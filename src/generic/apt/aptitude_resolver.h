@@ -445,6 +445,12 @@ public:
    * MarkInstall would, if the dependency isn't current resolved.
    * (this is arguably not quite right: it ought to be cancelled
    * whenever the dependency is resolved by a partial solution)
+   *
+   * \param initial_state_manual_flags maps packages that have an
+   * overridden initial state to "true" or "false" depending on
+   * whether they should be considered to have a manually chosen
+   * state.  The manual states of overridden packages default to
+   * "true" if they do not have a mapping in this collection.
    */
   void add_action_scores(int preserve_score, int auto_score,
 			 int remove_score, int keep_score,
@@ -455,6 +461,7 @@ public:
 			 int break_hold_score,
 			 bool allow_break_holds_and_forbids,
 			 int default_resolution_score,
+			 const std::map<package, bool> &initial_state_manual_flags,
 			 const std::vector<hint> &hints);
 
   /** Score packages/versions according to their priorities.  Normally

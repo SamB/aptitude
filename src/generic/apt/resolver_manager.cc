@@ -768,6 +768,7 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
 			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::DefaultResolutionScore", 400),
+			      std::map<aptitude_resolver_package, bool>(),
 			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),

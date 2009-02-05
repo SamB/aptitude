@@ -655,7 +655,7 @@ bool aptitude_resolver::is_break_hold(const aptitude_resolver::version &v) const
   const aptitudeDepCache::aptitude_state &state=get_universe().get_cache()->get_ext_state(p.get_pkg());
 
   const bool not_currently_installed = p.get_pkg().CurrentVer().end();
-  const bool current_version = v == p.current_version();
+  const bool current_version = v == get_initial_state().version_of(p);
   const bool held_back = state.selection_state == pkgCache::State::Hold;
   const bool forbidden = !v.get_ver().end() && state.forbidver == v.get_ver().VerStr();
 
@@ -666,7 +666,9 @@ bool aptitude_resolver::is_break_hold(const aptitude_resolver::version &v) const
     }
   else if(current_version)
     {
-      LOG_TRACE(loggerScores, v << " does not break a hold/forbid: it is the currently installed package version.");
+      // Note: the initially selected version, whatever it is, gets a
+      // free pass.
+      LOG_TRACE(loggerScores, v << " does not break a hold/forbid: it is the currently selected package version.");
       return false;
     }
   else if(!held_back && !forbidden)
@@ -997,11 +999,11 @@ void aptitude_resolver::add_default_resolution_score(const pkgCache::DepIterator
 					   instVer,
 					   cache);
 
-      // If the source of the dependency is currently installed, apply
-      // the score only to the target; otherwise, apply it to the pair
-      // (the target can't be installed, or we would not jave invoked
-      // this routine).
-      if(source_ver.get_package().current_version() == source_ver)
+      // If the source of the dependency is currently (going to be)
+      // installed, apply the score only to the target; otherwise,
+      // apply it to the pair (the target can't be installed, or we
+      // would not have invoked this routine).
+      if(get_initial_state().version_of(source_ver.get_package()) == source_ver)
 	{
 	  LOG_DEBUG(loggerScores,
 		    "** Score: " << std::showpos << default_resolution_score
@@ -1037,11 +1039,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  int break_hold_score,
 					  bool allow_break_holds_and_forbids,
 					  int default_resolution_score,
+					  const std::map<package, bool> &initial_state_manual_flags,
 					  const std::vector<hint> &hints)
 {
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
   pkgRecords records(*get_universe().get_cache());
+  const resolver_initial_state<aptitude_universe> &initial_state(get_initial_state());
 
   // Should I stick with APT iterators instead?  This is a bit more
   // convenient, though..
@@ -1052,15 +1056,27 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       aptitudeDepCache::aptitude_state &state=get_universe().get_cache()->get_ext_state(p.get_pkg());
       pkgDepCache::StateCache &apt_state = (*get_universe().get_cache())[p.get_pkg()];
 
-      // Packages are considered "manual" if either they were manually
+      // Packages are considered "manual" either if they were manually
       // installed, or if they are currently installed and were
-      // manually removed.
+      // manually removed.  Packages whose state was set by the
+      // initial_state object are always considered to be manual.
       //
       // There is NO PENALTY for any change to a non-manual package's
       // state, other than the usual priority-based and non-default
       // version weighting.
-      bool manual = ((!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto)) ||
-	(p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual));
+      bool manual;
+
+      if(initial_state.version_of(p) == p.current_version())
+	manual = ((!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto)) ||
+	  (p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual));
+      else
+	{
+	  std::map<package, bool>::const_iterator found(initial_state_manual_flags.find(p));
+	  if(found != initial_state_manual_flags.end())
+	    manual = found->second;
+	  else
+	    manual = true;
+	}
 
       for(aptitude_universe::package::version_iterator vi=p.versions_begin(); !vi.end(); ++vi)
 	{
@@ -1124,8 +1140,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		}
 	    }
 
-	  // Remember, the "current version" is the InstVer.
-	  if(v==p.current_version())
+	  // Remember, the initial version is the InstVer.
+	  if(v == initial_state.version_of(p))
 	    {
 	      if(manual)
 		{
@@ -1252,13 +1268,11 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		     is_or_head && (dep->Type == pkgCache::Dep::Depends ||
 				    dep->Type == pkgCache::Dep::Recommends))
 		    {
-		      // Scan ahead to see if any of the dependencies
-		      // are satisfied by the current installation.
-		      pkgCache::DepIterator endDep = dep;
-		      while(!endDep.end() && (endDep->CompareOp & pkgCache::Dep::Or) != 0)
-			++endDep;
-		      if(!endDep.end() &&
-			 ((*apt_cache_file)[endDep] & pkgDepCache::DepGInstall) == 0)
+		      aptitude_resolver_dep d(dep,
+					      pkgCache::PrvIterator(),
+					      get_universe().get_cache());
+
+		      if(d.broken_under(initial_state))
 			{
 			  LOG_TRACE(loggerScores,
 				    "Adjusting scores to promote a default resolution for \"" << dep << "\"");
