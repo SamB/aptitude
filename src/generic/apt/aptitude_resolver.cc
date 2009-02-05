@@ -1269,7 +1269,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 				    dep->Type == pkgCache::Dep::Recommends))
 		    {
 		      aptitude_resolver_dep d(dep,
-					      pkgCache::PrvIterator(),
+					      pkgCache::PrvIterator(*get_universe().get_cache(),
+								    0, (pkgCache::Version *) 0),
 					      get_universe().get_cache());
 
 		      if(d.broken_under(initial_state))
