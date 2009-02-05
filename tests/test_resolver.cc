@@ -93,6 +93,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testActionCompare);
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
 
@@ -314,6 +315,67 @@ private:
     catch(NoMoreSolutions)
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
+      }
+  }
+
+  // Check that initial states work.
+  void testInitialState()
+  {
+    typedef dummy_universe_ref::package package;
+    typedef dummy_universe_ref::version version;
+    typedef dummy_universe_ref::dep dep;
+    typedef dummy_solution::action action;
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_2);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version av1 = a.version_from_name("v1");
+    version av2 = a.version_from_name("v2");
+    version bv1 = b.version_from_name("v1");
+    version bv2 = b.version_from_name("v2");
+    version cv1 = c.version_from_name("v1");
+    version cv2 = c.version_from_name("v2");
+
+
+    imm::map<package, version> initial_state;
+    initial_state.put(a, av2);
+    initial_state.put(c, cv2);
+
+    dummy_resolver r(10, -300, -100, 10000000, 500,
+		     initial_state,
+		     u);
+
+    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), av2);
+    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), cv2);
+
+    try
+      {
+	dummy_solution sol = r.find_next_solution(1000000, NULL);
+
+	CPPUNIT_ASSERT_MESSAGE("There are no broken deps, so only the empty solution should be returned.",
+			       sol.get_actions().empty());
+
+	bool out_of_solutions = false;
+	try
+	  {
+	    sol = r.find_next_solution(1000000, NULL);
+	  }
+	catch(NoMoreSolutions&)
+	  {
+	    out_of_solutions = true;
+	  }
+	CPPUNIT_ASSERT_MESSAGE("There should be only one solution.",
+			       out_of_solutions);
+      }
+    catch(NoMoreTime&)
+      {
+	CPPUNIT_FAIL("Unable to solve the solution in the ridiculous amount of time I allocated.");
+      }
+    catch(NoMoreSolutions&)
+      {
+	CPPUNIT_FAIL("The empty solution should be returned.");
       }
   }
 
