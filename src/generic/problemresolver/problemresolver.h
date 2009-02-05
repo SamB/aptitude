@@ -627,6 +627,14 @@ private:
     }
   };
 
+  /** \brief The initial state of the resolver.
+   *
+   *  If this is not NULL, we need to use a more clever technique to
+   *  get all the broken deps.  Can we get away with just iterating
+   *  over all deps and calling broken_under()?
+   */
+  resolver_initial_state<PackageUniverse> initial_state;
+
   // Information regarding the weight given to various parameters;
   // packaged up in a struct so it can be easily used by the solution
   // constructors.
@@ -930,6 +938,7 @@ private:
   {
     solution s;
     package drop;
+
   public:
     drop_package(const solution &_s, const package &_drop)
       :s(_s), drop(_drop)
@@ -939,7 +948,7 @@ private:
     version version_of(const package &p) const
     {
       if(p == drop)
-	return p.current_version();
+	return s.get_initial_state().version_of(p);
       else
 	return s.version_of(p);
     }
@@ -1013,7 +1022,7 @@ private:
 
     drop_package dropped(s, v.get_package());
 
-    version curr = v.get_package().current_version();
+    version curr = initial_state.version_of(v.get_package());
     for(typename version::revdep_iterator i = curr.revdeps_begin();
 	!i.end(); ++i)
       if(ignore_deps.find(*i) == ignore_deps.end() &&
@@ -1044,25 +1053,17 @@ private:
     return false;
   }
 
-  /** Represents an empty solution. */
-  class null_solution
-  {
-  public:
-    version version_of(const package &p) const
-    {
-      return p.current_version();
-    }
-  };
-
   /** Represents a partial solution based directly (by reference) on a
    *  reference to a map.
    */
   class map_solution
   {
     const std::map<package, action> &actions;
+    const resolver_initial_state &initial_state;
   public:
-    map_solution(const std::map<package, action> &_actions)
-      : actions(_actions)
+    map_solution(const std::map<package, action> &_actions,
+		 const resolver_initial_state &_initial_state)
+      : actions(_actions), initial_state(_initial_state)
     {
     }
 
@@ -1071,7 +1072,7 @@ private:
       typename std::map<package, action>::const_iterator found = actions.find(p);
 
       if(found == actions.end())
-	return p.current_version();
+	return initial_state.version_of(p);
       else
 	return found->second.ver;
     }
@@ -1366,7 +1367,7 @@ private:
 	// mean it does ;-)
 	eassert_on_dep(found_one, d);
 	eassert_on_ver(output_actions.find(solver.get_package()) == output_actions.end(), solver);
-	eassert_on_ver(solver != solver.get_package().current_version(), solver);
+	eassert_on_ver(solver != initial_state.version_of(solver.get_package()), solver);
 
 	LOG_TRACE("Filter: resolving " << d << " with "
 		  << solver);
@@ -1390,7 +1391,7 @@ private:
 	output_actions[solver.get_package()] = act;
 	action_score += step_score;
 	action_score += version_scores[solver.get_id()];
-	action_score -= version_scores[solver.get_package().current_version().get_id()];
+	action_score -= version_scores[initial_state.version_of(solver.get_package()).get_id()];
       }
 
     // By definition we have a solution now.
@@ -1801,7 +1802,7 @@ private:
 		action &out_act) const
   {
     package p = v.get_package();
-    version cur = p.current_version();
+    version cur = initial_state.version_of(p);
     version inst = s.version_of(p);
 
     if(inst != cur)
@@ -1891,12 +1892,14 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights) const
+			const solution_weights<PackageUniverse> &weights,
+			const resolver_initial_state<PackageUniverse> &initial_state) const
     {
       target.push_back(solution::successor(s,
 					   abegin, aend,
 					   ubegin, uend,
-					   universe, weights));
+					   universe, weights,
+					   initial_state));
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
@@ -1937,7 +1940,8 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights) const
+			const solution_weights<PackageUniverse> &weights,
+			const resolver_initial_state<PackageUniverse> &initial_state) const
     {
       ++count;
     }
@@ -2007,7 +2011,8 @@ private:
 	if(found == conflicts.end())
 	  generator.make_successor(s, &act, &act+1,
 				   (dep *) 0, (dep *) 0,
-				   universe, weights);
+				   universe, weights,
+				   initial_state);
 	else
 	  {
 	    LOG_TRACE(logger,
@@ -2079,9 +2084,9 @@ private:
 	  insert_conflictor(conflict, action(source, d, false, -1));
 	else
 	  {
-	    eassert_on_2objs_soln(source == source.get_package().current_version(),
+	    eassert_on_2objs_soln(source == initial_state.version_of(source.get_package()),
 				  source,
-				  source.get_package().current_version(),
+				  initial_state.version_of(source.get_package()),
 				  s);
 
 	    for(typename package::version_iterator vi = source.get_package().versions_begin();
@@ -2105,7 +2110,8 @@ private:
     // Finally, maybe we can leave this dependency unresolved.
     if(d.is_soft())
       generator.make_successor(s, (action *) 0, (action *) 0,
-			       &d, &d+1, universe, weights);
+			       &d, &d+1, universe, weights,
+			       initial_state);
   }
 
   /** Processes the given solution by enqueuing its successor nodes
@@ -2318,17 +2324,23 @@ public:
    *  with less than -infinity points will be immediately discarded.
    *  \param _full_solution_score a bonus for goal nodes (things
    *  that solve all dependencies)
+   *  \param _initial_state   A set of package actions to treat as part
+   *                          of the initial state (empty to just
+   *                          use default versions for everything).
    *  \param _universe the universe in which we are working.
    */
   generic_problem_resolver(int _step_score, int _broken_score,
 			   int _unfixed_soft_score,
 			   int infinity,
 			   int _full_solution_score,
+			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolver()),
      appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     initial_state(_initial_state, universe),
      weights(_step_score, _broken_score, _unfixed_soft_score,
-	     _full_solution_score, _universe.get_version_count()),
+	     _full_solution_score, _universe.get_version_count(),
+	     initial_state),
      minimum_score(-infinity),
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
@@ -2343,7 +2355,8 @@ public:
 
 	solution empty_solution(solution::root_node(initial_broken,
 						    universe,
-						    weights));
+						    weights,
+						    initial_state));
 	eassert_on_dep(bd.broken_under(empty_solution), empty_solution, bd);
 
 	initial_broken.insert(bd);
@@ -2427,6 +2440,12 @@ public:
       reexamine_deferred();
 
     return open.empty() && finished;
+  }
+
+  /** \return the initial state of the resolver. */
+  const resolver_initial_state<PackageUniverse> &get_initial_state() const
+  {
+    return initial_state;
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -2768,7 +2787,8 @@ public:
 
 	open.push(solution::root_node(initial_broken,
 				      universe,
-				      weights));
+				      weights,
+				      initial_state));
       }
 
     while(max_steps>0 && !open.empty())

@@ -1,6 +1,6 @@
 // sanity_check_universe.h                  -*-c++-*-
 //
-//   Copyright (C) 2007-2008 Daniel Burrows
+//   Copyright (C) 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -358,10 +358,13 @@ void sanity_check_universe(const PackageUniverse &universe)
 		<< std::endl;
     }
 
+  resolver_initial_state<PackageUniverse>
+    initial_state(imm::map<package, version>(), universe);
   generic_solution<PackageUniverse> empty_solution
     = generic_solution<PackageUniverse>::root_node(imm::set<dep>(),
 						   universe,
-						   solution_weights<PackageUniverse>(0, 0, 0, 0, 0));
+						   solution_weights<PackageUniverse>(0, 0, 0, 0, 0, initial_state),
+						   initial_state);
 
   for(broken_dep_iterator bdIt = universe.broken_begin();
       !bdIt.end(); ++bdIt)

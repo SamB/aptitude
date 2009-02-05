@@ -35,6 +35,132 @@
 template<typename PackageUniverse>
 class solution_weights;
 
+/** \brief Represents the initial state of a dependency search.
+ *
+ *  This is optimized under the assumption that overrides of package
+ *  versions will be rare, but not unheard of.
+ */
+template<typename PackageUniverse>
+class resolver_initial_state
+{
+  resolver_initial_state(const resolver_initial_state &);
+
+  // A collection of indices into the vector of overridden versions,
+  // indexed by package ID; -1 means to use the real current version.
+  // This lets us avoid allocating space for non-overridden versions
+  // while keeping good locality for the list of versions.
+  //
+  // If NULL, all packages have their real current version.
+  int *overridden_versions;
+  // Only set if overridden_versions is NULL;
+  int num_overridden_versions;
+
+  // Stores the versions that have been overridden;
+  // overridden_versions indexes into this list.
+  std::vector<typename PackageUniverse::version> version_store;
+
+  /** \brief Override p (if necessary) to the version v. */
+  void map_package(const typename PackageUniverse::package &p,
+		   const typename PackageUniverse::version &v,
+		   const PackageUniverse &universe)
+  {
+    if(overridden_versions == NULL)
+      {
+	if(p.current_version() == v)
+	  return;
+
+	num_overridden_versions = universe.get_package_count();
+	overridden_versions = new int[num_overridden_versions];
+	for(int i = 0; i < num_overridden_versions; ++i)
+	  overridden_versions[i] = -1;
+      }
+
+    const int p_id = p.get_id();
+    if(overridden_versions[p_id] == -1)
+      {
+	if(p.current_version() == v)
+	  return;
+
+	// Allocate a new slot.
+	const int slot = (int)version_store.size();
+	version_store.push_back(v);
+	overridden_versions[p_id] = slot;
+      }
+    else
+      {
+	const int slot = overridden_versions[p_id];
+	version_store[slot] = v;
+      }
+  }
+
+  struct do_map_package
+  {
+    resolver_initial_state &state;
+    const PackageUniverse &universe;
+
+    do_map_package(resolver_initial_state &_state,
+		   const PackageUniverse &_universe)
+      : state(_state), universe(_universe)
+    {
+    }
+
+    void operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
+    {
+      state.map_package(pair.first, pair.second, universe);
+    }
+  };
+
+public:
+  /** \brief Create a new initial state that sets the given packages
+   *  to the given versions.
+   */
+  resolver_initial_state(const imm::map<typename PackageUniverse::package, typename PackageUniverse::version> &mappings,
+			 const PackageUniverse &universe)
+    : overridden_versions(NULL),
+      num_overridden_versions(NULL)
+  {
+    mappings.for_each(do_map_package(*this, universe));
+  }
+
+  bool empty()
+  {
+    if(overridden_versions == NULL)
+      return true;
+
+    for(int i = 0; i < num_overridden_versions; ++i)
+      if(overridden_versions[i] != -1)
+	return false;
+
+    return true;
+  }
+
+  ~resolver_initial_state()
+  {
+    delete[] overridden_versions;
+  }
+
+  typename PackageUniverse::version version_of(const typename PackageUniverse::package &p) const
+  {
+    int slot;
+    int p_id;
+    if(overridden_versions == NULL)
+      {
+	slot = -1;
+	p_id = -1;
+      }
+    else
+      {
+	p_id = p.get_id();
+	slot = overridden_versions[p.get_id()];
+      }
+
+    if(slot == -1)
+      return p.current_version();
+    else
+      return version_store[slot];
+  }
+};
+
 /** Represents a single action taken by the resolver: the
  *  installation of a particular version of a package.  The
  *  *identity* of an action (in terms of operator< and operator==)
@@ -114,6 +240,20 @@ private:
 
   class solution_rep
   {
+    /** \brief The initial state of this solution.
+     *
+     *  This is currently assumed to be the same for all solutions in
+     *  a given resolver run (i.e., operator== and friends don't check
+     *  it); if it's not, you have some serious weirdness.  The
+     *  pointer goes away after the resolver is done with its
+     *  computations, but nothing else should use it anyway.
+     *
+     *  We need this mainly so that version_of works properly with no
+     *  extra arguments.  (maybe instead I should just accept having
+     *  to wrap it all the time?)
+     */
+    const resolver_initial_state<PackageUniverse> &initial_state;
+
     /** The actions performed by this solution.
      *
      *  Originally the plan was to read this off by tracing to the
@@ -164,9 +304,10 @@ private:
 		 const imm::set<dep> &_broken_deps,
 		 const imm::set<dep> &_unresolved_soft_deps,
 		 const imm::map<version, dep> &_forbidden_versions,
+		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
 		 int _action_score)
-      : actions(_actions),
+      : initial_state(_initial_state), actions(_actions),
 	broken_deps(_broken_deps),
 	unresolved_soft_deps(_unresolved_soft_deps),
 	forbidden_versions(_forbidden_versions),
@@ -174,6 +315,11 @@ private:
 	action_score(_action_score),
 	refcount(1)
     {
+    }
+
+    const resolver_initial_state<PackageUniverse> &get_initial_state() const
+    {
+      return initial_state;
     }
 
     const imm::set<dep> &get_broken_deps() const
@@ -204,7 +350,7 @@ private:
       typename imm::map<package, action>::node found
 	= actions.lookup(pkg);
       if(!found.isValid())
-	return pkg.current_version();
+	return initial_state.version_of(pkg);
       else
 	return found.getVal().second.ver;
     }
@@ -233,9 +379,12 @@ private:
   struct solution_map_wrapper
   {
     const imm::map<package, action> &actions;
+    const resolver_initial_state<PackageUniverse> &initial_state;
   public:
-    solution_map_wrapper(const imm::map<package, action> &_actions)
-      :actions(_actions)
+    solution_map_wrapper(const imm::map<package, action> &_actions,
+			 const resolver_initial_state<PackageUniverse> &_initial_state)
+      : actions(_actions),
+	initial_state(_initial_state)
     {
     }
 
@@ -247,7 +396,7 @@ private:
       if(found.isValid())
 	return found.getVal().second.ver;
       else
-	return p.current_version();
+	return initial_state.version_of(p);
     }
   };
 
@@ -273,6 +422,7 @@ public:
 					     get_broken().clone(),
 					     get_unresolved_soft_deps().clone(),
 					     get_forbidden_versions().clone(),
+					     get_initial_state(),
 					     get_score(),
 					     get_action_score()));
   }
@@ -281,7 +431,8 @@ public:
   /** Generate the root node for a search in the given universe. */
   static generic_solution root_node(const imm::set<dep> &initial_broken,
 				    const PackageUniverse &universe,
-				    const solution_weights<PackageUniverse> &weights);
+				    const solution_weights<PackageUniverse> &weights,
+				    const resolver_initial_state<PackageUniverse> &initial_state);
 
   /** Generate a successor to the given solution.
    *
@@ -295,7 +446,8 @@ public:
 				    const u_iter &ubegin,
 				    const u_iter &uend,
 				    const PackageUniverse &universe,
-				    const solution_weights<PackageUniverse> &weights);
+				    const solution_weights<PackageUniverse> &weights,
+				    const resolver_initial_state<PackageUniverse> &initial_state);
 
   ~generic_solution()
   {
@@ -389,6 +541,12 @@ public:
   bool is_full_solution() const
   {
     return get_broken().empty();
+  }
+
+  /** \return the initial state of the solution. */
+  const resolver_initial_state<PackageUniverse> &get_initial_state() const
+  {
+    return real_soln->get_initial_state();
   }
 
   /** \return the score of the scolution */
@@ -657,6 +815,20 @@ private:
    */
   joint_score_set joint_scores;
 
+  /** \brief The initial state of the resolver.
+   *
+   *  This is currently assumed to be the same for all solutions in
+   *  a given resolver run (i.e., operator== and friends don't check
+   *  it); if it's not, you have some serious weirdness.  The
+   *  pointer goes away after the resolver is done with its
+   *  computations, but nothing else should use it anyway.
+   *
+   *  We need this mainly so that version_of works properly with no
+   *  extra arguments.  (maybe instead I should just accept having
+   *  to wrap it all the time?)
+   */
+  const resolver_initial_state<PackageUniverse> &initial_state;
+
   /** \brief A list of the joint scores added to this
    *  set of weights, in order.
    *
@@ -668,11 +840,13 @@ private:
 public:
   solution_weights(int _step_score, int _broken_score,
 		   int _unfixed_soft_score, int _full_solution_score,
-		   unsigned long num_versions)
+		   unsigned long num_versions,
+		   const resolver_initial_state<PackageUniverse> &_initial_state)
     :step_score(_step_score), broken_score(_broken_score),
      unfixed_soft_score(_unfixed_soft_score),
      full_solution_score(_full_solution_score),
-     version_scores(new int[num_versions])
+     version_scores(new int[num_versions]),
+     initial_state(_initial_state)
   {
     for(unsigned long i = 0; i < num_versions; ++i)
       version_scores[i] = 0;
@@ -687,17 +861,21 @@ private:
   class build_joint_score_action_set
   {
     imm::map<package, action> &output;
+    const resolver_initial_state<PackageUniverse> &initial_state;
     bool &any_is_current;
   public:
     build_joint_score_action_set(imm::map<package, action> &_output,
-				 bool &_any_is_current)
-      : output(_output), any_is_current(_any_is_current)
+				 bool &_any_is_current,
+				 const resolver_initial_state<PackageUniverse> &_initial_state)
+      : output(_output),
+	initial_state(_initial_state),
+	any_is_current(_any_is_current)
     {
     }
 
     void operator()(const version &version) const
     {
-      if(version == version.get_package().current_version())
+      if(version == initial_state.version_of(version.get_package()))
 	any_is_current = true;
 
       output.put(version.get_package(),
@@ -741,7 +919,8 @@ public:
     imm::map<package, action> actions_map;
     bool any_is_current = false;
     versions.for_each(build_joint_score_action_set(actions_map,
-						   any_is_current));
+						   any_is_current,
+						   initial_state));
 
     if(any_is_current)
       return;
@@ -761,7 +940,8 @@ template<typename PackageUniverse>
 inline generic_solution<PackageUniverse>
 generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken,
 					     const PackageUniverse &universe,
-					     const solution_weights<PackageUniverse> &weights)
+					     const solution_weights<PackageUniverse> &weights,
+					     const resolver_initial_state<PackageUniverse> &initial_state)
 {
   int score = initial_broken.size() * weights.broken_score;
 
@@ -772,6 +952,7 @@ generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken
 					   initial_broken,
 					   imm::set<dep>(),
 					   imm::map<version, dep>(),
+					   initial_state,
 					   score,
 					   0));
 }
@@ -786,7 +967,8 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const u_iter &ubegin,
 					     const u_iter &uend,
 					     const PackageUniverse &universe,
-					     const solution_weights<PackageUniverse> &weights)
+					     const solution_weights<PackageUniverse> &weights,
+					     const resolver_initial_state<PackageUniverse> &initial_state)
 {
   imm::set<dep> broken_deps = s.get_broken();
   imm::map<package, action> actions = s.get_actions();
@@ -808,13 +990,13 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
     {
       const action &a = *ai;
       eassert(!actions.domain_contains(a.ver.get_package()));
-      eassert(a.ver != a.ver.get_package().current_version());
+      eassert(a.ver != initial_state.version_of(a.ver.get_package()));
 
       actions.put(a.ver.get_package(), a);
 
       action_score += weights.step_score;
       action_score += weights.version_scores[a.ver.get_id()];
-      action_score -= weights.version_scores[a.ver.get_package().current_version().get_id()];
+      action_score -= weights.version_scores[initial_state.version_of(a.ver.get_package()).get_id()];
 
       // Look for joint score constraints triggered by adding this
       // action.
@@ -844,7 +1026,7 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
       // Update the set of broken dependencies, trying to re-use as
       // much of the former set as possible.
       version old_version=s.version_of(a.ver.get_package());
-      solution_map_wrapper tmpsol(actions);
+      solution_map_wrapper tmpsol(actions, initial_state);
 
       // Check reverse deps of the old version
       for(typename version::revdep_iterator rdi=old_version.revdeps_begin();
@@ -922,6 +1104,7 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					   broken_deps,
 					   unresolved_soft_deps,
 					   forbidden_versions,
+					   initial_state,
 					   score,
 					   action_score));
 }

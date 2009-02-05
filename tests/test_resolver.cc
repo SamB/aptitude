@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -167,6 +167,7 @@ private:
 							   parent.get_broken(),
 							   unresolved,
 							   parent.get_forbidden_versions(),
+							   parent.get_initial_state(),
 							   parent.get_score(),
 							   parent.get_action_score()));
   }
@@ -184,7 +185,10 @@ private:
     CPPUNIT_ASSERT(!di.end());
     dummy_universe::dep d2 = *di;
 
-    solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count());
+    resolver_initial_state<dummy_universe_ref> initial_state(imm::map<dummy_universe::package, dummy_universe::version>(), u);
+
+    solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count(),
+						 initial_state);
 
     imm::set<dummy_universe::dep> u_broken;
     for(dummy_universe::broken_dep_iterator bi = u.broken_begin();
@@ -206,7 +210,7 @@ private:
     // is correctly calculated according to the version mappings and
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
-						  u, weights);
+						  u, weights, initial_state);
     dummy_solution s1
       = unsafe_successor(s0, &a1, &a1+1,
 			 (dummy_universe::dep *) 0,
@@ -295,7 +299,9 @@ private:
   void testRejections()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
-    dummy_resolver r(10, -300, -100, 100000, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
 
     r.reject_version(u.find_package("a").version_from_name("v3"));
     r.reject_version(u.find_package("b").version_from_name("v3"));
@@ -320,7 +326,9 @@ private:
     typedef dummy_solution::action action;
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 10000000, 500, u);
+    dummy_resolver r(10, -300, -100, 10000000, 500,
+		     imm::map<package, version>(),
+		     u);
     // Disable this to debug the resolver test.
     //r.set_debug(true);
     // Score the combination of b, v1 and a, v2 highly.
@@ -400,7 +408,9 @@ private:
   void testDropSolutionSupersets()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 100000, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
 
     dummy_universe::package a = u.find_package("a");
     dummy_universe::version av1 = a.version_from_name("v1");
