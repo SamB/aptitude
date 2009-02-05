@@ -1892,14 +1892,12 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights,
-			const resolver_initial_state<PackageUniverse> &initial_state) const
+			const solution_weights<PackageUniverse> &weights) const
     {
       target.push_back(solution::successor(s,
 					   abegin, aend,
 					   ubegin, uend,
-					   universe, weights,
-					   initial_state));
+					   universe, weights));
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
@@ -1940,8 +1938,7 @@ private:
 			const a_iter &abegin, const a_iter &aend,
 			const u_iter &ubegin, const u_iter &uend,
 			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights,
-			const resolver_initial_state<PackageUniverse> &initial_state) const
+			const solution_weights<PackageUniverse> &weights) const
     {
       ++count;
     }
@@ -2011,8 +2008,7 @@ private:
 	if(found == conflicts.end())
 	  generator.make_successor(s, &act, &act+1,
 				   (dep *) 0, (dep *) 0,
-				   universe, weights,
-				   initial_state);
+				   universe, weights);
 	else
 	  {
 	    LOG_TRACE(logger,
@@ -2110,8 +2106,7 @@ private:
     // Finally, maybe we can leave this dependency unresolved.
     if(d.is_soft())
       generator.make_successor(s, (action *) 0, (action *) 0,
-			       &d, &d+1, universe, weights,
-			       initial_state);
+			       &d, &d+1, universe, weights);
   }
 
   /** Processes the given solution by enqueuing its successor nodes

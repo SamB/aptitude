@@ -446,8 +446,7 @@ public:
 				    const u_iter &ubegin,
 				    const u_iter &uend,
 				    const PackageUniverse &universe,
-				    const solution_weights<PackageUniverse> &weights,
-				    const resolver_initial_state<PackageUniverse> &initial_state);
+				    const solution_weights<PackageUniverse> &weights);
 
   ~generic_solution()
   {
@@ -967,9 +966,11 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const u_iter &ubegin,
 					     const u_iter &uend,
 					     const PackageUniverse &universe,
-					     const solution_weights<PackageUniverse> &weights,
-					     const resolver_initial_state<PackageUniverse> &initial_state)
+					     const solution_weights<PackageUniverse> &weights)
 {
+  const resolver_initial_state<PackageUniverse>
+    &initial_state(s.get_initial_state());
+
   imm::set<dep> broken_deps = s.get_broken();
   imm::map<package, action> actions = s.get_actions();
   imm::map<version, dep> forbidden_versions = s.get_forbidden_versions();
