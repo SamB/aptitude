@@ -2,7 +2,7 @@
 
 // dpkg_terminal.h
 //
-//  Copyright 2008 Daniel Burrows
+//  Copyright 2008-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include <generic/apt/parse_dpkg_status.h>
 #include <generic/util/safe_slot.h>
 
+struct sockaddr_un;
+
 /** \brief Support for creating a GUI terminal in which dpkg can be
  *  invoked.
  *
@@ -47,6 +49,15 @@ namespace gui
 
     // Forbid copying.
     DpkgTerminal(const DpkgTerminal &);
+
+    /** \brief The code that initializes the dpkg invocation in the
+     *  terminal.
+     *
+     *  \param sa   A socket on which to report the child's status.
+     *  \param f    A callback to invoke after dpkg finishes running.
+     */
+    void child_process(const struct sockaddr_un &sa,
+		       const safe_slot1<pkgPackageManager::OrderResult, int> &f);
 
   public:
     /** \brief Initialize a new terminal. */
@@ -92,6 +103,11 @@ namespace gui
     /** \brief Send "no" in reply to a "replace this conffile?" message.
      */
     void inject_no();
+
+    /** \brief Emitted when the subprocess tries to read from standard
+     *  input.
+     */
+    sigc::signal0<void> subprocess_read;
   };
 }
 

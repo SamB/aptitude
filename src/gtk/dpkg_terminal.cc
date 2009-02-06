@@ -228,6 +228,76 @@ namespace gui
     delete terminal;
   }
 
+  void DpkgTerminal::child_process(const struct sockaddr_un &sa,
+				   const safe_slot1<pkgPackageManager::OrderResult, int> &f)
+  {
+    // The child process.  It passes status information to the
+    // parent process and uses its *return code* to indicate the
+    // success / failure state.
+
+    // NB: we should close the listen side here, but I don't
+    // because of my magic knowledge that vte will.
+
+    char timebuf[512] = "";
+
+    const time_t start_time = time(0);
+    struct tm start_local_time;
+    localtime_r(&start_time, &start_local_time);
+    if(strftime(timebuf, sizeof(timebuf), "%c", &start_local_time) == 0)
+      strcpy(timebuf, "ERR");
+    printf(_("[%s] dpkg process starting...\n"), timebuf);
+
+    int write_sock = open_unix_socket();
+    if(write_sock == -1)
+      {
+	_error->DumpErrors();
+	_exit(pkgPackageManager::Failed);
+      }
+
+    if(connect(write_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
+      {
+	int errnum = errno;
+	std::string err = cw::util::sstrerror(errnum);
+	_error->Error("%s: Unable to bind to the temporary socket: %s",
+		      __PRETTY_FUNCTION__,
+		      err.c_str());
+	_error->DumpErrors();
+	_exit(pkgPackageManager::Failed);
+      }
+
+    pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
+
+    // Make sure errors appear somewhere (we really ought to push
+    // them down the FIFO).
+    _error->DumpErrors();
+
+    const time_t end_time = time(0);
+    struct tm end_local_time;
+    localtime_r(&end_time, &end_local_time);
+    if(strftime(timebuf, sizeof(timebuf), "%c", &end_local_time) == 0)
+      strcpy(timebuf, "ERR");
+
+    switch(result)
+      {
+      case pkgPackageManager::Completed:
+	printf(_("[%s] dpkg process complete.\n"), timebuf);
+	break;
+      case pkgPackageManager::Failed:
+	printf(_("[%s] dpkg process failed.\n"), timebuf);
+	break;
+      case pkgPackageManager::Incomplete:
+	printf(_("[%s] dpkg process complete; there are more packages left to process.\n"),
+	       timebuf);
+	break;
+      default:
+	printf("[%s] dpkg process complete; internal error: bad result code (%d).\n",
+	       timebuf, result);
+	break;
+      }
+
+    _exit(result);
+  }
+
   void DpkgTerminal::run(const safe_slot1<pkgPackageManager::OrderResult, int> &f)
   {
     // Create a temporary UNIX-domain socket to pass status
@@ -289,73 +359,7 @@ namespace gui
 				     FALSE, FALSE, FALSE);
 
     if(pid == 0)
-      {
-	// The child process.  It passes status information to the
-	// parent process and uses its *return code* to indicate the
-	// success / failure state.
-
-	// NB: we should close the listen side here, but I don't
-	// because of my magic knowledge that vte will.
-
-	char timebuf[512] = "";
-
-	const time_t start_time = time(0);
-	struct tm start_local_time;
-	localtime_r(&start_time, &start_local_time);
-	if(strftime(timebuf, sizeof(timebuf), "%c", &start_local_time) == 0)
-	  strcpy(timebuf, "ERR");
-	printf(_("[%s] dpkg process starting...\n"), timebuf);
-
-	int write_sock = open_unix_socket();
-	if(write_sock == -1)
-	  {
-	    _error->DumpErrors();
-	    _exit(pkgPackageManager::Failed);
-	  }
-
-	if(connect(write_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-	  {
-	    int errnum = errno;
-	    std::string err = cw::util::sstrerror(errnum);
-	    _error->Error("%s: Unable to bind to the temporary socket: %s",
-			  __PRETTY_FUNCTION__,
-			  err.c_str());
-	    _error->DumpErrors();
-	    _exit(pkgPackageManager::Failed);
-	  }
-
-	pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
-
-	// Make sure errors appear somewhere (we really ought to push
-	// them down the FIFO).
-	_error->DumpErrors();
-
-	const time_t end_time = time(0);
-	struct tm end_local_time;
-	localtime_r(&end_time, &end_local_time);
-	if(strftime(timebuf, sizeof(timebuf), "%c", &end_local_time) == 0)
-	  strcpy(timebuf, "ERR");
-
-	switch(result)
-	  {
-	  case pkgPackageManager::Completed:
-	    printf(_("[%s] dpkg process complete.\n"), timebuf);
-	    break;
-	  case pkgPackageManager::Failed:
-	    printf(_("[%s] dpkg process failed.\n"), timebuf);
-	    break;
-	  case pkgPackageManager::Incomplete:
-	    printf(_("[%s] dpkg process complete; there are more packages left to process.\n"),
-		   timebuf);
-	    break;
-	  default:
-	    printf("[%s] dpkg process complete; internal error: bad result code (%d).\n",
-		   timebuf, result);
-	    break;
-	  }
-
-	_exit(result);
-      }
+      child_process(sa, f);
     else
       {
 	int read_sock = accept(listen_sock, NULL, NULL);
