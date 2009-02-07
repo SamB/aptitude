@@ -132,22 +132,6 @@ namespace gui
       }
     };
 
-    int open_unix_socket()
-    {
-      int sock = socket(AF_UNIX, SOCK_STREAM, 0);
-      if(sock == -1)
-	{
-	  int errnum = errno;
-	  std::string err = cw::util::sstrerror(errnum);
-	  std::string msg = cw::util::ssprintf(_("%s: Unable to create a Unix-domain socket: %s"),
-					       "open_unix_socket",
-					       err.c_str());
-	  _error->Error("%s", msg.c_str());
-	}
-
-      return sock;
-    }
-
     // Closure structure to connect up the child-exited signal.
     struct child_exited_info
     {
@@ -243,6 +227,22 @@ namespace gui
     }
   };
 
+  int open_unix_socket()
+  {
+    int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+    if(sock == -1)
+      {
+	int errnum = errno;
+	std::string err = cw::util::sstrerror(errnum);
+	std::string msg = cw::util::ssprintf(_("%s: Unable to create a Unix-domain socket: %s"),
+					     "open_unix_socket",
+					     err.c_str());
+	throw TemporarySocketFail(msg);
+      }
+
+    return sock;
+  }
+
   /** \brief Represents the read end of a pair of Unix-domain sockets. */
   class temporary_listen_socket
   {
@@ -257,12 +257,6 @@ namespace gui
     {
       using namespace cwidget::util;
       int fd = open_unix_socket();
-      if(fd == -1)
-	{
-	  int errnum = errno;
-	  throw TemporarySocketFail(ssprintf(_("Can't allocate socket: %s."),
-					     sstrerror(errnum).c_str()));
-	}
 
       listen_sock = std::auto_ptr<FileFd>(new FileFd(fd));
 
@@ -331,9 +325,14 @@ namespace gui
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
 
-    int write_sock = open_unix_socket();
-    if(write_sock == -1)
+    int write_sock;
+    try
       {
+	write_sock = open_unix_socket();
+      }
+    catch(TemporarySocketFail &ex)
+      {
+	_error->Error("%s", ex.errmsg().c_str());
 	_error->DumpErrors();
 	_exit(pkgPackageManager::Failed);
       }
