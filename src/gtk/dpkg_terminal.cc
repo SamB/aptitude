@@ -436,7 +436,7 @@ namespace gui
 	{
 	  if(WIFEXITED(status) || WIFSIGNALED(status))
 	    {
-	      if(write(child_process_to_self_control_fd_write, &result, sizeof(result)) < (int)sizeof(result))
+	      if(write(child_process_to_self_control_fd_write, &status, sizeof(status)) < (int)sizeof(status))
 		{
 		  // Something is very very wrong.  Make a last ditch
 		  // effort to tell the world about our troubles.
