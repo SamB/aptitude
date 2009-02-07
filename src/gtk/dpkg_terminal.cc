@@ -849,6 +849,37 @@ namespace gui
 
     LOG_INFO(logger, "Child process starting.");
 
+
+    // We have to do this before tcsetattr(), because tcsetattr()
+    // requires the terminal (that's the parent process) to respond,
+    // but that process is blocked in accept() until we open the side
+    // channels.
+    //
+    // This is all somewhat fragile; I wish Gnome bug #320128 was
+    // fixed so that I could just make some internal pipes. :-(
+    LOG_TRACE(logger, "Opening sockets to parent process.");
+
+    std::auto_ptr<temporary_client_socket> dpkg_sock;
+    std::auto_ptr<temporary_client_socket> control_sock;
+    try
+      {
+	// Open two sockets, one for dpkg status messages and one for
+	// intra-program control messages.
+	dpkg_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
+	control_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
+      }
+    catch(TemporarySocketFail &ex)
+      {
+	LOG_FATAL(logger, "Unable to open sockets: " << ex.errmsg());
+	_error->Error("%s", ex.errmsg().c_str());
+	_error->DumpErrors();
+	_exit(pkgPackageManager::Failed);
+      }
+
+    child_process_to_parent_control_fd = control_sock->get_fd();
+
+
+    LOG_TRACE(logger, "Disabling TOSTOP.");
     // Try to disable TOSTOP (so that output never suspends a
     // backgrounded process).
     {
@@ -900,27 +931,6 @@ namespace gui
     if(strftime(timebuf, sizeof(timebuf), "%c", &start_local_time) == 0)
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
-
-    LOG_TRACE(logger, "Opening sockets to parent process.");
-
-    std::auto_ptr<temporary_client_socket> dpkg_sock;
-    std::auto_ptr<temporary_client_socket> control_sock;
-    try
-      {
-	// Open two sockets, one for dpkg status messages and one for
-	// intra-program control messages.
-	dpkg_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
-	control_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
-      }
-    catch(TemporarySocketFail &ex)
-      {
-	LOG_FATAL(logger, "Unable to open sockets: " << ex.errmsg());
-	_error->Error("%s", ex.errmsg().c_str());
-	_error->DumpErrors();
-	_exit(pkgPackageManager::Failed);
-      }
-
-    child_process_to_parent_control_fd = control_sock->get_fd();
 
     _error->DumpErrors();
 
