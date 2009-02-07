@@ -620,6 +620,12 @@ namespace gui
 						cw::util::sstrerror(errnum).c_str());
 				  _error->DumpErrors();
 				}
+			      else
+				{
+				  // Tell the parent that we continued the process.
+				  unsigned char c = 1;
+				  write(child_process_to_parent_control_fd, &c, 1);
+				}
 			    }
 			}
 		      else
