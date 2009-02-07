@@ -36,6 +36,7 @@
 #include <apt-pkg/error.h>
 
 #include <aptitude.h>
+#include <loggers.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -43,6 +44,9 @@
 #include "gui.h"
 
 namespace cw = cwidget;
+
+using log4cxx::LoggerPtr;
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -64,25 +68,32 @@ namespace gui
       int fd;
       safe_slot1<void, aptitude::apt::dpkg_status_message> report_message;
       aptitude::apt::dpkg_status_parser parser;
+      log4cxx::LoggerPtr logger;
 
-      static void delete_socket_data_processor(dpkg_socket_data_processor *processor)
+      static void delete_socket_data_processor(log4cxx::LoggerPtr logger,
+					       dpkg_socket_data_processor *processor)
       {
+	LOG_TRACE(logger, "Deleting dpkg socket data processor " << processor << ".");
 	delete processor;
       }
 
     public:
       dpkg_socket_data_processor(int _fd,
 				 const safe_slot1<void, aptitude::apt::dpkg_status_message> &_report_message)
-	: fd(_fd), report_message(_report_message)
+	: fd(_fd), report_message(_report_message),
+	  logger(Loggers::getAptitudeDpkgStatusPipe())
       {
       }
 
       bool process_data_from_dpkg_socket(Glib::IOCondition condition)
       {
+	LOG_TRACE(logger, "Got dpkg socket event: condition " << condition);
+
 	bool rval = false;
 
 	if(condition & Glib::IO_IN)
 	  {
+	    LOG_TRACE(logger, "Reading data from the dpkg socket.");
 	    char buf[1024];
 	    const int buf_len = sizeof(buf);
 	    int amt;
@@ -90,6 +101,10 @@ namespace gui
 	    do
 	      {
 		amt = recv(fd, buf, buf_len, MSG_DONTWAIT);
+
+		// TODO: I should escape all the socket data.
+		LOG_DEBUG(logger, "Read data from the dpkg socket: \"" << std::string(buf, amt) << "\".");
+
 		parser.process_input(buf, amt);
 
 		if(aptcfg->FindB("Debug::Aptitude::Dpkg-Status-Fd", false))
@@ -99,6 +114,7 @@ namespace gui
 		  {
 		    aptitude::apt::dpkg_status_message
 		      msg(parser.pop_message());
+		    LOG_TRACE(logger, "Parsed dpkg message: " << msg << ".");
 		    report_message.get_slot()(msg);
 		  }
 
@@ -107,14 +123,23 @@ namespace gui
 	      }
 	    while(amt > 0);
 
+	    if(read_anything)
+	      LOG_TRACE(logger, "No data received from the dpkg socket, assuming the process exited.");
+	    else
+	      LOG_TRACE(logger, "Done reading data from the dpkg socket.");
+
 	    rval = read_anything;
 	  }
 	else if( (condition & Glib::IO_NVAL) ||
 		 (condition & Glib::IO_ERR) ||
 		 (condition & Glib::IO_HUP) )
-	  rval = false;
+	  {
+	    LOG_TRACE(logger, "The socket seems to have closed, exiting.");
+	    rval = false;
+	  }
 	else
 	  {
+	    LOG_ERROR(logger, "Unexpected IO condition " << condition);
 	    _error->Warning("Unexpected IO condition %d", condition);
 	    rval = false;
 	  }
@@ -124,9 +149,10 @@ namespace gui
 	  // a little nervous about deleting something that's actively
 	  // involved in signal delivery.
 	  {
+	    LOG_DEBUG(logger, "Scheduling this socket data processor (" << this << ") for deletion.");
 	    sigc::slot0<void> delete_this =
 	      sigc::bind(sigc::ptr_fun(&dpkg_socket_data_processor::delete_socket_data_processor),
-			 this);
+			 logger, this);
 	    post_event(make_safe_slot(delete_this));
 	  }
 
@@ -143,12 +169,15 @@ namespace gui
       // The continuation of the child.
       safe_slot1<void, pkgPackageManager::OrderResult> k;
 
+      LoggerPtr logger;
+
       gulong handler_id;
 
       child_exited_info(pid_t _pid,
 			const safe_slot1<void, pkgPackageManager::OrderResult> &_k)
 	: pid(_pid),
-	  k(_k)
+	  k(_k),
+	  logger(Loggers::getAptitudeDpkgTerminal())
       {
       }
     };
@@ -156,6 +185,8 @@ namespace gui
     void destroy_child_exited_info(gpointer data,
 				   GClosure *closure)
     {
+      LOG_TRACE(((child_exited_info *)data)->logger,
+		"Destroying the child exited signal associated with " << data << ".");
       delete (child_exited_info *)data;
     }
 
@@ -165,13 +196,23 @@ namespace gui
 			    gpointer user_data)
     {
       child_exited_info *info = (child_exited_info *)user_data;
+      LOG_DEBUG(info->logger,
+		"PID " << pid << " exited, status " << status << " (" << user_data << ").");
 
       if(info->pid != pid)
-	return;
+	{
+	  LOG_TRACE(info->logger,
+		    "Wrong PID, not announcing that dpkg finished.");
+	  return;
+	}
 
       pkgPackageManager::OrderResult result = pkgPackageManager::Failed;
       if(WIFEXITED(status))
 	result = (pkgPackageManager::OrderResult) WEXITSTATUS(status);
+
+
+      LOG_TRACE(info->logger,
+		"dpkg result is " << result << ".");
 
       info->k.get_slot()(pkgPackageManager::Failed);
 
@@ -187,6 +228,10 @@ namespace gui
 			     safe_slot1<void, pkgPackageManager::OrderResult> k)
     {
       child_exited_info *info = new child_exited_info(pid, k);
+
+      LOG_TRACE(info->logger, "Waiting for the subprocess "
+		<< pid << "to finish (" << info << ")");
+
       // We use implicit locking here (plus the fact that we are
       // running in the foreground thread) to know that the signal
       // won't be triggered before handler_id is set.
@@ -201,21 +246,32 @@ namespace gui
   }
 
   DpkgTerminal::DpkgTerminal()
-    : sent_finished_signal(false)
+    : sent_finished_signal(false),
+      logger(Loggers::getAptitudeDpkgTerminal())
   {
+    LOG_TRACE(logger, "Creating the dpkg terminal manager.");
+
     GtkWidget *vte = vte_terminal_new();
     terminal = (Glib::wrap(vte, false));
   }
 
   DpkgTerminal::~DpkgTerminal()
   {
+    LOG_TRACE(logger, "Destroying the dpkg terminal manager.");
+
     if(!sent_finished_signal)
-      finished(pkgPackageManager::Incomplete);
+      {
+	LOG_DEBUG(logger, "Since the dpkg terminal manager is being destroyed, returning an Incomplete dpkg status.");
+	finished(pkgPackageManager::Incomplete);
+      }
     delete terminal;
   }
 
   bool DpkgTerminal::handle_suspend_resume_event(Glib::IOCondition condition)
   {
+    LOG_TRACE(logger_backgrounding,
+	      "Received IO condition " << condition << " on the control socket.");
+
     bool rval = false;
 
     if(condition & Glib::IO_IN)
@@ -232,6 +288,10 @@ namespace gui
 	      {
 		state = (buf != 0);
 		read_anything = true;
+
+		LOG_DEBUG(logger_backgrounding,
+			  "Read status from control socket: dpkg is "
+			  << (state ? "running" : "suspended"));
 	      }
 	  }
 	while(amt > 0);
@@ -239,14 +299,24 @@ namespace gui
 	if(read_anything)
 	  subprocess_running_changed(state);
 
+	if(!read_anything)
+	  LOG_TRACE(logger_backgrounding,
+		    "No data on the control socket, shutting down the listener.");
+
 	rval = read_anything;
       }
     else if( (condition & Glib::IO_NVAL) ||
 	     (condition & Glib::IO_ERR) ||
 	     (condition & Glib::IO_HUP) )
-      rval = false;
+      {
+	LOG_TRACE(logger_backgrounding,
+		  "Control socket shut down, shutting down the listener.");
+	rval = false;
+      }
     else
       {
+	LOG_TRACE(logger_backgrounding,
+		  "Unexpected IO condition " << condition << " on control socket, shutting down the listener.");
 	_error->Warning("Unexpected IO condition %d", condition);
 	rval = false;
       }
@@ -279,6 +349,7 @@ namespace gui
 	std::string msg = cw::util::ssprintf(_("%s: Unable to create a Unix-domain socket: %s"),
 					     "open_unix_socket",
 					     err.c_str());
+	LOG_FATAL(Loggers::getAptitudeDpkgTerminal(), msg);
 	throw TemporarySocketFail(msg);
       }
 
@@ -300,13 +371,19 @@ namespace gui
       using namespace cwidget::util;
       int fd = open_unix_socket();
 
+      LOG_TRACE(Loggers::getAptitudeDpkgTerminal(),
+		"Listening on the temporary socket \"" << name.get_name() << "\".");
+
       listen_sock = std::auto_ptr<FileFd>(new FileFd(fd));
 
       const size_t max_socket_name = sizeof(addr.sun_path);
 
       if(name.get_name().size() > max_socket_name)
-	throw TemporarySocketFail(ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
-					   name.get_name().c_str()));
+	{
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(), "Internal error: the temporary socket name \"" << name.get_name() << " is too long!");
+	  throw TemporarySocketFail(ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
+					     name.get_name().c_str()));
+	}
 
       addr.sun_family = AF_UNIX;
       strncpy(addr.sun_path, name.get_name().c_str(), max_socket_name);
@@ -315,6 +392,8 @@ namespace gui
 	{
 	  int errnum = errno;
 	  std::string err = cw::util::sstrerror(errnum);
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(),
+		    __PRETTY_FUNCTION__ << ": unable to bind to the temporary socket: " << err);
 	  throw TemporarySocketFail(ssprintf("%s: Unable to bind to the temporary socket: %s",
 					     __PRETTY_FUNCTION__,
 					     err.c_str()));
@@ -324,6 +403,8 @@ namespace gui
 	{
 	  int errnum = errno;
 	  std::string err = cw::util::sstrerror(errnum);
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(),
+		    __PRETTY_FUNCTION__ << ": unable to listen on the temporary socket: " << err);
 	  throw TemporarySocketFail(ssprintf("%s: Unable to listen on the temporary socket: %s",
 					     __PRETTY_FUNCTION__,
 					     err.c_str()));
@@ -332,15 +413,22 @@ namespace gui
 
     int accept() const
     {
+      LOG_TRACE(Loggers::getAptitudeDpkgTerminal(),
+		"Accepting a connection to \"" << name.get_name() << "\"");
       int result = ::accept(listen_sock->Fd(), NULL, NULL);
       if(result == -1)
 	{
 	  int errnum = errno;
 	  std::string errmsg = cw::util::sstrerror(errnum);
-	  throw TemporarySocketFail(cw::util::ssprintf(_("%s: Unable to accept a connection from the subprocess: %s"),
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(),
+		    __PRETTY_FUNCTION__ << ": unable to accept a connection: " << errmsg);
+	  throw TemporarySocketFail(cw::util::ssprintf(_("%s: Unable to accept a connection: %s"),
 						       __PRETTY_FUNCTION__,
 						       errmsg.c_str()));
 	}
+
+      LOG_DEBUG(Loggers::getAptitudeDpkgTerminal(),
+		"Accepted connection to the temporary socket \"" << name.get_name() << "\" as fd " << result << ".");
 
       return result;
     }
@@ -361,11 +449,19 @@ namespace gui
     temporary_client_socket(const temp::name &_name)
       : name(_name)
     {
+      LOG_TRACE(Loggers::getAptitudeDpkgTerminal(),
+		"Connecting to the temporary socket \"" << name.get_name() << "\".");
+
       const size_t max_socket_name = sizeof(addr.sun_path);
 
       if(name.get_name().size() > max_socket_name)
-	throw TemporarySocketFail(cw::util::ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
-						     name.get_name().c_str()));
+	{
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(),
+		    "Internal error: the temporary socket name \""
+		    << name.get_name() << "\" is too long!");
+	  throw TemporarySocketFail(cw::util::ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
+						       name.get_name().c_str()));
+	}
 
       addr.sun_family = AF_UNIX;
       strncpy(addr.sun_path, name.get_name().c_str(), max_socket_name);
@@ -377,10 +473,15 @@ namespace gui
 	{
 	  int errnum = errno;
 	  std::string err = cw::util::sstrerror(errnum);
+	  LOG_FATAL(Loggers::getAptitudeDpkgTerminal(),
+		    __PRETTY_FUNCTION__ << ": Unable to bind to the temporary socket: " << err);
 	  throw TemporarySocketFail(cw::util::ssprintf("%s: Unable to bind to the temporary socket: %s",
 						       __PRETTY_FUNCTION__,
 						       err.c_str()));
 	}
+
+      LOG_DEBUG(Loggers::getAptitudeDpkgTerminal(),
+		"Connected to the temporary socket \"" << name.get_name() << "\" as fd " << fd->Fd() << ".");
     }
 
     int get_fd() const { return fd->Fd(); }
@@ -499,6 +600,9 @@ namespace gui
      */
     pkgPackageManager::OrderResult shell_process()
     {
+      LoggerPtr logger(Loggers::getAptitudeDpkgTerminal());
+      LoggerPtr loggerBackgrounding(Loggers::getAptitudeDpkgTerminalBackgrounding());
+
       // Create a pipe to ourselves, used to pass back the result of
       // the dpkg invocation when it exits.
 
@@ -506,18 +610,25 @@ namespace gui
       if(pipe(selfpipe) != 0)
 	{
 	  int errnum = errno;
+	  const std::string err(cw::util::sstrerror(errnum));
+	  LOG_FATAL(logger, "Can't create result notification: pipe() failed: " << err << ".");
 	  _error->Error(_("aptitude: can't create result notification: pipe() failed: %s"),
-			cw::util::sstrerror(errnum).c_str());
+			err.c_str());
 	  _error->DumpErrors();
 
 	  if(child_process_pid != -1)
-	    kill(-child_process_pid, SIGINT);
+	    {
+	      LOG_TRACE(logger, "Killing the process group of the child process " << child_process_pid << ".");
+	      kill(-child_process_pid, SIGINT);
+	    }
 
 	  return pkgPackageManager::Failed;
 	}
 
       int child_process_to_self_control_fd_read = selfpipe[0];
       child_process_to_self_control_fd_write = selfpipe[1];
+
+      LOG_DEBUG(logger, "Opened a self-pipe to send child states (read end " << child_process_to_self_control_fd_read << ", write end " << child_process_to_self_control_fd_write << ").");
 
       // Set up the SIGCHLD signal handler, which handles informing
       // the parent process when the child is suspended and this
@@ -569,15 +680,21 @@ namespace gui
 	      int errnum = errno;
 	      if(errnum != EINTR)
 		{
+		  std::string err(cw::util::sstrerror(errnum));
+		  LOG_FATAL(logger, "Can't wait for the dpkg process: select() failed: " << err);
 		  _error->Error(_("aptitude: can't wait for the dpkg process: select() failed: %s"),
-				cw::util::sstrerror(errnum).c_str());
+				err.c_str());
 		  return pkgPackageManager::Failed;
 		}
+	      else
+		LOG_TRACE(logger, "select(): interrupted system call (looping).");
 	    }
 	  else if(result > 0)
 	    {
 	      if(FD_ISSET(child_process_to_self_control_fd_read, &fds))
 		{
+		  LOG_TRACE(logger, "Data available on the self-pipe.");
+
 		  int state;
 		  int amt;
 
@@ -588,22 +705,29 @@ namespace gui
 		  if(amt < 0)
 		    {
 		      int errnum = errno;
+		      std::string err(cw::util::sstrerror(errnum));
+		      LOG_FATAL(logger, "Can't check the dpkg process state: read() failed: " << err);
 		      _error->Error(_("aptitude: can't check the dpkg process state: read() failed: %s"),
-				    cw::util::sstrerror(errnum).c_str());
+				    err.c_str());
 		      return pkgPackageManager::Failed;
 		    }
 		  else if(amt != sizeof(state))
 		    {
 		      // This should never happen.
-		      _error->Error(_("aptitude: can't check the dpkg process state: read() returned too fre bytes"));
+		      LOG_FATAL(logger, "Can't check the dpkg process state: read() returned too few bytes.");
+		      _error->Error(_("aptitude: can't check the dpkg process state: read() returned too few bytes"));
 		      return pkgPackageManager::Failed;
 		    }
 		  else
 		    {
 		      if(WIFEXITED(state))
-			return (pkgPackageManager::OrderResult)WEXITSTATUS(state);
+			{
+			  LOG_DEBUG(logger, "Child exited with status " << WEXITSTATUS(state));
+			  return (pkgPackageManager::OrderResult)WEXITSTATUS(state);
+			}
 		      else if(!WIFSIGNALED(state))
 			{
+			  LOG_FATAL(logger, "Unknown child state " << state);
 			  // This should never happen.
 			  _error->Error(_("aptitude: unexpected dpkg process exit status %d"),
 					state);
@@ -611,6 +735,7 @@ namespace gui
 			}
 		      else
 			{
+			  LOG_FATAL(logger, "Child terminated by signal " << WTERMSIG(state));
 			  _error->Error(_("aptitude: dpkg process terminated by signal %d"),
 					WTERMSIG(state));
 			  return pkgPackageManager::Failed;
@@ -621,6 +746,7 @@ namespace gui
 
 	      if(FD_ISSET(child_process_to_parent_control_fd, &fds))
 		{
+		  LOG_TRACE(loggerBackgrounding, "Data available on the parent's control socket.");
 		  bool read_anything = false;
 		  bool foreground;
 		  int amt;
@@ -632,6 +758,7 @@ namespace gui
 		      if(amt > 0)
 			{
 			  foreground = (buf != 0);
+			  LOG_DEBUG(loggerBackgrounding, "Request: place dpkg in the " << (foreground ? "foreground" : "background"));
 			  read_anything = true;
 			}
 		    }
@@ -643,14 +770,17 @@ namespace gui
 			{
 			  if(child_process_pid != -1)
 			    {
+			      LOG_TRACE(loggerBackgrounding, "Bringing dpkg into the foreground.");
 			      // Give the dpkg process access to the
 			      // terminal and wake it up.
 			      int result = tcsetpgrp(0, child_process_pid);
 			      if(result != 0)
 				{
 				  int errnum = errno;
+				  std::string err(cw::util::sstrerror(errnum));
+				  LOG_FATAL(loggerBackgrounding, "Can't put the dpkg process in the foreground: tcsetpgrp() failed: " << err);
 				  _error->Error(_("aptitude: can't put the dpkg process in the foreground: tcsetpgrp() failed: %s"),
-						cw::util::sstrerror(errnum).c_str());
+						err.c_str());
 				  _error->DumpErrors();
 				}
 			      // Tell the parent that we are going to
@@ -665,6 +795,8 @@ namespace gui
 			      if(result != 0)
 				{
 				  int errnum = errno;
+				  std::string err(cw::util::sstrerror(errnum));
+				  LOG_FATAL(loggerBackgrounding, "Can't wake up the dpkg process: " << err);
 				  _error->Error(_("aptitude: can't wake up the dpkg process: %s"),
 						cw::util::sstrerror(errnum).c_str());
 				  _error->DumpErrors();
@@ -673,22 +805,29 @@ namespace gui
 				  write(child_process_to_parent_control_fd, &c, 1);
 				}
 			    }
+			  else
+			    LOG_WARN(loggerBackgrounding, "Can't bring dpkg into the foreground (no active process).");
 			}
 		      else
 			{
 			  // Stuff the dpkg process into the background.
 			  if(child_process_pid != -1)
 			    {
+			      LOG_TRACE(loggerBackgrounding, "Placing dpkg into the background.");
 			      // Take control of the terminal ourselves.
 			      int result = tcsetpgrp(0, getpid());
 			      if(result != 0)
 				{
 				  int errnum = errno;
+				  std::string err(cw::util::sstrerror(errnum));
+				  LOG_FATAL(loggerBackgrounding, "Can't place dpkg into the background: tcsetpgrp() failed: " << err);
 				  _error->Error(_("aptitude: can't put the dpkg process in the background: tcsetpgrp() failed: %s"),
-						cw::util::sstrerror(errnum).c_str());
+						err.c_str());
 				  _error->DumpErrors();
 				}
 			    }
+			  else
+			    LOG_WARN(loggerBackgrounding, "Can't place dpkg into the background (no active process).");
 			}
 		    }
 		}
@@ -706,6 +845,7 @@ namespace gui
     // parent process and uses its *return code* to indicate the
     // success / failure state.
 
+    LOG_INFO(logger, "Child process starting.");
 
     // Try to disable TOSTOP (so that output never suspends a
     // backgrounded process).
@@ -714,8 +854,10 @@ namespace gui
       if(tcgetattr(0, &current_settings) < 0)
 	{
 	  int errnum = errno;
+	  std::string err(cw::util::sstrerror(errnum));
+	  LOG_ERROR(logger_backgrounding, "Can't read the current terminal settings: tcgetattr() failed: " << err);
 	  _error->Error(_("aptitude: can't read the current terminal settings: tcgetattr() failed: %s"),
-			cw::util::sstrerror(errnum).c_str());
+			err.c_str());
 	}
       else
 	{
@@ -723,19 +865,24 @@ namespace gui
 	  if(tcsetattr(0, TCSADRAIN, &current_settings) < 0)
 	    {
 	      int errnum = errno;
+	      std::string err(cw::util::sstrerror(errnum));
+	      LOG_ERROR(logger_backgrounding, "Can't modify the terminal settings: tcsetattr() failed: " << err);
 	      _error->Error(_("aptitude: can't modify the terminal settings: tcsetattr() failed: %s"),
-			    cw::util::sstrerror(errnum).c_str());
+			    err.c_str());
 	    }
 	  else
 	    {
 	      if(tcgetattr(0, &current_settings) < 0)
 		{
 		  int errnum = errno;
+		  std::string err(cw::util::sstrerror(errnum));
+		  LOG_ERROR(logger_backgrounding, "Can't read back the terminal settings: tcgetattr() failed: " << err);
 		  _error->Error(_("aptitude: can't read back the terminal settings: tcgetattr() failed: %s"),
 				cw::util::sstrerror(errnum).c_str());
 		}
 	      else if((current_settings.c_lflag & (TOSTOP)) == (TOSTOP))
 		{
+		  LOG_ERROR(logger_backgrounding, "TOSTOP is set even though I just cleared it!");
 		  _error->Error("%s",
 				_("aptitude: TOSTOP is set even though I just cleared it!"));
 		}
@@ -752,6 +899,8 @@ namespace gui
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
 
+    LOG_TRACE(logger, "Opening sockets to parent process.");
+
     std::auto_ptr<temporary_client_socket> dpkg_sock;
     std::auto_ptr<temporary_client_socket> control_sock;
     try
@@ -763,6 +912,7 @@ namespace gui
       }
     catch(TemporarySocketFail &ex)
       {
+	LOG_FATAL(logger, "Unable to open sockets: " << ex.errmsg());
 	_error->Error("%s", ex.errmsg().c_str());
 	_error->DumpErrors();
 	_exit(pkgPackageManager::Failed);
@@ -792,8 +942,10 @@ namespace gui
       case -1:
 	{
 	  int errnum = errno;
+	  std::string err(cw::util::sstrerror(errnum));
+	  LOG_FATAL(logger, "failed to invoke dpkg: fork() failed: " << err);
 	  _error->Error(_("aptitude: failed to invoke dpkg: fork() failed: %s"),
-			cw::util::sstrerror(errnum).c_str());
+			err.c_str());
 	  result = pkgPackageManager::Failed;
 	  break;
 	}
@@ -804,11 +956,14 @@ namespace gui
 	  if(tcgetattr(0, &current_settings) < 0)
 	    {
 	      int errnum = errno;
+	      std::string err(cw::util::sstrerror(errnum));
+	      LOG_ERROR(logger, "Can't read back the terminal settings: tcgetattr() failed: " << err);
 	      _error->Error(_("aptitude: can't read back the terminal settings: tcgetattr() failed: %s"),
-			    cw::util::sstrerror(errnum).c_str());
+			    err.c_str());
 	    }
 	  else if((current_settings.c_lflag & (TOSTOP)) == (TOSTOP))
 	    {
+	      LOG_ERROR(logger, "TOSTOP is set even though I just cleared it!");
 	      _error->Error("%s",
 			    _("aptitude: TOSTOP is set even though I just cleared it!"));
 	    }
@@ -828,20 +983,31 @@ namespace gui
 	  if(setpgid(getpid(), getpid()) < 0)
 	    {
 	      int errnum = errno;
+	      std::string err(cw::util::sstrerror(errnum));
+	      LOG_ERROR(logger, "Failed to set the process group for dpkg: setpgid() failed: " << err);
 	      _error->Error(_("aptitude: failed to set the process group for dpkg: setpgid() failed: %s"),
-			    cw::util::sstrerror(errnum).c_str());
+			    err.c_str());
 	      _error->DumpErrors();
 	      // Continue anyway.
 	    }
+
+	  LOG4CXX_TRACE(logger, "Running dpkg.");
+
 	  pkgPackageManager::OrderResult result =
 	    f.get_slot()(dpkg_sock->get_fd());
+
+	  LOG4CXX_TRACE(logger, "Finished running dpkg, result is " << result << ".");
+
 	  _exit(result);
 	}
 
       default:
+	LOG_INFO(logger, "The dpkg process is PID " << child_process_pid << ".");
 	setpgid(child_process_pid, child_process_pid);
 	result = shell_process();
       }
+
+    LOG4CXX_TRACE(logger, "Subprocess finished, result is " << result << ".");
 
     // Make sure errors appear somewhere (we really ought to push
     // them down the FIFO).
@@ -891,6 +1057,7 @@ namespace gui
       }
     catch(TemporarySocketFail &ex)
       {
+	LOG_FATAL(logger, "Failed to create a listen socket for the temporary control socket: " << ex.errmsg());
 	_error->Error("%s", ex.errmsg().c_str());
 	finished(pkgPackageManager::Failed);
 	return;
@@ -905,6 +1072,8 @@ namespace gui
       child_process(dpkg_socket_name, f);
     else
       {
+	LOG_INFO(logger, "The shell process is PID " << pid << ".");
+
 	int dpkg_sock = -1;
 	subprocess_map_signal_fd = -1;
 
@@ -915,6 +1084,7 @@ namespace gui
 	  }
 	catch(TemporarySocketFail &ex)
 	  {
+	    LOG_ERROR(logger, "Failed to establish control sockets: " << ex.errmsg());
 	    _error->Error("%s", ex.errmsg().c_str());
 	    // Not a fatal error -- try to install anyway.
 	  }
@@ -949,6 +1119,9 @@ namespace gui
 
   void DpkgTerminal::set_foreground(bool foreground)
   {
+    LOG_DEBUG(logger_backgrounding,
+	      "Placing the dpkg process in the " << (foreground ? "foreground" : "background") << ".");
+
     unsigned char byte = foreground ? 1 : 0;
     int result = write(subprocess_map_signal_fd, &byte, 1);
     if(result < 1)
@@ -956,15 +1129,26 @@ namespace gui
 	int errnum = errno;
 
 	if(result < 0)
-	  _error->Error(_("Unable to send foreground state to subprocess: %s"),
-			cw::util::sstrerror(errnum).c_str());
+	  {
+	    std::string err(cw::util::sstrerror(errnum));
+	    LOG4CXX_ERROR(logger_backgrounding,
+			  "Unable to send foreground state to subprocess: " << err);
+	    _error->Error(_("Unable to send foreground state to subprocess: %s"),
+			  cw::util::sstrerror(errnum).c_str());
+	  }
 	else
-	  _error->Error(_("Unable to send foreground state to subprocess (no bytes written)."));
+	  {
+	    LOG4CXX_ERROR(logger_backgrounding,
+			  "Unable to send foreground state to subprocess: no bytes written");
+	    _error->Error(_("Unable to send foreground state to subprocess (no bytes written)."));
+	  }
       }
   }
 
   void DpkgTerminal::inject_yes()
   {
+    LOG4CXX_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'y' to the dpkg process.");
+
     VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 
     vte_terminal_feed_child(vte, "y\n", 2);
@@ -972,6 +1156,8 @@ namespace gui
 
   void DpkgTerminal::inject_no()
   {
+    LOG4CXX_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'n' to the dpkg process.");
+
     VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 
     vte_terminal_feed_child(vte, "n\n", 2);

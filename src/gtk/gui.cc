@@ -25,6 +25,7 @@
 #include "gui.h"
 
 #include "aptitude.h"
+#include "loggers.h"
 
 #include <map>
 
@@ -66,6 +67,8 @@
 #include "../ui_download_manager.h"
 
 namespace cw = cwidget;
+
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -503,6 +506,8 @@ namespace gui
       // The fractional progress that was displayed before the child was suspended.
       double child_suspended_fraction;
 
+      log4cxx::LoggerPtr logger, logger_backgrounding;
+
       static Gdk::Color mix_colors(const Gdk::Color &c1, const Gdk::Color &c2)
       {
 	Gdk::Color rval;
@@ -522,7 +527,7 @@ namespace gui
 	  {
 	    if(flash_count == 20)
 	      {
-		printf("Stop flash.\n");
+		LOG_TRACE(logger, "Button flash: stopping.");
 
 		flashing = false;
 		flash_count = 0;
@@ -546,7 +551,8 @@ namespace gui
 		bool highlighted = (flash_count % 2 == 0);
 		++flash_count;
 
-		printf("Flash: %s\n", highlighted ? "true" : "false");
+		LOG_TRACE(logger, "Button flash: flashing "
+			  << (highlighted ? "bright." : "dark."));
 
 		if(highlighted)
 		  {
@@ -570,7 +576,7 @@ namespace gui
 	  }
 	else
 	  {
-	    printf("Pause.\n");
+	    LOG_TRACE(logger, "Button flash: paused.");
 	    flash_details_button_connection =
 	      Glib::signal_timeout().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
 					     1000 / 20);
@@ -580,6 +586,7 @@ namespace gui
 
       gboolean pulse_progress_bar()
       {
+	LOG_TRACE(logger, "Pulsing the progress bar.");
 	progress->pulse();
 	return TRUE;
       }
@@ -587,7 +594,12 @@ namespace gui
       void child_suspended()
       {
 	if(child_is_suspended)
-	  return;
+	  {
+	    LOG_TRACE(logger, "The dpkg-suspended animations are already running; not starting them again.");
+	    return;
+	  }
+
+	LOG_TRACE(logger, "Placing the dpkg status widgets into the 'dpkg suspended' state.");
 
 	flashing = true;
 	flash_count = 0;
@@ -607,7 +619,12 @@ namespace gui
       void child_resumed()
       {
 	if(!child_is_suspended)
-	  return;
+	  {
+	    LOG_TRACE(logger, "The dpkg-suspended animations are already stopped; not stopping them again.");
+	    return;
+	  }
+
+	LOG_TRACE(logger, "Returning the dpkg status widgets to the normal 'dpkg running' state.");
 
 	progress->set_text(child_suspended_text);
 	progress->set_fraction(child_suspended_fraction);
@@ -620,6 +637,9 @@ namespace gui
 
       void finish_prompt_abort_ok(int response)
       {
+	LOG_TRACE(logger, "The user says that it " << (response == Gtk::RESPONSE_YES
+						       ? "is" : "is not") << " OK to abort dpkg.");
+
 	if(response == Gtk::RESPONSE_YES)
 	  {
 	    abort_ok = true;
@@ -641,6 +661,7 @@ namespace gui
 	  {
 	    if(abort_ok_prompt == NULL)
 	      {
+		LOG_TRACE(logger, "Creating a new prompt to ask the user if aborting dpkg is OK.");
 		// Hopefully this message is scary enough to make
 		// people click "No" unless they really mean it. ;-) I
 		// think the wording could be improved, though.
@@ -652,22 +673,34 @@ namespace gui
 							 Gtk::BUTTONS_YES_NO, true);
 		abort_ok_prompt->signal_response().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::finish_prompt_abort_ok));
 	      }
+	    else
+	      LOG_TRACE(logger, "Reusing the existing prompt to ask the user if aborting dpkg is OK.");
 
 	    abort_ok_prompt->show();
 	    return false;
 	  }
 	else
-	  return true;
+	  {
+	    if(finished)
+	      LOG_TRACE(logger, "Not asking whether to abort dpkg: it already finished on its own.");
+	    else
+	      LOG_TRACE(logger, "Not asking whether to abort dpkg: we already were told it's OK.");
+	    return true;
+	  }
       }
 
       void abort()
       {
+	LOG_TRACE(logger,
+		  "Aborting dpkg run.");
 	delete terminal;
 	terminal = NULL;
       }
 
       void do_finish_dpkg_run(pkgPackageManager::OrderResult res)
       {
+	LOG_TRACE(logger,
+		  "Running post-dpkg actions (state " << res << ")");
 	finished = true;
 	progress->hide();
 	Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
@@ -679,6 +712,8 @@ namespace gui
 
       void finish_dpkg_run(pkgPackageManager::OrderResult res)
       {
+	LOG_TRACE(logger,
+		  "dpkg run finished (state " << res << ")");
 	// Invoking this as an idle callback is a bit of a holdover
 	// from when I tried (disastrously) to run the download
 	// manager's finish() in a background thread.  Nonetheless, it
@@ -690,8 +725,8 @@ namespace gui
 
       void handle_subprocess_suspended_changed(bool state)
       {
-	printf("handle_subprocess_suspended_changed: %s\n",
-	       state ? "true" : "false");
+	LOG_TRACE(logger,
+		  "Subprocess is " << (state ? "suspended." : "running."));
 
 	if(!state)
 	  child_resumed();
@@ -701,6 +736,7 @@ namespace gui
 
       void handle_active_changed()
       {
+	LOG_TRACE(logger, "dpkg terminal tab becoming " << (tab->get_active() ? "active" : "inactive"));
 	terminal->set_foreground(tab != NULL && tab->get_active());
       }
 
@@ -716,8 +752,11 @@ namespace gui
 	  abort_ok_prompt(NULL),
 	  child_is_suspended(false),
 	  flashing(false),
-	  flash_count(0)
+	  flash_count(0),
+	  logger(Loggers::getAptitudeDpkgTerminal())
       {
+	LOG_TRACE(logger, "Creating dpkg terminal notification.");
+
 	progress->set_text(_("Applying changes..."));
 	progress->set_ellipsize(Pango::ELLIPSIZE_END);
 	progress->show();
@@ -744,15 +783,20 @@ namespace gui
 
       void run_dpkg(const safe_slot1<pkgPackageManager::OrderResult, int> &f)
       {
+	LOG_TRACE(logger, "Starting dpkg process.");
 	terminal->run(f);
       }
 
       void view_details()
       {
 	if(tab != NULL)
-	  tab->get_widget()->show();
+	  {
+	    LOG_TRACE(logger, "Showing the existing dpkg tab.");
+	    tab->get_widget()->show();
+	  }
 	else
 	  {
+	    LOG_TRACE(logger, "Creating and displaying a new dpkg tab.");
 	    tab = new DpkgTerminalTab(terminal->get_widget());
 	    tab->active_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_active_changed));
 	    tab_add(tab);
@@ -761,6 +805,7 @@ namespace gui
 
       void process_dpkg_message(aptitude::apt::dpkg_status_message msg)
       {
+	LOG_DEBUG(logger, "Received dpkg status message: " << msg);
 	using aptitude::apt::dpkg_status_message;
 	switch(msg.get_type())
 	  {
@@ -811,6 +856,8 @@ namespace gui
 
       ~DpkgTerminalNotification()
       {
+	LOG_TRACE(logger, "Destroying the dpkg terminal notification and terminal.");
+
 	delete abort_ok_prompt;
 	delete tab;
 	delete terminal;

@@ -30,6 +30,8 @@
 #include <generic/util/safe_slot.h>
 #include <generic/util/temp.h>
 
+#include <log4cxx/logger.h>
+
 struct sockaddr_un;
 
 /** \brief Support for creating a GUI terminal in which dpkg can be
@@ -62,6 +64,9 @@ namespace gui
      *  it writes "0".
      */
     int subprocess_map_signal_fd;
+
+    log4cxx::LoggerPtr logger;
+    log4cxx::LoggerPtr logger_backgrounding;
 
     /** \brief Handle input on the pipe to the subprocess. */
     bool handle_suspend_resume_event(Glib::IOCondition condition);
