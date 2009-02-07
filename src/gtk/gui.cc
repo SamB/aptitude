@@ -580,6 +580,8 @@ namespace gui
 	    flash_details_button_connection =
 	      Glib::signal_timeout().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
 					     1000 / 20);
+	    flashing = true;
+	    flash_count = 0;
 	    return FALSE;
 	  }
       }
