@@ -723,12 +723,12 @@ namespace gui
 	post_event(safe_bind(make_safe_slot(do_finish_dpkg_run_slot), res));
       }
 
-      void handle_subprocess_suspended_changed(bool state)
+      void handle_subprocess_running_changed(bool state)
       {
 	LOG_TRACE(logger,
-		  "Subprocess is " << (state ? "suspended." : "running."));
+		  "Subprocess is " << (state ? "running." : "suspended."));
 
-	if(!state)
+	if(state)
 	  child_resumed();
 	else
 	  child_suspended();
@@ -764,7 +764,7 @@ namespace gui
 
 	terminal->finished.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::finish_dpkg_run));
 	terminal->status_message.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::process_dpkg_message));
-	terminal->subprocess_running_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_subprocess_suspended_changed));
+	terminal->subprocess_running_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_subprocess_running_changed));
 
 	view_details_button = new Gtk::Button(_("View Details"));
 	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::view_details));
