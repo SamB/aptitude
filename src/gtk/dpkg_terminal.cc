@@ -205,11 +205,6 @@ namespace gui
   {
     GtkWidget *vte = vte_terminal_new();
     terminal = (Glib::wrap(vte, false));
-
-    terminal->signal_map().connect(sigc::bind(sigc::mem_fun(*this, &DpkgTerminal::set_foreground),
-					      true));
-    terminal->signal_unmap().connect(sigc::bind(sigc::mem_fun(*this, &DpkgTerminal::set_foreground),
-						false));
   }
 
   DpkgTerminal::~DpkgTerminal()
