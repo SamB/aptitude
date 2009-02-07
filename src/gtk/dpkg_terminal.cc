@@ -798,6 +798,7 @@ namespace gui
 	}
 
       default:
+	setpgid(child_process_pid, child_process_pid);
 	result = shell_process();
       }
 
