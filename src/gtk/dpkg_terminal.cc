@@ -229,8 +229,8 @@ namespace gui
     {
       child_exited_info *info = new child_exited_info(pid, k);
 
-      LOG_TRACE(info->logger, "Waiting for the subprocess "
-		<< pid << "to finish (" << info << ")");
+      LOG_TRACE(info->logger, "Setting up callback to listen for the exit status of process "
+		<< pid << " (" << info << ")");
 
       // We use implicit locking here (plus the fact that we are
       // running in the foreground thread) to know that the signal
