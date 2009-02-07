@@ -524,6 +524,9 @@ int main(int argc, char *argv[])
   else
     aptcfg->Set(PACKAGE "::Delete-Unused-Pattern", "");
 
+  // By default don't log anything below WARN.
+  Logger::getRootLogger()->setLevel(Level::getWarn());
+
   // Read the arguments:
   while((curopt=getopt_long(argc, argv, "DVZWvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
     {
@@ -766,9 +769,6 @@ int main(int argc, char *argv[])
 	  break;
 	}
     }
-
-  // By default don't log anything below WARN.
-  Logger::getRootLogger()->setLevel(Level::getWarn());
 
   if(!log_config_file.empty())
     PropertyConfigurator::configureAndWatch(log_config_file);
