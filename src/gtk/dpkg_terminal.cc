@@ -247,7 +247,8 @@ namespace gui
 
   DpkgTerminal::DpkgTerminal()
     : sent_finished_signal(false),
-      logger(Loggers::getAptitudeDpkgTerminal())
+      logger(Loggers::getAptitudeDpkgTerminal()),
+      logger_backgrounding(Loggers::getAptitudeDpkgTerminalBackgrounding())
   {
     LOG_TRACE(logger, "Creating the dpkg terminal manager.");
 
