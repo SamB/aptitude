@@ -48,6 +48,24 @@ namespace gui
     Gtk::Widget *terminal;
     bool sent_finished_signal;
 
+    /** \brief The file descriptor that should be used to inform the
+     *  subprocess about map / unmap events and for the subprocess to
+     *  inform us about suspend / continue events on the dpkg
+     *  descriptor.
+     *
+     *  The parent process writes single bytes down this fd; when the
+     *  terminal is mapped, it writes "1", and when it's unmapped it
+     *  writes "0".
+     *
+     *  The subprocess also writes single bytes down this fd; when the
+     *  dpkg process is running it writes "1", and when it's suspended
+     *  it writes "0".
+     */
+    int subprocess_map_signal_fd;
+
+    /** \brief Handle input on the pipe to the subprocess. */
+    bool handle_suspend_resume_event(Glib::IOCondition condition);
+
     // Forbid copying.
     DpkgTerminal(const DpkgTerminal &);
 
@@ -61,6 +79,16 @@ namespace gui
     void child_process(const temp::name &dpkg_socket_name,
 		       const safe_slot1<pkgPackageManager::OrderResult, int> &f);
 
+
+    /** \brief Invoke to tell the dpkg process that it is now a
+     *  "foreground" or a "background" process.
+     *
+     *  \param foreground  \b true to put the dpkg process in the
+     *                     foreground; \b false to put it in the
+     *                     background.  If in the background, it will
+     *                     be suspended when it requires input.
+     */
+    void set_foreground(bool foreground);
   public:
     /** \brief Initialize a new terminal. */
     DpkgTerminal();
@@ -83,6 +111,14 @@ namespace gui
      */
     sigc::signal1<void, aptitude::apt::dpkg_status_message> status_message;
 
+    /** \brief Emitted when the dpkg process is suspended or resumed.
+     *
+     *  The argument states whether the process is currently
+     *  suspended.  This may be emitted more than once in a row with
+     *  the same argument.
+     */
+    sigc::signal<void, bool> subprocess_suspended_changed;
+
     /** \brief Start running dpkg in the encapsulated terminal.
      *
      *  This must be invoked from a foreground thread.
@@ -104,11 +140,6 @@ namespace gui
     /** \brief Send "no" in reply to a "replace this conffile?" message.
      */
     void inject_no();
-
-    /** \brief Emitted when the subprocess tries to read from standard
-     *  input.
-     */
-    sigc::signal0<void> subprocess_read;
   };
 }
 

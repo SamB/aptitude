@@ -31,6 +31,8 @@
 #include <sys/types.h>
 #include <sys/un.h> // Fox UNIX-domain sockets.
 
+#include <termios.h>
+
 #include <apt-pkg/error.h>
 
 #include <aptitude.h>
@@ -203,6 +205,11 @@ namespace gui
   {
     GtkWidget *vte = vte_terminal_new();
     terminal = (Glib::wrap(vte, false));
+
+    terminal->signal_map().connect(sigc::bind(sigc::mem_fun(*this, &DpkgTerminal::set_foreground),
+					      true));
+    terminal->signal_unmap().connect(sigc::bind(sigc::mem_fun(*this, &DpkgTerminal::set_foreground),
+						false));
   }
 
   DpkgTerminal::~DpkgTerminal()
@@ -210,6 +217,46 @@ namespace gui
     if(!sent_finished_signal)
       finished(pkgPackageManager::Incomplete);
     delete terminal;
+  }
+
+  bool DpkgTerminal::handle_suspend_resume_event(Glib::IOCondition condition)
+  {
+    bool rval = false;
+
+    if(condition & Glib::IO_IN)
+      {
+	bool state;
+
+	int amt;
+	bool read_anything = false;
+	do
+	  {
+	    char buf;
+	    amt = recv(subprocess_map_signal_fd, &buf, 1, MSG_DONTWAIT);
+	    if(amt > 0)
+	      {
+		state = (buf != 0);
+		read_anything = true;
+	      }
+	  }
+	while(amt > 0);
+
+	if(read_anything)
+	  subprocess_suspended_changed(state);
+
+	rval = read_anything;
+      }
+    else if( (condition & Glib::IO_NVAL) ||
+	     (condition & Glib::IO_ERR) ||
+	     (condition & Glib::IO_HUP) )
+      rval = false;
+    else
+      {
+	_error->Warning("Unexpected IO condition %d", condition);
+	rval = false;
+      }
+
+    return rval;
   }
 
   /** \brief Exception related to the temporary socket class. */
@@ -344,6 +391,267 @@ namespace gui
     int get_fd() const { return fd->Fd(); }
   };
 
+  namespace
+  {
+    // Global variable storing the file descriptor used for control
+    // input from / output to the parent.  This is safe because it's
+    // only used in the child process, when there's just one thread
+    // running; we need a global variable because it's accessed by a
+    // signal handler.
+    int child_process_to_parent_control_fd = -1;
+    // Same thing, storing the pid of the child that will be suspended
+    // and continued.
+    pid_t child_process_pid = -1;
+
+    // Self-pipe, used to indicate that the child process finished.
+    // We write to it only once, when the child exits, and we write
+    // the exit status to it.
+    //
+    // This is used to break out of the main wait loop in the shell
+    // process.
+    int child_process_to_self_control_fd_write = -1;
+
+    void handle_child_process_sigchld(int signal,
+				      siginfo_t *info,
+				      void *ucontext)
+    {
+      if(signal != SIGCHLD)
+	return;
+
+      if(info->si_pid != child_process_pid)
+	return;
+
+      int status;
+      int result = waitpid(child_process_pid, &status, WUNTRACED | WNOHANG);
+
+      if(result == -1)
+	// ... Can't safely log b/c I don't know if log4cxx is
+	// reentrant (probably not), so just do nothing.  (anyway,
+	// why did I get a SIGCHLD if there are no children?)
+	;
+      else if(result == 0)
+	// ... no child has a status change, but I got a SIGCHLD?
+	;
+      else if(result == child_process_pid)
+	{
+	  if(WIFEXITED(status) || WIFSIGNALED(status))
+	    {
+	      if(write(child_process_to_self_control_fd_write, &result, sizeof(result)) < (int)sizeof(result))
+		{
+		  // Something is very very wrong.  Make a last ditch
+		  // effort to tell the world about our troubles.
+		  const char *msg =
+		    "aptitude: error writing completion status to control fd, aborting.\n";
+		  const int msglen = strlen(msg);
+		  if(write(2, msg, msglen) < msglen)
+		    write(1, msg, msglen);
+		  _exit(-1);
+		}
+	    }
+	  else if(WIFSTOPPED(status))
+	    {
+	      unsigned char c = 0;
+	      if(write(child_process_to_parent_control_fd, &c, 1) < 1)
+		{
+		  // Something is very very wrong.
+		  const char *msg = "aptitude: error informing parent that the child has stopped.\n";
+		  const int msglen = strlen(msg);
+
+		  if(write(2, msg, msglen) < msglen)
+		    write(1, msg, msglen);
+		}
+	    }
+	}
+    }
+
+    /** \brief Handles running the "shell" that manages the
+     *  suspended/unsuspended state and foreground/background of the
+     *  dpkg process.
+     *
+     *  \return   The return value of the dpkg process.
+     */
+    pkgPackageManager::OrderResult shell_process()
+    {
+      // Create a pipe to ourselves, used to pass back the result of
+      // the dpkg invocation when it exits.
+
+      int selfpipe[2];
+      if(pipe(selfpipe) != 0)
+	{
+	  int errnum = errno;
+	  _error->Error(_("aptitude: can't create result notification: pipe() failed: %s"),
+			cw::util::sstrerror(errnum).c_str());
+	  _error->DumpErrors();
+
+	  if(child_process_pid != -1)
+	    kill(-child_process_pid, SIGINT);
+
+	  return pkgPackageManager::Failed;
+	}
+
+      int child_process_to_self_control_fd_read = selfpipe[0];
+      child_process_to_self_control_fd_write = selfpipe[1];
+
+      // Set up the SIGCHLD signal handler, which handles informing
+      // the parent process when the child is suspended and this
+      // process when it dies.
+      {
+	struct sigaction act;
+	act.sa_sigaction = &handle_child_process_sigchld;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGCHLD, &act, NULL);
+      }
+
+      // Block terminal control signals.
+      {
+	struct sigaction act;
+	act.sa_handler = SIG_IGN;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	sigaction(SIGTSTP, &act, NULL);
+	sigaction(SIGTTIN, &act, NULL);
+	sigaction(SIGTTOU, &act, NULL);
+      }
+
+      // Wait around for input events on the two control FDs, until
+      // the child process terminates.
+      while(true)
+	{
+	  fd_set fds;
+	  FD_ZERO(&fds);
+	  FD_SET(child_process_to_parent_control_fd, &fds);
+	  FD_SET(child_process_to_self_control_fd_read, &fds);
+
+	  const int nfds = std::max(child_process_to_parent_control_fd,
+				    child_process_to_self_control_fd_read) + 1;
+
+	  int result = select(nfds, &fds, NULL, NULL, NULL);
+
+	  if(result < 0)
+	    {
+	      int errnum = errno;
+	      if(errnum != EINTR)
+		{
+		  _error->Error(_("aptitude: can't wait for the dpkg process: select() failed: %s"),
+				cw::util::sstrerror(errnum).c_str());
+		  return pkgPackageManager::Failed;
+		}
+	    }
+	  else if(result > 0)
+	    {
+	      if(FD_ISSET(child_process_to_self_control_fd_read, &fds))
+		{
+		  int state;
+		  int amt;
+
+		  amt = read(child_process_to_self_control_fd_read,
+			     &state, sizeof(state));
+		  // If something went wrong, assume that dpkg is done
+		  // and abort.
+		  if(amt < 0)
+		    {
+		      int errnum = errno;
+		      _error->Error(_("aptitude: can't check the dpkg process state: read() failed: %s"),
+				    cw::util::sstrerror(errnum).c_str());
+		      return pkgPackageManager::Failed;
+		    }
+		  else if(amt != sizeof(state))
+		    {
+		      // This should never happen.
+		      _error->Error(_("aptitude: can't check the dpkg process state: read() returned too fre bytes"));
+		      return pkgPackageManager::Failed;
+		    }
+		  else
+		    {
+		      if(WIFEXITED(state))
+			return (pkgPackageManager::OrderResult)WEXITSTATUS(state);
+		      else if(!WIFSIGNALED(state))
+			{
+			  // This should never happen.
+			  _error->Error(_("aptitude: unexpected dpkg process exit status %d"),
+					state);
+			  return pkgPackageManager::Failed;
+			}
+		      else
+			{
+			  _error->Error(_("aptitude: dpkg process terminated by signal %d"),
+					WTERMSIG(state));
+			  return pkgPackageManager::Failed;
+			}
+		    }
+		}
+	      // Done handling input from the dpkg process status fd.
+
+	      if(FD_ISSET(child_process_to_parent_control_fd, &fds))
+		{
+		  bool read_anything = false;
+		  bool foreground;
+		  int amt;
+		  // Read the current state.
+		  do
+		    {
+		      char buf;
+		      amt = recv(child_process_to_parent_control_fd, &buf, 1, MSG_DONTWAIT);
+		      if(amt > 0)
+			{
+			  foreground = (buf != 0);
+			  read_anything = true;
+			}
+		    }
+		  while(amt > 0);
+
+		  if(read_anything)
+		    {
+		      if(foreground)
+			{
+			  if(child_process_pid != -1)
+			    {
+			      // Give the dpkg process access to the
+			      // terminal and wake it up.
+			      int result = tcsetpgrp(0, child_process_pid);
+			      if(result != 0)
+				{
+				  int errnum = errno;
+				  _error->Error(_("aptitude: can't put the dpkg process in the foreground: tcsetpgrp() failed: %s"),
+						cw::util::sstrerror(errnum).c_str());
+				  _error->DumpErrors();
+				}
+			      result = kill(child_process_pid, SIGCONT);
+			      if(result != 0)
+				{
+				  int errnum = errno;
+				  _error->Error(_("aptitude: can't wake up the dpkg process: %s"),
+						cw::util::sstrerror(errnum).c_str());
+				  _error->DumpErrors();
+				}
+			    }
+			}
+		      else
+			{
+			  // Stuff the dpkg process into the background.
+			  if(child_process_pid != -1)
+			    {
+			      // Take control of the terminal ourselves.
+			      int result = tcsetpgrp(0, getpid());
+			      if(result != 0)
+				{
+				  int errnum = errno;
+				  _error->Error(_("aptitude: can't put the dpkg process in the background: tcsetpgrp() failed: %s"),
+						cw::util::sstrerror(errnum).c_str());
+				  _error->DumpErrors();
+				}
+			    }
+			}
+		    }
+		}
+	      // Done handling input from the parent process
+	      // suspend/resume fd.
+	    }
+	}
+    }
+  }
+
   void DpkgTerminal::child_process(const temp::name &dpkg_socket_name,
 				   const safe_slot1<pkgPackageManager::OrderResult, int> &f)
   {
@@ -351,8 +659,42 @@ namespace gui
     // parent process and uses its *return code* to indicate the
     // success / failure state.
 
-    // NB: we should close the listen side here, but I don't
-    // because of my magic knowledge that vte will.
+
+    // Try to disable TOSTOP (so that output never suspends a
+    // backgrounded process).
+    {
+      struct termios current_settings;
+      if(tcgetattr(0, &current_settings) < 0)
+	{
+	  int errnum = errno;
+	  _error->Error(_("aptitude: can't read the current terminal settings: tcgetattr() failed: %s"),
+			cw::util::sstrerror(errnum).c_str());
+	}
+      else
+	{
+	  current_settings.c_lflag &= ~(TOSTOP);
+	  if(tcsetattr(0, TCSADRAIN, &current_settings) < 0)
+	    {
+	      int errnum = errno;
+	      _error->Error(_("aptitude: can't modify the terminal settings: tcsetattr() failed: %s"),
+			    cw::util::sstrerror(errnum).c_str());
+	    }
+	  else
+	    {
+	      if(tcgetattr(0, &current_settings) < 0)
+		{
+		  int errnum = errno;
+		  _error->Error(_("aptitude: can't read back the terminal settings: tcgetattr() failed: %s"),
+				cw::util::sstrerror(errnum).c_str());
+		}
+	      else if((current_settings.c_lflag & (TOSTOP)) == (TOSTOP))
+		{
+		  _error->Error("%s",
+				_("aptitude: TOSTOP is set even though I just cleared it!"));
+		}
+	    }
+	}
+    }
 
     char timebuf[512] = "";
 
@@ -363,10 +705,14 @@ namespace gui
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
 
-    std::auto_ptr<temporary_client_socket> write_sock;
+    std::auto_ptr<temporary_client_socket> dpkg_sock;
+    std::auto_ptr<temporary_client_socket> control_sock;
     try
       {
-	write_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
+	// Open two sockets, one for dpkg status messages and one for
+	// intra-program control messages.
+	dpkg_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
+	control_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
       }
     catch(TemporarySocketFail &ex)
       {
@@ -375,7 +721,79 @@ namespace gui
 	_exit(pkgPackageManager::Failed);
       }
 
-    pkgPackageManager::OrderResult result = f.get_slot()(write_sock->get_fd());
+    child_process_to_parent_control_fd = control_sock->get_fd();
+
+    _error->DumpErrors();
+
+    // To handle job control (so that we can detect when the child
+    // needs terminal access), we fork into a "shell process" and a
+    // "dpkg process".  The "dpkg process" actually runs dpkg; its
+    // exit status indicates whether it was successful.  Both
+    // processes set the dpkg process up as the head of a new process
+    // group (the reason for this is to ensure that it ends up in that
+    // group before either process starts to do stuff with it).
+    //
+    // The dpkg process is started in the background; it is moved into
+    // the foreground or the background based on the commands received
+    // from the parent (GUI) process.
+
+    pkgPackageManager::OrderResult result;
+
+    child_process_pid = fork();
+    switch(child_process_pid)
+      {
+      case -1:
+	{
+	  int errnum = errno;
+	  _error->Error(_("aptitude: failed to invoke dpkg: fork() failed: %s"),
+			cw::util::sstrerror(errnum).c_str());
+	  result = pkgPackageManager::Failed;
+	  break;
+	}
+
+      case 0:
+	{
+	  struct termios current_settings;
+	  if(tcgetattr(0, &current_settings) < 0)
+	    {
+	      int errnum = errno;
+	      _error->Error(_("aptitude: can't read back the terminal settings: tcgetattr() failed: %s"),
+			    cw::util::sstrerror(errnum).c_str());
+	    }
+	  else if((current_settings.c_lflag & (TOSTOP)) == (TOSTOP))
+	    {
+	      _error->Error("%s",
+			    _("aptitude: TOSTOP is set even though I just cleared it!"));
+	    }
+
+	  // SIGTTOU should never be sent if TOSTOP is set, but Linux
+	  // apparently sends it anyway.  D'oh!  Just ignore it
+	  // explicitly, since in this terminal we don't ever want to
+	  // suspend processes for printing output.
+	  struct sigaction act;
+	  act.sa_handler = SIG_IGN;
+	  sigemptyset(&act.sa_mask);
+	  act.sa_flags = 0;
+	  sigaction(SIGTTOU, &act, NULL);
+
+	  // The dpkg process: set up the process group and run dpkg,
+	  // then exit with its return value.
+	  if(setpgid(getpid(), getpid()) < 0)
+	    {
+	      int errnum = errno;
+	      _error->Error(_("aptitude: failed to set the process group for dpkg: setpgid() failed: %s"),
+			    cw::util::sstrerror(errnum).c_str());
+	      _error->DumpErrors();
+	      // Continue anyway.
+	    }
+	  pkgPackageManager::OrderResult result =
+	    f.get_slot()(dpkg_sock->get_fd());
+	  _exit(result);
+	}
+
+      default:
+	result = shell_process();
+      }
 
     // Make sure errors appear somewhere (we really ought to push
     // them down the FIFO).
@@ -439,11 +857,13 @@ namespace gui
       child_process(dpkg_socket_name, f);
     else
       {
-	int read_sock = -1;
+	int dpkg_sock = -1;
+	subprocess_map_signal_fd = -1;
 
 	try
 	  {
-	    read_sock = listen_sock->accept();
+	    dpkg_sock = listen_sock->accept();
+	    subprocess_map_signal_fd = listen_sock->accept();
 	  }
 	catch(TemporarySocketFail &ex)
 	  {
@@ -454,10 +874,15 @@ namespace gui
 	// Catch status output from the install process.
 	sigc::slot1<void, aptitude::apt::dpkg_status_message>
 	  report_message_slot(status_message.make_slot());
-	dpkg_socket_data_processor *data_processor = new dpkg_socket_data_processor(read_sock, make_safe_slot(report_message_slot));
-	Glib::signal_io().connect(sigc::mem_fun(*data_processor, &dpkg_socket_data_processor::process_data_from_dpkg_socket),
-				  read_sock,
-				  Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
+	dpkg_socket_data_processor *data_processor = new dpkg_socket_data_processor(dpkg_sock, make_safe_slot(report_message_slot));
+	if(dpkg_sock != -1)
+	  Glib::signal_io().connect(sigc::mem_fun(*data_processor, &dpkg_socket_data_processor::process_data_from_dpkg_socket),
+				    dpkg_sock,
+				    Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
+	if(subprocess_map_signal_fd != -1)
+	  Glib::signal_io().connect(sigc::mem_fun(*this, &DpkgTerminal::handle_suspend_resume_event),
+				    subprocess_map_signal_fd,
+				    Glib::IO_IN | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
 
 	// The parent process.  Here we just wait for the reaper to
 	// tell us that the child finished, then return the result.
@@ -471,6 +896,22 @@ namespace gui
 	connect_dpkg_result(pid, make_safe_slot(finished_slot));
 
 	vte_reaper_add_child(pid);
+      }
+  }
+
+  void DpkgTerminal::set_foreground(bool foreground)
+  {
+    unsigned char byte = foreground ? 1 : 0;
+    int result = write(subprocess_map_signal_fd, &byte, 1);
+    if(result < 1)
+      {
+	int errnum = errno;
+
+	if(result < 0)
+	  _error->Error(_("Unable to send foreground state to subprocess: %s"),
+			cw::util::sstrerror(errnum).c_str());
+	else
+	  _error->Error(_("Unable to send foreground state to subprocess (no bytes written)."));
       }
   }
 
