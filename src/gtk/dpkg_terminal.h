@@ -78,17 +78,6 @@ namespace gui
      */
     void child_process(const temp::name &dpkg_socket_name,
 		       const safe_slot1<pkgPackageManager::OrderResult, int> &f);
-
-
-    /** \brief Invoke to tell the dpkg process that it is now a
-     *  "foreground" or a "background" process.
-     *
-     *  \param foreground  \b true to put the dpkg process in the
-     *                     foreground; \b false to put it in the
-     *                     background.  If in the background, it will
-     *                     be suspended when it requires input.
-     */
-    void set_foreground(bool foreground);
   public:
     /** \brief Initialize a new terminal. */
     DpkgTerminal();
@@ -140,6 +129,17 @@ namespace gui
     /** \brief Send "no" in reply to a "replace this conffile?" message.
      */
     void inject_no();
+
+
+    /** \brief Invoke to tell the dpkg process that it is now a
+     *  "foreground" or a "background" process.
+     *
+     *  \param foreground  \b true to put the dpkg process in the
+     *                     foreground; \b false to put it in the
+     *                     background.  If in the background, it will
+     *                     be suspended when it requires input.
+     */
+    void set_foreground(bool foreground);
   };
 }
 
