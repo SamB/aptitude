@@ -762,6 +762,14 @@ namespace gui
 
 		  if(read_anything)
 		    {
+		      sigset_t sigchld;
+		      sigemptyset(&sigchld);
+		      sigaddset(&sigchld, SIGCHLD);
+
+		      // Block SIGCHLD while we're fiddling with the
+		      // child's state, just to be safe.
+		      sigprocmask(SIG_BLOCK, &sigchld, NULL);
+
 		      if(foreground)
 			{
 			  if(child_process_pid != -1)
@@ -825,6 +833,8 @@ namespace gui
 			  else
 			    LOG_WARN(loggerBackgrounding, "Can't place dpkg into the background (no active process).");
 			}
+
+		      sigprocmask(SIG_UNBLOCK, &sigchld, NULL);
 		    }
 		}
 	      // Done handling input from the parent process
