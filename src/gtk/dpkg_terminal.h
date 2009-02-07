@@ -85,8 +85,7 @@ namespace gui
 
     /** \brief Start running dpkg in the encapsulated terminal.
      *
-     *  This may be invoked in either a foreground thread or a
-     *  background thread.
+     *  This must be invoked from a foreground thread.
      *
      *  \param f The function that actually invokes dpkg.
      */
