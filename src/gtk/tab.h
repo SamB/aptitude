@@ -2,7 +2,7 @@
 
 // tab.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -205,6 +205,15 @@ namespace gui
        *  This is disconnected when we switch away from the tab.
        */
       sigc::connection edit_columns_available_changed_connection;
+
+      /** \brief Hack to allow us to change the state of a page when we
+       *  switch *away* from it.
+       *
+       *  When switch_page() is called, the current page is already modified.
+       *  To find out what page we switched away from, I store the index of the
+       *  last page and update it whenever we switch pages. (EWW)
+       */
+      int last_active_page;
 
       /** \brief Use the currently displayed tab to update
        *  the package menu.

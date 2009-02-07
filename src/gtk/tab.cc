@@ -1,6 +1,6 @@
 // tab.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -164,6 +164,8 @@ namespace gui
   {
     signal_page_removed().connect(sigc::mem_fun(this, &TabsManager::page_removed));
     signal_switch_page().connect(sigc::mem_fun(this, &TabsManager::do_switch_page));
+
+    last_active_page = get_current_page();
   }
 
   int TabsManager::append_page(Tab &tab)
@@ -213,6 +215,8 @@ namespace gui
 
 	delete tab;
       }
+
+    last_active_page = get_current_page();
   }
 
   Tab *TabsManager::get_current_tab()
@@ -226,11 +230,14 @@ namespace gui
 
   void TabsManager::do_switch_page(GtkNotebookPage *page, guint page_idx)
   {
+    const int previous_page = last_active_page;
+    last_active_page = page_idx;
+
     package_menu_actions_changed_connection.disconnect();
     undo_available_changed_connection.disconnect();
     edit_columns_available_changed_connection.disconnect();
 
-    Tab *current = get_current_tab();
+    Tab *current = (Tab *)get_nth_page(previous_page)->get_data(tab_property);
     if(current != NULL)
       current->set_active(false);
 
