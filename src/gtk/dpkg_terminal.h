@@ -28,6 +28,7 @@
 
 #include <generic/apt/parse_dpkg_status.h>
 #include <generic/util/safe_slot.h>
+#include <generic/util/temp.h>
 
 struct sockaddr_un;
 
@@ -53,10 +54,11 @@ namespace gui
     /** \brief The code that initializes the dpkg invocation in the
      *  terminal.
      *
-     *  \param sa   A socket on which to report the child's status.
+     *  \param dpkg_socket_name
+     *              The socket on which to report the child's dpkg status.
      *  \param f    A callback to invoke after dpkg finishes running.
      */
-    void child_process(const struct sockaddr_un &sa,
+    void child_process(const temp::name &dpkg_socket_name,
 		       const safe_slot1<pkgPackageManager::OrderResult, int> &f);
 
   public:

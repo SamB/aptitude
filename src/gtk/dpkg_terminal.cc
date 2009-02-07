@@ -306,7 +306,45 @@ namespace gui
     const sockaddr_un &get_addr() const { return addr; }
   };
 
-  void DpkgTerminal::child_process(const struct sockaddr_un &sa,
+
+  class temporary_write_socket
+  {
+    temp::name name;
+
+    struct sockaddr_un addr;
+
+    std::auto_ptr<FileFd> fd;
+
+  public:
+    temporary_write_socket(const temp::name &_name)
+      : name(_name)
+    {
+      const size_t max_socket_name = sizeof(addr.sun_path);
+
+      if(name.get_name().size() > max_socket_name)
+	throw TemporarySocketFail(cw::util::ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
+						     name.get_name().c_str()));
+
+      addr.sun_family = AF_UNIX;
+      strncpy(addr.sun_path, name.get_name().c_str(), max_socket_name);
+
+      fd = std::auto_ptr<FileFd>(new FileFd(open_unix_socket()));
+
+
+      if(connect(fd->Fd(), (struct sockaddr *)&addr, sizeof(addr)) != 0)
+	{
+	  int errnum = errno;
+	  std::string err = cw::util::sstrerror(errnum);
+	  throw TemporarySocketFail(cw::util::ssprintf("%s: Unable to bind to the temporary socket: %s",
+						       __PRETTY_FUNCTION__,
+						       err.c_str()));
+	}
+    }
+
+    int get_fd() const { return fd->Fd(); }
+  };
+
+  void DpkgTerminal::child_process(const temp::name &dpkg_socket_name,
 				   const safe_slot1<pkgPackageManager::OrderResult, int> &f)
   {
     // The child process.  It passes status information to the
@@ -325,10 +363,10 @@ namespace gui
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
 
-    int write_sock;
+    std::auto_ptr<temporary_write_socket> write_sock;
     try
       {
-	write_sock = open_unix_socket();
+	write_sock = std::auto_ptr<temporary_write_socket>(new temporary_write_socket(dpkg_socket_name));
       }
     catch(TemporarySocketFail &ex)
       {
@@ -337,18 +375,7 @@ namespace gui
 	_exit(pkgPackageManager::Failed);
       }
 
-    if(connect(write_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-      {
-	int errnum = errno;
-	std::string err = cw::util::sstrerror(errnum);
-	_error->Error("%s: Unable to bind to the temporary socket: %s",
-		      __PRETTY_FUNCTION__,
-		      err.c_str());
-	_error->DumpErrors();
-	_exit(pkgPackageManager::Failed);
-      }
-
-    pkgPackageManager::OrderResult result = f.get_slot()(write_sock);
+    pkgPackageManager::OrderResult result = f.get_slot()(write_sock->get_fd());
 
     // Make sure errors appear somewhere (we really ought to push
     // them down the FIFO).
@@ -409,7 +436,7 @@ namespace gui
 				     FALSE, FALSE, FALSE);
 
     if(pid == 0)
-      child_process(listen_sock->get_addr(), f);
+      child_process(socketname, f);
     else
       {
 	int read_sock = -1;
