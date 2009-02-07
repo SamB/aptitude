@@ -594,7 +594,7 @@ namespace gui
 
 	child_suspended_text = progress->get_text();
 	child_suspended_fraction = progress->get_fraction();
-	progress->set_text("Waiting for user input...");
+	progress->set_text(child_suspended_text + ": waiting for user input...");
 
 	flash_details_button_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
 								  1000 / 20);
