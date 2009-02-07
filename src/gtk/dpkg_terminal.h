@@ -113,11 +113,11 @@ namespace gui
 
     /** \brief Emitted when the dpkg process is suspended or resumed.
      *
-     *  The argument states whether the process is currently
-     *  suspended.  This may be emitted more than once in a row with
-     *  the same argument.
+     *  The argument states whether the process is currently running:
+     *  "true" if it is running, and "false" if it is suspended.  This
+     *  may be emitted more than once in a row with the same argument.
      */
-    sigc::signal<void, bool> subprocess_suspended_changed;
+    sigc::signal<void, bool> subprocess_running_changed;
 
     /** \brief Start running dpkg in the encapsulated terminal.
      *

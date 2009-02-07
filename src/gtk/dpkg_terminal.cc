@@ -237,7 +237,7 @@ namespace gui
 	while(amt > 0);
 
 	if(read_anything)
-	  subprocess_suspended_changed(state);
+	  subprocess_running_changed(state);
 
 	rval = read_anything;
       }
