@@ -431,6 +431,7 @@ namespace gui
 	{
 	  if(WIFEXITED(status) || WIFSIGNALED(status))
 	    {
+	      child_process_pid = -1;
 	      if(write(child_process_to_self_control_fd_write, &status, sizeof(status)) < (int)sizeof(status))
 		{
 		  // Something is very very wrong.  Make a last ditch
