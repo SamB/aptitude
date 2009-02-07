@@ -612,6 +612,14 @@ namespace gui
 						cw::util::sstrerror(errnum).c_str());
 				  _error->DumpErrors();
 				}
+			      // Tell the parent that we are going to
+			      // continue the process.  This needs to
+			      // be sent before we actually send
+			      // SIGCONT, or if the subprocess
+			      // resuspends, its state change might
+			      // get sent before this state change.
+			      unsigned char c = 1;
+			      write(child_process_to_parent_control_fd, &c, 1);
 			      result = kill(child_process_pid, SIGCONT);
 			      if(result != 0)
 				{
@@ -619,11 +627,8 @@ namespace gui
 				  _error->Error(_("aptitude: can't wake up the dpkg process: %s"),
 						cw::util::sstrerror(errnum).c_str());
 				  _error->DumpErrors();
-				}
-			      else
-				{
-				  // Tell the parent that we continued the process.
-				  unsigned char c = 1;
+
+				  c = 0;
 				  write(child_process_to_parent_control_fd, &c, 1);
 				}
 			    }
