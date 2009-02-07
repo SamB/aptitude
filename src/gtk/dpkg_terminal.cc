@@ -413,7 +413,7 @@ namespace gui
     // Create a temporary UNIX-domain socket to pass status
     // information to the parent.
     temp::dir tempdir("aptitude");
-    temp::name socketname(tempdir, "commsocket");
+    temp::name dpkg_socket_name(tempdir, "commsocket");
 
     // To avoid races, we bind the receive end of the socket first and
     // start accepting connections.
@@ -421,7 +421,7 @@ namespace gui
 
     try
       {
-	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(socketname));
+	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(dpkg_socket_name));
       }
     catch(TemporarySocketFail &ex)
       {
@@ -436,7 +436,7 @@ namespace gui
 				     FALSE, FALSE, FALSE);
 
     if(pid == 0)
-      child_process(socketname, f);
+      child_process(dpkg_socket_name, f);
     else
       {
 	int read_sock = -1;
