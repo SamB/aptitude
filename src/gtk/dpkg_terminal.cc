@@ -307,7 +307,7 @@ namespace gui
   };
 
 
-  class temporary_write_socket
+  class temporary_client_socket
   {
     temp::name name;
 
@@ -316,7 +316,7 @@ namespace gui
     std::auto_ptr<FileFd> fd;
 
   public:
-    temporary_write_socket(const temp::name &_name)
+    temporary_client_socket(const temp::name &_name)
       : name(_name)
     {
       const size_t max_socket_name = sizeof(addr.sun_path);
@@ -363,10 +363,10 @@ namespace gui
       strcpy(timebuf, "ERR");
     printf(_("[%s] dpkg process starting...\n"), timebuf);
 
-    std::auto_ptr<temporary_write_socket> write_sock;
+    std::auto_ptr<temporary_client_socket> write_sock;
     try
       {
-	write_sock = std::auto_ptr<temporary_write_socket>(new temporary_write_socket(dpkg_socket_name));
+	write_sock = std::auto_ptr<temporary_client_socket>(new temporary_client_socket(dpkg_socket_name));
       }
     catch(TemporarySocketFail &ex)
       {
