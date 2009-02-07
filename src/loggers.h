@@ -46,6 +46,21 @@ namespace aptitude
   {
     // Could define static variables here, but that would have no real purpose.
   public:
+    /** \brief The logger for events having to do with the dpkg
+     *  status pipe.
+     */
+    static log4cxx::LoggerPtr getAptitudeDpkgStatusPipe();
+
+    /** \brief The logger for events having to do with the dpkg
+     *  terminal in the GTK+ frontend.
+     */
+    static log4cxx::LoggerPtr getAptitudeDpkgTerminal();
+
+    /** \brief The logger for events having to do with management of
+     *  the dpkg process's background status in the GTK+ frontend.
+     */
+    static log4cxx::LoggerPtr getAptitudeDpkgTerminalBackgrounding();
+
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver

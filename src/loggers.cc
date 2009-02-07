@@ -23,6 +23,21 @@ using namespace log4cxx;
 
 namespace aptitude
 {
+  LoggerPtr Loggers::getAptitudeDpkgStatusPipe()
+  {
+    return Logger::getLogger("aptitude.dpkg.statusPipe");
+  }
+
+  LoggerPtr Loggers::getAptitudeDpkgTerminal()
+  {
+    return Logger::getLogger("aptitude.dpkg.terminal");
+  }
+
+  LoggerPtr Loggers::getAptitudeDpkgTerminalBackgrounding()
+  {
+    return Logger::getLogger("aptitude.dpkg.terminal.backgrounding");
+  }
+
   LoggerPtr Loggers::getAptitudeResolver()
   {
     return Logger::getLogger("aptitude.resolver");
