@@ -460,6 +460,37 @@ namespace gui
 	}
     }
 
+    // SIGHUP is only sent to foreground processes, so we might need
+    // to kill dpkg&co off with SIGHUP.
+    void handle_shell_process_sighup(int signal)
+    {
+      if(signal != SIGHUP)
+	return;
+
+      if(child_process_pid != -1)
+	{
+	  if(kill(-child_process_pid, SIGHUP) != 0)
+	    {
+	      const char *msg = "aptitude: unable to kill the dpkg process.\n";
+	      const int msglen = strlen(msg);
+
+	      if(write(2, msg, msglen) < msglen)
+		write(1, msg, msglen);
+	    }
+	}
+
+      // Kill ourselves with SIGHUP too.
+      struct sigaction act;
+      act.sa_handler = SIG_DFL;
+      sigemptyset(&act.sa_mask);
+      act.sa_flags = 0;
+
+      sigaction(SIGHUP, &act, NULL);
+      raise(SIGHUP);
+      // And just in case that didn't work,
+      _exit(0);
+    }
+
     /** \brief Handles running the "shell" that manages the
      *  suspended/unsuspended state and foreground/background of the
      *  dpkg process.
@@ -497,6 +528,15 @@ namespace gui
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGCHLD, &act, NULL);
+      }
+
+      // Set up a SIGHUP handler that kills the subprocess.
+      {
+	struct sigaction act;
+	act.sa_handler = &handle_shell_process_sighup;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGHUP, &act, NULL);
       }
 
       // Block terminal control signals.
