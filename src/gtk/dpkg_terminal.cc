@@ -258,13 +258,7 @@ namespace gui
 
   DpkgTerminal::~DpkgTerminal()
   {
-    LOG_TRACE(logger, "Destroying the dpkg terminal manager.");
-
-    if(!sent_finished_signal)
-      {
-	LOG_DEBUG(logger, "Since the dpkg terminal manager is being destroyed, returning an Incomplete dpkg status.");
-	finished(pkgPackageManager::Incomplete);
-      }
+    LOG_TRACE(logger, "Destroying the dpkg terminal manager (" << this << ").");
     delete terminal;
   }
 

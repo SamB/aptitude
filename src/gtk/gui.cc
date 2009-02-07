@@ -695,6 +695,8 @@ namespace gui
 		  "Aborting dpkg run.");
 	delete terminal;
 	terminal = NULL;
+
+	finish_dpkg_run(pkgPackageManager::Incomplete);
       }
 
       void do_finish_dpkg_run(pkgPackageManager::OrderResult res)
