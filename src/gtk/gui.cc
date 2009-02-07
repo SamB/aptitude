@@ -465,6 +465,7 @@ namespace gui
 
     class DpkgTerminalNotification : public Notification
     {
+      Gtk::Button *view_details_button;
       Gtk::ProgressBar *progress;
       // The active terminal information tab, or NULL if none.
       DpkgTerminalTab *tab;
@@ -475,6 +476,147 @@ namespace gui
       bool finished;
       bool abort_ok;
       Gtk::MessageDialog *abort_ok_prompt;
+
+      // True if the child is currently suspended (meaning the "get
+      // the user's attention" animations are active).
+      bool child_is_suspended;
+
+      // The connection representing the timout that flashes the
+      // details button.
+      sigc::connection flash_details_button_connection;
+      // If "true", we're on the "flash fast" state of the flash
+      // animation; otherwise we're "between flashes".  We flash the
+      // button 10 times over 2 seconds, then wait 15 seconds before
+      // flashing again.
+      bool flashing;
+      // The number of flashes: this counts from 0 to 19 (with even
+      // numbers turning the flash on and odd numbers turning it off).
+      int flash_count;
+
+      // The connection representing the timeout that makes the
+      // progress bar pulse.
+      sigc::connection pulse_progress_bar_connection;
+
+      // The text that was displayed in the progress bar when the
+      // child stopped to wait for user input.
+      Glib::ustring child_suspended_text;
+      // The fractional progress that was displayed before the child was suspended.
+      double child_suspended_fraction;
+
+      static Gdk::Color mix_colors(const Gdk::Color &c1, const Gdk::Color &c2)
+      {
+	Gdk::Color rval;
+	rval.set_red((c1.get_red() + c2.get_red()) / 2);
+	rval.set_blue((c1.get_blue() + c2.get_blue()) / 2);
+	rval.set_green((c1.get_green() + c2.get_green()) / 2);
+
+	return rval;
+      }
+
+      Gdk::Color view_details_orig_base;
+      Gdk::Color view_details_orig_bg;
+
+      gboolean flash_details_button()
+      {
+	if(flashing)
+	  {
+	    if(flash_count == 20)
+	      {
+		printf("Stop flash.\n");
+
+		flashing = false;
+		flash_count = 0;
+		view_details_button->modify_base(Gtk::STATE_NORMAL, view_details_orig_base);
+		view_details_button->modify_bg(Gtk::STATE_NORMAL, view_details_orig_bg);
+
+		flash_details_button_connection =
+		  Glib::signal_timeout().connect_seconds(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
+							 15);
+		return FALSE;
+	      }
+	    else
+	      {
+		// We flash to a lighter color than the default and a
+		// darker color than the default.  This is because we
+		// don't know what color the button is: if the style
+		// is very bright, a bright color won't show up; if
+		// the style is very dark, a dark color won't show up.
+		// So we find two colors that should always be visible
+		// (I hope).
+		bool highlighted = (flash_count % 2 == 0);
+		++flash_count;
+
+		printf("Flash: %s\n", highlighted ? "true" : "false");
+
+		if(highlighted)
+		  {
+		    Gdk::Color base(mix_colors(view_details_orig_base, Gdk::Color("#000000")));
+		    Gdk::Color bg(mix_colors(view_details_orig_bg, Gdk::Color("#000000")));
+
+		    view_details_button->modify_base(Gtk::STATE_NORMAL, base);
+		    view_details_button->modify_bg(Gtk::STATE_NORMAL, bg);
+		  }
+		else
+		  {
+		    Gdk::Color base(mix_colors(view_details_orig_base, Gdk::Color("#FFFFFF")));
+		    Gdk::Color bg(mix_colors(view_details_orig_bg, Gdk::Color("#FFFFFF")));
+
+		    view_details_button->modify_base(Gtk::STATE_NORMAL, base);
+		    view_details_button->modify_bg(Gtk::STATE_NORMAL, bg);
+		  }
+
+		return TRUE;
+	      }
+	  }
+	else
+	  {
+	    printf("Pause.\n");
+	    flash_details_button_connection =
+	      Glib::signal_timeout().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
+					     1000 / 20);
+	    return FALSE;
+	  }
+      }
+
+      gboolean pulse_progress_bar()
+      {
+	progress->pulse();
+	return TRUE;
+      }
+
+      void child_suspended()
+      {
+	if(child_is_suspended)
+	  return;
+
+	flashing = true;
+	flash_count = 0;
+
+	child_suspended_text = progress->get_text();
+	child_suspended_fraction = progress->get_fraction();
+	progress->set_text("Waiting for user input...");
+
+	flash_details_button_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::flash_details_button),
+								  1000 / 20);
+	pulse_progress_bar_connection = Glib::signal_timeout().connect_seconds(sigc::mem_fun(*this, &DpkgTerminalNotification::pulse_progress_bar),
+									       1);
+
+	child_is_suspended = true;
+      }
+
+      void child_resumed()
+      {
+	if(!child_is_suspended)
+	  return;
+
+	progress->set_text(child_suspended_text);
+	progress->set_fraction(child_suspended_fraction);
+	flash_details_button_connection.disconnect();
+	pulse_progress_bar_connection.disconnect();
+	view_details_button->modify_base(Gtk::STATE_NORMAL, view_details_orig_base);
+	view_details_button->modify_bg(Gtk::STATE_NORMAL, view_details_orig_bg);
+	child_is_suspended = false;
+      }
 
       void finish_prompt_abort_ok(int response)
       {
@@ -546,6 +688,22 @@ namespace gui
 	post_event(safe_bind(make_safe_slot(do_finish_dpkg_run_slot), res));
       }
 
+      void handle_subprocess_suspended_changed(bool state)
+      {
+	printf("handle_subprocess_suspended_changed: %s\n",
+	       state ? "true" : "false");
+
+	if(!state)
+	  child_resumed();
+	else
+	  child_suspended();
+      }
+
+      void handle_active_changed()
+      {
+	terminal->set_foreground(tab != NULL && tab->get_active());
+      }
+
     public:
 	DpkgTerminalNotification(const safe_slot1<void, pkgPackageManager::OrderResult> &_k)
 	: Notification(true),
@@ -555,7 +713,10 @@ namespace gui
 	  k(_k),
 	  finished(false),
 	  abort_ok(false),
-	  abort_ok_prompt(NULL)
+	  abort_ok_prompt(NULL),
+	  child_is_suspended(false),
+	  flashing(false),
+	  flash_count(0)
       {
 	progress->set_text(_("Applying changes..."));
 	progress->set_ellipsize(Pango::ELLIPSIZE_END);
@@ -564,11 +725,15 @@ namespace gui
 
 	terminal->finished.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::finish_dpkg_run));
 	terminal->status_message.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::process_dpkg_message));
+	terminal->subprocess_running_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_subprocess_suspended_changed));
 
-	Gtk::Button *view_details_button = new Gtk::Button(_("View Details"));
+	view_details_button = new Gtk::Button(_("View Details"));
 	view_details_button->signal_clicked().connect(sigc::mem_fun(*this, &DpkgTerminalNotification::view_details));
 	view_details_button->show();
 	add_button(view_details_button);
+
+	view_details_orig_base = view_details_button->get_style()->get_base(Gtk::STATE_NORMAL);
+	view_details_orig_bg = view_details_button->get_style()->get_bg(Gtk::STATE_NORMAL);
 
 	closing.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::prompt_abort_ok));
 	closed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::abort));
@@ -589,6 +754,7 @@ namespace gui
 	else
 	  {
 	    tab = new DpkgTerminalTab(terminal->get_widget());
+	    tab->active_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_active_changed));
 	    tab_add(tab);
 	  }
       }
