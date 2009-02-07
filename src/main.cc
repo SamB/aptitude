@@ -437,6 +437,18 @@ namespace
   }
 }
 
+class NullAppender : public log4cxx::AppenderSkeleton
+{
+public:
+  void close() { }
+  void append(const log4cxx::spi::LoggingEventPtr &,
+	      log4cxx::helpers::Pool &)
+  {
+  }
+
+  bool requiresLayout() const { return false; }
+};
+
 int main(int argc, char *argv[])
 {
   srandom(time(0));
@@ -777,6 +789,9 @@ int main(int argc, char *argv[])
     BasicConfigurator::configure();
     Logger::getRootLogger()->removeAllAppenders();
   }
+
+  // Make log4cxx shut up about not having a root logger.
+  Logger::getRootLogger()->addAppender(new NullAppender);
 
   if(!log_file.empty())
     {
