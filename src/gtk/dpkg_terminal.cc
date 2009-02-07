@@ -228,6 +228,90 @@ namespace gui
     delete terminal;
   }
 
+  /** \brief Exception related to the temporary socket class. */
+  class TemporarySocketFail : public cwidget::util::Exception
+  {
+    const std::string msg;
+  public:
+    TemporarySocketFail(const std::string &_msg) : msg(_msg)
+    {
+    }
+
+    std::string errmsg() const
+    {
+      return msg;
+    }
+  };
+
+  /** \brief Represents the read end of a pair of Unix-domain sockets. */
+  class temporary_listen_socket
+  {
+    temp::name name;
+
+    std::auto_ptr<FileFd> listen_sock;
+    struct sockaddr_un addr;
+
+  public:
+    temporary_listen_socket(const temp::name &_name)
+      : name(_name)
+    {
+      using namespace cwidget::util;
+      int fd = open_unix_socket();
+      if(fd == -1)
+	{
+	  int errnum = errno;
+	  throw TemporarySocketFail(ssprintf(_("Can't allocate socket: %s."),
+					     sstrerror(errnum).c_str()));
+	}
+
+      listen_sock = std::auto_ptr<FileFd>(new FileFd(fd));
+
+      const size_t max_socket_name = sizeof(addr.sun_path);
+
+      if(name.get_name().size() > max_socket_name)
+	throw TemporarySocketFail(ssprintf(_("Internal error: the temporary socket name \"%s\" is too long!"),
+					   name.get_name().c_str()));
+
+      addr.sun_family = AF_UNIX;
+      strncpy(addr.sun_path, name.get_name().c_str(), max_socket_name);
+
+      if(bind(listen_sock->Fd(), (struct sockaddr *)&addr, sizeof(addr)) != 0)
+	{
+	  int errnum = errno;
+	  std::string err = cw::util::sstrerror(errnum);
+	  throw TemporarySocketFail(ssprintf("%s: Unable to bind to the temporary socket: %s",
+					     __PRETTY_FUNCTION__,
+					     err.c_str()));
+	}
+
+      if(listen(listen_sock->Fd(), 1) != 0)
+	{
+	  int errnum = errno;
+	  std::string err = cw::util::sstrerror(errnum);
+	  throw TemporarySocketFail(ssprintf("%s: Unable to listen on the temporary socket: %s",
+					     __PRETTY_FUNCTION__,
+					     err.c_str()));
+	}
+    }
+
+    int accept() const
+    {
+      int result = ::accept(listen_sock->Fd(), NULL, NULL);
+      if(result == -1)
+	{
+	  int errnum = errno;
+	  std::string errmsg = cw::util::sstrerror(errnum);
+	  throw TemporarySocketFail(cw::util::ssprintf(_("%s: Unable to accept a connection from the subprocess: %s"),
+						       __PRETTY_FUNCTION__,
+						       errmsg.c_str()));
+	}
+
+      return result;
+    }
+
+    const sockaddr_un &get_addr() const { return addr; }
+  };
+
   void DpkgTerminal::child_process(const struct sockaddr_un &sa,
 				   const safe_slot1<pkgPackageManager::OrderResult, int> &f)
   {
@@ -307,48 +391,15 @@ namespace gui
 
     // To avoid races, we bind the receive end of the socket first and
     // start accepting connections.
-    int listen_sock = open_unix_socket();
-    if(listen_sock == -1)
+    std::auto_ptr<temporary_listen_socket> listen_sock;
+
+    try
       {
-	finished(pkgPackageManager::Failed);
-	return;
+	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(socketname));
       }
-
-    // Ensure that the socket is always closed when this routine
-    // exits.
-    FileFd sock_fd(listen_sock);
-
-    struct sockaddr_un sa;
-
-    const size_t max_socket_name = sizeof(sa.sun_path);
-
-    if(socketname.get_name().size() > max_socket_name)
+    catch(TemporarySocketFail &ex)
       {
-	_error->Error("Internal error: the temporary socket name is too long!");
-	finished(pkgPackageManager::Failed);
-	return;
-      }
-
-    sa.sun_family = AF_UNIX;
-    strncpy(sa.sun_path, socketname.get_name().c_str(), max_socket_name);
-    if(bind(listen_sock, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-      {
-	int errnum = errno;
-	std::string err = cw::util::sstrerror(errnum);
-	_error->Error("%s: Unable to bind to the temporary socket: %s",
-		      __PRETTY_FUNCTION__,
-		      err.c_str());
-	finished(pkgPackageManager::Failed);
-	return;
-      }
-
-    if(listen(listen_sock, 1) != 0)
-      {
-	int errnum = errno;
-	std::string err = cw::util::sstrerror(errnum);
-	_error->Error("%s: Unable to listen on the temporary socket: %s",
-		      __PRETTY_FUNCTION__,
-		      err.c_str());
+	_error->Error("%s", ex.errmsg().c_str());
 	finished(pkgPackageManager::Failed);
 	return;
       }
@@ -359,17 +410,19 @@ namespace gui
 				     FALSE, FALSE, FALSE);
 
     if(pid == 0)
-      child_process(sa, f);
+      child_process(listen_sock->get_addr(), f);
     else
       {
-	int read_sock = accept(listen_sock, NULL, NULL);
-	if(read_sock == -1)
+	int read_sock = -1;
+
+	try
 	  {
-	    int errnum = errno;
-	    std::string errmsg = cw::util::sstrerror(errnum);
-	    _error->Error(_("%s: Unable to accept a connection from the subprocess: %s"),
-			  __PRETTY_FUNCTION__,
-			  errmsg.c_str());
+	    read_sock = listen_sock->accept();
+	  }
+	catch(TemporarySocketFail &ex)
+	  {
+	    _error->Error("%s", ex.errmsg().c_str());
+	    // Not a fatal error -- try to install anyway.
 	  }
 
 	// Catch status output from the install process.
