@@ -365,7 +365,8 @@ namespace gui
     struct sockaddr_un addr;
 
   public:
-    temporary_listen_socket(const temp::name &_name)
+    temporary_listen_socket(const temp::name &_name,
+			    int backlog)
       : name(_name)
     {
       using namespace cwidget::util;
@@ -399,7 +400,7 @@ namespace gui
 					     err.c_str()));
 	}
 
-      if(listen(listen_sock->Fd(), 1) != 0)
+      if(listen(listen_sock->Fd(), backlog) != 0)
 	{
 	  int errnum = errno;
 	  std::string err = cw::util::sstrerror(errnum);
@@ -1053,7 +1054,7 @@ namespace gui
 
     try
       {
-	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(dpkg_socket_name));
+	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(dpkg_socket_name, 1));
       }
     catch(TemporarySocketFail &ex)
       {
