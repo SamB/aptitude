@@ -984,16 +984,6 @@ namespace gui
 			    _("aptitude: TOSTOP is set even though I just cleared it!"));
 	    }
 
-	  // SIGTTOU should never be sent if TOSTOP is set, but Linux
-	  // apparently sends it anyway.  D'oh!  Just ignore it
-	  // explicitly, since in this terminal we don't ever want to
-	  // suspend processes for printing output.
-	  struct sigaction act;
-	  act.sa_handler = SIG_IGN;
-	  sigemptyset(&act.sa_mask);
-	  act.sa_flags = 0;
-	  sigaction(SIGTTOU, &act, NULL);
-
 	  // The dpkg process: set up the process group and run dpkg,
 	  // then exit with its return value.
 	  if(setpgid(getpid(), getpid()) < 0)
