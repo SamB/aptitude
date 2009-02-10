@@ -706,6 +706,9 @@ private:
    */
   std::set<solution, solution_contents_compare> deferred;
 
+  /** Like deferred, but for future solutions. */
+  std::set<solution, solution_contents_compare> deferred_future_solutions;
+
   typedef dense_mapset<package, action, ExtractPackageId> conflictset;
 
 
@@ -1700,26 +1703,46 @@ private:
     // not invalidate existing iterators.  Hence this very careful
     // iteration:
 
-    typename std::set<solution, solution_contents_compare>::const_iterator
-      i = deferred.begin(), j = i;
+    {
+      typename std::set<solution, solution_contents_compare>::const_iterator
+	i = deferred.begin(), j = i;
 
-    while(i != deferred.end())
-      {
-	++j;
+      while(i != deferred.end())
+	{
+	  ++j;
 
-	if(!should_defer(*i))
-	  {
-	    open.push(*i);
-	    deferred.erase(i);
-	  }
+	  if(!should_defer(*i))
+	    {
+	      open.push(*i);
+	      deferred.erase(i);
+	    }
 
-	i = j;
-      }
+	  i = j;
+	}
+    }
+
+    {
+      typename std::set<solution, solution_contents_compare>::const_iterator
+	i = deferred_future_solutions.begin(), j = i;
+
+      while(i != deferred_future_solutions.end())
+	{
+	  ++j;
+
+	  if(!should_defer(*i))
+	    {
+	      future_solutions.push(*i);
+	      deferred_future_solutions.erase(i);
+	    }
+
+	  i = j;
+	}
+    }
 
     // Note that we might have to rescind the "finished" state: the
     // actions above can actually cause new solutions to be available
     // for processing!
-    if(finished && !open.empty())
+    if(finished && (!open.empty() || !future_solutions.empty()))
       finished = false;
 
     deferred_dirty = false;
@@ -2807,6 +2830,13 @@ public:
 				      initial_state));
       }
 
+    // Here the outer loop is used to ensure that we don't get
+    // confused by supposedly existing solutions that are actually
+    // deferred.  We don't check the solution list until we've already
+    // found something, but if all the solutions on it are deferred,
+    // we need to keep searching until max_steps is exhausted.
+    while(max_steps > 0 && !open.empty())
+      {
     while(max_steps > 0 && most_future_solution_steps <= future_horizon && !open.empty())
       {
 	if(most_future_solution_steps > 0)
@@ -2910,13 +2940,29 @@ public:
 
     if(!future_solutions.empty())
       {
-	solution rval(future_solutions.top());
-	future_solutions.pop();
+	solution rval;
 
-	if(open.empty() && future_solutions.empty())
-	  finished = true;
+	while(!future_solutions.empty() && !rval)
+	  {
+	    solution tmp = future_solutions.top();
+	    future_solutions.pop();
 
-	return rval;
+	    if(should_defer(tmp))
+	      deferred_future_solutions.insert(tmp);
+	    else
+	      rval = tmp;
+	  }
+
+	if(rval)
+	  {
+	    if(open.empty() && future_solutions.empty())
+	      finished = true;
+
+	    return rval;
+	  }
+	else
+	  most_future_solution_steps = 0;
+      }
       }
 
     // Oh no, we either ran out of solutions or ran out of steps.
