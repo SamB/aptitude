@@ -968,6 +968,8 @@ namespace gui
 
       case 0:
 	{
+	  signal(SIGTTOU, SIG_IGN);
+
 	  struct termios current_settings;
 	  if(tcgetattr(0, &current_settings) < 0)
 	    {
