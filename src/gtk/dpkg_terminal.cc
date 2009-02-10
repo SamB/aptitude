@@ -744,7 +744,7 @@ namespace gui
 		{
 		  LOG_TRACE(loggerBackgrounding, "Data available on the parent's control socket.");
 		  bool read_anything = false;
-		  bool foreground;
+		  bool foreground = false;
 		  int amt;
 		  // Read the current state.
 		  do
