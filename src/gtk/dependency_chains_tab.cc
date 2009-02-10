@@ -224,7 +224,7 @@ namespace gui
     Glib::RefPtr<Gtk::TreeView::Selection> start_selection =
       start_search_list->get_package_list()->get_treeview()->get_selection();
     Glib::RefPtr<Gtk::TreeView::Selection> end_selection =
-      start_search_list->get_package_list()->get_treeview()->get_selection();
+      end_search_list->get_package_list()->get_treeview()->get_selection();
 
     if(!start_selection || !end_selection)
       return store;
