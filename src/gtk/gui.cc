@@ -27,6 +27,8 @@
 #include "aptitude.h"
 #include "loggers.h"
 
+#include <signal.h>
+
 #include <map>
 
 #undef OK
@@ -1686,6 +1688,9 @@ namespace gui
 
   bool main(int argc, char *argv[])
   {
+    // Don't crash if a subprocess breaks a pipe.
+    signal(SIGPIPE, SIG_IGN);
+
     // GTK+ provides a perfectly good routine, gtk_init_check(), to
     // initialize GTK+ *and report whether the initialization
     // succeeded*.  gtkmm doesn't wrap it.  But initializing GTK+
