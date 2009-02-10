@@ -691,7 +691,11 @@ private:
   /** The working queue: */
   std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> open;
 
-  /** Solutions generated "in the future". */
+  /** Solutions generated "in the future".
+   *
+   *  The main reason this is persistent at the moment is so we don't
+   *  lose solutions if find_next_solution() throws an exception.
+   */
   std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> future_solutions;
 
   /** Stores already-seen solutions: */
