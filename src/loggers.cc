@@ -67,4 +67,14 @@ namespace aptitude
   {
     return Logger::getLogger("aptitude.resolver.scores");
   }
+
+  LoggerPtr Loggers::getAptitudeWhy()
+  {
+    return Logger::getLogger("aptitude.why");
+  }
+
+  LoggerPtr Loggers::getAptitudeWhyGtk()
+  {
+    return Logger::getLogger("aptitude.why.gtk");
+  }
 }

@@ -99,6 +99,18 @@ namespace aptitude
      *  Name: aptitude.resolver.scores
      */
     static log4cxx::LoggerPtr getAptitudeResolverScores();
+
+    /** \brief The logger for the "why" command.
+     *
+     *  Name: aptitude.why
+     */
+    static log4cxx::LoggerPtr getAptitudeWhy();
+
+    /** \brief The logger for the GTK+ interface to the "why" command.
+     *
+     *  Name: aptitude.why
+     */
+    static log4cxx::LoggerPtr getAptitudeWhyGtk();
   };
 }
 
