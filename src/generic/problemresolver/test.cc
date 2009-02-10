@@ -471,8 +471,11 @@ int main(int argc, char **argv)
   for(int i=1; i<argc; ++i)
     {
       // lame man's command line
-      if(!strcmp(argv[0], "--dump"))
-	show_world=true;
+      if(!strcmp(argv[i], "--dump"))
+        {
+	  show_world=true;
+          continue;
+        }
 
       ifstream f(argv[i]);
 
