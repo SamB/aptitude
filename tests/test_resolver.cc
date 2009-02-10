@@ -300,7 +300,7 @@ private:
   void testRejections()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
-    dummy_resolver r(10, -300, -100, 100000, 50000,
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -343,7 +343,7 @@ private:
     initial_state.put(a, av2);
     initial_state.put(c, cv2);
 
-    dummy_resolver r(10, -300, -100, 10000000, 500,
+    dummy_resolver r(10, -300, -100, 10000000, 500, 1,
 		     initial_state,
 		     u);
 
@@ -388,7 +388,7 @@ private:
     typedef dummy_solution::action action;
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 10000000, 500,
+    dummy_resolver r(10, -300, -100, 10000000, 500, 500,
 		     imm::map<package, version>(),
 		     u);
     // Disable this to debug the resolver test.
@@ -470,7 +470,7 @@ private:
   void testDropSolutionSupersets()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 100000, 50000,
+    dummy_resolver r(10, -300, -100, 100000, 50000, 500000,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
