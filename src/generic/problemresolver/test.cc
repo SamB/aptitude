@@ -278,6 +278,20 @@ map<dummy_universe::package, dummy_resolver::version> read_solution(istream &f, 
   throw ParseError("Unexpected error reading solution list");
 }
 
+int parse_int(const std::string &s)
+{
+  if(s.empty())
+    throw ParseError("Can't parse an integer from an empty string.");
+
+  char *endptr;
+  long int rval = strtol(s.c_str(), &endptr, 0);
+
+  if(*endptr != '\0')
+    throw ParseError("Error in integer constant \"" + s + "\"");
+
+  return rval;
+}
+
 void run_test_file(istream &f, bool show_world)
 {
   dummy_universe_ref universe=NULL;
@@ -326,9 +340,11 @@ void run_test_file(istream &f, bool show_world)
 	  int broken_score;
 	  int unfixed_soft_score;
 	  int infinity;
-	  int goal_score;
+	  int goal_score = 50;
+	  int future_horizon = 0;
+	  std::string goal_score_or_brace;
 
-	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> goal_score;
+	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> ws >> goal_score_or_brace >> ws;
 
 	  if(f.eof())
 	    throw ParseError("Expected '{' following broken_score, got EOF");
@@ -336,7 +352,24 @@ void run_test_file(istream &f, bool show_world)
 	  if(!f)
 	    throw ParseError("Error reading step_score, broken_score, unfixed_soft_score, infinity, max_succ, and goal_score after 'TEST'");
 
-	  f >> s >> ws;
+	  if(goal_score_or_brace != "{")
+	    {
+	      goal_score = parse_int(goal_score_or_brace);
+
+	      std::string future_horizon_or_brace;
+	      f >> future_horizon_or_brace >> ws;
+
+	      if(future_horizon_or_brace != "{")
+		{
+		  future_horizon = parse_int(future_horizon_or_brace);
+
+		  f >> s >> ws;
+		}
+	      else
+		s = future_horizon_or_brace;
+	    }
+	  else
+	    s = goal_score;
 
 	  if(s != "{")
 	    throw ParseError("Expected '{' following TEST, got "+s);
@@ -345,6 +378,7 @@ void run_test_file(istream &f, bool show_world)
 				  unfixed_soft_score,
 				  infinity,
 				  goal_score,
+				  future_horizon,
 				  imm::map<dummy_universe::package, dummy_universe::version>(),
 				  universe);
 

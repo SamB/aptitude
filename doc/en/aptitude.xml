@@ -10868,6 +10868,22 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-FutureHorizon'>
+	      <seg><literal>Aptitude::ProblemResolver::FutureHorizon</literal></seg>
+	      <seg><literal>50</literal></seg>
+
+	      <seg>
+		How many <quote>steps</quote> the resolver should run
+		after finding the first solution.  Although &aptitude;
+		attempts to generate better solutions before worse
+		solutions, sometimes it is unable to do so; this
+		setting causes the resolver to briefly continue
+		searching for a better solution before displaying its
+		results, rather than stopping immediately after it
+		finds the first solution.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-Hints'>
 	      <seg><literal>Aptitude::ProblemResolver::Hints</literal></seg>
 	      <seg>(empty)</seg>

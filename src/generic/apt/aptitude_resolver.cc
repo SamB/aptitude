@@ -608,8 +608,10 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int unfixed_soft_score,
 				     int infinity,
 				     int resolution_score,
+				     int future_horizon,
 				     aptitudeDepCache *cache)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score,
+					       future_horizon,
 					       imm::map<aptitude_resolver_package, aptitude_resolver_version>(),
 					       aptitude_universe(cache))
 {

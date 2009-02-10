@@ -633,6 +633,11 @@ private:
    */
   int minimum_score;
 
+  /** The number of "future" steps to examine after we find a solution
+   *  in order to find a better one.
+   */
+  int future_horizon;
+
   /** The universe in which we are solving problems. */
   const PackageUniverse universe;
 
@@ -685,6 +690,9 @@ private:
 
   /** The working queue: */
   std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> open;
+
+  /** Solutions generated "in the future". */
+  std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> future_solutions;
 
   /** Stores already-seen solutions: */
   std::set<solution, solution_contents_compare> closed;
@@ -2307,6 +2315,9 @@ public:
    *  with less than -infinity points will be immediately discarded.
    *  \param _full_solution_score a bonus for goal nodes (things
    *  that solve all dependencies)
+   *  \param _future_horizon  The number of steps to keep searching after finding a
+   *                          solution in the hope that a better one is "just around
+   *                          the corner".
    *  \param _initial_state   A set of package actions to treat as part
    *                          of the initial state (empty to just
    *                          use default versions for everything).
@@ -2316,6 +2327,7 @@ public:
 			   int _unfixed_soft_score,
 			   int infinity,
 			   int _full_solution_score,
+			   int _future_horizon,
 			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolver()),
@@ -2325,6 +2337,7 @@ public:
 	     _full_solution_score, _universe.get_version_count(),
 	     initial_state),
      minimum_score(-infinity),
+     future_horizon(_future_horizon),
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
@@ -2759,6 +2772,19 @@ public:
     // debugging (see below).
     int odometer = 0;
 
+    // Counter for how many "future" steps are left.
+    //
+    // Because this is a local variable and not a class member, the
+    // future horizon will restart each time this routine is called.
+    // But since we always run it out when we find a solution, the
+    // worst thing that can happen is that we search a little too much
+    // if there are lots of solutions near each other.  If this
+    // becomes a practical problem, it shouldn't be too hard to
+    // implement better behavior; the most difficult thing will be
+    // defining the best semantics for it.  Another possibility would
+    // be to always return the first "future" solution that we find.
+    int most_future_solution_steps = 0;
+
     if(deferred_dirty)
       reexamine_deferred();
 
@@ -2777,8 +2803,12 @@ public:
 				      initial_state));
       }
 
-    while(max_steps>0 && !open.empty())
+    while(max_steps > 0 && most_future_solution_steps <= future_horizon && !open.empty())
       {
+	if(most_future_solution_steps > 0)
+	  LOG_TRACE(logger, "Speculative \"future\" resolver tick ("
+		    << most_future_solution_steps << "/" << future_horizon << ").");
+
 	// Threaded operation: check whether we have been cancelled.
 	{
 	  cwidget::threads::mutex::lock l(execution_mutex);
@@ -2814,11 +2844,6 @@ public:
 	if(s.is_full_solution())
 	  {
 	    LOG_INFO(logger, " --- Found solution " << s);
-
-	    // Set it here too in case the last tentative solution is
-	    // really a solution.
-	    if(open.empty())
-	      finished=true;
 
 	    solution minimized = remove_stupid ? eliminate_stupid(s) : s;
 
@@ -2861,16 +2886,33 @@ public:
 
 		update_counts_cache();
 
-		return minimized;
+		future_solutions.push(minimized);
 	      }
 	  }
 	// Nope, let's go enqueue successor nodes.
 	else
 	  process_solution(s, visited_packages);
 
+	// Keep track of the "future horizon".  If we haven't found a
+	// solution, we aren't using those steps up at all.
+	// Otherwise, we count up until we hit 50.
+	if(!future_solutions.empty())
+	  ++most_future_solution_steps;
+
 	LOG_TRACE(logger, "Done generating successors.");
 
 	--max_steps;
+      }
+
+    if(!future_solutions.empty())
+      {
+	solution rval(future_solutions.top());
+	future_solutions.pop();
+
+	if(open.empty() && future_solutions.empty())
+	  finished = true;
+
+	return rval;
       }
 
     // Oh no, we either ran out of solutions or ran out of steps.
