@@ -1103,7 +1103,7 @@ int cmdline_why(int argc, char *argv[],
 
   if(argc < 2)
     {
-      fprintf(stderr, _("%s: this command requires at least one argument (the package to query)."),
+      fprintf(stderr, _("%s: this command requires at least one argument (the package to query).\n"),
 	      argv[0]);
       return -1;
     }
