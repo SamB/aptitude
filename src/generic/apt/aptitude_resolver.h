@@ -382,6 +382,7 @@ public:
 		    int unfixed_soft_score,
 		    int infinity,
 		    int resolution_score,
+		    int future_horizon,
 		    aptitudeDepCache *cache);
 
   /** \brief Return \b true if the given version will break a hold or
