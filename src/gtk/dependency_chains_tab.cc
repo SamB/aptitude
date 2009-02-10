@@ -1,6 +1,6 @@
 // dependency_chains_tab.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -132,7 +132,8 @@ namespace gui
 	{
 	  cwidget::util::ref_ptr<Entity> ent = (*iter)[columns.EntObject];
 	  cwidget::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
-	  rval = pkg_ent->get_pkg();
+	  if(pkg_ent.valid())
+	    rval = pkg_ent->get_pkg();
 	}
 
       return rval;
