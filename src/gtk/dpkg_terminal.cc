@@ -102,6 +102,14 @@ namespace gui
 	      {
 		amt = recv(fd, buf, buf_len, MSG_DONTWAIT);
 
+		if(amt < 0)
+		  {
+		    int errnum = errno;
+		    std::string err(cw::util::sstrerror(errnum));
+		    LOG_FATAL(logger, "Error reading from the dpkg socket: " << err);
+		    break;
+		  }
+
 		// TODO: I should escape all the socket data.
 		LOG_DEBUG(logger, "Read data from the dpkg socket: \"" << std::string(buf, amt) << "\".");
 
