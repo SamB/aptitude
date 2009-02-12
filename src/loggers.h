@@ -56,10 +56,11 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeDpkgTerminal();
 
-    /** \brief The logger for events having to do with management of
-     *  the dpkg process's background status in the GTK+ frontend.
+    /** \brief The logger for events having to do with the dpkg
+     *  terminal and subprocess activity/inactivity in the GTK+
+     *  frontend.
      */
-    static log4cxx::LoggerPtr getAptitudeDpkgTerminalBackgrounding();
+    static log4cxx::LoggerPtr getAptitudeDpkgTerminalInactivity();
 
     /** \brief The logger for the dependency resolver.
      *

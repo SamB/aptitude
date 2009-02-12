@@ -50,26 +50,45 @@ namespace gui
     Gtk::Widget *terminal;
     bool sent_finished_signal;
 
-    /** \brief The file descriptor that should be used to inform the
-     *  subprocess about map / unmap events and for the subprocess to
-     *  inform us about suspend / continue events on the dpkg
-     *  descriptor.
-     *
-     *  The parent process writes single bytes down this fd; when the
-     *  terminal is mapped, it writes "1", and when it's unmapped it
-     *  writes "0".
-     *
-     *  The subprocess also writes single bytes down this fd; when the
-     *  dpkg process is running it writes "1", and when it's suspended
-     *  it writes "0".
-     */
-    int subprocess_map_signal_fd;
+    // Used to suppress activity timeouts after dpkg finishes.
+    bool subprocess_complete;
 
     log4cxx::LoggerPtr logger;
-    log4cxx::LoggerPtr logger_backgrounding;
 
-    /** \brief Handle input on the pipe to the subprocess. */
-    bool handle_suspend_resume_event(Glib::IOCondition condition);
+    /** \brief How long (in seconds) we wait between messages from the
+     *  install process before we claim that it's waiting for input.
+     *
+     *  Option Aptitude::Dpkg-Inactivity-Interval.
+     *
+     *  If 0, we never claim the install process is waiting for input.
+     */
+    int inactivity_interval;
+
+    /** \brief The connection that will wake the main thread up to
+     *  announce that the dpkg terminal is waiting for user input.
+     */
+    sigc::connection inactivity_interval_expired_connection;
+
+    /** \brief Disconnect any pending activity-threshold connection,
+     *  then recreate the timeout.
+     */
+    void reset_inactivity_timeout();
+
+    /** \brief Invoked when the subprocess is waiting for input
+     *  (according to the activity timeout).
+     */
+    bool subprocess_timeout_handler();
+
+    /** \brief Reset the activity timeout and forward the given
+     *  message to the status message signal.
+     */
+    void handle_status_message(aptitude::apt::dpkg_status_message msg);
+
+    /** \brief Invoked when the subprocess terminates.
+     *
+     *  Flips the 
+     */
+    void handle_dpkg_finished(pkgPackageManager::OrderResult result);
 
     // Forbid copying.
     DpkgTerminal(const DpkgTerminal &);
@@ -93,8 +112,8 @@ namespace gui
      *
      *  The wrapper is owned by this DpkgTerminal.
      */
-    Gtk::Widget *get_widget() const { return terminal; }
 
+    Gtk::Widget *get_widget() const { return terminal; }
     /** \brief A signal that triggers in the main thread when dpkg
      *	finishes running.
      */
@@ -105,11 +124,14 @@ namespace gui
      */
     sigc::signal1<void, aptitude::apt::dpkg_status_message> status_message;
 
-    /** \brief Emitted when the dpkg process is suspended or resumed.
+    /** \brief Emitted when the dpkg process appears to have stopped
+     *  running or continued.
      *
      *  The argument states whether the process is currently running:
      *  "true" if it is running, and "false" if it is suspended.  This
-     *  may be emitted more than once in a row with the same argument.
+     *  is a heuristic based on whether the subprocess has generated
+     *  output, and it may be wrong in both directions.  It might be
+     *  generated several times in a row with the same argument.
      */
     sigc::signal<void, bool> subprocess_running_changed;
 
@@ -134,17 +156,6 @@ namespace gui
     /** \brief Send "no" in reply to a "replace this conffile?" message.
      */
     void inject_no();
-
-
-    /** \brief Invoke to tell the dpkg process that it is now a
-     *  "foreground" or a "background" process.
-     *
-     *  \param foreground  \b true to put the dpkg process in the
-     *                     foreground; \b false to put it in the
-     *                     background.  If in the background, it will
-     *                     be suspended when it requires input.
-     */
-    void set_foreground(bool foreground);
   };
 }
 

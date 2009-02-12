@@ -740,12 +740,6 @@ namespace gui
 	  child_suspended();
       }
 
-      void handle_active_changed()
-      {
-	LOG_TRACE(logger, "dpkg terminal tab becoming " << (tab->get_active() ? "active" : "inactive"));
-	terminal->set_foreground(tab != NULL && tab->get_active());
-      }
-
     public:
 	DpkgTerminalNotification(const safe_slot1<void, pkgPackageManager::OrderResult> &_k)
 	: Notification(true),
@@ -804,7 +798,6 @@ namespace gui
 	  {
 	    LOG_TRACE(logger, "Creating and displaying a new dpkg tab.");
 	    tab = new DpkgTerminalTab(terminal->get_widget());
-	    tab->active_changed.connect(sigc::mem_fun(*this, &DpkgTerminalNotification::handle_active_changed));
 	    tab_add(tab);
 	  }
       }

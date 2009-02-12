@@ -33,9 +33,9 @@ namespace aptitude
     return Logger::getLogger("aptitude.dpkg.terminal");
   }
 
-  LoggerPtr Loggers::getAptitudeDpkgTerminalBackgrounding()
+  LoggerPtr Loggers::getAptitudeDpkgTerminalInactivity()
   {
-    return Logger::getLogger("aptitude.dpkg.terminal.backgrounding");
+    return Logger::getLogger("aptitude.dpkg.terminal.inactivity");
   }
 
   LoggerPtr Loggers::getAptitudeResolver()
