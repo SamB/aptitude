@@ -1,7 +1,7 @@
 // tab.cc
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -237,9 +237,13 @@ namespace gui
     undo_available_changed_connection.disconnect();
     edit_columns_available_changed_connection.disconnect();
 
-    Tab *current = (Tab *)get_nth_page(previous_page)->get_data(tab_property);
-    if(current != NULL)
-      current->set_active(false);
+    Gtk::Widget *current_widget = get_nth_page(previous_page);
+    if (current_widget != NULL)
+    {
+      Tab *current = (Tab *)current_widget->get_data(tab_property);
+      if(current != NULL)
+        current->set_active(false);
+    }
 
     Tab *tab = NULL;
     Widget *next = get_nth_page(page_idx);
