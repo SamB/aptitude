@@ -102,8 +102,13 @@ namespace gui
   {
     modify_base(Gtk::STATE_NORMAL, color);
     textview->modify_base(Gtk::STATE_NORMAL, color);
+    if(imageWidget != NULL)
+      imageWidget->modify_base(Gtk::STATE_NORMAL, color);
+
     modify_bg(Gtk::STATE_NORMAL, color);
     textview->modify_bg(Gtk::STATE_NORMAL, color);
+    if(imageWidget != NULL)
+      imageWidget->modify_bg(Gtk::STATE_NORMAL, color);
   }
 
   NotifyView::NotifyView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) : Gtk::VBox(cobject)
