@@ -25,19 +25,7 @@
 
 namespace gui
 {
-  Notification::Notification(bool onetimeuse)
-    : imageWidget(NULL)
-  {
-    this->onetimeuse = onetimeuse;
-    hbox = manage(new Gtk::HBox());
-    textview = manage(new Gtk::TextView());
-    add(*hbox);
-    hbox->show();
-    hbox->pack_start(*textview, true, true);
-  }
-
-  Notification::Notification(const Glib::ustring &text, bool onetimeuse)
-    : imageWidget(NULL)
+  void Notification::init(const Glib::ustring &text, bool onetimeuse)
   {
     this->onetimeuse = onetimeuse;
     Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
@@ -47,6 +35,18 @@ namespace gui
     add(*hbox);
     hbox->show();
     hbox->pack_start(*textview, true, true);
+  }
+
+  Notification::Notification(bool onetimeuse)
+    : imageWidget(NULL)
+  {
+    init("", onetimeuse);
+  }
+
+  Notification::Notification(const Glib::ustring &text, bool onetimeuse)
+    : imageWidget(NULL)
+  {
+    init(text, onetimeuse);
     finalize();
   }
 

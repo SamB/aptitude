@@ -49,6 +49,8 @@ namespace gui
       Gtk::HBox *hbox;
       Gtk::TextView * textview;
       Gtk::Widget * imageWidget;
+
+      void init(const Glib::ustring &text, bool onetimeuse);
     public:
       /** \brief Create a notification.
        *
