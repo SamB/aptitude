@@ -85,6 +85,9 @@ namespace gui
   /** \brief Display a "Not implemented, yet." message. */
   void do_notimplemented_message();
 
+  /** \brief Display a custom "Not implemented, yet." message. */
+  void do_notimplemented_message_custom(Glib::ustring msg);
+
   /** \brief Invoke tab_add on pMainWindow. */
   void tab_add(Tab *tab);
 

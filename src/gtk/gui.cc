@@ -1,7 +1,7 @@
 // gui.cc
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1293,11 +1293,16 @@ namespace gui
 
   void do_notimplemented_message()
   {
+    do_notimplemented_message_custom(_("This feature is not implemented, yet."));
+  }
+
+  void do_notimplemented_message_custom(Glib::ustring msg)
+  {
     Gtk::MessageDialog dialog(*pMainWindow,
                               _("Not implemented"),
                               false,
                               Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-    dialog.set_secondary_text(_("This feature is not implemented, yet."));
+    dialog.set_secondary_text(msg);
     dialog.run();
   }
 
