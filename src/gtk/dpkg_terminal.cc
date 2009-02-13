@@ -257,7 +257,7 @@ namespace gui
   {
     if(!subprocess_complete)
       {
-	inactivity_interval = aptcfg->FindI(PACKAGE "::Dpkg-Inactivity-Interval", 30);
+	inactivity_interval = aptcfg->FindI(PACKAGE "::Dpkg-Inactivity-Interval", 120);
 	if(inactivity_interval > 0)
 	  {
 	    LOG_TRACE(Loggers::getAptitudeDpkgTerminalInactivity(),
