@@ -3,7 +3,7 @@
 // info.cc
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -653,6 +653,16 @@ namespace gui
 
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
     set_label("Info on " + Glib::ustring(pkg.Name()));
+
+    //FIXME: Weasel out if the requested package is a virtual package.
+    //       This prevents a cascade of segfaults.
+    //TODO: Implement a variant of disp_package for virtual packages
+    if(pkg.VersionList().end() && !pkg.ProvidesList().end())
+    {
+      pMainWindow->get_notebook()->remove_page(*this);
+      do_notimplemented_message_custom("Displaying virtual packages is not implemented, yet.");
+      return;
+    }
 
     PackageInformation info(pkg, ver);
 
