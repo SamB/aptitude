@@ -156,6 +156,7 @@ namespace gui
 
   void start_download(download_manager *manager,
 		      const std::string &title,
+		      Gtk::Widget *image,
 		      download_progress_mode progress_mode,
 		      NotifyView *view,
 		      const sigc::slot0<void> &download_starts_slot,
@@ -169,6 +170,7 @@ namespace gui
 						 progress_mode,
 						 model,
 						 log);
+    n->set_image(image);
 
     view->add_notification(n);
 
@@ -206,6 +208,8 @@ namespace gui
 
     start_download(m.release(),
 		   _("Checking for updates"),
+		   new Gtk::Image(Gtk::Stock::REFRESH,
+				  Gtk::ICON_SIZE_LARGE_TOOLBAR),
 		   download_progress_pulse,
 		   pMainWindow->get_notifyview(),
 		   sigc::ptr_fun(&gui_finish_download));
@@ -868,6 +872,7 @@ namespace gui
 		      sigc::slot1<void, pkgPackageManager::OrderResult> k)
     {
       DpkgTerminalNotification *n = new DpkgTerminalNotification(make_safe_slot(k));
+      n->set_image(new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR));
 
       pMainWindow->get_notifyview()->add_notification(n);
 
@@ -896,6 +901,8 @@ namespace gui
 
       start_download(m,
 		     _("Downloading packages"),
+		     new Gtk::Image(Gtk::Stock::APPLY,
+				    Gtk::ICON_SIZE_LARGE_TOOLBAR),
 		     download_progress_size,
 		     pMainWindow->get_notifyview(),
 		     sigc::slot0<void>(),

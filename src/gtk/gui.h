@@ -241,6 +241,9 @@ namespace gui
    *
    *  \param title   A string describing the download.
    *
+   *  \param image   An image to show in the download notification,
+   *                 or NULL for none.
+   *
    *  \param download_progress  How to display the download progress.
    *
    *  \param view    The notification view in which to place the
@@ -257,6 +260,7 @@ namespace gui
    */
   void start_download(download_manager *manager,
 		      const std::string &title,
+		      Gtk::Widget *image,
 		      download_progress_mode download_progress,
 		      NotifyView *view,
 		      const sigc::slot0<void> &download_starts_slot = sigc::slot0<void>(),

@@ -527,6 +527,7 @@ namespace gui
 
     start_download(manager.release(),
 		   _("Downloading changelogs"),
+		   NULL,
 		   download_progress_item_count,
 		   pMainWindow->get_notifyview());
   }
