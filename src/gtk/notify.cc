@@ -26,6 +26,7 @@
 namespace gui
 {
   Notification::Notification(bool onetimeuse)
+    : imageWidget(NULL)
   {
     this->onetimeuse = onetimeuse;
     hbox = manage(new Gtk::HBox());
@@ -36,6 +37,7 @@ namespace gui
   }
 
   Notification::Notification(const Glib::ustring &text, bool onetimeuse)
+    : imageWidget(NULL)
   {
     this->onetimeuse = onetimeuse;
     Glib::RefPtr<Gtk::TextBuffer> buffer = Gtk::TextBuffer::create();
@@ -51,6 +53,19 @@ namespace gui
   void Notification::close()
   {
     close_clicked();
+  }
+
+  void Notification::set_image(Gtk::Widget *image)
+  {
+    delete imageWidget;
+    imageWidget = image;
+
+    if(image != NULL)
+      {
+	hbox->pack_start(*image, false, false);
+	hbox->reorder_child(*image, 0);
+	image->show();
+      }
   }
 
   void Notification::add_button(Gtk::Button * button)

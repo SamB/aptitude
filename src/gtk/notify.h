@@ -48,6 +48,7 @@ namespace gui
 
       Gtk::HBox *hbox;
       Gtk::TextView * textview;
+      Gtk::Widget * imageWidget;
     public:
       /** \brief Create a notification.
        *
@@ -61,6 +62,13 @@ namespace gui
       Notification(const Glib::ustring &text, bool onetimeuse);
       bool is_onetimeuse() { return onetimeuse; };
       void add_button(Gtk::Button *);
+      /** \brief Set the widget displayed as an image.
+       *
+       *  \param image    The widget to display as an image, or
+       *                  NULL to destroy the existing image and
+       *                  hide it.
+       */
+      void set_image(Gtk::Widget *image);
       /** \brief Set the text displayed in this notification.
        *
        *  \param buffer   The text buffer to display; if it is
