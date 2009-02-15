@@ -63,6 +63,16 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.hints.parse");
   }
  
+  LoggerPtr Loggers::getAptitudeResolverSafeResolver()
+  {
+    return Logger::getLogger("aptitude.resolver.safeResolver");
+  }
+ 
+  LoggerPtr Loggers::getAptitudeResolverSafeResolverSetup()
+  {
+    return Logger::getLogger("aptitude.resolver.safeResolver.setup");
+  }
+
   LoggerPtr Loggers::getAptitudeResolverScores()
   {
     return Logger::getLogger("aptitude.resolver.scores");

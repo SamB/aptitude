@@ -25,6 +25,8 @@
 #include "config_signal.h"
 #include "dump_packages.h"
 
+#include <loggers.h>
+
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/util/temp.h>
 #include <generic/util/undo.h>
@@ -38,6 +40,8 @@
 
 #include <sys/types.h>
 #include <sys/wait.h>
+
+using aptitude::Loggers;
 
 class resolver_manager::resolver_interaction
 {
@@ -1478,6 +1482,8 @@ void resolver_manager::maybe_start_solution_calculation(bool blocking,
      !st.background_thread_aborted)
     {
       const int selected = st.selected_solution;
+      // TODO: duplication of information!  These config values should
+      // be moved into a central function that everyone else can call.
       const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
       const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
 
@@ -1494,3 +1500,267 @@ void resolver_manager::maybe_start_solution_calculation(bool blocking,
   else
     delete k;
 }
+
+// Safe resolver logic:
+
+class resolver_manager::safe_resolver_continuation : public resolver_manager::background_continuation
+{
+  background_continuation *real_continuation;
+  resolver_manager *manager;
+  // Used to update the statistics in the manager.
+  generic_solution<aptitude_universe> last_sol;
+
+  safe_resolver_continuation(background_continuation *_real_continuation,
+			     resolver_manager *_manager,
+			     const generic_solution<aptitude_universe> &_last_sol)
+    : real_continuation(_real_continuation),
+      manager(_manager),
+      last_sol(_last_sol)
+  {
+  }
+
+public:
+  safe_resolver_continuation(background_continuation *_real_continuation,
+			     resolver_manager *_manager)
+    : real_continuation(_real_continuation),
+      manager(_manager)
+  {
+  }
+
+  void success(const generic_solution<aptitude_universe> &sol)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    LOG_TRACE(logger, "safe_resolve_deps: got intermediate solution: " << sol);
+
+    typedef imm::map<aptitude_resolver_package,
+      generic_solution<aptitude_universe>::action> actions_map;
+
+    // If the solution changed (i.e., we managed to find some new
+    // upgrades), we should try again; otherwise we've found the
+    // solution that we'll return to the user.
+    if(!(last_sol &&
+	 sol.get_actions() == last_sol.get_actions() &&
+	 sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
+      {
+	// The solution changed; prepare the resolver for the next
+	// stage.
+
+
+	// Mandate all the upgrades and installs in this solution,
+	// then ask for the next solution.  The goal is to try to
+	// find the best solution, not just some solution, but to
+	// preserve our previous decisions in order to avoid
+	// thrashing around between alternatives.
+	for(actions_map::const_iterator it = sol.get_actions().begin();
+	    it != sol.get_actions().end(); ++it)
+	  {
+	    const pkgCache::PkgIterator p(it->second.ver.get_pkg());
+
+	    if(it->second.ver.get_ver() != p.CurrentVer())
+	      {
+		LOG_DEBUG(logger,
+			  "safe_resolve_deps: Mandating the upgrade or install " << it->second.ver
+			  << ", since it was produced as part of a solution.");
+		manager->mandate_version(it->second.ver);
+	      }
+	    else
+	      {
+		LOG_DEBUG(logger,
+			  "safe_resolve_deps: Not mandating " << it->second.ver
+			  << ", since it is a hold.");
+	      }
+	  }
+
+	// This is like select_next_solution(), but doesn't invoke
+	// the state_changed signal (because that signal is normally
+	// only emitted from the foreground thread).
+	cwidget::threads::mutex::lock l(manager->mutex);
+	cwidget::threads::mutex::lock sol_l(manager->solutions_mutex);
+
+	// NULL out the sub-continuation so that we don't delete it
+	// when we're deleted.
+	background_continuation *k = real_continuation;
+	real_continuation = NULL;
+
+	// TODO: duplication of information!  These config values
+	// should be moved into a central function that everyone else
+	// can call.
+	const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+
+	// Kick off a new job in the resolver manager.
+	//
+	// TODO: we have to do it by hand because all the routines
+	// that encapsulate starting a new job are meant to be called
+	// from a foreground thread, so they lock the solutions mutex
+	// and deadlock -- maybe there should be some (internal?)
+	// routine that's safe to call from the background thread?  Or
+	// maybe that should be a recursive mutex?
+	manager->selected_solution = manager->solutions.size();
+	manager->pending_jobs.push(resolver_manager::job_request(manager->selected_solution,
+								 limit,
+								 new safe_resolver_continuation(k, manager, sol)));
+      }
+    else
+      {
+	// Internal error that should never happen, but try to survive
+	// if it does.
+	LOG_FATAL(logger,
+		  "safe_resolve_deps: Internal error: the resolver unexpectedly produced the same result twice: " << last_sol << " = " << sol);
+
+	if(real_continuation != NULL)
+	  real_continuation->success(sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should send the end solution to the real continuation, but it's NULL.");
+      }
+  }
+
+  void no_more_solutions()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    if(last_sol)
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: no more solutions; returning the last seen solution.");
+
+	if(real_continuation != NULL)
+	  real_continuation->success(last_sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
+      }
+    else
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: unable to find any solutions.");
+
+	if(real_continuation != NULL)
+	  real_continuation->no_more_solutions();
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should report that there are no solutions, but the continuation is NULL.");
+      }
+  }
+
+  void no_more_time()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    if(last_sol)
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: ran out of time searching for a solution; returning the last one that was computed.");
+
+	if(real_continuation != NULL)
+	  real_continuation->success(last_sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
+      }
+    else
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: ran out of time before finding any solutions.");
+
+	if(real_continuation != NULL)
+	  real_continuation->no_more_time();
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should report that we ran out of time, but the continuation is NULL.");
+      }
+  }
+
+  void interrupted()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    // Should never happen.  In fact, no code calls interrupted() --
+    // is that a vestigial function?
+    LOG_WARN(logger, "safe_resolve_deps: someone interrupted the solution search!");
+  }
+
+  void aborted(const cwidget::util::Exception &e)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    // Should we try to return the current solution if there is one?
+    LOG_FATAL(logger, "safe_resolve_deps: aborted by exception: " << e.errmsg());
+    if(real_continuation != NULL)
+      real_continuation->aborted(e);
+    else
+      LOG_WARN(logger, "safe_resolve_deps: should report that we were interrupted by an exception, but the continuation is NULL.  Exception: " << e.errmsg());
+  }
+};
+
+void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upgrades)
+{
+  eassert(resolver_exists());
+
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolverSetup());
+
+  LOG_TRACE(logger,
+	    "setup_safe_resolver: Setting up the resolver state for safe dependency resolution.");
+
+  reset_resolver();
+
+  for(pkgCache::PkgIterator p = (*cache).PkgBegin();
+      !p.end(); ++p)
+    {
+      // Forbid the resolver from removing installed packages.
+      if(!p.CurrentVer().end())
+	{
+	  aptitude_resolver_version
+	    remove_p(p,
+		     pkgCache::VerIterator(*cache),
+		     cache);
+
+	  LOG_DEBUG(logger,
+		    "setup_safe_resolver: Rejecting the removal of the package " << remove_p.get_package() << ".");
+
+	  reject_version(remove_p);
+	}
+
+      // Forbid all real versions that aren't the current version or
+      // the candidate version.
+      for(pkgCache::VerIterator v = p.VersionList();
+	  !v.end(); ++v)
+	{
+	  // For our purposes, all half-unpacked etc states are
+	  // installed.
+	  const bool p_is_installed =
+	    p->CurrentState != pkgCache::State::NotInstalled &&
+	    p->CurrentState != pkgCache::State::ConfigFiles;
+
+	  const bool p_will_install =
+	    (*cache)[p].Install();
+
+	  const bool v_is_a_new_install = !p_is_installed && !p_will_install;
+	  const bool v_is_a_new_upgrade = p_is_installed && p_will_install;
+	  const bool v_is_a_non_default_version = v != (*cache)[p].CandidateVerIter(*cache);
+
+	  if(v != p.CurrentVer() &&
+	     // Disallow installing not-installed packages that
+	     // aren't marked for installation if
+	     // no_new_installs is set.
+	     ((v_is_a_new_install && no_new_installs) ||
+	      (v_is_a_new_upgrade && no_new_upgrades) ||
+	      v_is_a_non_default_version))
+	    {
+	      aptitude_resolver_version p_v(p, v, cache);
+
+	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
+		{
+		  if(v_is_a_non_default_version)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a non-default version).");
+		  else if(v_is_a_new_install)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a new install).");
+		  else // if(v_is_a_new_upgrade)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a new upgrade).");
+		}
+
+	      reject_version(p_v);
+	    }
+	}
+    }
+}
+
+void resolver_manager::safe_resolve_deps_background(bool no_new_installs, bool no_new_upgrades,
+						    background_continuation *k)
+{
+  setup_safe_resolver(no_new_installs, no_new_upgrades);
+  maybe_start_solution_calculation(true, new safe_resolver_continuation(k, this));
+}
+

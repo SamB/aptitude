@@ -94,6 +94,20 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverHintsParse();
 
+    /** \brief The logger for the "upgrade/install only" logic in the
+     *  dependency resolver.
+     *
+     *  Name: aptitude.resolver.safeResolver
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverSafeResolver();
+
+    /** \brief The logger for the setup routine for the safe resolver
+     * logic.
+     *
+     *  Name: aptitude.resolver.safeResolver.setup
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverSafeResolverSetup();
+
     /** \brief The logger for setting up scores for the dependency
      *  resolver.
      *
