@@ -1484,9 +1484,9 @@ void resolver_manager::maybe_start_solution_calculation(bool blocking,
       if(limit > 0)
 	{
 	  if(blocking)
-	    resman->get_solution_background_blocking(selected, limit, wait_steps, k);
+	    get_solution_background_blocking(selected, limit, wait_steps, k);
 	  else
-	    resman->get_solution_background(selected, limit, k);
+	    get_solution_background(selected, limit, k);
 	}
       else
 	delete k;
