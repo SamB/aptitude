@@ -405,9 +405,9 @@ public:
    *  \param with_autoinst if \b true, the dependencies of packages
    *  begin upgraded will automatically be installed.
    *
-   *  \param ignore_selections if \b false, all upgradable packages
-   *  that are not held back will be upgraded; otherwise, packages
-   *  that are going to be removed will be ignored.
+   *  \param ignore_removed if \b false, all upgradable packages that
+   *  are not held back will be upgraded; otherwise, packages that are
+   *  going to be removed will be ignored.
    *
    *  \param undo an undo group with which the actions taken by this
    *  routine will be registered, or \b NULL.
