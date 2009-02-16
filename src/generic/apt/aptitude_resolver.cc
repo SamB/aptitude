@@ -1071,8 +1071,15 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       bool manual;
 
       if(initial_state.version_of(p) == p.current_version())
-	manual = ((!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto)) ||
-	  (p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual));
+	{
+	  const bool was_manually_installed =
+	    (!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto);
+
+	  const bool was_manually_removed =
+	    p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual);
+
+	  manual =  was_manually_installed || was_manually_removed;
+	}
       else
 	{
 	  std::map<package, bool>::const_iterator found(initial_state_manual_flags.find(p));
