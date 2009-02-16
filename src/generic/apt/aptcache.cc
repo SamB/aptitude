@@ -1,6 +1,6 @@
 // aptcache.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -629,44 +629,54 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
       // version on upgrades.
       bool do_autoinstall=(iter==1);
 
-      for(pkgCache::PkgIterator i=PkgBegin(); !i.end(); i++)
+      std::set<pkgCache::PkgIterator> to_upgrade;
+      get_upgradable(ignore_removed, to_upgrade);
+      for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	    to_upgrade.begin(); it != to_upgrade.end(); ++it)
 	{
-	  StateCache &state=(*this)[i];
-	  aptitude_state &estate=get_ext_state(i);
+	  pre_package_state_changed();
+	  dirty = true;
 
-	  if(i.CurrentVer().end())
-	    continue;
+	  MarkInstall(*it, do_autoinstall);
+	}
+    }
+}
 
-	  bool do_upgrade = false;
+void aptitudeDepCache::get_upgradable(bool ignore_removed,
+				      std::set<pkgCache::PkgIterator> &upgradable)
+{
+  for(pkgCache::PkgIterator p = PkgBegin(); !p.end(); ++p)
+    {
+      StateCache &state = (*this)[p];
+      aptitude_state &estate = get_ext_state(p);
 
-	  if(!ignore_removed)
-	    do_upgrade = state.Status > 0 && !is_held(i);
-	  else
+      if(p.CurrentVer().end())
+	continue;
+
+      bool do_upgrade = false;
+
+      if(!ignore_removed)
+	do_upgrade = state.Status > 0 && !is_held(p);
+      else
+	{
+	  switch(estate.selection_state)
 	    {
-	      switch(estate.selection_state)
-		{
-		  // This case shouldn't really happen:
-		case pkgCache::State::Unknown:
-		  estate.selection_state=pkgCache::State::Install;
+	      // This case shouldn't really happen:
+	    case pkgCache::State::Unknown:
+	      estate.selection_state = pkgCache::State::Install;
 
-		  // Fall through
-		case pkgCache::State::Install:
-		  if(state.Status > 0 && !is_held(i))
-		    do_upgrade = true;
-		  break;
-		default:
-		  break;
-		}
-	    }
-
-	  if(do_upgrade)
-	    {
-	      pre_package_state_changed();
-	      dirty = true;
-
-	      MarkInstall(i, do_autoinstall);
+	      // Fall through
+	    case pkgCache::State::Install:
+	      if(state.Status > 0 && !is_held(p))
+		do_upgrade = true;
+	      break;
+	    default:
+	      break;
 	    }
 	}
+
+      if(do_upgrade)
+	upgradable.insert(p);
     }
 }
 

@@ -1,6 +1,6 @@
 // aptcache.h  -*-c++-*-
 //
-//  Copyright 1999-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -414,6 +414,18 @@ public:
    */
   void mark_all_upgradable(bool with_autoinst, bool ignore_removed,
 			   undo_group *undo);
+
+  /** \brief Retrieve the set of packages that mark_all_upgradable
+   *  would attempt to upgrade.
+   *
+   *  \param ignore_removed if \b false, all upgradable packages that
+   *  are not held back will be upgraded; otherwise, packages that are
+   *  going to be removed will be ignored.
+   *
+   *  \param upgradable A location in which to place the set of
+   *  currently upgradable packages.
+   */
+  void get_upgradable(bool ignore_removed, std::set<pkgCache::PkgIterator> &upgradable);
 
   void mark_single_install(const PkgIterator &pkg, undo_group *undo);
   // Marks this package to be install, and all other packages to be kept.
