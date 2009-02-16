@@ -33,8 +33,11 @@
 #include <apt-pkg/pkgcache.h>
 
 #include <generic/apt/apt.h>
+#include <generic/apt/apt_undo_group.h>
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/resolver_manager.h>
+
+#include <generic/util/undo.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -50,10 +53,24 @@ namespace gui
 
   void DashboardTab::do_upgrade()
   {
-    do_mark_upgradable();
-    // TODO: run a "safe-upgrade" here first, and if it fails
-    // display a notification saying "unable to upgrade everything,
-    // try harder?" that falls back to this (full upgrade) logic.
+    if(apt_cache_file == NULL)
+      return;
+
+    // NB: here we assume that the upgradable set is what the current
+    // solution is based on.
+    undo_group *undo = new apt_undo_group;
+    {
+      aptitudeDepCache::action_group group(*apt_cache_file, NULL);
+
+      (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
+      if(upgrade_solution)
+	(*apt_cache_file)->apply_solution(upgrade_solution, NULL);
+    }
+    if(!undo->empty())
+      apt_undos->add_item(undo);
+    else
+      delete undo;
+
     pMainWindow->do_preview();
   }
 
@@ -399,6 +416,8 @@ namespace gui
 	discard_resolver();
 	return;
       }
+
+    upgrade_solution = sol;
 
     if(sol)
       LOG_TRACE(logger, "Upgrade solution computed: " << sol);
