@@ -2370,6 +2370,12 @@ public:
      solver_executing(false), solver_cancelled(false),
      conflicts(_universe.get_package_count())
   {
+    // Used for sanity-checking below; create this only once for
+    // efficiency's sake.
+    solution empty_solution(solution::root_node(initial_broken,
+						universe,
+						weights,
+						initial_state));
     // Find all the broken deps.
     for(typename PackageUniverse::dep_iterator di = universe.deps_begin();
 	!di.end(); ++di)
@@ -2378,10 +2384,6 @@ public:
 
 	if(d.broken_under(initial_state))
 	  {
-	    solution empty_solution(solution::root_node(initial_broken,
-							universe,
-							weights,
-							initial_state));
 	    eassert_on_dep(d.broken_under(empty_solution), empty_solution, d);
 
 	    initial_broken.insert(d);
