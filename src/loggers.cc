@@ -38,6 +38,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.dpkg.terminal.inactivity");
   }
 
+  LoggerPtr Loggers::getAptitudeGtkDashboardUpgradeResolver()
+  {
+    return Logger::getLogger("aptitude.gtk.dashboard.upgrade.resolver");
+  }
+
   LoggerPtr Loggers::getAptitudeResolver()
   {
     return Logger::getLogger("aptitude.resolver");

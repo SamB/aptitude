@@ -28,13 +28,18 @@
 #include "progress.h"
 
 #include <aptitude.h>
+#include <loggers.h>
+
+#include <apt-pkg/pkgcache.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/resolver_manager.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
 namespace cw = cwidget;
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -182,7 +187,15 @@ namespace gui
 
   void DashboardTab::handle_cache_closed()
   {
+    discard_resolver();
     available_upgrades_label->set_text(_("Available upgrades:"));
+  }
+
+  void DashboardTab::handle_cache_reloaded()
+  {
+    (*apt_cache_file)->pre_package_state_changed.connect(sigc::mem_fun(*this, &DashboardTab::discard_resolver));
+    (*apt_cache_file)->package_state_changed.connect(sigc::mem_fun(*this, &DashboardTab::make_resolver));
+    make_resolver();
   }
 
   void DashboardTab::handle_upgrades_store_reloaded()
@@ -199,10 +212,292 @@ namespace gui
     available_upgrades_label->set_text(formatted_text);
   }
 
+  namespace
+  {
+    // Used to build the initial installations for the resolver.
+    imm::map<aptitude_resolver_package, aptitude_resolver_version>
+    get_upgradable()
+    {
+      imm::map<aptitude_resolver_package, aptitude_resolver_version> rval;
+
+      std::set<pkgCache::PkgIterator> upgradable;
+      (*apt_cache_file)->get_upgradable(true, upgradable);
+
+      for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	    upgradable.begin(); it != upgradable.end(); ++it)
+	{
+	  pkgCache::PkgIterator pkg(*it);
+	  pkgCache::VerIterator ver((*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file));
+
+	  aptitude_resolver_package resolver_pkg(pkg, *apt_cache_file);
+	  aptitude_resolver_version resolver_ver(pkg, ver, *apt_cache_file);
+
+	  rval.put(resolver_pkg, resolver_ver);
+	}
+
+      return rval;
+    }
+  }
+
+  class DashboardTab::upgrade_continuation : public resolver_manager::background_continuation
+  {
+    safe_slot1<void, generic_solution<aptitude_universe> > success_slot;
+    safe_slot0<void> no_more_solutions_slot;
+    safe_slot1<void, std::string> aborted_slot;
+
+    resolver_manager &resolver;
+
+  public:
+    upgrade_continuation(const safe_slot1<void, generic_solution<aptitude_universe> > &_success_slot,
+			 const safe_slot0<void> &_no_more_solutions_slot,
+			 const safe_slot1<void, std::string> &_aborted_slot,
+			 resolver_manager &_resolver)
+      : success_slot(_success_slot),
+	no_more_solutions_slot(_no_more_solutions_slot),
+	aborted_slot(_aborted_slot),
+	resolver(_resolver)
+    {
+    }
+
+    void success(const generic_solution<aptitude_universe> &sol)
+    {
+      post_event(safe_bind(success_slot, sol));
+    }
+
+    void no_more_solutions()
+    {
+      post_event(no_more_solutions_slot);
+    }
+
+    void no_more_time()
+    {
+      resolver.maybe_start_solution_calculation(false, new upgrade_continuation(success_slot,
+										no_more_solutions_slot,
+										aborted_slot,
+										resolver));
+    }
+
+    void interrupted()
+    {
+    }
+
+    void aborted(const cwidget::util::Exception &e)
+    {
+      post_event(safe_bind(aborted_slot, e.errmsg()));
+    }
+  };
+
+  bool DashboardTab::pulse_progress_timeout()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    LOG_TRACE(logger, "Pulsing the upgrade resolver's progress bar.");
+
+    upgrade_resolver_progress->pulse();
+    return true;
+  }
+
+  void DashboardTab::make_resolver()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    if(apt_cache_file == NULL)
+      {
+	LOG_WARN(logger, "Not creating a resolver: the apt cache is closed.");
+	discard_resolver(); // Just to be sure.
+      }
+    else if(upgrade_resolver != NULL)
+      {
+	// Shouldn't happen.
+	LOG_WARN(logger, "Not creating a new resolver for the dashboard tab (one already exists).");
+      }
+    else
+      {
+	LOG_TRACE(logger, "Creating a new resolver for the dashboard tab.");
+	upgrade_resolver = new resolver_manager(*apt_cache_file, get_upgradable());
+
+	if(!upgrade_resolver->resolver_exists())
+	  {
+	    LOG_TRACE(logger, "Not calculating an upgrade: there are no broken dependencies.");
+	    // To ensure consistency, invoke success() with an invalid
+	    // solution (indicating nothing to be done).
+	    upgrade_resolver_success(generic_solution<aptitude_universe>());
+	  }
+
+	LOG_TRACE(logger, "Starting to calculate the upgrade in the background.");
+	if(background_upgrade_redirect != NULL)
+	  {
+	    // Shouldn't happen.
+	    LOG_WARN(logger, "The background redirecter was unexpectedly not NULL.");
+	    delete background_upgrade_redirect;
+	    background_upgrade_redirect = NULL;
+	  }
+	background_upgrade_redirect = new redirect_from_background(*this);
+
+	{
+	  sigc::slot<void, generic_solution<aptitude_universe> > success_slot =
+	    sigc::mem_fun(*background_upgrade_redirect, &redirect_from_background::success);
+	  sigc::slot<void> no_more_solutions_slot =
+	    sigc::mem_fun(*background_upgrade_redirect, &redirect_from_background::no_more_solutions);
+	  sigc::slot<void, std::string> aborted_slot =
+	    sigc::mem_fun(*background_upgrade_redirect, &redirect_from_background::aborted);
+
+	  upgrade_continuation *k =
+	    new upgrade_continuation(make_safe_slot(success_slot),
+				     make_safe_slot(no_more_solutions_slot),
+				     make_safe_slot(aborted_slot),
+				     *upgrade_resolver);
+
+	  upgrade_resolver->safe_resolve_deps_background(false, false, k);
+	}
+
+	LOG_TRACE(logger, "Setting up the progress bar.");
+	upgrade_resolver_progress->show();
+	upgrade_resolver_progress->set_text(_("Calculating upgrade..."));
+	upgrade_resolver_progress->pulse();
+	upgrade_resolver_label->hide();
+	upgrade_button->set_sensitive(false);
+
+	pulse_progress_connection.disconnect(); // Just extra paranoia.
+	pulse_progress_connection = Glib::signal_timeout().connect_seconds(sigc::mem_fun(*this, &DashboardTab::pulse_progress_timeout),
+									   3);
+      }
+  }
+
+  void DashboardTab::discard_resolver()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    LOG_TRACE(logger, "Discarding the dashboard tab's internal resolver.");
+
+    // Eliminate all the connections for resolver events by zapping
+    // the object that they go through.
+    delete background_upgrade_redirect;
+    background_upgrade_redirect = NULL;
+    pulse_progress_connection.disconnect();
+
+    // Throw away the resolver itself.
+    delete upgrade_resolver;
+    upgrade_resolver = NULL;
+
+    // Adjust the UI to show that there's no upgrade available.
+    upgrade_resolver_progress->hide();
+    upgrade_resolver_label->hide();
+    upgrade_button->set_sensitive(false);
+  }
+
+  void DashboardTab::upgrade_resolver_success(generic_solution<aptitude_universe> sol)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    pulse_progress_connection.disconnect();
+
+    if(apt_cache_file == NULL)
+      {
+	LOG_WARN(logger, "Received a solution from the resolver when the cache was closed.");
+	// ABORT!  Why did we get here?
+	discard_resolver();
+	return;
+      }
+
+    if(sol)
+      LOG_TRACE(logger, "Upgrade solution computed: " << sol);
+    else
+      LOG_TRACE(logger, "No upgrade solution computed because there were no problems to solve.");
+
+    std::set<pkgCache::PkgIterator> upgrades;
+    (*apt_cache_file)->get_upgradable(true, upgrades);
+
+    // Find out how many upgrades will be installed.
+    int num_upgrades_selected;
+    if(sol)
+      {
+	num_upgrades_selected = 0;
+	for(std::set<pkgCache::PkgIterator>::const_iterator it = upgrades.begin();
+	    it != upgrades.end(); ++it)
+	  {
+	    aptitude_resolver_package pkg(*it, *apt_cache_file);
+	    aptitude_resolver_version installed = sol.version_of(pkg);
+
+	    // TODO: if we ever allow full replacements in safe upgrade,
+	    // this will be wrong; when that happens, we need to account
+	    // for them and include them in the explanatory text below.
+	    if(pkg.get_pkg().CurrentVer() != sol.version_of(pkg).get_ver())
+	      ++num_upgrades_selected;
+	  }
+      }
+    else
+      // If there are no problems, we upgrade all the currently
+      // upgradable packages.
+      num_upgrades_selected = upgrades.size();
+
+    upgrade_resolver_progress->hide();
+    upgrade_resolver_label->show();
+
+    if(upgrades.empty())
+      {
+	upgrade_resolver_label->set_text(_("No upgrades are available."));
+	upgrade_button->set_sensitive(false);
+      }
+    else
+      {
+	// TODO: if we couldn't install all the upgrades, offer to let
+	// the user start resolving dependencies by hand from the last
+	// stopping point of the resolver.
+	Glib::ustring markup;
+
+	if(num_upgrades_selected == 0)
+	  markup = Glib::Markup::escape_text(_("Unable to calculate an upgrade."));
+	else
+	  // This message doesn't say how many upgrades there are
+	  // because (A) I can't come up with a straightforward way of
+	  // stating that, and (B) that information is already
+	  // available in the label of the list view.
+	  markup =
+	    cw::util::ssprintf(ngettext("Press 'Upgrade' to install <span size='large'>%d</span> upgrade.",
+					"Press 'Upgrade' to install <span size='large'>%d</span> upgrades.",
+					num_upgrades_selected),
+			       num_upgrades_selected);
+	upgrade_resolver_label->set_markup(markup);
+	upgrade_button->set_sensitive(num_upgrades_selected > 0);
+      }
+  }
+
+  void DashboardTab::upgrade_resolver_no_more_solutions()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    LOG_TRACE(logger, "The upgrade resolver was unable to calculate a solution.");
+
+    pulse_progress_connection.disconnect();
+
+    // TODO: add a button that lets the user start resolving
+    // dependencies by hand.
+    upgrade_resolver_progress->hide();
+    upgrade_resolver_label->show();
+    upgrade_resolver_label->set_text(_("Unable to calculate an upgrade."));
+    upgrade_button->set_sensitive(false);
+  }
+
+  void DashboardTab::upgrade_resolver_aborted(std::string errmsg)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    LOG_ERROR(logger, "The upgrade resolver aborted with an error: " << errmsg);
+
+    pulse_progress_connection.disconnect();
+
+    upgrade_resolver_progress->hide();
+    upgrade_resolver_label->show();
+    upgrade_resolver_label->set_text(cw::util::ssprintf(_("Internal error encountered while calculating an upgrade: %s"),
+							errmsg.c_str()));
+    upgrade_button->set_sensitive(false);
+  }
+
   DashboardTab::DashboardTab(Glib::ustring label)
     : Tab(Dashboard, label,
 	  Gnome::Glade::Xml::create(glade_main_file, "dashboard_main"),
-	  "dashboard_main")
+	  "dashboard_main"),
+      upgrade_resolver(NULL),
+      background_upgrade_redirect(NULL)
   {
     get_xml()->get_widget("dashboard_upgrades_selected_package_textview",
 			  upgrades_changelog_view);
@@ -224,6 +519,10 @@ namespace gui
 			  available_upgrades_label);
     get_xml()->get_widget("dashboard_upgrades_summary_textview",
 			  upgrades_summary_textview);
+    get_xml()->get_widget("dashboard_upgrade_calculation_progress",
+			  upgrade_resolver_progress);
+    get_xml()->get_widget("dashboard_upgrade_label",
+			  upgrade_resolver_label);
 
     package_search_entry = PackageSearchEntry::create(search_entry,
 						      search_errors,
@@ -235,16 +534,22 @@ namespace gui
     upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
     upgrades_pkg_view->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
 
-    cache_closed.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
-				    false));
     cache_closed.connect(sigc::mem_fun(*this,
 				       &DashboardTab::handle_cache_closed));
-    cache_reloaded.connect(sigc::bind(sigc::mem_fun(*upgrade_button, &Gtk::Widget::set_sensitive),
-				      true));
+    cache_reloaded.connect(sigc::mem_fun(*this,
+					 &DashboardTab::handle_cache_reloaded));
     upgrades_pkg_view->store_reloaded.connect(sigc::mem_fun(*this,
 							    &DashboardTab::handle_upgrades_store_reloaded));
 
+    upgrade_button->set_sensitive(apt_cache_file != NULL);
 
+    if(apt_cache_file != NULL)
+      {
+	handle_cache_reloaded();
+      }
+
+    // TODO: use get_upgradable() to populate it with exactly the
+    // packages that would be upgraded?
     upgrades_pkg_view->set_limit(aptitude::matching::pattern::make_upgradable());
 
     cache_reloaded.connect(sigc::mem_fun(*this, &DashboardTab::create_upgrade_summary));
@@ -255,8 +560,6 @@ namespace gui
 
     get_widget()->show_all();
 
-    upgrade_button->set_sensitive(apt_cache_file != NULL);
-
     // TODO: start an "update" when the program starts, or not?
 
     // TODO: start downloading changelogs and display them when
@@ -264,6 +567,11 @@ namespace gui
 
     // TODO: customize the displayed columns to display version /
     // size / archive information.
+  }
+
+  DashboardTab::~DashboardTab()
+  {
+    discard_resolver();
   }
 
   void DashboardTab::activated_upgrade_package_handler()

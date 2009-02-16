@@ -62,6 +62,13 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeDpkgTerminalInactivity();
 
+    /** \brief The logger for the GUI dashboard tab's upgrade
+     *         resolver.
+     *
+     *  Name: aptitude.gtk.dashboard.upgrade.resolver
+     */
+    static log4cxx::LoggerPtr getAptitudeGtkDashboardUpgradeResolver();
+
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver
