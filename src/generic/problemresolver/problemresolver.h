@@ -2395,6 +2395,18 @@ public:
   {
   }
 
+  /** \brief Get the dependencies that were initially broken in this
+   *  resolver.
+   *
+   *  This might be different from the dependencies that are
+   *  "intrinsically" broken in the universe, if there are
+   *  hypothesized initial installations.
+   */
+  const imm::set<dep> get_initial_broken() const
+  {
+    return initial_broken;
+  }
+
   const PackageUniverse &get_universe() const
   {
     return universe;
