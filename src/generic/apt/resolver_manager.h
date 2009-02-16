@@ -35,6 +35,8 @@
 #include <set>
 #include <vector>
 
+#include <generic/util/immset.h>
+
 /** \brief A higher-level resolver interface
  *
  * 
@@ -334,6 +336,11 @@ private:
    */
   bool background_thread_in_resolver;
 
+  /** \brief The initial set of installations; used when setting up
+   *  the resolver.
+   */
+  imm::map<aptitude_resolver_package, aptitude_resolver_version> initial_installations;
+
   /** A lock around pending_jobs, background_thread_killed,
    *  background_thread_suspend_count, background_thread_in_resolver,
    *  resolver_null, and resolver_trace_dir.
@@ -452,7 +459,8 @@ private:
 			     const resolver_interaction &act);
 public:
   /** Create a new resolver manager for the given cache file. */
-  resolver_manager(aptitudeDepCache *cache);
+  resolver_manager(aptitudeDepCache *cache,
+		   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations);
 
   virtual ~resolver_manager();
 

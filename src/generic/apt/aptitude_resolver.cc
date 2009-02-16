@@ -609,10 +609,11 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int infinity,
 				     int resolution_score,
 				     int future_horizon,
+				     const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
 				     aptitudeDepCache *cache)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score,
 					       future_horizon,
-					       imm::map<aptitude_resolver_package, aptitude_resolver_version>(),
+					       initial_installations,
 					       aptitude_universe(cache))
 {
   using cwidget::util::ref_ptr;

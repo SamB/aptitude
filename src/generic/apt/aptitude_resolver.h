@@ -383,6 +383,7 @@ public:
 		    int infinity,
 		    int resolution_score,
 		    int future_horizon,
+		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
 		    aptitudeDepCache *cache);
 
   /** \brief Return \b true if the given version will break a hold or

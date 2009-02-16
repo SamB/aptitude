@@ -157,7 +157,8 @@ resolver_manager::solution_information::~solution_information()
 // or by the user (don't have a mutex lock); I could sidestep this
 // with some clever magic, but there's no point unless it turns out to
 // be a bottleneck.
-resolver_manager::resolver_manager(aptitudeDepCache *_cache)
+resolver_manager::resolver_manager(aptitudeDepCache *_cache,
+				   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations)
   :cache(_cache),
    resolver(NULL),
    undos(new undo_list),
@@ -169,6 +170,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
    resolver_null(true),
    background_thread_suspend_count(0),
    background_thread_in_resolver(false),
+   initial_installations(_initial_installations),
    resolver_thread(NULL),
    mutex(cwidget::threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
 {
@@ -654,7 +656,7 @@ void resolver_manager::maybe_create_resolver()
 {
   cwidget::threads::mutex::lock l(mutex);
 
-  if(resolver == NULL && cache->BrokenCount() > 0)
+  if(resolver == NULL && (cache->BrokenCount() > 0 || !initial_installations.empty()))
     {
       {
 	cwidget::threads::mutex::lock l(background_control_mutex);
@@ -662,6 +664,13 @@ void resolver_manager::maybe_create_resolver()
 	resolver_trace_file = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-File", "");
       }
       create_resolver();
+
+      // If there are initial installations, we don't know whether
+      // there are broken dependencies until we actually create the
+      // resolver.  If there aren't broken dependencies, don't create
+      // a resolver object.
+      if(resolver->get_initial_broken().empty())
+	discard_resolver();
     }
 
   // Always signal a state change: we are signalling for the whole
@@ -758,7 +767,29 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::FutureHorizon", 50),
+				 initial_installations,
 				 cache);
+
+  // Set auto flags for initial installations as if the installs were
+  // done by the user.  i.e., if the package is currently installed,
+  // we use the current value of the Auto flag; otherwise we treat it
+  // as manual.
+  std::map<aptitude_resolver_package, bool> auto_flags;
+  for(imm::map<aptitude_resolver_package, aptitude_resolver_version>::const_iterator it =
+	initial_installations.begin(); it != initial_installations.end(); ++it)
+    {
+      pkgCache::PkgIterator pkg(it->first.get_pkg());
+      aptitude_resolver_package resolver_pkg(pkg, cache);
+
+      if(pkg->CurrentState != pkgCache::State::NotInstalled &&
+	 pkg->CurrentState != pkgCache::State::ConfigFiles)
+	{
+	  auto_flags[resolver_pkg] =
+	    ((*cache)[pkg].Flags & pkgCache::Flag::Auto) == 0;
+	}
+      else
+	auto_flags[resolver_pkg] = true;
+    }
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveAutoScore", 0),
@@ -773,7 +804,7 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
 			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::DefaultResolutionScore", 400),
-			      std::map<aptitude_resolver_package, bool>(),
+			      auto_flags,
 			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),

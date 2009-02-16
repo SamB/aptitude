@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #include <aptitude.h>
 
-
+#include "aptitude_resolver_universe.h"
 #include "config_signal.h"
 #include "pkg_hier.h"
 #include "resolver_manager.h"
@@ -418,7 +418,7 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
       hier_reloaded();
     }
 
-  resman = new resolver_manager(*new_file);
+  resman = new resolver_manager(*new_file, imm::map<aptitude_resolver_package, aptitude_resolver_version>());
 
   cache_reloaded();
 }
