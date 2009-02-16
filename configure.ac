@@ -320,6 +320,7 @@ AC_CONFIG_FILES([
 	doc/ja/images/Makefile
 	doc/po4a/Makefile
 	doc/po4a/po/Makefile
+	doc/po4a/add_de/Makefile
 	doc/po4a/add_fr/Makefile
 	m4/Makefile
 	po/Makefile.in
