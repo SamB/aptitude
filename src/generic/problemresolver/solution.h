@@ -303,7 +303,7 @@ private:
      *  extra arguments.  (maybe instead I should just accept having
      *  to wrap it all the time?)
      */
-    const resolver_initial_state<PackageUniverse> &initial_state;
+    const resolver_initial_state<PackageUniverse> initial_state;
 
     /** The actions performed by this solution.
      *
@@ -877,7 +877,7 @@ private:
    *  extra arguments.  (maybe instead I should just accept having
    *  to wrap it all the time?)
    */
-  const resolver_initial_state<PackageUniverse> &initial_state;
+  const resolver_initial_state<PackageUniverse> initial_state;
 
   /** \brief A list of the joint scores added to this
    *  set of weights, in order.
