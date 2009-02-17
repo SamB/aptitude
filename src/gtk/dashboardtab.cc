@@ -618,6 +618,12 @@ namespace gui
 	ref_ptr<Entity> ent = (*iter)[upgrades_pkg_view->get_columns()->EntObject];
 	ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
 
+	if(!pkg_ent.valid())
+	  {
+	    upgrades_changelog_view->set_buffer(Gtk::TextBuffer::create());
+	    return;
+	  }
+
 	pkgCache::PkgIterator pkg = pkg_ent->get_pkg();
 	pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
 	const Glib::RefPtr<Gtk::TextBuffer> buffer =
