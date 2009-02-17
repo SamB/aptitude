@@ -109,6 +109,10 @@ namespace gui
 
     Gtk::Label *available_upgrades_label;
 
+    // Maps each version displayed in the upgrade list to the location
+    // of its changelog in the changelog text view.
+    std::map<pkgCache::VerIterator, Glib::RefPtr<Gtk::TextBuffer::Mark> > changelog_locations;
+
     void do_search();
 
     void do_upgrade();

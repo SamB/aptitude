@@ -103,6 +103,8 @@ namespace gui
     if(apt_cache_file == NULL)
       return;
 
+    std::map<pkgCache::VerIterator, Glib::RefPtr<Gtk::TextBuffer::Mark> > changelog_locations_new;
+
     Glib::RefPtr<Gtk::TextBuffer> text_buffer = Gtk::TextBuffer::create();
 
     Glib::RefPtr<Gtk::TextBuffer::Tag> header_tag = text_buffer->create_tag();
@@ -152,6 +154,7 @@ namespace gui
 
 	Glib::RefPtr<Gtk::TextBuffer::Mark> header_begin_mark =
 	  text_buffer->create_mark(where);
+	changelog_locations_new[*it] = header_begin_mark;
 
 	where = text_buffer->insert(where,
 				    candver.ParentPkg().Name());
@@ -198,12 +201,14 @@ namespace gui
       }
 
     upgrades_summary_textview->set_buffer(text_buffer);
+    changelog_locations.swap(changelog_locations_new);
 
     fetch_and_show_changelogs(changelogs);
   }
 
   void DashboardTab::handle_cache_closed()
   {
+    changelog_locations.clear();
     discard_resolver();
     available_upgrades_label->set_text(_("Available upgrades:"));
   }
@@ -636,6 +641,12 @@ namespace gui
 				    pkg.Name()));
 	else
 	  fetch_and_show_changelog(candver, buffer, buffer->end());
+
+	// Try to scroll to its changelog in the big list.
+	std::map<pkgCache::VerIterator, Glib::RefPtr<Gtk::TextBuffer::Mark> >::const_iterator
+	  found(changelog_locations.find(candver));
+	if(found != changelog_locations.end())
+	  upgrades_summary_textview->scroll_to(found->second, 0, 0, 0);
       }
     else
       {
