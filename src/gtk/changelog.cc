@@ -136,12 +136,12 @@ namespace gui
   // NB: some changelogs aren't monotonically increasing, so that
   // support should put a link wherever the "newness state" goes from
   // newer to not-newer.
-  Gtk::TextBuffer::iterator
-  render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
-		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
-		   const std::string &current_version,
-		   Gtk::TextBuffer::iterator where,
-		   bool only_new)
+  static Gtk::TextBuffer::iterator
+  do_render_changelog(const cwidget::util::ref_ptr<aptitude::apt::changelog> &cl,
+		      const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+		      const std::string &current_version,
+		      Gtk::TextBuffer::iterator where,
+		      bool only_new)
   {
     using aptitude::apt::changelog;
 
@@ -284,18 +284,14 @@ namespace gui
   }
 
   Gtk::TextBuffer::iterator
-  parse_and_render_changelog(const temp::name &file,
-			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
-			     const std::string &current_version,
-			     Gtk::TextBuffer::iterator where,
-			     bool only_new)
+  render_changelog(const cw::util::ref_ptr<aptitude::apt::changelog> &cl,
+		   const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
+		   const std::string &current_version,
+		   Gtk::TextBuffer::iterator where,
+		   bool only_new)
   {
-    cw::util::ref_ptr<aptitude::apt::changelog> cl =
-      aptitude::apt::parse_changelog(file,
-				     only_new ? current_version : "");
-
     if(cl.valid())
-      return render_changelog(cl, textBuffer, current_version, where, only_new);
+      return do_render_changelog(cl, textBuffer, current_version, where, only_new);
     else
       {
         Glib::RefPtr<Gtk::TextBuffer::Tag> warning_tag = textBuffer->create_tag();
@@ -345,7 +341,7 @@ namespace gui
     // downloading.  WARNING: the binding is only thread-safe because
     // it's bound up as a "safe" slot from the main thread, so the
     // RefPtrs are't copied in a background thread!
-    void finish_changelog_download(temp::name name,
+    void finish_changelog_download(const cw::util::ref_ptr<aptitude::apt::changelog> &cl,
 				   finish_changelog_download_info download_info)
     {
       const Gtk::TextBuffer::iterator begin = download_info.text_buffer->get_iter_at_mark(download_info.begin);
@@ -357,11 +353,11 @@ namespace gui
       const bool only_new = download_info.only_new;
 
       // Now insert the changelog.
-      parse_and_render_changelog(name,
-				 download_info.text_buffer,
-				 download_info.current_version,
-				 where,
-				 only_new);
+      render_changelog(cl,
+		       download_info.text_buffer,
+		       download_info.current_version,
+		       where,
+		       only_new);
     }
 
     void changelog_download_error(const std::string &error,
@@ -377,13 +373,50 @@ namespace gui
 				       ssprintf(_("Failed to download the changelog: %s"), error.c_str()));
     }
 
+    /** \brief Parses a single changelog in the background, then
+     *  invokes the given slot in the foreground, passing it the
+     *  parsed log.
+     */
+    class parse_changelog_thread
+    {
+      // Remember that this is passed to the thread bootstrap by
+      // copy-construction, so everything here has to be safe to copy
+      // (it is).
+
+      // The filename of the changelog.
+      temp::name name;
+      // The slot to invoke.
+      safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot;
+      // The earliest version that is to be included.
+      const std::string from;
+
+    public:
+      parse_changelog_thread(const temp::name &_name,
+			     const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &_slot,
+			     const std::string &_from)
+	: name(_name), slot(_slot), from(_from)
+      {
+      }
+
+      void operator()() const
+      {
+	cw::util::ref_ptr<aptitude::apt::changelog> parsed =
+	  aptitude::apt::parse_changelog(name, from);
+	post_event(safe_bind(slot, parsed));
+      }
+    };
+
     // Helper function to post the "changelog download complete" event
     // to the main thread.
     void do_view_changelog_trampoline(temp::name name,
-				      safe_slot1<void, temp::name> slot)
+				      safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot,
+				      std::string from)
     {
-      post_event(safe_bind(slot, name));
+      // Use the fact that cwidget thread objects can be destroyed
+      // without shutting the thread down.
+      cw::threads::thread(parse_changelog_thread(name, slot, from));
     }
+
     void do_changelog_download_error_trampoline(const std::string &error,
 						safe_slot1<void, std::string> slot)
     {
@@ -483,16 +516,17 @@ namespace gui
 	  finish_changelog_download_info
 	    download_info(begin, end, textBuffer, current_source_ver, only_new);
 
-	  const sigc::slot1<void, temp::name> finish_changelog_download_slot =
+	  const sigc::slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_slot =
 	    sigc::bind(sigc::ptr_fun(&finish_changelog_download),
 		       download_info);
 
-	  const safe_slot1<void, temp::name> finish_changelog_download_safe_slot =
+	  const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_safe_slot =
 	    make_safe_slot(finish_changelog_download_slot);
 
 	  const sigc::slot1<void, temp::name> finish_changelog_download_trampoline =
 	    sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
-		       finish_changelog_download_safe_slot);
+		       finish_changelog_download_safe_slot,
+		       only_new ? current_source_ver : "");
 
 	  const sigc::slot1<void, std::string> changelog_download_error_slot =
 	    sigc::bind(sigc::ptr_fun(&changelog_download_error),

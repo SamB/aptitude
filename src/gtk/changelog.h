@@ -53,6 +53,9 @@ namespace gui
 
   /** \brief Render a changelog object into a buffer.
    *
+   *  If the changelog is invalid, an error message will be displayed
+   *  instead.
+   *
    *  \param cl                The changelog to render.
    *  \param textBuffer        The text buffer in which to store
    *                           the rendered text.
@@ -79,33 +82,6 @@ namespace gui
 		   const std::string &current_version,
 		   Gtk::TextBuffer::iterator where,
 		   bool only_new);
-
-  /** \brief Parse a changelog and render it into a buffer.
-   *
-   *  \param file   The raw changelog text.
-   *  \param textBuffer        The text buffer in which to store
-   *                           the rendered text.
-   *  \param current_version   The currently installed source
-   *                           version of the package whose
-   *                           changelog this is (used to
-   *                           determine which versions are
-   *                           newer).
-   *  \param where             The buffer location at which to render
-   *                           the changelog.
-   *  \param only_new          Set to \b true to only show entries that
-   *                           are newer than current_version.
-   *
-   *  \return A new iterator to the end of the rendered text.
-   *
-   *  If the changelog can't be parsed, a hopefully appropriate
-   *  error message is displayed.
-   */
-  Gtk::TextBuffer::iterator
-  parse_and_render_changelog(const temp::name &file,
-			     const Glib::RefPtr<Gtk::TextBuffer> &textBuffer,
-			     const std::string &current_version,
-			     Gtk::TextBuffer::iterator where,
-			     bool only_new);
 
   /** \brief A changelog job says to download the changelog of a
    *  binary package version at the given buffer location.
