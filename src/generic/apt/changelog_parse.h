@@ -229,7 +229,7 @@ namespace aptitude
      *         directory of this file, in which an intermediate form of
      *         the changelog will be stored.
      *
-     *  \param from   a string giving the earlier version
+     *  \param from   a string giving the earliest version
      *                that is to be included in the changelog.
      *                If non-empty, nothing earlier than this version
      *                will be returned.
