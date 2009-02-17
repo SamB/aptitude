@@ -170,6 +170,11 @@ class resolver_initial_state
       else
 	return version_store[slot];
     }
+
+    void get_initial_versions(std::vector<typename PackageUniverse::version> &out) const
+    {
+      out.insert(out.end(), version_store.begin(), version_store.end());
+    }
   };
 
   cwidget::util::ref_ptr<impl> the_impl;
@@ -209,6 +214,17 @@ public:
       return the_impl->version_of(p);
     else
       return p.current_version();
+  }
+
+  /** \brief Retrieve the initial installations stored in this object.
+   *
+   *  \param out  A vector onto which the initially installed versions
+   *              are pushed; it is guaranteed that no two output
+   *              versions have the same package.
+   */
+  void get_initial_versions(std::vector<typename PackageUniverse::version> &out) const
+  {
+    return the_impl->get_initial_versions(out);
   }
 };
 

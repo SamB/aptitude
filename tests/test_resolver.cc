@@ -350,12 +350,42 @@ private:
     CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), av2);
     CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(c), cv2);
 
+    // I use an immset here because it has a decent operator<< for
+    // printing error messages, and to smooth out differences in order
+    // (which shouldn't happen in this implementation, but shouldn't
+    // be wrong either).
+    imm::set<version> expected_initial_state;
+    expected_initial_state.insert(av2);
+    expected_initial_state.insert(cv2);
+
+    {
+      std::vector<version> initial_state;
+      r.get_initial_state().get_initial_versions(initial_state);
+      imm::set<version> initial_state_set;
+      for(std::vector<version>::const_iterator it = initial_state.begin();
+	  it != initial_state.end(); ++it)
+	initial_state_set.insert(*it);
+      CPPUNIT_ASSERT_EQUAL(initial_state_set,
+			   expected_initial_state);
+    }
+
     try
       {
 	dummy_solution sol = r.find_next_solution(1000000, NULL);
 
 	CPPUNIT_ASSERT_MESSAGE("There are no broken deps, so only the empty solution should be returned.",
 			       sol.get_actions().empty());
+
+	{
+	  std::vector<version> initial_state;
+	  sol.get_initial_state().get_initial_versions(initial_state);
+	  imm::set<version> initial_state_set;
+	  for(std::vector<version>::const_iterator it = initial_state.begin();
+	      it != initial_state.end(); ++it)
+	    initial_state_set.insert(*it);
+	  CPPUNIT_ASSERT_EQUAL(initial_state_set,
+			       expected_initial_state);
+	}
 
 	bool out_of_solutions = false;
 	try
