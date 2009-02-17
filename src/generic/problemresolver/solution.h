@@ -25,7 +25,9 @@
 #include <iostream>
 #include <map>
 
+#include <cwidget/generic/util/ref_ptr.h>
 #include <generic/util/immset.h>
+#include <generic/util/refcounted_base.h>
 
 /** \brief The solution class for the problem resolver.
  * 
@@ -38,130 +40,175 @@ class solution_weights;
 /** \brief Represents the initial state of a dependency search.
  *
  *  This is optimized under the assumption that overrides of package
- *  versions will be rare, but not unheard of.
+ *  versions will be rare, but not unheard of.  (note: this is O(n),
+ *  but in reality it might not be optimized due to poor locality and
+ *  the low number of overrides; if it's really an issue some
+ *  profiling of different approaches -- sparse binary tree, sparse
+ *  array, etc -- would be handy)
  */
 template<typename PackageUniverse>
 class resolver_initial_state
 {
-  resolver_initial_state(const resolver_initial_state &);
-
-  // A collection of indices into the vector of overridden versions,
-  // indexed by package ID; -1 means to use the real current version.
-  // This lets us avoid allocating space for non-overridden versions
-  // while keeping good locality for the list of versions.
-  //
-  // If NULL, all packages have their real current version.
-  int *overridden_versions;
-  // The size that the version array has / will have (depending on
-  // whether the array is NULL).
-  int num_overridden_versions;
-
-  // Stores the versions that have been overridden;
-  // overridden_versions indexes into this list.
-  std::vector<typename PackageUniverse::version> version_store;
-
-  /** \brief Override p (if necessary) to the version v. */
-  void map_package(const typename PackageUniverse::package &p,
-		   const typename PackageUniverse::version &v)
+  class impl : public aptitude::util::refcounted_base_threadsafe
   {
-    if(overridden_versions == NULL)
-      {
-	if(p.current_version() == v)
-	  return;
+    // A collection of indices into the vector of overridden versions,
+    // indexed by package ID; -1 means to use the real current
+    // version.  This lets us avoid allocating space for
+    // non-overridden versions while keeping good locality for the
+    // list of versions.
+    //
+    // If NULL, all packages have their real current version.
+    int *overridden_versions;
+    // The size that the version array has / will have (depending on
+    // whether the array is NULL).
+    int num_overridden_versions;
 
-	overridden_versions = new int[num_overridden_versions];
-	for(int i = 0; i < num_overridden_versions; ++i)
-	  overridden_versions[i] = -1;
-      }
+    // Stores the versions that have been overridden;
+    // overridden_versions indexes into this list.
+    std::vector<typename PackageUniverse::version> version_store;
 
-    const int p_id = p.get_id();
-    if(overridden_versions[p_id] == -1)
-      {
-	if(p.current_version() == v)
-	  return;
-
-	// Allocate a new slot.
-	const int slot = (int)version_store.size();
-	version_store.push_back(v);
-	overridden_versions[p_id] = slot;
-      }
-    else
-      {
-	const int slot = overridden_versions[p_id];
-	version_store[slot] = v;
-      }
-  }
-
-  struct do_map_package
-  {
-    resolver_initial_state &state;
-
-    do_map_package(resolver_initial_state &_state)
-      : state(_state)
+    /** \brief Override p (if necessary) to the version v. */
+    void map_package(const typename PackageUniverse::package &p,
+		     const typename PackageUniverse::version &v)
     {
+      if(overridden_versions == NULL)
+	{
+	  if(p.current_version() == v)
+	    return;
+
+	  overridden_versions = new int[num_overridden_versions];
+	  for(int i = 0; i < num_overridden_versions; ++i)
+	    overridden_versions[i] = -1;
+	}
+
+      const int p_id = p.get_id();
+      if(overridden_versions[p_id] == -1)
+	{
+	  if(p.current_version() == v)
+	    return;
+
+	  // Allocate a new slot.
+	  const int slot = (int)version_store.size();
+	  version_store.push_back(v);
+	  overridden_versions[p_id] = slot;
+	}
+      else
+	{
+	  const int slot = overridden_versions[p_id];
+	  version_store[slot] = v;
+	}
     }
 
-    void operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
+    struct do_map_package
     {
-      state.map_package(pair.first, pair.second);
+      impl &state;
+
+      do_map_package(impl &_state)
+	: state(_state)
+      {
+      }
+
+      void operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
+      {
+	state.map_package(pair.first, pair.second);
+      }
+    };
+
+  public:
+    /** \brief Create a new initial state that sets the given packages
+     *  to the given versions.
+     *
+     *  \param mappings   Each package in this map will be treated as
+     *                    "starting at" the version it is mapped to.
+     *
+     *  \param package_count The number of packages in the universe;
+     *                          used to allocate space for internal
+     *                          structures.
+     */
+    impl(const imm::map<typename PackageUniverse::package, typename PackageUniverse::version> &mappings,
+	 int package_count)
+      : overridden_versions(NULL),
+	num_overridden_versions(package_count)
+    {
+      mappings.for_each(do_map_package(*this));
+    }
+
+    bool empty() const
+    {
+      if(overridden_versions == NULL)
+	return true;
+
+      for(int i = 0; i < num_overridden_versions; ++i)
+	if(overridden_versions[i] != -1)
+	  return false;
+
+      return true;
+    }
+
+    ~impl()
+    {
+      delete[] overridden_versions;
+    }
+
+    typename PackageUniverse::version version_of(const typename PackageUniverse::package &p) const
+    {
+      int slot;
+      int p_id;
+      if(overridden_versions == NULL)
+	{
+	  slot = -1;
+	  p_id = -1;
+	}
+      else
+	{
+	  p_id = p.get_id();
+	  slot = overridden_versions[p.get_id()];
+	}
+
+      if(slot == -1)
+	return p.current_version();
+      else
+	return version_store[slot];
     }
   };
 
+  cwidget::util::ref_ptr<impl> the_impl;
+
 public:
-  /** \brief Create a new initial state that sets the given packages
-   *  to the given versions.
-   *
-   *  \param mappings   Each package in this map will be treated as
-   *                    "starting at" the version it is mapped to.
-   *
-   *  \param package_count The number of packages in the universe;
-   *                          used to allocate space for internal
-   *                          structures.
-   */
+  resolver_initial_state()
+  {
+  }
+
+  resolver_initial_state(const resolver_initial_state &state)
+    : the_impl(state.the_impl)
+  {
+  }
+
   resolver_initial_state(const imm::map<typename PackageUniverse::package, typename PackageUniverse::version> &mappings,
 			 int package_count)
-    : overridden_versions(NULL),
-      num_overridden_versions(package_count)
+    : the_impl(mappings.empty()
+	       ? cwidget::util::ref_ptr<impl>()
+	       : new impl(mappings, package_count))
   {
-    mappings.for_each(do_map_package(*this));
   }
 
-  bool empty()
+  resolver_initial_state &operator=(const resolver_initial_state &other)
   {
-    if(overridden_versions == NULL)
-      return true;
-
-    for(int i = 0; i < num_overridden_versions; ++i)
-      if(overridden_versions[i] != -1)
-	return false;
-
-    return true;
+    the_impl = other.the_impl;
+    return *this;
   }
 
-  ~resolver_initial_state()
+  bool empty() const
   {
-    delete[] overridden_versions;
+    return !the_impl || the_impl->empty();
   }
 
   typename PackageUniverse::version version_of(const typename PackageUniverse::package &p) const
   {
-    int slot;
-    int p_id;
-    if(overridden_versions == NULL)
-      {
-	slot = -1;
-	p_id = -1;
-      }
+    if(the_impl.valid())
+      return the_impl->version_of(p);
     else
-      {
-	p_id = p.get_id();
-	slot = overridden_versions[p.get_id()];
-      }
-
-    if(slot == -1)
       return p.current_version();
-    else
-      return version_store[slot];
   }
 };
 
