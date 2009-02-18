@@ -28,6 +28,7 @@
 
 #include <apt-pkg/error.h>
 
+#include <loggers.h>
 #include <solution_fragment.h> // For archives_text.
 #include <solution_item.h> // For action_type.
 
@@ -37,6 +38,8 @@
 #include <gui.h>
 
 #include <cwidget/generic/util/ssprintf.h>
+
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -73,6 +76,10 @@ namespace gui
 
       void success(const aptitude_solution &sol)
       {
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+
+	LOG_TRACE(logger, "Resolver tab: got solution: " << sol);
+
 	// Tell the main loop to pretend the state changed.
 	sigc::slot0<void> state_changed =
 	  manager->state_changed.make_slot();
@@ -81,6 +88,10 @@ namespace gui
 
       void no_more_solutions()
       {
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+
+	LOG_TRACE(logger, "Resolver tab: ran out of solutions.");
+
 	sigc::slot0<void> state_changed =
 	  manager->state_changed.make_slot();
 	post_event(make_safe_slot(state_changed));
@@ -93,6 +104,10 @@ namespace gui
 
       void interrupted()
       {
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+
+	LOG_TRACE(logger, "Resolver tab: interrupted.");
+
 	sigc::slot0<void> state_changed =
 	  manager->state_changed.make_slot();
 	post_event(make_safe_slot(state_changed));
@@ -100,6 +115,9 @@ namespace gui
 
       void aborted(const cwidget::util::Exception &e)
       {
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	LOG_TRACE(logger, "Resolver tab: aborted by exception: " << e.errmsg());
+
 	sigc::slot0<void> do_error_slot =
 	  sigc::bind(sigc::ptr_fun(&gui_resolver_continuation::do_error),
 		     e.errmsg(), sigc::ref(*manager));
@@ -580,10 +598,16 @@ namespace gui
   void ResolverTab::update_from_state(const resolver_manager::state &state,
 				      bool force_update)
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    LOG_TRACE(logger, "Updating the resolver tab (" << (force_update ? "forced" : "not forced") << ")");
+    // Maybe I should log more information about the resolver state as
+    // we log it?
+
     Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(pResolverView->resolver_columns);
 
     if(!state.resolver_exists)
       {
+	LOG_DEBUG(logger, "Resolver tab: no resolver has been created.");
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[pResolverView->resolver_columns.Name] = _("Nothing to do: there are no broken packages.");
@@ -591,6 +615,7 @@ namespace gui
       }
     else if(state.solutions_exhausted && state.generated_solutions == 0)
       {
+	LOG_DEBUG(logger, "Resolver tab: search exhausted before any solutions were produced.");
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[pResolverView->resolver_columns.Name] = _("No resolutions found.");
@@ -602,12 +627,18 @@ namespace gui
 	// the tree, but that requires more complex state management.
 	if(state.background_thread_aborted)
 	  {
+	    LOG_DEBUG(logger, "Resolver tab: resolver aborted: " << state.background_thread_abort_msg);
 	    Gtk::TreeModel::iterator iter = store->append();
 	    Gtk::TreeModel::Row row = *iter;
 	    row[pResolverView->resolver_columns.Name] = state.background_thread_abort_msg;
 	  }
 	else
 	  {
+	    LOG_DEBUG(logger, "Resolver tab: resolver running: open: "
+		      << state.open_size
+		      << "; closed: " << state.closed_size
+		      << "; defer: " << state.deferred_size
+		      << "; conflict: " << state.conflicts_size);
 	    std::string generation_info = ssprintf(_("open: %d; closed: %d; defer: %d; conflict: %d"),
 						   (int)state.open_size, (int)state.closed_size,
 						   (int)state.deferred_size, (int)state.conflicts_size).c_str();
@@ -711,6 +742,7 @@ namespace gui
   {
     if (do_next_solution_enabled())
     {
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Moving to the next solution.");
       // If an error was encountered, pressing "next solution"
       // skips it.
       resman->discard_error_information();
@@ -735,6 +767,8 @@ namespace gui
 
     if (do_apply_solution_enabled_from_state(state))
     {
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Applying the current solution.");
+
       undo_group *undo = new apt_undo_group;
       try
       {

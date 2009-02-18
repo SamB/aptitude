@@ -69,6 +69,12 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeGtkDashboardUpgradeResolver();
 
+    /** \brief The logger for the GUI resolver tab.
+     *
+     *  Name: aptitude.gtk.resolver
+     */
+    static log4cxx::LoggerPtr getAptitudeGtkResolver();
+
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver

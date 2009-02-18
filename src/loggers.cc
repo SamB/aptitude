@@ -43,6 +43,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.gtk.dashboard.upgrade.resolver");
   }
 
+  LoggerPtr Loggers::getAptitudeGtkResolver()
+  {
+    return Logger::getLogger("aptitude.gtk.resolver");
+  }
+
   LoggerPtr Loggers::getAptitudeResolver()
   {
     return Logger::getLogger("aptitude.resolver");
