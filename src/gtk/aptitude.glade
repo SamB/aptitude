@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Feb 17 21:44:03 2009 -->
+<!--Generated with glade3 3.4.5 on Wed Feb 18 20:01:14 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -373,17 +373,13 @@
                 <property name="stock_id">gtk-home</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
               <widget class="GtkSeparatorToolItem" id="toolbutton1">
                 <property name="visible">True</property>
               </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">False</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkToolButton" id="main_toolbutton_update">
@@ -392,7 +388,7 @@
                 <property name="stock_id">gtk-refresh</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -402,7 +398,7 @@
                 <property name="stock_id">gtk-new</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -412,7 +408,7 @@
                 <property name="stock_id">gtk-print-preview</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -422,7 +418,7 @@
                 <property name="stock_id">gtk-dialog-info</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -432,7 +428,7 @@
                 <property name="stock_id">gtk-apply</property>
               </widget>
               <packing>
-                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
           </widget>
@@ -560,7 +556,6 @@
               <widget class="GtkProgressBar" id="main_progressbar">
                 <property name="width_request">250</property>
                 <property name="visible">True</property>
-                <property name="text" translatable="yes"></property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -686,7 +681,6 @@
               <widget class="GtkTreeView" id="edit_package_columns_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">True</property>
               </widget>
             </child>
           </widget>
@@ -757,7 +751,6 @@
           <widget class="GtkTreeView" id="main_download_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="headers_clickable">True</property>
           </widget>
         </child>
       </widget>
@@ -807,6 +800,18 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkToggleButton" id="main_notebook_packages_incremental_toggle_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="label" translatable="yes">Incremental</property>
+                    <property name="response_id">0</property>
+                  </widget>
+                  <packing>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </widget>
@@ -866,7 +871,6 @@
                   <widget class="GtkTreeView" id="main_packages_treeview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="headers_clickable">True</property>
                     <property name="rules_hint">True</property>
                     <property name="enable_tree_lines">True</property>
                   </widget>
@@ -961,7 +965,6 @@
                       <widget class="GtkTreeView" id="main_info_versionsview">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="headers_clickable">True</property>
                         <property name="rules_hint">True</property>
                         <property name="enable_tree_lines">True</property>
                       </widget>
@@ -997,7 +1000,6 @@
                   <widget class="GtkTreeView" id="main_info_dependsview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="headers_clickable">True</property>
                   </widget>
                 </child>
               </widget>
@@ -1053,7 +1055,6 @@
                   <widget class="GtkTreeView" id="main_info_filesview">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="headers_clickable">True</property>
                   </widget>
                 </child>
               </widget>
@@ -1238,7 +1239,6 @@ This is the default view mode.</property>
               <widget class="GtkTreeView" id="main_resolver_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">True</property>
               </widget>
             </child>
           </widget>
@@ -1407,7 +1407,6 @@ This is the default view mode.</property>
                               <widget class="GtkTreeView" id="dashboard_upgrades_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
                                 <property name="rules_hint">True</property>
                                 <property name="enable_tree_lines">True</property>
                               </widget>
@@ -1495,7 +1494,6 @@ This is the default view mode.</property>
                         <child>
                           <widget class="GtkProgressBar" id="dashboard_upgrade_calculation_progress">
                             <property name="no_show_all">True</property>
-                            <property name="text" translatable="yes"></property>
                           </widget>
                         </child>
                         <child>
@@ -1581,7 +1579,6 @@ This is the default view mode.</property>
               <widget class="GtkTreeView" id="main_preview_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">True</property>
               </widget>
             </child>
           </widget>
@@ -1730,7 +1727,6 @@ This is the default view mode.</property>
                               <widget class="GtkTreeView" id="dependency_path_start_packages_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
                                 <property name="rules_hint">True</property>
                                 <property name="enable_tree_lines">True</property>
                               </widget>
@@ -1867,7 +1863,6 @@ This is the default view mode.</property>
                               <widget class="GtkTreeView" id="dependency_path_end_packages_treeview">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
                                 <property name="rules_hint">True</property>
                                 <property name="enable_tree_lines">True</property>
                               </widget>
@@ -1914,7 +1909,6 @@ This is the default view mode.</property>
               <widget class="GtkTreeView" id="dependency_path_results_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="headers_clickable">True</property>
               </widget>
             </child>
           </widget>
@@ -1936,7 +1930,6 @@ This is the default view mode.</property>
           <widget class="GtkTreeView" id="errors_treeview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="headers_clickable">True</property>
             <property name="rules_hint">True</property>
           </widget>
         </child>

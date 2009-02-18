@@ -3,7 +3,7 @@
 // packagestab.h
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,24 +54,31 @@ namespace gui
     Gtk::Entry *search_entry;
     Gtk::Label *error_label;
     Gtk::Button *find_button;
+    Gtk::ToggleButton *incremental_toggle_button;
 
     // Parse the current entry and emit the activated() signal if it's
     // valid (otherwise show the error).
     void do_search();
+
+    // Affect the search button according to the incremental toggle button:
+    // if toggled, then disable manual search.
+    void toggled_incremental();
 
     // Invoked when the search entry's text changes.
     void search_entry_changed();
 
     PackageSearchEntry(Gtk::Entry *_search_entry,
 		       Gtk::Label *_error_label,
-		       Gtk::Button *_find_button);
+                       Gtk::Button *_find_button,
+                       Gtk::ToggleButton *_incremental_toggle_button);
 
   public:
     /** \brief Create a new PackageSearchEntry.
      *
-     *  \param search_entry The text entry to manage.
-     *  \param error_label  The label in which to display error messages.
-     *  \param find_button  A button that the user can use to perform a search.
+     *  \param search_entry               The text entry to manage.
+     *  \param error_label                The label in which to display error messages.
+     *  \param find_button                A button that the user can use to perform a search.
+     *  \param incremental_toggle_button  A togglebutton to toggle incremental search.
      *
      *  \return A reference-counting wrapper around the new package
      *  search entry.
@@ -79,9 +86,10 @@ namespace gui
     static cwidget::util::ref_ptr<PackageSearchEntry>
     create(Gtk::Entry *search_entry,
 	   Gtk::Label *error_label,
-	   Gtk::Button *find_button)
+	   Gtk::Button *find_button,
+           Gtk::ToggleButton *incremental_toggle_button = NULL)
     {
-      return new PackageSearchEntry(search_entry, error_label, find_button);
+      return new PackageSearchEntry(search_entry, error_label, find_button, incremental_toggle_button);
     }
 
     Glib::ustring get_text() const

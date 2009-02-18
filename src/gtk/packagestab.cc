@@ -1,7 +1,7 @@
 // packagestab.cc
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -68,6 +68,19 @@ namespace gui
     activated(p);
   }
 
+  void PackageSearchEntry::toggled_incremental()
+  {
+    if(incremental_toggle_button->get_active())
+    {
+      find_button->set_sensitive(false);
+      do_search();
+    }
+    else
+    {
+      find_button->set_sensitive(true);
+    }
+  }
+
   void PackageSearchEntry::search_entry_changed()
   {
     const Glib::ustring limit(search_entry->get_text());
@@ -83,7 +96,25 @@ namespace gui
       }
 
     if(valid)
+    {
       search_entry->unset_base(Gtk::STATE_NORMAL);
+      if(incremental_toggle_button != NULL && incremental_toggle_button->get_active())
+      {
+        // FIXME: This sensitivity/position dance is a temporary workaround
+        //        because the searching lag messes up badly with
+        //        the text entry editing (caret position and selection).
+        //        It looks like the caret is only moved after the newly typed character
+        //        only after Editable::signal_changed() is fired and handled but a new
+        //        character can be type (at the previous position) in the meantime.
+        int position;
+        position = search_entry->get_position();
+        search_entry->set_sensitive(false);
+        do_search();
+        search_entry->set_sensitive(true);
+        search_entry->grab_focus();
+        search_entry->set_position(position);
+      }
+    }
     else
       search_entry->modify_base(Gtk::STATE_NORMAL, Gdk::Color("#FFD0D0"));
   }
@@ -96,14 +127,17 @@ namespace gui
 
   PackageSearchEntry::PackageSearchEntry(Gtk::Entry *_search_entry,
 					 Gtk::Label *_error_label,
-					 Gtk::Button *_find_button)
+					 Gtk::Button *_find_button,
+			                 Gtk::ToggleButton *_incremental_toggle_button)
     : search_entry(_search_entry),
       error_label(_error_label),
-      find_button(_find_button)
+      find_button(_find_button),
+      incremental_toggle_button(_incremental_toggle_button)
   {
     search_entry->signal_activate().connect(sigc::mem_fun(*this, &PackageSearchEntry::do_search));
     find_button->signal_clicked().connect(sigc::mem_fun(*this, &PackageSearchEntry::do_search));
-
+    if(incremental_toggle_button != NULL)
+      incremental_toggle_button->signal_toggled().connect(sigc::mem_fun(*this, &PackageSearchEntry::toggled_incremental));
     search_entry->signal_changed().connect(sigc::mem_fun(*this, &PackageSearchEntry::search_entry_changed));
   }
 
@@ -268,11 +302,13 @@ namespace gui
     Gtk::Label *pLimitErrorLabel;
     Gtk::ComboBox *pLimitComboBox;
     Gtk::Button *pLimitButton;
+    Gtk::ToggleButton *pIncrementalToggleButton;
 
     get_xml()->get_widget("main_packages_textview", pPackagesTextView);
     get_xml()->get_widget("main_notebook_packages_limit_entry", pLimitEntry);
     get_xml()->get_widget("main_notebook_packages_limit_errors", pLimitErrorLabel);
     get_xml()->get_widget("main_notebook_packages_limit_button", pLimitButton);
+    get_xml()->get_widget("main_notebook_packages_incremental_toggle_button", pIncrementalToggleButton);
     get_xml()->get_widget("main_notebook_packages_show_only_combo_box", pLimitComboBox);
 
     using cwidget::util::ref_ptr;
@@ -284,7 +320,7 @@ namespace gui
     pPkgView->store_reloading.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), false));
     pPkgView->store_reloaded.connect(sigc::bind(sigc::mem_fun(*get_label_button(), &Gtk::Widget::set_sensitive), true));
 
-    pSearchList = PackageSearchList::create(PackageSearchEntry::create(pLimitEntry, pLimitErrorLabel, pLimitButton),
+    pSearchList = PackageSearchList::create(PackageSearchEntry::create(pLimitEntry, pLimitErrorLabel, pLimitButton, pIncrementalToggleButton),
 					    pLimitComboBox, pPkgView,
 					    sigc::mem_fun(this, &PackagesTab::after_repopulate_model));
 
