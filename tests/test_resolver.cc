@@ -359,10 +359,10 @@ private:
     expected_initial_state.insert(cv2);
 
     {
-      std::vector<version> initial_state;
+      std::set<version> initial_state;
       r.get_initial_state().get_initial_versions(initial_state);
       imm::set<version> initial_state_set;
-      for(std::vector<version>::const_iterator it = initial_state.begin();
+      for(std::set<version>::const_iterator it = initial_state.begin();
 	  it != initial_state.end(); ++it)
 	initial_state_set.insert(*it);
       CPPUNIT_ASSERT_EQUAL(initial_state_set,
@@ -377,10 +377,10 @@ private:
 			       sol.get_actions().empty());
 
 	{
-	  std::vector<version> initial_state;
+	  std::set<version> initial_state;
 	  sol.get_initial_state().get_initial_versions(initial_state);
 	  imm::set<version> initial_state_set;
-	  for(std::vector<version>::const_iterator it = initial_state.begin();
+	  for(std::set<version>::const_iterator it = initial_state.begin();
 	      it != initial_state.end(); ++it)
 	    initial_state_set.insert(*it);
 	  CPPUNIT_ASSERT_EQUAL(initial_state_set,

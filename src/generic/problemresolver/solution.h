@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <map>
+#include <set>
 
 #include <cwidget/generic/util/ref_ptr.h>
 #include <generic/util/immset.h>
@@ -171,9 +172,9 @@ class resolver_initial_state
 	return version_store[slot];
     }
 
-    void get_initial_versions(std::vector<typename PackageUniverse::version> &out) const
+    void get_initial_versions(std::set<typename PackageUniverse::version> &out) const
     {
-      out.insert(out.end(), version_store.begin(), version_store.end());
+      out.insert(version_store.begin(), version_store.end());
     }
   };
 
@@ -218,11 +219,11 @@ public:
 
   /** \brief Retrieve the initial installations stored in this object.
    *
-   *  \param out  A vector onto which the initially installed versions
-   *              are pushed; it is guaranteed that no two output
+   *  \param out  A set into which the initially installed versions
+   *              are placed; it is guaranteed that no two output
    *              versions have the same package.
    */
-  void get_initial_versions(std::vector<typename PackageUniverse::version> &out) const
+  void get_initial_versions(std::set<typename PackageUniverse::version> &out) const
   {
     return the_impl->get_initial_versions(out);
   }
