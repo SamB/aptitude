@@ -62,9 +62,12 @@ namespace gui
     {
       aptitudeDepCache::action_group group(*apt_cache_file, NULL);
 
-      (*apt_cache_file)->mark_all_upgradable(false, true, NULL);
       if(upgrade_solution)
 	(*apt_cache_file)->apply_solution(upgrade_solution, NULL);
+      else
+	// If there is no solution, assume that the upgrade can be
+	// scheduled with no dependency problems.
+	(*apt_cache_file)->mark_all_upgradable(false, true, NULL);
     }
     if(!undo->empty())
       apt_undos->add_item(undo);

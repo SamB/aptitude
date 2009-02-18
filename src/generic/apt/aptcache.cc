@@ -1742,25 +1742,43 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 
   pre_package_state_changed();
 
+  // Build a list of all the resolver versions that are to be
+  // installed: versions selected in the solution as well as the
+  // versions that were initially installed.  The boolean values that
+  // tag along indicate whether each version was automatically
+  // installed (true if it was, false if it wasn't).
+  std::vector<std::pair<aptitude_resolver_version, bool> > versions;
+
+  std::set<aptitude_resolver_version> initial_versions;
+  sol.get_initial_state().get_initial_versions(initial_versions);
+  for(std::set<aptitude_resolver_version>::const_iterator it =
+	initial_versions.begin(); it != initial_versions.end(); ++it)
+    versions.push_back(std::make_pair(*it, false));
+
   for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
 	i = sol.get_actions().begin();
       i != sol.get_actions().end(); ++i)
+    versions.push_back(std::make_pair(i->second.ver, true));
+
+  for(std::vector<std::pair<aptitude_resolver_version, bool> >::const_iterator it =
+	versions.begin(); it != versions.end(); ++it)
     {
-      pkgCache::PkgIterator pkg=i->first.get_pkg();
+      const bool is_auto = it->second;
+      pkgCache::PkgIterator pkg = it->first.get_pkg();
       pkgCache::VerIterator curver=pkg.CurrentVer();
       pkgCache::VerIterator instver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
-      pkgCache::VerIterator actionver=i->second.ver.get_ver();
+      pkgCache::VerIterator actionver = it->first.get_ver();
 
       // Check what type of action it is.
       if(actionver.end())
 	{
 	  // removal.
 	  internal_mark_delete(pkg, false, false);
-	  if(!curver.end())
+	  if(is_auto && !curver.end())
 	    get_ext_state(pkg).remove_reason = from_resolver;
 	}
       else if(actionver == curver)
-	internal_mark_keep(pkg, true, false);
+	internal_mark_keep(pkg, is_auto, false);
       else
 	// install a particular version that's not the current one.
 	{
@@ -1772,7 +1790,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	  // that are going to be manually installed don't get marked
 	  // as auto, but packages that are being removed *do* get
 	  // marked as auto.
-	  if(instver.end())
+	  if(is_auto && instver.end())
 	    MarkAuto(pkg, true);
 	}
     }
