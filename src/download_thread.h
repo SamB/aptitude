@@ -20,6 +20,8 @@
 #ifndef DOWNLOAD_THREAD_H
 #define DOWNLOAD_THREAD_H
 
+#include <aptitude.h>
+
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/error.h>
 
@@ -102,7 +104,7 @@ public:
   void start()
   {
     if(t != NULL)
-      _error->Error("Attempt to start a download thread twice!");
+      _error->Error(_("Attempt to start a download thread twice!"));
     else
       t = new cwidget::threads::thread(cwidget::threads::noncopy_bootstrap<download_thread>(*this));
   }

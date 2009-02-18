@@ -168,7 +168,7 @@ public:
   {
     if(res != pkgAcquire::Continue || failed)
       {
-	_error->Error("Couldn't fetch URL %s", uri.c_str());
+	_error->Error(_("Couldn't fetch URL %s"), uri.c_str());
 
 	return failure;
       }

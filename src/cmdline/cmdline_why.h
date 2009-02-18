@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+#include <aptitude.h>
+
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgcache.h>
@@ -173,7 +175,7 @@ namespace aptitude
 	  case InstallNotCurrent:
 	    return (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
 	  default:
-	    _error->Error("Unknown version selection, something is very wrong.");
+	    _error->Error(_("Unknown version selection, something is very wrong."));
 	    return pkg.CurrentVer();
 	  }
       }

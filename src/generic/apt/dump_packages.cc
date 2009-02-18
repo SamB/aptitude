@@ -671,7 +671,7 @@ namespace aptitude
       if(make_directory_and_parents(out_directory) != 0)
 	{
 	  std::string tmp = cwidget::util::sstrerror(errno);
-	  _error->Error("Unable to create truncated cache: %s.",
+	  _error->Error(_("Unable to create truncated cache: %s."),
 			tmp.c_str());
 	  return;
 	}

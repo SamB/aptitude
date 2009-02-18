@@ -19,6 +19,7 @@
 
 #include "resolver_manager.h"
 
+#include <aptitude.h>
 #include "apt.h"
 #include "aptitude_resolver.h"
 #include "aptitude_resolver_universe.h"
@@ -426,9 +427,9 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
 	    ;
 
 	  if(WIFSIGNALED(status))
-	    _error->Error("Unable to create the output file: child killed by signal %d.", WTERMSIG(status));
+	    _error->Error(_("Unable to create the output file: child killed by signal %d."), WTERMSIG(status));
 	  else if(WEXITSTATUS(status) != 0)
-	    _error->Error("Unable to create the output file: child exited with status %d.", WEXITSTATUS(status));
+	    _error->Error(_("Unable to create the output file: child exited with status %d."), WEXITSTATUS(status));
 
 	  // Whee, we win!
 	}

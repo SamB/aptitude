@@ -135,7 +135,7 @@ namespace
 	++begin;
       }
 
-    _error->Warning("Unterminated quoted string in command: %s",
+    _error->Warning(_("Unterminated quoted string in command: %s"),
 		    whole_string.c_str());
     return rval;
   }

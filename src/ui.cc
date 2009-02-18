@@ -465,7 +465,7 @@ static void do_su_to_root(string args)
 
   if(pid==-1)
     {
-      _error->Error("Unable to fork: %s", strerror(errno));
+      _error->Error(_("Unable to fork: %s"), strerror(errno));
       cw::toplevel::resume();
     }
   else if(pid==0) // I'm a child!

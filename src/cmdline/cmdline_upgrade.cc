@@ -41,7 +41,7 @@ int cmdline_upgrade(int argc, char *argv[],
   pkgset to_install, to_hold, to_remove, to_purge;
 
   if(!strcasecmp(argv[0], "upgrade"))
-    _error->Warning("The \"upgrade\" command is deprecated; use \"safe-upgrade\" instead.");
+    _error->Warning(_("The \"upgrade\" command is deprecated; use \"safe-upgrade\" instead."));
 
   _error->DumpErrors();
 

@@ -19,7 +19,7 @@ void parse_cmdline(vector<arg_parser *> parsers, int argc, char *argv[])
 	done=parsers[i].parse_arg(argc, argv);
 
       if(!done)
-	_error->Error("Invalid command-line option '%s'", argv[argc]);
+	_error->Error(_("Invalid command-line option '%s'"), argv[argc]);
 
       if(_error->PendingError())
 	return;
