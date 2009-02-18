@@ -98,11 +98,19 @@ namespace gui
     if(incremental_toggle_button->get_active())
     {
       find_button->set_sensitive(false);
-      do_search();
+      if(search_entry->get_text() != "")
+      {
+        do_search();
+      }
+      else
+      {
+        search_entry->grab_focus();
+      }
     }
     else
     {
       find_button->set_sensitive(true);
+      search_entry->grab_focus();
     }
   }
 
