@@ -487,6 +487,7 @@ namespace gui
 	    // To ensure consistency, invoke success() with an invalid
 	    // solution (indicating nothing to be done).
 	    upgrade_resolver_success(generic_solution<aptitude_universe>());
+	    return;
 	  }
 
 	LOG_TRACE(logger, "Starting to calculate the upgrade in the background.");
