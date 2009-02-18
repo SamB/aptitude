@@ -40,7 +40,7 @@ class solution_weights;
 /** \brief Represents the initial state of a dependency search.
  *
  *  This is optimized under the assumption that overrides of package
- *  versions will be rare, but not unheard of.  (note: this is O(n),
+ *  versions will be rare, but not unheard of.  (note: this is O(1),
  *  but in reality it might not be optimized due to poor locality and
  *  the low number of overrides; if it's really an issue some
  *  profiling of different approaches -- sparse binary tree, sparse
