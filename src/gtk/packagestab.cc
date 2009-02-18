@@ -51,21 +51,46 @@ namespace gui
     cwidget::util::ref_ptr<aptitude::matching::pattern> p;
     try
       {
-	p = aptitude::matching::parse_with_errors(search_term);
+        p = aptitude::matching::parse_with_errors(search_term);
       }
     catch(aptitude::matching::MatchingException &ex)
       {
-	// Show the user what's wrong and don't update the list.
-	std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
-						   Glib::Markup::escape_text(_("Parse error")).c_str(),
-						   Glib::Markup::escape_text(ex.errmsg()).c_str()));
-	error_label->set_markup(markup);
-	error_label->show();
-	return;
+        // Show the user what's wrong and don't update the list.
+        std::string markup(cwidget::util::ssprintf("<span size=\"smaller\" color=\"red\">%s: %s</span>",
+                                                   Glib::Markup::escape_text(_("Parse error")).c_str(),
+                                                   Glib::Markup::escape_text(ex.errmsg()).c_str()));
+        error_label->set_markup(markup);
+        error_label->show();
+        return;
       }
 
     error_label->hide();
     activated(p);
+  }
+
+  bool PackageSearchEntry::do_delayed_search(Glib::ustring search_term)
+  {
+    Glib::ustring current_search_term(search_entry->get_text());
+    if(current_search_term == search_term && current_search_term != last_delayed_search_term)
+    {
+      // FIXME: This sensitivity/position dance is a temporary workaround
+      //        because the searching lag messes up badly with
+      //        the text entry editing (caret position and selection).
+      //        It looks like the caret is only moved after the newly typed character
+      //        only after Editable::signal_changed() is fired and handled but a new
+      //        character can be type (at the previous position) in the meantime.
+      // NOTE:  This should now be mostly mitigated by the 200ms timeout but can still
+      //        happen with very length searches.
+      int position;
+      position = search_entry->get_position();
+      search_entry->set_sensitive(false);
+      last_delayed_search_term = current_search_term;
+      do_search();
+      search_entry->set_sensitive(true);
+      search_entry->grab_focus();
+      search_entry->set_position(position);
+    }
+    return false;
   }
 
   void PackageSearchEntry::toggled_incremental()
@@ -100,19 +125,7 @@ namespace gui
       search_entry->unset_base(Gtk::STATE_NORMAL);
       if(incremental_toggle_button != NULL && incremental_toggle_button->get_active())
       {
-        // FIXME: This sensitivity/position dance is a temporary workaround
-        //        because the searching lag messes up badly with
-        //        the text entry editing (caret position and selection).
-        //        It looks like the caret is only moved after the newly typed character
-        //        only after Editable::signal_changed() is fired and handled but a new
-        //        character can be type (at the previous position) in the meantime.
-        int position;
-        position = search_entry->get_position();
-        search_entry->set_sensitive(false);
-        do_search();
-        search_entry->set_sensitive(true);
-        search_entry->grab_focus();
-        search_entry->set_position(position);
+        Glib::signal_timeout().connect(sigc::bind(sigc::mem_fun(*this, &PackageSearchEntry::do_delayed_search), limit), 200);
       }
     }
     else

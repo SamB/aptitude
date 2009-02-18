@@ -56,9 +56,17 @@ namespace gui
     Gtk::Button *find_button;
     Gtk::ToggleButton *incremental_toggle_button;
 
+    Glib::ustring last_delayed_search_term;
+
     // Parse the current entry and emit the activated() signal if it's
     // valid (otherwise show the error).
     void do_search();
+
+    // Will compare the current search term with the stored value and fire if unchanged,
+    // but will not fire if same as last_delayed_search_term.
+    // This is used to trigger a search, say, 200ms in the future if the search term
+    // hasn't changed since but has since the last delayed search.
+    bool do_delayed_search(Glib::ustring search_term);
 
     // Affect the search button according to the incremental toggle button:
     // if toggled, then disable manual search.
