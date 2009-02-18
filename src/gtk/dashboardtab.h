@@ -45,6 +45,7 @@ namespace gui
 {
   class PkgView;
   class PackageSearchEntry;
+  class ResolverTab;
 
   /** \brief The main dashboard tab. */
   class DashboardTab : public Tab
@@ -56,6 +57,76 @@ namespace gui
     // actually discard and recreate it ourselves as well: e.g., if a
     // "hold" state changes, that can affect the upgrade calculation.
     resolver_manager *upgrade_resolver;
+
+    // Collects code that keeps track of the "fixing upgrade" state.
+    class fixing_upgrade_info
+    {
+      // A separate internal resolver that's used if the user asks to
+      // fix the initial solution manually.  The first upgrade
+      // solution that was produced is used for the initial state of
+      // this resolver.  This manager is set to NULL until (1) an
+      // upgrade solution is produced AND (2) there is a "fixing
+      // upgrade" tab.
+      resolver_manager *fixing_upgrade_resolver;
+
+      // The "fixing upgrade" tab, if one exists; otherwise NULL.
+      ResolverTab *fixing_upgrade_tab;
+
+      /** \brief Invoked when the tab is closed. */
+      void handle_fixing_upgrade_tab_closed();
+
+      /** \brief Initialize the internal resolver manager from the
+       *  given solution.
+       *
+       *  If there is a fixing upgrade tab, notifies it of the new
+       *  manager.
+       */
+      void create_resolver(const generic_solution<aptitude_universe> &sol);
+
+    public:
+      fixing_upgrade_info();
+
+      // Discards the resolver and NULLs it out in the tab if there is
+      // one.
+      ~fixing_upgrade_info();
+
+      /** \brief Throw away the resolver and NULL it out in the tab.
+       *
+       *  Use this to get rid of the resolver after a cache reload,
+       *  for instance.
+       */
+      void discard_resolver();
+
+      /** \brief Pulse the progress bar on the "fixing upgrade" tab,
+       *  if there is one.
+       */
+      void pulse();
+
+      /** \brief Tell the "fixing upgrade" tab, if there is one, that
+       *  the given solution was found.
+       *
+       *  If there is a tab, creates a new resolver manager and hands
+       *  it off to the tab.
+       *
+       *  \param sol The solution that was calculated, or an invalid
+       *             solution if the resolver failed.
+       */
+      void solution_calculated(const generic_solution<aptitude_universe> &sol);
+
+      /** \brief Show the "fixing upgrade" tab and populate it with
+       *  the given solution.
+       *
+       *  Like solution_calculated(), but creates the tab if it
+       *  doesn't exist.
+       *
+       *  \param sol The solution that was calculated, or an invalid
+       *             solution if the resolver failed.
+       */
+      void show_fixing_upgrade(const generic_solution<aptitude_universe> &sol);
+    };
+
+    fixing_upgrade_info fixing_upgrade;
+
     // The internal resolver solution that we use to calculate an
     // upgrade solution.  If this is invalid, the solution hasn't been
     // calculated yet.
@@ -105,6 +176,7 @@ namespace gui
 
     Gtk::ProgressBar *upgrade_resolver_progress;
     Gtk::Label *upgrade_resolver_label;
+    Gtk::Button *fix_manually_button;
     Gtk::Button *upgrade_button;
 
     Gtk::Label *available_upgrades_label;
@@ -116,6 +188,8 @@ namespace gui
     void do_search();
 
     void do_upgrade();
+
+    void do_fix_manually();
 
     // Download all the changelogs and show the new entries.
     void create_upgrade_summary();

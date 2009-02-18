@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Feb 16 09:29:22 2009 -->
+<!--Generated with glade3 3.4.5 on Tue Feb 17 21:44:03 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -1127,6 +1127,45 @@
         <property name="border_width">6</property>
         <property name="spacing">6</property>
         <child>
+          <widget class="GtkHBox" id="resolver_fixing_upgrade_message">
+            <property name="no_show_all">True</property>
+            <property name="spacing">10</property>
+            <child>
+              <widget class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="stock">gtk-go-up</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="resolver_fixing_upgrade_label">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="yes">Fixing upgrade manually:</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkProgressBar" id="resolver_fixing_upgrade_progress_bar">
+                <property name="text" translatable="yes">Calculating upgrade...</property>
+              </widget>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+          </packing>
+        </child>
+        <child>
           <widget class="GtkFrame" id="frame4">
             <property name="visible">True</property>
             <property name="label_xalign">0</property>
@@ -1186,6 +1225,7 @@ This is the default view mode.</property>
           </widget>
           <packing>
             <property name="expand">False</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -1203,7 +1243,7 @@ This is the default view mode.</property>
             </child>
           </widget>
           <packing>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -1264,7 +1304,7 @@ This is the default view mode.</property>
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </widget>
@@ -1472,6 +1512,15 @@ This is the default view mode.</property>
                             <property name="visible">True</property>
                             <property name="layout_style">GTK_BUTTONBOX_END</property>
                             <child>
+                              <widget class="GtkButton" id="dashboard_fix_manually_button">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="label" translatable="yes">Fix Manually</property>
+                                <property name="response_id">0</property>
+                              </widget>
+                            </child>
+                            <child>
                               <widget class="GtkButton" id="dashboard_upgrade_button">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -1479,6 +1528,9 @@ This is the default view mode.</property>
                                 <property name="label" translatable="yes">Upgrade</property>
                                 <property name="response_id">0</property>
                               </widget>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </widget>
                           <packing>

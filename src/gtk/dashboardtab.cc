@@ -26,6 +26,7 @@
 #include "packagestab.h" // For PackageSearchEntry.
 #include "pkgview.h"
 #include "progress.h"
+#include "resolver.h"
 
 #include <aptitude.h>
 #include <loggers.h>
@@ -44,11 +45,176 @@
 namespace cw = cwidget;
 using aptitude::Loggers;
 
+namespace
+{
+  // Used to build the initial installations for the resolver.
+  imm::map<aptitude_resolver_package, aptitude_resolver_version>
+  get_upgradable()
+  {
+    imm::map<aptitude_resolver_package, aptitude_resolver_version> rval;
+
+    std::set<pkgCache::PkgIterator> upgradable;
+    (*apt_cache_file)->get_upgradable(true, upgradable);
+
+    for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	  upgradable.begin(); it != upgradable.end(); ++it)
+      {
+	pkgCache::PkgIterator pkg(*it);
+	pkgCache::VerIterator ver((*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file));
+
+	aptitude_resolver_package resolver_pkg(pkg, *apt_cache_file);
+	aptitude_resolver_version resolver_ver(pkg, ver, *apt_cache_file);
+
+	rval.put(resolver_pkg, resolver_ver);
+      }
+
+    return rval;
+  }
+}
+
 namespace gui
 {
+  void DashboardTab::fixing_upgrade_info::handle_fixing_upgrade_tab_closed()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    LOG_TRACE(logger, "The resolver tab for manually fixing the upgrade was closed.");
+
+    fixing_upgrade_tab = NULL;
+    // Don't destroy the resolver; the user might want to continue
+    // from where they left off.
+  }
+
+  void DashboardTab::fixing_upgrade_info::create_resolver(const generic_solution<aptitude_universe> &sol)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    if(sol)
+      LOG_DEBUG(logger, "Manually fixing the remaining upgrades from the solution " << sol);
+    else
+      LOG_DEBUG(logger, "Manually fixing the upgrade.");
+
+    // Figure out the initial set of installations.
+    imm::map<aptitude_resolver_package, aptitude_resolver_version> initial_versions;
+
+    if(sol)
+      {
+	// Start with the initial versions of this solution.
+	std::set<aptitude_resolver_version> sol_initial_versions;
+	sol.get_initial_state().get_initial_versions(sol_initial_versions);
+	for(std::set<aptitude_resolver_version>::const_iterator it
+	      = sol_initial_versions.begin();
+	    it != sol_initial_versions.end(); ++it)
+	  initial_versions.put(it->get_package(), *it);
+
+	// Now apply the changes described by this solution, but NOT
+	// keeps!
+	for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
+	      it = sol.get_actions().begin();
+	    it != sol.get_actions().end(); ++it)
+	  {
+	    if(it->second.ver == it->first.current_version())
+	      LOG_TRACE(logger, "Not including " << it->second.ver << " in the initial state of the upgrade-fixing resolver: it is a keep.");
+	    else
+	      initial_versions.put(it->first, it->second.ver);
+	  }
+      }
+    else
+      // Assume we just couldn't find any solutions (ow).
+      initial_versions = get_upgradable();
+
+    LOG_DEBUG(logger, "Initial versions for the manual fixer: " << initial_versions);
+    if(fixing_upgrade_resolver)
+      discard_resolver();
+    LOG_TRACE(logger, "Creating a new resolver manager for manually fixing the upgrade.");
+    fixing_upgrade_resolver = new resolver_manager(*apt_cache_file,
+						   initial_versions);
+
+    if(fixing_upgrade_tab != NULL)
+      {
+	if(fixing_upgrade_resolver->resolver_exists())
+	  {
+	    LOG_TRACE(logger, "Sending the new resolver manager to the fixing-upgrade tab.");
+	    fixing_upgrade_tab->set_fix_upgrade_resolver(fixing_upgrade_resolver);
+	  }
+	else
+	  LOG_ERROR(logger, "No resolver exists in the new resolver manager -- not sending it to the fixing-upgrade tab.");
+      }
+  }
+
+  DashboardTab::fixing_upgrade_info::fixing_upgrade_info()
+    : fixing_upgrade_resolver(NULL),
+      fixing_upgrade_tab(NULL)
+  {
+  }
+
+  DashboardTab::fixing_upgrade_info::~fixing_upgrade_info()
+  {
+    discard_resolver();
+  }
+
+  void DashboardTab::fixing_upgrade_info::discard_resolver()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    LOG_TRACE(logger, "Discarding the resolver for manual upgrade fixing.");
+
+    delete fixing_upgrade_resolver;
+    fixing_upgrade_resolver = NULL;
+
+    if(fixing_upgrade_tab != NULL)
+      fixing_upgrade_tab->set_fix_upgrade_resolver(fixing_upgrade_resolver);
+  }
+
+  void DashboardTab::fixing_upgrade_info::pulse()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    LOG_TRACE(logger, "Pulsing the progress bar in the tab for manually fixing the upgrade.");
+
+    if(fixing_upgrade_tab != NULL)
+      fixing_upgrade_tab->pulse_fix_upgrade_resolver_progress();
+  }
+
+  void DashboardTab::fixing_upgrade_info::solution_calculated(const generic_solution<aptitude_universe> &sol)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    if(fixing_upgrade_tab != NULL)
+      create_resolver(sol);
+    else
+      LOG_TRACE(logger, "Not creating a new resolver to fix upgrades manually: there is no active tab.");
+  }
+
+  void DashboardTab::fixing_upgrade_info::show_fixing_upgrade(const generic_solution<aptitude_universe> &sol)
+  {
+    if(fixing_upgrade_tab == NULL)
+      {
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+	LOG_TRACE(logger, "Creating new resolver tab to manually fix the upgrade.");
+
+	fixing_upgrade_tab = new ResolverTab(_("Resolve Upgrade Manually"));
+	fixing_upgrade_tab->closed.connect(sigc::mem_fun(*this, &fixing_upgrade_info::handle_fixing_upgrade_tab_closed));
+	pMainWindow->tab_add(fixing_upgrade_tab);
+      }
+
+    solution_calculated(sol);
+  }
+
   void DashboardTab::do_search()
   {
     pMainWindow->add_packages_tab(package_search_entry->get_text());
+  }
+
+  void DashboardTab::do_fix_manually()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+
+    if(upgrade_resolver == NULL)
+      // Should never happen.
+      LOG_TRACE(logger, "Not fixing the upgrade manually: sanity-check failed: no upgrade resolver.");
+    else
+      fixing_upgrade.show_fixing_upgrade(upgrade_solution);
   }
 
   void DashboardTab::do_upgrade()
@@ -237,33 +403,6 @@ namespace gui
     available_upgrades_label->set_text(formatted_text);
   }
 
-  namespace
-  {
-    // Used to build the initial installations for the resolver.
-    imm::map<aptitude_resolver_package, aptitude_resolver_version>
-    get_upgradable()
-    {
-      imm::map<aptitude_resolver_package, aptitude_resolver_version> rval;
-
-      std::set<pkgCache::PkgIterator> upgradable;
-      (*apt_cache_file)->get_upgradable(true, upgradable);
-
-      for(std::set<pkgCache::PkgIterator>::const_iterator it =
-	    upgradable.begin(); it != upgradable.end(); ++it)
-	{
-	  pkgCache::PkgIterator pkg(*it);
-	  pkgCache::VerIterator ver((*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file));
-
-	  aptitude_resolver_package resolver_pkg(pkg, *apt_cache_file);
-	  aptitude_resolver_version resolver_ver(pkg, ver, *apt_cache_file);
-
-	  rval.put(resolver_pkg, resolver_ver);
-	}
-
-      return rval;
-    }
-  }
-
   class DashboardTab::upgrade_continuation : public resolver_manager::background_continuation
   {
     safe_slot1<void, generic_solution<aptitude_universe> > success_slot;
@@ -319,6 +458,7 @@ namespace gui
     LOG_TRACE(logger, "Pulsing the upgrade resolver's progress bar.");
 
     upgrade_resolver_progress->pulse();
+    fixing_upgrade.pulse();
     return true;
   }
 
@@ -381,6 +521,7 @@ namespace gui
 	upgrade_resolver_progress->set_text(_("Calculating upgrade..."));
 	upgrade_resolver_progress->pulse();
 	upgrade_resolver_label->hide();
+	fix_manually_button->set_sensitive(false);
 	upgrade_button->set_sensitive(false);
 
 	pulse_progress_connection.disconnect(); // Just extra paranoia.
@@ -408,7 +549,10 @@ namespace gui
     // Adjust the UI to show that there's no upgrade available.
     upgrade_resolver_progress->hide();
     upgrade_resolver_label->hide();
+    fix_manually_button->set_sensitive(false);
     upgrade_button->set_sensitive(false);
+
+    fixing_upgrade.discard_resolver();
   }
 
   void DashboardTab::upgrade_resolver_success(generic_solution<aptitude_universe> sol)
@@ -431,6 +575,8 @@ namespace gui
       LOG_TRACE(logger, "Upgrade solution computed: " << sol);
     else
       LOG_TRACE(logger, "No upgrade solution computed because there were no problems to solve.");
+
+    fixing_upgrade.solution_calculated(upgrade_solution);
 
     std::set<pkgCache::PkgIterator> upgrades;
     (*apt_cache_file)->get_upgradable(true, upgrades);
@@ -457,6 +603,8 @@ namespace gui
       // If there are no problems, we upgrade all the currently
       // upgradable packages.
       num_upgrades_selected = upgrades.size();
+    const int num_upgrades_not_selected
+      = upgrades.size() - num_upgrades_selected;
 
     upgrade_resolver_progress->hide();
     upgrade_resolver_label->show();
@@ -464,6 +612,7 @@ namespace gui
     if(upgrades.empty())
       {
 	upgrade_resolver_label->set_text(_("No upgrades are available."));
+	fix_manually_button->set_sensitive(false);
 	upgrade_button->set_sensitive(false);
       }
     else
@@ -476,16 +625,35 @@ namespace gui
 	if(num_upgrades_selected == 0)
 	  markup = Glib::Markup::escape_text(_("Unable to calculate an upgrade."));
 	else
-	  // This message doesn't say how many upgrades there are
-	  // because (A) I can't come up with a straightforward way of
-	  // stating that, and (B) that information is already
-	  // available in the label of the list view.
-	  markup =
-	    cw::util::ssprintf(ngettext("Press 'Upgrade' to install <span size='large'>%d</span> upgrade.",
-					"Press 'Upgrade' to install <span size='large'>%d</span> upgrades.",
-					num_upgrades_selected),
-			       num_upgrades_selected);
+	  {
+	    // This message doesn't say how many upgrades there are
+	    // because (A) I can't come up with a straightforward way
+	    // of stating that, and (B) that information is already
+	    // available in the label of the list view.
+
+	    if(num_upgrades_selected > 0)
+	      markup += cw::util::ssprintf(ngettext("Press \"%s\" to install <span size='large'>%d</span> upgrade out of <span size='large'>%d</span>.",
+						    "Press \"%s\" to install <span size='large'>%d</span> upgrades out of <span size='large'>%d</span>.",
+						    num_upgrades_selected),
+					   upgrade_button->get_label().c_str(),
+					   num_upgrades_selected,
+					   upgrades.size());
+
+	    if(num_upgrades_not_selected > 0)
+	      {
+		if(!markup.empty())
+		  markup += "\n";
+
+		markup += cw::util::ssprintf(ngettext("Press \"%s\" to manually attempt to install the remaining <span size='large'>%d</span> upgrade.",
+						      "Press \"%s\" to manually attempt to install the remaining <span size='large'>%d</span> upgrades.",
+						      num_upgrades_not_selected),
+					     fix_manually_button->get_label().c_str(),
+					     num_upgrades_not_selected);
+	      }
+	  }
+
 	upgrade_resolver_label->set_markup(markup);
+	fix_manually_button->set_sensitive(num_upgrades_not_selected > 0);
 	upgrade_button->set_sensitive(num_upgrades_selected > 0);
       }
   }
@@ -501,8 +669,12 @@ namespace gui
     // dependencies by hand.
     upgrade_resolver_progress->hide();
     upgrade_resolver_label->show();
-    upgrade_resolver_label->set_text(_("Unable to calculate an upgrade."));
+    upgrade_resolver_label->set_text(cw::util::ssprintf(_("Unable to calculate an upgrade.  Press \"%s\" to manually search for a solution."),
+							fix_manually_button->get_label().c_str()));
+    fix_manually_button->set_sensitive(true);
     upgrade_button->set_sensitive(false);
+    upgrade_solution.nullify();
+    fixing_upgrade.solution_calculated(upgrade_solution);
   }
 
   void DashboardTab::upgrade_resolver_aborted(std::string errmsg)
@@ -516,6 +688,7 @@ namespace gui
     upgrade_resolver_label->show();
     upgrade_resolver_label->set_text(cw::util::ssprintf(_("Internal error encountered while calculating an upgrade: %s"),
 							errmsg.c_str()));
+    fix_manually_button->set_sensitive(false);
     upgrade_button->set_sensitive(false);
   }
 
@@ -542,6 +715,8 @@ namespace gui
 
     get_xml()->get_widget("dashboard_upgrade_button",
 			  upgrade_button);
+    get_xml()->get_widget("dashboard_fix_manually_button",
+			  fix_manually_button);
     get_xml()->get_widget("dashboard_available_upgrades_label",
 			  available_upgrades_label);
     get_xml()->get_widget("dashboard_upgrades_summary_textview",
@@ -568,7 +743,8 @@ namespace gui
     upgrades_pkg_view->store_reloaded.connect(sigc::mem_fun(*this,
 							    &DashboardTab::handle_upgrades_store_reloaded));
 
-    upgrade_button->set_sensitive(apt_cache_file != NULL);
+    fix_manually_button->set_sensitive(false);
+    upgrade_button->set_sensitive(false);
 
     if(apt_cache_file != NULL)
       {
@@ -584,6 +760,8 @@ namespace gui
 
     upgrade_button->set_image(*manage(new Gtk::Image(Gtk::Stock::GO_UP, Gtk::ICON_SIZE_BUTTON)));
     upgrade_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_upgrade));
+
+    fix_manually_button->signal_clicked().connect(sigc::mem_fun(*this, &DashboardTab::do_fix_manually));
 
     get_widget()->show_all();
 

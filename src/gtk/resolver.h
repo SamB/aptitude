@@ -72,11 +72,31 @@ namespace gui
     private:
       typedef generic_solution<aptitude_universe> aptitude_solution;
 
+    // The resolver manager that we're using.
+    resolver_manager *resolver;
+
+    // True if we're using an internal resolver; false otherwise.
+    bool using_internal_resolver;
+
+    resolver_manager *get_resolver() const
+    {
+      return using_internal_resolver ? resolver : resman;
+    }
+
+    sigc::connection resolver_state_changed_connection;
+
       ResolverView * pResolverView;
       Gtk::Label * pResolverStatus;
       Gtk::Button * pResolverPrevious;
       Gtk::Button * pResolverNext;
       Gtk::Button * pResolverApply;
+
+    // The top container for the "fixing upgrade..." message.  Used to
+    // show and hide it.
+    Gtk::Widget * resolver_fixing_upgrade_message;
+
+    Gtk::ProgressBar * resolver_fixing_upgrade_progress_bar;
+    Gtk::Label * resolver_fixing_upgrade_label;
 
     Gtk::RadioButton * pButtonGroupByAction;
     Gtk::RadioButton * pButtonShowExplanation;
@@ -137,6 +157,30 @@ namespace gui
     public:
       ResolverTab(const Glib::ustring &label);
       ResolverView * get_packages_view() { return pResolverView; };
+
+    /** \brief Enable the "fix upgrade manually" mode on this resolver
+     *  tab, using the given resolver manager.
+     *
+     *  This just adjusts the UI slightly to make it clear that the
+     *  resolver is specifically focused on finding a solution for an
+     *  upgrade problem and to provide feedback when the upgrade
+     *  resolver's initial state is being recalculated for some reason
+     *  (e.g., a cache reload).  It also prevents the resolver from
+     *  being automatically destroyed when there are no more broken
+     *  dependencies.
+     *
+     *  \param manager The manager to use in this tab, or \b NULL to
+     *  disable the UI and show the "recalculating upgrade" progress
+     *  bar.  The caller is responsible for invoking
+     *  set_is_fix_upgrade_resolver() again, should "manager" ever
+     *  become invalid, with a valid resolver manager object.
+     */
+    void set_fix_upgrade_resolver(resolver_manager *manager);
+
+    /** \brief Invoked by the dashboard tab to pulse the progress bar
+     *	in this tab.
+     */
+    void pulse_fix_upgrade_resolver_progress();
   };
 
   /** \brief Set up the global resolver tracker.

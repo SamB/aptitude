@@ -45,7 +45,8 @@ namespace gui
 {
   namespace
   {
-    void do_start_solution_calculation(bool blocking);
+    void do_start_solution_calculation(bool blocking,
+				       resolver_manager *resolver);
 
     class gui_resolver_continuation : public resolver_manager::background_continuation
     {
@@ -99,7 +100,11 @@ namespace gui
 
       void no_more_time()
       {
-	do_start_solution_calculation(false);
+	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+
+	LOG_TRACE(logger, "Resolver tab: ran out of time, restarting the calculation.");
+
+	do_start_solution_calculation(false, manager);
       }
 
       void interrupted()
@@ -125,16 +130,18 @@ namespace gui
       }
     };
 
-    void do_start_solution_calculation(bool blocking)
+    void do_start_solution_calculation(bool blocking, resolver_manager *resolver)
     {
-      resman->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resman));
+      resolver->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resolver));
     }
 
+    // This isn't parameterized by the resolver, because only the
+    // global resolver should automatically be started calculating.
     void do_connect_resolver_callback()
     {
-      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true));
+      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true, resman));
       // We may have missed a signal before making the connection:
-      do_start_solution_calculation(false);
+      do_start_solution_calculation(false, resman);
     }
   }
 
@@ -180,7 +187,9 @@ namespace gui
   }
 
   ResolverTab::ResolverTab(const Glib::ustring &label) :
-    Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "main_resolver_vbox"), "main_resolver_vbox")
+    Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "main_resolver_vbox"), "main_resolver_vbox"),
+    resolver(NULL),
+    using_internal_resolver(false)
   {
     get_xml()->get_widget("main_resolver_status", pResolverStatus);
     get_xml()->get_widget("main_resolver_previous", pResolverPrevious);
@@ -188,6 +197,9 @@ namespace gui
     get_xml()->get_widget("main_resolver_next", pResolverNext);
     pResolverNext->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_next_solution));
     get_xml()->get_widget("main_resolver_apply", pResolverApply);
+    get_xml()->get_widget("resolver_fixing_upgrade_message", resolver_fixing_upgrade_message);
+    get_xml()->get_widget("resolver_fixing_upgrade_progress_bar", resolver_fixing_upgrade_progress_bar);
+    get_xml()->get_widget("resolver_fixing_upgrade_label", resolver_fixing_upgrade_label);
     pResolverApply->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_apply_solution));
 
     get_xml()->get_widget("resolver_group_by_action", pButtonGroupByAction);
@@ -207,13 +219,18 @@ namespace gui
 
     get_widget()->show();
 
-    resman->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
-					     false));
+    // \todo This is never reconnected after a cache reload!
+    resolver_state_changed_connection =
+      get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+						       false));
   }
 
   void ResolverTab::update(bool force_update)
   {
-    resolver_manager::state state = resman->state_snapshot();
+    if(get_resolver() == NULL)
+      return;
+
+    resolver_manager::state state = get_resolver()->state_snapshot();
     update_from_state(state, force_update);
   }
 
@@ -657,7 +674,9 @@ namespace gui
       }
     else
       {
-	aptitude_solution sol = resman->get_solution(state.selected_solution, 0);
+	aptitude_solution sol = get_resolver()->get_solution(state.selected_solution, 0);
+
+	LOG_DEBUG(logger, "Resolver tab: showing solution: " << sol);
 
 	// Break out without doing anything if the current solution
 	// isn't changed.
@@ -706,10 +725,10 @@ namespace gui
 
   bool ResolverTab::do_previous_solution_enabled()
   {
-    if (resman == NULL)
+    if (get_resolver() == NULL)
       return false;
 
-    resolver_manager::state state = resman->state_snapshot();
+    resolver_manager::state state = get_resolver()->state_snapshot();
 
     return do_previous_solution_enabled_from_state(state);
   }
@@ -718,7 +737,8 @@ namespace gui
   {
     if (do_previous_solution_enabled())
       {
-	resman->select_previous_solution();
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Moving to the previous solution.");
+	get_resolver()->select_previous_solution();
       }
   }
 
@@ -731,10 +751,10 @@ namespace gui
 
   bool ResolverTab::do_next_solution_enabled()
   {
-    if (resman == NULL)
+    if (get_resolver() == NULL)
       return false;
 
-    resolver_manager::state state = resman->state_snapshot();
+    resolver_manager::state state = get_resolver()->state_snapshot();
     return do_next_solution_enabled_from_state(state);
   }
 
@@ -745,8 +765,8 @@ namespace gui
       LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Moving to the next solution.");
       // If an error was encountered, pressing "next solution"
       // skips it.
-      resman->discard_error_information();
-      resman->select_next_solution();
+      get_resolver()->discard_error_information();
+      get_resolver()->select_next_solution();
     }
   }
 
@@ -760,10 +780,10 @@ namespace gui
 
   void ResolverTab::do_apply_solution()
   {
-    if (!apt_cache_file)
+    if (!apt_cache_file || get_resolver() == NULL)
       return;
 
-    resolver_manager::state state = resman->state_snapshot();
+    resolver_manager::state state = get_resolver()->state_snapshot();
 
     if (do_apply_solution_enabled_from_state(state))
     {
@@ -773,7 +793,7 @@ namespace gui
       try
       {
 	aptitudeDepCache::action_group group(*apt_cache_file, NULL);
-	(*apt_cache_file)->apply_solution(resman->get_solution(state.selected_solution, 0), undo);
+	(*apt_cache_file)->apply_solution(get_resolver()->get_solution(state.selected_solution, 0), undo);
       }
       catch (NoMoreSolutions)
       {
@@ -796,4 +816,38 @@ namespace gui
     }
   }
 
+  void ResolverTab::set_fix_upgrade_resolver(resolver_manager *manager)
+  {
+    resolver_state_changed_connection.disconnect();
+
+    using_internal_resolver = true;
+    resolver = manager;
+    if(manager != NULL)
+      {
+	// \todo Is there a better place to put this?
+	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true, manager));
+	manager->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+						  false));
+
+	get_widget()->set_sensitive(true);
+	manager->maybe_start_solution_calculation(true, new gui_resolver_continuation(manager));
+	resolver_fixing_upgrade_label->show();
+	resolver_fixing_upgrade_progress_bar->hide();
+      }
+    else
+      {
+	get_widget()->set_sensitive(false);
+	resolver_fixing_upgrade_label->hide();
+	resolver_fixing_upgrade_progress_bar->show();
+	resolver_fixing_upgrade_progress_bar->pulse();
+      }
+
+    resolver_fixing_upgrade_message->show();
+    update(true);
+  }
+
+  void ResolverTab::pulse_fix_upgrade_resolver_progress()
+  {
+    resolver_fixing_upgrade_progress_bar->pulse();
+  }
 }
