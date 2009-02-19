@@ -813,6 +813,13 @@ namespace gui
       }
       else
         delete undo;
+
+      // This is a bit of a hack, to ensure that the user doesn't get
+      // dropped back at the dashboard after fixing an upgrade
+      // manually.
+      if(using_internal_resolver)
+	pMainWindow->do_preview();
+      tab_del(this);
     }
   }
 
