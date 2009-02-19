@@ -2,7 +2,7 @@
 
 // pkgview.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,6 +28,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/util/refcounted_base.h>
 
 #include <gtk/entityview.h>
 
@@ -35,8 +36,18 @@
 
 #include "gui.h" // For entity_state_info.
 
+namespace cwidget
+{
+  namespace threads
+  {
+    class thread;
+  }
+}
+
 namespace gui
 {
+  class guiOpProgress;
+
   class PkgEntity : public Entity
   {
     private:
@@ -126,7 +137,128 @@ namespace gui
     cwidget::util::ref_ptr<aptitude::matching::pattern> limit;
     sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK;
 
+    /** \brief Discards the contents of the list and stops building
+     *  it.
+     */
     void do_cache_closed();
+
+    class background_build_store : public sigc::trackable
+    {
+      /** \brief Used to cancel the background build thread on a
+       *  best-effort basis.
+       *
+       *  Canceling the thread isn't always possible, and it isn't
+       *  strictly necessary; it just saves some CPU time to do so.
+       */
+      class cancel_flag : public aptitude::util::refcounted_base_threadsafe
+      {
+	cancel_flag()
+	  : canceled(false)
+	{
+	}
+
+	// TODO: is it any better to have a mutex around this?  Seems
+	// like that might just introduce tons of locks for no good
+	// reason, esp. since this is just a best-effort cancel.  (of
+	// course, we could check every 1000 iterations or so...)
+	bool canceled;
+
+      public:
+	static cwidget::util::ref_ptr<cancel_flag> create()
+	{
+	  return new cancel_flag;
+	}
+
+	bool is_canceled() const
+	{
+	  return canceled;
+	}
+
+	void cancel()
+	{
+	  canceled = true;
+	}
+      };
+
+      class build_thread;
+
+      /** \brief The callback for the current build thread.
+       *
+       *  When the build is canceled we disconnect this slot, so that it
+       *  has no effect if it's posted to the mean thread.
+       */
+      safe_slot1<void, Glib::RefPtr<Gtk::TreeModel> > builder_callback;
+
+      /** \brief Like builder_callback, but for the current progress. */
+      safe_slot2<void, int, int> builder_progress_callback;
+
+      /** \brief The cancel flag for the current build thread. */
+      cwidget::util::ref_ptr<cancel_flag> builder_cancel;
+
+      /** \brief The current build thread, if any.
+       *
+       *  This is set by the main thread when the builder is started,
+       *  and nulled when builder_complete() or builder_cancel() is invoked.
+       */
+      cwidget::threads::thread *builder;
+
+      /** \brief Holds a reference to the progress bar of the current
+       *  builder, if any.
+       *
+       *  This is set and cleared in the same cases as builder.
+       */
+      cwidget::util::ref_ptr<guiOpProgress> builder_progress;
+
+      /** \brief The connection that pulses the main progress bar, if
+       *  any.
+       */
+      sigc::connection pulse_connection;
+
+      bool pulse_progress();
+
+      void progress(int current, int total);
+
+      /** \brief Invoked in the main thread when the store is done being
+       *  built in the background.
+       *
+       *  Not invoked if the rebuild is canceled.
+       */
+      void rebuild_store_finished(Glib::RefPtr<Gtk::TreeModel> model);
+
+    public:
+      background_build_store();
+      ~background_build_store();
+
+      /** \brief Start rebuilding the store.
+       *
+       *  Cancels any existing rebuild as a side effect.
+       */
+      void start(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> &generatorK,
+		 const EntityColumns *columns,
+		 const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit);
+
+      /** \brief Stop the background list builder.
+       *
+       *  This actually just disconnects it (so that invoking its slot
+       *  has no effect) and then asks it to cancel; it doesn't wait for
+       *  the thread to actually stop.
+       */
+      void cancel();
+
+      /** \brief Signal indicating that the store has been rebuilt.
+       */
+      sigc::signal<void, Glib::RefPtr<Gtk::TreeModel> > store_rebuilt;
+    };
+
+    /** \brief Invoked when the background builder is finished
+     *  rebuilding the store.
+     *
+     *  This attaches the model to the tree-view and signals to
+     *  clients that it's ready.
+     */
+    void store_rebuilt(const Glib::RefPtr<Gtk::TreeModel> &model);
+
+    background_build_store background_builder;
 
   public:
     sigc::signal<void> store_reloading;

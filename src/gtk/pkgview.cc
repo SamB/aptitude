@@ -376,6 +376,8 @@ namespace gui
 
     get_version_column()->set_visible(false);
     get_archive_column()->set_visible(false);
+
+    background_builder.store_rebuilt.connect(sigc::mem_fun(*this, &PkgViewBase::store_rebuilt));
   }
 
   PkgViewBase::~PkgViewBase()
@@ -384,6 +386,10 @@ namespace gui
 
   void PkgViewBase::do_cache_closed()
   {
+    // The builder has to be stopped before we reset the store;
+    // otherwise it might overwrite the new store.
+    background_builder.cancel();
+
     Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*get_columns());
     Gtk::TreeModel::iterator iter = store->append();
     Gtk::TreeModel::Row row = *iter;
@@ -391,19 +397,55 @@ namespace gui
     set_model(store);
   }
 
-  void PkgViewBase::rebuild_store()
+  // Bootstrap class for the build thread.
+  class PkgViewBase::background_build_store::build_thread
+  {
+    // How to create a generator.
+    sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> generatorK;
+    const EntityColumns *columns;
+    // The search term to use as a filter.
+    cwidget::util::ref_ptr<aptitude::matching::pattern> limit;
+    // The location to check for our cancel flag.
+    cwidget::util::ref_ptr<cancel_flag> canceled;
+    // The build's continuation; will be invoked in the main thread.
+    safe_slot1<void, Glib::RefPtr<Gtk::TreeModel> > k;
+
+
+    // TODO: I really should just have a threadsafe OpProgress that
+    // can post to the main thread.
+    //
+    // This slot is invoked with the current progress and the total
+    // progress.  The package view knows magically that if the two
+    // are inequal the text to display is "Building view"; otherwise
+    // it is "Finalizing view" (and the progress bar should be
+    // pulsed).
+    safe_slot2<void, int, int> progress_callback;
+
+  public:
+    build_thread(sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
+		 const EntityColumns *_columns,
+		 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_limit,
+		 const cwidget::util::ref_ptr<cancel_flag> &_canceled,
+		 const safe_slot1<void, Glib::RefPtr<Gtk::TreeModel> > &_k,
+		 const safe_slot2<void, int, int> &_progress_callback)
+      : generatorK(_generatorK),
+	columns(_columns),
+	limit(_limit),
+	canceled(_canceled),
+	k(_k),
+	progress_callback(_progress_callback)
+    {
+    }
+
+    void operator()();
+  };
+
+  void PkgViewBase::background_build_store::build_thread::operator()()
   {
     using namespace aptitude::matching;
     using cwidget::util::ref_ptr;
 
-    if(apt_cache_file == NULL)
-      return; // We'll try again when it's loaded.
-
-    store_reloading();
-    std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(get_columns()));
-
-    cwidget::util::ref_ptr<guiOpProgress> p =
-      guiOpProgress::create();
+    std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(columns));
 
     bool limited = limit.valid();
 
@@ -419,13 +461,16 @@ namespace gui
 	for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
 	      it = matches.begin(); it != matches.end(); ++it)
 	  {
-	    p->OverallProgress(num, total, 1, _("Building view"));
+	    if(canceled->is_canceled())
+	      return;
+
+	    post_event(safe_bind(progress_callback, num, total));
 
 	    ++num;
 	    generator->add(it->first);
 	  }
 
-	p->OverallProgress(total, total, 1,  _("Finalizing view"));
+	post_event(safe_bind(progress_callback, total, total));
       }
     else
       {
@@ -435,29 +480,136 @@ namespace gui
 	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
 	    !pkg.end(); ++pkg)
 	  {
-	    p->OverallProgress(num, total, 1, _("Building view"));
+	    if(canceled->is_canceled())
+	      return;
+
+	    post_event(safe_bind(progress_callback, num, total));
 
 	    ++num;
 	    generator->add(pkg);
 	  }
 
-	p->OverallProgress(total, total, 1, _("Finalizing view"));
+	post_event(safe_bind(progress_callback, total, total));
       }
 
-    Glib::Thread * sort_thread = Glib::Thread::create(sigc::mem_fun(*generator, &PkgTreeModelGenerator::finish), true);
-    while(!generator->finished)
-    {
-      pMainWindow->get_progress_bar()->pulse();
-      gtk_update();
-      Glib::usleep(100000);
-    }
-    sort_thread->join();
+    generator->finish();
 
-    // Erase our reference to the progress bar (it should be deleted
-    // when we do).
-    p = NULL;
+    // CAREFUL.  Glib::RefPtr isn't thread-safe, so we must relinquish
+    // all our references before the main thread sees the object.  We
+    // keep the model alive by binding one reference into the safe
+    // slot object, so it lives on the heap until the main thread
+    // picks it up.
 
-    set_model(generator->get_model());
+    // The slot that binds up the reference:
+    safe_slot0<void> bound_k(safe_bind(k, generator->get_model()));
+    // Zero out our reference.
+    generator.reset();
+
+    // Now post the heap-allocated reference to the main thread.
+    post_event(bound_k);
+  }
+
+  PkgViewBase::background_build_store::background_build_store()
+    : builder(NULL)
+  {
+  }
+
+  PkgViewBase::background_build_store::~background_build_store()
+  {
+    cancel();
+  }
+
+  void PkgViewBase::background_build_store::start(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> &generatorK,
+						  const EntityColumns *columns,
+						  const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit)
+  {
+    cancel();
+
+    pMainWindow->get_progress_bar()->set_text(_("Searching..."));
+    pulse_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &background_build_store::pulse_progress),
+						      200);
+
+    builder_progress = guiOpProgress::create();
+    builder_cancel = cancel_flag::create();
+    sigc::slot<void, Glib::RefPtr<Gtk::TreeModel> > k =
+      sigc::mem_fun(*this, &background_build_store::rebuild_store_finished);
+    builder_callback = make_safe_slot(k);
+
+    sigc::slot<void, int, int> progress_callback =
+      sigc::mem_fun(*this, &background_build_store::progress);
+    builder_progress_callback = make_safe_slot(progress_callback);
+
+    builder = new cwidget::threads::thread(build_thread(generatorK,
+							columns,
+							limit,
+							builder_cancel,
+							builder_callback,
+							builder_progress_callback));
+  }
+
+  void PkgViewBase::background_build_store::cancel()
+  {
+    if(builder_cancel.valid())
+      builder_cancel->cancel();
+
+    builder_callback.disconnect();
+    builder_progress_callback.disconnect();
+    builder_cancel = cwidget::util::ref_ptr<cancel_flag>();
+    builder_progress = cwidget::util::ref_ptr<guiOpProgress>();
+    pulse_connection.disconnect();
+    delete builder;
+    builder = NULL;
+  }
+
+  void PkgViewBase::background_build_store::progress(int current, int total)
+  {
+    if(builder_progress.valid())
+      {
+	const std::string msg =
+	  (current == total) ? _("Finalizing view") : _("Building view");
+	builder_progress->OverallProgress(current, total, 1, msg);
+	// If we're done, start pulsing the bar.
+	if(current == total)
+	  {
+	    pulse_connection.disconnect();
+	    pulse_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &background_build_store::pulse_progress),
+							      200);
+	  }
+	else
+	  pulse_connection.disconnect();
+      }
+  }
+
+  void PkgViewBase::background_build_store::rebuild_store_finished(Glib::RefPtr<Gtk::TreeModel> model)
+  {
+    // Clear out the background thread's structures and signal
+    // connections.
+    cancel();
+    store_rebuilt(model);
+  }
+
+  bool PkgViewBase::background_build_store::pulse_progress()
+  {
+    pMainWindow->get_progress_bar()->pulse();
+    return true;
+  }
+
+
+  void PkgViewBase::rebuild_store()
+  {
+    background_builder.cancel();
+
+    if(apt_cache_file == NULL)
+      return; // We'll try again when it's loaded.
+
+    store_reloading();
+
+    background_builder.start(generatorK, get_columns(), limit);
+  }
+
+  void PkgViewBase::store_rebuilt(const Glib::RefPtr<Gtk::TreeModel> &model)
+  {
+    set_model(model);
     store_reloaded();
   }
 
