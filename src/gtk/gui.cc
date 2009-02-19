@@ -1090,6 +1090,8 @@ namespace gui
       add_button(preview_button);
 
       install_remove_button = new Gtk::Button(_("Apply changes"));
+      install_remove_button->set_image(*new Gtk::Image(Gtk::Stock::APPLY,
+						       Gtk::ICON_SIZE_BUTTON));
       install_remove_button->signal_clicked().connect(sigc::ptr_fun(&do_installremove));
       add_button(install_remove_button);
 
