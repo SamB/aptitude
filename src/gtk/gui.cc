@@ -1484,6 +1484,12 @@ namespace gui
       menu_view_dependency_chains->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::show_dependency_chains_tab));
     }
 
+    refGlade->get_widget("menu_tab_previous", pMenuTabPrevious);
+    pMenuTabPrevious->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::prev_page));
+
+    refGlade->get_widget("menu_tab_next", pMenuTabNext);
+    pMenuTabNext->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::next_page));
+
     refGlade->get_widget("menu_undo_undo", menu_undo_undo);
     menu_undo_undo->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_undo));
 

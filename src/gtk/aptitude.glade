@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Feb 18 20:01:14 2009 -->
+<!--Generated with glade3 3.4.5 on Wed Feb 18 23:38:55 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="title" translatable="yes">Aptitude Package Manager</property>
@@ -332,6 +332,33 @@
                             <property name="icon_size">1</property>
                           </widget>
                         </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem6">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">menuitem4</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="menu_tab_previous">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">gtk-go-back</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="F6" signal="activate"/>
+                        <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="menu_tab_next">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">gtk-go-forward</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="F7" signal="activate"/>
+                        <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
                   </widget>

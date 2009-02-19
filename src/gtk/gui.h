@@ -135,6 +135,9 @@ namespace gui
       Gtk::ImageMenuItem * pMenuFileSuToRoot;
       Gtk::ImageMenuItem * pMenuFileExit;
 
+      Gtk::ImageMenuItem * pMenuTabPrevious;
+      Gtk::ImageMenuItem * pMenuTabNext;
+
       Gtk::Menu * pMenuPackage;
       Gtk::MenuItem *menu_undo_undo;
       Gtk::MenuItem *menu_view_edit_columns;
