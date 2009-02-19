@@ -1,6 +1,6 @@
 // safe_slot.h                                   -*-c++-*-
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -62,6 +62,11 @@ class safe_slot_wrapper
       : slot(_slot),
 	refcount(0)
     {
+    }
+
+    void disconnect()
+    {
+      slot.disconnect();
     }
 
     const T &get_slot() const
@@ -129,6 +134,12 @@ public:
     return *this;
   }
 
+  void disconnect()
+  {
+    if(impl != NULL)
+      impl->disconnect();
+  }
+
   /** \brief Return the stored slot, or a default-constructed slot if there is none. */
   T get_slot() const
   {
@@ -154,6 +165,8 @@ public:
   {
   }
 
+  void disconnect() const { real_slot.disconnect(); }
+
   sigc::slot0<Ret> get_slot() const { return real_slot.get_slot(); }
 };
 
@@ -177,6 +190,8 @@ public:
     : real_slot(slot)
   {
   }
+
+  void disconnect() { real_slot.disconnect(); }
 
   sigc::slot1<Ret, A1> get_slot() const { return real_slot.get_slot(); }
 };
@@ -216,6 +231,8 @@ public:
     : real_slot(slot)
   {
   }
+
+  void disconnect() { real_slot.disconnect(); }
 
   sigc::slot2<Ret, A1, A2> get_slot() const { return real_slot.get_slot(); }
 };
@@ -262,6 +279,8 @@ public:
     : real_slot(slot)
   {
   }
+
+  void disconnect() { real_slot.disconnect(); }
 
   sigc::slot3<Ret, A1, A2, A3> get_slot() const { return real_slot.get_slot(); }
 };
