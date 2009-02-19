@@ -359,6 +359,16 @@
                         <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                       </widget>
                     </child>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="menu_tab_close">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">gtk-close</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                        <accelerator key="Q" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                        <accelerator key="W" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                      </widget>
+                    </child>
                   </widget>
                 </child>
               </widget>

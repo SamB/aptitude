@@ -3,7 +3,7 @@
 // tab.h
 //
 //  Copyright 1999-2009 Daniel Burrows
-//  Copyright 2008 Obey Arthur Liu
+//  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -261,6 +261,12 @@ namespace gui
        * @param tab tab to remove
        */
       void remove_page(Tab &tab);
+
+      /**
+       * Remove the current tab from the notebook (maybe)
+       * Fires Tab::close_clicked().
+       */
+      void maybe_close_current_page();
 
       /** \brief Get the currently active tab. */
       Tab *get_current_tab();

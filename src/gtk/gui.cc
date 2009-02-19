@@ -1490,6 +1490,9 @@ namespace gui
     refGlade->get_widget("menu_tab_next", pMenuTabNext);
     pMenuTabNext->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::next_page));
 
+    refGlade->get_widget("menu_tab_close", pMenuTabClose);
+    pMenuTabClose->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::maybe_close_current_page));
+
     refGlade->get_widget("menu_undo_undo", menu_undo_undo);
     menu_undo_undo->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_undo));
 

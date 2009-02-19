@@ -204,6 +204,19 @@ namespace gui
     Gtk::Notebook::remove_page(*(tab.get_widget()));
   }
 
+  void TabsManager::maybe_close_current_page()
+  {
+    Gtk::Widget *current = get_nth_page(get_current_page());
+    if(current != NULL)
+    {
+      Tab * tab = (Tab*)current;
+      if(tab->get_autodestroy())
+        remove_page(*tab);
+      else
+        current->hide();
+    }
+  }
+
   void TabsManager::page_removed(Gtk::Widget *widget, int page)
   {
     if(widget != NULL)
