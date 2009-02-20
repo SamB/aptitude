@@ -23,6 +23,11 @@ using namespace log4cxx;
 
 namespace aptitude
 {
+  LoggerPtr Loggers::getAptitudeAptGlobals()
+  {
+    return Logger::getLogger("aptitude.apt.globals");
+  }
+
   LoggerPtr Loggers::getAptitudeDpkgStatusPipe()
   {
     return Logger::getLogger("aptitude.dpkg.statusPipe");

@@ -46,6 +46,13 @@ namespace aptitude
   {
     // Could define static variables here, but that would have no real purpose.
   public:
+    /** \brief The logger for events having to do with aptitude's
+     *  global apt state.
+     *
+     *  Name: aptitude.apt.globals
+     */
+    static log4cxx::LoggerPtr getAptitudeAptGlobals();
+
     /** \brief The logger for events having to do with the dpkg
      *  status pipe.
      */
