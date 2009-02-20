@@ -195,12 +195,31 @@ namespace gui
       /** \brief The cancel flag for the current build thread. */
       cwidget::util::ref_ptr<cancel_flag> builder_cancel;
 
+      /** \brief The set of build threads that are active at this
+       *  moment.
+       *
+       *  These are used when cancel_now() is invoked; they are
+       *  maintained in the main thread.
+       */
+      std::set<cwidget::threads::thread *> active_threads;
+
       /** \brief The current build thread, if any.
        *
        *  This is set by the main thread when the builder is started,
-       *  and nulled when builder_complete() or builder_cancel() is invoked.
+       *  and nulled when builder_complete() or builder_cancel() is
+       *  invoked.  (note, however, that it is not deleted until it's
+       *  removed from active_threads, which happens either when it
+       *  exits or when it is stopped by cancel_now().
        */
       cwidget::threads::thread *builder;
+
+      /** \brief If the given thread exists in active_threads, delete
+       *  it and remove it from that set.
+       *
+       *  Invoked when a thread exits normally, and when it's stopped
+       *  by cancel_now().
+       */
+      void thread_stopped(cwidget::threads::thread *t);
 
       /** \brief Holds a reference to the progress bar of the current
        *  builder, if any.
@@ -244,6 +263,14 @@ namespace gui
        *  the thread to actually stop.
        */
       void cancel();
+
+      /** \brief Stop all outstanding build threads, and wait for them
+       *  to finish.
+       *
+       *  This should be invoked, for instance, when the cache is
+       *  being closed.
+       */
+      void cancel_now();
 
       /** \brief Signal indicating that the store has been rebuilt.
        */

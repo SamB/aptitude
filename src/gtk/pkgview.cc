@@ -20,6 +20,7 @@
 
 #include "pkgview.h"
 #include "aptitude.h"
+#include "loggers.h"
 
 #undef OK
 #include <gtkmm.h>
@@ -42,6 +43,8 @@
 
 #include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/generic/util/transcode.h>
+
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -386,9 +389,9 @@ namespace gui
 
   void PkgViewBase::do_cache_closed()
   {
-    // The builder has to be stopped before we reset the store;
-    // otherwise it might overwrite the new store.
-    background_builder.cancel();
+    // The builder has to be stopped before the cache is closed;
+    // otherwise it might access the closed cache and blow up.
+    background_builder.cancel_now();
 
     Glib::RefPtr<Gtk::ListStore> store = Gtk::ListStore::create(*get_columns());
     Gtk::TreeModel::iterator iter = store->append();
@@ -421,19 +424,65 @@ namespace gui
     // pulsed).
     safe_slot2<void, int, int> progress_callback;
 
+    /** \brief Used to ensure that no matter how we exit the thread,
+     *  we always invoke the "done" callback.
+     *
+     *  Once the thread learns what its pointer is, it must invoke
+     *  bind() to set up the callback.
+     */
+    class ensure_done_callback
+    {
+      safe_slot1<void, cwidget::threads::thread *> done_callback;
+      cwidget::threads::thread *t;
+    public:
+      ensure_done_callback(const safe_slot1<void, cwidget::threads::thread *> _done_callback)
+	: done_callback(_done_callback)
+      {
+      }
+
+      ~ensure_done_callback()
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkPkgView(),
+		  "PkgView build thread: notifying main thread that " << t << " exited.");
+	post_event(safe_bind(done_callback, t));
+      }
+
+      void bind(cwidget::threads::thread *_t)
+      {
+	t = _t;
+      }
+    };
+
+    ensure_done_callback done_callback;
+
+    // A location from which to retrieve the thread object to pass to
+    // done_callback().
+    cwidget::threads::box<cwidget::threads::thread *> &thread_box;
+
+    // We "put" into this box to inform the parent that we're done
+    // getting the thread.  This is necessary, because otherwise the
+    // parent might destroy its box too soon!
+    cwidget::threads::box<void> &thread_box_done_box;
+
   public:
     build_thread(sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> _generatorK,
 		 const EntityColumns *_columns,
 		 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_limit,
 		 const cwidget::util::ref_ptr<cancel_flag> &_canceled,
 		 const safe_slot1<void, Glib::RefPtr<Gtk::TreeModel> > &_k,
-		 const safe_slot2<void, int, int> &_progress_callback)
+		 const safe_slot2<void, int, int> &_progress_callback,
+		 const safe_slot1<void, cwidget::threads::thread *> &_done_callback,
+		 cwidget::threads::box<cwidget::threads::thread *> &_thread_box,
+		 cwidget::threads::box<void> &_thread_box_done_box)
       : generatorK(_generatorK),
 	columns(_columns),
 	limit(_limit),
 	canceled(_canceled),
 	k(_k),
-	progress_callback(_progress_callback)
+	progress_callback(_progress_callback),
+	done_callback(_done_callback),
+	thread_box(_thread_box),
+	thread_box_done_box(_thread_box_done_box)
     {
     }
 
@@ -444,6 +493,19 @@ namespace gui
   {
     using namespace aptitude::matching;
     using cwidget::util::ref_ptr;
+
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+
+    LOG_TRACE(logger, "PkgView build thread: starting.");
+
+    cwidget::threads::thread *self_thread = thread_box.take();
+    done_callback.bind(self_thread);
+
+    LOG_DEBUG(logger, "PkgView build thread: got self pointer: " << self_thread);
+
+    thread_box_done_box.put();
+
+    LOG_TRACE(logger, "PkgView build thread: telling main thread to continue.");
 
     std::auto_ptr<PkgTreeModelGenerator> generator(generatorK(columns));
 
@@ -492,6 +554,8 @@ namespace gui
 	post_event(safe_bind(progress_callback, total, total));
       }
 
+    LOG_TRACE(logger, "PkgView build thread: sorting view.");
+
     generator->finish();
 
     // CAREFUL.  Glib::RefPtr isn't thread-safe, so we must relinquish
@@ -516,13 +580,24 @@ namespace gui
 
   PkgViewBase::background_build_store::~background_build_store()
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    LOG_TRACE(logger, "Destroying background store builder.");
     cancel();
+    for(std::set<cwidget::threads::thread *>::const_iterator it =
+	  active_threads.begin(); it != active_threads.end(); ++it)
+      {
+	LOG_TRACE(logger, "Deleting " << *it << " from the background store builder.");
+	delete *it;
+      }
   }
 
   void PkgViewBase::background_build_store::start(const sigc::slot1<PkgTreeModelGenerator *, const EntityColumns *> &generatorK,
 						  const EntityColumns *columns,
 						  const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit)
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+
+    LOG_TRACE(logger, "Creating new build thread.");
     cancel();
 
     pMainWindow->get_progress_bar()->set_text(_("Searching..."));
@@ -539,16 +614,43 @@ namespace gui
       sigc::mem_fun(*this, &background_build_store::progress);
     builder_progress_callback = make_safe_slot(progress_callback);
 
+    sigc::slot<void, cwidget::threads::thread *> thread_stopped_slot =
+      sigc::mem_fun(*this, &background_build_store::thread_stopped);
+    safe_slot1<void, cwidget::threads::thread *> thread_stopped_safe_slot =
+      make_safe_slot(thread_stopped_slot);
+
+    cwidget::threads::box<cwidget::threads::thread *>
+      thread_box;
+
+    cwidget::threads::box<void>
+      thread_box_done_box;
+
     builder = new cwidget::threads::thread(build_thread(generatorK,
 							columns,
 							limit,
 							builder_cancel,
 							builder_callback,
-							builder_progress_callback));
+							builder_progress_callback,
+							thread_stopped_safe_slot,
+							thread_box,
+							thread_box_done_box));
+
+    LOG_DEBUG(logger, "New PkgView build thread created: " << builder);
+
+    active_threads.insert(builder);
+
+    thread_box.put(builder);
+    thread_box_done_box.take();
   }
 
   void PkgViewBase::background_build_store::cancel()
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    if(builder == NULL)
+      LOG_TRACE(logger, "Would cancel the build thread, but it is NULL.");
+    else
+      LOG_DEBUG(logger, "Canceling build thread " << builder);
+
     if(builder_cancel.valid())
       builder_cancel->cancel();
 
@@ -557,12 +659,55 @@ namespace gui
     builder_cancel = cwidget::util::ref_ptr<cancel_flag>();
     builder_progress = cwidget::util::ref_ptr<guiOpProgress>();
     pulse_connection.disconnect();
-    delete builder;
     builder = NULL;
+  }
+
+  void PkgViewBase::background_build_store::cancel_now()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    LOG_TRACE(logger, "Canceling all threads and waiting for them to terminate.");
+
+    cancel();
+
+    // Now every active thread has been canceled, so just join all of
+    // them and we're done.
+
+    // Make a local copy of the set, since we'll delete elements as we
+    // walk over them.
+    std::vector<cwidget::threads::thread *> active_threads_copy(active_threads.begin(), active_threads.end());
+
+    for(std::vector<cwidget::threads::thread *>::const_iterator it =
+	  active_threads_copy.begin(); it != active_threads_copy.end(); ++it)
+      {
+	LOG_TRACE(logger, "Joining " << *it);
+	(*it)->join();
+
+	thread_stopped(*it);
+      }
+
+    if(active_threads.size() > 0)
+      {
+	LOG_ERROR(logger, "After all build threads were stopped and discarded, some threads are left!  Probably leaking memory...");
+	active_threads.clear();
+      }
+  }
+
+  void PkgViewBase::background_build_store::thread_stopped(cwidget::threads::thread *t)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+
+    LOG_DEBUG(logger, "Background PkgView build thread " << t << " has stopped, removing it from the active threads set.");
+
+    if(active_threads.erase(t) == 0)
+      LOG_DEBUG(logger, "The thread " << t << " was already removed from the set; not deleting it.");
+    else
+      delete t;
   }
 
   void PkgViewBase::background_build_store::progress(int current, int total)
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+
     if(builder_progress.valid())
       {
 	const std::string msg =
@@ -582,6 +727,9 @@ namespace gui
 
   void PkgViewBase::background_build_store::rebuild_store_finished(Glib::RefPtr<Gtk::TreeModel> model)
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    LOG_TRACE(logger, "The package view store was successfully rebuilt.");
+
     // Clear out the background thread's structures and signal
     // connections.
     cancel();
@@ -597,6 +745,8 @@ namespace gui
 
   void PkgViewBase::rebuild_store()
   {
+    // The builder has to be canceled before we reset the store;
+    // otherwise it might just overwrite the store.
     background_builder.cancel();
 
     if(apt_cache_file == NULL)
