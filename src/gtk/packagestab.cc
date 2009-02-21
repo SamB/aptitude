@@ -729,7 +729,7 @@ namespace gui
 
 	    textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
 
-	    textBuffer->insert_with_tag(textBuffer->end(), _("Description: "), fieldNameTag);
+	    textBuffer->insert(textBuffer->end(), info.LongDescription());
 
             textBuffer->insert(textBuffer->end(), "\n");
 
