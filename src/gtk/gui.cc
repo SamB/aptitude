@@ -1204,14 +1204,6 @@ namespace gui
     }
   };
 
-  namespace
-  {
-    void make_debtags_tab(const std::string &tag)
-    {
-      pMainWindow->add_packages_tab(tag);
-    }
-  }
-
   Gtk::TextBuffer::iterator add_debtags(const Glib::RefPtr<Gtk::TextBuffer> &buffer,
 					Gtk::TextBuffer::iterator where,
 					const pkgCache::PkgIterator &pkg,
@@ -1251,10 +1243,12 @@ namespace gui
 	    else
 	      where = buffer->insert(where, ", ");
 
+      // FIXME: This will break on regex-unsafe tags, like "implemented-in::c++"
+      //        which won't even match implemented-in::c++ ...
 	    where = add_hyperlink(buffer, where,
 				  name,
-				  sigc::bind(sigc::ptr_fun(&make_debtags_tab),
-					     name));
+				  sigc::bind(sigc::mem_fun(*pMainWindow, &AptitudeWindow::add_packages_tab),
+					     "?tag(^" + name + "$)"));
 	  }
       }
 
