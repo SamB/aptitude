@@ -1243,12 +1243,10 @@ namespace gui
 	    else
 	      where = buffer->insert(where, ", ");
 
-      // FIXME: This will break on regex-unsafe tags, like "implemented-in::c++"
-      //        which won't even match implemented-in::c++ ...
 	    where = add_hyperlink(buffer, where,
 				  name,
 				  sigc::bind(sigc::mem_fun(*pMainWindow, &AptitudeWindow::add_packages_tab),
-					     "?tag(^" + name + "$)"));
+					     "?tag(^" + backslash_escape_nonalnum(name) + "$)"));
 	  }
       }
 

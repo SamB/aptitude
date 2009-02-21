@@ -735,12 +735,10 @@ namespace gui
 
             textBuffer->insert_with_tag(textBuffer->end(), _("Source: "), fieldNameTag);
 
-            // NOTE: This will break on regex-unsafe packages names, but since packages names are
-            //       supposed to be regex-safe, it should be ok
             add_hyperlink(textBuffer, textBuffer->end(),
                 info.SourcePackage(),
                 sigc::bind(sigc::mem_fun(*pMainWindow, &AptitudeWindow::add_packages_tab),
-                    "?source-package(^" + info.SourcePackage() + "$)"));
+                    "?source-package(^" + backslash_escape_nonalnum(info.SourcePackage()) + "$)"));
 
 	    textBuffer->insert(textBuffer->end(), "\n");
 	    textBuffer->insert(textBuffer->end(), "\n");
