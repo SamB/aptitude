@@ -529,22 +529,19 @@ namespace gui
       void Stop(download_signal_log &manager, const sigc::slot0<void> &k)
       {
 	// \todo Maybe use some other condition here?
-	if(!success)
-	  {
-	    if(!success)
-	      // \todo The "error" color is copied around; it should
-	      // be a constant somewhere.
-	      set_color(Gdk::Color("#FFE0E0"));
+        if(!success)
+          // \todo The "error" color is copied around; it should
+          // be a constant somewhere.
+          set_color(Gdk::Color("#FFE0E0"));
 
-	    progress->hide();
-	    Glib::RefPtr<Gtk::TextBuffer> buffer(Gtk::TextBuffer::create());
+        progress->hide();
+        Glib::RefPtr<Gtk::TextBuffer> buffer(Gtk::TextBuffer::create());
 
-	    if(success)
-	      buffer->set_text(title + ": " + _("Completed"));
-	    else
-	      buffer->set_text(title + ": " + _("Completed with errors"));
-	    set_buffer(buffer);
-	  }
+        if(success)
+          buffer->set_text(title + ": " + _("Completed"));
+        else
+          buffer->set_text(title + ": " + _("Completed with errors"));
+        set_buffer(buffer);
 
 	finished = true;
 
