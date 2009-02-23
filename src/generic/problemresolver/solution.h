@@ -109,9 +109,10 @@ class resolver_initial_state
       {
       }
 
-      void operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
+      bool operator()(const std::pair<typename PackageUniverse::package, typename PackageUniverse::version> &pair) const
       {
 	state.map_package(pair.first, pair.second);
+	return true;
       }
     };
 
@@ -940,13 +941,15 @@ private:
     {
     }
 
-    void operator()(const version &version) const
+    bool operator()(const version &version) const
     {
       if(version == initial_state.version_of(version.get_package()))
 	any_is_current = true;
 
       output.put(version.get_package(),
 		 action(version, dep(), false, 0));
+
+      return true;
     }
   };
 
@@ -964,7 +967,7 @@ private:
     {
     }
 
-    void operator()(const std::pair<package, action> &entry) const
+    bool operator()(const std::pair<package, action> &entry) const
     {
       const typename joint_score_set::iterator found =
 	s.find(entry.second);
@@ -973,6 +976,8 @@ private:
 	s[entry.second].push_back(score);
       else
 	found->second.push_back(score);
+
+      return true;
     }
   };
 

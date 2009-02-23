@@ -352,18 +352,25 @@ namespace imm
 
     /** Apply the given operator to each value in the tree in
      *  order.
+     *
+     *  If the operator returns false, the traversal is aborted.
      */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
       if(isValid())
 	{
-	  realNode->getLeftChild().for_each(o);
+	  if(!realNode->getLeftChild().for_each(o))
+	    return false;
 
-	  o(getVal());
+	  if(!o(getVal()))
+	    return false;
 
-	  realNode->getRightChild().for_each(o);
+	  if(!realNode->getRightChild().for_each(o))
+	    return false;
 	}
+
+      return true;
     }
 
     void dump(std::ostream &out,
@@ -691,9 +698,9 @@ namespace imm
 
     /** Apply the given operator to each member of this set. */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
-      root.for_each(o);
+      return root.for_each(o);
     }
 
     /** Insert an element into a tree, returning a new tree.  This is
@@ -849,7 +856,7 @@ namespace imm
     {
     }
 
-    void operator()(const Val &v) const
+    bool operator()(const Val &v) const
     {
       if(first)
 	first = false;
@@ -857,6 +864,8 @@ namespace imm
 	out << ", ";
 
       out << v;
+
+      return true;
     }
   };
 
@@ -980,7 +989,7 @@ namespace imm
      *  \param o a function object that takes a pair (key, val).
      */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
       return contents.for_each(o);
     }
@@ -1132,7 +1141,7 @@ namespace imm
     {
     }
 
-    void operator()(const std::pair<Key, Val> &entry) const
+    bool operator()(const std::pair<Key, Val> &entry) const
     {
       if(first)
 	first = false;
@@ -1140,6 +1149,8 @@ namespace imm
 	out << ", ";
 
       out << entry.first << " := " << entry.second;
+
+      return true;
     }
   };
 
