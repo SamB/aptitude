@@ -80,6 +80,11 @@ private:
   }
 
 public:
+  generic_choice()
+    : from_dep_source(false), tp(install_version)
+  {
+  }
+
   /** \brief Create a new choice that installs the given version. */
   static generic_choice make_install_version(const version &ver)
   {
