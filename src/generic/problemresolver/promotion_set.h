@@ -743,6 +743,8 @@ public:
    */
   const_iterator find_highest_promotion_for(const imm::set<choice> &choices) const
   {
+    LOG_TRACE(logger, "Entering find_highest_promotion_for(" << choices << ")");
+
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
     traverse_intersections<find_entry_subset_op>
@@ -926,6 +928,8 @@ public:
   const_iterator find_highest_promotion_containing(const imm::set<choice> &choices,
 						   const choice &c) const
   {
+    LOG_TRACE(logger, "Entering find_highest_promotion_containing(" << choices << ", " << c << ")");
+
     const std::vector<entry_ref> *index_entries = find_index_list(c);
 
     if(index_entries == NULL || index_entries->empty())
