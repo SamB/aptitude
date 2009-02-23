@@ -98,6 +98,16 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.scores");
   }
 
+  LoggerPtr Loggers::getAptitudeResolverSearch()
+  {
+    return Logger::getLogger("aptitude.resolver.search");
+  }
+
+  LoggerPtr Loggers::getAptitudeResolverSearchTiers()
+  {
+    return Logger::getLogger("aptitude.resolver.search.tiers");
+  }
+
   LoggerPtr Loggers::getAptitudeWhy()
   {
     return Logger::getLogger("aptitude.why");

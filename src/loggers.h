@@ -141,6 +141,19 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverScores();
 
+    /** \brief The logger for the resolver's search logic.
+     *
+     *  Name: aptitude.resolver.search
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverSearch();
+
+    /** \brief The logger for the tiering component of the resolver's
+     *  search logic.
+     *
+     *  Name: aptitude.resolver.search.tiers
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverSearchTiers();
+
     /** \brief The logger for the "why" command.
      *
      *  Name: aptitude.why

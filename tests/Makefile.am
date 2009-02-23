@@ -22,6 +22,7 @@ test_SOURCES = \
 	test_dense_setset.cc \
 	test_matching.cc \
 	test_misc.cc \
+	test_promotion_set.cc \
 	test_resolver.cc \
 	test_resolver_hints.cc \
 	test_setset.cc \
