@@ -836,7 +836,7 @@ private:
     /** \brief Set to true if all the choices were found, and false
      *  otherwise.
      */
-    bool rval;
+    mutable bool rval;
 
     // Maps versions to choices associated with installing those
     // versions.
@@ -917,6 +917,7 @@ private:
     }
   };
 
+public:
   /** \brief Find a highest tier promotion that is a subset of the
    *  given set of choices *and* that contains the given choice.
    *
@@ -928,45 +929,80 @@ private:
     const std::vector<entry_ref> *index_entries = find_index_list(c);
 
     if(index_entries == NULL || index_entries->empty())
-      return end();
-
-    // Build local indices, used to make it reasonable to compare all
-    // the promotions in index_entries to the input choice list.
-    LOG_TRACE(logger, "find_highest_promotion_containing: Building local index.");
-
-    bool found_anything = false;
-    entry_ref best_entry;
-
-    traverse_intersections<increment_entry_count_op>
-      increment_f(*this, true, increment_entry_count_op(logger));
-    traverse_intersections<find_entry_subset_op>
-      find_result_f(*this, true, find_entry_subset_op(logger));
-    const find_entry_subset_op &find_result(find_result_f.get_op());
-
-    choices.for_each(increment_f);
-    // We have to run this even if the increment aborted, since we
-    // need to reset all the counters to 0 for the next run.
-    choices.for_each(find_result_f);
-
-    if(!find_result.was_set)
-      return end();
+      {
+	LOG_TRACE(logger, "find_highest_promotion_containing: There are no index entries for " << c << "; returning an end iterator.");
+	return end();
+      }
     else
       {
-	const entry_ref result_entry(find_result.return_value_ref);
-	const int tier = result_entry->p.get_tier();
-	typename std::map<int, std::list<entry> >::const_iterator tier_found =
-	  entries.find(tier);
-	if(tier_found == entries.end())
+	// Build local indices, used to make it reasonable to compare all
+	// the promotions in index_entries to the input choice list.
+
+	std::map<version, choice> choices_by_install_version;
+	std::set<dep> broken_soft_deps;
+	build_local_indices build_indices_f(choices_by_install_version,
+					    broken_soft_deps, logger);
+
+
+	LOG_TRACE(logger, "find_highest_promotion_containing: Building local index.");
+	choices.for_each(build_indices_f);
+
+
+	LOG_TRACE(logger, "find_highest_promotion_containing: Matching indexed entries for " << c << " to the local index.");
+
+	bool found_anything = false;
+	entry_ref highest_entry;
+	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
+	    it != index_entries->end(); ++it)
 	  {
-	    LOG_ERROR(logger, "Unable to find tier " << tier << " even though we just found an entry in it!");
+	    all_choices_in_local_indices
+	      all_choices_found_f(choices_by_install_version,
+				  broken_soft_deps, logger);
+
+	    const promotion &p((*it)->p);
+	    p.get_choices().for_each(all_choices_found_f);
+	    if(all_choices_found_f.rval)
+	      {
+		if(!found_anything)
+		  {
+		    LOG_TRACE(logger, "find_highest_promotion_containing: found the first match: " << p);
+		    found_anything = true;
+		    highest_entry = *it;
+		  }
+		else if(highest_entry->p.get_tier() >= p.get_tier())
+		  LOG_TRACE(logger, "find_highest_promotion_containing: found a match " << p
+			    << ", but its tier is lower than the existing match ("
+			    << p.get_tier() << " vs " << highest_entry->p.get_tier());
+		else
+		  {
+		    LOG_TRACE(logger, "find_highest_promotion_containing: found a new highest match: " << p
+			      << " (previous tier was " << highest_entry->p.get_tier());
+		    highest_entry = *it;
+		  }		  
+	      }
+	  }
+
+	if(!found_anything)
+	  {
+	    LOG_TRACE(logger, "find_highest_promotion_containing: no matches found; returning an end iterator.");
 	    return end();
 	  }
 	else
 	  {
-	    LOG_TRACE(logger, "find_highest_promotion_for: Returning an iterator to " << result_entry->p);
-	    // Assume that result_entry is in this list, since if it
-	    // isn't, something is very wrong.
-	    return const_iterator(tier_found, entries.end(), result_entry);
+	    const int tier = highest_entry->p.get_tier();
+	    typename std::map<int, std::list<entry> >::const_iterator tier_found =
+	      entries.find(tier);
+
+	    if(tier_found == entries.end())
+	      {
+		LOG_ERROR(logger, "Unable to find tier " << tier << " even though we just found an entry in it!");
+		return end();
+	      }
+	    else
+	      {
+		LOG_TRACE(logger, "find_highest_promotion_containing: returning a reference to " << highest_entry->p);
+		return const_iterator(tier_found, entries.end(), highest_entry);
+	      }
 	  }
       }
   }
