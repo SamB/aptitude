@@ -200,7 +200,65 @@ public:
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
     dummy_promotion_set p(u);
 
+    package a(u.find_package("a"));
+    package b(u.find_package("b"));
+    package c(u.find_package("c"));
+
+    version av1(a.version_from_name("v1"));
+    version av2(a.version_from_name("v2"));
+    version av3(a.version_from_name("v3"));
+
+    version bv1(b.version_from_name("v1"));
+    version bv2(b.version_from_name("v2"));
+    version bv3(b.version_from_name("v3"));
+
+    version cv1(c.version_from_name("v1"));
+    version cv2(c.version_from_name("v2"));
+    version cv3(c.version_from_name("v3"));
+
+    dep av1d1(*av1.deps_begin());
+    dep bv2d1(*bv2.deps_begin());
+    dep av2d1(*av2.deps_begin());
+    dep av3d1(*av3.deps_begin());
+
     make_test_promotions(u, p);
+
+    // First search: (Install(a v1), Install(b v3),
+    //                Install(c v3), Break(b v2 -> <c v2>))
+    //
+    // Should turn up only (T500: Install(c v3), Break(b v2 -> <c v2>))
+    imm::set<choice> search1;
+    search1.insert(choice::make_install_version(av1));
+    search1.insert(choice::make_install_version(bv3));
+    search1.insert(choice::make_install_version(cv3));
+    search1.insert(choice::make_break_soft_dep(bv2d1));
+
+    imm::set<choice> expected1;
+    expected1.insert(choice::make_install_version(cv3));
+    expected1.insert(choice::make_break_soft_dep(bv2d1));
+
+    dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found);
+
+    dummy_promotion_set::const_iterator found2 =
+      p.find_highest_promotion_containing(search1, choice::make_install_version(av1));
+    CPPUNIT_ASSERT(found2 == p.end());
+
+    found2 = p.find_highest_promotion_containing(search1, choice::make_install_version(bv3));
+    CPPUNIT_ASSERT(found2 == p.end());
+
+    found2 = p.find_highest_promotion_containing(search1, choice::make_install_version(cv3));
+    CPPUNIT_ASSERT(found2 != p.end());
+    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found2);
+
+    found2 = p.find_highest_promotion_containing(search1, choice::make_break_soft_dep(bv2d1));
+    CPPUNIT_ASSERT(found2 != p.end());
+    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found2);
+
+
+
+    // Second search: (a v1, b v1)
   }
 };
 
