@@ -191,6 +191,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotion p7(p7_choices, 500);
     expected_promotions.insert(p7);
     promotions.insert(p7);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
+    CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
   }
 
 public:
