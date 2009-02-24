@@ -1213,12 +1213,27 @@ namespace aptitude
 	  return true;
 	}
 
+	static const char *first_package_name(const std::vector<action> &reasons)
+	{
+	  for(std::vector<action>::const_iterator it = reasons.begin();
+	      it != reasons.end(); ++it)
+	    {
+	      if(!it->get_dep().end())
+		return it->get_dep().ParentPkg().Name();
+	    }
+
+	  return "";
+	}
+
       public:
 	bool operator()(const std::vector<action> &reason1,
 			const std::vector<action> &reason2)
 	{
 	  const bool first_is_depends(is_depends_chain(reason1));
 	  const bool second_is_depends(is_depends_chain(reason2));
+
+	  const char * const package_name1(first_package_name(reason1));
+	  const char * const package_name2(first_package_name(reason2));
 
 	  if(!first_is_depends && second_is_depends)
 	    return true;
@@ -1229,8 +1244,7 @@ namespace aptitude
 	  else if(reason2.empty())
 	    return false;
 	  else
-	    return strcmp(reason1.front().get_dep().ParentPkg().Name(),
-			  reason2.front().get_dep().ParentPkg().Name());
+	    return strcmp(package_name1, package_name2) < 0;
 	}
       };
     }
