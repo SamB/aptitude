@@ -1277,6 +1277,8 @@ namespace aptitude
 			   roots_string_mode mode,
 			   std::vector<std::string> &output)
     {
+      eassert(mode != no_summary);
+
       if(mode == show_requiring_packages ||
 	 mode == show_requiring_packages_and_strength)
 	{
