@@ -948,15 +948,27 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
 	  else
 	    rval.push_back(cw::newline_fragment());
 
+	  int col1_width = 0;
+	  int col2_width = 0;
 	  std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
 	  for(std::vector<action>::const_iterator it = results.begin();
 	      it != results.end(); ++it)
 	    {
-	      col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
+	      cw::fragment *col1_fragment = it->description_column1_fragment();
+	      cw::fragment *col2_fragment = it->description_column2_fragment();
+	      cw::fragment *col3_fragment = it->description_column3_fragment();
+
+	      int this_col1_width = col1_fragment->max_width(0, 0);
+	      int this_col2_width = col2_fragment->max_width(0, 0);
+
+	      col1_width = std::max(col1_width, this_col1_width);
+	      col2_width = std::max(col2_width, this_col2_width);
+
+	      col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col1_fragment),
 									it->get_style())));
-	      col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column2_fragment()),
+	      col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col2_fragment),
 									it->get_style())));
-	      col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column3_fragment()),
+	      col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col3_fragment),
 									it->get_style())));
 	    }
 
@@ -964,8 +976,8 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
 
 	  std::vector<fragment_column_entry> columns;
 	  columns.push_back(fragment_column_entry(false,
-						  true,
-						  0,
+						  false,
+						  col1_width,
 						  fragment_column_entry::top,
 						  col1_entries));
 	  columns.push_back(fragment_column_entry(false,
@@ -974,8 +986,8 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
 						  fragment_column_entry::top,
 						  NULL));
 	  columns.push_back(fragment_column_entry(false,
-						  true,
-						  0,
+						  false,
+						  col2_width,
 						  fragment_column_entry::top,
 						  col2_entries));
 	  columns.push_back(fragment_column_entry(false,
