@@ -230,7 +230,8 @@ enum {
   OPTION_NO_GUI,
   OPTION_LOG_LEVEL,
   OPTION_LOG_FILE,
-  OPTION_LOG_CONFIG_FILE
+  OPTION_LOG_CONFIG_FILE,
+  OPTION_SHOW_SUMMARY
 };
 int getopt_result;
 
@@ -278,6 +279,7 @@ option opts[]={
   {"log-level", 1, &getopt_result, OPTION_LOG_LEVEL},
   {"log-file", 1, &getopt_result, OPTION_LOG_FILE},
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
+  {"show-summary", 2, &getopt_result, OPTION_SHOW_SUMMARY},
   {0,0,0,0}
 };
 
@@ -506,6 +508,7 @@ int main(int argc, char *argv[])
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
   bool showwhy = aptcfg->FindB(PACKAGE "::CmdLine::Show-Why", false);
+  string show_why_summary_mode = aptcfg->Find(PACKAGE "::CmdLine::Why-Display-Mode", "no-summary");
   bool visual_preview=aptcfg->FindB(PACKAGE "::CmdLine::Visual-Preview", false);
   bool always_prompt=aptcfg->FindB(PACKAGE "::CmdLine::Always-Prompt", false);
   int verbose=aptcfg->FindI(PACKAGE "::CmdLine::Verbose", 0);
@@ -766,6 +769,14 @@ int main(int argc, char *argv[])
 	    case OPTION_LOG_FILE:
 	      log_file = optarg;
 	      break;
+
+	    case OPTION_SHOW_SUMMARY:
+	      if(optarg == NULL)
+		show_why_summary_mode = "last-package";
+	      else
+		show_why_summary_mode = optarg;
+	      break;
+
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -781,6 +792,23 @@ int main(int argc, char *argv[])
 	  break;
 	}
     }
+
+  aptitude::why::roots_string_mode why_display_mode;
+  if(show_why_summary_mode == "no-summary" || show_why_summary_mode == _("no-summary"))
+    why_display_mode = aptitude::why::no_summary;
+  else if(show_why_summary_mode == "last-package" || show_why_summary_mode == _("last-package"))
+    why_display_mode = aptitude::why::show_requiring_packages;
+  else if(show_why_summary_mode == "last-package-and-type" || show_why_summary_mode == _("last-package-and-type"))
+    why_display_mode = aptitude::why::show_requiring_packages_and_strength;
+  else if(show_why_summary_mode == "all-packages" || show_why_summary_mode == _("all-packages"))
+    why_display_mode = aptitude::why::show_chain;
+  else if(show_why_summary_mode == "all-packages-with-dep-versions" || show_why_summary_mode == _("all-packages-with-dep-versions"))
+    why_display_mode = aptitude::why::show_chain_with_versions;
+  else
+    // ForTranslators: "why" here is the aptitude command name and
+    // should not be translated.
+    _error->Error(_("Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"last-package\", \"last-package-and-type\", \"all-packages\", or \"all-packages-with-dep-versions\"."),
+		  show_why_summary_mode.c_str());
 
   if(!log_config_file.empty())
     PropertyConfigurator::configureAndWatch(log_config_file);
@@ -872,10 +900,12 @@ int main(int argc, char *argv[])
 				  debug_search);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
-			       status_fname, verbose, false);
+			       status_fname, verbose,
+			       why_display_mode, false);
 	  else if(!strcasecmp(argv[optind], "why-not"))
 	    return cmdline_why(argc - optind, argv + optind,
-			       status_fname, verbose, true);
+			       status_fname, verbose,
+			       why_display_mode, true);
 	  else if( (!strcasecmp(argv[optind], "install")) ||
 		   (!strcasecmp(argv[optind], "reinstall")) ||
 		   (!strcasecmp(argv[optind], "dist-upgrade")) ||

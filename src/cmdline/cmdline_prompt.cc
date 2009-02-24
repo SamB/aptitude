@@ -868,7 +868,9 @@ static void cmdline_parse_why(string response)
       bool success;
       string root = arguments.back();
       arguments.pop_back();
-      std::auto_ptr<cw::fragment> frag(do_why(arguments, root, false, false, success));
+      std::auto_ptr<cw::fragment> frag(do_why(arguments, root,
+					      aptitude::why::no_summary,
+					      false, false, success));
       update_screen_width();
       if(frag.get() != NULL)
 	std::cout << frag->layout(screen_width, screen_width, cwidget::style());

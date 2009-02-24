@@ -39,6 +39,33 @@
 /** \file cmdline_why.h
  */
 
+namespace aptitude
+{
+  namespace why
+  {
+    enum roots_string_mode
+      {
+	/** \brief No summary at all (only used in do_why and
+	 *  cmdline_why).
+	 */
+	no_summary,
+	/** \brief Show only the name of each requiring package. */
+	show_requiring_packages,
+	/** \brief Show the name of each requiring package and the
+	 *  strength of the strongest entry in the chain.
+	 */
+	show_requiring_packages_and_strength,
+	/** \brief Show the chain leading to each requiring package.
+	 */
+	show_chain,
+	/** \brief Show the chain leading to each requiring package,
+	 *  with version information.
+	 */
+	show_chain_with_versions
+      };
+  }
+}
+
 /** \brief Explain why a package is installed or conflicted against.
  *
  *  aptitude why A1 [A2 ...] B
@@ -63,6 +90,7 @@
  */
 int cmdline_why(int argc, char *argv[],
 		const char *status_fname, int verbosity,
+		aptitude::why::roots_string_mode display_mode,
 		bool why_not);
 
 
@@ -416,6 +444,7 @@ namespace aptitude
 
 cwidget::fragment *do_why(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
 			  const pkgCache::PkgIterator &root,
+			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
 			  bool &success);
@@ -423,6 +452,7 @@ cwidget::fragment *do_why(const std::vector<cwidget::util::ref_ptr<aptitude::mat
 // Parses the leaves as if they were command-line arguments.
 cwidget::fragment *do_why(const std::vector<std::string> &arguments,
 			  const std::string &root,
+			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
 			  bool &success);
@@ -431,23 +461,6 @@ namespace aptitude
 {
   namespace why
   {
-    enum roots_string_mode
-      {
-	/** \brief Show only the name of each requiring package. */
-	show_requiring_packages,
-	/** \brief Show the name of each requiring package and the
-	 *  strength of the strongest entry in the chain.
-	 */
-	show_requiring_packages_and_strength,
-	/** \brief Show the chain leading to each requiring package.
-	 */
-	show_chain,
-	/** \brief Show the chain leading to each requiring package,
-	 *  with version information.
-	 */
-	show_chain_with_versions
-      };
-
     /** \brief Build a list of strings summarizing the given actions.
      *
      *  \param actions  The "why" output to be displayed.

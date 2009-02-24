@@ -1002,6 +1002,7 @@ namespace aptitude
 
 cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
 		 bool &success)
@@ -1027,17 +1028,34 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
       else
 	return cw::fragf(_("Unable to find a reason to install %s.\n"), root.Name());
     }
-  else
+  else if(display_mode == aptitude::why::no_summary)
     return render_reason_columns(solutions, verbosity >= 1);
+  else
+    {
+      std::vector<std::string> lines;
+      aptitude::why::summarize_reasons(solutions, display_mode, lines);
+
+      std::vector<cw::fragment *> fragments;
+      fragments.push_back(cw::fragf(_("Packages requiring %s:"), root.Name()));
+      fragments.push_back(cw::newline_fragment());
+
+      for(std::vector<std::string>::const_iterator it = lines.begin();
+	  it != lines.end(); ++it)
+	fragments.push_back(cw::fragf("  %s\n", it->c_str()));
+
+      return sequence_fragment(fragments);
+    }
 }
 
 int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 	   const pkgCache::PkgIterator &root,
+	   aptitude::why::roots_string_mode display_mode,
 	   int verbosity,
 	   bool root_is_removal)
 {
   bool success = false;
-  std::auto_ptr<cw::fragment> f(do_why(leaves, root, verbosity, root_is_removal,
+  std::auto_ptr<cw::fragment> f(do_why(leaves, root, display_mode,
+				       verbosity, root_is_removal,
 				       success));
   update_screen_width();
   // TODO: display each result as we find it.
@@ -1048,12 +1066,13 @@ int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 
 cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
 		 bool &success)
 {
   const int verbosity = find_all ? 1 : 0;
-  return do_why(leaves, root, verbosity, root_is_removal, success);
+  return do_why(leaves, root, display_mode, verbosity, root_is_removal, success);
 }
 
 bool interpret_why_args(const std::vector<std::string> &args,
@@ -1088,6 +1107,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
 
 cw::fragment *do_why(const std::vector<std::string> &arguments,
 		 const std::string &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
 		 bool &success)
@@ -1102,22 +1122,26 @@ cw::fragment *do_why(const std::vector<std::string> &arguments,
   if(!interpret_why_args(arguments, matchers))
     return cw::text_fragment(_("Unable to parse some match patterns."));
 
-  cw::fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
+  cw::fragment *rval = do_why(matchers, pkg, display_mode,
+			      verbosity, root_is_removal, success);
 
   return rval;
 }
 
 cw::fragment *do_why(const std::vector<std::string> &leaves,
 		 const std::string &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
 		 bool &success)
 {
-  return do_why(leaves, root, find_all ? 1 : 0, root_is_removal, success);
+  return do_why(leaves, root, display_mode, find_all ? 1 : 0,
+		root_is_removal, success);
 }
 
 int cmdline_why(int argc, char *argv[],
 		const char *status_fname, int verbosity,
+		aptitude::why::roots_string_mode display_mode,
 		bool is_why_not)
 {
   _error->DumpErrors();
@@ -1181,7 +1205,7 @@ int cmdline_why(int argc, char *argv[],
   if(parsing_arguments_failed)
     rval = -1;
   else
-    rval = do_why(matchers, pkg, verbosity, is_removal);
+    rval = do_why(matchers, pkg, display_mode, verbosity, is_removal);
 
   return rval;
 }

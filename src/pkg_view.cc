@@ -1,6 +1,6 @@
 // pkg_view.cc
 //
-//  Copyright 2000-2005, 2007-2008 Daniel Burrows
+//  Copyright 2000-2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -204,6 +204,7 @@ public:
 	bool success = false;
 	set_fragment(do_why(search_leaves,
 			    pkg,
+			    aptitude::why::no_summary,
 			    false,
 			    false,
 			    success));
