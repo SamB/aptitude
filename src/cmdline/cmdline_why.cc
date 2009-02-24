@@ -68,6 +68,63 @@ namespace
       return p1->ID < p2->ID;
     }
   };
+
+  struct compare_dep_levels
+  {
+    static int dep_level_to_int(const pkgCache::Dep::DepType dt)
+    {
+      switch(dt)
+	{
+	case pkgCache::Dep::PreDepends:
+	  return 7;
+
+	case pkgCache::Dep::Depends:
+	  return 6;
+
+	case pkgCache::Dep::Recommends:
+	  return 5;
+
+	case pkgCache::Dep::Conflicts:
+	  return 4;
+
+	case pkgCache::Dep::DpkgBreaks:
+	  return 3;
+
+	case pkgCache::Dep::Suggests:
+	  return 2;
+
+	case pkgCache::Dep::Replaces:
+	  return 1;
+
+	case pkgCache::Dep::Obsoletes:
+	  return 0;
+
+	default:
+	  return -1;
+	}
+    }
+
+    bool operator()(const pkgCache::Dep::DepType dt1,
+		    const pkgCache::Dep::DepType dt2) const
+    {
+      return dep_level_to_int(dt1) < dep_level_to_int(dt2);
+    }
+  };
+
+  // Place weaker dependencies first, then order alphabetically.
+  struct compare_pair_by_dep_type
+  {
+    compare_dep_levels dep_type_less_than;
+
+    bool operator()(const std::pair<std::string, pkgCache::Dep::DepType> &p1,
+		    const std::pair<std::string, pkgCache::Dep::DepType> &p2) const
+    {
+      if(p1.second != p2.second)
+	return dep_type_less_than(p2.second, p1.second);
+      else
+	return p1.first < p2.first;
+    }
+  };
 }
 
 namespace aptitude
@@ -1282,8 +1339,9 @@ namespace aptitude
       if(mode == show_requiring_packages ||
 	 mode == show_requiring_packages_and_strength)
 	{
-	  // Maps root names to (is it a Depends?).
-	  std::map<std::string, bool> roots;
+	  compare_dep_levels dep_less_than;
+	  // Maps root names to strongest dependency type.
+	  std::map<std::string, pkgCache::Dep::DepType> roots;
 	  for(std::vector<std::vector<action> >::const_iterator it =
 		reasons.begin(); it != reasons.end(); ++it)
 	    {
@@ -1302,69 +1360,56 @@ namespace aptitude
 	      if(!act.get_dep().end())
 		{
 		  const std::string name(act.get_dep().ParentPkg().Name());
-		  std::map<std::string, bool>::iterator found =
+		  std::map<std::string, pkgCache::Dep::DepType>::iterator found =
 		    roots.find(name);
 
-		  // Find out if the strongest dependency on the chain is
-		  // a Depends (we know it's either a Depends or a
-		  // Recommends because of how the search was set up).
-		  bool is_depends = true;
+		  // Find the strongest dependency on the chain.
+		  pkgCache::Dep::DepType type = pkgCache::Dep::Suggests;
 		  for(std::vector<action>::const_iterator act_it = it->begin();
-		      is_depends && act_it != it->end(); ++act_it)
+		      act_it != it->end(); ++act_it)
 		    {
 		      if(act_it->get_dep().end())
 			continue;
 		      else
-			is_depends = is_depends && act_it->get_dep()->Type == pkgCache::Dep::Depends;
+			{
+			  pkgCache::Dep::DepType current_type =
+			    (pkgCache::Dep::DepType)act_it->get_dep()->Type;
+			  if(dep_less_than(type, current_type))
+			    type = current_type;
+			}
 		    }
 
 		  if(found == roots.end())
-		    roots.insert(found, std::make_pair(name, act.get_dep()->Type == pkgCache::Dep::Depends));
-		  else
-		    {
-		      if(act.get_dep()->Type == pkgCache::Dep::Depends)
-			found->second = true;
-		    }
+		    roots.insert(found, std::make_pair(name, type));
+		  else if(dep_less_than(found->second, type))
+		    found->second = type;
 		}
 	    }
 
-	  const char * const dependsStr = pkgCache::DepType(pkgCache::Dep::Depends);
-	  const char * const recommendsStr = pkgCache::DepType(pkgCache::Dep::Recommends);
-
 	  if(mode == show_requiring_packages)
-	    for(std::map<std::string, bool>::const_iterator it = roots.begin();
+	    for(std::map<std::string, pkgCache::Dep::DepType>::const_iterator it = roots.begin();
 		it != roots.end(); ++it)
 	      output.push_back(it->first);
 	  else // if(mode == show_requiring_packages_and_strength)
-	    // Lame hack to output Depends before Recommends.
-	    for(int cycle = 0; cycle < 2; ++cycle)
-	      {
-		for(std::map<std::string, bool>::const_iterator it = roots.begin();
-		    it != roots.end(); ++it)
-		  {
-		    // Show Depends in the first cycle, Recommends in the
-		    // second one.
-		    if(cycle == 0)
-		      {
-			if(!it->second)
-			  continue;
-		      }
-		    else
-		      {
-			if(it->second)
-			  continue;
-		      }
+	    {
+	      std::vector<std::pair<std::string, pkgCache::Dep::DepType> >
+		packages_by_dep_strength(roots.begin(), roots.end());
+	      std::sort(packages_by_dep_strength.begin(),
+			packages_by_dep_strength.end(),
+			compare_pair_by_dep_type());
 
-		    const bool is_depends = it->second;
-
-		    if(mode == show_requiring_packages_and_strength)
-		      output.push_back(ssprintf("[%s] %s",
-						is_depends ? dependsStr : recommendsStr,
-						it->first.c_str()));
-		    else
-		      output.push_back(it->first);
-		  }
-	      }
+	      for(std::vector<std::pair<std::string, pkgCache::Dep::DepType> >::const_iterator it =
+		    packages_by_dep_strength.begin();
+		  it != packages_by_dep_strength.end(); ++it)
+		{
+		  if(mode == show_requiring_packages_and_strength)
+		    output.push_back(ssprintf("[%s] %s",
+					      pkgCache::DepType(it->second),
+					      it->first.c_str()));
+		  else
+		    output.push_back(it->first);
+		}
+	    }
 	}
       else
 	{
