@@ -179,6 +179,9 @@ class resolver_initial_state
     }
   };
 
+  // If invalid, this represents an empty set of initial versions;
+  // otherwise, a pointer to the real object that contains the initial
+  // version set.
   cwidget::util::ref_ptr<impl> the_impl;
 
 public:
