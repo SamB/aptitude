@@ -1089,8 +1089,37 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
     return render_reason_columns(solutions, verbosity >= 1);
   else
     {
+      // HACK: drop all chains that include a dependency that's less
+      // strict than Recommends.  (ideally we should let the user set
+      // a level of strictness and conform to that here AND in the
+      // search, rather than generating a lot of junk we then throw
+      // away)
+      std::vector<std::vector<action> > strong_solutions;
+      for(std::vector<std::vector<action> >::const_iterator it = solutions.begin();
+	  it != solutions.end(); ++it)
+	{
+	  bool keeper = true;
+	  for(std::vector<action>::const_iterator act_it = it->begin();
+	      keeper && act_it != it->end(); ++act_it)
+	    {
+	      if(!act_it->get_dep().end())
+		{
+		  pkgCache::Dep::DepType type = (pkgCache::Dep::DepType)act_it->get_dep()->Type;
+
+		  if(!(type == pkgCache::Dep::Depends ||
+		       type == pkgCache::Dep::PreDepends ||
+		       type == pkgCache::Dep::Recommends ||
+		       type == pkgCache::Dep::Conflicts))
+		    keeper = false;
+		}
+	    }
+
+	  if(keeper)
+	    strong_solutions.push_back(*it);
+	}
+
       std::vector<std::string> lines;
-      aptitude::why::summarize_reasons(solutions, display_mode, lines);
+      aptitude::why::summarize_reasons(strong_solutions, display_mode, lines);
 
       std::vector<cw::fragment *> fragments;
       fragments.push_back(cw::fragf(_("Packages requiring %s:"), root.Name()));
