@@ -1214,9 +1214,9 @@ namespace aptitude
       };
     }
 
-    void render_roots(const std::vector<std::vector<action> > &reasons,
-		      roots_string_mode mode,
-		      std::vector<std::string> &output)
+    void summarize_reasons(const std::vector<std::vector<action> > &reasons,
+			   roots_string_mode mode,
+			   std::vector<std::string> &output)
     {
       if(mode == show_requiring_packages ||
 	 mode == show_requiring_packages_and_strength)

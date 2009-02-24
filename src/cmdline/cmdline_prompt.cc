@@ -187,7 +187,7 @@ namespace
       mode = show_chain;
     else
       mode = show_requiring_packages;
-    render_roots(reasons, mode, reason_strings);
+    summarize_reasons(reasons, mode, reason_strings);
 
     std::string rval = "(";
     if(mode == show_requiring_packages)

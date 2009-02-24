@@ -448,16 +448,16 @@ namespace aptitude
 	show_chain_with_versions
       };
 
-    /** \brief Compute strings summarizing the given actions.
+    /** \brief Build a list of strings summarizing the given actions.
      *
      *  \param actions  The "why" output to be displayed.
      *  \param mode     The mode to run in.
      *  \param out      A vector onto which a string should be placed
      *                  for each individual reason that is discovered.
      */
-    void render_roots(const std::vector<std::vector<action> > &actions,
-		      roots_string_mode mode,
-		      std::vector<std::string> &out);
+    void summarize_reasons(const std::vector<std::vector<action> > &actions,
+			   roots_string_mode mode,
+			   std::vector<std::string> &out);
   }
 }
 
