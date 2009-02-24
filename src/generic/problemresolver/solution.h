@@ -229,7 +229,8 @@ public:
    */
   void get_initial_versions(std::set<typename PackageUniverse::version> &out) const
   {
-    return the_impl->get_initial_versions(out);
+    if(the_impl.valid())
+      return the_impl->get_initial_versions(out);
   }
 };
 
