@@ -1164,3 +1164,223 @@ int cmdline_why(int argc, char *argv[],
 
   return rval;
 }
+
+namespace aptitude
+{
+  namespace why
+  {
+    namespace
+    {
+      // Sort action vectors by the name of the package in the first
+      // action and by the chain strength.
+      struct compare_first_action
+      {
+      private:
+	/** \return \b true if all the dependencies in the given chain are
+	 *  Depends.
+	 */
+	static bool is_depends_chain(const std::vector<action> &reasons)
+	{
+	  for(std::vector<action>::const_iterator it = reasons.begin();
+	      it != reasons.end(); ++it)
+	    {
+	      if(!it->get_dep().end() &&
+		 it->get_dep()->Type == pkgCache::Dep::Recommends)
+		return false;
+	    }
+
+	  return true;
+	}
+
+      public:
+	bool operator()(const std::vector<action> &reason1,
+			const std::vector<action> &reason2)
+	{
+	  const bool first_is_depends(is_depends_chain(reason1));
+	  const bool second_is_depends(is_depends_chain(reason2));
+
+	  if(!first_is_depends && second_is_depends)
+	    return true;
+	  else if(first_is_depends && !second_is_depends)
+	    return false;
+	  else if(reason1.empty())
+	    return !reason2.empty();
+	  else if(reason2.empty())
+	    return false;
+	  else
+	    return strcmp(reason1.front().get_dep().ParentPkg().Name(),
+			  reason2.front().get_dep().ParentPkg().Name());
+	}
+      };
+    }
+
+    void render_roots(const std::vector<std::vector<action> > &reasons,
+		      roots_string_mode mode,
+		      std::vector<std::string> &output)
+    {
+      if(mode == show_requiring_packages ||
+	 mode == show_requiring_packages_and_strength)
+	{
+	  // Maps root names to (is it a Depends?).
+	  std::map<std::string, bool> roots;
+	  for(std::vector<std::vector<action> >::const_iterator it =
+		reasons.begin(); it != reasons.end(); ++it)
+	    {
+	      // Shouldn't happen, but deal anyway.
+	      if(it->empty())
+		continue; // Generate an internal error here?
+
+	      const action &act(it->front());
+
+	      // This can happen in the case of an impure virtual
+	      // package.  e.g., A is manually installed and B provides
+	      // A.
+	      if(act.get_dep().end())
+		continue;
+
+	      if(!act.get_dep().end())
+		{
+		  const std::string name(act.get_dep().ParentPkg().Name());
+		  std::map<std::string, bool>::iterator found =
+		    roots.find(name);
+
+		  // Find out if the strongest dependency on the chain is
+		  // a Depends (we know it's either a Depends or a
+		  // Recommends because of how the search was set up).
+		  bool is_depends = true;
+		  for(std::vector<action>::const_iterator act_it = it->begin();
+		      is_depends && act_it != it->end(); ++act_it)
+		    {
+		      if(act_it->get_dep().end())
+			continue;
+		      else
+			is_depends = is_depends && act_it->get_dep()->Type == pkgCache::Dep::Depends;
+		    }
+
+		  if(found == roots.end())
+		    roots.insert(found, std::make_pair(name, act.get_dep()->Type == pkgCache::Dep::Depends));
+		  else
+		    {
+		      if(act.get_dep()->Type == pkgCache::Dep::Depends)
+			found->second = true;
+		    }
+		}
+	    }
+
+	  const char * const dependsStr = pkgCache::DepType(pkgCache::Dep::Depends);
+	  const char * const recommendsStr = pkgCache::DepType(pkgCache::Dep::Recommends);
+
+	  if(mode == show_requiring_packages)
+	    for(std::map<std::string, bool>::const_iterator it = roots.begin();
+		it != roots.end(); ++it)
+	      output.push_back(it->first);
+	  else // if(mode == show_requiring_packages_and_strength)
+	    // Lame hack to output Depends before Recommends.
+	    for(int cycle = 0; cycle < 2; ++cycle)
+	      {
+		for(std::map<std::string, bool>::const_iterator it = roots.begin();
+		    it != roots.end(); ++it)
+		  {
+		    // Show Depends in the first cycle, Recommends in the
+		    // second one.
+		    if(cycle == 0)
+		      {
+			if(!it->second)
+			  continue;
+		      }
+		    else
+		      {
+			if(it->second)
+			  continue;
+		      }
+
+		    const bool is_depends = it->second;
+
+		    if(mode == show_requiring_packages_and_strength)
+		      output.push_back(ssprintf("[%s] %s",
+						is_depends ? dependsStr : recommendsStr,
+						it->first.c_str()));
+		    else
+		      output.push_back(it->first);
+		  }
+	      }
+	}
+      else
+	{
+	  std::vector<std::vector<action> > reasons_copy(reasons);
+	  std::sort(reasons_copy.begin(), reasons_copy.end(), compare_first_action());
+	  for(std::vector<std::vector<action> >::const_iterator it =
+		reasons_copy.begin(); it != reasons_copy.end(); ++it)
+	
+	    {
+	      if(it->empty())
+		continue;
+
+	      std::string entry;
+
+	      bool first_action = true;
+	      for(std::vector<action>::const_iterator aIt = it->begin();
+		  aIt != it->end(); ++aIt)
+		{
+		  if(!first_action)
+		    entry += " ";
+
+		  if(!aIt->get_dep().end())
+		    {
+		      const pkgCache::DepIterator &dep(aIt->get_dep());
+
+		      if(first_action)
+			{
+			  entry += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
+			  entry += " ";
+			}
+
+		      std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
+		      entry += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
+		      entry += ": ";
+
+		      entry += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+
+		      // Show version information if we were asked for it.
+		      if(mode == show_chain_with_versions && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
+			{
+			  entry += " (";
+			  entry += const_cast<pkgCache::DepIterator &>(dep).CompType();
+			  entry += " ";
+			  entry += dep.TargetVer();
+			  entry += ")";
+			}
+		    }
+		  else
+		    {
+		      const pkgCache::PrvIterator &prv(aIt->get_prv());
+		      eassert(!prv.end());
+
+		      if(first_action)
+			{
+			  entry += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
+			}
+
+		      entry += " ";
+
+		      entry += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
+		      entry += "<- ";
+
+		      entry += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+		      if(mode == show_chain_with_versions && prv.ProvideVersion() != NULL)
+			{
+			  entry += " (";
+			  entry += prv.ProvideVersion();
+			  entry += ")";
+			}
+		    }
+
+		  first_action = false;
+		}
+
+	      output.push_back(entry);
+	    }
+	}
+    }
+  }
+}

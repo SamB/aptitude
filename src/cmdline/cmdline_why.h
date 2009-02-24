@@ -1,6 +1,6 @@
 // cmdline_why.h                            -*-c++-*-
 //
-//   Copyright (C) 2007-2008 Daniel Burrows
+//   Copyright (C) 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -427,5 +427,38 @@ cwidget::fragment *do_why(const std::vector<std::string> &arguments,
 			  bool root_is_removal,
 			  bool &success);
 
+namespace aptitude
+{
+  namespace why
+  {
+    enum roots_string_mode
+      {
+	/** \brief Show only the name of each requiring package. */
+	show_requiring_packages,
+	/** \brief Show the name of each requiring package and the
+	 *  strength of the strongest entry in the chain.
+	 */
+	show_requiring_packages_and_strength,
+	/** \brief Show the chain leading to each requiring package.
+	 */
+	show_chain,
+	/** \brief Show the chain leading to each requiring package,
+	 *  with version information.
+	 */
+	show_chain_with_versions
+      };
+
+    /** \brief Compute strings summarizing the given actions.
+     *
+     *  \param actions  The "why" output to be displayed.
+     *  \param mode     The mode to run in.
+     *  \param out      A vector onto which a string should be placed
+     *                  for each individual reason that is discovered.
+     */
+    void render_roots(const std::vector<std::vector<action> > &actions,
+		      roots_string_mode mode,
+		      std::vector<std::string> &out);
+  }
+}
 
 #endif

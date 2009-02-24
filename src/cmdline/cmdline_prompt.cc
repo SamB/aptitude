@@ -179,142 +179,33 @@ namespace
     if(reasons.size() == 0)
       return "";
 
-    if(verbose == 0)
-      {
-	std::set<std::string> root_names;
-	for(std::vector<std::vector<action> >::const_iterator it =
-	      reasons.begin(); it != reasons.end(); ++it)
-	  {
-	    // Shouldn't happen, but deal anyway.
-	    if(it->empty())
-	      continue; // Generate an internal error here?
-
-	    const action &act(it->front());
-
-	    // This can happen in the case of an impure virtual
-	    // package.  e.g., A is manually installed and B provides
-	    // A.
-	    if(act.get_dep().end())
-	      continue;
-
-	    if(!act.get_dep().end())
-	      root_names.insert(act.get_dep().ParentPkg().Name());
-	  }
-
-	if(root_names.empty())
-	  return "";
-
-	std::string rval;
-
-	bool first = true;
-	for(std::set<std::string>::const_iterator it = root_names.begin();
-	    it != root_names.end(); ++it)
-	  {
-	    if(first)
-	      first = false;
-	    else
-	      rval += ", ";
-
-	    rval += *it;
-	  }
-
-	// ForTranslators: %s is replaced with a comma-delimited list
-	// of package names.
-	return ssprintf(ngettext("(for %s)",
-				 "(for %s)",
-				 root_names.size()),
-			rval.c_str());
-      }
+    std::vector<std::string> reason_strings;
+    roots_string_mode mode;
+    if(verbose > 1)
+      mode = show_chain_with_versions;
+    else if(verbose > 0)
+      mode = show_chain;
     else
+      mode = show_requiring_packages;
+    render_roots(reasons, mode, reason_strings);
+
+    std::string rval = "(";
+    if(mode == show_requiring_packages)
+      rval += "for ";
+    bool first = true;
+    for(std::vector<std::string>::const_iterator it = reason_strings.begin();
+	it != reason_strings.end(); ++it)
       {
-	// If we're being verbose, display whole chains leading to
-	// each target.
+	if(first)
+	  first = false;
+	else
+	  rval += ", ";
 
-	if(reasons.empty())
-	  return "";
-
-	std::string rval;
-	bool first = true;
-	std::sort(reasons.begin(), reasons.end(), compare_first_action());
-	rval += "(";
-	for(std::vector<std::vector<action> >::const_iterator it =
-	      reasons.begin(); it != reasons.end(); ++it)
-	
-	  {
-	    if(it->empty())
-	      continue;
-
-	    if(first)
-	      first = false;
-	    else
-	      rval += ", ";
-
-	    bool first_action = true;
-	    for(std::vector<action>::const_iterator aIt = it->begin();
-		aIt != it->end(); ++aIt)
-	      {
-		if(!first_action)
-		  rval += " ";
-
-		if(!aIt->get_dep().end())
-		  {
-		    const pkgCache::DepIterator &dep(aIt->get_dep());
-
-		    if(first_action)
-		      {
-			rval += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
-			rval += " ";
-		      }
-
-		    std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
-		    rval += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
-		    rval += ": ";
-
-		    rval += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
-
-		    // Display versioned deps if we're really being
-		    // verbose.
-		    if(verbose > 1 && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
-		      {
-			rval += " (";
-			rval += const_cast<pkgCache::DepIterator &>(dep).CompType();
-			rval += " ";
-			rval += dep.TargetVer();
-			rval += ")";
-		      }
-		  }
-		else
-		  {
-		    const pkgCache::PrvIterator &prv(aIt->get_prv());
-		    eassert(!prv.end());
-
-		    if(first_action)
-		      {
-			rval += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
-		      }
-
-		    rval += " ";
-
-		    rval += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
-		    rval += "<- ";
-
-		    rval += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
-		    if(verbose > 1 && prv.ProvideVersion() != NULL)
-		      {
-			rval += " (";
-			rval += prv.ProvideVersion();
-			rval += ")";
-		      }
-		  }
-
-		first_action = false;
-	      }
-
-	    rval += ")";
-	  }
-
-	return rval;
+	rval += *it;
       }
+    rval += ")";
+
+    return rval;
   }
 }
 
