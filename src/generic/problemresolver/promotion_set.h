@@ -422,8 +422,10 @@ private:
 		  else
 		    {
 		      LOG_TRACE(logger, "find_index_list(" << c <<
-				") returning an empty list: there are no from-dep index entries for " << c.get_dep());
-		      return NULL;
+				") returning a list of "
+				<< index_entry->not_from_dep_source_entries.size()
+				<< " index entries from the not-from-dep-source-list: there are no from-dep index entries for " << c.get_dep());
+		      return &index_entry->not_from_dep_source_entries;
 		    }
 		}
 	    }
@@ -1374,7 +1376,12 @@ private:
       switch(c.get_type())
 	{
 	case choice::install_version:
-	  LOG_TRACE(logger, "Inserting an index entry: " << c.get_ver() << " |-> " << new_entry->p);
+	  if(!c.get_from_dep_source())
+	    LOG_TRACE(logger, "Inserting an index entry: " << c.get_ver()
+		      << " |-> " << new_entry->p);
+	  else
+	    LOG_TRACE(logger, "Inserting an index entry: " << c.get_ver()
+		      << "[" << c.get_dep() << "] |-> " << new_entry->p);
 	  {
 	    const int id = c.get_ver().get_id();
 	    install_version_index_entry *index_entry = install_version_index[id];
@@ -1386,7 +1393,18 @@ private:
 	      }
 
 	    if(!c.get_from_dep_source())
-	      index_entry->not_from_dep_source_entries.push_back(new_entry);
+	      {
+		LOG_TRACE(logger, "Inserting " << c << " into the not-from-dep-source-list.");
+		index_entry->not_from_dep_source_entries.push_back(new_entry);
+		for(typename std::map<dep, std::vector<entry_ref> >::iterator
+		      from_dep_source_it = index_entry->from_dep_source_entries.begin();
+		    from_dep_source_it != index_entry->from_dep_source_entries.end();
+		    ++from_dep_source_it)
+		  {
+		    LOG_TRACE(logger, "Inserting " << c << " into the from-dep-source list for " << from_dep_source_it->first << ".");
+		    from_dep_source_it->second.push_back(new_entry);
+		  }
+	      }
 	    else
 	      {
 		typename std::map<dep, std::vector<entry_ref> >::iterator found =
@@ -1396,6 +1414,11 @@ private:
 		  {
 		    LOG_DEBUG(logger, "Creating a new from-dep index cell for " << c.get_dep());
 		    found = index_entry->from_dep_source_entries.insert(found, std::make_pair(c.get_dep(), std::vector<entry_ref>()));
+		    // Make sure the new cell contains all the entries
+		    // in the not-from-dep-source list.
+		    found->second.insert(found->second.end(),
+					 index_entry->not_from_dep_source_entries.begin(),
+					 index_entry->not_from_dep_source_entries.end());
 		  }
 
 		LOG_TRACE(logger, "Inserting " << c << " into the from-dep-source-list.");
