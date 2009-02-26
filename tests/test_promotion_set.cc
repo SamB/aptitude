@@ -230,6 +230,9 @@ public:
     //                Install(c v3), Break(b v2 -> <c v2>))
     //
     // Should turn up only (T500: Install(c v3), Break(b v2 -> <c v2>))
+    //
+    // Checks that a search for a set with several hits returns the
+    // highest-valued one.
     imm::set<choice> search1;
     search1.insert(choice::make_install_version(av1));
     search1.insert(choice::make_install_version(bv3));
@@ -265,6 +268,8 @@ public:
     // Second search: (a v1, b v1)
     //
     // Should turn up nothing.
+    //
+    // Checks that a search for a set with no hits returns nothing.
     imm::set<choice> search2;
     search2.insert(choice::make_install_version(av1));
     search2.insert(choice::make_install_version(bv1));
@@ -276,6 +281,8 @@ public:
     // Third search: (Break(b v2 -> <c v2>))
     //
     // Should turn up only (T125: Break(b v2 -> <c v2>))
+    //
+    // Checks that a higher-valued superset is correctly ignored.
     imm::set<choice> search3;
     search3.insert(choice::make_break_soft_dep(bv2d1));
 
