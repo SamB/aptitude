@@ -189,6 +189,18 @@ private:
 
     /** \brief The entries that contain this version installed from
      *  the dependency source, indexed by the dependency they solved.
+     *
+     *  Each entry in this map includes all the elements of
+     *  not_from_dep_source_entries: when we want to find the indexed
+     *  hits for a version that was installed from a dependency
+     *  source, we must also include the indexed hits for the
+     *  "generic" version.  This is the simplest way to achieve that
+     *  without allocating space during the search (instead we
+     *  pre-allocate the exact list we'll want for each index
+     *  location).  This moves the cost to the point where the
+     *  structure is built, and in my off-the-cuff estimation this
+     *  should be a win, since the promotion set is a read-mostly
+     *  structure.
      */
     std::map<dep, std::vector<entry_ref> > from_dep_source_entries;
   };
