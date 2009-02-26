@@ -324,6 +324,40 @@ public:
     found = p.find_highest_promotion_containing(search4, choice::make_install_version(bv2));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected4, *found);
+
+
+    // Fifth search: (Install(a v1 [a v2 -> <>]), Install(b v2))
+    //
+    // Should turn up only (T100: Install(a v1 [a v2 -> <>]))
+    //
+    // Tests that choices made due to a dependency are matched by
+    // choices made due to the same dependency.
+    imm::set<choice> search5;
+    search5.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+    search5.insert(choice::make_install_version(bv2));
+
+    imm::set<choice> expected_choices5;
+    expected_choices5.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+    promotion expected5(expected_choices5, 100);
+
+    found = p.find_highest_promotion_for(search5);
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected5, *found);
+
+    found = p.find_highest_promotion_containing(search5, choice::make_install_version_from_dep_source(av1, av2d1));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected5, *found);
+
+    // In this case there is a different expectation: we should find
+    // (T75: Install(a v1, b v2)), since the otherwise expected
+    // solution doesn't contain the "key" element.
+    imm::set<choice> expected_choices5_2;
+    expected_choices5_2.insert(choice::make_install_version(av1));
+    expected_choices5_2.insert(choice::make_install_version(bv2));
+    promotion expected5_2(expected_choices5_2, 75);
+    found = p.find_highest_promotion_containing(search5, choice::make_install_version(bv2));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected5_2, *found);
   }
 };
 
