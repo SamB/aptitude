@@ -262,6 +262,15 @@ public:
 
 
     // Second search: (a v1, b v1)
+    //
+    // Should turn up nothing.
+    imm::set<choice> search2;
+    search2.insert(choice::make_install_version(av1));
+    search2.insert(choice::make_install_version(bv1));
+
+    CPPUNIT_ASSERT(p.find_highest_promotion_for(search2) == p.end());
+    CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, choice::make_install_version(av1)) == p.end());
+    CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, choice::make_install_version(bv1)) == p.end());
   }
 };
 
