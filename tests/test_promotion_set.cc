@@ -236,13 +236,14 @@ public:
     search1.insert(choice::make_install_version(cv3));
     search1.insert(choice::make_break_soft_dep(bv2d1));
 
-    imm::set<choice> expected1;
-    expected1.insert(choice::make_install_version(cv3));
-    expected1.insert(choice::make_break_soft_dep(bv2d1));
+    imm::set<choice> expected1_choices;
+    expected1_choices.insert(choice::make_install_version(cv3));
+    expected1_choices.insert(choice::make_break_soft_dep(bv2d1));
+    promotion expected1(expected1_choices, 500);
 
     dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
     CPPUNIT_ASSERT(found != p.end());
-    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found);
+    CPPUNIT_ASSERT_EQUAL(expected1, *found);
 
     dummy_promotion_set::const_iterator found2 =
       p.find_highest_promotion_containing(search1, choice::make_install_version(av1));
@@ -253,11 +254,11 @@ public:
 
     found2 = p.find_highest_promotion_containing(search1, choice::make_install_version(cv3));
     CPPUNIT_ASSERT(found2 != p.end());
-    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found2);
+    CPPUNIT_ASSERT_EQUAL(expected1, *found2);
 
     found2 = p.find_highest_promotion_containing(search1, choice::make_break_soft_dep(bv2d1));
     CPPUNIT_ASSERT(found2 != p.end());
-    CPPUNIT_ASSERT_EQUAL(promotion(expected1, 500), *found2);
+    CPPUNIT_ASSERT_EQUAL(expected1, *found2);
 
 
 
