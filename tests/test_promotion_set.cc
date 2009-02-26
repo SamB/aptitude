@@ -271,6 +271,23 @@ public:
     CPPUNIT_ASSERT(p.find_highest_promotion_for(search2) == p.end());
     CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, choice::make_install_version(av1)) == p.end());
     CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, choice::make_install_version(bv1)) == p.end());
+
+    // Third search: (Break(b v2 -> <c v2>))
+    //
+    // Should turn up only (T125: Break(b v2 -> <c v2>))
+    imm::set<choice> search3;
+    search3.insert(choice::make_break_soft_dep(bv2d1));
+
+    imm::set<choice> expected_choices3 = search3;
+    promotion expected3(expected_choices3, 125);
+
+    found = p.find_highest_promotion_for(search3);
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected3, *found);
+
+    found = p.find_highest_promotion_containing(search3, choice::make_break_soft_dep(bv2d1));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected3, *found);
   }
 };
 
