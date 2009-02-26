@@ -296,6 +296,34 @@ public:
     found = p.find_highest_promotion_containing(search3, choice::make_break_soft_dep(bv2d1));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected3, *found);
+
+    // Fourth search: (Install(a v1 [a v3 -> <>]), Install(b v2))
+    //
+    // Should turn up only (T75: Install(a v1), Install(b v2))
+    //
+    // Tests that choices made due to a dependency are matched by
+    // choices made not due to a dependency, but not by choices made
+    // due to a different dependency.
+    imm::set<choice> search4;
+    search4.insert(choice::make_install_version_from_dep_source(av1, av3d1));
+    search4.insert(choice::make_install_version(bv2));
+
+    imm::set<choice> expected_choices4;
+    expected_choices4.insert(choice::make_install_version(av1));
+    expected_choices4.insert(choice::make_install_version(bv2));
+    promotion expected4(expected_choices4, 75);
+
+    found = p.find_highest_promotion_for(search4);
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected4, *found);
+
+    found = p.find_highest_promotion_containing(search4, choice::make_install_version_from_dep_source(av1, av3d1));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected4, *found);
+
+    found = p.find_highest_promotion_containing(search4, choice::make_install_version(bv2));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected4, *found);
   }
 };
 
