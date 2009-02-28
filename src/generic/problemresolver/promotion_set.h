@@ -1286,7 +1286,6 @@ public:
   void remove_below_tier(int tier)
   {
     LOG_DEBUG(logger, "Removing all promotions below tier " << tier);
-    bool removed_anything = false;
 
     std::set<version> installed_versions;
     std::set<dep> broken_soft_deps;
@@ -1294,8 +1293,11 @@ public:
     int num_promotions_erased = 0;
 
     // This is set to one past the last iterator in this tier, so we
-    // can use it to delete all the dropped tiers.
-    std::map<int, std::list<entry> > delete_end;
+    // can use it to delete all the dropped tiers.  We don't use
+    // upper_bound() because we have to examine each deleted tier to
+    // (a) update the size correctly, and (b) collect the index
+    // locations that need to be fixed up.
+    typename std::map<int, std::list<entry> >::iterator delete_end;
     for(typename std::map<int, std::list<entry> >::iterator it =
 	  entries.begin(), it_next = it;
 	it != entries.end() && it->first < tier;
