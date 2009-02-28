@@ -351,24 +351,6 @@ public:
     }
   };
 
-  class iterator : public const_iterator
-  {
-    friend class promotion_set;
-
-    iterator(typename std::map<int, std::list<entry> >::const_iterator _entries_it,
-	     typename std::map<int, std::list<entry> >::const_iterator _entries_end,
-	     typename std::list<entry>::const_iterator _entry_list_it)
-      : const_iterator(_entries_it, _entries_end, _entry_list_it)
-    {
-    }
-
-    iterator(typename std::map<int, std::list<entry> >::const_iterator _entries_it,
-	     typename std::map<int, std::list<entry> >::const_iterator _entries_end)
-      : const_iterator(_entries_it, _entries_end)
-    {
-    }
-  };
-
   const_iterator begin() const
   {
     if(entries.empty())
@@ -380,19 +362,6 @@ public:
   const_iterator end() const
   {
     return const_iterator(entries.end(), entries.end());
-  }
-
-  iterator begin()
-  {
-    if(entries.empty())
-      return end();
-    else
-      return const_iterator(entries.begin(), entries.end(), entries.begin()->second.begin());
-  }
-
-  iterator end()
-  {
-    return iterator(entries.end(), entries.end());
   }
 
 private:
