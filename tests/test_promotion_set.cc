@@ -394,6 +394,43 @@ public:
     // results.
     p.remove_tier(500);
 
+    // Check that the size and contents (when iterating) of the
+    // promotion set are maintained correctly.
+    {
+      imm::set<promotion> expected_promotions;
+      imm::set<choice> p1_choices;
+      p1_choices.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+      promotion p1(p1_choices, 100);
+      expected_promotions.insert(p1);
+      p.insert(p1);
+
+
+      imm::set<choice> p2_choices;
+      p2_choices.insert(choice::make_install_version(av1));
+      p2_choices.insert(choice::make_install_version(bv2));
+      promotion p2(p2_choices, 75);
+      expected_promotions.insert(p2);
+      p.insert(p2);
+
+
+      imm::set<choice> p3_choices;
+      p3_choices.insert(choice::make_install_version(bv2));
+      promotion p3(p3_choices, 30);
+      expected_promotions.insert(p3);
+      p.insert(p3);
+
+      imm::set<choice> p4_choices;
+      p4_choices.insert(choice::make_break_soft_dep(bv2d1));
+      promotion p4(p4_choices, 125);
+      expected_promotions.insert(p4);
+      p.insert(p4);
+
+
+      CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), p.size());
+      CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(p));
+      CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(p));
+    }
+
     // First search: (Install(a v1), Install(b v3),
     //                Install(c v3), Break(b v2 -> <c v2>))
     //
