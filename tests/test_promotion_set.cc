@@ -45,6 +45,8 @@ class Promotion_SetTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(Promotion_SetTest);
 
   CPPUNIT_TEST(testFindHighestPromotion);
+  CPPUNIT_TEST(testRemoveTier);
+  CPPUNIT_TEST(testRemoveBelowTier);
 
   CPPUNIT_TEST_SUITE_END();
 
