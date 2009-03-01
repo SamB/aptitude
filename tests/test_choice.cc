@@ -154,3 +154,5 @@ public:
     CPPUNIT_ASSERT(cav2d1.contains(cav2d1));
   }
 };
+
+CPPUNIT_TEST_SUITE_REGISTRATION(Choice_Test);
