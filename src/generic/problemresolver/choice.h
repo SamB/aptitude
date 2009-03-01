@@ -111,6 +111,39 @@ public:
     return generic_choice(d);
   }
 
+  /** \brief Test whether this choice "contains" another choice.
+   *
+   *  This is true if the two choices are equal, or if this choice is
+   *  "more general" than the other choice.  In particular: installing
+   *  a version, not from a dependency source, is always more general
+   *  than installing the same version from any dependency source.
+   */
+  bool contains(const generic_choice &other) const
+  {
+    if(tp != other.tp)
+      return false;
+    else // tp == other.tp
+      switch(tp)
+	{
+	case install_version:
+	  if(ver != other.ver)
+	    return false;
+	  else // ver == other.ver
+	    {
+	      if(!from_dep_source)
+		return true;
+	      else
+		return other.from_dep_source && d == other.d;
+	    }
+
+	case break_soft_dep:
+	  return d == other.d;
+	}
+
+    eassert(!"We should never get here.");
+    return false;
+  }
+
   /** \brief Compare two choices.
    *
    *  Choices are ordered arbitrarily.
