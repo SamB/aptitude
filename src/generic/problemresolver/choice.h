@@ -20,6 +20,10 @@
 #ifndef CHOICE_H
 #define CHOICE_H
 
+#include <cwidget/generic/util/eassert.h>
+
+#include <iostream>
+
 /** \brief Represents a decision made by the resolver.
  *
  *  This is used to keep track of which choices imply that we end up
