@@ -240,6 +240,15 @@ private:
 public:
   typedef unsigned int size_type;
   size_type size() const { return num_promotions; }
+  size_type tier_size(int tier) const
+  {
+    typename std::map<int, std::list<entry> >::const_iterator found =
+      entries.find(tier);
+    if(found == entries.end())
+      return 0;
+    else
+      return found->second.size();
+  }
 
   class const_iterator
   {
