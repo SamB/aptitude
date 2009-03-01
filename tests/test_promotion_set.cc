@@ -117,6 +117,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     // (Install(b v2)): 30
     // (Break(b v2 -> <c v2>)): 125
     // (Install(c v3), Break (b v2 -> <c v2>)): 500
+    // (Install(bv3 [b v2 -> <c v2>], cv2)): 50
     //
     // Note that the third entry should override the second one.  The
     // fourth entry shouldn't be stored at all.
@@ -193,6 +194,16 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotion p7(p7_choices, 500);
     expected_promotions.insert(p7);
     promotions.insert(p7);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
+    CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
+
+    imm::set<choice> p8_choices;
+    p8_choices.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    p8_choices.insert(choice::make_install_version(cv2));
+    promotion p8(p8_choices, 50);
+    expected_promotions.insert(p8);
+    promotions.insert(p8);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -360,6 +371,38 @@ public:
     found = p.find_highest_promotion_containing(search5, choice::make_install_version(bv2));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected5_2, *found);
+
+    // Check that nothing matches (Install(bv3, cv2)), because it
+    // doesn't have the right from-dep-source information.  Tests that
+    // find_highest_promotion_containing correctly checks the
+    // from-dep-source information.
+    imm::set<choice> search6;
+    search6.insert(choice::make_install_version(bv3));
+    search6.insert(choice::make_install_version(cv2));
+
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(search6));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search6, choice::make_install_version(bv3)));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search6, choice::make_install_version(cv2)));
+
+    // Check that we can match (Install(bv3 [bv2 -> <c v2>], cv2))
+    // instead.
+    imm::set<choice> search7;
+    search7.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    search7.insert(choice::make_install_version(cv2));
+
+    promotion expected7(search7, 50);
+
+    found = p.find_highest_promotion_for(search7);
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected7, *found);
+
+    found = p.find_highest_promotion_containing(search7, choice::make_install_version_from_dep_source(bv3, bv2d1));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected7, *found);
+
+    found = p.find_highest_promotion_containing(search7, choice::make_install_version(cv2));
+    CPPUNIT_ASSERT(found != p.end());
+    CPPUNIT_ASSERT_EQUAL(expected7, *found);
   }
 
   void testRemoveTier()
@@ -390,9 +433,10 @@ public:
 
     make_test_promotions(u, p);
 
-    // Remove tier 500 and make sure it doesn't show up in the
-    // results.
+    // Remove tiers 500 and 50, and make sure they doesn't show up in
+    // the results.
     p.remove_tier(500);
+    p.remove_tier(50);
 
     // Check that the size and contents (when iterating) of the
     // promotion set are maintained correctly.
@@ -424,6 +468,7 @@ public:
       promotion p4(p4_choices, 125);
       expected_promotions.insert(p4);
       p.insert(p4);
+
 
 
       CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), p.size());
@@ -461,6 +506,17 @@ public:
     found = p.find_highest_promotion_containing(search1, choice::make_break_soft_dep(bv2d1));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected1, *found);
+
+
+    // Nothing should match the tier-50 promotion.
+
+    imm::set<choice> search2;
+    search2.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    search2.insert(choice::make_install_version(cv2));
+
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(search2));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search2, choice::make_install_version_from_dep_source(bv3, bv2d1)));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search2, choice::make_install_version(cv2)));
   }
 
   void testRemoveBelowTier()
@@ -499,7 +555,8 @@ public:
     //            (T500: Install(c v3), Break(b v2 -> c v2))}
     //
     // The previously available promotions
-    //   (T75: Install(a v1, b v2)) and
+    //   (T75: Install(a v1, b v2)),
+    //   (T50: Install(b v3 [b v2 -> <c v2>], cv2)), and
     //   (T30: Install(b v2))
     // should be gone.
     imm::set<promotion> expected;
@@ -527,6 +584,10 @@ public:
 
     imm::set<choice> up2_choices;
     up2_choices.insert(choice::make_install_version(bv2));
+
+    imm::set<choice> up3_choices;
+    up3_choices.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    up3_choices.insert(choice::make_install_version(cv2));
 
     // Check that the new size of the set is correct.
     CPPUNIT_ASSERT_EQUAL(expected.size(), p.size());
@@ -575,6 +636,10 @@ public:
 
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(up2_choices));
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(up2_choices, choice::make_install_version(bv2)));
+
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(up3_choices));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(up3_choices, choice::make_install_version_from_dep_source(bv3, bv2d1)));
+    CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(up3_choices, choice::make_install_version(cv2)));
   }
 };
 
