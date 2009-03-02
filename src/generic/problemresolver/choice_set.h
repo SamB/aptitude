@@ -272,8 +272,10 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniverse> &choices)
 {
+  out << "{";
   typename generic_choice_set<PackageUniverse>::show_choice f(out, true);
   choices.for_each(f);
+  out << "}";
   return out;
 }
 
