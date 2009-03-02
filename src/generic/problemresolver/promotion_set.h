@@ -33,6 +33,7 @@
 #include <loggers.h>
 
 #include "choice.h"
+#include "choice_set.h"
 
 /** \brief Represents a tier promotion: the knowledge that
  *  a set of choices forces a solution to a higher tier.
@@ -42,19 +43,20 @@ class generic_promotion
 {
 public:
   typedef generic_choice<PackageUniverse> choice;
+  typedef generic_choice_set<PackageUniverse> choice_set;
 
 private:
-  imm::set<choice> choices;
+  choice_set choices;
   int tier;
 
 public:
   /** \brief Create a new promotion. */
-  generic_promotion(const imm::set<choice> &_choices, int _tier)
+  generic_promotion(const choice_set &_choices, int _tier)
     : choices(_choices), tier(_tier)
   {
   }
 
-  const imm::set<choice> &get_choices() const { return choices; }
+  const choice_set &get_choices() const { return choices; }
   int get_tier() const { return tier; }
 
   bool operator<(const generic_promotion &other) const
@@ -125,7 +127,7 @@ std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUnive
  *  the structure of choices (e.g., it indexes choices to break soft
  *  dependencies differently from choices to install versions).
  *
- *  \sa generic_choice
+ *  \sa generic_choice, generic_choice_set
  */
 template<typename PackageUniverse>
 class promotion_set
@@ -136,6 +138,7 @@ public:
   typedef typename PackageUniverse::dep dep;
 
   typedef generic_choice<PackageUniverse> choice;
+  typedef generic_choice_set<PackageUniverse> choice_set;
   typedef generic_promotion<PackageUniverse> promotion;
 
 private:
@@ -733,7 +736,7 @@ public:
    *
    *  Implements requirement (1).
    */
-  const_iterator find_highest_promotion_for(const imm::set<choice> &choices) const
+  const_iterator find_highest_promotion_for(const choice_set &choices) const
   {
     LOG_TRACE(logger, "Entering find_highest_promotion_for(" << choices << ")");
 
@@ -917,7 +920,7 @@ public:
    *
    *  Implements requirement (1).
    */
-  const_iterator find_highest_promotion_containing(const imm::set<choice> &choices,
+  const_iterator find_highest_promotion_containing(const choice_set &choices,
 						   const choice &c) const
   {
     LOG_TRACE(logger, "Entering find_highest_promotion_containing(" << choices << ", " << c << ")");
@@ -1030,7 +1033,7 @@ private:
 					     p.get_tier(),
 					     logger));
 
-    const imm::set<choice> &choices(p.get_choices());
+    const choice_set &choices(p.get_choices());
     choices.for_each(increment_f);
     choices.for_each(find_results_f);
   }
@@ -1479,7 +1482,7 @@ public:
   void insert(const promotion &p)
   {
     const int tier = p.get_tier();
-    const imm::set<choice> &choices = p.get_choices();
+    const choice_set &choices = p.get_choices();
 
     LOG_DEBUG(logger, "Inserting " << p << " into the promotion set.");
 
