@@ -248,6 +248,18 @@ public:
     return !(*this == other);
   }
 
+  bool operator<(const generic_choice_set &other) const
+  {
+    // \todo We should have a compare-and-return-int function on sets
+    // to avoid always comparing them twice.
+    if(install_version_choices < other.install_version_choices)
+      return true;
+    else if(other.install_version_choices < install_version_choices)
+      return false;
+    else
+      return not_install_version_choices < other.not_install_version_choices;
+  }
+
   /** \brief Check whether each entry in the other set is contained by
    *  an entry in this set.
    */
