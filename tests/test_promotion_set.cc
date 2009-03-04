@@ -62,7 +62,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
   typedef dummy_universe_ref::dep dep;
   typedef generic_choice<dummy_universe_ref> choice;
   typedef generic_choice_set<dummy_universe_ref> choice_set;
-  typedef promotion_set<dummy_universe_ref> dummy_promotion_set;
+  typedef generic_promotion_set<dummy_universe_ref> dummy_promotion_set;
   typedef dummy_promotion_set::promotion promotion;
 
   static imm::set<promotion> get_promotions(const dummy_promotion_set &promotions)

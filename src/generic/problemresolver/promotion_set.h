@@ -135,7 +135,7 @@ std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUnive
  *  \sa generic_choice, generic_choice_set
  */
 template<typename PackageUniverse>
-class promotion_set
+class generic_promotion_set
 {
 public:
   typedef typename PackageUniverse::package package;
@@ -271,7 +271,7 @@ public:
     // The current entry in the current list.
     typename std::list<entry>::const_iterator entry_list_it;
 
-    friend class promotion_set;
+    friend class generic_promotion_set;
 
     // This overload is used for non-end iterators.
     const_iterator(typename std::map<int, std::list<entry> >::const_iterator _entries_it,
@@ -506,7 +506,7 @@ private:
   template<typename Op>
   struct traverse_intersections
   {
-    const promotion_set &parent;
+    const generic_promotion_set &parent;
     // If \b true, we are looking for a subset of the input.  If \b
     // false, we are looking for a superset.  This affects how we
     // compare choices when they are not identical, but one is a
@@ -515,7 +515,7 @@ private:
     Op op;
 
   public:
-    traverse_intersections(const promotion_set &_parent,
+    traverse_intersections(const generic_promotion_set &_parent,
 			   bool _subset_mode,
 			   const Op &_op)
       : parent(_parent),
@@ -1582,7 +1582,7 @@ public:
       }
   }
 
-  promotion_set(const PackageUniverse &u)
+  generic_promotion_set(const PackageUniverse &u)
     : logger(aptitude::Loggers::getAptitudeResolverSearchTiers()),
       num_promotions(0),
       num_versions(u.get_version_count()),
@@ -1592,7 +1592,7 @@ public:
       install_version_index[i] = NULL;
   }
 
-  ~promotion_set()
+  ~generic_promotion_set()
   {
     for(int i = 0; i < num_versions; ++i)
       delete install_version_index[i];
@@ -1601,10 +1601,10 @@ public:
 };
 
 template<typename PackageUniverse>
-std::ostream &operator<<(std::ostream &out, const promotion_set<PackageUniverse> &s)
+std::ostream &operator<<(std::ostream &out, const generic_promotion_set<PackageUniverse> &s)
 {
   out << "{";
-  for(typename promotion_set<PackageUniverse>::const_iterator it =
+  for(typename generic_promotion_set<PackageUniverse>::const_iterator it =
 	s.begin(); it != s.end(); ++it)
     {
       if(it != s.begin())
