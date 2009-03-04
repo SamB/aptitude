@@ -20,6 +20,7 @@
 #include <iostream>
 #include <set>
 
+#include "problemresolver.h"
 #include "solution.h"
 
 /** \file sanity_check_universe.h */
@@ -364,7 +365,8 @@ void sanity_check_universe(const PackageUniverse &universe)
     = generic_solution<PackageUniverse>::root_node(imm::set<dep>(),
 						   universe,
 						   solution_weights<PackageUniverse>(0, 0, 0, 0, 0, initial_state),
-						   initial_state);
+						   initial_state,
+						   generic_problem_resolver<PackageUniverse>::minimum_tier);
 
   for(broken_dep_iterator bdIt = universe.broken_begin();
       !bdIt.end(); ++bdIt)

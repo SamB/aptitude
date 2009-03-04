@@ -365,6 +365,13 @@ private:
      */
     int action_score;
 
+    /** \brief The tier of this solution.
+     *
+     *  Informational only; not considered when comparing solutions by
+     *  identity.
+     */
+    int tier;
+
     /** The reference count of this solution. */
     mutable unsigned int refcount;
 
@@ -379,13 +386,15 @@ private:
 		 const imm::map<version, dep> &_forbidden_versions,
 		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
-		 int _action_score)
+		 int _action_score,
+		 int _tier)
       : initial_state(_initial_state), actions(_actions),
 	broken_deps(_broken_deps),
 	unresolved_soft_deps(_unresolved_soft_deps),
 	forbidden_versions(_forbidden_versions),
 	score(_score),
 	action_score(_action_score),
+	tier(_tier),
 	refcount(1)
     {
     }
@@ -417,6 +426,7 @@ private:
 
     int get_score() const {return score;}
     int get_action_score() const {return action_score;}
+    int get_tier() const { return tier; }
 
     version version_of(const package &pkg) const
     {
@@ -497,7 +507,8 @@ public:
 					     get_forbidden_versions().clone(),
 					     get_initial_state(),
 					     get_score(),
-					     get_action_score()));
+					     get_action_score(),
+					     get_tier()));
   }
 
 
@@ -505,7 +516,8 @@ public:
   static generic_solution root_node(const imm::set<dep> &initial_broken,
 				    const PackageUniverse &universe,
 				    const solution_weights<PackageUniverse> &weights,
-				    const resolver_initial_state<PackageUniverse> &initial_state);
+				    const resolver_initial_state<PackageUniverse> &initial_state,
+				    int tier);
 
   /** Generate a successor to the given solution.
    *
@@ -518,6 +530,7 @@ public:
 				    const a_iter &aend,
 				    const u_iter &ubegin,
 				    const u_iter &uend,
+				    int tier,
 				    const PackageUniverse &universe,
 				    const solution_weights<PackageUniverse> &weights);
 
@@ -631,6 +644,12 @@ public:
   int get_action_score() const
   {
     return real_soln->get_action_score();
+  }
+
+  /** \return The tier at which this solution was calculated. */
+  int get_tier() const
+  {
+    return real_soln->get_tier();
   }
 
   version version_of(const package &pkg) const
@@ -798,7 +817,7 @@ public:
 	out << "!!;";
       }
 
-    out << get_score();
+    out << "T" << get_tier() << "S" << get_score();
   }
 
   /** Compare actions by their ID */
@@ -1017,7 +1036,8 @@ inline generic_solution<PackageUniverse>
 generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken,
 					     const PackageUniverse &universe,
 					     const solution_weights<PackageUniverse> &weights,
-					     const resolver_initial_state<PackageUniverse> &initial_state)
+					     const resolver_initial_state<PackageUniverse> &initial_state,
+					     int tier)
 {
   int score = initial_broken.size() * weights.broken_score;
 
@@ -1030,7 +1050,8 @@ generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken
 					   imm::map<version, dep>(),
 					   initial_state,
 					   score,
-					   0));
+					   0,
+					   tier));
 }
 
 
@@ -1042,6 +1063,7 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const a_iter &aend,
 					     const u_iter &ubegin,
 					     const u_iter &uend,
+					     int tier,
 					     const PackageUniverse &universe,
 					     const solution_weights<PackageUniverse> &weights)
 {
@@ -1184,7 +1206,8 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					   forbidden_versions,
 					   initial_state,
 					   score,
-					   action_score));
+					   action_score,
+					   tier));
 }
 
 #endif // SOLUTION_H

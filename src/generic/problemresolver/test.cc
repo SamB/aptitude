@@ -47,6 +47,16 @@ log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolver()
   return log4cxx::Logger::getLogger("aptitude.resolver");
 }
 
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearch()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver.search");
+}
+
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchTiers()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver.search.tiers");
+}
+
 // To make things easier, the tests are specified as plaintext files.
 // The syntax is quite simple: it consists of whitespace-separated
 // words, of the form:

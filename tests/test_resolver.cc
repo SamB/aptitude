@@ -170,7 +170,8 @@ private:
 							   parent.get_forbidden_versions(),
 							   parent.get_initial_state(),
 							   parent.get_score(),
-							   parent.get_action_score()));
+							   parent.get_action_score(),
+							   parent.get_tier()));
   }
 
   /** Tests that the comparison operations on solutions work. */
@@ -211,7 +212,8 @@ private:
     // is correctly calculated according to the version mappings and
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
-						  u, weights, initial_state);
+						  u, weights, initial_state,
+						  0);
     dummy_solution s1
       = unsafe_successor(s0, &a1, &a1+1,
 			 (dummy_universe::dep *) 0,
