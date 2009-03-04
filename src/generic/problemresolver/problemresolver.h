@@ -2380,8 +2380,6 @@ private:
     // Set to \b true if this search node is untenable.
     bool dead_end = false;
 
-    int num_least_successors_user_impinging = -1;
-    dep least_successors_user_impinging;
     int num_least_successors = -1;
     dep least_successors;
 
@@ -2459,23 +2457,12 @@ private:
 				null_generator(num_successors),
 				visited_packages);
 
-	    if(impinges_user_constraint(*bi))
-	      {
-		if(num_least_successors_user_impinging == -1 ||
-		   num_successors < num_least_successors_user_impinging)
-		  {
-		    num_least_successors_user_impinging = num_successors;
-		    least_successors_user_impinging = *bi;
-		  }
-	      }
-
 	    if(num_least_successors == -1 ||
 	       num_successors < num_least_successors)
 	      {
 		num_least_successors = num_successors;
 		least_successors = *bi;
 	      }
-
 
 	    if(num_successors == 0)
 	      dead_end = true;
@@ -2493,7 +2480,6 @@ private:
 		curr = v.back();
 		done = false;
 
-		num_least_successors_user_impinging = -1;
 		num_least_successors = -1;
 	      }
 	  }
@@ -2514,22 +2500,6 @@ private:
       }
 
     unsigned int nsols = 0;
-
-    // First try to enqueue stuff related to a dependency that the
-    // user constrained; then just go for a free-for-all.
-    if(num_least_successors_user_impinging != -1)
-      {
-	LOG_TRACE(logger,
-		  "Generating successors for "
-		  << least_successors_user_impinging);
-
-	std::vector<solution> v;
-	generate_successors(curr, least_successors_user_impinging,
-			    real_generator(v, visited_packages),
-			    visited_packages);
-	try_enqueue(v);
-	nsols += v.size();
-      }
 
     // Should never happen unless we have no broken dependencies.
     if(num_least_successors != -1)
