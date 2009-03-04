@@ -805,11 +805,13 @@ int main(int argc, char *argv[])
   else if(show_why_summary_mode == "all-packages-with-dep-versions" || show_why_summary_mode == _("all-packages-with-dep-versions"))
     why_display_mode = aptitude::why::show_chain_with_versions;
   else
-    // ForTranslators: "why" here is the aptitude command name and
-    // should not be translated.
-    _error->Error(_("Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"last-package\", \"last-package-and-type\", \"all-packages\", or \"all-packages-with-dep-versions\"."),
-		  show_why_summary_mode.c_str());
-
+    {
+      // ForTranslators: "why" here is the aptitude command name and
+      // should not be translated.
+      _error->Error(_("Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"last-package\", \"last-package-and-type\", \"all-packages\", or \"all-packages-with-dep-versions\"."),
+		    show_why_summary_mode.c_str());
+      why_display_mode = aptitude::why::no_summary;
+    }
   if(!log_config_file.empty())
     PropertyConfigurator::configureAndWatch(log_config_file);
   else
