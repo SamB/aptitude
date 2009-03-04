@@ -50,6 +50,11 @@ private:
   int tier;
 
 public:
+  generic_promotion()
+    : choices(), tier(0)
+  {
+  }
+
   /** \brief Create a new promotion. */
   generic_promotion(const choice_set &_choices, int _tier)
     : choices(_choices), tier(_tier)
