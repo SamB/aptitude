@@ -214,6 +214,20 @@ public:
     choices.for_each(insert_choice_narrow(*this));
   }
 
+  /** \brief Insert every choice in the given set into this set,
+   *  overriding more general options with more specific ones.
+   *
+   *  \todo We should implement a fast set union operation on imm::set
+   *  (the balanced trees paper has a nice example of how to do this
+   *  IIRC).  In this case we'd need some function object to ensure
+   *  that matching elements in the by-package map are combined
+   *  properly.
+   */
+  void insert_or_narrow(const generic_choice_set &other)
+  {
+    other.for_each(insert_choice_narrow(*this));
+  }
+
   /** \brief Insert the given choice into this set, overriding more
    * general options with more specific ones.
    *
