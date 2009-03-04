@@ -61,6 +61,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
   typedef dummy_universe_ref::version version;
   typedef dummy_universe_ref::dep dep;
   typedef generic_choice<dummy_universe_ref> choice;
+  typedef generic_choice_set<dummy_universe_ref> choice_set;
   typedef promotion_set<dummy_universe_ref> dummy_promotion_set;
   typedef dummy_promotion_set::promotion promotion;
 
@@ -129,8 +130,8 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p1_choices;
-    p1_choices.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+    choice_set p1_choices;
+    p1_choices.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
     promotion p1(p1_choices, 100);
     expected_promotions.insert(p1);
     promotions.insert(p1);
@@ -138,10 +139,10 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p2_choices;
-    p2_choices.insert(choice::make_install_version(av1));
-    p2_choices.insert(choice::make_install_version(bv2));
-    p2_choices.insert(choice::make_install_version(cv3));
+    choice_set p2_choices;
+    p2_choices.insert_or_narrow(choice::make_install_version(av1));
+    p2_choices.insert_or_narrow(choice::make_install_version(bv2));
+    p2_choices.insert_or_narrow(choice::make_install_version(cv3));
     promotion p2(p2_choices, 50);
     expected_promotions.insert(p2);
     promotions.insert(p2);
@@ -149,9 +150,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p3_choices;
-    p3_choices.insert(choice::make_install_version(av1));
-    p3_choices.insert(choice::make_install_version(bv2));
+    choice_set p3_choices;
+    p3_choices.insert_or_narrow(choice::make_install_version(av1));
+    p3_choices.insert_or_narrow(choice::make_install_version(bv2));
     promotion p3(p3_choices, 75);
     expected_promotions.insert(p3);
     expected_promotions.erase(p2);
@@ -160,18 +161,18 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p4_choices;
-    p4_choices.insert(choice::make_install_version(av1));
-    p4_choices.insert(choice::make_install_version(bv2));
-    p4_choices.insert(choice::make_install_version(cv1));
+    choice_set p4_choices;
+    p4_choices.insert_or_narrow(choice::make_install_version(av1));
+    p4_choices.insert_or_narrow(choice::make_install_version(bv2));
+    p4_choices.insert_or_narrow(choice::make_install_version(cv1));
     promotion p4(p4_choices, 10);
     promotions.insert(p4);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p5_choices;
-    p5_choices.insert(choice::make_install_version(bv2));
+    choice_set p5_choices;
+    p5_choices.insert_or_narrow(choice::make_install_version(bv2));
     promotion p5(p5_choices, 30);
     expected_promotions.insert(p5);
     promotions.insert(p5);
@@ -179,8 +180,8 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p6_choices;
-    p6_choices.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set p6_choices;
+    p6_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion p6(p6_choices, 125);
     expected_promotions.insert(p6);
     promotions.insert(p6);
@@ -188,9 +189,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p7_choices;
-    p7_choices.insert(choice::make_install_version(cv3));
-    p7_choices.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set p7_choices;
+    p7_choices.insert_or_narrow(choice::make_install_version(cv3));
+    p7_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion p7(p7_choices, 500);
     expected_promotions.insert(p7);
     promotions.insert(p7);
@@ -198,9 +199,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
-    imm::set<choice> p8_choices;
-    p8_choices.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
-    p8_choices.insert(choice::make_install_version(cv2));
+    choice_set p8_choices;
+    p8_choices.insert_or_narrow(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    p8_choices.insert_or_narrow(choice::make_install_version(cv2));
     promotion p8(p8_choices, 50);
     expected_promotions.insert(p8);
     promotions.insert(p8);
@@ -246,15 +247,15 @@ public:
     //
     // Checks that a search for a set with several hits returns the
     // highest-valued one.
-    imm::set<choice> search1;
-    search1.insert(choice::make_install_version(av1));
-    search1.insert(choice::make_install_version(bv3));
-    search1.insert(choice::make_install_version(cv3));
-    search1.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set search1;
+    search1.insert_or_narrow(choice::make_install_version(av1));
+    search1.insert_or_narrow(choice::make_install_version(bv3));
+    search1.insert_or_narrow(choice::make_install_version(cv3));
+    search1.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
 
-    imm::set<choice> expected1_choices;
-    expected1_choices.insert(choice::make_install_version(cv3));
-    expected1_choices.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set expected1_choices;
+    expected1_choices.insert_or_narrow(choice::make_install_version(cv3));
+    expected1_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion expected1(expected1_choices, 500);
 
     dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
@@ -283,9 +284,9 @@ public:
     // Should turn up nothing.
     //
     // Checks that a search for a set with no hits returns nothing.
-    imm::set<choice> search2;
-    search2.insert(choice::make_install_version(av1));
-    search2.insert(choice::make_install_version(bv1));
+    choice_set search2;
+    search2.insert_or_narrow(choice::make_install_version(av1));
+    search2.insert_or_narrow(choice::make_install_version(bv1));
 
     CPPUNIT_ASSERT(p.find_highest_promotion_for(search2) == p.end());
     CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, choice::make_install_version(av1)) == p.end());
@@ -296,10 +297,10 @@ public:
     // Should turn up only (T125: Break(b v2 -> <c v2>))
     //
     // Checks that a higher-valued superset is correctly ignored.
-    imm::set<choice> search3;
-    search3.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set search3;
+    search3.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
 
-    imm::set<choice> expected_choices3 = search3;
+    choice_set expected_choices3 = search3;
     promotion expected3(expected_choices3, 125);
 
     found = p.find_highest_promotion_for(search3);
@@ -317,13 +318,13 @@ public:
     // Tests that choices made due to a dependency are matched by
     // choices made not due to a dependency, but not by choices made
     // due to a different dependency.
-    imm::set<choice> search4;
-    search4.insert(choice::make_install_version_from_dep_source(av1, av3d1));
-    search4.insert(choice::make_install_version(bv2));
+    choice_set search4;
+    search4.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av3d1));
+    search4.insert_or_narrow(choice::make_install_version(bv2));
 
-    imm::set<choice> expected_choices4;
-    expected_choices4.insert(choice::make_install_version(av1));
-    expected_choices4.insert(choice::make_install_version(bv2));
+    choice_set expected_choices4;
+    expected_choices4.insert_or_narrow(choice::make_install_version(av1));
+    expected_choices4.insert_or_narrow(choice::make_install_version(bv2));
     promotion expected4(expected_choices4, 75);
 
     found = p.find_highest_promotion_for(search4);
@@ -345,12 +346,12 @@ public:
     //
     // Tests that choices made due to a dependency are matched by
     // choices made due to the same dependency.
-    imm::set<choice> search5;
-    search5.insert(choice::make_install_version_from_dep_source(av1, av2d1));
-    search5.insert(choice::make_install_version(bv2));
+    choice_set search5;
+    search5.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
+    search5.insert_or_narrow(choice::make_install_version(bv2));
 
-    imm::set<choice> expected_choices5;
-    expected_choices5.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+    choice_set expected_choices5;
+    expected_choices5.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
     promotion expected5(expected_choices5, 100);
 
     found = p.find_highest_promotion_for(search5);
@@ -364,9 +365,9 @@ public:
     // In this case there is a different expectation: we should find
     // (T75: Install(a v1, b v2)), since the otherwise expected
     // solution doesn't contain the "key" element.
-    imm::set<choice> expected_choices5_2;
-    expected_choices5_2.insert(choice::make_install_version(av1));
-    expected_choices5_2.insert(choice::make_install_version(bv2));
+    choice_set expected_choices5_2;
+    expected_choices5_2.insert_or_narrow(choice::make_install_version(av1));
+    expected_choices5_2.insert_or_narrow(choice::make_install_version(bv2));
     promotion expected5_2(expected_choices5_2, 75);
     found = p.find_highest_promotion_containing(search5, choice::make_install_version(bv2));
     CPPUNIT_ASSERT(found != p.end());
@@ -376,9 +377,9 @@ public:
     // doesn't have the right from-dep-source information.  Tests that
     // find_highest_promotion_containing correctly checks the
     // from-dep-source information.
-    imm::set<choice> search6;
-    search6.insert(choice::make_install_version(bv3));
-    search6.insert(choice::make_install_version(cv2));
+    choice_set search6;
+    search6.insert_or_narrow(choice::make_install_version(bv3));
+    search6.insert_or_narrow(choice::make_install_version(cv2));
 
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(search6));
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search6, choice::make_install_version(bv3)));
@@ -386,9 +387,9 @@ public:
 
     // Check that we can match (Install(bv3 [bv2 -> <c v2>], cv2))
     // instead.
-    imm::set<choice> search7;
-    search7.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
-    search7.insert(choice::make_install_version(cv2));
+    choice_set search7;
+    search7.insert_or_narrow(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    search7.insert_or_narrow(choice::make_install_version(cv2));
 
     promotion expected7(search7, 50);
 
@@ -442,29 +443,29 @@ public:
     // promotion set are maintained correctly.
     {
       imm::set<promotion> expected_promotions;
-      imm::set<choice> p1_choices;
-      p1_choices.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+      choice_set p1_choices;
+      p1_choices.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
       promotion p1(p1_choices, 100);
       expected_promotions.insert(p1);
       p.insert(p1);
 
 
-      imm::set<choice> p2_choices;
-      p2_choices.insert(choice::make_install_version(av1));
-      p2_choices.insert(choice::make_install_version(bv2));
+      choice_set p2_choices;
+      p2_choices.insert_or_narrow(choice::make_install_version(av1));
+      p2_choices.insert_or_narrow(choice::make_install_version(bv2));
       promotion p2(p2_choices, 75);
       expected_promotions.insert(p2);
       p.insert(p2);
 
 
-      imm::set<choice> p3_choices;
-      p3_choices.insert(choice::make_install_version(bv2));
+      choice_set p3_choices;
+      p3_choices.insert_or_narrow(choice::make_install_version(bv2));
       promotion p3(p3_choices, 30);
       expected_promotions.insert(p3);
       p.insert(p3);
 
-      imm::set<choice> p4_choices;
-      p4_choices.insert(choice::make_break_soft_dep(bv2d1));
+      choice_set p4_choices;
+      p4_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
       promotion p4(p4_choices, 125);
       expected_promotions.insert(p4);
       p.insert(p4);
@@ -480,14 +481,14 @@ public:
     //                Install(c v3), Break(b v2 -> <c v2>))
     //
     // Should turn up (T125: Break(b v2 -> <c v2>))
-    imm::set<choice> search1;
-    search1.insert(choice::make_install_version(av1));
-    search1.insert(choice::make_install_version(bv3));
-    search1.insert(choice::make_install_version(cv3));
-    search1.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set search1;
+    search1.insert_or_narrow(choice::make_install_version(av1));
+    search1.insert_or_narrow(choice::make_install_version(bv3));
+    search1.insert_or_narrow(choice::make_install_version(cv3));
+    search1.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
 
-    imm::set<choice> expected_choices1;
-    expected_choices1.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set expected_choices1;
+    expected_choices1.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion expected1(expected_choices1, 125);
 
     dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
@@ -510,9 +511,9 @@ public:
 
     // Nothing should match the tier-50 promotion.
 
-    imm::set<choice> search2;
-    search2.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
-    search2.insert(choice::make_install_version(cv2));
+    choice_set search2;
+    search2.insert_or_narrow(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    search2.insert_or_narrow(choice::make_install_version(cv2));
 
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_for(search2));
     CPPUNIT_ASSERT(p.end() == p.find_highest_promotion_containing(search2, choice::make_install_version_from_dep_source(bv3, bv2d1)));
@@ -560,34 +561,34 @@ public:
     //   (T30: Install(b v2))
     // should be gone.
     imm::set<promotion> expected;
-    imm::set<choice> p1_choices;
-    p1_choices.insert(choice::make_install_version_from_dep_source(av1, av2d1));
+    choice_set p1_choices;
+    p1_choices.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
     promotion p1(p1_choices, 100);
     expected.insert(p1);
 
-    imm::set<choice> p2_choices;
-    p2_choices.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set p2_choices;
+    p2_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion p2(p2_choices, 125);
     expected.insert(p2);
 
-    imm::set<choice> p3_choices;
-    p3_choices.insert(choice::make_install_version(cv3));
-    p3_choices.insert(choice::make_break_soft_dep(bv2d1));
+    choice_set p3_choices;
+    p3_choices.insert_or_narrow(choice::make_install_version(cv3));
+    p3_choices.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
     promotion p3(p3_choices, 500);
     expected.insert(p3);
 
 
     // Unexpected promotions.  These should match nothing.
-    imm::set<choice> up1_choices;
-    up1_choices.insert(choice::make_install_version(av1));
-    up1_choices.insert(choice::make_install_version(bv2));
+    choice_set up1_choices;
+    up1_choices.insert_or_narrow(choice::make_install_version(av1));
+    up1_choices.insert_or_narrow(choice::make_install_version(bv2));
 
-    imm::set<choice> up2_choices;
-    up2_choices.insert(choice::make_install_version(bv2));
+    choice_set up2_choices;
+    up2_choices.insert_or_narrow(choice::make_install_version(bv2));
 
-    imm::set<choice> up3_choices;
-    up3_choices.insert(choice::make_install_version_from_dep_source(bv3, bv2d1));
-    up3_choices.insert(choice::make_install_version(cv2));
+    choice_set up3_choices;
+    up3_choices.insert_or_narrow(choice::make_install_version_from_dep_source(bv3, bv2d1));
+    up3_choices.insert_or_narrow(choice::make_install_version(cv2));
 
     // Check that the new size of the set is correct.
     CPPUNIT_ASSERT_EQUAL(expected.size(), p.size());

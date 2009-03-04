@@ -30,8 +30,17 @@ template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniverse> &choices);
 
 /** \brief Stores a set of choices, with the ability to quickly answer
- *  questions about containment and to prune choices that are
- *  redundant.
+ *  questions about containment.
+ *
+ *  If several choices overlap, only the most specific choice is
+ *  stored.  The reason for this is that this structure is used to
+ *  store information of the form "if ever entry in this set of
+ *  choices was chosen, then X".  The only way to choose both a more
+ *  general option and a more specific one is to take the more
+ *  specific one; hence, it makes no sense to include both of them.
+ *  To emphasize this behavior, the "insert" routine is called
+ *  "insert_or_narrow".  An "insert_widen" could be written without
+ *  conflict; it just happens not to be needed right now.
  *
  *  This object requires that the choices form a coherent installation
  *  set.  In particular, two install_version choices that install
@@ -117,11 +126,11 @@ private:
     }
   };
 
-  struct insert_choice
+  struct insert_choice_narrow
   {
     generic_choice_set &parent;
 
-    insert_choice(generic_choice_set &_parent)
+    insert_choice_narrow(generic_choice_set &_parent)
       : parent(_parent)
     {
     }
@@ -146,11 +155,11 @@ private:
 		choice &existing_choice(existing_choice_pair.second);
 
 		if(existing_choice.contains(c))
-		  ; // The new choice adds no information.
-		else if(c.contains(existing_choice))
 		  // Override the existing choice with the new one,
-		  // which is more general.
+		  // which is more specific.
 		  parent.install_version_choices.put(p, c);
+		else if(c.contains(existing_choice))
+		  ; // c is more general than the existing choice.
 		else
 		  eassert(!"Internal error: attempted to add conflicting choices to the same set.");
 	      }
@@ -197,14 +206,27 @@ public:
   {
   }
 
-  generic_choice_set(const imm::set<choice> &choices)
+  /** \brief Insert every choice in the given set into this set,
+   *  overriding more general options with more specific ones.
+   */
+  void insert_or_narrow(const imm::set<choice> &choices)
   {
-    choices.for_each(insert_choice(*this));
+    choices.for_each(insert_choice_narrow(*this));
   }
 
-  void insert(const choice &c)
+  /** \brief Insert the given choice into this set, overriding more
+   * general options with more specific ones.
+   *
+   *  \param c  The choice to insert.
+   *
+   *  If the set contains a choice that is more general than c, that
+   *  choice will be dropped in favor c.  On the other hand, if the
+   *  set contains a choice that is more specific than c, c will be
+   *  discarded in favor of that choice.
+   */
+  void insert_or_narrow(const choice &c)
   {
-    insert_choice(*this)(c);
+    insert_choice_narrow(*this)(c);
   }
 
   bool contains(const choice &c) const
