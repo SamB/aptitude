@@ -121,7 +121,7 @@ bool get_apt_knows_about_rootdir()
   return apt_knows_about_rootdir;
 }
 
-void apt_preinit()
+void apt_preinit(const char *rootdir)
 {
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
@@ -155,6 +155,13 @@ void apt_preinit()
 
   theme_config=new Configuration;
   user_config=new Configuration;
+
+  if(rootdir != NULL)
+    {
+      _config->Set("RootDir", rootdir);
+      theme_config->Set("RootDir", rootdir);
+      user_config->Set("RootDir", rootdir);
+    }
 
   ReadConfigFile(*theme_config, PKGDATADIR "/aptitude-defaults");
 
@@ -295,9 +302,15 @@ void apt_revertoptions()
   Configuration *old_user_config=user_config;
   Configuration *old_config=_config;
 
+  // Preserve any existing root-dir settings in the new configuration.
+  const std::string old_rootdir = _config->Find("RootDir", "");
+
   _config=new Configuration;
 
   user_config=new Configuration;
+
+  _config->Set("RootDir", old_rootdir);
+  user_config->Set("RootDir", old_rootdir);
 
   // ick?
   pkgInitConfig(*_config);

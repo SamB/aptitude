@@ -1,6 +1,6 @@
 // apt.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ pkg_hier *get_user_pkg_hier();
 // people who don't use the browser don't take the hit of having to
 // load in the (BIG) hierarchy info file)
 
-void apt_preinit();
+void apt_preinit(const char *rootdir);
 // Performs initialization of stuff that has to happen before apt_init is
 // called (eg, pkgInitialize and setting up the undo structure)
 

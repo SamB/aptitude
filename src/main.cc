@@ -466,7 +466,13 @@ int main(int argc, char *argv[])
   bindtextdomain(PACKAGE, LOCALEDIR);
   textdomain(PACKAGE);
 
-  apt_preinit();
+  // An environment variable is used mostly because of the utterly
+  // lame option parsing that aptitude does.  A better option parser
+  // would pre-parse the options and remember them in a structure of
+  // some sort, meaning that I could parse the command-line options
+  // before I set up the apt configuration structures.
+  const char * const rootdir = getenv("APT_ROOT_DIR");
+  apt_preinit(rootdir);
 
   char *status_fname=NULL;
   // The filename to read status information from.
