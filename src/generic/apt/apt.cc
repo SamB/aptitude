@@ -241,10 +241,6 @@ void apt_preinit(const char *rootdir)
 
 void apt_dumpcfg(const char *root)
 {
-  // Don't write RootDir to the user's configuration file -- it causes
-  // horrible confusion.
-  config_change_pusher p("RootDir", "", *_config);
-
   string cfgloc;
 
   const char *HOME = getenv("HOME");
@@ -289,7 +285,14 @@ void apt_dumpcfg(const char *root)
       return;
     }
 
+  // Don't write RootDir to the user's configuration file -- it causes
+  // horrible confusion.
+  std::string rootDir(_config->Find("RootDir", ""));
+  _config->Clear("RootDir");
+
   aptcfg->Dump(f);
+
+  _config->Set("RootDir", rootDir);
 
   f.close();
 
