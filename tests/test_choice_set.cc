@@ -44,6 +44,7 @@ class Choice_Set_Test : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testInsertNarrow);
   CPPUNIT_TEST(testGetVersionOf);
+  CPPUNIT_TEST(testClone);
   CPPUNIT_TEST(testContainsChoice);
   CPPUNIT_TEST(testContainsChoiceSet);
   // No test for for_each(), because it's tested in testInsertNarrow
@@ -229,6 +230,19 @@ public:
 
     CPPUNIT_ASSERT(s.contains(make_break_soft_dep(av2d1)));
     CPPUNIT_ASSERT(!s.contains(make_break_soft_dep(av3d1)));
+  }
+
+  void testClone()
+  {
+    choice_set s;
+    s.insert_or_narrow(make_install_version_from_dep_source(av1, av3d1));
+    s.insert_or_narrow(make_install_version(cv3));
+    s.insert_or_narrow(make_install_version(bv1));
+    s.insert_or_narrow(make_break_soft_dep(av2d1));
+
+    CPPUNIT_ASSERT_EQUAL(s, s.clone());
+    CPPUNIT_ASSERT_EQUAL(s, s.clone());
+    CPPUNIT_ASSERT_EQUAL(s, s.clone());
   }
 
   void testGetVersionOf()

@@ -201,6 +201,13 @@ private:
     }
   };
 
+  generic_choice_set(const imm::map<package, choice> &_install_version_choices,
+		     const imm::set<choice> &_not_install_version_choices)
+    : install_version_choices(_install_version_choices),
+      not_install_version_choices(_not_install_version_choices)
+  {
+  }
+
 public:
   generic_choice_set()
   {
@@ -314,6 +321,15 @@ public:
   {
     install_version_choices.for_each(for_each_choice_pair<F>(f));
     not_install_version_choices.for_each(f);
+  }
+
+  /** \brief Return a new choice set that does not share memory with
+   *  this set.
+   */
+  generic_choice_set clone() const
+  {
+    return generic_choice_set(install_version_choices.clone(),
+			      not_install_version_choices.clone());
   }
 
   /** \brief Retrieve the version, if any, that was chosen for the
