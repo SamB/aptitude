@@ -315,6 +315,29 @@ public:
     install_version_choices.for_each(for_each_choice_pair<F>(f));
     not_install_version_choices.for_each(f);
   }
+
+  /** \brief Retrieve the version, if any, that was chosen for the
+   *  given package.
+   *
+   *  \param p   The package to examine.
+   *  \param out A location in which to store the retrieved version.
+   *
+   *  \return  \b true if a version of the package p is installed
+   *  by this choice set; \b false if not (in which case out is
+   *  unchanged).
+   */
+  bool get_version_of(const package &p, version &out) const
+  {
+    typename imm::map<package, choice>::node found = install_version_choices.lookup(p);
+
+    if(found.isValid())
+      {
+	out = found.getVal().second.get_ver();
+	return true;
+      }
+    else
+      return false;
+  }
 };
 
 template<typename PackageUniverse>

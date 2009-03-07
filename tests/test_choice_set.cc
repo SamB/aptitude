@@ -43,6 +43,7 @@ class Choice_Set_Test : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(Choice_Set_Test);
 
   CPPUNIT_TEST(testInsertNarrow);
+  CPPUNIT_TEST(testGetVersionOf);
   CPPUNIT_TEST(testContainsChoice);
   CPPUNIT_TEST(testContainsChoiceSet);
   // No test for for_each(), because it's tested in testInsertNarrow
@@ -249,6 +250,50 @@ public:
 
     CPPUNIT_ASSERT(s.contains(make_break_soft_dep(av2d1)));
     CPPUNIT_ASSERT(!s.contains(make_break_soft_dep(av3d1)));
+  }
+
+  void testGetVersionOf()
+  {
+    dummy_universe_ref u(parseUniverse(dummy_universe_1));
+
+    package a(u.find_package("a"));
+    package b(u.find_package("b"));
+    package c(u.find_package("c"));
+
+    version av1(a.version_from_name("v1"));
+    version av2(a.version_from_name("v2"));
+    version av3(a.version_from_name("v3"));
+
+    version bv1(b.version_from_name("v1"));
+    version bv2(b.version_from_name("v2"));
+    version bv3(b.version_from_name("v3"));
+
+    version cv1(c.version_from_name("v1"));
+    version cv2(c.version_from_name("v2"));
+    version cv3(c.version_from_name("v3"));
+
+    dep av1d1(*av1.deps_begin());
+    dep bv2d1(*bv2.deps_begin());
+    dep av2d1(*av2.deps_begin());
+    dep av3d1(*av3.deps_begin());
+
+
+    choice_set s;
+    s.insert_or_narrow(choice::make_install_version(av1, -1));
+    s.insert_or_narrow(choice::make_install_version(bv3, -1));
+
+    version v;
+    CPPUNIT_ASSERT(s.get_version_of(a, v));
+    CPPUNIT_ASSERT_EQUAL(av1, v);
+
+    CPPUNIT_ASSERT(s.get_version_of(b, v));
+    CPPUNIT_ASSERT_EQUAL(bv3, v);
+
+    s.insert_or_narrow(choice::make_install_version_from_dep_source(bv3, bv2d1, -1));
+    CPPUNIT_ASSERT(s.get_version_of(b, v));
+    CPPUNIT_ASSERT_EQUAL(bv3, v);
+
+    CPPUNIT_ASSERT(!s.get_version_of(c, v));
   }
 
   void testContainsChoiceSet()
