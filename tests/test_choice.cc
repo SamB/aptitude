@@ -60,6 +60,23 @@ class Choice_Test : public CppUnit::TestFixture
   typedef dummy_universe_ref::dep dep;
   typedef generic_choice<dummy_universe_ref> choice;
 
+  // We don't care about id in these tests, so these are convenience
+  // routines that use a dummy value.
+  static choice make_install_version(const version &v)
+  {
+    return choice::make_install_version(v, -1);
+  }
+
+  static choice make_install_version_from_dep_source(const version &v, const dep &d)
+  {
+    return choice::make_install_version_from_dep_source(v, d, -1);
+  }
+
+  static choice make_break_soft_dep(const dep &d)
+  {
+    return choice::make_break_soft_dep(d, -1);
+  }
+
 public:
   void testContains()
   {
@@ -86,13 +103,13 @@ public:
     dep av2d1(*av2.deps_begin());
     dep av3d1(*av3.deps_begin());
 
-    const choice cav1 = choice::make_install_version(av1);
-    const choice cav1av2d1 = choice::make_install_version_from_dep_source(av1, av2d1);
-    const choice cav1av3d1 = choice::make_install_version_from_dep_source(av1, av3d1);
-    const choice cav2 = choice::make_install_version(av2);
-    const choice cbv1 = choice::make_install_version(bv1);
-    const choice cav1d1 = choice::make_break_soft_dep(av1d1);
-    const choice cav2d1 = choice::make_break_soft_dep(av2d1);
+    const choice cav1 = make_install_version(av1);
+    const choice cav1av2d1 = make_install_version_from_dep_source(av1, av2d1);
+    const choice cav1av3d1 = make_install_version_from_dep_source(av1, av3d1);
+    const choice cav2 = make_install_version(av2);
+    const choice cbv1 = make_install_version(bv1);
+    const choice cav1d1 = make_break_soft_dep(av1d1);
+    const choice cav2d1 = make_break_soft_dep(av2d1);
 
     // Check that all the containment relations here are correct.
     CPPUNIT_ASSERT(cav1.contains(cav1));

@@ -1468,9 +1468,9 @@ private:
   static choice get_choice(const action &act)
   {
     if(act.from_dep_source)
-      return choice::make_install_version_from_dep_source(act.ver, act.d);
+      return choice::make_install_version_from_dep_source(act.ver, act.d, act.id);
     else
-      return choice::make_install_version(act.ver);
+      return choice::make_install_version(act.ver, act.id);
   }
 
   /** \brief Used to convert a solution to a set of choices.
@@ -1497,7 +1497,7 @@ private:
     // Add a broken-dep.
     bool operator()(const dep &broken) const
     {
-      rval.insert_or_narrow(choice::make_break_soft_dep(broken));
+      rval.insert_or_narrow(choice::make_break_soft_dep(broken, -1));
       return true;
     }
 
@@ -1505,9 +1505,9 @@ private:
     bool operator()(const std::pair<package, action> &act) const
     {
       if(act.second.from_dep_source && keep_dep_info)
-	rval.insert_or_narrow(choice::make_install_version_from_dep_source(act.second.ver, act.second.d));
+	rval.insert_or_narrow(choice::make_install_version_from_dep_source(act.second.ver, act.second.d, act.second.id));
       else
-	rval.insert_or_narrow(choice::make_install_version(act.second.ver));
+	rval.insert_or_narrow(choice::make_install_version(act.second.ver, act.second.id));
       return true;
     }
   };
@@ -1918,7 +1918,7 @@ private:
 		  "Discarding " << v
 		  << ": monotonicity violation");
 
-	out_choice = choice::make_install_version(inst);
+	out_choice = choice::make_install_version(inst, -1);
 	return false;
       }
     else
@@ -1945,7 +1945,7 @@ private:
 	    // The version that was installed to change the
 	    // dependency's source.
 	    version culprit_ver = s.version_of(found_d.get_source().get_package());
-	    out_choice = choice::make_install_version_from_dep_source(culprit_ver, found_d);
+	    out_choice = choice::make_install_version_from_dep_source(culprit_ver, found_d, -1);
 
 	    return false;
 	  }
@@ -2284,7 +2284,7 @@ private:
     if(!d.is_soft())
       {
 	if(source_found.isValid())
-	  forcing_reasons.insert_or_narrow(choice::make_install_version(source));
+	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, -1));
 	else
 	  {
 	    eassert_on_2objs_soln(source == initial_state.version_of(source.get_package()),
@@ -2337,7 +2337,7 @@ private:
 	// Check whether adding this unresolved dep triggers a
 	// promotion.
 	choice_set choices(get_solution_choices(s));
-	choice break_d(choice::make_break_soft_dep(d));
+	choice break_d(choice::make_break_soft_dep(d, -1));
 	choices.insert_or_narrow(break_d);
 	typename promotion_set::const_iterator found =
 	  promotions.find_highest_promotion_containing(choices, break_d);

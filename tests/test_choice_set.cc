@@ -98,6 +98,24 @@ class Choice_Set_Test : public CppUnit::TestFixture
     return rval;
   }
 
+
+  // We don't care about id in these tests, so these are convenience
+  // routines that use a dummy value.
+  static choice make_install_version(const version &v)
+  {
+    return choice::make_install_version(v, -1);
+  }
+
+  static choice make_install_version_from_dep_source(const version &v, const dep &d)
+  {
+    return choice::make_install_version_from_dep_source(v, d, -1);
+  }
+
+  static choice make_break_soft_dep(const dep &d)
+  {
+    return choice::make_break_soft_dep(d, -1);
+  }
+
 public:
   void testInsertNarrow()
   {
@@ -132,7 +150,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
-    const choice c1(choice::make_install_version(av2));
+    const choice c1(make_install_version(av2));
     s.insert_or_narrow(c1);
     expected.insert(c1);
 
@@ -141,7 +159,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
-    const choice c2(choice::make_install_version_from_dep_source(av2, av3d1));
+    const choice c2(make_install_version_from_dep_source(av2, av3d1));
     expected.erase(c1);
     expected.insert(c2);
     s.insert_or_narrow(c2);
@@ -151,7 +169,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
-    const choice c3(choice::make_break_soft_dep(av2d1));
+    const choice c3(make_break_soft_dep(av2d1));
     s.insert_or_narrow(c3);
     expected.insert(c3);
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
@@ -159,7 +177,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
-    const choice c4(choice::make_install_version_from_dep_source(bv1, bv2d1));
+    const choice c4(make_install_version_from_dep_source(bv1, bv2d1));
     s.insert_or_narrow(c4);
     expected.insert(c4);
 
@@ -168,7 +186,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
-    const choice c5(choice::make_install_version(bv1));
+    const choice c5(make_install_version(bv1));
     s.insert_or_narrow(c5);
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
@@ -177,7 +195,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
 
 
-    const choice c6(choice::make_break_soft_dep(av3d1));
+    const choice c6(make_break_soft_dep(av3d1));
     s.insert_or_narrow(c6);
     expected.insert(c6);
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
@@ -212,25 +230,25 @@ public:
     dep av3d1(*av3.deps_begin());
 
     choice_set s;
-    s.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av3d1));
-    s.insert_or_narrow(choice::make_install_version(cv3));
-    s.insert_or_narrow(choice::make_install_version(bv1));
-    s.insert_or_narrow(choice::make_break_soft_dep(av2d1));
+    s.insert_or_narrow(make_install_version_from_dep_source(av1, av3d1));
+    s.insert_or_narrow(make_install_version(cv3));
+    s.insert_or_narrow(make_install_version(bv1));
+    s.insert_or_narrow(make_break_soft_dep(av2d1));
 
-    CPPUNIT_ASSERT(s.contains(choice::make_install_version_from_dep_source(av1, av3d1)));
-    CPPUNIT_ASSERT(!s.contains(choice::make_install_version_from_dep_source(av1, av2d1)));
-    CPPUNIT_ASSERT(!s.contains(choice::make_install_version(av1)));
+    CPPUNIT_ASSERT(s.contains(make_install_version_from_dep_source(av1, av3d1)));
+    CPPUNIT_ASSERT(!s.contains(make_install_version_from_dep_source(av1, av2d1)));
+    CPPUNIT_ASSERT(!s.contains(make_install_version(av1)));
 
-    CPPUNIT_ASSERT(s.contains(choice::make_install_version(cv3)));
-    CPPUNIT_ASSERT(!s.contains(choice::make_install_version(cv2)));
-    CPPUNIT_ASSERT(s.contains(choice::make_install_version_from_dep_source(cv3, av2d1)));
+    CPPUNIT_ASSERT(s.contains(make_install_version(cv3)));
+    CPPUNIT_ASSERT(!s.contains(make_install_version(cv2)));
+    CPPUNIT_ASSERT(s.contains(make_install_version_from_dep_source(cv3, av2d1)));
 
-    CPPUNIT_ASSERT(s.contains(choice::make_install_version(bv1)));
-    CPPUNIT_ASSERT(!s.contains(choice::make_install_version(bv2)));
-    CPPUNIT_ASSERT(s.contains(choice::make_install_version_from_dep_source(bv1, bv2d1)));
+    CPPUNIT_ASSERT(s.contains(make_install_version(bv1)));
+    CPPUNIT_ASSERT(!s.contains(make_install_version(bv2)));
+    CPPUNIT_ASSERT(s.contains(make_install_version_from_dep_source(bv1, bv2d1)));
 
-    CPPUNIT_ASSERT(s.contains(choice::make_break_soft_dep(av2d1)));
-    CPPUNIT_ASSERT(!s.contains(choice::make_break_soft_dep(av3d1)));
+    CPPUNIT_ASSERT(s.contains(make_break_soft_dep(av2d1)));
+    CPPUNIT_ASSERT(!s.contains(make_break_soft_dep(av3d1)));
   }
 
   void testContainsChoiceSet()
@@ -278,33 +296,33 @@ public:
     // Sn contains Sn for all n.
 
     choice_set s0;
-    s0.insert_or_narrow(choice::make_install_version(av1));
-    s0.insert_or_narrow(choice::make_install_version(bv3));
-    s0.insert_or_narrow(choice::make_install_version(cv2));
+    s0.insert_or_narrow(make_install_version(av1));
+    s0.insert_or_narrow(make_install_version(bv3));
+    s0.insert_or_narrow(make_install_version(cv2));
 
     choice_set s1;
-    s1.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av2d1));
-    s1.insert_or_narrow(choice::make_install_version(bv3));
-    s1.insert_or_narrow(choice::make_install_version(cv2));
+    s1.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
+    s1.insert_or_narrow(make_install_version(bv3));
+    s1.insert_or_narrow(make_install_version(cv2));
 
     choice_set s2;
-    s2.insert_or_narrow(choice::make_install_version_from_dep_source(av1, av3d1));
-    s2.insert_or_narrow(choice::make_install_version(bv3));
-    s2.insert_or_narrow(choice::make_install_version(cv2));
+    s2.insert_or_narrow(make_install_version_from_dep_source(av1, av3d1));
+    s2.insert_or_narrow(make_install_version(bv3));
+    s2.insert_or_narrow(make_install_version(cv2));
 
     choice_set s3;
-    s3.insert_or_narrow(choice::make_install_version(cv2));
+    s3.insert_or_narrow(make_install_version(cv2));
 
     choice_set s4;
-    s4.insert_or_narrow(choice::make_install_version(cv2));
-    s4.insert_or_narrow(choice::make_break_soft_dep(av2d1));
+    s4.insert_or_narrow(make_install_version(cv2));
+    s4.insert_or_narrow(make_break_soft_dep(av2d1));
 
     choice_set s5;
-    s5.insert_or_narrow(choice::make_break_soft_dep(av2d1));
-    s5.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
+    s5.insert_or_narrow(make_break_soft_dep(av2d1));
+    s5.insert_or_narrow(make_break_soft_dep(bv2d1));
 
     choice_set s6;
-    s6.insert_or_narrow(choice::make_break_soft_dep(bv2d1));
+    s6.insert_or_narrow(make_break_soft_dep(bv2d1));
 
     std::vector<choice_set> sets;
     sets.push_back(s0);

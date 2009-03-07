@@ -68,47 +68,61 @@ private:
   // The type of this choice object.
   type tp:1;
 
-  generic_choice(const version &_ver)
-    : ver(_ver), from_dep_source(false), tp(install_version)
+  /** \brief The order in which this choice was made.
+   */
+  int id:30;
+
+  generic_choice(const version &_ver, int _id)
+    : ver(_ver), from_dep_source(false), tp(install_version), id(_id)
   {
   }
 
-  generic_choice(const version &_ver, const dep &_d)
-    : ver(_ver), d(_d), from_dep_source(true), tp(install_version)
+  generic_choice(const version &_ver, const dep &_d, int _id)
+    : ver(_ver), d(_d), from_dep_source(true), tp(install_version), id(_id)
   {
   }
 
-  generic_choice(const dep &_d)
-    : d(_d), from_dep_source(false), tp(break_soft_dep)
+  generic_choice(const dep &_d, int _id)
+    : d(_d), from_dep_source(false), tp(break_soft_dep), id(_id)
   {
   }
 
 public:
   generic_choice()
-    : from_dep_source(false), tp(install_version)
+    : from_dep_source(false), tp(install_version), id(-1)
   {
   }
 
-  /** \brief Create a new choice that installs the given version. */
-  static generic_choice make_install_version(const version &ver)
+  /** \brief Create a new choice that installs the given version.
+   *
+   *  \param id  An arbitrary integer associated with this choice.
+   *             Ignored by all operations except get_id().
+   */
+  static generic_choice make_install_version(const version &ver, int id)
   {
-    return generic_choice(ver);
+    return generic_choice(ver, id);
   }
 
   /** \brief Create a new choice that installs the given version to
    *  change the source of the given dependency.
+   *
+   *  \param id  An arbitrary integer associated with this choice.
+   *             Ignored by all operations except get_id().
    */
-  static generic_choice make_install_version_from_dep_source(const version &ver, const dep &d)
+  static generic_choice make_install_version_from_dep_source(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, d);
+    return generic_choice(ver, d, id);
   }
 
   /** \brief Create a new choice that leaves the given soft dependency
    *  unresolved.
+   *
+   *  \param id  An arbitrary integer associated with this choice.
+   *             Ignored by all operations except get_id().
    */
-  static generic_choice make_break_soft_dep(const dep &d)
+  static generic_choice make_break_soft_dep(const dep &d, int id)
   {
-    return generic_choice(d);
+    return generic_choice(d, id);
   }
 
   /** \brief Test whether this choice "contains" another choice.
@@ -213,6 +227,7 @@ public:
     eassert(!"We should never get here.");
   }
 
+  int get_id() const { return id; }
   type get_type() const { return tp; }
 
   const version &get_ver() const
