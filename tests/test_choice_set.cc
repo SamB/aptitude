@@ -117,31 +117,33 @@ class Choice_Set_Test : public CppUnit::TestFixture
     return choice::make_break_soft_dep(d, -1);
   }
 
+  static package a;
+  static package b;
+  static package c;
+
+  static version av1;
+  static version av2;
+  static version av3;
+
+  static version bv1;
+  static version bv2;
+  static version bv3;
+
+  static version cv1;
+  static version cv2;
+  static version cv3;
+
+  static dep av1d1;
+  static dep bv2d1;
+  static dep av2d1;
+  static dep av3d1;
+
+  static dummy_universe_ref u;
+
 public:
   void testInsertNarrow()
   {
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
-
-    package a(u.find_package("a"));
-    package b(u.find_package("b"));
-    package c(u.find_package("c"));
-
-    version av1(a.version_from_name("v1"));
-    version av2(a.version_from_name("v2"));
-    version av3(a.version_from_name("v3"));
-
-    version bv1(b.version_from_name("v1"));
-    version bv2(b.version_from_name("v2"));
-    version bv3(b.version_from_name("v3"));
-
-    version cv1(c.version_from_name("v1"));
-    version cv2(c.version_from_name("v2"));
-    version cv3(c.version_from_name("v3"));
-
-    dep av1d1(*av1.deps_begin());
-    dep bv2d1(*bv2.deps_begin());
-    dep av2d1(*av2.deps_begin());
-    dep av3d1(*av3.deps_begin());
 
     choice_set s;
     imm::set<choice> expected;
@@ -207,29 +209,6 @@ public:
 
   void testContainsChoice()
   {
-    dummy_universe_ref u(parseUniverse(dummy_universe_1));
-
-    package a(u.find_package("a"));
-    package b(u.find_package("b"));
-    package c(u.find_package("c"));
-
-    version av1(a.version_from_name("v1"));
-    version av2(a.version_from_name("v2"));
-    version av3(a.version_from_name("v3"));
-
-    version bv1(b.version_from_name("v1"));
-    version bv2(b.version_from_name("v2"));
-    version bv3(b.version_from_name("v3"));
-
-    version cv1(c.version_from_name("v1"));
-    version cv2(c.version_from_name("v2"));
-    version cv3(c.version_from_name("v3"));
-
-    dep av1d1(*av1.deps_begin());
-    dep bv2d1(*bv2.deps_begin());
-    dep av2d1(*av2.deps_begin());
-    dep av3d1(*av3.deps_begin());
-
     choice_set s;
     s.insert_or_narrow(make_install_version_from_dep_source(av1, av3d1));
     s.insert_or_narrow(make_install_version(cv3));
@@ -254,30 +233,6 @@ public:
 
   void testGetVersionOf()
   {
-    dummy_universe_ref u(parseUniverse(dummy_universe_1));
-
-    package a(u.find_package("a"));
-    package b(u.find_package("b"));
-    package c(u.find_package("c"));
-
-    version av1(a.version_from_name("v1"));
-    version av2(a.version_from_name("v2"));
-    version av3(a.version_from_name("v3"));
-
-    version bv1(b.version_from_name("v1"));
-    version bv2(b.version_from_name("v2"));
-    version bv3(b.version_from_name("v3"));
-
-    version cv1(c.version_from_name("v1"));
-    version cv2(c.version_from_name("v2"));
-    version cv3(c.version_from_name("v3"));
-
-    dep av1d1(*av1.deps_begin());
-    dep bv2d1(*bv2.deps_begin());
-    dep av2d1(*av2.deps_begin());
-    dep av3d1(*av3.deps_begin());
-
-
     choice_set s;
     s.insert_or_narrow(choice::make_install_version(av1, -1));
     s.insert_or_narrow(choice::make_install_version(bv3, -1));
@@ -298,30 +253,6 @@ public:
 
   void testContainsChoiceSet()
   {
-    dummy_universe_ref u(parseUniverse(dummy_universe_1));
-
-    package a(u.find_package("a"));
-    package b(u.find_package("b"));
-    package c(u.find_package("c"));
-
-    version av1(a.version_from_name("v1"));
-    version av2(a.version_from_name("v2"));
-    version av3(a.version_from_name("v3"));
-
-    version bv1(b.version_from_name("v1"));
-    version bv2(b.version_from_name("v2"));
-    version bv3(b.version_from_name("v3"));
-
-    version cv1(c.version_from_name("v1"));
-    version cv2(c.version_from_name("v2"));
-    version cv3(c.version_from_name("v3"));
-
-    dep av1d1(*av1.deps_begin());
-    dep bv2d1(*bv2.deps_begin());
-    dep av2d1(*av2.deps_begin());
-    dep av3d1(*av3.deps_begin());
-
-
     // Test sets:
     // S0: (Install(av1, bv3, cv2))
     // S1: (Install(av1 [av2d1], bv3, cv2))
@@ -396,5 +327,28 @@ public:
 	}
   }
 };
+
+dummy_universe_ref Choice_Set_Test::u(parseUniverse(dummy_universe_1));
+
+Choice_Set_Test::package Choice_Set_Test::a(u.find_package("a"));
+Choice_Set_Test::package Choice_Set_Test::b(u.find_package("b"));
+Choice_Set_Test::package Choice_Set_Test::c(u.find_package("c"));
+
+Choice_Set_Test::version Choice_Set_Test::av1(a.version_from_name("v1"));
+Choice_Set_Test::version Choice_Set_Test::av2(a.version_from_name("v2"));
+Choice_Set_Test::version Choice_Set_Test::av3(a.version_from_name("v3"));
+
+Choice_Set_Test::version Choice_Set_Test::bv1(b.version_from_name("v1"));
+Choice_Set_Test::version Choice_Set_Test::bv2(b.version_from_name("v2"));
+Choice_Set_Test::version Choice_Set_Test::bv3(b.version_from_name("v3"));
+
+Choice_Set_Test::version Choice_Set_Test::cv1(c.version_from_name("v1"));
+Choice_Set_Test::version Choice_Set_Test::cv2(c.version_from_name("v2"));
+Choice_Set_Test::version Choice_Set_Test::cv3(c.version_from_name("v3"));
+
+Choice_Set_Test::dep Choice_Set_Test::av1d1(*av1.deps_begin());
+Choice_Set_Test::dep Choice_Set_Test::bv2d1(*bv2.deps_begin());
+Choice_Set_Test::dep Choice_Set_Test::av2d1(*av2.deps_begin());
+Choice_Set_Test::dep Choice_Set_Test::av3d1(*av3.deps_begin());
 
 CPPUNIT_TEST_SUITE_REGISTRATION(Choice_Set_Test);
