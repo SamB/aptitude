@@ -950,6 +950,9 @@ namespace aptitude
       for(std::vector<search_params>::const_iterator it = searches.begin();
 	  it != searches.end(); ++it)
 	{
+	  if(!output.empty() && !find_all)
+	    return;
+
 	  justification_search search(leaves, goal, *it, verbosity);
 
 	  while(search.next(results))
@@ -966,6 +969,9 @@ namespace aptitude
 		  if(!results.empty())
 		    output.push_back(results);
 		}
+
+	      if(!output.empty() && !find_all)
+		return;
 	    }
 	}
     }
