@@ -27,7 +27,13 @@
 /** \brief Represents a decision made by the resolver.
  *
  *  This is used to keep track of which choices imply that we end up
- *  at a higher tier than we otherwise would.
+ *  at a higher tier than we otherwise would.  Note that only some of
+ *  the fields are part of the "value" of the choice; id tags along
+ *  for informational purposes only, and if the choice is of type
+ *  install_version and is not from the dependency source, then the
+ *  associated dependency is also present for informational purposes
+ *  only.  Comparison operators, contains(), and other operations
+ *  ignore fields that are present for informational purposes only.
  *
  *  \sa promotion_set
  */
@@ -58,8 +64,12 @@ private:
 
   // The dependency, if any, associated with this choice.
   //
-  // Meaningful for install_version choices if from_dep_source is
-  // true, and for break_soft_dep choices.
+  // Meaningful for install_version choices and for break_soft_dep
+  // choices.  If type is install_version and from_dep_source is set,
+  // this is part of the "identity" of this object (so it will be used
+  // in equality comparisons, contains() checks, etc); all other
+  // install_version choices include it only for informational
+  // purposes.
   dep d;
 
   // True if the choice was to remove the source of the dependency.
@@ -72,13 +82,8 @@ private:
    */
   int id:30;
 
-  generic_choice(const version &_ver, int _id)
-    : ver(_ver), from_dep_source(false), tp(install_version), id(_id)
-  {
-  }
-
-  generic_choice(const version &_ver, const dep &_d, int _id)
-    : ver(_ver), d(_d), from_dep_source(true), tp(install_version), id(_id)
+  generic_choice(const version &_ver, bool _from_dep_source, const dep &_d, int _id)
+    : ver(_ver), d(_d), from_dep_source(_from_dep_source), tp(install_version), id(_id)
   {
   }
 
@@ -95,23 +100,30 @@ public:
 
   /** \brief Create a new choice that installs the given version.
    *
+   *  \param ver The version that is installed by this choice.
+   *  \param d   The dependency that caused this choice.  This is
+   *             included for informational purposes only and is
+   *             ignored by all operations except get_dep().
    *  \param id  An arbitrary integer associated with this choice.
    *             Ignored by all operations except get_id().
    */
-  static generic_choice make_install_version(const version &ver, int id)
+  static generic_choice make_install_version(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, id);
+    return generic_choice(ver, false, d, id);
   }
 
   /** \brief Create a new choice that installs the given version to
    *  change the source of the given dependency.
    *
+   *  \param ver The version that is installed by this choice.
+   *  \param d   The dependency whose source was modified by installing
+   *             ver.
    *  \param id  An arbitrary integer associated with this choice.
    *             Ignored by all operations except get_id().
    */
   static generic_choice make_install_version_from_dep_source(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, d, id);
+    return generic_choice(ver, true, d, id);
   }
 
   /** \brief Create a new choice that leaves the given soft dependency
@@ -244,8 +256,6 @@ public:
 
   const dep &get_dep() const
   {
-    eassert(tp == break_soft_dep ||
-	    (tp == install_version && from_dep_source));
     return d;
   }
 };

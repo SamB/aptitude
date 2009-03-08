@@ -1470,7 +1470,7 @@ private:
     if(act.from_dep_source)
       return choice::make_install_version_from_dep_source(act.ver, act.d, act.id);
     else
-      return choice::make_install_version(act.ver, act.id);
+      return choice::make_install_version(act.ver, act.d, act.id);
   }
 
   /** \brief Used to convert a solution to a set of choices.
@@ -1507,7 +1507,7 @@ private:
       if(act.second.from_dep_source && keep_dep_info)
 	rval.insert_or_narrow(choice::make_install_version_from_dep_source(act.second.ver, act.second.d, act.second.id));
       else
-	rval.insert_or_narrow(choice::make_install_version(act.second.ver, act.second.id));
+	rval.insert_or_narrow(choice::make_install_version(act.second.ver, act.second.d, act.second.id));
       return true;
     }
   };
@@ -1918,7 +1918,7 @@ private:
 		  "Discarding " << v
 		  << ": monotonicity violation");
 
-	out_choice = choice::make_install_version(inst, -1);
+	out_choice = choice::make_install_version(inst, dep(), -1);
 	return false;
       }
     else
@@ -2284,7 +2284,7 @@ private:
     if(!d.is_soft())
       {
 	if(source_found.isValid())
-	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, -1));
+	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, dep(), -1));
 	else
 	  {
 	    eassert_on_2objs_soln(source == initial_state.version_of(source.get_package()),
