@@ -69,6 +69,64 @@ private:
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
 
+public:
+  /** \brief A slow but convenient way to iterate over this set. */
+  class const_iterator
+  {
+    friend class generic_choice_set;
+
+    typename imm::map<package, choice>::const_iterator install_version_iter;
+    typename imm::map<package, choice>::const_iterator install_version_end_iter;
+    typename imm::set<choice>::const_iterator not_install_version_iter;
+
+    const_iterator(const typename imm::map<package, choice>::const_iterator _install_version_iter,
+		   const typename imm::map<package, choice>::const_iterator _install_version_end_iter,
+		   const typename imm::set<choice>::const_iterator _not_install_version_iter)
+      : install_version_iter(_install_version_iter),
+	install_version_end_iter(_install_version_end_iter),
+	not_install_version_iter(_not_install_version_iter)
+    {
+    }
+
+  public:
+    bool operator==(const const_iterator &other) const
+    {
+      return install_version_iter == other.install_version_iter &&
+	not_install_version_iter == other.not_install_version_iter;
+    }
+
+    bool operator!=(const const_iterator &other) const
+    {
+      return !((*this) == other);
+    }
+
+    const choice &operator*() const
+    {
+      if(install_version_iter != install_version_end_iter)
+	return install_version_iter->second;
+      else
+	return *not_install_version_iter;
+    }
+
+    const_iterator &operator++()
+    {
+      if(install_version_iter != install_version_end_iter)
+	++install_version_iter;
+      else
+	++not_install_version_iter;
+
+      return *this;
+    }
+
+    const_iterator operator++(int)
+    {
+      const_iterator rval(*this);
+      ++(*this);
+      return rval;
+    }
+  };
+
+private:
   // Note: no iterators on this structure because they'd be a pain to
   // write and they should never be used (use for_each instead, it's a
   // lot more efficient).
@@ -81,6 +139,7 @@ private:
   // could just store dependencies instead; I don't know whether that
   // would be more efficient or not.
   imm::set<choice> not_install_version_choices;
+
 
   friend std::ostream &operator<< <PackageUniverse>(std::ostream &out, const generic_choice_set<PackageUniverse> &choices);
 
@@ -211,6 +270,20 @@ private:
 public:
   generic_choice_set()
   {
+  }
+
+  const_iterator begin() const
+  {
+    return const_iterator(install_version_choices.begin(),
+			  install_version_choices.end(),
+			  not_install_version_choices.begin());
+  }
+
+  const_iterator end() const
+  {
+    return const_iterator(install_version_choices.end(),
+			  install_version_choices.end(),
+			  not_install_version_choices.end());
   }
 
   /** \brief Insert every choice in the given set into this set,

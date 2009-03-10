@@ -86,6 +86,36 @@ class Choice_Set_Test : public CppUnit::TestFixture
     }
   };
 
+  struct contents_enumerator
+  {
+    std::vector<choice> &rval;
+
+    contents_enumerator(std::vector<choice> &_rval)
+      : rval(_rval)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      rval.push_back(c);
+      return true;
+    }
+  };
+
+  void test_contents_iterator(const choice_set &s)
+  {
+    std::vector<choice> expected, observed;
+
+    s.for_each(contents_enumerator(expected));
+
+    for(choice_set::const_iterator it = s.begin(); it != s.end(); ++it)
+      observed.push_back(*it);
+
+    CPPUNIT_ASSERT_EQUAL(expected.size(), observed.size());
+    for(std::vector<choice>::size_type i = 0; i < expected.size(); ++i)
+      CPPUNIT_ASSERT_EQUAL(expected[i], observed[i]);
+  };
+
   static imm::set<choice> get_contents(const choice_set &s)
   {
     imm::set<choice> rval;
@@ -153,6 +183,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
     const choice c1(make_install_version(av2));
     s.insert_or_narrow(c1);
@@ -162,6 +193,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
     const choice c2(make_install_version_from_dep_source(av2, av3d1));
     expected.erase(c1);
@@ -172,6 +204,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
     const choice c3(make_break_soft_dep(av2d1));
     s.insert_or_narrow(c3);
@@ -180,6 +213,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
     const choice c4(make_install_version_from_dep_source(bv1, bv2d1));
     s.insert_or_narrow(c4);
@@ -189,6 +223,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
     const choice c5(make_install_version(bv1));
     s.insert_or_narrow(c5);
@@ -197,6 +232,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
 
 
     const choice c6(make_break_soft_dep(av3d1));
@@ -206,6 +242,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
+    test_contents_iterator(s);
   }
 
   void testContainsChoice()
