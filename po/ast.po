@@ -1,0 +1,5484 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: aptitude 0.4.11.11\n"
+"Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
+"POT-Creation-Date: 2008-09-05 16:05+0200\n"
+"PO-Revision-Date: 2009-03-10 11:15+0100\n"
+"Last-Translator: Marcos Alvarez Costales <marcos.alvarez.costales@gmail.com>\n"
+"Language-Team: Asturian <softast-xeneral@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: src/apt_config_treeitems.cc:99
+msgid ""
+"%BOption:%b  %s\n"
+"%BDefault:%b %s\n"
+"%BValue:%b   %s\n"
+msgstr ""
+"%BOpción:%b  %s\n"
+"%BPor defeutu:%b %s\n"
+"%BValor:%b   %s\n"
+
+#: src/apt_config_treeitems.cc:103
+#: src/apt_config_treeitems.cc:104
+msgid "True"
+msgstr "Cierto"
+
+#: src/apt_config_treeitems.cc:103
+#: src/apt_config_treeitems.cc:104
+msgid "False"
+msgstr "Falso"
+
+#: src/apt_config_treeitems.cc:209
+#: src/apt_config_treeitems.cc:393
+msgid "%BOption:%b  "
+msgstr "%BOpción:%b  "
+
+#: src/apt_config_treeitems.cc:211
+#: src/apt_config_treeitems.cc:395
+msgid "%BDefault:%b "
+msgstr "%BPor defeutu:%b "
+
+#: src/apt_config_treeitems.cc:213
+#: src/apt_config_treeitems.cc:397
+msgid "%BValue:%b   "
+msgstr "%BValor:%b   "
+
+#: src/apt_config_treeitems.cc:279
+#, c-format
+msgid "Editing \"%ls\""
+msgstr "Editando \"%ls\""
+
+#: src/apt_config_treeitems.cc:401
+msgid "%BChoice:%b  "
+msgstr "%BEscoyer:%b  "
+
+#: src/apt_options.cc:160
+msgid "Display some available commands at the top of the screen"
+msgstr "Visualizar dalgunos comandos disponibles no cimero de la pantalla"
+
+#: src/apt_options.cc:161
+msgid "If this option is enabled, a brief summary of some of the most important aptitude commands will appear beneath the menu bar."
+msgstr "Si esta opción ta activa, aparecerá un resumen curtiu de los comandos aptitude más importantes qu'aparecerán embaxo la barra de menú."
+
+#: src/apt_options.cc:165
+msgid "Hide the menu bar when it is not being used"
+msgstr "Anubrir la barra de menú cuando nun seya usada"
+
+#: src/apt_options.cc:166
+msgid "If this option is enabled, the menu bar will only appear when it has been activated by pressing the menu key."
+msgstr "Si esta opción ta activada, la barra de menú sólo aparecerá cuando seya activada calcando la tecla menú."
+
+#: src/apt_options.cc:170
+msgid "Use a minibuffer-style prompt when possible"
+msgstr "Usar un prompt estilu minibuffer cuando seya afayaízo"
+
+#: src/apt_options.cc:171
+msgid "If this option is enabled, prompts will be displayed in a single line at the bottom of the screen.  If not, prompts will be displayed as pop-up dialog boxes."
+msgstr "Si esta opción ta activa, les entrugues sedrán visualizaes nuna sola llinia no baxo de la pantalla. Si non, les entrugues sedrán visualizaes como caxes de diálogu popup."
+
+#: src/apt_options.cc:176
+msgid "Show partial search results (incremental search)"
+msgstr "Amosar resultaos de gueta parcial (gueta incremental)"
+
+#: src/apt_options.cc:177
+msgid "If this option is enabled, aptitude will perform searches within the package list as you type them.  This is convenient, but may slow the program down, particularly on older computers."
+msgstr "Si esta opción ta activa, aptitude faerá les guetes na llista de paquetes según teclees. Esto puede ser cómodo, pero puede ser perllento, sobre too n'ordenadores vieyos."
+
+#: src/apt_options.cc:183
+msgid "Closing the last view exits the program"
+msgstr "Zarrar la vista cabera al colar del programa"
+
+#: src/apt_options.cc:184
+msgid "If this option is enabled, aptitude will stop running when all views (package lists, package details, etc) have been closed.  Otherwise, aptitude will continue running until you select 'Quit' from the Actions menu."
+msgstr "Si esta opción ta activa, aptitude parará d'executase cuando toles vistes (llistes de paquetes, detalles de paquete, etc) seyan zarraes. N'otru casu, aptitude siguirá executándose fasta que seleiciones 'Zarrar' dende'l menú d'Acciones."
+
+#: src/apt_options.cc:190
+msgid "Prompt for confirmation at exit"
+msgstr "Entrugar por confirmación al colar"
+
+#: src/apt_options.cc:191
+msgid "If this option is enabled, aptitude will not terminate until you confirm that you really want to quit."
+msgstr "Si esta opción ta activa, aptitude nun terminará fasta que confirmes realmente que quies colar."
+
+#: src/apt_options.cc:195
+msgid "Pause after downloading files"
+msgstr "Pausar dempués de baxar ficheros"
+
+#: src/apt_options.cc:196
+msgid "This option controls whether aptitude will wait for confirmation after a download before it goes ahead and installs packages."
+msgstr "Esta aición remana si aptitude esperará confirmación dempués d'una descarga, enantes de dir a la cabecera ya instalar paquetes."
+
+#: src/apt_options.cc:199
+msgid "Never"
+msgstr "Enxamás"
+
+#: src/apt_options.cc:200
+msgid "Never wait for the user after downloading packages: always begin the installation immediately."
+msgstr "Enxamás esperar pol usuariu dempués de baxar paquetes: siempre entamar la instalación de secute."
+
+#: src/apt_options.cc:201
+msgid "When an error occurs"
+msgstr "Cuando heba un fallu"
+
+#: src/apt_options.cc:202
+msgid "Wait for confirmation if an error occurred during the download.  If there were no errors, begin installing packages immediately."
+msgstr "Esperar por confirmación si ocurrió un fallu durante la baxada. Si nun hai fallos, entamar a instalar paquetes de secute."
+
+#: src/apt_options.cc:203
+msgid "Always"
+msgstr "Siempre"
+
+#: src/apt_options.cc:204
+msgid "Always wait for the user to confirm the download before proceeding with the installation."
+msgstr "Siempre esperar pola confirmación del usuariu pa la baxada enantes de siguir cola instalación."
+
+#: src/apt_options.cc:206
+msgid "Use a 'status-line' download indicator for all downloads"
+msgstr "Usar un indicador de baxada 'status-line' pa toles baxaes"
+
+#: src/apt_options.cc:207
+msgid "If this option is enabled, aptitude will display the status of ongoing downloads at the bottom of the screen, rather than opening a new view."
+msgstr "Si esta opción ta activa, aptitude visualizará l'estáu de baxaes en cursu no cabero de la pantalla, n'arróu de nuna vista nueva."
+
+#: src/apt_options.cc:211
+msgid "Display the information area by default"
+msgstr "Visualizar l'area d'información por defeutu"
+
+#: src/apt_options.cc:212
+msgid "If this option is enabled, the information area (the pane at the bottom of the screen) in the package list will be visible when the program starts; otherwise, it will be initially hidden."
+msgstr "Si esta opción ta activa, l'area d'información (el panel d'abaxo de la pantalla) na llista de paquetes sedrá visible cuando'l programa anicie; n'otru casu, aniciaráse anubríu."
+
+#: src/apt_options.cc:217
+msgid "Display tabs for the available views"
+msgstr "Visualizar llingüetes pa les vistes disponibles"
+
+#: src/apt_options.cc:218
+msgid "If this option is enabled, tabs will appear at the top of the screen listing the currently opened views."
+msgstr "Si esta opción ta activa, aparecerán llingüetes no cimero de la pantalla llistando les vistes abiertes anguaño."
+
+#: src/apt_options.cc:221
+msgid "Display tabs for the information area"
+msgstr "Visualizar llingüetes pal area d'información"
+
+#: src/apt_options.cc:222
+msgid "If this option is enabled, tabs will appear at the top of the information area (the pane at the bottom of the screen) listing the different displays of information that can be viewed there."
+msgstr "Si esta opción ta activa, aparecerán llingüetes no cabero del area d'información (el panel d'arriba de la pantalla) llistando la distinta información que puede visualizase ehí."
+
+#: src/apt_options.cc:227
+msgid "Advance to the next item after changing the state of a package"
+msgstr "Dir al siguiente elementu dempués de camudar l'estáu d'un paquete"
+
+#: src/apt_options.cc:228
+msgid "If this option is enabled, then performing an action on a package (for instance, installing or removing it) will move the selection to the next package in the list."
+msgstr "Si esta opción ta activa, entós facer una acción al paquete (por defeutu, instalar o desanicialu) moverá la seleición al siguiente paquete na llista."
+
+#: src/apt_options.cc:233
+msgid "Automatically show why packages are broken"
+msgstr "Amosar por qué los paquetes tan frayaos automáticamente"
+
+#: src/apt_options.cc:234
+msgid "If this option is enabled, then highlighting a package that has broken dependencies will automatically display the dependencies that are unfulfilled in the lower pane of the display."
+msgstr "Si esta opción ta activa, entós un paquete seleicionáu que tien dependencies frayaes visualizará automáticamente les dependencies que nun tan completes nel panel pequeñu de la visualización."
+
+#: src/apt_options.cc:240
+msgid "The default grouping method for package views"
+msgstr "El métodu d'arrexuntamientu por defeutu pa la vista de paquetes"
+
+#: src/apt_options.cc:241
+msgid "This option controls how aptitude organizes the package list.  See the aptitude user's manual for information on how to specify a grouping method."
+msgstr "Esta opción controla como organiza aptitude la llista de paquetes. Llee'l manual d'usuariu d'aptitude pa información de como especificar un métodu d'arrexuntamientu"
+
+#: src/apt_options.cc:245
+msgid "The default display-limit for package views"
+msgstr "El llímite de visualización por defeutu pa vistes de paquetes"
+
+#: src/apt_options.cc:246
+msgid "By default, the limit of each package view will be set to the value specified by this option.  See the aptitude user's manual for detailed information about searches."
+msgstr "Por defeutu, el llímite de la vista de cada paquete sedrá afitáu al valor especificáu por esta opción. Llee'l manual d'usuariu d'aptitude pa información detallada al rodiu de les guetes."
+
+#: src/apt_options.cc:251
+msgid "The display format for package views"
+msgstr "El formatu de visualización pa vistes de paquetes"
+
+#: src/apt_options.cc:252
+msgid "This option controls how aptitude formats lines of the package list.  See the aptitude user's manual for information on how to specify a display format."
+msgstr "Esta opción controla como formatea aptitude la llista de paquetes. Llee'l manual d'usuariu d'aptitude pa información de como especificar un formatu de visualización."
+
+#: src/apt_options.cc:258
+msgid "The display format for the status line"
+msgstr "El formatu de visualización por la llinia d'estáu"
+
+#: src/apt_options.cc:259
+msgid "This option controls how aptitude formats the status line (the line between the package list and the lower pane).  See the aptitude user's manual for information on how to specify a display format."
+msgstr "Esta opción controla como formatea aptitude la llinia d'estáu (la llinia ente la llista de paquetes y el panel inferior). Llee'l manual d'usariu d'aptitude por información de como especificar un formatu de visualización."
+
+#: src/apt_options.cc:266
+msgid "The display format for the header line"
+msgstr "El formatu de visualización de la llinia de cabecera"
+
+#: src/apt_options.cc:267
+msgid "This option controls how aptitude formats the header line (the line above the package list).  See the aptitude user's manual for information on how to specify a display format."
+msgstr "Esta opción controla como formatea aptitude la llinia de cabecera (la llinia sobre la llista de paquetes). Llee'l manual d'usuariu pa información de cómo especificar un formatu de visualización."
+
+#: src/apt_options.cc:277
+msgid "Automatically upgrade installed packages"
+msgstr "Anovar automaticamente paquetes instalaos"
+
+#: src/apt_options.cc:278
+msgid "If this option is enabled, then on startup, aptitude will select all upgradable packages for upgrade."
+msgstr "Si esta opción ta activa, nel aniciu, aptitude seleicionará tolos paquetes actualizables p'actualizalos."
+
+#: src/apt_options.cc:282
+msgid "Remove obsolete package files after downloading new package lists"
+msgstr "Desaniciar ficheros de paquetes obsoletos dempués de baxar les llistes de paquetes nuevos."
+
+#: src/apt_options.cc:283
+msgid "If this option is enabled, then after every install run, aptitude will delete from the package cache any package files that can no longer be downloaded from any archive in sources.list."
+msgstr "Si esta opción ta activa, entós dempués de cada instalación, aptitude desaniciará dende la cache de paquetes cualisquier ficheru de paquete que nun heba podío baxase dende dalgún depósitu definíu nel ficheru sources.list."
+
+#: src/apt_options.cc:288
+msgid "URL to use to download changelogs"
+msgstr "URL pa usar la baxada de rexistros de cambéu"
+
+#: src/apt_options.cc:289
+msgid "This option controls the template that's used to download changelogs from the Debian Web site.  You should only need to change this if the changelogs move to a different URL."
+msgstr "Esta opción controla la pantilla usada pa baxar rexistros de cambéu dende'l sitiu Web de Debian. Sólo necesites camudar esto si los rexistros de cambéu muevense a otra URL distinta."
+
+#: src/apt_options.cc:295
+msgid "Display a preview of what will be done before doing it"
+msgstr "Visualizar una preview de qué se faerá anantes de facelo"
+
+#: src/apt_options.cc:296
+msgid "If this option is enabled, then when you ask aptitude to perform an install run, it will first display a summary of the actions it is going to perform."
+msgstr "Si esta opción ta activa, entós cuando pidas a aptitude que faiga una instalación, visualizará primero un sumariu de les aiciones que se faerán."
+
+#: src/apt_options.cc:302
+msgid "Forget which packages are \"new\" whenever the package lists are updated"
+msgstr "Escaecer qué paquetes son \"nuevos\" al anovar la llista de paquetes"
+
+#: src/apt_options.cc:303
+msgid "If this option is enabled, then aptitude will clear the list of new packages after you update the package lists (e.g., by pressing 'u')."
+msgstr "Si esta opción ta activa, entós aptitude llimpiará la llista de nuevos paquetes dempués de qu'actualices la llista de paquetes (p. e., calcando 'u')."
+
+#: src/apt_options.cc:308
+msgid "Forget which packages are \"new\" whenever packages are installed or removed"
+msgstr "Escaecer qué paquetes son \"nuevos\" al instalar o desaniciar paquetes"
+
+#: src/apt_options.cc:309
+msgid "If this option is enabled, then aptitude will clear the list of new packages after you perform an install run or install or remove packages from the command-line."
+msgstr "Si esta opción ta activa, entós aptitude llimpiará la llista de nuevos paquetes dempués de que corras una instalación o instales o desanicies paquetes dende la llinia de comandos."
+
+#: src/apt_options.cc:315
+msgid "Do not display a warning when the first change is made in read-only mode"
+msgstr "Nun visualizar avisos cuando'l primer cambéu ye fechu en mou sólo llectura"
+
+#: src/apt_options.cc:316
+msgid "If this option is %Bnot%b enabled, aptitude will display a warning when you modify the state of a package if you do not have permissions to apply the change to the system."
+msgstr "Si esta opción %Bnon%b ta activa, aptitude visualizará un avisu cuando modifiques l'estáu d'un paquete si nun tienes permisos p'aplicar cambeos al sistema."
+
+#: src/apt_options.cc:322
+msgid "Warn when attempting to perform a privileged action as a non-root user"
+msgstr "Avisar cuando fae una acción privilexiada un usuariu como non root"
+
+#: src/apt_options.cc:323
+msgid "If this option is enabled, aptitude will warn you when you attempt to perform an action which you do not have permission to do: for instance, installing packages as a non-root user.  You will be given the option to log in as root and perform the action with root privileges."
+msgstr "Si esta opción ta activa, aptitude avisará cuando faigas una acción na que nun tienes permisu: por defeutu, instalar paquetes como un usuariu non root. Tendrás la opción de rexistrate como usuariu root y facer l'acción con privilexos de root."
+
+#: src/apt_options.cc:332
+msgid "File to log actions into"
+msgstr "Ficheru nel que rexistrar acciones"
+
+#: src/apt_options.cc:333
+msgid "When you install or remove packages, a summary of what aptitude does will be written to this file.  If the first character of the file name is a pipe character ('%B|%b'), the remainder of the name will be interpreted as a shell command that is to receive the log on standard input."
+msgstr "Cuando instales o desanicies paquetes, un sumariu de que fae aptitude sedrá escritu a esti ficheru. Si'l primer carauter del nome de ficheru ye un carauter tubería ('%B|%b'), el nome sedrá interpretáu como un comandu shell que sedrá lo que reciba'l rexistru na entrada standard."
+
+#: src/apt_options.cc:345
+msgid "Automatically resolve dependencies of a package when it is selected"
+msgstr "Iguar dependencies automáticamente de un paquete cuando ta seleicionáu"
+
+#: src/apt_options.cc:346
+msgid "If this option is enabled, aptitude will use a simple heuristic to immediately resolve the dependencies of each package you flag for installation.  This is much faster than the built-in dependency resolver, but may produce suboptimal results or fail entirely in some scenarios."
+msgstr "Si esta opción ta activa, aptitude usará una heurística cenciella pa iguar inmeditamente toles dependencies de cada paquete que marques pa instalación. Esto ye muncho más rápido que'l iguador de dependencies incluyíu, pero puede producir resultaos inadecuaos o fallar completamente en dalgunes situaciones."
+
+#: src/apt_options.cc:354
+msgid "Automatically fix broken packages before installing or removing"
+msgstr "Iguar paquetes frayaos automáticamente anantes d'instalar o desaniciar"
+
+#: src/apt_options.cc:355
+msgid "If this option is enabled, and you perform an install run while some packages are broken, aptitude will automatically apply the current suggestion of the problem resolver.  Otherwise, aptitude will prompt you for a solution to the broken dependencies."
+msgstr "Si esta opción ta activa, y corres una instalación mientres dalgunos paquetes tan frayaos, aptitude aplicará automáticamente la suxerencia del iguador de problemes. N'otru casu, aptitude entrugarate por un solución a les dependencies frayaes."
+
+#: src/apt_options.cc:362
+msgid "Install recommended packages automatically"
+msgstr "Instalar paquetes recomendaos automáticamente"
+
+#: src/apt_options.cc:363
+msgid ""
+"If this option is enabled and \"automatically resolve dependencies\" is also enabled, aptitude will attempt to install the recommendations of newly installed packages in addition to their outright dependencies.  Suggestions will not be automatically installed.\n"
+"If this option is enabled and \"Remove unused packages automatically\" is enabled, packages that are recommended by an installed package will not be automatically removed."
+msgstr ""
+"Si esta opción ta activa y \"Iguar dependencies automáticamente\" tamién lo ta, aptitude intentará instalar les recomendaciones de nuevos paquetes instalaos además de les sos dependencies. Suxerencies nun sedrán instalaes automáticamente.\n"
+"Si esta opción ta activa y \"Desaniciar automáticamente paquetes non usaos\" ta activa, paquetes que son recomendaos por un paquetes instaláu nun sedrá desaniciáu automaticamente."
+
+#: src/apt_options.cc:375
+msgid "Remove unused packages automatically"
+msgstr "Desaniciar paquetes nun usaos automáticamente"
+
+#: src/apt_options.cc:376
+msgid ""
+"If this option is enabled, packages that are automatically installed and that no manually installed package depends on will be removed from the system.  Cancelling the removal will flag the package as manually installed.\n"
+"If this option is enabled and \"Install recommended packages automatically\" is enabled, automatically installed packages will not be removed if any installed package recommends them."
+msgstr ""
+"Si esta opción ta activa, paquetes que son instalaos automáticamente y que non tienen dependencies de paquetes instalaos manualmente sedrán desanciaos del sistema. Encaboxar el desaniciu marcará'l paquete como instaláu manualmente.\n"
+"Si esta opción ta activa y \"Instalar paquetes recomendaos automáticamente\" ta activa, paquetes instalaos automáticamente nun sedrán desaniciaos si son recomendaos por otru paquete instaláu."
+
+#: src/apt_options.cc:387
+msgid "Packages that should never be automatically removed"
+msgstr "Paquetes qu'enxamás debieren ser desanicios automáticamente"
+
+#: src/apt_options.cc:388
+msgid "Packages matching this search pattern will always be treated as if an installed package depends on them: they will never be targeted for removal as unused packages."
+msgstr "Siempre se tratará a los paquetes que coincidan con esti patron de gueta como si dalgún paquete instaláu dependiera d'el: enxamás se marcará pa ser desaniciáu como paquete nun usáu."
+
+#: src/apt_options.cc:393
+msgid "Allow dependency resolutions that break holds or forbids"
+msgstr "Permitir resoluciones de dependenca que rompe paquetes bloqueaos o prohibios"
+
+#: src/apt_options.cc:394
+msgid ""
+"If this option is enabled, then whenever aptitude solves a dependency problem, it will consider modifying held packages, or installing forbidden package versions.  With this option disabled, these solutions will be rejected by default.\n"
+"NOTE: At present, this restriction only applies to situations in which aptitude's dependency resolver (the red bar at the bottom of the screen) is activated.  aptitude will still break holds when automatically installing the dependencies of a package that has just been selected for installation or upgrade, due to apt bug #470035."
+msgstr ""
+"Si esta opción ta activa, entós aptitude soluciona los problemes de dependenca, considerando modificar paquetes bloqueaos, o instalando versiones de paquetes prohibidos. Con esta opción desactivada, eses soluciones sedrán rechazaes por defeutu.\n"
+"NOTA: Actualmente, esta restricción sólo aplica a situaciones nes cuales ta activu'l iguador de dependencies d'aptitude (la barra colorada no cabero de la pantalla). aptitude Siguirá rompiendo bloqueos cuando s'instalen automáticamente les dependencies d'un paquete ya selecionáu pa instalación o actualización, debido al bug apt #470035."
+
+#: src/apt_options.cc:520
+msgid "UI options"
+msgstr "Opciones IU"
+
+#: src/apt_options.cc:522
+msgid "Dependency handling"
+msgstr "Remanando dependencies"
+
+#: src/apt_options.cc:524
+#: src/pkg_grouppolicy.cc:1018
+msgid "Miscellaneous"
+msgstr "Miscelánea"
+
+#: src/broken_indicator.cc:126
+#, c-format
+msgid "%ls: Examine"
+msgstr "%ls: Desaminar"
+
+#: src/broken_indicator.cc:135
+#, c-format
+msgid "%ls: Apply"
+msgstr "%ls: Aplicar"
+
+#: src/broken_indicator.cc:140
+#, c-format
+msgid "%ls: Next"
+msgstr "%ls: Siguiente"
+
+#: src/broken_indicator.cc:146
+#, c-format
+msgid "%ls: Previous"
+msgstr "%ls: Anterior"
+
+#: src/broken_indicator.cc:241
+msgid "Dependency resolution disabled."
+msgstr "Desactivada resolución de dependencies."
+
+#: src/broken_indicator.cc:252
+msgid "Unable to resolve dependencies."
+msgstr "Nun pueden resolvese dependencies."
+
+#: src/broken_indicator.cc:263
+msgid "Fatal error in resolver"
+msgstr "Fallu grave al iguar"
+
+#: src/broken_indicator.cc:275
+#, c-format
+msgid "[%d(%d)/...] Resolving dependencies"
+msgstr "[%d(%d)/...] Resolviendo dependencies"
+
+#: src/broken_indicator.cc:311
+#: src/solution_dialog.cc:140
+#: src/solution_screen.cc:542
+msgid "Internal error: unexpected null solution."
+msgstr "Fallu internu: Solución vacía nun esperada."
+
+#: src/broken_indicator.cc:366
+msgid "Suggest keeping all packages at their current version."
+msgstr "Suxerío caltener tolos paquetes na so versión actual."
+
+#: src/broken_indicator.cc:374
+#, c-format
+msgid "%d install"
+msgid_plural "%d installs"
+msgstr[0] "%d instalación"
+msgstr[1] "%d instalaciones"
+
+#: src/broken_indicator.cc:384
+#, c-format
+msgid "%d removal"
+msgid_plural "%d removals"
+msgstr[0] "%d desaniciación"
+msgstr[1] "%d desaniciaciones"
+
+#: src/broken_indicator.cc:394
+#, c-format
+msgid "%d keep"
+msgid_plural "%d keeps"
+msgstr[0] "%d calteniu"
+msgstr[1] "%d calteníos"
+
+#: src/broken_indicator.cc:404
+#, c-format
+msgid "%d upgrade"
+msgid_plural "%d upgrades"
+msgstr[0] "%d actualización"
+msgstr[1] "%d actualizaciones"
+
+#: src/broken_indicator.cc:414
+#, c-format
+msgid "%d downgrade"
+msgid_plural "%d downgrades"
+msgstr[0] "%d baxada de versión"
+msgstr[1] "%d baxaes de versión"
+
+#. ForTranslators: %F is replaced with a comma separated list such as
+#. "n1 installs, n2 removals", ...
+#.
+#: src/broken_indicator.cc:425
+#, c-format
+msgid "Suggest %F"
+msgstr "Suxiere %F"
+
+#: src/cmdline/cmdline_action.cc:48
+#, c-format
+msgid "Unable to find the source package for \"%s\".\n"
+msgstr "Nun puede atopase'l paquete fonte pa \"%s\".\n"
+
+#: src/cmdline/cmdline_action.cc:202
+#, c-format
+msgid "Unable to satisfy the build-depends: %s."
+msgstr "Nun pueden satisfacese les dependencies de compilación: %s."
+
+#: src/cmdline/cmdline_action.cc:238
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already installed.\n"
+msgstr ""
+"Nota: \"%s\", proporciona'l paquete virtual\n"
+"      \"%s\", yá ta instaláu.\n"
+
+#: src/cmdline/cmdline_action.cc:245
+#, c-format
+msgid ""
+"Note: \"%s\", providing the virtual package\n"
+"      \"%s\", is already going to be installed.\n"
+msgstr ""
+"Nota: \"%s\", proporciona'l paquete virtual\n"
+"      \"%s\", yá va a ser instaláu.\n"
+
+#: src/cmdline/cmdline_action.cc:267
+#, c-format
+msgid ""
+"\"%s\" exists in the package database, but it is not a\n"
+"real package and no package provides it.\n"
+msgstr ""
+"\"%s\" existe na base de datos del paquete, pero nun ye un\n"
+"paquete real y non lu proporciona nengún paquete.\n"
+
+#: src/cmdline/cmdline_action.cc:275
+#, c-format
+msgid "\"%s\" is a virtual package provided by:\n"
+msgstr "\"%s\" ye un paquete virtual proporcionáu por:\n"
+
+#: src/cmdline/cmdline_action.cc:278
+#, c-format
+msgid "You must choose one to install.\n"
+msgstr "Tienes d'escoyer ún pa instalar.\n"
+
+#: src/cmdline/cmdline_action.cc:286
+#, c-format
+msgid ""
+"Note: selecting \"%s\" instead of the\n"
+"      virtual package \"%s\"\n"
+msgstr ""
+"Nota: seleccionando \"%s\" en llugar de'l\n"
+"      paquete virtual \"%s\"\n"
+
+#: src/cmdline/cmdline_action.cc:305
+#, c-format
+msgid "%s is already installed at the requested version (%s)\n"
+msgstr "%s yá ta instaláu na versión solicitada (%s)\n"
+
+#: src/cmdline/cmdline_action.cc:311
+#, c-format
+msgid "%s is not currently installed, so it will not be reinstalled.\n"
+msgstr "%s nun ta instaláu anguaño, polo que nun se reinstalará.\n"
+
+#: src/cmdline/cmdline_action.cc:318
+#: src/cmdline/cmdline_action.cc:324
+#, c-format
+msgid "Package %s is not installed, so it will not be removed\n"
+msgstr "Paquete %s nun ta instaláu, polo que nun se desaniciará\n"
+
+#: src/cmdline/cmdline_action.cc:342
+#, c-format
+msgid "Package %s is not installed, cannot forbid an upgrade\n"
+msgstr "Paquete %s nun instaláu, nun puede prohibíse un anovamientu\n"
+
+#: src/cmdline/cmdline_action.cc:344
+#, c-format
+msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
+msgstr "Paquete %s nun ye anovable, nun puede prohibíse un anovamientu\n"
+
+#: src/cmdline/cmdline_action.cc:438
+#, c-format
+msgid "Note: selecting the task \"%s: %s\" for installation\n"
+msgstr "Nota: Seleicionando la xera \"%s: %s\" pa instalar\n"
+
+#: src/cmdline/cmdline_action.cc:472
+#, c-format
+msgid "You can only specify a package version with an 'install' command or a 'forbid-version' command.\n"
+msgstr "Sólo puedes especificar una versión de paquete con un comandu 'install' o un comandu 'forbid-version'.\n"
+
+#: src/cmdline/cmdline_action.cc:481
+#, c-format
+msgid "You can only specify a package archive with an 'install' command.\n"
+msgstr "Sólo puedes especificar un archivu de paquetes con un comandu 'install'.\n"
+
+#: src/cmdline/cmdline_action.cc:518
+#, c-format
+msgid ""
+"Couldn't find package \"%s\", and more than 40\n"
+"packages contain \"%s\" in their name.\n"
+msgstr ""
+"Nun puede atopase paquete \"%s\", y más de 40\n"
+"paquetes tienen nel so nome \"%s\".\n"
+
+#: src/cmdline/cmdline_action.cc:521
+#, c-format
+msgid ""
+"Couldn't find package \"%s\".  However, the following\n"
+"packages contain \"%s\" in their name:\n"
+msgstr ""
+"Nun puede atopase paquete \"%s\".  Sin embargo, los siguientes\n"
+"paquetes tienen \"%s\" nel so nome:\n"
+
+#: src/cmdline/cmdline_action.cc:543
+#, c-format
+msgid "Couldn't find any package whose name or description matched \"%s\"\n"
+msgstr "Nun s'atopa dengún paquete cuyu nome o descripción concase \"%s\"\n"
+
+#: src/cmdline/cmdline_action.cc:545
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\", and more than 40\n"
+"packages contain \"%s\" in their description.\n"
+msgstr ""
+"Nun s'atopa nengún paquete coincidente \"%s\", y más de 40\n"
+"paquetes contienen \"%s\" na so descripción.\n"
+
+#: src/cmdline/cmdline_action.cc:548
+#, c-format
+msgid ""
+"Couldn't find any package matching \"%s\".  However, the following\n"
+"packages contain \"%s\" in their description:\n"
+msgstr ""
+"Nun s'atopa nengún paquete coincidente \"%s\".  Sin embargo, los siguientes\n"
+"paquetes tienen \"%s\" na so descripción:\n"
+
+#: src/cmdline/cmdline_action.cc:686
+#, c-format
+msgid "Bad action character '%c'\n"
+msgstr "Carauter d'acción incorreutu '%c'\n"
+
+#: src/cmdline/cmdline_changelog.cc:96
+msgid "Can't execute sensible-pager, is this a working Debian system?"
+msgstr "Nun puede executase sensible-pager, ¿ye ésti un sistema Debian que furrula bien?"
+
+#: src/cmdline/cmdline_changelog.cc:154
+#, c-format
+msgid "%s is not an official Debian package, cannot display its changelog."
+msgstr "%s nun ye un paquete oficial de Debian, nun puede visualizase'l so rexistru de cambeos."
+
+#: src/cmdline/cmdline_changelog.cc:243
+#, c-format
+msgid "Couldn't find a changelog for %s"
+msgstr "Nun puede atopase rexistru de cambéu pa %s"
+
+#: src/cmdline/cmdline_clean.cc:29
+#, c-format
+msgid "E: The clean command takes no arguments\n"
+msgstr "E: El comandu clean nun toma argumentos\n"
+
+#: src/cmdline/cmdline_clean.cc:58
+#, c-format
+msgid "Del %s* %spartial/*\n"
+msgstr "Esborra %s* %spartial/*\n"
+
+#: src/cmdline/cmdline_clean.cc:86
+#, c-format
+msgid "Del %s %s [%sB]\n"
+msgstr "Esborra %s %s [%sB]\n"
+
+#: src/cmdline/cmdline_clean.cc:111
+#, c-format
+msgid "E: The autoclean command takes no arguments\n"
+msgstr "E: El comandu autoclean nun toma argumentos\n"
+
+#: src/cmdline/cmdline_clean.cc:148
+#, c-format
+msgid "Would free %sB of disk space\n"
+msgstr "Lliberaránse %sB d'espaciu en discu\n"
+
+#: src/cmdline/cmdline_clean.cc:151
+#, c-format
+msgid "Freed %sB of disk space\n"
+msgstr "Lliberaráse %sB d'espaciu en discu\n"
+
+#: src/cmdline/cmdline_do_action.cc:83
+#, c-format
+msgid "Invalid operation %s"
+msgstr "Operación %s nun válida"
+
+#: src/cmdline/cmdline_do_action.cc:159
+msgid "Unexpected pattern argument following \"keep-all\""
+msgstr "El siguiente patrón del argumentu nun ye esperáu siguiendo a \"keep-all\""
+
+#: src/cmdline/cmdline_do_action.cc:266
+#, c-format
+msgid "Unable to safely resolve dependencies, try running with --full-resolver.\n"
+msgstr "Nun pueden resolvese de mou seguru delles dependencies, intentalo corriendo con --full-resolver.\n"
+
+#: src/cmdline/cmdline_do_action.cc:304
+#: src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:163
+#: src/main.cc:711
+#, c-format
+msgid "Abort.\n"
+msgstr "Albortar.\n"
+
+#: src/cmdline/cmdline_download.cc:31
+#, c-format
+msgid "download: you must specify at least one package to download\n"
+msgstr "baxar: Tienes qu'especificar al menos un paquete pa baxar\n"
+
+#: src/cmdline/cmdline_download.cc:43
+#: src/generic/apt/download_install_manager.cc:83
+msgid "Couldn't read source list"
+msgstr "Nun puede lleese llista de fontes"
+
+#: src/cmdline/cmdline_download.cc:72
+#, c-format
+msgid "Can't find a package named \"%s\""
+msgstr "Nun puede atopase un paquete nomáu \"%s\""
+
+#: src/cmdline/cmdline_download.cc:111
+#, c-format
+msgid "No downloadable files for %s version %s; perhaps it is a local or obsolete package?"
+msgstr "Nun pueden algamase ficheros pa %s na versión %s, ¿puede que seya un paquete llocal o obsoletu?"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#, c-format
+msgid ""
+"extract-cache-entries: at least one argument is required (the directory\n"
+"to which to write files).\n"
+msgstr ""
+"extract-cache-entries: ye requeríu al menos un argumentu (el direutoriu\n"
+"nel qu'escribir ficheros).\n"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:77
+#: src/cmdline/cmdline_user_tag.cc:116
+#, c-format
+msgid "No such package \"%s\".\n"
+msgstr "Ensin paquete coincidente \"%s\".\n"
+
+#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#, c-format
+msgid "No packages were selected by the given search pattern; nothing to do.\n"
+msgstr "Ensin paquetes seleicionaos pol patrón de gueta dau; nada que facer.\n"
+
+#: src/cmdline/cmdline_forget_new.cc:25
+#, c-format
+msgid "E: The forget-new command takes no arguments\n"
+msgstr "E: El comandu forget-new nun toma argumentos\n"
+
+#: src/cmdline/cmdline_forget_new.cc:52
+#, c-format
+msgid "Would forget what packages are new\n"
+msgstr "Escaecería que paquetes son nuevos\n"
+
+#: src/cmdline/cmdline_moo.cc:16
+#, c-format
+msgid "There are no Easter Eggs in this program.\n"
+msgstr "Nun hai Güevos Pintos nesti programa.\n"
+
+#: src/cmdline/cmdline_moo.cc:19
+#, c-format
+msgid "There really are no Easter Eggs in this program.\n"
+msgstr "Daveres nun hai Güevos Pintos nesti programa.\n"
+
+#: src/cmdline/cmdline_moo.cc:22
+#, c-format
+msgid "Didn't I already tell you that there are no Easter Eggs in this program?\n"
+msgstr "¿Nun te dixe que nun hai Güevos Pintos nesti programa?\n"
+
+#: src/cmdline/cmdline_moo.cc:25
+#, c-format
+msgid "Stop it!\n"
+msgstr "¡Dexa de facer eso!\n"
+
+#: src/cmdline/cmdline_moo.cc:28
+#, c-format
+msgid "Okay, okay, if I give you an Easter Egg, will you go away?\n"
+msgstr "Val, val, si te doi un Güevu Pintu, dexarásme?\n"
+
+#: src/cmdline/cmdline_moo.cc:31
+#, c-format
+msgid "All right, you win.\n"
+msgstr "D'alcuerdu, tú ganes.\n"
+
+#: src/cmdline/cmdline_moo.cc:42
+#, c-format
+msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
+msgstr "¿Qué ye eso? Ye un elefante xintáu por una serpiente, por supuestu.\n"
+
+#: src/cmdline/cmdline_prompt.cc:42
+msgid "Unexpected end-of-file on standard input"
+msgstr "Nun esperáu final de ficheru na entrada standard"
+
+#: src/cmdline/cmdline_prompt.cc:66
+msgid "Couldn't read list of sources"
+msgstr "Nun puede lleese llista de fontes"
+
+#. ForTranslators: %s is replaced with a comma-delimited list
+#. of package names.
+#: src/cmdline/cmdline_prompt.cc:218
+#, c-format
+msgid "(for %s)"
+msgid_plural "(for %s)"
+msgstr[0] "(pa %s)"
+msgstr[1] "(pa %s)"
+
+#: src/cmdline/cmdline_prompt.cc:293
+#: src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_why.cc:192
+#: src/generic/apt/matchers.cc:2436
+msgid "Provides"
+msgstr "Proporciona"
+
+#: src/cmdline/cmdline_prompt.cc:426
+msgid "Config files"
+msgstr "Ficheros de configuración"
+
+#: src/cmdline/cmdline_prompt.cc:530
+#: src/cmdline/cmdline_show_broken.cc:73
+#, c-format
+msgid "but %s is to be installed."
+msgstr "pero %s sedrá instaláu."
+
+#: src/cmdline/cmdline_prompt.cc:533
+#: src/cmdline/cmdline_show_broken.cc:76
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "pero %s ta instaláu y reteniu."
+
+#: src/cmdline/cmdline_prompt.cc:536
+#: src/cmdline/cmdline_show_broken.cc:79
+#, c-format
+msgid "but %s is installed."
+msgstr "pero ta instaláu %s."
+
+#: src/cmdline/cmdline_prompt.cc:540
+#: src/cmdline/cmdline_show_broken.cc:83
+#, c-format
+msgid "but it is not installable"
+msgstr "pero nun ye instalable"
+
+#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_show_broken.cc:87
+#, c-format
+msgid " which is a virtual package."
+msgstr " que ye un paquete virtual"
+
+#: src/cmdline/cmdline_prompt.cc:547
+#: src/cmdline/cmdline_show_broken.cc:90
+#, c-format
+msgid " or"
+msgstr " o"
+
+#: src/cmdline/cmdline_prompt.cc:561
+msgid "The following packages are BROKEN:"
+msgstr "Los siguientes paquetes tán FRAYAOS:"
+
+#: src/cmdline/cmdline_prompt.cc:562
+msgid "The following packages are unused and will be REMOVED:"
+msgstr "Los siguientes paquetes nun s'usen y sedrán DESANICIAOS:"
+
+#: src/cmdline/cmdline_prompt.cc:563
+msgid "The following packages have been automatically kept back:"
+msgstr "Los siguientes paquetes foron reteníos automáticamente:"
+
+#: src/cmdline/cmdline_prompt.cc:564
+msgid "The following NEW packages will be automatically installed:"
+msgstr "Los siguientes paquetes NUEVOS sedrán automáticamente instalaos:"
+
+#: src/cmdline/cmdline_prompt.cc:565
+msgid "The following packages will be automatically REMOVED:"
+msgstr "Los siguientes paquetes sedrán automáticamente DESANICIAOS:"
+
+#: src/cmdline/cmdline_prompt.cc:566
+msgid "The following packages will be DOWNGRADED:"
+msgstr "Los siguientes paquetes sedrán BAXAOS DE VERSIÓN:"
+
+#: src/cmdline/cmdline_prompt.cc:567
+msgid "The following packages have been kept back:"
+msgstr "Los siguiente paquetes tán reteníos:"
+
+#: src/cmdline/cmdline_prompt.cc:568
+msgid "The following packages will be REINSTALLED:"
+msgstr "Los siguientes paquetes sedrán REINSTALAOS:"
+
+#: src/cmdline/cmdline_prompt.cc:569
+msgid "The following NEW packages will be installed:"
+msgstr "Los siguientes NUEVOS paquetes sedrán instalaos:"
+
+#: src/cmdline/cmdline_prompt.cc:570
+msgid "The following packages will be REMOVED:"
+msgstr "Los siguientes paquetes sedrán DESANICIAOS:"
+
+#: src/cmdline/cmdline_prompt.cc:571
+msgid "The following packages will be upgraded:"
+msgstr "Los siguientes paquetes sedrán anovaos:"
+
+#: src/cmdline/cmdline_prompt.cc:572
+msgid "The following partially installed packages will be configured:"
+msgstr "Los siguientes paquetes instalaos parcialmente sedrán configuraos:"
+
+#: src/cmdline/cmdline_prompt.cc:627
+#: src/ui.cc:1465
+#, c-format
+msgid "The following ESSENTIAL packages will be REMOVED!\n"
+msgstr "¡Los siguientes paquetes ESENCIALES sedrán DESANICIAOS!\n"
+
+#: src/cmdline/cmdline_prompt.cc:636
+#: src/ui.cc:1480
+#, c-format
+msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
+msgstr "Los siguientes paquetes ESENCIALES sedrán FRAYAOS por esta aición:\n"
+
+#: src/cmdline/cmdline_prompt.cc:646
+#: src/ui.cc:1493
+#, c-format
+msgid ""
+"WARNING: Performing this action will probably cause your system to break!\n"
+"         Do NOT continue unless you know EXACTLY what you are doing!\n"
+msgstr ""
+"AVISU: ¡Faciendo esta aición dablemente faigas que'l to sistema rompa!\n"
+"         ¡NUN sigas a menos que sepas ESAUTAMENTE qué tas faciendo!\n"
+
+#: src/cmdline/cmdline_prompt.cc:648
+msgid "I am aware that this is a very bad idea"
+msgstr "Toi seguru qu'esto ye una permala idega"
+
+#: src/cmdline/cmdline_prompt.cc:652
+#: src/ui.cc:1494
+#, c-format
+msgid "To continue, type the phrase \"%s\":\n"
+msgstr "Pa siguir, escribe la frase \"%s\":\n"
+
+#: src/cmdline/cmdline_prompt.cc:694
+#, c-format
+msgid ""
+"WARNING: untrusted versions of the following packages will be installed!\n"
+"\n"
+"Untrusted packages could compromise your system's security.\n"
+"You should only proceed with the installation if you are certain that\n"
+"this is what you want to do.\n"
+"\n"
+msgstr ""
+"AVISU: ¡Instalaránse versiones ensin roblar de los siguientes paquetes!\n"
+"\n"
+"Paquetes ensin firmar podríen comprometer la segurida del to sistema.\n"
+"Sólo debieres siguir cola instalación si tas seguru que\n"
+"esto ye lo que quies facer.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:706
+#, c-format
+msgid ""
+"*** WARNING ***   Ignoring these trust violations because\n"
+"                  %s::CmdLine::Ignore-Trust-Violations is 'true'!\n"
+msgstr ""
+"*** AVISU ***   Inorando les robles incorreutes porque\n"
+"                  %s::CmdLine::Ignore-Trust-Violations ye 'true'!\n"
+
+#: src/cmdline/cmdline_prompt.cc:715
+msgid ""
+"*** WARNING ***   Ignoring these trust violations because\n"
+"                  Apt::Get::AllowUnauthenticated is 'true'!\n"
+msgstr ""
+"*** AVISU ***   Inorando eses violaciones de confianza porque\n"
+"                  Apt::Get::AllowUnauthenticated ye 'true'!\n"
+
+#: src/cmdline/cmdline_prompt.cc:721
+msgid "Yes"
+msgstr "Sí"
+
+#: src/cmdline/cmdline_prompt.cc:721
+msgid "No"
+msgstr "Non"
+
+#: src/cmdline/cmdline_prompt.cc:732
+#, c-format
+msgid "Do you want to ignore this warning and proceed anyway?\n"
+msgstr "¿Quies inorar esti avisu y siguir de toes formes?\n"
+
+#: src/cmdline/cmdline_prompt.cc:733
+#, c-format
+msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
+msgstr "Pa siguir, introduz \"%s\"; pa encaboxar, introduz \"%s\": "
+
+#: src/cmdline/cmdline_prompt.cc:750
+#, c-format
+msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
+msgstr "Entrada nun reconocible. Introduz \"%s\" o \"%s\".\n"
+
+#: src/cmdline/cmdline_prompt.cc:865
+#, c-format
+msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
+msgstr "Los siguientes paquetes son RECOMENDAOS pero NUN s'instalarán:\n"
+
+#: src/cmdline/cmdline_prompt.cc:871
+#, c-format
+msgid "The following packages are SUGGESTED but will NOT be installed:\n"
+msgstr "Los siguientes paquetes sedrán SUXERÍOS pero NUN sedrán instalaos:\n"
+
+#: src/cmdline/cmdline_prompt.cc:876
+#, c-format
+msgid "No packages will be installed, upgraded, or removed.\n"
+msgstr "Dengún paquete sedrá instaláu, anováu, o desaniciáu.\n"
+
+#: src/cmdline/cmdline_prompt.cc:878
+#, c-format
+msgid "%lu packages upgraded, %lu newly installed, "
+msgstr "%lu paquetes anovaos, %lu instalaos nuevos, "
+
+#: src/cmdline/cmdline_prompt.cc:882
+#, c-format
+msgid "%lu reinstalled, "
+msgstr "%lu reinstalaos, "
+
+#: src/cmdline/cmdline_prompt.cc:884
+#, c-format
+msgid "%lu downgraded, "
+msgstr "%lu baxaos de versión, "
+
+#: src/cmdline/cmdline_prompt.cc:886
+#, c-format
+msgid "%lu to remove and %lu not upgraded.\n"
+msgstr "%lu a desaniciar y %lu non anovaos.\n"
+
+#: src/cmdline/cmdline_prompt.cc:893
+#, c-format
+msgid "Need to get %sB/%sB of archives. "
+msgstr "Necesario garrar %sB/%sB d'archivos. "
+
+#: src/cmdline/cmdline_prompt.cc:896
+#, c-format
+msgid "Need to get %sB of archives. "
+msgstr "Necesario garrar %sB d'archivos. "
+
+#: src/cmdline/cmdline_prompt.cc:903
+#, c-format
+msgid "After unpacking %sB will be used.\n"
+msgstr "Dempués de desempaquetar usaránse %sB.\n"
+
+#: src/cmdline/cmdline_prompt.cc:906
+#, c-format
+msgid "After unpacking %sB will be freed.\n"
+msgstr "Dempués de desempaquetar lliberaránse %sB.\n"
+
+#: src/cmdline/cmdline_prompt.cc:927
+#, c-format
+msgid "No packages to show -- enter the package names on the line after 'i'.\n"
+msgstr "Ensin paquete a amosar -- introduz los nomes de los paquetes na llinia dempués de '¡'.\n"
+
+#: src/cmdline/cmdline_prompt.cc:933
+msgid "Press Return to continue."
+msgstr "Calca Volver pa siguir."
+
+#: src/cmdline/cmdline_prompt.cc:944
+#, c-format
+msgid "No packages found -- enter the package names on the line after 'c'.\n"
+msgstr "Ensin paquetes atopaos -- introduz los nomes de los paquetes na llinia dempués 'c'.\n"
+
+#: src/cmdline/cmdline_prompt.cc:948
+msgid "Press Return to continue"
+msgstr "Calca Enter pa siguir"
+
+#: src/cmdline/cmdline_prompt.cc:958
+#, c-format
+msgid "No packages found -- enter zero or more roots of the search followed by the package to justify.\n"
+msgstr "Ensin paquetes atopaos -- introduz cero o más raíces pa la gueta seguios del paquete a justificar.\n"
+
+#: src/cmdline/cmdline_prompt.cc:981
+#, c-format
+msgid "y: %F"
+msgstr "y: %F"
+
+#: src/cmdline/cmdline_prompt.cc:983
+msgid "continue with the installation"
+msgstr "siguir cola instalación"
+
+#: src/cmdline/cmdline_prompt.cc:985
+#, c-format
+msgid "n: %F"
+msgstr "n: %F"
+
+#: src/cmdline/cmdline_prompt.cc:987
+msgid "abort and quit"
+msgstr "albortar y colar"
+
+#: src/cmdline/cmdline_prompt.cc:989
+#, c-format
+msgid "i: %F"
+msgstr "i: %F"
+
+#: src/cmdline/cmdline_prompt.cc:991
+msgid "show information about one or more packages; the package names should follow the 'i'"
+msgstr "amosar información al rodiu d'un o más paquetes; los nomes de los paquetes deben siguir a la 'i'"
+
+#: src/cmdline/cmdline_prompt.cc:993
+#, c-format
+msgid "c: %F"
+msgstr "c: %F"
+
+#: src/cmdline/cmdline_prompt.cc:995
+msgid "show the Debian changelogs of one or more packages; the package names should follow the 'c'"
+msgstr "amosar los rexistros de cambéu de Debian d'un o más paquetes; los nomes de paquetes deben siguir a la 'c'"
+
+#: src/cmdline/cmdline_prompt.cc:997
+#, c-format
+msgid "d: %F"
+msgstr "d: %F"
+
+#: src/cmdline/cmdline_prompt.cc:999
+msgid "toggle the display of dependency information"
+msgstr "camudar la visualización d'información de dependencia"
+
+#: src/cmdline/cmdline_prompt.cc:1001
+#, c-format
+msgid "s: %F"
+msgstr "s: %F"
+
+#: src/cmdline/cmdline_prompt.cc:1003
+msgid "toggle the display of changes in package sizes"
+msgstr "camudar la información de cambeos nel tamañu de paquetes"
+
+#: src/cmdline/cmdline_prompt.cc:1005
+#, c-format
+msgid "v: %F"
+msgstr "v: %F"
+
+#: src/cmdline/cmdline_prompt.cc:1007
+msgid "toggle the display of version numbers"
+msgstr "camudar la información del númberu de versiones"
+
+#: src/cmdline/cmdline_prompt.cc:1009
+#, c-format
+msgid "w: %F"
+msgstr "w: %F"
+
+#: src/cmdline/cmdline_prompt.cc:1011
+msgid "try to find a reason for installing a single package, or explain why installing one package should lead to installing another package."
+msgstr "intentando atopar una razón pa instalar un únicu paquete, o desplicar por qué instalando un paquete instalase otru paquete."
+
+#: src/cmdline/cmdline_prompt.cc:1014
+#, c-format
+msgid "r: %F"
+msgstr "r: %F"
+
+#: src/cmdline/cmdline_prompt.cc:1016
+msgid "run the automatic dependency resolver to fix the broken dependencies."
+msgstr "corriendo'l iguador de dependencies automáticu pa iguar les dependencies frayaes."
+
+#: src/cmdline/cmdline_prompt.cc:1018
+#, c-format
+msgid "e: %F"
+msgstr "e: %F"
+
+#: src/cmdline/cmdline_prompt.cc:1020
+msgid "enter the full visual interface"
+msgstr "usar la interface visual completa"
+
+#: src/cmdline/cmdline_prompt.cc:1023
+msgid "You may also specify modification to the actions which will be taken.  To do so, type an action character followed by one or more package names (or patterns).  The action will be applied to all the packages that you list.  The following actions are available:"
+msgstr "Tu tamién puedes especificar modificaciones so les aiciones que sedrán tomaes. Pa facelo, teclea un carauter d'aición siguiu d'un o más nomes de paquete (o patrones). L'aición aplicarase a tolos paquetes que tu llistes. Les siguientes acciones tan disponibles:"
+
+#: src/cmdline/cmdline_prompt.cc:1030
+#: src/cmdline/cmdline_resolver.cc:204
+msgid "'+' to install packages"
+msgstr "'+' pa instalar paquetes"
+
+#: src/cmdline/cmdline_prompt.cc:1033
+#: src/cmdline/cmdline_resolver.cc:206
+msgid "'+M' to install packages and immediately flag them as automatically installed"
+msgstr "'+M' pa instalar paquetes ya inmediatamente marcalos como instalaos automáticamente"
+
+#: src/cmdline/cmdline_prompt.cc:1035
+#: src/cmdline/cmdline_resolver.cc:208
+msgid "'-' to remove packages"
+msgstr "'-' pa desaniciar paquetes"
+
+#: src/cmdline/cmdline_prompt.cc:1037
+#: src/cmdline/cmdline_resolver.cc:210
+msgid "'_' to purge packages"
+msgstr "'_' pa purgar paquetes"
+
+#: src/cmdline/cmdline_prompt.cc:1039
+#: src/cmdline/cmdline_resolver.cc:212
+msgid "'=' to place packages on hold"
+msgstr "'=' pa bloquiar paquetes"
+
+#: src/cmdline/cmdline_prompt.cc:1041
+#: src/cmdline/cmdline_resolver.cc:214
+msgid "':' to keep packages in their current state without placing them on hold"
+msgstr "':' pa caltener paquetes nel so estáu actual ensin bloquialos"
+
+#: src/cmdline/cmdline_prompt.cc:1043
+#: src/cmdline/cmdline_resolver.cc:216
+msgid "'&M' to mark packages as automatically installed"
+msgstr "'&M' pa marcar paquetes como instalaos automáticamente"
+
+#: src/cmdline/cmdline_prompt.cc:1045
+#: src/cmdline/cmdline_resolver.cc:218
+msgid "'&m' to mark packages as manually installed"
+msgstr "'&m' pa marcar paquetes como instalaos manualmente"
+
+#: src/cmdline/cmdline_prompt.cc:1047
+msgid "'&BD' to install the build-dependencies of a package."
+msgstr "'&BD' pa instalar les dependencies pa construyir d'un paquete."
+
+#: src/cmdline/cmdline_prompt.cc:1051
+msgid "Commands:"
+msgstr "Comandos:"
+
+#: src/cmdline/cmdline_prompt.cc:1160
+msgid "aptitude failed to find a solution to these dependencies.  You can solve them yourself by hand or type 'n' to quit."
+msgstr "Falló aptitude atopando una solución pa eses dependencies. Puedes resolveles por ti mesmu a mano o escribiendo 'n' pa colar."
+
+#: src/cmdline/cmdline_prompt.cc:1178
+msgid "Do you want to continue? [Y/n/?] "
+msgstr "¿Quies siguir? [Y/n/?] "
+
+#: src/cmdline/cmdline_prompt.cc:1179
+msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
+msgstr "Iguar eses dependencies a manu? [N/+/-/_/:/?] "
+
+#: src/cmdline/cmdline_prompt.cc:1197
+msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
+msgstr "Rempuesta nun válida. Por favor, introduz un comandu válidu o '?' p'aida.\n"
+
+#: src/cmdline/cmdline_prompt.cc:1203
+msgid "Enter a package management command (such as '+ package' to install a package), 'R' to attempt automatic dependency resolution or 'N' to abort."
+msgstr "Introduz un comandu xestor de paquetes (como '+ package' pa instalar un paquete), 'R' pa iguar dependencies automáticamente o 'N' p'albortar."
+
+#: src/cmdline/cmdline_prompt.cc:1234
+#, c-format
+msgid ""
+"\n"
+"Dependency information will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Información de dependencies sedrá amosada.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:1236
+#, c-format
+msgid ""
+"\n"
+"Dependency information will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Información de dependencies nun sedrá amosada.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:1242
+#, c-format
+msgid ""
+"\n"
+"Versions will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Versiones que sedrán amosaes.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:1244
+#, c-format
+msgid ""
+"\n"
+"Versions will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"Versiones que nun sedrán amosaes.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:1249
+#, c-format
+msgid ""
+"\n"
+"Size changes will be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"cambeos de tamañu que sedrán amosaos.\n"
+"\n"
+
+#: src/cmdline/cmdline_prompt.cc:1251
+#, c-format
+msgid ""
+"\n"
+"Size changes will not be shown.\n"
+"\n"
+msgstr ""
+"\n"
+"cambeos de tamañu que nun sedrán amosaos.\n"
+"\n"
+
+#: src/cmdline/cmdline_resolver.cc:91
+#: src/cmdline/cmdline_resolver.cc:715
+#: src/generic/apt/apt.cc:275
+#, c-format
+msgid "Unable to open %s for writing"
+msgstr "Nun puede abrise %s pa escribir"
+
+#: src/cmdline/cmdline_resolver.cc:97
+#: src/cmdline/cmdline_resolver.cc:720
+#, c-format
+msgid "Error writing resolver state to %s"
+msgstr "Fallu escribiendo estáu del iguador a %s"
+
+#: src/cmdline/cmdline_resolver.cc:99
+#: src/cmdline/cmdline_resolver.cc:722
+msgid "Resolver state successfully written!"
+msgstr "¡Escritu dafechu l'estáu del iguador!"
+
+#: src/cmdline/cmdline_resolver.cc:162
+#, c-format
+msgid "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+msgstr "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr paq ver ...: %F%na paq ver ...: %F%n<AICIÓN> paq... : %F%n%F%F%F%F%F%F%F%F"
+
+#: src/cmdline/cmdline_resolver.cc:182
+msgid "accept the proposed changes"
+msgstr "aceptar cambeos propuestos"
+
+#: src/cmdline/cmdline_resolver.cc:184
+msgid "reject the proposed changes and search for another solution"
+msgstr "refugar los cambeos propuestos y guetar por otra solución"
+
+#: src/cmdline/cmdline_resolver.cc:186
+msgid "give up and quit the program"
+msgstr "Colar del programa"
+
+#: src/cmdline/cmdline_resolver.cc:188
+msgid "move to the next solution"
+msgstr "dir a la solución siguiente"
+
+#: src/cmdline/cmdline_resolver.cc:190
+msgid "move to the previous solution"
+msgstr "dir a la solución anterior"
+
+#: src/cmdline/cmdline_resolver.cc:192
+msgid "toggle between the contents of the solution and an explanation of the solution"
+msgstr "camudar ente los conteníos de la solución y la esplicación de la solución"
+
+#: src/cmdline/cmdline_resolver.cc:194
+msgid "examine the solution in the visual user interface"
+msgstr "examinar la solución na interface visual d'usuariu"
+
+#: src/cmdline/cmdline_resolver.cc:196
+msgid "abort automatic dependency resolution; resolve dependencies by hand instead"
+msgstr "albortar solución automática de dependencies; iguar dependencies a mano"
+
+#: src/cmdline/cmdline_resolver.cc:198
+msgid "reject the given package versions; don't display any solutions in which they occur.  Enter UNINST instead of a version to reject removing the package."
+msgstr "refugar les versiones especificaes de los paquetes; non amosar nenguna solución qu'apareza. Introduz UNINST en llugar d'una versión pa refugar el desaniciáu del paquete."
+
+#: src/cmdline/cmdline_resolver.cc:200
+msgid "accept the given package versions; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package."
+msgstr "aceutar les versiones especificaes de los paquetes; amosar sólo soluciones nes qu'apareza. Introduz UNINST en llugar d'una versión p'aceutar el desaniciáu del paquete."
+
+#: src/cmdline/cmdline_resolver.cc:202
+msgid "adjust the state of the listed packages, where ACTION is one of:"
+msgstr "axustar l'estáu de los paquetes llistaos, onde ACTION ye una de:"
+
+#: src/cmdline/cmdline_resolver.cc:220
+msgid "Adjustments will cause the current solution to be discarded and recalculated as necessary."
+msgstr "Axustes podríen descartar la solución autual y recalculala como seya necesaria"
+
+#: src/cmdline/cmdline_resolver.cc:234
+#, c-format
+msgid "The version %s is available in the following archives:"
+msgstr "La versión %s ta disponible nos siguientes archivos:"
+
+#: src/cmdline/cmdline_resolver.cc:242
+#, c-format
+msgid "Select the version of %s that should be used: "
+msgstr "Seleiciona la versión de %s que debiera usase: "
+
+#: src/cmdline/cmdline_resolver.cc:249
+#, c-format
+msgid "Invalid response.  Please enter an integer between 1 and %d."
+msgstr "Rempuesta nun válida. Por favor, introduz un enteru ente 1 y %d."
+
+#: src/cmdline/cmdline_resolver.cc:264
+#, c-format
+msgid "Expected at least one package/version pair following '%c'"
+msgstr "Esperábase al menos una pareya de la triba paquete/versión siguiendo a '%c'"
+
+#: src/cmdline/cmdline_resolver.cc:278
+#, c-format
+msgid "Expected a version or \"%s\" after \"%s\""
+msgstr "Esperábase una versión o \"%s\" dempués \"%s\""
+
+#: src/cmdline/cmdline_resolver.cc:288
+#, c-format
+msgid "No such package \"%s\""
+msgstr "Non existe paquete \"%s\""
+
+#: src/cmdline/cmdline_resolver.cc:304
+#, c-format
+msgid "%s has no version named \"%s\""
+msgstr "%s nun tien versión col nome \"%s\""
+
+#: src/cmdline/cmdline_resolver.cc:321
+#, c-format
+msgid "Allowing the removal of %s"
+msgstr "Permitiendo'l desaniciáu de %s"
+
+#: src/cmdline/cmdline_resolver.cc:324
+#, c-format
+msgid "Allowing the installation of %s version %s (%s)"
+msgstr "Permitiendo la instalación de %s versión %s (%s)"
+
+#: src/cmdline/cmdline_resolver.cc:334
+#, c-format
+msgid "Rejecting the removal of %s"
+msgstr "Refugar el desaniciáu de %s"
+
+#: src/cmdline/cmdline_resolver.cc:337
+#, c-format
+msgid "Rejecting the installation of %s version %s (%s)"
+msgstr "refugar la instalación de %s versión %s (%s)"
+
+#: src/cmdline/cmdline_resolver.cc:350
+#, c-format
+msgid "No longer requiring the removal of %s"
+msgstr "Ya nun ye necesariu'l desaniciáu de %s"
+
+#: src/cmdline/cmdline_resolver.cc:353
+#, c-format
+msgid "No longer requiring the installation of %s version %s (%s)"
+msgstr "Ya nun ye necesaria la instalación de %s versión %s (%s)"
+
+#: src/cmdline/cmdline_resolver.cc:362
+#, c-format
+msgid "Requiring the removal of %s"
+msgstr "Requeríu'l desaniciáu de %s"
+
+#: src/cmdline/cmdline_resolver.cc:365
+#, c-format
+msgid "Requiring the installation of %s version %s (%s)"
+msgstr "Requerida la instalación de %s versión %s (%s)"
+
+#: src/cmdline/cmdline_resolver.cc:507
+#, c-format
+msgid ""
+"Would resolve dependencies, but dependency resolution is disabled.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
+msgstr ""
+"Debieran resolvese dependencies, pero resolución de dependencies ta desactivada.\n"
+"   (%s::ProblemResolver::StepLimit = 0)\n"
+
+#: src/cmdline/cmdline_resolver.cc:516
+msgid "I want to resolve dependencies, but no dependency resolver was created."
+msgstr "Yo quiero iguar les dependencies, pero nun fue criáu un iguador de dependencies."
+
+#: src/cmdline/cmdline_resolver.cc:530
+#: src/solution_dialog.cc:127
+#: src/solution_screen.cc:519
+msgid "Resolving dependencies..."
+msgstr "Resolviendo dependencies..."
+
+#: src/cmdline/cmdline_resolver.cc:562
+#, c-format
+msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
+msgstr "abiertu: %zd, zarráu: %zd; diferíu: %zd; conflictu: %zd"
+
+#: src/cmdline/cmdline_resolver.cc:615
+msgid "The following actions will resolve these dependencies:"
+msgstr "Les siguientes acciones iguarán eses dependencies:"
+
+#: src/cmdline/cmdline_resolver.cc:632
+msgid "Accept this solution? [Y/n/q/?] "
+msgstr "Aceptar esta solución? [Y/n/q/?] "
+
+#: src/cmdline/cmdline_resolver.cc:659
+#: src/cmdline/cmdline_resolver.cc:766
+msgid "Abandoning all efforts to resolve these dependencies."
+msgstr "Dexando tolos esfuercios por iguar eses dependencies."
+
+#: src/cmdline/cmdline_resolver.cc:662
+msgid "Abandoning automatic dependency resolution and reverting to manual resolution."
+msgstr "Abandonar la resolución automática de dependencies y tornando a resolución manual"
+
+#: src/cmdline/cmdline_resolver.cc:692
+msgid "The following commands are available:"
+msgstr "Los siguienes comandos tan disponibles"
+
+#: src/cmdline/cmdline_resolver.cc:712
+msgid "File to write resolver state to: "
+msgstr "Ficheru nel qu'escribir l'estáu del iguador:"
+
+#: src/cmdline/cmdline_resolver.cc:727
+msgid "Invalid response; please enter one of the following commands:"
+msgstr "Rempuesta nun válida; por favor, introduz un de los siguientes comandos:"
+
+#: src/cmdline/cmdline_resolver.cc:740
+msgid "No solution found within the allotted time.  Try harder? [Y/n]"
+msgstr "Nun s'atopó nenguna solución nel tiempu esperáu. ¿Intentalo más? [Y/n]"
+
+#: src/cmdline/cmdline_resolver.cc:769
+msgid "Invalid response; please enter 'y' or 'n'."
+msgstr "Rempuesta nun válida; por favor, introduz 'y' o 'n'."
+
+#: src/cmdline/cmdline_resolver.cc:778
+msgid "Unable to resolve dependencies!  Giving up..."
+msgstr "¡Nun pueden resolvese les dependencies! Desistiendo..."
+
+#: src/cmdline/cmdline_resolver.cc:784
+msgid "*** No more solutions available ***"
+msgstr "*** Nun hai más soluciones disponibles ***"
+
+#: src/cmdline/cmdline_resolver.cc:803
+msgid ""
+"*** ERROR: search aborted by fatal exception.  You may continue\n"
+"           searching, but some solutions will be unreachable."
+msgstr ""
+"*** FALLU: Gueta albortada por excepción grave. Puedes siguir\n"
+"           guetando, pero dalgunes soluciones podríen rechazase."
+
+#: src/cmdline/cmdline_resolver.cc:963
+msgid "The resolver timed out after producing a solution; some possible upgrades might not be performed."
+msgstr "L'iguador tardó demasiao xenerando una solución; dalgunes actualizaciones posibles nun faeranse."
+
+#: src/cmdline/cmdline_resolver.cc:970
+msgid "Unable to resolve dependencies for the upgrade (the resolver timed out)."
+msgstr "Nun puede iguar les dependencies pa l'actualización (l'iguador tardó demasiao)."
+
+#: src/cmdline/cmdline_resolver.cc:984
+msgid "Unable to resolve dependencies for the upgrade (no solution found)."
+msgstr "Nun puede iguar les dependencies pa l'actualización (nun atopada solución)."
+
+#: src/cmdline/cmdline_resolver.cc:993
+#, c-format
+msgid "Dependency resolution incomplete (%s); some possible upgrades might not be performed."
+msgstr "Resolución de dependences incompleta (%s); dalgunes actualizaciones posibles puede que nun se faigan."
+
+#: src/cmdline/cmdline_resolver.cc:999
+#, c-format
+msgid "Unable to resolve dependencies for the upgrade (%s)."
+msgstr "Nun pueden resolvese dependencies pa l'actualización (%s)."
+
+#: src/cmdline/cmdline_search.cc:125
+#, c-format
+msgid "iconv of %s failed.\n"
+msgstr "falló iconv so %s.\n"
+
+#: src/cmdline/cmdline_search.cc:142
+#, c-format
+msgid "search: You must provide at least one search term\n"
+msgstr "gueta: Debes dar al menos ún términu de gueta\n"
+
+#: src/cmdline/cmdline_show_broken.cc:113
+#, c-format
+msgid "The following packages have unmet dependencies:\n"
+msgstr "Los siguientes paquetes tienes dependencies nun satisfeches:\n"
+
+#: src/cmdline/cmdline_show.cc:170
+#: src/cmdline/cmdline_show.cc:414
+#: src/solution_fragment.cc:58
+msgid "<NULL>"
+msgstr "<NULL>"
+
+#: src/cmdline/cmdline_show.cc:187
+#: src/cmdline/cmdline_show.cc:192
+msgid "not installed"
+msgstr "non instaláu"
+
+#: src/cmdline/cmdline_show.cc:194
+#: src/pkg_columnizer.cc:249
+#: src/pkg_ver_item.cc:232
+msgid "unpacked"
+msgstr "desempaquetáu"
+
+#: src/cmdline/cmdline_show.cc:196
+msgid "partially configured"
+msgstr "parcialmente configuráu"
+
+#: src/cmdline/cmdline_show.cc:198
+msgid "partially installed"
+msgstr "parcialmente instaláu"
+
+#: src/cmdline/cmdline_show.cc:200
+msgid "not installed (configuration files remain)"
+msgstr "non instaláu (permanecen los ficheros de configuración)"
+
+#: src/cmdline/cmdline_show.cc:203
+msgid "awaiting trigger processing by other package(s)"
+msgstr "esperando al procesamientu de los disparadores por otru(os) paquete(s)"
+
+#: src/cmdline/cmdline_show.cc:205
+msgid "awaiting trigger processing"
+msgstr "esperando al procesamientu de los disparadores"
+
+#: src/cmdline/cmdline_show.cc:208
+#: src/pkg_columnizer.cc:257
+#: src/pkg_ver_item.cc:240
+msgid "installed"
+msgstr "instaláu"
+
+#: src/cmdline/cmdline_show.cc:231
+#, c-format
+msgid "%s; will be purged because nothing depends on it"
+msgstr "%s; sedrá purgáu porque nun hai na que dependa d'el"
+
+#: src/cmdline/cmdline_show.cc:233
+#: src/cmdline/cmdline_show.cc:329
+#, c-format
+msgid "%s; will be purged"
+msgstr "%s; sedrá purgáu"
+
+#: src/cmdline/cmdline_show.cc:238
+#, c-format
+msgid "%s; will be removed because nothing depends on it"
+msgstr "%s; desaniciarase porque na depende d'el"
+
+#: src/cmdline/cmdline_show.cc:240
+#, c-format
+msgid "%s; will be removed"
+msgstr "%s; sedrá desaniciáu"
+
+#: src/cmdline/cmdline_show.cc:258
+#, c-format
+msgid "%s%s; will be downgraded [%s -> %s]"
+msgstr "%s%s; sedrá baxáu de versión [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:261
+#, c-format
+msgid "%s%s; will be upgraded [%s -> %s]"
+msgstr "%s%s; sedrá anováu [%s -> %s]"
+
+#: src/cmdline/cmdline_show.cc:270
+msgid "not a real package"
+msgstr "nun ye un paquete real"
+
+#: src/cmdline/cmdline_show.cc:283
+msgid " [held]"
+msgstr " [reteniu]"
+
+#: src/cmdline/cmdline_show.cc:297
+#, c-format
+msgid "%s; will be installed"
+msgstr "%s; sedrá instaláu"
+
+#: src/cmdline/cmdline_show.cc:299
+#, c-format
+msgid "%s; will be installed automatically"
+msgstr "%s; sedrá instaláu automaticamente"
+
+#: src/cmdline/cmdline_show.cc:319
+#, c-format
+msgid "%s; version %s will be installed"
+msgstr "%s; versión %s sedrá instalada"
+
+#: src/cmdline/cmdline_show.cc:323
+#, c-format
+msgid "%s; version %s will be installed automatically"
+msgstr "%s; versión %s sedrá isntalada automáticamente"
+
+#: src/cmdline/cmdline_show.cc:348
+#: src/cmdline/cmdline_show.cc:370
+msgid "Package: "
+msgstr "Paquete: "
+
+#: src/cmdline/cmdline_show.cc:349
+#: src/cmdline/cmdline_show.cc:378
+#: src/pkg_columnizer.cc:91
+msgid "State"
+msgstr "Estáu"
+
+#: src/cmdline/cmdline_show.cc:350
+#: src/cmdline/cmdline_show.cc:436
+#: src/generic/apt/matchers.cc:2490
+msgid "Provided by"
+msgstr "Dau por"
+
+#: src/cmdline/cmdline_show.cc:372
+#: src/pkg_info_screen.cc:120
+msgid "Essential: "
+msgstr "Esencial: "
+
+#: src/cmdline/cmdline_show.cc:372
+#: src/cmdline/cmdline_show.cc:376
+#: src/cmdline/cmdline_show.cc:387
+#: src/pkg_info_screen.cc:120
+msgid "yes"
+msgstr "si"
+
+#: src/cmdline/cmdline_show.cc:376
+msgid "New"
+msgstr "Nuevu"
+
+#: src/cmdline/cmdline_show.cc:381
+msgid "Forbidden version"
+msgstr "Versión prohibida"
+
+#: src/cmdline/cmdline_show.cc:385
+msgid "Automatically installed"
+msgstr "Instaláu automaticamente"
+
+#: src/cmdline/cmdline_show.cc:387
+msgid "no"
+msgstr "non"
+
+#: src/cmdline/cmdline_show.cc:389
+msgid "Version: "
+msgstr "Versión: "
+
+#: src/cmdline/cmdline_show.cc:390
+#: src/pkg_info_screen.cc:128
+msgid "Priority: "
+msgstr "Prioridá: "
+
+#: src/cmdline/cmdline_show.cc:391
+#: src/cmdline/cmdline_show.cc:393
+#: src/cmdline/cmdline_show.cc:402
+msgid "N/A"
+msgstr "N/A"
+
+#: src/cmdline/cmdline_show.cc:392
+#: src/pkg_info_screen.cc:129
+msgid "Section: "
+msgstr "Seición: "
+
+#: src/cmdline/cmdline_show.cc:394
+#: src/pkg_info_screen.cc:130
+msgid "Maintainer: "
+msgstr "Caltenedor: "
+
+#: src/cmdline/cmdline_show.cc:397
+msgid "Uncompressed Size: "
+msgstr "Tamañu non comprimíu"
+
+#: src/cmdline/cmdline_show.cc:401
+msgid "Architecture: "
+msgstr "Arquiteutura: "
+
+#: src/cmdline/cmdline_show.cc:403
+msgid "Compressed Size: "
+msgstr "Tamañu comprimiu: "
+
+#: src/cmdline/cmdline_show.cc:405
+msgid "Filename: "
+msgstr "Nome ficheru: "
+
+#: src/cmdline/cmdline_show.cc:407
+msgid "MD5sum: "
+msgstr "MD5sum: "
+
+#: src/cmdline/cmdline_show.cc:411
+#: src/cmdline/cmdline_show.cc:414
+msgid "Archive"
+msgstr "Archivu"
+
+#: src/cmdline/cmdline_show.cc:419
+msgid "Depends"
+msgstr "Depende de"
+
+#: src/cmdline/cmdline_show.cc:421
+msgid "PreDepends"
+msgstr "Predepende de"
+
+#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_why.cc:261
+msgid "Recommends"
+msgstr "Enfota"
+
+#: src/cmdline/cmdline_show.cc:425
+#: src/cmdline/cmdline_why.cc:264
+msgid "Suggests"
+msgstr "Suxiere"
+
+#: src/cmdline/cmdline_show.cc:427
+msgid "Conflicts"
+msgstr "Conflictivu con"
+
+#: src/cmdline/cmdline_show.cc:429
+msgid "Breaks"
+msgstr "Frayaos"
+
+#: src/cmdline/cmdline_show.cc:431
+msgid "Replaces"
+msgstr "Troca"
+
+#: src/cmdline/cmdline_show.cc:433
+msgid "Obsoletes"
+msgstr "Fae obsoletu a"
+
+#: src/cmdline/cmdline_show.cc:439
+#: src/pkg_info_screen.cc:102
+msgid "Description: "
+msgstr "Descripción: "
+
+#: src/cmdline/cmdline_show.cc:445
+#: src/pkg_info_screen.cc:107
+#: src/pkg_view.cc:259
+msgid "Homepage: "
+msgstr "Páxina d'aniciu: "
+
+#: src/cmdline/cmdline_show.cc:542
+#, c-format
+msgid "Unable to locate package %s"
+msgstr "Nun puede llocalizase paquete %s"
+
+#: src/cmdline/cmdline_show.cc:557
+#, c-format
+msgid "Unable to parse pattern %s"
+msgstr "Nun puede interpretase'l patrón %s"
+
+#: src/cmdline/cmdline_simulate.cc:41
+#, c-format
+msgid "Would download/install/remove packages.\n"
+msgstr "Baxará/instalará/desaniciará paquetes.\n"
+
+#: src/cmdline/cmdline_simulate.cc:52
+msgid "Internal Error, Ordering didn't finish"
+msgstr "Fallu internu, la ordenación nun finó"
+
+#: src/cmdline/cmdline_update.cc:32
+#, c-format
+msgid "Deleting obsolete downloaded files\n"
+msgstr "Desaniciando ficheros baxaos obsoletos\n"
+
+#: src/cmdline/cmdline_update.cc:41
+#, c-format
+msgid "E: The update command takes no arguments\n"
+msgstr "E: El comandu anovar nun toma argumentos\n"
+
+#: src/cmdline/cmdline_upgrade.cc:50
+#, c-format
+msgid "E: The %s command takes no arguments\n"
+msgstr "E: El comandu %s nun toma argumentos\n"
+
+#: src/cmdline/cmdline_user_tag.cc:52
+#, c-format
+msgid "Adding user tag \"%s\" to the package \"%s\".\n"
+msgstr "Amestando etiqueta d'usuariu \"%s\" al paquete \"%s\".\n"
+
+#: src/cmdline/cmdline_user_tag.cc:59
+#, c-format
+msgid "Removing user tag \"%s\" from the package \"%s\".\n"
+msgstr "Desaniciando etiqueta d'usariu \"%s\" del paquete \"%s\".\n"
+
+#: src/cmdline/cmdline_user_tag.cc:89
+#, c-format
+msgid "%s: too few arguments; expected at least a tag name and a package.\n"
+msgstr "%s: mui pocos argumentos; esperabase polo menos un nome d'etiqueta y un paquete.\n"
+
+#: src/cmdline/cmdline_util.cc:131
+#, c-format
+msgid "No candidate version found for %s\n"
+msgstr "Non atopada versión candidata pa %s\n"
+
+#: src/cmdline/cmdline_util.cc:133
+#, c-format
+msgid "No current or candidate version found for %s\n"
+msgstr "Non atopada versión autual o candidata pa %s\n"
+
+#: src/cmdline/cmdline_util.cc:148
+#, c-format
+msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
+msgstr "Nun s'atopó un archivu \"%s\" pal paquete \"%s\"\n"
+
+#: src/cmdline/cmdline_util.cc:158
+#, c-format
+msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
+msgstr "Nun pudo atopase una versión \"%s\" pal paquete \"%s\"\n"
+
+#: src/cmdline/cmdline_util.cc:164
+#, c-format
+msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
+msgstr "Fallu internu: ¡pasose a cmdline_find_ver un valor %i nun válidu!\n"
+
+#: src/cmdline/cmdline_util.cc:194
+#, c-format
+msgid "You cannot specify both an archive and a version for a package\n"
+msgstr "Nun puedes especifiar un archivu y una versión pa un paquete a la vez\n"
+
+#: src/cmdline/cmdline_util.cc:292
+#, c-format
+msgid "%d broken [%+d]"
+msgid_plural "%d broken [%+d]"
+msgstr[0] "%d frayáu [%+d]"
+msgstr[1] "%d frayaos [%+d]"
+
+#: src/cmdline/cmdline_util.cc:306
+#, c-format
+msgid "%d update [%+d]"
+msgid_plural "%d updates [%+d]"
+msgstr[0] "%d anováu [%+d]"
+msgstr[1] "%d actualizaos [%+d]"
+
+#: src/cmdline/cmdline_util.cc:320
+#, c-format
+msgid "%d new [%+d]"
+msgid_plural "%d new [%+d]"
+msgstr[0] "%d nuevu [%+d]"
+msgstr[1] "%d nuevos [%+d]"
+
+#: src/cmdline/cmdline_util.cc:331
+#, c-format
+msgid "Current status: %F."
+msgstr "Estáu actual: %F."
+
+#: src/cmdline/cmdline_util.cc:342
+#, c-format
+msgid "There is %d newly obsolete package."
+msgid_plural "There are %d newly obsolete packages."
+msgstr[0] "Hai %d paquete nuevu obsoletu."
+msgstr[1] "hai %d paquetes nuevos obsoletos."
+
+#: src/cmdline/cmdline_util.cc:354
+#, c-format
+msgid "There is %d newly obsolete package: "
+msgid_plural "There are %d newly obsolete packages: "
+msgstr[0] "Hai %d paquete nuevu obsoletu: "
+msgstr[1] "Hai %d paquetes nuevos obsoletos: "
+
+#: src/cmdline/cmdline_why.cc:252
+msgid "dep_level"
+msgstr "nivel_dep"
+
+#: src/cmdline/cmdline_why.cc:258
+msgid "DependsOnly"
+msgstr "DependeSolo"
+
+#: src/cmdline/cmdline_why.cc:272
+msgid "version_selection"
+msgstr "seleición_versión"
+
+#: src/cmdline/cmdline_why.cc:277
+msgid "Current"
+msgstr "Autual"
+
+#: src/cmdline/cmdline_why.cc:280
+msgid "Candidate"
+msgstr "Candidatu"
+
+#: src/cmdline/cmdline_why.cc:283
+#: src/generic/apt/matchers.cc:1597
+msgid "Install"
+msgstr "Instalar"
+
+#: src/cmdline/cmdline_why.cc:286
+msgid "InstallNotCurrent"
+msgstr "InstaláuNonActual"
+
+#: src/cmdline/cmdline_why.cc:294
+msgid "allow_choices"
+msgstr "permitir_escoyetes"
+
+#: src/cmdline/cmdline_why.cc:297
+msgid "true"
+msgstr "verdadero"
+
+#: src/cmdline/cmdline_why.cc:299
+msgid "false"
+msgstr "falso"
+
+#: src/cmdline/cmdline_why.cc:353
+#, c-format
+msgid "Install(%s)"
+msgstr "Instalar(%s)"
+
+#: src/cmdline/cmdline_why.cc:355
+#, c-format
+msgid "Remove(%s)"
+msgstr "Desaniciar(%s)"
+
+#: src/cmdline/cmdline_why.cc:357
+#, c-format
+msgid "Install(%s provides %s)"
+msgstr "Instalar(%s que da %s)"
+
+#: src/cmdline/cmdline_why.cc:361
+#, c-format
+msgid "Remove(%s provides %s)"
+msgstr "Desaniciar(%s que da %s)"
+
+#: src/cmdline/cmdline_why.cc:419
+#, c-format
+msgid "    ++ Examining %F\n"
+msgstr "    ++ Analizando %F\n"
+
+#: src/cmdline/cmdline_why.cc:429
+msgid "    ++   --> skipping, not a conflict\n"
+msgstr "    ++   --> saltando, nun ye un conflictu\n"
+
+#: src/cmdline/cmdline_why.cc:439
+msgid "    ++   --> skipping conflict\n"
+msgstr "    ++   --> saltando conflictu\n"
+
+#: src/cmdline/cmdline_why.cc:447
+msgid "    ++   --> skipping, not relevant according to params\n"
+msgstr "    ++   --> saltando, nun relevante acorde colos parámetros\n"
+
+#: src/cmdline/cmdline_why.cc:454
+msgid "    ++   --> skipping, parent is not the selected version\n"
+msgstr "    ++   --> saltando, el padre nun ta na versión seleicionada\n"
+
+#: src/cmdline/cmdline_why.cc:494
+msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
+msgstr "    ++   --> saltando, la dependencia ye satisfecha cola versión actual\n"
+
+#: src/cmdline/cmdline_why.cc:524
+msgid "    ++   --> ENQUEUING\n"
+msgstr "    ++   --> SACANDO DE LA COLA\n"
+
+#: src/cmdline/cmdline_why.cc:531
+msgid "    ++   --> skipping, version check failed\n"
+msgstr "    ++   --> saltando, falló comprobar versión\n"
+
+#: src/cmdline/cmdline_why.cc:549
+#, c-format
+msgid "    ++   --> ENQUEUING %s Provides %s\n"
+msgstr "    ++   --> ENCOLANDO %s da %s\n"
+
+#: src/cmdline/cmdline_why.cc:678
+#, c-format
+msgid "Starting search with parameters %ls\n"
+msgstr "Entamar gueta colos parámetros %ls\n"
+
+#: src/cmdline/cmdline_why.cc:898
+msgid "Skipping this solution, I've already seen it.\n"
+msgstr "Saltando esta solución, Ya la ví.\n"
+
+#: src/cmdline/cmdline_why.cc:973
+#, c-format
+msgid "Unable to find a reason to remove %s.\n"
+msgstr "Nun s'atopase una razón pa desaniciar %s.\n"
+
+#: src/cmdline/cmdline_why.cc:975
+#, c-format
+msgid "Unable to find a reason to install %s.\n"
+msgstr "Nun s'atopa una razón pa instalar %s.\n"
+
+#: src/cmdline/cmdline_why.cc:1020
+#: src/cmdline/cmdline_why.cc:1046
+#: src/cmdline/cmdline_why.cc:1108
+#, c-format
+msgid "No package named \"%s\" exists."
+msgstr "Nun existe paquete nomáu \"%s\"."
+
+#: src/cmdline/cmdline_why.cc:1054
+msgid "Unable to parse some match patterns."
+msgstr "Nun se puede interpretar dalgún patrón de comparación"
+
+#: src/cmdline/cmdline_why.cc:1081
+#, c-format
+msgid "%s: this command requires at least one argument (the package to query)."
+msgstr "%s: Esti comandu requier al menos un argumentu (el paquete a guetar)."
+
+#: src/dep_item.cc:148
+msgid "UNSATISFIED"
+msgstr "NON SATISFECHO"
+
+#: src/dep_item.cc:148
+#: src/reason_fragment.cc:256
+msgid "UNAVAILABLE"
+msgstr "NUN DISPONIBLE"
+
+#: src/desc_parse.cc:314
+msgid "Tags"
+msgstr "Etiquetes"
+
+#: src/desc_parse.cc:334
+msgid "User Tags"
+msgstr "Etiquetes d'Usuariu"
+
+#: src/download_item.cc:80
+#: src/download_item.cc:84
+#: src/download_item.cc:106
+#: src/generic/apt/acqprogress.cc:248
+#, c-format
+msgid " [Working]"
+msgstr " [Trabayando]"
+
+#: src/download_item.cc:110
+#: src/download_list.cc:363
+msgid "[Hit]"
+msgstr "[Oxe]"
+
+#: src/download_item.cc:110
+#: src/download_list.cc:385
+msgid "[Downloaded]"
+msgstr "[Baxáu]"
+
+#: src/download_list.cc:82
+#, c-format
+msgid "Downloaded %sB in %s (%sB/s)."
+msgstr "Baxaos %sB en %s (%sB/s)."
+
+#: src/download_list.cc:88
+#, c-format
+msgid "%n%nSome files were not downloaded successfully."
+msgstr "%n%nDalgunos ficheros nun fueron baxaos dafechu."
+
+#: src/download_list.cc:98
+#: src/download_list.cc:347
+msgid "Continue"
+msgstr "Siguir"
+
+#: src/download_list.cc:100
+#: src/mine/cmine.cc:311
+#: src/mine/cmine.cc:376
+msgid "Cancel"
+msgstr "Encaboxar"
+
+#: src/download_list.cc:216
+msgid "Total Progress: "
+msgstr "Progresu Total: "
+
+#: src/download_list.cc:244
+#, c-format
+msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgstr " [ %i%% ] (%sB/s, falten %s)"
+
+#: src/download_list.cc:246
+#, c-format
+msgid " [ %i%% ] (stalled)"
+msgstr " [ %i%% ] (deteniu)"
+
+#: src/download_list.cc:248
+#, c-format
+msgid " [ %i%% ]"
+msgstr " [ %i%% ]"
+
+#: src/download_list.cc:266
+msgid "Downloading... "
+msgstr "Baxando... "
+
+#: src/download_list.cc:342
+#, c-format
+msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
+msgstr "Por favor, inxerta'l discu etiquetáu con \"%s\" na unidá \"%s\""
+
+#: src/download_list.cc:349
+msgid "Abort"
+msgstr "Albortar"
+
+#: src/download_list.cc:407
+msgid "[IGNORED]"
+msgstr "[IGNORÁU]"
+
+#: src/download_list.cc:413
+msgid "[ERROR]"
+msgstr "[FALLU]"
+
+#: src/edit_pkg_hier.cc:192
+msgid "No hierarchy information to edit"
+msgstr "Nun hai información de xerarquía pa editar"
+
+#: src/edit_pkg_hier.cc:294
+#, c-format
+msgid "Couldn't open \"%s\" for writing"
+msgstr "Nun puede abrise \"%s\" pa escritura"
+
+#: src/edit_pkg_hier.cc:339
+msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
+msgstr "Nun s'atopó'l to direutoriu home, ¡guardando a /tmp/function_pkgs!"
+
+#: src/generic/apt/acqprogress.cc:65
+msgid "Hit "
+msgstr "Oxe "
+
+#: src/generic/apt/acqprogress.cc:89
+msgid "Get:"
+msgstr "Bax:"
+
+#: src/generic/apt/acqprogress.cc:120
+msgid "Ign "
+msgstr "Ign "
+
+#: src/generic/apt/acqprogress.cc:124
+msgid "Err "
+msgstr "Err "
+
+#: src/generic/apt/acqprogress.cc:148
+#, c-format
+msgid "Fetched %sB in %s (%sB/s)\n"
+msgstr "Baxaos %sB en %s (%sB/s)\n"
+
+#: src/generic/apt/acqprogress.cc:296
+#, c-format
+msgid "Media Change: Please insert the disc labeled '%s' in the drive '%s' and press [Enter].\n"
+msgstr "cambéu de Mediu: Por favor, inxerta'l discu etiquetáu con '%s' na unidá '%s' y calca [Enter].\n"
+
+#: src/generic/apt/aptcache.cc:266
+#, c-format
+msgid "Error parsing a user-tag for the package %s: unexpected end-of-line following %s."
+msgstr "Fallu al analizar una etiqueta d'usuariu pal paquete %s: fin de llinia nun esperáu %s."
+
+#: src/generic/apt/aptcache.cc:283
+#, c-format
+msgid "Unterminated '\"' in the user-tags list of the package %s."
+msgstr "'\"' Nun termináu na llista d'etiquetes del usuariu del paquete %s."
+
+#: src/generic/apt/aptcache.cc:387
+msgid "Can't open Aptitude extended state file"
+msgstr "Nun puede abrise ficheru d'estáu estendiu d'Aptitude"
+
+#: src/generic/apt/aptcache.cc:401
+#: src/generic/apt/aptcache.cc:489
+#: src/generic/apt/aptcache.cc:491
+msgid "Reading extended state information"
+msgstr "Lleendo información d'estáu estendiu"
+
+#: src/generic/apt/aptcache.cc:496
+#: src/generic/apt/aptcache.cc:578
+#: src/generic/apt/aptcache.cc:581
+msgid "Initializing package states"
+msgstr "Aniciando estaos de paquetes"
+
+#: src/generic/apt/aptcache.cc:709
+msgid "Cannot open Aptitude state file"
+msgstr "Nun puede abrise ficheru d'estáu d'Aptitude"
+
+#: src/generic/apt/aptcache.cc:713
+#: src/generic/apt/aptcache.cc:819
+#: src/generic/apt/aptcache.cc:822
+msgid "Writing extended state information"
+msgstr "Escribiendo información d'estáu estendiu"
+
+#: src/generic/apt/aptcache.cc:810
+msgid "Couldn't write state file"
+msgstr "Nun puede escribise ficheru d'estáu"
+
+#: src/generic/apt/aptcache.cc:827
+msgid "Error writing state file"
+msgstr "Fallu escribiendo nel ficheru d'estáu"
+
+#: src/generic/apt/aptcache.cc:845
+#, c-format
+msgid "failed to remove %s"
+msgstr "falló desaniciar %s"
+
+#: src/generic/apt/aptcache.cc:852
+#, c-format
+msgid "failed to rename %s to %s"
+msgstr "falló renomar %s a %s"
+
+#: src/generic/apt/aptcache.cc:860
+#, c-format
+msgid "couldn't replace %s with %s"
+msgstr "Nun puede trocase %s con %s"
+
+#: src/generic/apt/aptcache.cc:1457
+msgid "Unable to correct dependencies, some packages cannot be installed"
+msgstr "Nun pueden correxise les dependencies, dalgunos paquetes nun pueden instálase"
+
+#: src/generic/apt/aptcache.cc:1773
+msgid "The list of sources could not be read."
+msgstr "Nun puede ser lleída la llista de fontes"
+
+#: src/generic/apt/aptcache.cc:1780
+msgid "The package lists or status file could not be parsed or opened."
+msgstr "Les llistes de paquetes o ficheru d'estáu nun puede ser interpretao o abierto."
+
+#: src/generic/apt/aptcache.cc:1783
+msgid "You may want to update the package lists to correct these missing files"
+msgstr "Quiciabés quiés anovar la llista de paquetes pa correxir esos ficheros que falten"
+
+#. ForTranslators: Set this string to the name of a configuration
+#. file in $pkgdatadir/aptitude that overrides defaults for your
+#. language.  This is particularly intended for overriding entries
+#. in the Aptitude::Sections::Descriptions tree.
+#.
+#. For instance, Sections localized for the language .ww might be
+#. stored in a file named aptitude-defaults.ww, which would be
+#. indicated by translating "Localized defaults|" below to
+#. "aptitude-defaults.ww".  If you use this mechanism, you should
+#. also add your defaults file to pkgdata_DATA in Makefile.am.
+#: src/generic/apt/apt.cc:174
+msgid "Localized defaults|"
+msgstr "aptitude-defaults.ast"
+
+#: src/generic/apt/apt.cc:247
+#, c-format
+msgid "%s is readable but not writable; unable to write configuration file."
+msgstr "%s ye lleíble pero non escribíble; nun puede escribise ficheru de configuración."
+
+#: src/generic/apt/apt.cc:285
+#, c-format
+msgid "Unable to replace %s with new configuration file"
+msgstr "Nun puede trocase %s col nuevu ficheru de configuración"
+
+#: src/generic/apt/apt.cc:384
+msgid "Could not lock the cache file; this usually means that dpkg or another apt tool is already installing packages.  Opening in read-only mode; any changes you make to the states of packages will NOT be preserved!"
+msgstr "Nun puede bloquease'l ficheru de cache; esto normalmente quier dicir que dpkg o otra ferramienta apt ya ta instalando paquetes. Abriendo en mou sólo llectura; ¡cualisquier cambéu que faigas a los estaos de los paquetes NUN sedrá remembrarán!"
+
+#: src/generic/apt/download_install_manager.cc:56
+msgid "The package cache is not available; unable to download and install packages."
+msgstr "La cache de paquetes nun ta disponible; nun pueden baxase ya instalar paquetes."
+
+#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_update_manager.cc:92
+msgid "Couldn't lock list directory..are you root?"
+msgstr "Nun puede bloquiase direutoriu de llista...¿yes alministrador?"
+
+#: src/generic/apt/download_install_manager.cc:93
+msgid "Internal error: couldn't generate list of packages to download"
+msgstr "Fallu internu: nun puede xenerase la llista de paquetes a baxar"
+
+#: src/generic/apt/download_install_manager.cc:123
+#, c-format
+msgid "Failed to fetch %s: %s"
+msgstr "Falló algamar %s: %s"
+
+#: src/generic/apt/download_install_manager.cc:129
+msgid "Unable to correct for unavailable packages"
+msgstr "Nun pueden correxise los paquetes nun disponibles"
+
+#: src/generic/apt/download_install_manager.cc:155
+msgid "A package failed to install.  Trying to recover:"
+msgstr "Falló un paquete al instalar. Intentando recuperalu:"
+
+#: src/generic/apt/download_install_manager.cc:180
+msgid "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
+msgstr "¡Nun puede volver a obtener el sistema de bloquéu! (¿Quiciabés tas executando otru apt o dpkg?)"
+
+#: src/generic/apt/download_update_manager.cc:77
+msgid "Couldn't read list of package sources"
+msgstr "Nun puede lleese llista de fontes del paquete"
+
+#: src/generic/apt/download_update_manager.cc:214
+#, c-format
+msgid "fork() failed: %s"
+msgstr "falló fork(): %s"
+
+#: src/generic/apt/download_update_manager.cc:262
+#, c-format
+msgid "waitpid() failed: %s"
+msgstr "falló waitpid(): %s"
+
+#: src/generic/apt/download_update_manager.cc:314
+msgid "Couldn't clean out list directories"
+msgstr "Nun puede llimpiase direutorios de la llista de salida"
+
+#: src/generic/apt/download_update_manager.cc:326
+msgid "Couldn't rebuild package cache"
+msgstr "Nun puede reconstruyíse cache del paquete"
+
+#: src/generic/apt/download_update_manager.cc:341
+msgid "The debtags command must not be an empty string."
+msgstr "El comandu debtags nun puede ser una cadena vacía."
+
+#: src/generic/apt/download_update_manager.cc:345
+msgid "The debtags command must be an absolute path."
+msgstr "El comandu debtags debe ser un camín absolutu."
+
+#: src/generic/apt/download_update_manager.cc:358
+#, c-format
+msgid "The debtags command (%s) cannot be executed: %s"
+msgstr "Nun puede executase'l comandu debtags (%s): %s"
+
+#: src/generic/apt/download_update_manager.cc:363
+msgid "Updating debtags database..."
+msgstr "Actualizando base de datos de debtags..."
+
+#: src/generic/apt/download_update_manager.cc:380
+msgid "(core dumped)"
+msgstr "(volcáu de memoria)"
+
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:383
+#, c-format
+msgid "The debtags update process (%s update %s) was killed by signal %d%s."
+msgstr "El procesu d'actualización de debtags (%s actualización %s) fué espurriu por señal %d%s."
+
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:391
+#, c-format
+msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
+msgstr "El procesu d'actualización debtags (%s actualización %s) salió anormalmente (códigu %d)."
+
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:398
+#, c-format
+msgid "The debtags update process (%s update %s) exited in an unexpected way (status %d)."
+msgstr "El procesu d'actualización debtags (%s actualización %s) salió per un camín nun esperáu (estáu %d)."
+
+#. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
+#: src/generic/apt/download_update_manager.cc:404
+#, c-format
+msgid "Updating the debtags database (%s update %s) failed (perhaps debtags is not installed?): %s"
+msgstr "Falló l'actualización de la base de datos de debtags (%s actualización %s) (¿de xuro que debtags ta instaláu?): %s"
+
+#: src/generic/apt/dump_packages.cc:539
+#: src/generic/apt/dump_packages.cc:629
+#, c-format
+msgid "Unable to stat %s."
+msgstr "Nun puede aniciase stat sobre %s."
+
+#: src/generic/apt/log.cc:54
+#, c-format
+msgid "Unable to open %s to log actions"
+msgstr "Nun puede abrise %s p'acciones de rexistru"
+
+#: src/generic/apt/log.cc:66
+#, c-format
+msgid "Error generating local time (%s)"
+msgstr "Fallu xenerando la hora llocal (%s)"
+
+#: src/generic/apt/log.cc:70
+msgid "log report"
+msgstr "informe de rexistru"
+
+#: src/generic/apt/log.cc:71
+#, c-format
+msgid ""
+"IMPORTANT: this log only lists intended actions; actions which fail due to\n"
+"dpkg problems may not be completed.\n"
+"\n"
+msgstr ""
+"IMPORTANTE: Esti rexistru sólo llista acciones intencioanes; acciones que fallen\n"
+"por fallos de dpkg nun sedrán completaes.\n"
+"\n"
+
+#: src/generic/apt/log.cc:72
+#, c-format
+msgid "Will install %li packages, and remove %li packages.\n"
+msgstr "Instalaránse %li paquetes, y desaniciaránse %li paquetes.\n"
+
+#: src/generic/apt/log.cc:76
+#, c-format
+msgid "%sB of disk space will be used\n"
+msgstr "sedrá usáu %sB d'espaciu en discu\n"
+
+#: src/generic/apt/log.cc:79
+#, c-format
+msgid "%sB of disk space will be freed\n"
+msgstr "Usaráse %sB d'espaciu en discu\n"
+
+#: src/generic/apt/log.cc:89
+#, c-format
+msgid "[UPGRADE] %s %s -> %s\n"
+msgstr "[ACTUALIZAR] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:93
+#, c-format
+msgid "[DOWNGRADE] %s %s -> %s\n"
+msgstr "[BAXAR DE VERSIÓN] %s %s -> %s\n"
+
+#: src/generic/apt/log.cc:103
+msgid "REMOVE"
+msgstr "DESANICIA"
+
+#: src/generic/apt/log.cc:109
+msgid "INSTALL"
+msgstr "INSTALA"
+
+#: src/generic/apt/log.cc:112
+msgid "REINSTALL"
+msgstr "REINSTALA"
+
+#: src/generic/apt/log.cc:115
+msgid "HOLD"
+msgstr "RETIEN"
+
+#: src/generic/apt/log.cc:118
+msgid "BROKEN"
+msgstr "FRAYÁR"
+
+#: src/generic/apt/log.cc:121
+msgid "REMOVE, NOT USED"
+msgstr "DESANICIAR, NON USÁU"
+
+#: src/generic/apt/log.cc:124
+msgid "REMOVE, DEPENDENCIES"
+msgstr "DESANICIA, DEPENDENCIES"
+
+#: src/generic/apt/log.cc:127
+msgid "INSTALL, DEPENDENCIES"
+msgstr "INSTALA, DEPENDENCIES"
+
+#: src/generic/apt/log.cc:130
+msgid "HOLD, DEPENDENCIES"
+msgstr "RETIEN, DEPENDENCIES"
+
+#: src/generic/apt/log.cc:133
+msgid "UNCONFIGURED"
+msgstr "NON_CONFIGURÁU"
+
+#: src/generic/apt/log.cc:136
+msgid "????????"
+msgstr "????????"
+
+#: src/generic/apt/log.cc:140
+#, c-format
+msgid "[%s] %s\n"
+msgstr "[%s] %s\n"
+
+#: src/generic/apt/log.cc:143
+#, c-format
+msgid ""
+"===============================================================================\n"
+"\n"
+"Log complete.\n"
+msgstr ""
+"===============================================================================\n"
+"\n"
+"Rexistru completu.\n"
+
+#: src/generic/apt/matchers.cc:1346
+msgid "Automatically Installed"
+msgstr "Instaláu automáticamente"
+
+#: src/generic/apt/matchers.cc:1374
+#: src/generic/apt/matchers.cc:1581
+msgid "Broken"
+msgstr "Frayáu"
+
+#: src/generic/apt/matchers.cc:1579
+msgid "Unchanged"
+msgstr "Nun camudáu"
+
+#: src/generic/apt/matchers.cc:1583
+msgid "Remove [unused]"
+msgstr "Desaniciar [non usáu]"
+
+#: src/generic/apt/matchers.cc:1585
+msgid "Hold [auto]"
+msgstr "Reteniu [auto]"
+
+#: src/generic/apt/matchers.cc:1587
+msgid "Install [auto]"
+msgstr "Instalar [auto]"
+
+#: src/generic/apt/matchers.cc:1589
+msgid "Remove [auto]"
+msgstr "Desaniciar [auto]"
+
+#: src/generic/apt/matchers.cc:1591
+msgid "Downgrade"
+msgstr "Baxar de versión"
+
+#: src/generic/apt/matchers.cc:1593
+msgid "Hold"
+msgstr "Retener"
+
+#: src/generic/apt/matchers.cc:1595
+msgid "Reinstall"
+msgstr "Reinstalar"
+
+#: src/generic/apt/matchers.cc:1599
+msgid "Remove"
+msgstr "Desaniciar"
+
+#: src/generic/apt/matchers.cc:1601
+msgid "Upgrade"
+msgstr "Anovar"
+
+#: src/generic/apt/matchers.cc:1627
+msgid "Keep"
+msgstr "Caltener"
+
+#: src/generic/apt/matchers.cc:1659
+msgid "Virtual"
+msgstr "Virtual"
+
+#: src/generic/apt/matchers.cc:1686
+msgid "Installed"
+msgstr "Instaláu"
+
+#: src/generic/apt/matchers.cc:1714
+msgid "Essential"
+msgstr "Esencial"
+
+#: src/generic/apt/matchers.cc:1739
+msgid "Config Files Remain"
+msgstr "Caltienense Ficheros de Configuración"
+
+#: src/generic/apt/matchers.cc:2176
+msgid "Garbage"
+msgstr "Puxarra"
+
+#: src/generic/apt/matchers.cc:2545
+msgid "No reverse dependencies"
+msgstr "Ensin dependencies inverses"
+
+#: src/generic/apt/matchers.cc:2623
+msgid "New Package"
+msgstr "Paquete Nuevu"
+
+#: src/generic/apt/matchers.cc:2648
+msgid "Upgradable"
+msgstr "Actualizable"
+
+#: src/generic/apt/matchers.cc:2673
+msgid "Obsolete"
+msgstr "Obsoletu"
+
+#: src/generic/apt/matchers.cc:3112
+#, c-format
+msgid "Unknown action type: %s"
+msgstr "Acción de triba desconocida: %s"
+
+#: src/generic/apt/matchers.cc:3153
+#, c-format
+msgid "Unterminated literal string after %s"
+msgstr "Dempués de cadena %s lliteral non termináu"
+
+#: src/generic/apt/matchers.cc:3250
+#, c-format
+msgid "Unknown priority %s"
+msgstr "Prioridá desconocida %s"
+
+#: src/generic/apt/matchers.cc:3269
+#, c-format
+msgid "Match pattern ends unexpectedly (expected '%c')."
+msgstr "Patrón de coincidencia finó inesperadamente (esperábase '%c')."
+
+#: src/generic/apt/matchers.cc:3272
+#, c-format
+msgid "Expected '%c', got '%c'."
+msgstr "Esperábase '%c', atopose '%c'."
+
+#: src/generic/apt/matchers.cc:3579
+#: src/generic/apt/matchers.cc:4019
+#: src/generic/apt/matchers.cc:4062
+#, c-format
+msgid "Unknown dependency type: %s"
+msgstr "Triba de dependencia desconocida: %s"
+
+#: src/generic/apt/matchers.cc:3633
+#, c-format
+msgid "Unknown matcher type: \"%s\"."
+msgstr "Triba coincidencia desconocida: \"%s\"."
+
+#. ForTranslators: Question marks ("?") are used as prefix for function names.
+#. Leave the question marks attached to the string placeholders.
+#: src/generic/apt/matchers.cc:3644
+#: src/generic/apt/matchers.cc:3653
+#, c-format
+msgid "The ?%s matcher must be used in a \"wide\" context (a top-level context, or a context enclosed by ?%s)."
+msgstr "El patrón ?%s debe usase nun contestu \"ampliu\" (d'un contestu de primer nivel o nun contestu rodeáu de ?%s)."
+
+#: src/generic/apt/matchers.cc:3872
+msgid "Unmatched '('"
+msgstr "Ensin zarrar '('"
+
+#: src/generic/apt/matchers.cc:4025
+msgid "Provides: cannot be broken"
+msgstr "Provee: Nun puede frayase"
+
+#: src/generic/apt/matchers.cc:4088
+#, c-format
+msgid "Unknown pattern type: %c"
+msgstr "Triba de patrón desconocida: %c"
+
+#: src/generic/apt/matchers.cc:4111
+msgid "Can't search for \"\""
+msgstr "Nun puede guetase por \"\""
+
+#: src/generic/apt/matchers.cc:4143
+msgid "Unexpected empty expression"
+msgstr "Espresión vacía nun esperada"
+
+#: src/generic/apt/matchers.cc:4176
+msgid "Badly formed expression"
+msgstr "Espresión mal formada"
+
+#: src/generic/apt/matchers.cc:4215
+msgid "Unexpected ')'"
+msgstr "Nun esperáu ')'"
+
+#: src/generic/apt/pkg_acqfile.cc:50
+#, c-format
+msgid "I wasn't able to locate a file for the %s package. This might mean you need to manually fix this package. (due to missing arch)"
+msgstr "Nun puede llocalizase un ficheru pal paquete %s. Esto puede significar que quiciabés necesites iguar manualmente esti paquete. (Debido a que falte una arquiteutura)"
+
+#: src/generic/apt/pkg_acqfile.cc:99
+#, c-format
+msgid "The package index files are corrupted. No Filename: field for package %s."
+msgstr "Los ficheros colos índices de paquetes tan dañaos. Ensin Filename: campu pal paquete %s."
+
+#: src/generic/apt/pkg_changelog.cc:151
+#: src/view_changelog.cc:164
+#, c-format
+msgid "ChangeLog of %s"
+msgstr "Rexistru de cambeos de %s"
+
+#: src/generic/apt/pkg_hier.cc:28
+#: src/generic/apt/pkg_hier.cc:49
+#, c-format
+msgid "Warning: group %s is involved in a cycle"
+msgstr "Avisu: el grupu %s forma parte d'un bucle"
+
+#: src/generic/apt/pkg_hier.cc:143
+#, c-format
+msgid "Cannot open package hierarchy file %s"
+msgstr "Nun puede abrise'l ficheru cola xerarquía de paquetes %s"
+
+#: src/generic/apt/pkg_hier.cc:164
+msgid "Global block encountered after first record, ignoring"
+msgstr "Atoposé un bloque global dempués del primer rexistru, ignorando"
+
+#: src/generic/apt/pkg_hier.cc:177
+msgid "Bad record encountered (no Package or Group entry), skipping"
+msgstr "Atoposé un rexistru nun válidu (Ensin paquete o entrada de grupu), saltando"
+
+#: src/generic/apt/pkg_hier.cc:179
+#, c-format
+msgid "Bad record encountered (Package=%s, Group=%s), skipping"
+msgstr "Atoposé un rexistru nun válidu (Paquete=%s, Grupu=%s), saltando"
+
+#: src/generic/apt/pkg_hier.cc:242
+#, c-format
+msgid "Multiple descriptions found for group %s, ignoring one"
+msgstr "Atoparónse múltiples descripciones pal grupu %s, ignorando una"
+
+#: src/generic/apt/tags.cc:218
+#: src/generic/apt/tags.cc:225
+msgid "Building tag database"
+msgstr "Construyir la base de datos d'etiquetes"
+
+#: src/generic/apt/tasks.cc:278
+msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
+msgstr "Nun puede abrise /usr/share/tasksel/debian-tasks.desc"
+
+#: src/generic/apt/tasks.cc:285
+#: src/generic/apt/tasks.cc:327
+#: src/generic/apt/tasks.cc:329
+msgid "Reading task descriptions"
+msgstr "Lleendo descripciones de les tarees"
+
+#: src/generic/util/temp.cc:65
+#: src/generic/util/temp.cc:136
+#: src/generic/util/temp.cc:150
+#, c-format
+msgid "Unable to create temporary directory from template \"%s\": %s"
+msgstr "Nun puede criase direutoriu temporal den la plantilla \"%s\": %s"
+
+#: src/generic/util/temp.cc:99
+#, c-format
+msgid "Unable to delete temporary directory \"%s\""
+msgstr "Nun puede esborrase direutoriu temporal \"%s\""
+
+#: src/generic/util/temp.cc:145
+msgid "Unknown error"
+msgstr "Fallu desconocíu"
+
+#: src/generic/util/util.cc:273
+#, c-format
+msgid "Unable to stat \"%s\""
+msgstr "Nun puede aniciase stat so \"%s\""
+
+#: src/generic/util/util.cc:279
+#, c-format
+msgid "Unable to remove \"%s\""
+msgstr "Nun puede esborrase \"%s\""
+
+#: src/generic/util/util.cc:289
+#, c-format
+msgid "Unable to list files in \"%s\""
+msgstr "Nun pueden llistase ficheros en \"%s\""
+
+#: src/generic/util/util.cc:306
+#, c-format
+msgid "Failure closing directory \"%s\""
+msgstr "Hebo un fallu zarrando direutoriu \"%s\""
+
+#: src/generic/util/util.cc:312
+#, c-format
+msgid "Unable to remove directory \"%s\""
+msgstr "Nun puede esborrase'l direutoriu \"%s\""
+
+#: src/load_config.cc:48
+#, c-format
+msgid "Unrecognized color name \"%s\""
+msgstr "Nome de collor nun reconocíu \"%s\""
+
+#: src/load_config.cc:75
+#, c-format
+msgid "Unrecognized attribute name \"%s\""
+msgstr "Nome d'atributu nun reconocíu \"%s\""
+
+#: src/load_config.cc:113
+#, c-format
+msgid "Invalid entry in style definition group: \"%s\""
+msgstr "Entrada nun válida nel grupu de definición d'estilos: \"%s\""
+
+#: src/load_config.cc:115
+#, c-format
+msgid "Invalid tagless entry in style definition group: \"%s\""
+msgstr "Entrada ensin etiqueta nun válida nel grupu de definición d'estilos: \"%s\""
+
+#: src/load_config.cc:127
+msgid "The default color may only be used as a background."
+msgstr "El collor por defeutu debiera ser sólo l'usáu como fondu."
+
+#: src/load_config.cc:144
+#, c-format
+msgid "Unknown style attribute %s"
+msgstr "Atributu d'estilu desconocíu %s"
+
+#: src/load_config.cc:167
+#: src/load_config.cc:169
+#, c-format
+msgid "Invalid entry in keybinding group: \"%s\""
+msgstr "Entrada nun válida nel grupu de tecles de referencia: \"%s\""
+
+#: src/load_config.cc:184
+#, c-format
+msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
+msgstr "Inorando la tecla de referencia \"%s\" -> \"%s\" nun válida "
+
+#: src/load_grouppolicy.cc:258
+#, c-format
+msgid "Expected policy identifier, got '%c'"
+msgstr "Esperábase un identificador de norma, atópose '%c'"
+
+#: src/load_grouppolicy.cc:270
+#, c-format
+msgid "Expected ',' or '(', got '%c'"
+msgstr "Esperabasae ',' o '(', atópose '%c'"
+
+#: src/load_grouppolicy.cc:277
+#, c-format
+msgid "Unknown grouping policy \"%s\""
+msgstr "Norma d'arrexuntamientu \"%s\" desconocia"
+
+#: src/load_grouppolicy.cc:284
+#, c-format
+msgid "Terminal policy \"%s\" should be the last policy in the list"
+msgstr "La norma terminal \"%s\" debe ser la cabera na llista"
+
+#: src/load_grouppolicy.cc:371
+#, c-format
+msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
+msgstr "Nome de seición '%s' incorreutu (usa 'none', 'topdir', 'subdir', o 'subdirs')"
+
+#: src/load_grouppolicy.cc:381
+#, c-format
+msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
+msgstr "Configuración passthrough '%s' incorreuta (usa 'passthrough' o 'nopassthrough')"
+
+#: src/load_grouppolicy.cc:386
+msgid "Too many arguments to by-section grouping policy"
+msgstr "Demasiaos argumentos pa la norma d'arrexuntamientu por seición"
+
+#: src/load_grouppolicy.cc:399
+msgid "By-status grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu por estáu nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:416
+msgid "Expected '(' after 'filter'"
+msgstr "Esperábase '(' dempués de 'patrón'"
+
+#: src/load_grouppolicy.cc:453
+#, c-format
+msgid "Unable to parse pattern at '%s'"
+msgstr "Nun puede interpretase patrón en '%s'"
+
+#: src/load_grouppolicy.cc:458
+msgid "Exactly one filter must be provided as an argument to a filter policy"
+msgstr "Tien que dase esautamente un fieltru como argumentu pa les normes de fieltráu"
+
+#: src/load_grouppolicy.cc:477
+msgid "By-mode grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu por mou nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:488
+msgid "First-character grouping policies take no arguments"
+msgstr "Primer carauter de les normes d'arrexuntamientu nun toma argumentos"
+
+#: src/load_grouppolicy.cc:500
+msgid "Version-generating grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu version-generating nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:511
+msgid "Dep-generating grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu dep-generating nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:522
+msgid "By-priority grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu por prioridá nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:553
+msgid "Task grouping policies take no arguments"
+msgstr "Les normes d'arrexuntamientu de xeres nun tomen argumentos"
+
+#: src/load_grouppolicy.cc:566
+msgid "Expected no more than one argument to a tag grouping policy"
+msgstr "Nun s'espera más d'un argumentu pa normes d'arrexuntamientu por marques"
+
+#: src/load_grouppolicy.cc:581
+msgid "Expected '(' after 'pattern'"
+msgstr "Esperábase '(' dempués de 'patrón'"
+
+#: src/load_grouppolicy.cc:589
+msgid "Missing arguments to 'pattern'"
+msgstr "Falten argumentos pa 'patrón'"
+
+#: src/load_grouppolicy.cc:613
+#, c-format
+msgid "Unable to parse pattern after \"%s\""
+msgstr "Nun puede interpretase'l patrón dempués de \"%s\""
+
+#: src/load_grouppolicy.cc:635
+#, c-format
+msgid "Unexpectedly empty tree title after \"%s\""
+msgstr "Árbol de titulu ermu nun esperáu dempués de \"%s\""
+
+#: src/load_grouppolicy.cc:654
+#, c-format
+msgid "Expected ',' or ')' following '||', got '%s'"
+msgstr "Esperábase ',' o ')' siguiendo a '||', atopose '%s'"
+
+#: src/load_grouppolicy.cc:666
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "Ensin pareya pa '(' nel patrón de norma d'arrexuntamientu"
+
+#: src/load_pkgview.cc:64
+msgid "Couldn't parse layout: No column format specified for static item"
+msgstr "Nun puede analizase disposición: Nun especificose nengún formatu de columna pal elementu estáticu"
+
+#: src/load_pkgview.cc:97
+msgid "Couldn't parse layout: encoding error in column descriptor"
+msgstr "Nun puede analizase disposición: fallu de codificación nel descriptor de columna"
+
+#: src/load_pkgview.cc:118
+#, c-format
+msgid "Couldn't parse layout: unknown view item type \"%s\""
+msgstr "Nun puede analizase layout: triba d'elementu de vista desconocíu \"%s\""
+
+#: src/load_pkgview.cc:125
+#: src/load_pkgview.cc:133
+msgid "Couldn't parse layout: no row number specified"
+msgstr "Nun puede analizase disposición: Ensin númberu de fila especificáu"
+
+#: src/load_pkgview.cc:141
+msgid "Couldn't parse layout: no width specified"
+msgstr "Nun puede analizase disposición: anchu non especificáu"
+
+#: src/load_pkgview.cc:149
+msgid "Couldn't parse layout: no height specified"
+msgstr "Nun puede analizase disposición: altor nun especificáu"
+
+#: src/load_pkgview.cc:180
+#: src/load_pkgview.cc:198
+#, c-format
+msgid "Unknown alignment type '%s'"
+msgstr "Triba d'alliniamientu desconocida '%s'"
+
+#: src/load_sortpolicy.cc:51
+msgid "By-name sorting policies take no arguments"
+msgstr "Les normes d'ordenación por nome nun tomen argumentos"
+
+#: src/load_sortpolicy.cc:64
+msgid "By-version sorting policies take no arguments"
+msgstr "Les normes d'ordenación por versión nun tomen argumentos"
+
+#: src/load_sortpolicy.cc:77
+msgid "By-installed size sorting policies take no arguments"
+msgstr "Les normes d'ordenación por tamañu instaláu nun tomen argumentos"
+
+#: src/load_sortpolicy.cc:90
+msgid "By-priority sorting policies take no arguments"
+msgstr "Les normes d'ordenación por prioridá nun tomen argumentos"
+
+#: src/load_sortpolicy.cc:148
+msgid "Invalid zero-length sorting policy name"
+msgstr "Nome de norma d'ordenación de llonxitú cero nun válidu"
+
+#: src/load_sortpolicy.cc:166
+msgid "Unmatched '(' in sorting policy description"
+msgstr "'(' Ensin zarrar na descripción de la norma d'ordenación"
+
+#: src/load_sortpolicy.cc:193
+#, c-format
+msgid "Invalid sorting policy type '%s'"
+msgstr "Triba de norma d'ordenación nun válida '%s'"
+
+#: src/main.cc:89
+#, c-format
+msgid "Can't decode multibyte string after \"%ls\""
+msgstr "Nun puede decodificase la cadena multibyte dempués de \"%ls\""
+
+#: src/main.cc:98
+#, c-format
+msgid "Can't decode wide-character string after \"%s\""
+msgstr "Nun puede decodificase cadena de carauteres anchos dempués de \"%s\""
+
+#: src/main.cc:106
+#, c-format
+msgid "%s %s compiled at %s %s\n"
+msgstr "%s %s compiláu en %s %s\n"
+
+#: src/main.cc:109
+#, c-format
+msgid "Compiler: g++ %s\n"
+msgstr "Compilador: g++ %s\n"
+
+#: src/main.cc:111
+msgid "Compiled against:\n"
+msgstr "Compiláu con:\n"
+
+#: src/main.cc:112
+#, c-format
+msgid "  apt version %d.%d.%d\n"
+msgstr "  versión apt %d.%d.%d\n"
+
+#: src/main.cc:115
+#, c-format
+msgid "  NCurses version: Unknown\n"
+msgstr "  Versión de NCurses: Desconocida\n"
+
+#: src/main.cc:117
+#, c-format
+msgid "  NCurses version %s\n"
+msgstr "  Versión de NCurses: %s\n"
+
+#: src/main.cc:119
+#, c-format
+msgid "  libsigc++ version: %s\n"
+msgstr "  Versión de libsigc++: %s\n"
+
+#: src/main.cc:121
+#, c-format
+msgid "  Ept support enabled.\n"
+msgstr "  Activáu'l sofitu d'Ept.\n"
+
+#: src/main.cc:123
+#, c-format
+msgid "  Ept support disabled.\n"
+msgstr "  Desactiváu'l sofitu d'Ept.\n"
+
+#: src/main.cc:126
+msgid ""
+"\n"
+"Current library versions:\n"
+msgstr ""
+"\n"
+"Versiones de llibreríes autuales:\n"
+
+#: src/main.cc:127
+#, c-format
+msgid "  NCurses version: %s\n"
+msgstr "  Versión de NCurses: %s\n"
+
+#: src/main.cc:128
+#, c-format
+msgid "  cwidget version: %s\n"
+msgstr "  Versión de cwidget: %s\n"
+
+#: src/main.cc:129
+#, c-format
+msgid "  Apt version: %s\n"
+msgstr "  Versión d'Apt: %s\n"
+
+#: src/main.cc:135
+#, c-format
+msgid "Usage: aptitude [-S fname] [-u|-i]"
+msgstr "Mou d'usu: aptitude [-S nome_ficheru] [-u|-i]"
+
+#: src/main.cc:137
+#, c-format
+msgid "       aptitude [options] <action> ..."
+msgstr "       aptitude [opciones] <aición> ..."
+
+#: src/main.cc:139
+#, c-format
+msgid ""
+"  Actions (if none is specified, aptitude will enter interactive mode):\n"
+"\n"
+msgstr ""
+"  Aiciones (si nun especifiques nenguna, aptitude entrará en mou):\n"
+"\n"
+
+#: src/main.cc:140
+#, c-format
+msgid " install      - Install/upgrade packages\n"
+msgstr " install      -  Instala/actualiza paquetes\n"
+
+#: src/main.cc:141
+#, c-format
+msgid " remove       - Remove packages\n"
+msgstr " remove       -  Desanicia paquetes\n"
+
+#: src/main.cc:142
+#, c-format
+msgid " purge        - Remove packages and their configuration files\n"
+msgstr " purge        - Desanicia paquetes xunto colos sos ficheros de configuración\n"
+
+#: src/main.cc:143
+#, c-format
+msgid " hold         - Place packages on hold\n"
+msgstr " hold         - Bloquea paquetes\n"
+
+#: src/main.cc:144
+#, c-format
+msgid " unhold       - Cancel a hold command for a package\n"
+msgstr " unhold       - Desbloquea un paquete\n"
+
+#: src/main.cc:145
+#, c-format
+msgid " markauto     - Mark packages as having been automatically installed\n"
+msgstr " markauto     - marca paquetes como instalaos manualmente\n"
+
+#: src/main.cc:146
+#, c-format
+msgid " unmarkauto   - Mark packages as having been manually installed\n"
+msgstr " unmarkauto   - desmarca paquetes como instalaos manualmente\n"
+
+#: src/main.cc:147
+#, c-format
+msgid " forbid-version - Forbid aptitude from upgrading to a specific package version.\n"
+msgstr " forbid-version - Prohíbe a aptitude anovar a una versión específica d'un paquete.\n"
+
+#: src/main.cc:148
+#, c-format
+msgid " update       - Download lists of new/upgradable packages\n"
+msgstr " update       - Baxa les llistes de paquetes nuevos/actualizables\n"
+
+#: src/main.cc:149
+#, c-format
+msgid " safe-upgrade - Perform a safe upgrade\n"
+msgstr " safe-upgrade      - realiza una actualización segura\n"
+
+#: src/main.cc:150
+#, c-format
+msgid " full-upgrade - Perform an upgrade, possibly installing and removing packages\n"
+msgstr " full-upgrade - Fae una actualización, posiblemente instalando y desaniciando paquetes\n"
+
+#: src/main.cc:151
+#, c-format
+msgid " forget-new   - Forget what packages are \"new\"\n"
+msgstr " forget-new   - Escaez qué paquetes son \"nuevos\"\n"
+
+#: src/main.cc:152
+#, c-format
+msgid " search       - Search for a package by name and/or expression\n"
+msgstr " search       - Gueta un paquete por nome y/o espresión\n"
+
+#: src/main.cc:153
+#, c-format
+msgid " show         - Display detailed information about a package\n"
+msgstr " show         - Visualiza información detallada d'un paquete\n"
+
+#: src/main.cc:154
+#, c-format
+msgid " clean        - Erase downloaded package files\n"
+msgstr " clean        - Desanicia los ficheros de paquetes baxaos\n"
+
+#: src/main.cc:155
+#, c-format
+msgid " autoclean    - Erase old downloaded package files\n"
+msgstr " autoclean    - Desanicia los ficheros de paquetes baxaos obsoletos\n"
+
+#: src/main.cc:156
+#, c-format
+msgid " changelog    - View a package's changelog\n"
+msgstr " changelog    - Ver el rexistru de cambeos del paquete\n"
+
+#: src/main.cc:157
+#, c-format
+msgid " download     - Download the .deb file for a package\n"
+msgstr " download     - Baxa los ficheros .deb pa un paquete\n"
+
+#: src/main.cc:158
+#, c-format
+msgid " reinstall    - Download and (possibly) reinstall a currently installed package\n"
+msgstr " reinstall    - Baxa y (posiblemente) reinstala un paquete ya instaláu\n"
+
+#: src/main.cc:159
+#, c-format
+msgid ""
+" why          - Show the manually installed packages that require a package, or\n"
+"                why one or more packages would require the given package\n"
+msgstr ""
+" why          - Amosa los paquetes manualmente instalaos que necesiten un paquete, o\n"
+"                o por qué ún de los paquetes necesita un paquete concretu.\n"
+
+#: src/main.cc:161
+#, c-format
+msgid ""
+" why-not      - Show the manually installed packages that lead to a conflict\n"
+"                with the given package, or why one or more packages would\n"
+"                lead to a conflict with the given package if installed\n"
+msgstr ""
+" why-not      - Amosar los paquetes manualmente instalaos que lleven a un\n"
+"                conflictu con un paquete determináu, o por qué si se instalaran\n"
+"                un o más paquetes llevaríen a un conflictu con dicho paquete.\n"
+
+#: src/main.cc:165
+#, c-format
+msgid "  Options:\n"
+msgstr "  Opciones:\n"
+
+#: src/main.cc:166
+#, c-format
+msgid " -h             This help text\n"
+msgstr " -h             Esti testu d'aida\n"
+
+#: src/main.cc:167
+#, c-format
+msgid " -s             Simulate actions, but do not actually perform them.\n"
+msgstr " -s             Simula les aiciones, pero en realida nun les fae.\n"
+
+#: src/main.cc:168
+#, c-format
+msgid " -d             Only download packages, do not install or remove anything.\n"
+msgstr " -d             Sólo baxa paquetes, non instala o desinstala na.\n"
+
+#: src/main.cc:169
+#, c-format
+msgid " -P             Always prompt for confirmation or actions\n"
+msgstr " -P             Siempre pide confirmación de les aiciones\n"
+
+#: src/main.cc:170
+#, c-format
+msgid " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgstr " -y             Supón que la rempuesta a entrugues simples de la triba sí/non ye 'sí'\n"
+
+#: src/main.cc:171
+#, c-format
+msgid " -F format      Specify a format for displaying search results; see the manual\n"
+msgstr " -F formatu     Especifica'l formatu pa visualizar los resultaos de la gueta; ver el manual\n"
+
+#: src/main.cc:172
+#, c-format
+msgid " -O order       Specify how search results should be sorted; see the manual\n"
+msgstr " -O orde       Especifica como se deben ordenar los resultados de la gueta; ver el manual\n"
+
+#: src/main.cc:173
+#, c-format
+msgid " -w width       Specify the display width for formatting search results\n"
+msgstr " -w anchu       Especifica l'anchu del visor pa dar formatu a los resultaos de la gueta\n"
+
+#: src/main.cc:174
+#, c-format
+msgid " -f             Aggressively try to fix broken packages.\n"
+msgstr " -f             Intenta iguar paquetes frayaos de mou agresivu.\n"
+
+#: src/main.cc:175
+#, c-format
+msgid " -V             Show which versions of packages are to be installed.\n"
+msgstr " -V             Amosa qué versiones de los paquetes van a instalase.\n"
+
+#: src/main.cc:176
+#, c-format
+msgid " -D             Show the dependencies of automatically changed packages.\n"
+msgstr " -D             Amosa les dependencies de los paquetes camudaos\n"
+
+#: src/main.cc:177
+#, c-format
+msgid " -Z             Show the change in installed size of each package.\n"
+msgstr " -Z             Amosa'l cambéu nel tamañu instaláu de cada paquete.\n"
+
+#: src/main.cc:178
+#, c-format
+msgid " -v             Display extra information. (may be supplied multiple times)\n"
+msgstr " -v             Amosa información extra (puede dase más d'una vegada)\n"
+
+#: src/main.cc:179
+#, c-format
+msgid " -t [release]   Set the release from which packages should be installed\n"
+msgstr " -t [distrib]   Afita la distribución dende la que s'instalen los paquetes\n"
+
+#: src/main.cc:180
+#, c-format
+msgid ""
+" -q             In command-line mode, suppress the incremental progress\n"
+"                indicators.\n"
+msgstr ""
+" -q             Non amosa los indicadores de progresu incrementales nel\n"
+"                mou de llinia de comandos.\n"
+
+#: src/main.cc:182
+#, c-format
+msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgstr " -o opconf=val  Establez direutamente la opción de configuración nomada 'key'\n"
+
+#: src/main.cc:183
+#, c-format
+msgid ""
+" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
+"                strong dependencies\n"
+msgstr " --with(out)-recommends,\tEspecifica si se traten o non les                                recomendaciones como dependencies fuertes\n"
+
+#: src/main.cc:185
+#, c-format
+msgid " -S fname       Read the aptitude extended status info from fname.\n"
+msgstr " -S fnombre     Llee la información d'estáu estendida d'aptitude de fnombre.\n"
+
+#: src/main.cc:186
+#, c-format
+msgid " -u             Download new package lists on startup.\n"
+msgstr " -u             Baxa una nueva llista de paquetes al aniciar.\n"
+
+#: src/main.cc:187
+#, c-format
+msgid " -i             Perform an install run on startup.\n"
+msgstr " -i             Fae una instalación al aniciar.\n"
+
+#: src/main.cc:189
+#, c-format
+msgid "                  This aptitude does not have Super Cow Powers.\n"
+msgstr "                  Esti aptitude nun tien poderes de Super Xatu.\n"
+
+#: src/main.cc:375
+#, c-format
+msgid "Expected a number after -q=\n"
+msgstr "Esperábase un númberu dempués de -q=\n"
+
+#: src/main.cc:384
+#, c-format
+msgid "Expected a number after -q=, got %s\n"
+msgstr "Esperábase un númberu dempués de -q=, garró %s\n"
+
+#: src/main.cc:408
+#, c-format
+msgid "-o requires an argument of the form key=value, got %s\n"
+msgstr "-o requier un argumentu de la forma opción=valor, díose %s\n"
+
+#: src/main.cc:500
+#, c-format
+msgid "No comma following tag name \"%s\".\n"
+msgstr "Ensin coma dempués del nome d'etiqueta \"%s\".\n"
+
+#: src/main.cc:531
+#: src/main.cc:540
+msgid "WEIRDNESS: unknown option code received\n"
+msgstr "RAREZA: Recibiu códigu d'opción desconocíu\n"
+
+#: src/main.cc:558
+msgid "Only one of -u and -i may be specified\n"
+msgstr "Sólo ún de -u ya -i puede ser especificáu\n"
+
+#: src/main.cc:566
+msgid "-u and -i may not be specified in command-line mode (eg, with 'install')"
+msgstr "Puede que -u ya -i nun deban especificase nel mou llinia de comandos (p.e, con 'install')"
+
+#: src/main.cc:587
+msgid "-u and -i may not be specified with a command"
+msgstr "Puede que -u ya -i nun deban especificase con un comandu"
+
+#: src/main.cc:648
+#, c-format
+msgid ""
+"The options --safe-resolver and --full-resolver are not meaningful\n"
+"for %s, which always uses the safe resolver.\n"
+msgstr ""
+"Les opciones «--safe-resolver» y «--full-resolver» nun tienen xacíu\n"
+"pa %s, que siempre usa la resolución segura.\n"
+
+#: src/main.cc:704
+#, c-format
+msgid "Unknown command \"%s\"\n"
+msgstr "Comandu desconocíu \"%s\"\n"
+
+#: src/main.cc:716
+#: src/main.cc:765
+#, c-format
+msgid "Uncaught exception: %s\n"
+msgstr "Esceición non xestionada: %s\n"
+
+#: src/main.cc:720
+#: src/main.cc:769
+#, c-format
+msgid ""
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+"Volcáu:\n"
+"%s\n"
+
+#: src/menu_text_layout.cc:43
+#: src/menu_tree.cc:220
+#: src/view_changelog.cc:60
+msgid "Search for: "
+msgstr "Guetar por: "
+
+#: src/menu_text_layout.cc:75
+#: src/menu_tree.cc:237
+#: src/view_changelog.cc:72
+msgid "Search backwards for: "
+msgstr "Guetar p'atrás: "
+
+#: src/mine/cmine.cc:114
+#: src/mine/cmine.cc:156
+#: src/ui.cc:1644
+msgid "Minesweeper"
+msgstr "Buscamines"
+
+#: src/mine/cmine.cc:120
+#, c-format
+msgid "%i/%i mines  %d %s"
+msgstr "%i/%i mines  %d %s"
+
+#: src/mine/cmine.cc:124
+#: src/mine/cmine.cc:131
+msgid "second"
+msgstr "segundu"
+
+#: src/mine/cmine.cc:124
+#: src/mine/cmine.cc:131
+msgid "seconds"
+msgstr "segundos"
+
+#: src/mine/cmine.cc:128
+#, c-format
+msgid "    %s in %d %s"
+msgstr "    %s en %d %s"
+
+#: src/mine/cmine.cc:129
+msgid "Won"
+msgstr "Ganáu"
+
+#: src/mine/cmine.cc:129
+msgid "Lost"
+msgstr "Perdíu"
+
+#: src/mine/cmine.cc:173
+#: src/mine/cmine.cc:217
+#, c-format
+msgid "Could not open file \"%s\""
+msgstr "Nun puede abrise ficheru \"%s\""
+
+#: src/mine/cmine.cc:188
+#, c-format
+msgid "Could not load game from %s"
+msgstr "Nun puede cargase xuegu dende %s"
+
+#: src/mine/cmine.cc:255
+msgid "The board height must be a positive integer"
+msgstr "L'altor del tableru debe ser un númberu enteru positivu"
+
+#: src/mine/cmine.cc:267
+msgid "The board width must be a positive integer"
+msgstr "L'anchu del tableru debe ser un númberu enteru positivu"
+
+#: src/mine/cmine.cc:279
+msgid "Invalid mine count; please enter a positive integer"
+msgstr "Númberu de mines nun válidu; por favor, introduz un númberu enteru positivu"
+
+#: src/mine/cmine.cc:299
+msgid "Setup custom game"
+msgstr "Afitar un xuegu personalizáu"
+
+#: src/mine/cmine.cc:301
+msgid "Height of board: "
+msgstr "Altor del tableru: "
+
+#: src/mine/cmine.cc:304
+msgid "Width of board: "
+msgstr "Anchor del tableru: "
+
+#: src/mine/cmine.cc:307
+msgid "Number of mines: "
+msgstr "Númberu de mines: "
+
+#: src/mine/cmine.cc:310
+#: src/mine/cmine.cc:375
+#: src/ui.cc:284
+#: src/ui.cc:356
+msgid "Ok"
+msgstr "Aceutar"
+
+#: src/mine/cmine.cc:368
+msgid "Choose difficulty level"
+msgstr "Escoyer nivel de dificultá"
+
+#: src/mine/cmine.cc:370
+msgid "Easy"
+msgstr "Fácil"
+
+#: src/mine/cmine.cc:371
+msgid "Medium"
+msgstr "Mediu"
+
+#: src/mine/cmine.cc:372
+msgid "Hard"
+msgstr "Díficil"
+
+#: src/mine/cmine.cc:373
+msgid "Custom"
+msgstr "Personalizáu"
+
+#: src/mine/cmine.cc:471
+msgid "You have won."
+msgstr "Ganaste."
+
+#: src/mine/cmine.cc:474
+msgid "You lose!"
+msgstr "¡Perdiste!"
+
+#: src/mine/cmine.cc:479
+msgid "You die...  --More--"
+msgstr "Morriste... --Más--"
+
+#: src/mine/cmine.cc:492
+msgid "The spikes were poisoned!  The poison was deadly...  --More--"
+msgstr "¡Les espines taben envelenaes! El velenu yera mortal...  --Más--"
+
+#: src/mine/cmine.cc:495
+msgid "You land on a set of sharp iron spikes!  --More--"
+msgstr "¡Aterrices nun garrapiellu d'espines de fierro afilaes!  --Más--"
+
+#: src/mine/cmine.cc:498
+msgid "You fall into a pit!  --More--"
+msgstr "¡Caes nun furacu!  --Más--"
+
+#: src/mine/cmine.cc:501
+msgid "KABOOM!  You step on a land mine.  --More--"
+msgstr "¡BOOM!  Pisaste una mina.  --Más--"
+
+#: src/mine/cmine.cc:506
+msgid "The dart was poisoned!  The poison was deadly...  --More--"
+msgstr "¡El dardu taba envelenáu!  El velenu yera moral...  --Más--"
+
+#: src/mine/cmine.cc:508
+msgid "A little dart shoots out at you!  You are hit by a little dart!  --More--"
+msgstr "¡Un pequeñu dardu dispárase hacia ti! ¡Yes golpeáu por un pequeñu dardu!  --Más--"
+
+#: src/mine/cmine.cc:512
+msgid "You turn to stone... --More--"
+msgstr "Conviérteste nuna piedra... --Más--"
+
+#: src/mine/cmine.cc:514
+msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
+msgstr "Ficiste un error fatal al tocar el cuerpu d'un basiliscu.  --Más--"
+
+#: src/mine/cmine.cc:516
+msgid "You feel here a cockatrice corpse.  --More--"
+msgstr "Sientes el cuerpu d'un basiliscu.  --Más--"
+
+#: src/mine/cmine.cc:520
+msgid "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --More--"
+msgstr "¡Click!  ¡Actives una trampa de cantu rodáu! ¡Yes golpeáu pol cantu rodáu! --Más--"
+
+#: src/mine/cmine.cc:530
+msgid "sleep"
+msgstr "durme"
+
+#: src/mine/cmine.cc:533
+msgid "striking"
+msgstr "golpiando"
+
+#: src/mine/cmine.cc:536
+msgid "death"
+msgstr "muerte"
+
+#: src/mine/cmine.cc:539
+msgid "polymorph"
+msgstr "polimorfista"
+
+#: src/mine/cmine.cc:542
+msgid "magic missile"
+msgstr "misil máxicu"
+
+#: src/mine/cmine.cc:545
+msgid "secret door detection"
+msgstr "deteición de puerte secreta"
+
+#: src/mine/cmine.cc:548
+msgid "invisibility"
+msgstr "invisibilidá"
+
+#: src/mine/cmine.cc:551
+msgid "cold"
+msgstr "fríu"
+
+#: src/mine/cmine.cc:557
+#, c-format
+msgid "Your wand of %s breaks apart and explodes!  --More--"
+msgstr "¡La to varita máxica %s fráñese y españa!  --Más--"
+
+#: src/mine/cmine.cc:563
+msgid "You are jolted by a surge of electricity!  --More--"
+msgstr "¡Sacúdete una descarga eléctrica!  --Más--"
+
+#: src/mine/cmine.cc:667
+msgid "Enter the filename to load: "
+msgstr "Introduz el nome del ficheru a cargar: "
+
+#: src/mine/cmine.cc:674
+msgid "Enter the filename to save: "
+msgstr "Introduz el nome del ficheru a guardar: "
+
+#: src/mine/cmine.cc:684
+msgid "mine-help.txt"
+msgstr "mine-help.txt"
+
+#: src/mine/cmine.cc:686
+msgid "Encoding of mine-help.txt|UTF-8"
+msgstr "Codificación de mine-help.txt|UTF-8"
+
+#: src/pkg_columnizer.cc:85
+msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
+
+#: src/pkg_columnizer.cc:88
+#: src/ui.cc:2616
+msgid "Package"
+msgstr "Paquete"
+
+#: src/pkg_columnizer.cc:89
+msgid "InstSz"
+msgstr "TamInst"
+
+#: src/pkg_columnizer.cc:90
+msgid "DebSz"
+msgstr "TamDeb"
+
+#: src/pkg_columnizer.cc:92
+msgid "Action"
+msgstr "Aición"
+
+#: src/pkg_columnizer.cc:93
+#: src/pkg_view.cc:675
+msgid "Description"
+msgstr "Descripción"
+
+#: src/pkg_columnizer.cc:94
+msgid "InstVer"
+msgstr "VerInst"
+
+#: src/pkg_columnizer.cc:95
+msgid "CandVer"
+msgstr "VerCand"
+
+#: src/pkg_columnizer.cc:96
+msgid "LongState"
+msgstr "EstáuLlargu"
+
+#: src/pkg_columnizer.cc:97
+msgid "LongAction"
+msgstr "AiciónLlarga"
+
+#: src/pkg_columnizer.cc:98
+msgid "Maintainer"
+msgstr "Desendolcador"
+
+#: src/pkg_columnizer.cc:99
+msgid "Priority"
+msgstr "Prioridá"
+
+#: src/pkg_columnizer.cc:100
+msgid "Section"
+msgstr "Seición"
+
+#: src/pkg_columnizer.cc:101
+msgid "RC"
+msgstr "RC"
+
+#: src/pkg_columnizer.cc:102
+msgid "Auto"
+msgstr "Auto"
+
+#: src/pkg_columnizer.cc:103
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: src/pkg_columnizer.cc:106
+msgid "ProgName"
+msgstr "NomeProg"
+
+#: src/pkg_columnizer.cc:107
+msgid "ProgVer"
+msgstr "VerProg"
+
+#: src/pkg_columnizer.cc:108
+msgid "#Broken"
+msgstr "#Frayáu"
+
+#: src/pkg_columnizer.cc:109
+msgid "DiskUsage"
+msgstr "UsuDiscu"
+
+#: src/pkg_columnizer.cc:110
+msgid "DownloadSize"
+msgstr "TamañuBaxáu"
+
+#: src/pkg_columnizer.cc:138
+#: src/pkg_columnizer.cc:150
+#: src/pkg_ver_item.cc:104
+#: src/pkg_ver_item.cc:169
+msgid "<N/A>"
+msgstr "<N/A>"
+
+#: src/pkg_columnizer.cc:180
+#: src/pkg_columnizer.cc:191
+msgid "<none>"
+msgstr "<none>"
+
+#: src/pkg_columnizer.cc:237
+#: src/pkg_grouppolicy.cc:262
+msgid "virtual"
+msgstr "virtual"
+
+#: src/pkg_columnizer.cc:244
+#: src/pkg_ver_item.cc:219
+#: src/pkg_ver_item.cc:227
+msgid "purged"
+msgstr "purgáu"
+
+#: src/pkg_columnizer.cc:251
+#: src/pkg_ver_item.cc:234
+msgid "half-config"
+msgstr "medio-configuráu"
+
+#: src/pkg_columnizer.cc:253
+#: src/pkg_ver_item.cc:236
+msgid "half-install"
+msgstr "medio-instaláu"
+
+#: src/pkg_columnizer.cc:255
+#: src/pkg_ver_item.cc:238
+msgid "config-files"
+msgstr "ficheros-configuración"
+
+#: src/pkg_columnizer.cc:260
+msgid "triggers-awaited"
+msgstr "disparadores-esperando"
+
+#: src/pkg_columnizer.cc:262
+msgid "triggers-pending"
+msgstr "disparadores-pendientes"
+
+#: src/pkg_columnizer.cc:265
+#: src/pkg_columnizer.cc:551
+#: src/pkg_ver_item.cc:242
+msgid "ERROR"
+msgstr "FALLU"
+
+#: src/pkg_columnizer.cc:312
+#: src/pkg_ver_item.cc:300
+msgid "hold"
+msgstr "retener"
+
+#: src/pkg_columnizer.cc:315
+msgid "forbidden upgrade"
+msgstr "actualización prohibida"
+
+#: src/pkg_columnizer.cc:317
+msgid "purge"
+msgstr "purgar"
+
+#: src/pkg_columnizer.cc:317
+#: src/pkg_ver_item.cc:324
+msgid "delete"
+msgstr "desaniciar"
+
+#: src/pkg_columnizer.cc:319
+#: src/pkg_ver_item.cc:222
+#: src/pkg_ver_item.cc:306
+msgid "broken"
+msgstr "frayáu"
+
+#: src/pkg_columnizer.cc:321
+#: src/pkg_ver_item.cc:310
+#: src/pkg_ver_item.cc:317
+#: src/pkg_ver_item.cc:326
+msgid "install"
+msgstr "instalar"
+
+#: src/pkg_columnizer.cc:323
+msgid "reinstall"
+msgstr "reinstalar"
+
+#: src/pkg_columnizer.cc:325
+msgid "upgrade"
+msgstr "anovar"
+
+#: src/pkg_columnizer.cc:327
+#: src/pkg_columnizer.cc:329
+#: src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:319
+#: src/pkg_ver_item.cc:328
+#: src/pkg_ver_item.cc:331
+msgid "none"
+msgstr "dengún"
+
+#: src/pkg_columnizer.cc:353
+#: src/pkg_columnizer.cc:374
+#: src/pkg_columnizer.cc:381
+#: src/pkg_grouppolicy.cc:268
+#: src/pkg_info_screen.cc:128
+#: src/pkg_info_screen.cc:129
+#: src/pkg_ver_item.cc:350
+#: src/pkg_ver_item.cc:384
+msgid "Unknown"
+msgstr "Desconocíu"
+
+#. ForTranslators: Imp = Important
+#: src/pkg_columnizer.cc:361
+#: src/pkg_ver_item.cc:359
+msgid "Imp"
+msgstr "Imp"
+
+#. ForTranslators: Req = Required
+#: src/pkg_columnizer.cc:363
+#: src/pkg_ver_item.cc:362
+msgid "Req"
+msgstr "Req"
+
+#. ForTranslators: Std = Standard
+#: src/pkg_columnizer.cc:365
+#: src/pkg_ver_item.cc:365
+msgid "Std"
+msgstr "Std"
+
+#. ForTranslators: Opt = Optional
+#: src/pkg_columnizer.cc:367
+#: src/pkg_ver_item.cc:368
+msgid "Opt"
+msgstr "Opt"
+
+#. ForTranslators: Xtr = Extra
+#: src/pkg_columnizer.cc:369
+#: src/pkg_ver_item.cc:371
+msgid "Xtr"
+msgstr "Xtr"
+
+#: src/pkg_columnizer.cc:371
+#: src/pkg_ver_item.cc:373
+msgid "ERR"
+msgstr "ERR"
+
+#: src/pkg_columnizer.cc:393
+#, c-format
+msgid "#Broken: %ld"
+msgstr "#Frayáu: %ld"
+
+#: src/pkg_columnizer.cc:408
+#, c-format
+msgid "Will use %sB of disk space"
+msgstr "Usaráse %sB d'espaciu del discu"
+
+#: src/pkg_columnizer.cc:416
+#, c-format
+msgid "Will free %sB of disk space"
+msgstr "Lliberaráse %sB d'espaciu del discu"
+
+#: src/pkg_columnizer.cc:430
+#, c-format
+msgid "DL Size: %sB"
+msgstr "TamDesc: %sB"
+
+#. ForTranslators: Hostname
+#: src/pkg_columnizer.cc:503
+msgid "HN too long"
+msgstr "HN perllargu"
+
+#: src/pkg_columnizer.cc:675
+#: src/pkg_columnizer.cc:684
+#, c-format
+msgid "Unable to transcode package display format after \"%ls\""
+msgstr "Nun puede aplicase transcode al formatu de visualización de los paquetes dempués de \"%ls\""
+
+#: src/pkg_columnizer.cc:691
+msgid "Internal error: Default column string is unparsable"
+msgstr "Fallu internu: la columna por defeutu nun ye lleíble"
+
+#: src/pkg_grouppolicy.cc:257
+#: src/pkg_grouppolicy.cc:1070
+msgid "Tasks"
+msgstr "Xeres"
+
+#: src/pkg_grouppolicy.cc:283
+msgid "main"
+msgstr "principal"
+
+#: src/pkg_grouppolicy.cc:425
+msgid ""
+"Security Updates\n"
+" Security updates for these packages are available from security.debian.org."
+msgstr ""
+"Actualizaciones de Seguridá\n"
+" Hai anovamientos disponibles de seguridá pa esos paquetes dende security.debian.org."
+
+#: src/pkg_grouppolicy.cc:426
+msgid ""
+"Upgradable Packages\n"
+" A newer version of these packages is available."
+msgstr ""
+"Paquetes actualizables\n"
+" Hai algamable una nueva versión d'estos paquetes"
+
+#: src/pkg_grouppolicy.cc:427
+msgid ""
+"New Packages\n"
+" These packages have been added to Debian since the last time you cleared the list of \"new\" packages (choose \"Forget new packages\" from the Actions menu to empty this list)."
+msgstr ""
+"Paquetes nuevos\n"
+" Estos paquetes amestáronse a Debian dende la cabera vegada qu'esborraste la llista de paquetes \"nuevos\" (escueye \"Escaecer paquetes nuevos\" dende'l menu Aiciones pa vaciar esta llista)."
+
+#: src/pkg_grouppolicy.cc:428
+msgid ""
+"Installed Packages\n"
+" These packages are currently installed on your computer."
+msgstr ""
+"Paquetes Instalaos\n"
+"Esos paquetes tán anguaño instalaos nel to ordenador."
+
+#: src/pkg_grouppolicy.cc:429
+msgid ""
+"Not Installed Packages\n"
+" These packages are not installed on your computer."
+msgstr ""
+"Paquetes Non Instalaos\n"
+"Esos paquetes nun tán instalaos nel to ordenador."
+
+#: src/pkg_grouppolicy.cc:430
+msgid ""
+"Obsolete and Locally Created Packages\n"
+" These packages are currently installed on your computer, but they are not available from any apt source.  They may be obsolete and removed from the archive, or you may have built a private version of them yourself."
+msgstr ""
+"Paquetes obsoletos y criaos llocalmente\n"
+" Esos paquetes tán anguaño instalaos nel to ordenador, pero nun tán disponibles dende nenguna fonte d'apt. Puede que ten obsoletos y se desaniciaren del ficheru, o puede que tú compilases la to propia versión pa ti mesmu."
+
+#: src/pkg_grouppolicy.cc:431
+msgid ""
+"Virtual Packages\n"
+" These packages do not exist; they are names other packages use to require or provide some functionality."
+msgstr ""
+"Paquetes Virtuales\n"
+" Esos paquetes nun esisten; sólo son nomes qu'otros paquetes suelen requerir o dar dalguna funcionalidá."
+
+#: src/pkg_grouppolicy.cc:584
+msgid ""
+"Packages which are recommended by other packages\n"
+" These packages are not strictly required, but they may be necessary to provide full functionality in some other programs that you are installing or upgrading."
+msgstr ""
+"Paquetes recomandaos por otros paquetes\n"
+" Esos paquetes nun son obligatorios, pero pueden ser necesarios pa dar tola funcionalidá de dalgunos otros programes que vas a instalar o anovar."
+
+#: src/pkg_grouppolicy.cc:605
+msgid ""
+"Packages which are suggested by other packages\n"
+" These packages are not required in order to make your system function properly, but they may provide enhanced functionality for some programs that you are currently installing."
+msgstr ""
+"Paquetes suxeríos por otros paquetes\n"
+" Esos paquetes nun son requeríos pa que'l sistema furrule afayaízamente, pero nun dan funcionalidaes amestaes a dalgunos programes que van instalase."
+
+#: src/pkg_grouppolicy.cc:633
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, either on your system or in the Debian archive."
+msgstr ""
+"Paquetes con dependencies nun satisfeches\n"
+" Les dependencies d'esos paquetes nun tarán satisfeches fasta que la instalación te completa.\n"
+" .\n"
+" La presencia d'esti árbol probablemente indica que dalgo ta frayao, nel to sistema o nel ficheru de Debian."
+
+#: src/pkg_grouppolicy.cc:634
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed to fulfill dependencies, and the planned action will result in no installed package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Paquetes que se desaniciarán porque ya nun s'usen\n"
+" Esos paquetes desaniciaránse porque fueron automáticamente instalaos pa satisfacer dependencies, y les aiciones planeaes faerán que nengún paquete instaláu dependa d'ellos de mena 'importante'.\n"
+
+#: src/pkg_grouppolicy.cc:635
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current state to avoid breaking dependencies."
+msgstr ""
+"Paquetes calteníos nel so estáu actual\n"
+" Esos paquetes podríen ser actualizaos, pero conservense nel so estáu actual pa nun frayar nenguna dependencia."
+
+#: src/pkg_grouppolicy.cc:636
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another package you have chosen for installation."
+msgstr ""
+"Paquetes automáticamente instalaos pa satisfacer les dependencies\n"
+" Esos paquetes instalaránse porque dalgún otru paquete seleicionáu pa instalar necesitalos."
+
+#: src/pkg_grouppolicy.cc:637
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies is no longer available, or because another package conflicts with them."
+msgstr ""
+"Paquetes que se desaniciarán poles dependencies nun satisfeches\n"
+" Esos paquetes desaniciaránse porque una o más de les sos dependencies nun tán disponibles por más tiempu, o porque otru paquete cria un conflictu con ellos."
+
+#: src/pkg_grouppolicy.cc:638
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be installed."
+msgstr ""
+"Paquetes pa baxar de versión\n"
+" Instalaráse una versión anterior d'esos paquetes que tán anguaño instalaos."
+
+#: src/pkg_grouppolicy.cc:639
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at their current version."
+msgstr ""
+"Paquetes bloqueaos\n"
+" Esos paquetes pueden anovase, pero pidiste que caltengan la so versión actual."
+
+#: src/pkg_grouppolicy.cc:640
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+" Paquetes a reinstalar\n"
+" Esos paquetes sedrán reinstalaos."
+
+#: src/pkg_grouppolicy.cc:641
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your computer."
+msgstr ""
+"Paquetes a instalar\n"
+" Esos paquetes foron seleicionaos manualmente pa instalar nel to ordenador."
+
+#: src/pkg_grouppolicy.cc:642
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Paquetes a esborrar\n"
+" Esos paquetes foron seleicionaos manualmente pa desanicialos."
+
+#: src/pkg_grouppolicy.cc:643
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Paquetes a anovar\n"
+" Esos paquetes sedrán anovaos a una versión nueva."
+
+#: src/pkg_grouppolicy.cc:644
+msgid ""
+"Packages that are partially installed\n"
+" These packages are not fully installed and configured; an attempt will be made to complete their installation."
+msgstr ""
+"Paquetes instalaos parcialmente\n"
+" Esos paquetes nun tán completamente instalaos y configuraos; intentaráse completar la so instalación."
+
+#: src/pkg_grouppolicy.cc:761
+msgid "unknown"
+msgstr "desconocíu"
+
+#: src/pkg_grouppolicy.cc:772
+#, c-format
+msgid "Priority %s"
+msgstr "Prioridá %s"
+
+#: src/pkg_grouppolicy.cc:886
+msgid "UNCATEGORIZED"
+msgstr "Ensin CATEGORÍA"
+
+#: src/pkg_grouppolicy.cc:1013
+msgid "End-user"
+msgstr "Usuariu final"
+
+#: src/pkg_grouppolicy.cc:1014
+msgid "Servers"
+msgstr "Sirvidores"
+
+#: src/pkg_grouppolicy.cc:1015
+msgid "Development"
+msgstr "Desarrollu"
+
+#: src/pkg_grouppolicy.cc:1016
+msgid "Localization"
+msgstr "Llocalización"
+
+#: src/pkg_grouppolicy.cc:1017
+msgid "Hardware Support"
+msgstr "Sofitu Hardware"
+
+#: src/pkg_grouppolicy.cc:1019
+msgid "Unrecognized tasks"
+msgstr "Xeres nun reconocíes"
+
+#: src/pkg_grouppolicy.cc:1071
+msgid ""
+"\n"
+" Tasks are groups of packages which provide an easy way to select a predefined set of packages for a particular purpose."
+msgstr ""
+"\n"
+" Xeres son grupos de paquetes que dan un mou cenciellu de seleicionar un conxuntu de paquetes pa un envís en particular."
+
+#: src/pkg_grouppolicy.cc:1202
+#, c-format
+msgid "Bad number in format string: %ls"
+msgstr "Númberu incorreutu en cadena de formatu: %ls"
+
+#: src/pkg_grouppolicy.cc:1211
+#, c-format
+msgid "Match indices must be 1 or greater, not \"%s\""
+msgstr "Los índices de coincidencia tienen de ser 1 o mayor, no \"%s\""
+
+#: src/pkg_grouppolicy.cc:1229
+#, c-format
+msgid "Match index %ls is too large; available groups are (%s)"
+msgstr "L'índiz de coincidencia %ls ye abondu llargu; los grupos disponibles son (%s)"
+
+#: src/pkg_grouppolicy.cc:1502
+msgid "TAGLESS PACKAGES"
+msgstr "PAQUETES ENSIN MARQUES"
+
+#: src/pkg_grouppolicy.cc:1503
+msgid ""
+"\n"
+" These packages have not yet been classified in debtags, or the debtags database is not present (installing debtags may correct this problem)."
+msgstr ""
+"\n"
+" Esos paquetes nun tán entá clasificaos en debtags, o la base de datos de debtags nun ta presente (instalar debtags podría correxir esti problema)."
+
+#: src/pkg_grouppolicy.cc:1537
+msgid "MISSING TAG"
+msgstr "MARCA NON ATOPADA"
+
+#: src/pkg_info_screen.cc:131
+msgid "Compressed size: "
+msgstr "Tamañu comprimíu: "
+
+#: src/pkg_info_screen.cc:132
+msgid "Uncompressed size: "
+msgstr "Tamañu descomprimíu: "
+
+#: src/pkg_info_screen.cc:133
+msgid "Source Package: "
+msgstr "Paquete Fonte: "
+
+#: src/pkg_info_screen.cc:143
+#, c-format
+msgid "Package names provided by %s"
+msgstr "Nomes del paquete daos por %s"
+
+#: src/pkg_info_screen.cc:156
+#, c-format
+msgid "Packages which depend on %s"
+msgstr "Paquetes que dependen de %s"
+
+#: src/pkg_info_screen.cc:162
+#, c-format
+msgid "Versions of %s"
+msgstr "Versiones de %s"
+
+#: src/pkg_item.cc:85
+#, c-format
+msgid "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."
+msgstr "%s ye un paquete esencial!%n%n¿De xuru que quies desanicialu?%nEscribe '%s' si lo tas."
+
+#: src/pkg_item.cc:228
+#: src/pkg_ver_item.cc:683
+#: src/solution_item.cc:298
+#, c-format
+msgid "Information about %s"
+msgstr "Información tocante a %s"
+
+#: src/pkg_item.cc:230
+#: src/pkg_ver_item.cc:685
+#: src/solution_item.cc:296
+#, c-format
+msgid "%s info"
+msgstr "%s info"
+
+#: src/pkg_item.cc:326
+#, c-format
+msgid "Available versions of %s"
+msgstr "Versiones disponibles de %s"
+
+#: src/pkg_item.cc:329
+#, c-format
+msgid "%s versions"
+msgstr "%s versiones"
+
+#: src/pkg_item.cc:341
+#: src/pkg_ver_item.cc:713
+#, c-format
+msgid "Dependencies of %s"
+msgstr "Dependencies de %s"
+
+#: src/pkg_item.cc:343
+#: src/pkg_ver_item.cc:715
+#, c-format
+msgid "%s deps"
+msgstr "%s deps"
+
+#: src/pkg_item.cc:354
+#: src/pkg_ver_item.cc:725
+#, c-format
+msgid "Packages depending on %s"
+msgstr "Paquetes que depeden de %s"
+
+#: src/pkg_item.cc:356
+#: src/pkg_ver_item.cc:727
+#, c-format
+msgid "%s reverse deps"
+msgstr "%s deps inversos"
+
+#: src/pkg_item.cc:406
+#: src/pkg_ver_item.cc:775
+#, c-format
+msgid "Reporting a bug in %s:\n"
+msgstr "Informando un fallu en %s:\n"
+
+#: src/pkg_item.cc:426
+msgid "You are not root and I cannot find any way to become root.  To reconfigure this package, install the menu package, the login package, or run aptitude as root."
+msgstr "Nun yes alministrador y nun atopo dengún mou pa convertite nél. Pa reconfigurar esti paquete, instala'l paquete menu, el paquete login, o executa aptitude como alministrador."
+
+#: src/pkg_item.cc:434
+#, c-format
+msgid "Reconfiguring %s\n"
+msgstr "Reconfigurando %s\n"
+
+#: src/pkg_item.cc:444
+#: src/ui.cc:1149
+msgid "Press return to continue.\n"
+msgstr "Calca enter pa siguir.\n"
+
+#: src/pkg_item.cc:461
+msgid "Hierarchy editor"
+msgstr "Editor de xerarquíes"
+
+#: src/pkg_item.cc:461
+#: src/pkg_view.cc:673
+msgid "Hierarchy Editor"
+msgstr "Editor de Xerarquíes"
+
+#: src/pkg_subtree.cc:159
+#, c-format
+msgid "This group contains %d package."
+msgid_plural "This group contains %d packages."
+msgstr[0] "Esti grupu contién %d paquete."
+msgstr[1] "Esti grupu contién %d paquetes."
+
+#: src/pkg_tree.cc:175
+msgid "All Packages"
+msgstr "Tolos Paquetes"
+
+#: src/pkg_tree.cc:188
+#: src/pkg_tree.cc:203
+msgid "Building view"
+msgstr "Faciendo vista"
+
+#: src/pkg_tree.cc:246
+#, c-format
+msgid "No packages matched the pattern \"%ls\"."
+msgstr "Nengún paquete concasa col patrón \"%ls\"."
+
+#: src/pkg_tree.cc:268
+msgid "Enter the new package tree limit: "
+msgstr "Introduz el nuevu llímite d'ábol de paquetes: "
+
+#: src/pkg_tree.cc:302
+msgid "Enter the new package grouping mechanism for this display: "
+msgstr "Introduz el nuevu mecanismu d'agrupación de paquetes pa esta vista: "
+
+#: src/pkg_tree.cc:310
+msgid "Enter the new package sorting mechanism for this display: "
+msgstr "Introduz el nuevu mecanismu d'ordenación de paquetes pa esta vista: "
+
+#: src/pkg_view.cc:161
+msgid "Couldn't cw::util::transcode column definition"
+msgstr "Nun puede camudase la definición de la columna cw::util::transcode"
+
+#: src/pkg_view.cc:168
+msgid "Couldn't parse column definition"
+msgstr "Nun puede interpretase la definición de la columna"
+
+#: src/pkg_view.cc:223
+msgid "If you select a package, an explanation of why it should be installed or removed will appear in this space."
+msgstr "Si seleicionaste un paquete, nesti espaciu aparecerá una desplicación de por qué va instalase o desaniciase."
+
+#: src/pkg_view.cc:575
+msgid "make_package_view: error in arguments -- two main widgets??"
+msgstr "make_package_view: Fallu nos argumentos -- ¿Dos componentes principales?"
+
+#: src/pkg_view.cc:581
+msgid "make_package_view: error in arguments -- bad column list for static item"
+msgstr "make_package_view: Fallu nos argumentos -- La llista de columnes pal elementu estáticu ye incorreuta"
+
+#: src/pkg_view.cc:678
+msgid "Related Dependencies"
+msgstr "Dependencies rellacionaes"
+
+#: src/pkg_view.cc:681
+msgid "Why Installed"
+msgstr "Razón d'instalación"
+
+#: src/pkg_view.cc:700
+msgid "make_package_view: bad argument!"
+msgstr "make_package_view: ¡Argumentu incorreutu!"
+
+#: src/pkg_view.cc:752
+msgid "make_package_view: no main widget found"
+msgstr "make_package_view: componente principal nun atopáu"
+
+#: src/reason_fragment.cc:32
+msgid "depends on"
+msgstr "depende de"
+
+#: src/reason_fragment.cc:34
+msgid "pre-depends on"
+msgstr "dependencies previes de"
+
+#: src/reason_fragment.cc:36
+msgid "suggests"
+msgstr "suxer"
+
+#: src/reason_fragment.cc:37
+msgid "recommends"
+msgstr "encamienta"
+
+#: src/reason_fragment.cc:39
+msgid "conflicts with"
+msgstr "conflictos con"
+
+#: src/reason_fragment.cc:41
+msgid "breaks"
+msgstr "fraya"
+
+#: src/reason_fragment.cc:43
+msgid "replaces"
+msgstr "camuda"
+
+#: src/reason_fragment.cc:44
+msgid "obsoletes"
+msgstr "fae obsoleto a"
+
+#: src/reason_fragment.cc:177
+#, c-format
+msgid " (provided by %F)"
+msgstr " (proporcionáu por %F)"
+
+#: src/reason_fragment.cc:287
+#, c-format
+msgid "%F%s %F %F"
+msgstr "%F%s %F %F"
+
+#: src/reason_fragment.cc:336
+msgid "If you select a package, an explanation of its current state will appear in this space."
+msgstr "Si seleiciones un paquete, nesti espaciu aparecerá una desplicación del so estáu actual."
+
+#: src/reason_fragment.cc:370
+msgid "%B%s%b was installed automatically;  it is being removed because all of the packages which depend upon it are being removed:"
+msgstr "Instalóse %B%s%b automáticamente;  desaníciase porque tolos paquetes que dependen d'él van desaniciase:"
+
+#: src/reason_fragment.cc:374
+msgid "%B%s%b will be automatically removed because of dependency errors:"
+msgstr "Desaniciaráse %B%s%b automáticamente por fallos de dependencies:"
+
+#: src/reason_fragment.cc:378
+msgid "%B%s%b will be automatically installed to satisfy the following dependencies:"
+msgstr "Instalaráse %B%s%b automáticamente pa satisfacer les siguientes dependencies:"
+
+#: src/reason_fragment.cc:384
+#: src/reason_fragment.cc:396
+msgid "%B%s%b cannot be upgraded now, but if it could be, it would still be held at version %B%s%b."
+msgstr "Nun puede anovase agora %B%s%b, pero si se pudiere, entá tendríes que caltenelu na versión %B%s%b"
+
+#: src/reason_fragment.cc:387
+msgid "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the following dependencies:"
+msgstr "%B%s%b nun s'anovará a la versión %B%s%b, pa evitar frayar les siguientes dependencies:"
+
+#: src/reason_fragment.cc:399
+msgid "%B%s%b is currently installed."
+msgstr "%B%s%b ta anguaño instaláu."
+
+#: src/reason_fragment.cc:405
+msgid "%B%s%b is not currently installed."
+msgstr "%B%s%b nun ta anguaño instaláu."
+
+#: src/reason_fragment.cc:413
+msgid "Some dependencies of %B%s%b are not satisfied:"
+msgstr "Dalgunes dependencies de %B%s%b nun tán satisfeches:"
+
+#: src/reason_fragment.cc:417
+msgid "%B%s%b will be downgraded."
+msgstr "Baxaráse de versión %B%s%b."
+
+#: src/reason_fragment.cc:424
+msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
+msgstr "Nun s'anovará %B%s%b a la versión prohibida %B%s%b."
+
+#: src/reason_fragment.cc:428
+msgid "%B%s%b could be upgraded to version %B%s%b, but it is being held at version %B%s%b."
+msgstr "%B%s%b puede anovase a la versión %B%s%b, pero ta siendo reteníu na versión %B%s%b."
+
+#: src/reason_fragment.cc:435
+msgid "%B%s%b will be re-installed."
+msgstr "%B%s%b sedrá reinstaláu."
+
+#: src/reason_fragment.cc:439
+msgid "%B%s%b will be installed."
+msgstr "%B%s%b sedrá instaláu."
+
+#: src/reason_fragment.cc:443
+msgid "%B%s%b will be removed."
+msgstr "%B%s%b sedrá desaniciáu."
+
+#: src/reason_fragment.cc:448
+msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
+msgstr "Anovaráse %B%s%b dende la versión %B%s%b a la versión %B%s%b."
+
+#: src/reason_fragment.cc:455
+msgid "%B%s%b is only partly installed; its installation will be completed."
+msgstr "%B%s%b ta parcialmente instaláu; Completaráse la so instalación."
+
+#: src/reason_fragment.cc:487
+msgid "The following packages depend on %B%s%b and will be broken by its removal:"
+msgstr "Los siguientes paquetes dependen de %B%s%b y frayaránse pol so desaniciu:"
+
+#: src/reason_fragment.cc:490
+msgid "The following packages depend on %B%s%b and are broken:"
+msgstr "Los siguientes paquetes dependen de %B%s%b y tan frayaos:"
+
+#: src/reason_fragment.cc:497
+msgid "The following packages conflict with %B%s%b and will be broken by its installation:"
+msgstr "Los siguientes paquetes tienen conflictos con %B%s%b y frayaránse pola so instalación:"
+
+#: src/reason_fragment.cc:530
+msgid "The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b, or conflict with the currently installed version:"
+msgstr "Los siguientes paquetes dependen d'una versión de %B%s%b distinta de la versión instalada anguaño de %B%s%b, o tienen conflictos cola versión anguaño instalada:"
+
+#: src/reason_fragment.cc:534
+msgid "The following packages conflict with %B%s%b, or depend on a version of it which is not going to be installed."
+msgstr "Los siguientes paquetes tienen conflictos con %B%s%b, o dependen d'una versión d'esti que nun va instalase."
+
+#: src/reason_fragment.cc:538
+msgid "The following packages conflict with %B%s%b:"
+msgstr "Los siguientes paquetes tienen conflictos con %B%s%b:"
+
+#: src/reason_fragment.cc:543
+msgid "The following packages depend on a version of %B%s%b other than the currently installed version of %B%s%b:"
+msgstr "Los siguientes paquetes dependen d'una versión de %B%s%b distinta de la versión anguaño instalada de %B%s%b:"
+
+#: src/reason_fragment.cc:547
+msgid "The following packages depend on a version of %B%s%b which is not going to be installed."
+msgstr "Los siguientes paquetes dependen d'una versión de %B%s%b que nun va instalase."
+
+#: src/reason_fragment.cc:553
+msgid "upgraded"
+msgstr "anováu"
+
+#: src/reason_fragment.cc:553
+msgid "downgraded"
+msgstr "baxáu de versión"
+
+#: src/reason_fragment.cc:559
+msgid "The following packages depend on the currently installed version of %B%s%b (%B%s%b), or conflict with the version it will be %s to (%B%s%b), and will be broken if it is %s."
+msgstr "Los siguientes paquetes dependen de la versión anguaño instalada de %B%s%b (%B%s%b), o tienen conflictos cola versión en que se convertirá %s (%B%s%b), y frayaránse si ye %s."
+
+#: src/reason_fragment.cc:566
+msgid "The following packages conflict with version %B%s%b of %B%s%b, and will be broken if it is %s."
+msgstr "Los siguientes paquetes tienen conflictos cola versión %B%s%b de %B%s%b, y frayaránse si ye %s."
+
+#: src/reason_fragment.cc:571
+msgid "The following packages depend on version %B%s%b of %B%s%b, and will be broken if it is %s."
+msgstr "Los siguientes paquetes dependen de la versión %B%s%b de %B%s%b, y frayaránse si ye %s."
+
+#: src/solution_dialog.cc:97
+#: src/solution_screen.cc:478
+msgid "The package cache is not available."
+msgstr "Nun ta disponible l'atroxu de paquetes."
+
+#: src/solution_dialog.cc:105
+msgid "No packages are broken."
+msgstr "Ensin paquetes frayaos."
+
+#: src/solution_dialog.cc:114
+#: src/solution_screen.cc:501
+msgid "No resolution found."
+msgstr "Nun s'atopó denguna solución."
+
+#: src/solution_dialog.cc:183
+msgid "Previous"
+msgstr "Anterior"
+
+#: src/solution_dialog.cc:184
+msgid "Next"
+msgstr "Siguiente"
+
+#: src/solution_dialog.cc:185
+msgid "Apply"
+msgstr "Aplicar"
+
+#: src/solution_dialog.cc:186
+msgid "Close"
+msgstr "Zarrar"
+
+#: src/solution_fragment.cc:106
+#, c-format
+msgid "%s depends upon %s"
+msgstr "%s depende de %s"
+
+#: src/solution_fragment.cc:109
+#, c-format
+msgid "%s pre-depends upon %s"
+msgstr "%s tien dependencies previes de %s"
+
+#: src/solution_fragment.cc:112
+#, c-format
+msgid "%s suggests %s"
+msgstr "%s suxer %s"
+
+#: src/solution_fragment.cc:115
+#: src/solution_item.cc:602
+#, c-format
+msgid "%s recommends %s"
+msgstr "%s encamienta %s"
+
+#: src/solution_fragment.cc:118
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s tien conflictos con %s"
+
+#: src/solution_fragment.cc:121
+#, c-format
+msgid "%s breaks %s"
+msgstr "%s fraya %s"
+
+#: src/solution_fragment.cc:124
+#, c-format
+msgid "%s replaces %s"
+msgstr "%s camuda %s"
+
+#: src/solution_fragment.cc:127
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s fae obsoletu a %s"
+
+#: src/solution_fragment.cc:140
+#, c-format
+msgid "%s conflicts with %s [provided by %s %s]"
+msgstr "%s tien conflictos con %s [proporcionáu por %s %s]"
+
+#: src/solution_fragment.cc:150
+#, c-format
+msgid "Removing %s"
+msgstr "Desaniciando %s"
+
+#: src/solution_fragment.cc:152
+#, c-format
+msgid "Installing %s %s (%s)"
+msgstr "Instalando %s %s (%s)"
+
+#: src/solution_fragment.cc:221
+msgid "%BRemove%b the following packages:%n"
+msgstr "%BDesaniciar%b los paquetes siguientes:%n"
+
+#: src/solution_fragment.cc:231
+msgid "%BInstall%b the following packages:%n"
+msgstr "%BInstalar%b los siguientes paquetes:%n"
+
+#: src/solution_fragment.cc:244
+msgid "%BKeep%b the following packages at their current version:%n"
+msgstr "%BCaltener%b los siguientes paquetes na so versión actual:%n"
+
+#: src/solution_fragment.cc:251
+msgid "Not Installed"
+msgstr "Ensin Instalar"
+
+#: src/solution_fragment.cc:264
+msgid "%BUpgrade%b the following packages:%n"
+msgstr "%BAnovar%b los siguientes paquetes:%n"
+
+#: src/solution_fragment.cc:279
+msgid "%BDowngrade%b the following packages:%n"
+msgstr "%BDesanovar%b los siguientes paquetes:%n"
+
+#: src/solution_fragment.cc:296
+#, c-format
+msgid "Leave the following dependencies unresolved:%n"
+msgstr "Dexar les siguientes dependencies ensin resolver:%n"
+
+#: src/solution_fragment.cc:304
+#, c-format
+msgid "Score is %d"
+msgstr "La puntuación ye %d"
+
+#: src/solution_item.cc:96
+#, c-format
+msgid "Remove %F [%s (%s)]"
+msgstr "Desaniciar %F [%s (%s)]"
+
+#: src/solution_item.cc:103
+#, c-format
+msgid "Install %F [%s (%s)]"
+msgstr "Instalar %F [%s (%s)]"
+
+#: src/solution_item.cc:111
+#, c-format
+msgid "Cancel the installation of %F"
+msgstr "Encaboxar la instalación de %F"
+
+#: src/solution_item.cc:114
+#, c-format
+msgid "Cancel the removal of %F"
+msgstr "Encaboxar el desaniciu de %F"
+
+#: src/solution_item.cc:117
+#, c-format
+msgid "Keep %F at version %s (%s)"
+msgstr "Caltener %F na versión %s (%s)"
+
+#: src/solution_item.cc:125
+#, c-format
+msgid "Upgrade %F [%s (%s) -> %s (%s)]"
+msgstr "Anovar %F [%s (%s) -> %s (%s)]"
+
+#: src/solution_item.cc:134
+#, c-format
+msgid "Downgrade %F [%s (%s) -> %s (%s)]"
+msgstr "Baxar de versión %F [%s (%s) -> %s (%s)]"
+
+#: src/solution_item.cc:606
+#, c-format
+msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
+msgstr "-> Dexar la dependencia \"%s encamienta %s\" ensin resolver."
+
+#: src/solution_screen.cc:157
+msgid "The following actions will resolve this dependency:"
+msgstr "Les aiciones siguientes resolverán estes dependencies:"
+
+#: src/solution_screen.cc:248
+msgid "Remove the following packages:"
+msgstr "Desaniciar los siguientes paquetes:"
+
+#: src/solution_screen.cc:259
+msgid "Keep the following packages at their current version:"
+msgstr "Caltener los siguientes paquetes na so versión actual:"
+
+#: src/solution_screen.cc:270
+msgid "Install the following packages:"
+msgstr "Instalar los siguientes paquetes:"
+
+#: src/solution_screen.cc:281
+msgid "Upgrade the following packages:"
+msgstr "Anovar los paquetes siguientes:"
+
+#: src/solution_screen.cc:292
+msgid "Downgrade the following packages:"
+msgstr "Baxar de versión los siguientes paquetes:"
+
+#: src/solution_screen.cc:305
+msgid "Leave the following recommendations unresolved:"
+msgstr "Dexar les siguientes recomendaciones ensin resolver:"
+
+#: src/solution_screen.cc:485
+msgid "No broken packages."
+msgstr "Ensin paquetes frayaos"
+
+#: src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "abiertu: %d; zarráu: %d; diferíu: %d; conflictu: %d"
+
+#: src/trust.cc:19
+#: src/trust.cc:21
+msgid "WARNING"
+msgstr "AVISU"
+
+#: src/trust.cc:20
+msgid "%F: This version of %s is from an %Buntrusted source%b!  Installing this package could allow a malicious individual to damage or take control of your system."
+msgstr "%F: ¡Esta versión de %s ye d'una %Bfonte ensin firmar%b! Instalando esti paquete puedes dexar a una persona maliciosa frayar o tomar el control del to sistema."
+
+#: src/ui.cc:202
+msgid "Yes, I am aware this is a very bad idea"
+msgstr "Sí, sé que ye una idega permala"
+
+#: src/ui.cc:229
+msgid "Er, there aren't any errors, this shouldn't have happened.."
+msgstr "Uhm, nun hai fallos, esto nun debiera pasar..."
+
+#: src/ui.cc:235
+msgid "E:"
+msgstr "E:"
+
+#: src/ui.cc:237
+msgid "W:"
+msgstr "W:"
+
+#: src/ui.cc:251
+msgid "Search for:"
+msgstr "Guetar por:"
+
+#: src/ui.cc:333
+msgid "WARNING: the package cache is opened in read-only mode!  This change and all subsequent changes will not be saved unless you stop all other running apt-based programs and select \"Become root\" from the Actions menu."
+msgstr "AVISU: ¡La caché de paquetes ta abierta en mou namái llectura! Estos cambeos y toles cambeos siguientes nun sedrán guardaos a nun ser que pares tolos demás programes n'execución basaos n'apt y seleiciones \"Convertise n'alministrador\" del menú Aiciones."
+
+#: src/ui.cc:339
+msgid "Never display this message again."
+msgstr "Nun amosar esti mensaxe otra vegada."
+
+#: src/ui.cc:385
+msgid "You may not modify the state of any package while a download is underway."
+msgstr "Nun modifiques l'estáu de dnengún paquete mientres una baxada tea en procesu."
+
+#: src/ui.cc:416
+msgid "You already are root!"
+msgstr "¡Yá yes alministrador!"
+
+#: src/ui.cc:431
+msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
+msgstr "Get-Root-Command nun válidu; tendría d'entamar con su: o sudo:"
+
+#: src/ui.cc:438
+#, c-format
+msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
+msgstr "Get-Root-Command nun válidu; tendría d'entamar con su: o sudo:, non %s:"
+
+#: src/ui.cc:561
+msgid "Subprocess exited with an error -- did you type your password correctly?"
+msgstr "Subprocesu salió con un fallu -- ¿escribiste la contraseña correutamente?"
+
+#: src/ui.cc:600
+msgid "Loading cache"
+msgstr "Cargando caché"
+
+#: src/ui.cc:642
+msgid "Really quit Aptitude?"
+msgstr "¿Zarrar dafechu Aptitude?"
+
+#: src/ui.cc:695
+#: src/ui.cc:697
+msgid "Preferences"
+msgstr "Preferencies"
+
+#: src/ui.cc:696
+#: src/ui.cc:2382
+msgid "Change the behavior of aptitude"
+msgstr "Camudar el comportamientu "
+
+#: src/ui.cc:732
+msgid "Really discard your personal settings and reload the defaults?"
+msgstr "¿De xuru que quies descartar les tos preferencies personales y cargar los valores por defeutu?"
+
+#: src/ui.cc:836
+#: src/ui.cc:838
+#: src/ui.cc:885
+#: src/ui.cc:887
+#: src/ui.cc:906
+#: src/ui.cc:908
+#: src/ui.cc:929
+#: src/ui.cc:931
+msgid "Packages"
+msgstr "Paquetes"
+
+#: src/ui.cc:837
+#: src/ui.cc:886
+#: src/ui.cc:907
+#: src/ui.cc:930
+msgid "View available packages and choose actions to perform"
+msgstr "Ver los paquetes disponibles y escoyer les aiciones a facer"
+
+#: src/ui.cc:866
+msgid "Recommended Packages"
+msgstr "Paquetes Encamentaos"
+
+#: src/ui.cc:867
+msgid "View packages that it is recommended that you install"
+msgstr "Ver paquetes que s'encamienta qu'instales"
+
+#: src/ui.cc:868
+msgid "Recommendations"
+msgstr "Encamientos"
+
+#: src/ui.cc:972
+msgid "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This is free software, and you are welcome to redistribute it under certain conditions; see 'license' for details."
+msgstr "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude entrégase %BENSIN DENGUNA GARANTÍA%b; pa más detalles mira la 'llicencia' nel menú d'Aida. Esto ye software llibre, y puedes redistribuilu baxo ciertes condiciones; mira la 'llicencia' pa detalles."
+
+#: src/ui.cc:1022
+#: src/ui.cc:1024
+msgid "License"
+msgstr "Llicencia"
+
+#: src/ui.cc:1023
+#: src/ui.cc:2474
+msgid "View the terms under which you may copy and distribute aptitude"
+msgstr "Ver los terminos baxo los que puedes copiar y distribuyir aptitude"
+
+#: src/ui.cc:1037
+msgid "help.txt"
+msgstr "help.txt"
+
+#: src/ui.cc:1039
+msgid "Encoding of help.txt|UTF-8"
+msgstr "Codificación d'help.txt|UTF-8"
+
+#: src/ui.cc:1050
+msgid "Online Help"
+msgstr "Aida Online"
+
+#: src/ui.cc:1051
+msgid "View a brief introduction to aptitude"
+msgstr "Ver una curtia introdución a aptitude"
+
+#: src/ui.cc:1052
+#: src/ui.cc:2621
+msgid "Help"
+msgstr "Aida"
+
+#: src/ui.cc:1060
+msgid "README"
+msgstr "LLÉEME"
+
+#: src/ui.cc:1061
+msgid "Encoding of README|ISO_8859-1"
+msgstr "Codificación de README|ISO_8859-1"
+
+#: src/ui.cc:1072
+msgid "User's Manual"
+msgstr "Manual d'Usuariu"
+
+#: src/ui.cc:1073
+msgid "Read the full user's manual of aptitude"
+msgstr "Lleer too'l manual d'usuariu d'aptitude"
+
+#: src/ui.cc:1074
+msgid "Manual"
+msgstr "Manual"
+
+#: src/ui.cc:1081
+#: src/ui.cc:1083
+msgid "FAQ"
+msgstr "FAQ"
+
+#: src/ui.cc:1082
+#: src/ui.cc:2466
+msgid "View a list of frequently asked questions"
+msgstr "Ver una llista de entrugues retrucaes frecuentes"
+
+#: src/ui.cc:1091
+#: src/ui.cc:1093
+msgid "News"
+msgstr "Noticies"
+
+#: src/ui.cc:1092
+#, c-format
+msgid "View the important changes made in each version of %s"
+msgstr "Ver los cambeos más importantes fechos en cada versión de %s"
+
+#: src/ui.cc:1099
+#, c-format
+msgid "Unable to remove the old temporary directory; you should remove %s by hand."
+msgstr "Nun se pudo desaniciar el direutoriu temporal anterior; tendríes de desaniciar %s a mano."
+
+#: src/ui.cc:1104
+#, c-format
+msgid "Will not remove %s; you should examine the files in it and remove them by hand."
+msgstr "Nun sedrá desaniciáu %s; Tienes de desaminar los ficheros que caltién y desanicialos a mano."
+
+#: src/ui.cc:1130
+#, c-format
+msgid "It appears that a previous version of aptitude left files behind in %s.  These files are probably useless and safe to delete.%n%nDo you want to remove this directory and all its contents?  If you select \"No\", you will not see this message again."
+msgstr "Paez qu'una versión previa d'aptitude dexó ficheros en %s. Dablemente seyan inútiles y puedan esborrase.%n%n¿Quies esborrar esti direutoriu y tol so conteniu? Si seleiciones \"Non\", nun verás esti mensaxe otra vegada."
+
+#: src/ui.cc:1173
+msgid "Downloading packages"
+msgstr "Baxando paquetes"
+
+#: src/ui.cc:1174
+msgid "View the progress of the package download"
+msgstr "Ver el progresu de la baxada de los paquetes"
+
+#: src/ui.cc:1175
+msgid "Package Download"
+msgstr "Baxada Paquetes"
+
+#: src/ui.cc:1211
+msgid "%BWARNING%b: untrusted versions of the following packages will be installed!%n%nUntrusted packages could %Bcompromise your system's security%b.  You should only proceed with the installation if you are certain that this is what you want to do.%n%n"
+msgstr "%BAVISU%b: ¡instalaránse versiones ensin firmar de los siguietnes paquetes!%n%nPaquetes ensin firmar pueden %Bcomprometer la seguridá del sistema%b. Sólo debieres siguir cola instalación si tas seguru de qué quies.%n%n"
+
+#: src/ui.cc:1217
+msgid "  %S*%N %s [version %s]%n"
+msgstr "  %S*%N %s [versión %s]%n"
+
+#: src/ui.cc:1223
+msgid "Really Continue"
+msgstr "Siguir de toes formes"
+
+#: src/ui.cc:1225
+msgid "Abort Installation"
+msgstr "Albortar Instalación"
+
+#: src/ui.cc:1290
+msgid "Preview of package installation"
+msgstr "Previsualizar la instalación de los paquetes"
+
+#: src/ui.cc:1291
+msgid "View and/or adjust the actions that will be performed"
+msgstr "Ver y/o axustar les aiciones que se faerán"
+
+#: src/ui.cc:1292
+msgid "Preview"
+msgstr "Previsualizar"
+
+#: src/ui.cc:1348
+msgid "Some packages were broken and have been fixed:"
+msgstr "Dalgunos paquetes taben frayaos y fueron iguaos:"
+
+#: src/ui.cc:1356
+msgid "No solution to these dependency problems exists!"
+msgstr "¡Ensin solución pa estos problemes de dependencia!"
+
+#: src/ui.cc:1362
+#, c-format
+msgid "Ran out of time while trying to resolve dependencies (press \"%s\" to try harder)"
+msgstr "¡Escosose'l tiempu tratando de resolver les dependencies (calca \"%s\" pa intentalo concienzudamente)"
+
+#: src/ui.cc:1408
+msgid "Installing/removing packages requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"
+msgstr "La instalación/desaniciáu de paquetes requier privilexos d'alministración, qu'agora mesmo nun tienes. ¿Quies camudar a la cuenta d'alministrador?"
+
+#: src/ui.cc:1411
+#: src/ui.cc:1632
+msgid "Become root"
+msgstr "Convertise n'alministrador"
+
+#: src/ui.cc:1413
+#: src/ui.cc:1634
+msgid "Don't become root"
+msgstr "Nun convertise n'alministrador"
+
+#: src/ui.cc:1418
+#: src/ui.cc:1639
+msgid "A package-list update or install run is already taking place."
+msgstr "Yá ta n'execución un anovamientu o instalación d'una llista de paquetes."
+
+#: src/ui.cc:1533
+msgid "No packages are scheduled to be installed, removed, or upgraded."
+msgstr "Ensin paquetes planificaos pa instalar, desaniciar o anovar."
+
+#: src/ui.cc:1539
+msgid "No packages will be installed, removed or upgraded.  Some packages could be upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an upgrade."
+msgstr "Nun s'instalará, desaniciará o anovará nengún paquete. Dalgunos paquetes pueden anovase, pero nun escoyíste anovalos. Escribe \"U\" pa preparar una actualización."
+
+#: src/ui.cc:1597
+#: src/ui.cc:1714
+msgid "Deleting obsolete downloaded files"
+msgstr "Esborrando ficheros baxaos obsoletos"
+
+#: src/ui.cc:1613
+msgid "Updating package lists"
+msgstr "Anovando llista de paquetes"
+
+#: src/ui.cc:1614
+msgid "View the progress of the package list update"
+msgstr "Ver el progresu de l'anovamientu de la llista de paquetes"
+
+#: src/ui.cc:1615
+msgid "List Update"
+msgstr "Anovar Llistes"
+
+#: src/ui.cc:1629
+msgid "Updating the package lists requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"
+msgstr "L'anovamientu de la llista de paquetes requier privilexos d'alministrador, que tu nun tienes anguaño. ¿Quies camudar a la cuenta d'alministrador?"
+
+#: src/ui.cc:1644
+#: src/ui.cc:2221
+msgid "Waste time trying to find mines"
+msgstr "Pierde'l to tiempu intentando guetar les mines"
+
+#: src/ui.cc:1651
+#: src/ui.cc:1711
+msgid "Cleaning while a download is in progress is not allowed"
+msgstr "Nun ta permitiu llimpiar mientres ta faciendose una baxada"
+
+#: src/ui.cc:1654
+msgid "Deleting downloaded files"
+msgstr "Desaniciando ficheros baxaos"
+
+#: src/ui.cc:1668
+msgid "Downloaded package files have been deleted"
+msgstr "Desaniciáronse los ficheros de paquetes baxaos"
+
+#: src/ui.cc:1708
+msgid "The apt cache file is not available; cannot auto-clean."
+msgstr "El ficheru de caché d'apt nun ta disponible; nun puede autollimpiase"
+
+#: src/ui.cc:1734
+#, c-format
+msgid "Obsolete downloaded package files have been deleted, freeing %sB of disk space."
+msgstr "Desaniciaos los ficheros de paquetes obsoletos baxaos, lliberando %sB d'espaciu en discu."
+
+#: src/ui.cc:1831
+msgid "No more solutions."
+msgstr "Nun hai más soluciones."
+
+#: src/ui.cc:2058
+msgid "Unable to find a solution to apply."
+msgstr "Nun puede atopase denguna solución a aplicar."
+
+#: src/ui.cc:2064
+msgid "Ran out of time while trying to find a solution."
+msgstr "Agotóse'l tiempu al intentar guetar una solución."
+
+#: src/ui.cc:2124
+#: src/ui.cc:2126
+msgid "Resolve Dependencies"
+msgstr "Resolver les Dependencies"
+
+#: src/ui.cc:2125
+msgid "Search for solutions to unsatisfied dependencies"
+msgstr "Guetar soluciones pa les dependencies nun satisfeches"
+
+#: src/ui.cc:2137
+#, c-format
+msgid "Unable to open %ls"
+msgstr "Nun puede abrise %ls"
+
+#: src/ui.cc:2143
+msgid "Error while dumping resolver state"
+msgstr "Fallu volcando l'estáu del iguador"
+
+#: src/ui.cc:2153
+msgid "File to which the resolver state should be dumped:"
+msgstr "Ficheru al que se tien que volcar l'estáu del iguador:"
+
+#: src/ui.cc:2183
+msgid "^Install/remove packages"
+msgstr "^Instalar/desaniciar paquetes"
+
+#: src/ui.cc:2184
+msgid "Perform all pending installs and removals"
+msgstr "Facer toles instalaciones y desaniciaos pendientes"
+
+#: src/ui.cc:2186
+msgid "^Update package list"
+msgstr "^Anovar llista de paquetes"
+
+#: src/ui.cc:2187
+msgid "Check for new versions of packages"
+msgstr "Comprobar por nueves versiones de paquetes"
+
+#: src/ui.cc:2191
+msgid "Mark Up^gradable"
+msgstr "Marcar ^actualizable"
+
+#: src/ui.cc:2192
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr "Conseñar tolos paquetes anovables que nun ten reteníos pa que seyan anovaos"
+
+#: src/ui.cc:2196
+msgid "^Forget new packages"
+msgstr "^Escaecer paquetes nuevos"
+
+#: src/ui.cc:2197
+msgid "Forget which packages are \"new\""
+msgstr "Escaecer qué paquetes son \"nuevos\""
+
+#: src/ui.cc:2200
+msgid "Canc^el pending actions"
+msgstr "Enc^aboxar aiciones pendientes"
+
+#: src/ui.cc:2201
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr "Encaboxar toles instalaciones, desaniciaos, bloqueos y anovamientos pendientes."
+
+#: src/ui.cc:2204
+msgid "^Clean package cache"
+msgstr "^Llimpiar la caché de paquetes"
+
+#: src/ui.cc:2205
+msgid "Delete package files which were previously downloaded"
+msgstr "Esborrar ficheros de paquete baxaos previamente"
+
+#: src/ui.cc:2208
+msgid "Clean ^obsolete files"
+msgstr "Llimpiar ficheros ^obsoletos"
+
+#: src/ui.cc:2209
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Desaniciar ficheros de paquetes que nun pueden ser baxaos"
+
+#: src/ui.cc:2215
+msgid "^Reload package cache"
+msgstr "^Recargar caché de paquetes"
+
+#: src/ui.cc:2216
+msgid "Reload the package cache"
+msgstr "Recargar caché de paquetes"
+
+#: src/ui.cc:2220
+msgid "^Play Minesweeper"
+msgstr "^Xugar al guetamines"
+
+#: src/ui.cc:2225
+msgid "^Become root"
+msgstr "^Convertise n'alministrador"
+
+#: src/ui.cc:2226
+msgid "Run 'su' to become root; this will restart the program, but your settings will be preserved"
+msgstr "Executa 'su' pa convertite n'alministrador; esto reaniciará'l programa, pero caltendránse les tos preferencies"
+
+#: src/ui.cc:2228
+msgid "^Quit"
+msgstr "^Colar"
+
+#: src/ui.cc:2229
+msgid "Exit the program"
+msgstr "Colar del programa"
+
+#: src/ui.cc:2235
+#: src/ui.cc:2615
+msgid "Undo"
+msgstr "Desfacer"
+
+#: src/ui.cc:2236
+msgid "Undo the last package operation or group of operations"
+msgstr "Desfacer la cabera operación o grupu d'operaciones sobre los paquetes"
+
+#: src/ui.cc:2244
+msgid "^Install"
+msgstr "^Instalar"
+
+#: src/ui.cc:2245
+msgid "Flag the currently selected package for installation or upgrade"
+msgstr "Conseñar el paquete seleicionáu anguaño pa instalar o anovar"
+
+#: src/ui.cc:2248
+msgid "^Remove"
+msgstr "^Desaniciar"
+
+#: src/ui.cc:2249
+msgid "Flag the currently selected package for removal"
+msgstr "Conseñar el paquete seleicionáu anguaño pa desaniciar"
+
+#: src/ui.cc:2252
+msgid "^Purge"
+msgstr "^Purgar"
+
+#: src/ui.cc:2253
+msgid "Flag the currently selected package and its configuration files for removal"
+msgstr "Conseñar el paquete seleicionáu anguaño y los sos ficheros de configuración pa desaniciar"
+
+#: src/ui.cc:2256
+msgid "^Keep"
+msgstr "^Caltener"
+
+#: src/ui.cc:2257
+msgid "Cancel any action on the selected package"
+msgstr "Encaboxar cualisquier aición nel paquete seleicionáu"
+
+#: src/ui.cc:2260
+msgid "^Hold"
+msgstr "^Retener"
+
+#: src/ui.cc:2261
+msgid "Cancel any action on the selected package, and protect it from future upgrades"
+msgstr "Encaboxar cualisquier aición nel paquete seleicionáu, y protexelu de futures actualizaciones"
+
+#: src/ui.cc:2264
+msgid "Mark ^Auto"
+msgstr "Conseñar ^Automáticu"
+
+#: src/ui.cc:2265
+msgid "Mark the selected package as having been automatically installed; it will automatically be removed if no other packages depend on it"
+msgstr "Conseñar el paquete seleicionáu como instaláu automáticamente; desaniciaráse automáticamente si dengún otru paquete depende d'él"
+
+#: src/ui.cc:2268
+msgid "Mark ^Manual"
+msgstr "Conseñar ^Manual"
+
+#: src/ui.cc:2269
+msgid "Mark the selected package as having been manually installed; it will not be removed unless you manually remove it"
+msgstr "Conseñar el paquete seleicionáu como instaláu manualmente; non sedrá desaniciáu a menos que lo faigas manualmente"
+
+#: src/ui.cc:2272
+msgid "^Forbid Version"
+msgstr "^Prohíbir Versiones"
+
+#: src/ui.cc:2273
+msgid "Forbid the candidate version of the selected package from being installed; newer versions of the package will be installed as usual"
+msgstr "Evitar la instalación de la versión candidata del paquete seleicionáu. Les versiones postreres del paquete instalaránse de la manera usual"
+
+#: src/ui.cc:2277
+msgid "I^nformation"
+msgstr "I^nformación"
+
+#: src/ui.cc:2278
+msgid "Display more information about the selected package"
+msgstr "Mostrar más información acerca del pauqete seleicionáu"
+
+#: src/ui.cc:2281
+msgid "C^ycle Package Information"
+msgstr "Rec^orrer Información de paquetes"
+
+#: src/ui.cc:2282
+msgid "Cycle through the modes of the package information area: it can show the package's long description, a summary of its dependency status, or an analysis of why the package is required."
+msgstr "Recorrer tolos moos del área d'información de paquetes: puedes amosar la descripción llarga del paquete, un resume del so estáu de dependencies o un análisis de por qué necesitase'l paquete."
+
+#: src/ui.cc:2285
+msgid "^Changelog"
+msgstr "^Rexistru de cambeos"
+
+#: src/ui.cc:2286
+msgid "Display the Debian changelog of the selected package"
+msgstr "Amosar el rexistru de cambeos de Debian pal paquete seleicionáu"
+
+#: src/ui.cc:2293
+msgid "^Examine Solution"
+msgstr "^Desaminar Solución"
+
+#: src/ui.cc:2294
+msgid "Examine the currently selected solution to the dependency problems."
+msgstr "Desaminar los problemes de dependencia de la solución seleicionada anguaño"
+
+#: src/ui.cc:2297
+msgid "Apply ^Solution"
+msgstr "Aplicar ^Solución"
+
+#: src/ui.cc:2298
+msgid "Perform the actions contained in the currently selected solution."
+msgstr "Facer les aiciones conteníes na solución seleicionada anguaño."
+
+#: src/ui.cc:2301
+msgid "^Next Solution"
+msgstr "^Solución siguiente"
+
+#: src/ui.cc:2302
+msgid "Select the next solution to the dependency problems."
+msgstr "Seleicionar la siguiente solución a los problemes de dependencia."
+
+#: src/ui.cc:2305
+msgid "^Previous Solution"
+msgstr "^Solución anterior"
+
+#: src/ui.cc:2306
+msgid "Select the previous solution to the dependency problems."
+msgstr "Seleicionar la solución anterior a los problemes de dependencia."
+
+#: src/ui.cc:2309
+msgid "^First Solution"
+msgstr "^Primer Solución"
+
+#: src/ui.cc:2310
+msgid "Select the first solution to the dependency problems."
+msgstr "Seleicionar la primer solución a los problemes de dependencies."
+
+#: src/ui.cc:2313
+msgid "^Last Solution"
+msgstr "Cabera So^lución"
+
+#: src/ui.cc:2314
+msgid "Select the last solution to the dependency problems that has been generated so far."
+msgstr "Seleicionar la cabera solución a los problemes de dependencies que se xenerarón fasta agora."
+
+#: src/ui.cc:2320
+msgid "Toggle ^Rejected"
+msgstr "Camudar ^Refugaos"
+
+#: src/ui.cc:2321
+msgid "Toggle whether the currently selected action is rejected."
+msgstr "Camudar ente refugar o non la aición seleicionada."
+
+#: src/ui.cc:2325
+msgid "Toggle ^Approved"
+msgstr "Camudar ^Aceptada"
+
+#: src/ui.cc:2326
+msgid "Toggle whether the currently selected action is approved."
+msgstr "Camudar ente aceutar o non l'aición seleicionada."
+
+#: src/ui.cc:2330
+msgid "^View Target"
+msgstr "^Ver Oxetivu"
+
+#: src/ui.cc:2331
+msgid "View the package which will be affected by the selected action"
+msgstr "Ver el paquete que sedrá afeutáu pola aición selecionada"
+
+#: src/ui.cc:2337
+msgid "Reject Breaking ^Holds"
+msgstr "Refugar Frayar ^Bloqueos"
+
+#: src/ui.cc:2339
+msgid "Reject all actions that would change the state of held packages or install forbidden versions"
+msgstr "refugar toles aiciones que camudarán l'estáu d'un paquete bloqueáu o qu'instalaríen versiones prohibíes."
+
+#: src/ui.cc:2347
+msgid "^Find"
+msgstr "^Guetar"
+
+#: src/ui.cc:2348
+msgid "Search forwards"
+msgstr "Guetar p'alantre"
+
+#: src/ui.cc:2351
+msgid "^Find Backwards"
+msgstr "^Guetar p'atrás"
+
+#: src/ui.cc:2352
+msgid "Search backwards"
+msgstr "Guetar p'atrás"
+
+#: src/ui.cc:2355
+msgid "Find ^Again"
+msgstr "^Atopar Otra Vegada"
+
+#: src/ui.cc:2356
+msgid "Repeat the last search"
+msgstr "Repetir la cabera gueta"
+
+#: src/ui.cc:2359
+msgid "Find Again ^Backwards"
+msgstr "Atopar Otra Vegada p'^Atrás"
+
+#: src/ui.cc:2360
+msgid "Repeat the last search in the opposite direction"
+msgstr "Repetir la cabera gueta na direición opuesta"
+
+#: src/ui.cc:2364
+msgid "^Limit Display"
+msgstr "^Llimitar Vista"
+
+#: src/ui.cc:2365
+msgid "Apply a filter to the package list"
+msgstr "Aplicar un filtru a la llista de paquetes"
+
+#: src/ui.cc:2368
+msgid "^Un-Limit Display"
+msgstr "^Non Llimitar Vista"
+
+#: src/ui.cc:2369
+msgid "Remove the filter from the package list"
+msgstr "Desaniciar el fieltru de la llista de paquetes"
+
+#: src/ui.cc:2373
+msgid "Find ^Broken"
+msgstr "Atopar ^Frayáu"
+
+#: src/ui.cc:2374
+msgid "Find the next package with unsatisfied dependencies"
+msgstr "Atopar el paquete siguiente con dependencies nun satisfeches"
+
+#: src/ui.cc:2381
+msgid "^Preferences"
+msgstr "^Preferencies"
+
+#: src/ui.cc:2386
+msgid "^UI options"
+msgstr "Opciones ^IU"
+
+#: src/ui.cc:2387
+msgid "Change the settings which affect the user interface"
+msgstr "Camudar les preferencies qu'afecten a la interface d'usuariu"
+
+#: src/ui.cc:2390
+msgid "^Dependency handling"
+msgstr "Manexu de ^Dependencies"
+
+#: src/ui.cc:2394
+msgid "^Miscellaneous"
+msgstr "^Miscelánea"
+
+#: src/ui.cc:2395
+msgid "Change miscellaneous program settings"
+msgstr "Camudar diverses preferencies del programa"
+
+#: src/ui.cc:2401
+msgid "^Revert options"
+msgstr "^Revertir opciones"
+
+#: src/ui.cc:2402
+msgid "Reset all settings to the system defaults"
+msgstr "Resetear toles configuraciones a les por defeutu del sistema"
+
+#: src/ui.cc:2413
+msgid "^Next"
+msgstr "^Siguiente"
+
+#: src/ui.cc:2414
+msgid "View next display"
+msgstr "Ver siguiente visualización"
+
+#: src/ui.cc:2417
+msgid "^Prev"
+msgstr "^Prev"
+
+#: src/ui.cc:2418
+msgid "View previous display"
+msgstr "Ver visualización previa"
+
+#: src/ui.cc:2421
+msgid "^Close"
+msgstr "^Zarrar"
+
+#: src/ui.cc:2422
+msgid "Close this display"
+msgstr "Zarrar esta visualización"
+
+#: src/ui.cc:2427
+msgid "New Package ^View"
+msgstr "Nueva ^Vista de Paquete"
+
+#: src/ui.cc:2428
+msgid "Create a new default package view"
+msgstr "Criar una nueva vista de paquete por defeutu"
+
+#: src/ui.cc:2431
+msgid "Audit ^Recommendations"
+msgstr "Auditar ^Recomendaciones"
+
+#: src/ui.cc:2432
+msgid "View packages which it is recommended that you install, but which are not currently installed."
+msgstr "Ver paquetes que son recomendaos qu'instales, pero nun tienes instalaos anguaño."
+
+#: src/ui.cc:2435
+msgid "New ^Flat Package List"
+msgstr "Nueva ^Vista de Llista de Paquetes"
+
+#: src/ui.cc:2436
+msgid "View all the packages on the system in a single uncategorized list"
+msgstr "Ver tolos paquetes nel sistema nuna llista simple ensin categoríes"
+
+#: src/ui.cc:2439
+msgid "New ^Debtags Browser"
+msgstr "Nuevu Restolador ^Debtags"
+
+#: src/ui.cc:2441
+msgid "Browse packages using Debtags data"
+msgstr "Restolar paquetes usando datos Debtags"
+
+#: src/ui.cc:2444
+msgid "New Categorical ^Browser"
+msgstr "Nuevu ^Restolar de categoríes"
+
+#: src/ui.cc:2446
+msgid "Browse packages by category"
+msgstr "Restolar paquetes por categoría"
+
+#: src/ui.cc:2454
+msgid "^About"
+msgstr "^Tocante a"
+
+#: src/ui.cc:2455
+msgid "View information about this program"
+msgstr "Ver información tocante a esti programa"
+
+#: src/ui.cc:2458
+msgid "^Help"
+msgstr "^Aida"
+
+#: src/ui.cc:2459
+msgid "View the on-line help"
+msgstr "Ver l'aida online"
+
+#: src/ui.cc:2461
+msgid "User's ^Manual"
+msgstr "^Manual d'usuariu"
+
+#: src/ui.cc:2462
+msgid "View the detailed program manual"
+msgstr "Ver el manual de programa detalláu"
+
+#: src/ui.cc:2465
+msgid "^FAQ"
+msgstr "^FAQ"
+
+#: src/ui.cc:2469
+msgid "^News"
+msgstr "^Noticies"
+
+#: src/ui.cc:2470
+msgid "View the important changes made in each version of "
+msgstr "Ver los cambeos importantes fechos en cada versión de "
+
+#: src/ui.cc:2473
+msgid "^License"
+msgstr "^Llicencia"
+
+#: src/ui.cc:2614
+msgid "Actions"
+msgstr "Aiciones"
+
+#: src/ui.cc:2617
+msgid "Resolver"
+msgstr "iguador"
+
+#: src/ui.cc:2618
+msgid "Search"
+msgstr "Guetar"
+
+#: src/ui.cc:2619
+msgid "Options"
+msgstr "Opciones"
+
+#: src/ui.cc:2620
+msgid "Views"
+msgstr "Vistes"
+
+#: src/ui.cc:2686
+#, c-format
+msgid "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove Pkgs"
+msgstr "%ls: Menú %ls: Aida %ls: Colar %ls: Anovar %ls: Baxa/Instala/Desanicia Paqs"
+
+#: src/ui.cc:3031
+msgid "yes_key"
+msgstr "yes_key"
+
+#: src/ui.cc:3032
+msgid "no_key"
+msgstr "no_key"
+
+#: src/view_changelog.cc:165
+#, c-format
+msgid "%s changes"
+msgstr "%s cambeos"
+
+#: src/view_changelog.cc:166
+msgid "View the list of changes made to this Debian package."
+msgstr "Ver la llista de cambeos fecha a esti paquete Debian."
+
+#: src/view_changelog.cc:230
+msgid "You can only view changelogs of official Debian packages."
+msgstr "Sólo puedes ver rexistros de cambéu de paquetes oficiales de Debian."
+
+#: src/view_changelog.cc:240
+msgid "Downloading Changelog"
+msgstr "Baxando Rexistru de cambeos"
+
+#: src/view_changelog.cc:242
+msgid "Download Changelog"
+msgstr "Baxar Rexistru de cambeos"
+
