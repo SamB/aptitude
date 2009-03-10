@@ -109,7 +109,11 @@ class Choice_Set_Test : public CppUnit::TestFixture
     s.for_each(contents_enumerator(expected));
 
     for(choice_set::const_iterator it = s.begin(); it != s.end(); ++it)
-      observed.push_back(*it);
+      {
+	// Force operator-> to be compiled and invoked.
+	CPPUNIT_ASSERT_EQUAL((*it).get_type(), it->get_type());
+	observed.push_back(*it);
+      }
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), observed.size());
     for(std::vector<choice>::size_type i = 0; i < expected.size(); ++i)

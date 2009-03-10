@@ -108,6 +108,11 @@ public:
 	return *not_install_version_iter;
     }
 
+    const choice *operator->() const
+    {
+      return &**this;
+    }
+
     const_iterator &operator++()
     {
       if(install_version_iter != install_version_end_iter)
