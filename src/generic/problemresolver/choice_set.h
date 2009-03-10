@@ -315,12 +315,17 @@ public:
       not_install_version_choices.contains(other.not_install_version_choices, f);
   }
 
-  /** \brief Apply a function object to each element in this set. */
+  /** \brief Apply a function object to each element in this set.
+   *
+   *  If the function returns \b false, it will short-circuit.
+   */
   template<typename F>
-  void for_each(const F &f) const
+  bool for_each(const F &f) const
   {
-    install_version_choices.for_each(for_each_choice_pair<F>(f));
-    not_install_version_choices.for_each(f);
+    if(!install_version_choices.for_each(for_each_choice_pair<F>(f)))
+      return false;
+
+    return not_install_version_choices.for_each(f);
   }
 
   /** \brief Return a new choice set that does not share memory with
