@@ -1,10 +1,12 @@
 -- | Routines for parsing and loading the log file.
 
 module Resolver.Log(
-                    LogFile(),
-                    ProcessingStep(),
-                    loadLogFile,
-                    processingSteps
+                    LogFile(..),
+                    ProcessingStep(..),
+                    LinkChoice(..),
+                    Successor(..),
+                    ParentLink(..),
+                    loadLogFile
                    )
     where
 
@@ -28,9 +30,14 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
+type ProgressCallback = Integer -> Integer -> IO ()
+
 data LogFile = LogFile { logFileH :: Handle,
+                         -- ^ Get the file handle associated with this
+                         -- log file.  Use this, for instance, to load
+                         -- the text associated with a log entry.
                          processingSteps :: [ProcessingStep]
-                         -- ^ Get the processing setps contained in
+                         -- ^ Get the processing steps contained in
                          -- this log, in the order in which they were
                          -- generated.
                        }
@@ -408,10 +415,13 @@ while cond body dflt =
         then (body >>= while cond body)
         else return dflt)
 
-forEachLine :: Handle -> (ByteString -> LogParse ()) -> LogParse ()
-forEachLine h f = while (liftIO (hIsEOF h) >>= return . not) doLine ()
-    where doLine =
+forEachLine :: Handle -> (ByteString -> LogParse ()) -> ProgressCallback -> LogParse ()
+forEachLine h f progress = do total <- liftIO $ hFileSize h
+                              while (liftIO (hIsEOF h) >>= return . not) (doLine total) ()
+    where doLine :: Integer -> LogParse ()
+          doLine total =
               do loc <- liftIO $ hTell h
+                 liftIO $ progress loc total
                  setCurrentLineStart loc
                  nextLine <- liftIO $ BS.hGetLine h >>= return
                  f nextLine
@@ -515,9 +525,9 @@ forceEverything a =
           BS.length name `seq` ()
 
 
-processFile :: Handle -> LogParse LogFile
-processFile h =
-    do forEachLine h processLogLine
+processFile :: Handle -> ProgressCallback -> LogParse LogFile
+processFile h progress =
+    do forEachLine h processLogLine progress
        --forEachLine h $ (\s -> forceEverything $ processLogLine s)
        -- The last step won't have a length because we update it when
        -- we add a new step; fix that.
@@ -528,6 +538,9 @@ processFile h =
        return $ LogFile h outSteps
 
 -- | Load a log file from a handle.
-loadLogFile :: Handle -> String -> IO LogFile
-loadLogFile h sourceName =
-    do runLogParse sourceName (processFile h)
+--
+-- The callback is invoked with the current file position and the file
+-- size, in that order.
+loadLogFile :: Handle -> String -> ProgressCallback -> IO LogFile
+loadLogFile h sourceName progress =
+    do runLogParse sourceName (processFile h progress)

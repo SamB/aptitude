@@ -1,0 +1,14 @@
+Name: resolver-visualize
+Version: 0.1
+Cabal-Version: >= 1.2
+License: GPL
+Author: Daniel Burrows
+Synopsis: A visualizer for trace logs from aptitude's dependency solver.
+Build-Type: Simple
+
+Executable resolver-visualize
+  Build-Depends: array, base, bytestring, containers, glib,
+                 glade, gtk, gtksourceview2, mtl, old-time,
+                 parsec, regex-base, regex-posix
+  Main-Is: Main.hs
+  Other-Modules: Resolver.Log, Resolver.Parse, Resolver.Types
