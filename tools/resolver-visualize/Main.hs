@@ -190,7 +190,6 @@ setLog lf =
                    rawLogViewBuffer <- textViewGetBuffer logView
                    textBufferSetText rawLogViewBuffer ""
                    model <- renderTreeView lf
-                   treeViewSetModel treeView model
                    -- Set up column bindings.
                    cellLayoutSetAttributes (treeViewTextColumn treeViewColInfo)
                                            (treeViewTextRenderer treeViewColInfo)
@@ -198,6 +197,10 @@ setLog lf =
                                            (\row -> [cellText := entryColumnText row])
                    -- Store information about the loaded file for later
                    -- use.
+                   treeViewSetModel treeView model
+                   -- Add the columns to the tree-view.
+                   treeViewAppendColumn treeView (treeViewTextColumn treeViewColInfo)
+                   -- Store the new log file information.
                    writeIORef (loadedFile ctx) (Just LoadedLogFile { logFile = lf,
                                                                      treeViewStore = model })
 
