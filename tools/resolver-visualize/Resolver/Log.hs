@@ -20,6 +20,7 @@ import Data.List(foldl')
 import Data.Maybe(catMaybes, listToMaybe)
 import Resolver.Parse
 import Resolver.Types
+import Resolver.Util(while)
 import System.IO
 import System.IO.Error
 import Text.Parsec(parse, setPosition, SourceName)
@@ -407,13 +408,6 @@ processLogLine line =
     -- Evaluate the first match, if there is one; otherwise do
     -- nothing.
     head (catMaybes matches ++ [return ()])
-
-while :: Monad m => m Bool -> m a -> a -> m a
-while cond body dflt =
-    do ok <- cond
-       (if ok
-        then (body >>= while cond body)
-        else return dflt)
 
 forEachLine :: Handle -> (ByteString -> LogParse ()) -> ProgressCallback -> LogParse ()
 forEachLine h f progress = do total <- liftIO $ hFileSize h
