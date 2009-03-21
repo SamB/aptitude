@@ -302,7 +302,7 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                        return log
              (xml, ctx) <- newMainWindow
              liftIO $ runVis (setLog loadedFile) ctx
-             liftIO $ xmlGetWidget xml castToWindow "main_window" >>= widgetShow
+             liftIO $ xmlGetWidget xml castToWindow "main_window" >>= widgetShowAll
              return ()
     where showProgress :: ProgressBar -> IORef (Maybe ClockTime) -> Integer -> Integer -> IO ()
           showProgress pb lastTime cur max =
