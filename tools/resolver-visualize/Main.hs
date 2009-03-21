@@ -5,7 +5,8 @@ module Main where
 import Control.Monad.Reader
 import qualified Control.Monad.State as State
 import Control.Monad.Trans(liftIO)
-import Data.ByteString.Char8 as ByteString(ByteString, empty, readFile, unpack)
+import Data.ByteString.Char8 as ByteString(ByteString, empty, readFile, pack, unpack)
+import Data.List(intersperse)
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.SourceView
@@ -162,8 +163,23 @@ logFileToTree log = case processingSteps log of
                  return $ catMaybes (first:rest')
           makeOrphanedTree root = Step root Unknown
 
+class PP a where
+    ppS :: a -> ShowS
+
+instance PP Version where
+    ppS (Version pkg verName) = ppS pkg . (' ':) . (unpack verName++)
+
+instance PP Package where
+    ppS (Package pkgName) = (unpack pkgName++)
+
+instance PP Dep where
+    ppS (Dep src solvers) = ppS src . (" -> {"++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
+
+pp x = ppS x ""
+
 choiceText :: LinkChoice -> String
-choiceText (LinkChoice choice) = show choice -- TODO: custom choice rendering
+choiceText (LinkChoice (InstallVersion ver _ _)) = "Install " ++ pp ver
+choiceText (LinkChoice (BreakSoftDep d)) = "Break " ++ pp d
 choiceText Unknown = "(...)"
 
 -- Column definitions for tree view entries.
