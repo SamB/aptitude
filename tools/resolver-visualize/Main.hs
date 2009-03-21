@@ -9,6 +9,7 @@ import Data.ByteString.Char8 as ByteString(ByteString, empty, readFile, unpack)
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.SourceView
+import Numeric
 import System.Environment(getArgs)
 import System.Glib.MainLoop
 import System.Glib.Types
@@ -18,6 +19,7 @@ import qualified Data.Set as Set
 import Data.Tree
 import Resolver.Log
 import Resolver.Types
+import Resolver.Util
 import System.IO
 import System.Time
 
@@ -318,7 +320,8 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                         Just time -> diffClockTimes currTime time >= updateInterval
                      shouldUpdate   = bigUpdate || longUpdate
                  when shouldUpdate (do progressBarSetFraction pb newf
-                                       mainContextIteration mainContextDefault False
+                                       progressBarSetText pb (showFFloat (Just 1) (100 * newf) "" ++ "%")
+                                       while (mainContextIteration mainContextDefault False) (return ()) ()
                                        return ())
 
 main :: IO ()
