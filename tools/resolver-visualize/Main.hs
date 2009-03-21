@@ -291,19 +291,19 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                        labelSetText title ("Loading " ++ fn ++ "...")
                                        widgetShow win
                                        h   <- openFile fn ReadMode
-                                       currTime <- getClockTime
-                                       lastTime <- newIORef currTime
+                                       lastTime <- newIORef Nothing
                                        log <- loadLogFile h fn (showProgress progressBar lastTime)
                                        return log
              (xml, ctx) <- newMainWindow
              liftIO $ runVis (setLog loadedFile) ctx
              liftIO $ xmlGetWidget xml castToWindow "main_window" >>= widgetShow
              return ()
-    where showProgress :: ProgressBar -> IORef ClockTime -> Integer -> Integer -> IO ()
+    where showProgress :: ProgressBar -> IORef (Maybe ClockTime) -> Integer -> Integer -> IO ()
           showProgress pb lastTime cur max =
               do oldf     <- progressBarGetFraction pb
                  currTime <- getClockTime
                  last     <- readIORef lastTime
+                 writeIORef lastTime (Just currTime)
                  let updateInterval = TimeDiff { tdYear = 0,
                                                  tdMonth = 0,
                                                  tdDay = 0,
@@ -313,7 +313,9 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                                  tdPicosec = milliToPicoseconds 100 }
                      newf           = if max == 0 then 0 else ((fromInteger cur) / (fromInteger max))
                      bigUpdate      = oldf - newf >= 0.01
-                     longUpdate     = diffClockTimes currTime last >= updateInterval
+                     longUpdate     = case last of
+                                        Nothing -> True
+                                        Just time -> diffClockTimes currTime time >= updateInterval
                      shouldUpdate   = bigUpdate || longUpdate
                  when shouldUpdate (do progressBarSetFraction pb newf
                                        mainContextIteration mainContextDefault False
