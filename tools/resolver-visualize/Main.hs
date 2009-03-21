@@ -318,11 +318,10 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                                  tdSec = 0,
                                                  tdPicosec = milliToPicoseconds 100 }
                      newf           = if max == 0 then 0 else ((fromInteger cur) / (fromInteger max))
-                     bigUpdate      = oldf - newf >= 0.01
                      longUpdate     = case last of
                                         Nothing -> True
                                         Just time -> diffClockTimes currTime time >= updateInterval
-                     shouldUpdate   = bigUpdate || longUpdate
+                     shouldUpdate   = longUpdate || newf == 1
                  when shouldUpdate (do progressBarSetFraction pb newf
                                        progressBarSetText pb (showFFloat (Just 1) (100 * newf) "" ++ "%")
                                        while (mainContextIteration mainContextDefault False) (return ()) ()
