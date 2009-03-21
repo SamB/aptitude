@@ -298,6 +298,7 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                        h   <- openFile fn ReadMode
                                        lastTime <- newIORef Nothing
                                        log <- loadLogFile h fn (showProgress progressBar lastTime)
+                                       widgetDestroy win
                                        return log
              (xml, ctx) <- newMainWindow
              liftIO $ runVis (setLog loadedFile) ctx
