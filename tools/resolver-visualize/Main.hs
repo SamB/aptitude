@@ -16,6 +16,7 @@ import System.Glib.MainLoop
 import System.Glib.Types
 import Data.IORef
 import Data.Maybe
+import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Tree
 import Resolver.Log
@@ -25,9 +26,6 @@ import System.IO
 import System.Time
 
 xmlFilename = "resolver-visualize.glade"
-
--- Column numbers.
-treeViewDisplayColumnText = 0
 
 data MainLoopContext = MainLoopContext { mainLoop :: MainLoop,
                                          numMainWindows :: IORef Integer }
@@ -49,18 +47,169 @@ mainWindowOpened = do ctx <- ask
 
 -- | Information about a loaded log file.
 data LoadedLogFile =
-    LoadedLogFile { treeViewStore :: TreeStore TreeViewEntry,
-                    logFile :: LogFile }
+    LoadedLogFile { logFile :: LogFile }
+
+data TextColumnInfo = TextColumnInfo { textColumn   :: TreeViewColumn,
+                                       textRenderer :: CellRendererText }
+
+textColumnNew :: String -> IO TextColumnInfo
+textColumnNew name = do col      <- treeViewColumnNew
+                        treeViewColumnSetTitle col name
+                        renderer <- cellRendererTextNew
+                        cellLayoutPackEnd col renderer True
+                        return TextColumnInfo { textColumn   = col,
+                                                textRenderer = renderer }
 
 -- | Information about the columns and renderers of the tree display.
 data TreeViewColumnInfo =
-    TreeViewColumnInfo { treeViewTextColumn   :: TreeViewColumn,
-                         treeViewTextRenderer :: CellRendererText }
+    TreeViewColumnInfo { treeViewText        :: TextColumnInfo,
+                         treeViewNumChoices  :: TextColumnInfo,
+                         treeViewBrokenDeps  :: TextColumnInfo,
+                         treeViewStepNum     :: TextColumnInfo,
+                         treeViewChildren    :: TextColumnInfo,
+                         treeViewHeight      :: TextColumnInfo,
+                         treeViewSubtreeSize :: TextColumnInfo,
+                         treeViewTier        :: TextColumnInfo,
+                         treeViewScore       :: TextColumnInfo }
+
+treeViewColumnInfoRenderers :: TreeViewColumnInfo -> [CellRenderer]
+treeViewColumnInfoRenderers inf =
+    [ toCellRenderer $ textRenderer $ treeViewText inf,
+      toCellRenderer $ textRenderer $ treeViewNumChoices inf,
+      toCellRenderer $ textRenderer $ treeViewBrokenDeps inf,
+      toCellRenderer $ textRenderer $ treeViewStepNum inf,
+      toCellRenderer $ textRenderer $ treeViewChildren inf,
+      toCellRenderer $ textRenderer $ treeViewHeight inf,
+      toCellRenderer $ textRenderer $ treeViewSubtreeSize inf,
+      toCellRenderer $ textRenderer $ treeViewTier inf,
+      toCellRenderer $ textRenderer $ treeViewScore inf ]
+
+treeViewColumnInfoColumns :: TreeViewColumnInfo -> [TreeViewColumn]
+treeViewColumnInfoColumns inf =
+    [ textColumn $ treeViewText inf,
+      textColumn $ treeViewNumChoices inf,
+      textColumn $ treeViewBrokenDeps inf,
+      textColumn $ treeViewStepNum inf,
+      textColumn $ treeViewChildren inf,
+      textColumn $ treeViewHeight inf,
+      textColumn $ treeViewSubtreeSize inf,
+      textColumn $ treeViewTier inf,
+      textColumn $ treeViewScore inf ]
+
+-- | Discard attribute bindings for the tree view.
+treeViewColumnInfoClear :: TreeViewColumnInfo -> IO ()
+treeViewColumnInfoClear inf = let cols = treeViewColumnInfoColumns inf in
+                              mapM_ cellLayoutClear cols
+
+newTreeViewColumns :: IO TreeViewColumnInfo
+newTreeViewColumns =
+    do text              <- textColumnNew "Description"
+       numChoices        <- textColumnNew "Choices"
+       brokenDeps        <- textColumnNew "Broken Deps"
+       stepNum           <- textColumnNew "Order"
+       children          <- textColumnNew "Children"
+       height            <- textColumnNew "Height"
+       subtreeSize       <- textColumnNew "Size"
+       tier              <- textColumnNew "Tier"
+       score             <- textColumnNew "Score"
+       return TreeViewColumnInfo { treeViewText          = text,
+                                   treeViewNumChoices    = numChoices,
+                                   treeViewBrokenDeps    = brokenDeps,
+                                   treeViewStepNum       = stepNum,
+                                   treeViewChildren      = children,
+                                   treeViewHeight        = height,
+                                   treeViewSubtreeSize   = subtreeSize,
+                                   treeViewTier          = tier,
+                                   treeViewScore         = score }
 
 -- | Information about the columns and renderers of the chronological
 -- display.
 data ChronologicalViewColumnInfo =
-    ChronologicalViewColumnInfo
+    ChronologicalViewColumnInfo { chronViewNumChoices  :: TextColumnInfo,
+                                  chronViewBrokenDeps  :: TextColumnInfo,
+                                  chronViewStepNum     :: TextColumnInfo,
+                                  chronViewChildren    :: TextColumnInfo,
+                                  chronViewHeight      :: TextColumnInfo,
+                                  chronViewSubtreeSize :: TextColumnInfo,
+                                  chronViewTier        :: TextColumnInfo,
+                                  chronViewScore       :: TextColumnInfo }
+
+chronViewColumnInfoRenderers :: ChronologicalViewColumnInfo -> [CellRenderer]
+chronViewColumnInfoRenderers inf =
+    [ toCellRenderer $ textRenderer $ chronViewNumChoices inf,
+      toCellRenderer $ textRenderer $ chronViewBrokenDeps inf,
+      toCellRenderer $ textRenderer $ chronViewStepNum inf,
+      toCellRenderer $ textRenderer $ chronViewChildren inf,
+      toCellRenderer $ textRenderer $ chronViewHeight inf,
+      toCellRenderer $ textRenderer $ chronViewSubtreeSize inf,
+      toCellRenderer $ textRenderer $ chronViewTier inf,
+      toCellRenderer $ textRenderer $ chronViewScore inf ]
+
+chronViewColumnInfoColumns :: ChronologicalViewColumnInfo -> [TreeViewColumn]
+chronViewColumnInfoColumns inf =
+    [ textColumn $ chronViewNumChoices inf,
+      textColumn $ chronViewBrokenDeps inf,
+      textColumn $ chronViewStepNum inf,
+      textColumn $ chronViewChildren inf,
+      textColumn $ chronViewHeight inf,
+      textColumn $ chronViewSubtreeSize inf,
+      textColumn $ chronViewTier inf,
+      textColumn $ chronViewScore inf ]
+
+-- | Discard attribute bindings for the chronological view.
+chronViewColumnInfoClear :: ChronologicalViewColumnInfo -> IO ()
+chronViewColumnInfoClear inf = let cols = chronViewColumnInfoColumns inf in
+                               mapM_ cellLayoutClear cols
+
+newChronViewColumns :: IO ChronologicalViewColumnInfo
+newChronViewColumns =
+    do numChoices        <- textColumnNew "Choices"
+       brokenDeps        <- textColumnNew "Broken Deps"
+       stepNum           <- textColumnNew "Order"
+       children          <- textColumnNew "Children"
+       height            <- textColumnNew "Height"
+       subtreeSize       <- textColumnNew "Size"
+       tier              <- textColumnNew "Tier"
+       score             <- textColumnNew "Score"
+       return ChronologicalViewColumnInfo {
+                    chronViewNumChoices   = numChoices,
+                    chronViewBrokenDeps   = brokenDeps,
+                    chronViewStepNum      = stepNum,
+                    chronViewChildren     = children,
+                    chronViewHeight       = height,
+                    chronViewSubtreeSize  = subtreeSize,
+                    chronViewTier         = tier,
+                    chronViewScore        = score
+                  }
+
+-- | Information about the columns and renderers of the run list.
+data RunListColumnInfo =
+    RunListColumnInfo { runListNumber :: TextColumnInfo,
+                        runListLength :: TextColumnInfo }
+
+runListInfoRenderers :: RunListColumnInfo -> [CellRenderer]
+runListInfoRenderers inf =
+    [ toCellRenderer $ textRenderer $ runListNumber inf,
+      toCellRenderer $ textRenderer $ runListLength inf ]
+
+runListInfoColumns :: RunListColumnInfo -> [TreeViewColumn]
+runListInfoColumns inf =
+    [ textColumn $ runListNumber inf,
+      textColumn $ runListLength inf ]
+
+-- | Discard attribute bindings for the run list.
+runListColumnInfoClear :: RunListColumnInfo -> IO ()
+runListColumnInfoClear inf = let cols = runListInfoColumns inf in
+                             mapM_ cellLayoutClear cols
+
+newRunListColumns :: IO RunListColumnInfo
+newRunListColumns =
+    do number     <- textColumnNew "Run Number"
+       len        <- textColumnNew "Run Length"
+       return RunListColumnInfo {
+                    runListNumber = number,
+                    runListLength = len
+                  }
 
 -- | Shared context for the visualizer.
 data VisualizeContext =
@@ -68,9 +217,12 @@ data VisualizeContext =
                        treeViewColumnInfo :: TreeViewColumnInfo,
                        chronologicalView :: TreeView,
                        chronologicalViewColumnInfo :: ChronologicalViewColumnInfo,
+                       runList :: TreeView,
+                       runListColumnInfo :: RunListColumnInfo,
                        logView :: SourceView,
                        mainContext :: MainLoopContext,
-                       loadedFile :: IORef (Maybe LoadedLogFile) }
+                       loadedFile :: IORef (Maybe LoadedLogFile),
+                       activeRun  :: IORef (Maybe (Integer, [ProcessingStep])) }
 
 -- | State monad for the visualizer.
 type VisM = ReaderT VisualizeContext IO
@@ -86,10 +238,16 @@ getTreeViewColumnInfo :: VisM TreeViewColumnInfo
 getTreeViewColumnInfo = do ctx <- ask; return $ treeViewColumnInfo ctx
 
 getChronologicalView :: VisM TreeView
-getChronologicalView = do ctx <- ask; return $ treeView ctx
+getChronologicalView = do ctx <- ask; return $ chronologicalView ctx
 
 getChronologicalViewColumnInfo :: VisM ChronologicalViewColumnInfo
 getChronologicalViewColumnInfo = do ctx <- ask; return $ chronologicalViewColumnInfo ctx
+
+getRunList :: VisM TreeView
+getRunList = do ctx <- ask; return $ runList ctx
+
+getRunListColumnInfo :: VisM RunListColumnInfo
+getRunListColumnInfo = do ctx <- ask; return $ runListColumnInfo ctx
 
 getLogView :: VisM SourceView
 getLogView = do ctx <- ask; return $ logView ctx
@@ -103,45 +261,131 @@ getLog = do ctx <- ask
             maybeInf <- liftIO $ readIORef $ loadedFile ctx
             return $ fmap logFile maybeInf
 
-getTreeViewStore :: VisM (Maybe (TreeStore TreeViewEntry))
-getTreeViewStore = do ctx <- ask
-                      maybeInf <- liftIO $ readIORef $ loadedFile ctx
-                      return $ fmap treeViewStore maybeInf
+getRunNumber :: VisM (Maybe Integer)
+getRunNumber = do ctx <- ask
+                  runInf <- liftIO $ readIORef $ activeRun ctx
+                  return $ fmap fst runInf
+
+isActiveRun :: Integer -> VisM Bool
+isActiveRun n = do current <- getRunNumber
+                   case current of
+                     Nothing   -> return False
+                     (Just n') -> return (n == n')
+
+--getTreeViewStore :: VisM (Maybe (TreeStore TreeViewEntry))
+--getTreeViewStore = do ctx <- ask
+--                      maybeInf <- liftIO $ readIORef $ loadedFile ctx
+--                      return $ fmap treeViewStore maybeInf
+
+-- | Stores tree-structure information about an entry.
+data EntryTreeInfo = EntryTreeInfo {
+      treeInfoChildren    :: Integer,
+      treeInfoHeight      :: Integer,
+      treeInfoSubtreeSize :: Integer
+    } deriving(Ord, Eq, Show)
+
+getTreeInfo :: ProcessingStep -> EntryTreeInfo
+getTreeInfo (ProcessingStep { stepSuccessors = steps,
+                              stepDepth      = height,
+                              stepBranchSize = branchSize }) = EntryTreeInfo { treeInfoChildren    = toInteger $ length steps,
+                                                                               treeInfoHeight      = height,
+                                                                               treeInfoSubtreeSize = branchSize }
 
 -- Each row in the tree display is either the root of the search, a
 -- processing step (possibly with no parent!), a solution that was
 -- enqueued but never visited, or a note about a problem rendering the
 -- tree.
-data TreeViewEntry = Root ProcessingStep
-                   | Step ProcessingStep LinkChoice
-                   -- | A Step node would have been produced, but the
-                   -- same solution was already generated as a Step
-                   -- node.  The attached Solution node could be used
-                   -- to, e.g., look up the tree node associated with
-                   -- the link.
-                   | AlreadyGeneratedStep Solution LinkChoice
-                   | NoStep Solution LinkChoice
-                   | Error String -- Something went wrong.
-                     deriving(Ord, Eq, Show)
+data TreeViewEntry =
+    Root {
+      entryStep         :: ProcessingStep,
+      entryNumChoices   :: Integer,
+      entryBrokenDeps   :: Integer,
+      entryStepNum      :: Integer,
+      entryTreeInfo     :: EntryTreeInfo
+    }
+  | Step {
+      entryStep         :: ProcessingStep,
+      entryChoice       :: LinkChoice,
+      entryNumChoices   :: Integer,
+      entryBrokenDeps   :: Integer,
+      entryStepNum      :: Integer,
+      entryTreeInfo     :: EntryTreeInfo
+    }
+  -- | A Step node would have been produced, but the
+  -- same solution was already generated as a Step
+  -- node.  The attached Solution node could be used
+  -- to, e.g., look up the tree node associated with
+  -- the link.
+  | AlreadyGeneratedStep {
+      entrySol          :: Solution,
+      entryChoice       :: LinkChoice,
+      entryNumChoices   :: Integer,
+      entryStepNum      :: Integer,
+      entryBrokenDeps   :: Integer
+    }
+  | NoStep {
+      entrySol          :: Solution,
+      entryChoice       :: LinkChoice,
+      entryBrokenDeps   :: Integer,
+      entryNumChoices   :: Integer
+    }
+  | Error {
+      entryErrorText    :: String,
+      entryStepNum      :: Integer
+    }
+
+forceList :: [a] -> [a]
+forceList = foldr (\a b -> a `seq` (a:b)) []
 
 -- | The tree-view building monad contains local state remembering
 -- which nodes have already been incorporated into the tree, so we
 -- don't display them more than once.
 type BuildTreeView = State.State (Set.Set Solution)
 unfoldSuccessor :: Successor -> BuildTreeView (TreeViewEntry, [Successor])
-unfoldSuccessor (Successor step choice) =
+unfoldSuccessor (Successor step choice forced) =
     do seen <- State.get
-       let sol = stepSol step
+       let sol        = stepSol step
+           stepNum    = stepOrder step
        (if sol `Set.member` seen
-        then return (AlreadyGeneratedStep sol choice, [])
-        else do State.put $ Set.insert sol seen
-                return (Step step choice, stepSuccessors step))
-unfoldSuccessor (Unprocessed sol choice) = return (NoStep sol choice, [])
+        then let numChoices = toInteger $ Map.size $ solChoices sol
+                 brokenDeps = toInteger $ Set.size $ solBrokenDeps sol in
+             return $ sol `seq` choice `seq` stepNum `seq`
+                    numChoices `seq` brokenDeps `seq`
+                                   (AlreadyGeneratedStep { entrySol        = sol,
+                                                           entryChoice     = choice,
+                                                           entryStepNum    = stepNum,
+                                                           entryNumChoices = numChoices,
+                                                           entryBrokenDeps = brokenDeps },
+                                    [])
+        else let newState       = Set.insert sol seen
+                 numChoices     = toInteger $ Map.size $ solChoices $ stepSol step
+                 brokenDeps     = toInteger $ Set.size $ solBrokenDeps $ stepSol step
+                 treeInfo       = getTreeInfo step in
+             step `seq` choice `seq` stepNum `seq` newState `seq`
+             numChoices `seq` brokenDeps `seq` treeInfo `seq`
+             do State.put $ Set.insert sol seen
+                return (Step { entryStep       = step,
+                               entryChoice     = choice,
+                               entryStepNum    = stepNum,
+                               entryNumChoices = numChoices,
+                               entryBrokenDeps = brokenDeps,
+                               entryTreeInfo   = treeInfo },
+                        forceList $ stepSuccessors step))
+unfoldSuccessor (Unprocessed sol choice forced) =
+    let brokenDeps = toInteger $ Set.size $ solBrokenDeps sol
+        numChoices = toInteger $ Map.size $ solChoices sol in
+    sol `seq` choice `seq` brokenDeps `seq` numChoices `seq`
+    return (NoStep { entrySol = sol,
+                     entryChoice = choice,
+                     entryBrokenDeps = brokenDeps,
+                     entryNumChoices = numChoices },
+            [])
 
-logFileToTree :: LogFile -> Forest TreeViewEntry
-logFileToTree log = case processingSteps log of
-                      [] -> [Node (Error "Dependencies were not resolved.") []]
-                      (root:rest) -> State.evalState (makeWholeTree root rest) Set.empty
+runToTree :: [ProcessingStep] -> Forest TreeViewEntry
+runToTree steps = case steps of
+                    [] -> [Node (Error { entryErrorText = "No steps in this run.",
+                                         entryStepNum = 0 }) []]
+                    (root:rest) -> State.evalState (makeWholeTree root rest) Set.empty
     where makeTree :: (ProcessingStep -> TreeViewEntry) -> ProcessingStep -> BuildTreeView (Maybe (Tree TreeViewEntry))
           makeTree f root =
               do seen <- State.get
@@ -151,17 +395,37 @@ logFileToTree log = case processingSteps log of
                   else do State.put $ Set.insert rootSol seen
                           let rootSucc = stepSuccessors root
                           succ <- unfoldForestM unfoldSuccessor rootSucc
-                          return $ Just $ Node (f root) succ)
+                          return $ f `seq` root `seq` forceList succ `seq` Just $ Node (f root) succ)
           makeWholeTree :: ProcessingStep -> [ProcessingStep] -> BuildTreeView (Forest TreeViewEntry)
           makeWholeTree root rest =
-              do first <- makeTree Root root
+              do first <- makeTree makeRootTree root
                  -- This is always the first node we
                  -- process, so it should never
                  -- appear in "seen".
                  when (not $ isJust first) (error "Internal error: how can the root be seen already?")
                  rest' <- sequence $ map (makeTree makeOrphanedTree) rest
                  return $ catMaybes (first:rest')
-          makeOrphanedTree root = Step root Unknown
+          makeRootTree     root = let numChoices = toInteger $ Map.size $ solChoices $ stepSol root
+                                      brokenDeps = toInteger $ Set.size $ solBrokenDeps $ stepSol root
+                                      stepNum = stepOrder root
+                                      treeInfo = getTreeInfo root in
+                                  root `seq` numChoices `seq` brokenDeps `seq` stepNum `seq` treeInfo `seq`
+                                  Root { entryStep       = root,
+                                         entryNumChoices = numChoices,
+                                         entryBrokenDeps = brokenDeps,
+                                         entryStepNum    = stepOrder root,
+                                         entryTreeInfo   = getTreeInfo root }
+          makeOrphanedTree root = let numChoices = toInteger $ Map.size $ solChoices $ stepSol root
+                                      brokenDeps = toInteger $ Set.size $ solBrokenDeps $ stepSol root
+                                      stepNum = stepOrder root
+                                      treeInfo = getTreeInfo root in
+                                  root `seq` numChoices `seq` brokenDeps `seq` stepNum `seq` treeInfo `seq`
+                                  Step { entryStep       = root,
+                                         entryChoice     = Unknown,
+                                         entryNumChoices = numChoices,
+                                         entryBrokenDeps = brokenDeps,
+                                         entryStepNum    = stepNum,
+                                         entryTreeInfo   = treeInfo }
 
 class PP a where
     ppS :: a -> ShowS
@@ -184,42 +448,196 @@ choiceText Unknown = "(...)"
 
 -- Column definitions for tree view entries.
 entryColumnText :: TreeViewEntry -> String
-entryColumnText (Root sol) = "Root"
-entryColumnText (Step sol choice) = choiceText choice
-entryColumnText (AlreadyGeneratedStep sol choice) = ("Already seen: " ++ choiceText choice)
-entryColumnText (NoStep sol choice) = choiceText choice
-entryColumnText (Error err) = err
+entryColumnText (Root {}) = "Root"
+entryColumnText (Step { entryChoice = choice}) = choiceText choice
+entryColumnText (AlreadyGeneratedStep { entryChoice = choice }) = ("Already seen: " ++ choiceText choice)
+entryColumnText (NoStep { entryChoice = choice }) = choiceText choice
+entryColumnText (Error { entryErrorText = err }) = err
 
-renderTreeView :: LogFile -> IO (TreeStore TreeViewEntry)
-renderTreeView lf = do let tree = logFileToTree lf
-                       model <- (treeStoreNew tree)
-                       treeModelSetColumn model (makeColumnIdString treeViewDisplayColumnText) entryColumnText
-                       return model
+entryColumnNumChoices :: TreeViewEntry -> String
+entryColumnNumChoices (Root { entryNumChoices = n })                    = show n
+entryColumnNumChoices (Step { entryNumChoices = n })                    = show n
+entryColumnNumChoices (AlreadyGeneratedStep { entryNumChoices = n })    = show n
+entryColumnNumChoices (NoStep { entryNumChoices = n })                  = show n
+entryColumnNumChoices (Error {})                                        = ""
+
+entryColumnBrokenDeps :: TreeViewEntry -> String
+entryColumnBrokenDeps (Root { entryBrokenDeps = n })                    = show n
+entryColumnBrokenDeps (Step { entryBrokenDeps = n })                    = show n
+entryColumnBrokenDeps (AlreadyGeneratedStep { entryBrokenDeps = n })    = show n
+entryColumnBrokenDeps (NoStep { entryBrokenDeps = n })                  = show n
+entryColumnBrokenDeps (Error {})                                        = ""
+
+entryColumnStepNum :: TreeViewEntry -> String
+entryColumnStepNum (Root { entryStepNum = n })                          = show n
+entryColumnStepNum (Step { entryStepNum = n })                          = show n
+entryColumnStepNum (AlreadyGeneratedStep { entryStepNum = n })          = show n
+entryColumnStepNum (NoStep {})                                          = ""
+entryColumnStepNum (Error {})                                           = ""
+
+entryColumnChildren :: TreeViewEntry -> String
+entryColumnChildren (Root { entryTreeInfo = inf })                      = show $ treeInfoChildren inf
+entryColumnChildren (Step { entryTreeInfo = inf })                      = show $ treeInfoChildren inf
+entryColumnChildren (AlreadyGeneratedStep {})                           = ""
+entryColumnChildren (NoStep { })                                        = ""
+entryColumnChildren (Error {})                                          = ""
+
+
+entryColumnHeight :: TreeViewEntry -> String
+entryColumnHeight (Root { entryTreeInfo = inf })                        = show $ treeInfoHeight inf
+entryColumnHeight (Step { entryTreeInfo = inf })                        = show $ treeInfoHeight inf
+entryColumnHeight (AlreadyGeneratedStep { })                            = ""
+entryColumnHeight (NoStep { })                                          = ""
+entryColumnHeight (Error {})                                            = ""
+
+entryColumnSubtreeSize :: TreeViewEntry -> String
+entryColumnSubtreeSize (Root { entryTreeInfo = inf })                   = show $ treeInfoSubtreeSize inf
+entryColumnSubtreeSize (Step { entryTreeInfo = inf })                   = show $ treeInfoSubtreeSize inf
+entryColumnSubtreeSize (AlreadyGeneratedStep { })                       = ""
+entryColumnSubtreeSize (NoStep { })                                     = ""
+entryColumnSubtreeSize (Error {})                                       = ""
+
+entryColumnTier :: TreeViewEntry -> String
+entryColumnTier (Root { entryStep = step })                             = show $ solTier $ stepSol step
+entryColumnTier (Step { entryStep = step })                             = show $ solTier $ stepSol step
+entryColumnTier (AlreadyGeneratedStep { entrySol = sol })               = show $ solTier sol
+entryColumnTier (NoStep { entrySol = sol })                             = show $ solTier sol
+entryColumnTier (Error {})                                              = ""
+
+entryColumnScore :: TreeViewEntry -> String
+entryColumnScore (Root { entryStep = step })                            = show $ solScore $ stepSol step
+entryColumnScore (Step { entryStep = step })                            = show $ solScore $ stepSol step
+entryColumnScore (AlreadyGeneratedStep { entrySol = sol })              = show $ solScore sol
+entryColumnScore (NoStep { entrySol = sol })                            = show $ solScore sol
+entryColumnScore (Error {})                                             = ""
+
+renderTreeView :: [ProcessingStep] -> IO (TreeStore TreeViewEntry)
+renderTreeView steps = do let tree = runToTree steps
+                          model <- (treeStoreNew $ take 20 tree)
+                          return model
+
+data ChronViewEntry =
+    ChronStep { chronNumChoices   :: Integer,
+                chronBrokenDeps   :: Integer,
+                chronStepNum      :: Integer,
+                chronChildren     :: Integer,
+                chronHeight       :: Integer,
+                chronSubtreeSize  :: Integer,
+                chronTier         :: Tier,
+                chronScore        :: Integer,
+                chronStep         :: ProcessingStep }
+
+makeChronStep :: ProcessingStep -> ChronViewEntry
+makeChronStep step =
+    let numChoices  = toInteger $ Map.size $ solChoices $ stepSol step
+        brokenDeps  = toInteger $ Set.size $ solBrokenDeps $ stepSol step
+        stepNum     = stepOrder step
+        children    = toInteger $ length $ stepSuccessors step
+        height      = stepDepth step
+        subtreeSize = stepBranchSize step
+        tier        = solTier $ stepSol step
+        score       = solScore $ stepSol step in
+    numChoices `seq` brokenDeps `seq` stepNum `seq` children `seq` height `seq` subtreeSize `seq` step `seq` tier `seq` score `seq`
+    ChronStep { chronNumChoices  = numChoices,
+                chronBrokenDeps  = brokenDeps,
+                chronStepNum     = stepNum,
+                chronChildren    = children,
+                chronHeight      = height,
+                chronSubtreeSize = subtreeSize,
+                chronStep        = step,
+                chronTier        = tier,
+                chronScore       = score }
+
+renderChronView :: [ProcessingStep] -> IO (ListStore ChronViewEntry)
+renderChronView steps =
+    do let list = [ makeChronStep step | step <- steps ]
+       model <- listStoreNew list
+       return model
+
+setupTextColumn inf model ops =
+    cellLayoutSetAttributes (textColumn inf) (textRenderer inf) model ops
+
+setRun :: Maybe (Integer, [ProcessingStep]) -> VisM ()
+setRun Nothing =
+    do treeView         <- getTreeView
+       chronView        <- getChronologicalView
+       treeViewColInfo  <- getTreeViewColumnInfo
+       chronViewColInfo <- getChronologicalViewColumnInfo
+       liftIO $ do listStoreNew [] >>= treeViewSetModel treeView
+                   listStoreNew [] >>= treeViewSetModel chronView
+
+setRun (Just (n, steps)) =
+    do isActive <- isActiveRun n
+       unless isActive $
+            do ctx <- ask
+               treeView         <- getTreeView
+               chronView        <- getChronologicalView
+               treeViewColInfo  <- getTreeViewColumnInfo
+               chronViewColInfo <- getChronologicalViewColumnInfo
+               logView <- getLogView
+               liftIO $ do -- Update the UI for the new log file.
+                 rawLogViewBuffer <- textViewGetBuffer logView
+                 textBufferSetText rawLogViewBuffer ""
+                 -- Set up column bindings.
+                 let makeCol info model (getCol, getText) =
+                         setupTextColumn (getCol info) model
+                                         (\row -> [cellText := getText row])
+                     treeCols   = [(treeViewText,         entryColumnText),
+                                   (treeViewNumChoices,   entryColumnNumChoices),
+                                   (treeViewBrokenDeps,   entryColumnBrokenDeps),
+                                   (treeViewStepNum,      entryColumnStepNum),
+                                   (treeViewChildren,     entryColumnChildren),
+                                   (treeViewHeight,       entryColumnHeight),
+                                   (treeViewSubtreeSize,  entryColumnSubtreeSize),
+                                   (treeViewTier,         entryColumnTier),
+                                   (treeViewScore,        entryColumnScore)]
+                     chronCols  = [(chronViewNumChoices,  show . chronNumChoices),
+                                   (chronViewBrokenDeps,  show . chronBrokenDeps),
+                                   (chronViewStepNum,     show . chronStepNum),
+                                   (chronViewChildren,    show . chronChildren),
+                                   (chronViewHeight,      show . chronHeight),
+                                   (chronViewSubtreeSize, show . chronSubtreeSize),
+                                   (chronViewTier,        show . chronTier),
+                                   (chronViewScore,       show . chronScore)]
+
+                 treeModel  <- renderTreeView steps
+                 mapM_ (makeCol treeViewColInfo treeModel) treeCols
+                 treeViewSetModel treeView  treeModel
+
+                 chronModel <- renderChronView steps
+                 mapM_ (makeCol chronViewColInfo chronModel) chronCols
+                 treeViewSetModel chronView chronModel
 
 setLog :: LogFile -> VisM ()
 setLog lf =
-    do ctx <- ask
-       treeView <- getTreeView
-       treeViewColInfo <- getTreeViewColumnInfo
-       logView <- getLogView
-       liftIO $ do -- Update the UI for the new log file.
-                   rawLogViewBuffer <- textViewGetBuffer logView
-                   textBufferSetText rawLogViewBuffer ""
-                   model <- renderTreeView lf
-                   -- Set up column bindings.
-                   cellLayoutSetAttributes (treeViewTextColumn treeViewColInfo)
-                                           (treeViewTextRenderer treeViewColInfo)
-                                           model
-                                           (\row -> [cellText := entryColumnText row])
-                   -- Store information about the loaded file for later
-                   -- use.
-                   treeViewSetModel treeView model
-                   -- Add the columns to the tree-view.
-                   treeViewAppendColumn treeView (treeViewTextColumn treeViewColInfo)
-                   -- Store the new log file information.
-                   writeIORef (loadedFile ctx) (Just LoadedLogFile { logFile = lf,
-                                                                     treeViewStore = model })
+    do runModel <- liftIO $ listStoreNew (zip [1..] $ runs lf)
+       runView  <- getRunList
+       runInfo  <- getRunListColumnInfo
+       let makeCol (getCol, getText) =
+               setupTextColumn (getCol runInfo) runModel
+                               (\row -> [cellText := getText row])
+           runCols = [(runListNumber,     show . fst),
+                      (runListLength,     show . length . snd)]
+       ctx <- ask
+       liftIO $ do mapM_ makeCol runCols
+                   treeViewSetModel runView runModel
 
+                   selection <- treeViewGetSelection runView
+                   treeSelectionSetMode selection SelectionSingle
+                   afterSelectionChanged selection $ do
+                     num <- treeSelectionCountSelectedRows selection
+                     (if num /= 1
+                      then runVis (setRun Nothing) ctx
+                      else do (Just selected) <- treeSelectionGetSelected selection
+                              (i:_) <- treeModelGetPath runModel selected
+                              run <- listStoreGetValue runModel i
+                              runVis (setRun (Just run)) ctx)
+                   -- Make sure the first iterator is selected.
+                   firstIter <- treeModelGetIterFirst runModel
+                   (case firstIter of
+                      Nothing -> return ()
+                      Just i  -> treeSelectionSelectIter selection i)
+       return ()
 
 -- | Load a widget from the Glade file by name.
 loadXmlWidget :: WidgetClass a => String -> (GObject -> a) -> IO (GladeXML, a)
@@ -251,31 +669,35 @@ setupMainWindow xml =
        panedAdd2 rightPane sourceView
        return sourceView
 
-createMainWindowColumns :: GladeXML -> MainM (TreeViewColumnInfo, ChronologicalViewColumnInfo)
+createMainWindowColumns :: GladeXML -> MainM (TreeViewColumnInfo, ChronologicalViewColumnInfo, RunListColumnInfo)
 createMainWindowColumns xml =
-    liftIO $ do tv <- xmlGetWidget xml castToTreeView "tree_view_search_tree"
-                chrontv <- xmlGetWidget xml castToTreeView "tree_view_search_history"
-                textRenderer <- cellRendererTextNew
-                textCol      <- treeViewColumnNew
-                cellLayoutPackEnd textCol textRenderer True
-                return (TreeViewColumnInfo { treeViewTextColumn = textCol,
-                                             treeViewTextRenderer = textRenderer },
-                        ChronologicalViewColumnInfo)
+    liftIO $ do treeViewCols  <- newTreeViewColumns
+                chronViewCols <- newChronViewColumns
+                runListCols   <- newRunListColumns
+                return (treeViewCols, chronViewCols, runListCols)
 
 newCtx :: GladeXML -> MainM VisualizeContext
 newCtx xml =
     do mainCtx <- ask
-       (treeViewColInf, chronViewColumnInf) <- createMainWindowColumns xml
+       (treeViewColInf, chronViewColumnInf, runListColumnInf) <- createMainWindowColumns xml
        liftIO $ do sourceView <- setupMainWindow xml
-                   tv <- xmlGetWidget xml castToTreeView "tree_view_search_tree"
-                   chrontv <- xmlGetWidget xml castToTreeView "tree_view_search_history"
+                   treeView <- xmlGetWidget xml castToTreeView "tree_view_search_tree"
+                   chronView <- xmlGetWidget xml castToTreeView "tree_view_search_history"
+                   runListView <- xmlGetWidget xml castToTreeView "tree_view_run_list"
+                   mapM_ (treeViewAppendColumn treeView)      (treeViewColumnInfoColumns treeViewColInf)
+                   mapM_ (treeViewAppendColumn chronView)     (chronViewColumnInfoColumns chronViewColumnInf)
+                   mapM_ (treeViewAppendColumn runListView)   (runListInfoColumns runListColumnInf)
                    lf <- newIORef Nothing
-                   return VisualizeContext { treeView = tv,
+                   runRef <- newIORef Nothing
+                   return VisualizeContext { treeView = treeView,
                                              treeViewColumnInfo = treeViewColInf,
-                                             chronologicalView = chrontv,
+                                             chronologicalView = chronView,
                                              chronologicalViewColumnInfo = chronViewColumnInf,
+                                             runList = runListView,
+                                             runListColumnInfo = runListColumnInf,
                                              logView = sourceView,
                                              loadedFile = lf,
+                                             activeRun = runRef,
                                              mainContext = mainCtx }
 
 
