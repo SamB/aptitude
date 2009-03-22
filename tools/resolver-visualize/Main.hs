@@ -5,7 +5,7 @@ module Main where
 import Control.Monad.Reader
 import qualified Control.Monad.State as State
 import Control.Monad.Trans(liftIO)
-import Data.ByteString.Char8 as ByteString(ByteString, empty, readFile, pack, unpack)
+import Data.ByteString.Char8 as ByteString(ByteString, empty, hGet, pack, unpack)
 import Data.List(intersperse)
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
@@ -211,14 +211,20 @@ newRunListColumns =
                     runListLength = len
                   }
 
+type TreeViewStore  = TreeStore TreeViewEntry
+type ChronViewStore = ListStore ChronViewEntry
+type RunListStore   = ListStore (Integer, [ProcessingStep])
 -- | Shared context for the visualizer.
 data VisualizeContext =
     VisualizeContext { treeView :: TreeView,
                        treeViewColumnInfo :: TreeViewColumnInfo,
+                       treeViewStore :: TreeViewStore,
                        chronologicalView :: TreeView,
                        chronologicalViewColumnInfo :: ChronologicalViewColumnInfo,
+                       chronologicalViewStore :: ChronViewStore,
                        runList :: TreeView,
                        runListColumnInfo :: RunListColumnInfo,
+                       runListStore :: RunListStore,
                        logView :: SourceView,
                        mainContext :: MainLoopContext,
                        loadedFile :: IORef (Maybe LoadedLogFile),
@@ -234,6 +240,9 @@ runVis = runReaderT
 getTreeView :: VisM TreeView
 getTreeView = do ctx <- ask; return $ treeView ctx
 
+getTreeViewStore :: VisM TreeViewStore
+getTreeViewStore = do ctx <- ask; return $ treeViewStore ctx
+
 getTreeViewColumnInfo :: VisM TreeViewColumnInfo
 getTreeViewColumnInfo = do ctx <- ask; return $ treeViewColumnInfo ctx
 
@@ -243,11 +252,17 @@ getChronologicalView = do ctx <- ask; return $ chronologicalView ctx
 getChronologicalViewColumnInfo :: VisM ChronologicalViewColumnInfo
 getChronologicalViewColumnInfo = do ctx <- ask; return $ chronologicalViewColumnInfo ctx
 
+getChronologicalViewStore :: VisM ChronViewStore
+getChronologicalViewStore = do ctx <- ask; return $ chronologicalViewStore ctx
+
 getRunList :: VisM TreeView
 getRunList = do ctx <- ask; return $ runList ctx
 
 getRunListColumnInfo :: VisM RunListColumnInfo
 getRunListColumnInfo = do ctx <- ask; return $ runListColumnInfo ctx
+
+getRunListStore :: VisM RunListStore
+getRunListStore = do ctx <- ask; return $ runListStore ctx
 
 getLogView :: VisM SourceView
 getLogView = do ctx <- ask; return $ logView ctx
@@ -381,11 +396,11 @@ unfoldSuccessor (Unprocessed sol choice forced) =
                      entryNumChoices = numChoices },
             [])
 
-runToTree :: [ProcessingStep] -> Forest TreeViewEntry
-runToTree steps = case steps of
-                    [] -> [Node (Error { entryErrorText = "No steps in this run.",
-                                         entryStepNum = 0 }) []]
-                    (root:rest) -> State.evalState (makeWholeTree root rest) Set.empty
+runToForest :: [ProcessingStep] -> Forest TreeViewEntry
+runToForest steps = case steps of
+                      [] -> [Node (Error { entryErrorText = "No steps in this run.",
+                                           entryStepNum = 0 }) []]
+                      (root:rest) -> State.evalState (makeWholeTree root rest) Set.empty
     where makeTree :: (ProcessingStep -> TreeViewEntry) -> ProcessingStep -> BuildTreeView (Maybe (Tree TreeViewEntry))
           makeTree f root =
               do seen <- State.get
@@ -511,10 +526,11 @@ entryColumnScore (AlreadyGeneratedStep { entrySol = sol })              = show $
 entryColumnScore (NoStep { entrySol = sol })                            = show $ solScore sol
 entryColumnScore (Error {})                                             = ""
 
-renderTreeView :: [ProcessingStep] -> IO (TreeStore TreeViewEntry)
-renderTreeView steps = do let tree = runToTree steps
-                          model <- (treeStoreNew $ take 20 tree)
-                          return model
+renderTreeView :: [ProcessingStep] -> TreeViewStore -> IO ()
+renderTreeView steps model = do let forest = runToForest steps
+                                treeStoreClear model
+                                mapM_ (\(n, tree) -> treeStoreInsertTree model [] n tree)
+                                      (zip [0..] forest)
 
 data ChronViewEntry =
     ChronStep { chronNumChoices   :: Integer,
@@ -548,11 +564,25 @@ makeChronStep step =
                 chronTier        = tier,
                 chronScore       = score }
 
-renderChronView :: [ProcessingStep] -> IO (ListStore ChronViewEntry)
-renderChronView steps =
+renderChronView :: [ProcessingStep] -> ChronViewStore -> IO ()
+renderChronView steps model =
     do let list = [ makeChronStep step | step <- steps ]
-       model <- listStoreNew list
-       return model
+       listStoreClear model
+       mapM_ (listStoreAppend model) list
+
+stepSelected :: Maybe ProcessingStep -> VisM ()
+stepSelected Nothing = return () -- Clear the log view?
+stepSelected (Just step) =
+    do log       <- getLog
+       logView   <- getLogView
+       liftIO $ do
+         logBuffer <- textViewGetBuffer logView
+         (case log of
+            Nothing -> textBufferSetText logBuffer ""
+            Just f  -> do let h = logFileH f
+                          hSeek h AbsoluteSeek (stepTextStart step)
+                          s <- ByteString.hGet h (fromInteger $ stepTextLength step)
+                          textBufferSetText logBuffer $ unpack s)
 
 setupTextColumn inf model ops =
     cellLayoutSetAttributes (textColumn inf) (textRenderer inf) model ops
@@ -561,10 +591,15 @@ setRun :: Maybe (Integer, [ProcessingStep]) -> VisM ()
 setRun Nothing =
     do treeView         <- getTreeView
        chronView        <- getChronologicalView
+
+       treeStore        <- getTreeViewStore
+       chronStore       <- getChronologicalViewStore
+
        treeViewColInfo  <- getTreeViewColumnInfo
        chronViewColInfo <- getChronologicalViewColumnInfo
-       liftIO $ do listStoreNew [] >>= treeViewSetModel treeView
-                   listStoreNew [] >>= treeViewSetModel chronView
+
+       liftIO $ do treeStoreClear treeStore
+                   listStoreClear chronStore
 
 setRun (Just (n, steps)) =
     do isActive <- isActiveRun n
@@ -572,71 +607,35 @@ setRun (Just (n, steps)) =
             do ctx <- ask
                treeView         <- getTreeView
                chronView        <- getChronologicalView
+
+               treeStore        <- getTreeViewStore
+               chronStore       <- getChronologicalViewStore
+
                treeViewColInfo  <- getTreeViewColumnInfo
                chronViewColInfo <- getChronologicalViewColumnInfo
+
                logView <- getLogView
                liftIO $ do -- Update the UI for the new log file.
                  rawLogViewBuffer <- textViewGetBuffer logView
                  textBufferSetText rawLogViewBuffer ""
-                 -- Set up column bindings.
-                 let makeCol info model (getCol, getText) =
-                         setupTextColumn (getCol info) model
-                                         (\row -> [cellText := getText row])
-                     treeCols   = [(treeViewText,         entryColumnText),
-                                   (treeViewNumChoices,   entryColumnNumChoices),
-                                   (treeViewBrokenDeps,   entryColumnBrokenDeps),
-                                   (treeViewStepNum,      entryColumnStepNum),
-                                   (treeViewChildren,     entryColumnChildren),
-                                   (treeViewHeight,       entryColumnHeight),
-                                   (treeViewSubtreeSize,  entryColumnSubtreeSize),
-                                   (treeViewTier,         entryColumnTier),
-                                   (treeViewScore,        entryColumnScore)]
-                     chronCols  = [(chronViewNumChoices,  show . chronNumChoices),
-                                   (chronViewBrokenDeps,  show . chronBrokenDeps),
-                                   (chronViewStepNum,     show . chronStepNum),
-                                   (chronViewChildren,    show . chronChildren),
-                                   (chronViewHeight,      show . chronHeight),
-                                   (chronViewSubtreeSize, show . chronSubtreeSize),
-                                   (chronViewTier,        show . chronTier),
-                                   (chronViewScore,       show . chronScore)]
 
-                 treeModel  <- renderTreeView steps
-                 mapM_ (makeCol treeViewColInfo treeModel) treeCols
-                 treeViewSetModel treeView  treeModel
-
-                 chronModel <- renderChronView steps
-                 mapM_ (makeCol chronViewColInfo chronModel) chronCols
-                 treeViewSetModel chronView chronModel
+                 renderTreeView  steps treeStore
+                 renderChronView steps chronStore
 
 setLog :: LogFile -> VisM ()
 setLog lf =
-    do runModel <- liftIO $ listStoreNew (zip [1..] $ runs lf)
+    do runModel <- getRunListStore
        runView  <- getRunList
-       runInfo  <- getRunListColumnInfo
-       let makeCol (getCol, getText) =
-               setupTextColumn (getCol runInfo) runModel
-                               (\row -> [cellText := getText row])
-           runCols = [(runListNumber,     show . fst),
-                      (runListLength,     show . length . snd)]
-       ctx <- ask
-       liftIO $ do mapM_ makeCol runCols
-                   treeViewSetModel runView runModel
-
-                   selection <- treeViewGetSelection runView
-                   treeSelectionSetMode selection SelectionSingle
-                   afterSelectionChanged selection $ do
-                     num <- treeSelectionCountSelectedRows selection
-                     (if num /= 1
-                      then runVis (setRun Nothing) ctx
-                      else do (Just selected) <- treeSelectionGetSelected selection
-                              (i:_) <- treeModelGetPath runModel selected
-                              run <- listStoreGetValue runModel i
-                              runVis (setRun (Just run)) ctx)
+       ctx      <- ask
+       liftIO $ do listStoreClear runModel
+                   mapM_ (listStoreAppend runModel) $ (zip [1..] $ runs lf)
                    -- Make sure the first iterator is selected.
                    firstIter <- treeModelGetIterFirst runModel
+                   selection <- treeViewGetSelection runView
                    (case firstIter of
                       Nothing -> return ()
                       Just i  -> treeSelectionSelectIter selection i)
+                   writeIORef (loadedFile ctx) $ Just LoadedLogFile { logFile = lf }
        return ()
 
 -- | Load a widget from the Glade file by name.
@@ -662,11 +661,11 @@ loadLoadingProgressXML = loadXmlWidget "window_load_progress" castToWindow
 
 setupMainWindow :: GladeXML -> IO SourceView
 setupMainWindow xml =
-    do rightPane <- xmlGetWidget xml castToHPaned "hpaned2"
+    do sourceViewHolder <- xmlGetWidget xml castToScrolledWindow "scrolledwindow_sourceview"
        sourceView <- sourceViewNew
        sourceViewSetShowLineNumbers sourceView True
        textViewSetEditable sourceView False
-       panedAdd2 rightPane sourceView
+       containerAdd sourceViewHolder sourceView
        return sourceView
 
 createMainWindowColumns :: GladeXML -> MainM (TreeViewColumnInfo, ChronologicalViewColumnInfo, RunListColumnInfo)
@@ -676,6 +675,71 @@ createMainWindowColumns xml =
                 runListCols   <- newRunListColumns
                 return (treeViewCols, chronViewCols, runListCols)
 
+createMainWindowStores :: TreeViewColumnInfo -> ChronologicalViewColumnInfo -> RunListColumnInfo -> IO (TreeViewStore, ChronViewStore, RunListStore)
+createMainWindowStores treeViewInf chronViewInf runListInf = do
+  treeModel    <- treeStoreNew []
+  chronModel   <- listStoreNew []
+  runModel     <- listStoreNew []
+  -- Set up column bindings.
+  let makeCol info model (getCol, getText) =
+          setupTextColumn (getCol info) model
+                          (\row -> [cellText := getText row])
+      treeCols   = [(treeViewText,         entryColumnText),
+                    (treeViewNumChoices,   entryColumnNumChoices),
+                    (treeViewBrokenDeps,   entryColumnBrokenDeps),
+                    (treeViewStepNum,      entryColumnStepNum),
+                    (treeViewChildren,     entryColumnChildren),
+                    (treeViewHeight,       entryColumnHeight),
+                    (treeViewSubtreeSize,  entryColumnSubtreeSize),
+                    (treeViewTier,         entryColumnTier),
+                    (treeViewScore,        entryColumnScore)]
+      chronCols  = [(chronViewNumChoices,  show . chronNumChoices),
+                    (chronViewBrokenDeps,  show . chronBrokenDeps),
+                    (chronViewStepNum,     show . chronStepNum),
+                    (chronViewChildren,    show . chronChildren),
+                    (chronViewHeight,      show . chronHeight),
+                    (chronViewSubtreeSize, show . chronSubtreeSize),
+                    (chronViewTier,        show . chronTier),
+                    (chronViewScore,       show . chronScore)]
+      runCols = [(runListNumber,     show . fst),
+                 (runListLength,     show . length . snd)]
+  mapM_ (makeCol treeViewInf treeModel) treeCols
+  mapM_ (makeCol chronViewInf chronModel) chronCols
+  mapM_ (makeCol runListInf runModel) runCols
+  return (treeModel, chronModel, runModel)
+
+treeSelectionChanged :: VisualizeContext -> TreeSelection -> TreeViewStore -> IO ()
+treeSelectionChanged ctx selection model = do
+  num <- treeSelectionCountSelectedRows selection
+  (if num /= 1
+   then runVis (stepSelected Nothing) ctx
+   else do (Just selected) <- treeSelectionGetSelected selection
+           path            <- treeModelGetPath model selected
+           node            <- treeStoreLookup model path
+           (case node of
+              Nothing   -> runVis (stepSelected Nothing) ctx
+              Just tree -> runVis (stepSelected (Just $ entryStep $ rootLabel tree)) ctx))
+
+chronSelectionChanged :: VisualizeContext -> TreeSelection -> ChronViewStore -> IO ()
+chronSelectionChanged ctx selection model = do
+  num <- treeSelectionCountSelectedRows selection
+  (if num /= 1
+   then runVis (stepSelected Nothing) ctx
+   else do (Just selected) <- treeSelectionGetSelected selection
+           (i:_)           <- treeModelGetPath model selected
+           entry           <- listStoreGetValue model i
+           runVis (stepSelected $ Just $ chronStep entry) ctx)
+
+runSelectionChanged :: VisualizeContext -> TreeSelection -> RunListStore -> IO ()
+runSelectionChanged ctx selection model = do
+  num <- treeSelectionCountSelectedRows selection
+  (if num /= 1
+   then runVis (setRun Nothing) ctx
+   else do (Just selected) <- treeSelectionGetSelected selection
+           (i:_) <- treeModelGetPath model selected
+           run <- listStoreGetValue model  i
+           runVis (setRun (Just run)) ctx)
+
 newCtx :: GladeXML -> MainM VisualizeContext
 newCtx xml =
     do mainCtx <- ask
@@ -683,22 +747,46 @@ newCtx xml =
        liftIO $ do sourceView <- setupMainWindow xml
                    treeView <- xmlGetWidget xml castToTreeView "tree_view_search_tree"
                    chronView <- xmlGetWidget xml castToTreeView "tree_view_search_history"
-                   runListView <- xmlGetWidget xml castToTreeView "tree_view_run_list"
+                   runView <- xmlGetWidget xml castToTreeView "tree_view_run_list"
                    mapM_ (treeViewAppendColumn treeView)      (treeViewColumnInfoColumns treeViewColInf)
                    mapM_ (treeViewAppendColumn chronView)     (chronViewColumnInfoColumns chronViewColumnInf)
-                   mapM_ (treeViewAppendColumn runListView)   (runListInfoColumns runListColumnInf)
+                   mapM_ (treeViewAppendColumn runView)   (runListInfoColumns runListColumnInf)
+                   (treeModel, chronModel, runModel) <-
+                       createMainWindowStores treeViewColInf chronViewColumnInf runListColumnInf
+
                    lf <- newIORef Nothing
                    runRef <- newIORef Nothing
-                   return VisualizeContext { treeView = treeView,
-                                             treeViewColumnInfo = treeViewColInf,
-                                             chronologicalView = chronView,
-                                             chronologicalViewColumnInfo = chronViewColumnInf,
-                                             runList = runListView,
-                                             runListColumnInfo = runListColumnInf,
-                                             logView = sourceView,
-                                             loadedFile = lf,
-                                             activeRun = runRef,
-                                             mainContext = mainCtx }
+
+                   let ctx = VisualizeContext { treeView = treeView,
+                                                treeViewColumnInfo = treeViewColInf,
+                                                treeViewStore = treeModel,
+                                                chronologicalView = chronView,
+                                                chronologicalViewColumnInfo = chronViewColumnInf,
+                                                chronologicalViewStore = chronModel,
+                                                runList = runView,
+                                                runListColumnInfo = runListColumnInf,
+                                                runListStore = runModel,
+                                                logView = sourceView,
+                                                loadedFile = lf,
+                                                activeRun = runRef,
+                                                mainContext = mainCtx }
+
+                   treeSelection <- treeViewGetSelection treeView
+                   treeSelectionSetMode treeSelection SelectionSingle
+                   afterSelectionChanged treeSelection (treeSelectionChanged ctx treeSelection treeModel)
+
+                   chronSelection <- treeViewGetSelection chronView
+                   treeSelectionSetMode chronSelection SelectionSingle
+                   afterSelectionChanged chronSelection (chronSelectionChanged ctx chronSelection chronModel)
+
+                   runSelection <- treeViewGetSelection runView
+                   treeSelectionSetMode runSelection SelectionSingle
+                   afterSelectionChanged runSelection (runSelectionChanged ctx runSelection runModel)
+
+                   treeViewSetModel treeView treeModel
+                   treeViewSetModel chronView chronModel
+                   treeViewSetModel runView runModel
+                   return ctx
 
 
 
