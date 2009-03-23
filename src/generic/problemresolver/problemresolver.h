@@ -1959,10 +1959,12 @@ private:
   {
     std::vector<solution> &target;
     std::set<package> *visited_packages;
+    const log4cxx::LoggerPtr &logger;
   public:
     real_generator(std::vector<solution> &_target,
-		   std::set<package> *_visited_packages)
-      :target(_target), visited_packages(_visited_packages)
+		   std::set<package> *_visited_packages,
+		   const log4cxx::LoggerPtr &_logger)
+      :target(_target), visited_packages(_visited_packages), logger(_logger)
     {
     }
 
@@ -1979,6 +1981,8 @@ private:
 					   ubegin, uend,
 					   tier,
 					   universe, weights));
+
+      LOG_TRACE(logger, "Generated successor: " << target.back());
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
@@ -2471,7 +2475,7 @@ private:
 		LOG_TRACE(logger, "Forced resolution of " << *bi);
 
 		std::vector<solution> v;
-		real_generator g(v, visited_packages);
+		real_generator g(v, visited_packages, logger);
 		generate_successors(curr, *bi,
 				    g, visited_packages);
 
@@ -2510,7 +2514,7 @@ private:
 
 	std::vector<solution> v;
 	generate_successors(curr, least_successors,
-			    real_generator(v, visited_packages),
+			    real_generator(v, visited_packages, logger),
 			    visited_packages);
 	try_enqueue(v);
 	nsols += v.size();
