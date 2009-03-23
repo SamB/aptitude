@@ -118,7 +118,7 @@ choice :: Parser Choice
 choice = (lexeme $ do installChoice <|> breakDepChoice) <?> "choice"
     where installChoice = do try (symbol "Install")
                              parens $ do
-                               v <- versionWithoutTerminators [rightParen, leftSquare]
+                               v <- versionWithoutTerminators [rightParen]
                                v `seq` ((do d <- squares dep
                                             let fromDepSource = Just True
                                                 reason        = Just d
