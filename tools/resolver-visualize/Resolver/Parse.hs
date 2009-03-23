@@ -164,6 +164,7 @@ solution = do installVersionChoices <- solutionInstalls
                  semicolon
                  return bindings
           binding =
+              choice <|>
               do p <- try $ packageWithoutTerminators [try $ symbol ":=", symbol ">"]
                  symbol ":="
                  v <- lexeme $ readCharsTill [comma, rightAngle]
