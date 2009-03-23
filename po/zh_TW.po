@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/apt_config_treeitems.cc:99
 msgid ""
@@ -434,9 +434,8 @@ msgid ""
 "installation.  This is much faster than the built-in dependency resolver, "
 "but may produce suboptimal results or fail entirely in some scenarios."
 msgstr ""
-"加入該選項時，aptitude 將會使用簡單的嘗試錯誤方法來立即解決欲安裝套"
-"件的相依問題。這方式比內建的相依解決器更快速，但可能在某些情況下發"
-"生錯誤。"
+"加入該選項時，aptitude 將會使用簡單的嘗試錯誤方法來立即解決欲安裝套件的相依問"
+"題。這方式比內建的相依解決器更快速，但可能在某些情況下發生錯誤。"
 
 #: src/apt_options.cc:354
 msgid "Automatically fix broken packages before installing or removing"
@@ -449,8 +448,8 @@ msgid ""
 "suggestion of the problem resolver.  Otherwise, aptitude will prompt you for "
 "a solution to the broken dependencies."
 msgstr ""
-"加入該選項時，當您進行安裝且部份套件是損毀時，aptitude 將自動套用目前解決器的建議。"
-"否則 aptitude 會詢問您損毀的相依關係的解救方式。"
+"加入該選項時，當您進行安裝且部份套件是損毀時，aptitude 將自動套用目前解決器的"
+"建議。否則 aptitude 會詢問您損毀的相依關係的解救方式。"
 
 #: src/apt_options.cc:362
 msgid "Install recommended packages automatically"
@@ -466,10 +465,10 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
-"加入該選項以及“自動解決相依問題”選項時，aptitude 將會嘗試安裝"
-"推薦的新套件以及額外符合相依性的軟體。建議的套件並不會安裝。\n"
-"如果加入該選項以及“自動移除未用套件”自動安裝推薦的套件選項時，先前安裝的被推薦套件"
-"將不會自動移除。"
+"加入該選項以及“自動解決相依問題”選項時，aptitude 將會嘗試安裝推薦的新套件以及"
+"額外符合相依性的軟體。建議的套件並不會安裝。\n"
+"如果加入該選項以及“自動移除未用套件”自動安裝推薦的套件選項時，先前安裝的被推"
+"薦套件將不會自動移除。"
 
 #: src/apt_options.cc:375
 msgid "Remove unused packages automatically"
@@ -486,8 +485,8 @@ msgid ""
 "installed package recommends them."
 msgstr ""
 "加入該選項時，自動安裝的套件在沒有其餘套件相依時會一併地從系統移除。\n"
-"如果該選項成立且\"自動安裝推薦的套件\"也成立，當已安裝的套件"
-"推薦時，這些自動安裝的套件並不會被刪除。"
+"如果該選項成立且\"自動安裝推薦的套件\"也成立，當已安裝的套件推薦時，這些自動"
+"安裝的套件並不會被刪除。"
 
 #: src/apt_options.cc:387
 msgid "Packages that should never be automatically removed"
@@ -518,11 +517,11 @@ msgid ""
 "the dependencies of a package that has just been selected for installation "
 "or upgrade, due to apt bug #470035."
 msgstr ""
-"加入該選項時，不管 aptitude 何時解決相依問題，它可能考慮修改保留或是安裝"
-"禁用的套件版本。  取消該選項時，這些動作預設是不會執行的。\n"
-"注意：目前，該限制只套用在 aptitude 的相依解決器上(在螢幕下方的紅色光棒)。"
-"安裝或升級指定套件並自動安裝符合套件相依性的軟體時，aptitude 仍然會破壞被設為保留"
-"的套件，原因請看 apt 臭蟲編號 #470035"
+"加入該選項時，不管 aptitude 何時解決相依問題，它可能考慮修改保留或是安裝禁用"
+"的套件版本。  取消該選項時，這些動作預設是不會執行的。\n"
+"注意：目前，該限制只套用在 aptitude 的相依解決器上(在螢幕下方的紅色光棒)。安"
+"裝或升級指定套件並自動安裝符合套件相依性的軟體時，aptitude 仍然會破壞被設為保"
+"留的套件，原因請看 apt 臭蟲編號 #470035"
 
 #: src/apt_options.cc:520
 msgid "UI options"
@@ -1357,8 +1356,8 @@ msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
-"輸入一個套件管理指令(如'+package'來安裝套件)，'R'是嘗試自動解決相依問題或"
-"'N'是放棄。"
+"輸入一個套件管理指令(如'+package'來安裝套件)，'R'是嘗試自動解決相依問題"
+"或'N'是放棄。"
 
 #: src/cmdline/cmdline_prompt.cc:1234
 #, c-format
@@ -1474,8 +1473,7 @@ msgstr "到上一個解決方案"
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
-msgstr ""
-"切換解決方法的內容和說明。"
+msgstr "切換解決方法的內容和說明。"
 
 #: src/cmdline/cmdline_resolver.cc:194
 msgid "examine the solution in the visual user interface"
@@ -1658,8 +1656,7 @@ msgstr "*** 沒有更多的解決方案了 ***"
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
-msgstr ""
-"*** 錯誤：搜尋遇到嚴重意外。您能繼續搜尋，但無法取得解決的方法。"
+msgstr "*** 錯誤：搜尋遇到嚴重意外。您能繼續搜尋，但無法取得解決的方法。"
 
 #: src/cmdline/cmdline_resolver.cc:963
 msgid ""
@@ -2305,8 +2302,7 @@ msgstr "媒體已改變: 請將標記為“%s”的光碟插入光碟機“%s”
 msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
 "following %s."
-msgstr ""
-"解析套件 %s 的使用者標誌時出錯：在 %s 後遇到意外的結束行符號。"
+msgstr "解析套件 %s 的使用者標誌時出錯：在 %s 後遇到意外的結束行符號。"
 
 #: src/generic/apt/aptcache.cc:283
 #, c-format
@@ -2756,8 +2752,7 @@ msgstr "未知的匹配類型：“%s”"
 msgid ""
 "The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
 "a context enclosed by ?%s)."
-msgstr ""
-"?%s 配對器必須用在 \"wide\" 內容(最上層的內文，或靠近 ?%s 的內文)。"
+msgstr "?%s 配對器必須用在 \"wide\" 內容(最上層的內文，或靠近 ?%s 的內文)。"
 
 #: src/generic/apt/matchers.cc:3872
 msgid "Unmatched '('"
@@ -4224,8 +4219,8 @@ msgid ""
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
 "\n"
-"這些套件尚未被 debtags 驗證，或是不存在 debtags 資料庫"
-"(安裝 debtags 可修正這個問題)。"
+"這些套件尚未被 debtags 驗證，或是不存在 debtags 資料庫(安裝 debtags 可修正這"
+"個問題)。"
 
 #: src/pkg_grouppolicy.cc:1537
 msgid "MISSING TAG"
