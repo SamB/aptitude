@@ -155,10 +155,11 @@ compile = makeRegex
 
 processingStepStart = compile "Processing (.*)$"
 newPromotion        = compile "Inserting new promotion: (.*)$"
--- Note: if we see a "forced" dependency, we magically know that the
--- next "Processing" line will be for its successor (and we use that
--- to ensure that they get linked up).
+-- Note: if we see a "forced" dependency and no "generated" line, we
+-- magically know that the next "Processing" line will be for its
+-- successor (and we use that to ensure that they get linked up).
 successorsStart     = compile "(Generating successors for|Forced resolution of) (.*)$"
+madeSuccessor       = compile "Generated successor: (.*)$"
 tryingResolution    = compile "Trying to resolve (.*) by installing (.*)(from the dependency source)?$"
 tryingUnresolved    = compile "Trying to leave (.*) unresolved$"
 enqueuing           = compile "Enqueuing (.*)$"
@@ -175,7 +176,7 @@ lineParsers = [
  (successorsStart, processSuccessorsStartLine),
  (tryingResolution, processTryingResolutionLine),
  (tryingUnresolved, processTryingUnresolvedLine),
- (enqueuing, processEnqueuingLine),
+ (madeSuccessor, processGeneratedLine),
  (successorsEnd, processSuccessorsEndLine) ]
 
 data GeneratingSuccessorsInfo =
@@ -331,21 +332,6 @@ parseMatch subParser source (start, length) =
 processStepStartLine :: ByteString -> MatchArray -> LogParse ()
 processStepStartLine source matches =
     do sol <- parseMatch solution source (matches!1)
-       -- If we were processing a forced dependency, then the
-       -- last-seen "try" line produced this step.  Check if that's
-       -- the case.
-       inf <- getGeneratingSuccessorsInfo
-       let forced = case inf of
-                      Nothing   -> False
-                      Just inf' -> generatingForced inf'
-       when forced $
-            do lastSeen <- getLastSeenTryChoice
-               -- Add this step as a successor of the last step.
-               modifyLastStep (\lastStep ->
-                                   let succs  = pstepReverseSuccessors lastStep
-                                       succ   = (sol, lastSeen, True)
-                                       succs' = succ:succs in
-                                   lastStep { pstepReverseSuccessors = succs' })
        -- Close off the existing step.  The only thing
        -- that needs to be updated is its length.
        lineStart <- getCurrentLineStart
@@ -415,15 +401,12 @@ processTryingUnresolvedLine source matches =
 
 -- | Process a line of the log file that indicates that a new solution
 -- is being inserted into the queue.
-processEnqueuingLine :: ByteString -> MatchArray -> LogParse ()
-processEnqueuingLine source matches =
+processGeneratedLine :: ByteString -> MatchArray -> LogParse ()
+processGeneratedLine source matches =
     do s <- parseMatch solution source (matches!1)
        lastSeenChoice <- getLastSeenTryChoice
        fn <- getSourceName
        lineNum <- getCurrentLine
-       -- Note: checking whether this is a forced dependency is really
-       -- just a nicety; normally we should never see this case for
-       -- forced deps.
        succInf <- getGeneratingSuccessorsInfo
        forced <- (case succInf of
                     Just GeneratingSuccessorsInfo { generatingForced = forced' }

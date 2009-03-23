@@ -117,10 +117,18 @@ dep = depWithoutTerminators []
 choice :: Parser Choice
 choice = (lexeme $ do installChoice <|> breakDepChoice) <?> "choice"
     where installChoice = do try (symbol "Install")
-                             v <- parens $ versionWithoutTerminators [rightParen]
-                             v `seq` return $ InstallVersion { choiceVer = v,
-                                                               choiceVerReason = Nothing,
-                                                               choiceFromDepSource = Nothing }
+                             parens $ do
+                               v <- versionWithoutTerminators [rightParen]
+                               v `seq` ((do d <- squares dep
+                                            let fromDepSource = Just True
+                                                reason        = Just d
+                                            (d `seq` fromDepSource `seq` reason `seq`
+                                             (return $ InstallVersion { choiceVer = v,
+                                                                        choiceVerReason = reason,
+                                                                        choiceFromDepSource = fromDepSource }))) <|>
+                                        (return $ InstallVersion { choiceVer = v,
+                                                                   choiceVerReason = Nothing,
+                                                                   choiceFromDepSource = Nothing }))
           breakDepChoice = do try (symbol "Break")
                               d <- parens dep
                               d `seq` return $ BreakSoftDep { choiceDep = d }
