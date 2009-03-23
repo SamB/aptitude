@@ -336,7 +336,9 @@ data TreeViewEntry =
       entryChoice       :: LinkChoice,
       entryNumChoices   :: Integer,
       entryStepNum      :: Integer,
-      entryBrokenDeps   :: Integer
+      entryBrokenDeps   :: Integer,
+      entryTextStart    :: Integer,
+      entryTextLength   :: Integer
     }
   | NoStep {
       entrySol          :: Solution,
@@ -363,14 +365,18 @@ unfoldSuccessor (Successor step choice forced) =
            stepNum    = stepOrder step
        (if sol `Set.member` seen
         then let numChoices = toInteger $ Map.size $ solChoices sol
-                 brokenDeps = toInteger $ Set.size $ solBrokenDeps sol in
-             return $ sol `seq` choice `seq` stepNum `seq`
-                    numChoices `seq` brokenDeps `seq`
+                 brokenDeps = toInteger $ Set.size $ solBrokenDeps sol
+                 textStart  = stepTextStart step
+                 textLength = stepTextLength step in
+             return $ sol `seq` choice `seq` stepNum `seq` textStart `seq`
+                    textLength `seq` numChoices `seq` brokenDeps `seq`
                                    (AlreadyGeneratedStep { entrySol        = sol,
                                                            entryChoice     = choice,
                                                            entryStepNum    = stepNum,
                                                            entryNumChoices = numChoices,
-                                                           entryBrokenDeps = brokenDeps },
+                                                           entryBrokenDeps = brokenDeps,
+                                                           entryTextStart  = textStart,
+                                                           entryTextLength = textLength },
                                     [])
         else let newState       = Set.insert sol seen
                  numChoices     = toInteger $ Map.size $ solChoices $ stepSol step
@@ -570,19 +576,22 @@ renderChronView steps model =
        listStoreClear model
        mapM_ (listStoreAppend model) list
 
-stepSelected :: Maybe ProcessingStep -> VisM ()
-stepSelected Nothing = return () -- Clear the log view?
-stepSelected (Just step) =
-    do log       <- getLog
-       logView   <- getLogView
+showText :: Integer -> Integer -> VisM ()
+showText start len =
+    do log      <- getLog
+       logView  <- getLogView
        liftIO $ do
          logBuffer <- textViewGetBuffer logView
          (case log of
             Nothing -> textBufferSetText logBuffer ""
             Just f  -> do let h = logFileH f
-                          hSeek h AbsoluteSeek (stepTextStart step)
-                          s <- ByteString.hGet h (fromInteger $ stepTextLength step)
+                          hSeek h AbsoluteSeek start
+                          s <- ByteString.hGet h (fromInteger len)
                           textBufferSetText logBuffer $ unpack s)
+
+stepSelected :: Maybe ProcessingStep -> VisM ()
+stepSelected Nothing = return () -- Clear the log view?
+stepSelected (Just step) = showText (stepTextStart step) (stepTextLength step)
 
 setupTextColumn inf model ops =
     cellLayoutSetAttributes (textColumn inf) (textRenderer inf) model ops
@@ -718,7 +727,12 @@ treeSelectionChanged ctx selection model = do
            node            <- treeStoreLookup model path
            (case node of
               Nothing   -> runVis (stepSelected Nothing) ctx
-              Just tree -> runVis (stepSelected (Just $ entryStep $ rootLabel tree)) ctx))
+              Just (Node {rootLabel = Root {entryStep = step}}) -> runVis (stepSelected (Just step)) ctx
+              Just (Node {rootLabel = Step {entryStep = step}}) -> runVis (stepSelected (Just step)) ctx
+              Just (Node {rootLabel = AlreadyGeneratedStep { entryTextStart  = start,
+                                                             entryTextLength = len }})
+                  -> runVis (showText start len) ctx
+              _ -> runVis (stepSelected Nothing) ctx))
 
 chronSelectionChanged :: VisualizeContext -> TreeSelection -> ChronViewStore -> IO ()
 chronSelectionChanged ctx selection model = do
