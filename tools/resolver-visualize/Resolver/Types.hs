@@ -87,6 +87,7 @@ instance Show Tier where
         | tier == conflictTier         = ("T:conflict"++)
         | tier == deferTier            = ("T:defer"++)
         | tier == alreadyGeneratedTier = ("T:redundant"++)
+        | tier == minimumTier          = ("T:minimum"++)
         | otherwise =  ('T':) . shows (tierLevel tier)
 
 -- | Represents a promotion to a tier.
