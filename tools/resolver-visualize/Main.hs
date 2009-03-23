@@ -471,8 +471,8 @@ choiceText Unknown = "(...)"
 entryColumnText :: TreeViewEntry -> String
 entryColumnText (Root {}) = "Root"
 entryColumnText (Step { entryChoice = choice}) = choiceText choice
-entryColumnText (AlreadyGeneratedStep { entryChoice = choice }) = ("Already seen: " ++ choiceText choice)
-entryColumnText (NoStep { entryChoice = choice }) = choiceText choice
+entryColumnText (AlreadyGeneratedStep { entryChoice = choice }) = "Already seen: " ++ choiceText choice
+entryColumnText (NoStep { entryChoice = choice }) = "Never visited: " ++ choiceText choice
 entryColumnText (Error { entryErrorText = err }) = err
 
 entryColumnNumChoices :: TreeViewEntry -> String
