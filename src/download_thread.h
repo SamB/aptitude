@@ -1,6 +1,6 @@
 // download_thread                              -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,6 +27,8 @@
 
 #include <cwidget/generic/threads/threads.h>
 
+#include <generic/util/safe_slot.h>
+
 #include <sigc++/slot.h>
 
 /** \file download_thread.h
@@ -34,6 +36,14 @@
 
 class download_manager;
 class download_signal_log;
+
+/** \brief The type of a callback that posts a thunk to the
+ *  main thread.
+ *
+ *  We use a function pointer and not a slot to avoid any unexpected
+ *  problems with slots and threads.
+ */
+typedef void (*post_thunk_func)(const safe_slot0<void> &thunk);
 
 /** A proxy status object that posts messages to the main thread.
  *  Each message "blocks" the download until the user deals with it,
@@ -46,6 +56,8 @@ class download_signal_log;
 class background_status : public pkgAcquireStatus
 {
   download_signal_log *real_status;
+  post_thunk_func post_thunk;
+
 public:
   void Fetched(unsigned long Size, unsigned long ResumePoint);
   bool MediaChange(std::string Media, std::string Drive);
@@ -58,8 +70,20 @@ public:
   void Stop();
   void Complete();
 
-  background_status(download_signal_log *_real_status)
-    :real_status(_real_status)
+  /** \brief Create a background-status object.
+   *
+   *  This should be created in the foreground thread.
+   *
+   *  \param _real_status  The status object that will be used to
+   *                       broadcast messages in the foreground thread.
+   *
+   *  \param _post_thunk   How to schedule a thunk for execution in the
+   *                       foreground thread.
+   */
+  background_status(download_signal_log *_real_status,
+		    post_thunk_func _post_thunk)
+    : real_status(_real_status),
+      post_thunk(_post_thunk)
   {
   }
 };
@@ -68,6 +92,9 @@ public:
 class download_thread
 {
   cwidget::threads::box<bool> cancelled;
+
+  /** A callback that posts thunks to be run in the main thread. */
+  post_thunk_func post_thunk;
 
   /** The bundled download_manager object.  It should have been
    *  initialized using a background_status wrapper as above, and you
@@ -81,7 +108,7 @@ class download_thread
    *  thread will be automatically join()ed before the continuation is
    *  deleted.
    */
-  sigc::slot2<void, download_thread *, pkgAcquire::RunResult> continuation;
+  safe_slot2<void, download_thread *, pkgAcquire::RunResult> continuation;
 
   cwidget::threads::thread *t;
 
@@ -89,8 +116,10 @@ class download_thread
   download_thread &operator=(const download_thread &other);
 public:
   download_thread(download_manager *manager,
-		  const sigc::slot2<void, download_thread *, pkgAcquire::RunResult> &_continuation)
-    : cancelled(false), m(manager), continuation(_continuation), t(NULL)
+		  post_thunk_func _post_thunk,
+		  const safe_slot2<void, download_thread *, pkgAcquire::RunResult> &_continuation)
+    : cancelled(false), post_thunk(_post_thunk),
+      m(manager), continuation(_continuation), t(NULL)
   {
   }
 

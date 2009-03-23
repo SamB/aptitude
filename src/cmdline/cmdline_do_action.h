@@ -16,7 +16,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool showvers, bool showdeps,
 		      bool showsize, bool showwhy,
 		      bool visual_preview, bool always_prompt,
-		      bool safe_resolver,
+		      bool safe_resolver, bool safe_resolver_show_actions,
 		      // Two options for the safe resolver, if
 		      // it's enabled:
 		      bool no_new_installs, bool no_new_upgrades,

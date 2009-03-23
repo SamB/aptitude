@@ -18,6 +18,8 @@ void undo_list::undo()
       delete items.front();
       items.pop_front();
     }
+
+  changed();
 }
 
 void undo_list::clear_items()
@@ -36,6 +38,8 @@ void undo_list::clear_items()
 
   eassert(items.size()==0);
   eassert(floors.size()==1);
+
+  changed();
 }
 
 void undo_list::collapse_to(unsigned int prev_size)
@@ -54,6 +58,8 @@ void undo_list::collapse_to(unsigned int prev_size)
 
       items.push_front(new_item);
     }
+
+  changed();
 }
 
 void undo_list::revert_to(unsigned int prev_size)
@@ -65,6 +71,8 @@ void undo_list::revert_to(unsigned int prev_size)
       while(items.size()>prev_size)
 	undo();
     }
+
+  changed();
 }
 
 void undo_list::push_floor(unsigned int floor)

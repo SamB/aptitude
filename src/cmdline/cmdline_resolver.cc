@@ -1,6 +1,6 @@
 // cmdline_resolver.cc
 //
-//   Copyright (C) 2005-2008 Daniel Burrows
+//   Copyright (C) 2005-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -55,6 +55,8 @@
 using namespace std;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+typedef generic_choice<aptitude_universe> choice;
+typedef generic_choice_set<aptitude_universe> choice_set;
 
 namespace cw = cwidget;
 
@@ -63,20 +65,21 @@ namespace cw = cwidget;
  */
 static cw::fragment *solution_story(const aptitude_solution &s)
 {
-  std::vector<aptitude_solution::action> actions;
-  for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
-	i = s.get_actions().begin(); i != s.get_actions().end(); ++i)
-    actions.push_back(i->second);
-  sort(actions.begin(), actions.end(), aptitude_solution::action_id_compare());
+  std::vector<choice> choices;
+  for(choice_set::const_iterator it = s.get_choices().begin();
+      it != s.get_choices().end(); ++it)
+    choices.push_back(*it);
+
+  sort(choices.begin(), choices.end(), aptitude_solution::choice_id_compare());
 
 
   vector<cw::fragment *> fragments;
 
-  for(vector<aptitude_solution::action>::const_iterator i = actions.begin();
-      i != actions.end(); ++i)
+  for(vector<choice>::const_iterator i = choices.begin();
+      i != choices.end(); ++i)
     fragments.push_back(cw::fragf("%ls%n -> %F%n",
-			      dep_text(i->d.get_dep()).c_str(),
-			      indentbox(0, 4, action_fragment(*i))));
+				  dep_text(i->get_dep().get_dep()).c_str(),
+				  indentbox(0, 4, choice_fragment(*i))));
 
   return cw::sequence_fragment(fragments);
 }
@@ -499,42 +502,11 @@ public:
   std::string errmsg() const { return msg; }
 };
 
-aptitude_solution calculate_current_solution(bool suppress_message)
+// Displays a spinner while we wait for the background thread to spit
+// out a solution.
+static aptitude_solution wait_for_solution(cwidget::threads::box<cmdline_resolver_continuation::resolver_result> &retbox,
+					   cmdline_spinner &spin)
 {
-  const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
-  if(step_limit <= 0)
-    {
-      const std::string msg = ssprintf(_("Would resolve dependencies, but dependency resolution is disabled.\n   (%s::ProblemResolver::StepLimit = 0)\n"), PACKAGE);
-
-      // It's important that the code path leading to here doesn't
-      // access resman: the resolver won't exist in this case.
-      throw CmdlineSearchDisabledException(msg);
-    }
-
-  if(!resman->resolver_exists())
-    {
-      const std::string msg = _("I want to resolve dependencies, but no dependency resolver was created.");
-
-      throw CmdlineSearchAbortedException(msg);
-    }
-
-
-
-  if(resman->get_selected_solution() < resman->generated_solution_count())
-    return resman->get_solution(resman->get_selected_solution(), 0);
-
-
-  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
-
-  if(!suppress_message)
-    std::cout << _("Resolving dependencies...") << std::endl;
-
-  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
-
-  resman->get_solution_background(resman->generated_solution_count(),
-				  step_limit,
-				  new cmdline_resolver_continuation(retbox));
-
   cmdline_resolver_continuation::resolver_result res;
   bool done = false;
   // The number of milliseconds to step per display.
@@ -575,6 +547,45 @@ aptitude_solution calculate_current_solution(bool suppress_message)
     throw CmdlineSearchAbortedException(res.abort_msg);
   else
     return res.sol;
+}
+
+aptitude_solution calculate_current_solution(bool suppress_message)
+{
+  const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+  if(step_limit <= 0)
+    {
+      const std::string msg = ssprintf(_("Would resolve dependencies, but dependency resolution is disabled.\n   (%s::ProblemResolver::StepLimit = 0)\n"), PACKAGE);
+
+      // It's important that the code path leading to here doesn't
+      // access resman: the resolver won't exist in this case.
+      throw CmdlineSearchDisabledException(msg);
+    }
+
+  if(!resman->resolver_exists())
+    {
+      const std::string msg = _("I want to resolve dependencies, but no dependency resolver was created.");
+
+      throw CmdlineSearchAbortedException(msg);
+    }
+
+
+
+  if(resman->get_selected_solution() < resman->generated_solution_count())
+    return resman->get_solution(resman->get_selected_solution(), 0);
+
+
+  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
+
+  if(!suppress_message)
+    std::cout << _("Resolving dependencies...") << std::endl;
+
+  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
+
+  resman->get_solution_background(resman->generated_solution_count(),
+				  step_limit,
+				  new cmdline_resolver_continuation(retbox));
+
+  return wait_for_solution(retbox, spin);
 }
 
 aptitude::cmdline::cmdline_resolver_result
@@ -827,178 +838,66 @@ namespace aptitude
 {
   namespace cmdline
   {
-    namespace
+    // Implements the --show-resolver-actions command-line parameters.
+    void show_resolver_actions(const generic_solution<aptitude_universe> &solution)
     {
-      // Set up aptitude's internal resolver for 'safe' resolution.
-      // Essentialy this means (1) forbid it from removing any package,
-      // and (2) only install the default candidate version of a package
-      // or the current version.
-      void setup_safe_resolver(bool no_new_installs, bool no_new_upgrades)
-      {
-	if(!resman->resolver_exists())
-	  return;
-
-	resman->reset_resolver();
-
-	resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
-
-	for(pkgCache::PkgIterator p = (*apt_cache_file)->PkgBegin();
-	    !p.end(); ++p)
-	  {
-	    // Forbid the resolver from removing installed packages.
-	    if(!p.CurrentVer().end())
-	      {
-		aptitude_resolver_version
-		  remove_p(p,
-			   pkgCache::VerIterator(*apt_cache_file),
-			   *apt_cache_file);
-
-		resman->reject_version(remove_p);
-	      }
-
-	    // Forbid all real versions that aren't the current version or
-	    // the candidate version.
-	    for(pkgCache::VerIterator v = p.VersionList();
-		!v.end(); ++v)
-	      {
-		// For our purposes, all half-unpacked etc states are
-		// installed.
-		const bool p_is_installed =
-		  p->CurrentState != pkgCache::State::NotInstalled &&
-		  p->CurrentState != pkgCache::State::ConfigFiles;
-
-		const bool p_will_install =
-		  (*apt_cache_file)[p].Install();
-
-		if(v != p.CurrentVer() &&
-		   // Disallow installing not-installed packages that
-		   // aren't marked for installation if
-		   // no_new_installs is set.
-		   ((!p_is_installed && !p_will_install && no_new_installs) ||
-		    (p_is_installed && p_will_install && no_new_upgrades) ||
-		    v != (*apt_cache_file)[p].CandidateVerIter(*apt_cache_file)))
-		  {
-		    aptitude_resolver_version
-		      p_v(p, v, *apt_cache_file);
-		    resman->reject_version(p_v);
-		  }
-	      }
-	  }
-
-	cmdline_dump_resolver();
-      }
+      if(solution.get_choices().size() > 0)
+	{
+	  // The previous line will say "resolving dependencies...";
+	  // separate the solution from this message..
+	  std::cout << std::endl;
+	  std::auto_ptr<cw::fragment> story(solution_story(solution));
+	  std::cout << story->layout(screen_width, screen_width, cwidget::style());
+	}
     }
 
     // Take the first solution we can compute, returning false if we
     // failed to find a solution.
-    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades)
+    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades, bool show_story)
     {
       if(!resman->resolver_exists())
 	return true;
 
-      const bool debug = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false);
-
-      setup_safe_resolver(no_new_installs, no_new_upgrades);
-
-      generic_solution<aptitude_universe> last_sol;
       try
 	{
-	  generic_solution<aptitude_universe> sol = calculate_current_solution(true);
-	  last_sol = sol;
-	  bool first = true;
-	  typedef imm::map<aptitude_resolver_package,
-	    generic_solution<aptitude_universe>::action> actions_map;
-	  while(!(!first &&
-		  last_sol &&
-		  sol.get_actions() == last_sol.get_actions() &&
-		  sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
-	    {
-	      first = false;
-	      // Mandate all the upgrades and installs in this solution,
-	      // then ask for the next solution.  The goal is to try to
-	      // find the best solution, not just some solution, but to
-	      // preserve our previous decisions in order to avoid
-	      // thrashing around between alternatives.
-	      for(actions_map::const_iterator it = sol.get_actions().begin();
-		  it != sol.get_actions().end(); ++it)
-		{
-		  if(it->second.ver.get_ver() != it->second.ver.get_pkg().CurrentVer())
-		    {
-		      if(debug)
-			std::cout << "Mandating the upgrade or install " << it->second.ver
-				  << ", since it was produced as part of a solution."
-				  << std::endl;
-		      resman->mandate_version(it->second.ver);
-		    }
-		  else
-		    {
-		      if(debug)
-			std::cout << "Not mandating " << it->second.ver
-				  << ", since it is a hold."
-				  << std::endl;
-		    }
-		}
-	      last_sol = sol;
-	      resman->select_next_solution();
-	      sol = calculate_current_solution(false);
-	    }
+	  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 
-	  // Internal error that should never happen, but try to survive
-	  // if it does.
-	  std::cout << "*** Internal error: the resolver unexpectedly produced the same result twice."
-		    << std::endl
-		    << "Previous iteration was:" << std::endl;
-	  last_sol.dump(std::cout, true);
-	  std::cout << std::endl << "Current iteration was:" << std::endl;
-	  sol.dump(std::cout, true);
-	  std::cout << std::endl;
+	  resman->safe_resolve_deps_background(no_new_installs, no_new_upgrades,
+					       new cmdline_resolver_continuation(retbox));
 
-	  (*apt_cache_file)->apply_solution(last_sol, NULL);
+	  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
+	  // TODO: maybe we should say "calculating upgrade" if we're
+	  // running safe-upgrade?
+	  std::cout << _("Resolving dependencies...") << std::endl;
+	  generic_solution<aptitude_universe> sol = wait_for_solution(retbox, spin);
+
+	  if(show_story)
+	    show_resolver_actions(sol);
+
+	  (*apt_cache_file)->apply_solution(sol, NULL);
 	}
       // If anything goes wrong, we give up (silently if verbosity is disabled).
       catch(NoMoreTime)
 	{
-	  if(last_sol)
-	    {
-	      std::cout << _("The resolver timed out after producing a solution; some possible upgrades might not be performed.");
-	      (*apt_cache_file)->apply_solution(last_sol, NULL);
-	      return true;
-	    }
-	  else
-	    {
-	      if(verbose > 0)
-		std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
-	      return false;
-	    }
+	  // We used to warn the user that the resolver timed out and
+	  // also produced a solution, but now that information is
+	  // buried in the resolver manager.  I don't think this is a
+	  // huge problem.
+	  if(verbose > 0)
+	    std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
+	  return false;
 	}
       catch(NoMoreSolutions)
 	{
-	  if(last_sol)
-	    {
-	      (*apt_cache_file)->apply_solution(last_sol, NULL);
-	      return true;
-	    }
-	  else
-	    {
-	      if(verbose > 0)
-		std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
-	      return false;
-	    }
+	  if(verbose > 0)
+	    std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	  return false;
 	}
       catch(const cw::util::Exception &e)
 	{
-	  if(last_sol)
-	    {
-	      (*apt_cache_file)->apply_solution(last_sol, NULL);
-	      std::cout << cw::util::ssprintf(_("Dependency resolution incomplete (%s); some possible upgrades might not be performed."), e.errmsg().c_str());
-	      return true;
-	    }
-	  else
-	    {
-	      if(verbose > 0)
-		std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
-	      return false;
-	    }
+	  if(verbose > 0)
+	    std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	  return false;
 	}
 
       return true;

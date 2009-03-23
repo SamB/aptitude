@@ -752,12 +752,17 @@ aptitude_universe::broken_dep_iterator &aptitude_universe::broken_dep_iterator::
   return *this;
 }
 
+std::ostream &operator<<(ostream &out, const aptitude_resolver_package &p)
+{
+  return out << p.get_name();
+}
+
 std::ostream &operator<<(ostream &out, const aptitude_resolver_version &v)
 {
   return out << v.get_package().get_name() << " " << v.get_name();
 }
 
-std::ostream &operator<<(ostream &out, aptitude_resolver_dep d)
+std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
 {
   std::vector<aptitude_resolver_version> solvers;
   for(aptitude_resolver_dep::solver_iterator i=d.solvers_begin(); !i.end(); ++i)

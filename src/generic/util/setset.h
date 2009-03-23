@@ -1,6 +1,6 @@
 // setset.h                             -*-c++-*-
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -201,9 +201,11 @@ private:
     {
     }
 
-    void operator()(const Val &v) const
+    bool operator()(const Val &v) const
     {
       sets_by_key[v].push_back(index_entry(index, v));
+
+      return true;
     }
   };
 
@@ -225,7 +227,7 @@ private:
     }
 
     // For each set containing v, add 1 to its hit count.
-    void operator()(const Val &v) const
+    bool operator()(const Val &v) const
     {
       typename index_type::const_iterator found
 	= sets_by_key.find(v);
@@ -239,6 +241,8 @@ private:
 	    if(r(vi->second, v))
 	      ++entries[vi->first].hit_count;
 	}
+
+      return true;
     }
   };
 

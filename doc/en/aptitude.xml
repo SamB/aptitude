@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.4.11.11'>
+  <!ENTITY VERSION '0.5.1'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -102,6 +102,7 @@
 
   <!ENTITY Sdescription "<literal><link linkend='searchDescription'>?description</link></literal>">
   <!ENTITY Sessential "<literal><link linkend='searchEssential'>?essential</link></literal>">
+  <!ENTITY Sexact-name "<literal><link linkend='searchExactName'>?exact-name</link></literal>">
   <!ENTITY Sfalse "<literal><link linkend='searchFalse'>?false</link></literal>">
   <!ENTITY Sfor "<literal><link linkend='searchFor'>?for</link></literal>">
   <!ENTITY Sgarbage "<literal><link linkend='searchGarbage'>?garbage</link></literal>">
@@ -125,6 +126,8 @@
   <!ENTITY Ssource-package "<literal><link linkend='searchSourcePackage'>?source-package</link></literal>">
   <!ENTITY Ssource-version "<literal><link linkend='searchSourceVersion'>?source-version</link></literal>">
   <!ENTITY Stag "<literal><link linkend='searchTag'>?tag</link></literal>">
+  <!ENTITY Sterm "<literal><link linkend='searchTerm'>?term</link></literal>">
+  <!ENTITY Sterm-prefix "<literal><link linkend='searchTermPrefix'>?term-prefix</link></literal>">
   <!ENTITY Strue "<literal><link linkend='searchTrue'>?true</link></literal>">
   <!ENTITY Stask "<literal><link linkend='searchTask'>?task</link></literal>">
   <!ENTITY Supgradable "<literal><link linkend='searchUpgradable'>?upgradable</link></literal>">
@@ -394,7 +397,7 @@
       </para>
 
       <section id='secBinaryPackages'>
-	<title>Pre-built &aptitude; packages, or, <quote>What 99% of Users Should Do</quote></title>
+	<title>Pre-built &aptitude; packages, or, <quote>what 99% of users should do</quote></title>
 
 	<para>
 	  Pre-built, or <quote>binary</quote> packages are the easiest and most
@@ -610,7 +613,7 @@
   </preface>
 
   <chapter id='chapGettingStarted'>
-    <title>Getting Started</title>
+    <title>Getting started</title>
 
     <blockquote>
       <attribution>
@@ -645,7 +648,7 @@
       </para>
 
       <section>
-	<title>&aptitude; Basics</title>
+	<title>&aptitude; basics</title>
 	<para>
 	  To run &aptitude;, open your favorite text terminal, and at
 	  the command line, type:
@@ -1231,7 +1234,7 @@ including kdesdk, qt3-designer, and all core KDE -dev packages.
 	</para>
 
 	<section id='tutorialBroken'>
-	  <title>Managing Broken Packages</title>
+	  <title>Managing broken packages</title>
 
 	  <para>
 	    Sometimes, changing a package's state will cause
@@ -1987,7 +1990,7 @@ Abort.</screen>
   </chapter>
 
   <chapter id='chapRefGuide'>
-    <title>&aptitude; Reference Guide</title>
+    <title>&aptitude; reference guide</title>
 
     <blockquote>
       <attribution>
@@ -2039,11 +2042,11 @@ Abort.</screen>
     </note>
 
     <section>
-      <title>The &aptitude; UI</title>
+      <title>The &aptitude; terminal user interface</title>
 
       <para>
-	This section describes the parts of the user interface of
-	&aptitude; that do not deal with <link
+	This section describes the parts of the terminal-based user
+	interface of &aptitude; that do not deal with <link
 	linkend='secManagingPackages'>managing packages</link>.
       </para>
 
@@ -2089,7 +2092,7 @@ Abort.</screen>
 	<title>Menu commands</title>
 
 	<section>
-	  <title>The Actions Menu</title>
+	  <title>The Actions menu</title>
 
 	  <figure>
 	    <title>Commands available in the Actions menu</title>
@@ -2206,7 +2209,7 @@ Abort.</screen>
 	</section>
   
 	<section>
-	  <title>The Undo Menu</title>
+	  <title>The Undo menu</title>
 
 	  <figure>
 	    <title>Commands available in the Undo menu</title>
@@ -2237,7 +2240,7 @@ Abort.</screen>
 	</section>
 
 	<section id='secPackageMenu'>
-	  <title>The Package Menu</title>
+	  <title>The Package menu</title>
 
 	  <figure>
 	    <title>Commands available in the Package menu</title>
@@ -2377,7 +2380,7 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Resolver Menu</title>
+	  <title>The Resolver menu</title>
 
 	  <figure>
 	    <title>Commands available in the Resolver menu</title>
@@ -2445,7 +2448,7 @@ Abort.</screen>
 		    </entry>
 		  </row>
 
-		  <row>
+		  <row id='menuResolverReject'>
 		    <entry>&resolver-reject;</entry>
 
 		    <entry>
@@ -2458,7 +2461,7 @@ Abort.</screen>
 		    </entry>
 		  </row>
 
-		  <row>
+		  <row id='menuResolverApprove'>
 		    <entry>&resolver-approve;</entry>
 
 		    <entry>
@@ -2503,7 +2506,7 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Search Menu</title>
+	  <title>The Search menu</title>
 
 	  <figure>
 	    <title>Commands available in the Search menu</title>
@@ -2557,7 +2560,7 @@ Abort.</screen>
 		   </entry>
 		  </row>
 
-		  <row>
+		  <row id='menuSearchLimit'>
 		    <entry>&search-limit;</entry>
 
 		    <entry>
@@ -2591,7 +2594,7 @@ Abort.</screen>
 	</section>
 
 	<section id="secOptionsMenu">
-	  <title>The Options Menu</title>
+	  <title>The Options menu</title>
 
 	  <figure>
 	    <title>Commands available in the Options menu</title>
@@ -2637,7 +2640,7 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Views Menu</title>
+	  <title>The Views menu</title>
 
 	  <note>
 	    <para>
@@ -2746,7 +2749,7 @@ Abort.</screen>
 	</section>
 
 	<section>
-	  <title>The Help Menu</title>
+	  <title>The Help menu</title>
 
 	  <figure>
 	    <title>Commands available in the Help menu</title>
@@ -2981,7 +2984,7 @@ Th+-------------------------------------------------------------------------+
 	  </para>
 
 	  <section>
-	    <title>The Package List</title>
+	    <title>The package list</title>
 
 	    <para>
 	      The package list displays an <quote>at-a-glance</quote> synopsis of a
@@ -3580,13 +3583,496 @@ i A 0.5.25
 	</note>
       </section>
 
-      <section id='secResolver'>
-	<title>Solving Dependency Problems</title>
+      <section id='secInstallRun'>
+	<title>Downloading, installing, and removing packages</title>
 
 	<para>
-	  If a dependency problem arises, &aptitude; can assist you in
-	  resolving it.  As soon as a problem occurs, a red bar will
-	  appear at the bottom of the screen with a summary of
+	  Changing package states as described in the previous section
+	  does not actually affect what is installed on your system.
+	  Thus, you can adjust the state of packages without affecting
+	  your system until you are happy with what you see; once you
+	  are, you can <quote>commit</quote> the changes by actually installing and
+	  removing packages.<footnote><para>This is sometimes referred
+	  to as an <quote>install run</quote>, even though you might be upgrading
+	  or removing packages in addition to installing
+	  them.</para></footnote>
+	</para>
+
+	<para>
+	  To commit your changes, use the &actions-install; command.
+	  Selecting this command will display a preview screen
+	  describing the changes that will be performed.  This screen
+	  is just a package list, and you can manipulate the packages
+	  (for instance, cancelling unwanted removals) in the same way
+	  that you could in the main list.
+	</para>
+
+	<para>
+	  When you are done, use &views-close; to cancel the
+	  installation, or use &actions-install; to proceed.
+	  &aptitude; will download any files that need to be
+	  downloaded, then prompt you to continue with the
+	  installation.  When you select <quote>Continue</quote>, the installations
+	  and removals will commence.
+	</para>
+
+	<para>
+	  Packages that are downloaded by &aptitude; are placed in a
+	  cache directory (typically
+	  <filename>/var/cache/apt/archives</filename>).  Normally,
+	  they are just left in this directory ad infinitum.  To
+	  delete all the files in this directory, use &actions-clean;;
+	  to delete only files which cannot be downloaded again (ie,
+	  obsolete packages), use &actions-clean-obs;.
+	</para>
+      </section>
+
+      <section id='secTrust'>
+	<title>Understanding and managing package trust</title>
+
+	<para>
+	  &apt;'s ability to access multiple package sources leads to
+	  a potential security vulnerability.  Suppose you add an
+	  archive of packages published by Joe Random Hacker to your
+	  <filename>sources.list</filename> file in order to install
+	  Joe's <systemitem>gargleblast</systemitem> package.  It is
+	  possible, however, that -- unbeknownst to you -- Joe's
+	  archive also contains his own <quote>customized</quote>
+	  versions of packages such as <systemitem>libc6</systemitem>
+	  and <systemitem>ssh</systemitem>...versions that steal your
+	  private information or open backdoors on your system!  If
+	  these packages have higher version numbers than the
+	  legitimate Debian packages, &apt; will blithely install them
+	  on your system during your next upgrade, allowing Joe to do
+	  his dirty work undetected.  Joe could also break into your
+	  mirror of the Debian archives and replace the legitimate
+	  software with his doctored version.
+	</para>
+
+	<para>
+	  Luckily, newer versions of &apt; and &aptitude;, such as the
+	  version documented in this manual, have built-in safeguards
+	  to help defeat this type of attack.  &apt; uses strong
+	  security mechanisms based on the popular <ulink
+	  url='http://www.gnupg.org'>GPG</ulink> encryption software
+	  to verify that the packages being distributed from the
+	  official Debian mirrors are the same packages that were
+	  uploaded by the Debian developers.  &aptitude; will then
+	  warn you if you attempt to install a package from a
+	  non-Debian source, or if you attempt to upgrade a package
+	  that was installed from a Debian source to a version that
+	  came from a non-Debian source.
+	</para>
+
+	<warning>
+	  <para>
+	    The security mechanisms in &apt; provide a near-perfect
+	    guarantee that the contents of your archive mirror are
+	    identical to the contents of the master Debian archive.
+	    However, they are not a panacea: for instance, there are
+	    many ways that a tampered package could theoretically find
+	    its way into the master Debian archive.
+	  </para>
+
+	  <para>
+	    Ensuring that you only install software from a trusted
+	    source will give you an important degree of protection
+	    against malicious packages, but it cannot eliminate all
+	    the risks inherent in installing software.
+	  </para>
+	</warning>
+
+	<section>
+	  <title>Understanding trust</title>
+
+	  <para>
+	    &apt; allows the administrator of an archive to provide a
+	    <firstterm>signature</firstterm> of the archive's index.
+	    This signature, which (for all practical purposes) cannot
+	    be forged, indicates that the package files listed in the
+	    index are the same files that the administrator intended
+	    to place in the archive: ie, that the contents of the
+	    archive have not been tampered with since it was
+	    created.<footnote><para>As noted above, it does
+	    <emphasis>not</emphasis> indicate that the packages in the
+	    archive are secure, or even non-malicious; it merely shows
+	    that they are genuine.</para></footnote> The signature can
+	    be validated by checking that it corresponds to the
+	    administrator's <firstterm>public key</firstterm>.  The
+	    public key of the Debian archive is distributed with
+	    &apt;, typically on your Debian CD.
+	  </para>
+
+	  <para>
+	    When &aptitude; downloads an archive index, it will check
+	    whether the index is properly signed.  If it is unsigned,
+	    &aptitude; will not trust package files from that
+	    archive. (see below for information on what this means) If
+	    it has a signature but the signature is incorrect or
+	    cannot be verified, a warning will be printed and
+	    &aptitude; will refuse to trust packages from that
+	    archive.
+	  </para>
+
+	  <para>
+	    Later, when you perform an <link
+	    linkend='secInstallRun'>install run</link>, &aptitude;
+	    will check whether the packages are from trusted sources.
+	    If an untrusted package is being installed, or a package
+	    is being upgraded from a trusted to an untrusted version,
+	    a warning will be displayed and you will have the
+	    opportunity to abort the download:
+	  </para>
+
+	  <screenshot>
+	    <mediaobject>
+	      <imageobject>
+		<imagedata fileref='images/trust-snapshot.png' format='PNG' width='100%' scalefit='1'/>
+	      </imageobject>
+
+	      <textobject role='text'>
+<screen> Actions  Undo  Package  Search  Options  Views  Help
+f10: Menu  ?: Help  q: Quit  u: Update  g: Download/Install/Remove Pkgs
+aptitude 0.3.0                    Will use 831kB of disk space   DL Size: 30.4MB
+--\ Packages to be upgraded
+iu U wesnoth                                       -98.3kB 0.8.7-1    0.8.8-1.0w
+iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
++------------------------------------------------------------------------------+
+|WARNING: untrusted versions of the following packages will be installed!     #|
+|                                                                             #|
+|Untrusted packages could compromise your system's security.  You should only #|
+|proceed with the installation if you are certain that this is what you want  #|
+|to do.                                                                       #|
+|                                                                             #|
+|  * wesnoth [version 0.8.8-1.0wesnoth.org]                                   #|
+|  * wesnoth-data [version 0.8.8-1.0wesnoth.org]                              #|
+|  * wesnoth-music [version 0.8.8-1.0wesnoth.org]                             #|
+|         [ Really Continue ]                  [ Abort Installation ]          |
++------------------------------------------------------------------------------+
+                                                                               #
+                                                                               #
+                                                                               #
+                                                                               #
+                                                                               #
+                                                                               #</screen>
+	      </textobject>
+	    </mediaobject>
+	  </screenshot>
+	</section>
+
+	<section>
+	  <title>Trusting additional keys</title>
+
+	  <para>
+	    You might find it useful to allow &apt; to trust
+	    additional archives, besides the main Debian archive.  For
+	    each archive that you want to trust, you will have to
+	    acquire the public key that is used to sign the archive's
+	    package index.  This is typically a text file whose name
+	    ends in <filename>.asc</filename>; it might be provided by
+	    the site administrator or downloadable from a public
+	    keyserver.  For more information on what public keys are
+	    and how to get them, see the <ulink
+	    url='http://www.gnupg.org'>GPG web page</ulink>.
+	  </para>
+
+	  <para>
+	    The list of keys that apt will trust is stored in the
+	    <firstterm>keyring file</firstterm>
+	    <filename>/etc/apt/trusted.gpg</filename>.  Once you have
+	    the GPG key, you can add it to this file by executing the
+	    command <command>gpg --no-default-keyring --keyring
+	    /etc/apt/trusted.gpg --import
+	    <replaceable>newkey.asc</replaceable></command>.
+	    &aptitude; will then trust any archive that is signed with
+	    the key contained in <filename>newkey.asc</filename>.
+	  </para>
+
+	  <warning>
+	    <para>
+	      Once an archive's key has been added to the APT keyring,
+	      it will be trusted just as much as the main Debian
+	      mirrors themselves!  You should only do this if you are
+	      very confident that the key you are adding is correct
+	      <emphasis>and</emphasis> that the person who holds the
+	      key is trustworthy and competent.
+	    </para>
+	  </warning>
+	</section>
+      </section>
+
+      <section id='secAutoInstall'>
+	<title>Managing automatically installed packages</title>
+
+	<para>
+	  To install one package, it is often necessary to install
+	  several others (to fulfill its dependencies).  For instance,
+	  if you wish to install the
+	  <systemitem>clanbomber</systemitem> package, you must also
+	  install the package <systemitem>libclanlib2</systemitem>.
+	  If you remove <systemitem>clanbomber</systemitem> again, you
+	  probably no longer need the
+	  <systemitem>libclanlib2</systemitem> package; &aptitude;
+	  will attempt to detect this and automatically remove the
+	  <systemitem>libclanlib2</systemitem> package.
+	</para>
+
+	<para>
+	  It works like this: when you install a package, &aptitude;
+	  will automatically install any other packages on which it
+	  depends.  These packages are marked as having been
+	  <quote>automatically installed</quote>; &aptitude; will monitor them and
+	  remove them when they are no longer depended upon by any
+	  manually installed package
+	  <footnote>
+	    <para>
+	      More precisely: they will be removed when there is no
+	      path via Depends, PreDepends, or Recommends to them from
+	      a manually installed package.  If <link
+	      linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link>
+	      is true, a Suggests relationship is also enough to keep
+	      a package installed.
+	    </para>
+	  </footnote>
+	  .  They will appear in the preview as
+	  <quote>packages being removed because they are no longer used.</quote>
+	</para>
+
+	<para>
+	  As with any automatic process, there is a potential for
+	  things to go haywire.  For instance, even if a package was
+	  automatically installed to start with, it might turn out to
+	  be useful in its own right.  You can cancel the <quote>automatic</quote>
+	  flag at any time by pressing <keycap>m</keycap>; if the
+	  package is already being removed, you can use
+	  &package-install; to cancel the removal and clear the
+	  <quote>automatic</quote> flag.
+	</para>
+      </section>
+    </section>
+
+    <section id='secDependencyResolution'>
+      <title>Resolving package dependencies</title>
+
+      <section>
+	<title>Dependency resolution in &aptitude;</title>
+
+	<para>
+	  There are two main dependency resolution algorithms in
+	  &aptitude;.
+	</para>
+
+	<para>
+	  The first is an algorithm that is also used by programs such
+	  as &apt-get; and <command>synaptic</command>; I will call
+	  it <quote>immediate resolution</quote>.  It is invoked
+	  whenever you select a package for installation
+	  interactively, and immediately after one or more packages
+	  are marked for installation at the command-line.  Immediate
+	  resolution is fast and will solve most dependency problems,
+	  but it is sometimes unable to find any solution.
+	</para>
+
+	<para>
+	  The second algorithm, which I will call <quote>interactive
+	  resolution</quote>, is invoked when packages have broken
+	  dependencies even after immediate
+	  resolution<footnote><para>Or when immediate resolution is
+	  disabled.</para></footnote>.  It can resolve more
+	  dependencies, it allows you to review a solution before
+	  applying it, and it allows you to provide feedback to the
+	  resolver, guiding it towards a better solution.
+	</para>
+      </section>
+
+      <section id='secImmediateResolution'>
+	<title>Immediate dependency resolution</title>
+
+	<para>
+	  Whenever you choose to install or upgrade a package in
+	  &aptitude;, &aptitude; makes an immediate attempt to resolve
+	  any of its dependencies that are not fulfilled.  For each
+	  unsatisfied dependency (either a <quote>Depends</quote>, a
+	  <quote>Recommends</quote>, or a <quote>Conflicts</quote>),
+	  it performs the following steps:
+	</para>
+
+	<orderedlist>
+	  <listitem>
+	    <para>
+	      If the dependency is a recommendation, &aptitude; tries
+	      to guess whether it is a <quote>new</quote>
+	      recommendation or a <quote>previously satisfied</quote>
+	      recommendation.  &aptitude; considers a recommendation
+	      to be <quote>new</quote> if the package declaring the
+	      recommendation is not currently installed, or if its
+	      installed version does not recommend a package of the
+	      same name.  On the other hand, a recommendation is
+	      <quote>previously satisfied</quote> if the package
+	      declaring the recommendation is installed, the currently
+	      installed version recommends a package of the same name,
+	      and that recommendation is currently fulfilled.
+	    </para>
+
+	    <para>
+	      For example: suppose that version <literal>1.0</literal>
+	      of <literal>prog</literal> recommends version
+	      <literal>4.0</literal> of <literal>libcool1</literal>,
+	      but version <literal>2.0</literal> of
+	      <literal>prog</literal> recommends version
+	      <literal>5.0</literal> of <literal>libcool1</literal>,
+	      and also recommends <literal>apache</literal>.  If you
+	      choose to upgrade <literal>prog</literal> from version
+	      <literal>1.0</literal> to version
+	      <literal>2.0</literal>, the recommendation of
+	      <literal>apache</literal> will be considered to be
+	      <quote>new</quote> because version
+	      <literal>1.0</literal> of <literal>prog</literal> did
+	      not recommend <literal>apache</literal>.  On the other
+	      hand, the recommendation of <literal>libcool1</literal>
+	      is <emphasis>not</emphasis> <quote>new</quote>, because
+	      version <literal>1.0</literal> of
+	      <literal>prog</literal> recommended
+	      <literal>libcool1</literal>, even though it recommended
+	      a different version.  However, if
+	      <literal>libcool1</literal> is installed, then that
+	      recommendation will be considered to be
+	      <quote>previously satisfied</quote>.
+	    </para>
+
+	    <para>
+	      If the configuration option <link
+	      linkend='configAptInstall-Recommends'><literal>Apt::Install-Recommends</literal></link>
+	      is <literal>true</literal>, &aptitude; will always
+	      attempt to fulfill <quote>new</quote> and
+	      <quote>previously satisfied</quote> recommendations; all
+	      others will be ignored by immediate resolution.  If that
+	      option is <literal>false</literal>, immediate dependency
+	      resolution will ignore <emphasis>all</emphasis>
+	      recommendations.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      If the dependency is on several packages combined with
+	      OR, examine each of the alternatives in the order that
+	      they are given.  For instance, if a package depends on
+	      <quote><literal>exim |
+	      mail-transport-agent</literal></quote>, &aptitude; will
+	      first process <literal>exim</literal>, then
+	      <literal>mail-transport-agent</literal>.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      For each alternative, attempt to resolve it.  If the
+	      dependency is a conflict, remove the current alternative
+	      if it is installed (and for an unversioned conflict,
+	      also remove any package providing the target of the
+	      conflict).  Otherwise, install the candidate version of
+	      the current alternative if it satisfies the dependency.
+	      If not, or if there is no candidate version (for
+	      instance, because the current alternative is a virtual
+	      package), and if the dependency is unversioned, attempt
+	      to install the highest-priority
+	      package<footnote><para>The package with the highest
+	      <command>dpkg</command> priority, not the package with
+	      the highest &apt; pin priority.</para></footnote> whose
+	      candidate version provides the target of the current
+	      alternative.
+	    </para>
+
+	    <para>
+	      For instance, say we are attempting to resolve
+	      <quote><literal>Depends: exim |
+	      mail-transport-agent</literal></quote>.  &aptitude; will
+	      first attempt to install the package
+	      <literal>exim</literal>.  If <literal>exim</literal> is
+	      not available, &aptitude; will then attempt to install
+	      the highest-priority package whose candidate version
+	      provides <literal>exim</literal>.  If there is no such
+	      package, &aptitude; will install the highest-priority
+	      package whose candidate version provides the virtual
+	      package <literal>mail-transport-agent</literal>.  On the
+	      other hand, suppose that the dependency is
+	      <quote><literal>Depends: exim (>= 2.0.0) |
+	      mail-transport-agent</literal></quote>, but only version
+	      <literal>1.0</literal> of <literal>exim</literal> is
+	      available.  In this case, &aptitude; will not install
+	      <literal>exim</literal> (because the version does not
+	      match), nor will it attempt to install packages
+	      providing <literal>exim</literal> (because virtual
+	      packages cannot match a dependency with a version
+	      restriction).  Thus, &aptitude; will fall back to
+	      installing the highest-priority package whose candidate
+	      version provides
+	      <literal>mail-transport-agent</literal>.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      If a package was installed by the previous step, resolve
+	      its dependencies using this algorithm, then stop.
+	    </para>
+	  </listitem>
+	</orderedlist>
+
+	<para>
+	  While this technique very often solves all the outstanding
+	  package dependencies, it can fail in a number of common
+	  circumstances.
+	</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Conflicts are resolved by removing the package that is
+	      the target of the conflict.  But now other packages that
+	      depend on this package have unresolved dependencies; the
+	      immediate resolver makes no attempt to fix them.
+	    </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      A dependency might not be satisfiable due to version
+	      restrictions and due to the limitation that only
+	      candidate versions are considered.  For instance, say
+	      that versions <literal>1.0</literal> and
+	      <literal>2.0</literal> of <literal>fileutils</literal>
+	      are available, that the candidate version is
+	      <literal>1.0</literal>, and that the package
+	      <literal>octopus</literal> declares a dependency
+	      <quote><literal>Depends: fileutils (>=
+	      2.0)</literal></quote>.  Immediate resolution is unable
+	      to resolve this dependency: it will never consider
+	      version <literal>2.0</literal> of the package, since
+	      that is not the candidate version.
+	    </para>
+	  </listitem>
+	</itemizedlist>
+
+	<para>
+	  The interactive dependency resolver can solve these
+	  situations and more.  When there are broken dependencies
+	  left over, or when immediate dependency resolution is
+	  disabled, the interactive resolver will automatically start
+	  searching for a solution.  The next section describes how to
+	  use the interactive dependency resolver.
+	</para>
+      </section>
+
+      <section id='secResolver'>
+	<title>Resolving Dependencies Interactively</title>
+
+	<para>
+	  If a dependency problem arises that cannot be handled using
+	  the immediate dependency resolver, &aptitude; can assist you
+	  in resolving it.  As soon as a problem occurs, a red bar
+	  will appear at the bottom of the screen with a summary of
 	  &aptitude;'s suggestion about how to fix it.  For instance,
 	  in the following screenshot, &aptitude; is indicating that
 	  it can resolve the situation by keeping two packages at
@@ -3884,276 +4370,196 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</para>
       </section>
 
-      <section id='secInstallRun'>
-	<title>Downloading, installing, and removing packages</title>
+      <section id='secDependencyResolutionConfiguration'>
+	<title>Configuring the interactive dependency resolver</title>
 
-	<para>
-	  Changing package states as described in the previous section
-	  does not actually affect what is installed on your system.
-	  Thus, you can adjust the state of packages without affecting
-	  your system until you are happy with what you see; once you
-	  are, you can <quote>commit</quote> the changes by actually installing and
-	  removing packages.<footnote><para>This is sometimes referred
-	  to as an <quote>install run</quote>, even though you might be upgrading
-	  or removing packages in addition to installing
-	  them.</para></footnote>
-	</para>
+	<section id='secDependencyResolutionHints'>
+	  <title>Resolver hints</title>
 
-	<para>
-	  To commit your changes, use the &actions-install; command.
-	  Selecting this command will display a preview screen
-	  describing the changes that will be performed.  This screen
-	  is just a package list, and you can manipulate the packages
-	  (for instance, cancelling unwanted removals) in the same way
-	  that you could in the main list.
-	</para>
-
-	<para>
-	  When you are done, use &views-close; to cancel the
-	  installation, or use &actions-install; to proceed.
-	  &aptitude; will download any files that need to be
-	  downloaded, then prompt you to continue with the
-	  installation.  When you select <quote>Continue</quote>, the installations
-	  and removals will commence.
-	</para>
-
-	<para>
-	  Packages that are downloaded by &aptitude; are placed in a
-	  cache directory (typically
-	  <filename>/var/cache/apt/archives</filename>).  Normally,
-	  they are just left in this directory ad infinitum.  To
-	  delete all the files in this directory, use &actions-clean;;
-	  to delete only files which cannot be downloaded again (ie,
-	  obsolete packages), use &actions-clean-obs;.
-	</para>
-      </section>
-
-      <section id='secTrust'>
-	<title>Understanding and managing package trust</title>
-
-	<para>
-	  &apt;'s ability to access multiple package sources leads to
-	  a potential security vulnerability.  Suppose you add an
-	  archive of packages published by Joe Random Hacker to your
-	  <filename>sources.list</filename> file in order to install
-	  Joe's <systemitem>gargleblast</systemitem> package.  It is
-	  possible, however, that -- unbeknownst to you -- Joe's
-	  archive also contains his own <quote>customized</quote>
-	  versions of packages such as <systemitem>libc6</systemitem>
-	  and <systemitem>ssh</systemitem>...versions that steal your
-	  private information or open backdoors on your system!  If
-	  these packages have higher version numbers than the
-	  legitimate Debian packages, &apt; will blithely install them
-	  on your system during your next upgrade, allowing Joe to do
-	  his dirty work undetected.  Joe could also break into your
-	  mirror of the Debian archives and replace the legitimate
-	  software with his doctored version.
-	</para>
-
-	<para>
-	  Luckily, newer versions of &apt; and &aptitude;, such as the
-	  version documented in this manual, have built-in safeguards
-	  to help defeat this type of attack.  &apt; uses strong
-	  security mechanisms based on the popular <ulink
-	  url='http://www.gnupg.org'>GPG</ulink> encryption software
-	  to verify that the packages being distributed from the
-	  official Debian mirrors are the same packages that were
-	  uploaded by the Debian developers.  &aptitude; will then
-	  warn you if you attempt to install a package from a
-	  non-Debian source, or if you attempt to upgrade a package
-	  that was installed from a Debian source to a version that
-	  came from a non-Debian source.
-	</para>
-
-	<warning>
 	  <para>
-	    The security mechanisms in &apt; provide a near-perfect
-	    guarantee that the contents of your archive mirror are
-	    identical to the contents of the master Debian archive.
-	    However, they are not a panacea: for instance, there are
-	    many ways that a tampered package could theoretically find
-	    its way into the master Debian archive.
+	    To improve the quality of the dependency solutions that
+	    you receive, you can provide hints to the interactive
+	    dependency resolver.  These hints can alter the priorities
+	    of the resolver, biasing it more strongly in favor of one
+	    version or package, or they can be used to
+	    <quote>pre-load</quote> the resolver with rejections and
+	    approvals, as if you had entered the resolver and manually
+	    rejected or approved various versions.
 	  </para>
 
 	  <para>
-	    Ensuring that you only install software from a trusted
-	    source will give you an important degree of protection
-	    against malicious packages, but it cannot eliminate all
-	    the risks inherent in installing software.
-	  </para>
-	</warning>
-
-	<section>
-	  <title>Understanding trust</title>
-
-	  <para>
-	    &apt; allows the administrator of an archive to provide a
-	    <firstterm>signature</firstterm> of the archive's index.
-	    This signature, which (for all practical purposes) cannot
-	    be forged, indicates that the package files listed in the
-	    index are the same files that the administrator intended
-	    to place in the archive: ie, that the contents of the
-	    archive have not been tampered with since it was
-	    created.<footnote><para>As noted above, it does
-	    <emphasis>not</emphasis> indicate that the packages in the
-	    archive are secure, or even non-malicious; it merely shows
-	    that they are genuine.</para></footnote> The signature can
-	    be validated by checking that it corresponds to the
-	    administrator's <firstterm>public key</firstterm>.  The
-	    public key of the Debian archive is distributed with
-	    &apt;, typically on your Debian CD.
+	    Hints are stored in the &apt; configuration file,
+	    <filename>/etc/apt/apt.conf</filename>, in the
+	    configuration group <quote><literal><link
+	    linkend='configProblemResolver-Hints'>Aptitude::ProblemResolver::Hints</link></literal></quote>
+	    (see <xref linkend='secConfigFile'/> for details on the
+	    configuration file).
 	  </para>
 
 	  <para>
-	    When &aptitude; downloads an archive index, it will check
-	    whether the index is properly signed.  If it is unsigned,
-	    &aptitude; will not trust package files from that
-	    archive. (see below for information on what this means) If
-	    it has a signature but the signature is incorrect or
-	    cannot be verified, a warning will be printed and
-	    &aptitude; will refuse to trust packages from that
-	    archive.
+	    Each resolver hint consists of an
+	    <replaceable>action</replaceable>, a
+	    <replaceable>target</replaceable>, and an optional
+	    <replaceable>version</replaceable>.  A hint is written
+	    like this: <literal>"<replaceable>action</replaceable>
+	    <replaceable>target</replaceable>
+	    <optional><replaceable>version</replaceable></optional>"</literal>.
+	    To apply a resolver hint, &aptitude; locates one or more
+	    packages using the value of
+	    <replaceable>target</replaceable>, chooses one or more
+	    versions of those packages using the value of
+	    <replaceable>version</replaceable>, and finally performs
+	    the given <replaceable>action</replaceable>.
 	  </para>
 
 	  <para>
-	    Later, when you perform an <link
-	    linkend='secInstallRun'>install run</link>, &aptitude;
-	    will check whether the packages are from trusted sources.
-	    If an untrusted package is being installed, or a package
-	    is being upgraded from a trusted to an untrusted version,
-	    a warning will be displayed and you will have the
-	    opportunity to abort the download:
+	    The <replaceable>action</replaceable> field of a resolver
+	    hint may be one of the following:
 	  </para>
 
-	  <screenshot>
-	    <mediaobject>
-	      <imageobject>
-		<imagedata fileref='images/trust-snapshot.png' format='PNG' width='100%' scalefit='1'/>
-	      </imageobject>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+		<quote><literal>approve</literal></quote>: Approve the
+		version, as if the command <link
+		linkend='menuResolverApprove'>&resolver-approve;</link>
+		had been invoked on it.
+	      </para>
+	    </listitem>
 
-	      <textobject role='text'>
-<screen> Actions  Undo  Package  Search  Options  Views  Help
-f10: Menu  ?: Help  q: Quit  u: Update  g: Download/Install/Remove Pkgs
-aptitude 0.3.0                    Will use 831kB of disk space   DL Size: 30.4MB
---\ Packages to be upgraded
-iu U wesnoth                                       -98.3kB 0.8.7-1    0.8.8-1.0w
-iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
-+------------------------------------------------------------------------------+
-|WARNING: untrusted versions of the following packages will be installed!     #|
-|                                                                             #|
-|Untrusted packages could compromise your system's security.  You should only #|
-|proceed with the installation if you are certain that this is what you want  #|
-|to do.                                                                       #|
-|                                                                             #|
-|  * wesnoth [version 0.8.8-1.0wesnoth.org]                                   #|
-|  * wesnoth-data [version 0.8.8-1.0wesnoth.org]                              #|
-|  * wesnoth-music [version 0.8.8-1.0wesnoth.org]                             #|
-|         [ Really Continue ]                  [ Abort Installation ]          |
-+------------------------------------------------------------------------------+
-                                                                               #
-                                                                               #
-                                                                               #
-                                                                               #
-                                                                               #
-                                                                               #</screen>
-	      </textobject>
-	    </mediaobject>
-	  </screenshot>
+	    <listitem>
+	      <para>
+		<quote><literal>reject</literal></quote>: Reject the
+		version, as if the command <link
+		linkend='menuResolverReject'>&resolver-reject;</link>
+		had been invoked on it.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><replaceable>number</replaceable></quote>: add
+		the given <replaceable>number</replaceable> to the
+		version's <replaceable>score</replaceable>, biasing
+		the resolver in favor of it or (with a negative
+		number) away from it.  For instance, the hint
+		<literal>200 emacs</literal> adds 200 to the score of
+		<literal>emacs</literal>, whereas the hint
+		<literal>-10 emacs</literal> subtracts 10 from its
+		score.
+	      </para>
+	    </listitem>
+	  </orderedlist>
+
+	  <para>
+	    If <replaceable>target</replaceable> field of a resolver
+	    hint contains a question mark
+	    (<quote><literal>?</literal></quote>) or tilde
+	    (<quote><literal>~</literal></quote>), it is considered to
+	    be a search pattern and all matching package versions are
+	    considered.  Otherwise, it is considered to be the name of
+	    a package to select.  So the target
+	    <quote><literal>g++</literal></quote> will select only the
+	    <literal>g++</literal> package, but the target
+	    <quote><literal>?section(non-free)</literal></quote> will
+	    select any package in the <literal>non-free</literal>
+	    section.  See <xref linkend='secSearchPatterns'/> for more
+	    information on search patterns.
+	  </para>
+
+	  <para>
+	    If the <replaceable>version</replaceable> field is not
+	    present, then all versions of the package are affected by
+	    the hint.  Otherwise, it may have any of the following
+	    forms:
+	  </para>
+
+	  <orderedlist>
+	    <listitem>
+	      <para>
+		<quote><literal>/<replaceable>archive</replaceable></literal></quote>:
+		the hint only affects versions that are available in
+		the given <replaceable>archive</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>&lt;<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		less than <replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>&lt;=<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		less than or equal to
+		<replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>=<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		<replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>&lt;&gt;<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		not <replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>&gt;=<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		greater than or equal to
+		<replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>&gt;<replaceable>version</replaceable></literal></quote>:
+		the hint only affects versions whose version number is
+		greater than <replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>:UNINST</literal></quote>: instead of
+		affecting any of the versions of
+		<replaceable>target</replaceable>, the hint affects
+		the decision to remove
+		<replaceable>target</replaceable>.  For instance,
+		<quote><literal>reject aptitude
+		:UNINST</literal></quote> will prevent the resolver
+		from attempting to remove &aptitude;.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><replaceable>version</replaceable></quote>: the
+		hint only affects versions whose version number is
+		<replaceable>version</replaceable>.
+	      </para>
+	    </listitem>
+	  </orderedlist>
 	</section>
-
-	<section>
-	  <title>Trusting additional keys</title>
-
-	  <para>
-	    You might find it useful to allow &apt; to trust
-	    additional archives, besides the main Debian archive.  For
-	    each archive that you want to trust, you will have to
-	    acquire the public key that is used to sign the archive's
-	    package index.  This is typically a text file whose name
-	    ends in <filename>.asc</filename>; it might be provided by
-	    the site administrator or downloadable from a public
-	    keyserver.  For more information on what public keys are
-	    and how to get them, see the <ulink
-	    url='http://www.gnupg.org'>GPG web page</ulink>.
-	  </para>
-
-	  <para>
-	    The list of keys that apt will trust is stored in the
-	    <firstterm>keyring file</firstterm>
-	    <filename>/etc/apt/trusted.gpg</filename>.  Once you have
-	    the GPG key, you can add it to this file by executing the
-	    command <command>gpg --no-default-keyring --keyring
-	    /etc/apt/trusted.gpg --import
-	    <replaceable>newkey.asc</replaceable></command>.
-	    &aptitude; will then trust any archive that is signed with
-	    the key contained in <filename>newkey.asc</filename>.
-	  </para>
-
-	  <warning>
-	    <para>
-	      Once an archive's key has been added to the APT keyring,
-	      it will be trusted just as much as the main Debian
-	      mirrors themselves!  You should only do this if you are
-	      very confident that the key you are adding is correct
-	      <emphasis>and</emphasis> that the person who holds the
-	      key is trustworthy and competent.
-	    </para>
-	  </warning>
-	</section>
-      </section>
-
-      <section id='secAutoInstall'>
-	<title>Managing automatically installed packages</title>
-
-	<para>
-	  To install one package, it is often necessary to install
-	  several others (to fulfill its dependencies).  For instance,
-	  if you wish to install the
-	  <systemitem>clanbomber</systemitem> package, you must also
-	  install the package <systemitem>libclanlib2</systemitem>.
-	  If you remove <systemitem>clanbomber</systemitem> again, you
-	  probably no longer need the
-	  <systemitem>libclanlib2</systemitem> package; &aptitude;
-	  will attempt to detect this and automatically remove the
-	  <systemitem>libclanlib2</systemitem> package.
-	</para>
-
-	<para>
-	  It works like this: when you install a package, &aptitude;
-	  will automatically install any other packages on which it
-	  depends.  These packages are marked as having been
-	  <quote>automatically installed</quote>; &aptitude; will monitor them and
-	  remove them when they are no longer depended upon by any
-	  manually installed package
-	  <footnote>
-	    <para>
-	      More precisely: they will be removed when there is no
-	      path via Depends, PreDepends, or Recommends to them from
-	      a manually installed package.  If <link
-	      linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link>
-	      is true, a Suggests relationship is also enough to keep
-	      a package installed.
-	    </para>
-	  </footnote>
-	  .  They will appear in the preview as
-	  <quote>packages being removed because they are no longer used.</quote>
-	</para>
-
-	<para>
-	  As with any automatic process, there is a potential for
-	  things to go haywire.  For instance, even if a package was
-	  automatically installed to start with, it might turn out to
-	  be useful in its own right.  You can cancel the <quote>automatic</quote>
-	  flag at any time by pressing <keycap>m</keycap>; if the
-	  package is already being removed, you can use
-	  &package-install; to cancel the removal and clear the
-	  <quote>automatic</quote> flag.
-	</para>
       </section>
     </section>
 
     <section id='secSearchPatterns'>
-      <title>Search Patterns</title>
+      <title>Search patterns</title>
 
       <para>
 	When you search for a package or set a display limit in
@@ -4180,20 +4586,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 
       <note>
 	<para>
-	  Text with no leading <quote>?</quote> can also form a search
-	  pattern: &aptitude; will attempt to match it against package
-	  names.  However, because <quote>?</quote> is a regular
-	  expression metacharacter, &aptitude; will
-	  <emphasis>not</emphasis> recognize question marks as
-	  terminators for these <quote>bare</quote> strings.  For
-	  instance, the search pattern
-	  <quote><literal>apt?name(python)</literal></quote> will not
-	  search for packages whose name contains both
-	  <quote><literal>apt</literal></quote> and
-	  <quote><literal>python</literal></quote>; instead, it will
-	  search for packages whose name matches the regular
-	  expression
-	  <quote><literal>apt?name(python)</literal></quote>.
+	  Text with no leading <quote>?</quote> also forms a search
+	  pattern: &aptitude; will treat each word (or quoted string)
+	  as the argument to a &Sterm; pattern, which performs a
+	  full-text search against the package
+	  database.<footnote><para>Previous versions of &aptitude;
+	  would instead treat text with no leading <quote>?</quote> as
+	  a &Sname; pattern.</para></footnote> For instance, the
+	  search pattern <quote><literal>algebra</literal></quote>
+	  will match any package that contains the keyword
+	  <literal>algebra</literal>, producing the same effect as the
+	  search pattern
+	  <quote><literal>&Sterm;(algebra)</literal></quote>.
 	</para>
       </note>
 
@@ -4205,9 +4609,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  future releases; scripts that invoke
 	  <literal>aptitude</literal> should explicitly name the
 	  search strategy they want to use.  That is, scripts should
-	  search for <quote><literal>&Sname;(coq)</literal></quote> or
-	  <quote><literal><link
-	  linkend='searchTermName'>~ncoq</link></literal></quote>
+	  search for <quote><literal>&Sterm;(coq)</literal></quote>
 	  rather than <quote><literal>coq</literal></quote>).
 	</para>
       </warning>
@@ -4401,7 +4803,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </section>
 
       <section>
-	<title>Searches and Versions</title>
+	<title>Searches and versions</title>
 
 	<para>
 	  By default, a pattern matches a package if any version of
@@ -4597,7 +4999,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       </section>
 
       <section id='secSearchTermReference'>
-	<title>Search Term Reference</title>
+	<title>Search term reference</title>
 
 	<para>
 	  <xref linkend='tableSearchTermQuickGuide'/> provides a brief
@@ -4805,6 +5207,15 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </row>
 
 	      <row>
+		<entry><literal>&Sexact-name;(<replaceable>name</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages named
+		  <replaceable>name</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
 		<entry><literal>&Sfalse;</literal></entry>
 		<entry><literal>~F</literal></entry>
 		<entry>
@@ -4973,6 +5384,25 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		<entry>
 		  Select packages that have the given debtags
 		  <replaceable>tag</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>&Sterm;(<replaceable>keyword</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Full-text search for packages that contain the given
+		  <replaceable>keyword</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>&Sterm-prefix;(<replaceable>keyword</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Full-text search for packages that contain a keyword
+		  that begins with the given
+		  <replaceable>keyword</replaceable>.
 		</entry>
 	      </row>
 
@@ -5464,6 +5894,29 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
+	<varlistentry id='searchExactName'>
+	  <term><literal>?exact-name(<replaceable>name</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages named <replaceable>name</replaceable>.
+	      This is similar to &Sname;, but the name must match
+	      exactly.  For instance, the following pattern will match
+	      only the package <systemitem>apt</systemitem>; with
+	      &Sname;, it would also match
+	      <systemitem>aptitude</systemitem>,
+	      <systemitem>uvccapture</systemitem>, etc.
+	    </para>
+
+	    <example id='idSearchExactName'>
+	      <title>Use of the <literal>?exact-name</literal> term</title>
+	      <para>
+		<literal>?exact-name(apt)</literal>
+	      </para>
+	    </example>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry id='searchFalse'>
 	  <term><literal>?false</literal>, <literal>~F</literal></term>
 
@@ -5796,6 +6249,62 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	  </listitem>
 	</varlistentry>
 
+	<varlistentry id='searchTerm'>
+	  <term>
+	    <literal>?term(<replaceable>keyword</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term performs a full-text search for
+	      <replaceable>keyword</replaceable> in the apt package
+	      cache.  When used with <quote><literal>aptitude
+	      search</literal></quote>, <link
+	      linkend='menuSearchLimit'>&search-limit;</link> in the
+	      curses front-end, or typed into a package search box in
+	      the GTK+ front-end, this term will allow &aptitude; to
+	      accelerate the search using a Xapian index.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchTermPrefix'>
+	  <term>
+	    <literal>?term-prefix(<replaceable>keyword</replaceable>)</literal>
+	  </term>
+
+	  <listitem>
+	    <para>
+	      This term performs a full-text search for any keyword
+	      beginning with <replaceable>keyword</replaceable> in the
+	      apt package cache.  When used with
+	      <quote><literal>aptitude search</literal></quote>, <link
+	      linkend='menuSearchLimit'>&search-limit;</link> in the
+	      curses front-end, or typed into a package search box in
+	      the GTK+ front-end, this term will allow &aptitude; to
+	      accelerate the search using a Xapian index.
+	    </para>
+
+	    <para>
+	      This is similar to &Sterm;, but matches extensions of
+	      the <replaceable>keyword</replaceable>.  For instance,
+	      the following search pattern will match any package
+	      indexed under the keywords <literal>hour</literal>,
+	      <literal>hourglass</literal>, <literal>hourly</literal>,
+	      and so on:
+	    </para>
+
+	    <example id='exampleTermPrefix'>
+	      <title>Use of the <literal>?term-prefix</literal> term</title>
+	      <para>
+		<literal>
+		  ?term-prefix(hour)
+		</literal>
+	      </para>
+	    </example>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry id='searchTrue'>
 	  <term>
 	    <literal>?true</literal>, <literal>~T</literal>
@@ -5936,7 +6445,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
       <title>Customizing &aptitude;</title>
 
       <section>
-	<title>Customizing the Package List</title>
+	<title>Customizing the package list</title>
 
 	<para>
 	  The package list can be heavily customized: how packages are
@@ -6508,7 +7017,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	    </varlistentry>
 
 	    <varlistentry>
-	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional><optional>, ...</optional>)</synopsis></term>
+	      <term><synopsis>pattern(<replaceable>pattern</replaceable> <optional>=> <replaceable>title</replaceable></optional> <optional>{ <replaceable>policy</replaceable> }</optional> <optional>, ...</optional>)</synopsis></term>
 
 	      <listitem>
 		<para>
@@ -6523,13 +7032,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>title</replaceable> will be replaced by
 		  the Nth result of the match.  If
 		  <replaceable>title</replaceable> is not present, it
-		  is assumed to be <literal>\1</literal>.
+		  is assumed to be <literal>\1</literal>.  Note that
+		  packages which do not match any
+		  <replaceable>pattern</replaceable>s will not appear
+		  in the tree at all.
 		</para>
 
+		<example>
+		  <title>Use of <literal>pattern</literal> to group packages by their maintainer</title>
+
+		  <para>
+		    <literal>pattern(&Smaintainer;() => \1)</literal>
+		  </para>
+		</example>
+
 		<para>
-		  For instance, <literal>pattern(&Smaintainer;() =>
-		  \1)</literal> will group packages according to their
-		  Maintainer field.  The policy
+		  The example above will group packages according to
+		  their Maintainer field.  The policy
 		  <literal>pattern(&Smaintainer;())</literal> will do
 		  the same thing, as the absent
 		  <replaceable>title</replaceable> defaults to
@@ -6544,14 +7063,83 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		  <replaceable>pattern</replaceable> will be inserted
 		  into the tree at the same level as the
 		  <literal>pattern</literal> grouping, rather than
-		  being placed in subtrees.  For instance,
-		  <literal>pattern(&Saction;(remove) => Packages Being
-		  Removed, &Strue; ||)</literal> will place packages
-		  that are being removed into a subtree, and place all
-		  the other packages at the current level.  Any later
-		  grouping policies will apply to both sets of
-		  packages, of course.
+		  being placed in subtrees.
 		</para>
+
+		<example>
+		  <title>
+		    Use of <literal>pattern</literal> with some
+		    packages placed at the top level
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed, &Strue; ||)</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The example above will place packages that are being
+		  removed into a subtree, and place all the other
+		  packages at the current level, grouped according to
+		  the policies that follow <literal>pattern</literal>.
+		</para>
+
+		<para>
+		  By default, all the packages that match each pattern
+		  are grouped according to the rules that follow the
+		  <literal>pattern</literal> policy.  To specify a
+		  different policy for some packages, write the policy
+		  in braces (<literal>{}</literal>) after the title of
+		  the group, after the <literal>||</literal>, or after
+		  the pattern if neither is present.  For instance:
+		</para>
+
+		<example id='examplePatternGroupingPolicyWithSubPolicies'>
+		  <title>
+		    Use of the <literal>pattern</literal> grouping policy with sub-policies
+		  </title>
+
+		  <para>
+		    <literal>pattern(&Saction;(remove) => Packages
+		    Being Removed {}, &Saction;(install) => Packages
+		    Being Installed, &Strue; || {status})</literal>
+		  </para>
+		</example>
+
+		<para>
+		  The policy in the above example has the following
+		  effects:
+		</para>
+
+		<itemizedlist>
+		  <listitem>
+		    <para>
+		      Packages that are being removed are placed into
+		      a subtree labeled <quote>Packages Being
+		      Removed</quote>; the grouping policy for this
+		      subtree is empty, so the packages are placed
+		      into a flat list.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      Packages that are being installed are placed
+		      into a subtree labeled <literal>Packages Being
+		      Installed</literal> and grouped according to the
+		      policies that follow <literal>pattern</literal>.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      All remaining packages are placed at the top
+		      level of the tree, grouped according to their
+		      status.
+		    </para>
+		  </listitem>
+		</itemizedlist>
 
 		<para>
 		  See <xref linkend='secSearchPatterns'/>
@@ -8759,7 +9347,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	</para>
 
 	<section>
-	  <title>Display Elements</title>
+	  <title>Display elements</title>
 
 	  <para>
 	    The layout is stored in the configuration group
@@ -9435,7 +10023,8 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		packages to be unused (and thus will not automatically
 		remove them) as long as any installed package
 		reommends them.  For more information, see <xref
-		linkend='secAutoInstall'/>.
+		linkend='secAutoInstall'/> and <xref
+		linkend='secImmediateResolution'/>.
 	      </seg>
 	    </seglistitem>
 
@@ -9669,7 +10258,7 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      <seg>
 		In command-line mode, if this option is
 		<literal>true</literal>, the <link
-		linkend='safeUpgrade'><literal>safe-upgrade</literal></link>
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 		command will not attempt to resolve dependencies by
 		installing new packages.  If upgrading package
 		<replaceable>A</replaceable> would require package
@@ -9678,6 +10267,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		upgraded.  This corresponds to the command-line option
 		<literal><link
 		linkend='cmdlineOptionSafeUpgradeNoNewInstalls'>--no-new-installs</link></literal>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'>
+	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command will display an explanation of the actions
+		taken by the resolver before showing the installation
+		preview.  This option is similar to <link
+		linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>,
+		but only applies to the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command.  Equivalent to the command-line option <link
+		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
 	    </seglistitem>
 
@@ -9732,6 +10338,26 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		displays the same information you can access via
 		<literal>aptitude why</literal> or by pressing
 		<keycap>i</keycap> in a package list.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configSafe-Resolver-Show-Resolver-Actions'>
+	      <seg><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is enabled, then when the
+		<quote>safe</quote> dependency resolver has been
+		activated via <link
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		it will display a summary of the actions taken by the
+		resolver before showing the installation preview.
+		This option is similar to <link
+		linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::Safe-Upgrade::Show-Resolver-Actions</literal></link>,
+		but only applies to command-line actions other than
+		<link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+		Equivalent to the command-line option <link
+		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
 	    </seglistitem>
 
@@ -10028,6 +10654,92 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configLoggingConfigFile'>
+	      <seg><literal>Aptitude::Logging::Config-File</literal></seg>
+	      <seg><filename>/etc/apt/aptitude-log.conf</filename></seg>
+	      <seg>
+		<!-- TODO: the logging system needs its own
+		     configuration section, with documentation of the
+		     file format, not a link to the library's home
+		     page.
+		-->
+		If this is set to a nonempty string, &aptitude; will
+		read it to configure the logging system; it should be
+		a file in the format of <ulink
+		linkend='http://logging.apache.org/log4cxx/'><literal>log4cxx</literal></ulink>.
+		&aptitude; will periodically re-read the file to see
+		whether any settings have been changed.  This differs
+		from the setting <link
+		linkend='configLog'><literal>Aptitude::Log</literal></link>:
+		that file is used to log installations and removals,
+		whereas the logging configured by this file is used to
+		log program events, errors, and debugging messages.
+		This option is equivalent to the command-line argument
+		<link
+		linkend='cmdlineOptionLogConfigFile'><literal>--log-config-file</literal></link>.
+		The options <link
+		linkend='configLoggingFile'><literal>Aptitude::Logging::File</literal></link>
+		and <link
+		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
+		provide a simpler, but less flexible, way of
+		configuring logging; they override any settings made
+		in this configuration file.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configLoggingFile'>
+	      <seg><literal>Aptitude::Logging::File</literal></seg>
+	      <seg><filename></filename></seg>
+
+	      <seg>
+		If this is set to a nonempty string, &aptitude; will
+		write logging messages to it; setting it to
+		<quote><literal>-</literal></quote> causes logging
+		messages to be printed to standard output.  This
+		differs from the setting <link
+		linkend='configLog'><literal>Aptitude::Log</literal></link>:
+		that file is used to log installations and removals,
+		whereas this file is used to log program events,
+		errors, and debugging messages (if enabled).  This
+		option is equivalent to the command-line argument
+		<link
+		linkend='cmdlineOptionLogFile'><literal>--log-file</literal></link>.
+		See also <link
+		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
+		and <link
+		linkend='configLoggingConfigFile'><literal>Aptitude::Logging::Config-File</literal></link>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configLoggingLevels'>
+	      <seg><literal>Aptitude::Logging::Levels</literal></seg>
+	      <seg>(empty)</seg>
+	      <seg>
+		This option is a group whose members control which log
+		messages are written.  Each entry is either
+		<quote><replaceable>level</replaceable></quote>, to
+		set the global log level (the log level of the root
+		logger) to the given <replaceable>level</replaceable>,
+		or
+		<quote><literal><replaceable>category</replaceable>:<replaceable>level</replaceable></literal></quote>,
+		where <replaceable>category</replaceable> is the
+		category of messages to modify (such as
+		<literal>aptitude.resolver.hints.match</literal>) and
+		<replaceable>level</replaceable> is the lowest log
+		level of messages in that category that should be
+		displayed.  Valid log levels are
+		<quote><literal>fatal</literal></quote>,
+		<quote><literal>error</literal></quote>,
+		<quote><literal>warn</literal></quote>,
+		<quote><literal>info</literal></quote>,
+		<quote><literal>debug</literal></quote>, and
+		<quote><literal>trace</literal></quote>.  The
+		command-line option <link
+		linkend='cmdlineOptionLogLevel'><literal>--log-level</literal></link>
+		can be used to set or override any log level.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configParseDescriptionBullets'>
 	      <seg><literal>Aptitude::Parse-Description-Bullets</literal></seg>
 
@@ -10098,6 +10810,23 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-DefaultResolutionScore'>
+	      <seg><literal>Aptitude::ProblemResolver::DefaultResolutionScore</literal></seg>
+	      <seg><literal>400</literal></seg>
+	      <seg>
+		How much to reward or penalize prospective solutions
+		based on how many <quote>default</quote> resolutions
+		for currently unsatisfied dependencies they install.
+		The default resolution is the resolution that
+		<quote><literal>apt-get install</literal></quote> or
+		the <quote><link
+		linkend='secImmediateResolution'>immediate dependency
+		resolver</link></quote> would pick.  The score is only
+		applied for dependencies and recommendations whose
+		targets are not currently installed.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-DiscardNullSolution'>
 	      <seg><literal>Aptitude::ProblemResolver::Discard-Null-Solution</literal></seg>
 	      <seg><literal>true</literal></seg>
@@ -10136,6 +10865,35 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		Removing a package and installing another package that
 		fully replaces it (i.e., conflicts with it, replaces
 		it, and provides it) is assigned this score.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-FutureHorizon'>
+	      <seg><literal>Aptitude::ProblemResolver::FutureHorizon</literal></seg>
+	      <seg><literal>50</literal></seg>
+
+	      <seg>
+		How many <quote>steps</quote> the resolver should run
+		after finding the first solution.  Although &aptitude;
+		attempts to generate better solutions before worse
+		solutions, sometimes it is unable to do so; this
+		setting causes the resolver to briefly continue
+		searching for a better solution before displaying its
+		results, rather than stopping immediately after it
+		finds the first solution.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-Hints'>
+	      <seg><literal>Aptitude::ProblemResolver::Hints</literal></seg>
+	      <seg>(empty)</seg>
+	      <seg>
+		This option is a group whose members are used to
+		configure the problem resolver.  Each item in the
+		group is a string describing an action that should be
+		applied to one or more packages.  The syntax for each
+		hint, and the effect that hints have, may be found in
+		<xref linkend='secDependencyResolutionHints'/>.
 	      </seg>
 	    </seglistitem>
 
@@ -10180,23 +10938,6 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		keeping a package in its current state, if that
 		package is not already going to be kept in its current
 		state.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configProblemResolver-MaxSuccessors'>
-	      <seg><literal>Aptitude::ProblemResolver::Max-Successors</literal></seg>
-	      <seg><literal>0</literal></seg>
-	      <seg>
-		When new possible solutions are being generated, this
-		value controls how long the generation procedure
-		lasts.  Successors are generated in discrete bundles,
-		and as soon as at least one and at most
-		<replaceable>Max-Successors</replaceable> nodes have
-		been generated, successor generation terminates.
-		Turning this value up might cause the first few
-		generated solutions to have higher scores; on the
-		other hand, it might cause each resolver
-		<quote>step</quote> to take a long time.
 	      </seg>
 	    </seglistitem>
 
@@ -10718,6 +11459,18 @@ iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w
 		If this option is <literal>true</literal>,
 		&aptitude; will format descriptions so that each
 		line is exactly the width of the screen.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configFlat-View-As-First-View'>
+	      <seg><literal>Aptitude::UI::Flat-View-As-First-View</literal></seg>
+
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>,
+		&aptitude; will display a flat view on startup
+		instead of the default view.
 	      </seg>
 	    </seglistitem>
 
@@ -11372,7 +12125,7 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
   </chapter>
 
   <chapter id='chapFAQ'>
-    <title>aptitude FAQ</title>
+    <title>aptitude frequently asked questions</title>
 
     <blockquote>
       <attribution>
@@ -11518,7 +12271,7 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
     </note>
 
     <variablelist>
-      <title>Translations and Internationalization</title>
+      <title>Translations and internationalization</title>
 
       <varlistentry>
 	<term>Brazilian translation</term>
@@ -11731,9 +12484,12 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
   </chapter>
 
   <reference id='secReference'>
-    <title>Command-Line Reference</title>
+    <title>Command-line reference</title>
 
     &manpage;
   </reference>
 
 </book>
+
+<!-- LocalWords:  unversioned
+-->

@@ -16,7 +16,9 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_manager.h>
 #include <generic/apt/download_signal_log.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
@@ -73,7 +75,7 @@ void ui_solution_screen()
   file_quit.connect(sigc::ptr_fun(cwidget::toplevel::exitmain));
 
   progress_ref p = gen_progress_bar();
-  do_new_package_view(*p.unsafe_get_ref());
+  do_new_package_view(*p->get_progress().unsafe_get_ref());
 
   do_examine_solution();
   ui_main();
@@ -369,6 +371,15 @@ namespace
   }
 }
 
+namespace
+{
+  template<typename T>
+  void assign(const T &val, T *target)
+  {
+    *target = val;
+  }
+}
+
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose)
 {
@@ -401,7 +412,9 @@ download_manager::result cmdline_do_download(download_manager *m,
   do
     {
       pkgAcquire::RunResult download_res = m->do_download();
-      finish_res = m->finish(download_res, progress);
+      m->finish(download_res, &progress,
+		sigc::bind(sigc::ptr_fun(&assign<download_manager::result>),
+			   &finish_res));
     }
   while(finish_res == download_manager::do_again);
 
@@ -416,11 +429,6 @@ download_manager::result cmdline_do_download(download_manager *m,
     }
 
   return finish_res;
-}
-
-bool cmdline_is_search_pattern(const std::string &s)
-{
-  return s.find_first_of("~?") != s.npos;
 }
 
 namespace aptitude
@@ -648,6 +656,7 @@ namespace aptitude
     void apply_user_tags(const std::vector<tag_application> &user_tags)
     {
       using namespace matching;
+      cwidget::util::ref_ptr<search_cache> search_info(search_cache::create());
       for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
 	  !pkg.end(); ++pkg)
 	{
@@ -655,11 +664,13 @@ namespace aptitude
 		user_tags.begin(); it != user_tags.end(); ++it)
 	    {
 	      bool applicable = false;
-	      if(it->get_matcher() != NULL)
+	      if(it->get_pattern().valid())
 		{
-		  if(matching::apply_matcher(it->get_matcher(), pkg,
-				   *apt_cache_file,
-				   *apt_package_records))
+		  if(matching::get_match(it->get_pattern(),
+					 pkg,
+					 search_info,
+					 *apt_cache_file,
+					 *apt_package_records).valid())
 		    applicable = true;
 		}
 	      else

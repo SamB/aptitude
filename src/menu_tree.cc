@@ -31,7 +31,9 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/undo.h>
 
@@ -42,16 +44,20 @@ namespace cwidget
 {
   using namespace widgets;
 }
-namespace match = aptitude::matching;
+namespace matching = aptitude::matching;
+using cwidget::util::ref_ptr;
 
 cw::editline::history_list menu_tree::search_history;
 
-class pkg_matcher_search:public cw::tree_search_func
+class pattern_search:public cw::tree_search_func
 {
-  match::pkg_matcher *matcher;
+  ref_ptr<matching::pattern> pattern;
+  ref_ptr<matching::search_cache> cache;
 public:
-  pkg_matcher_search(match::pkg_matcher *_matcher)
-    : matcher(_matcher)
+  pattern_search(const ref_ptr<matching::pattern> &_pattern,
+		 const ref_ptr<matching::search_cache> &_cache)
+    : pattern(_pattern),
+      cache(matching::search_cache::create())
   {
   }
 
@@ -60,19 +66,21 @@ public:
     // EWW
     const pkg_item *pitem=dynamic_cast<const pkg_item *>(&item);
     if(pitem)
-      return match::apply_matcher(matcher,
-				  pitem->get_package(),
-				  *apt_cache_file,
-				  *apt_package_records);
+      return matching::get_match(pattern,
+				 pitem->get_package(),
+				 cache,
+				 *apt_cache_file,
+				 *apt_package_records).valid();
     else {
       const pkg_ver_item *pvitem=dynamic_cast<const pkg_ver_item *>(&item);
 
       if(pvitem)
-	return match::apply_matcher(matcher,
-				    pvitem->get_package(),
-				    pvitem->get_version(),
-				    *apt_cache_file,
-				    *apt_package_records);
+	return matching::get_match(pattern,
+				   pvitem->get_package(),
+				   pvitem->get_version(),
+				   cache,
+				   *apt_cache_file,
+				   *apt_package_records).valid();
       else
 	return false;
     }
@@ -80,7 +88,7 @@ public:
 };
 
 menu_tree::menu_tree()
-  :last_search_matcher(NULL), doing_incsearch(false),
+  :last_search_pattern(), doing_incsearch(false),
    pre_incsearch_selected(get_end())
 {
   aptcfg->connect(PACKAGE "::UI::Incremental-Search",
@@ -89,7 +97,6 @@ menu_tree::menu_tree()
 
 menu_tree::~menu_tree()
 {
-  delete last_search_matcher;
 }
 
 bool menu_tree::proxy_redirect(bool (menu_redirect::*call)())
@@ -246,14 +253,15 @@ bool menu_tree::find_search_back()
 
 bool menu_tree::find_research_enabled()
 {
-  return last_search_matcher!=NULL;
+  return last_search_pattern.valid();
 }
 
 bool menu_tree::find_research()
 {
-  if(last_search_matcher)
+  if(last_search_pattern.valid())
     {
-      pkg_matcher_search searcher(last_search_matcher);
+      pattern_search searcher(last_search_pattern,
+			      matching::search_cache::create());
       if(last_search_backwards)
 	search_back_for(searcher);
       else
@@ -272,14 +280,15 @@ bool menu_tree::find_research()
 
 bool menu_tree::find_repeat_search_back_enabled()
 {
-  return last_search_matcher!=NULL;
+  return last_search_pattern.valid();
 }
 
 bool menu_tree::find_repeat_search_back()
 {
-  if(last_search_matcher)
+  if(last_search_pattern.valid())
     {
-      pkg_matcher_search searcher(last_search_matcher);
+      pattern_search searcher(last_search_pattern,
+			      matching::search_cache::create());
       if(!last_search_backwards)
 	search_back_for(searcher);
       else
@@ -333,20 +342,20 @@ void menu_tree::do_search(std::wstring s, bool backward)
 {
   if(s.size()!=0)
     {
-      delete last_search_matcher;
       last_search_term=s;
-      last_search_matcher = match::parse_pattern(cw::util::transcode(s));
+      last_search_pattern = matching::parse(cw::util::transcode(s));
     }
 
   if(doing_incsearch)
     doing_incsearch=false;
   else
     {
-      if(last_search_term.size()!=0 && last_search_matcher)
+      if(last_search_term.size() != 0 && last_search_pattern.valid())
 	{
 	  last_search_backwards = backward;
 
-	  pkg_matcher_search searcher(last_search_matcher);
+	  pattern_search searcher(last_search_pattern,
+				  matching::search_cache::create());
 	  if(backward)
 	    search_back_for(searcher);
 	  else
@@ -368,21 +377,20 @@ void menu_tree::do_incsearch(std::wstring s, bool backward)
       pre_incsearch_selected=get_selection();
     }
 
-  match::pkg_matcher *m = match::parse_pattern(cw::util::transcode(s), false, false);
+  ref_ptr<matching::pattern> p = matching::parse(cw::util::transcode(s), false, true, true);
 
   set_selection(pre_incsearch_selected);
 
-  if(m)
+  if(p.valid())
     {
-      pkg_matcher_search searcher(m);
+      pattern_search searcher(p,
+			      matching::search_cache::create());
       last_search_backwards = backward;
       if(backward)
 	search_back_for(searcher);
       else
 	search_for(searcher);
     }
-
-  delete m;
 }
 
 void menu_tree::do_cancel_incsearch()

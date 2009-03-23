@@ -1,6 +1,6 @@
 // aptcache.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,12 +20,15 @@
 #include "aptcache.h"
 
 #include <aptitude.h>
+#include <loggers.h>
 
 #include "apt.h"
 #include "aptitude_resolver_universe.h"
 #include "aptitudepolicy.h"
 #include "config_signal.h"
-#include "matchers.h"
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/problemresolver/solution.h>
 #include <generic/util/undo.h>
 
@@ -56,6 +59,7 @@
 namespace cw = cwidget;
 
 using namespace std;
+using aptitude::Loggers;
 
 class aptitudeDepCache::apt_undoer:public undoable
 // Allows an action performed on the package cache to be undone.  My first
@@ -170,7 +174,8 @@ public:
   }
 };
 
-aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache, undo_group *group)
+aptitudeDepCache::action_group::action_group(aptitudeDepCache &cache,
+					     undo_group *group)
   : parent_group(new pkgDepCache::ActionGroup(cache)),
     cache(cache), group(group)
 {
@@ -626,44 +631,54 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
       // version on upgrades.
       bool do_autoinstall=(iter==1);
 
-      for(pkgCache::PkgIterator i=PkgBegin(); !i.end(); i++)
+      std::set<pkgCache::PkgIterator> to_upgrade;
+      get_upgradable(ignore_removed, to_upgrade);
+      for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	    to_upgrade.begin(); it != to_upgrade.end(); ++it)
 	{
-	  StateCache &state=(*this)[i];
-	  aptitude_state &estate=get_ext_state(i);
+	  pre_package_state_changed();
+	  dirty = true;
 
-	  if(i.CurrentVer().end())
-	    continue;
+	  MarkInstall(*it, do_autoinstall);
+	}
+    }
+}
 
-	  bool do_upgrade = false;
+void aptitudeDepCache::get_upgradable(bool ignore_removed,
+				      std::set<pkgCache::PkgIterator> &upgradable)
+{
+  for(pkgCache::PkgIterator p = PkgBegin(); !p.end(); ++p)
+    {
+      StateCache &state = (*this)[p];
+      aptitude_state &estate = get_ext_state(p);
 
-	  if(!ignore_removed)
-	    do_upgrade = state.Status > 0 && !is_held(i);
-	  else
+      if(p.CurrentVer().end())
+	continue;
+
+      bool do_upgrade = false;
+
+      if(!ignore_removed)
+	do_upgrade = state.Status > 0 && !is_held(p);
+      else
+	{
+	  switch(estate.selection_state)
 	    {
-	      switch(estate.selection_state)
-		{
-		  // This case shouldn't really happen:
-		case pkgCache::State::Unknown:
-		  estate.selection_state=pkgCache::State::Install;
+	      // This case shouldn't really happen:
+	    case pkgCache::State::Unknown:
+	      estate.selection_state = pkgCache::State::Install;
 
-		  // Fall through
-		case pkgCache::State::Install:
-		  if(state.Status > 0 && !is_held(i))
-		    do_upgrade = true;
-		  break;
-		default:
-		  break;
-		}
-	    }
-
-	  if(do_upgrade)
-	    {
-	      pre_package_state_changed();
-	      dirty = true;
-
-	      MarkInstall(i, do_autoinstall);
+	      // Fall through
+	    case pkgCache::State::Install:
+	      if(state.Status > 0 && !is_held(p))
+		do_upgrade = true;
+	      break;
+	    default:
+	      break;
 	    }
 	}
+
+      if(do_upgrade)
+	upgradable.insert(p);
     }
 }
 
@@ -933,7 +948,9 @@ undoable *aptitudeDepCache::state_restorer(PkgIterator pkg, StateCache &state, a
 			ext_state.forbidver, this);
 }
 
-void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickies)
+void aptitudeDepCache::cleanup_after_change(undo_group *undo,
+					    std::set<pkgCache::PkgIterator> *changed_packages,
+					    bool alter_stickies)
   // Finds any packages whose states have changed and: (a) updates the
   // selected_state if it's not already updated; (b) adds an item to the
   // undo group.
@@ -941,7 +958,8 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
   // We get here with NULL backup_state in certain very early failures
   // (e.g., when someone else is holding a lock).  In this case we
   // don't know what the previous state was, so we can't possibly
-  // build a collection of undoers to return to it.
+  // build a collection of undoers to return to it or find out which
+  // packages changed relative to it.
   if(backup_state.PkgState == NULL ||
      backup_state.DepState == NULL ||
      backup_state.AptitudeState == NULL)
@@ -949,6 +967,10 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 
   for(pkgCache::PkgIterator pkg=PkgBegin(); !pkg.end(); pkg++)
     {
+      // Set to true if we should signal that this package's visible
+      // state changed.
+      bool visibly_changed = false;
+
       if(PkgState[pkg->ID].Mode!=backup_state.PkgState[pkg->ID].Mode ||
 	 (PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) != (backup_state.PkgState[pkg->ID].Flags & pkgCache::Flag::Auto) ||
 	 package_states[pkg->ID].selection_state!=backup_state.AptitudeState[pkg->ID].selection_state ||
@@ -1007,11 +1029,27 @@ void aptitudeDepCache::cleanup_after_change(undo_group *undo, bool alter_stickie
 		}
 	    }
 
+	  visibly_changed = true;
+
 	  if(undo)
 	    undo->add_item(state_restorer(pkg,
 					  backup_state.PkgState[pkg->ID],
 					  backup_state.AptitudeState[pkg->ID]));
 	}
+      // Detect things like broken-ness and other changes that
+      // shouldn't trigger undo but might trigger updating the
+      // package's display.
+      else if(PkgState[pkg->ID].Flags != backup_state.PkgState[pkg->ID].Flags ||
+	      PkgState[pkg->ID].DepState != backup_state.PkgState[pkg->ID].DepState ||
+	      PkgState[pkg->ID].CandidateVer != backup_state.PkgState[pkg->ID].CandidateVer ||
+	      PkgState[pkg->ID].Marked != backup_state.PkgState[pkg->ID].Marked ||
+	      PkgState[pkg->ID].Garbage != backup_state.PkgState[pkg->ID].Garbage ||
+	      package_states[pkg->ID].user_tags != backup_state.AptitudeState[pkg->ID].user_tags ||
+	      package_states[pkg->ID].new_package != backup_state.AptitudeState[pkg->ID].new_package)
+	visibly_changed = true;
+
+      if(visibly_changed && changed_packages != NULL)
+	changed_packages->insert(pkg);
     }
 }
 
@@ -1627,6 +1665,8 @@ void aptitudeDepCache::begin_action_group()
 
 void aptitudeDepCache::end_action_group(undo_group *undo)
 {
+  std::set<pkgCache::PkgIterator> changed_packages;
+
   eassert(group_level>0);
 
   if(group_level==1)
@@ -1642,11 +1682,12 @@ void aptitudeDepCache::end_action_group(undo_group *undo)
 
       sweep();
 
-      cleanup_after_change(undo);
+      cleanup_after_change(undo, &changed_packages);
 
       duplicate_cache(&backup_state);
 
       package_state_changed();
+      package_states_changed(&changed_packages);
     }
 
   group_level--;
@@ -1689,13 +1730,21 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
 void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &realSol,
 				      undo_group *undo)
 {
-  // Make a local copy so we don't crash when applying the solution.
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
+  // Make a local copy so we don't crash when applying the solution:
+  // applying the solution might trigger a callback that causes
+  // something else to throw away its reference to the solution =>
+  // BOOM.
   const generic_solution<aptitude_universe> sol(realSol);
+
+  LOG_DEBUG(logger, "Applying solution: " << sol);
 
   if(read_only && !read_only_permission())
     {
       if(group_level == 0)
 	read_only_fail();
+      LOG_DEBUG(logger, "Not applying solution: the cache is read-only.");
       return;
     }
 
@@ -1703,28 +1752,76 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 
   pre_package_state_changed();
 
-  for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
-	i = sol.get_actions().begin();
-      i != sol.get_actions().end(); ++i)
+  // Build a list of all the resolver versions that are to be
+  // installed: versions selected in the solution as well as the
+  // versions that were initially installed.  The boolean values that
+  // tag along indicate whether each version was automatically
+  // installed (true if it was, false if it wasn't).
+  std::vector<std::pair<aptitude_resolver_version, bool> > versions;
+
+  LOG_TRACE(logger, "Collecting initial versions from the solution:");
+
+  std::set<aptitude_resolver_version> initial_versions;
+  sol.get_initial_state().get_initial_versions(initial_versions);
+  for(std::set<aptitude_resolver_version>::const_iterator it =
+	initial_versions.begin(); it != initial_versions.end(); ++it)
     {
-      pkgCache::PkgIterator pkg=i->first.get_pkg();
+      aptitude_resolver_version ver(*it);
+
+      LOG_TRACE(logger, "Adding initial version: " << ver);
+      versions.push_back(std::make_pair(*it, false));
+    }
+
+  for(generic_choice_set<aptitude_universe>::const_iterator
+	i = sol.get_choices().begin();
+      i != sol.get_choices().end(); ++i)
+    {
+      if(i->get_type() == generic_choice<aptitude_universe>::install_version)
+	{
+	  aptitude_resolver_version ver(i->get_ver());
+	  LOG_TRACE(logger, "Adding version chosen by the resolver: " << ver);
+	  versions.push_back(std::make_pair(ver, true));
+	}
+      else
+	LOG_TRACE(logger, "Skipping " << *i << ": it is not a version install.");
+    }
+
+  for(std::vector<std::pair<aptitude_resolver_version, bool> >::const_iterator it =
+	versions.begin(); it != versions.end(); ++it)
+    {
+      const bool is_auto = it->second;
+
+      LOG_TRACE(logger, "Selecting " << it->first << " "
+		<< (is_auto ? "automatically" : "manually"));
+
+      pkgCache::PkgIterator pkg = it->first.get_pkg();
       pkgCache::VerIterator curver=pkg.CurrentVer();
       pkgCache::VerIterator instver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
-      pkgCache::VerIterator actionver=i->second.ver.get_ver();
+      pkgCache::VerIterator actionver = it->first.get_ver();
 
       // Check what type of action it is.
       if(actionver.end())
 	{
+	  LOG_TRACE(logger, "Removing " << pkg.Name());
+
 	  // removal.
 	  internal_mark_delete(pkg, false, false);
-	  if(!curver.end())
+	  if(is_auto && !curver.end())
 	    get_ext_state(pkg).remove_reason = from_resolver;
 	}
       else if(actionver == curver)
-	internal_mark_keep(pkg, true, false);
+	{
+	  LOG_TRACE(logger, "Keeping " << pkg.Name()
+		    << " at its current version ("
+		    << curver.VerStr() << ")");
+
+	  internal_mark_keep(pkg, is_auto, false);
+	}
       else
 	// install a particular version that's not the current one.
 	{
+	  LOG_TRACE(logger, "Installing " << pkg.Name() << " " << actionver.VerStr());
+
 	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
 	  // Mark the package as automatic iff it isn't currently
@@ -1733,7 +1830,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	  // that are going to be manually installed don't get marked
 	  // as auto, but packages that are being removed *do* get
 	  // marked as auto.
-	  if(instver.end())
+	  if(is_auto && instver.end())
 	    MarkAuto(pkg, true);
 	}
     }
@@ -1856,20 +1953,25 @@ class AptitudeInRootSetFunc : public pkgDepCache::InRootSetFunc
   /** \brief A pointer to the cache in which we're matching. */
   aptitudeDepCache &cache;
 
-  /** A matcher if one could be created; otherwise NULL. */
-  aptitude::matching::pkg_matcher *m;
+  /** A pattern if one could be created; otherwise NULL. */
+  cwidget::util::ref_ptr<aptitude::matching::pattern> p;
+
+  /** \brief The search cache to use in applying this function. */
+  cwidget::util::ref_ptr<aptitude::matching::search_cache> search_info;
 
   /** \b true if the package was successfully constructed. */
   bool constructedSuccessfully;
 
-  /** The secondary test to apply.  Only set if creating the
-   *  matcher succeeds.
+  /** The secondary test to apply.  Only set if creating the match
+   *  succeeds.
    */
   pkgDepCache::InRootSetFunc *chain;
 public:
   AptitudeInRootSetFunc(pkgDepCache::InRootSetFunc *_chain,
 			aptitudeDepCache &_cache)
-    : cache(_cache), m(NULL), constructedSuccessfully(false), chain(NULL)
+    : cache(_cache), p(NULL),
+      search_info(aptitude::matching::search_cache::create()),
+      constructedSuccessfully(false), chain(NULL)
   {
     std::string matchterm = aptcfg->Find(PACKAGE "::Keep-Unused-Pattern", "~nlinux-image-.*");
     if(matchterm.empty()) // Bug-compatibility with old versions.
@@ -1879,8 +1981,8 @@ public:
       constructedSuccessfully = true;
     else
       {
-	m = aptitude::matching::parse_pattern(matchterm);
-	if(m != NULL)
+	p = aptitude::matching::parse(matchterm);
+	if(p.valid())
 	  constructedSuccessfully = true;
       }
 
@@ -1896,7 +1998,7 @@ public:
   bool InRootSet(const pkgCache::PkgIterator &pkg)
   {
     pkgRecords &records(cache.get_records());
-    if(m != NULL && aptitude::matching::apply_matcher(m, pkg, cache, records))
+    if(p.valid() && aptitude::matching::get_match(p, pkg, search_info, cache, records).valid())
       return true;
     else
       return chain != NULL && chain->InRootSet(pkg);
@@ -1904,7 +2006,6 @@ public:
 
   ~AptitudeInRootSetFunc()
   {
-    delete m;
     delete chain;
   }
 };

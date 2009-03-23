@@ -1,6 +1,6 @@
 // dense_setset.h                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -206,9 +206,10 @@ private:
     {
     }
 
-    void operator()(const Val &v) const
+    bool operator()(const Val &v) const
     {
       sets_by_key[extractid(v)].push_back(index_entry(index, v));
+      return true;
     }
   };
 
@@ -232,7 +233,7 @@ private:
     }
 
     // For each set containing v, add 1 to its hit count.
-    void operator()(const Val &v) const
+    bool operator()(const Val &v) const
     {
       const std::vector<index_entry> &vals = sets_by_key[extractid(v)];
 
@@ -240,6 +241,8 @@ private:
 	    = vals.begin(); vi != vals.end(); ++vi)
 	if(r(vi->second, v))
 	  ++entries[vi->first].hit_count;
+
+      return true;
     }
   };
 

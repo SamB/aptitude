@@ -1,6 +1,6 @@
 // resolver_manager.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,6 +26,8 @@
 #include "config_signal.h"
 #include "dump_packages.h"
 
+#include <loggers.h>
+
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/util/temp.h>
 #include <generic/util/undo.h>
@@ -39,6 +41,8 @@
 
 #include <sys/types.h>
 #include <sys/wait.h>
+
+using aptitude::Loggers;
 
 class resolver_manager::resolver_interaction
 {
@@ -154,7 +158,8 @@ resolver_manager::solution_information::~solution_information()
 // or by the user (don't have a mutex lock); I could sidestep this
 // with some clever magic, but there's no point unless it turns out to
 // be a bottleneck.
-resolver_manager::resolver_manager(aptitudeDepCache *_cache)
+resolver_manager::resolver_manager(aptitudeDepCache *_cache,
+				   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations)
   :cache(_cache),
    resolver(NULL),
    undos(new undo_list),
@@ -166,6 +171,7 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache)
    resolver_null(true),
    background_thread_suspend_count(0),
    background_thread_in_resolver(false),
+   initial_installations(_initial_installations),
    resolver_thread(NULL),
    mutex(cwidget::threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
 {
@@ -287,7 +293,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
       if(visited_packages.find(p) == visited_packages.end())
 	continue;
 
-      pkg_action_state action = find_pkg_state(p.get_pkg(), *apt_cache_file);
+      pkg_action_state action = find_pkg_state(p.get_pkg(), *cache);
       std::string actionstr;
       switch(action)
 	{
@@ -302,7 +308,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
 	case pkg_install:
 	case pkg_upgrade:
 	  actionstr = std::string("install ") +
-	    (*apt_cache_file)[p.get_pkg()].InstVerIter(*apt_cache_file).VerStr();
+	    (*cache)[p.get_pkg()].InstVerIter(*cache).VerStr();
 	  break;
 
 	default:
@@ -368,18 +374,63 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
 
 	control_file << "  expect " << inf.get_ticks() << " {" << std::endl;
 
-	typedef generic_solution<aptitude_universe>::action action;
+	typedef generic_choice_set<aptitude_universe> choice_set;
+	typedef generic_choice<aptitude_universe> choice;
 	typedef aptitude_resolver_package package;
-	const imm::map<package, action> &actions = sol.get_actions();
-	for(imm::map<package, action>::const_iterator solActIt =
-	      actions.begin(); solActIt != actions.end(); ++solActIt)
+	typedef aptitude_resolver_version version;
+	typedef aptitude_resolver_dep dep;
+	const choice_set &choices = sol.get_choices();
+	for(choice_set::const_iterator solChoiceIt =
+	      choices.begin(); solChoiceIt != choices.end(); ++solChoiceIt)
 	  {
-	    control_file << "    \""
-			 << QuoteString(solActIt->first.get_name(), strBadChars)
-			 << "\" \""
-			 << QuoteString(solActIt->second.ver.get_name(), strBadChars)
-			 << "\""
-			 << std::endl;
+	    switch(solChoiceIt->get_type())
+	      {
+	      case choice::install_version:
+		control_file << "    install \""
+			     << QuoteString(solChoiceIt->get_ver().get_package().get_name(), strBadChars)
+			     << "\" \""
+			     << QuoteString(solChoiceIt->get_ver().get_name(), strBadChars)
+			     << "\""
+			     << std::endl;
+		break;
+
+	      case choice::break_soft_dep:
+		{
+		  dep d(solChoiceIt->get_dep());
+		  version source(d.get_source());
+
+		  control_file << "    break \""
+			       << QuoteString(source.get_package().get_name(), strBadChars)
+			       << "\" \""
+			       << QuoteString(source.get_name(), strBadChars)
+			       << "\" -> {";
+
+		  bool first = true;
+		  for(dep::solver_iterator sIt = d.solvers_begin();
+		      !sIt.end(); ++sIt)
+		    {
+		      if(first)
+			first = false;
+		      else
+			control_file << ", ";
+
+		      version solver(*sIt);
+		      control_file << "\""
+				   << QuoteString(solver.get_package().get_name(), strBadChars)
+				   << "\" \""
+				   << QuoteString(solver.get_name(), strBadChars)
+				   << "\"";
+		    }
+
+		  control_file << "}" << std::endl;
+		}
+
+		break;
+
+	      default:
+		// ... recover sanely.
+		control_file << "ERROR" << std::endl;
+	      }
 	  }
 	control_file << "  }" << std::endl;
 
@@ -651,7 +702,7 @@ void resolver_manager::maybe_create_resolver()
 {
   cwidget::threads::mutex::lock l(mutex);
 
-  if(resolver == NULL && cache->BrokenCount() > 0)
+  if(resolver == NULL && (cache->BrokenCount() > 0 || !initial_installations.empty()))
     {
       {
 	cwidget::threads::mutex::lock l(background_control_mutex);
@@ -659,6 +710,13 @@ void resolver_manager::maybe_create_resolver()
 	resolver_trace_file = aptcfg->Find(PACKAGE "::ProblemResolver::Trace-File", "");
       }
       create_resolver();
+
+      // If there are initial installations, we don't know whether
+      // there are broken dependencies until we actually create the
+      // resolver.  If there aren't broken dependencies, don't create
+      // a resolver object.
+      if(resolver->get_initial_broken().empty())
+	discard_resolver();
     }
 
   // Always signal a state change: we are signalling for the whole
@@ -716,6 +774,25 @@ void resolver_manager::create_resolver()
   cwidget::threads::mutex::lock l(mutex);
   eassert(resolver == NULL);
 
+  // \todo We should parse these once on startup to avoid duplicate
+  // error messages, support modifying the list dynamically (for the
+  // sake of GUI users), etc.
+  std::vector<aptitude_resolver::hint> hints;
+
+  const Configuration::Item * const root =
+    aptcfg->Tree(PACKAGE "::ProblemResolver::Hints");
+
+  if(root != NULL)
+    {
+      for(const Configuration::Item *itm = root->Child;
+	  itm != NULL; itm = itm -> Next)
+	{
+	  aptitude_resolver::hint hint;
+	  if(aptitude_resolver::hint::parse(itm->Value, hint))
+	    hints.push_back(hint);
+	}
+    }
+
   // NOTE: the performance of the resolver is highly sensitive to
   // these settings; choosing bad ones can result in hitting
   // exponential cases in practical situations.  In general,
@@ -734,9 +811,31 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::BrokenScore", -100),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
-				 aptcfg->FindI(PACKAGE "::ProblemResolver::Max-Successors", 0),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
+				 aptcfg->FindI(PACKAGE "::ProblemResolver::FutureHorizon", 50),
+				 initial_installations,
 				 cache);
+
+  // Set auto flags for initial installations as if the installs were
+  // done by the user.  i.e., if the package is currently installed,
+  // we use the current value of the Auto flag; otherwise we treat it
+  // as manual.
+  std::map<aptitude_resolver_package, bool> auto_flags;
+  for(imm::map<aptitude_resolver_package, aptitude_resolver_version>::const_iterator it =
+	initial_installations.begin(); it != initial_installations.end(); ++it)
+    {
+      pkgCache::PkgIterator pkg(it->first.get_pkg());
+      aptitude_resolver_package resolver_pkg(pkg, cache);
+
+      if(pkg->CurrentState != pkgCache::State::NotInstalled &&
+	 pkg->CurrentState != pkgCache::State::ConfigFiles)
+	{
+	  auto_flags[resolver_pkg] =
+	    ((*cache)[pkg].Flags & pkgCache::Flag::Auto) == 0;
+	}
+      else
+	auto_flags[resolver_pkg] = true;
+    }
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveAutoScore", 0),
@@ -749,7 +848,10 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::FullReplacementScore", 500),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::UndoFullReplacementScore", -500),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
-			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false));
+			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
+			      aptcfg->FindI(PACKAGE "::ProblemResolver::DefaultResolutionScore", 400),
+			      auto_flags,
+			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),
 				aptcfg->FindI(PACKAGE "::ProblemResolver::RequiredScore", 4),
@@ -898,7 +1000,7 @@ resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
 	  sol_l.acquire();
 
 	  bool is_keep_all_solution =
-	    (sol.get_actions() == resolver->get_keep_all_solution());
+	    (sol.get_choices() == resolver->get_keep_all_solution());
 
 	  solutions.push_back(new solution_information(new std::vector<resolver_interaction>(actions_since_last_solution),
 						       ticks_since_last_solution + max_steps,
@@ -1438,10 +1540,315 @@ void resolver_manager::dump(ostream &out)
       << resolver->get_broken_score() << " "
       << resolver->get_unresolved_soft_dep_score() << " "
       << resolver->get_infinity() << " "
-      << resolver->get_max_successors() << " "
       << resolver->get_full_solution_score() << " ";
 
   resolver->dump_scores(out);
 
   out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::Resolver::StepLimit", 5000) << " ANY )" << std::endl;
 }
+
+void resolver_manager::maybe_start_solution_calculation(bool blocking,
+							background_continuation *k)
+{
+  state st = state_snapshot();
+
+  if(st.resolver_exists &&
+     st.selected_solution == st.generated_solutions &&
+     !st.solutions_exhausted &&
+     !st.background_thread_active &&
+     !st.background_thread_aborted)
+    {
+      const int selected = st.selected_solution;
+      // TODO: duplication of information!  These config values should
+      // be moved into a central function that everyone else can call.
+      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
+
+      if(limit > 0)
+	{
+	  if(blocking)
+	    get_solution_background_blocking(selected, limit, wait_steps, k);
+	  else
+	    get_solution_background(selected, limit, k);
+	}
+      else
+	delete k;
+    }
+  else
+    delete k;
+}
+
+// Safe resolver logic:
+
+class resolver_manager::safe_resolver_continuation : public resolver_manager::background_continuation
+{
+  background_continuation *real_continuation;
+  resolver_manager *manager;
+  // Used to update the statistics in the manager.
+  generic_solution<aptitude_universe> last_sol;
+
+  safe_resolver_continuation(background_continuation *_real_continuation,
+			     resolver_manager *_manager,
+			     const generic_solution<aptitude_universe> &_last_sol)
+    : real_continuation(_real_continuation),
+      manager(_manager),
+      last_sol(_last_sol)
+  {
+  }
+
+public:
+  safe_resolver_continuation(background_continuation *_real_continuation,
+			     resolver_manager *_manager)
+    : real_continuation(_real_continuation),
+      manager(_manager)
+  {
+  }
+
+  void success(const generic_solution<aptitude_universe> &sol)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    LOG_TRACE(logger, "safe_resolve_deps: got intermediate solution: " << sol);
+
+    typedef generic_choice<aptitude_universe> choice;
+    typedef generic_choice_set<aptitude_universe> choice_set;
+
+    // If the solution changed (i.e., we managed to find some new
+    // upgrades), we should try again; otherwise we've found the
+    // solution that we'll return to the user.
+    if(!(last_sol &&
+	 sol.get_choices() == last_sol.get_choices()))
+      {
+	// The solution changed; prepare the resolver for the next
+	// stage.
+
+
+	// Mandate all the upgrades and installs in this solution,
+	// then ask for the next solution.  The goal is to try to
+	// find the best solution, not just some solution, but to
+	// preserve our previous decisions in order to avoid
+	// thrashing around between alternatives.
+	for(choice_set::const_iterator it = sol.get_choices().begin();
+	    it != sol.get_choices().end(); ++it)
+	  {
+	    switch(it->get_type())
+	      {
+	      case choice::install_version:
+		{
+		  const pkgCache::PkgIterator p(it->get_ver().get_pkg());
+
+		  if(it->get_ver().get_ver() != p.CurrentVer())
+		    {
+		      LOG_DEBUG(logger,
+				"safe_resolve_deps: Mandating the upgrade or install " << it->get_ver()
+				<< ", since it was produced as part of a solution.");
+		      manager->mandate_version(it->get_ver());
+		    }
+		  else
+		    {
+		      LOG_DEBUG(logger,
+				"safe_resolve_deps: Not mandating " << it->get_ver()
+				<< ", since it is a hold.");
+		    }
+		}
+
+		break;
+
+	      default:
+		// Nothing to do otherwise.
+		break;
+	      }
+	  }
+
+	// This is like select_next_solution(), but doesn't invoke
+	// the state_changed signal (because that signal is normally
+	// only emitted from the foreground thread).
+	cwidget::threads::mutex::lock l(manager->mutex);
+	cwidget::threads::mutex::lock sol_l(manager->solutions_mutex);
+
+	// NULL out the sub-continuation so that we don't delete it
+	// when we're deleted.
+	background_continuation *k = real_continuation;
+	real_continuation = NULL;
+
+	// TODO: duplication of information!  These config values
+	// should be moved into a central function that everyone else
+	// can call.
+	const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+
+	// Kick off a new job in the resolver manager.
+	//
+	// TODO: we have to do it by hand because all the routines
+	// that encapsulate starting a new job are meant to be called
+	// from a foreground thread, so they lock the solutions mutex
+	// and deadlock -- maybe there should be some (internal?)
+	// routine that's safe to call from the background thread?  Or
+	// maybe that should be a recursive mutex?
+	manager->selected_solution = manager->solutions.size();
+	manager->pending_jobs.push(resolver_manager::job_request(manager->selected_solution,
+								 limit,
+								 new safe_resolver_continuation(k, manager, sol)));
+      }
+    else
+      {
+	// Internal error that should never happen, but try to survive
+	// if it does.
+	LOG_FATAL(logger,
+		  "safe_resolve_deps: Internal error: the resolver unexpectedly produced the same result twice: " << last_sol << " = " << sol);
+
+	if(real_continuation != NULL)
+	  real_continuation->success(sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should send the end solution to the real continuation, but it's NULL.");
+      }
+  }
+
+  void no_more_solutions()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    if(last_sol)
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: no more solutions; returning the last seen solution.");
+
+	if(real_continuation != NULL)
+	  real_continuation->success(last_sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
+      }
+    else
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: unable to find any solutions.");
+
+	if(real_continuation != NULL)
+	  real_continuation->no_more_solutions();
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should report that there are no solutions, but the continuation is NULL.");
+      }
+  }
+
+  void no_more_time()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    if(last_sol)
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: ran out of time searching for a solution; returning the last one that was computed.");
+
+	if(real_continuation != NULL)
+	  real_continuation->success(last_sol);
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
+      }
+    else
+      {
+	LOG_TRACE(logger, "safe_resolve_deps: ran out of time before finding any solutions.");
+
+	if(real_continuation != NULL)
+	  real_continuation->no_more_time();
+	else
+	  LOG_WARN(logger, "safe_resolve_deps: should report that we ran out of time, but the continuation is NULL.");
+      }
+  }
+
+  void interrupted()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    // Should never happen.  In fact, no code calls interrupted() --
+    // is that a vestigial function?
+    LOG_WARN(logger, "safe_resolve_deps: someone interrupted the solution search!");
+  }
+
+  void aborted(const cwidget::util::Exception &e)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+
+    // Should we try to return the current solution if there is one?
+    LOG_FATAL(logger, "safe_resolve_deps: aborted by exception: " << e.errmsg());
+    if(real_continuation != NULL)
+      real_continuation->aborted(e);
+    else
+      LOG_WARN(logger, "safe_resolve_deps: should report that we were interrupted by an exception, but the continuation is NULL.  Exception: " << e.errmsg());
+  }
+};
+
+void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upgrades)
+{
+  eassert(resolver_exists());
+
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolverSetup());
+
+  LOG_TRACE(logger,
+	    "setup_safe_resolver: Setting up the resolver state for safe dependency resolution.");
+
+  reset_resolver();
+
+  for(pkgCache::PkgIterator p = (*cache).PkgBegin();
+      !p.end(); ++p)
+    {
+      // Forbid the resolver from removing installed packages.
+      if(!p.CurrentVer().end())
+	{
+	  aptitude_resolver_version
+	    remove_p(p,
+		     pkgCache::VerIterator(*cache),
+		     cache);
+
+	  LOG_DEBUG(logger,
+		    "setup_safe_resolver: Rejecting the removal of the package " << remove_p.get_package() << ".");
+
+	  reject_version(remove_p);
+	}
+
+      // Forbid all real versions that aren't the current version or
+      // the candidate version.
+      for(pkgCache::VerIterator v = p.VersionList();
+	  !v.end(); ++v)
+	{
+	  // For our purposes, all half-unpacked etc states are
+	  // installed.
+	  const bool p_is_installed =
+	    p->CurrentState != pkgCache::State::NotInstalled &&
+	    p->CurrentState != pkgCache::State::ConfigFiles;
+
+	  const bool p_will_install =
+	    (*cache)[p].Install();
+
+	  const bool v_is_a_new_install = !p_is_installed && !p_will_install;
+	  const bool v_is_a_new_upgrade = p_is_installed && p_will_install;
+	  const bool v_is_a_non_default_version = v != (*cache)[p].CandidateVerIter(*cache);
+
+	  if(v != p.CurrentVer() &&
+	     // Disallow installing not-installed packages that
+	     // aren't marked for installation if
+	     // no_new_installs is set.
+	     ((v_is_a_new_install && no_new_installs) ||
+	      (v_is_a_new_upgrade && no_new_upgrades) ||
+	      v_is_a_non_default_version))
+	    {
+	      aptitude_resolver_version p_v(p, v, cache);
+
+	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
+		{
+		  if(v_is_a_non_default_version)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a non-default version).");
+		  else if(v_is_a_new_install)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a new install).");
+		  else // if(v_is_a_new_upgrade)
+		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a new upgrade).");
+		}
+
+	      reject_version(p_v);
+	    }
+	}
+    }
+}
+
+void resolver_manager::safe_resolve_deps_background(bool no_new_installs, bool no_new_upgrades,
+						    background_continuation *k)
+{
+  setup_safe_resolver(no_new_installs, no_new_upgrades);
+  maybe_start_solution_calculation(true, new safe_resolver_continuation(k, this));
+}
+

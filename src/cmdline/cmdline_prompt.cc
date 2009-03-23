@@ -18,7 +18,9 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
 #include <generic/apt/infer_reason.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/util.h>
 
@@ -131,6 +133,9 @@ namespace
   std::string roots_string(const pkgCache::PkgIterator &pkg,
 			   int verbose)
   {
+    using namespace aptitude::matching;
+    using cw::util::ref_ptr;
+
     using namespace aptitude::why;
     pkgDepCache::StateCache &state((*apt_cache_file)[pkg]);
 
@@ -141,8 +146,8 @@ namespace
       return "";
 
     target t(state.Install() ? target::Install(pkg) : target::Remove(pkg));
-    std::vector<aptitude::matching::pkg_matcher *> leaves;
-    leaves.push_back(aptitude::matching::parse_pattern("?not(?automatic)"));
+    std::vector<ref_ptr<pattern> > leaves;
+    leaves.push_back(parse("?not(?automatic)"));
 
     std::vector<std::vector<action> > reasons;
 
@@ -174,142 +179,33 @@ namespace
     if(reasons.size() == 0)
       return "";
 
-    if(verbose == 0)
-      {
-	std::set<std::string> root_names;
-	for(std::vector<std::vector<action> >::const_iterator it =
-	      reasons.begin(); it != reasons.end(); ++it)
-	  {
-	    // Shouldn't happen, but deal anyway.
-	    if(it->empty())
-	      continue; // Generate an internal error here?
-
-	    const action &act(it->front());
-
-	    // This can happen in the case of an impure virtual
-	    // package.  e.g., A is manually installed and B provides
-	    // A.
-	    if(act.get_dep().end())
-	      continue;
-
-	    if(!act.get_dep().end())
-	      root_names.insert(act.get_dep().ParentPkg().Name());
-	  }
-
-	if(root_names.empty())
-	  return "";
-
-	std::string rval;
-
-	bool first = true;
-	for(std::set<std::string>::const_iterator it = root_names.begin();
-	    it != root_names.end(); ++it)
-	  {
-	    if(first)
-	      first = false;
-	    else
-	      rval += ", ";
-
-	    rval += *it;
-	  }
-
-	// ForTranslators: %s is replaced with a comma-delimited list
-	// of package names.
-	return ssprintf(ngettext("(for %s)",
-				 "(for %s)",
-				 root_names.size()),
-			rval.c_str());
-      }
+    std::vector<std::string> reason_strings;
+    roots_string_mode mode;
+    if(verbose > 1)
+      mode = show_chain_with_versions;
+    else if(verbose > 0)
+      mode = show_chain;
     else
+      mode = show_requiring_packages;
+    summarize_reasons(reasons, mode, reason_strings);
+
+    std::string rval = "(";
+    if(mode == show_requiring_packages)
+      rval += "for ";
+    bool first = true;
+    for(std::vector<std::string>::const_iterator it = reason_strings.begin();
+	it != reason_strings.end(); ++it)
       {
-	// If we're being verbose, display whole chains leading to
-	// each target.
+	if(first)
+	  first = false;
+	else
+	  rval += ", ";
 
-	if(reasons.empty())
-	  return "";
-
-	std::string rval;
-	bool first = true;
-	std::sort(reasons.begin(), reasons.end(), compare_first_action());
-	rval += "(";
-	for(std::vector<std::vector<action> >::const_iterator it =
-	      reasons.begin(); it != reasons.end(); ++it)
-	
-	  {
-	    if(it->empty())
-	      continue;
-
-	    if(first)
-	      first = false;
-	    else
-	      rval += ", ";
-
-	    bool first_action = true;
-	    for(std::vector<action>::const_iterator aIt = it->begin();
-		aIt != it->end(); ++aIt)
-	      {
-		if(!first_action)
-		  rval += " ";
-
-		if(!aIt->get_dep().end())
-		  {
-		    const pkgCache::DepIterator &dep(aIt->get_dep());
-
-		    if(first_action)
-		      {
-			rval += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
-			rval += " ";
-		      }
-
-		    std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
-		    rval += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
-		    rval += ": ";
-
-		    rval += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
-
-		    // Display versioned deps if we're really being
-		    // verbose.
-		    if(verbose > 1 && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
-		      {
-			rval += " (";
-			rval += const_cast<pkgCache::DepIterator &>(dep).CompType();
-			rval += " ";
-			rval += dep.TargetVer();
-			rval += ")";
-		      }
-		  }
-		else
-		  {
-		    const pkgCache::PrvIterator &prv(aIt->get_prv());
-		    eassert(!prv.end());
-
-		    if(first_action)
-		      {
-			rval += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
-		      }
-
-		    rval += " ";
-
-		    rval += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
-		    rval += "<- ";
-
-		    rval += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
-		    if(verbose > 1 && prv.ProvideVersion() != NULL)
-		      {
-			rval += " (";
-			rval += prv.ProvideVersion();
-			rval += ")";
-		      }
-		  }
-
-		first_action = false;
-	      }
-
-	    rval += ")";
-	  }
-
-	return rval;
+	rval += *it;
       }
+    rval += ")";
+
+    return rval;
   }
 }
 
@@ -718,7 +614,18 @@ static bool prompt_trust()
 	}
 
 
-      const string okstr=_("Yes"), abortstr=_("No");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string okstr    = P_("Go ahead and ignore the warning|Yes");
+      // ForTranslators: This string is a confirmation message, which
+      // users (especially CJK users) should be able to input without
+      // input methods.  Please include nothing but ASCII characters.
+      // The text preceding the pipe character (|) will be ignored and
+      // can be removed from your translation.
+      const string abortstr = P_("Abort instead of overriding the warning|No");
 
       // These strings are used to compare in a translation-invariant
       // way, so that "yes" and "no" are always valid inputs; if the
@@ -961,7 +868,9 @@ static void cmdline_parse_why(string response)
       bool success;
       string root = arguments.back();
       arguments.pop_back();
-      std::auto_ptr<cw::fragment> frag(do_why(arguments, root, false, false, success));
+      std::auto_ptr<cw::fragment> frag(do_why(arguments, root,
+					      aptitude::why::no_summary,
+					      false, false, success));
       update_screen_width();
       if(frag.get() != NULL)
 	std::cout << frag->layout(screen_width, screen_width, cwidget::style());

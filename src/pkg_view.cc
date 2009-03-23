@@ -1,6 +1,6 @@
 // pkg_view.cc
 //
-//  Copyright 2000-2005, 2007-2008 Daniel Burrows
+//  Copyright 2000-2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,7 +21,7 @@
 
 #include "aptitude.h"
 
-#include "desc_parse.h"
+#include "desc_render.h"
 #include "edit_pkg_hier.h"
 #include "menu_redirect.h"
 #include "pkg_columnizer.h"
@@ -44,7 +44,8 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/match.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
@@ -65,7 +66,8 @@ namespace cwidget
   using namespace widgets;
 }
 
-namespace match = aptitude::matching;
+namespace matching = aptitude::matching;
+using cw::util::ref_ptr;
 
 class pkg_handling_label:public cw::label
 {
@@ -193,29 +195,24 @@ public:
 	return;
       }
 
-    std::vector<match::pkg_matcher *> search_leaves;
+    std::vector<ref_ptr<matching::pattern> > search_leaves;
     // Search for package (versions) that are not automatically
     // installed and that are or will be installed.
-    search_leaves.push_back(match::parse_pattern("?not(?automatic)?any-version(?or(?version(CANDIDATE)?action(install), ?version(CURRENT)?installed))"));
+    search_leaves.push_back(matching::parse("?not(?automatic)?any-version(?or(?version(CANDIDATE)?action(install), ?version(CURRENT)?installed))"));
     try
       {
 	bool success = false;
 	set_fragment(do_why(search_leaves,
 			    pkg,
+			    aptitude::why::no_summary,
 			    false,
 			    false,
 			    success));
       }
     catch(...)
       {
-	for(std::vector<match::pkg_matcher *>::const_iterator it
-	      = search_leaves.begin(); it != search_leaves.end(); ++it)
-	  delete *it;
+	; // Eat and hide errors.
       }
-
-    for(std::vector<match::pkg_matcher *>::const_iterator it
-	  = search_leaves.begin(); it != search_leaves.end(); ++it)
-      delete *it;
   }
 
   void set_no_package()

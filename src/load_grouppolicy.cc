@@ -24,7 +24,8 @@
 
 #include "load_grouppolicy.h"
 
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/apt/pkg_hier.h>
 
 #include <generic/util/util.h>
@@ -43,7 +44,7 @@
 
 using namespace std;
 namespace cw = cwidget;
-namespace match = aptitude::matching;
+namespace matching = aptitude::matching;
 
 class GroupParseException
 {
@@ -106,6 +107,14 @@ public:
   virtual group_policy_parse_node *parse(string::const_iterator &begin,
 					 const string::const_iterator &end)=0;
 };
+
+/** \brief A global table of all the parsers of group policies
+ * according to their names.
+ *
+ *  Used to parse group policy lists; could actually just as well be a
+ *  member of the list parser.
+ */
+static map<string, group_policy_parser *> parse_types;
 
 
 
@@ -222,8 +231,14 @@ public:
 
 /** Parse a grouping policy based on a list.  Looks for policy names,
  *  then starts parsing their parameters as necessary according to a
- *  table of parsers.  Names must be alphanumeric; the occurance
- *  of a nonalphanumeric at the top level will terminate the parse.
+ *  table of parsers.  Names must be alphanumeric; the occurance of a
+ *  nonalphanumeric other than the terminator (see below) at the top
+ *  level will terminate the parse.
+ *
+ *  The list can be terminated by a distinguished character (typically
+ *  something like ")" or "}"); if this appears where a policy name
+ *  would normally start, it will be consumed and the parser will
+ *  return.
  */
 class list_policy_parser : public group_policy_parser
 {
@@ -232,9 +247,17 @@ public:
 
 private:
   const parsemap &parsers;
+  const bool allow_terminator;
+  const char terminator;
 public:
   list_policy_parser(const parsemap &_parsers)
-    :parsers(_parsers)
+    : parsers(_parsers), allow_terminator(false), terminator(-1)
+  {
+  }
+
+  list_policy_parser(const parsemap &_parsers,
+		     char _terminator)
+    : parsers(_parsers), allow_terminator(true), terminator(_terminator)
   {
   }
 
@@ -254,6 +277,14 @@ public:
 	while(begin != end && (isspace(*begin) || *begin == ','))
 	  ++begin;
 
+	// If we hit the terminator (e.g., "}" for pattern policies),
+	// eat it and stop.
+	if(allow_terminator && begin != end && *begin == terminator)
+	  {
+	    ++begin;
+	    break;
+	  }
+
 	if(begin != end && !isalnum(*begin))
 	  throw GroupParseException(_("Expected policy identifier, got '%c'"), *begin);
 
@@ -267,7 +298,16 @@ public:
 	  ++begin;
 
 	if(begin != end && *begin != ',' && *begin != '(')
-	  throw GroupParseException(_("Expected ',' or '(', got '%c'"), *begin);
+	  {
+	    if(allow_terminator)
+	      {
+		if(*begin != terminator)
+		  throw GroupParseException(_("Expected ',', '%c', or '('; got '%c'"),
+					    terminator, *begin);
+	      }
+	    else
+	      throw GroupParseException(_("Expected ',' or '(', got '%c'"), *begin);
+	  }
 
 	if(!name.empty())
 	  {
@@ -338,10 +378,12 @@ public:
 		  args.push_back(string());
 	      }
 	  }
-      }
 
-    if(begin != end)
-      ++begin;
+	if(begin != end)
+	  ++begin;
+	else
+	  throw GroupParseException(_("Unmatched '(' in pattern grouping policy"));
+      }
 
     return create_node(args);
   }
@@ -408,6 +450,8 @@ public:
   group_policy_parse_node *parse(string::const_iterator &begin,
 				 const string::const_iterator &end)
   {
+    using cw::util::ref_ptr;
+
     // Backwards compatibility cruft:
     static const string missing = "missing";
     bool is_missing = true;
@@ -434,11 +478,11 @@ public:
 
     if(is_missing)
       {
-	match::pkg_matcher *m = match::parse_pattern("~T");
+	ref_ptr<matching::pattern> p = matching::parse("~T");
 	begin = begin2;
 	++begin;
 
-	return new policy_node1<pkg_grouppolicy_filter_factory, match::pkg_matcher *>(m);
+	return new policy_node1<pkg_grouppolicy_filter_factory, cwidget::util::ref_ptr<matching::pattern> >(p);
       }
     else
       {
@@ -446,10 +490,10 @@ public:
 	terminators.push_back(",");
 	terminators.push_back(")");
 
-	auto_ptr<match::pkg_matcher> m(match::parse_pattern(begin, end, terminators,
-							    false, true, false));
+	ref_ptr<matching::pattern> p(matching::parse(begin, end, terminators,
+						     true, false, false));
 
-	if(m.get() == NULL)
+	if(!p.valid())
 	  throw GroupParseException(_("Unable to parse pattern at '%s'"),
 				    string(begin, end).c_str());
 	else if(begin != end && *begin != ')')
@@ -462,7 +506,7 @@ public:
 	    if(begin != end)
 	      ++begin;
 
-	    return new policy_node1<pkg_grouppolicy_filter_factory, match::pkg_matcher *>(m.release());
+	    return new policy_node1<pkg_grouppolicy_filter_factory, ref_ptr<matching::pattern> >(p);
 	  }
       }
   }
@@ -588,102 +632,120 @@ class pattern_policy_parser : public group_policy_parser
     if(begin == end || *begin == ')')
       throw GroupParseException(_("Missing arguments to 'pattern'"));
 
-    vector<pkg_grouppolicy_matchers_factory::match_pair> subgroups;
+    vector<pkg_grouppolicy_patterns_factory::match_entry> subgroups;
 
     vector<const char *> terminators;
     terminators.push_back(",");
     terminators.push_back("=>");
     terminators.push_back("||");
 
-    try
+    while(begin != end && *begin != ')')
       {
-	while(begin != end && *begin != ')')
+	string format = "\\1";
+
+	const string::const_iterator begin0 = begin;
+
+	cw::util::ref_ptr<matching::pattern> pattern(matching::parse(begin, end,
+								     terminators,
+								     true, false, false));
+
+	bool passthrough = false;
+	std::auto_ptr<pkg_grouppolicy_factory> chain;
+
+	if(!pattern.valid())
+	  throw GroupParseException(_("Unable to parse pattern after \"%s\""),
+				    string(begin0, end).c_str());
+
+	if(begin != end && *begin == '=')
 	  {
-	    string format = "\\1";
-
-	    const string::const_iterator begin0 = begin;
-
-	    auto_ptr<match::pkg_matcher> matcher(match::parse_pattern(begin, end,
-								      terminators,
-								      false, true, false));
-
-	    bool passthrough = false;
-
-	    if(matcher.get() == NULL)
-	      throw GroupParseException(_("Unable to parse pattern after \"%s\""),
-					string(begin0, end).c_str());
-
-	    if(begin != end && *begin == '=')
-	      {
-		++begin;
-
-		eassert(begin != end && *begin == '>');
-
-		++begin;
-
-		format.clear();
-
-		while(begin != end && *begin != ',' && *begin != ')')
-		  {
-		    format += *begin;
-		    ++begin;
-		  }
-
-		stripws(format);
-
-		if(format.empty())
-		  throw GroupParseException(_("Unexpectedly empty tree title after \"%s\""),
-					    string(begin0, end).c_str());
-	      }
-	    else if(begin != end && *begin == '|')
-	      {
-		++begin;
-
-		eassert(begin != end && *begin == '|');
-
-		passthrough = true;
-
-		++begin;
-
-		while(begin != end && isspace(*begin))
-		  ++begin;
-
-		if(begin != end)
-		  {
-		    if(*begin != ',' && *begin != ')')
-		      throw GroupParseException(_("Expected ',' or ')' following '||', got '%s'"),
-						string(begin, begin + 1).c_str());
-		  }
-	      }
-
-	    subgroups.push_back(pkg_grouppolicy_matchers_factory::match_pair(matcher.release(), cw::util::transcode(format), passthrough));
-
-	    if(begin != end && *begin == ',')
-	      ++begin;
-	  }
-
-	if(begin == end)
-	  throw GroupParseException(_("Unmatched '(' in pattern grouping policy"));
-	else
-	  {
-	    eassert(*begin == ')');
 	    ++begin;
+
+	    eassert(begin != end && *begin == '>');
+
+	    ++begin;
+
+	    format.clear();
+
+	    while(begin != end && *begin != ',' && *begin != ')' && *begin != '{')
+	      {
+		format += *begin;
+		// Allow the user to backslash-escape terminating
+		// characters.  The backslashes are preserved so
+		// that they can be used to detect substitutions
+		// (the pattern group policy will handle
+		// backslashed non-numbers by dropping the
+		// backslash).
+		if(*begin == '\\')
+		  {
+		    ++begin;
+		    if(begin != end)
+		      {
+			format += *begin;
+			++begin;
+		      }
+		  }
+		else
+		  ++begin;
+	      }
+
+	    stripws(format);
+
+	    if(format.empty())
+	      throw GroupParseException(_("Unexpectedly empty tree title after \"%s\""),
+					string(begin0, end).c_str());
+	  }
+	else if(begin != end && *begin == '|')
+	  {
+	    ++begin;
+
+	    eassert(begin != end && *begin == '|');
+
+	    passthrough = true;
+
+	    ++begin;
+
+	    while(begin != end && isspace(*begin))
+	      ++begin;
+
+	    if(begin != end)
+	      {
+		if(*begin != ',' && *begin != ')' && *begin != '{')
+		  throw GroupParseException(_("Expected '{', ')', or ',' following '||', got '%s'"),
+					    string(begin, begin + 1).c_str());
+	      }
 	  }
 
-	return new policy_node1<pkg_grouppolicy_matchers_factory, vector<pkg_grouppolicy_matchers_factory::match_pair> >(subgroups);
-      }
-    catch(...)
-      {
-	for(vector<pkg_grouppolicy_matchers_factory::match_pair>::const_iterator i = subgroups.begin();
-	    i != subgroups.end(); ++i)
-	  delete i->matcher;
+	// A brace-delimited list gives the sub-policy for this
+	// particular branch.
+	if(begin != end && *begin == '{')
+	  {
+	    ++begin;
 
-	throw;
+	    list_policy_parser subpolicy_tail_parser(parse_types, '}');
+
+	    std::auto_ptr<group_policy_parse_node>
+	      sub_parse_node(subpolicy_tail_parser.parse(begin, end));
+
+	    chain.reset(sub_parse_node->instantiate(NULL));
+	  }
+
+	subgroups.push_back(pkg_grouppolicy_patterns_factory::match_entry(pattern, chain.release(), cw::util::transcode(format), passthrough));
+
+	if(begin != end && *begin == ',')
+	  ++begin;
       }
+
+    if(begin == end)
+      throw GroupParseException(_("Unmatched '(' in pattern grouping policy"));
+    else
+      {
+	eassert(*begin == ')');
+	++begin;
+      }
+
+    return new policy_node1<pkg_grouppolicy_patterns_factory, vector<pkg_grouppolicy_patterns_factory::match_entry> >(subgroups);
   }
 };
-
-static map<string, group_policy_parser *> parse_types;
 
 static void init_parse_types()
 {

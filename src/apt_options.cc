@@ -237,6 +237,11 @@ option_item ui_options[]={
 		 "are unfulfilled in the lower pane of the "
 		 "display."),
 	      PACKAGE "::UI::Auto-Show-Reasons", true),
+  option_item(N_("Display flat view instead of default view on startup"),
+              N_("If this option is enabled, then the first view "
+                 "displayed on startup will be a flat view instead "
+                 "of the default view."),
+              PACKAGE "::UI::Flat-View-As-First-View", false),
   option_item(N_("The default grouping method for package views"),
 	      N_("This option controls how aptitude organizes the "
 		 "package list.  See the aptitude user's manual for "

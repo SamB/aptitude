@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,8 +22,9 @@
 #include "apt.h"
 
 #include <aptitude.h>
+#include <loggers.h>
 
-
+#include "aptitude_resolver_universe.h"
 #include "config_signal.h"
 #include "pkg_hier.h"
 #include "resolver_manager.h"
@@ -54,6 +55,7 @@
 #include <errno.h>
 
 using namespace std;
+using aptitude::Loggers;
 
 enum interesting_state {uncached = 0, uninteresting, interesting};
 static interesting_state *cached_deps_interesting = NULL;
@@ -119,7 +121,7 @@ bool get_apt_knows_about_rootdir()
   return apt_knows_about_rootdir;
 }
 
-void apt_preinit()
+void apt_preinit(const char *rootdir)
 {
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
@@ -153,6 +155,13 @@ void apt_preinit()
 
   theme_config=new Configuration;
   user_config=new Configuration;
+
+  if(rootdir != NULL)
+    {
+      _config->Set("RootDir", rootdir);
+      theme_config->Set("RootDir", rootdir);
+      user_config->Set("RootDir", rootdir);
+    }
 
   ReadConfigFile(*theme_config, PKGDATADIR "/aptitude-defaults");
 
@@ -276,7 +285,14 @@ void apt_dumpcfg(const char *root)
       return;
     }
 
+  // Don't write RootDir to the user's configuration file -- it causes
+  // horrible confusion.
+  std::string rootDir(_config->Find("RootDir", ""));
+  _config->Clear("RootDir");
+
   aptcfg->Dump(f);
+
+  _config->Set("RootDir", rootDir);
 
   f.close();
 
@@ -293,9 +309,15 @@ void apt_revertoptions()
   Configuration *old_user_config=user_config;
   Configuration *old_config=_config;
 
+  // Preserve any existing root-dir settings in the new configuration.
+  const std::string old_rootdir = _config->Find("RootDir", "");
+
   _config=new Configuration;
 
   user_config=new Configuration;
+
+  _config->Set("RootDir", old_rootdir);
+  user_config->Set("RootDir", old_rootdir);
 
   // ick?
   pkgInitConfig(*_config);
@@ -316,7 +338,13 @@ void apt_init(OpProgress *progress_bar, bool do_initselections,
 
 void apt_close_cache()
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+
+  LOG_INFO(logger, "Closing apt cache.");
+
   cache_closed();
+
+  LOG_TRACE(logger, "Done emitting cache_closed().");
 
   //   DANGER WILL ROBINSON!
   //
@@ -328,44 +356,75 @@ void apt_close_cache()
     {
       delete resman;
       resman = NULL;
+
+      LOG_TRACE(logger, "Deleted the global dependency resolver manager.");
     }
+  else
+    LOG_TRACE(logger, "No global dependency resolver manager exists; none deleted.");
 
   reset_tasks();
+
+  LOG_TRACE(logger, "Tasks reset.");
 
   if(apt_package_records)
     {
       delete apt_package_records;
       apt_package_records=NULL;
+      LOG_TRACE(logger, "Deleted the apt package records.");
     }
+  else
+    LOG_TRACE(logger, "No global apt package records exist; none deleted.");
 
   if(apt_cache_file)
     {
       delete apt_cache_file;
       apt_cache_file=NULL;
+      LOG_TRACE(logger, "Deleted the apt cache file.");
     }
+  else
+    LOG_TRACE(logger, "No global apt cache file exists; none deleted.");
 
   if(apt_source_list)
     {
       delete apt_source_list;
       apt_source_list=NULL;
+      LOG_TRACE(logger, "Deleted the apt sources list.");
     }
+  else
+    LOG_TRACE(logger, "No global apt sources list exists; none deleted.");
+
+  LOG_DEBUG(logger, "Done closing the apt cache.");
 }
 
 void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 		    const char * status_fname)
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+
   if(apt_cache_file != NULL)
-    return;
+    {
+      LOG_TRACE(logger, "Not loading apt cache: it's already loaded.");
+      return;
+    }
+
+  LOG_INFO(logger, "Loading apt cache.");
 
   aptitudeCacheFile *new_file=new aptitudeCacheFile;
+
+  LOG_TRACE(logger, "Reading the sources list.");
 
   apt_source_list=new pkgSourceList;
   apt_source_list->ReadMainList();
 
   bool simulate = aptcfg->FindB(PACKAGE "::Simulate", false);
 
+  if(simulate)
+    LOG_DEBUG(logger, PACKAGE "::Simulate is set; not locking the cache file.");
+
   // Clear the error stack so that we don't get confused by old errors.
   consume_errors();
+
+  LOG_TRACE(logger, "Opening the apt cache.");
 
   bool open_failed=!new_file->Open(*progress_bar, do_initselections,
 				   (getuid() == 0) && !simulate,
@@ -374,11 +433,20 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 
   if(open_failed && getuid() == 0)
     {
+      // Hm, we should include the errors, but there's no
+      // nondestructive way to do that. :-(
+      LOG_ERROR(logger, "Failed to load the apt cache; trying to open it without locking.");
+
       // Don't discard errors, make sure they get displayed instead.
       consume_errors();
 
       open_failed=!new_file->Open(*progress_bar, do_initselections,
 				  false, status_fname);
+
+      if(open_failed)
+	LOG_ERROR(logger, "Unable to load the apt cache at all; giving up.");
+      else
+	LOG_DEBUG(logger, "Opening the apt cache with locking succeeded.");
 
       if(!open_failed)
 	_error->Warning(_("Could not lock the cache file; this usually means that dpkg or another apt tool is already installing packages.  Opening in read-only mode; any changes you make to the states of packages will NOT be preserved!"));
@@ -387,7 +455,9 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
   if(open_failed)
     {
       delete new_file;
+      LOG_DEBUG(logger, "Unable to load the apt cache; aborting and emitting cache_reload_failed().");
       cache_reload_failed();
+      LOG_TRACE(logger, "Done emitting cache_reload_failed().");
       return;
     }
 
@@ -398,14 +468,20 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
   // ^C and lose important changes (like the new dselect states of
   // packages).  Note, though, that we don't fail if this fails.
   if(!status_fname && apt_cache_file->is_locked())
-    (*apt_cache_file)->save_selection_list(*progress_bar);
+    {
+      LOG_TRACE(logger, "Trying to save the current selection list.");
+      (*apt_cache_file)->save_selection_list(*progress_bar);
+    }
 
+  LOG_TRACE(logger, "Loading the apt package records.");
   apt_package_records=new pkgRecords(*apt_cache_file);
 
   // Um, good time to clear our undo info.
   apt_undos->clear_items();
 
+  LOG_TRACE(logger, "Loading task information.");
   load_tasks(*progress_bar);
+  LOG_TRACE(logger, "Loading tags.");
 #ifndef HAVE_EPT
   load_tags(*progress_bar);
 #else
@@ -414,13 +490,18 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 
   if(user_pkg_hier)
     {
+      LOG_TRACE(logger, "Loading user-defined package hierarchy information.");
       reload_user_pkg_hier();
       hier_reloaded();
     }
 
-  resman = new resolver_manager(*new_file);
+  LOG_TRACE(logger, "Initializing global dependency resolver manager.");
+  resman = new resolver_manager(*new_file, imm::map<aptitude_resolver_package, aptitude_resolver_version>());
 
+  LOG_DEBUG(logger, "Emitting cache_reloaded().");
   cache_reloaded();
+
+  LOG_TRACE(logger, "Done emitting cache_reloaded().");
 }
 
 void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,

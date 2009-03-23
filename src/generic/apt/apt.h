@@ -1,6 +1,6 @@
 // apt.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ pkg_hier *get_user_pkg_hier();
 // people who don't use the browser don't take the hit of having to
 // load in the (BIG) hierarchy info file)
 
-void apt_preinit();
+void apt_preinit(const char *rootdir);
 // Performs initialization of stuff that has to happen before apt_init is
 // called (eg, pkgInitialize and setting up the undo structure)
 
@@ -147,20 +147,48 @@ void forget_new();
 extern undo_list *apt_undos;
 // There's a global undo stack for apt actions, to keep things sane..
 
-enum pkg_action_state {pkg_unchanged=-1,
-		       pkg_broken,
-		       pkg_unused_remove,
-		       pkg_auto_hold,
-		       pkg_auto_install,
-		       pkg_auto_remove,
-		       pkg_downgrade,
-		       pkg_hold,
-		       pkg_reinstall,
-		       pkg_install,
-		       pkg_remove,
-		       pkg_upgrade,
-                       pkg_unconfigured};
+/** \brief Represents a package's logical state.
+ *
+ *  find_pkg_state computes this value.
+ */
+enum pkg_action_state
+  {
+    /** \brief No action is being performed on the package. */
+    pkg_unchanged=-1,
+    /** \brief The package has broken dependencies. */
+    pkg_broken,
+    /** \brief The package is unused and will be removed. */
+    pkg_unused_remove,
+    /** \brief The package was automatically held on the system. */
+    pkg_auto_hold,
+    /** \brief The package is being installed to fulfill dependencies. */
+    pkg_auto_install,
+    /** \brief The package is being removed to fulfill dependencies. */
+    pkg_auto_remove,
+    /** \brief The package is being downgraded. */
+    pkg_downgrade,
+    /** \brief The package is held back. */
+    pkg_hold,
+    /** \brief The package is being reinstalled. */
+    pkg_reinstall,
+    /** \brief The package is being installed. */
+    pkg_install,
+    /** \brief The package is being removed. */
+    pkg_remove,
+    /** \brief The package is being upgraded. */
+    pkg_upgrade,
+    /** \brief The package is installed but not configured. */
+    pkg_unconfigured
+  };
+/** \brief The number of package action states, not counting
+ *  pkg_unchanged.
+ */
 const int num_pkg_action_states=12;
+/** \brief Compute the action state of a package.
+ *
+ *  \param pkg   The package whose state is to be computed.
+ *  \param cache The open package cache associated with pkg.
+ */
 pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg,
 				aptitudeDepCache &cache);
 // A utility routine to return a useful notion of a package's "action-state"

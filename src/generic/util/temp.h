@@ -1,6 +1,6 @@
 // temp.h                                 -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -200,12 +200,18 @@ namespace temp
     /** Decrement the reference count of this impl. */
     void decref()
     {
-      cwidget::threads::mutex::lock l(m);
+      // Be careful to release the lock before we delete ourselves and
+      // destroy the mutex.
+      int new_count;
+      {
+	cwidget::threads::mutex::lock l(m);
 
-      eassert(refcount > 0);
-      --refcount;
+	eassert(refcount > 0);
+	--refcount;
+	new_count = refcount;
+      }
 
-      if(refcount == 0)
+      if(new_count == 0)
 	delete this;
     }
   };
@@ -356,12 +362,17 @@ namespace temp
     /** Decrement the reference count of this impl. */
     void decref()
     {
-      cwidget::threads::mutex::lock l(m);
+      int new_count;
 
-      eassert(refcount > 0);
-      --refcount;
+      {
+	cwidget::threads::mutex::lock l(m);
 
-      if(refcount == 0)
+	eassert(refcount > 0);
+	--refcount;
+	new_count = refcount;
+      }
+
+      if(new_count == 0)
 	delete this;
     }
   };

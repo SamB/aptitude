@@ -1,6 +1,6 @@
 // resolver_manager.h                                -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -34,6 +34,8 @@
 #include <queue>
 #include <set>
 #include <vector>
+
+#include <generic/util/immset.h>
 
 /** \brief A higher-level resolver interface
  *
@@ -334,6 +336,11 @@ private:
    */
   bool background_thread_in_resolver;
 
+  /** \brief The initial set of installations; used when setting up
+   *  the resolver.
+   */
+  imm::map<aptitude_resolver_package, aptitude_resolver_version> initial_installations;
+
   /** A lock around pending_jobs, background_thread_killed,
    *  background_thread_suspend_count, background_thread_in_resolver,
    *  resolver_null, and resolver_trace_dir.
@@ -452,7 +459,8 @@ private:
 			     const resolver_interaction &act);
 public:
   /** Create a new resolver manager for the given cache file. */
-  resolver_manager(aptitudeDepCache *cache);
+  resolver_manager(aptitudeDepCache *cache,
+		   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations);
 
   virtual ~resolver_manager();
 
@@ -689,6 +697,31 @@ public:
    */
   void select_previous_solution();
 
+  /** \brief Tells the background thread to start calculating
+   *  the next solution, if appropriate.
+   *
+   *  The thread will be started if all of the following are true:
+   *
+   *    1. There are broken packages.
+   *    2. The selected solution is the next solution to generate.
+   *    3. The solution set is not exhausted.
+   *    4. The background thread is not already active.
+   *    5. The background thread didn't abort with an error.
+   *
+   *  \param blocking    If \b true, the resolver will attempt to block
+   *                     and return immediately if a solution can be found
+   *                     in "a few" steps.
+   *  \param k           The continuation of the dependency resolver.
+   *                     It will be invoked (either in the foreground or
+   *                     in the background thread) when a solution is found.
+   *                     Ownership of this pointer is transfered to the
+   *                     resolver manager, which will delete it immediately
+   *                     if the thread isn't started, or after a solution is
+   *                     found otherwise.
+   */
+  void maybe_start_solution_calculation(bool blocking,
+					background_continuation *k);
+
   /** Tweak the resolver score of a particular package/version.  This
    *  requires that resolver_exists() and that the resolver is "fresh"
    *  (i.e., that next_solution() and current_solution() have never
@@ -718,6 +751,57 @@ public:
    *  considerations if you do so.
    */
   sigc::signal0<void> state_changed;
+
+  /** \brief Safe resolver logic. */
+  // @{
+
+private:
+  /** \brief Set up the resolver for "safe" dependency resolution;
+   *         used by safe_resolve_deps().
+   *
+   * Essentialy this means (1) forbid it from removing any package,
+   * and (2) only install the default candidate version of a package
+   * or the current version.  Invoking this routine will throw away
+   * any dependency resolution that has already been performed.
+   *
+   *  \param no_new_installs   If \b true, the resolver will also not
+   *                           be allowed to install any new packages;
+   *                           only upgrades will be permitted.
+   *  \param no_new_upgrades   If \b true, the resolver will not be
+   *                           allowed to upgrade any packages to resolve
+   *                           dependencies (so it can only cancel
+   *                           upgrades).
+   */
+  void setup_safe_resolver(bool no_new_installs, bool no_new_upgrades);
+
+  // Needs to be a member class so that it can access mutexes and so
+  // on (necessary so that locking works properly; I consider this OK
+  // because it's really just part of the resolver manager code, so
+  // close cooperation on locking is acceptable).
+  class safe_resolver_continuation;
+
+public:
+  /** \brief Resolve dependencies by installing default versions and
+   *  cancelling upgrades / installs.
+   *
+   *  \param no_new_installs   If \b true, the resolver will also not
+   *                           be allowed to install any new packages;
+   *                           only upgrades will be permitted.
+   *  \param no_new_upgrades   If \b true, the resolver will not be
+   *                           allowed to upgrade any packages to resolve
+   *                           dependencies (so it can only cancel
+   *                           upgrades).
+   *  \param k                 A continuation to invoke when the resolver
+   *                           is finished.
+   *
+   *  This routine will wipe out the state of the resolver and start
+   *  from scratch; no other code should adjust the resolver's state
+   *  until the safe resolution completes.
+   */
+  void safe_resolve_deps_background(bool no_new_installs, bool no_new_upgrades,
+				    background_continuation *k);
+
+  // @}
 };
 
 #endif

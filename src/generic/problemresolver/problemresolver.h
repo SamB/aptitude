@@ -1,6 +1,6 @@
 // problemresolver.h                  -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -45,10 +45,21 @@
 #include <iostream>
 #include <sstream>
 
+#include <limits.h>
+
+#include "choice.h"
+#include "choice_set.h"
 #include "dump_universe.h"
 #include "exceptions.h"
+#include "promotion_set.h"
 #include "solution.h"
 #include "resolver_undo.h"
+
+#include "log4cxx/consoleappender.h"
+#include "log4cxx/logger.h"
+#include "log4cxx/patternlayout.h"
+
+#include <loggers.h>
 
 #include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/eassert.h>
@@ -256,14 +267,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>dep_iterator</b>: an iterator over the list of all the \ref
  *  universe_dep "dependencies" in this universe.
  *
- *  - <b>broken_dep_iterator</b>: an iterator over the list of all
- *  "currently broken" \ref universe_dep "dependencies" in this
- *  universe (i.e., all dependencies that are broken if the "current"
- *  \ref universe_version "version" of each \ref universe_package
- *  "package", as given by \ref universe_package "package"::\ref
- *  universe_package_current_version "current_version()", is
- *  installed).
- *
  *  - <b>get_package_count()</b>: returns the number of \ref
  *  universe_package "package"s in the universe.
  *
@@ -277,10 +280,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>deps_begin()</b>: returns a \b dep_iterator pointing at the
  *  first \ref universe_dep "dependency" (in an arbitrary ordering) in
  *  the universe.
- *
- *  - <b>broken_begin()</b>: returns a \b broken_dep_iterator pointing
- *  at the first broken \ref universe_dep "dependency" (in an
- *  arbitrary ordering) in the universe.
  *
  *  \page universe_package Package concept
  *
@@ -499,8 +498,37 @@ public:
   typedef typename PackageUniverse::dep dep;
 
   typedef generic_solution<PackageUniverse> solution;
+  typedef generic_choice<PackageUniverse> choice;
+  typedef generic_choice_set<PackageUniverse> choice_set;
+  typedef generic_promotion<PackageUniverse> promotion;
+  typedef generic_promotion_set<PackageUniverse> promotion_set;
 
-  typedef typename solution::action action;
+  static const int maximum_tier = INT_MAX;
+
+  /** \brief The maximum tier; reserved for solutions that contain a
+   *  logical conflict and thus are dead-ends.
+   *
+   *  Search nodes at this tier are discarded without being visited.
+   */
+  static const int conflict_tier = maximum_tier;
+
+  /** \brief The second highest tier; reserved for solutions that were
+   *  already generated (to prevent them from being generated again).
+   *
+   *  Search nodes at this tier are discarded without being visited.
+   */
+  static const int already_generated_tier = conflict_tier - 1;
+
+  /** \brief The third highest tier; reserved for solutions that
+   *  violate a user constraint and will be deferred until the
+   *  constraints are changed.
+   */
+  static const int defer_tier = conflict_tier - 2;
+
+  /** \brief The minimum tier; this is the initial tier of the empty
+   *  solution.
+   */
+  static const int minimum_tier = INT_MIN;
 
   /** Information about the sizes of the various resolver queues. */
   struct queue_counts
@@ -509,6 +537,10 @@ public:
     size_t closed;
     size_t deferred;
     size_t conflicts;
+    /** \brief The number of deferred packages that are not at
+     *  defer_tier.
+     */
+    size_t promotions;
 
     /** \b true if the resolver has finished searching for solutions.
      *  If open is empty, this member distinguishes between the start
@@ -517,12 +549,15 @@ public:
     bool finished;
 
     queue_counts()
-      : open(0), closed(0), deferred(0), conflicts(0), finished(false)
+      : open(0), closed(0), deferred(0), conflicts(0), promotions(0), finished(false)
     {
     }
   };
 
 private:
+  log4cxx::LoggerPtr logger;
+  log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
+
   /** Hash function for packages: */
   struct ExtractPackageId
   {
@@ -544,8 +579,38 @@ private:
     }
   };
 
+  /** \brief Compares choices by their effects on the solution.
+   *
+   *  e.g., two choices that install the same version will always
+   *  compare equal.  This is used to check for choices that the user
+   *  has rejected or approved.
+   */
+  struct compare_choices_by_effects
+  {
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      if(c1.get_type() < c2.get_type())
+	return true;
+      else if(c2.get_type() < c1.get_type())
+	return false;
+      else
+	switch(c1.get_type())
+	  {
+	  case choice::install_version:
+	    return c1.get_ver() < c2.get_ver();
+
+	  case choice::break_soft_dep:
+	    return c1.get_dep() < c2.get_dep();
+	  }
+    }
+  };
+
   /** Compares solutions according to their contents; used to
    *  manage "closed".
+   *
+   *  Note that this does not attempt to merge choices that have the
+   *  same effect; it just ensures that a particular set of choices is
+   *  only placed on the open queue once.
    */
   struct solution_contents_compare
   {
@@ -571,24 +636,18 @@ private:
       else if(s2.get_action_score() < s1.get_action_score())
 	return false;
 
-      const imm::map<package,action>
-	&a1=s1.get_actions(), &a2=s2.get_actions();
-      const imm::set<dep>
-	&us1=s1.get_unresolved_soft_deps(), &us2=s2.get_unresolved_soft_deps();
+      const choice_set
+	&cs1 = s1.get_choices(), &cs2 = s2.get_choices();
 
 
       // Speed hack: order by size first to avoid traversing the whole
       // tree.
-      if(a1.size() < a2.size())
+      if(cs1.size() < cs2.size())
 	return true;
-      else if(a2.size() < a1.size())
-	return false;
-      else if(us1.size() < us2.size())
-	return true;
-      else if(us2.size() < us1.size())
+      else if(cs2.size() < cs2.size())
 	return false;
       else
-	return a1 < a2 || (a2 == a1 && us1 < us2);
+	return cs1 < cs2;
     }
   };
 
@@ -618,6 +677,14 @@ private:
     }
   };
 
+  /** \brief The initial state of the resolver.
+   *
+   *  If this is not NULL, we need to use a more clever technique to
+   *  get all the broken deps.  Can we get away with just iterating
+   *  over all deps and calling broken_under()?
+   */
+  resolver_initial_state<PackageUniverse> initial_state;
+
   // Information regarding the weight given to various parameters;
   // packaged up in a struct so it can be easily used by the solution
   // constructors.
@@ -628,34 +695,10 @@ private:
    */
   int minimum_score;
 
-  /** The "maximum" number of successors to generate for any given
-   *  node.  Note, however, that a full set of successors will always
-   *  be generated for each broken dependency, so this is not exact.
-   *
-   *  The theoretical justification is that in order to cover all
-   *  solutions, it's sufficient to generate all successors for a
-   *  single broken dependency.  This avoids the problem that when a
-   *  large number of packages are broken, or when a single package
-   *  version with a large number of reverse dependencies is broken,
-   *  you can end up searching way too many successor nodes, even if
-   *  all the successors are discarded outright.
-   *
-   *  Unfortunately, only generating one successor has its own
-   *  problem: solutions might be generated out-of-order (i.e., worse
-   *  solutions before better).  This variable allows you to seek a
-   *  "happy medium" by generating a reasonable number of successors,
-   *  but not too many.  If a single package breaks a large number of
-   *  other packages, then any attempt to fix those packages should
-   *  generate the correct successor (which will then pop to the top
-   *  of the queue and likely stay there), while if a large number of
-   *  unrelated packages are broken, it doesn't matter which successor
-   *  goes first.
-   *
-   *  Note that in practice, turning this up is very likely to result
-   *  in dreadful performance; the option to do so may very well be
-   *  removed in the future.
+  /** The number of "future" steps to examine after we find a solution
+   *  in order to find a better one.
    */
-  unsigned int max_successors;
+  int future_horizon;
 
   /** The universe in which we are solving problems. */
   const PackageUniverse universe;
@@ -667,9 +710,6 @@ private:
    *  no longer "forbidden".
    */
   bool deferred_dirty:1;
-
-  /** If \b true, debugging messages will be sent to stdout. */
-  bool debug:1;
 
   /** If \b true, so-called "stupid" pairs of actions will be
    *  eliminated from solutions. (see paper)
@@ -713,25 +753,72 @@ private:
   /** The working queue: */
   std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> open;
 
-  /** Stores already-seen solutions: */
+  /** \brief The current minimum search tier.
+   *
+   *  Solutions generated below this tier are discarded.  Defaults to
+   *  minimum_tier.
+   */
+  int minimum_search_tier;
+
+  /** \brief The current maximum search tier.
+   *
+   *  Solutions generated above this tier are placed into deferred.
+   *  This is advanced automatically when the current tier is
+   *  exhausted; it can also be advanced manually by the user.
+   *
+   *  Defaults to minimum_tier.
+   */
+  int maximum_search_tier;
+
+  /** Solutions generated "in the future".
+   *
+   *  The main reason this is persistent at the moment is so we don't
+   *  lose solutions if find_next_solution() throws an exception.
+   */
+  std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> future_solutions;
+
+  /** \brief Stores already-seen solutions that had their successors
+   *  generated.
+   */
   std::set<solution, solution_contents_compare> closed;
 
-  /** Stores solutions that were ignored because of user constraints
-   *  (but could be reinstated later).  Disjoint with closed.
+  /** \brief Stores solutions that are known to have a higher tier
+   *  than the current search tier.
+   *
+   *  Note: conflict_tier will never have an entry in this set;
+   *  solutions at that tier are thrown away rather than deferred.
    */
-  std::set<solution, solution_contents_compare> deferred;
+  std::map<int, std::set<solution, solution_contents_compare> > deferred;
 
-  typedef dense_mapset<package, action, ExtractPackageId> conflictset;
-
-  /** Stores conflicts: sets of installations that have been
-   *  determined to be mutually incompatible.
+  /** Like deferred, but for future solutions.
+   *
+   *  Note: because we only generate a deferred future solution when
+   *  we would otherwise have returned a solution, this doesn't need
+   *  to be split by tier: the solutions are always all at the current
+   *  tier.
    */
-  conflictset conflicts;
+  std::set<solution, solution_contents_compare> deferred_future_solutions;
+
+
+  /** Stores tier promotions: sets of installations that will force a
+   *  solution to a higher tier of the search.
+   */
+  promotion_set promotions;
 
   /** The initial set of broken dependencies.  Kept here for use in
    *  the stupid-elimination algorithm.
    */
   imm::set<dep> initial_broken;
+
+  /** The intrinsic tier of each version (indexed by version).
+   *
+   *  Store here instead of in the weights table because tiers are the
+   *  resolver's responsibility, not the solution object's (because
+   *  they are not a pure function of the contents of the solution; a
+   *  solution might get a higher tier if we can prove that it will
+   *  eventually have one anyway).
+   */
+  int *version_tiers;
 
   /** Stores versions that have been rejected by the user; distinct
    *  from the per-solution reject sets that track changes on a single
@@ -754,167 +841,10 @@ private:
    */
   std::set<dep> user_approved_broken;
 
-  /** Stores solutions that were already generated and that have
-   *  broken soft dependencies.
-   *
-   *  \todo Merge this with conflicts so we can accumulate information
-   *  about it?  Crazy idea: can we model breaking a soft dependency
-   *  as a special package version with a very low weight in the
-   *  model, and use that to unify the two?  Think about that.
-   */
-  std::vector<solution> generated_solutions;
-
 
   typedef std::set<std::pair<version, version> > stupid_table;
 
-  std::ostream &dump_conflict(std::ostream &out, const imm::map<package, action> &conflict) const;
-  std::ostream &dump_conflict(std::ostream &out, const action &act) const;
-
-
-  /** \param conflictorpair a (package, action) pair contained in a conflict.
-   *  \param apair a (package, action) pair from a solution or a conflict.
-   *
-   *  \return \b true if the given conflictor matches a.  This relation
-   *          is transitive, so if c1 matches c2 and c2 matches a,
-   *          then c1 matches a.
-   */
-  static bool conflictor_matches(const std::pair<package, action> &conflictorpair,
-				 const std::pair<package, action> &apair)
-  {
-    const action &conflictor = conflictorpair.second;
-    const action &a = apair.second;
-
-    if(a.ver != conflictor.ver)
-      return false;
-
-    if(!conflictor.from_dep_source)
-      return true;
-    else
-      return a.from_dep_source && a.d == conflictor.d;
-  }
-
-  /** \return \b true if each element of pc2 is matched by an element
-   *  in pc1.
-   */
-  static bool conflict_matches(const typename imm::map<package, action> &c,
-			       const typename imm::map<package, action> &acts)
-  {
-    typename imm::map<package, action>::const_iterator ci = c.begin();
-    typename imm::map<package, action>::const_iterator ai = acts.begin();
-
-    while(ci != c.end() &&
-	  ai != acts.end())
-      {
-	if(ai->first < ci->first)
-	  ++ai;
-	else if(ci->first < ai->first)
-	  return false;
-	else if(!(conflictor_matches(ci->second, ai->second)))
-	  return false;
-	else
-	  {
-	    ++ci;
-	    ++ai;
-	  }
-      }
-
-    return (ci == c.end());
-  }
-
-  /** Test whether the given partial conflict subsumes an existing
-   *  conflict.
-   *
-   *  \param m the conflict or action to match
-   *
-   *  \return a conflict matched by m, or conflicts.end() if no such
-   *  conflict exists.
-   */
-  typename conflictset::const_iterator
-  find_matching_conflict(const imm::map<package, action> &m) const
-  {
-    return conflicts.find_submap(m, &conflictor_matches);
-  }
-
-  /** Test whether the given partial conflict subsumes an existing
-   *  conflict.
-   *
-   *  \param m the conflict or action to match
-   *  \param actpair a single element that should be present in the
-   *                 returned conflict.  For instance, if you have a
-   *                 solution that you know is conflict-free and you
-   *                 perform a single action, passing this action
-   *                 as actpair may speed up the search for a
-   *                 conflict.
-   *
-   *  \return a conflict matched by m, or conflicts.end() if no such
-   *  conflict exists.
-   */
-  typename conflictset::const_iterator
-  find_matching_conflict(const imm::map<package, action> &m,
-			 const std::pair<package, action> &actpair) const
-  {
-    return conflicts.find_submap_containing(m, actpair, &conflictor_matches);
-  }
-
-  /** Test whether the given solution contains a conflict. */
-  bool contains_conflict(const solution &s) const
-  {
-    typename conflictset::const_iterator
-      found = find_matching_conflict(s.get_actions());
-    bool rval = (found != conflicts.end());
-
-    if(debug && rval)
-      {
-	std::cout << "The conflict ";
-	dump_conflict(std::cout, *found);
-	std::cout << " is triggered by the solution ";
-	s.dump(std::cout);
-	std::cout << std::endl;
-      }
-
-    return rval;
-  }
-
 #if 0
-  /** Test whether the given solution contains a conflict when the
-   *  given action is taken.
-   *
-   *  \return such a conflict if it exists; otherwise conflicts.end().
-   */
-  typename std::set<std::map<package, act_conflict> >::const_iterator
-  will_conflict(const solution &s,
-		const act_conflict &a) const
-  {
-    // For now I'm being lazy and actually generating a full mapping.
-    // However, this could be done much more efficiently if optimizing
-    // this code is important.
-    std::map<package, act_conflict> m;
-
-    populate_partial_conflict(s, m);
-
-    package p = a.ver.get_package();
-
-    m[p] = a;
-
-    typename std::set<std::map<package, act_conflict> >::const_iterator
-      result = subsumes_any_conflict(m);
-
-    if(debug && result != conflicts.end())
-      {
-	std::cout << "Adding " << p.get_name() << " "
-		  << a.ver.get_name();
-
-	if(a.from_dep_source)
-	  std::cout << " due to " << a.d;
-
-	std::cout << " will trigger conflict ";
-	dump(std::cout, *result);
-	std::cout << std::endl;
-      }
-
-    return result;
-  }
-
   /** Generate a table listing the "stupid" pairs of actions in a
    *  solution.  If (a,b) is in the table, then b solves the
    *  dependency that triggered a's installation.
@@ -952,6 +882,7 @@ private:
   {
     solution s;
     package drop;
+
   public:
     drop_package(const solution &_s, const package &_drop)
       :s(_s), drop(_drop)
@@ -961,7 +892,7 @@ private:
     version version_of(const package &p) const
     {
       if(p == drop)
-	return p.current_version();
+	return s.get_initial_state().version_of(p);
       else
 	return s.version_of(p);
     }
@@ -1035,7 +966,7 @@ private:
 
     drop_package dropped(s, v.get_package());
 
-    version curr = v.get_package().current_version();
+    version curr = initial_state.version_of(v.get_package());
     for(typename version::revdep_iterator i = curr.revdeps_begin();
 	!i.end(); ++i)
       if(ignore_deps.find(*i) == ignore_deps.end() &&
@@ -1066,25 +997,17 @@ private:
     return false;
   }
 
-  /** Represents an empty solution. */
-  class null_solution
-  {
-  public:
-    version version_of(const package &p) const
-    {
-      return p.current_version();
-    }
-  };
-
   /** Represents a partial solution based directly (by reference) on a
    *  reference to a map.
    */
   class map_solution
   {
     const std::map<package, action> &actions;
+    const resolver_initial_state &initial_state;
   public:
-    map_solution(const std::map<package, action> &_actions)
-      : actions(_actions)
+    map_solution(const std::map<package, action> &_actions,
+		 const resolver_initial_state &_initial_state)
+      : actions(_actions), initial_state(_initial_state)
     {
     }
 
@@ -1093,7 +1016,7 @@ private:
       typename std::map<package, action>::const_iterator found = actions.find(p);
 
       if(found == actions.end())
-	return p.current_version();
+	return initial_state.version_of(p);
       else
 	return found->second.ver;
     }
@@ -1388,12 +1311,10 @@ private:
 	// mean it does ;-)
 	eassert_on_dep(found_one, d);
 	eassert_on_ver(output_actions.find(solver.get_package()) == output_actions.end(), solver);
-	eassert_on_ver(solver != solver.get_package().current_version(), solver);
+	eassert_on_ver(solver != initial_state.version_of(solver.get_package()), solver);
 
-	if(debug)
-	  std::cout << "Filter: resolving " << d << " with "
-		    << solver.get_package().get_name() << ":"
-		    << solver.get_name() << std::endl; 
+	LOG_TRACE("Filter: resolving " << d << " with "
+		  << solver);
 
 	action act(solver, d, output_actions.size());
 
@@ -1414,7 +1335,7 @@ private:
 	output_actions[solver.get_package()] = act;
 	action_score += step_score;
 	action_score += version_scores[solver.get_id()];
-	action_score -= version_scores[solver.get_package().current_version().get_id()];
+	action_score -= version_scores[initial_state.version_of(solver.get_package()).get_id()];
       }
 
     // By definition we have a solution now.
@@ -1449,12 +1370,7 @@ private:
 
     while(!stupid_pairs.empty())
       {
-	if(debug)
-	  {
-	    std::cout << "Eliminating stupid pairs from ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
-	  }
+	LOG_TRACE(logger, "Eliminating stupid pairs from " << tmp);
 
 	// The pair to eliminate; picked (sorta) arbitrarily.
 	const typename std::pair<version, version> &victim = *stupid_pairs.begin();
@@ -1465,23 +1381,18 @@ private:
 	if(rval.get_actions().find(victim.first.get_package()) == rval.get_actions().end() ||
 	   rval.get_actions().find(victim.second.get_package()) == rval.get_actions().end())
 	  {
-	    if(debug)
-	      std::cout << "Dropping invalidated stupid pair("
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name() << ","
-			<< victim.second.get_package().get_name()
-			<< ":" << victim.second.get_name() << ")"
-			<< std::endl;
+	    LOG_TRACE(logger,
+		      "Dropping invalidated stupid pair("
+		      << victim.first << ", "
+		      << victim.second << ")");
 
 	    continue;
 	  }
 
-	if(debug)
-	  std::cout << "Examining stupid pair ("
-		    << victim.first.get_package().get_name()
-		    << ":" << victim.first.get_name() << ","
-		    << victim.second.get_package().get_name()
-		    << ":" << victim.second.get_name() << ")" << std::endl;
+	LOG_TRACE(logger,
+		  "Examining stupid pair ("
+		  << victim.first << ", "
+		  << victim.second << ")");
 
 	// Suppose we drop the second element in favor of the first.
 	// Will that produce a valid solution?
@@ -1492,12 +1403,11 @@ private:
 	// for the first action.
 	if(broken_by_drop(rval, victim.first, first_broken))
 	  {
-	    if(debug)
-	      std::cout << "Unable to drop "
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name()
-			<< ", changing justification to "
-			<< first_broken << std::endl;
+	    LOG_TRACE(logger,
+		      "Unable to drop "
+		      << victim.first
+		      << ", changing justification to "
+		      << first_broken);
 
 	    typename std::map<package, action>::const_iterator found = rval.get_actions().find(victim.first.get_package());
 	    eassert(found != rval.get_actions().end());
@@ -1527,12 +1437,9 @@ private:
 	  }
 	else
 	  {
-	    if(debug)
-	      std::cout << "Dropping "
-			<< victim.first.get_package().get_name()
-			<< ":" << victim.first.get_name()
-			<< " and filtering unnecessary installations."
-			<< std::endl;
+	    LOG_TRACE("Dropping "
+		      << victim.first
+		      << " and filtering unnecessary installations.");
 	    // Ok, it's safe.
 	    //
 	    // Generate a node by dropping the second element and
@@ -1556,21 +1463,11 @@ private:
 	  }
       }
 
-    if(debug)
-      {
-	if(contained_stupid)
-	  {
-	    std::cout << "Done eliminating stupid pairs, result is ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
-	  }
-	else
-	  {
-	    std::cout << "No stupid pairs in ";
-	    rval.dump(std::cout);
-	    std::cout << std::endl;
-	  }
-      }
+    LOG_TRACE(logger,
+	      (contained_stupid
+	       ? "Done eliminating stupid pairs, result is "
+	       : "No stupid pairs in ")
+	      << tmp);
 
     eassert(rval.get_broken().empty());
 
@@ -1580,170 +1477,343 @@ private:
 
   solution eliminate_stupid(const solution &s) const
   {
-    if(debug)
-      std::cout << "Would eliminate stupid, but stupid elimination is disabled." << std::endl;
+    LOG_TRACE(logger, "Would eliminate stupid, but stupid elimination is disabled.");
 
     return s;
   }
 
-  /** Calculate whether the solution is rejected based on
-   *  user_rejected by testing whether the intersection of the
-   *  solution domain and the rejected set is nonempty.
+  /** \brief Used to convert a set of choices to a (possibly) more
+   *  inclusive set that includes any choices which have the same
+   *  effect on the package cache.
+   *
+   *  This is used to ensure that solutions which have been returned
+   *  from the resolver are never produced again.
    */
-  bool contains_rejected(const solution &s) const
+  struct widen_choices_to_contents
   {
-    for(typename std::set<version>::const_iterator uri
-	  = user_rejected.begin(); uri != user_rejected.end(); ++uri)
-      {
-	typename imm::map<package, action>::node found = s.get_actions().lookup(uri->get_package());
+    choice_set &rval;
 
-	if(found.isValid() && found.getVal().second.ver == *uri)
-	  {
-	    if(debug)
-	      std::cout << "Rejected version " << found.getVal().first.get_name()
-			<< " " << found.getVal().second.ver.get_name()
-			<< " detected." << std::endl;
+    widen_choices_to_contents(choice_set &_rval)
+      : rval(_rval)
+    {
+    }
 
-	    return true;
-	  }
-      }
+    bool operator()(const choice &c) const
+    {
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  rval.insert_or_narrow(choice::make_install_version(c.get_ver(), c.get_dep(), c.get_id()));
+	  break;
 
-    return false;
+	case choice::break_soft_dep:
+	  rval.insert_or_narrow(c);
+	  break;
+	}
+
+      return true;
+    }
+  };
+
+  static choice_set get_solution_choices_without_dep_info(const solution &s)
+  {
+    choice_set rval;
+    widen_choices_to_contents populator(rval);
+
+    s.get_choices().for_each(populator);
+
+    return rval;
   }
 
-  bool breaks_hardened(const solution &s) const
-  {
-    typename std::set<dep>::const_iterator uh_iter
-      = user_hardened.begin();
-
-    if(uh_iter == user_hardened.end())
-      return false;
-
-    typename imm::set<dep>::const_iterator su_iter
-      = s.get_unresolved_soft_deps().begin();
-
-    while(uh_iter != user_hardened.end() &&
-	  su_iter != s.get_unresolved_soft_deps().end())
-      {
-	if(*uh_iter == *su_iter)
-	  {
-	    if(debug)
-	      std::cout << "Broken hardened dependency " << *uh_iter
-			<< " detected." << std::endl;
-
-	    return true;
-	  }
-	else if(*uh_iter < *su_iter)
-	  ++uh_iter;
-	else
-	  ++su_iter;
-      }
-
-    return false;
-  }
-
-  bool solves_approved_broken(const solution &s) const
-  {
-    const imm::map<package, action> &actions = s.get_actions();
-
-    for(typename imm::map<package, action>::const_iterator
-	  ai = actions.begin(); ai != actions.end(); ++ai)
-      if(user_approved_broken.find(ai->second.d) != user_approved_broken.end())
-	return true;
-
-    return false;
-  }
-
-  /** \return \b true if the given solution passed up an opportunity
-   *          to include an 'mandated' version.
+  /** \brief Determine the tier of the given solution using only the
+   *  promotions set.
+   *
+   *  For a completely correct calculation of the solution's tier,
+   *  callers should ensure that tier information from each version
+   *  contained in the solution is already "baked in" (this is true
+   *  for anything we pull from the open queue).
    */
-  bool avoids_mandated(const solution &s) const
+  int get_solution_tier(const solution &s) const
   {
-    // NB: The current algorithm is not terribly efficient.
-    for(typename std::set<version>::const_iterator ai = user_mandated.begin();
-	ai != user_mandated.end(); ++ai)
-      {
-	version v = s.version_of(ai->get_package());
-	// If it's already being installed, then we're fine.
-	if(v == *ai)
-	  continue;
+    choice_set choices = s.get_choices();
+    typename promotion_set::const_iterator found =
+      promotions.find_highest_promotion_for(choices);
+    if(found != promotions.end())
+      return std::max(found->get_tier(), s.get_tier());
+    else
+      return s.get_tier();
+  }
 
-	// Check (very slowly) whether we made a decision where we had
-	// the opportunity to use this version (and of course didn't).
-	for(typename imm::map<package, action>::const_iterator si = s.get_actions().begin();
-	    si != s.get_actions().end(); ++si)
-	  if(si->second.d.solved_by(*ai) &&
-	     user_mandated.find(si->second.ver) == user_mandated.end())
-	    {
-	      if(debug)
-		{
-		  std::cout << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (when resolving " << si->second.d << ") by the solution:" << std::endl;
-		  s.dump(std::cout);
-		  std::cout << std::endl;
-		}
+  /** \brief Determine the tier of the given solution, based only
+   *  on promotions containing the given choice.
+   */
+  int get_solution_tier_containing(const solution &s,
+				   const choice &c) const
+  {
+    // Build a set of choices.  \todo Maybe solutions should be based
+    // on the "choice" object instead of versions / broken deps?
 
-	      return true;
-	    }
+    choice_set choices = s.get_choices();
 
-	// Check whether a soft dependency is being left unresolved
-	// that this version could have satisfied and that's not
-	// approved-broken.
-	for(typename imm::set<dep>::const_iterator udi =
-	      s.get_unresolved_soft_deps().begin();
-	    udi != s.get_unresolved_soft_deps().end(); ++udi)
+    typename promotion_set::const_iterator found =
+      promotions.find_highest_promotion_containing(choices, c);
+
+    if(found != promotions.end())
+      return std::max(found->get_tier(), s.get_tier());
+    else
+      return s.get_tier();
+  }
+
+  // Note that these routines are slower than they could be: with some
+  // extra indexing in choice_set and/or more generic stuff in immset,
+  // they could use the fast set containment algorithm that immset
+  // provides.  But they are only invoked when the user constraints
+  // are changed, or when a solution is being added to or removed from
+  // the queue.  This is a relatively infrequent operation, and it
+  // wouldn't be worth the trouble to speed it up.
+
+  struct choice_does_not_break_user_constraint
+  {
+    const std::set<version> &rejected_versions;
+    const std::set<version> &mandated_versions;
+    const std::set<dep> &hardened_deps;
+    const std::set<dep> &approved_broken_deps;
+    const resolver_initial_state<PackageUniverse> &initial_state;
+    log4cxx::LoggerPtr logger;
+
+    choice_does_not_break_user_constraint(const std::set<version> &_rejected_versions,
+					  const std::set<version> &_mandated_versions,
+					  const std::set<dep> &_hardened_deps,
+					  const std::set<dep> &_approved_broken_deps,
+					  const resolver_initial_state<PackageUniverse> &_initial_state,
+					  const log4cxx::LoggerPtr &_logger)
+      : rejected_versions(_rejected_versions),
+	mandated_versions(_mandated_versions),
+	hardened_deps(_hardened_deps),
+	approved_broken_deps(_approved_broken_deps),
+	initial_state(_initial_state),
+	logger(_logger)
+    {
+    }
+
+    /** \brief Test whether a choice violates a user-specified
+     *  constraint.
+     *
+     *  \return \b true if the choice is OK, \b false if it breaks a
+     *  user constraint.
+     *
+     *  Because this returns \b false if it breaks a user constraint,
+     *  it is suitable for use with choice_set::for_each (it will
+     *  short-circuit and cause for_each() to return true or false as
+     *  appropriate).
+     */
+    bool operator()(const choice &c) const
+    {
+      // Check the easy cases first: it's rejected (in which case it
+      // violates a constraint) or it's mandated (in which case it
+      // definitely doesn't).  The only remaining case is that it
+      // avoids a mandated choice; that's handled below.
+      switch(c.get_type())
+	{
+	case choice::install_version:
 	  {
-	    const dep ud(*udi);
-	    const bool is_approved_broken =
-	      user_approved_broken.find(ud) != user_approved_broken.end();
-	    if(!is_approved_broken && ud.solved_by(*ai))
+	    version ver(c.get_ver());
+	    if(rejected_versions.find(ver) != rejected_versions.end())
 	      {
-		if(debug)
-		  {
-		    std::cout << ai->get_package().get_name() << " version " << ai->get_name() << " is avoided (by leaving " << ud << " unresolved) by the solution:" << std::endl;
-		    s.dump(std::cout);
-		    std::cout << std::endl;
-		  }
+		LOG_TRACE(logger, c << " is rejected: it installs the rejected version " << ver);
+		return false;
+	      }
 
-		return true;
+	    if(mandated_versions.find(ver) != mandated_versions.end())
+	      return true;
+
+	    break;
+	  }
+
+	case choice::break_soft_dep:
+	  {
+	    dep d(c.get_dep());
+
+	    if(hardened_deps.find(d) != hardened_deps.end())
+	      {
+		LOG_TRACE(logger, c << " is rejected: it breaks the hardened soft dependency " << d);
+		return false;
+	      }
+
+	    if(approved_broken_deps.find(d) != approved_broken_deps.end())
+	      return true;
+	  }
+
+	  break;
+	}
+
+      // Testing whether the choice avoids a mandated choice is
+      // trickier; we have to unpack it and look at what the
+      // alternatives were.
+
+
+      // \todo This preserves the old behavior, but I don't think it's
+      // right.  If an approved alternative was thrown out because it
+      // was illegal, that shouldn't cause all the other alternatives
+      // to be deferred.  We should invoke is_legal() to double-check
+      // that each alternative could actually be chosen (and thus this
+      // routine should take a solution so that we have some context).
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    const dep &d(c.get_dep());
+	    const version &chosen(c.get_ver());
+
+	    // We could have avoided this choice by installing a
+	    // version of the dependency's source that's not the
+	    // version we chose or the source itself.
+	    version source(d.get_source());
+	    package source_p(source.get_package());
+
+	    for(typename package::version_iterator vi = source_p.versions_begin();
+		!vi.end(); ++vi)
+	      {
+		version alternate(*vi);
+
+		if(alternate != source && alternate != chosen)
+		  {
+		    if(mandated_versions.find(alternate) != mandated_versions.end())
+		      {
+			LOG_TRACE(logger, c << " avoids installing the mandated version "
+				  << alternate << " to solve the dependency " << d);
+			return false;
+		      }
+		  }
+	      }
+
+	    // We could also have avoided this choice by installing a
+	    // different solver of the same dependency.
+	    for(typename dep::solver_iterator si = d.solvers_begin();
+		!si.end(); ++si)
+	      {
+		version solver(*si);
+
+		if(solver != chosen)
+		  {
+		    if(mandated_versions.find(solver) != mandated_versions.end())
+		      {
+			LOG_TRACE(logger, c << " avoids installing the mandated version "
+				  << solver << " to solve the dependency " << d);
+			return false;
+		      }
+		  }
+	      }
+
+
+
+	    // We could also have violated a user constraint by
+	    // accidentally solving a soft dependency that the user
+	    // told us to break.  Because of the possibly inconsistent
+	    // reverse dependency links, we need to check the reverse
+	    // dependencies of both the target and the initial
+	    // versions, to ensure that all the dependencies are
+	    // found.
+	    //
+	    // (note: in the apt case, checking both lists isn't
+	    // necessary because soft dependencies always appear in
+	    // the right place (only Conflicts are a problem and
+	    // they're never soft); however, this double check makes
+	    // the code more obviously correct)
+	    if(!d.is_soft())
+	      return true;
+
+	    for(typename version::revdep_iterator rdi = chosen.revdeps_begin();
+		!rdi.end(); ++rdi)
+	      {
+		dep rd(*rdi);
+
+		if(rd.is_soft())
+		  {
+		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
+		      {
+			LOG_TRACE(logger, c << " solves the soft dependency " << rd
+				  << " which was mandated to be broken.");
+			return false;
+		      }
+		  }
+	      }
+
+	    version chosen_initial(initial_state.version_of(chosen.get_package()));
+	    for(typename version::revdep_iterator rdi = chosen_initial.revdeps_begin();
+		!rdi.end(); ++rdi)
+	      {
+		dep rd(*rdi);
+
+		if(rd.is_soft())
+		  {
+		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
+		      {
+			LOG_TRACE(logger, c << " solves the soft dependency " << rd
+				  << " which was mandated to be broken.");
+			return false;
+		      }
+		  }
 	      }
 	  }
-      }
 
-    return false;
-  }
-
-  /** \return \b true if the resolution of the given dependency might
-   *                  be affected by a user constraint.
-   */
-  bool impinges_user_constraint(const dep &d) const
-  {
-    if(user_hardened.find(d) != user_hardened.end() ||
-       user_approved_broken.find(d) != user_approved_broken.end())
-      return true;
-
-    for(typename dep::solver_iterator si = d.solvers_begin();
-	!si.end(); ++si)
-      {
-	if(user_rejected.find(*si) != user_rejected.end())
 	  return true;
 
-	for(typename std::set<version>::iterator mi = user_mandated.begin();
-	    mi != user_mandated.end(); ++mi)
+	case choice::break_soft_dep:
+	  // This could only avoid a mandated choice if a move that
+	  // would have solved the dependency was mandated.  That is:
+	  // we need to check other versions of the source, and each
+	  // solver of the dependency.
 	  {
-	    if(mi->get_package() == (*si).get_package())
-	      return true;
+	    const dep &d(c.get_dep());
+	    version source(d.get_source());
+	    package source_p(source.get_package());
+
+	    for(typename package::version_iterator vi = source_p.versions_begin();
+		!vi.end(); ++vi)
+	      {
+		version alternate(*vi);
+
+		if(alternate != source &&
+		   mandated_versions.find(alternate) != mandated_versions.end())
+		  {
+		    LOG_TRACE(logger, c << " fails to install the mandated version " << alternate);
+		    return false;
+		  }
+	      }
+
+	    for(typename dep::solver_iterator si = d.solvers_begin();
+		!si.end(); ++si)
+	      {
+		version solver(*si);
+
+		if(mandated_versions.find(solver) != mandated_versions.end())
+		  {
+		    LOG_TRACE(logger, c << " fails to install the mandated version " << solver);
+		    return false;
+		  }
+	      }
 	  }
-      }
 
-    return false;
-  }
+	  return true;
+	}
 
+      LOG_ERROR(logger, c << " is an unknown choice type!");
+      return true;
+    }
+  };
 
-  /** \return \b true if the given solution should be deferred. */
-  bool should_defer(const solution &s) const
+  /** \return \b true if the given solution breaks a constraint
+   *  imposed by the user.
+   */
+  bool breaks_user_constraint(const solution &s) const
   {
-    return contains_rejected(s) || breaks_hardened(s) ||
-      avoids_mandated(s) || solves_approved_broken(s);
+    choice_does_not_break_user_constraint f(user_rejected, user_mandated,
+					    user_hardened, user_approved_broken,
+					    initial_state, logger);
+
+    bool does_not_break_user_constraint = s.get_choices().for_each(f);
+    return !does_not_break_user_constraint;
   }
 
   /** Place any solutions that were deferred and are no longer
@@ -1751,21 +1821,71 @@ private:
    */
   void reexamine_deferred()
   {
-    // NB: the STL guarantees that erasing elements from a set does
-    // not invalidate existing iterators.  Hence this very careful
-    // iteration:
+    // \todo If we un-defer a search node that has a lower tier than
+    // the current maximum tier, should we reset the maximum tier to
+    // be lower?  i.e., if we are at the "remove packages" tier, and
+    // we un-defer some search nodes that only install packages,
+    // should we put all the nodes at the "remove packages" tier aside
+    // until we've examined all the nodes that were newly injected
+    // into the "install packages" tier?
+
+
+    // Throw out all higher-level knowledge about deferrals.  The only
+    // way to ensure that this is done properly, but preserve
+    // information that doesn't need to be discarded, is to somehow
+    // (how?) "tag" each entry in the promotion set with the deferrals
+    // that it is associated with.  Then only the promotions that have
+    // actually become irrelevant need to be thrown away.
+    promotions.remove_tier(defer_tier);
+
+    // Place any deferred entries that are no longer deferred back
+    // into the "open" queue.
+    const typename std::map<int, std::set<solution, solution_contents_compare> >::iterator found =
+      deferred.find(defer_tier);
+    if(found != deferred.end())
+      {
+	LOG_TRACE(logger, "Re-examining the deferred tier.");
+
+	typename std::set<solution, solution_contents_compare>::iterator
+	  i = found->second.begin(), j = i;
+
+	while(i != found->second.end())
+	  {
+	    LOG_TRACE(logger, "Re-examining the solution " << *i);
+
+	    ++j;
+
+	    if(!breaks_user_constraint(*i))
+	      {
+		LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+
+		open.push(*i);
+		found->second.erase(i);
+	      }
+
+	    i = j;
+	  }
+      }
+    else
+      LOG_TRACE(logger, "Not re-examining the deferred tier: it does not exist.");
+
+    LOG_TRACE(logger, "Re-examining the future deferred set.");
 
     typename std::set<solution, solution_contents_compare>::const_iterator
-      i = deferred.begin(), j = i;
+      i = deferred_future_solutions.begin(), j = i;
 
-    while(i != deferred.end())
+    while(i != deferred_future_solutions.end())
       {
+	LOG_TRACE(logger, "Re-examining the solution " << *i);
+
 	++j;
 
-	if(!should_defer(*i))
+	if(!breaks_user_constraint(*i))
 	  {
-	    open.push(*i);
-	    deferred.erase(i);
+	    LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+
+	    future_solutions.push(*i);
+	    deferred_future_solutions.erase(i);
 	  }
 
 	i = j;
@@ -1774,8 +1894,13 @@ private:
     // Note that we might have to rescind the "finished" state: the
     // actions above can actually cause new solutions to be available
     // for processing!
-    if(finished && !open.empty())
-      finished = false;
+    if(finished && (!open.empty() || !future_solutions.empty()))
+      {
+	LOG_DEBUG(logger, "More solutions are available; clearing the \"finished\" flag on the dependency solver.");
+	finished = false;
+      }
+
+    LOG_TRACE(logger, "Done re-examining the deferred solution lists.");
 
     deferred_dirty = false;
   }
@@ -1787,73 +1912,66 @@ private:
   bool irrelevant(const solution &s)
   {
     if(closed.find(s) != closed.end())
-      return true;
-
-    if(contains_conflict(s))
-      return true;
-
-    // The efficiency of this step hinges on the *assumption* that the
-    // number of solutions that will be generated is small relative to
-    // the number of potential solutions.
-    for(typename std::vector<solution>::const_iterator i=generated_solutions.begin();
-	i!=generated_solutions.end(); ++i)
-      if(std::includes(s.get_actions().begin(), s.get_actions().end(),
-		       i->get_actions().begin(), i->get_actions().end()) &&
-	 std::includes(s.get_unresolved_soft_deps().begin(), s.get_unresolved_soft_deps().end(),
-		       i->get_unresolved_soft_deps().begin(), i->get_unresolved_soft_deps().end()))
+      {
+	LOG_TRACE(logger, s << " is irrelevant: it was already encountered in this search.");
 	return true;
+      }
+
+    const int tier = s.get_tier();
+    if(tier == conflict_tier)
+      {
+	LOG_TRACE(logger, s << " is irrelevant: it contains a conflict.");
+	return true;
+      }
+    else if(tier == already_generated_tier)
+      {
+	LOG_TRACE(logger, s << " is irrelevant: it was already produced as a result.");
+	return true;
+      }
 
     if(s.get_score() < minimum_score)
       {
-	if(debug)
-	  std::cout << "Not generating solution (infinite badness " << s.get_score() << "<" << minimum_score << ")" << std::endl;
+	LOG_TRACE(logger, s << "is irrelevant: it has infinite badness " << s.get_score() << "<" << minimum_score);
 	return true;
       }
 
     return false;
   }
 
-  /** Tries to enqueue the given package.
-   *
-   *  \return \b true if the solution was not irrelevant.
-   */
-  bool try_enqueue(const solution &s)
+  /** Tries to enqueue the given solution. */
+  void try_enqueue(const solution &s)
   {
-    if(irrelevant(s))
+    const int s_tier = get_solution_tier(s);
+    if(s_tier > maximum_search_tier)
       {
-	if(debug)
+	if(s_tier == conflict_tier)
+	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
+	else if(s_tier == already_generated_tier)
+	  LOG_TRACE(logger, "Dropping solution " << s << " (it was already generated as a solution).");
+	else
 	  {
-	    std::cout << "Dropping irrelevant solution ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
-	  }
+	    if(s_tier == defer_tier)
+	      LOG_TRACE(logger, "Deferring rejected solution " << s << " (it breaks a user constraint).");
+	    else
+	      LOG_TRACE(logger, "Deferring " << s << " until tier " << s_tier);
 
-	return false;
+	    deferred[s_tier].insert(s);
+	  }
       }
-    else if(should_defer(s))
+    else if(irrelevant(s))
+      // Shouldn't happen: we should have caught irrelevant solutions
+      // earlier in the process.
+      LOG_WARN(logger, "Unexpectedly irrelevant solution " << s);
+    else if(breaks_user_constraint(s))
       {
-	if(debug)
-	  {
-	    std::cout << "Deferring rejected solution ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
-	  }
-
-	deferred.insert(s);
-	return false;
+	LOG_WARN(logger, "Deferring rejected solution " << s);
+	deferred[defer_tier].insert(s);
       }
     else
       {
-	if(debug)
-	  {
-	    std::cout << "Enqueuing ";
-	    s.dump(std::cout);
-	    std::cout << std::endl;
-	  }
+	LOG_TRACE(logger, "Enqueuing " << s);
 
 	open.push(s);
-
-	return true;
       }
   }
 
@@ -1867,24 +1985,28 @@ private:
 
   /** Internal routine to check for the legality of a 'move' and
    *  generate a conflictor if it's not legal.
+   *
+   *  \param s   A solution giving the current context.
+   *  \param v   The version to consider installing.
+   *  \param out_choice   If v is illegal, this will be set
+   *                      to an existing choice in s that
+   *                      rendered v illegal.
    */
   bool is_legal(const solution &s,
 		const version &v,
-		action &out_act) const
+		choice &out_choice) const
   {
     package p = v.get_package();
-    version cur = p.current_version();
+    version cur = initial_state.version_of(p);
     version inst = s.version_of(p);
 
     if(inst != cur)
       {
-	if(debug)
-	  std::cout << "Discarding " << p.get_name() << " "
-		    << v.get_name() << ": monotonicity violation"
-		    << std::endl;
+	LOG_TRACE(logger,
+		  "Discarding " << v
+		  << ": monotonicity violation");
 
-	out_act.ver = inst;
-	out_act.from_dep_source = false;
+	out_choice = choice::make_install_version(inst, dep(), -1);
 	return false;
       }
     else
@@ -1898,51 +2020,23 @@ private:
 	  return true;
 	else
 	  {
+	    // \todo Store choices instead of deps as the reason for
+	    // forbidden versions; then we can also forbid resolving a
+	    // broken soft dependency, which should cut down the
+	    // branching factor.
 	    const dep &found_d = found.getVal().second;
 
-	    if(debug)
-	      std::cout << "Discarding " << p.get_name() << " "
-			<< v.get_name() << ": forbidden by the resolution of "
-			<< found_d << std::endl;
+	    LOG_TRACE(logger,
+		      "Discarding " << v
+		      << ": forbidden by the resolution of " << found_d);
 
-	    out_act.ver = s.version_of(found_d.get_source().get_package());
-	    out_act.d   = found_d;
-	    out_act.from_dep_source = true;
+	    // The version that was installed to change the
+	    // dependency's source.
+	    version culprit_ver = s.version_of(found_d.get_source().get_package());
+	    out_choice = choice::make_install_version_from_dep_source(culprit_ver, found_d, -1);
 
 	    return false;
 	  }
-      }
-  }
-
-  /** Internal routine to insert a new conflictor into a conflict set.
-   *  Handles the case in which the conflictor subsumes an existing
-   *  element of the set.
-   */
-  void insert_conflictor(imm::map<package, action> &conflict,
-			 const action &act) const
-  {
-    package p = act.ver.get_package();
-    typename imm::map<package, action>::node found
-      = conflict.lookup(p);
-
-    if(!found.isValid())
-      conflict.put(p, act);
-    else
-      {
-	const action &found_act = found.getVal().second;
-
-	action a2 = act;
-
-	eassert_on_2objs(found_act.ver == act.ver, found_act.ver, act.ver);
-	if(a2.from_dep_source)
-	  {
-	    if(found_act.from_dep_source)
-	      eassert_on_2objs(a2.d == found_act.d, a2.d, found_act.d);
-
-	    else
-	      a2.from_dep_source = false;
-	  }
-	conflict.put(p, a2);
       }
   }
 
@@ -1953,24 +2047,28 @@ private:
   {
     std::vector<solution> &target;
     std::set<package> *visited_packages;
+    const log4cxx::LoggerPtr &logger;
   public:
     real_generator(std::vector<solution> &_target,
-		   std::set<package> *_visited_packages)
-      :target(_target), visited_packages(_visited_packages)
+		   std::set<package> *_visited_packages,
+		   const log4cxx::LoggerPtr &_logger)
+      :target(_target), visited_packages(_visited_packages), logger(_logger)
     {
     }
 
-    template<typename a_iter, class u_iter>
+    template<typename c_iter>
     void make_successor(const solution &s,
-			const a_iter &abegin, const a_iter &aend,
-			const u_iter &ubegin, const u_iter &uend,
+			const c_iter &cbegin, const c_iter &cend,
+			int tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
       target.push_back(solution::successor(s,
-					   abegin, aend,
-					   ubegin, uend,
+					   cbegin, cend,
+					   tier,
 					   universe, weights));
+
+      LOG_TRACE(logger, "Generated successor: " << target.back());
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
@@ -2006,10 +2104,10 @@ private:
     {
     }
 
-    template<typename a_iter, class u_iter>
+    template<typename c_iter>
     void make_successor(const solution &s,
-			const a_iter &abegin, const a_iter &aend,
-			const u_iter &ubegin, const u_iter &uend,
+			const c_iter &cbegin, const c_iter &cend,
+			int tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
@@ -2022,18 +2120,58 @@ private:
     }
   };
 
+  /** \brief Function object that inserts each choice it is invoked on
+   *  into a given choice set if the choice does not install a given
+   *  version.
+   *
+   *  Used in generate_single_successor().
+   */
+  struct add_choices_not_for_version
+  {
+    choice_set &output;
+    const version &ver;
+
+    add_choices_not_for_version(choice_set &_output,
+				const version &_ver)
+      : output(_output), ver(_ver)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      bool ok = true;
+
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  ok = (ver != c.get_ver());
+	  break;
+
+	default:
+	  break;
+	}
+
+      if(ok)
+	output.insert_or_narrow(c);
+
+      return true;
+    }
+  };
+
   /** Convenience routine for the below: try to generate a successor
    *  by installing a single package version.  NB: assumes that the
-   *  solution's actions have dense identifiers (i.e., less than
-   *  s.get_actions().size()).
+   *  solution's choices have dense identifiers (i.e., less than
+   *  s.get_choices().size()).
    *
    *  \param s the solution for which a successor should be generated
    *  \param v the version to install
    *  \param d the dependency for which the successor is being generated.
    *  \param from_dep_source if \b true, this successor is the result
    *                         of an action on the source of a dependency
-   *  \param conflict a map to which conflictors for this version, if
-   *                  any, will be added.
+   *  \param result_promotion    set to an empty promotion to the lowest
+   *                             tier if no promotion was found;
+   *                             otherwise, set to the promotion that
+   *                             was found for this particular successor.
    *
    *  \param generator an object supporting the make_successor() routine,
    *                   as real_generator and null_generator above.
@@ -2043,87 +2181,155 @@ private:
 				 const dep &d,
 				 const version &v,
 				 bool from_dep_source,
-				 imm::map<package, action> &conflict,
+				 promotion &result_promotion,
 				 const SolutionGenerator &generator,
 				 std::set<package> *visited_packages) const
   {
+    // Note: it's essential for correctness that the set of forcing
+    // choices ends up containing every choice that "caused" the
+    // dependency to be broken.  Currently this happens
+    // coincidentally: if the source was modified so as to cause the
+    // dependency to become relevant, then it can't be changed again
+    // (so that installation is one reason), and if a solver was
+    // modified from being installed to not, then it can't be changed
+    // again (so that's another reason).  If the generation of
+    // promotions becomes more intelligent, I'll need to think a
+    // little more about whether this is right.
     if(visited_packages != NULL)
       visited_packages->insert(v.get_package());
 
-    action conflictor;
+    choice why_illegal;
 
-    if(debug)
+    LOG_TRACE(logger,
+	      "Trying to resolve " << d << " by installing "
+	      << v.get_package().get_name() << " "
+	      << v.get_name()
+	      << (from_dep_source ? " from the dependency source" : ""));
+
+    const int newid = s.get_choices().size();
+
+    // The contents of the promotion to return.
+    int tier = minimum_tier;
+    choice_set forcing_choices;
+
+    if(!is_legal(s, v, why_illegal))
       {
-	std::cout << "Trying to resolve " << d << " by installing "
-		  << v.get_package().get_name() << " "
-		  << v.get_name();
-	if(from_dep_source)
-	  std::cout << " from the dependency source";
-
-	std::cout << std::endl;
+	tier = conflict_tier;
+	forcing_choices.insert_or_narrow(why_illegal);
       }
-
-    const int newid = s.get_actions().size();
-
-    if(!is_legal(s, v, conflictor))
-      insert_conflictor(conflict, conflictor);
     else
       {
-	action act(v, d, from_dep_source, newid);
+	choice new_choice;
+	if(from_dep_source)
+	  new_choice = choice::make_install_version_from_dep_source(v, d, newid);
+	else
+	  new_choice = choice::make_install_version(v, d, newid);
 
 	// Speculatively form the new set of actions; doing this
 	// rather than forming the whole solution allows us to avoid
 	// several rather expensive steps in the successor routine
 	// (most notably the formation of the new broken packages
 	// set).
-	imm::map<package, action> new_acts = s.get_actions();
-	new_acts.put(v.get_package(), act);
+	choice_set new_choices = s.get_choices();
+	new_choices.insert_or_narrow(new_choice);
 
-	typename conflictset::const_iterator
-	  found = find_matching_conflict(new_acts,
-					 std::pair<package, action>(v.get_package(), act));
+ 	typename promotion_set::const_iterator
+	  found = promotions.find_highest_promotion_containing(new_choices,
+							       new_choice);
 
-	if(found == conflicts.end())
-	  generator.make_successor(s, &act, &act+1,
-				   (dep *) 0, (dep *) 0,
-				   universe, weights);
-	else
+	// If we didn't find a promotion, or the promotion didn't push
+	// the solution to a level that would cause it to be thrown
+	// away, go ahead and generate successors.  The caller will
+	// defer them or put them into the open queue, as appropriate.
+	if(!(found != promotions.end() &&
+	     (found->get_tier() == conflict_tier ||
+	      found->get_tier() == already_generated_tier)))
 	  {
-	    if(debug)
-	      {
-		std::cout << "Discarding " << v.get_package().get_name()
-			  << " " << v.get_name() << " due to conflict ";
-		dump_conflict(std::cout, *found);
-		std::cout << std::endl;
-	      }
+	    // Note: we didn't find a promotion, but the version
+	    // itself might have an intrinsic tier that's higher than
+	    // the current tier.
+	    const int current_tier = s.get_tier();
+	    int ver_tier = version_tiers[v.get_id()];
 
-	    imm::map<package, action> m = *found;
-
-	    for(typename imm::map<package, action>::const_iterator ci
-		  = m.begin(); ci != m.end(); ++ci)
+	    if(found != promotions.end())
 	      {
-		// Discard the version that we were trying to install,
-		// so that the caller can use this to form a more
-		// general conflict if all its resolutions fail.
-		if(ci->first != v.get_package())
-		  insert_conflictor(conflict, ci->second);
+		const int found_tier = found->get_tier();
+		if(found_tier > ver_tier)
+		  {
+		    if(found_tier > current_tier)
+		      {
+			LOG_TRACE(logger,
+				  v << " will promote this solution to tier " << found_tier
+				  << " due to the promotion " << *found);
+			tier = found_tier;
+			forcing_choices = found->get_choices();
+		      }
+		    else
+		      tier = current_tier;
+		  }
 		else
-		  eassert_on_2objs_soln(ci->second.ver == v,
-					ci->second.ver,
-					v,
-					s);
+		  {
+		    if(ver_tier > current_tier)
+		      {
+			LOG_TRACE(logger,
+				  v << " will promote this solution to tier " << ver_tier);
+			tier = ver_tier;
+		      }
+		    else
+		      tier = current_tier;
+		  }
 	      }
+	    else if(ver_tier > current_tier)
+	      {
+		LOG_TRACE(logger,
+			  v << " will promote this solution to tier " << ver_tier);
+		tier = ver_tier;
+	      }
+	    else
+	      tier = current_tier;
+
+
+	    generator.make_successor(s, &new_choice, &new_choice + 1,
+				     tier,
+				     universe, weights);
+	  }
+	else
+	  LOG_TRACE(logger, "Discarding " << v << " due to conflict "
+		    << found->get_choices());
+
+	// Now add anything that we learned to forcing_choices and
+	// extend the output promotion.
+
+	// Note that the output promotion contains the reasons that
+	// installing this version triggered a promotion; i.e., all
+	// the choices in the promotion *except* the one under
+	// consideration.  This means that if the version itself
+	// triggered a promotion, we just ignore it: installing this
+	// version triggers the promotion all by itself in that case.
+	// We only need to "remember" choices that had to do with a
+	// promotion that we hit.
+	if(found != promotions.end())
+	  {
+	    const promotion &p(*found);
+	    const choice_set &choices(p.get_choices());
+
+	    choices.for_each(add_choices_not_for_version(forcing_choices, v));
 	  }
       }
+
+    // Note that we have to pass all the candidate promotions up to
+    // the parent because the reasons for all the candidate
+    // installations have to be combined to form the final promotion
+    // for a solution.
+    result_promotion = promotion(forcing_choices, tier);
   }
 
   /** Build the successors of a solution node for a particular
    *  dependency.
    *
-   *  \param conflict a map which will be initialized with a conflict
-   *  explaining the non-appearance of some solvers (if there are no
-   *  solvers, this will be a full conflict explaining the lack of
-   *  solvers).
+   *  Any promotions / conflicts discovered in the course of this
+   *  process will be immediately inserted into the global set of
+   *  promotions.
    *
    *  \param visited_packages a set into which the packages used
    *                          to compute the successors will be
@@ -2134,7 +2340,6 @@ private:
   template<typename SolutionGenerator>
   void generate_successors(const solution &s,
 			   const dep &d,
-			   imm::map<package, action> &conflict,
 			   const SolutionGenerator &generator,
 			   std::set<package> *visited_packages) const
   {
@@ -2143,35 +2348,52 @@ private:
     if(visited_packages != NULL)
       visited_packages->insert(source.get_package());
 
-    typename imm::map<package, action>::node
-      source_found = s.get_actions().lookup(source.get_package());
+    // Check whether the source of the dependency was touched; if it
+    // was, we can't modify it.
+    version source_chosen;
+    bool source_was_modified = s.get_choices().get_version_of(source.get_package(), source_chosen);
+
+    // The tier and forcing reasons are updated until the tier is less
+    // than or equal to the current tier (since at that point there's
+    // no more information to be gleaned from them).
+
+    // This is the least tier generated by installing any solver for
+    // the dependency.
+    int tier = maximum_tier;
+    // The set of choices that explain the promotion that we're
+    // calculating.
+    choice_set forcing_reasons;
 
     // Try moving the source, if it is legal to do so.
     //
     // The source is not moved for soft deps: these model Recommends,
     // and experience has shown that users find it disturbing to have
     // packages upgraded or removed due to their recommendations.
-    //
-    // Note that a conflictor is never generated for the source if the
-    // dep is soft, since there's no logical dependency in that case
-    // between the source being in the working solution and the
-    // dependency being unsatisfiable.
     if(!d.is_soft())
       {
-	if(source_found.isValid())
-	  insert_conflictor(conflict, action(source, d, false, -1));
+	if(source_was_modified)
+	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, dep(), -1));
 	else
 	  {
-	    eassert_on_2objs_soln(source == source.get_package().current_version(),
+	    eassert_on_2objs_soln(source == initial_state.version_of(source.get_package()),
 				  source,
-				  source.get_package().current_version(),
+				  initial_state.version_of(source.get_package()),
 				  s);
 
 	    for(typename package::version_iterator vi = source.get_package().versions_begin();
 		!vi.end(); ++vi)
 	      if(*vi != source)
-		generate_single_successor(s, d, *vi, true, conflict, generator,
-					  visited_packages);
+		{
+		  promotion p;
+		  generate_single_successor(s, d, *vi, true, p, generator,
+					    visited_packages);
+
+		  if(tier > s.get_tier())
+		    {
+		      forcing_reasons.insert_or_narrow(p.get_choices());
+		      tier = std::min(tier, p.get_tier());
+		    }
+		}
 	  }
       }
 
@@ -2181,19 +2403,58 @@ private:
       {
 	if(visited_packages != NULL)
 	  visited_packages->insert((*si).get_package());
-	generate_single_successor(s, d, *si, false, conflict, generator,
+
+	promotion p;
+	generate_single_successor(s, d, *si, false, p, generator,
 				  visited_packages);
+
+
+	if(tier > s.get_tier())
+	  {
+	    forcing_reasons.insert_or_narrow(p.get_choices());
+	    tier = std::min(tier, p.get_tier());
+	  }
       }
 
     // Finally, maybe we can leave this dependency unresolved.
+    //
+    // \todo Add a way to set tiers of broken soft deps.  (maybe for
+    // now just have one tier that is always set for breaking them?)
     if(d.is_soft())
-      generator.make_successor(s, (action *) 0, (action *) 0,
-			       &d, &d+1, universe, weights);
+      {
+	// Check whether adding this unresolved dep triggers a
+	// promotion.
+	choice_set choices(s.get_choices());
+	choice break_d(choice::make_break_soft_dep(d, -1));
+	choices.insert_or_narrow(break_d);
+	typename promotion_set::const_iterator found =
+	  promotions.find_highest_promotion_containing(choices, break_d);
+
+	int tier = s.get_tier();
+	if(found != promotions.end() && found->get_tier() > tier)
+	  {
+	    tier = found->get_tier();
+	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << tier);
+	  }
+	LOG_TRACE(logger, "Trying to leave " << d << " unresolved");
+	generator.make_successor(s,
+				 &break_d, &break_d + 1,
+				 tier,
+				 universe, weights);
+      }
+
+    // Now, if the minimum tier of any successor is still above the
+    // previous solution's tier, we can promote solutions using the
+    // set of forced reasons that we've been accumulating.
+    if(tier > s.get_tier())
+      {
+	promotion p(forcing_reasons, tier);
+	LOG_DEBUG(logger, "Inserting new promotion: " << p);
+      }
   }
 
   /** Processes the given solution by enqueuing its successor nodes
-   *  (if any are available).  Note that for clarity, we now generate
-   *  *all* successors before examining *any*.
+   *  (if any are available).
    */
   void process_solution(const solution &s,
 			std::set<package> *visited_packages)
@@ -2207,18 +2468,16 @@ private:
     // Set to \b true if this search node is untenable.
     bool dead_end = false;
 
+    int num_least_successors = -1;
+    dep least_successors;
+
     // This loop attempts to generate all the successors of a
     // solution.  However, if a "forced" dependency arises, it
     // re-verifies all the dependencies of the solution.
     bool done = false;
     while(!done)
       {
-	if(debug)
-	  {
-	    std::cout << "Processing ";
-	    curr.dump(std::cout);
-	    std::cout << std::endl;
-	  }
+	LOG_DEBUG(logger, "Processing " << curr);
 
 	done = true;
 
@@ -2256,67 +2515,60 @@ private:
 		msg << ":" << std::endl;
 
 		msg << "Unexpectedly non-broken dependency "
-		    << *bi << "!" << std::endl;
+		    << *bi << "!";
 
 		version source = (*bi).get_source();
 
 		if(curr.version_of(source.get_package()) != source)
 		  msg << "  (" << source.get_package().get_name()
 		      << " " << source.get_name()
-		      << " is not installed)" << std::endl;
+		      << " is not installed)";
 
 		for(typename dep::solver_iterator si = (*bi).solvers_begin();
 		    !si.end(); ++si)
 		  if(curr.version_of((*si).get_package()) == *si)
 		    msg << "  (" << (*si).get_package().get_name()
 			<< " " << (*si).get_name()
-			<< " is installed)" << std::endl;
+			<< " is installed)";
 
-		throw ResolverInternalErrorException(msg.str());
+		std::string msgstr;
+		msg.str(msgstr);
+
+		LOG_FATAL(logger, msgstr);
+
+		throw ResolverInternalErrorException(msgstr);
 	      }
-
-	    imm::map<package, action> conflict;
 
 
 	    int num_successors = 0;
-	    generate_successors(curr, *bi, conflict,
+	    generate_successors(curr, *bi,
 				null_generator(num_successors),
 				visited_packages);
 
-
+	    if(num_least_successors == -1 ||
+	       num_successors < num_least_successors)
+	      {
+		num_least_successors = num_successors;
+		least_successors = *bi;
+	      }
 
 	    if(num_successors == 0)
-	      {
-		if(debug)
-		  {
-		    std::cout << "Discarding solution; unresolvable dependency "
-			      << *bi << " with conflict ";
-
-		    dump_conflict(std::cout, conflict);
-
-		    std::cout << std::endl;
-		  }
-
-		add_conflict(conflict);
-
-		dead_end = true;
-	      }
+	      dead_end = true;
 	    else if(num_successors == 1)
 	      {
-		if(debug)
-		  std::cout << "Forced resolution of " << *bi << std::endl;
+		LOG_TRACE(logger, "Forced resolution of " << *bi);
 
 		std::vector<solution> v;
-		real_generator g(v, visited_packages);
-		// NB: this may do redundant work adding to 'conflict'.
-		// Use a generator object to avoid that?
-		generate_successors(curr, *bi, conflict,
+		real_generator g(v, visited_packages, logger);
+		generate_successors(curr, *bi,
 				    g, visited_packages);
 
 		eassert_on_dep(v.size() == 1, s, *bi);
 
 		curr = v.back();
 		done = false;
+
+		num_least_successors = -1;
 	      }
 	  }
       }
@@ -2337,43 +2589,16 @@ private:
 
     unsigned int nsols = 0;
 
-    // First try to enqueue stuff related to a dependency that the
-    // user constrained; then just go for a free-for-all.
-    for(typename imm::set<dep>::const_iterator bi=curr.get_broken().begin();
-	bi!=curr.get_broken().end() && (nsols == 0 ||
-					nsols < max_successors); ++bi)
-
-      if(impinges_user_constraint(*bi))
-	{
-	  // Is it possible to take this out somehow?
-	  imm::map<package, action> conflict;
-
-	  if(debug)
-	    std::cout << "Generating successors for " << *bi
-		      << std::endl;
-
-	  std::vector<solution> v;
-	  generate_successors(curr, *bi, conflict,
-			      real_generator(v, visited_packages),
-			      visited_packages);
-	  try_enqueue(v);
-	  nsols += v.size();
-	}
-
-    for(typename imm::set<dep>::const_iterator bi=curr.get_broken().begin();
-	bi!=curr.get_broken().end() && (nsols == 0 ||
-					nsols < max_successors); ++bi)
+    // Should never happen unless we have no broken dependencies.
+    if(num_least_successors != -1)
       {
-	// Is it possible to take this out somehow?
-	imm::map<package, action> conflict;
-
-	if(debug)
-	  std::cout << "Generating successors for " << *bi
-		    << std::endl;
+	LOG_TRACE(logger,
+		  "Generating successors for "
+		  << least_successors);
 
 	std::vector<solution> v;
-	generate_successors(curr, *bi, conflict,
-			    real_generator(v, visited_packages),
+	generate_successors(curr, least_successors,
+			    real_generator(v, visited_packages, logger),
 			    visited_packages);
 	try_enqueue(v);
 	nsols += v.size();
@@ -2390,38 +2615,75 @@ public:
    *  with less than -infinity points will be immediately discarded.
    *  \param _full_solution_score a bonus for goal nodes (things
    *  that solve all dependencies)
+   *  \param _future_horizon  The number of steps to keep searching after finding a
+   *                          solution in the hope that a better one is "just around
+   *                          the corner".
+   *  \param _initial_state   A set of package actions to treat as part
+   *                          of the initial state (empty to just
+   *                          use default versions for everything).
    *  \param _universe the universe in which we are working.
    */
   generic_problem_resolver(int _step_score, int _broken_score,
 			   int _unfixed_soft_score,
-			   int infinity, unsigned int _max_successors,
+			   int infinity,
 			   int _full_solution_score,
+			   int _future_horizon,
+			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
-    :weights(_step_score, _broken_score, _unfixed_soft_score,
-	     _full_solution_score, _universe.get_version_count()),
-     minimum_score(-infinity), max_successors(_max_successors),
+    :logger(aptitude::Loggers::getAptitudeResolverSearch()),
+     appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     initial_state(_initial_state, _universe.get_package_count()),
+     weights(_step_score, _broken_score, _unfixed_soft_score,
+	     _full_solution_score, _universe.get_version_count(),
+	     initial_state),
+     minimum_score(-infinity),
+     future_horizon(_future_horizon),
      universe(_universe), finished(false), deferred_dirty(false),
-     debug(false), remove_stupid(true),
+     remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
-     conflicts(_universe.get_package_count())
+     promotions(_universe),
+     version_tiers(new int[_universe.get_version_count()])
   {
+    for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
+      version_tiers[i] = 0;
+
+    // Used for sanity-checking below; create this only once for
+    // efficiency's sake.
+    solution empty_solution(solution::root_node(initial_broken,
+						universe,
+						weights,
+						initial_state,
+						minimum_tier));
     // Find all the broken deps.
-    for(typename PackageUniverse::broken_dep_iterator bi=universe.broken_begin();
-	!bi.end(); ++bi)
+    for(typename PackageUniverse::dep_iterator di = universe.deps_begin();
+	!di.end(); ++di)
       {
-	dep bd(*bi);
+	dep d(*di);
 
-	solution empty_solution(solution::root_node(initial_broken,
-						    universe,
-						    weights));
-	eassert_on_dep(bd.broken_under(empty_solution), empty_solution, bd);
+	if(d.broken_under(initial_state))
+	  {
+	    eassert_on_dep(d.broken_under(empty_solution), empty_solution, d);
 
-	initial_broken.insert(bd);
+	    initial_broken.insert(d);
+	  }
       }
   }
 
   ~generic_problem_resolver()
   {
+    delete[] version_tiers;
+  }
+
+  /** \brief Get the dependencies that were initially broken in this
+   *  resolver.
+   *
+   *  This might be different from the dependencies that are
+   *  "intrinsically" broken in the universe, if there are
+   *  hypothesized initial installations.
+   */
+  const imm::set<dep> get_initial_broken() const
+  {
+    return initial_broken;
   }
 
   const PackageUniverse &get_universe() const
@@ -2433,15 +2695,28 @@ public:
   int get_broken_score() {return weights.broken_score;}
   int get_unresolved_soft_dep_score() {return weights.unfixed_soft_score;}
   int get_infinity() {return -minimum_score;}
-  int get_max_successors() {return max_successors;}
   int get_full_solution_score() {return weights.full_solution_score;}
 
   /** Enables or disables debugging.  Debugging is initially
    *  disabled.
+   *
+   *  This is a backwards-compatibility hook; in the future, the
+   *  log4cxx framework should be used to enable debugging.  This
+   *  function enables all possible debug messages by setting the
+   *  level for all resolver domains to TRACE.
    */
   void set_debug(bool new_debug)
   {
-    debug=new_debug;
+    if(new_debug)
+      {
+	logger->setLevel(log4cxx::Level::getTrace());
+	logger->addAppender(appender);
+      }
+    else
+      {
+	logger->setLevel(NULL);
+	logger->removeAppender(appender);
+      }
   }
 
   /** Enables or disables the removal of "stupid pairs".  Initially
@@ -2484,6 +2759,22 @@ public:
       reexamine_deferred();
 
     return open.empty() && finished;
+  }
+
+  /** \return the initial state of the resolver. */
+  const resolver_initial_state<PackageUniverse> &get_initial_state() const
+  {
+    return initial_state;
+  }
+
+  /** \brief Manually promote the given set of choices to the given tier.
+   *
+   *  If tier is defer_tier, the promotion will be lost when the user
+   *  changes the set of rejected packages.
+   */
+  void add_promotion(const choice_set &choices, int tier)
+  {
+    promotions.insert(promotion(choices, tier));
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -2675,60 +2966,6 @@ public:
       }
   }
 
-  /** Add a set of actions on packages to the set of 'conflicts'.  No
-   *  solution containing these actions will be generated or
-   *  contemplated.  This routine is public primarily to allow the
-   *  frontend to discard the 'do-nothing' solution (eg, the aptitude
-   *  resolver will ignore solutions that cancel all pending user
-   *  actions).
-   */
-  void add_conflict(const imm::map<package, action> &conflict)
-  {
-    typename conflictset::const_iterator
-      found = find_matching_conflict(conflict);
-
-    if(found != conflicts.end())
-      {
-	if(debug)
-	  {
-	    std::cout << "Dropping conflict ";
-	    dump_conflict(std::cout, conflict);
-	    std::cout << " because it is redundant with ";
-	    dump_conflict(std::cout, *found);
-	    std::cout << std::endl;
-	  }
-      }
-    else
-      {
-	if(debug)
-	  {
-	    std::cout << "Inserting conflict ";
-	    dump_conflict(std::cout, conflict);
-	    std::cout << std::endl;
-	  }
-	// TODO: drop conflicts of which this is a subset.  Needs work
-	// at the setset level.
-	conflicts.insert(conflict);
-      }
-  }
-
-  /** Remove all dependency-related information from a set of actions;
-   *  used to insert conflicts that shouldn't have dependency tags.
-   */
-  static imm::map<package, action>
-  strip_dep_info(const imm::map<package, action> &actmap)
-  {
-    imm::map<package, action> rval;
-
-    for(typename imm::map<package, action>::const_iterator i = actmap.begin();
-	i != actmap.end(); ++i)
-      rval.put(i->first, action(i->second.ver,
-				dep(), false,
-				i->second.id));
-
-    return rval;
-  }
-
   /** Cancel any find_next_solution call that is executing in the
    *  background.  If no such call is executing, then the next call
    *  will immediately be cancelled.
@@ -2755,15 +2992,28 @@ public:
     return counts;
   }
 
+  size_t get_num_deferred()
+  {
+    // \todo Track this more efficiently (we just need to wrap up the
+    // deferred map and keep a counter in the encapsulating class).
+    size_t rval = 0;
+    for(typename std::map<int, std::set<solution, solution_contents_compare> >::const_iterator
+	  it = deferred.begin(); it != deferred.end(); ++it)
+      rval += it->second.size();
+
+    return rval;
+  }
+
   /** Update the cached queue sizes. */
   void update_counts_cache()
   {
     cwidget::threads::mutex::lock l(counts_mutex);
-    counts.open      = open.size();
-    counts.closed    = closed.size();
-    counts.deferred  = deferred.size();
-    counts.conflicts = conflicts.size();
-    counts.finished  = finished;
+    counts.open       = open.size();
+    counts.closed     = closed.size();
+    counts.deferred   = get_num_deferred();
+    counts.conflicts  = promotions.tier_size(conflict_tier);
+    counts.promotions = promotions.size() - counts.conflicts;
+    counts.finished   = finished;
   }
 
   /** If no resolver is running, run through the deferred list and
@@ -2823,6 +3073,19 @@ public:
     // debugging (see below).
     int odometer = 0;
 
+    // Counter for how many "future" steps are left.
+    //
+    // Because this is a local variable and not a class member, the
+    // future horizon will restart each time this routine is called.
+    // But since we always run it out when we find a solution, the
+    // worst thing that can happen is that we search a little too much
+    // if there are lots of solutions near each other.  If this
+    // becomes a practical problem, it shouldn't be too hard to
+    // implement better behavior; the most difficult thing will be
+    // defining the best semantics for it.  Another possibility would
+    // be to always return the first "future" solution that we find.
+    int most_future_solution_steps = 0;
+
     if(deferred_dirty)
       reexamine_deferred();
 
@@ -2837,11 +3100,24 @@ public:
 
 	open.push(solution::root_node(initial_broken,
 				      universe,
-				      weights));
+				      weights,
+				      initial_state,
+				      minimum_tier));
       }
 
-    while(max_steps>0 && !open.empty())
+    // Here the outer loop is used to ensure that we don't get
+    // confused by supposedly existing solutions that are actually
+    // deferred.  We don't check the solution list until we've already
+    // found something, but if all the solutions on it are deferred,
+    // we need to keep searching until max_steps is exhausted.
+    while(max_steps > 0 && !open.empty())
       {
+    while(max_steps > 0 && most_future_solution_steps <= future_horizon && !open.empty())
+      {
+	if(most_future_solution_steps > 0)
+	  LOG_TRACE(logger, "Speculative \"future\" resolver tick ("
+		    << most_future_solution_steps << "/" << future_horizon << ").");
+
 	// Threaded operation: check whether we have been cancelled.
 	{
 	  cwidget::threads::mutex::lock l(execution_mutex);
@@ -2857,27 +3133,36 @@ public:
 
 	++odometer;
 
-	if(irrelevant(s))
+	// Check whether the solution has been promoted since it was
+	// inserted into the open queue.  If it has, defer it until we
+	// get to the appropriate tier.
+	const int s_tier = get_solution_tier(s);
+	if(s_tier == conflict_tier)
 	  {
-	    if(debug)
-	      {
-		std::cout << "Dropping irrelevant solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
-	      }
+	    LOG_DEBUG(logger, "Dropping conflicted solution " << s);
 	    continue;
 	  }
-
-	if(should_defer(s))
+	else if(s_tier == already_generated_tier)
 	  {
-	    if(debug)
-	      {
-		std::cout << "Deferring rejected solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
-	      }
+	    LOG_DEBUG(logger, "Dropping already generated solution " << s);
+	    continue;
+	  }
+	else if(irrelevant(s))
+	  {
+	    LOG_DEBUG(logger, "Dropping irrelevant solution " << s);
+	    continue;
+	  }
+	else if(s_tier > maximum_search_tier)
+	  {
+	    LOG_DEBUG(logger, "Deferring solution " << s << " to tier " << s_tier);
+	    deferred[s_tier].insert(s);
+	    continue;
+	  }
+	else if(breaks_user_constraint(s))
+	  {
+	    LOG_DEBUG(logger, "Deferring rejected solution " << s);
 
-	    deferred.insert(s);
+	    deferred[defer_tier].insert(s);
 	    continue;
 	  }
 
@@ -2886,17 +3171,7 @@ public:
 	// If all dependencies are satisfied, we found a solution.
 	if(s.is_full_solution())
 	  {
-	    if(debug)
-	      {
-		std::cout << " --- Found solution ";
-		s.dump(std::cout);
-		std::cout << std::endl;
-	      }
-
-	    // Set it here too in case the last tentative solution is
-	    // really a solution.
-	    if(open.empty())
-	      finished=true;
+	    LOG_INFO(logger, " --- Found solution " << s);
 
 	    solution minimized = remove_stupid ? eliminate_stupid(s) : s;
 
@@ -2907,54 +3182,100 @@ public:
 	    // *changed*, we sometimes end up re-inserting something
 	    // with the same version content and hence something
 	    // that's already on the closed queue.
-	    if(minimized.get_actions().size() != s.get_actions().size())
+	    if(minimized.get_choices().size() != s.get_choices().size())
 	      {
 		// Make it fend for itself! (although I expect it to
 		// come up again immediately; hrm)
-		if(debug)
-		  std::cout << " --- Placing de-stupidified solution back on the open queue" << std::endl;
+		LOG_TRACE(logger, " --- Placing de-stupidified solution back on the open queue");
 		finished = false;
 		open.push(minimized);
 	      }
 	    else
 	      {
 		closed.insert(minimized);
-		// In the cases where the solution can be completely
-		// represented by a conflict, add one (so we get the
-		// benefits of conflict tracking).
-		//
-		// \todo extend conflicts so they can represent
-		// everything or extend everything so a conflict can
-		// represent it.
-		if(minimized.get_unresolved_soft_deps().empty())
-		  add_conflict(strip_dep_info(minimized.get_actions()));
-		else
-		  generated_solutions.push_back(minimized);
+		// Remember this solution, so we don't try to return
+		// it again in the future.  (note that we remove
+		// from-dep-source information so that we match any
+		// solution with the same version content)
+		promotions.insert(promotion(get_solution_choices_without_dep_info(minimized),
+					    already_generated_tier));
 
-		if(debug)
-		  {
-		    std::cout << " *** Converged after " << odometer << " steps." << std::endl;
-		    std::cout << " *** open: " << open.size()
-			      << "; closed: " << closed.size()
-			      << "; conflicts: " << conflicts.size()
-			      << "; deferred: " << deferred.size()
-			      << "; generated solutions: " << generated_solutions.size()
-			      << std::endl;
-		  }
+		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
-		update_counts_cache();
+		LOG_INFO(logger, " *** open: " << open.size()
+			 << "; closed: " << closed.size()
+			 << "; promotions: " << promotions.size()
+			 << "; deferred: " << get_num_deferred());
 
-		return minimized;
+		future_solutions.push(minimized);
 	      }
 	  }
 	// Nope, let's go enqueue successor nodes.
 	else
 	  process_solution(s, visited_packages);
 
-	if(debug)
-	  std::cout << "Done generating successors." << std::endl;
+	// Keep track of the "future horizon".  If we haven't found a
+	// solution, we aren't using those steps up at all.
+	// Otherwise, we count up until we hit 50.
+	if(!future_solutions.empty())
+	  ++most_future_solution_steps;
+
+	LOG_TRACE(logger, "Done generating successors.");
 
 	--max_steps;
+
+	while(open.empty() && !deferred.empty() &&
+	      deferred.begin()->first != defer_tier &&
+	      deferred.begin()->first != already_generated_tier &&
+	      deferred.begin()->first != conflict_tier)
+	  {
+	    const std::pair<int, std::set<solution, solution_contents_compare> > &first_pair = *deferred.begin();
+	    const int first_tier = first_pair.first;
+	    const std::set<solution, solution_contents_compare> &first_solutions = first_pair.second;
+
+	    LOG_TRACE(logger, "Advancing to tier " << first_tier
+		      << " and inserting " << first_solutions.size()
+		      << " entries into the open list.");
+
+	    maximum_search_tier = first_tier;
+
+	    for(typename std::set<solution, solution_contents_compare>::const_iterator
+		  it = first_solutions.begin(); it != first_solutions.end(); ++it)
+	      // We can probably just do .push(), but doing this will
+	      // avoid any nasty surprises due to not checking what
+	      // try_enqueue usually checks.
+	      try_enqueue(*it);
+	  }
+      }
+
+    if(!future_solutions.empty())
+      {
+	solution rval;
+
+	while(!future_solutions.empty() && !rval)
+	  {
+	    solution tmp = future_solutions.top();
+	    future_solutions.pop();
+
+	    if(breaks_user_constraint(tmp))
+	      {
+		LOG_TRACE(logger, "Deferring the future solution " << tmp);
+		deferred_future_solutions.insert(tmp);
+	      }
+	    else
+	      rval = tmp;
+	  }
+
+	if(rval)
+	  {
+	    if(open.empty() && future_solutions.empty())
+	      finished = true;
+
+	    return rval;
+	  }
+	else
+	  most_future_solution_steps = 0;
+      }
       }
 
     // Oh no, we either ran out of solutions or ran out of steps.
@@ -2968,16 +3289,12 @@ public:
 
     update_counts_cache();
 
-    if(debug)
-      {
-	std::cout << " *** Out of solutions after " << odometer << " steps." << std::endl;
-	std::cout << " *** open: " << open.size()
-		  << "; closed: " << closed.size()
-		  << "; conflicts: " << conflicts.size()
-		  << "; deferred: " << deferred.size()
-		  << "; generated solutions: " << generated_solutions.size()
-		  << std::endl;
-      }
+    LOG_INFO(logger, " *** Out of solutions after " << odometer << " steps.");
+    LOG_INFO(logger ,
+	     " *** open: " << open.size()
+	     << "; closed: " << closed.size()
+	     << "; promotions: " << promotions.size()
+	     << "; deferred: " << get_num_deferred());
 
     throw NoMoreSolutions();
   }
@@ -3025,35 +3342,23 @@ public:
   }
 };
 
-template<class PackageUniverse>
-std::ostream &generic_problem_resolver<PackageUniverse>::dump_conflict(std::ostream &out, const typename generic_problem_resolver<PackageUniverse>::action &act) const
-{
-  out << act.ver.get_package().get_name() << " "
-      << act.ver.get_name();
-
-  if(act.from_dep_source)
-    out << " [" << act.d << "]";
-
-  return out;
-}
-
-template<class PackageUniverse>
-std::ostream &generic_problem_resolver<PackageUniverse>::dump_conflict(std::ostream &out, const typename imm::map<typename PackageUniverse::package, typename generic_solution<PackageUniverse>::action> &act) const
-{
-  out << "(";
-
-  for(typename imm::map<typename PackageUniverse::package, typename generic_solution<PackageUniverse>::action>::const_iterator ci
-	= act.begin(); ci != act.end(); ++ci)
-    {
-      if(ci != act.begin())
-	out << ", ";
-
-      dump_conflict(out, ci->second);
-    }
-
-  out << ")";
-
-  return out;
-}
+// Appease the C++ gods by writing dummy definitions of these things.
+// g++ happily accepts definitions of static constants inside a class,
+// but they aren't actually defined unless you define them outside the
+// class and don't give a definition in the definition, so without
+// these dummy lines, the linker will complain that there are
+// undefined references to the constants defined above because their
+// definitions aren't really definitions.  Hopefully that's all
+// obvious.
+template<typename PackageUniverse>
+const int generic_problem_resolver<PackageUniverse>::maximum_tier;
+template<typename PackageUniverse>
+const int generic_problem_resolver<PackageUniverse>::conflict_tier;
+template<typename PackageUniverse>
+const int generic_problem_resolver<PackageUniverse>::already_generated_tier;
+template<typename PackageUniverse>
+const int generic_problem_resolver<PackageUniverse>::defer_tier;
+template<typename PackageUniverse>
+const int generic_problem_resolver<PackageUniverse>::minimum_tier;
 
 #endif

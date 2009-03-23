@@ -19,19 +19,23 @@
 
 #include <cwidget/config/colors.h>
 #include <cwidget/config/keybindings.h>
+#include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 #include <cwidget/widgets/pager.h>
 #include <cwidget/widgets/scrollbar.h>
 #include <cwidget/widgets/table.h>
 #include <cwidget/widgets/text_layout.h>
 
-#include "changelog_parse.h"
+#include "download_list.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
+#include "safe_slot_event.h"
 #include "ui.h"
 #include "ui_download_manager.h"
 
 #include <generic/apt/apt.h>
+#include <generic/apt/changelog_parse.h>
 #include <generic/apt/pkg_changelog.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
@@ -41,12 +45,114 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
+
 using namespace std;
 
 namespace cw = cwidget;
 namespace cwidget
 {
   using namespace widgets;
+}
+
+
+static
+cw::fragment *change_text_fragment(const std::string &s)
+{
+  std::vector<cw::fragment *> lines;
+
+  std::string::size_type start = 0;
+  std::string::size_type next_nl;
+
+  do
+    {
+      next_nl = s.find('\n', start);
+
+      if(s[start] == ' ')
+	++start;
+
+      if(next_nl == start + 1 && s[start] == '.')
+	{
+	  lines.push_back(cw::newline_fragment());
+	  start = next_nl + 1;
+	  continue;
+	}
+
+      std::string this_line;
+      if(next_nl != std::string::npos)
+	this_line.assign(s, start, next_nl - start);
+      else
+	this_line.assign(s, start, std::string::npos);
+
+      size_t first_nonspace = 0;
+      while(first_nonspace < this_line.size() && isspace(this_line[first_nonspace]))
+	++first_nonspace;
+
+      bool has_bullet = false;
+      if(first_nonspace < this_line.size())
+	switch(this_line[first_nonspace])
+	  {
+	  case '*':
+	  case '+':
+	  case '-':
+	    has_bullet = true;
+	    break;
+	  }
+
+      if(has_bullet)
+	{
+	  cw::fragment *item =
+	    cw::fragf("%s%F%s%n",
+		      std::string(this_line, 0, first_nonspace).c_str(),
+		      cw::text_fragment(std::string(this_line, first_nonspace, 1).c_str(),
+					cw::get_style("Bullet")),
+		      std::string(this_line, first_nonspace + 1).c_str());
+	  lines.push_back(cw::hardwrapbox(item));
+	}
+      else
+	lines.push_back(cw::hardwrapbox(cw::fragf("%s%n", this_line.c_str())));
+
+      start = next_nl + 1;
+    } while(next_nl != std::string::npos);
+
+  return cw::sequence_fragment(lines);
+}
+
+static
+cw::fragment *render_changelog(const cw::util::ref_ptr<aptitude::apt::changelog> &cl,
+			       const std::string &curver)
+{
+  bool first = true;
+
+  std::vector<cw::fragment *> fragments;
+
+  for(aptitude::apt::changelog::const_iterator it = cl->begin();
+      it != cl->end(); ++it)
+    {
+      const cw::util::ref_ptr<aptitude::apt::changelog_entry>ent(*it);
+
+      cw::fragment *taglineFrag =
+	cw::hardwrapbox(cw::fragf("%n -- %s  %s",
+				  ent->get_maintainer().c_str(),
+				  ent->get_date_str().c_str()));
+      cw::fragment *f =
+	cw::fragf(first ? "%F%F" : "%n%F%F",
+		  change_text_fragment(ent->get_changes()),
+		  taglineFrag);
+
+      first = false;
+
+      if(!curver.empty() && _system->VS->CmpVersion(ent->get_version(), curver) > 0)
+	{
+	  cw::style s = cw::get_style("ChangelogNewerVersion");
+	  fragments.push_back(cw::style_fragment(f, s));
+	}
+      else
+	fragments.push_back(f);
+    }
+
+  return cw::sequence_fragment(fragments);
 }
 
 class pkg_changelog_screen : public cw::file_pager, public menu_redirect
@@ -165,7 +271,8 @@ static void do_view_changelog(temp::name n,
   string tablabel = ssprintf(_("%s changes"), pkgname.c_str());
   string desclabel = _("View the list of changes made to this Debian package.");
 
-  cw::fragment *f = make_changelog_fragment(n, curverstr);
+  cw::util::ref_ptr<aptitude::apt::changelog> changelog(aptitude::apt::parse_changelog(n));
+  cw::fragment *f = changelog.valid() ? render_changelog(changelog, curverstr) : NULL;
 
   cw::table_ref           t = cw::table::create();
   if(f != NULL)
@@ -207,16 +314,48 @@ static void do_view_changelog(temp::name n,
   insert_main_widget(t, menulabel, desclabel, tablabel);
 }
 
+namespace
+{
+  // Note that this is only safe if it's OK to copy the thunk in a
+  // background thread (i.e., it won't be invalidated by an object being
+  // destroyed in another thread).  In the special cases where we use
+  // this it should be all right.
+  void do_post_thunk(const safe_slot0<void> &thunk)
+  {
+    cw::toplevel::post_event(new aptitude::safe_slot_event(thunk));
+  }
+
+  // Helper routine to safely run do_view_changelog in the main
+  // thread.
+  void do_view_changelog_trampoline(temp::name n,
+				    string pkgname,
+				    string curverstr)
+  {
+    sigc::slot0<void> slot(sigc::bind(sigc::ptr_fun(&do_view_changelog),
+				      n, pkgname, curverstr));
+    do_post_thunk(make_safe_slot(slot));
+  }
+}
+
 void view_changelog(pkgCache::VerIterator ver)
 {
   bool in_debian=false;
 
   string pkgname = ver.ParentPkg().Name();
 
+
   pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-  string curverstr;
-  if(!curver.end() && curver.VerStr() != NULL)
-    curverstr = curver.VerStr();
+  std::string current_source_ver;
+  if(!curver.end())
+    {
+      pkgRecords::Parser &current_source_rec =
+	apt_package_records->Lookup(curver.FileList());
+
+      current_source_ver =
+	current_source_rec.SourceVer().empty()
+	? (curver.VerStr() == NULL ? "" : curver.VerStr())
+	: current_source_rec.SourceVer();
+    }
 
   // TODO: add a configurable association between origins and changelog URLs.
   for(pkgCache::VerFileIterator vf=ver.FileList();
@@ -232,12 +371,32 @@ void view_changelog(pkgCache::VerIterator ver)
       return;
     }
 
-  download_manager *manager = get_changelog(ver,
-					    sigc::bind(sigc::ptr_fun(&do_view_changelog), pkgname, curverstr));
+  // When the download completes, we'll invoke the trampoline
+  // function, which packages up a cwidget-style event in order to
+  // alert the main thread.  Errors are ignored (although I expect
+  // that they should show up in the apt error stack).
+  using aptitude::apt::global_changelog_cache;
+  download_manager *manager =
+    global_changelog_cache.get_changelog(ver,
+					 sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+						    pkgname, current_source_ver),
+					 sigc::slot<void, std::string>());
 
   if(manager != NULL)
-    (new ui_download_manager(manager, true, false, false,
-			     _("Downloading Changelog"),
-			     "",
-			     _("Download Changelog")))->start();
+    {
+      std::pair<download_signal_log *, download_list_ref>
+	download_log_pair = gen_download_progress(true, false,
+						  _("Downloading Changelog"),
+						  "",
+						  _("Download Changelog"));
+
+      ui_download_manager *uim =
+	new ui_download_manager(manager,
+				download_log_pair.first,
+				download_log_pair.second,
+				sigc::ptr_fun(&refcounted_progress::make),
+				&do_post_thunk);
+
+      uim->start();
+    }
 }

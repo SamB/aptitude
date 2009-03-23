@@ -9,7 +9,7 @@ MANPAGE=aptitude.$(LANGCODE).8
 README=README.$(LANGCODE)
 XMLSOURCES=aptitude.xml manpage.xml
 PERCENT_TRANSLATED=30
-MANPAGE_PERCENT_TRANSLATED=40
+MANPAGE_PERCENT_TRANSLATED=33
 
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)

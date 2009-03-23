@@ -12,6 +12,7 @@
 
 // For download_manager::result
 #include <generic/apt/download_manager.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <string>
 
@@ -70,23 +71,8 @@ bool cmdline_parse_source(const string &input,
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose);
 
-/** \brief Test whether a string looks like a search pattern.
- *
- *  \param s  the string to test.
- *
- *  Looks for tildes and question marks.
- *
- *  \return \b true if the string qualifies as a search pattern.
- */
-bool cmdline_is_search_pattern(const std::string &s);
-
 namespace aptitude
 {
-  namespace matching
-  {
-    class pkg_matcher;
-  }
-
   namespace cmdline
   {
     /** \brief Hack to handle memory management of apt source parsers.
@@ -167,26 +153,27 @@ namespace aptitude
     {
       bool is_add;
       std::string tag;
-      matching::pkg_matcher *matcher; // or NULL for implicit matchers.
+      cwidget::util::ref_ptr<aptitude::matching::pattern> pattern; // or NULL for implicit patterns.
 
     public:
       tag_application(bool _is_add,
 		      const std::string &_tag,
-		      matching::pkg_matcher *_matcher)
+		      const cwidget::util::ref_ptr<aptitude::matching::pattern> &_pattern)
       {
 	is_add = _is_add;
 	tag = _tag;
-	matcher = _matcher;
+	pattern = _pattern;
       }
 
       bool get_is_add() const { return is_add; }
       const std::string &get_tag() const { return tag; }
-      matching::pkg_matcher *get_matcher() const { return matcher; }
+      const cwidget::util::ref_ptr<aptitude::matching::pattern> &
+      get_pattern() const { return pattern; }
     };
 
     /** \brief Apply explicit and implicit user-tags to packages.
      *
-     *  Explicit tags are applied where their associated matcher holds;
+     *  Explicit tags are applied where their associated pattern holds;
      *  implicit tags are applied to packages that the user requested (as
      *  indicated in to_installed et al) and for which the requested
      *  action is being performed.

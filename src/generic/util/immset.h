@@ -1,6 +1,6 @@
 // immset.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005-2006, 2008 Daniel Burrows
+//   Copyright (C) 2005-2006, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -63,6 +63,26 @@ namespace imm
   template<typename Val, const int w = 4>
   class wtree_node
   {
+    // Type hack to let us dump trees containing pairs without
+    // operator<< (needed for map bindings).
+    template<typename T>
+    struct dumper
+    {
+      static void dump(std::ostream &out, const T &t)
+      {
+	out << t;
+      }
+    };
+
+    template<typename A, typename B>
+    struct dumper<std::pair<A, B> >
+    {
+      static void dump(std::ostream &out, const std::pair<A, B> &pair)
+      {
+	out << "(" << pair.first << ", " << pair.second << ")";
+      }
+    };
+
     class impl
     {
       typedef unsigned int size_type;
@@ -332,18 +352,25 @@ namespace imm
 
     /** Apply the given operator to each value in the tree in
      *  order.
+     *
+     *  If the operator returns false, the traversal is aborted.
      */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
       if(isValid())
 	{
-	  realNode->getLeftChild().for_each(o);
+	  if(!realNode->getLeftChild().for_each(o))
+	    return false;
 
-	  o(getVal());
+	  if(!o(getVal()))
+	    return false;
 
-	  realNode->getRightChild().for_each(o);
+	  if(!realNode->getRightChild().for_each(o))
+	    return false;
 	}
+
+      return true;
     }
 
     void dump(std::ostream &out,
@@ -363,7 +390,8 @@ namespace imm
       else if(mode == 1)
 	out << "R-> ";
 
-      out << getVal() << std::endl;
+      dumper<Val>::dump(out, getVal());
+      out << std::endl;
 
       getLeft().dump(out, indent, level+1, 0);
       getRight().dump(out, indent, level+1, 1);
@@ -670,9 +698,9 @@ namespace imm
 
     /** Apply the given operator to each member of this set. */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
-      root.for_each(o);
+      return root.for_each(o);
     }
 
     /** Insert an element into a tree, returning a new tree.  This is
@@ -817,6 +845,45 @@ namespace imm
     }
   };
 
+  template<typename Val>
+  struct set_write_action
+  {
+    std::ostream &out;
+    mutable bool first;
+
+    set_write_action(std::ostream &_out)
+      : out(_out), first(true)
+    {
+    }
+
+    bool operator()(const Val &v) const
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << v;
+
+      return true;
+    }
+  };
+
+  /** \brief Write a set to a stream as a set (values are written with
+   *  operator<<).
+   */
+  template<typename Val, typename Compare, int w>
+  std::ostream &operator<<(std::ostream &out, const set<Val, Compare, w> &s)
+  {
+    out.put('{');
+    set_write_action<Val> act(out);
+    s.for_each(act);
+    out.put('}');
+
+    return out;
+  }
+
+
   /** Compare two sets.  Will produce strange results unless the two
    *  sets have the same comparison *object*; you are responsible for
    *  ensuring that this is the case. (i.e., if the comparator has
@@ -922,7 +989,7 @@ namespace imm
      *  \param o a function object that takes a pair (key, val).
      */
     template<typename Op>
-    void for_each(const Op &o) const
+    bool for_each(const Op &o) const
     {
       return contents.for_each(o);
     }
@@ -1062,6 +1129,46 @@ namespace imm
       return map(contents.clone());
     }
   };
+
+  template<typename Key, typename Val>
+  struct map_write_action
+  {
+    std::ostream &out;
+    mutable bool first;
+
+    map_write_action(std::ostream &_out)
+      : out(_out), first(true)
+    {
+    }
+
+    bool operator()(const std::pair<Key, Val> &entry) const
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << entry.first << " := " << entry.second;
+
+      return true;
+    }
+  };
+
+
+  /** \brief Write a map to a stream as a map (values are written with
+   *  operator<<).
+   */
+  template<typename Key, typename Val, typename Compare>
+  std::ostream &operator<<(std::ostream &out, const map<Key, Val, Compare> &m)
+  {
+
+    out.put('{');
+    map_write_action<Key, Val> act(out);
+    m.for_each(act);
+    out.put('}');
+
+    return out;
+  }
 };
 
 #endif

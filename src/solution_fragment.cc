@@ -1,7 +1,7 @@
 // solution_fragment.cc
 //
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -35,6 +35,8 @@
 #include <vector>
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+typedef generic_choice<aptitude_universe> choice;
+typedef generic_choice_set<aptitude_universe> choice_set;
 
 using namespace std;
 namespace cw = cwidget;
@@ -144,14 +146,24 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerVer().VerStr());
 }
 
-cw::fragment *action_fragment(const aptitude_solution::action &a)
+cw::fragment *choice_fragment(const choice &c)
 {
-  if(a.ver.get_ver().end())
-    return cw::fragf(_("Removing %s"), a.ver.get_pkg().Name());
-  else
-    return cw::fragf(_("Installing %s %s (%s)"),
-		   a.ver.get_pkg().Name(), a.ver.get_ver().VerStr(),
-		   archives_text(a.ver.get_ver()).c_str());
+  switch(c.get_type())
+    {
+    case choice::install_version:
+      if(c.get_ver().get_ver().end())
+	return cw::fragf(_("Removing %s"), c.get_ver().get_pkg().Name());
+      else
+	return cw::fragf(_("Installing %s %s (%s)"),
+			 c.get_ver().get_pkg().Name(), c.get_ver().get_ver().VerStr(),
+			 archives_text(c.get_ver().get_ver()).c_str());
+
+    case choice::break_soft_dep:
+      return cw::fragf(_("Leave %ls unresolved."), dep_text(c.get_dep().get_dep()).c_str());
+
+    default:
+      return cw::fragf("Unhandled choice type %d.", c.get_type());
+    }
 }
 
 
@@ -163,43 +175,53 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
   vector<pkgCache::VerIterator> install_packages;
   vector<pkgCache::VerIterator> downgrade_packages;
   vector<pkgCache::VerIterator> upgrade_packages;
+  vector<pkgCache::DepIterator> unresolved;
 
-  for(imm::map<aptitude_universe::package,
-	aptitude_solution::action>::const_iterator i=sol.get_actions().begin();
-      i!=sol.get_actions().end(); ++i)
+  for(choice_set::const_iterator i = sol.get_choices().begin();
+      i != sol.get_choices().end(); ++i)
     {
-      pkgCache::PkgIterator pkg=i->first.get_pkg();
-      pkgCache::VerIterator curver=pkg.CurrentVer();
-      pkgCache::VerIterator newver=i->second.ver.get_ver();
-
-      if(curver.end())
+      switch(i->get_type())
 	{
-	  if(newver.end())
-	    keep_packages.push_back(pkg);
-	  else
-	    install_packages.push_back(newver);
-	}
-      else if(newver.end())
-	remove_packages.push_back(pkg);
-      else if(newver == curver)
-	keep_packages.push_back(pkg);
-      else
-	{
-	  int cmp=_system->VS->CmpVersion(curver.VerStr(),
-					  newver.VerStr());
+	case choice::install_version:
+	  {
+	    pkgCache::PkgIterator pkg = i->get_ver().get_pkg();
+	    pkgCache::VerIterator curver = pkg.CurrentVer();
+	    pkgCache::VerIterator newver = i->get_ver().get_ver();
 
-	  // The versions shouldn't be equal -- otherwise
-	  // something is majorly wrong.
-	  // eassert(cmp!=0);
-	  //
-	  // The above is not true: consider, eg, the case of a
-	  // locally compiled package and a standard package.
+	    if(curver.end())
+	      {
+		if(newver.end())
+		  keep_packages.push_back(pkg);
+		else
+		  install_packages.push_back(newver);
+	      }
+	    else if(newver.end())
+	      remove_packages.push_back(pkg);
+	    else if(newver == curver)
+	      keep_packages.push_back(pkg);
+	    else
+	      {
+		int cmp=_system->VS->CmpVersion(curver.VerStr(),
+						newver.VerStr());
 
-	  /** \todo indicate "sidegrades" separately? */
-	  if(cmp<=0)
-	    upgrade_packages.push_back(newver);
-	  else if(cmp>0)
-	    downgrade_packages.push_back(newver);
+		// The versions shouldn't be equal -- otherwise
+		// something is majorly wrong.
+		// eassert(cmp!=0);
+		//
+		// The above is not true: consider, eg, the case of a
+		// locally compiled package and a standard package.
+
+		/** \todo indicate "sidegrades" separately? */
+		if(cmp<=0)
+		  upgrade_packages.push_back(newver);
+		else if(cmp>0)
+		  downgrade_packages.push_back(newver);
+	      }
+	  }
+
+	case choice::break_soft_dep:
+	  unresolved.push_back(i->get_dep().get_dep());
+	  break;
 	}
     }
 
@@ -213,6 +235,7 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
        ver_name_lt());
   sort(upgrade_packages.begin(), upgrade_packages.end(),
        ver_name_lt());
+  // \todo Sort the unresolved list in some readable fashion.
 
   vector<cw::fragment *> fragments;
 
@@ -289,15 +312,13 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
       fragments.push_back(cw::newline_fragment());
     }
 
-  const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
-
   if(!unresolved.empty())
     {
       fragments.push_back(cw::fragf(_("Leave the following dependencies unresolved:%n")));
 
-      for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
+      for(std::vector<pkgCache::DepIterator>::const_iterator i = unresolved.begin();
 	  i != unresolved.end(); ++i)
-	fragments.push_back(cw::fragf("%ls%n", dep_text((*i).get_dep()).c_str()));
+	fragments.push_back(cw::fragf("%ls%n", dep_text(*i).c_str()));
     }
 
   char buf[512];

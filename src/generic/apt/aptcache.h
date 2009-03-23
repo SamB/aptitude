@@ -1,6 +1,6 @@
 // aptcache.h  -*-c++-*-
 //
-//  Copyright 1999-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -99,9 +99,6 @@ public:
     pkgCache::State::PkgSelectedState selection_state;
 
     /** Stores the version, if any, that the user explicitly selected.
-     *  This is not written to the global state file, although it is
-     *  used to pass information to the child during the "su-to-root"
-     *  operation.
      */
     std::string candver;
 
@@ -189,6 +186,12 @@ public:
 
     action_group(const action_group &other);
   public:
+    /** \brief Create a new action group.
+     *
+     *  \param cache  The package cache on which to act.
+     *  \param group  The undo group to add changes to, or NULL to not remember
+     *                changes.
+     */
     action_group(aptitudeDepCache &cache, undo_group *group = NULL);
 
     ~action_group();
@@ -304,7 +307,9 @@ private:
   // This makes the **ASSUMPTION** that if the target's tables aren't
   // NULL, they're properly sized..
 
-  void cleanup_after_change(undo_group *undo, bool alter_stickies=true);
+  void cleanup_after_change(undo_group *undo,
+			    std::set<pkgCache::PkgIterator> *changed_packages,
+			    bool alter_stickies=true);
   // Finds anything that magically changed and creates an undo item for it..
   // If alter_stickies is false, sticky states will be left alone.  (hack :( )
 
@@ -400,15 +405,27 @@ public:
    *  \param with_autoinst if \b true, the dependencies of packages
    *  begin upgraded will automatically be installed.
    *
-   *  \param ignore_selections if \b false, all upgradable packages
-   *  that are not held back will be upgraded; otherwise, packages
-   *  that are going to be removed will be ignored.
+   *  \param ignore_removed if \b false, all upgradable packages that
+   *  are not held back will be upgraded; otherwise, packages that are
+   *  going to be removed will be ignored.
    *
    *  \param undo an undo group with which the actions taken by this
    *  routine will be registered, or \b NULL.
    */
   void mark_all_upgradable(bool with_autoinst, bool ignore_removed,
 			   undo_group *undo);
+
+  /** \brief Retrieve the set of packages that mark_all_upgradable
+   *  would attempt to upgrade.
+   *
+   *  \param ignore_removed if \b false, all upgradable packages that
+   *  are not held back will be upgraded; otherwise, packages that are
+   *  going to be removed will be ignored.
+   *
+   *  \param upgradable A location in which to place the set of
+   *  currently upgradable packages.
+   */
+  void get_upgradable(bool ignore_removed, std::set<pkgCache::PkgIterator> &upgradable);
 
   void mark_single_install(const PkgIterator &pkg, undo_group *undo);
   // Marks this package to be install, and all other packages to be kept.
@@ -501,6 +518,11 @@ public:
    *  changed.
    */
   sigc::signal0<void> package_state_changed;
+
+  /** \brief This signal is emitted when any changes to a package's state
+   *  that might need to trigger a redraw of that package take place.
+   */
+  sigc::signal1<void, const std::set<pkgCache::PkgIterator> *> package_states_changed;
 
   // Emitted when a package's categorization is potentially changed.
   // (in particular, when package "new" states are forgotten)

@@ -1,3 +1,228 @@
+[1/18/2009]
+Version 0.5.1                               "One step at a time"
+
+- New features:
+
+  + [all] New match term: ?term-prefix(term).  This is like ?term(),
+          but it searches the Xapian database for any term which is an
+          extension of ?term.  For instance, ?term-prefix(hour)
+          matches any package that contains the terms "hour",
+          "hourglass", "hourly", etc.
+
+  + [all] If the user asks for the changelog of a version of a package
+          that's currently installed, aptitude will use the local copy
+          instead of downloading a new copy off the network.  If the
+          local copy can't be used for some reason, aptitude will fall
+          back to downloading a copy.
+
+  + [all] Implemented resolver hints: you can now place options in
+          apt.conf that control how the aptitude resolver treats
+          particular packages.  For a full discussion see the user's
+          manual, but here is a flavor:
+
+          Aptitude::ProblemResolver::Hints
+          {
+            "reject pulseaudio";          // Prevent the "pulseaudio"
+	    	    			  // package from being installed
+					  // by the aptitude resolver.
+            "approve ?name(emacs[0-9]*)"; // Always choose emacsNN over
+                                          // any alternatives.
+            "300 ?true /unstable";        // Give a 300-point bonus to
+	    	       			  // any version in the
+					  // "unstable" archive.
+          };
+
+          Currently these hints do not influence the choices made
+          by the "immediate" dependency resolver (the one that runs as
+          soon as you mark a package for installation).
+
+  + [gtk] aptitude now parses the dpkg status pipe, so it can show a
+          progress bar while dpkg is running.  Closing the terminal
+          tab does not terminate the install; only destroying the
+          progress bar does that.
+
+  + [gtk] The search entry box's background will turn slightly red if
+          the current text is not a valid search pattern.
+
+  + [gtk] If the user enters an invalid search pattern into the search
+          entry box, the error will be shown below the box (rather
+          than being shoved onto the apt errors pane).
+
+  + [gtk] aptitude prompts for confirmation before killing a download
+          or a dpkg process.  The download prompt might be
+          superfluous, but considering the possible side-effects of
+          killing off dpkg, that prompt will remain for the
+          foreseeable future.
+
+  + [gtk] aptitude will print a message to its embedded terminal
+          before and after running dpkg.
+
+  + [gtk] A drop-down box of package filters is available under the
+          text box where searches are entered.  This lets you quickly
+          filter a list of packages by some common criteria (showing
+          only packages that aren't installed).
+
+  + [gtk] The "automatically installed" flags of packages can be
+          toggled from the Package menu or from buttons in the
+          description pane.
+
+  + [gtk] Undo -> Undo works.
+
+  + [gtk] When viewing a dependency solution, you can choose to see
+          the actions in their "logical" order (equivalent to typing
+          "o" in the curses front-end).
+
+  + [gtk] In the version information tab (the one you get by
+          double-clicking a package), selecting a different version in
+          the list of versions causes information for that version to
+          be shown instead.
+
+  + [gtk] You can now change which columns are visible in a package
+          list by selecting View -> Edit Columns... or by clicking the
+          "..."  column heading.
+
+  + [gtk] New package list column: "automatically installed".
+
+          Each value in this column is displayed as a check-box, where
+          the box is checked if the package is automatic.  The
+          check-box can't currently be clicked because I'm worried
+          that people would click it by accident while trying to
+          select a package.  Most likely the rendering will be changed
+          in the future to look less "clickable".
+
+  + [gtk] New package list column: "archive".
+
+- Crashes and serious errors:
+
+  + [gtk] Fix several crashes, including one at start-up, that were
+          caused by some unusual package states.
+
+- Minor bugs:
+
+  + [cmdline] "aptitude why-not" no longer crashes when the final
+              argument is a virtual package.
+
+  + [gtk] The "Download started" row in the Downloads page is no
+          longer shown.
+
+  + [gtk] The dependency chains tab no longer misses some chains that
+          "aptitude why" would show.
+
+  + [gtk] Fix buffer problems due to sprintf by using aptitude's safer
+          variant of that function. (Closes: #511559)
+
+  + [gtk] When extracting just the part of a package's changelog that
+          corresponds to versions that are newer than the currently
+          installed version, truncate the changelog as soon as we see
+          the version numbers go "backwards" -- that is, as soon as
+          the previous version in the changelog is "newer" than the
+          current version.
+
+          This is important because some packages changed their
+          version scheme over time.  For instance, g++-4.2 lost its
+          epoch in 2004 when the package name changed.  But that
+          doesn't mean that those earlier versions of the package
+          should be displayed when we want to display the log for
+          today's upgrade!
+
+- Cosmetic and UI bugs:
+
+  + [all] The --help output now mentions --gui and --no-gui.
+
+  + [gtk] Many tweaks and improvements to the appearance of the UI;
+          particular thanks to Luca Bruno for his patches.  The
+          program looks a lot "nicer" overall as a result of his work.
+
+  + [gtk] The RC style "tiny-button-style" is used for tab close
+          buttons.
+
+  + [gtk] Use the "yes" icon (a green sphere) to indicate that a
+          package is installed and OK.  This is far more recognizable
+          for me (dburrows) than the hard disk icon we were using
+          before.
+
+  + [gtk] Not-yet-implemented menu options produce a "not implemented"
+          message.
+
+  + [gtk] Some menu items are disabled if they don't apply to the
+          "currently selected object".
+
+  + [gtk] When the user performs an action on several packages at
+          once, any packages they install will be marked as manually
+          installed, and package states won't change to fulfill
+          dependencies if those dependencies are already satisfied by
+          the selected actions.
+
+          For instance, suppose that the user selects A, B, and C for
+          installation.  A depends on "D | B", and B depends on C.
+          Previously aptitude might decide to install D to fulfill A's
+          dependency, and would mark C as automatically installed
+          because of B's dependency.  Now, just the three selected
+          packages will be installed, and they will all be marked as
+          manually instsalled.
+
+- Documentation:
+
+  + [doc] Wrote a new section of the documentation describing the
+          various dependency resolution mechanisms in aptitude.  This
+          includes the old section on resolving dependencies, but also
+          describes the immediate resolver and how to configure the
+          full resolver using resolver hints.
+
+- Internal changes:
+
+  + [gtk] Redesigned the dpkg terminal creation code to make it
+          cleaner and more maintainable.
+
+  + [gtk] Redesigned the code for the buttons in the package
+          description pane.
+
+  + [gtk] Stopped using random bits of the glade file as templates for
+          other GUI elements, in preparation for making each tab a
+          separate top-level widget in the file.
+
+- Translation fixes:
+
+  + Fix how ngettext is used so that the plurals can be properly
+    translated.  (Closes: #505675)
+
+  + Slovak (Closes: #505676)
+
+[11/10/2008]
+Version 0.5.0                               "Wheee!"
+
+This version introduces the GTK+ frontend.  Thanks are due to Obey
+Arthur Liu for providing code, ideas and energy to the project, and to
+Google for funding his work through their Summer of Code program in
+2008.
+
+This is an EXPERIMENTAL, DEVELOPMENT release.  It can be used for
+package management, but there may be bugs, there are probably places
+that need improvement, and it is certainly incomplete.
+
+- New features:
+
+  + Integrated the GTK+ frontend written by Obey Arthur Liu for the
+    2008 Google Summer of Code.  To manually suppress the GUI, run
+    "aptitude --no-gui" or set the option "Aptitude::Start-Gui" to
+    false.
+
+  + Added Xapian support.  Unadorned strings in search patterns now
+    search the apt Xapian database built by Enrico Zini.  There is
+    also a new search term ?term that does the same thing.
+
+  + Added the command-line option "--show-resolver-actions" to display
+    why aptitude made the decisions it did in "aptitude safe-upgrade".
+
+- Known Regressions:
+
+  + Incremental searching in the curses frontend is made much less
+    useful by introducing Xapian.  It still works, but because Xapian
+    searches don't find substrings, the search will fail to match
+    anything until you finish typing the entire search string.
+
+  + Documentation for the GTK+ frontend has not yet been written.
+
 [11/19/2008]
 Version 0.4.11.11                           "And the moon be still as bright"
 

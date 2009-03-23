@@ -1,6 +1,6 @@
 // test.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -39,6 +39,23 @@
 using namespace std;
 
 namespace cw = cwidget;
+
+// This is a gross hack; without defining this here, we'd have to
+// somehow link in a higher-level library.
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolver()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver");
+}
+
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearch()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver.search");
+}
+
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchTiers()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver.search.tiers");
+}
 
 // To make things easier, the tests are specified as plaintext files.
 // The syntax is quite simple: it consists of whitespace-separated
@@ -271,6 +288,20 @@ map<dummy_universe::package, dummy_resolver::version> read_solution(istream &f, 
   throw ParseError("Unexpected error reading solution list");
 }
 
+int parse_int(const std::string &s)
+{
+  if(s.empty())
+    throw ParseError("Can't parse an integer from an empty string.");
+
+  char *endptr;
+  long int rval = strtol(s.c_str(), &endptr, 0);
+
+  if(*endptr != '\0')
+    throw ParseError("Error in integer constant \"" + s + "\"");
+
+  return rval;
+}
+
 void run_test_file(istream &f, bool show_world)
 {
   dummy_universe_ref universe=NULL;
@@ -319,10 +350,11 @@ void run_test_file(istream &f, bool show_world)
 	  int broken_score;
 	  int unfixed_soft_score;
 	  int infinity;
-	  int max_successors;
-	  int goal_score;
+	  int goal_score = 50;
+	  int future_horizon = 0;
+	  std::string goal_score_or_brace;
 
-	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> max_successors >> goal_score;
+	  f >> step_score >> broken_score >> unfixed_soft_score >> infinity >> ws >> goal_score_or_brace >> ws;
 
 	  if(f.eof())
 	    throw ParseError("Expected '{' following broken_score, got EOF");
@@ -330,15 +362,35 @@ void run_test_file(istream &f, bool show_world)
 	  if(!f)
 	    throw ParseError("Error reading step_score, broken_score, unfixed_soft_score, infinity, max_succ, and goal_score after 'TEST'");
 
-	  f >> s >> ws;
+	  if(goal_score_or_brace != "{")
+	    {
+	      goal_score = parse_int(goal_score_or_brace);
+
+	      std::string future_horizon_or_brace;
+	      f >> future_horizon_or_brace >> ws;
+
+	      if(future_horizon_or_brace != "{")
+		{
+		  future_horizon = parse_int(future_horizon_or_brace);
+
+		  f >> s >> ws;
+		}
+	      else
+		s = future_horizon_or_brace;
+	    }
+	  else
+	    s = goal_score;
 
 	  if(s != "{")
 	    throw ParseError("Expected '{' following TEST, got "+s);
 
 	  dummy_resolver resolver(step_score, broken_score,
 				  unfixed_soft_score,
-				  infinity, max_successors,
-				  goal_score, universe);
+				  infinity,
+				  goal_score,
+				  future_horizon,
+				  imm::map<dummy_universe::package, dummy_universe::version>(),
+				  universe);
 
 	  resolver.set_debug(true);
 
@@ -411,16 +463,25 @@ void run_test_file(istream &f, bool show_world)
 
 		      bool equal=true;
 
-		      std::map<dummy_universe::package, dummy_universe::version>::const_iterator expect_iter=expected.begin();
-		      imm::map<dummy_universe::package, dummy_resolver::action>::const_iterator soln_iter=next_soln.get_actions().begin();
-
-		      while(equal &&
-			    expect_iter != expected.end() &&
-			    soln_iter != next_soln.get_actions().end())
+		      // Compare the solution and the expected set by
+		      // checking their value at each package.
+		      // Slightly lame but correct and easier than
+		      // writing a proper cross-compare.
+		      for(dummy_universe::package_iterator pi = universe.packages_begin();
+			  equal && !pi.end(); ++pi)
 			{
-			  if(expect_iter->first != soln_iter->first ||
-			     expect_iter->second != soln_iter->second.ver)
-			    equal=false;
+			  std::map<dummy_universe::package, dummy_universe::version>::const_iterator expect_found
+			    = expected.find(*pi);
+			  dummy_resolver::version soln_version;
+			  bool soln_touches_package = next_soln.get_choices().get_version_of(*pi, soln_version);
+
+			  if(expect_found != expected.end())
+			    {
+			      if(!soln_touches_package || soln_version != expect_found->second)
+				equal = false;
+			    }
+			  else if(soln_touches_package)
+			    equal = false;
 			}
 
 		      if(equal)
@@ -463,8 +524,11 @@ int main(int argc, char **argv)
   for(int i=1; i<argc; ++i)
     {
       // lame man's command line
-      if(!strcmp(argv[0], "--dump"))
-	show_world=true;
+      if(!strcmp(argv[i], "--dump"))
+        {
+	  show_world=true;
+          continue;
+        }
 
       ifstream f(argv[i]);
 

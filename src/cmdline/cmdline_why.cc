@@ -1,6 +1,6 @@
 // cmdline_why.cc                                -*-c++-*-
 //
-//   Copyright (C) 2007-2008 Daniel Burrows
+//   Copyright (C) 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -39,7 +39,9 @@
 #include <apt-pkg/version.h>
 
 #include <generic/apt/apt.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
 #include <generic/util/util.h>
@@ -64,6 +66,63 @@ namespace
 		    const pkgCache::PkgIterator &p2)
     {
       return p1->ID < p2->ID;
+    }
+  };
+
+  struct compare_dep_levels
+  {
+    static int dep_level_to_int(const pkgCache::Dep::DepType dt)
+    {
+      switch(dt)
+	{
+	case pkgCache::Dep::PreDepends:
+	  return 7;
+
+	case pkgCache::Dep::Depends:
+	  return 6;
+
+	case pkgCache::Dep::Recommends:
+	  return 5;
+
+	case pkgCache::Dep::Conflicts:
+	  return 4;
+
+	case pkgCache::Dep::DpkgBreaks:
+	  return 3;
+
+	case pkgCache::Dep::Suggests:
+	  return 2;
+
+	case pkgCache::Dep::Replaces:
+	  return 1;
+
+	case pkgCache::Dep::Obsoletes:
+	  return 0;
+
+	default:
+	  return -1;
+	}
+    }
+
+    bool operator()(const pkgCache::Dep::DepType dt1,
+		    const pkgCache::Dep::DepType dt2) const
+    {
+      return dep_level_to_int(dt1) < dep_level_to_int(dt2);
+    }
+  };
+
+  // Place weaker dependencies first, then order alphabetically.
+  struct compare_pair_by_dep_type
+  {
+    compare_dep_levels dep_type_less_than;
+
+    bool operator()(const std::pair<std::string, pkgCache::Dep::DepType> &p1,
+		    const std::pair<std::string, pkgCache::Dep::DepType> &p2) const
+    {
+      if(p1.second != p2.second)
+	return dep_type_less_than(p2.second, p1.second);
+      else
+	return p1.first < p2.first;
     }
   };
 }
@@ -503,7 +562,10 @@ namespace aptitude
 	  {
 	    pkgCache::VerIterator candver =
 	      (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
-	    ver_to_check = candver.VerStr();
+	    if(candver.end())
+	      ver_to_check = NULL;
+	    else
+	      ver_to_check = candver.VerStr();
 	  }
 	else
 	  {
@@ -564,7 +626,9 @@ namespace aptitude
     // from the front.
     std::deque<justification> q;
 
-    std::vector<pkg_matcher *> leaves;
+    std::vector<cwidget::util::ref_ptr<pattern> > leaves;
+
+    cwidget::util::ref_ptr<search_cache> search_info;
 
     search_params params;
 
@@ -595,11 +659,12 @@ namespace aptitude
      *                or the inst ver, and whether to consider
      *                suggests/recommends to be important.
      */
-    justification_search(const std::vector<pkg_matcher *> &_leaves,
+    justification_search(const std::vector<cwidget::util::ref_ptr<pattern> > &_leaves,
 			 const target &root,
 			 const search_params &_params,
 			 int _verbosity)
       : leaves(_leaves),
+	search_info(aptitude::matching::search_cache::create()),
 	params(_params),
 	seen_packages(NULL),
 	first_iteration(true),
@@ -613,7 +678,8 @@ namespace aptitude
       : q(other.q),
 	leaves(other.leaves),
 	params(other.params),
-	first_iteration(other.first_iteration)
+	first_iteration(other.first_iteration),
+	verbosity(other.verbosity)
     {
       if(other.seen_packages == NULL)
 	seen_packages = NULL;
@@ -641,6 +707,7 @@ namespace aptitude
 	    seen_packages[i] = other.seen_packages[i];
 	}
       first_iteration = other.first_iteration;
+      verbosity = other.verbosity;
       return *this;
     }
 
@@ -682,6 +749,8 @@ namespace aptitude
 
       while(!q.empty() && !reached_leaf)
 	{
+	  using cwidget::util::ref_ptr;
+
 	  // NB: could avoid this copy, but I'd have to move the
 	  // pop_front() into all execution branches.  Not worth it.
 	  const justification front(q.front());
@@ -720,13 +789,14 @@ namespace aptitude
 	  // we'll keep looking past it).
 	  pkgCache::VerIterator frontver = params.selected_version(frontpkg);
 	  if(!frontver.end() && !front.get_actions().empty())
-	    for(std::vector<pkg_matcher *>::const_iterator it = leaves.begin();
+	    for(std::vector<ref_ptr<pattern> >::const_iterator it = leaves.begin();
 		!reached_leaf && it != leaves.end(); ++it)
 	      {
-		if(apply_matcher((*it),
-				 frontpkg, frontver,
-				 *apt_cache_file,
-				 *apt_package_records))
+		if(get_match((*it),
+			     frontpkg, frontver,
+			     search_info,
+			     *apt_cache_file,
+			     *apt_package_records).valid())
 		  reached_leaf = true;
 	      }
 	  if(reached_leaf)
@@ -748,7 +818,7 @@ namespace aptitude
     }
 
     bool find_justification(const target &target,
-			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const std::vector<cwidget::util::ref_ptr<pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
 			    std::vector<std::vector<action> > &output)
@@ -774,198 +844,245 @@ namespace aptitude
       else
 	return false;
     }
+
+
+    void find_best_justification(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
+				 const target &goal,
+				 bool find_all,
+				 int verbosity,
+				 std::vector<std::vector<action> > &output)
+    {
+      std::vector<search_params> searches;
+
+      // The priority of searches goes like this:
+      // (1) install version, depends only
+      // (2) current version, depends only
+      // (3) install version, recommends or depends
+      // (4) current version, recommends or depends
+      // (5) install version, recommends or depends or suggests
+      // (6) current version, recommends or depends or suggests
+      searches.push_back(search_params(search_params::Install,
+				       search_params::DependsOnly,
+				       false));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::DependsOnly,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::DependsOnly,
+				       true));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::DependsOnly,
+				       true));
+
+
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Recommends,
+				       false));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Recommends,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Recommends,
+				       true));
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Recommends,
+				       true));
+
+
+
+
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Suggests,
+				       false));
+
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Suggests,
+				       false));
+
+      searches.push_back(search_params(search_params::Install,
+				       search_params::Suggests,
+				       true));
+
+      searches.push_back(search_params(search_params::Current,
+				       search_params::Suggests,
+				       true));
+
+
+
+
+      // As a last-ditch thing, run searches against candidate versions.
+      // We prefer *any* match that sticks to current/future installed versions
+      // to this, though.
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::DependsOnly,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::DependsOnly,
+				       true));
+
+
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Recommends,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Recommends,
+				       true));
+
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Suggests,
+				       false));
+      searches.push_back(search_params(search_params::Candidate,
+				       search_params::Suggests,
+				       true));
+
+
+      // Throw out completely identical search results.  (note that this
+      // might not perfectly eliminate results that appear identical if
+      // multiple versions of something are available; needs more work to
+      // do that)
+      std::set<std::vector<action> > seen_results;
+      std::vector<action> results;
+
+      for(std::vector<search_params>::const_iterator it = searches.begin();
+	  it != searches.end(); ++it)
+	{
+	  if(!output.empty() && !find_all)
+	    return;
+
+	  justification_search search(leaves, goal, *it, verbosity);
+
+	  while(search.next(results))
+	    {
+	      if(seen_results.find(results) != seen_results.end())
+		{
+		  if(verbosity > 1)
+		    std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
+		}
+	      else
+		{
+		  seen_results.insert(results);
+
+		  if(!results.empty())
+		    output.push_back(results);
+		}
+
+	      if(!output.empty() && !find_all)
+		return;
+	    }
+	}
+    }
+
+    namespace
+    {
+      cw::fragment *render_reason_columns(const std::vector<std::vector<action> > &solutions,
+					  bool show_all)
+      {
+	std::vector<cw::fragment *> rval;
+	bool first = true;
+	for(std::vector<std::vector<action> >::const_iterator solutionIt = solutions.begin();
+	    solutionIt != solutions.end(); ++solutionIt)
+	  {
+	    const std::vector<action> &results(*solutionIt);
+
+	    for(std::vector<action>::const_iterator actionIt = results.begin();
+		actionIt != results.end(); ++actionIt)
+	      {
+		if(first)
+		  first = false;
+		else
+		  rval.push_back(cw::newline_fragment());
+
+		int col1_width = 0;
+		int col2_width = 0;
+		std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
+		for(std::vector<action>::const_iterator it = results.begin();
+		    it != results.end(); ++it)
+		  {
+		    cw::fragment *col1_fragment = it->description_column1_fragment();
+		    cw::fragment *col2_fragment = it->description_column2_fragment();
+		    cw::fragment *col3_fragment = it->description_column3_fragment();
+
+		    int this_col1_width = col1_fragment->max_width(0, 0);
+		    int this_col2_width = col2_fragment->max_width(0, 0);
+
+		    col1_width = std::max(col1_width, this_col1_width);
+		    col2_width = std::max(col2_width, this_col2_width);
+
+		    col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col1_fragment),
+									      it->get_style())));
+		    col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col2_fragment),
+									      it->get_style())));
+		    col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", col3_fragment),
+									      it->get_style())));
+		  }
+
+		using cw::fragment_column_entry;
+
+		std::vector<fragment_column_entry> columns;
+		columns.push_back(fragment_column_entry(false,
+							false,
+							col1_width,
+							fragment_column_entry::top,
+							col1_entries));
+		columns.push_back(fragment_column_entry(false,
+							false,
+							1,
+							fragment_column_entry::top,
+							NULL));
+		columns.push_back(fragment_column_entry(false,
+							false,
+							col2_width,
+							fragment_column_entry::top,
+							col2_entries));
+		columns.push_back(fragment_column_entry(false,
+							false,
+							1,
+							fragment_column_entry::top,
+							NULL));
+		columns.push_back(fragment_column_entry(false,
+							true,
+							0,
+							fragment_column_entry::top,
+							col3_entries));
+		cw::fragment *solution_fragment(cw::fragment_columns(columns));
+
+		if(!show_all)
+		  return solution_fragment;
+		else
+		  rval.push_back(solution_fragment);
+	      }
+	  }
+
+	return cw::sequence_fragment(rval);
+      }
+    }
   }
 }
 
-cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
 		 bool &success)
 {
   using namespace aptitude::why;
 
-  std::vector<cw::fragment *> rval;
   success = true;
 
-  std::vector<search_params> searches;
+  std::vector<std::vector<action> > solutions;
+  target goal = root_is_removal ? target::Remove(root) : target::Install(root);
 
-  // The priority of searches goes like this:
-  // (1) install version, depends only
-  // (2) current version, depends only
-  // (3) install version, recommends or depends
-  // (4) current version, recommends or depends
-  // (5) install version, recommends or depends or suggests
-  // (6) current version, recommends or depends or suggests
-  searches.push_back(search_params(search_params::Install,
-				   search_params::DependsOnly,
-				   false));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::DependsOnly,
-				   false));
+  find_best_justification(leaves, goal,
+			  verbosity >= 1,
+			  verbosity,
+			  solutions);
 
-  searches.push_back(search_params(search_params::Install,
-				   search_params::DependsOnly,
-				   true));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::DependsOnly,
-				   true));
-
-
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Recommends,
-				   false));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Recommends,
-				   false));
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Recommends,
-				   true));
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Recommends,
-				   true));
-
-
-
-
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Suggests,
-				   false));
-
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Suggests,
-				   false));
-
-  searches.push_back(search_params(search_params::Install,
-				   search_params::Suggests,
-				   true));
-
-  searches.push_back(search_params(search_params::Current,
-				   search_params::Suggests,
-				   true));
-
-
-
-
-  // As a last-ditch thing, run searches against candidate versions.
-  // We prefer *any* match that sticks to current/future installed versions
-  // to this, though.
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::DependsOnly,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::DependsOnly,
-				   true));
-
-
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Recommends,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Recommends,
-				   true));
-
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Suggests,
-				   false));
-  searches.push_back(search_params(search_params::Candidate,
-				   search_params::Suggests,
-				   true));
-
-
-  // Throw out completely identical search results.  (note that this
-  // might not perfectly eliminate results that appear identical if
-  // multiple versions of something are available; needs more work to
-  // do that)
-  std::set<std::vector<action> > seen_results;
-  std::vector<action> results;
-  bool first = true;
-
-  for(std::vector<search_params>::const_iterator it = searches.begin();
-      it != searches.end(); ++it)
-    {
-      target goal = root_is_removal ? target::Remove(root) : target::Install(root);
-      justification_search search(leaves, goal, *it, verbosity);
-
-      while(search.next(results))
-	{
-	  if(seen_results.find(results) != seen_results.end())
-	    {
-	      if(verbosity > 1)
-		std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
-	      continue;
-	    }
-	  else
-	    seen_results.insert(results);
-
-	  if(results.empty())
-	    // This is a starting point of the search, but just keep
-	    // going and try to find other people who depend on it.
-	    // NB: this shouldn't be necessary (the search itself
-	    // should filter out empty results) but it's left in for
-	    // the sake of defensive programming.
-	    continue;
-	  else
-	    {
-	      if(first)
-		first = false;
-	      else
-		rval.push_back(cw::newline_fragment());
-
-	      std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
-	      for(std::vector<action>::const_iterator it = results.begin();
-		  it != results.end(); ++it)
-		{
-		  col1_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column1_fragment()),
-									it->get_style())));
-		  col2_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column2_fragment()),
-									it->get_style())));
-		  col3_entries.push_back(cw::hardwrapbox(cw::style_fragment(cw::fragf("%F\n", it->description_column3_fragment()),
-									it->get_style())));
-		}
-
-	      using cw::fragment_column_entry;
-
-	      std::vector<fragment_column_entry> columns;
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col1_entries));
-	      columns.push_back(fragment_column_entry(false,
-						      false,
-						      1,
-						      fragment_column_entry::top,
-						      NULL));
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col2_entries));
-	      columns.push_back(fragment_column_entry(false,
-						      false,
-						      1,
-						      fragment_column_entry::top,
-						      NULL));
-	      columns.push_back(fragment_column_entry(false,
-						      true,
-						      0,
-						      fragment_column_entry::top,
-						      col3_entries));
-	      cw::fragment *solution_fragment(cw::fragment_columns(columns));
-
-	      if(verbosity < 1)
-		return solution_fragment;
-	      else
-		rval.push_back(solution_fragment);
-	    }
-	}
-    }
-
-  if(first)
+  if(solutions.empty())
     {
       success = false;
 
@@ -974,18 +1091,64 @@ cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
       else
 	return cw::fragf(_("Unable to find a reason to install %s.\n"), root.Name());
     }
+  else if(display_mode == aptitude::why::no_summary)
+    return render_reason_columns(solutions, verbosity >= 1);
   else
-    return cw::sequence_fragment(rval);
+    {
+      // HACK: drop all chains that include a dependency that's less
+      // strict than Recommends.  (ideally we should let the user set
+      // a level of strictness and conform to that here AND in the
+      // search, rather than generating a lot of junk we then throw
+      // away)
+      std::vector<std::vector<action> > strong_solutions;
+      for(std::vector<std::vector<action> >::const_iterator it = solutions.begin();
+	  it != solutions.end(); ++it)
+	{
+	  bool keeper = true;
+	  for(std::vector<action>::const_iterator act_it = it->begin();
+	      keeper && act_it != it->end(); ++act_it)
+	    {
+	      if(!act_it->get_dep().end())
+		{
+		  pkgCache::Dep::DepType type = (pkgCache::Dep::DepType)act_it->get_dep()->Type;
+
+		  if(!(type == pkgCache::Dep::Depends ||
+		       type == pkgCache::Dep::PreDepends ||
+		       type == pkgCache::Dep::Recommends ||
+		       type == pkgCache::Dep::Conflicts))
+		    keeper = false;
+		}
+	    }
+
+	  if(keeper)
+	    strong_solutions.push_back(*it);
+	}
+
+      std::vector<std::string> lines;
+      aptitude::why::summarize_reasons(strong_solutions, display_mode, lines);
+
+      std::vector<cw::fragment *> fragments;
+      fragments.push_back(cw::fragf(_("Packages requiring %s:"), root.Name()));
+      fragments.push_back(cw::newline_fragment());
+
+      for(std::vector<std::string>::const_iterator it = lines.begin();
+	  it != lines.end(); ++it)
+	fragments.push_back(cw::fragf("  %s\n", it->c_str()));
+
+      return sequence_fragment(fragments);
+    }
 }
 
-int do_why(const std::vector<pkg_matcher *> &leaves,
+int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 	   const pkgCache::PkgIterator &root,
+	   aptitude::why::roots_string_mode display_mode,
 	   int verbosity,
 	   bool root_is_removal)
 {
   bool success = false;
-  std::auto_ptr<cw::fragment> f(do_why(leaves, root, verbosity, root_is_removal,
-				   success));
+  std::auto_ptr<cw::fragment> f(do_why(leaves, root, display_mode,
+				       verbosity, root_is_removal,
+				       success));
   update_screen_width();
   // TODO: display each result as we find it.
   std::cout << f->layout(screen_width, screen_width, cw::style());
@@ -993,18 +1156,19 @@ int do_why(const std::vector<pkg_matcher *> &leaves,
   return success ? 0 : 1;
 }
 
-cw::fragment *do_why(const std::vector<pkg_matcher *> &leaves,
+cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
 		 bool &success)
 {
   const int verbosity = find_all ? 1 : 0;
-  return do_why(leaves, root, verbosity, root_is_removal, success);
+  return do_why(leaves, root, display_mode, verbosity, root_is_removal, success);
 }
 
 bool interpret_why_args(const std::vector<std::string> &args,
-			std::vector<pkg_matcher *> &output)
+			std::vector<cwidget::util::ref_ptr<pattern> > &output)
 {
   bool parsing_arguments_failed = false;
 
@@ -1012,22 +1176,22 @@ bool interpret_why_args(const std::vector<std::string> &args,
       it != args.end(); ++it)
     {
       // If there isn't a tilde, treat it as an exact package name.
-      pkg_matcher *m = NULL;
-      if(!cmdline_is_search_pattern(*it))
+      cwidget::util::ref_ptr<pattern> p;
+      if(!aptitude::matching::is_pattern(*it))
 	{
 	  pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*it);
 	  if(pkg.end())
 	    _error->Error(_("No package named \"%s\" exists."), it->c_str());
 	  else
-	    m = make_const_matcher(pkg);
+	    p = pattern::make_name(ssprintf("^%s$", pkg.Name()));
 	}
       else
-	m = parse_pattern(*it);
+	p = parse(*it);
 
-      if(m == NULL)
+      if(!p.valid())
 	parsing_arguments_failed = true;
       else
-	output.push_back(m);
+	output.push_back(p);
     }
 
   return !parsing_arguments_failed;
@@ -1035,6 +1199,7 @@ bool interpret_why_args(const std::vector<std::string> &args,
 
 cw::fragment *do_why(const std::vector<std::string> &arguments,
 		 const std::string &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
 		 bool &success)
@@ -1045,40 +1210,37 @@ cw::fragment *do_why(const std::vector<std::string> &arguments,
   if(pkg.end())
     return cw::fragf(_("No package named \"%s\" exists."), root.c_str());
 
-  std::vector<pkg_matcher *> matchers;
+  std::vector<cwidget::util::ref_ptr<pattern> > matchers;
   if(!interpret_why_args(arguments, matchers))
-    {
-      for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-	  it != matchers.end(); ++it)
-	delete *it;
-      return cw::text_fragment(_("Unable to parse some match patterns."));
-    }
+    return cw::text_fragment(_("Unable to parse some match patterns."));
 
-  cw::fragment *rval = do_why(matchers, pkg, verbosity, root_is_removal, success);
-  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-      it != matchers.end(); ++it)
-    delete *it;
+  cw::fragment *rval = do_why(matchers, pkg, display_mode,
+			      verbosity, root_is_removal, success);
+
   return rval;
 }
 
 cw::fragment *do_why(const std::vector<std::string> &leaves,
 		 const std::string &root,
+		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
 		 bool &success)
 {
-  return do_why(leaves, root, find_all ? 1 : 0, root_is_removal, success);
+  return do_why(leaves, root, display_mode, find_all ? 1 : 0,
+		root_is_removal, success);
 }
 
 int cmdline_why(int argc, char *argv[],
 		const char *status_fname, int verbosity,
+		aptitude::why::roots_string_mode display_mode,
 		bool is_why_not)
 {
   _error->DumpErrors();
 
   if(argc < 2)
     {
-      fprintf(stderr, _("%s: this command requires at least one argument (the package to query)."),
+      fprintf(stderr, _("%s: this command requires at least one argument (the package to query).\n"),
 	      argv[0]);
       return -1;
     }
@@ -1112,17 +1274,19 @@ int cmdline_why(int argc, char *argv[],
   std::vector<std::string> arguments;
   for(int i = 1; i + 1 < argc; ++i)
     arguments.push_back(argv[i]);
-  std::vector<pkg_matcher *> matchers;
+  std::vector<cwidget::util::ref_ptr<pattern> > matchers;
   if(!interpret_why_args(arguments, matchers))
     parsing_arguments_failed = true;
 
   if(matchers.empty())
     {
-      pkg_matcher *m = parse_pattern("~i!~M");
-      if(m == NULL)
+      cwidget::util::ref_ptr<pattern> p =
+	pattern::make_and(pattern::make_installed(),
+			  pattern::make_not(pattern::make_automatic()));
+      if(!p.valid())
 	parsing_arguments_failed = true;
       else
-	matchers.push_back(m);
+	matchers.push_back(p);
     }
 
 
@@ -1133,10 +1297,231 @@ int cmdline_why(int argc, char *argv[],
   if(parsing_arguments_failed)
     rval = -1;
   else
-    rval = do_why(matchers, pkg, verbosity, is_removal);
+    rval = do_why(matchers, pkg, display_mode, verbosity, is_removal);
 
-  for(std::vector<pkg_matcher *>::const_iterator it = matchers.begin();
-      it != matchers.end(); ++it)
-    delete *it;
   return rval;
+}
+
+namespace aptitude
+{
+  namespace why
+  {
+    namespace
+    {
+      // Sort action vectors by the name of the package in the first
+      // action and by the chain strength.
+      struct compare_first_action
+      {
+      private:
+	/** \return \b true if all the dependencies in the given chain are
+	 *  Depends.
+	 */
+	static bool is_depends_chain(const std::vector<action> &reasons)
+	{
+	  for(std::vector<action>::const_iterator it = reasons.begin();
+	      it != reasons.end(); ++it)
+	    {
+	      if(!it->get_dep().end() &&
+		 it->get_dep()->Type == pkgCache::Dep::Recommends)
+		return false;
+	    }
+
+	  return true;
+	}
+
+	static const char *first_package_name(const std::vector<action> &reasons)
+	{
+	  for(std::vector<action>::const_iterator it = reasons.begin();
+	      it != reasons.end(); ++it)
+	    {
+	      if(!it->get_dep().end())
+		return it->get_dep().ParentPkg().Name();
+	    }
+
+	  return "";
+	}
+
+      public:
+	bool operator()(const std::vector<action> &reason1,
+			const std::vector<action> &reason2)
+	{
+	  const bool first_is_depends(is_depends_chain(reason1));
+	  const bool second_is_depends(is_depends_chain(reason2));
+
+	  const char * const package_name1(first_package_name(reason1));
+	  const char * const package_name2(first_package_name(reason2));
+
+	  if(!first_is_depends && second_is_depends)
+	    return true;
+	  else if(first_is_depends && !second_is_depends)
+	    return false;
+	  else if(reason1.empty())
+	    return !reason2.empty();
+	  else if(reason2.empty())
+	    return false;
+	  else
+	    return strcmp(package_name1, package_name2) < 0;
+	}
+      };
+    }
+
+    void summarize_reasons(const std::vector<std::vector<action> > &reasons,
+			   roots_string_mode mode,
+			   std::vector<std::string> &output)
+    {
+      eassert(mode != no_summary);
+
+      if(mode == show_requiring_packages ||
+	 mode == show_requiring_packages_and_strength)
+	{
+	  compare_dep_levels dep_less_than;
+	  // Maps root names to strongest dependency type.
+	  std::map<std::string, pkgCache::Dep::DepType> roots;
+	  for(std::vector<std::vector<action> >::const_iterator it =
+		reasons.begin(); it != reasons.end(); ++it)
+	    {
+	      // Shouldn't happen, but deal anyway.
+	      if(it->empty())
+		continue; // Generate an internal error here?
+
+	      const action &act(it->front());
+
+	      // This can happen in the case of an impure virtual
+	      // package.  e.g., A is manually installed and B provides
+	      // A.
+	      if(act.get_dep().end())
+		continue;
+
+	      if(!act.get_dep().end())
+		{
+		  const std::string name(act.get_dep().ParentPkg().Name());
+		  std::map<std::string, pkgCache::Dep::DepType>::iterator found =
+		    roots.find(name);
+
+		  // Find the strongest dependency on the chain.
+		  pkgCache::Dep::DepType type = pkgCache::Dep::Suggests;
+		  for(std::vector<action>::const_iterator act_it = it->begin();
+		      act_it != it->end(); ++act_it)
+		    {
+		      if(act_it->get_dep().end())
+			continue;
+		      else
+			{
+			  pkgCache::Dep::DepType current_type =
+			    (pkgCache::Dep::DepType)act_it->get_dep()->Type;
+			  if(dep_less_than(type, current_type))
+			    type = current_type;
+			}
+		    }
+
+		  if(found == roots.end())
+		    roots.insert(found, std::make_pair(name, type));
+		  else if(dep_less_than(found->second, type))
+		    found->second = type;
+		}
+	    }
+
+	  if(mode == show_requiring_packages)
+	    for(std::map<std::string, pkgCache::Dep::DepType>::const_iterator it = roots.begin();
+		it != roots.end(); ++it)
+	      output.push_back(it->first);
+	  else // if(mode == show_requiring_packages_and_strength)
+	    {
+	      std::vector<std::pair<std::string, pkgCache::Dep::DepType> >
+		packages_by_dep_strength(roots.begin(), roots.end());
+	      std::sort(packages_by_dep_strength.begin(),
+			packages_by_dep_strength.end(),
+			compare_pair_by_dep_type());
+
+	      for(std::vector<std::pair<std::string, pkgCache::Dep::DepType> >::const_iterator it =
+		    packages_by_dep_strength.begin();
+		  it != packages_by_dep_strength.end(); ++it)
+		{
+		  if(mode == show_requiring_packages_and_strength)
+		    output.push_back(ssprintf("[%s] %s",
+					      pkgCache::DepType(it->second),
+					      it->first.c_str()));
+		  else
+		    output.push_back(it->first);
+		}
+	    }
+	}
+      else
+	{
+	  std::vector<std::vector<action> > reasons_copy(reasons);
+	  std::sort(reasons_copy.begin(), reasons_copy.end(), compare_first_action());
+	  for(std::vector<std::vector<action> >::const_iterator it =
+		reasons_copy.begin(); it != reasons_copy.end(); ++it)
+	
+	    {
+	      if(it->empty())
+		continue;
+
+	      std::string entry;
+
+	      bool first_action = true;
+	      for(std::vector<action>::const_iterator aIt = it->begin();
+		  aIt != it->end(); ++aIt)
+		{
+		  if(!first_action)
+		    entry += " ";
+
+		  if(!aIt->get_dep().end())
+		    {
+		      const pkgCache::DepIterator &dep(aIt->get_dep());
+
+		      if(first_action)
+			{
+			  entry += const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name();
+			  entry += " ";
+			}
+
+		      std::string dep_type = const_cast<pkgCache::DepIterator &>(dep).DepType();
+		      entry += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
+		      entry += ": ";
+
+		      entry += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+
+		      // Show version information if we were asked for it.
+		      if(mode == show_chain_with_versions && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
+			{
+			  entry += " (";
+			  entry += const_cast<pkgCache::DepIterator &>(dep).CompType();
+			  entry += " ";
+			  entry += dep.TargetVer();
+			  entry += ")";
+			}
+		    }
+		  else
+		    {
+		      const pkgCache::PrvIterator &prv(aIt->get_prv());
+		      eassert(!prv.end());
+
+		      if(first_action)
+			{
+			  entry += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
+			}
+
+		      entry += " ";
+
+		      entry += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
+		      entry += "<- ";
+
+		      entry += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+		      if(mode == show_chain_with_versions && prv.ProvideVersion() != NULL)
+			{
+			  entry += " (";
+			  entry += prv.ProvideVersion();
+			  entry += ")";
+			}
+		    }
+
+		  first_action = false;
+		}
+
+	      output.push_back(entry);
+	    }
+	}
+    }
+  }
 }

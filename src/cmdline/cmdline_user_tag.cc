@@ -1,6 +1,6 @@
 // cmdline_user_tag.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,7 +27,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptcache.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <string.h>
 
@@ -107,7 +109,7 @@ namespace aptitude
       bool all_ok = true;
       for(int i = 2; i < argc; ++i)
 	{
-	  if(!cmdline_is_search_pattern(argv[i]))
+	  if(!aptitude::matching::is_pattern(argv[i]))
 	    {
 	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(argv[i]);
 	      if(pkg.end())
@@ -121,20 +123,28 @@ namespace aptitude
 	    }
 	  else
 	    {
-	      matching::pkg_matcher *m = matching::parse_pattern(argv[i]);
-	      if(m == NULL)
+	      using namespace aptitude::matching;
+	      using cwidget::util::ref_ptr;
+
+	      ref_ptr<pattern> p(parse(argv[i]));
+
+	      if(!p.valid())
 		{
 		  _error->DumpErrors();
 		  all_ok = false;
 		}
 	      else
 		{
-		  for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin();
-		      !pkg.end(); ++pkg)
-		    {
-		      if(matching::apply_matcher(m, pkg, *apt_cache_file, *apt_package_records))
-			do_user_tag(action, tag, pkg, verbose);
-		    }
+		  std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
+		  ref_ptr<search_cache> search_info(search_cache::create());
+		  search(p, search_info,
+			 matches,
+			 *apt_cache_file,
+			 *apt_package_records);
+
+		  for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+			it = matches.begin(); it != matches.end(); ++it)
+		    do_user_tag(action, tag, it->first, verbose);
 		}
 	    }
 	}

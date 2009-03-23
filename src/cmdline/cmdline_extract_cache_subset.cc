@@ -1,6 +1,6 @@
 // cmdline_extract_cache_subset.cc
 //
-//   Copyright (C) 2008 Daniel Burrows
+//   Copyright (C) 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -25,7 +25,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/dump_packages.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <stdio.h>
 
@@ -69,7 +71,7 @@ namespace aptitude
 	    {
 	      std::string arg(argv[i]);
 
-	      if(!cmdline_is_search_pattern(arg))
+	      if(!aptitude::matching::is_pattern(arg))
 		{
 		  pkgCache::PkgIterator pIt = (*apt_cache_file)->FindPkg(arg);
 		  if(pIt.end())
@@ -83,25 +85,27 @@ namespace aptitude
 		}
 	      else
 		{
-		  aptitude::matching::pkg_matcher *m =
-		    aptitude::matching::parse_pattern(arg,
-						      std::vector<const char *>());
+		  using namespace aptitude::matching;
+		  using cwidget::util::ref_ptr;
 
-		  if(m == NULL)
+		  ref_ptr<pattern> p = parse(arg);
+
+		  if(p.valid())
 		    {
 		      _error->DumpErrors();
 		    }
 		  else
 		    {
-		      for(pkgCache::PkgIterator pIt = (*apt_cache_file)->PkgBegin();
-			  !pIt.end(); ++pIt)
-			{
-			  if(aptitude::matching::apply_matcher(m,
-							       pIt,
-							       *apt_cache_file,
-							       *apt_package_records))
-			    packages.insert(pIt);
-			}
+		      std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > matches;
+		      ref_ptr<search_cache> search_info(search_cache::create());
+		      search(p, search_info,
+			     matches,
+			     *apt_cache_file,
+			     *apt_package_records);
+
+		      for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
+			    it = matches.begin(); it != matches.end(); ++it)
+			packages.insert(it->first);
 		    }
 		}
 	    }

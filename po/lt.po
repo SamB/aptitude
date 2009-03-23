@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2008-09-05 16:05+0200\n"
+"POT-Creation-Date: 2009-01-18 16:00-0800\n"
 "PO-Revision-Date: 2008-08-25 12:12+0300\n"
 "Last-Translator: Darius Žitkevičius <skystis@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -253,10 +253,26 @@ msgstr ""
 "apačioje bus rodomos netenkinamos priklausomybės."
 
 #: src/apt_options.cc:240
+msgid "Display flat view instead of default view on startup"
+msgstr ""
+
+#: src/apt_options.cc:241
+#, fuzzy
+#| msgid ""
+#| "If this option is enabled, the menu bar will only appear when it has been "
+#| "activated by pressing the menu key."
+msgid ""
+"If this option is enabled, then the first view displayed on startup will be "
+"a flat view instead of the default view."
+msgstr ""
+"Jei įjugta, tuomet menu juosta atsiras tik tada, kai jis bus aktyvuotas "
+"paspaudus meniu mygtuką."
+
+#: src/apt_options.cc:245
 msgid "The default grouping method for package views"
 msgstr "Numatytasis paketų grupavimo būdas"
 
-#: src/apt_options.cc:241
+#: src/apt_options.cc:246
 msgid ""
 "This option controls how aptitude organizes the package list.  See the "
 "aptitude user's manual for information on how to specify a grouping method."
@@ -264,11 +280,11 @@ msgstr ""
 "Šis nustatymas kontroliuoja kaip programa sutvarko paketų sąrašą.  Apie "
 "grupavimo metodus skaitykite aptitude vartotojo vadove."
 
-#: src/apt_options.cc:245
+#: src/apt_options.cc:250
 msgid "The default display-limit for package views"
 msgstr "Numatyta ekrano riba paketo peržiūroje"
 
-#: src/apt_options.cc:246
+#: src/apt_options.cc:251
 msgid ""
 "By default, the limit of each package view will be set to the value "
 "specified by this option.  See the aptitude user's manual for detailed "
@@ -277,11 +293,11 @@ msgstr ""
 "Nutylint, kiekvieno paketo vaizdas bus apribotas pagal šį nustatymą.  "
 "Daugiau apie paiešką skaitykite aptitude vartotojo vadove."
 
-#: src/apt_options.cc:251
+#: src/apt_options.cc:256
 msgid "The display format for package views"
 msgstr "Paketų peržiūros ekrano formatas"
 
-#: src/apt_options.cc:252
+#: src/apt_options.cc:257
 msgid ""
 "This option controls how aptitude formats lines of the package list.  See "
 "the aptitude user's manual for information on how to specify a display "
@@ -290,11 +306,11 @@ msgstr ""
 "Šis nustatymas kontroliuoja kaip programa suformuoja paketų sąrašo eilutes.  "
 "Apie rodymo formatus skaitykite aptitude vartotojo vadove."
 
-#: src/apt_options.cc:258
+#: src/apt_options.cc:263
 msgid "The display format for the status line"
 msgstr "Būsenos eilutės formatas"
 
-#: src/apt_options.cc:259
+#: src/apt_options.cc:264
 msgid ""
 "This option controls how aptitude formats the status line (the line between "
 "the package list and the lower pane).  See the aptitude user's manual for "
@@ -304,11 +320,11 @@ msgstr ""
 "tarp paketų sąrašo ir apatinio skydelio).  Apie vaizdo formatus skaitykite "
 "aptitude vartotojo vadove."
 
-#: src/apt_options.cc:266
+#: src/apt_options.cc:271
 msgid "The display format for the header line"
 msgstr "Antraštės formatas"
 
-#: src/apt_options.cc:267
+#: src/apt_options.cc:272
 msgid ""
 "This option controls how aptitude formats the header line (the line above "
 "the package list).  See the aptitude user's manual for information on how to "
@@ -318,11 +334,11 @@ msgstr ""
 "virš paketų sąrašo).  Apie vaido formatus skaitykite aptitude vartotojo "
 "vadove."
 
-#: src/apt_options.cc:277
+#: src/apt_options.cc:282
 msgid "Automatically upgrade installed packages"
 msgstr "Automatiškai atnaujinti įdiegtus paketus"
 
-#: src/apt_options.cc:278
+#: src/apt_options.cc:283
 msgid ""
 "If this option is enabled, then on startup, aptitude will select all "
 "upgradable packages for upgrade."
@@ -330,11 +346,11 @@ msgstr ""
 "Jei įjungta, tuomet paleidus programą visi atnaujinami paketai bus pažymėti "
 "atnaujinimui."
 
-#: src/apt_options.cc:282
+#: src/apt_options.cc:287
 msgid "Remove obsolete package files after downloading new package lists"
 msgstr "Gavus naują paketų sąrašą, pašalinti pasenusių paketų bylas"
 
-#: src/apt_options.cc:283
+#: src/apt_options.cc:288
 msgid ""
 "If this option is enabled, then after every install run, aptitude will "
 "delete from the package cache any package files that can no longer be "
@@ -344,11 +360,11 @@ msgstr ""
 "paketų saugyklos, kurie nebegali būti atsiųsti iš jokio archyvo nurodyto "
 "faile sources.list."
 
-#: src/apt_options.cc:288
+#: src/apt_options.cc:293
 msgid "URL to use to download changelogs"
 msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
 
-#: src/apt_options.cc:289
+#: src/apt_options.cc:294
 msgid ""
 "This option controls the template that's used to download changelogs from "
 "the Debian Web site.  You should only need to change this if the changelogs "
@@ -358,11 +374,11 @@ msgstr ""
 "ir Debian svetainės.  Ją keisti reikia tik tuo atveju, jei pakeitimų sąrašai "
 "perkeliami į kitą svetainę."
 
-#: src/apt_options.cc:295
+#: src/apt_options.cc:300
 msgid "Display a preview of what will be done before doing it"
 msgstr "Rodyti kas bus daroma prieš darant tai"
 
-#: src/apt_options.cc:296
+#: src/apt_options.cc:301
 msgid ""
 "If this option is enabled, then when you ask aptitude to perform an install "
 "run, it will first display a summary of the actions it is going to perform."
@@ -370,12 +386,12 @@ msgstr ""
 "Jei įjungta, tuomet prieš vykdant diegimą, programa parodys vaizdą su visų "
 "numatytų atlikti veiksmų suvestine."
 
-#: src/apt_options.cc:302
+#: src/apt_options.cc:307
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
 msgstr "Atnaujinus paketų sąrašą užmiršti kurie paketai yra „nauji“"
 
-#: src/apt_options.cc:303
+#: src/apt_options.cc:308
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you update the package lists (e.g., by pressing 'u')."
@@ -383,12 +399,12 @@ msgstr ""
 "Jei įjungta, tuomet atnaujinus paketų sąrašą (pvz. paspaudus 'u'), programa "
 "išalys naujų paketų sąrašą."
 
-#: src/apt_options.cc:308
+#: src/apt_options.cc:313
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
 msgstr "Po pašalinimo arba įdiegimo užmiršti kurie paketai yra „nauji“"
 
-#: src/apt_options.cc:309
+#: src/apt_options.cc:314
 msgid ""
 "If this option is enabled, then aptitude will clear the list of new packages "
 "after you perform an install run or install or remove packages from the "
@@ -397,13 +413,13 @@ msgstr ""
 "Jei įjungta, tuomet programa išalys naujų paketų sąrašą po kiekvieno paketų "
 "diegimo ar pašalinimo interaktyviai ar komandinės eilutės pagalba."
 
-#: src/apt_options.cc:315
+#: src/apt_options.cc:320
 msgid ""
 "Do not display a warning when the first change is made in read-only mode"
 msgstr ""
 "Nerodyti įspėjimo, kai atliekamas pirmas pakeitimas tik skaitymo būsenoje"
 
-#: src/apt_options.cc:316
+#: src/apt_options.cc:321
 msgid ""
 "If this option is %Bnot%b enabled, aptitude will display a warning when you "
 "modify the state of a package if you do not have permissions to apply the "
@@ -412,11 +428,11 @@ msgstr ""
 "Jei %Bišjungta%b, tuomet pakeitūs bet kokio paketo būseną ir neturint teisės "
 "pritaikyti šį pakeitimą sistemai, programa parodys įspėjimą."
 
-#: src/apt_options.cc:322
+#: src/apt_options.cc:327
 msgid "Warn when attempting to perform a privileged action as a non-root user"
 msgstr "Pranešti, jei paprastas naudotojas bando atlikti „root“ veiksmus"
 
-#: src/apt_options.cc:323
+#: src/apt_options.cc:328
 msgid ""
 "If this option is enabled, aptitude will warn you when you attempt to "
 "perform an action which you do not have permission to do: for instance, "
@@ -428,11 +444,11 @@ msgstr ""
 "galimybė įsisregistruoti kaip root vartotojos ir atlikti veiksmus turint "
 "reikiamas privilegijas."
 
-#: src/apt_options.cc:332
+#: src/apt_options.cc:337
 msgid "File to log actions into"
 msgstr "Byla, kurioje fiksuojami visi veiksmai"
 
-#: src/apt_options.cc:333
+#: src/apt_options.cc:338
 msgid ""
 "When you install or remove packages, a summary of what aptitude does will be "
 "written to this file.  If the first character of the file name is a pipe "
@@ -444,11 +460,11 @@ msgstr ""
 "(pipe) simbolis ('%B|%b'), likusi pavadinimo dalis bus interpretuojama kaip "
 "aplinkos komanda."
 
-#: src/apt_options.cc:345
+#: src/apt_options.cc:350
 msgid "Automatically resolve dependencies of a package when it is selected"
 msgstr "Pažymėjus paketą, automatiškai pažymėti jam reikalingus paketus"
 
-#: src/apt_options.cc:346
+#: src/apt_options.cc:351
 msgid ""
 "If this option is enabled, aptitude will use a simple heuristic to "
 "immediately resolve the dependencies of each package you flag for "
@@ -460,11 +476,11 @@ msgstr ""
 "integruotą resolver, bet gali pateikti neoptimalius rezultatus, ar kai "
 "kuriais atvejais gali nepavykti."
 
-#: src/apt_options.cc:354
+#: src/apt_options.cc:359
 msgid "Automatically fix broken packages before installing or removing"
 msgstr "Prieš diegiant/šalinant paketus automatiškai išspręsti priklausomybes"
 
-#: src/apt_options.cc:355
+#: src/apt_options.cc:360
 msgid ""
 "If this option is enabled, and you perform an install run while some "
 "packages are broken, aptitude will automatically apply the current "
@@ -475,11 +491,11 @@ msgstr ""
 "aptitude automatiškai pritaikys resolver siūlomą sprendimą.  Priešingu "
 "atveju aptitude paklaus jūsų sugadinto paketo priklausomybių sprenimo."
 
-#: src/apt_options.cc:362
+#: src/apt_options.cc:367
 msgid "Install recommended packages automatically"
 msgstr "Diegti rekomenduojamus paketus automatiškai"
 
-#: src/apt_options.cc:363
+#: src/apt_options.cc:368
 msgid ""
 "If this option is enabled and \"automatically resolve dependencies\" is also "
 "enabled, aptitude will attempt to install the recommendations of newly "
@@ -497,11 +513,11 @@ msgstr ""
 "šalinimas“, tuomet paketai, kuriuos rekomenduoja diegiamas paketas nebus "
 "automatiškai pašalinamas."
 
-#: src/apt_options.cc:375
+#: src/apt_options.cc:380
 msgid "Remove unused packages automatically"
 msgstr "Automatiškai pašalinti nebenaudojamus paketus"
 
-#: src/apt_options.cc:376
+#: src/apt_options.cc:381
 msgid ""
 "If this option is enabled, packages that are automatically installed and "
 "that no manually installed package depends on will be removed from the "
@@ -518,11 +534,11 @@ msgstr ""
 "diegimas“, tuomet automatiškai įdiegti paketai nebus šalinami, nors jo ir "
 "nebereikės jakiam kitam paketui."
 
-#: src/apt_options.cc:387
+#: src/apt_options.cc:392
 msgid "Packages that should never be automatically removed"
 msgstr "Paketai, kurie neturėtu būti automatiškai pašalinami"
 
-#: src/apt_options.cc:388
+#: src/apt_options.cc:393
 msgid ""
 "Packages matching this search pattern will always be treated as if an "
 "installed package depends on them: they will never be targeted for removal "
@@ -532,12 +548,12 @@ msgstr ""
 "taip kad atrodys jog kiti paketai nuo jų priklauso; jie niekada nebus "
 "šalinami kaip nebenaudojami."
 
-#: src/apt_options.cc:393
+#: src/apt_options.cc:398
 msgid "Allow dependency resolutions that break holds or forbids"
 msgstr ""
 "Lesti priklausomybių sprendimus, kurie sugadina, užlaiko arba uždraudžia"
 
-#: src/apt_options.cc:394
+#: src/apt_options.cc:399
 msgid ""
 "If this option is enabled, then whenever aptitude solves a dependency "
 "problem, it will consider modifying held packages, or installing forbidden "
@@ -557,15 +573,15 @@ msgstr ""
 "apačioje). aptitude nepaisys sulaikymų automatiškai diegiant paketo, kuris "
 "pažytas diegimui ar atnaujinimui, priklausomybes dėl klaidos #470035."
 
-#: src/apt_options.cc:520
+#: src/apt_options.cc:525
 msgid "UI options"
 msgstr "GUI parinktys"
 
-#: src/apt_options.cc:522
+#: src/apt_options.cc:527
 msgid "Dependency handling"
 msgstr "Priklausomybių tvarkymas"
 
-#: src/apt_options.cc:524 src/pkg_grouppolicy.cc:1018
+#: src/apt_options.cc:529 src/pkg_grouppolicy.cc:1022
 msgid "Miscellaneous"
 msgstr "Kiti"
 
@@ -606,8 +622,8 @@ msgstr "Esminė resolver klaida"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Sprendžiamos priklausomybės"
 
-#: src/broken_indicator.cc:311 src/solution_dialog.cc:140
-#: src/solution_screen.cc:542
+#: src/broken_indicator.cc:311 src/gtk/resolver.cc:307 src/gtk/resolver.cc:488
+#: src/solution_dialog.cc:140 src/solution_screen.cc:542
 msgid "Internal error: unexpected null solution."
 msgstr "Vidinė klaida: netikėtas tuščias sprendimas."
 
@@ -663,17 +679,17 @@ msgstr[2] "%d pasendintų"
 msgid "Suggest %F"
 msgstr "Siūlo %F"
 
-#: src/cmdline/cmdline_action.cc:48
+#: src/cmdline/cmdline_action.cc:50
 #, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Paketui „%s“ nėra išeities tektų paketo.\n"
 
-#: src/cmdline/cmdline_action.cc:202
+#: src/cmdline/cmdline_action.cc:204
 #, c-format
 msgid "Unable to satisfy the build-depends: %s."
 msgstr "Nepavyko patenkinti build-depends: %s."
 
-#: src/cmdline/cmdline_action.cc:238
+#: src/cmdline/cmdline_action.cc:240
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -682,7 +698,7 @@ msgstr ""
 "Dėmesio: paketas „%s“ pateikia virtualų paketą\n"
 "      „%s“ jau įdiegtas.\n"
 
-#: src/cmdline/cmdline_action.cc:245
+#: src/cmdline/cmdline_action.cc:247
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -691,7 +707,7 @@ msgstr ""
 "Dėmesio: paketas „%s“ pateikia virtualų paketą\n"
 "      „%s“ jau numatytas įdiegti.\n"
 
-#: src/cmdline/cmdline_action.cc:267
+#: src/cmdline/cmdline_action.cc:269
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -700,17 +716,17 @@ msgstr ""
 "Paketas „%s“ paketų duomenų bazėje yra, tačiau\n"
 "jis nėra realus ir joks paketas jo nepateikia.\n"
 
-#: src/cmdline/cmdline_action.cc:275
+#: src/cmdline/cmdline_action.cc:277
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "„%s“ yra virtualus paketas pateiktas:\n"
 
-#: src/cmdline/cmdline_action.cc:278
+#: src/cmdline/cmdline_action.cc:280
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Jūs turite pasirinkti vieną įdiegimui.\n"
 
-#: src/cmdline/cmdline_action.cc:286
+#: src/cmdline/cmdline_action.cc:288
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -719,37 +735,37 @@ msgstr ""
 "Dėmesio: parenkant „%s“, o ne\n"
 "      virtualų paketą „%s“\n"
 
-#: src/cmdline/cmdline_action.cc:305
+#: src/cmdline/cmdline_action.cc:307
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "tinkama paketo %s versija (%s) jau įdiegta\n"
 
-#: src/cmdline/cmdline_action.cc:311
+#: src/cmdline/cmdline_action.cc:313
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s šiuo metu nėra įdiegtas, todėl negali būti įdiegtas iš naujo.\n"
 
-#: src/cmdline/cmdline_action.cc:318 src/cmdline/cmdline_action.cc:324
+#: src/cmdline/cmdline_action.cc:320 src/cmdline/cmdline_action.cc:326
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Paketas %s nėra įdiegtas, todėl negali būti pašalintas\n"
 
-#: src/cmdline/cmdline_action.cc:342
+#: src/cmdline/cmdline_action.cc:344
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Paketas %s nėra įdiegtas, todėl negaliu uždrausti jo atnaujinimo\n"
 
-#: src/cmdline/cmdline_action.cc:344
+#: src/cmdline/cmdline_action.cc:346
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Paketas %s neatnaujinamas, todėl negaliu uždrausti jo atnaujinimo\n"
 
-#: src/cmdline/cmdline_action.cc:438
+#: src/cmdline/cmdline_action.cc:440
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Dėmesio: parenku užduotį „%s: %s“ diegimui\n"
 
-#: src/cmdline/cmdline_action.cc:472
+#: src/cmdline/cmdline_action.cc:474
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -758,12 +774,12 @@ msgstr ""
 "Su komanda 'install' galima nurodyti tik paketo versiją arba komandą 'forbid-"
 "version'.\n"
 
-#: src/cmdline/cmdline_action.cc:481
+#: src/cmdline/cmdline_action.cc:483
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Naudojant komandą „install“ galima nurodyti tik paketo archyvą\n"
 
-#: src/cmdline/cmdline_action.cc:518
+#: src/cmdline/cmdline_action.cc:520
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -772,7 +788,7 @@ msgstr ""
 "Negaliu rasti paketo „%s“, daugiau nei 40\n"
 "paketų pavadinime turi frazę „%s“.\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:523
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -781,14 +797,14 @@ msgstr ""
 "Negaliu rasti paketo „%s“.  Tačiau šie \n"
 "paketai pavadinime turi frazę „%s“.\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:545
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Negaliu rasti nei vieno paketo, kurio pavadinime arba apraše būtų frazė „%"
 "s“\n"
 
-#: src/cmdline/cmdline_action.cc:545
+#: src/cmdline/cmdline_action.cc:547
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -797,7 +813,7 @@ msgstr ""
 "Negaliu rasti paketo su fraze „%s“, ir yra daugiau nei 40\n"
 "paketų kurių apraše yra frazė „%s“.\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:550
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -806,22 +822,22 @@ msgstr ""
 "Negaliu rasti paketo su fraze „%s“. Tačiau šie\n"
 "paketai savo apraše turi frazę „%s“.\n"
 
-#: src/cmdline/cmdline_action.cc:686
+#: src/cmdline/cmdline_action.cc:689
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Netinkamas veiksmo simbolis „%c“\n"
 
-#: src/cmdline/cmdline_changelog.cc:96
+#: src/cmdline/cmdline_changelog.cc:102
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Negaliu paleisti puslapiuotojo, ar tai veikianti Debian sistema?"
 
-#: src/cmdline/cmdline_changelog.cc:154
+#: src/cmdline/cmdline_changelog.cc:160
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s nėra oficialus Debian paketas, negaliu parodyti jo pakeitimų sąrašo."
 
-#: src/cmdline/cmdline_changelog.cc:243
+#: src/cmdline/cmdline_changelog.cc:256
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Nerandu pakeitimų sąrašo bylos paketui %s"
@@ -856,44 +872,44 @@ msgstr "Atsilaisvins %sB\n"
 msgid "Freed %sB of disk space\n"
 msgstr "Atlaisvinta %sB\n"
 
-#: src/cmdline/cmdline_do_action.cc:83
+#: src/cmdline/cmdline_do_action.cc:92
 #, c-format
 msgid "Invalid operation %s"
 msgstr "Klaidingas veiksmas %s"
 
-#: src/cmdline/cmdline_do_action.cc:159
+#: src/cmdline/cmdline_do_action.cc:168
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Netikėtas argumentų derinys po „keep-all“"
 
-#: src/cmdline/cmdline_do_action.cc:266
+#: src/cmdline/cmdline_do_action.cc:275
 #, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr ""
 "Nepavyko saugiai išspręsti priklausomybių, pabandykite su --full-resolver.\n"
 
-#: src/cmdline/cmdline_do_action.cc:304 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:163 src/main.cc:711
+#: src/cmdline/cmdline_do_action.cc:313 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_upgrade.cc:175 src/main.cc:757
 #, c-format
 msgid "Abort.\n"
 msgstr "Atšaukti.\n"
 
-#: src/cmdline/cmdline_download.cc:31
+#: src/cmdline/cmdline_download.cc:33
 #, c-format
 msgid "download: you must specify at least one package to download\n"
 msgstr "atsisiuntimas: reikia nurodyti bent vieną paketą atsisiuntimui\n"
 
-#: src/cmdline/cmdline_download.cc:43
-#: src/generic/apt/download_install_manager.cc:83
+#: src/cmdline/cmdline_download.cc:45
+#: src/generic/apt/download_install_manager.cc:87
 msgid "Couldn't read source list"
 msgstr "Negaliu nuskaityti šaltinių sąrašo"
 
-#: src/cmdline/cmdline_download.cc:72
+#: src/cmdline/cmdline_download.cc:74
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "Nerandu paketo, kurio pavadinimas „%s“"
 
-#: src/cmdline/cmdline_download.cc:111
+#: src/cmdline/cmdline_download.cc:118
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -902,7 +918,7 @@ msgstr ""
 "Nėra atsiunčiamų paketo %s bylų (versija %s), gal tai lokalus arba "
 "nebenaudojamas paketas?"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:43
+#: src/cmdline/cmdline_extract_cache_subset.cc:45
 #, c-format
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
@@ -911,13 +927,13 @@ msgstr ""
 "extract-cache-entries: reikalingas bent vienas argumentas (aplankas\n"
 "į kurį rašomi failai).\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:77
-#: src/cmdline/cmdline_user_tag.cc:116
+#: src/cmdline/cmdline_extract_cache_subset.cc:79
+#: src/cmdline/cmdline_user_tag.cc:118
 #, c-format
 msgid "No such package \"%s\".\n"
 msgstr "Nėra tokio paketo „%s“.\n"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:115
+#: src/cmdline/cmdline_extract_cache_subset.cc:119
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
@@ -970,17 +986,17 @@ msgstr "Na gerai, tu laimėjai.\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "Kas tai?  Tai dramblys, kurį suvalgė gyvatė, žinoma.\n"
 
-#: src/cmdline/cmdline_prompt.cc:42
+#: src/cmdline/cmdline_prompt.cc:44
 msgid "Unexpected end-of-file on standard input"
 msgstr "Standartinėje įvestyje netikėta bylos galo žymė"
 
-#: src/cmdline/cmdline_prompt.cc:66
+#: src/cmdline/cmdline_prompt.cc:68
 msgid "Couldn't read list of sources"
 msgstr "Negaliu nuskaityti šaltinių sąrašo"
 
 #. ForTranslators: %s is replaced with a comma-delimited list
 #. of package names.
-#: src/cmdline/cmdline_prompt.cc:218
+#: src/cmdline/cmdline_prompt.cc:223
 #, c-format
 msgid "(for %s)"
 msgid_plural "(for %s)"
@@ -988,105 +1004,105 @@ msgstr[0] "(dėl %s)"
 msgstr[1] "(dėl %s)"
 msgstr[2] "(dėl %s)"
 
-#: src/cmdline/cmdline_prompt.cc:293 src/cmdline/cmdline_show.cc:435
-#: src/cmdline/cmdline_why.cc:192 src/generic/apt/matchers.cc:2436
+#: src/cmdline/cmdline_prompt.cc:298 src/cmdline/cmdline_show.cc:437
+#: src/cmdline/cmdline_why.cc:194 src/gtk/dependency_chains_tab.cc:199
 msgid "Provides"
 msgstr "Pateikia"
 
-#: src/cmdline/cmdline_prompt.cc:426
+#: src/cmdline/cmdline_prompt.cc:431
 msgid "Config files"
 msgstr "Nustatymų failai"
 
-#: src/cmdline/cmdline_prompt.cc:530 src/cmdline/cmdline_show_broken.cc:73
+#: src/cmdline/cmdline_prompt.cc:535 src/cmdline/cmdline_show_broken.cc:73
 #, c-format
 msgid "but %s is to be installed."
 msgstr "tačiau %s bus įdiegtas"
 
-#: src/cmdline/cmdline_prompt.cc:533 src/cmdline/cmdline_show_broken.cc:76
+#: src/cmdline/cmdline_prompt.cc:538 src/cmdline/cmdline_show_broken.cc:76
 #, c-format
 msgid "but %s is installed and it is kept back."
 msgstr "tačiau %s įdiegtas ir jo atnaujinimas sulaikomas"
 
-#: src/cmdline/cmdline_prompt.cc:536 src/cmdline/cmdline_show_broken.cc:79
+#: src/cmdline/cmdline_prompt.cc:541 src/cmdline/cmdline_show_broken.cc:79
 #, c-format
 msgid "but %s is installed."
 msgstr "tačiau %s yra įdiegtas."
 
-#: src/cmdline/cmdline_prompt.cc:540 src/cmdline/cmdline_show_broken.cc:83
+#: src/cmdline/cmdline_prompt.cc:545
 #, c-format
 msgid "but it is not installable"
 msgstr "tačiau jis negali būti įdiegtas"
 
 #  FIXME: do something sensible here!
-#: src/cmdline/cmdline_prompt.cc:544 src/cmdline/cmdline_show_broken.cc:87
+#: src/cmdline/cmdline_prompt.cc:549 src/cmdline/cmdline_show_broken.cc:93
 #, c-format
 msgid " which is a virtual package."
 msgstr " kuris yra virtualus paketas."
 
-#: src/cmdline/cmdline_prompt.cc:547 src/cmdline/cmdline_show_broken.cc:90
+#: src/cmdline/cmdline_prompt.cc:552 src/cmdline/cmdline_show_broken.cc:96
 #, c-format
 msgid " or"
 msgstr " arba"
 
-#: src/cmdline/cmdline_prompt.cc:561
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "The following packages are BROKEN:"
 msgstr "Šie paketai yra SUGADINTI:"
 
-#: src/cmdline/cmdline_prompt.cc:562
+#: src/cmdline/cmdline_prompt.cc:567
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Šie paketai nebenaudojami, todėl dabar bus PAŠALINTI:"
 
-#: src/cmdline/cmdline_prompt.cc:563
+#: src/cmdline/cmdline_prompt.cc:568
 msgid "The following packages have been automatically kept back:"
 msgstr "Šių paketų atnaujinimas automatiškai sulaikomas:"
 
-#: src/cmdline/cmdline_prompt.cc:564
+#: src/cmdline/cmdline_prompt.cc:569
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Šie NAUJI paketai bus įdiegti automatiškai:"
 
-#: src/cmdline/cmdline_prompt.cc:565
+#: src/cmdline/cmdline_prompt.cc:570
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Šie paketai bus PAŠALINTI automatiškai:"
 
-#: src/cmdline/cmdline_prompt.cc:566
+#: src/cmdline/cmdline_prompt.cc:571
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Šie paketai bus PASENDINTI (įdiegtos jų senesnės versijos):"
 
-#: src/cmdline/cmdline_prompt.cc:567
+#: src/cmdline/cmdline_prompt.cc:572
 msgid "The following packages have been kept back:"
 msgstr "Šių paketų atnaujinimas sulaikomas:"
 
-#: src/cmdline/cmdline_prompt.cc:568
+#: src/cmdline/cmdline_prompt.cc:573
 msgid "The following packages will be REINSTALLED:"
 msgstr "Šie paketai bus įdiegti iš naujo (PERINSTALIUOTI):"
 
-#: src/cmdline/cmdline_prompt.cc:569
+#: src/cmdline/cmdline_prompt.cc:574
 msgid "The following NEW packages will be installed:"
 msgstr "Bus įdiegti šie NAUJI paketai:"
 
-#: src/cmdline/cmdline_prompt.cc:570
+#: src/cmdline/cmdline_prompt.cc:575
 msgid "The following packages will be REMOVED:"
 msgstr "Šie paketai bus PAŠALINTI:"
 
-#: src/cmdline/cmdline_prompt.cc:571
+#: src/cmdline/cmdline_prompt.cc:576
 msgid "The following packages will be upgraded:"
 msgstr "Šie paketai bus atnaujinti:"
 
-#: src/cmdline/cmdline_prompt.cc:572
+#: src/cmdline/cmdline_prompt.cc:577
 msgid "The following partially installed packages will be configured:"
 msgstr "Šie dalinai įdiegti paketai bus sukonfigūruoti:"
 
-#: src/cmdline/cmdline_prompt.cc:627 src/ui.cc:1465
+#: src/cmdline/cmdline_prompt.cc:632 src/ui.cc:1509
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Šie ESMINIAI paketai bus PAŠALINTI!\n"
 
-#: src/cmdline/cmdline_prompt.cc:636 src/ui.cc:1480
+#: src/cmdline/cmdline_prompt.cc:641 src/ui.cc:1524
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Jūsų veiksmai šiuos ESMINIUS paketus SUGADINS:\n"
 
-#: src/cmdline/cmdline_prompt.cc:646 src/ui.cc:1493
+#: src/cmdline/cmdline_prompt.cc:651 src/ui.cc:1537
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1095,16 +1111,16 @@ msgstr ""
 "DĖMESIO: Šie Jūsų veiksmai greičiausiai sugadins Jūsų sistemą!\n"
 "         SUSTOKITE dabar, nebent jūs TIKSLIAI žinote ką darote!\n"
 
-#: src/cmdline/cmdline_prompt.cc:648
+#: src/cmdline/cmdline_prompt.cc:653
 msgid "I am aware that this is a very bad idea"
 msgstr "Aš sunerimęs, nes manau kad tai tikrai bloga mintis"
 
-#: src/cmdline/cmdline_prompt.cc:652 src/ui.cc:1494
+#: src/cmdline/cmdline_prompt.cc:657 src/ui.cc:1538
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Norėdami tęsti parašykite frazę „%s“:\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1120,7 +1136,7 @@ msgstr ""
 "Tęskite tik tuo atveju, jei esate įsitikinęs kad Jūs to norite.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:706
+#: src/cmdline/cmdline_prompt.cc:711
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1129,7 +1145,7 @@ msgstr ""
 "*** DĖMESIO ***   Ignoruojami šie patikimumo pažeidimai nes\n"
 "                  %s::CmdLine::Ignore-Trust-Violations yra 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:715
+#: src/cmdline/cmdline_prompt.cc:720
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1137,134 +1153,144 @@ msgstr ""
 "*** DĖMESIO ***   Ignoruojami šie patikimumo pažeidimai nes\n"
 "                  Apt::Get::AllowUnauthenticated yra 'true'!\n"
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "Yes"
-msgstr "Taip"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:731
+msgid "Go ahead and ignore the warning|Yes"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:721
-msgid "No"
-msgstr "Ne"
+#. ForTranslators: This string is a confirmation message, which
+#. users (especially CJK users) should be able to input without
+#. input methods.  Please include nothing but ASCII characters.
+#. The text preceding the pipe character (|) will be ignored and
+#. can be removed from your translation.
+#: src/cmdline/cmdline_prompt.cc:737
+msgid "Abort instead of overriding the warning|No"
+msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:732
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Ar Jūs ignoruojate šį perspėjimą ir norite tęsti?\n"
 
-#: src/cmdline/cmdline_prompt.cc:733
+#: src/cmdline/cmdline_prompt.cc:749
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Norėdami tęsti parašykite frazę „%s“; norėdami sustoti įveskite „%s“: "
 
-#: src/cmdline/cmdline_prompt.cc:750
+#: src/cmdline/cmdline_prompt.cc:766
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Neatpažinta įvestis:  Įveskite „%s“ arba „%s“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:881
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Šie paketai yra REKOMENDUOJAMI, tačiau jie nebus įdiegti:\n"
 
-#: src/cmdline/cmdline_prompt.cc:871
+#: src/cmdline/cmdline_prompt.cc:887
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Šie paketai yra SIŪLOMI, tačiau jie nebus įdiegti:\n"
 
-#: src/cmdline/cmdline_prompt.cc:876
+#: src/cmdline/cmdline_prompt.cc:892
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Nei vienas paketas nebus įdiegtas, pašalintas arba atnaujintas.\n"
 
-#: src/cmdline/cmdline_prompt.cc:878
+#: src/cmdline/cmdline_prompt.cc:894
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu paketų atnaujinta, %lu naujų paketų įdiegta, "
 
-#: src/cmdline/cmdline_prompt.cc:882
+#: src/cmdline/cmdline_prompt.cc:898
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu įdiegta iš naujo, "
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:900
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu pasendinta, "
 
-#: src/cmdline/cmdline_prompt.cc:886
+#: src/cmdline/cmdline_prompt.cc:902
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu bus pašalinta ir %lu ne atnaujinta.\n"
 
-#: src/cmdline/cmdline_prompt.cc:893
+#: src/cmdline/cmdline_prompt.cc:909
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Reikia gauti %sB/%sB archyvų. "
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:912
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Reikia gauti %sB archyvų. "
 
-#: src/cmdline/cmdline_prompt.cc:903
+#: src/cmdline/cmdline_prompt.cc:919
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Po išpakavimo bus panaudota %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:922
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Po išpakavimo atsilaisvins %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:943
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Nėra rodomų paketų -- įveskite paketų vardus eilutėje po „i“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:933
+#: src/cmdline/cmdline_prompt.cc:949
 msgid "Press Return to continue."
 msgstr "Norėdami tęsti spauskite ENTER."
 
-#: src/cmdline/cmdline_prompt.cc:944
+#: src/cmdline/cmdline_prompt.cc:960
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Nerastas joks paketas -- įveskite paketų pavadinimus eilutėje po „c“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:948
+#: src/cmdline/cmdline_prompt.cc:964
 msgid "Press Return to continue"
 msgstr "Norėdami tęsti spauskite ENTER."
 
-#: src/cmdline/cmdline_prompt.cc:958
+#: src/cmdline/cmdline_prompt.cc:974
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:981
+#: src/cmdline/cmdline_prompt.cc:997
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:983
+#: src/cmdline/cmdline_prompt.cc:999
 msgid "continue with the installation"
 msgstr "tęsti diegimą"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:1001
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "abort and quit"
 msgstr "atšaukti ir išeiti"
 
-#: src/cmdline/cmdline_prompt.cc:989
+#: src/cmdline/cmdline_prompt.cc:1005
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:991
+#: src/cmdline/cmdline_prompt.cc:1007
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1272,12 +1298,12 @@ msgstr ""
 "Parodyti vieno ar kelių paketų informaciją; paketų pavadinimai turi būti po "
 "'i'"
 
-#: src/cmdline/cmdline_prompt.cc:993
+#: src/cmdline/cmdline_prompt.cc:1009
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:995
+#: src/cmdline/cmdline_prompt.cc:1011
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1285,39 +1311,39 @@ msgstr ""
 "Rodyti vieno ar kelių Debian paketų pakeitimų žurnalus (changelog); paketų "
 "pavadinimai rašomi po 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:997
+#: src/cmdline/cmdline_prompt.cc:1013
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:999
+#: src/cmdline/cmdline_prompt.cc:1015
 msgid "toggle the display of dependency information"
 msgstr "perjungti priklausomybių informacijos ekraną"
 
-#: src/cmdline/cmdline_prompt.cc:1001
+#: src/cmdline/cmdline_prompt.cc:1017
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1003
+#: src/cmdline/cmdline_prompt.cc:1019
 msgid "toggle the display of changes in package sizes"
 msgstr "įjungti/išjungti paketų dydžio pasikeitimo rodymą"
 
-#: src/cmdline/cmdline_prompt.cc:1005
+#: src/cmdline/cmdline_prompt.cc:1021
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1007
+#: src/cmdline/cmdline_prompt.cc:1023
 msgid "toggle the display of version numbers"
 msgstr "įjungti/išjungti versijų rodymą"
 
-#: src/cmdline/cmdline_prompt.cc:1009
+#: src/cmdline/cmdline_prompt.cc:1025
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1011
+#: src/cmdline/cmdline_prompt.cc:1027
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1325,27 +1351,27 @@ msgstr ""
 "bandoma rasti priežastį diegti vieną paketą, arba paaiškinti, kodėl vieno "
 "paketo diegimas veda prie kito paketo diegimo."
 
-#: src/cmdline/cmdline_prompt.cc:1014
+#: src/cmdline/cmdline_prompt.cc:1030
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1016
+#: src/cmdline/cmdline_prompt.cc:1032
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "vykdyti automatinį priklausomybių sprendimo priemonę resolver, kad "
 "sutvarkyti priklausomybes."
 
-#: src/cmdline/cmdline_prompt.cc:1018
+#: src/cmdline/cmdline_prompt.cc:1034
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:1020
+#: src/cmdline/cmdline_prompt.cc:1036
 msgid "enter the full visual interface"
 msgstr "įveskite pilną vizualų interfeisą"
 
-#: src/cmdline/cmdline_prompt.cc:1023
+#: src/cmdline/cmdline_prompt.cc:1039
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1357,49 +1383,49 @@ msgstr ""
 "derinius).  Veiksmai bus pritaikyti visiems išvardintiems paketams.  Galite "
 "naudoti šiuos veiksmus:"
 
-#: src/cmdline/cmdline_prompt.cc:1030 src/cmdline/cmdline_resolver.cc:204
+#: src/cmdline/cmdline_prompt.cc:1046 src/cmdline/cmdline_resolver.cc:204
 msgid "'+' to install packages"
 msgstr "'+' įdiegti paketus"
 
-#: src/cmdline/cmdline_prompt.cc:1033 src/cmdline/cmdline_resolver.cc:206
+#: src/cmdline/cmdline_prompt.cc:1049 src/cmdline/cmdline_resolver.cc:206
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr "'+M' kad įdiegti ir tuoj pat pažymėti kaip automatiškai įdiegtus"
 
-#: src/cmdline/cmdline_prompt.cc:1035 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:1051 src/cmdline/cmdline_resolver.cc:208
 msgid "'-' to remove packages"
 msgstr "'-' kad pašalinti paketus"
 
-#: src/cmdline/cmdline_prompt.cc:1037 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:1053 src/cmdline/cmdline_resolver.cc:210
 msgid "'_' to purge packages"
 msgstr "'_' kad išvalyti (purge) paketus"
 
-#: src/cmdline/cmdline_prompt.cc:1039 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:1055 src/cmdline/cmdline_resolver.cc:212
 msgid "'=' to place packages on hold"
 msgstr "'=' kad užlaykyti paketą"
 
-#: src/cmdline/cmdline_prompt.cc:1041 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:1057 src/cmdline/cmdline_resolver.cc:214
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' kad palikti paketą dabartinėje būklėje neužlaikant"
 
-#: src/cmdline/cmdline_prompt.cc:1043 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:1059 src/cmdline/cmdline_resolver.cc:216
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' kad pažymėti kaip automatiška įdiegtus"
 
-#: src/cmdline/cmdline_prompt.cc:1045 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:1061 src/cmdline/cmdline_resolver.cc:218
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' kad pažymėti kaip įdiegti rankiniu būdų"
 
-#: src/cmdline/cmdline_prompt.cc:1047
+#: src/cmdline/cmdline_prompt.cc:1063
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "'&BD' kad įdiegti kompiliavimo priklausomybes paketui."
 
-#: src/cmdline/cmdline_prompt.cc:1051
+#: src/cmdline/cmdline_prompt.cc:1067
 msgid "Commands:"
 msgstr "Komandos:"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1176
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1407,19 +1433,19 @@ msgstr ""
 "aptitude nepavyko rasti šių priklausomybių sprendimo.  Galite jas sutvarkyti "
 "pats, arba spauskite 'n' kad išeiti."
 
-#: src/cmdline/cmdline_prompt.cc:1178
+#: src/cmdline/cmdline_prompt.cc:1194
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Ar tęsti? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1179
+#: src/cmdline/cmdline_prompt.cc:1195
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Spręsti priklausomybes rankomis? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1197
+#: src/cmdline/cmdline_prompt.cc:1213
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Neteisinga komanda.  Įveskite teisingą komandą, arba spauskite „?“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1203
+#: src/cmdline/cmdline_prompt.cc:1219
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1428,7 +1454,7 @@ msgstr ""
 "'R', kad pabandyti automatinį priklausomybių tvarkymą, arba 'N', kad "
 "atšaukti."
 
-#: src/cmdline/cmdline_prompt.cc:1234
+#: src/cmdline/cmdline_prompt.cc:1250
 #, c-format
 msgid ""
 "\n"
@@ -1439,7 +1465,7 @@ msgstr ""
 "Bus rodoma priklausomybių informacija.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1236
+#: src/cmdline/cmdline_prompt.cc:1252
 #, c-format
 msgid ""
 "\n"
@@ -1450,7 +1476,7 @@ msgstr ""
 "Priklausomybių informacija nebus rodoma.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1242
+#: src/cmdline/cmdline_prompt.cc:1258
 #, c-format
 msgid ""
 "\n"
@@ -1461,7 +1487,7 @@ msgstr ""
 "Bus rodomos versijos.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1244
+#: src/cmdline/cmdline_prompt.cc:1260
 #, c-format
 msgid ""
 "\n"
@@ -1472,7 +1498,7 @@ msgstr ""
 "Versijos nebus rodomos.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1249
+#: src/cmdline/cmdline_prompt.cc:1265
 #, c-format
 msgid ""
 "\n"
@@ -1483,7 +1509,7 @@ msgstr ""
 "Bus rodomi dydžio pakeitimai.\n"
 " \n"
 
-#: src/cmdline/cmdline_prompt.cc:1251
+#: src/cmdline/cmdline_prompt.cc:1267
 #, c-format
 msgid ""
 "\n"
@@ -1669,8 +1695,8 @@ msgstr ""
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr "Norima išspręsti priklausomybes, bet nesukurtas joks resolver."
 
-#: src/cmdline/cmdline_resolver.cc:530 src/solution_dialog.cc:127
-#: src/solution_screen.cc:519
+#: src/cmdline/cmdline_resolver.cc:530 src/gtk/resolver.cc:614
+#: src/solution_dialog.cc:127 src/solution_screen.cc:519
 msgid "Resolving dependencies..."
 msgstr "Sprendžiamos priklausomybės..."
 
@@ -1734,7 +1760,7 @@ msgstr ""
 "*** KAIDA: paieška sustabdyta dėl esminės klaidos.  Galima tęsti\n"
 "           paiešką, bet kai kurie sprendimai bus nepasiekiami."
 
-#: src/cmdline/cmdline_resolver.cc:963
+#: src/cmdline/cmdline_resolver.cc:983
 msgid ""
 "The resolver timed out after producing a solution; some possible upgrades "
 "might not be performed."
@@ -1742,16 +1768,16 @@ msgstr ""
 "Priedas resolver pasiūlė sprendimą, bet pernelyg ilgai neatsako; kai kurie "
 "atnaujinimai gali būti neatlikti."
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:990
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr "Nepavyksta išspręsti atnaujinimo priklausomybių (resolver neatsako)."
 
-#: src/cmdline/cmdline_resolver.cc:984
+#: src/cmdline/cmdline_resolver.cc:1007
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr "Nepavyksta išspręsti atnaujinimo priklausomybių (sprendimas nerastas)."
 
-#: src/cmdline/cmdline_resolver.cc:993
+#: src/cmdline/cmdline_resolver.cc:1019
 #, c-format
 msgid ""
 "Dependency resolution incomplete (%s); some possible upgrades might not be "
@@ -1760,254 +1786,269 @@ msgstr ""
 "Priklausomybių sprendimas neužbaigtas (%s); kai kurie galimi atnaujinimai "
 "gali būti neatlikti."
 
-#: src/cmdline/cmdline_resolver.cc:999
+#: src/cmdline/cmdline_resolver.cc:1025
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Nepavyksta išspręsti atnaujinimo priklausomybių (%s)."
 
-#: src/cmdline/cmdline_search.cc:125
+#: src/cmdline/cmdline_search.cc:126
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "%s iconv nepavyko.\n"
 
-#: src/cmdline/cmdline_search.cc:142
+#: src/cmdline/cmdline_search.cc:143
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "paieška: Jūs turite įvesti bent vieną paieškos žodį\n"
 
-#: src/cmdline/cmdline_show_broken.cc:113
+#: src/cmdline/cmdline_show_broken.cc:86
+#, fuzzy, c-format
+#| msgid "but it is not installable"
+msgid "but it is not installable."
+msgstr "tačiau jis negali būti įdiegtas"
+
+#: src/cmdline/cmdline_show_broken.cc:88
+#, fuzzy, c-format
+#| msgid "but %s is to be installed."
+msgid "but it is not going to be installed."
+msgstr "tačiau %s bus įdiegtas"
+
+#: src/cmdline/cmdline_show_broken.cc:119
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Šių paketų priklausomybės netenkinamos:\n"
 
-#: src/cmdline/cmdline_show.cc:170 src/cmdline/cmdline_show.cc:414
-#: src/solution_fragment.cc:58
+#: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
+#: src/gtk/resolver.cc:218 src/solution_fragment.cc:58
 msgid "<NULL>"
 msgstr "<NULL>"
 
-#: src/cmdline/cmdline_show.cc:187 src/cmdline/cmdline_show.cc:192
+#: src/cmdline/cmdline_show.cc:189 src/cmdline/cmdline_show.cc:194
 msgid "not installed"
 msgstr "neįdiegtas"
 
-#: src/cmdline/cmdline_show.cc:194 src/pkg_columnizer.cc:249
+#: src/cmdline/cmdline_show.cc:196 src/pkg_columnizer.cc:249
 #: src/pkg_ver_item.cc:232
 msgid "unpacked"
 msgstr "išspaustas"
 
-#: src/cmdline/cmdline_show.cc:196
+#: src/cmdline/cmdline_show.cc:198
 msgid "partially configured"
 msgstr "dalinai sukonfigūruotas"
 
-#: src/cmdline/cmdline_show.cc:198
+#: src/cmdline/cmdline_show.cc:200
 msgid "partially installed"
 msgstr "dalinai įdiegtas"
 
-#: src/cmdline/cmdline_show.cc:200
+#: src/cmdline/cmdline_show.cc:202
 msgid "not installed (configuration files remain)"
 msgstr "neįdiegtas (lieka konfigūracijos bylos)"
 
-#: src/cmdline/cmdline_show.cc:203
+#: src/cmdline/cmdline_show.cc:205
 msgid "awaiting trigger processing by other package(s)"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:207
 msgid "awaiting trigger processing"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:208 src/pkg_columnizer.cc:257
+#: src/cmdline/cmdline_show.cc:210 src/pkg_columnizer.cc:257
 #: src/pkg_ver_item.cc:240
 msgid "installed"
 msgstr "įdiegtas"
 
-#: src/cmdline/cmdline_show.cc:231
+#: src/cmdline/cmdline_show.cc:233
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; bus išvalytas, nes jokiam paketui jo nereikia"
 
-#: src/cmdline/cmdline_show.cc:233 src/cmdline/cmdline_show.cc:329
+#: src/cmdline/cmdline_show.cc:235 src/cmdline/cmdline_show.cc:331
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; bus išvalytas"
 
-#: src/cmdline/cmdline_show.cc:238
+#: src/cmdline/cmdline_show.cc:240
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; bus pašalintas, nes jokiam paketui jo nereikia."
 
-#: src/cmdline/cmdline_show.cc:240
+#: src/cmdline/cmdline_show.cc:242
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; bus pašalintas"
 
-#: src/cmdline/cmdline_show.cc:258
+#: src/cmdline/cmdline_show.cc:260
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; bus pasendintas [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:261
+#: src/cmdline/cmdline_show.cc:263
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; bus atnaujintas [%s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:270
+#: src/cmdline/cmdline_show.cc:272
 msgid "not a real package"
 msgstr "nėra realus paketas"
 
-#: src/cmdline/cmdline_show.cc:283
+#: src/cmdline/cmdline_show.cc:285
 msgid " [held]"
 msgstr " [užlaikytas]"
 
-#: src/cmdline/cmdline_show.cc:297
+#: src/cmdline/cmdline_show.cc:299
 #, c-format
 msgid "%s; will be installed"
 msgstr "%s; bus įdiegtas"
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:301
 #, c-format
 msgid "%s; will be installed automatically"
 msgstr "%s; bus įdiegtas automatiškai"
 
-#: src/cmdline/cmdline_show.cc:319
+#: src/cmdline/cmdline_show.cc:321
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; versija %s bus įdiegtas"
 
-#: src/cmdline/cmdline_show.cc:323
+#: src/cmdline/cmdline_show.cc:325
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; versija %s bus įdiegtas automatiškai"
 
-#: src/cmdline/cmdline_show.cc:348 src/cmdline/cmdline_show.cc:370
+#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:372
 msgid "Package: "
 msgstr "Paketas: "
 
-#: src/cmdline/cmdline_show.cc:349 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:351 src/cmdline/cmdline_show.cc:380
 #: src/pkg_columnizer.cc:91
 msgid "State"
 msgstr "Būsena"
 
-#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:436
-#: src/generic/apt/matchers.cc:2490
+#: src/cmdline/cmdline_show.cc:352 src/cmdline/cmdline_show.cc:438
 msgid "Provided by"
 msgstr "Pateikė"
 
-#: src/cmdline/cmdline_show.cc:372 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:120
 msgid "Essential: "
 msgstr "Esminiai: "
 
-#: src/cmdline/cmdline_show.cc:372 src/cmdline/cmdline_show.cc:376
-#: src/cmdline/cmdline_show.cc:387 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:374 src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:389 src/pkg_info_screen.cc:120
 msgid "yes"
 msgstr "taip"
 
-#: src/cmdline/cmdline_show.cc:376
+#: src/cmdline/cmdline_show.cc:378
 msgid "New"
 msgstr "Naujas"
 
-#: src/cmdline/cmdline_show.cc:381
+#: src/cmdline/cmdline_show.cc:383 src/gtk/gui.cc:91
 msgid "Forbidden version"
 msgstr "Uždrausta versija"
 
-#: src/cmdline/cmdline_show.cc:385
+#: src/cmdline/cmdline_show.cc:387
 msgid "Automatically installed"
 msgstr "Automatiškai įdiegtas"
 
-#: src/cmdline/cmdline_show.cc:387
+#: src/cmdline/cmdline_show.cc:389
 msgid "no"
 msgstr "ne"
 
-#: src/cmdline/cmdline_show.cc:389
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:665
+#: src/gtk/previewtab.cc:225
 msgid "Version: "
 msgstr "Versija: "
 
-#: src/cmdline/cmdline_show.cc:390 src/pkg_info_screen.cc:128
+#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:128
 msgid "Priority: "
 msgstr "Prioritetas: "
 
-#: src/cmdline/cmdline_show.cc:391 src/cmdline/cmdline_show.cc:393
-#: src/cmdline/cmdline_show.cc:402
+#: src/cmdline/cmdline_show.cc:393 src/cmdline/cmdline_show.cc:395
+#: src/cmdline/cmdline_show.cc:404
 msgid "N/A"
 msgstr "Nėra"
 
-#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:129
+#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:129
 msgid "Section: "
 msgstr "Sekcija: "
 
-#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:130
+#: src/cmdline/cmdline_show.cc:396 src/pkg_info_screen.cc:130
 msgid "Maintainer: "
 msgstr "Koordinatorius: "
 
-#: src/cmdline/cmdline_show.cc:397
+#: src/cmdline/cmdline_show.cc:399
 msgid "Uncompressed Size: "
 msgstr "Nesuspausto dydis: "
 
-#: src/cmdline/cmdline_show.cc:401
+#: src/cmdline/cmdline_show.cc:403
 msgid "Architecture: "
 msgstr "Architektūra: "
 
-#: src/cmdline/cmdline_show.cc:403
+#: src/cmdline/cmdline_show.cc:405
 msgid "Compressed Size: "
 msgstr "Suspausto dydis: "
 
-#: src/cmdline/cmdline_show.cc:405
+#: src/cmdline/cmdline_show.cc:407
 msgid "Filename: "
 msgstr "Bylos pavadinimas: "
 
-#: src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:409
 msgid "MD5sum: "
 msgstr "MD5 suma: "
 
-#: src/cmdline/cmdline_show.cc:411 src/cmdline/cmdline_show.cc:414
+#: src/cmdline/cmdline_show.cc:413 src/cmdline/cmdline_show.cc:416
+#: src/gtk/entityview.cc:606
 msgid "Archive"
 msgstr "Archyvas"
 
-#: src/cmdline/cmdline_show.cc:419
+#: src/cmdline/cmdline_show.cc:421
 msgid "Depends"
 msgstr "Reikia"
 
-#: src/cmdline/cmdline_show.cc:421
+#: src/cmdline/cmdline_show.cc:423
 msgid "PreDepends"
 msgstr "Reikia prieš"
 
-#: src/cmdline/cmdline_show.cc:423 src/cmdline/cmdline_why.cc:261
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:263
 msgid "Recommends"
 msgstr "Rekomenduoja"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:264
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:266
 msgid "Suggests"
 msgstr "Siūlo"
 
-#: src/cmdline/cmdline_show.cc:427
+#: src/cmdline/cmdline_show.cc:429
 msgid "Conflicts"
 msgstr "Konfliktuoja"
 
-#: src/cmdline/cmdline_show.cc:429
+#: src/cmdline/cmdline_show.cc:431
 msgid "Breaks"
 msgstr "Sugadina"
 
-#: src/cmdline/cmdline_show.cc:431
+#: src/cmdline/cmdline_show.cc:433
 msgid "Replaces"
 msgstr "Pakeičia"
 
-#: src/cmdline/cmdline_show.cc:433
+#: src/cmdline/cmdline_show.cc:435
 msgid "Obsoletes"
 msgstr "Nurašo"
 
-#: src/cmdline/cmdline_show.cc:439 src/pkg_info_screen.cc:102
+#: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:692
+#: src/gtk/packagestab.cc:673 src/gtk/previewtab.cc:233
+#: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Aprašas: "
 
-#: src/cmdline/cmdline_show.cc:445 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:259
+#: src/cmdline/cmdline_show.cc:447 src/pkg_info_screen.cc:107
+#: src/pkg_view.cc:255
 msgid "Homepage: "
 msgstr "Svetainė: "
 
-#: src/cmdline/cmdline_show.cc:542
+#: src/cmdline/cmdline_show.cc:544
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Nepavyko surasti paketą %s"
 
-#: src/cmdline/cmdline_show.cc:557
+#: src/cmdline/cmdline_show.cc:560
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Nepavyko interpretuoti derinio %s"
@@ -2031,59 +2072,59 @@ msgstr "Trinamos pasenusios gautos bylos\n"
 msgid "E: The update command takes no arguments\n"
 msgstr "E: Komanda „update“ nenaudoja jokių argumentų\n"
 
-#: src/cmdline/cmdline_upgrade.cc:50
+#: src/cmdline/cmdline_upgrade.cc:59
 #, c-format
 msgid "E: The %s command takes no arguments\n"
 msgstr "E: Komanda %s nenaudoja jokių argumentų\n"
 
-#: src/cmdline/cmdline_user_tag.cc:52
+#: src/cmdline/cmdline_user_tag.cc:54
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "Pridedama vartotojo žymė \"%s\" paketui \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:59
+#: src/cmdline/cmdline_user_tag.cc:61
 #, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "Šalinama vartotojo žymė \"%s\" paketui \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:89
+#: src/cmdline/cmdline_user_tag.cc:91
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
 "%s: per mažai argumetų; tikėtasi bent jau žymės pavadinimo ir paketo.\n"
 
-#: src/cmdline/cmdline_util.cc:131
+#: src/cmdline/cmdline_util.cc:133
 #, c-format
 msgid "No candidate version found for %s\n"
 msgstr "Nėra tinkamos versijos paketui %s\n"
 
-#: src/cmdline/cmdline_util.cc:133
+#: src/cmdline/cmdline_util.cc:135
 #, c-format
 msgid "No current or candidate version found for %s\n"
 msgstr "Paketui %s nerasta dabartinė arba kandidatuojama versija\n"
 
-#: src/cmdline/cmdline_util.cc:148
+#: src/cmdline/cmdline_util.cc:150
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "Negaliu rasti archyvo „%s“ paketui „%s“\n"
 
-#: src/cmdline/cmdline_util.cc:158
+#: src/cmdline/cmdline_util.cc:160
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "Negaliu rasti paketo „%1s“ versijos „%2s“\n"
 
-#: src/cmdline/cmdline_util.cc:164
+#: src/cmdline/cmdline_util.cc:166
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr ""
 "Vidinė klaida: komandai cmdline_find_ver perduota netinkama reikšmė %i!\n"
 
-#: src/cmdline/cmdline_util.cc:194
+#: src/cmdline/cmdline_util.cc:196
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "Jus negalite nurodyti paketo archyvą ir versiją vienu metu\n"
 
-#: src/cmdline/cmdline_util.cc:292
+#: src/cmdline/cmdline_util.cc:294
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
@@ -2091,7 +2132,7 @@ msgstr[0] "%d sugadintas [%+d]"
 msgstr[1] "%d sugadinti [%+d]"
 msgstr[2] "%d sugadintų [%+d]"
 
-#: src/cmdline/cmdline_util.cc:306
+#: src/cmdline/cmdline_util.cc:308
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
@@ -2099,7 +2140,7 @@ msgstr[0] "%d atnaujintas [%+d]"
 msgstr[1] "%d atnaujinti [%+d]"
 msgstr[2] "%d atnaujintų [%+d]"
 
-#: src/cmdline/cmdline_util.cc:320
+#: src/cmdline/cmdline_util.cc:322
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
@@ -2107,12 +2148,12 @@ msgstr[0] "%d naujas [%+d]"
 msgstr[1] "%d nauji [%+d]"
 msgstr[2] "%d naujų [%+d]"
 
-#: src/cmdline/cmdline_util.cc:331
+#: src/cmdline/cmdline_util.cc:333
 #, c-format
 msgid "Current status: %F."
 msgstr "Dabartinė būsena: %F."
 
-#: src/cmdline/cmdline_util.cc:342
+#: src/cmdline/cmdline_util.cc:344
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
@@ -2120,7 +2161,7 @@ msgstr[0] "Yra %d naujai nebegaliojantis paketas."
 msgstr[1] "Yra %d naujai nebegaliojantys paketai."
 msgstr[2] "Yra %d naujai nebegaliojančių paketų."
 
-#: src/cmdline/cmdline_util.cc:354
+#: src/cmdline/cmdline_util.cc:356
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
@@ -2128,135 +2169,136 @@ msgstr[0] "Yra %d naujai nebegaliojantis paketas: "
 msgstr[1] "Yra %d naujai nebegaliojantys paketai: "
 msgstr[2] "Yra %d naujai nebegaliojančių paketų: "
 
-#: src/cmdline/cmdline_why.cc:252
+#: src/cmdline/cmdline_why.cc:254
 msgid "dep_level"
 msgstr "dep_level"
 
-#: src/cmdline/cmdline_why.cc:258
+#: src/cmdline/cmdline_why.cc:260
 msgid "DependsOnly"
 msgstr "TikPriklauso"
 
-#: src/cmdline/cmdline_why.cc:272
+#: src/cmdline/cmdline_why.cc:274
 msgid "version_selection"
 msgstr "versijos_žymėjimas"
 
-#: src/cmdline/cmdline_why.cc:277
+#: src/cmdline/cmdline_why.cc:279
 msgid "Current"
 msgstr "Dabartinis"
 
-#: src/cmdline/cmdline_why.cc:280
+#: src/cmdline/cmdline_why.cc:282
 msgid "Candidate"
 msgstr "Kandidatas"
 
-#: src/cmdline/cmdline_why.cc:283 src/generic/apt/matchers.cc:1597
+#: src/cmdline/cmdline_why.cc:285 src/gtk/aptitude.glade:1906
+#: src/gtk/gui.cc:84 src/gtk/gui.cc:1144
 msgid "Install"
 msgstr "Įdiegti"
 
-#: src/cmdline/cmdline_why.cc:286
+#: src/cmdline/cmdline_why.cc:288
 msgid "InstallNotCurrent"
 msgstr "DiegtiNeDabartinį"
 
-#: src/cmdline/cmdline_why.cc:294
+#: src/cmdline/cmdline_why.cc:296
 msgid "allow_choices"
 msgstr "leisti_pasirikti"
 
-#: src/cmdline/cmdline_why.cc:297
+#: src/cmdline/cmdline_why.cc:299
 msgid "true"
 msgstr "tesinga"
 
-#: src/cmdline/cmdline_why.cc:299
+#: src/cmdline/cmdline_why.cc:301
 msgid "false"
 msgstr "klaidinga"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:355
 #, c-format
 msgid "Install(%s)"
 msgstr "Diegti(%s)"
 
-#: src/cmdline/cmdline_why.cc:355
+#: src/cmdline/cmdline_why.cc:357
 #, c-format
 msgid "Remove(%s)"
 msgstr "Šalinti(%s)"
 
-#: src/cmdline/cmdline_why.cc:357
+#: src/cmdline/cmdline_why.cc:359
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "Diegti(%s pateikia %s)"
 
-#: src/cmdline/cmdline_why.cc:361
+#: src/cmdline/cmdline_why.cc:363
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Šalinti(%s pateikia %s)"
 
-#: src/cmdline/cmdline_why.cc:419
+#: src/cmdline/cmdline_why.cc:421
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ Tikrinama %F\n"
 
-#: src/cmdline/cmdline_why.cc:429
+#: src/cmdline/cmdline_why.cc:431
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> praleidžiama, nėra konfliktas\n"
 
-#: src/cmdline/cmdline_why.cc:439
+#: src/cmdline/cmdline_why.cc:441
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> praleidžiama konfliktas\n"
 
-#: src/cmdline/cmdline_why.cc:447
+#: src/cmdline/cmdline_why.cc:449
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> praleidžiama, pagal parametrus nesvarbus\n"
 
-#: src/cmdline/cmdline_why.cc:454
+#: src/cmdline/cmdline_why.cc:456
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> praleidžiama, tėvas nėra pažymėta versija\n"
 
-#: src/cmdline/cmdline_why.cc:494
+#: src/cmdline/cmdline_why.cc:496
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> praleidžiama, priklausomybė tekžnkinama su dabartine versija\n"
 
-#: src/cmdline/cmdline_why.cc:524
+#: src/cmdline/cmdline_why.cc:529
 msgid "    ++   --> ENQUEUING\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:531
+#: src/cmdline/cmdline_why.cc:536
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> praleidžiama, versijos patikrinimas nepavyko\n"
 
-#: src/cmdline/cmdline_why.cc:549
+#: src/cmdline/cmdline_why.cc:554
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:678
+#: src/cmdline/cmdline_why.cc:688
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Pradedama paieška su parametrais %ls\n"
 
-#: src/cmdline/cmdline_why.cc:898
+#: src/cmdline/cmdline_why.cc:903
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Šis sprendimas praleidžiamas. Jis jau matytas.\n"
 
-#: src/cmdline/cmdline_why.cc:973
+#: src/cmdline/cmdline_why.cc:1005
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Nepavyko rasti priežasties pašalinti %s.\n"
 
-#: src/cmdline/cmdline_why.cc:975
+#: src/cmdline/cmdline_why.cc:1007
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Nepavyko rasti priežasties įdiegti %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1020 src/cmdline/cmdline_why.cc:1046
-#: src/cmdline/cmdline_why.cc:1108
+#: src/cmdline/cmdline_why.cc:1052 src/cmdline/cmdline_why.cc:1078
+#: src/cmdline/cmdline_why.cc:1133
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Nerandu paketo, pavadinimu „%s“."
 
-#: src/cmdline/cmdline_why.cc:1054
+#: src/cmdline/cmdline_why.cc:1082
 msgid "Unable to parse some match patterns."
 msgstr "Nepavyko interpretuoti kai kurių derinių."
 
-#: src/cmdline/cmdline_why.cc:1081
+#: src/cmdline/cmdline_why.cc:1106
 #, c-format
 msgid "%s: this command requires at least one argument (the package to query)."
 msgstr "%s: ši komanda reikalauja bent vieno argumento (paketo užklausai)."
@@ -2272,11 +2314,11 @@ msgstr "NETINKAMAS"
 msgid "UNAVAILABLE"
 msgstr "NEEGZISTUOJA"
 
-#: src/desc_parse.cc:314
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1110
 msgid "Tags"
 msgstr "Žymės"
 
-#: src/desc_parse.cc:334
+#: src/desc_render.cc:153
 msgid "User Tags"
 msgstr "Vatotojo Žymės"
 
@@ -2286,11 +2328,11 @@ msgstr "Vatotojo Žymės"
 msgid " [Working]"
 msgstr " [Dirbu]"
 
-#: src/download_item.cc:110 src/download_list.cc:363
+#: src/download_item.cc:110 src/download_list.cc:361
 msgid "[Hit]"
 msgstr "[Tiko]"
 
-#: src/download_item.cc:110 src/download_list.cc:385
+#: src/download_item.cc:110 src/download_list.cc:383
 msgid "[Downloaded]"
 msgstr "[Gautas]"
 
@@ -2304,51 +2346,51 @@ msgstr "Gauta %sB per %s (%sB/s)."
 msgid "%n%nSome files were not downloaded successfully."
 msgstr "%n%nKeletą bylų nepavyko atsiųsti."
 
-#: src/download_list.cc:98 src/download_list.cc:347
+#: src/download_list.cc:98 src/download_list.cc:345 src/gtk/download.cc:389
 msgid "Continue"
 msgstr "Tęsti"
 
-#: src/download_list.cc:100 src/mine/cmine.cc:311 src/mine/cmine.cc:376
+#: src/download_list.cc:100 src/mine/cmine.cc:303 src/mine/cmine.cc:368
 msgid "Cancel"
 msgstr "Atšaukti"
 
-#: src/download_list.cc:216
+#: src/download_list.cc:214
 msgid "Total Progress: "
 msgstr "Visas progresas: "
 
-#: src/download_list.cc:244
+#: src/download_list.cc:242
 #, c-format
 msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgstr " [ %i%% ] (%sB/s, liko %s)"
 
-#: src/download_list.cc:246
+#: src/download_list.cc:244
 #, c-format
 msgid " [ %i%% ] (stalled)"
 msgstr " [ %i%% ] (užstrigo)"
 
-#: src/download_list.cc:248
+#: src/download_list.cc:246
 #, c-format
 msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
-#: src/download_list.cc:266
+#: src/download_list.cc:264
 msgid "Downloading... "
 msgstr "Gaunu... "
 
-#: src/download_list.cc:342
+#: src/download_list.cc:340 src/gtk/download.cc:386
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "Į įrenginį „%1$s“ įdėkite diską, pažymėtą „%2$s“"
 
-#: src/download_list.cc:349
+#: src/download_list.cc:347 src/gtk/download.cc:390
 msgid "Abort"
 msgstr "Atšaukti"
 
-#: src/download_list.cc:407
+#: src/download_list.cc:405
 msgid "[IGNORED]"
 msgstr "[IGNORUOTAS]"
 
-#: src/download_list.cc:413
+#: src/download_list.cc:411
 msgid "[ERROR]"
 msgstr "[KLAIDA]"
 
@@ -2396,7 +2438,7 @@ msgstr ""
 "Keičiasi laikmena: Prašome į įrenginį „%1$s“ įdėti diską „%2$s“ ir spauskite "
 "ENTER.\n"
 
-#: src/generic/apt/aptcache.cc:266
+#: src/generic/apt/aptcache.cc:269
 #, c-format
 msgid ""
 "Error parsing a user-tag for the package %s: unexpected end-of-line "
@@ -2405,72 +2447,72 @@ msgstr ""
 "Klaida interpretuojant vartotojo žymę paketui %s: netikėta eilutės pabaiga "
 "po %s."
 
-#: src/generic/apt/aptcache.cc:283
+#: src/generic/apt/aptcache.cc:286
 #, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
 msgstr "Vartotojo žymėse pakeui %s neuždarytas '\"'."
 
-#: src/generic/apt/aptcache.cc:387
+#: src/generic/apt/aptcache.cc:390
 msgid "Can't open Aptitude extended state file"
 msgstr "Negaliu atidaryti Aptitude išplėstinės būsenos bylos"
 
-#: src/generic/apt/aptcache.cc:401 src/generic/apt/aptcache.cc:489
-#: src/generic/apt/aptcache.cc:491
+#: src/generic/apt/aptcache.cc:404 src/generic/apt/aptcache.cc:492
+#: src/generic/apt/aptcache.cc:494
 msgid "Reading extended state information"
 msgstr "Skaitoma išplėstinė būsenos informacija"
 
-#: src/generic/apt/aptcache.cc:496 src/generic/apt/aptcache.cc:578
-#: src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:499 src/generic/apt/aptcache.cc:581
+#: src/generic/apt/aptcache.cc:584
 msgid "Initializing package states"
 msgstr "Ruošiamos paketų būsenos"
 
-#: src/generic/apt/aptcache.cc:709
+#: src/generic/apt/aptcache.cc:712
 msgid "Cannot open Aptitude state file"
 msgstr "Negaliu atidaryti Aptitude būsenos bylos"
 
-#: src/generic/apt/aptcache.cc:713 src/generic/apt/aptcache.cc:819
-#: src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:716 src/generic/apt/aptcache.cc:822
+#: src/generic/apt/aptcache.cc:825
 msgid "Writing extended state information"
 msgstr "Rašoma išplėstinė būsenos informacija"
 
-#: src/generic/apt/aptcache.cc:810
+#: src/generic/apt/aptcache.cc:813
 msgid "Couldn't write state file"
 msgstr "Negaliu įrašyti būsenos bylos"
 
-#: src/generic/apt/aptcache.cc:827
+#: src/generic/apt/aptcache.cc:830
 msgid "Error writing state file"
 msgstr "Klaida rašant būsenos bylą"
 
-#: src/generic/apt/aptcache.cc:845
+#: src/generic/apt/aptcache.cc:848
 #, c-format
 msgid "failed to remove %s"
 msgstr "Nepavyko pašalinti %s"
 
-#: src/generic/apt/aptcache.cc:852
+#: src/generic/apt/aptcache.cc:855
 #, c-format
 msgid "failed to rename %s to %s"
 msgstr "Nepavyko pervadinti %s į %s"
 
-#: src/generic/apt/aptcache.cc:860
+#: src/generic/apt/aptcache.cc:863
 #, c-format
 msgid "couldn't replace %s with %s"
 msgstr "negaliu pakeisti %s į %s"
 
-#: src/generic/apt/aptcache.cc:1457
+#: src/generic/apt/aptcache.cc:1483
 msgid "Unable to correct dependencies, some packages cannot be installed"
 msgstr ""
 "Neįmanoma sutvarkyti priklausomybių, kai kurie paketai negali būti įdiegti"
 
-#: src/generic/apt/aptcache.cc:1773
+#: src/generic/apt/aptcache.cc:1802
 msgid "The list of sources could not be read."
 msgstr "Šaltinių sąrašas negali būti perskaitytas."
 
-#: src/generic/apt/aptcache.cc:1780
+#: src/generic/apt/aptcache.cc:1809
 msgid "The package lists or status file could not be parsed or opened."
 msgstr ""
 "Paketų sąrašas arba būsenos byla negali būti interpretuota arba atidaryta."
 
-#: src/generic/apt/aptcache.cc:1783
+#: src/generic/apt/aptcache.cc:1812
 msgid "You may want to update the package lists to correct these missing files"
 msgstr "Trūksta bylų, tikriausiai reikia atnaujinti paketų sąrašą"
 
@@ -2510,34 +2552,61 @@ msgstr ""
 "kitas apt įrankis jau diegia paketus.  Atidaroma tik skaitymui; bet kokie "
 "paketų būsenos pakeitimai NEBUS išsaugoti!"
 
-#: src/generic/apt/download_install_manager.cc:56
+#: src/generic/apt/aptitude_resolver.cc:170
+#, c-format
+msgid "Invalid hint \"%s\": expected an action, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:188
+#, c-format
+msgid "Invalid hint \"%s\": expected a target, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:213
+#, c-format
+msgid "Invalid hint \"%s\": invalid target: %s"
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:231
+#, c-format
+msgid "Invalid hint \"%s\": trailing junk after the version."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:310
+#, c-format
+msgid ""
+"Invalid hint: the action \"%s\" should be \"approve\", \"reject\", or a "
+"number."
+msgstr ""
+
+#: src/generic/apt/download_install_manager.cc:60
 msgid ""
 "The package cache is not available; unable to download and install packages."
 msgstr "Nėra paketų talpyklės; neįmanoma gauti ir įdiegti paketus."
 
-#: src/generic/apt/download_install_manager.cc:76
+#: src/generic/apt/download_install_manager.cc:80
 #: src/generic/apt/download_update_manager.cc:92
 msgid "Couldn't lock list directory..are you root?"
 msgstr "Negaliu užrakinti sąrašo aplanko. Ar Jūs root?"
 
-#: src/generic/apt/download_install_manager.cc:93
+#: src/generic/apt/download_install_manager.cc:97
 msgid "Internal error: couldn't generate list of packages to download"
 msgstr "Vidinė klaida: negaliu sugeneruoti atsisiunčiamų paketų sąrašo"
 
-#: src/generic/apt/download_install_manager.cc:123
+#: src/generic/apt/download_install_manager.cc:126
 #, c-format
 msgid "Failed to fetch %s: %s"
 msgstr "Nepavyko gauti %s: %s"
 
-#: src/generic/apt/download_install_manager.cc:129
+#: src/generic/apt/download_install_manager.cc:132
 msgid "Unable to correct for unavailable packages"
 msgstr "Negaliu sutvarkyti neegzistuojančių paketų"
 
-#: src/generic/apt/download_install_manager.cc:155
+#: src/generic/apt/download_install_manager.cc:167
 msgid "A package failed to install.  Trying to recover:"
 msgstr "Nepavyko įdiegti paketo.  Bandoma sutvarkyti:"
 
-#: src/generic/apt/download_install_manager.cc:180
+#: src/generic/apt/download_install_manager.cc:212
 msgid ""
 "Could not regain the system lock!  (Perhaps another apt or dpkg is running?)"
 msgstr ""
@@ -2558,44 +2627,44 @@ msgstr "fork() nepavyko: %s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid() nepavyko: %s"
 
-#: src/generic/apt/download_update_manager.cc:314
+#: src/generic/apt/download_update_manager.cc:317
 msgid "Couldn't clean out list directories"
 msgstr "Negaliu išvalyti aplankų sąrašo"
 
-#: src/generic/apt/download_update_manager.cc:326
+#: src/generic/apt/download_update_manager.cc:330
 msgid "Couldn't rebuild package cache"
 msgstr "Negaliu pergeneruoti paketu krepšio"
 
-#: src/generic/apt/download_update_manager.cc:341
+#: src/generic/apt/download_update_manager.cc:346
 msgid "The debtags command must not be an empty string."
 msgstr "Komanda debtags negali būti tuščia eilutė."
 
-#: src/generic/apt/download_update_manager.cc:345
+#: src/generic/apt/download_update_manager.cc:350
 msgid "The debtags command must be an absolute path."
 msgstr "Komanda debtags turi būti absoliutus kelias (path)."
 
-#: src/generic/apt/download_update_manager.cc:358
+#: src/generic/apt/download_update_manager.cc:363
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "debtags komanda (%s) negali būti įvykdyta: %s"
 
-#: src/generic/apt/download_update_manager.cc:363
+#: src/generic/apt/download_update_manager.cc:368
 msgid "Updating debtags database..."
 msgstr "Atnaujinama debtags duombazė..."
 
-#: src/generic/apt/download_update_manager.cc:380
+#: src/generic/apt/download_update_manager.cc:385
 msgid "(core dumped)"
 msgstr ""
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:383
+#: src/generic/apt/download_update_manager.cc:388
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr ""
 "debtags atnaujinimo procesas (%s atnaujinta %s) buvo nutrauktas signalo %d%s."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:391
+#: src/generic/apt/download_update_manager.cc:396
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr ""
@@ -2603,7 +2672,7 @@ msgstr ""
 "d)."
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:398
+#: src/generic/apt/download_update_manager.cc:403
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2613,7 +2682,7 @@ msgstr ""
 "(būsena %d)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:404
+#: src/generic/apt/download_update_manager.cc:409
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2738,167 +2807,91 @@ msgstr ""
 "\n"
 "Žurnalas užbaigtas.\n"
 
-#: src/generic/apt/matchers.cc:1346
-msgid "Automatically Installed"
-msgstr "Automatiškai įdiegtas"
-
-#: src/generic/apt/matchers.cc:1374 src/generic/apt/matchers.cc:1581
-msgid "Broken"
-msgstr "Blogas"
-
-#: src/generic/apt/matchers.cc:1579
-msgid "Unchanged"
-msgstr "Nekeistas"
-
-#: src/generic/apt/matchers.cc:1583
-msgid "Remove [unused]"
-msgstr "Pašalinti [nenaudojama]"
-
-#: src/generic/apt/matchers.cc:1585
-msgid "Hold [auto]"
-msgstr "Sulaikyti [auto]"
-
-#: src/generic/apt/matchers.cc:1587
-msgid "Install [auto]"
-msgstr "Įdiegti [auto]"
-
-#: src/generic/apt/matchers.cc:1589
-msgid "Remove [auto]"
-msgstr "Šalinti [auto]"
-
-#: src/generic/apt/matchers.cc:1591
-msgid "Downgrade"
-msgstr "Sendinti"
-
-#: src/generic/apt/matchers.cc:1593
-msgid "Hold"
-msgstr "Sulaikyti"
-
-#: src/generic/apt/matchers.cc:1595
-msgid "Reinstall"
-msgstr "Įdiegti iš naujo"
-
-#: src/generic/apt/matchers.cc:1599
-msgid "Remove"
-msgstr "Šalinti"
-
-#: src/generic/apt/matchers.cc:1601
-msgid "Upgrade"
-msgstr "atnaujinti"
-
-#: src/generic/apt/matchers.cc:1627
-msgid "Keep"
-msgstr "Palikti"
-
-#: src/generic/apt/matchers.cc:1659
-msgid "Virtual"
-msgstr "Virtualus"
-
-#: src/generic/apt/matchers.cc:1686
-msgid "Installed"
-msgstr "Įdiegtas"
-
-#: src/generic/apt/matchers.cc:1714
-msgid "Essential"
-msgstr "Esminis"
-
-#: src/generic/apt/matchers.cc:1739
-msgid "Config Files Remain"
-msgstr "Likusios konfigūracijos bylos"
-
-#: src/generic/apt/matchers.cc:2176
-msgid "Garbage"
-msgstr "Šlamštas"
-
-#: src/generic/apt/matchers.cc:2545
-msgid "No reverse dependencies"
-msgstr "Nėra atvirkštinių priklausomybių"
-
-#: src/generic/apt/matchers.cc:2623
-msgid "New Package"
-msgstr "Naujaspaketas"
-
-#: src/generic/apt/matchers.cc:2648
-msgid "Upgradable"
-msgstr "Atnaujinamas"
-
-#: src/generic/apt/matchers.cc:2673
-msgid "Obsolete"
-msgstr "Nebenaudojamas"
-
-#: src/generic/apt/matchers.cc:3112
+#: src/generic/apt/matching/parse.cc:307
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Nežinomas veiksmo tipas: %s"
 
-#: src/generic/apt/matchers.cc:3153
+#: src/generic/apt/matching/parse.cc:348
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Neuždarytas reiškinys po %s"
 
-#: src/generic/apt/matchers.cc:3250
+#: src/generic/apt/matching/parse.cc:445
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Nežinomas prioritetas: %s"
 
-#: src/generic/apt/matchers.cc:3269
+#: src/generic/apt/matching/parse.cc:464
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Netikėta derinio šablono pabaiga (tikėtasi '%c')."
 
-#: src/generic/apt/matchers.cc:3272
+#: src/generic/apt/matching/parse.cc:467
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Tikėtasi '%c', gauta '%c'."
 
-#: src/generic/apt/matchers.cc:3579 src/generic/apt/matchers.cc:4019
-#: src/generic/apt/matchers.cc:4062
+#: src/generic/apt/matching/parse.cc:807
+#: src/generic/apt/matching/parse.cc:1255
+#: src/generic/apt/matching/parse.cc:1295
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Nežinomas priklausomybės tipas: %s"
 
-#: src/generic/apt/matchers.cc:3633
-#, c-format
-msgid "Unknown matcher type: \"%s\"."
+#: src/generic/apt/matching/parse.cc:860
+#, fuzzy, c-format
+#| msgid "Unknown matcher type: \"%s\"."
+msgid "Unknown term type: \"%s\"."
 msgstr "Nežinomas derinio tipas:„%s“."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matchers.cc:3644 src/generic/apt/matchers.cc:3653
+#: src/generic/apt/matching/parse.cc:874 src/generic/apt/matching/parse.cc:883
 #, c-format
 msgid ""
-"The ?%s matcher must be used in a \"wide\" context (a top-level context, or "
-"a context enclosed by ?%s)."
+"The ?%s term must be used in a \"wide\" context (a top-level context, or a "
+"context enclosed by ?%s)."
 msgstr ""
 
-#: src/generic/apt/matchers.cc:3872
+#: src/generic/apt/matching/parse.cc:1113
 msgid "Unmatched '('"
 msgstr "Neatitikęs „(“"
 
-#: src/generic/apt/matchers.cc:4025
+#: src/generic/apt/matching/parse.cc:1261
 msgid "Provides: cannot be broken"
 msgstr "Pateikia: negali būti sugadintas"
 
-#: src/generic/apt/matchers.cc:4088
+#: src/generic/apt/matching/parse.cc:1317
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Nežinomas derinio tipas: %c"
 
-#: src/generic/apt/matchers.cc:4111
+#: src/generic/apt/matching/parse.cc:1334
 msgid "Can't search for \"\""
 msgstr "Negalima ieškoti \"\""
 
-#: src/generic/apt/matchers.cc:4143
+#: src/generic/apt/matching/parse.cc:1362
 msgid "Unexpected empty expression"
 msgstr "Netikėtas tuščias reiškinys"
 
-#: src/generic/apt/matchers.cc:4176
-msgid "Badly formed expression"
+#: src/generic/apt/matching/parse.cc:1391
+#, fuzzy, c-format
+#| msgid "Badly formed expression"
+msgid "Badly formed expression: expected '|', got '%c'"
 msgstr "Blogai suformuotas reiškinys"
 
-#: src/generic/apt/matchers.cc:4215
+#: src/generic/apt/matching/parse.cc:1438
 msgid "Unexpected ')'"
 msgstr "Netikėtas „)“"
+
+#: src/generic/apt/parse_dpkg_status.cc:72
+msgid "<aptitude: internal parse error: no apostrophe>"
+msgstr ""
+
+#: src/generic/apt/parse_dpkg_status.cc:80
+msgid "<aptitude: internal parse error: missing terminal apostrophe>"
+msgstr ""
 
 #: src/generic/apt/pkg_acqfile.cc:50
 #, c-format
@@ -2915,7 +2908,7 @@ msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr "Paketo indeksas sugadintas. Pakete %s nėra įrašo su bylos pavadinimu."
 
-#: src/generic/apt/pkg_changelog.cc:151 src/view_changelog.cc:164
+#: src/generic/apt/pkg_changelog.cc:215 src/view_changelog.cc:270
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "Pasikeitimų sąrašas paketui %s"
@@ -3001,6 +2994,1567 @@ msgstr "Klaida uždarant aplanką „%s“"
 msgid "Unable to remove directory \"%s\""
 msgstr "Nepavyko pašalinti aplanko „%s“"
 
+#: src/gtk/aptitude.glade:6
+msgid "Aptitude Package Manager"
+msgstr ""
+
+#: src/gtk/aptitude.glade:18
+#, fuzzy
+#| msgid "False"
+msgid "_File"
+msgstr "Ne"
+
+#: src/gtk/aptitude.glade:26 src/ui.cc:2219
+msgid "Perform all pending installs and removals"
+msgstr "Vykdyti numatytus veiksmus"
+
+#: src/gtk/aptitude.glade:27
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/Remove Packages"
+msgstr "^Diegti/šalinti paketus"
+
+#: src/gtk/aptitude.glade:42 src/ui.cc:2222
+msgid "Check for new versions of packages"
+msgstr "Ieškoti naujų paketų versijų"
+
+#: src/gtk/aptitude.glade:43
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update Package List"
+msgstr "^Atnaujinti paketų sąrašą"
+
+#: src/gtk/aptitude.glade:63 src/ui.cc:2227
+msgid "Mark all upgradable packages which are not held for upgrade"
+msgstr ""
+"Pažymėti visus atnaujinamus paketus, kurie nesulaikomi nuo atnaujinimo."
+
+#: src/gtk/aptitude.glade:64
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "Pažymėti kaip ^atnaujinamą"
+
+#: src/gtk/aptitude.glade:79 src/ui.cc:2232
+msgid "Forget which packages are \"new\""
+msgstr "Pamiršti kurie paketai yra „nauji“"
+
+#: src/gtk/aptitude.glade:80
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget New Packages"
+msgstr "^Pamiršti naujus paketus"
+
+#: src/gtk/aptitude.glade:94 src/ui.cc:2236
+msgid "Cancel all pending installations, removals, holds, and upgrades."
+msgstr ""
+"Atšaukti visus paruoštus diegimus, pašalinimus, sulaikymus ir atnaujinimus."
+
+#: src/gtk/aptitude.glade:95
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el Pending Actions"
+msgstr "Atšaukti ^visus veiksmus"
+
+#: src/gtk/aptitude.glade:109 src/ui.cc:2240
+msgid "Delete package files which were previously downloaded"
+msgstr "Ištrinti paketus, kurie buvo atsiųsti anksčiau"
+
+#: src/gtk/aptitude.glade:110
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "C_lean Package Cache"
+msgstr "^Valyti paketų krepšį"
+
+#: src/gtk/aptitude.glade:124 src/ui.cc:2244
+msgid "Delete package files which can no longer be downloaded"
+msgstr "Pašalinti paketus, kurių nebeįmanoma gauti"
+
+#: src/gtk/aptitude.glade:125
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _Obsolete Files"
+msgstr "^Išvalyti pasenusius paketus"
+
+#: src/gtk/aptitude.glade:144 src/ui.cc:2251
+msgid "Reload the package cache"
+msgstr "Perkrauti paketų krepšį"
+
+#: src/gtk/aptitude.glade:145
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload Package Cache"
+msgstr "^Perdaryti paketų krepšį"
+
+#: src/gtk/aptitude.glade:159 src/ui.cc:1700 src/ui.cc:2256
+msgid "Waste time trying to find mines"
+msgstr "Gaištate laiką bandydami rasti minas"
+
+#: src/gtk/aptitude.glade:160
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "Žaisti ^Minų lauką"
+
+#: src/gtk/aptitude.glade:179 src/ui.cc:2261
+msgid ""
+"Run 'su' to become root; this will restart the program, but your settings "
+"will be preserved"
+msgstr ""
+"Paleiskite komandą „su“, kad taptumėte root;  Programa startuos iš naujo, "
+"bet visi jūsų nustatymai išliks."
+
+#: src/gtk/aptitude.glade:180
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become Root"
+msgstr "Tapti root"
+
+#: src/gtk/aptitude.glade:194 src/ui.cc:2264
+msgid "Exit the program"
+msgstr "Išeiti iš programos"
+
+#: src/gtk/aptitude.glade:195
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "^Baigti"
+
+#: src/gtk/aptitude.glade:212
+msgid "E_dit"
+msgstr ""
+
+#: src/gtk/aptitude.glade:220 src/ui.cc:2271
+msgid "Undo the last package operation or group of operations"
+msgstr "Atšaukti paskutinį veiksmą, arba operacijų grupę."
+
+#: src/gtk/aptitude.glade:221
+msgid "gtk-undo"
+msgstr ""
+
+#: src/gtk/aptitude.glade:234
+msgid "gtk-cut"
+msgstr ""
+
+#: src/gtk/aptitude.glade:242
+msgid "gtk-copy"
+msgstr ""
+
+#: src/gtk/aptitude.glade:250
+msgid "gtk-paste"
+msgstr ""
+
+#: src/gtk/aptitude.glade:258
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-delete"
+msgstr "Ištrinti"
+
+#: src/gtk/aptitude.glade:270
+#, fuzzy
+#| msgid "Package"
+msgid "_Package"
+msgstr "Paketas"
+
+#: src/gtk/aptitude.glade:282
+#, fuzzy
+#| msgid "Views"
+msgid "_View"
+msgstr "Rodymas"
+
+#: src/gtk/aptitude.glade:290
+msgid "Change which columns are visible in the currently active view."
+msgstr ""
+
+#: src/gtk/aptitude.glade:291
+msgid "_Edit Columns..."
+msgstr ""
+
+#: src/gtk/aptitude.glade:310
+msgid ""
+"View errors that have occurred in the apt system since the program was "
+"started."
+msgstr ""
+
+#: src/gtk/aptitude.glade:311
+msgid "View Apt _Errors"
+msgstr ""
+
+#: src/gtk/aptitude.glade:325
+msgid "Find chains of dependencies linking one package to another."
+msgstr ""
+
+#: src/gtk/aptitude.glade:326
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/aptitude.glade:344
+#, fuzzy
+#| msgid "Help"
+msgid "_Help"
+msgstr "Pagalba"
+
+#: src/gtk/aptitude.glade:352
+msgid "gtk-about"
+msgstr ""
+
+#: src/gtk/aptitude.glade:372 src/gtk/aptitude.glade:671
+#: src/gtk/dashboardtab.cc:234 src/gtk/gui.cc:1320 src/gtk/gui.cc:1511
+msgid "Dashboard"
+msgstr ""
+
+#: src/gtk/aptitude.glade:391
+#, fuzzy
+#| msgid "List Update"
+msgid "Update"
+msgstr "Atnaujinimų sąrašas"
+
+#: src/gtk/aptitude.glade:401 src/gtk/aptitude.glade:883 src/gtk/gui.cc:1050
+#: src/ui.cc:837 src/ui.cc:839 src/ui.cc:884 src/ui.cc:886 src/ui.cc:912
+#: src/ui.cc:914 src/ui.cc:935 src/ui.cc:937
+msgid "Packages"
+msgstr "Paketai"
+
+#: src/gtk/aptitude.glade:411 src/gtk/aptitude.glade:1191 src/gtk/gui.cc:755
+#: src/gtk/previewtab.cc:116 src/ui.cc:1336
+msgid "Preview"
+msgstr "Peržiūra"
+
+#: src/gtk/aptitude.glade:421 src/gtk/aptitude.glade:1352 src/gtk/gui.cc:750
+#: src/ui.cc:2652
+msgid "Resolver"
+msgstr "Sprendimai"
+
+#: src/gtk/aptitude.glade:431
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Remove"
+msgstr "Įdiegtas"
+
+#: src/gtk/aptitude.glade:462 src/gtk/aptitude.glade:748
+#: src/gtk/aptitude.glade:1418 src/gtk/aptitude.glade:1555
+#, fuzzy
+#| msgid "Search"
+msgid "Search:"
+msgstr "Paieška"
+
+#: src/gtk/aptitude.glade:482 src/gtk/aptitude.glade:768
+#: src/gtk/aptitude.glade:1438 src/gtk/aptitude.glade:1575
+msgid "gtk-find"
+msgstr ""
+
+#: src/gtk/aptitude.glade:500 src/gtk/aptitude.glade:786
+#: src/gtk/aptitude.glade:1381 src/gtk/aptitude.glade:1456
+#: src/gtk/aptitude.glade:1593
+#, fuzzy
+#| msgid "Err "
+msgid "Errors"
+msgstr "Kld "
+
+#: src/gtk/aptitude.glade:580
+#, fuzzy
+#| msgid "Upgrade"
+msgid "Upgrade Summary"
+msgstr "atnaujinti"
+
+#: src/gtk/aptitude.glade:609
+#, fuzzy
+#| msgid "Source Package: "
+msgid "Selected Package"
+msgstr "Kilęs iš paketo: "
+
+#: src/gtk/aptitude.glade:637 src/gtk/gui.cc:86 src/gtk/gui.cc:1135
+msgid "Upgrade"
+msgstr "atnaujinti"
+
+#: src/gtk/aptitude.glade:654
+msgid "<b>Available Upgrades:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:702 src/gtk/tab.cc:64
+#, fuzzy
+#| msgid "[Downloaded]"
+msgid "Download"
+msgstr "[Gautas]"
+
+#: src/gtk/aptitude.glade:803 src/gtk/aptitude.glade:1473
+#: src/gtk/aptitude.glade:1610
+msgid "Show "
+msgstr ""
+
+#: src/gtk/aptitude.glade:949
+msgid "<span size=\"xx-large\">Versions:</span>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1011
+#, fuzzy
+#| msgid "Dependencies of %s"
+msgid "Dependencies"
+msgstr "Paketo %s priklausomybės."
+
+#: src/gtk/aptitude.glade:1041
+#, fuzzy
+#| msgid "^Changelog"
+msgid "Changelog"
+msgstr " Pakeitimų ^sąrašas"
+
+#: src/gtk/aptitude.glade:1070
+#, fuzzy
+#| msgid "False"
+msgid "Files"
+msgstr "Ne"
+
+#: src/gtk/aptitude.glade:1081
+msgid "popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1090
+msgid "Popcon"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1101
+#, fuzzy
+#| msgid "Tags"
+msgid "tags"
+msgstr "Žymės"
+
+#: src/gtk/aptitude.glade:1132 src/gtk/info.cc:727
+#, fuzzy
+#| msgid "no"
+msgid "Info"
+msgstr "ne"
+
+#: src/gtk/aptitude.glade:1219
+msgid ""
+"Arrange the actions of the current solution so that actions that are of the "
+"same type are placed together (for instance, all the actions that remove "
+"packages).\n"
+"\n"
+"This is the default view mode."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1222
+#, fuzzy
+#| msgid "Unknown action type: %s"
+msgid "Group by action type"
+msgstr "Nežinomas veiksmo tipas: %s"
+
+#: src/gtk/aptitude.glade:1235
+msgid ""
+"Show the order in which the actions in the current solution were performed "
+"and the dependency that triggered each action."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1236
+msgid "Show an explanation of the solution"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1253
+msgid "<b>View Mode</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1290 src/gtk/download.cc:203
+#: src/gtk/entityview.cc:551
+#, fuzzy
+#| msgid "State"
+msgid "Status"
+msgstr "Būsena"
+
+#: src/gtk/aptitude.glade:1299
+msgid "gtk-go-back"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1314
+msgid "gtk-go-forward"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1329
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1521
+msgid "<b>Start at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1658
+msgid "<b>End at these packages:</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1705
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Dependency Chain"
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/aptitude.glade:1723
+msgid "A terminal running dpkg will appear here."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1734
+msgid "Applying Changes"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1747
+msgid ""
+"Placeholder label for the explanation that two conffiles are being "
+"compared.\n"
+"This text should not appear in the program."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1773
+msgid "View the differences\t"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1799
+msgid ""
+"Do you want to apply these changes?\n"
+"You can also modify the files by hand, then click \"No\"."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1811
+#, fuzzy
+#| msgid "yes"
+msgid "gtk-yes"
+msgstr "taip"
+
+#: src/gtk/aptitude.glade:1821
+msgid "gtk-no"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1847
+#, fuzzy
+#| msgid "Config files"
+msgid "Conffile Diff"
+msgstr "Nustatymų failai"
+
+#: src/gtk/aptitude.glade:1919 src/gtk/gui.cc:88 src/gtk/gui.cc:1151
+msgid "Remove"
+msgstr "Šalinti"
+
+#: src/gtk/aptitude.glade:1932 src/gtk/gui.cc:1156
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "iš^naikinti"
+
+#: src/gtk/aptitude.glade:1945 src/gtk/gui.cc:1161
+msgid "Keep"
+msgstr "Palikti"
+
+#: src/gtk/aptitude.glade:1958 src/gtk/gui.cc:1166
+msgid "Hold"
+msgstr "Sulaikyti"
+
+#: src/gtk/aptitude.glade:1971
+msgid "Edit Columns..."
+msgstr ""
+
+#: src/gtk/aptitude.glade:1984
+msgid "Dummy label (will be replaced at runtime)."
+msgstr ""
+
+#: src/gtk/aptitude.glade:2016
+#, fuzzy
+#| msgid "Remove the filter from the package list"
+msgid "Make this the default for new package lists."
+msgstr "Nebenaudoti paketų sąrašo filtro"
+
+#: src/gtk/aptitude.glade:2032
+#, fuzzy
+#| msgid "Apply a filter to the package list"
+msgid "Apply these settings to all active package lists."
+msgstr "Pritaikyti filtrą paketų sąrašui"
+
+#: src/gtk/aptitude.glade:2050
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-close"
+msgstr "Ištrinti"
+
+#: src/gtk/changelog.cc:276
+msgid "The changelog is empty."
+msgstr ""
+
+#: src/gtk/changelog.cc:278
+msgid ""
+"No new changelog entries; it looks like you installed a locally compiled "
+"version of this package."
+msgstr ""
+
+#: src/gtk/changelog.cc:280
+msgid ""
+"No new changelog entries; this is likely due to a binary-only upload of this "
+"package."
+msgstr ""
+
+#: src/gtk/changelog.cc:376
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog: %s"
+msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
+
+#: src/gtk/changelog.cc:445
+#, fuzzy, c-format
+#| msgid "You can only view changelogs of official Debian packages."
+msgid ""
+"You can only view changelogs of official Debian packages; the origin of %s "
+"is unknown."
+msgstr "Oficialių Debian paketų pakeitimų sąrašą galima tik skaityti."
+
+#: src/gtk/changelog.cc:449
+#, fuzzy, c-format
+#| msgid "You can only view changelogs of official Debian packages."
+msgid ""
+"You can only view changelogs of official Debian packages; %s is from %s."
+msgstr "Oficialių Debian paketų pakeitimų sąrašą galima tik skaityti."
+
+#: src/gtk/changelog.cc:469
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelog; please wait..."
+msgstr "Gaunu pakeitimų sąrašą"
+
+#: src/gtk/changelog.cc:528
+#, fuzzy
+#| msgid "Downloading Changelog"
+msgid "Downloading changelogs"
+msgstr "Gaunu pakeitimų sąrašą"
+
+#: src/gtk/dashboardtab.cc:99
+#, fuzzy
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download changelogs"
+msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
+
+#: src/gtk/dashboardtab.cc:185
+msgid "Available upgrades:"
+msgstr ""
+
+#: src/gtk/dashboardtab.cc:195
+#, fuzzy, c-format
+#| msgid "%d upgrade"
+#| msgid_plural "%d upgrades"
+msgid "%d available upgrade:"
+msgid_plural "%d available upgrades:"
+msgstr[0] "%d atnaujinamas"
+msgstr[1] "%d atnaujinami"
+msgstr[2] "%d atnaujinamų"
+
+#: src/gtk/dashboardtab.cc:302
+#, c-format
+msgid ""
+"The package %s has no candidate version and will not be upgraded; unable to "
+"show its changelog."
+msgstr ""
+
+#: src/gtk/dependency_chains_tab.cc:77
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find dependency chains: start"
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/dependency_chains_tab.cc:79
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find dependency chains: end"
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/dependency_chains_tab.cc:81
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find dependency chains: results"
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/dependency_chains_tab.cc:220
+msgid "Select one or more starting packages and an ending package to search."
+msgstr ""
+
+#: src/gtk/dependency_chains_tab.cc:275
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "No dependency chain found."
+msgstr "Priklausomybių tvarkymas"
+
+#: src/gtk/download.cc:129
+msgid "Ignored"
+msgstr ""
+
+#: src/gtk/download.cc:136
+#, fuzzy
+#| msgid "False"
+msgid "Failed"
+msgstr "Ne"
+
+#: src/gtk/download.cc:145
+#, fuzzy
+#| msgid "Deleting downloaded files"
+msgid "Already downloaded"
+msgstr "Trinu gautas bylas"
+
+#: src/gtk/download.cc:152
+#, fuzzy
+#| msgid "death"
+msgid "Fetch"
+msgstr "mirtis"
+
+#: src/gtk/download.cc:158
+#, fuzzy
+#| msgid "none"
+msgid "Done"
+msgstr "nieko"
+
+#: src/gtk/download.cc:202
+msgid "URI"
+msgstr ""
+
+#: src/gtk/download.cc:208
+#, fuzzy
+#| msgid "Total Progress: "
+msgid "Progress"
+msgstr "Visas progresas: "
+
+#: src/gtk/download.cc:216
+#, fuzzy
+#| msgid "Description"
+msgid "Short Description"
+msgstr "Aprašymas"
+
+#: src/gtk/download.cc:217 src/gtk/entityview.cc:397 src/pkg_columnizer.cc:93
+#: src/pkg_view.cc:671
+msgid "Description"
+msgstr "Aprašymas"
+
+#: src/gtk/download.cc:264
+#, fuzzy
+#| msgid "Cleaning while a download is in progress is not allowed"
+msgid "The download is still in progress.  Should it be canceled?"
+msgstr "Valymas tuo metu, kai gaunami paketai, draudžiamas"
+
+#: src/gtk/download.cc:340 src/gtk/gui.cc:568
+#, fuzzy
+#| msgid "View next display"
+msgid "View Details"
+msgstr "Pereiti į sekantį ekraną"
+
+#: src/gtk/download.cc:384
+msgid "Change media"
+msgstr ""
+
+#: src/gtk/download.cc:405
+#, c-format
+msgid "%s: %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:425
+#, c-format
+msgid "%s: %lu/%lu, %sB/s"
+msgstr ""
+
+#: src/gtk/download.cc:431
+#, fuzzy, c-format
+#| msgid "%s; will be installed"
+msgid "%s: %lu/%lu, stalled"
+msgstr "%s; bus įdiegtas"
+
+#: src/gtk/download.cc:452
+#, fuzzy, c-format
+#| msgid " [ %i%% ] (%sB/s, %s remaining)"
+msgid "%s: %sB of %sB at %sB/s, %s remaining"
+msgstr " [ %i%% ] (%sB/s, liko %s)"
+
+#: src/gtk/download.cc:459
+#, fuzzy, c-format
+#| msgid "but %s is to be installed."
+msgid "%s: %sB of %sB, stalled"
+msgstr "tačiau %s bus įdiegtas"
+
+#: src/gtk/download.cc:488
+msgid "Completed"
+msgstr ""
+
+#: src/gtk/download.cc:490
+msgid "Completed with errors"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:142
+#, fuzzy, c-format
+#| msgid "Unable to locate package %s"
+msgid "%s: Unable to create a Unix-domain socket: %s"
+msgstr "Nepavyko surasti paketą %s"
+
+#: src/gtk/dpkg_terminal.cc:307
+#, c-format
+msgid "[%s] dpkg process starting...\n"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:342
+#, c-format
+msgid "[%s] dpkg process complete.\n"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:345
+#, c-format
+msgid "[%s] dpkg process failed.\n"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:348
+#, c-format
+msgid "[%s] dpkg process complete; there are more packages left to process.\n"
+msgstr ""
+
+#: src/gtk/dpkg_terminal.cc:366
+#, fuzzy, c-format
+#| msgid "Unable to create temporary directory from template \"%s\": %s"
+msgid "%s: Unable to accept a connection from the subprocess: %s"
+msgstr "Iš šablono \"%s\": %s nepavyko sukurti laikino aplanko"
+
+#: src/gtk/entityview.cc:381 src/gtk/entityview.cc:575 src/gtk/resolver.cc:159
+#, fuzzy
+#| msgid "ProgName"
+msgid "Name"
+msgstr "ProgPav"
+
+#: src/gtk/entityview.cc:385
+msgid "Visible?"
+msgstr ""
+
+#: src/gtk/entityview.cc:411
+#, fuzzy, c-format
+#| msgid "Could not open file \"%s\""
+msgid "Columns of \"%s\":"
+msgstr "Negaliu atidaryti bylos „%s“"
+
+#: src/gtk/entityview.cc:412
+#, fuzzy, c-format
+#| msgid "Rejecting the removal of %s"
+msgid "Editing the columns of \"%s\""
+msgstr "%s pašalinimas atmestas"
+
+#: src/gtk/entityview.cc:552
+msgid "Icons showing the current and future status of this package."
+msgstr ""
+
+#: src/gtk/entityview.cc:564 src/pkg_columnizer.cc:102
+msgid "Auto"
+msgstr "Auto"
+
+#: src/gtk/entityview.cc:570
+#, fuzzy
+#| msgid "'&M' to mark packages as automatically installed"
+msgid "Whether the package is automatically installed."
+msgstr "'&M' kad pažymėti kaip automatiška įdiegtus"
+
+#: src/gtk/entityview.cc:576
+#, fuzzy
+#| msgid "Cancel any action on the selected package"
+msgid "The name and description of the package."
+msgstr "Atšaukti šiam paketui visus veiksmus"
+
+#: src/gtk/entityview.cc:591
+#, fuzzy
+#| msgid "Version: "
+msgid "Version"
+msgstr "Versija: "
+
+#: src/gtk/entityview.cc:592
+#, fuzzy
+#| msgid "Check for new versions of packages"
+msgid "The version number of the package."
+msgstr "Ieškoti naujų paketų versijų"
+
+#: src/gtk/entityview.cc:607
+msgid "The package archives that contain this version."
+msgstr ""
+
+#: src/gtk/filesview.cc:293
+#, c-format
+msgid ""
+"This file list pertains to the currently installed version \"%s\", not the "
+"selected version \"%s\"."
+msgstr ""
+
+#: src/gtk/filesview.cc:307
+msgid "Files list is only available for installed packages."
+msgstr ""
+
+#: src/gtk/gui.cc:73
+#, fuzzy
+#| msgid "not installed"
+msgid "Not installed"
+msgstr "neįdiegtas"
+
+#: src/gtk/gui.cc:74
+msgid "Virtual"
+msgstr "Virtualus"
+
+#: src/gtk/gui.cc:75
+#, fuzzy
+#| msgid "unpacked"
+msgid "Unpacked"
+msgstr "išspaustas"
+
+#: src/gtk/gui.cc:76
+#, fuzzy
+#| msgid "half-config"
+msgid "Half-configured"
+msgstr "dalinai sudderinti"
+
+#: src/gtk/gui.cc:77
+#, fuzzy
+#| msgid "half-install"
+msgid "Half-installed"
+msgstr "dalinai įdiegti"
+
+#: src/gtk/gui.cc:78
+#, fuzzy
+#| msgid "not installed (configuration files remain)"
+msgid "Configuration files and data remain"
+msgstr "neįdiegtas (lieka konfigūracijos bylos)"
+
+#: src/gtk/gui.cc:79
+msgid "Triggers awaited"
+msgstr ""
+
+#: src/gtk/gui.cc:80
+msgid "Triggers pending"
+msgstr ""
+
+#: src/gtk/gui.cc:81
+msgid "Installed"
+msgstr "Įdiegtas"
+
+#: src/gtk/gui.cc:85
+msgid "Reinstall"
+msgstr "Įdiegti iš naujo"
+
+#: src/gtk/gui.cc:87 src/gtk/gui.cc:1141
+msgid "Downgrade"
+msgstr "Sendinti"
+
+#: src/gtk/gui.cc:89
+msgid "Remove and purge configuration/data"
+msgstr ""
+
+#: src/gtk/gui.cc:90
+#, fuzzy
+#| msgid "forbidden upgrade"
+msgid "Hold (don't upgrade)"
+msgstr "uždraustas atnaujinimas"
+
+#: src/gtk/gui.cc:92
+#, fuzzy
+#| msgid "Related Dependencies"
+msgid "Unsatisfied dependencies"
+msgstr "Susijusios Priklausomybės"
+
+#: src/gtk/gui.cc:203
+msgid "Checking for updates"
+msgstr ""
+
+#: src/gtk/gui.cc:219
+msgid "Insufficient privileges."
+msgstr ""
+
+#: src/gtk/gui.cc:222
+#, fuzzy
+#| msgid "Apply a filter to the package list"
+msgid "You must be root to update the package lists."
+msgstr "Pritaikyti filtrą paketų sąrašui"
+
+#: src/gtk/gui.cc:230 src/gtk/gui.cc:670
+#, fuzzy
+#| msgid "Downloading... "
+msgid "Download already running."
+msgstr "Gaunu... "
+
+#: src/gtk/gui.cc:232 src/gtk/gui.cc:672 src/ui.cc:1462 src/ui.cc:1695
+msgid "A package-list update or install run is already taking place."
+msgstr "Paketų atnaujinimas arba diegimas jau vyksta."
+
+#: src/gtk/gui.cc:291
+#, fuzzy, c-format
+#| msgid "List Update"
+msgid "Update %s?"
+msgstr "Atnaujinimų sąrašas"
+
+#: src/gtk/gui.cc:317
+#, fuzzy, c-format
+#| msgid "Unable to replace %s with new configuration file"
+msgid ""
+"Replace configuration file\n"
+"'%s'?"
+msgstr "Negaliu pakeisti bylos %s nauja konfigūracijos byla"
+
+#: src/gtk/gui.cc:321
+#, c-format
+msgid ""
+"The configuration file %s was modified (by you or by a script). An updated "
+"version is shipped in this package. If you want to keep your current "
+"version, choose 'No'. Do you want to replace the current file and install "
+"the new package maintainers version? "
+msgstr ""
+
+#: src/gtk/gui.cc:349
+#, c-format
+msgid "Comparing %s to %s..."
+msgstr ""
+
+#: src/gtk/gui.cc:508
+msgid ""
+"Interrupting this process could leave your system in an inconsistent state.  "
+"Are you sure you want to stop applying your changes?"
+msgstr ""
+
+#: src/gtk/gui.cc:532
+#, fuzzy
+#| msgid "%s changes"
+msgid "Done applying changes!"
+msgstr "%s pakeitimų"
+
+#: src/gtk/gui.cc:560
+#, fuzzy
+#| msgid "%s changes"
+msgid "Applying changes..."
+msgstr "%s pakeitimų"
+
+#: src/gtk/gui.cc:602
+#, fuzzy, c-format
+#| msgid "s: %F"
+msgid "%s: %s"
+msgstr "s: %F"
+
+#: src/gtk/gui.cc:605
+#, fuzzy, c-format
+#| msgid "No broken packages."
+msgid "Error in package %s"
+msgstr "Nėra blogų paketų."
+
+#: src/gtk/gui.cc:633
+#, fuzzy, c-format
+#| msgid "Unable to replace %s with new configuration file"
+msgid "Asking whether to replace the configuration file %s"
+msgstr "Negaliu pakeisti bylos %s nauja konfigūracijos byla"
+
+#: src/gtk/gui.cc:686 src/ui.cc:1206
+msgid "Downloading packages"
+msgstr "Gaunu paketus"
+
+#: src/gtk/gui.cc:760
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Broken packages"
+msgstr "Nėra blogų paketų."
+
+#: src/gtk/gui.cc:793
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Show broken packages"
+msgstr "Nėra blogų paketų."
+
+#: src/gtk/gui.cc:797
+#, fuzzy
+#| msgid "Resolve Dependencies"
+msgid "Resolve dependencies"
+msgstr "Išspręsti priklausomybes"
+
+#: src/gtk/gui.cc:825
+#, fuzzy, c-format
+#| msgid "No packages are broken."
+msgid "%d package is broken"
+msgid_plural "%d packages are broken."
+msgstr[0] "Bėra blogų paketų."
+msgstr[1] "Bėra blogų paketų."
+msgstr[2] "Bėra blogų paketų."
+
+#: src/gtk/gui.cc:869
+#, fuzzy
+#| msgid "%s changes"
+msgid "View changes"
+msgstr "%s pakeitimų"
+
+#: src/gtk/gui.cc:873
+#, fuzzy
+#| msgid "%s changes"
+msgid "Apply changes"
+msgstr "%s pakeitimų"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:912
+#, fuzzy, c-format
+#| msgid "%d install"
+#| msgid_plural "%d installs"
+msgid "%d package to install"
+msgid_plural "%d packages to install"
+msgstr[0] "%d diegiamas"
+msgstr[1] "%d diegiamas"
+msgstr[2] "%d diegiamas"
+
+#. ForTranslators: any numbers in this
+#. string will be displayed in a larger
+#. font.
+#: src/gtk/gui.cc:927
+#, fuzzy, c-format
+#| msgid "failed to remove %s"
+msgid "%d package to remove"
+msgid_plural "%d packages to remove"
+msgstr[0] "Nepavyko pašalinti %s"
+msgstr[1] "Nepavyko pašalinti %s"
+msgstr[2] "Nepavyko pašalinti %s"
+
+#: src/gtk/gui.cc:966
+#, fuzzy, c-format
+#| msgid "DownloadSize"
+msgid "Download size: %sB."
+msgstr "Reikia atsisiųsti"
+
+#: src/gtk/gui.cc:1016
+#, c-format
+msgid "Tags of %s:\n"
+msgstr ""
+
+#: src/gtk/gui.cc:1078
+#, fuzzy
+#| msgid "not installed"
+msgid "Not implemented"
+msgstr "neįdiegtas"
+
+#: src/gtk/gui.cc:1081
+msgid "This feature is not implemented, yet."
+msgstr ""
+
+#: src/gtk/gui.cc:1130 src/gtk/gui.cc:1149
+#, fuzzy
+#| msgid "Installed"
+msgid "Install/Upgrade"
+msgstr "Įdiegtas"
+
+#: src/gtk/gui.cc:1172
+msgid "Set as automatic"
+msgstr ""
+
+#: src/gtk/gui.cc:1177
+#, fuzzy
+#| msgid "User's Manual"
+msgid "Set as manual"
+msgstr "Naudotojo instrukcijos"
+
+#: src/gtk/gui.cc:1182
+msgid "Toggle automatic status"
+msgstr ""
+
+#: src/gtk/gui.cc:1490
+#, c-format
+msgid "Unable to load the user interface definition file %s/aptitude.glade."
+msgstr ""
+
+#: src/gtk/info.cc:160 src/gtk/pkgview.cc:166
+#, fuzzy
+#| msgid "Current status: %F."
+msgid "Current status"
+msgstr "Dabartinė būsena: %F."
+
+#: src/gtk/info.cc:162 src/gtk/pkgview.cc:168
+msgid "Selected status"
+msgstr ""
+
+#: src/gtk/info.cc:495
+#, fuzzy
+#| msgid "Not Installed"
+msgid "Not available"
+msgstr "Neįdiegtas"
+
+#: src/gtk/info.cc:540
+#, fuzzy
+#| msgid "C^ycle Package Information"
+msgid "Package information: version list"
+msgstr "^Keisti paketo informaciją"
+
+#: src/gtk/info.cc:550
+#, fuzzy
+#| msgid "Packages which depend on %s"
+msgid "Package information: dependency list"
+msgstr "Paketai, kuriems reikia %s"
+
+#: src/gtk/info.cc:592
+msgid "Please wait; reloading cache..."
+msgstr ""
+
+#: src/gtk/packageinformation.cc:104 src/gtk/packageinformation.cc:106
+#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
+#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:270
+#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
+#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
+msgid "Unknown"
+msgstr "nežinomas"
+
+#: src/gtk/packagestab.cc:60
+msgid "Parse error"
+msgstr ""
+
+#: src/gtk/packagestab.cc:148
+#, fuzzy, c-format
+#| msgid "No packages matched the pattern \"%ls\"."
+msgid "No packages matched \"%s\"."
+msgstr "Nei vienas paketas neatitiko derinio „%ls“."
+
+#: src/gtk/packagestab.cc:258
+msgid "Enter a search and click \"Find\" to display packages."
+msgstr ""
+
+#: src/gtk/packagestab.cc:356
+#, fuzzy
+#| msgid "Package: "
+msgid "Packages: "
+msgstr "Paketas: "
+
+#: src/gtk/packagestab.cc:433
+#, fuzzy, c-format
+#| msgid "%s versions"
+msgid "Upgrade to %s version %s"
+msgstr "%s versijos"
+
+#: src/gtk/packagestab.cc:441
+#, fuzzy, c-format
+#| msgid "Install(%s provides %s)"
+msgid "Install %s version %s"
+msgstr "Diegti(%s pateikia %s)"
+
+#: src/gtk/packagestab.cc:449
+#, fuzzy, c-format
+#| msgid "  cwidget version: %s\n"
+msgid "Downgrade to %s version %s"
+msgstr "  cwidget versija: %s\n"
+
+#: src/gtk/packagestab.cc:460
+#, fuzzy, c-format
+#| msgid "Keep the following packages at their current version:"
+msgid "Don't hold %s at its current version."
+msgstr "Palikti šių paketu dabartinesversijas:"
+
+#: src/gtk/packagestab.cc:463 src/gtk/packagestab.cc:483
+#: src/gtk/packagestab.cc:486
+#, fuzzy, c-format
+#| msgid "Canc^el pending actions"
+msgid "Cancel any actions on %s."
+msgstr "Atšaukti ^visus veiksmus"
+
+#: src/gtk/packagestab.cc:468
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the purge of %s."
+msgstr "Atšaukti %F pašalinimą"
+
+#: src/gtk/packagestab.cc:470
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the removal of %s."
+msgstr "Atšaukti %F pašalinimą"
+
+#: src/gtk/packagestab.cc:475
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the upgrade of %s."
+msgstr "Atšaukti %F pašalinimą"
+
+#: src/gtk/packagestab.cc:477
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the installation of %s."
+msgstr "Nutraukti %F diegimą"
+
+#: src/gtk/packagestab.cc:479
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the downgrade of %s."
+msgstr "Atšaukti %F pašalinimą"
+
+#: src/gtk/packagestab.cc:481
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the reinstallation of %s."
+msgstr "Nutraukti %F diegimą"
+
+#: src/gtk/packagestab.cc:522
+#, fuzzy, c-format
+#| msgid "Remove(%s)"
+msgid "Remove %s"
+msgstr "Šalinti(%s)"
+
+#: src/gtk/packagestab.cc:526
+#, fuzzy, c-format
+#| msgid "^Purge"
+msgid "Purge %s"
+msgstr "iš^naikinti"
+
+#: src/gtk/packagestab.cc:534
+#, c-format
+msgid "Hold %s at its current version."
+msgstr ""
+
+#: src/gtk/packagestab.cc:539
+#, fuzzy, c-format
+#| msgid "'&M' to mark packages as automatically installed"
+msgid "Mark %s as automatically installed."
+msgstr "'&M' kad pažymėti kaip automatiška įdiegtus"
+
+#: src/gtk/packagestab.cc:544
+#, fuzzy, c-format
+#| msgid "'&m' to mark packages as manually installed"
+msgid "Mark %s as manually installed."
+msgstr "'&m' kad pažymėti kaip įdiegti rankiniu būdų"
+
+#: src/gtk/packagestab.cc:586
+#, fuzzy, c-format
+#| msgid "\"%s\" is a virtual package provided by:\n"
+msgid "%s is a virtual package provided by:\n"
+msgstr "„%s“ yra virtualus paketas pateiktas:\n"
+
+#: src/gtk/packagestab.cc:650 src/gtk/previewtab.cc:210
+msgid "(more info...)"
+msgstr ""
+
+#: src/gtk/pkgview.cc:221
+#, fuzzy, c-format
+#| msgid "%s; will be installed automatically"
+msgid "%s was installed automatically."
+msgstr "%s; bus įdiegtas automatiškai"
+
+#: src/gtk/pkgview.cc:224
+#, fuzzy, c-format
+#| msgid "%s; will be installed automatically"
+msgid "%s is being installed automatically."
+msgstr "%s; bus įdiegtas automatiškai"
+
+#: src/gtk/pkgview.cc:232
+#, fuzzy, c-format
+#| msgid "%s; will be installed automatically"
+msgid "%s was installed manually."
+msgstr "%s; bus įdiegtas automatiškai"
+
+#: src/gtk/pkgview.cc:235
+#, fuzzy, c-format
+#| msgid "%s; will be installed automatically"
+msgid "%s is being installed manually."
+msgstr "%s; bus įdiegtas automatiškai"
+
+#: src/gtk/pkgview.cc:390
+msgid "Cache reloading, please wait..."
+msgstr ""
+
+#: src/gtk/pkgview.cc:422 src/gtk/pkgview.cc:438 src/pkg_tree.cc:204
+#: src/pkg_tree.cc:215 src/pkg_tree.cc:226 src/pkg_tree.cc:238
+msgid "Building view"
+msgstr "Kuriu vaizdą"
+
+#: src/gtk/pkgview.cc:428 src/gtk/pkgview.cc:444
+#, fuzzy
+#| msgid "Building view"
+msgid "Finalizing view"
+msgstr "Kuriu vaizdą"
+
+#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:637
+msgid ""
+"Packages with unsatisfied dependencies\n"
+" The dependency requirements of these packages will be unmet after the "
+"install is complete.\n"
+" .\n"
+" The presence of this tree probably indicates that something is broken, "
+"either on your system or in the Debian archive."
+msgstr ""
+"Paketai, kurių priklausomybės netenkinamos\n"
+" Baigus diegimą, šių paketų priklausomybių reikalavimai bus netinkami.\n"
+" .\n"
+" Tai rodo, kad kažkas sugadinta arba Jūsų sistemoje, arba Debian archyvuose."
+
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:638
+msgid ""
+"Packages being removed because they are no longer used\n"
+" These packages are being deleted because they were automatically installed "
+"to fulfill dependencies, and the planned action will result in no installed "
+"package declaring an 'important' dependency on them.\n"
+msgstr ""
+"Paketai bus pašalinti, nes jie nebenaudojami\n"
+" Šie paketai bus pašalinti, nes buvo automatiškai įdiegti. Jų reikėjo "
+"kitiems paketams. Atlikus planuojamus veiksmus, jie nebebus reikalingi.\n"
+
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:639
+msgid ""
+"Packages being automatically held in their current state\n"
+" These packages could be upgraded, but they have been kept in their current "
+"state to avoid breaking dependencies."
+msgstr ""
+"Paketų būsena automatiškai sulaikyta dabartinėje būsenoje\n"
+" Šie paketai gali būti atnaujinti, tačiau paliekami esamoje būklėje tam, kad "
+"nesugadinti priklausomybių."
+
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:640
+msgid ""
+"Packages being automatically installed to satisfy dependencies\n"
+" These packages are being installed because they are required by another "
+"package you have chosen for installation."
+msgstr ""
+"Paketai, įdiegti automatiškai, nes jų reikia kitiems paketams\n"
+" Šie paketai įdiegiami todėl, kad jie reikalingi paketams, kuriuos Jūs "
+"norite įdiegti."
+
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:641
+msgid ""
+"Packages being deleted due to unsatisfied dependencies\n"
+" These packages are being deleted because one or more of their dependencies "
+"is no longer available, or because another package conflicts with them."
+msgstr ""
+"Paketai pašalinti dėl netenkinamų priklausomybių\n"
+" Šie paketai buvo pašalinti, nes nebėra vieno ar kelių jiems reikalingų "
+"paketų, arba kiti paketai konfliktuoja su jais."
+
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:642
+msgid ""
+"Packages to be downgraded\n"
+" An older version of these packages than is currently installed will be "
+"installed."
+msgstr ""
+"Paketai, kurie bus pasendinti\n"
+" Bus įdiegtos senesnės šių paketų versijos."
+
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:643
+msgid ""
+"Packages being held back\n"
+" These packages could be upgraded, but you have asked for them to be held at "
+"their current version."
+msgstr ""
+"Sulaikyti paketai\n"
+" Šie paketai gali būti atnaujinti, tačiau Jūs nurodėte, kad šie paketai turi "
+"pasilikti dabartinėse versijose."
+
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:644
+msgid ""
+"Packages to be reinstalled\n"
+" These packages will be reinstalled."
+msgstr ""
+"Paketai, kurie bus įdiegti iš naujo\n"
+" Šie paketai bus įdiegti iš naujo."
+
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:645
+msgid ""
+"Packages to be installed\n"
+" These packages have been manually selected for installation on your "
+"computer."
+msgstr ""
+"Šie paketai bus įdiegti\n"
+" Šie paketai bus įdiegti į kompiuterį. Tai atlikti nurodyta rankiniu būdu."
+
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:646
+msgid ""
+"Packages to be removed\n"
+" These packages have been manually selected for removal."
+msgstr ""
+"Šie paketai bus pašalinti\n"
+" Rankiniu būdu nurodyta, kad šiuos paketus reikia pašalinti."
+
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:647
+msgid ""
+"Packages to be upgraded\n"
+" These packages will be upgraded to a newer version."
+msgstr ""
+"Atnaujinami paketai\n"
+" Bus įdiegtos naujesnės šių paketų versijos."
+
+#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:648
+msgid ""
+"Packages that are partially installed\n"
+" These packages are not fully installed and configured; an attempt will be "
+"made to complete their installation."
+msgstr ""
+"Dalinai įdiegti paketai\n"
+" Šie paketai yra ne pilnai įdiegti ar nesukonfigūruoti; bus bandoma pabaigti "
+"jų diegimą."
+
+#: src/gtk/previewtab.cc:174
+#, fuzzy
+#| msgid "Preview"
+msgid "Preview: "
+msgstr "Peržiūra"
+
+#: src/gtk/resolver.cc:58
+#, fuzzy, c-format
+#| msgid "Error while dumping resolver state"
+msgid "Error in dependency resolver: %s"
+msgstr "Klaida iškraunant sprendimų būseną"
+
+#: src/gtk/resolver.cc:61
+#, c-format
+msgid ""
+"Fatal error in dependency resolver.  You can continue searching, but some "
+"solutions might be impossible to generate.\n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/gtk/resolver.cc:160 src/pkg_columnizer.cc:92
+msgid "Action"
+msgstr "Veiksmas"
+
+#: src/gtk/resolver.cc:266 src/solution_fragment.cc:106
+#, c-format
+msgid "%s depends upon %s"
+msgstr "%s priklauso nuo %s"
+
+#: src/gtk/resolver.cc:269 src/solution_fragment.cc:109
+#, c-format
+msgid "%s pre-depends upon %s"
+msgstr "%s prieš-priklauso nuo %s"
+
+#: src/gtk/resolver.cc:272 src/solution_fragment.cc:112
+#, c-format
+msgid "%s suggests %s"
+msgstr "%s siūlo %s"
+
+#: src/gtk/resolver.cc:275 src/solution_fragment.cc:115
+#: src/solution_item.cc:602
+#, c-format
+msgid "%s recommends %s"
+msgstr "%s rekomenduoja %s"
+
+#: src/gtk/resolver.cc:278 src/solution_fragment.cc:118
+#, c-format
+msgid "%s conflicts with %s"
+msgstr "%s konfliktuoja su %s"
+
+#: src/gtk/resolver.cc:281 src/solution_fragment.cc:121
+#, c-format
+msgid "%s breaks %s"
+msgstr "%s sugadina %s"
+
+#: src/gtk/resolver.cc:284 src/solution_fragment.cc:124
+#, c-format
+msgid "%s replaces %s"
+msgstr "%s pakeičia %s"
+
+#: src/gtk/resolver.cc:287 src/solution_fragment.cc:127
+#, c-format
+msgid "%s obsoletes %s"
+msgstr "%s nurašo %s"
+
+#: src/gtk/resolver.cc:367 src/solution_screen.cc:248
+msgid "Remove the following packages:"
+msgstr "Pašalinti šiuos paketus:"
+
+#: src/gtk/resolver.cc:382 src/solution_screen.cc:270
+msgid "Install the following packages:"
+msgstr "Įdiegti šiuos paketus:"
+
+#: src/gtk/resolver.cc:399
+#, fuzzy
+#| msgid "Remove the following packages:"
+msgid "Keep the following packages:"
+msgstr "Pašalinti šiuos paketus:"
+
+#: src/gtk/resolver.cc:409 src/solution_fragment.cc:251
+msgid "Not Installed"
+msgstr "Neįdiegtas"
+
+#: src/gtk/resolver.cc:425 src/solution_screen.cc:281
+msgid "Upgrade the following packages:"
+msgstr "Atnaujinti šiuos paketus:"
+
+#: src/gtk/resolver.cc:444 src/solution_screen.cc:292
+msgid "Downgrade the following packages:"
+msgstr "Pasendinti šiuos paketus:"
+
+#: src/gtk/resolver.cc:465
+#, fuzzy
+#| msgid "Leave the following dependencies unresolved:%n"
+msgid "Leave the following dependencies unresolved:"
+msgstr "Palikti šias priklausomybes neišspręstas:%n"
+
+#: src/gtk/resolver.cc:523
+#, fuzzy, c-format
+#| msgid "Remove %F [%s (%s)]"
+msgid "Remove %s [%s (%s)]"
+msgstr "Pašalint %F [%s (%s)]"
+
+#: src/gtk/resolver.cc:530
+#, fuzzy, c-format
+#| msgid "Install %F [%s (%s)]"
+msgid "Install %s [%s (%s)]"
+msgstr "Įdiegti %F [%s (%s)]"
+
+#: src/gtk/resolver.cc:538
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "Cancel the installation of %s"
+msgstr "Nutraukti %F diegimą"
+
+#: src/gtk/resolver.cc:541
+#, fuzzy, c-format
+#| msgid "Cancel the removal of %F"
+msgid "Cancel the removal of %s"
+msgstr "Atšaukti %F pašalinimą"
+
+#: src/gtk/resolver.cc:544
+#, fuzzy, c-format
+#| msgid "Keep %F at version %s (%s)"
+msgid "Keep %s at version %s (%s)"
+msgstr "Palikti %F versiją %s (%s)"
+
+#: src/gtk/resolver.cc:551
+#, fuzzy, c-format
+#| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
+msgid "Upgrade %s [%s (%s) -> %s (%s)]"
+msgstr "Atnaujini %F [%s (%s) -> %s (%s)]"
+
+#: src/gtk/resolver.cc:560
+#, fuzzy, c-format
+#| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
+msgid "Downgrade %s [%s (%s) -> %s (%s)]"
+msgstr "Pasendinti %F [%s (%s) -> %s (%s)]"
+
+#: src/gtk/resolver.cc:589
+#, fuzzy
+#| msgid "No broken packages."
+msgid "Nothing to do: there are no broken packages."
+msgstr "Nėra blogų paketų."
+
+#: src/gtk/resolver.cc:596
+#, fuzzy
+#| msgid "No resolution found."
+msgid "No resolutions found."
+msgstr "Sprendimas nerastas."
+
+#: src/gtk/resolver.cc:611 src/solution_screen.cc:515
+#, c-format
+msgid "open: %d; closed: %d; defer: %d; conflict: %d"
+msgstr "atvira: %d; išspręsta: %d; atidėta: %d; konfliktų: %d"
+
+#: src/gtk/resolver.cc:650
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions."
+msgstr "Sprendimų nebėra."
+
+#: src/gtk/resolver.cc:650
+#, fuzzy
+#| msgid "No more solutions."
+msgid "No solutions yet."
+msgstr "Sprendimų nebėra."
+
+#: src/gtk/resolver.cc:652
+#, c-format
+msgid "Solution %d of %d (score: %d)"
+msgstr ""
+
+#: src/gtk/resolver.cc:746 src/ui.cc:2093
+msgid "Unable to find a solution to apply."
+msgstr "Nepavyko rasti sprendimo."
+
+#: src/gtk/resolver.cc:751 src/ui.cc:2099
+msgid "Ran out of time while trying to find a solution."
+msgstr "Ieškant sprendimo baigėsi tam skirtas laikas."
+
 #: src/load_config.cc:48
 #, c-format
 msgid "Unrecognized color name \"%s\""
@@ -3040,117 +4594,124 @@ msgstr "Neteisingas įrašas klavišų kombinacijų grupėje: „%s“"
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
 msgstr "Ignoruoju neteisingą klavišų kombinaciją: „%s“ -> „%s“"
 
-#: src/load_grouppolicy.cc:258
+#: src/load_grouppolicy.cc:289
 #, c-format
 msgid "Expected policy identifier, got '%c'"
 msgstr "Tikėtasi taisyklų aprašo, gauta '%c'"
 
-#: src/load_grouppolicy.cc:270
+#: src/load_grouppolicy.cc:305
+#, fuzzy, c-format
+#| msgid "Expected ',' or '(', got '%c'"
+msgid "Expected ',', '%c', or '('; got '%c'"
+msgstr "Tikėtasi ',' arba '(', gauta '%c'"
+
+#: src/load_grouppolicy.cc:309
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
 msgstr "Tikėtasi ',' arba '(', gauta '%c'"
 
-#: src/load_grouppolicy.cc:277
+#: src/load_grouppolicy.cc:317
 #, c-format
 msgid "Unknown grouping policy \"%s\""
 msgstr "Nežinoma grupavimo taisyklė „%s“"
 
-#: src/load_grouppolicy.cc:284
+#: src/load_grouppolicy.cc:324
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
 msgstr "Užbaigiančioji taisyklė „%s“ sąraše turi būti paskutinė"
 
-#: src/load_grouppolicy.cc:371
+#: src/load_grouppolicy.cc:385 src/load_grouppolicy.cc:739
+msgid "Unmatched '(' in pattern grouping policy"
+msgstr "Grupavimo taisyklių derinyje neatitikę'('"
+
+#: src/load_grouppolicy.cc:413
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
 "Blogas sekcijos pavadinimas '%s' (naudokite 'none', 'topdir' arba 'subdir')"
 
-#: src/load_grouppolicy.cc:381
+#: src/load_grouppolicy.cc:423
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
 "Blogas passthough nustatymas „%s“ (naudokite „passtrough“ arba "
 "„nopasstrough“)"
 
-#: src/load_grouppolicy.cc:386
+#: src/load_grouppolicy.cc:428
 msgid "Too many arguments to by-section grouping policy"
 msgstr "Grupavimo pagal sekciją taisyklėse yra per daug argumentų"
 
-#: src/load_grouppolicy.cc:399
+#: src/load_grouppolicy.cc:441
 msgid "By-status grouping policies take no arguments"
 msgstr "Grupavimo pagal būseną taisyklėse nereikalingi jokie argumentai"
 
-#: src/load_grouppolicy.cc:416
+#: src/load_grouppolicy.cc:460
 msgid "Expected '(' after 'filter'"
 msgstr "Tikėtasi '(' po 'filter'"
 
-#: src/load_grouppolicy.cc:453
+#: src/load_grouppolicy.cc:497
 #, c-format
 msgid "Unable to parse pattern at '%s'"
 msgstr "Nepavyko interpretuoti derinio ties '%s'"
 
-#: src/load_grouppolicy.cc:458
+#: src/load_grouppolicy.cc:502
 msgid "Exactly one filter must be provided as an argument to a filter policy"
 msgstr ""
 "Filtravimo taisyklėse turi būti įrašytas lygiai vienas filtras kaip "
 "argumentas"
 
-#: src/load_grouppolicy.cc:477
+#: src/load_grouppolicy.cc:521
 msgid "By-mode grouping policies take no arguments"
 msgstr "Grupavimo pagal režimą taisyklės argumentų nenaudoja"
 
-#: src/load_grouppolicy.cc:488
+#: src/load_grouppolicy.cc:532
 msgid "First-character grouping policies take no arguments"
 msgstr "Grupavimo pagal pirmą raidę taisyklės argumentų nenaudoja"
 
-#: src/load_grouppolicy.cc:500
+#: src/load_grouppolicy.cc:544
 msgid "Version-generating grouping policies take no arguments"
 msgstr "Grupavimo pagal versijų generavimą taisyklės argumentų nenaudoja"
 
-#: src/load_grouppolicy.cc:511
+#: src/load_grouppolicy.cc:555
 msgid "Dep-generating grouping policies take no arguments"
 msgstr ""
 "Grupavimo pagal priklausomybių generavimo taisyklės nenaudoja jokių argumentų"
 
-#: src/load_grouppolicy.cc:522
+#: src/load_grouppolicy.cc:566
 msgid "By-priority grouping policies take no arguments"
 msgstr "Grupavimo pagal prioritetą taisyklės argumentų nenaudoja"
 
-#: src/load_grouppolicy.cc:553
+#: src/load_grouppolicy.cc:597
 msgid "Task grouping policies take no arguments"
 msgstr "Grupavimo pagal užduotį taisyklės argumentų nenaudoja"
 
-#: src/load_grouppolicy.cc:566
+#: src/load_grouppolicy.cc:610
 msgid "Expected no more than one argument to a tag grouping policy"
 msgstr "Tikėtasi ne daugiau nei vieno žymių grupavimo taisyklių argumento"
 
-#: src/load_grouppolicy.cc:581
+#: src/load_grouppolicy.cc:625
 msgid "Expected '(' after 'pattern'"
 msgstr "Tikėjausi '(' po 'pattern'"
 
-#: src/load_grouppolicy.cc:589
+#: src/load_grouppolicy.cc:633
 msgid "Missing arguments to 'pattern'"
 msgstr "'pattern' trūksta argumento"
 
-#: src/load_grouppolicy.cc:613
+#: src/load_grouppolicy.cc:656
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
 msgstr "Nepavyko interpretuoti derinio po „%s“"
 
-#: src/load_grouppolicy.cc:635
+#: src/load_grouppolicy.cc:694
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
 msgstr "Netikėtai tuščias medžio pavadinimas po „%s“"
 
-#: src/load_grouppolicy.cc:654
-#, c-format
-msgid "Expected ',' or ')' following '||', got '%s'"
+#: src/load_grouppolicy.cc:713
+#, fuzzy, c-format
+#| msgid "Expected ',' or ')' following '||', got '%s'"
+msgid "Expected '{', ')', or ',' following '||', got '%s'"
 msgstr "Tikėtasi ',' arba '(', ir '||' gauta '%s'"
-
-#: src/load_grouppolicy.cc:666
-msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Grupavimo taisyklių derinyje neatitikę'('"
 
 #: src/load_pkgview.cc:64
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -3214,61 +4775,61 @@ msgstr "Rūšiavimo taisyklių aprašuose neuždarytas „(“"
 msgid "Invalid sorting policy type '%s'"
 msgstr "Netinkamas rūšiavimo taisyklių tipas „%s“"
 
-#: src/main.cc:89
+#: src/main.cc:94
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "Nepavyko dekoduoti keleto bitų eilutės po „%ls“"
 
-#: src/main.cc:98
+#: src/main.cc:103
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "Nepavyko dekoduoti plačių raidžių po „%s“"
 
-#: src/main.cc:106
+#: src/main.cc:111
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s kompiliuotas %s %s\n"
 
-#: src/main.cc:109
+#: src/main.cc:114
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "Kompiliatorius: g++ %s\n"
 
-#: src/main.cc:111
+#: src/main.cc:116
 msgid "Compiled against:\n"
 msgstr "Kompiliuota prieš:\n"
 
-#: src/main.cc:112
+#: src/main.cc:117
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "  apt versija %d.%d.%d\n"
 
-#: src/main.cc:115
+#: src/main.cc:120
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  NCurses versija: Nežinoma\n"
 
-#: src/main.cc:117
+#: src/main.cc:122
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  NCurses versija %s\n"
 
-#: src/main.cc:119
+#: src/main.cc:124
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  libsigc++ versija: %s\n"
 
-#: src/main.cc:121
+#: src/main.cc:126
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Ept palaikymas įjungtas.\n"
 
-#: src/main.cc:123
+#: src/main.cc:128
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Ept palaikymas išjungtas.\n"
 
-#: src/main.cc:126
+#: src/main.cc:131
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -3276,32 +4837,32 @@ msgstr ""
 "\n"
 "Esamos bibliotekų versijos:\n"
 
-#: src/main.cc:127
+#: src/main.cc:132
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  NCurses versija: %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:133
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  cwidget versija: %s\n"
 
-#: src/main.cc:129
+#: src/main.cc:134
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Apt versija: %s\n"
 
-#: src/main.cc:135
+#: src/main.cc:140
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Naudojimas: aptitude [-S fname] [-u|-i]"
 
-#: src/main.cc:137
+#: src/main.cc:142
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [parinktys] <veiksmas> ..."
 
-#: src/main.cc:139
+#: src/main.cc:144
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -3310,64 +4871,64 @@ msgstr ""
 "  Veiksmai (jei nenurodyti jokie parametrai, aptitude veiks interaktyviai):\n"
 "\n"
 
-#: src/main.cc:140
+#: src/main.cc:145
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - Įdiegti/atnaujinti paketus\n"
 
-#: src/main.cc:141
+#: src/main.cc:146
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - Pašalinti paketus\n"
 
-#: src/main.cc:142
+#: src/main.cc:147
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr ""
 " purge        - Pašalinti paketus ir jų konfigūracijos bylas (išvalyti)\n"
 
-#: src/main.cc:143
+#: src/main.cc:148
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - Sulaikyti paketų atnaujinimą\n"
 
-#: src/main.cc:144
+#: src/main.cc:149
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - Atšaukti paketų sulaikymą\n"
 
-#: src/main.cc:145
+#: src/main.cc:150
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr ""
 " markauto     - Pažymėti paketus taip, kad atrodytu jog jie įdiegti "
 "automatiškai\n"
 
-#: src/main.cc:146
+#: src/main.cc:151
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr ""
 " unmarkauto   - Pažymėti paketus taip, kad atrodytu jog jie įdiegti rankiniu "
 "būdu\n"
 
-#: src/main.cc:147
+#: src/main.cc:152
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr " forbid-version - Uždrausti atnaujinimą į nurodytą versiją.\n"
 
-#: src/main.cc:148
+#: src/main.cc:153
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - Atsisiųsti naują paketų sąrašą\n"
 
-#: src/main.cc:149
+#: src/main.cc:154
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - Vykdyti saugų atnaujinimą\n"
 
-#: src/main.cc:150
+#: src/main.cc:155
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -3376,42 +4937,42 @@ msgstr ""
 " full-upgrade - Vykdyti atnaujinimą, leidžiamas paketų diegimas ir "
 "šalinimas\n"
 
-#: src/main.cc:151
+#: src/main.cc:156
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - Užmiršti kurie paketai yra „nauji“\n"
 
-#: src/main.cc:152
+#: src/main.cc:157
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - Paketo paieška pagal pavadinimą ir/arba išraišką\n"
 
-#: src/main.cc:153
+#: src/main.cc:158
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show         - Rodyti detalią paketo informaciją\n"
 
-#: src/main.cc:154
+#: src/main.cc:159
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - Pašalinti gautų paketų bylas\n"
 
-#: src/main.cc:155
+#: src/main.cc:160
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - Pašalinti senas gautas paketų bylas\n"
 
-#: src/main.cc:156
+#: src/main.cc:161
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - Žiūrėti paketo pakeitimų sąrašą\n"
 
-#: src/main.cc:157
+#: src/main.cc:162
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - Gauti paketo .deb bylą\n"
 
-#: src/main.cc:158
+#: src/main.cc:163
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -3419,7 +4980,7 @@ msgid ""
 msgstr ""
 " reinstall    - Gauti ir (galbūt) įdiegti iš naujo šiuo metu įdiegtą paketą\n"
 
-#: src/main.cc:159
+#: src/main.cc:164
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -3430,7 +4991,7 @@ msgstr ""
 "paketas arba\n"
 "                kodėl vienas ar daugiau paketų reikalautu nurodyto paketo\n"
 
-#: src/main.cc:161
+#: src/main.cc:166
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -3444,22 +5005,33 @@ msgstr ""
 "diegiant\n"
 "                sukelia konfliktą\n"
 
-#: src/main.cc:165
+#: src/main.cc:170
 #, c-format
 msgid "  Options:\n"
 msgstr "  Parinktys:\n"
 
-#: src/main.cc:166
+#: src/main.cc:171
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             Ši pagalbos informacija\n"
 
-#: src/main.cc:167
+#: src/main.cc:172
+#, c-format
+msgid ""
+" --gui          Use the GTK GUI even if disabled in the configuration.\n"
+msgstr ""
+
+#: src/main.cc:173
+#, c-format
+msgid " --no-gui       Do not use the GTK GUI even if available.\n"
+msgstr ""
+
+#: src/main.cc:174
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             Simuliuoti veiksmus, tačiau nieko realaus nevykdyti.\n"
 
-#: src/main.cc:168
+#: src/main.cc:175
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -3467,18 +5039,18 @@ msgstr ""
 " -d             Tik atsisiųsti reikalingus paketus nieko nediegti ir "
 "nešalinti.\n"
 
-#: src/main.cc:169
+#: src/main.cc:176
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             Visada klausti veiksmų patvirtinimo\n"
 
-#: src/main.cc:170
+#: src/main.cc:177
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             Į klausimus taip/ne automatiškai atsakyti „taip“\n"
 
-#: src/main.cc:171
+#: src/main.cc:178
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
@@ -3487,7 +5059,7 @@ msgstr ""
 " -F formatas    Nurodyti kokių formatu rodyti paieškos rezultatus žr. "
 "instrukciją\n"
 
-#: src/main.cc:172
+#: src/main.cc:179
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
@@ -3495,34 +5067,34 @@ msgstr ""
 " -O tvarka      Nurodyti kaip rūšiuoti paieškos rezultatus; žr. "
 "instrukcijoje\n"
 
-#: src/main.cc:173
+#: src/main.cc:180
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w plotis      Nuodyti ekrano plotį, paieškos rezultatų formavimui\n"
 
-#: src/main.cc:174
+#: src/main.cc:181
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Bandyti tvarkyti sugadintus paketus agresyviai.\n"
 
-#: src/main.cc:175
+#: src/main.cc:182
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Rodyti kurios paketų versijos bus įdiegtos.\n"
 
-#: src/main.cc:176
+#: src/main.cc:183
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             Rodyti automatiškai pakeistų paketų priklausomybes.\n"
 
-#: src/main.cc:177
+#: src/main.cc:184
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z             Rodyti įdiegtų paketų dydžio pasikeitimus.\n"
 
-#: src/main.cc:178
+#: src/main.cc:185
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
@@ -3530,13 +5102,13 @@ msgstr ""
 " -v             Rodyti papildomą informaciją.( gali būti naudojamas kelis "
 "kartus)\n"
 
-#: src/main.cc:179
+#: src/main.cc:186
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   Nustatyti iš kurių paketų diegti.\n"
 
-#: src/main.cc:180
+#: src/main.cc:187
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
@@ -3544,12 +5116,12 @@ msgid ""
 msgstr ""
 " -q             Komandinėje eilutėje nerodyti progreso indikatoriaus.\n"
 
-#: src/main.cc:182
+#: src/main.cc:189
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o raktas=reikšmė      Tiesiogiai siųsti parametrą „raktas“\n"
 
-#: src/main.cc:183
+#: src/main.cc:190
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -3559,70 +5131,70 @@ msgstr ""
 "paketus\n"
 "                kaip reikalingus\n"
 
-#: src/main.cc:185
+#: src/main.cc:192
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S fname       Skaityti aptitude išplėstinės būsenos informaciją iš bylos "
 "fname.\n"
 
-#: src/main.cc:186
+#: src/main.cc:193
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Tik paleidus programą gauti naują paketų sąrašą.\n"
 
-#: src/main.cc:187
+#: src/main.cc:194
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Paleidus programą automatiškai vykdyti diegimą.\n"
 
-#: src/main.cc:189
+#: src/main.cc:196
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Šis aptitude neturi Superkarvės galių.\n"
 
-#: src/main.cc:375
+#: src/main.cc:399
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr ""
 "Po -q=\n"
 " tikėtasi skaičiaus\n"
 
-#: src/main.cc:384
+#: src/main.cc:408
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr ""
 "Po -q=\n"
 " tikėtasi skaičiaus, gauta %s\n"
 
-#: src/main.cc:408
+#: src/main.cc:432
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o reikalauja argumentų formate raktas=reikšmė, gavau %s\n"
 
-#: src/main.cc:500
+#: src/main.cc:532
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Nėra kablelio po žymės pavadinimo „%s“.\n"
 
-#: src/main.cc:531 src/main.cc:540
+#: src/main.cc:573 src/main.cc:582
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "KEISTA: gautas nežinomas parinkčių kodas\n"
 
-#: src/main.cc:558
+#: src/main.cc:602
 msgid "Only one of -u and -i may be specified\n"
 msgstr "Gali būti nurodytas tik vienas iš -u ir -i\n"
 
-#: src/main.cc:566
+#: src/main.cc:610
 msgid ""
 "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgstr "-u ir -i nenaudojami komandinės eilutės režime (pvz., su „install“)"
 
-#: src/main.cc:587
+#: src/main.cc:631
 msgid "-u and -i may not be specified with a command"
 msgstr "-u ir -i negali būti nurodyti su komanda"
 
-#: src/main.cc:648
+#: src/main.cc:693
 #, c-format
 msgid ""
 "The options --safe-resolver and --full-resolver are not meaningful\n"
@@ -3631,17 +5203,17 @@ msgstr ""
 "Nustatymas --sefe-resolver ir --full-resolver dėl %s neturi prasmės, jis "
 "visada naudoja --safe-resolver.\n"
 
-#: src/main.cc:704
+#: src/main.cc:750
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Nežinoma komanda „%s“\n"
 
-#: src/main.cc:716 src/main.cc:765
+#: src/main.cc:762 src/main.cc:827
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Nežinoma išimtis: %s\n"
 
-#: src/main.cc:720 src/main.cc:769
+#: src/main.cc:766 src/main.cc:831
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -3650,15 +5222,15 @@ msgstr ""
 "Pėdsakas:\n"
 "%s\n"
 
-#: src/menu_text_layout.cc:43 src/menu_tree.cc:220 src/view_changelog.cc:60
+#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:166
 msgid "Search for: "
 msgstr "Ieškoti: "
 
-#: src/menu_text_layout.cc:75 src/menu_tree.cc:237 src/view_changelog.cc:72
+#: src/menu_text_layout.cc:75 src/menu_tree.cc:244 src/view_changelog.cc:178
 msgid "Search backwards for: "
 msgstr "Ieškoti atgal: "
 
-#: src/mine/cmine.cc:114 src/mine/cmine.cc:156 src/ui.cc:1644
+#: src/mine/cmine.cc:115 src/mine/cmine.cc:154 src/ui.cc:1700
 msgid "Minesweeper"
 msgstr "Minų laukas"
 
@@ -3667,139 +5239,139 @@ msgstr "Minų laukas"
 msgid "%i/%i mines  %d %s"
 msgstr "%i/%i minos  %d %s"
 
-#: src/mine/cmine.cc:124 src/mine/cmine.cc:131
+#: src/mine/cmine.cc:124 src/mine/cmine.cc:129
 msgid "second"
 msgstr "sekundė"
 
-#: src/mine/cmine.cc:124 src/mine/cmine.cc:131
+#: src/mine/cmine.cc:124 src/mine/cmine.cc:129
 msgid "seconds"
 msgstr "sekundžių"
 
-#: src/mine/cmine.cc:128
+#: src/mine/cmine.cc:126
 #, c-format
 msgid "    %s in %d %s"
 msgstr "    %s per %d %s"
 
-#: src/mine/cmine.cc:129
+#: src/mine/cmine.cc:127
 msgid "Won"
 msgstr "Laimėjot"
 
-#: src/mine/cmine.cc:129
+#: src/mine/cmine.cc:127
 msgid "Lost"
 msgstr "Pralošėt"
 
-#: src/mine/cmine.cc:173 src/mine/cmine.cc:217
+#: src/mine/cmine.cc:169 src/mine/cmine.cc:209
 #, c-format
 msgid "Could not open file \"%s\""
 msgstr "Negaliu atidaryti bylos „%s“"
 
-#: src/mine/cmine.cc:188
+#: src/mine/cmine.cc:182
 #, c-format
 msgid "Could not load game from %s"
 msgstr "Negaliu pakrauti žaidimo iš %s"
 
-#: src/mine/cmine.cc:255
+#: src/mine/cmine.cc:247
 msgid "The board height must be a positive integer"
 msgstr "Lauko aukštis turi būti teigiamas sveikasis skaičius"
 
-#: src/mine/cmine.cc:267
+#: src/mine/cmine.cc:259
 msgid "The board width must be a positive integer"
 msgstr "Lauko plotis turi būti teigiamas sveikasis skaičius"
 
-#: src/mine/cmine.cc:279
+#: src/mine/cmine.cc:271
 msgid "Invalid mine count; please enter a positive integer"
 msgstr "Blogas minų skaičius; įveskite teigiamą sveikąjį skaičių"
 
-#: src/mine/cmine.cc:299
+#: src/mine/cmine.cc:291
 msgid "Setup custom game"
 msgstr "Sukurti kitokį žaidimą"
 
-#: src/mine/cmine.cc:301
+#: src/mine/cmine.cc:293
 msgid "Height of board: "
 msgstr "Lauko aukštis: "
 
-#: src/mine/cmine.cc:304
+#: src/mine/cmine.cc:296
 msgid "Width of board: "
 msgstr "Lauko plotis: "
 
-#: src/mine/cmine.cc:307
+#: src/mine/cmine.cc:299
 msgid "Number of mines: "
 msgstr "Minų skaičius: "
 
-#: src/mine/cmine.cc:310 src/mine/cmine.cc:375 src/ui.cc:284 src/ui.cc:356
+#: src/mine/cmine.cc:302 src/mine/cmine.cc:367 src/ui.cc:285 src/ui.cc:357
 msgid "Ok"
 msgstr "Gerai"
 
-#: src/mine/cmine.cc:368
+#: src/mine/cmine.cc:360
 msgid "Choose difficulty level"
 msgstr "Pasirinkite sudėtingumo lygį"
 
-#: src/mine/cmine.cc:370
+#: src/mine/cmine.cc:362
 msgid "Easy"
 msgstr "Lengvas"
 
-#: src/mine/cmine.cc:371
+#: src/mine/cmine.cc:363
 msgid "Medium"
 msgstr "Vidutinis"
 
-#: src/mine/cmine.cc:372
+#: src/mine/cmine.cc:364
 msgid "Hard"
 msgstr "Sunkus"
 
-#: src/mine/cmine.cc:373
+#: src/mine/cmine.cc:365
 msgid "Custom"
 msgstr "Kitoks"
 
-#: src/mine/cmine.cc:471
+#: src/mine/cmine.cc:463
 msgid "You have won."
 msgstr "Jūs laimėjot."
 
-#: src/mine/cmine.cc:474
+#: src/mine/cmine.cc:466
 msgid "You lose!"
 msgstr "Jūs pralošėte!"
 
-#: src/mine/cmine.cc:479
+#: src/mine/cmine.cc:471
 msgid "You die...  --More--"
 msgstr "Tu miręs...   --Dar---"
 
-#: src/mine/cmine.cc:492
+#: src/mine/cmine.cc:484
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
 msgstr "Vinys nuodingos!  Nuodai buvo mirtini..  --Dar--"
 
-#: src/mine/cmine.cc:495
+#: src/mine/cmine.cc:487
 msgid "You land on a set of sharp iron spikes!  --More--"
 msgstr "Tu nusileidai ant aštrių plieno vinių!  --Dar--"
 
-#: src/mine/cmine.cc:498
+#: src/mine/cmine.cc:490
 msgid "You fall into a pit!  --More--"
 msgstr "Tu įkritai į duobę!  --Dar--"
 
-#: src/mine/cmine.cc:501
+#: src/mine/cmine.cc:493
 msgid "KABOOM!  You step on a land mine.  --More--"
 msgstr "BUM!  Tu užlipai ant minos.  --Dar--"
 
-#: src/mine/cmine.cc:506
+#: src/mine/cmine.cc:498
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
 msgstr "Strėlė nuodinga!  Nuodai buvo mirtini...  -Dar--"
 
-#: src/mine/cmine.cc:508
+#: src/mine/cmine.cc:500
 msgid ""
 "A little dart shoots out at you!  You are hit by a little dart!  --More--"
 msgstr "Į tave pataikė maža strėlė!  --Dar--"
 
-#: src/mine/cmine.cc:512
+#: src/mine/cmine.cc:504
 msgid "You turn to stone... --More--"
 msgstr "Tu pavirtai akmeniu... --Dar--"
 
-#: src/mine/cmine.cc:514
+#: src/mine/cmine.cc:506
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
 msgstr "Palietę baziliką, padarėte lemiamą klaidą.  --Dar--"
 
-#: src/mine/cmine.cc:516
+#: src/mine/cmine.cc:508
 msgid "You feel here a cockatrice corpse.  --More--"
 msgstr "Čia Jūs matote baziliko kūną.  --Dar--"
 
-#: src/mine/cmine.cc:520
+#: src/mine/cmine.cc:512
 msgid ""
 "Click!  You trigger a rolling boulder trap!  You are hit by a boulder! --"
 "More--"
@@ -3807,60 +5379,60 @@ msgstr ""
 "Trakšt!  Tu pakliuvai į riedančios uolos spąstus!  Tave sutraiškė uola! -- "
 "Dar--"
 
-#: src/mine/cmine.cc:530
+#: src/mine/cmine.cc:522
 msgid "sleep"
 msgstr "miegas"
 
-#: src/mine/cmine.cc:533
+#: src/mine/cmine.cc:525
 msgid "striking"
 msgstr "puikus"
 
-#: src/mine/cmine.cc:536
+#: src/mine/cmine.cc:528
 msgid "death"
 msgstr "mirtis"
 
-#: src/mine/cmine.cc:539
+#: src/mine/cmine.cc:531
 msgid "polymorph"
 msgstr "polimorfas"
 
-#: src/mine/cmine.cc:542
+#: src/mine/cmine.cc:534
 msgid "magic missile"
 msgstr "stebuklinga raketa"
 
-#: src/mine/cmine.cc:545
+#: src/mine/cmine.cc:537
 msgid "secret door detection"
 msgstr "Slaptų durų paieška"
 
-#: src/mine/cmine.cc:548
+#: src/mine/cmine.cc:540
 msgid "invisibility"
 msgstr "nematomumas"
 
-#: src/mine/cmine.cc:551
+#: src/mine/cmine.cc:543
 msgid "cold"
 msgstr "šaltis"
 
-#: src/mine/cmine.cc:557
+#: src/mine/cmine.cc:547
 #, c-format
 msgid "Your wand of %s breaks apart and explodes!  --More--"
 msgstr "Tavo lazdelė %s lūžo ir sprogo!  --Dar--"
 
-#: src/mine/cmine.cc:563
+#: src/mine/cmine.cc:553
 msgid "You are jolted by a surge of electricity!  --More--"
 msgstr "Jus nutrenkė elektros iškrova!  --Dar--"
 
-#: src/mine/cmine.cc:667
+#: src/mine/cmine.cc:657
 msgid "Enter the filename to load: "
 msgstr "Nurodykite kurią bylą įkelti: "
 
-#: src/mine/cmine.cc:674
+#: src/mine/cmine.cc:664
 msgid "Enter the filename to save: "
 msgstr "Nurodykite į kokią bylą išsaugoti: "
 
-#: src/mine/cmine.cc:684
+#: src/mine/cmine.cc:672
 msgid "mine-help.txt"
 msgstr "mine-help.txt"
 
-#: src/mine/cmine.cc:686
+#: src/mine/cmine.cc:674
 msgid "Encoding of mine-help.txt|UTF-8"
 msgstr "Bylos mine-help.txt|UTF-8"
 
@@ -3868,7 +5440,7 @@ msgstr "Bylos mine-help.txt|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2616
+#: src/pkg_columnizer.cc:88 src/ui.cc:2651
 msgid "Package"
 msgstr "Paketas"
 
@@ -3879,14 +5451,6 @@ msgstr "ĮdgDyd"
 #: src/pkg_columnizer.cc:90
 msgid "DebSz"
 msgstr "DebDyd"
-
-#: src/pkg_columnizer.cc:92
-msgid "Action"
-msgstr "Veiksmas"
-
-#: src/pkg_columnizer.cc:93 src/pkg_view.cc:675
-msgid "Description"
-msgstr "Aprašymas"
 
 #: src/pkg_columnizer.cc:94
 msgid "InstVer"
@@ -3919,10 +5483,6 @@ msgstr "Sekcija"
 #: src/pkg_columnizer.cc:101
 msgid "RC"
 msgstr "RC"
-
-#: src/pkg_columnizer.cc:102
-msgid "Auto"
-msgstr "Auto"
 
 #: src/pkg_columnizer.cc:103
 msgid "Tag"
@@ -3957,7 +5517,7 @@ msgstr "<Nėra>"
 msgid "<none>"
 msgstr "<nieko>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:262
+#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:264
 msgid "virtual"
 msgstr "virtualus"
 
@@ -4027,13 +5587,6 @@ msgstr "atnaujinti"
 msgid "none"
 msgstr "nieko"
 
-#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:268
-#: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
-msgid "Unknown"
-msgstr "nežinomas"
-
 #. ForTranslators: Imp = Important
 #: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
 msgid "Imp"
@@ -4097,15 +5650,15 @@ msgstr "Neįmanoma perkoduoti paketo rodymo formato po „%ls“"
 msgid "Internal error: Default column string is unparsable"
 msgstr "Vidinė klaida: nesuprantama stulpelio eilutė"
 
-#: src/pkg_grouppolicy.cc:257 src/pkg_grouppolicy.cc:1070
+#: src/pkg_grouppolicy.cc:259 src/pkg_grouppolicy.cc:1074
 msgid "Tasks"
 msgstr "Užduotys"
 
-#: src/pkg_grouppolicy.cc:283
+#: src/pkg_grouppolicy.cc:285
 msgid "main"
 msgstr "pagrindiniai"
 
-#: src/pkg_grouppolicy.cc:425
+#: src/pkg_grouppolicy.cc:427
 msgid ""
 "Security Updates\n"
 " Security updates for these packages are available from security.debian.org."
@@ -4114,7 +5667,7 @@ msgstr ""
 " Šiuose paketuose rasta saugumo spragų, juos galima atnaujinti iš security."
 "debian.org."
 
-#: src/pkg_grouppolicy.cc:426
+#: src/pkg_grouppolicy.cc:428
 msgid ""
 "Upgradable Packages\n"
 " A newer version of these packages is available."
@@ -4122,7 +5675,7 @@ msgstr ""
 "Atnaujinti paketai\n"
 " Egzistuoja naujesnės šių paketų versijos."
 
-#: src/pkg_grouppolicy.cc:427
+#: src/pkg_grouppolicy.cc:429
 msgid ""
 "New Packages\n"
 " These packages have been added to Debian since the last time you cleared "
@@ -4134,7 +5687,7 @@ msgstr ""
 "Pasirinkite „Užmiršti naujus paketus“ meniu punkte „Veiksmai“, norėdami "
 "išvalyti šį sąrašą."
 
-#: src/pkg_grouppolicy.cc:428
+#: src/pkg_grouppolicy.cc:430
 msgid ""
 "Installed Packages\n"
 " These packages are currently installed on your computer."
@@ -4142,7 +5695,7 @@ msgstr ""
 "Įdiegti paketai\n"
 " Šie paketai šiuo metu įdiegti į Jūsų kompiuterį."
 
-#: src/pkg_grouppolicy.cc:429
+#: src/pkg_grouppolicy.cc:431
 msgid ""
 "Not Installed Packages\n"
 " These packages are not installed on your computer."
@@ -4150,7 +5703,7 @@ msgstr ""
 "Neįdiegti paketai\n"
 " Šie paketai nėra įdiegti į Jūsų kompiuterį."
 
-#: src/pkg_grouppolicy.cc:430
+#: src/pkg_grouppolicy.cc:432
 msgid ""
 "Obsolete and Locally Created Packages\n"
 " These packages are currently installed on your computer, but they are not "
@@ -4162,7 +5715,7 @@ msgstr ""
 "(apt šaltiniuose).  Jie gali būti nebenaudojami ir pašalinti iš Debian "
 "archyvo, arba jūs patys sukūrėte šių paketų asmeninę versiją."
 
-#: src/pkg_grouppolicy.cc:431
+#: src/pkg_grouppolicy.cc:433
 msgid ""
 "Virtual Packages\n"
 " These packages do not exist; they are names other packages use to require "
@@ -4172,7 +5725,7 @@ msgstr ""
 " Šie paketai neegzistuoja; tai sąrašas kitų paketų, naudojamas pateikti tam "
 "tikras funkcijas."
 
-#: src/pkg_grouppolicy.cc:584
+#: src/pkg_grouppolicy.cc:588
 msgid ""
 "Packages which are recommended by other packages\n"
 " These packages are not strictly required, but they may be necessary to "
@@ -4183,7 +5736,7 @@ msgstr ""
 " Šie paketai nėra būtini, tam kad Jūsų sistema sėkmingai funkcionuotu, "
 "tačiau jie gali būti reikalingi, pilnam įdiegiamų programų funkcionavimui."
 
-#: src/pkg_grouppolicy.cc:605
+#: src/pkg_grouppolicy.cc:609
 msgid ""
 "Packages which are suggested by other packages\n"
 " These packages are not required in order to make your system function "
@@ -4194,161 +5747,44 @@ msgstr ""
 " Šie paketai nėra būtini, tam kad Jūsų sistema sėkmingai funkcionuotu, "
 "tačiau jie naudojami papildomoms įdiegtų programų galimybėms išgauti."
 
-#: src/pkg_grouppolicy.cc:633
-msgid ""
-"Packages with unsatisfied dependencies\n"
-" The dependency requirements of these packages will be unmet after the "
-"install is complete.\n"
-" .\n"
-" The presence of this tree probably indicates that something is broken, "
-"either on your system or in the Debian archive."
-msgstr ""
-"Paketai, kurių priklausomybės netenkinamos\n"
-" Baigus diegimą, šių paketų priklausomybių reikalavimai bus netinkami.\n"
-" .\n"
-" Tai rodo, kad kažkas sugadinta arba Jūsų sistemoje, arba Debian archyvuose."
-
-#: src/pkg_grouppolicy.cc:634
-msgid ""
-"Packages being removed because they are no longer used\n"
-" These packages are being deleted because they were automatically installed "
-"to fulfill dependencies, and the planned action will result in no installed "
-"package declaring an 'important' dependency on them.\n"
-msgstr ""
-"Paketai bus pašalinti, nes jie nebenaudojami\n"
-" Šie paketai bus pašalinti, nes buvo automatiškai įdiegti. Jų reikėjo "
-"kitiems paketams. Atlikus planuojamus veiksmus, jie nebebus reikalingi.\n"
-
-#: src/pkg_grouppolicy.cc:635
-msgid ""
-"Packages being automatically held in their current state\n"
-" These packages could be upgraded, but they have been kept in their current "
-"state to avoid breaking dependencies."
-msgstr ""
-"Paketų būsena automatiškai sulaikyta dabartinėje būsenoje\n"
-" Šie paketai gali būti atnaujinti, tačiau paliekami esamoje būklėje tam, kad "
-"nesugadinti priklausomybių."
-
-#: src/pkg_grouppolicy.cc:636
-msgid ""
-"Packages being automatically installed to satisfy dependencies\n"
-" These packages are being installed because they are required by another "
-"package you have chosen for installation."
-msgstr ""
-"Paketai, įdiegti automatiškai, nes jų reikia kitiems paketams\n"
-" Šie paketai įdiegiami todėl, kad jie reikalingi paketams, kuriuos Jūs "
-"norite įdiegti."
-
-#: src/pkg_grouppolicy.cc:637
-msgid ""
-"Packages being deleted due to unsatisfied dependencies\n"
-" These packages are being deleted because one or more of their dependencies "
-"is no longer available, or because another package conflicts with them."
-msgstr ""
-"Paketai pašalinti dėl netenkinamų priklausomybių\n"
-" Šie paketai buvo pašalinti, nes nebėra vieno ar kelių jiems reikalingų "
-"paketų, arba kiti paketai konfliktuoja su jais."
-
-#: src/pkg_grouppolicy.cc:638
-msgid ""
-"Packages to be downgraded\n"
-" An older version of these packages than is currently installed will be "
-"installed."
-msgstr ""
-"Paketai, kurie bus pasendinti\n"
-" Bus įdiegtos senesnės šių paketų versijos."
-
-#: src/pkg_grouppolicy.cc:639
-msgid ""
-"Packages being held back\n"
-" These packages could be upgraded, but you have asked for them to be held at "
-"their current version."
-msgstr ""
-"Sulaikyti paketai\n"
-" Šie paketai gali būti atnaujinti, tačiau Jūs nurodėte, kad šie paketai turi "
-"pasilikti dabartinėse versijose."
-
-#: src/pkg_grouppolicy.cc:640
-msgid ""
-"Packages to be reinstalled\n"
-" These packages will be reinstalled."
-msgstr ""
-"Paketai, kurie bus įdiegti iš naujo\n"
-" Šie paketai bus įdiegti iš naujo."
-
-#: src/pkg_grouppolicy.cc:641
-msgid ""
-"Packages to be installed\n"
-" These packages have been manually selected for installation on your "
-"computer."
-msgstr ""
-"Šie paketai bus įdiegti\n"
-" Šie paketai bus įdiegti į kompiuterį. Tai atlikti nurodyta rankiniu būdu."
-
-#: src/pkg_grouppolicy.cc:642
-msgid ""
-"Packages to be removed\n"
-" These packages have been manually selected for removal."
-msgstr ""
-"Šie paketai bus pašalinti\n"
-" Rankiniu būdu nurodyta, kad šiuos paketus reikia pašalinti."
-
-#: src/pkg_grouppolicy.cc:643
-msgid ""
-"Packages to be upgraded\n"
-" These packages will be upgraded to a newer version."
-msgstr ""
-"Atnaujinami paketai\n"
-" Bus įdiegtos naujesnės šių paketų versijos."
-
-#: src/pkg_grouppolicy.cc:644
-msgid ""
-"Packages that are partially installed\n"
-" These packages are not fully installed and configured; an attempt will be "
-"made to complete their installation."
-msgstr ""
-"Dalinai įdiegti paketai\n"
-" Šie paketai yra ne pilnai įdiegti ar nesukonfigūruoti; bus bandoma pabaigti "
-"jų diegimą."
-
-#: src/pkg_grouppolicy.cc:761
+#: src/pkg_grouppolicy.cc:765
 msgid "unknown"
 msgstr "nežinomas"
 
-#: src/pkg_grouppolicy.cc:772
+#: src/pkg_grouppolicy.cc:776
 #, c-format
 msgid "Priority %s"
 msgstr "Prioritetas %s"
 
-#: src/pkg_grouppolicy.cc:886
+#: src/pkg_grouppolicy.cc:890
 msgid "UNCATEGORIZED"
 msgstr "BE KATEGORIJOS"
 
-#: src/pkg_grouppolicy.cc:1013
+#: src/pkg_grouppolicy.cc:1017
 msgid "End-user"
 msgstr "Vartotojas"
 
-#: src/pkg_grouppolicy.cc:1014
+#: src/pkg_grouppolicy.cc:1018
 msgid "Servers"
 msgstr "Serveriai"
 
-#: src/pkg_grouppolicy.cc:1015
+#: src/pkg_grouppolicy.cc:1019
 msgid "Development"
 msgstr "Kūrimas"
 
-#: src/pkg_grouppolicy.cc:1016
+#: src/pkg_grouppolicy.cc:1020
 msgid "Localization"
 msgstr "Lokalizavimas"
 
-#: src/pkg_grouppolicy.cc:1017
+#: src/pkg_grouppolicy.cc:1021
 msgid "Hardware Support"
 msgstr "Aparatūros palaikymas"
 
-#: src/pkg_grouppolicy.cc:1019
+#: src/pkg_grouppolicy.cc:1023
 msgid "Unrecognized tasks"
 msgstr "Neatpažinti darbai"
 
-#: src/pkg_grouppolicy.cc:1071
+#: src/pkg_grouppolicy.cc:1075
 msgid ""
 "\n"
 " Tasks are groups of packages which provide an easy way to select a "
@@ -4358,26 +5794,26 @@ msgstr ""
 " Užduotys, tai paketų grupės, kurios naudojamos norint lengvai įdiegti "
 "nustatytą paketų grupę, reikalingų tam tikram tikslui."
 
-#: src/pkg_grouppolicy.cc:1202
+#: src/pkg_grouppolicy.cc:1207
 #, c-format
 msgid "Bad number in format string: %ls"
 msgstr "Blogas skaičius formato eilutėje: %ls"
 
-#: src/pkg_grouppolicy.cc:1211
+#: src/pkg_grouppolicy.cc:1216
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "Indeksų pora turi būti 1 ar daugiau, ne „%s“"
 
-#: src/pkg_grouppolicy.cc:1229
+#: src/pkg_grouppolicy.cc:1236
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "Poros indeksas %ls yra per didelis; galimos grupės yra šios (%s)"
 
-#: src/pkg_grouppolicy.cc:1502
+#: src/pkg_grouppolicy.cc:1513
 msgid "TAGLESS PACKAGES"
 msgstr "PAKETAI BE ŽYMIŲ"
 
-#: src/pkg_grouppolicy.cc:1503
+#: src/pkg_grouppolicy.cc:1514
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -4387,7 +5823,7 @@ msgstr ""
 " Šie paketai nėra klasifikuoti debtags duombazėje, arba nerasta debtas "
 "duombazė (įdiegus debtags problema gali būti išspręsta)."
 
-#: src/pkg_grouppolicy.cc:1537
+#: src/pkg_grouppolicy.cc:1548
 msgid "MISSING TAG"
 msgstr "TRŪKSTA ŽYMĖS"
 
@@ -4418,7 +5854,7 @@ msgstr "Paketai, kuriems reikia %s"
 msgid "Versions of %s"
 msgstr "%s versija"
 
-#: src/pkg_item.cc:85
+#: src/pkg_item.cc:90
 #, c-format
 msgid ""
 "%s is an essential package!%n%nAre you sure you want to remove it?%nType '%"
@@ -4427,52 +5863,52 @@ msgstr ""
 "%s yra esminis paketas!%n%nAr Jūs tikrai norite jį pašalinti?%nJei Jūs "
 "tikras įveskite: „%s“."
 
-#: src/pkg_item.cc:228 src/pkg_ver_item.cc:683 src/solution_item.cc:298
+#: src/pkg_item.cc:233 src/pkg_ver_item.cc:683 src/solution_item.cc:298
 #, c-format
 msgid "Information about %s"
 msgstr "Informacija apie %s"
 
-#: src/pkg_item.cc:230 src/pkg_ver_item.cc:685 src/solution_item.cc:296
+#: src/pkg_item.cc:235 src/pkg_ver_item.cc:685 src/solution_item.cc:296
 #, c-format
 msgid "%s info"
 msgstr "%s info"
 
-#: src/pkg_item.cc:326
+#: src/pkg_item.cc:331
 #, c-format
 msgid "Available versions of %s"
 msgstr "Egzistuojančios versijos paketo %s"
 
-#: src/pkg_item.cc:329
+#: src/pkg_item.cc:334
 #, c-format
 msgid "%s versions"
 msgstr "%s versijos"
 
-#: src/pkg_item.cc:341 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:346 src/pkg_ver_item.cc:713
 #, c-format
 msgid "Dependencies of %s"
 msgstr "Paketo %s priklausomybės."
 
-#: src/pkg_item.cc:343 src/pkg_ver_item.cc:715
+#: src/pkg_item.cc:348 src/pkg_ver_item.cc:715
 #, c-format
 msgid "%s deps"
 msgstr "%s priklauso"
 
-#: src/pkg_item.cc:354 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:359 src/pkg_ver_item.cc:725
 #, c-format
 msgid "Packages depending on %s"
 msgstr "Paketai, kuriems reikia %s"
 
-#: src/pkg_item.cc:356 src/pkg_ver_item.cc:727
+#: src/pkg_item.cc:361 src/pkg_ver_item.cc:727
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s atgalinės priklausomybės"
 
-#: src/pkg_item.cc:406 src/pkg_ver_item.cc:775
+#: src/pkg_item.cc:411 src/pkg_ver_item.cc:775
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "Pranešame apie klaidas pakete %s:\n"
 
-#: src/pkg_item.cc:426
+#: src/pkg_item.cc:431
 msgid ""
 "You are not root and I cannot find any way to become root.  To reconfigure "
 "this package, install the menu package, the login package, or run aptitude "
@@ -4482,20 +5918,20 @@ msgstr ""
 "paketą perkonfigūruoti įdiekite paketus „menu“ ir „login“ arba paleiskite "
 "aptitude turėdami root teises."
 
-#: src/pkg_item.cc:434
+#: src/pkg_item.cc:439
 #, c-format
 msgid "Reconfiguring %s\n"
 msgstr "Perkonfigūruojamas paketas %s\n"
 
-#: src/pkg_item.cc:444 src/ui.cc:1149
+#: src/pkg_item.cc:449 src/ui.cc:1160
 msgid "Press return to continue.\n"
 msgstr "Norėdami tęsti spauskite ENTER.\n"
 
-#: src/pkg_item.cc:461
+#: src/pkg_item.cc:466
 msgid "Hierarchy editor"
 msgstr "Hierarchijos redaktorius"
 
-#: src/pkg_item.cc:461 src/pkg_view.cc:673
+#: src/pkg_item.cc:466 src/pkg_view.cc:669
 msgid "Hierarchy Editor"
 msgstr "Hierarchijos redaktorius"
 
@@ -4507,40 +5943,36 @@ msgstr[0] "Šioje grupėje yra %d paketas."
 msgstr[1] "Šioje grupėje yra %d paketai."
 msgstr[2] "Šioje grupėje yra %d paketų."
 
-#: src/pkg_tree.cc:175
+#: src/pkg_tree.cc:178
 msgid "All Packages"
 msgstr "Visi paketai"
 
-#: src/pkg_tree.cc:188 src/pkg_tree.cc:203
-msgid "Building view"
-msgstr "Kuriu vaizdą"
-
-#: src/pkg_tree.cc:246
+#: src/pkg_tree.cc:282
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
 msgstr "Nei vienas paketas neatitiko derinio „%ls“."
 
-#: src/pkg_tree.cc:268
+#: src/pkg_tree.cc:301
 msgid "Enter the new package tree limit: "
 msgstr "Įveskite naują paketų medžio ribą: "
 
-#: src/pkg_tree.cc:302
+#: src/pkg_tree.cc:334
 msgid "Enter the new package grouping mechanism for this display: "
 msgstr "Įveskite naują šio ekrano paketų grupavimo mechanizmą: "
 
-#: src/pkg_tree.cc:310
+#: src/pkg_tree.cc:342
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "Įveskite naują šio ekrano paketų rūšiavimo mechanizmą: "
 
-#: src/pkg_view.cc:161
+#: src/pkg_view.cc:163
 msgid "Couldn't cw::util::transcode column definition"
 msgstr "Negaliu cw::util::transcode stulpelio aprašymo"
 
-#: src/pkg_view.cc:168
+#: src/pkg_view.cc:170
 msgid "Couldn't parse column definition"
 msgstr "Nepavyko interpretuoti stulpelio aprašymo"
 
-#: src/pkg_view.cc:223
+#: src/pkg_view.cc:219
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
@@ -4548,30 +5980,30 @@ msgstr ""
 "Jei jūs pažymėsite paketą, šioje vietoje atsiras paaiškinimas kodėl jis turi "
 "būti įdiegtas arba pažalintas."
 
-#: src/pkg_view.cc:575
+#: src/pkg_view.cc:571
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view: klaida argumentuose -- du pagrindiniai elementai??"
 
-#: src/pkg_view.cc:581
+#: src/pkg_view.cc:577
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
 "make_package_view: klaida argumentuose -- blogas statinio elemento stulpelių "
 "sąrašas"
 
-#: src/pkg_view.cc:678
+#: src/pkg_view.cc:674
 msgid "Related Dependencies"
 msgstr "Susijusios Priklausomybės"
 
-#: src/pkg_view.cc:681
+#: src/pkg_view.cc:677
 msgid "Why Installed"
 msgstr "Kodėl Įdiegtas"
 
-#: src/pkg_view.cc:700
+#: src/pkg_view.cc:696
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view: blogas argumentas!"
 
-#: src/pkg_view.cc:752
+#: src/pkg_view.cc:748
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view: nėra pagrindinio raktažodžio"
 
@@ -4816,46 +6248,6 @@ msgstr "Pritaikyti"
 msgid "Close"
 msgstr "Uždaryti"
 
-#: src/solution_fragment.cc:106
-#, c-format
-msgid "%s depends upon %s"
-msgstr "%s priklauso nuo %s"
-
-#: src/solution_fragment.cc:109
-#, c-format
-msgid "%s pre-depends upon %s"
-msgstr "%s prieš-priklauso nuo %s"
-
-#: src/solution_fragment.cc:112
-#, c-format
-msgid "%s suggests %s"
-msgstr "%s siūlo %s"
-
-#: src/solution_fragment.cc:115 src/solution_item.cc:602
-#, c-format
-msgid "%s recommends %s"
-msgstr "%s rekomenduoja %s"
-
-#: src/solution_fragment.cc:118
-#, c-format
-msgid "%s conflicts with %s"
-msgstr "%s konfliktuoja su %s"
-
-#: src/solution_fragment.cc:121
-#, c-format
-msgid "%s breaks %s"
-msgstr "%s sugadina %s"
-
-#: src/solution_fragment.cc:124
-#, c-format
-msgid "%s replaces %s"
-msgstr "%s pakeičia %s"
-
-#: src/solution_fragment.cc:127
-#, c-format
-msgid "%s obsoletes %s"
-msgstr "%s nurašo %s"
-
 #: src/solution_fragment.cc:140
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
@@ -4882,10 +6274,6 @@ msgstr "%BĮdiegti%b paketus:%n"
 #: src/solution_fragment.cc:244
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BPalikti%b šiuos paketus palikti dabartinėse versijose:%n"
-
-#: src/solution_fragment.cc:251
-msgid "Not Installed"
-msgstr "Neįdiegtas"
 
 #: src/solution_fragment.cc:264
 msgid "%BUpgrade%b the following packages:%n"
@@ -4949,25 +6337,9 @@ msgstr "-> Palikti priklausomybę „%s rekomenduoja %s“ neišspręsta."
 msgid "The following actions will resolve this dependency:"
 msgstr "Sekantys veiksmai išspręs šią priklausomybę:"
 
-#: src/solution_screen.cc:248
-msgid "Remove the following packages:"
-msgstr "Pašalinti šiuos paketus:"
-
 #: src/solution_screen.cc:259
 msgid "Keep the following packages at their current version:"
 msgstr "Palikti šių paketu dabartinesversijas:"
-
-#: src/solution_screen.cc:270
-msgid "Install the following packages:"
-msgstr "Įdiegti šiuos paketus:"
-
-#: src/solution_screen.cc:281
-msgid "Upgrade the following packages:"
-msgstr "Atnaujinti šiuos paketus:"
-
-#: src/solution_screen.cc:292
-msgid "Downgrade the following packages:"
-msgstr "Pasendinti šiuos paketus:"
 
 #: src/solution_screen.cc:305
 msgid "Leave the following recommendations unresolved:"
@@ -4976,11 +6348,6 @@ msgstr "Šias rekomendacijas palikti neišspręstas:"
 #: src/solution_screen.cc:485
 msgid "No broken packages."
 msgstr "Nėra blogų paketų."
-
-#: src/solution_screen.cc:515
-#, c-format
-msgid "open: %d; closed: %d; defer: %d; conflict: %d"
-msgstr "atvira: %d; išspręsta: %d; atidėta: %d; konfliktų: %d"
 
 #: src/trust.cc:19 src/trust.cc:21
 msgid "WARNING"
@@ -4996,27 +6363,27 @@ msgstr ""
 "galite nepageidaujamiems asmenims suteikti galimybę sugadinti ar valdyti "
 "Jūsų sistemą."
 
-#: src/ui.cc:202
+#: src/ui.cc:203
 msgid "Yes, I am aware this is a very bad idea"
 msgstr "Taip, aš suprantu, kad tai labai bloga mintis"
 
-#: src/ui.cc:229
+#: src/ui.cc:230
 msgid "Er, there aren't any errors, this shouldn't have happened.."
 msgstr "Brrr, čia nėra jokių klaidų, tai neturėjo įvykti.."
 
-#: src/ui.cc:235
+#: src/ui.cc:236
 msgid "E:"
 msgstr "E:"
 
-#: src/ui.cc:237
+#: src/ui.cc:238
 msgid "W:"
 msgstr "W:"
 
-#: src/ui.cc:251
+#: src/ui.cc:252
 msgid "Search for:"
 msgstr "Ieškoti: "
 
-#: src/ui.cc:333
+#: src/ui.cc:334
 msgid ""
 "WARNING: the package cache is opened in read-only mode!  This change and all "
 "subsequent changes will not be saved unless you stop all other running apt-"
@@ -5027,77 +6394,72 @@ msgstr ""
 "visų apt- pagrindu veikiančių programų ir iš meniu „Veiksmai“ pasirinksite "
 "„Tapti root“."
 
-#: src/ui.cc:339
+#: src/ui.cc:340
 msgid "Never display this message again."
 msgstr "Daugiau niekada neberodyti šio pranešimo."
 
-#: src/ui.cc:385
+#: src/ui.cc:386
 msgid ""
 "You may not modify the state of any package while a download is underway."
 msgstr "Jūs negalite keisti jokio paketo būsenos, kol vyksta paketų siuntimas."
 
-#: src/ui.cc:416
+#: src/ui.cc:417
 msgid "You already are root!"
 msgstr "Jūs jau turite administratoriaus teises!"
 
-#: src/ui.cc:431
+#: src/ui.cc:432
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:"
 msgstr "Bloga Get-Root-Command; ji turėtu prasidėti su: arba sudo:"
 
-#: src/ui.cc:438
+#: src/ui.cc:439
 #, c-format
 msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr "Bloga Get-Root-Command; ji turėtu prasidėti su: arba sudo:, ne %s:"
 
-#: src/ui.cc:561
+#: src/ui.cc:562
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr "Įvyko klaida -- ar Jūs teisingai įrašėte slaptažodį?"
 
-#: src/ui.cc:600
+#: src/ui.cc:601
 msgid "Loading cache"
 msgstr "Įkeliamas krepšys"
 
-#: src/ui.cc:642
+#: src/ui.cc:643
 msgid "Really quit Aptitude?"
 msgstr "Tikrai išeinate iš Aptitude?"
 
-#: src/ui.cc:695 src/ui.cc:697
+#: src/ui.cc:696 src/ui.cc:698
 msgid "Preferences"
 msgstr "Nustatymai"
 
-#: src/ui.cc:696 src/ui.cc:2382
+#: src/ui.cc:697 src/ui.cc:2417
 msgid "Change the behavior of aptitude"
 msgstr "Pakeisti aptitude elgesį"
 
-#: src/ui.cc:732
+#: src/ui.cc:733
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr ""
 "Jūs tikrai norite prarasti savo asmeninius nustatymus ir įkelti "
 "standartinius?"
 
-#: src/ui.cc:836 src/ui.cc:838 src/ui.cc:885 src/ui.cc:887 src/ui.cc:906
-#: src/ui.cc:908 src/ui.cc:929 src/ui.cc:931
-msgid "Packages"
-msgstr "Paketai"
-
-#: src/ui.cc:837 src/ui.cc:886 src/ui.cc:907 src/ui.cc:930
+#: src/ui.cc:838 src/ui.cc:885 src/ui.cc:913 src/ui.cc:936
 msgid "View available packages and choose actions to perform"
 msgstr "Peržiūrėti turimus paketus ir atlikti veiksmus"
 
-#: src/ui.cc:866
+#: src/ui.cc:867
 msgid "Recommended Packages"
 msgstr "Rekomenduojami paketai"
 
-#: src/ui.cc:867
+#: src/ui.cc:868
 msgid "View packages that it is recommended that you install"
 msgstr "Parodyti paketus kuriuos rekomenduoja įdiegiami paketai"
 
-#: src/ui.cc:868
+#: src/ui.cc:869
 msgid "Recommendations"
 msgstr "Rekomendacijos"
 
-#: src/ui.cc:972
+#: src/ui.cc:978
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -5110,72 +6472,72 @@ msgstr ""
 "platinti pagal tam tikras sąlygas; norėdami sužinoti daugiau žiūrėkite "
 "„licencija“."
 
-#: src/ui.cc:1022 src/ui.cc:1024
+#: src/ui.cc:1028 src/ui.cc:1030
 msgid "License"
 msgstr "Licenzija"
 
-#: src/ui.cc:1023 src/ui.cc:2474
+#: src/ui.cc:1029 src/ui.cc:2509
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "Rodyti sąlygas, pagal kurias Jūs galite platinti ir kopijuoti aptitude"
 
-#: src/ui.cc:1037
+#: src/ui.cc:1043
 msgid "help.txt"
 msgstr "help.txt"
 
-#: src/ui.cc:1039
+#: src/ui.cc:1045
 msgid "Encoding of help.txt|UTF-8"
 msgstr "Bylos koduotė help.txt|UTF-8"
 
-#: src/ui.cc:1050
+#: src/ui.cc:1056
 msgid "Online Help"
 msgstr "Pagalba internete"
 
-#: src/ui.cc:1051
+#: src/ui.cc:1057
 msgid "View a brief introduction to aptitude"
 msgstr "Skaityti programos aptitude trumpą įžangą"
 
-#: src/ui.cc:1052 src/ui.cc:2621
+#: src/ui.cc:1058 src/ui.cc:2656
 msgid "Help"
 msgstr "Pagalba"
 
-#: src/ui.cc:1060
+#: src/ui.cc:1066
 msgid "README"
 msgstr "README"
 
-#: src/ui.cc:1061
+#: src/ui.cc:1067
 msgid "Encoding of README|ISO_8859-1"
 msgstr "Bylos koduotė README|ISO_8859-1"
 
-#: src/ui.cc:1072
+#: src/ui.cc:1078
 msgid "User's Manual"
 msgstr "Naudotojo instrukcijos"
 
-#: src/ui.cc:1073
+#: src/ui.cc:1079
 msgid "Read the full user's manual of aptitude"
 msgstr "Skaityti pilną aptitude vartotojo vadovą"
 
-#: src/ui.cc:1074
+#: src/ui.cc:1080
 msgid "Manual"
 msgstr "Rankinis"
 
-#: src/ui.cc:1081 src/ui.cc:1083
+#: src/ui.cc:1087 src/ui.cc:1089
 msgid "FAQ"
 msgstr "DUK"
 
-#: src/ui.cc:1082 src/ui.cc:2466
+#: src/ui.cc:1088 src/ui.cc:2501
 msgid "View a list of frequently asked questions"
 msgstr "Rodyti dažniausiai užduodamų klausimų sąrašą"
 
-#: src/ui.cc:1091 src/ui.cc:1093
+#: src/ui.cc:1097 src/ui.cc:1099
 msgid "News"
 msgstr "Naujienos"
 
-#: src/ui.cc:1092
+#: src/ui.cc:1098
 #, c-format
 msgid "View the important changes made in each version of %s"
 msgstr "Rodyti svarbius pakeitimus, kurie atsirado kiekvienoje %s versijoje"
 
-#: src/ui.cc:1099
+#: src/ui.cc:1105
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
@@ -5183,7 +6545,7 @@ msgstr ""
 "Nepavyko pašalinti seną laikiną aplanką; jūsų turėtumete pašalinti %s "
 "rankiniu būdu."
 
-#: src/ui.cc:1104
+#: src/ui.cc:1110
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -5192,7 +6554,7 @@ msgstr ""
 "%s nebus pašalintas; jums reikia peržiūrėti jo bylas ir pašalinti jas "
 "rankiniu būdu."
 
-#: src/ui.cc:1130
+#: src/ui.cc:1136
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -5205,19 +6567,15 @@ msgstr ""
 "pašalinti šį aplanką ir jo turinį?  Jei pasirinksite „Ne“, šio pranešimo "
 "nebematysite."
 
-#: src/ui.cc:1173
-msgid "Downloading packages"
-msgstr "Gaunu paketus"
-
-#: src/ui.cc:1174
+#: src/ui.cc:1207
 msgid "View the progress of the package download"
 msgstr "Rodyti paketo gavimo progresą"
 
-#: src/ui.cc:1175
+#: src/ui.cc:1208
 msgid "Package Download"
 msgstr "Paketo gavimas"
 
-#: src/ui.cc:1211
+#: src/ui.cc:1255
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -5228,39 +6586,35 @@ msgstr ""
 "paketai gali %Bpažeisti Jūsų sistemos saugumą%b. Tęskite diegimą tik tuo "
 "atveju, jei esate įsitikinęs, kad tai yra būtent tai ko jūs norite.%n%n"
 
-#: src/ui.cc:1217
+#: src/ui.cc:1261
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [versija %s]%n"
 
-#: src/ui.cc:1223
+#: src/ui.cc:1267
 msgid "Really Continue"
 msgstr "Tikrai tęsti"
 
-#: src/ui.cc:1225
+#: src/ui.cc:1269
 msgid "Abort Installation"
 msgstr "Atšaukti diegimą"
 
-#: src/ui.cc:1290
+#: src/ui.cc:1334
 msgid "Preview of package installation"
 msgstr "Peržiūrėti paketo diegimą"
 
-#: src/ui.cc:1291
+#: src/ui.cc:1335
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Žiūrėti ir/arba keisti veiksmus, kurie bus vykdomi"
 
-#: src/ui.cc:1292
-msgid "Preview"
-msgstr "Peržiūra"
-
-#: src/ui.cc:1348
+#: src/ui.cc:1392
 msgid "Some packages were broken and have been fixed:"
 msgstr "Kai kurie paketai buvo sugadinti ir buvo sutvarkyti:"
 
-#: src/ui.cc:1356
+#: src/ui.cc:1400
 msgid "No solution to these dependency problems exists!"
 msgstr "Šioms priklausomybių problemoms sprendimo nėra!"
 
-#: src/ui.cc:1362
+#: src/ui.cc:1406
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -5269,7 +6623,7 @@ msgstr ""
 "Bandant sutvarkyti priklausomybes baigėsi tam skirtas laikas (spauskite %s, "
 "kad labiau pasistengti)"
 
-#: src/ui.cc:1408
+#: src/ui.cc:1452
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5277,23 +6631,19 @@ msgstr ""
 "Norėdami įdiegti/pašalinti paketus turite turėti administratoriaus (root) "
 "privilegijas, kurių jūs neturite.  Ar norite pereiti į „root“ paskyrą?"
 
-#: src/ui.cc:1411 src/ui.cc:1632
+#: src/ui.cc:1455 src/ui.cc:1688
 msgid "Become root"
 msgstr "Tapti root"
 
-#: src/ui.cc:1413 src/ui.cc:1634
+#: src/ui.cc:1457 src/ui.cc:1690
 msgid "Don't become root"
 msgstr "Netapti root"
 
-#: src/ui.cc:1418 src/ui.cc:1639
-msgid "A package-list update or install run is already taking place."
-msgstr "Paketų atnaujinimas arba diegimas jau vyksta."
-
-#: src/ui.cc:1533
+#: src/ui.cc:1577
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "Jokio paketo įdiegimas, pašalinimas ar atnaujinimas neplanuojamas."
 
-#: src/ui.cc:1539
+#: src/ui.cc:1583
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -5303,23 +6653,23 @@ msgstr ""
 "būtų galima atnaujinti, tačiau jūs nenurodėte juos atnaujinti. Spauskite „U“ "
 "kad paruošti atnaujinimą."
 
-#: src/ui.cc:1597 src/ui.cc:1714
+#: src/ui.cc:1641 src/ui.cc:1770
 msgid "Deleting obsolete downloaded files"
 msgstr "Trinamos pasenusios gautos bylos"
 
-#: src/ui.cc:1613
+#: src/ui.cc:1658
 msgid "Updating package lists"
 msgstr "Atnaujinamas paketų sąrašas"
 
-#: src/ui.cc:1614
+#: src/ui.cc:1659
 msgid "View the progress of the package list update"
 msgstr "Stebėti paketų sąrašo atnaujinimo progresą"
 
-#: src/ui.cc:1615
+#: src/ui.cc:1660
 msgid "List Update"
 msgstr "Atnaujinimų sąrašas"
 
-#: src/ui.cc:1629
+#: src/ui.cc:1685
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -5327,203 +6677,141 @@ msgstr ""
 "Norint atnaujinti paketų sąrašą reikalingos administratoriaus privilegijos, "
 "kurių jūs šiuo metu neturite. Ar norite pereiti į root paskyrą?"
 
-#: src/ui.cc:1644 src/ui.cc:2221
-msgid "Waste time trying to find mines"
-msgstr "Gaištate laiką bandydami rasti minas"
-
-#: src/ui.cc:1651 src/ui.cc:1711
+#: src/ui.cc:1707 src/ui.cc:1767
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Valymas tuo metu, kai gaunami paketai, draudžiamas"
 
-#: src/ui.cc:1654
+#: src/ui.cc:1710
 msgid "Deleting downloaded files"
 msgstr "Trinu gautas bylas"
 
-#: src/ui.cc:1668
+#: src/ui.cc:1724
 msgid "Downloaded package files have been deleted"
 msgstr "Gautos paketų bylos ištrintos"
 
-#: src/ui.cc:1708
+#: src/ui.cc:1764
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr ""
 "Apt talpyklė nepasiekiama; automatini išvalymas (auto-clean) neįmanomas."
 
-#: src/ui.cc:1734
+#: src/ui.cc:1790
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
 msgstr "Pasenę gauti paketai ištrinti, atlaisvinta %sB."
 
-#: src/ui.cc:1831
+#: src/ui.cc:1887
 msgid "No more solutions."
 msgstr "Sprendimų nebėra."
 
-#: src/ui.cc:2058
-msgid "Unable to find a solution to apply."
-msgstr "Nepavyko rasti sprendimo."
-
-#: src/ui.cc:2064
-msgid "Ran out of time while trying to find a solution."
-msgstr "Ieškant sprendimo baigėsi tam skirtas laikas."
-
-#: src/ui.cc:2124 src/ui.cc:2126
+#: src/ui.cc:2159 src/ui.cc:2161
 msgid "Resolve Dependencies"
 msgstr "Išspręsti priklausomybes"
 
-#: src/ui.cc:2125
+#: src/ui.cc:2160
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Ieškoti būdų išspręsti netinkamas priklausomybes"
 
-#: src/ui.cc:2137
+#: src/ui.cc:2172
 #, c-format
 msgid "Unable to open %ls"
 msgstr "Nepavyko atidaryti %ls"
 
-#: src/ui.cc:2143
+#: src/ui.cc:2178
 msgid "Error while dumping resolver state"
 msgstr "Klaida iškraunant sprendimų būseną"
 
-#: src/ui.cc:2153
+#: src/ui.cc:2188
 msgid "File to which the resolver state should be dumped:"
 msgstr "Byla į kurią turėtu būti iškraunama sprendimų būsena:"
 
-#: src/ui.cc:2183
+#: src/ui.cc:2218
 msgid "^Install/remove packages"
 msgstr "^Diegti/šalinti paketus"
 
-#: src/ui.cc:2184
-msgid "Perform all pending installs and removals"
-msgstr "Vykdyti numatytus veiksmus"
-
-#: src/ui.cc:2186
+#: src/ui.cc:2221
 msgid "^Update package list"
 msgstr "^Atnaujinti paketų sąrašą"
 
-#: src/ui.cc:2187
-msgid "Check for new versions of packages"
-msgstr "Ieškoti naujų paketų versijų"
-
-#: src/ui.cc:2191
+#: src/ui.cc:2226
 msgid "Mark Up^gradable"
 msgstr "Pažymėti kaip ^atnaujinamą"
 
-#: src/ui.cc:2192
-msgid "Mark all upgradable packages which are not held for upgrade"
-msgstr ""
-"Pažymėti visus atnaujinamus paketus, kurie nesulaikomi nuo atnaujinimo."
-
-#: src/ui.cc:2196
+#: src/ui.cc:2231
 msgid "^Forget new packages"
 msgstr "^Pamiršti naujus paketus"
 
-#: src/ui.cc:2197
-msgid "Forget which packages are \"new\""
-msgstr "Pamiršti kurie paketai yra „nauji“"
-
-#: src/ui.cc:2200
+#: src/ui.cc:2235
 msgid "Canc^el pending actions"
 msgstr "Atšaukti ^visus veiksmus"
 
-#: src/ui.cc:2201
-msgid "Cancel all pending installations, removals, holds, and upgrades."
-msgstr ""
-"Atšaukti visus paruoštus diegimus, pašalinimus, sulaikymus ir atnaujinimus."
-
-#: src/ui.cc:2204
+#: src/ui.cc:2239
 msgid "^Clean package cache"
 msgstr "^Valyti paketų krepšį"
 
-#: src/ui.cc:2205
-msgid "Delete package files which were previously downloaded"
-msgstr "Ištrinti paketus, kurie buvo atsiųsti anksčiau"
-
-#: src/ui.cc:2208
+#: src/ui.cc:2243
 msgid "Clean ^obsolete files"
 msgstr "^Išvalyti pasenusius paketus"
 
-#: src/ui.cc:2209
-msgid "Delete package files which can no longer be downloaded"
-msgstr "Pašalinti paketus, kurių nebeįmanoma gauti"
-
-#: src/ui.cc:2215
+#: src/ui.cc:2250
 msgid "^Reload package cache"
 msgstr "^Perdaryti paketų krepšį"
 
-#: src/ui.cc:2216
-msgid "Reload the package cache"
-msgstr "Perkrauti paketų krepšį"
-
-#: src/ui.cc:2220
+#: src/ui.cc:2255
 msgid "^Play Minesweeper"
 msgstr "Žaisti ^Minų lauką"
 
-#: src/ui.cc:2225
+#: src/ui.cc:2260
 msgid "^Become root"
 msgstr "^Tapti root"
 
-#: src/ui.cc:2226
-msgid ""
-"Run 'su' to become root; this will restart the program, but your settings "
-"will be preserved"
-msgstr ""
-"Paleiskite komandą „su“, kad taptumėte root;  Programa startuos iš naujo, "
-"bet visi jūsų nustatymai išliks."
-
-#: src/ui.cc:2228
+#: src/ui.cc:2263
 msgid "^Quit"
 msgstr "^Baigti"
 
-#: src/ui.cc:2229
-msgid "Exit the program"
-msgstr "Išeiti iš programos"
-
-#: src/ui.cc:2235 src/ui.cc:2615
+#: src/ui.cc:2270 src/ui.cc:2650
 msgid "Undo"
 msgstr "Atšaukti"
 
-#: src/ui.cc:2236
-msgid "Undo the last package operation or group of operations"
-msgstr "Atšaukti paskutinį veiksmą, arba operacijų grupę."
-
-#: src/ui.cc:2244
+#: src/ui.cc:2279
 msgid "^Install"
 msgstr "Įd^iegti"
 
-#: src/ui.cc:2245
+#: src/ui.cc:2280
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "Pažymėti dabartinį paketą diegti arba atnaujinti"
 
-#: src/ui.cc:2248
+#: src/ui.cc:2283
 msgid "^Remove"
 msgstr "^Pašalinti"
 
-#: src/ui.cc:2249
+#: src/ui.cc:2284
 msgid "Flag the currently selected package for removal"
 msgstr "Pažymėti šį paketą, kaip šalinamą"
 
-#: src/ui.cc:2252
+#: src/ui.cc:2287
 msgid "^Purge"
 msgstr "iš^naikinti"
 
-#: src/ui.cc:2253
+#: src/ui.cc:2288
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "Pažymėti šį paketą ir jo konfigūracinius failus, kaip šalinamus"
 
-#: src/ui.cc:2256
+#: src/ui.cc:2291
 msgid "^Keep"
 msgstr "^Palikti"
 
-#: src/ui.cc:2257
+#: src/ui.cc:2292
 msgid "Cancel any action on the selected package"
 msgstr "Atšaukti šiam paketui visus veiksmus"
 
-#: src/ui.cc:2260
+#: src/ui.cc:2295
 msgid "^Hold"
 msgstr "^Sulaikyti"
 
-#: src/ui.cc:2261
+#: src/ui.cc:2296
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
@@ -5531,11 +6819,11 @@ msgstr ""
 "Atšaukti šiam paketui visus veiksmus, ir apsaugoti jį nuo ateities "
 "atnaujinimų"
 
-#: src/ui.cc:2264
+#: src/ui.cc:2299
 msgid "Mark ^Auto"
 msgstr "Pažymėti ^Auto"
 
-#: src/ui.cc:2265
+#: src/ui.cc:2300
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
@@ -5543,11 +6831,11 @@ msgstr ""
 "Pažymėti parinktus paketus kaip įdiegtus automatiškai; tuomet jie bus "
 "automatiškai pašalinti, kai jų nebereikės kitiems paketams"
 
-#: src/ui.cc:2268
+#: src/ui.cc:2303
 msgid "Mark ^Manual"
 msgstr "Žymėti ^Ne automatinis"
 
-#: src/ui.cc:2269
+#: src/ui.cc:2304
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
@@ -5555,11 +6843,11 @@ msgstr ""
 "Pažymėti pasirinktus paketus, kaip įdiegtus rankiniu būdu; jie nebus "
 "pašalinti tol, kol to nepadarysite rankiniu būdu"
 
-#: src/ui.cc:2272
+#: src/ui.cc:2307
 msgid "^Forbid Version"
 msgstr "^Uždrausti Versiją"
 
-#: src/ui.cc:2273
+#: src/ui.cc:2308
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
@@ -5567,19 +6855,19 @@ msgstr ""
 "Uždrausti pažymėto paketo siūlomą versiją; naujesnės paketo versijos bus "
 "įdiegtos kaip įprasta"
 
-#: src/ui.cc:2277
+#: src/ui.cc:2312
 msgid "I^nformation"
 msgstr "I^nformacija"
 
-#: src/ui.cc:2278
+#: src/ui.cc:2313
 msgid "Display more information about the selected package"
 msgstr "Parodyti daugiau informacijos apie pažymėtą paketą"
 
-#: src/ui.cc:2281
+#: src/ui.cc:2316
 msgid "C^ycle Package Information"
 msgstr "^Keisti paketo informaciją"
 
-#: src/ui.cc:2282
+#: src/ui.cc:2317
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
@@ -5589,59 +6877,59 @@ msgstr ""
 "aprašymas, priklausomybių būsenos suvestinė arba paaiškinimas, kodėl šis "
 "paketas yra būtinas."
 
-#: src/ui.cc:2285
+#: src/ui.cc:2320
 msgid "^Changelog"
 msgstr " Pakeitimų ^sąrašas"
 
-#: src/ui.cc:2286
+#: src/ui.cc:2321
 msgid "Display the Debian changelog of the selected package"
 msgstr "Rodyti šio paketo Debian pakeitimų sąrašą (changelog)"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2328
 msgid "^Examine Solution"
 msgstr "^Peržiūrėti sprendimą"
 
-#: src/ui.cc:2294
+#: src/ui.cc:2329
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Peržiūrėti pažymėto sprendimo priklausomybių problemas."
 
-#: src/ui.cc:2297
+#: src/ui.cc:2332
 msgid "Apply ^Solution"
 msgstr "Pritaikyti ^sprendimą"
 
-#: src/ui.cc:2298
+#: src/ui.cc:2333
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "Atlikti veiksmus, kurie numatyti pažymėtame sprendime."
 
-#: src/ui.cc:2301
+#: src/ui.cc:2336
 msgid "^Next Solution"
 msgstr "^Sekantis sprendimas"
 
-#: src/ui.cc:2302
+#: src/ui.cc:2337
 msgid "Select the next solution to the dependency problems."
 msgstr "Pasirinkite sekantį priklausomybių problemų sprendimą."
 
-#: src/ui.cc:2305
+#: src/ui.cc:2340
 msgid "^Previous Solution"
 msgstr "^Ankstesnis sprendimas"
 
-#: src/ui.cc:2306
+#: src/ui.cc:2341
 msgid "Select the previous solution to the dependency problems."
 msgstr "Pasirinkite ankstesnį priklausomybių problemų sprendimą."
 
-#: src/ui.cc:2309
+#: src/ui.cc:2344
 msgid "^First Solution"
 msgstr "^Pirmas sprendimas"
 
-#: src/ui.cc:2310
+#: src/ui.cc:2345
 msgid "Select the first solution to the dependency problems."
 msgstr "Pasirinkite pirmą priklausomybių problemų sprendimą."
 
-#: src/ui.cc:2313
+#: src/ui.cc:2348
 msgid "^Last Solution"
 msgstr "^Paskutinis sprendimas"
 
-#: src/ui.cc:2314
+#: src/ui.cc:2349
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
@@ -5649,35 +6937,35 @@ msgstr ""
 "Pasirinkite paskutinį priklausomybių , kurios iki šiol buvo sugeneruotos, "
 "problemų sprendimą."
 
-#: src/ui.cc:2320
+#: src/ui.cc:2355
 msgid "Toggle ^Rejected"
 msgstr "Keisti ^Atmestas"
 
-#: src/ui.cc:2321
+#: src/ui.cc:2356
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "Pakaitomis žymėti šį veiksmą kaip atmesta."
 
-#: src/ui.cc:2325
+#: src/ui.cc:2360
 msgid "Toggle ^Approved"
 msgstr "Pakaitomis ^Pataisytas"
 
-#: src/ui.cc:2326
+#: src/ui.cc:2361
 msgid "Toggle whether the currently selected action is approved."
 msgstr "Pakaitomis žymėti šį veiksmą kaip pataisytą."
 
-#: src/ui.cc:2330
+#: src/ui.cc:2365
 msgid "^View Target"
 msgstr "^Rodyti taikinį"
 
-#: src/ui.cc:2331
+#: src/ui.cc:2366
 msgid "View the package which will be affected by the selected action"
 msgstr "Rodyti paketus, kurie bus įtakoti šio veiksmo"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2372
 msgid "Reject Breaking ^Holds"
 msgstr "Atmesti trukdančius Sulaik^ymus"
 
-#: src/ui.cc:2339
+#: src/ui.cc:2374
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
@@ -5685,135 +6973,135 @@ msgstr ""
 "Atmesti visus veiksmus, kurie pakeičia sulaikytų paketų būsenas arba įdiegia "
 "uždraustas versijas"
 
-#: src/ui.cc:2347
+#: src/ui.cc:2382
 msgid "^Find"
 msgstr "^Rasti"
 
-#: src/ui.cc:2348
+#: src/ui.cc:2383
 msgid "Search forwards"
 msgstr "Ieškoti pirmyn"
 
-#: src/ui.cc:2351
+#: src/ui.cc:2386
 msgid "^Find Backwards"
 msgstr "^Ieškoti atgal"
 
-#: src/ui.cc:2352
+#: src/ui.cc:2387
 msgid "Search backwards"
 msgstr "Ieškoti atgal"
 
-#: src/ui.cc:2355
+#: src/ui.cc:2390
 msgid "Find ^Again"
 msgstr "Rasti ^Vėl"
 
-#: src/ui.cc:2356
+#: src/ui.cc:2391
 msgid "Repeat the last search"
 msgstr "Pakartoti paskutinę paiešką"
 
-#: src/ui.cc:2359
+#: src/ui.cc:2394
 msgid "Find Again ^Backwards"
 msgstr "Ieškoti vėl ^atgal"
 
-#: src/ui.cc:2360
+#: src/ui.cc:2395
 msgid "Repeat the last search in the opposite direction"
 msgstr "Pakartoti paskutinę paiešką atgaline kryptimi"
 
-#: src/ui.cc:2364
+#: src/ui.cc:2399
 msgid "^Limit Display"
 msgstr "^Apriboti ekraną"
 
-#: src/ui.cc:2365
+#: src/ui.cc:2400
 msgid "Apply a filter to the package list"
 msgstr "Pritaikyti filtrą paketų sąrašui"
 
-#: src/ui.cc:2368
+#: src/ui.cc:2403
 msgid "^Un-Limit Display"
 msgstr "^Neriboti ekrano"
 
-#: src/ui.cc:2369
+#: src/ui.cc:2404
 msgid "Remove the filter from the package list"
 msgstr "Nebenaudoti paketų sąrašo filtro"
 
-#: src/ui.cc:2373
+#: src/ui.cc:2408
 msgid "Find ^Broken"
 msgstr "Rasti ^Blogą"
 
-#: src/ui.cc:2374
+#: src/ui.cc:2409
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Rasti sekantį blogą paketą"
 
-#: src/ui.cc:2381
+#: src/ui.cc:2416
 msgid "^Preferences"
 msgstr "^Nustatymai"
 
-#: src/ui.cc:2386
+#: src/ui.cc:2421
 msgid "^UI options"
 msgstr "^Aplinkos parinktys"
 
-#: src/ui.cc:2387
+#: src/ui.cc:2422
 msgid "Change the settings which affect the user interface"
 msgstr "Pakeisti nustatymus, susijusius su naudotojo aplinka"
 
-#: src/ui.cc:2390
+#: src/ui.cc:2425
 msgid "^Dependency handling"
 msgstr "^Priklausomybių tvarkymas"
 
-#: src/ui.cc:2391
+#: src/ui.cc:2426
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "Keisti nustatymus, kurie turi įtakos darbui su paketų priklausomybėmis"
 
-#: src/ui.cc:2394
+#: src/ui.cc:2429
 msgid "^Miscellaneous"
 msgstr "^Kitkas"
 
-#: src/ui.cc:2395
+#: src/ui.cc:2430
 msgid "Change miscellaneous program settings"
 msgstr "Keisti kitus programos nustatymus"
 
-#: src/ui.cc:2401
+#: src/ui.cc:2436
 msgid "^Revert options"
 msgstr "Atstatyti ^parinktis"
 
-#: src/ui.cc:2402
+#: src/ui.cc:2437
 msgid "Reset all settings to the system defaults"
 msgstr "Atstatyti sistemos pradinius nustatymus"
 
-#: src/ui.cc:2413
+#: src/ui.cc:2448
 msgid "^Next"
 msgstr "^Sekantis"
 
-#: src/ui.cc:2414
+#: src/ui.cc:2449
 msgid "View next display"
 msgstr "Pereiti į sekantį ekraną"
 
-#: src/ui.cc:2417
+#: src/ui.cc:2452
 msgid "^Prev"
 msgstr "^Atgal"
 
-#: src/ui.cc:2418
+#: src/ui.cc:2453
 msgid "View previous display"
 msgstr "Pereiti į ankstesnį ekraną"
 
-#: src/ui.cc:2421
+#: src/ui.cc:2456
 msgid "^Close"
 msgstr "^Uždaryti"
 
-#: src/ui.cc:2422
+#: src/ui.cc:2457
 msgid "Close this display"
 msgstr "Uždaryti šį ekraną"
 
-#: src/ui.cc:2427
+#: src/ui.cc:2462
 msgid "New Package ^View"
 msgstr "Sekantis paketų ^vaizdas"
 
-#: src/ui.cc:2428
+#: src/ui.cc:2463
 msgid "Create a new default package view"
 msgstr "Sukurti naują standartinį paketų rodymą"
 
-#: src/ui.cc:2431
+#: src/ui.cc:2466
 msgid "Audit ^Recommendations"
 msgstr "Patikrinti ^rekomendacijas"
 
-#: src/ui.cc:2432
+#: src/ui.cc:2467
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -5821,91 +7109,87 @@ msgstr ""
 "Rodyti paketus, kurie yra rekomenduojami įdiegiamų paketų, ir jie šiuo metu "
 "nėra įdiegti."
 
-#: src/ui.cc:2435
+#: src/ui.cc:2470
 msgid "New ^Flat Package List"
 msgstr "Sekantis ^plokščias paketų sąrašas"
 
-#: src/ui.cc:2436
+#: src/ui.cc:2471
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Rodyti visus sistemos paketus viename sąraše be kategorijų"
 
-#: src/ui.cc:2439
+#: src/ui.cc:2474
 msgid "New ^Debtags Browser"
 msgstr "Nauja ^debtags naršyklė"
 
-#: src/ui.cc:2441
+#: src/ui.cc:2476
 msgid "Browse packages using Debtags data"
 msgstr "Naršyti paketus pagal debtag duomenis"
 
-#: src/ui.cc:2444
+#: src/ui.cc:2479
 msgid "New Categorical ^Browser"
 msgstr "^Nauja kategorijų naršyklė"
 
-#: src/ui.cc:2446
+#: src/ui.cc:2481
 msgid "Browse packages by category"
 msgstr "Naršyti paketus pagal kategorijas"
 
-#: src/ui.cc:2454
+#: src/ui.cc:2489
 msgid "^About"
 msgstr "^Apie"
 
-#: src/ui.cc:2455
+#: src/ui.cc:2490
 msgid "View information about this program"
 msgstr "Rodyti informaciją apie šią programą"
 
-#: src/ui.cc:2458
+#: src/ui.cc:2493
 msgid "^Help"
 msgstr "^Pagalba"
 
-#: src/ui.cc:2459
+#: src/ui.cc:2494
 msgid "View the on-line help"
 msgstr "Rodyti pagalbą"
 
-#: src/ui.cc:2461
+#: src/ui.cc:2496
 msgid "User's ^Manual"
 msgstr "Naudotojo ^instrukcijos"
 
-#: src/ui.cc:2462
+#: src/ui.cc:2497
 msgid "View the detailed program manual"
 msgstr "Rodyti detalizuotas naudotojo instrukcijas"
 
-#: src/ui.cc:2465
+#: src/ui.cc:2500
 msgid "^FAQ"
 msgstr "^DUK"
 
-#: src/ui.cc:2469
+#: src/ui.cc:2504
 msgid "^News"
 msgstr "Nau^jienos"
 
-#: src/ui.cc:2470
+#: src/ui.cc:2505
 msgid "View the important changes made in each version of "
 msgstr "Rodyti svarbius pakeitimus, kurie atsirado kiekvienoje versijoje "
 
-#: src/ui.cc:2473
+#: src/ui.cc:2508
 msgid "^License"
 msgstr "^Licencija"
 
-#: src/ui.cc:2614
+#: src/ui.cc:2649
 msgid "Actions"
 msgstr "Veiksmai"
 
-#: src/ui.cc:2617
-msgid "Resolver"
-msgstr "Sprendimai"
-
-#: src/ui.cc:2618
+#: src/ui.cc:2653
 msgid "Search"
 msgstr "Paieška"
 
-#: src/ui.cc:2619
+#: src/ui.cc:2654
 msgid "Options"
 msgstr "Parinktys"
 
-#: src/ui.cc:2620
+#: src/ui.cc:2655
 msgid "Views"
 msgstr "Rodymas"
 
-#: src/ui.cc:2686
+#: src/ui.cc:2721
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -5914,31 +7198,150 @@ msgstr ""
 "%ls: Meniu %ls: Pagalba %ls: Baigti %ls: Atnaujinti %ls: Gauti/Diegti/"
 "ŠalintiPkt"
 
-#: src/ui.cc:3031
+#: src/ui.cc:3063
 msgid "yes_key"
 msgstr "t"
 
-#: src/ui.cc:3032
+#: src/ui.cc:3064
 msgid "no_key"
 msgstr "n"
 
-#: src/view_changelog.cc:165
+#: src/view_changelog.cc:271
 #, c-format
 msgid "%s changes"
 msgstr "%s pakeitimų"
 
-#: src/view_changelog.cc:166
+#: src/view_changelog.cc:272
 msgid "View the list of changes made to this Debian package."
 msgstr "Rodyti šiam Debian paketui pritaikytus pakeitimus."
 
-#: src/view_changelog.cc:230
+#: src/view_changelog.cc:369
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Oficialių Debian paketų pakeitimų sąrašą galima tik skaityti."
 
-#: src/view_changelog.cc:240
+#: src/view_changelog.cc:389
 msgid "Downloading Changelog"
 msgstr "Gaunu pakeitimų sąrašą"
 
-#: src/view_changelog.cc:242
+#: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Gauti pakeitimų sąrašą"
+
+#, fuzzy
+#~| msgid "Install"
+#~ msgid "_Install"
+#~ msgstr "Įdiegti"
+
+#, fuzzy
+#~| msgid "Remove"
+#~ msgid "_Remove"
+#~ msgstr "Šalinti"
+
+#, fuzzy
+#~| msgid "^Purge"
+#~ msgid "_Purge"
+#~ msgstr "iš^naikinti"
+
+#, fuzzy
+#~| msgid "Keep"
+#~ msgid "_Keep"
+#~ msgstr "Palikti"
+
+#, fuzzy
+#~| msgid "Hold"
+#~ msgid "_Hold"
+#~ msgstr "Sulaikyti"
+
+#, fuzzy
+#~| msgid "Mark ^Auto"
+#~ msgid "Mark _Auto"
+#~ msgstr "Pažymėti ^Auto"
+
+#, fuzzy
+#~| msgid "Mark ^Manual"
+#~ msgid "Mark _Manual"
+#~ msgstr "Žymėti ^Ne automatinis"
+
+#, fuzzy
+#~| msgid "^Forbid Version"
+#~ msgid "_Forbid Version"
+#~ msgstr "^Uždrausti Versiją"
+
+#, fuzzy
+#~| msgid "Resolver"
+#~ msgid "Resolver:"
+#~ msgstr "Sprendimai"
+
+#, fuzzy
+#~| msgid "Preview"
+#~ msgid "Preview:"
+#~ msgstr "Peržiūra"
+
+#, fuzzy
+#~| msgid "No packages are broken."
+#~ msgid "%d packages are broken."
+#~ msgstr "Bėra blogų paketų."
+
+#, fuzzy
+#~| msgid "%d install"
+#~| msgid_plural "%d installs"
+#~ msgid "%d packages to install"
+#~ msgstr "%d diegiamas"
+
+#, fuzzy
+#~| msgid "No packages are broken."
+#~ msgid "%d packages to remove"
+#~ msgstr "Bėra blogų paketų."
+
+#, fuzzy
+#~| msgid "Packages"
+#~ msgid "Packages:"
+#~ msgstr "Paketai"
+
+#~ msgid "Yes"
+#~ msgstr "Taip"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "Automatically Installed"
+#~ msgstr "Automatiškai įdiegtas"
+
+#~ msgid "Broken"
+#~ msgstr "Blogas"
+
+#~ msgid "Unchanged"
+#~ msgstr "Nekeistas"
+
+#~ msgid "Remove [unused]"
+#~ msgstr "Pašalinti [nenaudojama]"
+
+#~ msgid "Hold [auto]"
+#~ msgstr "Sulaikyti [auto]"
+
+#~ msgid "Install [auto]"
+#~ msgstr "Įdiegti [auto]"
+
+#~ msgid "Remove [auto]"
+#~ msgstr "Šalinti [auto]"
+
+#~ msgid "Essential"
+#~ msgstr "Esminis"
+
+#~ msgid "Config Files Remain"
+#~ msgstr "Likusios konfigūracijos bylos"
+
+#~ msgid "Garbage"
+#~ msgstr "Šlamštas"
+
+#~ msgid "No reverse dependencies"
+#~ msgstr "Nėra atvirkštinių priklausomybių"
+
+#~ msgid "New Package"
+#~ msgstr "Naujaspaketas"
+
+#~ msgid "Upgradable"
+#~ msgstr "Atnaujinamas"
+
+#~ msgid "Obsolete"
+#~ msgstr "Nebenaudojamas"

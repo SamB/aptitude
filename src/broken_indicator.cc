@@ -1,6 +1,6 @@
 // broken_indicator.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -51,6 +51,8 @@ namespace cwidget
 }
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+typedef generic_choice<aptitude_universe> choice;
+typedef generic_choice_set<aptitude_universe> choice_set;
 
 /** A simple indicator, usually placed at the bottom of the screen,
  *  that describes the current state of the problem resolver.  Hidden
@@ -306,7 +308,7 @@ public:
     last_background_active = state.background_thread_active;
     last_sol_is_keep_all = resman->get_is_keep_all_solution(state.selected_solution, 0);
 
-    if(sol.get_actions().empty())
+    if(sol.get_choices().size() == 0)
       {
 	set_fragment(cw::fragf("%s", _("Internal error: unexpected null solution.")));
 	show();
@@ -315,14 +317,13 @@ public:
 
     int install_count=0, remove_count=0, keep_count=0, upgrade_count=0, downgrade_count=0;
 
-    for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
-	  i = sol.get_actions().begin();
-	i != sol.get_actions().end(); ++i)
+    for(choice_set::const_iterator i = sol.get_choices().begin();
+	i != sol.get_choices().end(); ++i)
       {
-	pkgCache::PkgIterator pkg=i->first.get_pkg();
+	pkgCache::PkgIterator pkg = i->get_ver().get_pkg();
 	pkgCache::VerIterator curver=pkg.CurrentVer();
 	pkgCache::VerIterator instver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
-	pkgCache::VerIterator newver=i->second.ver.get_ver();
+	pkgCache::VerIterator newver = i->get_ver().get_ver();
 
 	// If not, we have a problem.
 	eassert(instver!=newver);

@@ -1,6 +1,6 @@
 // download_thread.cc
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -31,53 +31,40 @@
 namespace cw = cwidget;
 
 template<typename RVal>
-class background_execute : public cw::toplevel::event
+void background_execute(sigc::slot0<RVal> slot,
+			cw::threads::box<RVal> *return_box)
 {
-  sigc::slot0<RVal> slot;
-
-  cw::threads::box<RVal> &return_box;
-public:
-  background_execute(const sigc::slot0<RVal> &_slot,
-		     cw::threads::box<RVal> &_return_box)
-    :slot(_slot), return_box(_return_box)
-  {
-  }
-
-  void dispatch()
-  {
-    return_box.put(slot());
-  }
-};
+  return_box->put(slot());
+}
 
 template<>
-class background_execute<void> : public cw::toplevel::event
+void background_execute<void>(sigc::slot0<void> slot,
+			      cw::threads::box<void> *return_box)
 {
-  sigc::slot0<void> slot;
-  cw::threads::box<void> &return_box;
-public:
-  background_execute(const sigc::slot0<void> &_slot,
-		     cw::threads::box<void> &_return_box)
-    :slot(_slot), return_box(_return_box)
-  {
-  }
+  slot();
+  return_box->put();
+}
 
-  void dispatch()
-  {
-    slot();
-    return_box.put();
-  }
-};
+// Note: all these do_foreground_execute() overloads are thread-safe
+// only because C is download_signal_log and that's not a trackable
+// object.  Furthermore, they're safe only under the assumption that
+// the signal log is not deleted 
 
 /** Run the given method call in the foreground and return its value. */
 template<typename C, typename RVal>
 static
 RVal do_foreground_execute(C *inst,
-			   RVal (C::* fun) ())
+			   RVal (C::* fun) (),
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  cw::toplevel::post_event(new background_execute<RVal>(sigc::mem_fun(inst, fun),
-						  return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::mem_fun(inst, fun),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -87,12 +74,17 @@ template<typename C, typename RVal, typename Arg0>
 static
 RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
-			   RVal (C::* fun) (Arg0))
+			   RVal (C::* fun) (Arg0),
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0),
-						  return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -103,12 +95,17 @@ static
 RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
 			   Arg1 arg1,
-			   RVal (C::* fun) (Arg0, Arg1))
+			   RVal (C::* fun) (Arg0, Arg1),
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1),
-						  return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -120,12 +117,17 @@ RVal do_foreground_execute(C *inst,
 			   Arg0 arg0,
 			   Arg1 arg1,
 			   Arg2 arg2,
-			   RVal (C::* fun) (Arg0, Arg1, Arg2))
+			   RVal (C::* fun) (Arg0, Arg1, Arg2),
+			   post_thunk_func post_thunk)
 {
   cw::threads::box<RVal> return_box;
 
-  cw::toplevel::post_event(new background_execute<RVal>(bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
-						  return_box));
+  sigc::slot0<void> background_execute_slot =
+    sigc::bind(sigc::ptr_fun(&background_execute<RVal>),
+	       sigc::bind(sigc::mem_fun(inst, fun), arg0, arg1, arg2),
+	       &return_box);
+
+  post_thunk(make_safe_slot(background_execute_slot));
 
   return return_box.take();
 }
@@ -134,7 +136,8 @@ void background_status::Fetched(unsigned long Size,
 				unsigned long ResumePoint)
 {
   do_foreground_execute(real_status, Size, ResumePoint,
-			&download_signal_log::Fetched);
+			&download_signal_log::Fetched,
+			post_thunk);
 }
 
 bool background_status::MediaChange(std::string Media, std::string Drive)
@@ -146,29 +149,30 @@ bool background_status::MediaChange(std::string Media, std::string Drive)
     const sigc::slot1<void, bool> &>  (real_status, Media, Drive,
 				       sigc::mem_fun(return_box,
 						     &cw::threads::box<bool>::put),
-				       &download_signal_log::MediaChange);
+				       &download_signal_log::MediaChange,
+				       post_thunk);
 
   return return_box.take();
 }
 
 void background_status::IMSHit(pkgAcquire::ItemDesc &item)
 {
-  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::IMSHit);
+  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::IMSHit, post_thunk);
 }
 
 void background_status::Fetch(pkgAcquire::ItemDesc &item)
 {
-  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Fetch);
+  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Fetch, post_thunk);
 }
 
 void background_status::Done(pkgAcquire::ItemDesc &item)
 {
-  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Done);
+  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Done, post_thunk);
 }
 
 void background_status::Fail(pkgAcquire::ItemDesc &item)
 {
-  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Fail);
+  do_foreground_execute<download_signal_log, void, pkgAcquire::ItemDesc &>(real_status, item, &download_signal_log::Fail, post_thunk);
 }
 
 bool background_status::Pulse(pkgAcquire *Owner)
@@ -180,14 +184,15 @@ bool background_status::Pulse(pkgAcquire *Owner)
     const sigc::slot1<void, bool> &>(real_status, Owner,
 				     sigc::mem_fun(&return_box,
 						   &cw::threads::box<bool>::put),
-				     &download_signal_log::Pulse);
+				     &download_signal_log::Pulse,
+				     post_thunk);
 
   return return_box.take();
 }
 
 void background_status::Start()
 {
-  do_foreground_execute(real_status, &download_signal_log::Start);
+  do_foreground_execute(real_status, &download_signal_log::Start, post_thunk);
 }
 
 void background_status::Stop()
@@ -199,34 +204,30 @@ void background_status::Stop()
     const sigc::slot0<void> &>(real_status,
 			       sigc::mem_fun(&return_box,
 					     &cw::threads::box<void>::put),
-			       &download_signal_log::Stop);
+			       &download_signal_log::Stop,
+			       post_thunk);
 
   return_box.take();
 }
 
-class download_thread_complete_event : public cw::toplevel::event
+namespace
 {
-  download_thread *t;
-  pkgAcquire::RunResult res;
-
-  sigc::slot2<void, download_thread *, pkgAcquire::RunResult> continuation;
-public:
-  download_thread_complete_event(download_thread *_t,
-				 pkgAcquire::RunResult _res,
-				 sigc::slot2<void, download_thread *, pkgAcquire::RunResult> &_continuation)
-    :t(_t), res(_res), continuation(_continuation)
-  {
-  }
-
-  void dispatch()
+  void do_download_complete(download_thread *t,
+			    pkgAcquire::RunResult res,
+			    safe_slot2<void, download_thread *, pkgAcquire::RunResult> continuation)
   {
     t->join();
-    continuation(t, res);
+    continuation.get_slot()(t, res);
   }
-};
+}
 
 void download_thread::operator()()
 {
-  cw::toplevel::post_event(new download_thread_complete_event(this, m->do_download(),
-							continuation));
+  pkgAcquire::RunResult res = m->do_download();
+
+  sigc::slot0<void> download_complete_slot =
+    sigc::bind(sigc::ptr_fun(&do_download_complete),
+	       this, res,
+	       continuation);
+  post_thunk(make_safe_slot(download_complete_slot));
 }

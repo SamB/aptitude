@@ -1,6 +1,6 @@
 // dummy_universe.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -174,6 +174,11 @@ void dummy_universe::add_dep(const string &pkg_name, const string &pkg_ver,
   for(dummy_dep::solver_iterator i=newdep->solvers_begin();
       i!=newdep->solvers_end(); ++i)
     (*i)->add_revdep(newdep);
+}
+
+ostream &operator<<(ostream &out, const dummy_universe::package &p)
+{
+  return out << p.get_name();
 }
 
 ostream &operator<<(ostream &out, const dummy_universe::version &v)

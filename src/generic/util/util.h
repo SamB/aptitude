@@ -1,6 +1,6 @@
 // Random utility functions that have nothing to do with apt. -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,6 +28,11 @@
  */
 
 struct tm;
+
+/** \brief Backslash-escape anything in the given string that is not a
+ *  number or a letter.
+ */
+std::string backslash_escape_nonalnum(const std::string &s);
 
 // Strip whitespace from the beginning and end of a string.
 void stripws(std::string &s);

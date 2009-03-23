@@ -1,6 +1,6 @@
 // cmdline_why.h                            -*-c++-*-
 //
-//   Copyright (C) 2007-2008 Daniel Burrows
+//   Copyright (C) 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -34,11 +34,39 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptcache.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
 
 /** \file cmdline_why.h
  */
+
+namespace aptitude
+{
+  namespace why
+  {
+    enum roots_string_mode
+      {
+	/** \brief No summary at all (only used in do_why and
+	 *  cmdline_why).
+	 */
+	no_summary,
+	/** \brief Show only the name of each requiring package. */
+	show_requiring_packages,
+	/** \brief Show the name of each requiring package and the
+	 *  strength of the strongest entry in the chain.
+	 */
+	show_requiring_packages_and_strength,
+	/** \brief Show the chain leading to each requiring package.
+	 */
+	show_chain,
+	/** \brief Show the chain leading to each requiring package,
+	 *  with version information.
+	 */
+	show_chain_with_versions
+      };
+  }
+}
 
 /** \brief Explain why a package is installed or conflicted against.
  *
@@ -64,6 +92,7 @@
  */
 int cmdline_why(int argc, char *argv[],
 		const char *status_fname, int verbosity,
+		aptitude::why::roots_string_mode display_mode,
 		bool why_not);
 
 
@@ -74,11 +103,6 @@ namespace cwidget
 }
 namespace aptitude
 {
-  namespace matching
-  {
-    class pkg_matcher;
-  }
-
   namespace why
   {
     class justification;
@@ -385,7 +409,7 @@ namespace aptitude
     /** \brief Search for a justification for an action.
      *
      *  \param target    the action to justify.
-     *  \param leaves    matchers selecting the packages to build a
+     *  \param leaves    patterns selecting the packages to build a
      *                   justification from.
      *  \param params    the parameters of the search.
      *  \param output    where the justification is stored.
@@ -394,15 +418,35 @@ namespace aptitude
      *          \b false otherwise.
      */
     bool find_justification(const target &target,
-			    const std::vector<aptitude::matching::pkg_matcher *> leaves,
+			    const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
 			    std::vector<std::vector<action> > &output);
+
+    /** \brief Find the shortest strongest justification for the given
+     *  goal starting at the given set of leaves.
+     *
+     *  \param leaves     The packages at which the search should terminate.
+     *  \param goal       The target of the search.
+     *  \param find_all   If \b true, return all the possible justifications
+     *                    rather than just the first one.
+     *  \param verbosity  How verbose the search should be (if set to a value
+     *                    greater than zero, various trace information will be
+
+     *                    written to standard output).
+     *  \param output     A vector in which to store the results of the search.
+     */
+    void find_best_justification(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
+				 const target &goal,
+				 bool find_all,
+				 int verbosity,
+				 std::vector<std::vector<action> > &output);
   }
 }
 
-cwidget::fragment *do_why(const std::vector<aptitude::matching::pkg_matcher *> &leaves,
+cwidget::fragment *do_why(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
 			  const pkgCache::PkgIterator &root,
+			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
 			  bool &success);
@@ -410,9 +454,26 @@ cwidget::fragment *do_why(const std::vector<aptitude::matching::pkg_matcher *> &
 // Parses the leaves as if they were command-line arguments.
 cwidget::fragment *do_why(const std::vector<std::string> &arguments,
 			  const std::string &root,
+			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
 			  bool &success);
 
+namespace aptitude
+{
+  namespace why
+  {
+    /** \brief Build a list of strings summarizing the given actions.
+     *
+     *  \param actions  The "why" output to be displayed.
+     *  \param mode     The mode to run in.
+     *  \param out      A vector onto which a string should be placed
+     *                  for each individual reason that is discovered.
+     */
+    void summarize_reasons(const std::vector<std::vector<action> > &actions,
+			   roots_string_mode mode,
+			   std::vector<std::string> &out);
+  }
+}
 
 #endif

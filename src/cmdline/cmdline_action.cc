@@ -9,7 +9,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 #include <generic/apt/tasks.h>
 
 #include <apt-pkg/algorithms.h>
@@ -482,7 +484,7 @@ bool cmdline_applyaction(string s,
       return false;
     }
 
-  if(!cmdline_is_search_pattern(package))
+  if(!aptitude::matching::is_pattern(package))
     {
       pkgCache::PkgIterator pkg=(*apt_cache_file)->FindPkg(package.c_str());
       if(pkg.end())
@@ -561,29 +563,30 @@ bool cmdline_applyaction(string s,
     }
   else
     {
-      pkg_matcher *m = parse_pattern(package.c_str());
-      if(!m)
+      cw::util::ref_ptr<pattern> p(parse(package.c_str()));
+      if(!p.valid())
 	{
 	  _error->DumpErrors();
 	  return false;
 	}
 
-      for(pkgCache::PkgIterator pkg=(*apt_cache_file)->PkgBegin();
-	  !pkg.end(); ++pkg)
+      std::vector<std::pair<pkgCache::PkgIterator, cw::util::ref_ptr<structural_match> > > matches;
+      cw::util::ref_ptr<search_cache> search_info(search_cache::create());
+      search(p, search_info, matches,
+	     *apt_cache_file,
+	     *apt_package_records);
+      for(std::vector<std::pair<pkgCache::PkgIterator, cw::util::ref_ptr<structural_match> > >::const_iterator
+	    it = matches.begin(); it != matches.end(); ++it)
 	{
-	  pkgCache::VerIterator testver;
-
-	  if(apply_matcher(m, pkg, *apt_cache_file, *apt_package_records))
-	    rval = cmdline_applyaction(action, pkg,
-				       seen_virtual_packages,
-				       to_install, to_hold, to_remove, to_purge,
-				       verbose, source,
-				       sourcestr,
-				       policy, arch_only,
-				       allow_auto) && rval;
+	  if(!cmdline_applyaction(action, it->first,
+				  seen_virtual_packages,
+				  to_install, to_hold, to_remove, to_purge,
+				  verbose, source,
+				  sourcestr,
+				  policy, arch_only,
+				  allow_auto))
+	    rval = false;
 	}
-
-      delete m;
     }
 
   return rval;

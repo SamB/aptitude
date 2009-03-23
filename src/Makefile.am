@@ -1,6 +1,11 @@
 MAINTAINERCLEANFILES=Makefile.in
 
-SUBDIRS=generic cmdline mine
+if BUILD_GTK
+  MAYBE_GTK = gtk
+  MAYBE_LIBGTK = gtk/libgtk.a
+endif
+
+SUBDIRS=generic $(MAYBE_GTK) cmdline mine
 
 localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
@@ -8,14 +13,15 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 bin_PROGRAMS=aptitude
 
-LDADD=@LIBINTL@ cmdline/libcmdline.a mine/libcmine.a \
-	generic/util/libgeneric-util.a generic/apt/libgeneric-apt.a
+LDADD=@LIBINTL@ $(MAYBE_LIBGTK) cmdline/libcmdline.a mine/libcmine.a \
+	generic/util/libgeneric-util.a generic/apt/libgeneric-apt.a \
+	generic/apt/matching/libgeneric-matching.a
 
 aptitude_SOURCES= 	\
 	aptitude.h	\
 	main.cc		\
-	desc_parse.cc   \
-	desc_parse.h    \
+	desc_render.cc   \
+	desc_render.h    \
 	apt_config_treeitems.cc \
 	apt_config_treeitems.h  \
 	apt_config_widgets.cc \
@@ -28,8 +34,6 @@ aptitude_SOURCES= 	\
 	apt_undo_tree.h \
 	broken_indicator.cc\
 	broken_indicator.h\
-	changelog_parse.cc \
-	changelog_parse.h  \
 	defaults.cc	\
 	defaults.h	\
 	dep_item.cc	\
@@ -50,6 +54,8 @@ aptitude_SOURCES= 	\
 	load_pkgview.h	\
 	load_sortpolicy.cc\
 	load_sortpolicy.h\
+	loggers.cc\
+	loggers.h\
 	menu_redirect.cc\
 	menu_redirect.h\
 	menu_text_layout.cc \
@@ -81,6 +87,7 @@ aptitude_SOURCES= 	\
 	progress.h	\
 	reason_fragment.cc\
 	reason_fragment.h\
+	safe_slot_event.h\
 	solution_dialog.cc\
 	solution_dialog.h\
 	solution_fragment.cc\

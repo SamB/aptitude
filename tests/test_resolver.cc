@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -93,6 +93,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testActionCompare);
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
 
@@ -167,8 +168,10 @@ private:
 							   parent.get_broken(),
 							   unresolved,
 							   parent.get_forbidden_versions(),
+							   parent.get_initial_state(),
 							   parent.get_score(),
-							   parent.get_action_score()));
+							   parent.get_action_score(),
+							   parent.get_tier()));
   }
 
   /** Tests that the comparison operations on solutions work. */
@@ -184,7 +187,10 @@ private:
     CPPUNIT_ASSERT(!di.end());
     dummy_universe::dep d2 = *di;
 
-    solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count());
+    resolver_initial_state<dummy_universe_ref> initial_state(imm::map<dummy_universe::package, dummy_universe::version>(), u.get_package_count());
+
+    solution_weights<dummy_universe_ref> weights(0, 0, 0, 0, u.get_version_count(),
+						 initial_state);
 
     imm::set<dummy_universe::dep> u_broken;
     for(dummy_universe::broken_dep_iterator bi = u.broken_begin();
@@ -206,7 +212,8 @@ private:
     // is correctly calculated according to the version mappings and
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
-						  u, weights);
+						  u, weights, initial_state,
+						  0);
     dummy_solution s1
       = unsafe_successor(s0, &a1, &a1+1,
 			 (dummy_universe::dep *) 0,
@@ -295,7 +302,9 @@ private:
   void testRejections()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
-    dummy_resolver r(10, -300, -100, 100000, 0, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
 
     r.reject_version(u.find_package("a").version_from_name("v3"));
     r.reject_version(u.find_package("b").version_from_name("v3"));
@@ -311,6 +320,97 @@ private:
       }
   }
 
+  // Check that initial states work.
+  void testInitialState()
+  {
+    typedef dummy_universe_ref::package package;
+    typedef dummy_universe_ref::version version;
+    typedef dummy_universe_ref::dep dep;
+    typedef dummy_solution::action action;
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_2);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version av1 = a.version_from_name("v1");
+    version av2 = a.version_from_name("v2");
+    version bv1 = b.version_from_name("v1");
+    version bv2 = b.version_from_name("v2");
+    version cv1 = c.version_from_name("v1");
+    version cv2 = c.version_from_name("v2");
+
+
+    imm::map<package, version> initial_state;
+    initial_state.put(a, av2);
+    initial_state.put(c, cv2);
+
+    dummy_resolver r(10, -300, -100, 10000000, 500, 1,
+		     initial_state,
+		     u);
+
+    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(a), av2);
+    CPPUNIT_ASSERT_EQUAL(r.get_initial_state().version_of(c), cv2);
+
+    // I use an immset here because it has a decent operator<< for
+    // printing error messages, and to smooth out differences in order
+    // (which shouldn't happen in this implementation, but shouldn't
+    // be wrong either).
+    imm::set<version> expected_initial_state;
+    expected_initial_state.insert(av2);
+    expected_initial_state.insert(cv2);
+
+    {
+      std::set<version> initial_state;
+      r.get_initial_state().get_initial_versions(initial_state);
+      imm::set<version> initial_state_set;
+      for(std::set<version>::const_iterator it = initial_state.begin();
+	  it != initial_state.end(); ++it)
+	initial_state_set.insert(*it);
+      CPPUNIT_ASSERT_EQUAL(initial_state_set,
+			   expected_initial_state);
+    }
+
+    try
+      {
+	dummy_solution sol = r.find_next_solution(1000000, NULL);
+
+	CPPUNIT_ASSERT_MESSAGE("There are no broken deps, so only the empty solution should be returned.",
+			       sol.get_actions().empty());
+
+	{
+	  std::set<version> initial_state;
+	  sol.get_initial_state().get_initial_versions(initial_state);
+	  imm::set<version> initial_state_set;
+	  for(std::set<version>::const_iterator it = initial_state.begin();
+	      it != initial_state.end(); ++it)
+	    initial_state_set.insert(*it);
+	  CPPUNIT_ASSERT_EQUAL(initial_state_set,
+			       expected_initial_state);
+	}
+
+	bool out_of_solutions = false;
+	try
+	  {
+	    sol = r.find_next_solution(1000000, NULL);
+	  }
+	catch(NoMoreSolutions&)
+	  {
+	    out_of_solutions = true;
+	  }
+	CPPUNIT_ASSERT_MESSAGE("There should be only one solution.",
+			       out_of_solutions);
+      }
+    catch(NoMoreTime&)
+      {
+	CPPUNIT_FAIL("Unable to solve the solution in the ridiculous amount of time I allocated.");
+      }
+    catch(NoMoreSolutions&)
+      {
+	CPPUNIT_FAIL("The empty solution should be returned.");
+      }
+  }
+
   // Check that joint scores work.
   void testJointScores()
   {
@@ -320,8 +420,11 @@ private:
     typedef dummy_solution::action action;
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 10000000, 0, 500, u);
-    r.set_debug(true);
+    dummy_resolver r(10, -300, -100, 10000000, 500, 500,
+		     imm::map<package, version>(),
+		     u);
+    // Disable this to debug the resolver test.
+    //r.set_debug(true);
     // Score the combination of b, v1 and a, v2 highly.
     package a = u.find_package("a");
     package b = u.find_package("b");
@@ -399,7 +502,9 @@ private:
   void testDropSolutionSupersets()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 100000, 0, 50000, u);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 500000,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
 
     dummy_universe::package a = u.find_package("a");
     dummy_universe::version av1 = a.version_from_name("v1");

@@ -20,8 +20,15 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
+#include <log4cxx/basicconfigurator.h>
+#include <log4cxx/level.h>
+#include <log4cxx/logger.h>
+
 int main(int argc, char **argv)
 {
+  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
+  log4cxx::BasicConfigurator::configure();
+
   CppUnit::TextUi::TestRunner runner;
   CppUnit::TestFactoryRegistry &registry =
     CppUnit::TestFactoryRegistry::getRegistry();

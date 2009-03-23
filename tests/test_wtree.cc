@@ -1,6 +1,6 @@
 // test_wtree.cc
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -84,6 +84,7 @@ class WTreeTest : public CppUnit::TestFixture
   CPPUNIT_TEST(generalWTreeTest);
   CPPUNIT_TEST(mapTest);
   CPPUNIT_TEST(mapIntersectTest);
+  CPPUNIT_TEST(setForEachBreakTest);
 
   CPPUNIT_TEST_SUITE_END();
 public:
@@ -1177,6 +1178,64 @@ do  { \
     CPPUNIT_ASSERT(m1.has_related_mapping(m2, std::greater<std::pair<int, int> >()));
     CPPUNIT_ASSERT(!m2.has_related_mapping(m1, std::greater<std::pair<int, int> >()));
     CPPUNIT_ASSERT(m2.has_related_mapping(m1, std::less<std::pair<int, int> >()));
+  }
+
+  // Set the Nth entry in the given array to true, until the entry
+  // number is above 5.
+  struct set_or_break
+  {
+    bool *array;
+
+    set_or_break(bool *_array) : array(_array)
+    {
+    }
+
+    bool operator()(int n) const
+    {
+      array[n] = true;
+
+      return n <= 5;
+    }
+  };
+
+  void setForEachBreakTest()
+  {
+    const int array_len = 20;
+    bool array[array_len];
+
+    for(int i = 0; i < array_len; ++i)
+      array[i] = false;
+    {
+      imm::set<int> vals;
+
+      vals.insert(2);
+      CPPUNIT_ASSERT(vals.for_each(set_or_break(array)));
+
+      for(int i = 0; i < array_len; ++i)
+	{
+	  CPPUNIT_ASSERT_EQUAL(vals.contains(i), array[i]);
+	}
+    }
+
+
+    for(int i = 0; i < array_len; ++i)
+      array[i] = false;
+    {
+      imm::set<int> vals;
+
+      vals.insert(2);
+      vals.insert(4);
+      vals.insert(5);
+      vals.insert(6);
+      vals.insert(8);
+      CPPUNIT_ASSERT(!vals.for_each(set_or_break(array)));
+
+      // Now everything *up to and including* 6 should be set.
+      for(int i = 0; i < array_len; ++i)
+	{
+	  CPPUNIT_ASSERT_EQUAL(vals.contains(i) && i <= 6, array[i]);
+	}
+    }
   }
 };
 

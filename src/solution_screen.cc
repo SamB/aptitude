@@ -1,6 +1,6 @@
 // solution_screen.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -48,6 +48,8 @@
 #include <algorithm>
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+typedef generic_choice<aptitude_universe> choice;
+typedef generic_choice_set<aptitude_universe> choice_set;
 
 using namespace std;
 namespace cw = cwidget;
@@ -56,15 +58,7 @@ namespace cwidget
   using namespace widgets;
 }
 
-struct act_name_lt
-{
-public:
-  bool operator()(const aptitude_solution::action &v1,
-		  const aptitude_solution::action &v2) const
-  {
-    return strcmp(v1.ver.get_pkg().Name(), v2.ver.get_pkg().Name()) < 0;
-  }
-};
+typedef aptitude_solution::choice_name_lt choice_name_lt;
 
 /** Partition the set of all packages into several vectors,
  *  according to the action to be performed on each package.
@@ -78,38 +72,50 @@ public:
  *         its target version will be placed in this vector.
  *  \param upgrade_actions if a package is being upgraded,
  *         its target version will be placed in this vector.
+ *  \param unresolved_actions all the choices that leave a dependency
+ *         unresolved will be placed in this vector.
  */
 void bin_actions(const aptitude_solution &sol,
-		 vector<aptitude_solution::action> &remove_actions,
-		 vector<aptitude_solution::action> &keep_actions,
-		 vector<aptitude_solution::action> &install_actions,
-		 vector<aptitude_solution::action> &downgrade_actions,
-		 vector<aptitude_solution::action> &upgrade_actions)
+		 vector<choice> &remove_actions,
+		 vector<choice> &keep_actions,
+		 vector<choice> &install_actions,
+		 vector<choice> &downgrade_actions,
+		 vector<choice> &upgrade_actions,
+		 vector<choice> &unresolved_actions)
 {
 
-  for(imm::map<aptitude_universe::package,
-	aptitude_solution::action>::const_iterator i=sol.get_actions().begin();
-      i!=sol.get_actions().end(); ++i)
-    switch(analyze_action(i->second.ver))
-      {
-      case action_remove:
-	remove_actions.push_back(i->second);
-	break;
-      case action_keep:
-	keep_actions.push_back(i->second);
-	break;
-      case action_install:
-	install_actions.push_back(i->second);
-	break;
-      case action_downgrade:
-	downgrade_actions.push_back(i->second);
-	break;
-      case action_upgrade:
-	upgrade_actions.push_back(i->second);
-	break;
-      default:
-	abort();
-      }
+  for(choice_set::const_iterator it = sol.get_choices().begin();
+      it != sol.get_choices().end(); ++it)
+    {
+      switch(it->get_type())
+	{
+	case choice::install_version:
+	  switch(analyze_action(it->get_ver()))
+	    {
+	    case action_remove:
+	      remove_actions.push_back(*it);
+	      break;
+	    case action_keep:
+	      keep_actions.push_back(*it);
+	      break;
+	    case action_install:
+	      install_actions.push_back(*it);
+	      break;
+	    case action_downgrade:
+	      downgrade_actions.push_back(*it);
+	      break;
+	    case action_upgrade:
+	      upgrade_actions.push_back(*it);
+	      break;
+	    default:
+	      abort();
+	    }
+
+	case choice::break_soft_dep:
+	  unresolved_actions.push_back(*it);
+	  break;
+	}
+    }
 }
 
 class label_tree : public cw::subtree_generic
@@ -166,9 +172,7 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
 	    vi = d.get_source().get_package().versions_begin(); !vi.end(); ++vi)
 	if(*vi != d.get_source())
 	  {
-	    aptitude_solution::action act(*vi, d, true, 0);
-
-	    resolvers->add_child(new solution_act_item(act,
+	    resolvers->add_child(new solution_act_item(*vi, d,
 						       sigc::slot1<void, cw::fragment *>(),
 						       sigc::slot1<void, aptitude_resolver_dep>()));
 	  }
@@ -177,9 +181,7 @@ cw::subtree_generic *make_dep_solvers_tree(const aptitude_resolver_dep &d)
   for(aptitude_resolver_dep::solver_iterator
 	si = d.solvers_begin(); !si.end(); ++si)
     {
-      aptitude_solution::action act(*si, d, false, 0);
-
-      resolvers->add_child(new solution_act_item(act,
+      resolvers->add_child(new solution_act_item(*si, d,
 						 sigc::slot1<void, cw::fragment *>(),
 						 sigc::slot1<void, aptitude_resolver_dep>()));
     }
@@ -194,23 +196,39 @@ cw::subtree_generic *make_story_tree(const aptitude_solution &sol,
 				    const sigc::slot1<void, cw::fragment *> &set_short_description,
 				    const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
-  vector<aptitude_solution::action> actions;
+  vector<choice> choices;
+  for(choice_set::const_iterator it = sol.get_choices().begin();
+      it != sol.get_choices().end(); ++it)
+    choices.push_back(*it);
 
-  for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
-	i = sol.get_actions().begin() ; i != sol.get_actions().end(); ++i)
-    actions.push_back(i->second);
-
-  sort(actions.begin(), actions.end(), aptitude_solution::action_id_compare());
+  sort(choices.begin(), choices.end(), aptitude_solution::choice_id_compare());
 
   cw::subtree_generic *root = new label_tree(L"");
 
-  for(vector<aptitude_solution::action>::const_iterator
-	i = actions.begin(); i != actions.end(); ++i)
+  for(vector<choice>::const_iterator
+	i = choices.begin(); i != choices.end(); ++i)
     {
-      cw::subtree_generic *tree = new label_tree(dep_text(i->d.get_dep()), true, false);
+      // The common parts here aren't factored out because they might
+      // not be relevant for future choice types.
+      switch(i->get_type())
+	{
+	case choice::install_version:
+	  {
+	    cw::subtree_generic *tree = new label_tree(dep_text(i->get_dep().get_dep()), true, false);
+	    tree->add_child(new solution_act_item(i->get_ver(), i->get_dep(),
+						  set_short_description, set_active_dep));
+	    root->add_child(tree);
+	  }
+	  break;
 
-      tree->add_child(new solution_act_item(*i, set_short_description, set_active_dep));
-      root->add_child(tree);
+	case choice::break_soft_dep:
+	  {
+	    cw::subtree_generic *tree = new label_tree(dep_text(i->get_dep().get_dep()), true, false);
+	    tree->add_child(new solution_unresolved_item(i->get_dep(), false, set_active_dep));
+	    root->add_child(tree);
+	  }
+	  break;
+	}
     }
 
   return root;
@@ -221,25 +239,30 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
 				       const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
 {
   // Bin packages according to what will happen to them.
-  vector<aptitude_solution::action> remove_actions;
-  vector<aptitude_solution::action> keep_actions;
-  vector<aptitude_solution::action> install_actions;
-  vector<aptitude_solution::action> downgrade_actions;
-  vector<aptitude_solution::action> upgrade_actions;
+  vector<choice> remove_actions;
+  vector<choice> keep_actions;
+  vector<choice> install_actions;
+  vector<choice> downgrade_actions;
+  vector<choice> upgrade_actions;
+  vector<choice> unresolved;
 
   bin_actions(sol, remove_actions, keep_actions, install_actions,
-	       downgrade_actions, upgrade_actions);
+	      downgrade_actions, upgrade_actions, unresolved);
+
+  typedef aptitude_solution::choice_name_lt choice_name_lt;
 
   sort(remove_actions.begin(), remove_actions.end(),
-       act_name_lt());
+       choice_name_lt());
   sort(keep_actions.begin(), keep_actions.end(),
-       act_name_lt());
+       choice_name_lt());
   sort(install_actions.begin(), install_actions.end(),
-       act_name_lt());
+       choice_name_lt());
   sort(downgrade_actions.begin(), downgrade_actions.end(),
-       act_name_lt());
+       choice_name_lt());
   sort(upgrade_actions.begin(), upgrade_actions.end(),
-       act_name_lt());
+       choice_name_lt());
+  sort(unresolved.begin(), unresolved.end(),
+       choice_name_lt());
 
   cw::subtree_generic *root = new label_tree(L"");
 
@@ -247,9 +270,10 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
     {
       cw::subtree_generic *remove_tree = new label_tree(W_("Remove the following packages:"));
 
-      for(vector<aptitude_solution::action>::const_iterator i = remove_actions.begin();
+      for(vector<choice>::const_iterator i = remove_actions.begin();
 	  i != remove_actions.end(); ++i)
-	remove_tree->add_child(new solution_act_item_bare(*i, set_short_description, set_active_dep));
+	remove_tree->add_child(new solution_act_item_bare(i->get_ver(), i->get_dep(),
+							  set_short_description, set_active_dep));
 
       root->add_child(remove_tree);
     }
@@ -258,9 +282,10 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
     {
       cw::subtree_generic *keep_tree = new label_tree(W_("Keep the following packages at their current version:"));
 
-      for(vector<aptitude_solution::action>::const_iterator i = keep_actions.begin();
+      for(vector<choice>::const_iterator i = keep_actions.begin();
 	  i != keep_actions.end(); ++i)
-	keep_tree->add_child(new solution_act_item_bare(*i, set_short_description, set_active_dep));
+	keep_tree->add_child(new solution_act_item_bare(i->get_ver(), i->get_dep(),
+							set_short_description, set_active_dep));
 
       root->add_child(keep_tree);
     }
@@ -269,9 +294,10 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
     {
       cw::subtree_generic *install_tree = new label_tree(W_("Install the following packages:"));
 
-      for(vector<aptitude_solution::action>::const_iterator i = install_actions.begin();
+      for(vector<choice>::const_iterator i = install_actions.begin();
 	  i != install_actions.end(); ++i)
-	install_tree->add_child(new solution_act_item_bare(*i, set_short_description, set_active_dep));
+	install_tree->add_child(new solution_act_item_bare(i->get_ver(), i->get_dep(),
+							   set_short_description, set_active_dep));
 
       root->add_child(install_tree);
     }
@@ -280,9 +306,10 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
     {
       cw::subtree_generic *upgrade_tree = new label_tree(W_("Upgrade the following packages:"));
 
-      for(vector<aptitude_solution::action>::const_iterator i = upgrade_actions.begin();
+      for(vector<choice>::const_iterator i = upgrade_actions.begin();
 	  i != upgrade_actions.end(); ++i)
-	upgrade_tree->add_child(new solution_act_item_bare(*i, set_short_description, set_active_dep));
+	upgrade_tree->add_child(new solution_act_item_bare(i->get_ver(), i->get_dep(),
+							   set_short_description, set_active_dep));
 
       root->add_child(upgrade_tree);
     }
@@ -291,22 +318,21 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
     {
       cw::subtree_generic *downgrade_tree = new label_tree(W_("Downgrade the following packages:"));
 
-      for(vector<aptitude_solution::action>::const_iterator i = downgrade_actions.begin();
+      for(vector<choice>::const_iterator i = downgrade_actions.begin();
 	  i != downgrade_actions.end(); ++i)
-	downgrade_tree->add_child(new solution_act_item_bare(*i, set_short_description, set_active_dep));
+	downgrade_tree->add_child(new solution_act_item_bare(i->get_ver(), i->get_dep(),
+							     set_short_description, set_active_dep));
 
       root->add_child(downgrade_tree);
     }
-
-  const imm::set<aptitude_universe::dep> &unresolved = sol.get_unresolved_soft_deps();
 
   if(!unresolved.empty())
     {
       cw::subtree_generic *unresolved_tree = new label_tree(W_("Leave the following recommendations unresolved:"));
 
-      for(imm::set<aptitude_universe::dep>::const_iterator i = unresolved.begin();
-	  i != unresolved.end(); ++i)
-	unresolved_tree->add_child(new solution_unresolved_item(*i, false, set_active_dep));
+      for(std::vector<choice>::const_iterator it = unresolved.begin();
+	  it != unresolved.end(); ++it)
+	unresolved_tree->add_child(new solution_unresolved_item(it->get_dep(), false, set_active_dep));
 
       root->add_child(unresolved_tree);
     }
@@ -538,7 +564,7 @@ public:
 
     last_sol = sol;
 
-    if(sol.get_actions().empty())
+    if(sol.get_choices().size() == 0)
       set_static_root(W_("Internal error: unexpected null solution."));
     else
       {

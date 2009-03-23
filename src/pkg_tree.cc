@@ -39,7 +39,9 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/matchers.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
 
 #include <apt-pkg/progress.h>
 #include <apt-pkg/configuration.h>
@@ -54,7 +56,8 @@ namespace cwidget
   using namespace widgets;
 }
 
-namespace match = aptitude::matching;
+namespace matching = aptitude::matching;
+using cw::util::ref_ptr;
 
 cw::config::keybindings *pkg_tree::bindings=NULL;
 
@@ -77,7 +80,7 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    limitstr(def_limit)
 {
   if(!limitstr.empty())
-    limit = match::parse_pattern(cw::util::transcode(limitstr));
+    limit = matching::parse(cw::util::transcode(limitstr));
 }
 
 pkg_tree::pkg_tree(const std::string &def_grouping,
@@ -90,7 +93,7 @@ pkg_tree::pkg_tree(const std::string &def_grouping,
    limitstr(cw::util::transcode(aptcfg->Find(PACKAGE "::Pkg-Display-Limit", "")))
 {
   if(!limitstr.empty())
-    limit = match::parse_pattern(cw::util::transcode(limitstr));
+    limit = matching::parse(cw::util::transcode(limitstr));
 }
 
 void pkg_tree::handle_cache_close()
@@ -178,29 +181,62 @@ bool pkg_tree::build_tree(OpProgress &progress)
 
       mytree->set_depth(-1);
 
-      int num=0;
-      int total=(*apt_cache_file)->Head().PackageCount;
-
-      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin(); !i.end(); i++)
+      if(limit.valid())
 	{
-	  cache_empty=false;
+	  ref_ptr<matching::search_cache> search_info(matching::search_cache::create());
 
-	  progress.OverallProgress(num, total, 1, _("Building view"));
+	  std::vector<std::pair<pkgCache::PkgIterator, cwidget::util::ref_ptr<matching::structural_match> > > matches;
+	  matching::search(limit, search_info,
+			   matches,
+			   *apt_cache_file,
+			   *apt_package_records);
 
-	  ++num;
+	  int num = 0;
+	  int total = matches.size();
 
-	  // Filter useless packages up-front.
-	  if(i.VersionList().end() && i.ProvidesList().end())
-	    continue;
-
-	  if((!limit) || match::apply_matcher(limit, i, *apt_cache_file, *apt_package_records))
+	  for(std::vector<std::pair<pkgCache::PkgIterator, cwidget::util::ref_ptr<matching::structural_match> > >::const_iterator
+		it = matches.begin(); it != matches.end(); ++it)
 	    {
-	      empty=false;
-	      grouper->add_package(i, mytree);
-	    }
-	}
+	      pkgCache::PkgIterator pkg(it->first);
 
-      progress.OverallProgress(total, total, 1, _("Building view"));
+	      cache_empty = false;
+
+	      progress.OverallProgress(num, total, 1, _("Building view"));
+	      ++num;
+
+	      // Filter useless packages up-front.
+	      if(pkg.VersionList().end() && pkg.ProvidesList().end())
+		continue;
+
+	      empty = false;
+	      grouper->add_package(pkg, mytree);
+	    }
+
+	  progress.OverallProgress(total, total, 1, _("Building view"));
+	}
+      else
+	{
+	  int num = 0;
+	  int total = (*apt_cache_file)->Head().PackageCount;
+
+	  for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin(); !pkg.end(); ++pkg)
+	    {
+	      cache_empty = false;
+
+	      progress.OverallProgress(num, total, 1, _("Building view"));
+
+	      ++num;
+
+	      // Filter useless packages up-front.
+	      if(pkg.VersionList().end() && pkg.ProvidesList().end())
+		continue;
+
+	      empty = false;
+	      grouper->add_package(pkg, mytree);
+	    }
+
+	  progress.OverallProgress(total, total, 1, _("Building view"));
+	}
 
       pkg_sortpolicy_wrapper sorter(sorting);
       mytree->sort(sorter);
@@ -222,7 +258,7 @@ bool pkg_tree::build_tree(OpProgress &progress)
 bool pkg_tree::build_tree()
 {
   progress_ref p=gen_progress_bar();
-  bool rval=build_tree(*p.unsafe_get_ref());
+  bool rval=build_tree(*p->get_progress().unsafe_get_ref());
   p->destroy();
 
   return rval;
@@ -230,11 +266,11 @@ bool pkg_tree::build_tree()
 
 void pkg_tree::set_limit(const std::wstring &_limit)
 {
-  match::pkg_matcher *old_limit = limit;
-  std::wstring old_limitstr=limitstr;
+  ref_ptr<matching::pattern> old_limit(limit);
+  std::wstring old_limitstr(limitstr);
 
-  match::pkg_matcher *new_limit = match::parse_pattern(cw::util::transcode(_limit));
-  if(_limit.empty() || new_limit)
+  ref_ptr<matching::pattern> new_limit(matching::parse(cw::util::transcode(_limit)));
+  if(_limit.empty() || new_limit.valid())
     {
       limit=new_limit;
       limitstr=_limit;
@@ -247,14 +283,11 @@ void pkg_tree::set_limit(const std::wstring &_limit)
 		   _limit.c_str());
 
 	  show_message(buf);
-	  delete new_limit;
 	  limit=old_limit;
 	  limitstr=old_limitstr;
 
 	  build_tree();
 	}
-      else
-	delete old_limit;
     }
 }
 
@@ -277,7 +310,7 @@ bool pkg_tree::find_limit()
 
 bool pkg_tree::find_reset_limit_enabled()
 {
-  return get_visible() && limit!=NULL;
+  return get_visible() && limit.valid();
 }
 
 bool pkg_tree::find_reset_limit()
@@ -285,7 +318,6 @@ bool pkg_tree::find_reset_limit()
   if(!get_visible())
     return false;
 
-  delete limit;
   limit=NULL;
   limitstr=L"";
 

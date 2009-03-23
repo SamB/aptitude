@@ -1,7 +1,7 @@
 // aptitude_resolver.h                  -*-c++-*-
 //
 // 
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,17 +27,13 @@
 
 #include "aptitude_resolver_universe.h"
 
+#include <generic/apt/matching/pattern.h>
 #include <generic/problemresolver/problemresolver.h>
 
 #include <generic/util/immset.h>
 
 /** \brief Glue code to make the resolver talk to the core aptitude classes.
  *
- * 
- *  shootshootshoot...maybe I should just teach the core about
- *  conflicts...anyway, if not, then I need to be much more careful how
- *  I iterate over conflicts if an OR is involved (it should be
- *  basically ignored)
  *  
  *  General comment on how the iterators are handled: basically the
  *  technique is (generally) to have a normalize() routine that
@@ -51,9 +47,17 @@
  *  \file aptitude_resolver.h
  */
 
+namespace aptitude
+{
+  namespace matching
+  {
+    class pattern;
+  }
+}
+
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
-  imm::map<package, action> keep_all_solution;
+  choice_set keep_all_solution;
 
   void add_full_replacement_score(const pkgCache::VerIterator &src,
 				  const pkgCache::PkgIterator &real_target,
@@ -61,11 +65,325 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 				  int full_replacement_score,
 				  int undo_full_replacement_score);
 
+  /** \brief Given the first dependency in an OR group, add scores to
+   *  bias the resolver in favor of the default candidate that
+   *  MarkInstall would pick.
+   */
+  void add_default_resolution_score(const pkgCache::DepIterator &dep,
+				    int default_resolution_score);
 public:
+  class hint
+  {
+  public:
+    /** \brief The type of hint represented by this object. */
+    enum hint_type
+      {
+	/** \brief A hint that one or more package versions should be
+	 *  rejected.
+	 */
+	reject,
+	/** \brief A hint that one or more package versions should be
+	 *   mandated.
+	 */
+	mandate,
+	/** \brief A hint that one or more package versions should
+	 *  have their scores adjusted by some amount.
+	 */
+	tweak_score
+      };
+
+    /** \brief Describes which versions are selected by a hint. */
+    class version_selection
+    {
+    public:
+      /** \brief Describes what sort of version selection is in use. */
+      enum version_selection_type
+	{
+	  /** \brief All versions.
+	   *
+	   *  Matches any version.
+	   */
+	  select_all,
+
+	  /** \brief Versions are selected by archive.
+	   *
+	   *  Any version contained in an archive that equals the
+	   *  version selection string will be selected.
+	   */
+	  select_by_archive,
+
+	  /** \brief All versions of a package except the
+	   *  not-installed version will be matched.
+	   *
+	   *  This is equivalent to not providing a version string.
+	   */
+	  select_inst,
+
+	  /** \brief The non-installed version of the package will be
+	   *  matched.
+	   */
+	  select_uninst,
+
+	  /** \brief Versions are selected by version string.
+	   *
+	   *  Any version contained in an archive that compares
+	   *  correctly to the version selection string (according to
+	   *  the comparison operator) will be selected.
+	   */
+	  select_by_version
+	};
+
+      /** \brief Lists the comparison operations that are allowed. */
+      enum compare_op_type
+	{
+	  less_than,
+	  less_than_or_equal_to,
+	  equal_to,
+	  not_equal_to,
+	  greater_than,
+	  greater_than_or_equal_to
+	};
+
+    private:
+      version_selection_type type;
+      compare_op_type compare_op;
+      std::string version_selection_string;
+
+      version_selection(version_selection_type _type,
+			compare_op_type _compare_op,
+			const std::string &_version_selection_string)
+	: type(_type), compare_op(_compare_op),
+	  version_selection_string(_version_selection_string)
+      {
+      }
+
+    public:
+      version_selection()
+	: type((version_selection_type)-1),
+	  compare_op((compare_op_type)-1),
+	  version_selection_string()
+      {
+      }
+
+      static version_selection make_all()
+      {
+	return version_selection(select_all, (compare_op_type)-1, std::string());
+      }
+
+      /** \brief Create a version selection that selects versions by
+       *  their archive.
+       *
+       *  \param archive   The archive to match; only versions that are
+       *                   contained in this archive will be selected.
+       */
+      static version_selection make_archive(const std::string &archive)
+      {
+	return version_selection(select_by_archive, (compare_op_type)-1, archive);
+      }
+
+      /** \brief Create a version selection that selects all versions
+       *  except the not-installed version.
+       */
+      static version_selection make_inst()
+      {
+	return version_selection(select_inst, (compare_op_type)-1, std::string());
+      }
+
+      /** \brief Create a version selection that selects not-installed
+       *  versions.
+       */
+      static version_selection make_uninst()
+      {
+	return version_selection(select_uninst, (compare_op_type)-1, std::string());
+      }
+
+      /** \brief Create a version selection that selects versions by
+       *  version number.
+       *
+       *  \param   The version number to compare against.
+       *  \param   The operation to use in comparison.  For instance,
+       *           use pkgCache::Dep::Less to select only versions
+       *           less than the given version.
+       */
+      static version_selection make_version(compare_op_type compare_op,
+					    const std::string &version)
+      {
+	return version_selection(select_by_version, compare_op, version);
+      }
+
+      /** \brief Test a version against this selector.
+       *
+       *  \param v   The version to test.
+       *
+       *  \return \b true if v is matched by this selector.
+       */
+      bool matches(const aptitude_resolver_version &v) const;
+
+      /** \brief Compare two version selectors.
+       *
+       *  \param other   The version selector to compare against.
+       *
+       *  Selectors are arbitrarily arranged in a total ordering.
+       *
+       *  \return a number less than zero if this selector is less
+       *  than the other selector, a number greater than zero if the
+       *  other selector is greater than this selector, and zero if
+       *  the two selectors are equal.
+       */
+      int compare(const version_selection &other) const;
+
+      bool operator<(const version_selection &other) const { return compare(other) < 0; }
+      bool operator<=(const version_selection &other) const { return compare(other) <= 0; }
+      bool operator==(const version_selection &other) const { return compare(other) == 0; }
+      bool operator!=(const version_selection &other) const { return compare(other) != 0; }
+      bool operator>=(const version_selection &other) const { return compare(other) >= 0; }
+      bool operator>(const version_selection &other) const { return compare(other) > 0; }
+
+      /** \brief Get the type of this selection. */
+      version_selection_type get_type() const { return type; }
+
+      /** \brief Get the version selection string of this selection.
+       *
+       *  Only valid for select_by_archive and select_by_version
+       *  selections.
+       */
+      const std::string &get_version_selection_string() const
+      {
+	eassert(type == select_by_archive || type == select_by_version);
+
+	return version_selection_string;
+      }
+
+      /** \brief Get the comparison operation of this selection.
+       *
+       *  Only valid for select_by_version selections.
+       */
+      compare_op_type get_version_comparison_operator() const
+      {
+	eassert(type == select_by_version);
+
+	return compare_op;
+      }
+    };
+
+  private:
+    hint_type type;
+    int score;
+    cwidget::util::ref_ptr<aptitude::matching::pattern> target;
+    version_selection selection;
+
+    hint(hint_type _type, int _score,
+	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
+	 version_selection _selection)
+      : type(_type), score(_score), target(_target),
+	selection(_selection)
+    {
+    }
+
+  public:
+    hint()
+      : type((hint_type)-1), score(-1), target(NULL), selection()
+    {
+    }
+
+    ~hint();
+
+    /** \brief Create a hint that rejects a version or versions of a package. */
+    static hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+				     const version_selection &selection)
+    {
+      return hint(reject, 0, target, selection);
+    }
+
+    /** \brief Create a hint that mandates a version or versions of a package. */
+    static hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+				      const version_selection &selection)
+    {
+      return hint(mandate, 0, target, selection);
+    }
+
+    /** \brief Create a hint that adjust the score of a package. */
+    static hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+					  const version_selection &selection,
+					  int score)
+    {
+      return hint(tweak_score, score, target, selection);
+    }
+
+    /** \brief Parse a resolver hint definition.
+     *
+     *  Definitions have the form ACTION TARGET [VERSION].  ACTION is
+     *  either a number (which will be added to the score of the
+     *  selected version), or the special strings "reject" or
+     *  "approve".  If TARGET is a match pattern (specifically, if the
+     *  portion of the remaining string that parses as a match pattern
+     *  includes a question mark or tilde), then it will be treated as
+     *  such; otherwise it is the name of the package to match.
+     *  VERSION is the version of TARGET that is to be tweaked.  If
+     *  VERSION is not present, all versions of the package (except
+     *  the removal version) that match TARGET will be selected.  If
+     *  VERSION has the form "/<archive>" then the version of the
+     *  package from that archive will be selected.  If VERSION is
+     *  ":UNINST" then the not-installed version of the package will
+     *  be selected.  Finally, VERSION may be ">VERSION2",
+     *  "=VERSION2", ">=VERSION2", "<VERSION2", "<=VERSION2", or
+     *  "<>VERSION2" to only apply the hint to versions of the package
+     *  that compare accordingly to the version string.  (obviously
+     *  "=VERSION2" is redundant, but it is included for completeness)
+     *
+     *  \param definition   The text of the hint definition.
+     *  \param out  A location in which to store the parsed hint.
+     *
+     *  \return \b true if the hint was parsed successfully, \b false
+     *  otherwise.
+     */
+    static bool parse(const std::string &definition, hint &out);
+
+    /** \brief Compare this hint to another hint.
+     *
+     *  \param other  The hint to which this is to be compared.
+     *
+     *  \return -1 if this is less than other, 0 if the two hints are
+     *  equal, and 1 if this is more than other.
+     *
+     *  Hints exist in an arbitrary total ordering.
+     */
+    int compare(const hint &other) const;
+
+    bool operator<(const hint &other) const { return compare(other) < 0; }
+    bool operator<=(const hint &other) const { return compare(other) <= 0; }
+    bool operator==(const hint &other) const { return compare(other) == 0; }
+    bool operator!=(const hint &other) const { return compare(other) != 0; }
+    bool operator>=(const hint &other) const { return compare(other) >= 0; }
+    bool operator>(const hint &other) const { return compare(other) > 0; }
+
+    /** \brief Get the type of this hint.
+     *
+     *  \sa hint_type
+     */
+    hint_type get_type() const { return type; }
+
+    /** \brief For score-tweaking hints, get the number of points to be
+     *  added to the version's score.
+     */
+    int get_score() const { return score; }
+
+    /** \brief Return the pattern identifying the package or packages
+     *  to be adjusted.
+     */
+    const cwidget::util::ref_ptr<aptitude::matching::pattern> &
+    get_target() const { return target; }
+
+    /** \brief Return the version selection rule for this hint. */
+    const version_selection &get_version_selection() const { return selection; }
+  };
+
   aptitude_resolver(int step_score, int broken_score,
 		    int unfixed_soft_score,
-		    int infinity, int max_successors,
+		    int infinity,
 		    int resolution_score,
+		    int future_horizon,
+		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
 		    aptitudeDepCache *cache);
 
   /** \brief Return \b true if the given version will break a hold or
@@ -76,6 +394,11 @@ public:
   /** Assign scores to all packages and all package versions according
    *  to its arguments.  All scores are assigned with add_score, so
    *  this can be easily combined with other policies.
+   *
+   *  Note: hints are folded into this routine for efficiency
+   *  (minimizing the number of passes over the cache.  We should
+   *  probably fold everything into one enormous monster "set all the
+   *  aptitude scores up" routine.
    *
    * \param preserve_score the score to assign to the version that the
    * user selected.
@@ -118,6 +441,18 @@ public:
    * \param allow_break_holds_and_forbids   if false, versions that
    * would break a package hold or install a forbidden version are
    * rejected up-front.
+   *
+   * \param default_resolution_score   the score for installing a
+   * package and also resolving a dependency in the way that
+   * MarkInstall would, if the dependency isn't current resolved.
+   * (this is arguably not quite right: it ought to be cancelled
+   * whenever the dependency is resolved by a partial solution)
+   *
+   * \param initial_state_manual_flags maps packages that have an
+   * overridden initial state to "true" or "false" depending on
+   * whether they should be considered to have a manually chosen
+   * state.  The manual states of overridden packages default to
+   * "true" if they do not have a mapping in this collection.
    */
   void add_action_scores(int preserve_score, int auto_score,
 			 int remove_score, int keep_score,
@@ -126,7 +461,10 @@ public:
 			 int full_replacement_score,
 			 int undo_full_replacement_score,
 			 int break_hold_score,
-			 bool allow_break_holds_and_forbids);
+			 bool allow_break_holds_and_forbids,
+			 int default_resolution_score,
+			 const std::map<package, bool> &initial_state_manual_flags,
+			 const std::vector<hint> &hints);
 
   /** Score packages/versions according to their priorities.  Normally
    *  you want important>=required>=standard>=optional>=extra.
@@ -143,7 +481,7 @@ public:
   /** \return the "keep-all" solution, the solution that cancels
    *  all of the user's planned actions.
    */
-  imm::map<package, action> get_keep_all_solution() const;
+  choice_set get_keep_all_solution() const;
 };
 
 #endif

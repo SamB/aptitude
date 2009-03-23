@@ -72,7 +72,7 @@ download_list::workerinf::workerinf(const string &_msg, unsigned long _current, 
 static cw::widget_ref download_summary(const download_list_ref &l,
 				       bool failed,
 				       bool already_cancelled,
-				       cw::util::slot0arg cancel_slot,
+				       const sigc::slot0<void> &cancel_slot,
 				       double FetchedBytes,
 				       unsigned long ElapsedTime,
 				       double CurrentCPS)
@@ -131,10 +131,9 @@ static cw::widget_ref download_summary(const download_list_ref &l,
 }
 				 
 
-download_list::download_list(cw::util::slot0arg _abortslot,
-			     bool _display_messages, bool _display_cumulative_progress)
-  :start(0), sticky_end(true), cancelled(false), failed(false),
-   abortslot(_abortslot), display_messages(_display_messages),
+download_list::download_list(bool _display_messages, bool _display_cumulative_progress)
+  :start(0), sticky_end(true), was_cancelled(false), failed(false),
+   display_messages(_display_messages),
 
    display_cumulative_progress(_display_cumulative_progress), startx(0),
 
@@ -147,10 +146,9 @@ download_list::download_list(cw::util::slot0arg _abortslot,
 
 void download_list::cancel()
 {
-  cancelled=true;
+  was_cancelled=true;
 
-  if(abortslot)
-    (*abortslot)();
+  cancelled();
 }
 
 void download_list::destroy()
@@ -449,8 +447,8 @@ void download_list::Stop(download_signal_log &manager, const sigc::slot0<void> &
     {
       cw::widget_ref summary = download_summary(this,
 						failed,
-						cancelled,
-						abortslot,
+						was_cancelled,
+						cancelled.make_slot(),
 						manager.get_fetched_bytes(),
 						manager.get_elapsed_time(),
 						manager.get_currentCPS());
@@ -485,7 +483,7 @@ void download_list::Pulse(pkgAcquire *Owner, download_signal_log &manager,
   if(get_visible())
     cw::toplevel::queuelayout(); // Force an update
 
-  if(cancelled)
+  if(was_cancelled)
     k(false);
   else
     k(true);
