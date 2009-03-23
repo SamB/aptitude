@@ -1,6 +1,6 @@
 // solution_dialog.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -136,7 +136,7 @@ public:
 
     last_sol=sol;
 
-    if(sol.get_actions().empty())
+    if(sol.get_choices().size() > 0)
       set_fragment(cw::fragf("%s", _("Internal error: unexpected null solution.")));
     else
       set_fragment(solution_fragment(sol));

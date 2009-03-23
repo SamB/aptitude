@@ -373,18 +373,63 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
 
 	control_file << "  expect " << inf.get_ticks() << " {" << std::endl;
 
-	typedef generic_solution<aptitude_universe>::action action;
+	typedef generic_choice_set<aptitude_universe> choice_set;
+	typedef generic_choice<aptitude_universe> choice;
 	typedef aptitude_resolver_package package;
-	const imm::map<package, action> &actions = sol.get_actions();
-	for(imm::map<package, action>::const_iterator solActIt =
-	      actions.begin(); solActIt != actions.end(); ++solActIt)
+	typedef aptitude_resolver_version version;
+	typedef aptitude_resolver_dep dep;
+	const choice_set &choices = sol.get_choices();
+	for(choice_set::const_iterator solChoiceIt =
+	      choices.begin(); solChoiceIt != choices.end(); ++solChoiceIt)
 	  {
-	    control_file << "    \""
-			 << QuoteString(solActIt->first.get_name(), strBadChars)
-			 << "\" \""
-			 << QuoteString(solActIt->second.ver.get_name(), strBadChars)
-			 << "\""
-			 << std::endl;
+	    switch(solChoiceIt->get_type())
+	      {
+	      case choice::install_version:
+		control_file << "    install \""
+			     << QuoteString(solChoiceIt->get_ver().get_package().get_name(), strBadChars)
+			     << "\" \""
+			     << QuoteString(solChoiceIt->get_ver().get_name(), strBadChars)
+			     << "\""
+			     << std::endl;
+		break;
+
+	      case choice::break_soft_dep:
+		{
+		  dep d(solChoiceIt->get_dep());
+		  version source(d.get_source());
+
+		  control_file << "    break \""
+			       << QuoteString(source.get_package().get_name(), strBadChars)
+			       << "\" \""
+			       << QuoteString(source.get_name(), strBadChars)
+			       << "\" -> {";
+
+		  bool first = true;
+		  for(dep::solver_iterator sIt = d.solvers_begin();
+		      !sIt.end(); ++sIt)
+		    {
+		      if(first)
+			first = false;
+		      else
+			control_file << ", ";
+
+		      version solver(*sIt);
+		      control_file << "\""
+				   << QuoteString(solver.get_package().get_name(), strBadChars)
+				   << "\" \""
+				   << QuoteString(solver.get_name(), strBadChars)
+				   << "\"";
+		    }
+
+		  control_file << "}" << std::endl;
+		}
+
+		break;
+
+	      default:
+		// ... recover sanely.
+		control_file << "ERROR" << std::endl;
+	      }
 	  }
 	control_file << "  }" << std::endl;
 
@@ -954,7 +999,7 @@ resolver_manager::do_get_solution(int max_steps, unsigned int solution_num,
 	  sol_l.acquire();
 
 	  bool is_keep_all_solution =
-	    (sol.get_actions() == resolver->get_keep_all_solution());
+	    (sol.get_choices() == resolver->get_keep_all_solution());
 
 	  solutions.push_back(new solution_information(new std::vector<resolver_interaction>(actions_since_last_solution),
 						       ticks_since_last_solution + max_steps,
@@ -1564,15 +1609,14 @@ public:
 
     LOG_TRACE(logger, "safe_resolve_deps: got intermediate solution: " << sol);
 
-    typedef imm::map<aptitude_resolver_package,
-      generic_solution<aptitude_universe>::action> actions_map;
+    typedef generic_choice<aptitude_universe> choice;
+    typedef generic_choice_set<aptitude_universe> choice_set;
 
     // If the solution changed (i.e., we managed to find some new
     // upgrades), we should try again; otherwise we've found the
     // solution that we'll return to the user.
     if(!(last_sol &&
-	 sol.get_actions() == last_sol.get_actions() &&
-	 sol.get_unresolved_soft_deps() == last_sol.get_unresolved_soft_deps()))
+	 sol.get_choices() == last_sol.get_choices()))
       {
 	// The solution changed; prepare the resolver for the next
 	// stage.
@@ -1583,23 +1627,35 @@ public:
 	// find the best solution, not just some solution, but to
 	// preserve our previous decisions in order to avoid
 	// thrashing around between alternatives.
-	for(actions_map::const_iterator it = sol.get_actions().begin();
-	    it != sol.get_actions().end(); ++it)
+	for(choice_set::const_iterator it = sol.get_choices().begin();
+	    it != sol.get_choices().end(); ++it)
 	  {
-	    const pkgCache::PkgIterator p(it->second.ver.get_pkg());
+	    switch(it->get_type())
+	      {
+	      case choice::install_version:
+		{
+		  const pkgCache::PkgIterator p(it->get_ver().get_pkg());
 
-	    if(it->second.ver.get_ver() != p.CurrentVer())
-	      {
-		LOG_DEBUG(logger,
-			  "safe_resolve_deps: Mandating the upgrade or install " << it->second.ver
-			  << ", since it was produced as part of a solution.");
-		manager->mandate_version(it->second.ver);
-	      }
-	    else
-	      {
-		LOG_DEBUG(logger,
-			  "safe_resolve_deps: Not mandating " << it->second.ver
-			  << ", since it is a hold.");
+		  if(it->get_ver().get_ver() != p.CurrentVer())
+		    {
+		      LOG_DEBUG(logger,
+				"safe_resolve_deps: Mandating the upgrade or install " << it->get_ver()
+				<< ", since it was produced as part of a solution.");
+		      manager->mandate_version(it->get_ver());
+		    }
+		  else
+		    {
+		      LOG_DEBUG(logger,
+				"safe_resolve_deps: Not mandating " << it->get_ver()
+				<< ", since it is a hold.");
+		    }
+		}
+
+		break;
+
+	      default:
+		// Nothing to do otherwise.
+		break;
 	      }
 	  }
 

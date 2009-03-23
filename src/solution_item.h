@@ -1,6 +1,6 @@
 // solution_item.h                                   -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -93,6 +93,16 @@ public:
   bool resolver_toggle_rejected_enabled();
 };
 
+/** \brief A solution item representing an "action" (an install_version choice).
+ *
+ *  Having this be separate from the unresolved_item is a holdover
+ *  from before a unified choice object existed.  However, I like
+ *  having two classes for the two choice types: they have very
+ *  different behaviors, so this is good for eliminating lots of
+ *  conditional tests.  (if more interfaces on the resolver, such as
+ *  the interface for setting up rejections, accepted choices instead
+ *  of specific versions, I might consider merging these two classes)
+ */
 class solution_act_item : public solution_item
 {
   aptitude_universe::version ver;
@@ -111,17 +121,19 @@ public:
 
   /** Create a solution_act_item.
    *
-   *  \param act the action that this item corresponds to
+   *  \param _ver   the version installed by this item.
+   *  \param _d     the dependency that was resolved by installing _ver.
    *  \param _set_short_description a callback to be invoked with a
    *               brief description of this item when it is selected
    *  \param _set_active_dep a callback to be invoked with the dependency
    *               corresponding to this item when the item is selected
    */
-  solution_act_item(const generic_solution<aptitude_universe>::action &act,
+  solution_act_item(const aptitude_universe::version &_ver,
+		    const aptitude_universe::dep &_d,
 		    const sigc::slot1<void, cwidget::fragment *> &_set_short_description,
 		    const sigc::slot1<void, aptitude_resolver_dep> &_set_active_dep)
-    :ver(act.ver),
-     d(act.d),
+    :ver(_ver),
+     d(_d),
      set_short_description(_set_short_description),
      set_active_dep(_set_active_dep)
   {
@@ -163,10 +175,11 @@ public:
 class solution_act_item_bare : public solution_act_item
 {
 public:
-  solution_act_item_bare(const generic_solution<aptitude_universe>::action &act,
+  solution_act_item_bare(const aptitude_universe::version &ver,
+			 const aptitude_universe::dep &d,
 			 const sigc::slot1<void, cwidget::fragment *> &set_short_description,
 			 const sigc::slot1<void, aptitude_resolver_dep> &set_active_dep)
-    :solution_act_item(act, set_short_description, set_active_dep)
+    :solution_act_item(ver, d, set_short_description, set_active_dep)
   {
   }
 

@@ -20,6 +20,7 @@
 #include "aptcache.h"
 
 #include <aptitude.h>
+#include <loggers.h>
 
 #include "apt.h"
 #include "aptitude_resolver_universe.h"
@@ -58,6 +59,7 @@
 namespace cw = cwidget;
 
 using namespace std;
+using aptitude::Loggers;
 
 class aptitudeDepCache::apt_undoer:public undoable
 // Allows an action performed on the package cache to be undone.  My first
@@ -1728,13 +1730,21 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
 void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &realSol,
 				      undo_group *undo)
 {
-  // Make a local copy so we don't crash when applying the solution.
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
+  // Make a local copy so we don't crash when applying the solution:
+  // applying the solution might trigger a callback that causes
+  // something else to throw away its reference to the solution =>
+  // BOOM.
   const generic_solution<aptitude_universe> sol(realSol);
+
+  LOG_DEBUG(logger, "Applying solution: " << sol);
 
   if(read_only && !read_only_permission())
     {
       if(group_level == 0)
 	read_only_fail();
+      LOG_DEBUG(logger, "Not applying solution: the cache is read-only.");
       return;
     }
 
@@ -1749,21 +1759,41 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
   // installed (true if it was, false if it wasn't).
   std::vector<std::pair<aptitude_resolver_version, bool> > versions;
 
+  LOG_TRACE(logger, "Collecting initial versions from the solution:");
+
   std::set<aptitude_resolver_version> initial_versions;
   sol.get_initial_state().get_initial_versions(initial_versions);
   for(std::set<aptitude_resolver_version>::const_iterator it =
 	initial_versions.begin(); it != initial_versions.end(); ++it)
-    versions.push_back(std::make_pair(*it, false));
+    {
+      aptitude_resolver_version ver(*it);
 
-  for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
-	i = sol.get_actions().begin();
-      i != sol.get_actions().end(); ++i)
-    versions.push_back(std::make_pair(i->second.ver, true));
+      LOG_TRACE(logger, "Adding initial version: " << ver);
+      versions.push_back(std::make_pair(*it, false));
+    }
+
+  for(generic_choice_set<aptitude_universe>::const_iterator
+	i = sol.get_choices().begin();
+      i != sol.get_choices().end(); ++i)
+    {
+      if(i->get_type() == generic_choice<aptitude_universe>::install_version)
+	{
+	  aptitude_resolver_version ver(i->get_ver());
+	  LOG_TRACE(logger, "Adding version chosen by the resolver: " << ver);
+	  versions.push_back(std::make_pair(ver, true));
+	}
+      else
+	LOG_TRACE(logger, "Skipping " << *i << ": it is not a version install.");
+    }
 
   for(std::vector<std::pair<aptitude_resolver_version, bool> >::const_iterator it =
 	versions.begin(); it != versions.end(); ++it)
     {
       const bool is_auto = it->second;
+
+      LOG_TRACE(logger, "Selecting " << it->first << " "
+		<< (is_auto ? "automatically" : "manually"));
+
       pkgCache::PkgIterator pkg = it->first.get_pkg();
       pkgCache::VerIterator curver=pkg.CurrentVer();
       pkgCache::VerIterator instver = (*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
@@ -1772,16 +1802,26 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       // Check what type of action it is.
       if(actionver.end())
 	{
+	  LOG_TRACE(logger, "Removing " << pkg.Name());
+
 	  // removal.
 	  internal_mark_delete(pkg, false, false);
 	  if(is_auto && !curver.end())
 	    get_ext_state(pkg).remove_reason = from_resolver;
 	}
       else if(actionver == curver)
-	internal_mark_keep(pkg, is_auto, false);
+	{
+	  LOG_TRACE(logger, "Keeping " << pkg.Name()
+		    << " at its current version ("
+		    << curver.VerStr() << ")");
+
+	  internal_mark_keep(pkg, is_auto, false);
+	}
       else
 	// install a particular version that's not the current one.
 	{
+	  LOG_TRACE(logger, "Installing " << pkg.Name() << " " << actionver.VerStr());
+
 	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
 	  // Mark the package as automatic iff it isn't currently

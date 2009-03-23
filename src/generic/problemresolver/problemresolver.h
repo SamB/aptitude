@@ -503,8 +503,6 @@ public:
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
 
-  typedef typename solution::action action;
-
   static const int maximum_tier = INT_MAX;
 
   /** \brief The maximum tier; reserved for solutions that contain a
@@ -581,8 +579,38 @@ private:
     }
   };
 
+  /** \brief Compares choices by their effects on the solution.
+   *
+   *  e.g., two choices that install the same version will always
+   *  compare equal.  This is used to check for choices that the user
+   *  has rejected or approved.
+   */
+  struct compare_choices_by_effects
+  {
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      if(c1.get_type() < c2.get_type())
+	return true;
+      else if(c2.get_type() < c1.get_type())
+	return false;
+      else
+	switch(c1.get_type())
+	  {
+	  case choice::install_version:
+	    return c1.get_ver() < c2.get_ver();
+
+	  case choice::break_soft_dep:
+	    return c1.get_dep() < c2.get_dep();
+	  }
+    }
+  };
+
   /** Compares solutions according to their contents; used to
    *  manage "closed".
+   *
+   *  Note that this does not attempt to merge choices that have the
+   *  same effect; it just ensures that a particular set of choices is
+   *  only placed on the open queue once.
    */
   struct solution_contents_compare
   {
@@ -608,24 +636,18 @@ private:
       else if(s2.get_action_score() < s1.get_action_score())
 	return false;
 
-      const imm::map<package,action>
-	&a1=s1.get_actions(), &a2=s2.get_actions();
-      const imm::set<dep>
-	&us1=s1.get_unresolved_soft_deps(), &us2=s2.get_unresolved_soft_deps();
+      const choice_set
+	&cs1 = s1.get_choices(), &cs2 = s2.get_choices();
 
 
       // Speed hack: order by size first to avoid traversing the whole
       // tree.
-      if(a1.size() < a2.size())
+      if(cs1.size() < cs2.size())
 	return true;
-      else if(a2.size() < a1.size())
-	return false;
-      else if(us1.size() < us2.size())
-	return true;
-      else if(us2.size() < us1.size())
+      else if(cs2.size() < cs2.size())
 	return false;
       else
-	return a1 < a2 || (a2 == a1 && us1 < us2);
+	return cs1 < cs2;
     }
   };
 
@@ -755,8 +777,7 @@ private:
    */
   std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> future_solutions;
 
-  /** \brief Stores already-seen solutions that were returned,
-   *  discarded due to being dead-ends, or that had their successors
+  /** \brief Stores already-seen solutions that had their successors
    *  generated.
    */
   std::set<solution, solution_contents_compare> closed;
@@ -1461,75 +1482,45 @@ private:
     return s;
   }
 
-  /** \brief Used to convert a single action to a choice.
+  /** \brief Used to convert a set of choices to a (possibly) more
+   *  inclusive set that includes any choices which have the same
+   *  effect on the package cache.
    *
-   *  \todo Actions should be wrappers for choices.
+   *  This is used to ensure that solutions which have been returned
+   *  from the resolver are never produced again.
    */
-  static choice get_choice(const action &act)
-  {
-    if(act.from_dep_source)
-      return choice::make_install_version_from_dep_source(act.ver, act.d, act.id);
-    else
-      return choice::make_install_version(act.ver, act.d, act.id);
-  }
-
-  /** \brief Used to convert a solution to a set of choices.
-   *
-   *  \todo Should solutions be refactored to be a set of choices?  I
-   *  suspect the gains in clarity and consistency far outweigh the
-   *  performance drawbacks (there are only a few thousand of those
-   *  objects created in a normal search anyway), and it should just
-   *  take an afternoon or evening to make the switch.  Maybe two.
-   */
-  struct populate_choices
+  struct widen_choices_to_contents
   {
     choice_set &rval;
-    // If false, we throw away from-dep-source info and the attached
-    // deps, in order to produce a set of choices that stores only the
-    // "result" of the solution.
-    bool keep_dep_info;
 
-    populate_choices(choice_set &_rval, bool _keep_dep_info)
-      : rval(_rval), keep_dep_info(_keep_dep_info)
+    widen_choices_to_contents(choice_set &_rval)
+      : rval(_rval)
     {
     }
 
-    // Add a broken-dep.
-    bool operator()(const dep &broken) const
+    bool operator()(const choice &c) const
     {
-      rval.insert_or_narrow(choice::make_break_soft_dep(broken, -1));
-      return true;
-    }
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  rval.insert_or_narrow(choice::make_install_version(c.get_ver(), c.get_dep(), c.get_id()));
+	  break;
 
-    // Add a version action.
-    bool operator()(const std::pair<package, action> &act) const
-    {
-      if(act.second.from_dep_source && keep_dep_info)
-	rval.insert_or_narrow(choice::make_install_version_from_dep_source(act.second.ver, act.second.d, act.second.id));
-      else
-	rval.insert_or_narrow(choice::make_install_version(act.second.ver, act.second.d, act.second.id));
+	case choice::break_soft_dep:
+	  rval.insert_or_narrow(c);
+	  break;
+	}
+
       return true;
     }
   };
 
-  static choice_set get_solution_choices(const solution &s)
-  {
-    choice_set rval;
-    populate_choices populator(rval, true);
-
-    s.get_actions().for_each(populator);
-    s.get_unresolved_soft_deps().for_each(populator);
-
-    return rval;
-  }
-
   static choice_set get_solution_choices_without_dep_info(const solution &s)
   {
     choice_set rval;
-    populate_choices populator(rval, false);
+    widen_choices_to_contents populator(rval);
 
-    s.get_actions().for_each(populator);
-    s.get_unresolved_soft_deps().for_each(populator);
+    s.get_choices().for_each(populator);
 
     return rval;
   }
@@ -1544,7 +1535,7 @@ private:
    */
   int get_solution_tier(const solution &s) const
   {
-    choice_set choices = get_solution_choices(s);
+    choice_set choices = s.get_choices();
     typename promotion_set::const_iterator found =
       promotions.find_highest_promotion_for(choices);
     if(found != promotions.end())
@@ -1562,7 +1553,7 @@ private:
     // Build a set of choices.  \todo Maybe solutions should be based
     // on the "choice" object instead of versions / broken deps?
 
-    choice_set choices = get_solution_choices(s);
+    choice_set choices = s.get_choices();
 
     typename promotion_set::const_iterator found =
       promotions.find_highest_promotion_containing(choices, c);
@@ -1573,159 +1564,256 @@ private:
       return s.get_tier();
   }
 
-  /** Calculate whether the solution is rejected based on
-   *  user_rejected by testing whether the intersection of the
-   *  solution domain and the rejected set is nonempty.
-   */
-  bool contains_rejected(const solution &s) const
-  {
-    for(typename std::set<version>::const_iterator uri
-	  = user_rejected.begin(); uri != user_rejected.end(); ++uri)
-      {
-	typename imm::map<package, action>::node found = s.get_actions().lookup(uri->get_package());
+  // Note that these routines are slower than they could be: with some
+  // extra indexing in choice_set and/or more generic stuff in immset,
+  // they could use the fast set containment algorithm that immset
+  // provides.  But they are only invoked when the user constraints
+  // are changed, or when a solution is being added to or removed from
+  // the queue.  This is a relatively infrequent operation, and it
+  // wouldn't be worth the trouble to speed it up.
 
-	if(found.isValid() && found.getVal().second.ver == *uri)
+  struct choice_does_not_break_user_constraint
+  {
+    const std::set<version> &rejected_versions;
+    const std::set<version> &mandated_versions;
+    const std::set<dep> &hardened_deps;
+    const std::set<dep> &approved_broken_deps;
+    const resolver_initial_state<PackageUniverse> &initial_state;
+    log4cxx::LoggerPtr logger;
+
+    choice_does_not_break_user_constraint(const std::set<version> &_rejected_versions,
+					  const std::set<version> &_mandated_versions,
+					  const std::set<dep> &_hardened_deps,
+					  const std::set<dep> &_approved_broken_deps,
+					  const resolver_initial_state<PackageUniverse> &_initial_state,
+					  const log4cxx::LoggerPtr &_logger)
+      : rejected_versions(_rejected_versions),
+	mandated_versions(_mandated_versions),
+	hardened_deps(_hardened_deps),
+	approved_broken_deps(_approved_broken_deps),
+	initial_state(_initial_state),
+	logger(_logger)
+    {
+    }
+
+    /** \brief Test whether a choice violates a user-specified
+     *  constraint.
+     *
+     *  \return \b true if the choice is OK, \b false if it breaks a
+     *  user constraint.
+     *
+     *  Because this returns \b false if it breaks a user constraint,
+     *  it is suitable for use with choice_set::for_each (it will
+     *  short-circuit and cause for_each() to return true or false as
+     *  appropriate).
+     */
+    bool operator()(const choice &c) const
+    {
+      // Check the easy cases first: it's rejected (in which case it
+      // violates a constraint) or it's mandated (in which case it
+      // definitely doesn't).  The only remaining case is that it
+      // avoids a mandated choice; that's handled below.
+      switch(c.get_type())
+	{
+	case choice::install_version:
 	  {
-	    LOG_TRACE(logger,
-		      "Rejected version " << found.getVal().second.ver
-		      << " detected.");
-
-	    return true;
-	  }
-      }
-
-    return false;
-  }
-
-  bool breaks_hardened(const solution &s) const
-  {
-    typename std::set<dep>::const_iterator uh_iter
-      = user_hardened.begin();
-
-    if(uh_iter == user_hardened.end())
-      return false;
-
-    typename imm::set<dep>::const_iterator su_iter
-      = s.get_unresolved_soft_deps().begin();
-
-    while(uh_iter != user_hardened.end() &&
-	  su_iter != s.get_unresolved_soft_deps().end())
-      {
-	if(*uh_iter == *su_iter)
-	  {
-	    LOG_TRACE(logger,
-		      "Broken hardened dependency " << *uh_iter
-		      << " detected.");
-
-	    return true;
-	  }
-	else if(*uh_iter < *su_iter)
-	  ++uh_iter;
-	else
-	  ++su_iter;
-      }
-
-    return false;
-  }
-
-  bool solves_approved_broken(const solution &s) const
-  {
-    const imm::map<package, action> &actions = s.get_actions();
-
-    for(typename imm::map<package, action>::const_iterator
-	  ai = actions.begin(); ai != actions.end(); ++ai)
-      if(user_approved_broken.find(ai->second.d) != user_approved_broken.end())
-	return true;
-
-    return false;
-  }
-
-  /** \return \b true if the given solution passed up an opportunity
-   *          to include an 'mandated' version.
-   */
-  bool avoids_mandated(const solution &s) const
-  {
-    // NB: The current algorithm is not terribly efficient.
-    for(typename std::set<version>::const_iterator ai = user_mandated.begin();
-	ai != user_mandated.end(); ++ai)
-      {
-	version v = s.version_of(ai->get_package());
-	// If it's already being installed, then we're fine.
-	if(v == *ai)
-	  continue;
-
-	// Check (very slowly) whether we made a decision where we had
-	// the opportunity to use this version (and of course didn't).
-	for(typename imm::map<package, action>::const_iterator si = s.get_actions().begin();
-	    si != s.get_actions().end(); ++si)
-	  if(si->second.d.solved_by(*ai) &&
-	     user_mandated.find(si->second.ver) == user_mandated.end())
-	    {
-	      LOG_TRACE(logger,
-			*ai << " is avoided (when resolving "
-			<< si->second.d << ") by the solution: " << s);
-
-	      return true;
-	    }
-
-	// Check whether a soft dependency is being left unresolved
-	// that this version could have satisfied and that's not
-	// approved-broken.
-	for(typename imm::set<dep>::const_iterator udi =
-	      s.get_unresolved_soft_deps().begin();
-	    udi != s.get_unresolved_soft_deps().end(); ++udi)
-	  {
-	    const dep ud(*udi);
-	    const bool is_approved_broken =
-	      user_approved_broken.find(ud) != user_approved_broken.end();
-	    if(!is_approved_broken && ud.solved_by(*ai))
+	    version ver(c.get_ver());
+	    if(rejected_versions.find(ver) != rejected_versions.end())
 	      {
-		LOG_TRACE(logger,
-			  *ai << " is avoided (by leaving " << ud
-			  << " unresolved) by the solution: " << s);
+		LOG_TRACE(logger, c << " is rejected: it installs the rejected version " << ver);
+		return false;
+	      }
 
-		return true;
+	    if(mandated_versions.find(ver) != mandated_versions.end())
+	      return true;
+
+	    break;
+	  }
+
+	case choice::break_soft_dep:
+	  {
+	    dep d(c.get_dep());
+
+	    if(hardened_deps.find(d) != hardened_deps.end())
+	      {
+		LOG_TRACE(logger, c << " is rejected: it breaks the hardened soft dependency " << d);
+		return false;
+	      }
+
+	    if(approved_broken_deps.find(d) != approved_broken_deps.end())
+	      return true;
+	  }
+
+	  break;
+	}
+
+      // Testing whether the choice avoids a mandated choice is
+      // trickier; we have to unpack it and look at what the
+      // alternatives were.
+
+
+      // \todo This preserves the old behavior, but I don't think it's
+      // right.  If an approved alternative was thrown out because it
+      // was illegal, that shouldn't cause all the other alternatives
+      // to be deferred.  We should invoke is_legal() to double-check
+      // that each alternative could actually be chosen (and thus this
+      // routine should take a solution so that we have some context).
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    const dep &d(c.get_dep());
+	    const version &chosen(c.get_ver());
+
+	    // We could have avoided this choice by installing a
+	    // version of the dependency's source that's not the
+	    // version we chose or the source itself.
+	    version source(d.get_source());
+	    package source_p(source.get_package());
+
+	    for(typename package::version_iterator vi = source_p.versions_begin();
+		!vi.end(); ++vi)
+	      {
+		version alternate(*vi);
+
+		if(alternate != source && alternate != chosen)
+		  {
+		    if(mandated_versions.find(alternate) != mandated_versions.end())
+		      {
+			LOG_TRACE(logger, c << " avoids installing the mandated version "
+				  << alternate << " to solve the dependency " << d);
+			return false;
+		      }
+		  }
+	      }
+
+	    // We could also have avoided this choice by installing a
+	    // different solver of the same dependency.
+	    for(typename dep::solver_iterator si = d.solvers_begin();
+		!si.end(); ++si)
+	      {
+		version solver(*si);
+
+		if(solver != chosen)
+		  {
+		    if(mandated_versions.find(solver) != mandated_versions.end())
+		      {
+			LOG_TRACE(logger, c << " avoids installing the mandated version "
+				  << solver << " to solve the dependency " << d);
+			return false;
+		      }
+		  }
+	      }
+
+
+
+	    // We could also have violated a user constraint by
+	    // accidentally solving a soft dependency that the user
+	    // told us to break.  Because of the possibly inconsistent
+	    // reverse dependency links, we need to check the reverse
+	    // dependencies of both the target and the initial
+	    // versions, to ensure that all the dependencies are
+	    // found.
+	    //
+	    // (note: in the apt case, checking both lists isn't
+	    // necessary because soft dependencies always appear in
+	    // the right place (only Conflicts are a problem and
+	    // they're never soft); however, this double check makes
+	    // the code more obviously correct)
+	    if(!d.is_soft())
+	      return true;
+
+	    for(typename version::revdep_iterator rdi = chosen.revdeps_begin();
+		!rdi.end(); ++rdi)
+	      {
+		dep rd(*rdi);
+
+		if(rd.is_soft())
+		  {
+		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
+		      {
+			LOG_TRACE(logger, c << " solves the soft dependency " << rd
+				  << " which was mandated to be broken.");
+			return false;
+		      }
+		  }
+	      }
+
+	    version chosen_initial(initial_state.version_of(chosen.get_package()));
+	    for(typename version::revdep_iterator rdi = chosen_initial.revdeps_begin();
+		!rdi.end(); ++rdi)
+	      {
+		dep rd(*rdi);
+
+		if(rd.is_soft())
+		  {
+		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
+		      {
+			LOG_TRACE(logger, c << " solves the soft dependency " << rd
+				  << " which was mandated to be broken.");
+			return false;
+		      }
+		  }
 	      }
 	  }
-      }
 
-    return false;
-  }
-
-  /** \return \b true if the resolution of the given dependency might
-   *                  be affected by a user constraint.
-   */
-  bool impinges_user_constraint(const dep &d) const
-  {
-    if(user_hardened.find(d) != user_hardened.end() ||
-       user_approved_broken.find(d) != user_approved_broken.end())
-      return true;
-
-    for(typename dep::solver_iterator si = d.solvers_begin();
-	!si.end(); ++si)
-      {
-	if(user_rejected.find(*si) != user_rejected.end())
 	  return true;
 
-	for(typename std::set<version>::iterator mi = user_mandated.begin();
-	    mi != user_mandated.end(); ++mi)
+	case choice::break_soft_dep:
+	  // This could only avoid a mandated choice if a move that
+	  // would have solved the dependency was mandated.  That is:
+	  // we need to check other versions of the source, and each
+	  // solver of the dependency.
 	  {
-	    if(mi->get_package() == (*si).get_package())
-	      return true;
+	    const dep &d(c.get_dep());
+	    version source(d.get_source());
+	    package source_p(source.get_package());
+
+	    for(typename package::version_iterator vi = source_p.versions_begin();
+		!vi.end(); ++vi)
+	      {
+		version alternate(*vi);
+
+		if(alternate != source &&
+		   mandated_versions.find(alternate) != mandated_versions.end())
+		  {
+		    LOG_TRACE(logger, c << " fails to install the mandated version " << alternate);
+		    return false;
+		  }
+	      }
+
+	    for(typename dep::solver_iterator si = d.solvers_begin();
+		!si.end(); ++si)
+	      {
+		version solver(*si);
+
+		if(mandated_versions.find(solver) != mandated_versions.end())
+		  {
+		    LOG_TRACE(logger, c << " fails to install the mandated version " << solver);
+		    return false;
+		  }
+	      }
 	  }
-      }
 
-    return false;
-  }
+	  return true;
+	}
 
+      LOG_ERROR(logger, c << " is an unknown choice type!");
+      return true;
+    }
+  };
 
   /** \return \b true if the given solution breaks a constraint
    *  imposed by the user.
    */
   bool breaks_user_constraint(const solution &s) const
   {
-    return contains_rejected(s) || breaks_hardened(s) ||
-      avoids_mandated(s) || solves_approved_broken(s);
+    choice_does_not_break_user_constraint f(user_rejected, user_mandated,
+					    user_hardened, user_approved_broken,
+					    initial_state, logger);
+
+    bool does_not_break_user_constraint = s.get_choices().for_each(f);
+    return !does_not_break_user_constraint;
   }
 
   /** Place any solutions that were deferred and are no longer
@@ -1968,17 +2056,15 @@ private:
     {
     }
 
-    template<typename a_iter, class u_iter>
+    template<typename c_iter>
     void make_successor(const solution &s,
-			const a_iter &abegin, const a_iter &aend,
-			const u_iter &ubegin, const u_iter &uend,
+			const c_iter &cbegin, const c_iter &cend,
 			int tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
       target.push_back(solution::successor(s,
-					   abegin, aend,
-					   ubegin, uend,
+					   cbegin, cend,
 					   tier,
 					   universe, weights));
 
@@ -2018,10 +2104,9 @@ private:
     {
     }
 
-    template<typename a_iter, class u_iter>
+    template<typename c_iter>
     void make_successor(const solution &s,
-			const a_iter &abegin, const a_iter &aend,
-			const u_iter &ubegin, const u_iter &uend,
+			const c_iter &cbegin, const c_iter &cend,
 			int tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
@@ -2075,8 +2160,8 @@ private:
 
   /** Convenience routine for the below: try to generate a successor
    *  by installing a single package version.  NB: assumes that the
-   *  solution's actions have dense identifiers (i.e., less than
-   *  s.get_actions().size()).
+   *  solution's choices have dense identifiers (i.e., less than
+   *  s.get_choices().size()).
    *
    *  \param s the solution for which a successor should be generated
    *  \param v the version to install
@@ -2113,7 +2198,7 @@ private:
     if(visited_packages != NULL)
       visited_packages->insert(v.get_package());
 
-    choice reason;
+    choice why_illegal;
 
     LOG_TRACE(logger,
 	      "Trying to resolve " << d << " by installing "
@@ -2121,28 +2206,31 @@ private:
 	      << v.get_name()
 	      << (from_dep_source ? " from the dependency source" : ""));
 
-    const int newid = s.get_actions().size();
+    const int newid = s.get_choices().size();
 
     // The contents of the promotion to return.
     int tier = minimum_tier;
     choice_set forcing_choices;
 
-    if(!is_legal(s, v, reason))
+    if(!is_legal(s, v, why_illegal))
       {
 	tier = conflict_tier;
-	forcing_choices.insert_or_narrow(reason);
+	forcing_choices.insert_or_narrow(why_illegal);
       }
     else
       {
-	action act(v, d, from_dep_source, newid);
+	choice new_choice;
+	if(from_dep_source)
+	  new_choice = choice::make_install_version_from_dep_source(v, d, newid);
+	else
+	  new_choice = choice::make_install_version(v, d, newid);
 
 	// Speculatively form the new set of actions; doing this
 	// rather than forming the whole solution allows us to avoid
 	// several rather expensive steps in the successor routine
 	// (most notably the formation of the new broken packages
 	// set).
-	choice_set new_choices = get_solution_choices(s);
-	choice new_choice(get_choice(act));
+	choice_set new_choices = s.get_choices();
 	new_choices.insert_or_narrow(new_choice);
 
  	typename promotion_set::const_iterator
@@ -2201,8 +2289,7 @@ private:
 	      tier = current_tier;
 
 
-	    generator.make_successor(s, &act, &act+1,
-				     (dep *) 0, (dep *) 0,
+	    generator.make_successor(s, &new_choice, &new_choice + 1,
 				     tier,
 				     universe, weights);
 	  }
@@ -2261,8 +2348,10 @@ private:
     if(visited_packages != NULL)
       visited_packages->insert(source.get_package());
 
-    typename imm::map<package, action>::node
-      source_found = s.get_actions().lookup(source.get_package());
+    // Check whether the source of the dependency was touched; if it
+    // was, we can't modify it.
+    version source_chosen;
+    bool source_was_modified = s.get_choices().get_version_of(source.get_package(), source_chosen);
 
     // The tier and forcing reasons are updated until the tier is less
     // than or equal to the current tier (since at that point there's
@@ -2280,14 +2369,9 @@ private:
     // The source is not moved for soft deps: these model Recommends,
     // and experience has shown that users find it disturbing to have
     // packages upgraded or removed due to their recommendations.
-    //
-    // Note that a conflictor is never generated for the source if the
-    // dep is soft, since there's no logical dependency in that case
-    // between the source being in the working solution and the
-    // dependency being unsatisfiable.
     if(!d.is_soft())
       {
-	if(source_found.isValid())
+	if(source_was_modified)
 	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, dep(), -1));
 	else
 	  {
@@ -2340,7 +2424,7 @@ private:
       {
 	// Check whether adding this unresolved dep triggers a
 	// promotion.
-	choice_set choices(get_solution_choices(s));
+	choice_set choices(s.get_choices());
 	choice break_d(choice::make_break_soft_dep(d, -1));
 	choices.insert_or_narrow(break_d);
 	typename promotion_set::const_iterator found =
@@ -2353,8 +2437,8 @@ private:
 	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << tier);
 	  }
 	LOG_TRACE(logger, "Trying to leave " << d << " unresolved");
-	generator.make_successor(s, (action *) 0, (action *) 0,
-				 &d, &d+1,
+	generator.make_successor(s,
+				 &break_d, &break_d + 1,
 				 tier,
 				 universe, weights);
       }
@@ -2370,8 +2454,7 @@ private:
   }
 
   /** Processes the given solution by enqueuing its successor nodes
-   *  (if any are available).  Note that for clarity, we now generate
-   *  *all* successors before examining *any*.
+   *  (if any are available).
    */
   void process_solution(const solution &s,
 			std::set<package> *visited_packages)
@@ -2591,18 +2674,6 @@ public:
     delete[] version_tiers;
   }
 
-  /** \brief Backwards-compatibility code to insert a conflict
-   *  manually.
-   */
-  void add_conflict(const imm::map<package, action> &conflict)
-  {
-    choice_set real_conflict;
-    for(typename imm::map<package, action>::const_iterator it = conflict.begin();
-	it != conflict.end(); ++it)
-      real_conflict.insert_or_narrow(get_choice(it->second));
-    promotions.insert(promotion(real_conflict, conflict_tier));
-  }
-
   /** \brief Get the dependencies that were initially broken in this
    *  resolver.
    *
@@ -2694,6 +2765,16 @@ public:
   const resolver_initial_state<PackageUniverse> &get_initial_state() const
   {
     return initial_state;
+  }
+
+  /** \brief Manually promote the given set of choices to the given tier.
+   *
+   *  If tier is defer_tier, the promotion will be lost when the user
+   *  changes the set of rejected packages.
+   */
+  void add_promotion(const choice_set &choices, int tier)
+  {
+    promotions.insert(promotion(choices, tier));
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -3101,7 +3182,7 @@ public:
 	    // *changed*, we sometimes end up re-inserting something
 	    // with the same version content and hence something
 	    // that's already on the closed queue.
-	    if(minimized.get_actions().size() != s.get_actions().size())
+	    if(minimized.get_choices().size() != s.get_choices().size())
 	      {
 		// Make it fend for itself! (although I expect it to
 		// come up again immediately; hrm)
@@ -3177,7 +3258,10 @@ public:
 	    future_solutions.pop();
 
 	    if(breaks_user_constraint(tmp))
-	      deferred_future_solutions.insert(tmp);
+	      {
+		LOG_TRACE(logger, "Deferring the future solution " << tmp);
+		deferred_future_solutions.insert(tmp);
+	      }
 	    else
 	      rval = tmp;
 	  }

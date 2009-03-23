@@ -107,16 +107,30 @@ namespace gui
 	    it != sol_initial_versions.end(); ++it)
 	  initial_versions.put(it->get_package(), *it);
 
+	typedef generic_choice<aptitude_universe> choice;
+	typedef generic_choice_set<aptitude_universe> choice_set;
+
 	// Now apply the changes described by this solution, but NOT
 	// keeps!
-	for(imm::map<aptitude_resolver_package, generic_solution<aptitude_universe>::action>::const_iterator
-	      it = sol.get_actions().begin();
-	    it != sol.get_actions().end(); ++it)
+	for(choice_set::const_iterator it = sol.get_choices().begin();
+	    it != sol.get_choices().end(); ++it)
 	  {
-	    if(it->second.ver == it->first.current_version())
-	      LOG_TRACE(logger, "Not including " << it->second.ver << " in the initial state of the upgrade-fixing resolver: it is a keep.");
-	    else
-	      initial_versions.put(it->first, it->second.ver);
+	    switch(it->get_type())
+	      {
+	      case choice::install_version:
+		if(it->get_ver() == it->get_ver().get_package().current_version())
+		  LOG_TRACE(logger, "Not including " << it->get_ver() << " in the initial state of the upgrade-fixing resolver: it is a keep.");
+		else
+		  {
+		    LOG_TRACE(logger, "Adding " << it->get_ver() << " to the initial state of the upgrade-fixing resolver.");
+		    initial_versions.put(it->get_ver().get_package(), it->get_ver());
+		  }
+		break;
+
+	      default:
+		LOG_TRACE(logger, "Not adding " << (*it) << " to the initial state of the upgrade-fixing resolver: it does not modify a package state.");
+		break;
+	      }
 	  }
       }
     else

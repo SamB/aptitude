@@ -463,16 +463,25 @@ void run_test_file(istream &f, bool show_world)
 
 		      bool equal=true;
 
-		      std::map<dummy_universe::package, dummy_universe::version>::const_iterator expect_iter=expected.begin();
-		      imm::map<dummy_universe::package, dummy_resolver::action>::const_iterator soln_iter=next_soln.get_actions().begin();
-
-		      while(equal &&
-			    expect_iter != expected.end() &&
-			    soln_iter != next_soln.get_actions().end())
+		      // Compare the solution and the expected set by
+		      // checking their value at each package.
+		      // Slightly lame but correct and easier than
+		      // writing a proper cross-compare.
+		      for(dummy_universe::package_iterator pi = universe.packages_begin();
+			  equal && !pi.end(); ++pi)
 			{
-			  if(expect_iter->first != soln_iter->first ||
-			     expect_iter->second != soln_iter->second.ver)
-			    equal=false;
+			  std::map<dummy_universe::package, dummy_universe::version>::const_iterator expect_found
+			    = expected.find(*pi);
+			  dummy_resolver::version soln_version;
+			  bool soln_touches_package = next_soln.get_choices().get_version_of(*pi, soln_version);
+
+			  if(expect_found != expected.end())
+			    {
+			      if(!soln_touches_package || soln_version != expect_found->second)
+				equal = false;
+			    }
+			  else if(soln_touches_package)
+			    equal = false;
 			}
 
 		      if(equal)

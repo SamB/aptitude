@@ -169,31 +169,6 @@ std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint)
   return out << " " << hint.get_target() << " " << hint.get_version_selection();
 }
 
-struct write_action
-{
-  std::ostream &out;
-  mutable bool first;
-
-  write_action(std::ostream &_out)
-    : out(_out), first(true)
-  {
-  }
-
-  void operator()(const std::pair<aptitude_resolver::package, aptitude_resolver::action> &entry) const
-  {
-    if(first)
-      first = false;
-    else
-      out << ", ";
-
-    const aptitude_resolver::package &p(entry.first);
-    const aptitude_resolver::action &act(entry.second);
-    const aptitude_resolver::version &ver(act.ver);
-
-    out << p.get_name() << ":=" << ver.get_name();
-  }
-};
-
 #define TRACE_EQUAL(logger, a, b) LOG_TRACE((logger), "compare(" << (a) << ", " << (b) << ") = 0")
 #define TRACE_INEQUAL(logger, result, why, a, b) LOG_TRACE((logger), "compare(" << (a) << ", " << (b) << ") = " << (result) << "  " << (why))
 
@@ -626,27 +601,26 @@ aptitude_resolver::aptitude_resolver(int step_score,
       pkgDepCache::StateCache &s((*cache)[i]);
 
       if(!s.Keep())
-	keep_all_solution.put(package(i, cache),
-			      action(version(i, i.CurrentVer(), cache),
-				     dep(), false, 0));
+	keep_all_solution.insert_or_narrow(choice::make_install_version(version(i, i.CurrentVer(), cache),
+									dep(), 0));
     }
 
   bool discardNullSolution = aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", true);
-  if(discardNullSolution && !keep_all_solution.empty())
+  if(discardNullSolution && keep_all_solution.size() > 0)
     {
       LOG_DEBUG(loggerScores, "Rejecting the solution that reverts all the user's actions (" << keep_all_solution << ")");
-      add_conflict(keep_all_solution);
+      add_promotion(keep_all_solution, conflict_tier);
     }
   else
     {
-      if(keep_all_solution.empty())
+      if(keep_all_solution.size() == 0)
 	LOG_DEBUG(loggerScores, "There are no user actions that could be reverted by a solution.");
       else
 	LOG_DEBUG(loggerScores, "Not rejecting the solution which reverts all the user's settings: " PACKAGE "::ProblemResolver::Discard-Null-Solution is disabled.");
     }
 }
 
-imm::map<aptitude_resolver::package, aptitude_resolver::action>
+generic_choice_set<aptitude_universe>
 aptitude_resolver::get_keep_all_solution() const
 {
   return keep_all_solution;

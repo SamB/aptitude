@@ -53,6 +53,13 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeAptGlobals();
 
+    /** \brief The logger for events having to do with aptitude's
+     *  wrapper around the apt cache.
+     *
+     *  Name: aptitude.apt.cache
+     */
+    static log4cxx::LoggerPtr getAptitudeAptCache();
+
     /** \brief The logger for events having to do with the dpkg
      *  status pipe.
      */

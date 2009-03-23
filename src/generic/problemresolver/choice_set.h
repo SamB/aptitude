@@ -161,8 +161,7 @@ private:
 
     bool operator()(const std::pair<package, choice> &p) const
     {
-      f(p.second);
-      return true;
+      return f(p.second);
     }
   };
 

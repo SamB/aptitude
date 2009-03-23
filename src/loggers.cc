@@ -23,6 +23,11 @@ using namespace log4cxx;
 
 namespace aptitude
 {
+  LoggerPtr Loggers::getAptitudeAptCache()
+  {
+    return Logger::getLogger("aptitude.apt.cache");
+  }
+
   LoggerPtr Loggers::getAptitudeAptGlobals()
   {
     return Logger::getLogger("aptitude.apt.globals");

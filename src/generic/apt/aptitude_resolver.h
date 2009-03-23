@@ -57,7 +57,7 @@ namespace aptitude
 
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
-  imm::map<package, action> keep_all_solution;
+  choice_set keep_all_solution;
 
   void add_full_replacement_score(const pkgCache::VerIterator &src,
 				  const pkgCache::PkgIterator &real_target,
@@ -481,7 +481,7 @@ public:
   /** \return the "keep-all" solution, the solution that cancels
    *  all of the user's planned actions.
    */
-  imm::map<package, action> get_keep_all_solution() const;
+  choice_set get_keep_all_solution() const;
 };
 
 #endif

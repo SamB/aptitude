@@ -1,6 +1,6 @@
 // solution_fragment.h            -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -48,8 +48,8 @@ cwidget::fragment *solution_fragment(const generic_solution<aptitude_universe> &
  */
 std::string archives_text(const pkgCache::VerIterator &v);
 
-/** \return a cwidget::fragment describing the given action. */
-cwidget::fragment *action_fragment(const generic_solution<aptitude_universe>::action &a);
+/** \return a cwidget::fragment describing the given choice. */
+cwidget::fragment *choice_fragment(const generic_choice<aptitude_universe> &c);
 
 /** \return descriptive text about a single dependency. */
 std::wstring dep_text(const pkgCache::DepIterator &d);

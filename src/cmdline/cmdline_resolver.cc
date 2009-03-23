@@ -55,6 +55,8 @@
 using namespace std;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
+typedef generic_choice<aptitude_universe> choice;
+typedef generic_choice_set<aptitude_universe> choice_set;
 
 namespace cw = cwidget;
 
@@ -63,20 +65,21 @@ namespace cw = cwidget;
  */
 static cw::fragment *solution_story(const aptitude_solution &s)
 {
-  std::vector<aptitude_solution::action> actions;
-  for(imm::map<aptitude_universe::package, aptitude_solution::action>::const_iterator
-	i = s.get_actions().begin(); i != s.get_actions().end(); ++i)
-    actions.push_back(i->second);
-  sort(actions.begin(), actions.end(), aptitude_solution::action_id_compare());
+  std::vector<choice> choices;
+  for(choice_set::const_iterator it = s.get_choices().begin();
+      it != s.get_choices().end(); ++it)
+    choices.push_back(*it);
+
+  sort(choices.begin(), choices.end(), aptitude_solution::choice_id_compare());
 
 
   vector<cw::fragment *> fragments;
 
-  for(vector<aptitude_solution::action>::const_iterator i = actions.begin();
-      i != actions.end(); ++i)
+  for(vector<choice>::const_iterator i = choices.begin();
+      i != choices.end(); ++i)
     fragments.push_back(cw::fragf("%ls%n -> %F%n",
-			      dep_text(i->d.get_dep()).c_str(),
-			      indentbox(0, 4, action_fragment(*i))));
+				  dep_text(i->get_dep().get_dep()).c_str(),
+				  indentbox(0, 4, choice_fragment(*i))));
 
   return cw::sequence_fragment(fragments);
 }
@@ -838,8 +841,7 @@ namespace aptitude
     // Implements the --show-resolver-actions command-line parameters.
     void show_resolver_actions(const generic_solution<aptitude_universe> &solution)
     {
-      if(!solution.get_actions().empty() ||
-	 !solution.get_unresolved_soft_deps().empty())
+      if(solution.get_choices().size() > 0)
 	{
 	  // The previous line will say "resolving dependencies...";
 	  // separate the solution from this message..
