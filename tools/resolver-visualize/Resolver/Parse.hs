@@ -7,6 +7,9 @@
 -- debugging statements that aptitude prints will have to be reworked
 -- to unambiguously print package and version information.
 module Resolver.Parse(
+                      Parser,
+                      ParseState,
+                      initialParseState,
                       versionWithoutTerminators,
                       version,
                       packageWithoutTerminators,
@@ -22,7 +25,7 @@ import Control.Monad(unless, when)
 
 import qualified Text.ParserCombinators.Parsec as Parsec
 import Text.Parsec hiding(choice)
-import Text.Parsec.ByteString(Parser)
+import qualified Text.Parsec.ByteString()
 
 import Resolver.Types
 
@@ -30,8 +33,148 @@ import qualified Data.ByteString.Char8 as BS
 
 import Data.List(foldl')
 import Data.Maybe(maybeToList)
-import qualified Data.Map as Map(fromList)
-import qualified Data.Set as Set(fromList)
+import qualified Data.Map as Map
+import qualified Data.Set as Set
+
+type InternSet a = Map.Map a a
+emptyInternSet = Map.empty
+-- The two arguments should be identical, except that the second one
+-- can be copied so that it shares less memory with other structures
+-- (thus making it more suitable for interning).
+doIntern :: (Ord a) => InternSet a -> a -> a -> (InternSet a, a)
+doIntern s a1 a2 = case Map.lookup a1 s of
+                     Just a' -> (s, a')
+                     Nothing -> (Map.insert a2 a2 s, a2)
+
+data ParseState = ParseState { internedStrings    :: InternSet BS.ByteString,
+                               internedPackages   :: InternSet Package,
+                               internedVersions   :: InternSet Version,
+                               internedChoices    :: InternSet Choice,
+                               internedDeps       :: InternSet Dep,
+                               internedSolutions  :: InternSet Solution,
+                               internedPromotions :: InternSet Promotion}
+                deriving(Eq, Ord, Show)
+
+initialParseState :: ParseState
+initialParseState = ParseState { internedStrings    = emptyInternSet,
+                                 internedPackages   = emptyInternSet,
+                                 internedVersions   = emptyInternSet,
+                                 internedChoices    = emptyInternSet,
+                                 internedDeps       = emptyInternSet,
+                                 internedSolutions  = emptyInternSet,
+                                 internedPromotions = emptyInternSet }
+
+type Parser = Parsec BS.ByteString ParseState
+
+-- | Overloadable convenience typeclass for interning various things.
+class Internable a where
+    intern  :: a -> Parser a
+
+maybeIntern :: Internable a => Maybe a -> Parser (Maybe a)
+maybeIntern (Just a) = do a' <- intern a
+                          return $ Just a'
+maybeIntern Nothing  = return Nothing
+
+instance Internable BS.ByteString where
+    intern s      = do st <- getState
+                       let strings           = internedStrings st
+                           (strings', rval)  = doIntern strings s (BS.copy s)
+                       putState st { internedStrings = strings' }
+                       strings' `seq` rval `seq` return rval
+
+instance Internable Package where
+    intern p@(Package name) =
+        do name'     <- intern name
+           st        <- getState
+           let packages          = internedPackages st
+               (packages', rval) = doIntern packages p (Package name')
+           putState st { internedPackages = packages' }
+           packages' `seq` (pkgName rval) `seq` return rval
+
+instance Internable Version where
+    intern v@(Version pkg name) =
+        do name'  <- intern name
+           pkg'   <- intern pkg
+           st     <- getState
+           let versions          = internedVersions st
+               (versions', rval) = doIntern versions v (Version pkg' name')
+           putState st { internedVersions = versions' }
+           versions' `seq` (pkgName $ verPkg rval) `seq` verName rval `seq` return rval
+
+instance Internable Dep where
+    intern d@(Dep source solvers) =
+        do source'  <- intern source
+           solvers' <- sequence $ map intern solvers
+           st       <- getState
+           let deps              = internedDeps st
+               (deps', rval)     = doIntern deps d (Dep source' solvers')
+           putState st { internedDeps = deps' }
+           deps' `seq` (pkgName $ verPkg $ depSource rval) `seq` (verName $ depSource rval)
+                 `seq` (seqList $ depSolvers rval) `seq` return rval
+
+instance Internable Choice where
+    intern c@(InstallVersion ver reason fromDepSource) =
+        do ver'     <- intern ver
+           reason'  <- maybeIntern reason
+           st       <- getState
+           let choices           = internedChoices st
+               (choices', rval)  = doIntern choices c (InstallVersion ver' reason' fromDepSource)
+           putState st { internedChoices = choices' }
+           choices' `seq` (verPkg $ choiceVer rval) `seq` (choiceVerReason rval)
+                    `seq` (choiceFromDepSource rval) `seq` return rval
+    intern c@(BreakSoftDep dep) =
+        do dep'     <- intern dep
+           st       <- getState
+           let choices           = internedChoices st
+               (choices', rval)  = doIntern choices c (BreakSoftDep dep')
+           putState st { internedChoices = choices' }
+           choices' `seq` (depSource $ choiceDep rval)
+                    `seq` return rval
+
+instance Internable Promotion where
+    intern p@(Promotion choices tier) =
+        do choicesList' <- sequence $ map intern (Set.toList choices)
+           st           <- getState
+           let choices'            = Set.fromList choicesList'
+               promotions          = internedPromotions st
+               (promotions', rval) = doIntern promotions p (Promotion choices' tier)
+           putState st { internedPromotions = promotions' }
+           promotions' `seq` choices'
+                       `seq` rval
+                       `seq` return rval
+
+instance Internable Solution where
+    intern sol = do let choiceList            = Map.toList $ solChoices sol
+                        forbiddenVersionList  = Set.toList $ solForbiddenVersions sol
+                        brokenDepList         = Set.toList $ solBrokenDeps sol
+                    choiceList'               <-
+                        sequence [do k' <- intern k
+                                     k' `seq` return (k', v)
+                                  | (k, v) <- choiceList]
+                    forbiddenVersionList'     <-
+                        sequence (map intern forbiddenVersionList)
+                    brokenDepList'            <-
+                        sequence (map intern brokenDepList)
+                    st                        <- getState
+                    let solChoices'           = Map.fromList choiceList'
+                        solForbiddenVersions' = Set.fromList forbiddenVersionList'
+                        solBrokenDeps'        = Set.fromList brokenDepList'
+                        sol'                  = solChoices' `seq`
+                                                solForbiddenVersions' `seq`
+                                                solBrokenDeps' `seq`
+                                                sol { solChoices = solChoices',
+                                                      solForbiddenVersions = solForbiddenVersions',
+                                                      solBrokenDeps = solBrokenDeps' }
+                        sols                  = internedSolutions st
+                        (sols', rval)         = doIntern sols sol sol'
+                    putState st { internedSolutions = sols' }
+                    sols' `seq` rval
+                          `seq` solChoices rval
+                          `seq` solForbiddenVersions rval
+                          `seq` solBrokenDeps rval
+                          `seq` solScore rval
+                          `seq` solTier rval
+                          `seq` return rval
 
 seqList :: [a] -> ()
 seqList lst = foldl' (flip seq) () lst
@@ -79,7 +222,8 @@ versionWithoutTerminators terminators =
                  v <- lexeme $ readCharsTill terminators
                  when (null v) (fail "Missing version number.")
                  let vn = BS.pack v
-                 p `seq` vn `seq` return $ Version { verPkg = p, verName = vn }) <?> "version"
+                 rval <- intern $ Version { verPkg = p, verName = vn }
+                 p `seq` vn `seq` return rval) <?> "version"
 
 version :: Parser Version
 version = versionWithoutTerminators []
@@ -90,7 +234,7 @@ packageWithoutTerminators :: [Parser t] -> Parser Package
 packageWithoutTerminators terminators =
     (do w <- lexeme $ readCharsTill terminators
         when (null w) (fail "Missing package name.")
-        let p = Package $ BS.pack w
+        p <- intern $ Package $ BS.pack w
         p `seq` return p) <?> "package name"
 
 package :: Parser Package
@@ -108,7 +252,8 @@ depWithoutTerminators terminators =
         -- since we have a balanced group.  e.g., this means that in
         -- [a -> {b [UNINST]}] everything parses correctly.
         solvers <- lexeme $ manyTill (versionWithoutTerminators [rightBrace]) (try rightBrace)
-        source `seq` seqList solvers `seq` return $ Dep { depSource = source, depSolvers = solvers }) <?> "dependency"
+        rval <- intern $ Dep { depSource = source, depSolvers = solvers }
+        source `seq` seqList solvers `seq` return rval) <?> "dependency"
 
 dep :: Parser Dep
 dep = depWithoutTerminators []
@@ -123,15 +268,15 @@ choice = (lexeme $ do installChoice <|> breakDepChoice) <?> "choice"
                                             let fromDepSource = Just True
                                                 reason        = Just d
                                             (d `seq` fromDepSource `seq` reason `seq`
-                                             (return $ InstallVersion { choiceVer = v,
-                                                                        choiceVerReason = reason,
-                                                                        choiceFromDepSource = fromDepSource }))) <|>
-                                        (return $ InstallVersion { choiceVer = v,
-                                                                   choiceVerReason = Nothing,
-                                                                   choiceFromDepSource = Nothing }))
+                                             (intern InstallVersion { choiceVer = v,
+                                                                      choiceVerReason = reason,
+                                                                      choiceFromDepSource = fromDepSource }))) <|>
+                                        (intern InstallVersion { choiceVer = v,
+                                                                 choiceVerReason = Nothing,
+                                                                 choiceFromDepSource = Nothing }))
           breakDepChoice = do try (symbol "Break")
                               d <- parens dep
-                              d `seq` return $ BreakSoftDep { choiceDep = d }
+                              d `seq` intern $ BreakSoftDep { choiceDep = d }
 
 -- | Hacky non-lexeme parser for integers.
 --
@@ -161,7 +306,7 @@ solution = do installVersionChoices <- solutionInstalls
                   forbidden = Set.fromList forbiddenVers
                   broken    = Set.fromList brokenDeps
               choices `seq` forbidden `seq` broken `seq` score `seq` tier `seq`
-                      return $ Solution { solChoices = choices,
+                      intern $ Solution { solChoices = choices,
                                           solForbiddenVersions = forbidden,
                                           solBrokenDeps = broken,
                                           solScore = score,
@@ -207,5 +352,5 @@ promotion = parens $ do char 'T'
                         choices <- braces $ sepBy choice comma
                         let choiceSet = Set.fromList choices
                         tier `seq` choiceSet `seq`
-                             return $ Promotion { promotionTier = Tier tier,
+                             intern $ Promotion { promotionTier = Tier tier,
                                                   promotionChoices = Set.fromList choices }

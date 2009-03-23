@@ -23,8 +23,8 @@ import Resolver.Types
 import Resolver.Util(while)
 import System.IO
 import System.IO.Error
-import Text.Parsec(parse, getPosition, setPosition, SourceName)
-import Text.Parsec.ByteString(Parser)
+import Text.Parsec(runParser, getState, getPosition, setPosition, SourceName)
+import Text.Parsec.ByteString()
 import Text.Parsec.Pos(newPos)
 import Text.Regex.Posix
 import qualified Data.ByteString.Char8 as BS
@@ -186,6 +186,10 @@ data GeneratingSuccessorsInfo =
 
 -- | The state used while loading the log file.
 data LogParseState = LogParseState {
+      -- | The state of the parser; we magically know that this
+      -- contains intern sets that should be shared over all parse
+      -- steps.
+      logParseParseState :: ParseState,
       -- | All the steps in the file, in reverse order.  The first
       -- element in this list is the step currently being parsed (if
       -- any).
@@ -209,7 +213,8 @@ data LogParseState = LogParseState {
     } deriving(Show)
 
 initialState sourceName =
-    LogParseState { logParseAllStepsReversed = [],
+    LogParseState { logParseParseState = initialParseState,
+                    logParseAllStepsReversed = [],
                     logParseSourceName = sourceName,
                     logParseCurrentLine = 0,
                     logParseCurrentLineStart = 0,
@@ -226,6 +231,21 @@ get = do ref <- ask
 put :: LogParseState -> LogParse ()
 put st = st `seq` do ref <- ask
                      liftIO $ writeIORef ref st
+
+-- | Run a parser using the embedded state.
+parse p sourceName source =
+    do st <- get
+       case runParser (do rval <- p
+                          st'  <- getState
+                          return (st', rval))
+                      (logParseParseState st)
+                      sourceName
+                      source of
+         Left err ->
+             fail $ show err
+         Right (parseState', rval) ->
+             do put st { logParseParseState = parseState' }
+                return rval
 
 runLogParse :: String -> LogParse a -> IO a
 runLogParse sourceName parser =
@@ -323,9 +343,7 @@ parseMatch subParser source (start, length) =
        let currentColumn = start
            pos = newPos sourceName currentLine currentColumn
            text = extract (start, length) source
-       case parse (setPosition pos >> subParser) sourceName text of
-         Right result -> return result
-         Left err -> error (show err)
+       parse (setPosition pos >> subParser) sourceName text
 
 -- | Process a line of the log file from a match array produced by
 -- processingStepStart.
