@@ -2352,6 +2352,7 @@ private:
 	    tier = found->get_tier();
 	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << tier);
 	  }
+	LOG_TRACE(logger, "Trying to leave " << d << " unresolved");
 	generator.make_successor(s, (action *) 0, (action *) 0,
 				 &d, &d+1,
 				 tier,
