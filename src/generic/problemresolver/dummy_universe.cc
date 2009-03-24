@@ -188,7 +188,7 @@ ostream &operator<<(ostream &out, const dummy_universe::version &v)
 
 ostream &operator<<(ostream &out, const dummy_universe::dep &d)
 {
-  out << d.get_source() << " -> {";
+  out << d.get_source() << (d.is_soft() ? " -S> {" : " -> {");
   for(dummy_universe::dep::solver_iterator i=d.solvers_begin();
       !i.end(); ++i)
     {

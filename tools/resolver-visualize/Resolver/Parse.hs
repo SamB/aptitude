@@ -102,12 +102,12 @@ instance Internable Version where
            versions' `seq` (pkgName $ verPkg rval) `seq` verName rval `seq` return rval
 
 instance Internable Dep where
-    intern d@(Dep source solvers) =
+    intern d@(Dep source solvers isSoft) =
         do source'  <- intern source
            solvers' <- sequence $ map intern solvers
            st       <- getState
            let deps              = internedDeps st
-               (deps', rval)     = doIntern deps d (Dep source' solvers')
+               (deps', rval)     = doIntern deps d (Dep source' solvers' isSoft)
            putState st { internedDeps = deps' }
            deps' `seq` (pkgName $ verPkg $ depSource rval) `seq` (verName $ depSource rval)
                  `seq` (seqList $ depSolvers rval) `seq` return rval
@@ -243,17 +243,18 @@ package = packageWithoutTerminators []
 -- | A dependency looks like this: version -> { ver ver ver }
 depWithoutTerminators :: [Parser t] -> Parser Dep
 depWithoutTerminators terminators =
-    (do let term'  = [t >> return () | t <- terminators]
-            arrow  = symbol "->"
+    (do let term'     = [t >> return () | t <- terminators]
+            arrow     = char '-' >> ((char '>' >> spaces >> return False) <|>
+                                     (char 'S' >> char '>' >> spaces >> return True))
         source <- versionWithoutTerminators $ (try arrow >> return ()):term'
-        arrow
+        soft   <- arrow
         leftBrace
         -- Throw away the input terminators and just use } instead,
         -- since we have a balanced group.  e.g., this means that in
         -- [a -> {b [UNINST]}] everything parses correctly.
         solvers <- lexeme $ manyTill (versionWithoutTerminators [rightBrace]) (try rightBrace)
-        rval <- intern $ Dep { depSource = source, depSolvers = solvers }
-        source `seq` seqList solvers `seq` return rval) <?> "dependency"
+        rval <- intern $ Dep { depSource = source, depSolvers = solvers, depIsSoft = soft }
+        source `seq` seqList solvers `seq` soft `seq` return rval) <?> "dependency"
 
 dep :: Parser Dep
 dep = depWithoutTerminators []

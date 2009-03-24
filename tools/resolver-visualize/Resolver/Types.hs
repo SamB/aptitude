@@ -30,7 +30,8 @@ data Version = Version { -- | The package that this version is
 data Dep = Dep { -- | The version that declares this dependency.
                  depSource :: Version,
                  -- | A list of versions that solve this dependency.
-                 depSolvers :: [Version] }
+                 depSolvers :: [Version],
+                 depIsSoft :: Bool}
          deriving(Ord, Eq, Show)
 
 

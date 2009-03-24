@@ -603,7 +603,7 @@ forceEverything a =
           ()
       forceSol sol = ()
       forcePromotion p = ()
-      forceDep (Dep source solvers) = forceMap forceVersion solvers `seq` forceVersion source `seq` ()
+      forceDep (Dep source solvers isSoft) = forceMap forceVersion solvers `seq` forceVersion source `seq` isSoft `seq` ()
       forceChoice (InstallVersion ver dep fromDepSource) =
           forceVersion ver `seq` forceMaybe forceDep dep `seq` forceMaybe id fromDepSource `seq` ()
       forceChoice (BreakSoftDep dep) =

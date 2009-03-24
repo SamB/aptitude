@@ -458,7 +458,10 @@ instance PP Package where
     ppS (Package pkgName) = (unpack pkgName++)
 
 instance PP Dep where
-    ppS (Dep src solvers) = ppS src . (" -> {"++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
+    ppS (Dep src solvers isSoft) = let arrow = if isSoft
+                                               then " -S> {"
+                                               else " -> {" in
+                                   ppS src . (arrow++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
 
 pp x = ppS x ""
 
