@@ -189,7 +189,7 @@ data LogParseState = LogParseState {
       -- | The state of the parser; we magically know that this
       -- contains intern sets that should be shared over all parse
       -- steps.
-      logParseParseState :: ParseState,
+      logParseParseState :: !ParseState,
       -- | All the steps in the file, in reverse order.  The first
       -- element in this list is the step currently being parsed (if
       -- any).
