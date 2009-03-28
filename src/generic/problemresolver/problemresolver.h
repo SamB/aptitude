@@ -345,9 +345,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *
  *  - <b>revdep_iterator</b>: an iterator class for reverse dependencies.
  *
- *  - <b>jump_iterator</b>: an iterator class for \ref universe_jump
-      jumps.
- *
  *  - <b>get_name()</b>: returns a string that uniquely identifies
  *  this version among all the versions of the same package.
  *
@@ -379,9 +376,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *    \e either the reverse dependency list of \e v1 or the reverse
  *    dependency list of \e v2.
  *
- *  - <b>jump_iterator jumps_begin()</b>: returns a \b jump_iterator
- *    pointing to the first \ref universe_jump "jump" in the list of jumps.
- *
  *  - <b>operator==(version)</b>, <b>operator!=(version)</b>:
  *  compare versions by identity.  Two version objects compare equal
  *  if and only if they represent the same version of the same
@@ -390,8 +384,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>operator<(version)</b>: an arbitrary total ordering on
  *  versions.  This should be appropriate for, eg, placing versions
  *  into a balanced tree structure.
- *
- *  \sa \ref universe_jump
  *
  *  \page universe_dep Dependency concept
  *
@@ -445,31 +437,46 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  dependencies.  This should be appropriate for, eg, placing
  *  dependencies into a balanced tree structure.
  *
- *  \page universe_jump    Jumps
+ *  \page universe_jump    Jump concept
  *
- *  Each version has an associated list of outgoing "jumps".  This
- *  list is similar to a soft \ref universe_dep dependency, but it is
- *  applied "atomically".  That is, whenever a solution would be
- *  produced, all unresolved jumps from outgoing packages are
+ *  A Jump is similar to a soft \ref universe_dep Dependency, but it
+ *  is applied "atomically".  That is, whenever a solution would be
+ *  produced, any unresolved Jumps from outgoing packages are
  *  processed immediately.  This will produce several solutions: one
- *  for each target of a jump from a given version that is legal in
- *  the context of the current solution, and one for "not taking the
- *  jump", equivalent to not solving a soft dependency.  Importantly,
- *  the tier and score of the "intermediate" solution (with the
- *  unresolved jump) are ignored.
+ *  for each target of the jump that is legal in the context of the
+ *  current solution, and one for "not taking the jump", equivalent to
+ *  not solving a soft dependency.  Importantly, the tier and score of
+ *  the "intermediate" solution (with the unresolved Jump) are
+ *  ignored.
  *
- *  In the Debian universe, a jump models a package replacement: the
- *  removal version for a package will be linked by a jump to each
+ *  In the Debian universe, a Jump models a package replacement: the
+ *  removal version for a package will be linked by a Jump to each
  *  package version that fully replaces the package being removed.
  *  The reason for ignoring scores in the intermediate step is that
- *  this fully eliminates the "hole" that is produced when package A
- *  replaces B, but B has been removed (incurring a penalty) and A has
- *  not yet been installed.  It allows rules that set the score or
- *  tier of solutions containing both A and B to trigger; this is
- *  particularly important for tiers, since they can only increase.
- *  And unlike a dependency, it is never "broken": it only triggers as
- *  an auxiliary rule when a version is inserted into the partial
- *  solution.
+ *  this eliminates fully the "hole" produced when package A replaces
+ *  B, but B has been removed (incurring a penalty) and A has not yet
+ *  been installed.  It allows rules that set the score or tier of
+ *  solutions containing both A and B to trigger; this is particularly
+ *  important for tiers, since they can only increase.  And unlike a
+ *  dependency, it is never "broken"; it only triggers as an auxiliary
+ *  rule when a version is inserted into the partial solution.
+ *
+ *  A class modeling the Jump concept should provide the following
+ *  members:
+ *
+ * - <b>target_iterator</b>: an iterator over the versions that are
+      targets of this jump.
+ *
+ * - <b>version get_source()</b>: returns the source "version" of this
+ *   jump.
+ *
+ * - <b>target_iterator targets_begin()</b>: returns a target_iterator
+ *   pointing to the first target of this jump.
+ *
+ * - <b>operator==(jump)</b>, <b>operator!-(jump)</b>: compare jumps
+ *   by identity.
+ *
+ * - <b>oeprator<(jump)</b>: an arbitrary total ordering on jumps.
  *
  *  \page universe_installation Installation concept
  *
