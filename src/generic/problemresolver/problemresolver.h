@@ -3324,7 +3324,9 @@ public:
 	      deferred.begin()->first < already_generated_tier &&
 	      deferred.begin()->first < conflict_tier)
 	  {
-	    const std::pair<tier, std::set<solution, solution_contents_compare> > &first_pair = *deferred.begin();
+	    const typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+	      deferred_begin = deferred.begin();
+	    const std::pair<tier, std::set<solution, solution_contents_compare> > &first_pair = *deferred_begin;
 	    const tier &first_tier = first_pair.first;
 	    const std::set<solution, solution_contents_compare> &first_solutions = first_pair.second;
 
@@ -3340,6 +3342,8 @@ public:
 	      // avoid any nasty surprises due to not checking what
 	      // try_enqueue usually checks.
 	      try_enqueue(*it);
+
+	    deferred.erase(deferred_begin);
 	  }
       }
 
