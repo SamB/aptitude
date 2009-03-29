@@ -23,6 +23,7 @@
 
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
+#include <apt-pkg/policy.h>
 #include <apt-pkg/sptr.h>
 
 #include <aptitude.h>
@@ -45,6 +46,54 @@ namespace
   log4cxx::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
   log4cxx::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
   log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
+
+  aptitude_resolver::tier parse_tier(const std::string &s)
+  {
+    if(s == "conflict")
+      return aptitude_resolver::conflict_tier;
+    else if(s == "minimum" || s == "")
+      return aptitude_resolver::minimum_tier;
+    else
+      {
+	char *endptr;
+	long n = strtol(s.c_str(), &endptr, 0);
+	if(*endptr != '\0')
+	  {
+	    std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
+	    LOG_ERROR(loggerHintsParse, msg);
+	    _error->Error(_(msg.c_str()));
+	    return aptitude_resolver::minimum_tier;
+	  }
+	else
+	  {
+	    return aptitude_resolver::tier(n);
+	  }
+      }
+  }
+
+  /** \brief Return a tier that has the same major level as the given
+   *  base tier, but whose subordinate values have been set
+   *  appropriately for the given version.
+   */
+  aptitude_resolver::tier specialize_tier(const aptitude_resolver::tier &base,
+					  const pkgCache::VerIterator &ver,
+					  pkgPolicy *policy)
+  {
+    if(ver.end())
+      return aptitude_resolver::tier(base.get_policy(), INT_MAX);
+    else
+      {
+	int apt_priority = INT_MIN;
+	for(pkgCache::VerFileIterator vf = ver.FileList();
+	    !vf.end(); ++vf)
+	  {
+	    int pin = policy->GetPriority(vf.File());
+	    apt_priority = std::max(apt_priority, pin);
+	  }
+
+	return aptitude_resolver::tier(base.get_policy(), -apt_priority);
+      }
+  }
 }
 
 // Logging operators.
@@ -585,14 +634,18 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int resolution_score,
 				     int future_horizon,
 				     const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
-				     aptitudeDepCache *cache)
+				     aptitudeDepCache *cache,
+				     pkgPolicy *_policy)
   :generic_problem_resolver<aptitude_universe>(step_score, broken_score, unfixed_soft_score, infinity, resolution_score,
 					       future_horizon,
 					       initial_installations,
-					       aptitude_universe(cache))
+					       aptitude_universe(cache)),
+   policy(_policy)
 {
   using cwidget::util::ref_ptr;
   using aptitude::matching::pattern;
+
+  tier keep_all_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000")));
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
@@ -605,11 +658,19 @@ aptitude_resolver::aptitude_resolver(int step_score,
 									dep(), 0));
     }
 
-  bool discardNullSolution = aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", true);
-  if(discardNullSolution && keep_all_solution.size() > 0)
+  bool discardNullSolution = aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", false);
+  if(keep_all_solution.size() > 0)
     {
-      LOG_DEBUG(loggerScores, "Rejecting the solution that reverts all the user's actions (" << keep_all_solution << ")");
-      add_promotion(keep_all_solution, conflict_tier);
+      if(discardNullSolution)
+	{
+	  LOG_DEBUG(loggerScores, "Rejecting the solution that reverts all the user's actions (" << keep_all_solution << ")");
+	  add_promotion(keep_all_solution, conflict_tier);
+	}
+      else if(minimum_tier < keep_all_tier)
+	{
+	  LOG_DEBUG(loggerScores, "Promoting the solution that reverts all the user's actions (" << keep_all_solution << ") to tier " << keep_all_tier);
+	  add_promotion(keep_all_solution, keep_all_tier);
+	}
     }
   else
     {
@@ -1019,6 +1080,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  const std::map<package, bool> &initial_state_manual_flags,
 					  const std::vector<hint> &hints)
 {
+  tier safe_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000")));
+  tier remove_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Removal-Tier", "30000")));
+  tier break_hold_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000")));
+  tier non_default_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000")));
+  tier remove_essential_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000")));
+
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
   aptitudeDepCache *cache(get_universe().get_cache());
@@ -1144,6 +1211,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << " because it is the to-be-installed version of an automatically installed package (" PACKAGE "::ProblemResolver::PreserveAutoScore).");
 		  add_version_score(v, auto_score);
 		}
+
+	      // No change to the tier in this case.
 	    }
 	  // Ok, if this version is selected it'll be a change.
 	  else if(apt_ver == p.get_pkg().CurrentVer())
@@ -1156,6 +1225,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << " because it is the currently installed version of a manually installed package  (" PACKAGE "::ProblemResolver::KeepScore).");
 		  add_version_score(v, keep_score);
 		}
+
+	      tier v_tier(specialize_tier(safe_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Tier)");
+	      set_version_min_tier(v, v_tier);
 	    }
 	  else if(apt_ver.end())
 	    {
@@ -1167,6 +1242,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << " because it represents the removal of a manually installed package  (" PACKAGE "::ProblemResolver::RemoveScore).");
 		  add_version_score(v, remove_score);
 		}
+
+	      tier v_tier(specialize_tier(remove_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Tier)");
+	      set_version_min_tier(v, v_tier);
 	    }
 	  else if(apt_ver == (*cache)[p.get_pkg()].CandidateVerIter(*cache))
 	    {
@@ -1190,6 +1271,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		      add_version_score(v, upgrade_score);
 		    }
 		}
+
+	      tier v_tier(specialize_tier(safe_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Tier).");
+	      set_version_min_tier(v, v_tier);
 	    }
 	  else
 	    // We know that:
@@ -1204,6 +1291,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			<< std::noshowpos << " for " << v
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::NonDefaultScore).");
 	      add_version_score(v, non_default_score);
+
+	      tier v_tier(specialize_tier(non_default_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Tier).");
+	      set_version_min_tier(v, v_tier);
 	    }
 
 	  // This logic is slightly duplicated in resolver_manger.cc,
@@ -1221,6 +1314,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    "** Rejecting " << v << " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Allow-Break-Holds).");
 		  reject_version(v);
 		}
+
+	      tier v_tier(specialize_tier(break_hold_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Tier).");
+	      set_version_min_tier(v, v_tier);
 	    }
 
 	  // In addition, add the essential-removal score:
@@ -1237,6 +1336,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      LOG_DEBUG(loggerScores,
 			"** Rejecting " << v << " because it represents removing an essential package.");
 	      reject_version(v);
+
+	      tier v_tier(specialize_tier(remove_essential_tier, v.get_ver(), policy));
+	      LOG_DEBUG(loggerScores,
+			"** Tier: " << v_tier << " for " << v
+			<< " because it represents removing an essential package.");
+	      set_version_min_tier(v, v_tier);
 	    }
 
 	  // Look for a conflicts/provides/replaces.

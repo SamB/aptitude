@@ -158,9 +158,9 @@ resolver_manager::solution_information::~solution_information()
 // or by the user (don't have a mutex lock); I could sidestep this
 // with some clever magic, but there's no point unless it turns out to
 // be a bottleneck.
-resolver_manager::resolver_manager(aptitudeDepCache *_cache,
+resolver_manager::resolver_manager(aptitudeCacheFile *_cache_file,
 				   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations)
-  :cache(_cache),
+  :cache_file(_cache_file),
    resolver(NULL),
    undos(new undo_list),
    ticks_since_last_solution(0),
@@ -175,8 +175,8 @@ resolver_manager::resolver_manager(aptitudeDepCache *_cache,
    resolver_thread(NULL),
    mutex(cwidget::threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE))
 {
-  cache->pre_package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::discard_resolver));
-  cache->package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::maybe_create_resolver));
+  (*cache_file)->pre_package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::discard_resolver));
+  (*cache_file)->package_state_changed.connect(sigc::mem_fun(this, &resolver_manager::maybe_create_resolver));
 
   aptcfg->connect("Apt::Install-Recommends",
 		  sigc::mem_fun(this,
@@ -293,7 +293,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
       if(visited_packages.find(p) == visited_packages.end())
 	continue;
 
-      pkg_action_state action = find_pkg_state(p.get_pkg(), *cache);
+      pkg_action_state action = find_pkg_state(p.get_pkg(), **cache_file);
       std::string actionstr;
       switch(action)
 	{
@@ -308,7 +308,7 @@ void resolver_manager::write_test_control_file(const std::string &outDir,
 	case pkg_install:
 	case pkg_upgrade:
 	  actionstr = std::string("install ") +
-	    (*cache)[p.get_pkg()].InstVerIter(*cache).VerStr();
+	    (*cache_file)[p.get_pkg()].InstVerIter(*cache_file).VerStr();
 	  break;
 
 	default:
@@ -702,7 +702,7 @@ void resolver_manager::maybe_create_resolver()
 {
   cwidget::threads::mutex::lock l(mutex);
 
-  if(resolver == NULL && (cache->BrokenCount() > 0 || !initial_installations.empty()))
+  if(resolver == NULL && ((*cache_file)->BrokenCount() > 0 || !initial_installations.empty()))
     {
       {
 	cwidget::threads::mutex::lock l(background_control_mutex);
@@ -814,7 +814,8 @@ void resolver_manager::create_resolver()
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::FutureHorizon", 50),
 				 initial_installations,
-				 cache);
+				 (*cache_file),
+				 cache_file->Policy);
 
   // Set auto flags for initial installations as if the installs were
   // done by the user.  i.e., if the package is currently installed,
@@ -825,13 +826,13 @@ void resolver_manager::create_resolver()
 	initial_installations.begin(); it != initial_installations.end(); ++it)
     {
       pkgCache::PkgIterator pkg(it->first.get_pkg());
-      aptitude_resolver_package resolver_pkg(pkg, cache);
+      aptitude_resolver_package resolver_pkg(pkg, *cache_file);
 
       if(pkg->CurrentState != pkgCache::State::NotInstalled &&
 	 pkg->CurrentState != pkgCache::State::ConfigFiles)
 	{
 	  auto_flags[resolver_pkg] =
-	    ((*cache)[pkg].Flags & pkgCache::Flag::Auto) == 0;
+	    ((*cache_file)[pkg].Flags & pkgCache::Flag::Auto) == 0;
 	}
       else
 	auto_flags[resolver_pkg] = true;
@@ -1520,7 +1521,7 @@ void resolver_manager::tweak_score(const pkgCache::PkgIterator &pkg,
   eassert(resolver_exists());
   eassert(resolver->fresh());
 
-  resolver->add_version_score(aptitude_resolver_version(pkg, ver, cache),
+  resolver->add_version_score(aptitude_resolver_version(pkg, ver, (*cache_file)),
 			      score);
 }
 
@@ -1784,7 +1785,7 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 
   reset_resolver();
 
-  for(pkgCache::PkgIterator p = (*cache).PkgBegin();
+  for(pkgCache::PkgIterator p = (*cache_file)->PkgBegin();
       !p.end(); ++p)
     {
       // Forbid the resolver from removing installed packages.
@@ -1792,8 +1793,8 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	{
 	  aptitude_resolver_version
 	    remove_p(p,
-		     pkgCache::VerIterator(*cache),
-		     cache);
+		     pkgCache::VerIterator(*cache_file),
+		     *cache_file);
 
 	  LOG_DEBUG(logger,
 		    "setup_safe_resolver: Rejecting the removal of the package " << remove_p.get_package() << ".");
@@ -1813,11 +1814,11 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	    p->CurrentState != pkgCache::State::ConfigFiles;
 
 	  const bool p_will_install =
-	    (*cache)[p].Install();
+	    (*cache_file)[p].Install();
 
 	  const bool v_is_a_new_install = !p_is_installed && !p_will_install;
 	  const bool v_is_a_new_upgrade = p_is_installed && p_will_install;
-	  const bool v_is_a_non_default_version = v != (*cache)[p].CandidateVerIter(*cache);
+	  const bool v_is_a_non_default_version = v != (*cache_file)[p].CandidateVerIter(*cache_file);
 
 	  if(v != p.CurrentVer() &&
 	     // Disallow installing not-installed packages that
@@ -1827,7 +1828,7 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	      (v_is_a_new_upgrade && no_new_upgrades) ||
 	      v_is_a_non_default_version))
 	    {
-	      aptitude_resolver_version p_v(p, v, cache);
+	      aptitude_resolver_version p_v(p, v, *cache_file);
 
 	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
 		{

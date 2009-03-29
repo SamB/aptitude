@@ -141,7 +141,7 @@ namespace gui
     if(fixing_upgrade_resolver)
       discard_resolver();
     LOG_TRACE(logger, "Creating a new resolver manager for manually fixing the upgrade.");
-    fixing_upgrade_resolver = new resolver_manager(*apt_cache_file,
+    fixing_upgrade_resolver = new resolver_manager(apt_cache_file,
 						   initial_versions);
 
     if(fixing_upgrade_tab != NULL)
@@ -493,7 +493,7 @@ namespace gui
     else
       {
 	LOG_TRACE(logger, "Creating a new resolver for the dashboard tab.");
-	upgrade_resolver = new resolver_manager(*apt_cache_file, get_upgradable());
+	upgrade_resolver = new resolver_manager(apt_cache_file, get_upgradable());
 
 	if(!upgrade_resolver->resolver_exists())
 	  {

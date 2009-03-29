@@ -961,6 +961,9 @@ public:
       entries[1] = apt_priority;
     }
 
+    int get_policy() const { return entries[0]; }
+    int apt_priority() const { return entries[1]; }
+
     bool operator<(const tier &other) const
     {
       if(entries[0] < other.entries[0])

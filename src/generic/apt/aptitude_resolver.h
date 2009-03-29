@@ -32,6 +32,8 @@
 
 #include <generic/util/immset.h>
 
+class pkgPolicy;
+
 /** \brief Glue code to make the resolver talk to the core aptitude classes.
  *
  *  
@@ -58,6 +60,7 @@ namespace aptitude
 class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
   choice_set keep_all_solution;
+  pkgPolicy *policy;
 
   void add_full_replacement_score(const pkgCache::VerIterator &src,
 				  const pkgCache::PkgIterator &real_target,
@@ -388,7 +391,8 @@ public:
 		    int resolution_score,
 		    int future_horizon,
 		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
-		    aptitudeDepCache *cache);
+		    aptitudeDepCache *cache,
+		    pkgPolicy *_policy);
 
   /** \brief Return \b true if the given version will break a hold or
    *  install a forbidden version.

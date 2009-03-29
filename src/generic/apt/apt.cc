@@ -496,7 +496,7 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
     }
 
   LOG_TRACE(logger, "Initializing global dependency resolver manager.");
-  resman = new resolver_manager(*new_file, imm::map<aptitude_resolver_package, aptitude_resolver_version>());
+  resman = new resolver_manager(new_file, imm::map<aptitude_resolver_package, aptitude_resolver_version>());
 
   LOG_DEBUG(logger, "Emitting cache_reloaded().");
   cache_reloaded();

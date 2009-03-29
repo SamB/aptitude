@@ -54,7 +54,7 @@ class aptitude_universe;
 class aptitude_resolver_package;
 class aptitude_resolver_version;
 class aptitude_resolver_dep;
-class aptitudeDepCache;
+class aptitudeCacheFile;
 template<typename PackageUniverse> class generic_solution;
 template<typename PackageUniverse> class generic_problem_resolver;
 class aptitude_resolver;
@@ -188,7 +188,7 @@ private:
   };
 
   /** The cache file on which this manager operates. */
-  aptitudeDepCache *cache;
+  aptitudeCacheFile *cache_file;
 
   /** The active resolver, or \b NULL if none is active. */
   aptitude_resolver *resolver;
@@ -459,7 +459,7 @@ private:
 			     const resolver_interaction &act);
 public:
   /** Create a new resolver manager for the given cache file. */
-  resolver_manager(aptitudeDepCache *cache,
+  resolver_manager(aptitudeCacheFile *cache_file,
 		   const imm::map<aptitude_resolver_package, aptitude_resolver_version> &_initial_installations);
 
   virtual ~resolver_manager();
