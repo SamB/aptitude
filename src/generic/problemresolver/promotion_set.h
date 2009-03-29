@@ -44,31 +44,32 @@ class generic_promotion
 public:
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
+  typedef typename PackageUniverse::tier tier;
 
 private:
   choice_set choices;
-  int tier;
+  tier promotion_tier;
 
 public:
   generic_promotion()
-    : choices(), tier(0)
+    : choices(), promotion_tier()
   {
   }
 
   /** \brief Create a new promotion. */
-  generic_promotion(const choice_set &_choices, int _tier)
-    : choices(_choices), tier(_tier)
+  generic_promotion(const choice_set &_choices, const tier &_promotion_tier)
+    : choices(_choices), promotion_tier(_promotion_tier)
   {
   }
 
   const choice_set &get_choices() const { return choices; }
-  int get_tier() const { return tier; }
+  const tier &get_tier() const { return promotion_tier; }
 
   bool operator<(const generic_promotion &other) const
   {
-    if(tier < other.tier)
+    if(promotion_tier < other.promotion_tier)
       return false;
-    else if(tier > other.tier)
+    else if(other.promotion_tier < promotion_tier)
       return true;
     else
       return choices < other.choices;
@@ -76,7 +77,7 @@ public:
 
   bool operator==(const generic_promotion &other) const
   {
-    if(tier != other.tier)
+    if(promotion_tier != other.promotion_tier)
       return false;
 
     if(!(choices == other.choices))
@@ -87,7 +88,7 @@ public:
 
   bool operator!=(const generic_promotion &other) const
   {
-    if(tier != other.tier)
+    if(promotion_tier != other.promotion_tier)
       return true;
 
     if(!(choices == other.choices))
@@ -117,10 +118,10 @@ std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUnive
  *      dependency, depending on what type of choice we have).
  *
  *   2. We also want to be able to prune the structure of all entries
- *      below a particular tier, or to yank out the contents of a tier
- *      entirely (used when deferrals are removed, or when we advance
- *      to a new tier and want to get rid of cruft from the previous
- *      tier).
+ *      below a particular tier, or to yank out the contents of a
+ *      range of tiers entirely (used when deferrals are removed, or
+ *      when we advance to a new tier and want to get rid of cruft
+ *      from the previous tier).
  *
  *   3. When a new tier promotion is inserted, it should override any
  *      lower promotions that it is a subset of or equal to, but not
@@ -141,6 +142,7 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
+  typedef typename PackageUniverse::tier tier;
 
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
@@ -175,7 +177,7 @@ private:
    *  Lists are used so that we can store stable references to
    *  entries.
    */
-  std::map<int, std::list<entry> > entries;
+  std::map<tier, std::list<entry> > entries;
 
   unsigned int num_promotions;
 
@@ -248,14 +250,27 @@ private:
 public:
   typedef unsigned int size_type;
   size_type size() const { return num_promotions; }
-  size_type tier_size(int tier) const
+  size_type tier_size(const tier &selected_tier) const
   {
-    typename std::map<int, std::list<entry> >::const_iterator found =
-      entries.find(tier);
+    typename std::map<tier, std::list<entry> >::const_iterator found =
+      entries.find(selected_tier);
     if(found == entries.end())
       return 0;
     else
       return found->second.size();
+  }
+
+  size_type tier_size_above(const tier &selected_tier) const
+  {
+    size_type rval = 0;
+
+    typename std::map<tier, std::list<entry> >::const_iterator first =
+      entries.lower_bound(selected_tier);
+    for(typename std::map<tier, std::list<entry> >::const_iterator it = first;
+	it != entries.end(); ++it)
+      rval += it->second.size();
+
+    return rval;
   }
 
   class const_iterator
@@ -263,10 +278,10 @@ public:
     // This is the only place where it's awkward to have a
     // map-of-lists be the canonical location where all the entries in
     // this object are stored.
-    typename std::map<int, std::list<entry> >::const_iterator entries_it;
+    typename std::map<tier, std::list<entry> >::const_iterator entries_it;
     // The end iterator for the map -- necessary so that we know
     // whether it's safe to start walking down the current list.
-    typename std::map<int, std::list<entry> >::const_iterator entries_end;
+    typename std::map<tier, std::list<entry> >::const_iterator entries_end;
 
     // The current entry in the current list.
     typename std::list<entry>::const_iterator entry_list_it;
@@ -274,8 +289,8 @@ public:
     friend class generic_promotion_set;
 
     // This overload is used for non-end iterators.
-    const_iterator(typename std::map<int, std::list<entry> >::const_iterator _entries_it,
-		   typename std::map<int, std::list<entry> >::const_iterator _entries_end,
+    const_iterator(typename std::map<tier, std::list<entry> >::const_iterator _entries_it,
+		   typename std::map<tier, std::list<entry> >::const_iterator _entries_end,
 		   typename std::list<entry>::const_iterator _entry_list_it)
       : entries_it(_entries_it),
 	entries_end(_entries_end),
@@ -294,8 +309,8 @@ public:
     }
 
     // This overload is used only to create an end iterator.
-    const_iterator(typename std::map<int, std::list<entry> >::const_iterator _entries_it,
-		   typename std::map<int, std::list<entry> >::const_iterator _entries_end)
+    const_iterator(typename std::map<tier, std::list<entry> >::const_iterator _entries_it,
+		   typename std::map<tier, std::list<entry> >::const_iterator _entries_end)
       : entries_it(_entries_it),
 	entries_end(_entries_end)
     {
@@ -674,7 +689,7 @@ private:
     unsigned int required_hits;
     // The maximum tier to return; entries with a higher tier will be
     // ignored.
-    int maximum_tier;
+    tier maximum_tier;
     log4cxx::LoggerPtr logger;
 
     /** \brief Create a find-supersets operation.
@@ -692,7 +707,7 @@ private:
      */
     find_entry_supersets_op(std::vector<entry_ref> &_output_entries,
 			    unsigned int _required_hits,
-			    int _maximum_tier,
+			    const tier &_maximum_tier,
 			    const log4cxx::LoggerPtr &_logger)
       : output_entries(_output_entries),
 	required_hits(_required_hits),
@@ -705,7 +720,7 @@ private:
     {
       if(r->hit_count > 0)
 	{
-	  if(r->p.get_tier() > maximum_tier)
+	  if(maximum_tier < r->p.get_tier())
 	    {
 	      LOG_INFO(logger, "find_entry_supersets_op: resetting the hit count for "
 		       << r->p << " to 0, but not returning it, because its tier "
@@ -761,12 +776,12 @@ public:
     else
       {
 	const entry_ref result_entry(find_result.return_value_ref);
-	const int tier = result_entry->p.get_tier();
-	typename std::map<int, std::list<entry> >::const_iterator tier_found =
-	  entries.find(tier);
+	const tier &result_tier = result_entry->p.get_tier();
+	typename std::map<tier, std::list<entry> >::const_iterator tier_found =
+	  entries.find(result_tier);
 	if(tier_found == entries.end())
 	  {
-	    LOG_ERROR(logger, "Unable to find tier " << tier << " even though we just found an entry in it!");
+	    LOG_ERROR(logger, "Unable to find tier " << result_tier << " even though we just found an entry in it!");
 	    return end();
 	  }
 	else
@@ -993,13 +1008,13 @@ public:
 	  }
 	else
 	  {
-	    const int tier = highest_entry->p.get_tier();
-	    typename std::map<int, std::list<entry> >::const_iterator tier_found =
-	      entries.find(tier);
+	    const tier &highest_entry_tier = highest_entry->p.get_tier();
+	    typename std::map<tier, std::list<entry> >::const_iterator tier_found =
+	      entries.find(highest_entry_tier);
 
 	    if(tier_found == entries.end())
 	      {
-		LOG_ERROR(logger, "Unable to find tier " << tier << " even though we just found an entry in it!");
+		LOG_ERROR(logger, "Unable to find tier " << highest_entry_tier << " even though we just found an entry in it!");
 		return end();
 	      }
 	    else
@@ -1048,16 +1063,41 @@ private:
    */
   struct entry_ref_in_tier_pred
   {
-    int tier;
+    tier selected_tier;
 
-    entry_ref_in_tier_pred(int _tier)
-      : tier(_tier)
+    entry_ref_in_tier_pred(const tier &_selected_tier)
+      : selected_tier(_selected_tier)
     {
     }
 
     bool operator()(entry_ref r) const
     {
-      return r->p.get_tier() == tier;
+      return r->p.get_tier() == selected_tier;
+    }
+  };
+
+  /** \brief Predicate testing whether an entry reference refers to
+   *  something between two tiers.
+   */
+  struct entry_ref_between_tiers_pred
+  {
+    tier begin_tier, end_tier;
+
+    /** \brief Create a new entry_ref_in_tier_pred.
+     *
+     *  \param _begin_tier  The first tier to select.
+     *  \param _end_tier The first tier to *not* select.
+     */
+    entry_ref_between_tiers_pred(const tier &_begin_tier, const tier &_end_tier)
+      : begin_tier(_begin_tier), end_tier(_end_tier)
+    {
+    }
+
+    bool operator()(entry_ref r) const
+    {
+      const tier &r_tier(r->p.get_tier());
+
+      return r_tier >= begin_tier && r_tier < end_tier;
     }
   };
 
@@ -1066,16 +1106,16 @@ private:
    */
   struct entry_ref_strictly_below_tier_pred
   {
-    int tier;
+    tier selected_tier;
 
-    entry_ref_strictly_below_tier_pred(int _tier)
-      : tier(_tier)
+    entry_ref_strictly_below_tier_pred(const tier &_selected_tier)
+      : selected_tier(_selected_tier)
     {
     }
 
     bool operator()(entry_ref r) const
     {
-      return r->p.get_tier() < tier;
+      return r->p.get_tier() < selected_tier;
     }
   };
 
@@ -1255,96 +1295,66 @@ private:
   }
 
 public:
-  /** \brief Remove all the promotions associated with the given tier.
+  /** \brief Remove all the promotions whose tier is greater than or
+   * equal to begin_tier, and strictly less than end_tier.
    *
    *  Implements requirement (2).
    */
-  void remove_tier(int tier)
+  void remove_between_tiers(const tier &begin_tier, const tier &end_tier)
   {
-    LOG_DEBUG(logger, "Removing all promotions in tier " << tier);
+    LOG_DEBUG(logger, "Removing all promotions between tiers " << begin_tier << " and " << end_tier);
 
-    typename std::map<int, std::list<entry> >::iterator found =
-      entries.find(tier);
+    typename std::map<tier, std::list<entry> >::iterator start =
+      entries.lower_bound(begin_tier);
 
-    if(found == entries.end())
-      LOG_TRACE(logger, "Not removing tier " << tier << ": it is empty.");
-    else
+    typename std::map<tier, std::list<entry> >::iterator stop =
+      entries.lower_bound(end_tier);
+
+    // Collect the versions and soft dependencies related to each
+    // choice in the selected tiers.
+    std::set<version> installed_versions;
+    std::set<dep> broken_soft_deps;
+
+    int num_promotions_erased = 0;
+    for(typename std::map<tier, std::list<entry> >::iterator it = start;
+	it != stop; ++it)
       {
-	// Collect the versions and soft dependencies related to each
-	// choice in the tier.
-	std::set<version> installed_versions;
-	std::set<dep> broken_soft_deps;
-
-	collect_indexers(found->second,
+	collect_indexers(it->second,
 			 installed_versions,
 			 broken_soft_deps,
 			 logger);
 
-	// Now zap all the index entries in this tier.
-	drop_install_version_index_entries(installed_versions,
-					   entry_ref_in_tier_pred(tier));
-	drop_broken_soft_dep_index_entries(broken_soft_deps,
-					   entry_ref_in_tier_pred(tier));
-
-	int num_promotions_erased = found->second.size();
-
-	// Delete the tier itself.
-	entries.erase(found);
-	num_promotions -= num_promotions_erased;
-
-	LOG_TRACE(logger, "Removed tier " << tier << ", dropping " << num_promotions_erased << " promotions.");
+	num_promotions_erased += it->second.size();
       }
+
+    // Now zap all the index entries in these tiers.
+    drop_install_version_index_entries(installed_versions,
+				       entry_ref_between_tiers_pred(begin_tier, end_tier));
+    drop_broken_soft_dep_index_entries(broken_soft_deps,
+				       entry_ref_between_tiers_pred(begin_tier, end_tier));
+
+    // Delete the tiers.
+    entries.erase(start, stop);
+    num_promotions -= num_promotions_erased;
+
+    LOG_TRACE(logger, "Removed tiers " << begin_tier
+	      << " through " << end_tier
+	      << ", dropping " << num_promotions_erased << " promotions.");
   }
 
   /** \brief Remove all the promotions below the given tier.
    *
    *  Implements requirement (2).
    */
-  void remove_below_tier(int tier)
+  void remove_below_tier(const tier &min_tier)
   {
-    LOG_DEBUG(logger, "Removing all promotions below tier " << tier);
+    LOG_DEBUG(logger, "Removing all promotions below tier " << min_tier);
 
-    std::set<version> installed_versions;
-    std::set<dep> broken_soft_deps;
-
-    int num_promotions_erased = 0;
-
-    // This is set to one past the last iterator in this tier, so we
-    // can use it to delete all the dropped tiers.  We don't use
-    // upper_bound() because we have to examine each deleted tier to
-    // (a) update the size correctly, and (b) collect the index
-    // locations that need to be fixed up.
-    typename std::map<int, std::list<entry> >::iterator delete_end;
-    for(typename std::map<int, std::list<entry> >::iterator it =
-	  entries.begin(), it_next = it;
-	it != entries.end() && it->first < tier;
-	it = it_next)
+    if(entries.size() > 0)
       {
-	++it_next;
-	delete_end = it_next;
-
-	num_promotions_erased += it->second.size();
-
-	collect_indexers(it->second,
-			 installed_versions,
-			 broken_soft_deps,
-			 logger);
-      }
-
-    if(delete_end == entries.begin())
-      LOG_TRACE(logger, "No entries below tier " << tier << " to remove.");
-    else
-      {
-	drop_install_version_index_entries(installed_versions,
-					   entry_ref_strictly_below_tier_pred(tier));
-	drop_broken_soft_dep_index_entries(broken_soft_deps,
-					   entry_ref_strictly_below_tier_pred(tier));
-
-	// Delete the tiers in question.
-	entries.erase(entries.begin(), delete_end);
-	num_promotions -= num_promotions_erased;
-
-	LOG_TRACE(logger, "Deleted all tiers below " << tier << ", dropping " << num_promotions_erased << " promotions.");
+	const tier &curr_min_tier = entries.begin()->first;
+	if(curr_min_tier < min_tier)
+	  remove_between_tiers(curr_min_tier, min_tier);
       }
   }
 
@@ -1486,13 +1496,13 @@ public:
    */
   void insert(const promotion &p)
   {
-    const int tier = p.get_tier();
+    const tier &p_tier = p.get_tier();
     const choice_set &choices = p.get_choices();
 
     LOG_DEBUG(logger, "Inserting " << p << " into the promotion set.");
 
     const const_iterator highest(find_highest_promotion_for(choices));
-    if(highest != end() && highest->get_tier() >= tier)
+    if(highest != end() && highest->get_tier() >= p_tier)
       LOG_TRACE(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
     else
       {
@@ -1534,12 +1544,12 @@ public:
 	  {
 	    entry_ref ent(*it);
 	    LOG_TRACE(logger, "Removing " << ent->p);
-	    const int tier = ent->p.get_tier();
-	    typename std::map<int, std::list<entry> >::iterator found =
-	      entries.find(tier);
+	    const tier removed_tier = ent->p.get_tier();
+	    typename std::map<tier, std::list<entry> >::iterator found =
+	      entries.find(removed_tier);
 
 	    if(found == entries.end())
-	      LOG_ERROR(logger, "Tier " << tier << " has gone missing!");
+	      LOG_ERROR(logger, "Tier " << removed_tier << " has gone missing!");
 	    else
 	      {
 		typename std::list<entry>::size_type initial_size(found->second.size());
@@ -1549,29 +1559,29 @@ public:
 
 		if(found->second.empty())
 		  {
-		    LOG_DEBUG(logger, "Tier " << tier << " is empty, deleting it.");
+		    LOG_DEBUG(logger, "Tier " << removed_tier << " is empty, deleting it.");
 		    entries.erase(found);
 		  }
 	      }
           }
         num_promotions -= superseded_entries.size();
 
-	LOG_TRACE(logger, "Inserting " << p << " into tier " << tier);
+	LOG_TRACE(logger, "Inserting " << p << " into tier " << p_tier);
 
 	// Find the tier list.  Use a roundabout means instead of
 	// operator[] so we can log when we allocate a new tier.
-	typename std::map<int, std::list<entry> >::iterator tier_found = entries.find(tier);
+	typename std::map<tier, std::list<entry> >::iterator p_tier_found = entries.find(p_tier);
 
-	if(tier_found == entries.end())
+	if(p_tier_found == entries.end())
 	  {
-	    LOG_DEBUG(logger, "Allocating initial structures for tier " << tier);
-	    tier_found = entries.insert(tier_found, std::make_pair(tier, std::list<entry>()));
+	    LOG_DEBUG(logger, "Allocating initial structures for tier " << p_tier);
+	    p_tier_found = entries.insert(p_tier_found, std::make_pair(p_tier, std::list<entry>()));
 	  }
 
 	// Insert the new entry into the list of entries in this tier.
-	std::list<entry> &tier_entries = tier_found->second;
+	std::list<entry> &p_tier_entries = p_tier_found->second;
 	const entry_ref new_entry =
-	  tier_entries.insert(tier_entries.end(), p);
+	  p_tier_entries.insert(p_tier_entries.end(), p);
 	++num_promotions;
 
 	LOG_TRACE(logger, "Building index entries for " << p);

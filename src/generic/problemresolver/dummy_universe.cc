@@ -201,6 +201,21 @@ ostream &operator<<(ostream &out, const dummy_universe::dep &d)
   return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const dummy_universe::tier &tier)
+{
+  out << "(";
+  for(dummy_universe::tier::const_iterator it = tier.begin();
+      it != tier.end(); ++it)
+    {
+      if(it != tier.begin())
+	out << ", ";
+      out << *it;
+    }
+  out << ")";
+
+  return out;
+}
+
 pair<string, string> read_pkgverpair(istream &in)
 {
   in >> ws;

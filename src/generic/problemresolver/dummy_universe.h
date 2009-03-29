@@ -476,6 +476,57 @@ public:
     bool solved_by(const version &other) const;
   };
 
+  class tier
+  {
+    std::vector<int> values;
+
+  public:
+    tier()
+    {
+    }
+
+    template<typename iter>
+    tier(iter begin, iter end)
+      : values(begin, end)
+    {
+    }
+
+    explicit tier(int first)
+      : values(1, first)
+    {
+    }
+
+    typedef std::vector<int>::const_iterator const_iterator;
+
+    const_iterator begin() const { return values.begin(); }
+    const_iterator end() const { return values.end(); }
+
+    bool operator<(const tier &other) const
+    {
+      return values < other.values;
+    }
+
+    bool operator>=(const tier &other) const
+    {
+      return values >= other.values;
+    }
+
+    bool operator==(const tier &other) const
+    {
+      return values == other.values;
+    }
+
+    bool operator!=(const tier &other) const
+    {
+      return values != other.values;
+    }
+
+    tier &operator=(const tier &other)
+    {
+      values = other.values;
+      return *this;
+    }
+  };
 
   typedef wrap_ptr_iter<dummy_package, package> package_iterator;
   typedef wrap_ptr_iter<dummy_dep, dep> dep_iterator;
@@ -652,6 +703,7 @@ public:
   typedef dummy_universe::package package;
   typedef dummy_universe::version version;
   typedef dummy_universe::dep dep;
+  typedef dummy_universe::tier tier;
   typedef dummy_universe::package_iterator package_iterator;
   typedef dummy_universe::dep_iterator dep_iterator;
   typedef dummy_universe::broken_dep_iterator broken_dep_iterator;
@@ -757,6 +809,8 @@ std::ostream &operator<<(std::ostream &out, const dummy_universe::package &p);
 std::ostream &operator<<(std::ostream &out, const dummy_universe::version &v);
 
 std::ostream &operator<<(std::ostream &out, const dummy_universe::dep &d);
+
+std::ostream &operator<<(std::ostream &out, const dummy_universe::tier &tier);
 
 class ParseError : public cwidget::util::Exception
 {

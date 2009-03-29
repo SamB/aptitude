@@ -4,8 +4,9 @@
 module Resolver.Types where
 
 import Data.ByteString.Char8(ByteString)
-import Data.Set
-import Data.Map
+import Data.Set(Set)
+import Data.List
+import Data.Map(Map)
 
 -- | Represents a package.
 --
@@ -74,12 +75,14 @@ data Solution = Solution { -- | The choices made in this solution.
                            solTier  :: Tier }
               deriving(Ord, Eq, Show)
 
-newtype Tier = Tier { tierLevel :: Integer } deriving(Ord, Eq)
-maximumTier = Tier 2147483647
+maximumTierNum = 2147483647
+minimumTierNum = -2147483648
+newtype Tier = Tier { tierLevels :: [Integer] } deriving(Ord, Eq)
+maximumTier = Tier [maximumTierNum]
 conflictTier = maximumTier
-deferTier = Tier (tierLevel conflictTier - 1)
-alreadyGeneratedTier = Tier (tierLevel deferTier - 2)
-minimumTier = Tier (-2147483648)
+alreadyGeneratedTier = Tier [maximumTierNum - 1]
+deferTier = Tier [maximumTierNum - 2]
+minimumTier = Tier [minimumTierNum]
 
 -- The Show instance mainly special-cases the special tiers so they
 -- get pretty-printed.
@@ -89,7 +92,9 @@ instance Show Tier where
         | tier == deferTier            = ("T:defer"++)
         | tier == alreadyGeneratedTier = ("T:redundant"++)
         | tier == minimumTier          = ("T:minimum"++)
-        | otherwise =  ('T':) . shows (tierLevel tier)
+        | otherwise =  case tier of
+                         Tier [num] -> ('T':) . shows (num)
+                         Tier nums  -> ("T("++) . foldr (.) id (intersperse (", "++) (map shows nums)) . (')':)
 
 -- | Represents a promotion to a tier.
 data Promotion = Promotion { -- | The choices that produced this promotion.

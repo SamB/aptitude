@@ -784,3 +784,18 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
 
   return out;
 }
+
+std::ostream &operator<<(ostream &out, const aptitude_universe::tier &t)
+{
+  out << "(";
+  for(aptitude_universe::tier::const_iterator it =
+	t.begin(); it != t.end(); ++it)
+    {
+      if(it != t.begin())
+	out << ", ";
+      out << *it;
+    }
+
+  out << ")";
+  return out;
+}

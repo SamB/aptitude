@@ -267,6 +267,8 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>dep_iterator</b>: an iterator over the list of all the \ref
  *  universe_dep "dependencies" in this universe.
  *
+ *  - <b>tier</b>: a model of \ref universe_tier "the Tier concept".
+ *
  *  - <b>get_package_count()</b>: returns the number of \ref
  *  universe_package "package"s in the universe.
  *
@@ -445,6 +447,53 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *
  *  The generic_solution class is a model of the Installation concept.
  *
+ *  \page universe_tier   Tier concept
+ *
+ *  A Tier represents a value that controls the order in which
+ *  solutions are generated.  Tiers are conceptually tuples of
+ *  integers ordered lexicographically, but how they are represented
+ *  is up to the implementation.  (in the dummy implementation they
+ *  are std::vectors; in the apt implementation they are fixed-size
+ *  arrays of integers)
+ *
+ *  Three special tiers are created by the dependency solver, by
+ *  storing the three highest integers in the first entry of a Tier
+ *  object.  All tiers above the lowest of these tiers are reserved
+ *  for use by the solver.  In the apt implementation, the first entry
+ *  is used to store the "policy" set by the user or the solver, with
+ *  the remaining entries tracking things like the APT priority of the
+ *  version.
+ *
+ *  Note that a single integer is a model of Tier if it is augmented
+ *  with appropriate implementations of the Tier methods.
+ *
+ *  A class modeling the Tier concept should provide the following
+ *  members:
+ *
+ * - <b>Tier(n)</b>: construct a tier with the given first element.
+ *
+ * - <b>const_iterator</b>: a type name that is used to iterate over
+ *    the elements of the tuple (used only for debugging output).
+ *
+ * - <b>begin() const</b>, <b>end() const</b>: first and last iterators in the
+ *   tuple.
+ *
+ * - <b>operator&lt;(Tier) const</b>: a total ordering on Tiers
+ *   corresponding to lexicographic ordering on the corresponding
+ *   tuples.
+ *
+ * - <b>operator&gt;=(Tier) const</b>: a total ordering on Tiers
+ *   corresponding to lexicographic ordering on the corresponding
+ *   tuples.
+ *
+ * - <b>operator==(Tier) const</b>, <b>operator!=(Tier) const</b>:
+ *   comparison of tiers.
+ *
+ * - <b>operator=(Tier)<b/>: assignment.
+ *
+ * - <b>operator&lt;&lt;(std::ostream &, Tier)</b>: write a Tier
+ *   as a parenthesized list of integers.
+ *
  *  \sa \ref abstract_universe
  *
  *  A class modelling the Installation concept should provide the
@@ -496,6 +545,7 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
+  typedef typename PackageUniverse::tier tier;
 
   typedef generic_solution<PackageUniverse> solution;
   typedef generic_choice<PackageUniverse> choice;
@@ -503,32 +553,38 @@ public:
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
 
-  static const int maximum_tier = INT_MAX;
+  static const int maximum_tier_num = INT_MAX;
 
   /** \brief The maximum tier; reserved for solutions that contain a
    *  logical conflict and thus are dead-ends.
    *
    *  Search nodes at this tier are discarded without being visited.
    */
-  static const int conflict_tier = maximum_tier;
+  static const int conflict_tier_num = maximum_tier_num;
 
   /** \brief The second highest tier; reserved for solutions that were
    *  already generated (to prevent them from being generated again).
    *
    *  Search nodes at this tier are discarded without being visited.
    */
-  static const int already_generated_tier = conflict_tier - 1;
+  static const int already_generated_tier_num = conflict_tier_num - 1;
 
   /** \brief The third highest tier; reserved for solutions that
    *  violate a user constraint and will be deferred until the
    *  constraints are changed.
    */
-  static const int defer_tier = conflict_tier - 2;
+  static const int defer_tier_num = conflict_tier_num - 2;
 
   /** \brief The minimum tier; this is the initial tier of the empty
    *  solution.
    */
-  static const int minimum_tier = INT_MIN;
+  static const int minimum_tier_num = INT_MIN;
+
+  static const tier maximum_tier;
+  static const tier conflict_tier;
+  static const tier already_generated_tier;
+  static const tier defer_tier;
+  static const tier minimum_tier;
 
   /** Information about the sizes of the various resolver queues. */
   struct queue_counts
@@ -758,7 +814,7 @@ private:
    *  Solutions generated below this tier are discarded.  Defaults to
    *  minimum_tier.
    */
-  int minimum_search_tier;
+  tier minimum_search_tier;
 
   /** \brief The current maximum search tier.
    *
@@ -768,7 +824,7 @@ private:
    *
    *  Defaults to minimum_tier.
    */
-  int maximum_search_tier;
+  tier maximum_search_tier;
 
   /** Solutions generated "in the future".
    *
@@ -788,7 +844,7 @@ private:
    *  Note: conflict_tier will never have an entry in this set;
    *  solutions at that tier are thrown away rather than deferred.
    */
-  std::map<int, std::set<solution, solution_contents_compare> > deferred;
+  std::map<tier, std::set<solution, solution_contents_compare> > deferred;
 
   /** Like deferred, but for future solutions.
    *
@@ -818,7 +874,7 @@ private:
    *  solution might get a higher tier if we can prove that it will
    *  eventually have one anyway).
    */
-  int *version_tiers;
+  tier *version_tiers;
 
   /** Stores versions that have been rejected by the user; distinct
    *  from the per-solution reject sets that track changes on a single
@@ -1533,35 +1589,49 @@ private:
    *  contained in the solution is already "baked in" (this is true
    *  for anything we pull from the open queue).
    */
-  int get_solution_tier(const solution &s) const
+  const tier &get_solution_tier(const solution &s) const
   {
+    const tier &s_tier(s.get_tier());
     choice_set choices = s.get_choices();
     typename promotion_set::const_iterator found =
       promotions.find_highest_promotion_for(choices);
     if(found != promotions.end())
-      return std::max(found->get_tier(), s.get_tier());
+      {
+	const tier &found_tier(found->get_tier());
+	if(s_tier < found_tier)
+	  return found_tier;
+	else
+	  return s_tier;
+      }
     else
-      return s.get_tier();
+      return s_tier;
   }
 
   /** \brief Determine the tier of the given solution, based only
    *  on promotions containing the given choice.
    */
-  int get_solution_tier_containing(const solution &s,
-				   const choice &c) const
+  const tier &get_solution_tier_containing(const solution &s,
+					   const choice &c) const
   {
     // Build a set of choices.  \todo Maybe solutions should be based
     // on the "choice" object instead of versions / broken deps?
 
+    const tier &s_tier = s.get_tier();
     choice_set choices = s.get_choices();
 
     typename promotion_set::const_iterator found =
       promotions.find_highest_promotion_containing(choices, c);
 
     if(found != promotions.end())
-      return std::max(found->get_tier(), s.get_tier());
+      {
+	const tier &found_tier = found->get_tier();
+	if(found_tier > s_tier)
+	  return found_tier;
+	else
+	  return s_tier;
+      }
     else
-      return s.get_tier();
+      return s_tier;
   }
 
   // Note that these routines are slower than they could be: with some
@@ -1836,34 +1906,43 @@ private:
     // (how?) "tag" each entry in the promotion set with the deferrals
     // that it is associated with.  Then only the promotions that have
     // actually become irrelevant need to be thrown away.
-    promotions.remove_tier(defer_tier);
+    promotions.remove_between_tiers(defer_tier, already_generated_tier);
 
     // Place any deferred entries that are no longer deferred back
     // into the "open" queue.
-    const typename std::map<int, std::set<solution, solution_contents_compare> >::iterator found =
-      deferred.find(defer_tier);
-    if(found != deferred.end())
+    const typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+      first_deferred = deferred.lower_bound(defer_tier),
+      first_already_generated = deferred.lower_bound(already_generated_tier);
+
+    if(first_deferred != first_already_generated)
       {
 	LOG_TRACE(logger, "Re-examining the deferred tier.");
 
-	typename std::set<solution, solution_contents_compare>::iterator
-	  i = found->second.begin(), j = i;
-
-	while(i != found->second.end())
+	for(typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+	      it = first_deferred; it != first_already_generated; ++it)
 	  {
-	    LOG_TRACE(logger, "Re-examining the solution " << *i);
+	    // Walk down the set associated with this tier and move
+	    // anything that's not deferred any more back to the open
+	    // queue.
+	    typename std::set<solution, solution_contents_compare>::iterator
+	      i = it->second.begin(), j = i;
 
-	    ++j;
-
-	    if(!breaks_user_constraint(*i))
+	    while(i != it->second.end())
 	      {
-		LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+		LOG_TRACE(logger, "Re-examining the solution " << *i);
 
-		open.push(*i);
-		found->second.erase(i);
+		++j;
+
+		if(!breaks_user_constraint(*i))
+		  {
+		    LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+
+		    open.push(*i);
+		    it->second.erase(i);
+		  }
+
+		i = j;
 	      }
-
-	    i = j;
 	  }
       }
     else
@@ -1917,13 +1996,13 @@ private:
 	return true;
       }
 
-    const int tier = s.get_tier();
-    if(tier == conflict_tier)
+    const tier &s_tier = s.get_tier();
+    if(s_tier >= conflict_tier)
       {
 	LOG_TRACE(logger, s << " is irrelevant: it contains a conflict.");
 	return true;
       }
-    else if(tier == already_generated_tier)
+    else if(s_tier >= already_generated_tier)
       {
 	LOG_TRACE(logger, s << " is irrelevant: it was already produced as a result.");
 	return true;
@@ -1941,16 +2020,16 @@ private:
   /** Tries to enqueue the given solution. */
   void try_enqueue(const solution &s)
   {
-    const int s_tier = get_solution_tier(s);
-    if(s_tier > maximum_search_tier)
+    const tier &s_tier = get_solution_tier(s);
+    if(maximum_search_tier < s_tier)
       {
-	if(s_tier == conflict_tier)
+	if(s_tier >= conflict_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
-	else if(s_tier == already_generated_tier)
+	else if(s_tier >= already_generated_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it was already generated as a solution).");
 	else
 	  {
-	    if(s_tier == defer_tier)
+	    if(s_tier >= defer_tier)
 	      LOG_TRACE(logger, "Deferring rejected solution " << s << " (it breaks a user constraint).");
 	    else
 	      LOG_TRACE(logger, "Deferring " << s << " until tier " << s_tier);
@@ -2059,13 +2138,13 @@ private:
     template<typename c_iter>
     void make_successor(const solution &s,
 			const c_iter &cbegin, const c_iter &cend,
-			int tier,
+			const tier &succ_tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
       target.push_back(solution::successor(s,
 					   cbegin, cend,
-					   tier,
+					   succ_tier,
 					   universe, weights));
 
       LOG_TRACE(logger, "Generated successor: " << target.back());
@@ -2107,7 +2186,7 @@ private:
     template<typename c_iter>
     void make_successor(const solution &s,
 			const c_iter &cbegin, const c_iter &cend,
-			int tier,
+			const tier & succ_tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
@@ -2209,12 +2288,12 @@ private:
     const int newid = s.get_choices().size();
 
     // The contents of the promotion to return.
-    int tier = minimum_tier;
+    tier promotion_tier(minimum_tier);
     choice_set forcing_choices;
 
     if(!is_legal(s, v, why_illegal))
       {
-	tier = conflict_tier;
+	promotion_tier = conflict_tier;
 	forcing_choices.insert_or_narrow(why_illegal);
       }
     else
@@ -2242,55 +2321,58 @@ private:
 	// away, go ahead and generate successors.  The caller will
 	// defer them or put them into the open queue, as appropriate.
 	if(!(found != promotions.end() &&
-	     (found->get_tier() == conflict_tier ||
-	      found->get_tier() == already_generated_tier)))
+	     (found->get_tier() >= conflict_tier ||
+	      found->get_tier() >= already_generated_tier)))
 	  {
-	    // Note: we didn't find a promotion, but the version
-	    // itself might have an intrinsic tier that's higher than
-	    // the current tier.
-	    const int current_tier = s.get_tier();
-	    int ver_tier = version_tiers[v.get_id()];
+	    // Figure out the tier of the new solution.  It will be at
+	    // least the tier of the current solution, but if we
+	    // encountered a promotion or if the version that was
+	    // selected has a higher tier, we need to promote the new
+	    // solution to that tier (and generate promotion
+	    // information).
+	    const tier &current_tier = s.get_tier();
+	    const tier &ver_tier = version_tiers[v.get_id()];
 
 	    if(found != promotions.end())
 	      {
-		const int found_tier = found->get_tier();
-		if(found_tier > ver_tier)
+		const tier &found_tier = found->get_tier();
+		if(ver_tier < found_tier)
 		  {
-		    if(found_tier > current_tier)
+		    if(current_tier < found_tier)
 		      {
 			LOG_TRACE(logger,
 				  v << " will promote this solution to tier " << found_tier
 				  << " due to the promotion " << *found);
-			tier = found_tier;
+			promotion_tier = found_tier;
 			forcing_choices = found->get_choices();
 		      }
 		    else
-		      tier = current_tier;
+		      promotion_tier = current_tier;
 		  }
 		else
 		  {
-		    if(ver_tier > current_tier)
+		    if(current_tier < ver_tier)
 		      {
 			LOG_TRACE(logger,
 				  v << " will promote this solution to tier " << ver_tier);
-			tier = ver_tier;
+			promotion_tier = ver_tier;
 		      }
 		    else
-		      tier = current_tier;
+		      promotion_tier = current_tier;
 		  }
 	      }
-	    else if(ver_tier > current_tier)
+	    else if(current_tier < ver_tier)
 	      {
 		LOG_TRACE(logger,
 			  v << " will promote this solution to tier " << ver_tier);
-		tier = ver_tier;
+		promotion_tier = ver_tier;
 	      }
 	    else
-	      tier = current_tier;
+	      promotion_tier = current_tier;
 
 
 	    generator.make_successor(s, &new_choice, &new_choice + 1,
-				     tier,
+				     promotion_tier,
 				     universe, weights);
 	  }
 	else
@@ -2321,7 +2403,7 @@ private:
     // the parent because the reasons for all the candidate
     // installations have to be combined to form the final promotion
     // for a solution.
-    result_promotion = promotion(forcing_choices, tier);
+    result_promotion = promotion(forcing_choices, promotion_tier);
   }
 
   /** Build the successors of a solution node for a particular
@@ -2359,7 +2441,7 @@ private:
 
     // This is the least tier generated by installing any solver for
     // the dependency.
-    int tier = maximum_tier;
+    tier succ_tier = maximum_tier;
     // The set of choices that explain the promotion that we're
     // calculating.
     choice_set forcing_reasons;
@@ -2388,10 +2470,11 @@ private:
 		  generate_single_successor(s, d, *vi, true, p, generator,
 					    visited_packages);
 
-		  if(tier > s.get_tier())
+		  if(s.get_tier() < succ_tier)
 		    {
 		      forcing_reasons.insert_or_narrow(p.get_choices());
-		      tier = std::min(tier, p.get_tier());
+		      if(p.get_tier() < succ_tier)
+			succ_tier = p.get_tier();
 		    }
 		}
 	  }
@@ -2409,10 +2492,11 @@ private:
 				  visited_packages);
 
 
-	if(tier > s.get_tier())
+	if(s.get_tier() < succ_tier)
 	  {
 	    forcing_reasons.insert_or_narrow(p.get_choices());
-	    tier = std::min(tier, p.get_tier());
+	    if(p.get_tier() < succ_tier)
+	      succ_tier = p.get_tier();
 	  }
       }
 
@@ -2430,25 +2514,33 @@ private:
 	typename promotion_set::const_iterator found =
 	  promotions.find_highest_promotion_containing(choices, break_d);
 
-	int tier = s.get_tier();
-	if(found != promotions.end() && found->get_tier() > tier)
+	tier unresolved_tier = s.get_tier();
+	if(found != promotions.end() && unresolved_tier < found->get_tier())
 	  {
-	    tier = found->get_tier();
-	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << tier);
+	    if(s.get_tier() < succ_tier)
+	      forcing_reasons.insert_or_narrow(found->get_choices());
+	    unresolved_tier = found->get_tier();
+	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << unresolved_tier);
 	  }
 	LOG_TRACE(logger, "Trying to leave " << d << " unresolved");
 	generator.make_successor(s,
 				 &break_d, &break_d + 1,
-				 tier,
+				 unresolved_tier,
 				 universe, weights);
+
+        if(s.get_tier() < succ_tier)
+	  {
+	    if(unresolved_tier < succ_tier)
+	      succ_tier = unresolved_tier;
+	  }
       }
 
     // Now, if the minimum tier of any successor is still above the
     // previous solution's tier, we can promote solutions using the
     // set of forced reasons that we've been accumulating.
-    if(tier > s.get_tier())
+    if(s.get_tier() < succ_tier)
       {
-	promotion p(forcing_reasons, tier);
+	promotion p(forcing_reasons, succ_tier);
 	LOG_DEBUG(logger, "Inserting new promotion: " << p);
       }
   }
@@ -2641,11 +2733,13 @@ public:
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
+     minimum_search_tier(minimum_tier),
+     maximum_search_tier(maximum_tier),
      promotions(_universe),
-     version_tiers(new int[_universe.get_version_count()])
+     version_tiers(new tier[_universe.get_version_count()])
   {
     for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
-      version_tiers[i] = 0;
+      version_tiers[i] = tier(0);
 
     // Used for sanity-checking below; create this only once for
     // efficiency's sake.
@@ -2772,9 +2866,9 @@ public:
    *  If tier is defer_tier, the promotion will be lost when the user
    *  changes the set of rejected packages.
    */
-  void add_promotion(const choice_set &choices, int tier)
+  void add_promotion(const choice_set &choices, const tier &promotion_tier)
   {
-    promotions.insert(promotion(choices, tier));
+    promotions.insert(promotion(choices, promotion_tier));
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -2997,7 +3091,7 @@ public:
     // \todo Track this more efficiently (we just need to wrap up the
     // deferred map and keep a counter in the encapsulating class).
     size_t rval = 0;
-    for(typename std::map<int, std::set<solution, solution_contents_compare> >::const_iterator
+    for(typename std::map<tier, std::set<solution, solution_contents_compare> >::const_iterator
 	  it = deferred.begin(); it != deferred.end(); ++it)
       rval += it->second.size();
 
@@ -3011,7 +3105,7 @@ public:
     counts.open       = open.size();
     counts.closed     = closed.size();
     counts.deferred   = get_num_deferred();
-    counts.conflicts  = promotions.tier_size(conflict_tier);
+    counts.conflicts  = promotions.tier_size_above(conflict_tier);
     counts.promotions = promotions.size() - counts.conflicts;
     counts.finished   = finished;
   }
@@ -3136,13 +3230,13 @@ public:
 	// Check whether the solution has been promoted since it was
 	// inserted into the open queue.  If it has, defer it until we
 	// get to the appropriate tier.
-	const int s_tier = get_solution_tier(s);
-	if(s_tier == conflict_tier)
+	const tier &s_tier = get_solution_tier(s);
+	if(s_tier >= conflict_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping conflicted solution " << s);
 	    continue;
 	  }
-	else if(s_tier == already_generated_tier)
+	else if(s_tier >= already_generated_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping already generated solution " << s);
 	    continue;
@@ -3152,9 +3246,10 @@ public:
 	    LOG_DEBUG(logger, "Dropping irrelevant solution " << s);
 	    continue;
 	  }
-	else if(s_tier > maximum_search_tier)
+	else if(maximum_search_tier < s_tier)
 	  {
-	    LOG_DEBUG(logger, "Deferring solution " << s << " to tier " << s_tier);
+	    LOG_DEBUG(logger, "Deferring solution " << s << " to tier " << s_tier
+		      << ": it is beyond the current horizon of " << maximum_search_tier);
 	    deferred[s_tier].insert(s);
 	    continue;
 	  }
@@ -3225,12 +3320,12 @@ public:
 	--max_steps;
 
 	while(open.empty() && !deferred.empty() &&
-	      deferred.begin()->first != defer_tier &&
-	      deferred.begin()->first != already_generated_tier &&
-	      deferred.begin()->first != conflict_tier)
+	      deferred.begin()->first < defer_tier &&
+	      deferred.begin()->first < already_generated_tier &&
+	      deferred.begin()->first < conflict_tier)
 	  {
-	    const std::pair<int, std::set<solution, solution_contents_compare> > &first_pair = *deferred.begin();
-	    const int first_tier = first_pair.first;
+	    const std::pair<tier, std::set<solution, solution_contents_compare> > &first_pair = *deferred.begin();
+	    const tier &first_tier = first_pair.first;
 	    const std::set<solution, solution_contents_compare> &first_solutions = first_pair.second;
 
 	    LOG_TRACE(logger, "Advancing to tier " << first_tier
@@ -3351,14 +3446,29 @@ public:
 // definitions aren't really definitions.  Hopefully that's all
 // obvious.
 template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::maximum_tier;
+const int generic_problem_resolver<PackageUniverse>::maximum_tier_num;
 template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::conflict_tier;
+const int generic_problem_resolver<PackageUniverse>::conflict_tier_num;
 template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::already_generated_tier;
+const int generic_problem_resolver<PackageUniverse>::already_generated_tier_num;
 template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::defer_tier;
+const int generic_problem_resolver<PackageUniverse>::defer_tier_num;
 template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::minimum_tier;
+const int generic_problem_resolver<PackageUniverse>::minimum_tier_num;
+
+template<typename PackageUniverse>
+const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::maximum_tier(maximum_tier_num);
+
+template<typename PackageUniverse>
+const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::conflict_tier(conflict_tier_num);
+
+template<typename PackageUniverse>
+const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::already_generated_tier(already_generated_tier_num);
+
+template<typename PackageUniverse>
+const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::defer_tier(defer_tier_num);
+
+template<typename PackageUniverse>
+const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::minimum_tier(minimum_tier_num);
 
 #endif

@@ -52,7 +52,8 @@ data ParseState = ParseState { internedStrings    :: InternSet BS.ByteString,
                                internedChoices    :: InternSet Choice,
                                internedDeps       :: InternSet Dep,
                                internedSolutions  :: InternSet Solution,
-                               internedPromotions :: InternSet Promotion}
+                               internedPromotions :: InternSet Promotion,
+                               internedTiers      :: InternSet Tier }
                 deriving(Eq, Ord, Show)
 
 initialParseState :: ParseState
@@ -62,7 +63,8 @@ initialParseState = ParseState { internedStrings    = emptyInternSet,
                                  internedChoices    = emptyInternSet,
                                  internedDeps       = emptyInternSet,
                                  internedSolutions  = emptyInternSet,
-                                 internedPromotions = emptyInternSet }
+                                 internedPromotions = emptyInternSet,
+                                 internedTiers      = emptyInternSet }
 
 type Parser = Parsec BS.ByteString ParseState
 
@@ -81,6 +83,13 @@ instance Internable BS.ByteString where
                            (strings', rval)  = doIntern strings s (BS.copy s)
                        putState st { internedStrings = strings' }
                        strings' `seq` rval `seq` return rval
+
+instance Internable Tier where
+    intern t      = do st <- getState
+                       let tiers             = internedTiers st
+                           (tiers', rval)    = doIntern tiers t t
+                       putState st { internedTiers = tiers' }
+                       tiers' `seq` rval `seq` return rval
 
 instance Internable Package where
     intern p@(Package name) =
@@ -134,10 +143,11 @@ instance Internable Choice where
 instance Internable Promotion where
     intern p@(Promotion choices tier) =
         do choicesList' <- sequence $ map intern (Set.toList choices)
+           tier'        <- intern tier
            st           <- getState
            let choices'            = Set.fromList choicesList'
                promotions          = internedPromotions st
-               (promotions', rval) = doIntern promotions p (Promotion choices' tier)
+               (promotions', rval) = doIntern promotions p (Promotion choices' tier')
            putState st { internedPromotions = promotions' }
            promotions' `seq` choices'
                        `seq` rval
@@ -287,6 +297,14 @@ integer = (do sign <- optionMaybe $ oneOf "-+"
               digits <- many1 digit
               return (read (maybeToList sign ++ digits))) <?> "integer"
 
+-- | A tier is eitiher an integer or a parenthesized list.
+tier :: Parser Tier
+tier = do vals <- parens (sepBy (lexeme integer) comma)
+          (foldr (seq) vals vals) `seq` return $ Tier vals
+       <|>
+       do val <- lexeme integer
+          val `seq` return $ Tier [val]
+
 -- | A solution looks like this:
 --
 -- < pkg1 := ver1 , pkg2 := ver2 , ... > ;
@@ -300,18 +318,18 @@ solution = do installVersionChoices <- solutionInstalls
               brokenDeps <- solutionBrokenDeps
               forbiddenVers <- solutionForbiddenVers
               char 'T'
-              tier <- integer
+              solTier <- tier
               char 'S'
               score <- integer
               let choices   = Map.fromList [(c, Nothing) | c <- installVersionChoices ++ unresolvedSoftDeps]
                   forbidden = Set.fromList forbiddenVers
                   broken    = Set.fromList brokenDeps
-              choices `seq` forbidden `seq` broken `seq` score `seq` tier `seq`
+              choices `seq` forbidden `seq` broken `seq` score `seq` solTier `seq`
                       intern $ Solution { solChoices = choices,
                                           solForbiddenVersions = forbidden,
                                           solBrokenDeps = broken,
                                           solScore = score,
-                                          solTier = Tier tier }
+                                          solTier = solTier }
     where solutionInstalls =
               do bindings <- angles $ sepBy binding comma
                  spaces
@@ -348,10 +366,10 @@ solution = do installVersionChoices <- solutionInstalls
 -- | A promotion looks like this: (T<tier>: {choice, ..})
 promotion :: Parser Promotion
 promotion = parens $ do char 'T'
-                        tier <- lexeme integer
+                        promotionTier <- tier
                         symbol ":"
                         choices <- braces $ sepBy choice comma
                         let choiceSet = Set.fromList choices
-                        tier `seq` choiceSet `seq`
-                             intern $ Promotion { promotionTier = Tier tier,
+                        promotionTier `seq` choiceSet `seq`
+                             intern $ Promotion { promotionTier = promotionTier,
                                                   promotionChoices = Set.fromList choices }

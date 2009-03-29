@@ -29,6 +29,8 @@
 #include "apt.h"
 #include "aptcache.h"
 
+#include <limits.h>
+
 /** \file aptitude_resolver_universe.h
  */
 
@@ -932,6 +934,78 @@ public:
   typedef aptitude_resolver_version version;
   typedef aptitude_resolver_dep dep;
 
+  /** \brief Tiers in aptitude contain two integers: the policy
+   *  selected by the user or the resolver, and the apt priority of
+   *  the package.
+   */
+  class tier
+  {
+    int entries[2];
+
+  public:
+    tier()
+    {
+      entries[0] = INT_MIN;
+      entries[1] = INT_MIN;
+    }
+
+    explicit tier(int policy)
+    {
+      entries[0] = policy;
+      entries[1] = INT_MIN;
+    }
+
+    tier(int policy, int apt_priority)
+    {
+      entries[0] = policy;
+      entries[1] = apt_priority;
+    }
+
+    bool operator<(const tier &other) const
+    {
+      if(entries[0] < other.entries[0])
+	return true;
+      else if(other.entries[0] < entries[0])
+	return false;
+      else if(entries[1] < other.entries[1])
+	return true;
+      else if(other.entries[1] < entries[1])
+	return false;
+      else
+	return false;
+    }
+
+    bool operator>=(const tier &other) const
+    {
+      if(entries[0] > other.entries[0])
+	return true;
+      else if(other.entries[0] > entries[0])
+	return false;
+      else if(entries[1] > other.entries[1])
+	return true;
+      else if(other.entries[1] > entries[1])
+	return false;
+      else
+	return true;
+    }
+
+    bool operator==(const tier &other) const
+    {
+      return entries[0] == other.entries[0] &&
+	entries[1] == other.entries[1];
+    }
+
+    bool operator!=(const tier &other) const
+    {
+      return entries[0] != other.entries[0] ||
+	entries[1] != other.entries[1];
+    }
+
+    typedef const int * const_iterator;
+    const_iterator begin() const { return entries; }
+    const_iterator end() const { return entries + (sizeof(entries) / sizeof(entries[0])); }
+  };
+
   aptitude_universe(aptitudeDepCache *_cache)
     :cache(_cache)
   {
@@ -1179,5 +1253,8 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d);
 
 /** \brief Write an aptitude_resolver_version to the given stream. */
 std::ostream &operator<<(ostream &out, const aptitude_resolver_version &d);
+
+/** \brief Write an aptitude_resolver_universe::tier to the given stream. */
+std::ostream &operator<<(std::ostream &out, const aptitude_universe::tier &t);
 
 #endif

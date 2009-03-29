@@ -79,6 +79,10 @@ public:
     enum hint_type
       {
 	/** \brief A hint that one or more package versions should be
+	 *  assigned a tier.
+	 */
+	set_tier,
+	/** \brief A hint that one or more package versions should be
 	 *  rejected.
 	 */
 	reject,

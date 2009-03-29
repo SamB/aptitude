@@ -255,6 +255,7 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
+  typedef typename PackageUniverse::tier tier;
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
 
@@ -306,7 +307,7 @@ private:
      *  Informational only; not considered when comparing solutions by
      *  identity.
      */
-    int tier;
+    tier sol_tier;
 
     /** The reference count of this solution. */
     mutable unsigned int refcount;
@@ -322,13 +323,13 @@ private:
 		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
 		 int _action_score,
-		 int _tier)
+		 const tier &_sol_tier)
       : initial_state(_initial_state), choices(_choices),
 	broken_deps(_broken_deps),
 	forbidden_versions(_forbidden_versions),
 	score(_score),
 	action_score(_action_score),
-	tier(_tier),
+	sol_tier(_sol_tier),
 	refcount(1)
     {
     }
@@ -355,7 +356,7 @@ private:
 
     int get_score() const {return score;}
     int get_action_score() const {return action_score;}
-    int get_tier() const { return tier; }
+    const tier &get_tier() const { return sol_tier; }
 
     version version_of(const package &pkg) const
     {
@@ -443,7 +444,7 @@ public:
 				    const PackageUniverse &universe,
 				    const solution_weights<PackageUniverse> &weights,
 				    const resolver_initial_state<PackageUniverse> &initial_state,
-				    int tier);
+				    const tier &sol_tier);
 
   /** Generate a successor to the given solution.
    *
@@ -453,7 +454,7 @@ public:
   static generic_solution successor(const generic_solution &s,
 				    const c_iter &cbegin,
 				    const c_iter &cend,
-				    int tier,
+				    const tier &sol_tier,
 				    const PackageUniverse &universe,
 				    const solution_weights<PackageUniverse> &weights);
 
@@ -555,7 +556,7 @@ public:
   }
 
   /** \return The tier at which this solution was calculated. */
-  int get_tier() const
+  const tier &get_tier() const
   {
     return real_soln->get_tier();
   }
@@ -972,7 +973,7 @@ generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken
 					     const PackageUniverse &universe,
 					     const solution_weights<PackageUniverse> &weights,
 					     const resolver_initial_state<PackageUniverse> &initial_state,
-					     int tier)
+					     const tier &sol_tier)
 {
   int score = initial_broken.size() * weights.broken_score;
 
@@ -985,7 +986,7 @@ generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken
 					   initial_state,
 					   score,
 					   0,
-					   tier));
+					   sol_tier));
 }
 
 
@@ -995,7 +996,7 @@ inline generic_solution<PackageUniverse>
 generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					     const c_iter &cbegin,
 					     const c_iter &cend,
-					     int tier,
+					     const tier &sol_tier,
 					     const PackageUniverse &universe,
 					     const solution_weights<PackageUniverse> &weights)
 {
@@ -1136,7 +1137,7 @@ generic_solution<PackageUniverse>::successor(const generic_solution &s,
 					   initial_state,
 					   score,
 					   action_score,
-					   tier));
+					   sol_tier));
 }
 
 #endif // SOLUTION_H
