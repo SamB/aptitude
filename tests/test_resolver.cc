@@ -120,6 +120,7 @@ class ResolverTest : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
@@ -141,6 +142,22 @@ private:
     std::istringstream in(s);
 
     return parse_universe(in);
+  }
+
+  // Check that the first set is a (perhaps) more general version of
+  // the second, but that there are no missing items.
+  static void assertSameEffect(const choice_set &s1, const choice_set &s2)
+  {
+    std::ostringstream tmp1, tmp2;
+    tmp1 << s1;
+    tmp2 << s2;
+    std::string str1(tmp1.str()), str2(tmp2.str());
+
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("The sets " + str1 + " and " + str2 + " are not the same size.",
+				 s1.size(), s2.size());
+
+    CPPUNIT_ASSERT_MESSAGE("The set " + str1 + " does not contain " + str2 + ".",
+			   s1.contains(s2));
   }
 
   /** Generate a successor solution that just contains the given
@@ -296,6 +313,120 @@ private:
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
       }
+  }
+
+  void testTiers()
+  {
+    dummy_universe_ref u = parseUniverse(dummy_universe_2);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version av1 = a.version_from_name("v1");
+    version av2 = a.version_from_name("v2");
+    version bv1 = b.version_from_name("v1");
+    version bv2 = b.version_from_name("v2");
+    version cv1 = c.version_from_name("v1");
+    version cv2 = c.version_from_name("v2");
+
+    choice_set av1_choices;
+    av1_choices.insert_or_narrow(choice::make_install_version(bv2, dep(), 0));
+    av1_choices.insert_or_narrow(choice::make_install_version(cv2, dep(), 0));
+
+    choice_set av2_choices;
+    av2_choices.insert_or_narrow(choice::make_install_version(av2, dep(), 0));
+
+    // Verify that without a tier we get the shorter solution first.
+    // Without this we aren't testing anything!
+    {
+      dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		       imm::map<dummy_universe::package, dummy_universe::version>(),
+		       u);
+      r.set_version_score(av2, 10000);
+      r.set_version_score(bv2, -100);
+      r.set_version_score(cv2, -100);
+
+      solution sol;
+      try
+	{
+	  sol = r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  CPPUNIT_FAIL("Expected two solutions, got none.");
+	}
+
+      assertSameEffect(av2_choices, sol.get_choices());
+
+      try
+	{
+	  sol = r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  CPPUNIT_FAIL("Expected two solutions, got only one.");
+	}
+
+      assertSameEffect(av1_choices, sol.get_choices());
+
+      bool done = false;
+      try
+	{
+	  r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  done = true;
+	}
+
+      CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
+    }
+
+    // Now check that adjusting tiers changes the output.
+    {
+      dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		       imm::map<dummy_universe::package, dummy_universe::version>(),
+		       u);
+      r.set_version_score(av2, 1000);
+      r.set_version_score(bv2, -100);
+      r.set_version_score(cv2, -100);
+      r.set_version_min_tier(av2, tier(100));
+
+      solution sol;
+      try
+	{
+	  sol = r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  CPPUNIT_FAIL("Expected two solutions, got none.");
+	}
+
+      assertSameEffect(av1_choices, sol.get_choices());
+
+      try
+	{
+	  sol = r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  CPPUNIT_FAIL("Expected two solutions, got only one.");
+	}
+
+      assertSameEffect(av2_choices, sol.get_choices());
+
+      bool done = false;
+      try
+	{
+	  r.find_next_solution(1000000, NULL);
+	}
+      catch(NoMoreSolutions)
+	{
+	  done = true;
+	}
+
+      CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
+    }
   }
 
   // Check that initial states work.
