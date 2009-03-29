@@ -2734,7 +2734,7 @@ public:
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
      minimum_search_tier(minimum_tier),
-     maximum_search_tier(maximum_tier),
+     maximum_search_tier(minimum_tier),
      promotions(_universe),
      version_tiers(new tier[_universe.get_version_count()])
   {
