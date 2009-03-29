@@ -81,10 +81,10 @@ public:
     /** \brief The type of hint represented by this object. */
     enum hint_type
       {
-	/** \brief A hint that one or more package versions should be
-	 *  assigned a tier.
+	/** \brief A hint that one or more package versions should
+	 *  have their tier increased.
 	 */
-	set_tier,
+	increase_tier_to,
 	/** \brief A hint that one or more package versions should be
 	 *  rejected.
 	 */
@@ -276,67 +276,77 @@ public:
   private:
     hint_type type;
     int score;
+    tier tier_val;
     cwidget::util::ref_ptr<aptitude::matching::pattern> target;
     version_selection selection;
 
-    hint(hint_type _type, int _score,
+    hint(hint_type _type, int _score, tier _tier_val,
 	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
 	 version_selection _selection)
-      : type(_type), score(_score), target(_target),
-	selection(_selection)
+      : type(_type), score(_score), tier_val(_tier_val),
+	target(_target), selection(_selection)
     {
     }
 
   public:
     hint()
-      : type((hint_type)-1), score(-1), target(NULL), selection()
+      : type((hint_type)-1), score(-1), tier_val(), target(NULL), selection()
     {
     }
 
     ~hint();
 
+    /** \brief Create a hint that increases the tier of a version. */
+    static hint make_increase_tier_to(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+				      const version_selection &selection,
+				      tier tier_val)
+    {
+      return hint(increase_tier_to, 0, tier_val, target, selection);
+    }
+
     /** \brief Create a hint that rejects a version or versions of a package. */
     static hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				     const version_selection &selection)
     {
-      return hint(reject, 0, target, selection);
+      return hint(reject, 0, tier(), target, selection);
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
     static hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				      const version_selection &selection)
     {
-      return hint(mandate, 0, target, selection);
+      return hint(mandate, 0, tier(), target, selection);
     }
 
-    /** \brief Create a hint that adjust the score of a package. */
+    /** \brief Create a hint that adjusts the score of a package. */
     static hint make_tweak_score(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 					  const version_selection &selection,
 					  int score)
     {
-      return hint(tweak_score, score, target, selection);
+      return hint(tweak_score, score, tier(), target, selection);
     }
 
     /** \brief Parse a resolver hint definition.
      *
      *  Definitions have the form ACTION TARGET [VERSION].  ACTION is
      *  either a number (which will be added to the score of the
-     *  selected version), or the special strings "reject" or
-     *  "approve".  If TARGET is a match pattern (specifically, if the
-     *  portion of the remaining string that parses as a match pattern
-     *  includes a question mark or tilde), then it will be treated as
-     *  such; otherwise it is the name of the package to match.
-     *  VERSION is the version of TARGET that is to be tweaked.  If
-     *  VERSION is not present, all versions of the package (except
-     *  the removal version) that match TARGET will be selected.  If
-     *  VERSION has the form "/<archive>" then the version of the
-     *  package from that archive will be selected.  If VERSION is
-     *  ":UNINST" then the not-installed version of the package will
-     *  be selected.  Finally, VERSION may be ">VERSION2",
-     *  "=VERSION2", ">=VERSION2", "<VERSION2", "<=VERSION2", or
-     *  "<>VERSION2" to only apply the hint to versions of the package
-     *  that compare accordingly to the version string.  (obviously
-     *  "=VERSION2" is redundant, but it is included for completeness)
+     *  selected version), "increase-tier N" where N is a number, or
+     *  the special strings "reject" or "approve".  If TARGET is a
+     *  match pattern (specifically, if the portion of the remaining
+     *  string that parses as a match pattern includes a question mark
+     *  or tilde), then it will be treated as such; otherwise it is
+     *  the name of the package to match.  VERSION is the version of
+     *  TARGET that is to be tweaked.  If VERSION is not present, all
+     *  versions of the package (except the removal version) that
+     *  match TARGET will be selected.  If VERSION has the form
+     *  "/<archive>" then the version of the package from that archive
+     *  will be selected.  If VERSION is ":UNINST" then the
+     *  not-installed version of the package will be selected.
+     *  Finally, VERSION may be ">VERSION2", "=VERSION2",
+     *  ">=VERSION2", "<VERSION2", "<=VERSION2", or "<>VERSION2" to
+     *  only apply the hint to versions of the package that compare
+     *  accordingly to the version string.  (obviously "=VERSION2" is
+     *  redundant, but it is included for completeness)
      *
      *  \param definition   The text of the hint definition.
      *  \param out  A location in which to store the parsed hint.
@@ -374,6 +384,11 @@ public:
      *  added to the version's score.
      */
     int get_score() const { return score; }
+
+    /** \brief For tier-tweaking hints, get the tier associated with
+     *  the hint.
+     */
+    const tier &get_tier() const { return tier_val; }
 
     /** \brief Return the pattern identifying the package or packages
      *  to be adjusted.

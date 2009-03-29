@@ -72,7 +72,19 @@ namespace
       test("approve dc >1", hint::make_mandate(pattern::make_exact_name("dc"),
 					      hint::version_selection::make_version(hint::version_selection::greater_than, "1"))),
       test("reject ?task(desktop) <>4.0", hint::make_reject(pattern::make_task("desktop"),
-							    hint::version_selection::make_version(hint::version_selection::not_equal_to, "4.0")))
+							    hint::version_selection::make_version(hint::version_selection::not_equal_to, "4.0"))),
+      test("increase-tier-to 100 wesnoth <5.0.0",
+	   hint::make_increase_tier_to(pattern::make_exact_name("wesnoth"),
+				       hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
+				       aptitude_resolver::tier(100))),
+      test("increase-tier-to 500 xroach",
+	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
+				       hint::version_selection::make_inst(),
+				       aptitude_resolver::tier(500))),
+      test("increase-tier-to 800 xroach",
+	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
+				       hint::version_selection::make_inst(),
+				       aptitude_resolver::tier(800))),
     };
   const int num_resolver_tests =
     sizeof(resolver_tests) / sizeof(resolver_tests[0]);

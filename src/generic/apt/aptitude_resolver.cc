@@ -210,6 +210,10 @@ std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint)
       out << "tweak(" << hint.get_score() << ")";
       break;
 
+    case aptitude_resolver::hint::increase_tier_to:
+      out << "increase-tier-to(" << hint.get_tier() << ")";
+      break;
+
     default:
       out << "bad-hint-type(" << hint.get_type() << ")";
       break;
@@ -428,6 +432,20 @@ int aptitude_resolver::hint::compare(const hint &other) const
     }
   else
     {
+      if(type == increase_tier_to)
+	{
+	  if(tier_val < other.tier_val)
+	    {
+	      TRACE_HINTS_INEQUAL(-1, "[tier]");
+	      return -1;
+	    }
+	  else if(other.tier_val < tier_val)
+	    {
+	      TRACE_HINTS_INEQUAL(1, "[tier]");
+	      return 1;
+	    }
+	}
+
       const int selection_compare = selection.compare(other.selection);
       if(selection_compare != 0)
 	{
@@ -476,6 +494,30 @@ bool aptitude_resolver::hint::parse(const std::string &hint, hint &out)
   while(start != hint.end() && isspace(*start))
     ++start;
 
+  tier parsed_tier;
+  if(action == "increase-tier-to")
+    {
+      if(start == hint.end())
+	{
+	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": expected a tier number, but found nothing.",
+					       hint.c_str()));
+	  _error->Error(_("Invalid hint \"%s\": expected a tier number, but found nothing."),
+			hint.c_str());
+	  return false;
+	}
+
+      std::string tier_number;
+      while(start != hint.end() && !isspace(*start))
+	{
+	  tier_number.push_back(*start);
+	  ++start;
+	}
+
+      while(start != hint.end() && isspace(*start))
+	++start;
+
+      parsed_tier = parse_tier(tier_number);
+    }
 
   if(start == hint.end())
     {
@@ -602,6 +644,8 @@ bool aptitude_resolver::hint::parse(const std::string &hint, hint &out)
     out = make_reject(target, selection);
   else if(action == "approve")
     out = make_mandate(target, selection);
+  else if(action == "increase-tier-to")
+    out = make_increase_tier_to(target, selection, parsed_tier);
   else
     {
       unsigned long score_tweak = 0;
@@ -1170,6 +1214,16 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      // OK, apply the hint.
 	      switch(h.get_type())
 		{
+		case hint::increase_tier_to:
+		  {
+		    tier v_tier(specialize_tier(h.get_tier(),
+						v.get_ver(),
+						policy));
+		    LOG_DEBUG(loggerScores, "** Tier: " << v_tier << " for " << v << " due to the hint " << h);
+		    set_version_min_tier(v, v_tier);
+		  }
+		  break;
+
 		case hint::reject:
 		  LOG_DEBUG(loggerScores, "** Rejecting " << v << " due to the hint " << h);
 		  reject_version(v);
