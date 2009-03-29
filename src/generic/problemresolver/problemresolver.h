@@ -2894,6 +2894,31 @@ public:
     weights.version_scores[ver.get_id()]+=score;
   }
 
+  /** \brief Set the tier of a version.
+   *
+   *  Adding this version to a solution with a lower tier will
+   *  increase the solution's tier to the given value.
+   */
+  void set_version_tier(const version &ver, const tier &t)
+  {
+    eassert(ver.get_id() < universe.get_version_count());
+    version_tiers[ver.get_id()] = t;
+  }
+
+  /** \brief Set the tier of a version to at least the given value.
+   *
+   *  If the tier is less than t, it will be increased to t; otherwise
+   *  it will be left unchanged.
+   */
+  void set_version_min_tier(const version &ver, const tier &t)
+  {
+    eassert(ver.get_id() < universe.get_version_count());
+    tier &version_tier = version_tiers[ver.get_id()];
+
+    if(version_tier < t)
+      version_tier = t;
+  }
+
   /** \return the score of the version ver. */
   int get_version_score(const version &ver)
   {
