@@ -55,42 +55,69 @@ UNIVERSE [ \
 
 // Done this way so meaningful line numbers are generated.
 #define assertEqEquivalent(x1, x2) \
-do { \
-    CPPUNIT_ASSERT((x1) == (x2)); \
-    CPPUNIT_ASSERT((x2) == (x1)); \
-    CPPUNIT_ASSERT(!((x1) != (x2))); \
-    CPPUNIT_ASSERT(!((x2) != (x1))); \
-    CPPUNIT_ASSERT(!((x1) < (x2))); \
-    CPPUNIT_ASSERT(!((x2) < (x1))); \
-} while(0)
+  do {									\
+    std::stringstream ____x1_ss, ____x2_ss;				\
+    ____x1_ss << (x1); ____x2_ss << (x2);				\
+    std::string ____x1_s(____x1_ss.str()), ____x2_s(____x2_ss.str());	\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " does not equal " + ____x2_s,	\
+			   (x1) == (x2));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " does not equal " + ____x1_s,	\
+			   (x2) == (x1));				\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is inequal to " + ____x2_s,	\
+			   !((x1) != (x2)));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " is inequal to " + ____x1_s,	\
+			   !((x2) != (x1)));				\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is less than " + ____x2_s,	\
+			   !((x1) < (x2)));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " is less than " + ____x1_s,	\
+			   !((x2) < (x1)));				\
+  } while(0)
 
 #define assertEqInequivalent(x1, x2) \
-do { \
-    CPPUNIT_ASSERT((x1) != (x2)); \
-    CPPUNIT_ASSERT((x2) != (x1)); \
-    CPPUNIT_ASSERT(!((x1) == (x2))); \
-    CPPUNIT_ASSERT(!((x2) == (x1))); \
-    CPPUNIT_ASSERT((x1) < (x2) || (x2) < (x1)); \
-    CPPUNIT_ASSERT(!((x1) < (x2) && (x2) < (x1))); \
-} while(0)
+  do {									\
+    std::stringstream ____x1_ss, ____x2_ss;				\
+    ____x1_ss << (x1); ____x2_ss << (x2);				\
+    std::string ____x1_s(____x1_ss.str()), ____x2_s(____x2_ss.str());	\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is not inequal to " + ____x2_s,		\
+			   (x1) != (x2));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " is not inequal to " + ____x1_s,		\
+			   (x2) != (x1));				\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " equals " + ____x2_s,	\
+			   !((x1) == (x2)));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " equals " + ____x1_s,	\
+			   !((x2) == (x1)));				\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is unrelated to " + ____x2_s + " under <", \
+			   (x1) < (x2) || (x2) < (x1));			\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is both less than and greater than " + ____x2_s, \
+			   !((x1) < (x2) && (x2) < (x1)));		\
+  } while(0)
 
-#define assertLtEquivalent(x1, x2, lt) \
-do { \
-    CPPUNIT_ASSERT(!(lt((x1), (x2)))); \
-    CPPUNIT_ASSERT(!(lt((x2), (x1)))); \
-} while(0)
+#define assertLtEquivalent(x1, x2, lt)					\
+  do {									\
+    std::stringstream ____x1_ss, ____x2_ss;				\
+    ____x1_ss << (x1); ____x2_ss << (x2);				\
+    std::string ____x1_s(____x1_ss.str()), ____x2_s(____x2_ss.str());	\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is less than " + ____x2_s,	\
+			   !(lt((x1), (x2))));				\
+    CPPUNIT_ASSERT_MESSAGE(____x2_s + " is less than " + ____x1_s,	\
+			   !(lt((x2), (x1))));				\
+  } while(0)
 
 #define assertLtInequivalent(x1, x2, lt) \
-do { \
-    CPPUNIT_ASSERT(lt((x1), (x2)) || lt((x2), (x1))); \
-    CPPUNIT_ASSERT(!(lt((x1), (x2)) && lt((x2), (x1)))); \
-} while(0)
+  do {									\
+    std::stringstream ____x1_ss, ____x2_ss;				\
+    ____x1_ss << (x1); ____x2_ss << (x2);				\
+    std::string ____x1_s(____x1_ss.str()), ____x2_s(____x2_ss.str());	\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is not related under < to " + ____x2_s, \
+			   lt((x1), (x2)) || lt((x2), (x1)));		\
+    CPPUNIT_ASSERT_MESSAGE(____x1_s + " is both less than and greater than " + ____x2_s, \
+			   !(lt((x1), (x2)) && lt((x2), (x1))));	\
+  } while(0)
 
 class ResolverTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ResolverTest);
 
-  CPPUNIT_TEST(testActionCompare);
   CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
   CPPUNIT_TEST(testInitialState);
@@ -100,6 +127,15 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE_END();
 
 private:
+  typedef dummy_universe_ref::package package;
+  typedef dummy_universe_ref::version version;
+  typedef dummy_universe_ref::dep dep;
+  typedef dummy_universe_ref::tier tier;
+
+  typedef generic_solution<dummy_universe_ref> solution;
+  typedef generic_choice_set<dummy_universe_ref> choice_set;
+  typedef generic_choice<dummy_universe_ref> choice;
+
   static dummy_universe_ref parseUniverse(const std::string &s)
   {
     std::istringstream in(s);
@@ -107,66 +143,21 @@ private:
     return parse_universe(in);
   }
 
-  /** Test that the comparison operators on actions work. */
-  void testActionCompare()
-  {
-    dummy_universe_ref u = parseUniverse(dummy_universe_1);
-
-    // Grab two arbitrary deps.
-    dummy_universe::dep_iterator di = u.deps_begin();
-    CPPUNIT_ASSERT(!di.end());
-    dummy_universe::dep d1 = *di;
-    ++di;
-    CPPUNIT_ASSERT(!di.end());
-    dummy_universe::dep d2 = *di;
-
-    dummy_solution::action a1(u.find_package("a").version_from_name("v1"),
-			      d1, false, 49);
-    dummy_solution::action a2(u.find_package("a").version_from_name("v1"),
-			      d2, false, 21);
-
-    assertEqEquivalent(a1, a1);
-    assertEqEquivalent(a1, a2);
-
-    dummy_solution::action a3(u.find_package("a").version_from_name("v2"),
-			      d1, false, 49);
-
-    assertEqEquivalent(a2, a2);
-    assertEqEquivalent(a3, a3);
-
-    assertEqInequivalent(a1, a3);
-    assertEqInequivalent(a2, a3);
-
-    dummy_solution::action a4(u.find_package("c").version_from_name("v3"),
-			      d2, false, 21);
-
-    assertEqEquivalent(a4, a4);
-    assertEqInequivalent(a1, a4);
-    assertEqInequivalent(a2, a4);
-    assertEqInequivalent(a3, a4);
-  }
-
   /** Generate a successor solution that just contains the given
    *  information by using internal constructors of the solution
    *  class.  Used when testing the solution class itself.
    */
-  template<class a_iter, class u_iter>
+  template<class c_iter>
   dummy_solution unsafe_successor(const dummy_solution &parent,
-				  a_iter abegin, a_iter aend,
-				  u_iter ubegin, u_iter uend)
+				  c_iter cbegin, c_iter cend)
   {
-    imm::map<dummy_universe::package, dummy_solution::action> actions = parent.get_actions();
-    imm::set<dummy_universe::dep> unresolved = parent.get_unresolved_soft_deps();
+    choice_set choices(parent.get_choices());
 
-    for(a_iter ai = abegin; ai != aend; ++ai)
-      actions.put((*ai).ver.get_package(), *ai);
+    for(c_iter ci = cbegin; ci != cend; ++ci)
+      choices.insert_or_narrow(*ci);
 
-    for(u_iter ui = ubegin; ui != uend; ++ui)
-      unresolved.insert(*ui);
-
-    return dummy_solution(new dummy_solution::solution_rep(actions,
+    return dummy_solution(new dummy_solution::solution_rep(choices,
 							   parent.get_broken(),
-							   unresolved,
 							   parent.get_forbidden_versions(),
 							   parent.get_initial_state(),
 							   parent.get_score(),
@@ -197,15 +188,17 @@ private:
 	!bi.end(); ++bi)
       u_broken.insert(*bi);
 
-    dummy_solution::action a1(u.find_package("a").version_from_name("v1"),
-			      d1, false, 49);
-    dummy_solution::action a2(u.find_package("a").version_from_name("v1"),
-			      d2, false, 21);
-    dummy_solution::action a3(u.find_package("a").version_from_name("v2"),
-			      d1, false, 49);
+    choice c1(choice::make_install_version(u.find_package("a").version_from_name("v1"),
+					   d1, 49));
+    choice c2(choice::make_install_version(u.find_package("a").version_from_name("v1"),
+					   d2, 21));
+    choice c3(choice::make_install_version(u.find_package("a").version_from_name("v2"),
+					   d1, 49));
 
-    dummy_solution::action a4(u.find_package("c").version_from_name("v3"),
-			      d2, false, 21);
+    choice c4(choice::make_install_version(u.find_package("c").version_from_name("v3"),
+					   d2, 21));
+
+    choice c5(choice::make_break_soft_dep(d1, 443));
 
 
     // Generate some meaningless solutions to check that equivalency
@@ -213,40 +206,25 @@ private:
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
 						  u, weights, initial_state,
-						  0);
+						  tier(0));
     dummy_solution s1
-      = unsafe_successor(s0, &a1, &a1+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s0, &c1, &c1 + 1);
     dummy_solution s2
-      = unsafe_successor(s0, &a2, &a2+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s0, &c2, &c2 + 1);
     dummy_solution s3
-      = unsafe_successor(s0, &a3, &a3+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s0, &c3, &c3 + 1);
     dummy_solution s4
-      = unsafe_successor(s0, &a4, &a4+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s0, &c4, &c4 + 1);
 
     // the following two should be equal.
     dummy_solution s5
-      = unsafe_successor(s1, &a4, &a4+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s1, &c4, &c4 + 1);
     dummy_solution s6
-      = unsafe_successor(s4, &a1, &a1+1,
-			 (dummy_universe::dep *) 0,
-			 (dummy_universe::dep *) 0);
+      = unsafe_successor(s4, &c1, &c1 + 1);
 
     // and this should not equal any other solution.
     dummy_solution s7
-      = unsafe_successor(s0,
-			 (dummy_solution::action *) 0,
-			 (dummy_solution::action *) 0,
-			 &d1, &d1+1);
+      = unsafe_successor(s0, &c5, &c5+1);
 
     dummy_resolver::solution_contents_compare solcmp;
 
@@ -323,11 +301,6 @@ private:
   // Check that initial states work.
   void testInitialState()
   {
-    typedef dummy_universe_ref::package package;
-    typedef dummy_universe_ref::version version;
-    typedef dummy_universe_ref::dep dep;
-    typedef dummy_solution::action action;
-
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
     package a = u.find_package("a");
@@ -376,7 +349,7 @@ private:
 	dummy_solution sol = r.find_next_solution(1000000, NULL);
 
 	CPPUNIT_ASSERT_MESSAGE("There are no broken deps, so only the empty solution should be returned.",
-			       sol.get_actions().empty());
+			       sol.get_choices().size() == 0);
 
 	{
 	  std::set<version> initial_state;
@@ -414,11 +387,6 @@ private:
   // Check that joint scores work.
   void testJointScores()
   {
-    typedef dummy_universe_ref::package package;
-    typedef dummy_universe_ref::version version;
-    typedef dummy_universe_ref::dep dep;
-    typedef dummy_solution::action action;
-
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
     dummy_resolver r(10, -300, -100, 10000000, 500, 500,
 		     imm::map<package, version>(),
@@ -434,16 +402,16 @@ private:
     version bv2 = b.version_from_name("v2");
     version cv2 = c.version_from_name("v2");
 
-    imm::set<version> action_pair, action_pair2;
-    action_pair.insert(av2);
-    action_pair.insert(bv1);
-    action_pair2.insert(bv2);
-    action_pair2.insert(cv2);
+    imm::set<version> choice_pair, choice_pair2;
+    choice_pair.insert(av2);
+    choice_pair.insert(bv1);
+    choice_pair2.insert(bv2);
+    choice_pair2.insert(cv2);
 
     const int test_score = 100000;
     const int test_score2 = -200000;
-    r.add_joint_score(action_pair, test_score);
-    r.add_joint_score(action_pair2, test_score2);
+    r.add_joint_score(choice_pair, test_score);
+    r.add_joint_score(choice_pair2, test_score2);
 
     bool saw_one_positive = false;
     bool saw_one_negative = false;
@@ -460,7 +428,7 @@ private:
 		saw_one_positive = true;
 		// Check that we *don't* apply the joint score in
 		// this case, since b starts out at v1.
-		CPPUNIT_ASSERT_EQUAL((int)(sol.get_actions().size()) * r.get_step_score() + r.get_full_solution_score(),
+		CPPUNIT_ASSERT_EQUAL((int)(sol.get_choices().size()) * r.get_step_score() + r.get_full_solution_score(),
 				     sol.get_score());
 	      }
 	    else if(sol.version_of(b) == bv2 &&
@@ -468,13 +436,13 @@ private:
 	      {
 		saw_one_positive2 = true;
 		saw_one_negative = true;
-		CPPUNIT_ASSERT_EQUAL(test_score2 + ((int)sol.get_actions().size()) * r.get_step_score() + r.get_full_solution_score(),
+		CPPUNIT_ASSERT_EQUAL(test_score2 + ((int)sol.get_choices().size()) * r.get_step_score() + r.get_full_solution_score(),
 				     sol.get_score());
 	      }
 	    else
 	      {
 		saw_one_negative = true;
-		CPPUNIT_ASSERT_EQUAL((int)(sol.get_actions().size() * r.get_step_score()) + r.get_full_solution_score(),
+		CPPUNIT_ASSERT_EQUAL((int)(sol.get_choices().size() * r.get_step_score()) + r.get_full_solution_score(),
 				     sol.get_score());
 	      }
 	  }
@@ -524,7 +492,7 @@ private:
       }
 
     CPPUNIT_ASSERT(s.version_of(a) == av2);
-    CPPUNIT_ASSERT_EQUAL(s.get_actions().size(), 1U);
+    CPPUNIT_ASSERT_EQUAL(s.get_choices().size(), 1U);
 
     try
       {
