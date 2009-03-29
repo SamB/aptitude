@@ -2739,7 +2739,7 @@ public:
      version_tiers(new tier[_universe.get_version_count()])
   {
     for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
-      version_tiers[i] = tier(0);
+      version_tiers[i] = minimum_tier;
 
     // Used for sanity-checking below; create this only once for
     // efficiency's sake.
