@@ -644,7 +644,7 @@ private:
       // tree.
       if(cs1.size() < cs2.size())
 	return true;
-      else if(cs2.size() < cs2.size())
+      else if(cs2.size() < cs1.size())
 	return false;
       else
 	return cs1 < cs2;
