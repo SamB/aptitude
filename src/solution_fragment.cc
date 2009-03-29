@@ -218,6 +218,7 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
 		  downgrade_packages.push_back(newver);
 	      }
 	  }
+	  break;
 
 	case choice::break_soft_dep:
 	  unresolved.push_back(i->get_dep().get_dep());
