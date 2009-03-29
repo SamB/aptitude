@@ -3366,6 +3366,8 @@ public:
 	    if(open.empty() && future_solutions.empty())
 	      finished = true;
 
+	    LOG_DEBUG(logger, "--- Returning the future solution " << rval);
+
 	    return rval;
 	  }
 	else
