@@ -117,7 +117,8 @@ static void setup_resolver(pkgset &to_install,
   // it.
   resman->reset_resolver();
 
-  resman->set_debug(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false));
+  if(aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Debug", false))
+    resman->set_debug(true);
 
   // For all packages that the user listed on the command-line (i.e.,
   // all in to_install, to_hold, to_remove, and to_purge), tell the
