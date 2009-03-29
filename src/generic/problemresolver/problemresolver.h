@@ -631,7 +631,10 @@ private:
   {
     bool operator()(const solution &s1, const solution &s2) const
     {
-      return s1.get_score() < s2.get_score();
+      // Note that *lower* tiers come "before" higher tiers, hence the
+      // reversed comparison there.
+      return s2.get_tier() < s1.get_tier() ||
+	(s1.get_tier() == s2.get_tier() && s1.get_score() < s2.get_score());
     }
   };
 
