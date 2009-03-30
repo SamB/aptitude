@@ -868,17 +868,17 @@ aptitude_universe::tier aptitude_universe::get_remove_essential_tier()
 
 void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string> > &out)
 {
-  const Configuration::Item *tree = aptcfg->Tree(PACKAGE "::ProblemResolver::Tier-Names");
-
-  if(tree == NULL)
-    return;
-
   out.push_back(std::make_pair(get_safe_tier(), _("Safe actions")));
   out.push_back(std::make_pair(get_keep_all_tier(), _("Cancel all user actions")));
   out.push_back(std::make_pair(get_remove_tier(), _("Remove packages")));
   out.push_back(std::make_pair(get_break_hold_tier(), _("Modify held packages")));
   out.push_back(std::make_pair(get_non_default_tier(), _("Install versions from non-default sources")));
   out.push_back(std::make_pair(get_remove_essential_tier(), _("Remove essential packages")));
+
+  const Configuration::Item *tree = aptcfg->Tree(PACKAGE "::ProblemResolver::Tier-Names");
+
+  if(tree == NULL)
+    return;
 
   for(const Configuration::Item *item = tree->Child; item != NULL; item = item->Next)
     {
