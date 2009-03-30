@@ -87,7 +87,12 @@ namespace aptitude
   {
     return Logger::getLogger("aptitude.resolver.hints.parse");
   }
- 
+
+  LoggerPtr Loggers::getAptitudeResolverInitialManualFlags()
+  {
+    return Logger::getLogger("aptitude.resolver.initialManualFlags");
+  }
+
   LoggerPtr Loggers::getAptitudeResolverSafeResolver()
   {
     return Logger::getLogger("aptitude.resolver.safeResolver");

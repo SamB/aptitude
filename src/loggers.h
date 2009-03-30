@@ -127,6 +127,13 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverHintsParse();
 
+    /** \brief The logger for describing which packages are initially
+     *  considered "manual".
+     *
+     *  Name: aptitude.resolver.initialManualFlags
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverInitialManualFlags();
+
     /** \brief The logger for the "upgrade/install only" logic in the
      *  dependency resolver.
      *

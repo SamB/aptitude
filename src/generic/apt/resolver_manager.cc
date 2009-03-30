@@ -821,7 +821,7 @@ void resolver_manager::create_resolver()
   // done by the user.  i.e., if the package is currently installed,
   // we use the current value of the Auto flag; otherwise we treat it
   // as manual.
-  std::map<aptitude_resolver_package, bool> auto_flags;
+  std::map<aptitude_resolver_package, bool> manual_flags;
   for(imm::map<aptitude_resolver_package, aptitude_resolver_version>::const_iterator it =
 	initial_installations.begin(); it != initial_installations.end(); ++it)
     {
@@ -831,11 +831,23 @@ void resolver_manager::create_resolver()
       if(pkg->CurrentState != pkgCache::State::NotInstalled &&
 	 pkg->CurrentState != pkgCache::State::ConfigFiles)
 	{
-	  auto_flags[resolver_pkg] =
+	  manual_flags[resolver_pkg] =
 	    ((*cache_file)[pkg].Flags & pkgCache::Flag::Auto) == 0;
+
+	  LOG_DEBUG(Loggers::getAptitudeResolverInitialManualFlags(),
+		    "Set the manual flag for the currently installed package "
+		    << resolver_pkg << " to "
+		    << (manual_flags[resolver_pkg] ? "true" : "false")
+		    << " to reflect its current auto flag.");
 	}
       else
-	auto_flags[resolver_pkg] = true;
+	{
+	  manual_flags[resolver_pkg] = true;
+	  LOG_DEBUG(Loggers::getAptitudeResolverInitialManualFlags(),
+		    "Set the manual flag for the non-installed package "
+		    << resolver_pkg << " to "
+		    << (manual_flags[resolver_pkg] ? "true" : "false"));
+	}
     }
 
   resolver->add_action_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::PreserveManualScore", 60),
@@ -851,7 +863,7 @@ void resolver_manager::create_resolver()
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::BreakHoldScore", -300),
 			      aptcfg->FindB(PACKAGE "::ProblemResolver::Allow-Break-Holds", false),
 			      aptcfg->FindI(PACKAGE "::ProblemResolver::DefaultResolutionScore", 400),
-			      auto_flags,
+			      manual_flags,
 			      hints);
 
   resolver->add_priority_scores(aptcfg->FindI(PACKAGE "::ProblemResolver::ImportantScore", 5),
