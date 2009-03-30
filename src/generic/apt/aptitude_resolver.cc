@@ -45,6 +45,7 @@ namespace
   log4cxx::LoggerPtr loggerHintsCompare(aptitude::Loggers::getAptitudeResolverHintsCompare());
   log4cxx::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
   log4cxx::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
+  log4cxx::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
   log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
   log4cxx::LoggerPtr loggerTiers(aptitude::Loggers::getAptitudeResolverTiers());
 
@@ -1168,15 +1169,31 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	  const bool was_manually_removed =
 	    p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual);
 
+	  if(was_manually_installed)
+	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it was manually installed.");
+	  else if(was_manually_removed)
+	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it was manually removed.");
+	  else
+	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as automatic: it was neither manually installed nor manually removed.");
+
 	  manual =  was_manually_installed || was_manually_removed;
 	}
       else
 	{
 	  std::map<package, bool>::const_iterator found(initial_state_manual_flags.find(p));
 	  if(found != initial_state_manual_flags.end())
-	    manual = found->second;
+	    {
+	      manual = found->second;
+	      LOG_TRACE(loggerInitialManualFlags,
+			"Marking " << p
+			<< " as " << (manual ? "manual" : "automatic") << ", from the list of initial flags.");
+	    }
 	  else
-	    manual = true;
+	    {
+	      manual = true;
+	      LOG_TRACE(loggerInitialManualFlags,
+			"Marking " << p << " as manual: it is not mentioned in the list of initial flags.");
+	    }
 	}
 
       for(aptitude_universe::package::version_iterator vi=p.versions_begin(); !vi.end(); ++vi)
