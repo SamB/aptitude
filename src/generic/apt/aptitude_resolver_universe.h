@@ -1246,6 +1246,25 @@ public:
   {
     return cache->Head().PackageCount;
   }
+
+  // Configuration helper -- should this be somewhere better?
+  static tier parse_tier(const std::string &s);
+
+  // Configuration fetchers.
+  static tier get_safe_tier();
+  static tier get_keep_all_tier();
+  static tier get_remove_tier();
+  static tier get_break_hold_tier();
+  static tier get_non_default_tier();
+  static tier get_remove_essential_tier();
+
+  /** \brief Retrieve the tiers that the user has assigned
+   *  names to.
+   */
+  static void get_named_tiers(std::vector<std::pair<tier, std::string> > &out);
+
+  /** \brief Return a string description of the given tier. */
+  static std::string get_tier_name(const tier &t);
 };
 
 /** \brief Write an aptitude_resolver_package to the given stream. */

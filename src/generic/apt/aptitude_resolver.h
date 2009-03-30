@@ -409,14 +409,6 @@ public:
 		    aptitudeDepCache *cache,
 		    pkgPolicy *_policy);
 
-  // Configuration fetchers.
-  static tier get_safe_tier();
-  static tier get_keep_all_tier();
-  static tier get_remove_tier();
-  static tier get_break_hold_tier();
-  static tier get_non_default_tier();
-  static tier get_remove_essential_tier();
-
   /** \brief Return \b true if the given version will break a hold or
    *  install a forbidden version.
    */

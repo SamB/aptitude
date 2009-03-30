@@ -161,6 +161,13 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverSearchTiers();
 
+    /** \brief The logger for setting up tiers for the dependency
+     *  resolver.
+     *
+     *  Name: aptitude.resolver.tiers
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverTiers();
+
     /** \brief The logger for the "why" command.
      *
      *  Name: aptitude.why

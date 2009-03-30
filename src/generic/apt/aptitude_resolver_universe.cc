@@ -2,6 +2,10 @@
 
 #include "aptitude_resolver_universe.h"
 
+#include "config_signal.h"
+
+// Included only so that we can access the predefined tiers.
+#include <generic/problemresolver/problemresolver.h>
 #include <generic/problemresolver/solution.h>
 
 #include <algorithm>
@@ -9,7 +13,14 @@
 
 #include <apt-pkg/error.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
+#include <aptitude.h>
+#include <loggers.h>
+
 using namespace std;
+using aptitude::Loggers;
+using cwidget::util::ssprintf;
 
 static inline
 bool ver_disappeared(const pkgCache::VerIterator ver)
@@ -798,4 +809,145 @@ std::ostream &operator<<(ostream &out, const aptitude_universe::tier &t)
 
   out << ")";
   return out;
+}
+
+aptitude_universe::tier aptitude_universe::parse_tier(const std::string &s)
+{
+  typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
+  if(s == "conflict")
+    return aptitude_resolver::conflict_tier;
+  else if(s == "minimum" || s == "")
+    return aptitude_resolver::minimum_tier;
+  else
+    {
+      char *endptr;
+      long n = strtol(s.c_str(), &endptr, 0);
+      if(*endptr != '\0')
+	{
+	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
+	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
+	  _error->Error(_(msg.c_str()));
+	  return aptitude_resolver::minimum_tier;
+	}
+      else
+	{
+	  return tier(n);
+	}
+    }
+}
+
+aptitude_universe::tier aptitude_universe::get_safe_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
+}
+
+aptitude_universe::tier aptitude_universe::get_keep_all_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
+}
+
+aptitude_universe::tier aptitude_universe::get_remove_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "30000"));
+}
+
+aptitude_universe::tier aptitude_universe::get_break_hold_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
+}
+
+aptitude_universe::tier aptitude_universe::get_non_default_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
+}
+
+aptitude_universe::tier aptitude_universe::get_remove_essential_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
+}
+
+void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string> > &out)
+{
+  const Configuration::Item *tree = aptcfg->Tree(PACKAGE "::ProblemResolver::Tier-Names");
+
+  if(tree == NULL)
+    return;
+
+  out.push_back(std::make_pair(get_safe_tier(), _("Safe actions")));
+  out.push_back(std::make_pair(get_keep_all_tier(), _("Cancel all user actions")));
+  out.push_back(std::make_pair(get_remove_tier(), _("Remove packages")));
+  out.push_back(std::make_pair(get_break_hold_tier(), _("Modify held packages")));
+  out.push_back(std::make_pair(get_non_default_tier(), _("Install versions from non-default sources")));
+  out.push_back(std::make_pair(get_remove_essential_tier(), _("Remove essential packages")));
+
+  for(const Configuration::Item *item = tree->Child; item != NULL; item = item->Next)
+    {
+      // Each sub-tree should have a Name and a Tier value.
+      bool has_name = false, has_tier = false;
+      std::string item_name;
+      tier item_tier;
+      for(Configuration::Item const *sub_item = item->Child; sub_item != NULL; sub_item = sub_item->Next)
+	{
+	  if(stringcasecmp(sub_item->Tag, "Name") == 0)
+	    {
+	      has_name = true;
+	      item_name = sub_item->Value;
+	    }
+	  else if(stringcasecmp(sub_item->Tag, "Tier") == 0)
+	    {
+	      has_tier = true;
+	      item_tier = parse_tier(sub_item->Value);
+	    }
+	}
+
+      if(has_name && has_tier)
+	out.push_back(std::make_pair(item_tier, item_name));
+      else
+	{
+	  if(has_name)
+	    LOG_ERROR(Loggers::getAptitudeResolverTiers(),
+		      ssprintf(_("The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a Tier entry."),
+			       item_name.c_str(), PACKAGE));
+	  else if(has_tier)
+	    LOG_ERROR(Loggers::getAptitudeResolverTiers(),
+		      ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
+			       item_tier.get_policy(), PACKAGE));
+	  else
+	    ; // Assume this is junk that got in accidentally.
+	}
+    }
+}
+
+std::string aptitude_universe::get_tier_name(const tier &t)
+{
+  typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
+  if(t >= aptitude_resolver::conflict_tier)
+    return "Unsolvable search nodes"; // Should never happen in a returned solution.
+  else if(t >= aptitude_resolver::already_generated_tier)
+    return "Already generated solutions"; // Should never happen in a returned solution.
+  else if(t >= aptitude_resolver::defer_tier)
+    return "Deferred search nodes"; // Should never happen in a returned solution.
+  else
+    {
+      std::vector<std::pair<tier, std::string> > named_tiers;
+      get_named_tiers(named_tiers);
+
+      std::string rval;
+      for(std::vector<std::pair<tier, std::string> >::const_iterator it =
+	    named_tiers.begin(); it != named_tiers.end(); ++it)
+	{
+	  if(it->first.get_policy() == t.get_policy() &&
+	     t >= it->first)
+	    {
+	      if(!rval.empty())
+		rval += ", ";
+	      rval += it->second;
+	    }
+	}
+
+      if(rval.empty())
+	rval = ssprintf("%d", t.get_policy());
+
+      return rval;
+    }
 }
