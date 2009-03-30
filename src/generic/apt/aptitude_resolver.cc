@@ -1164,7 +1164,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
       if(initial_state.version_of(p) == p.current_version())
 	{
 	  const bool was_manually_installed =
-	    (!p.current_version().get_ver().end()) && (apt_state.Flags & pkgCache::Flag::Auto);
+	    (!p.current_version().get_ver().end()) && ((apt_state.Flags & pkgCache::Flag::Auto) == 0);
 
 	  const bool was_manually_removed =
 	    p.current_version().get_ver().end() && (p.get_pkg().CurrentVer().end() || state.remove_reason == aptitudeDepCache::manual);
