@@ -1153,8 +1153,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 
       // Packages are considered "manual" either if they were manually
       // installed, or if they are currently installed and were
-      // manually removed.  Packages whose state was set by the
-      // initial_state object are always considered to be manual.
+      // manually removed.
       //
       // There is NO PENALTY for any change to a non-manual package's
       // state, other than the usual priority-based and non-default
