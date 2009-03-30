@@ -932,22 +932,22 @@ std::string aptitude_universe::get_tier_name(const tier &t)
       std::vector<std::pair<tier, std::string> > named_tiers;
       get_named_tiers(named_tiers);
 
-      std::string rval;
+      std::string name;
       for(std::vector<std::pair<tier, std::string> >::const_iterator it =
 	    named_tiers.begin(); it != named_tiers.end(); ++it)
 	{
 	  if(it->first.get_policy() == t.get_policy() &&
 	     t >= it->first)
 	    {
-	      if(!rval.empty())
-		rval += ", ";
-	      rval += it->second;
+	      if(!name.empty())
+		name += ", ";
+	      name += it->second;
 	    }
 	}
 
-      if(rval.empty())
-	rval = ssprintf("%d", t.get_policy());
-
-      return rval;
+      if(name.empty())
+	return ssprintf("%d", t.get_policy());
+      else
+	return ssprintf("%s (%d)", name.c_str(), t.get_policy());
     }
 }
