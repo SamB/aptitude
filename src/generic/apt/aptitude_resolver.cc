@@ -666,6 +666,11 @@ aptitude_resolver::aptitude_resolver(int step_score,
   using cwidget::util::ref_ptr;
   using aptitude::matching::pattern;
 
+  LOG_TRACE(loggerScores, "Setting up the resolver; score parameters: step_score = " << step_score
+	    << ", broken_score = " << broken_score << ", unfixed_soft_score = " << unfixed_soft_score
+	    << ", infinity = " << infinity << ", resolution_score = " << resolution_score
+	    << ", future_horizon = " << future_horizon << ".");
+
   tier keep_all_tier(aptitude_universe::get_keep_all_tier());
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
@@ -1102,10 +1107,26 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  const std::vector<hint> &hints)
 {
   tier safe_tier(aptitude_universe::get_safe_tier());
+  tier keep_all_tier(aptitude_universe::get_keep_all_tier());
   tier remove_tier(aptitude_universe::get_remove_tier());
   tier break_hold_tier(aptitude_universe::get_break_hold_tier());
   tier non_default_tier(aptitude_universe::get_non_default_tier());
   tier remove_essential_tier(aptitude_universe::get_remove_essential_tier());
+
+  LOG_TRACE(loggerScores, "Setting up action scores; score parameters: preserver_score = " << preserve_score
+	    << ", auto_score = " << auto_score << ", remove_score = " << remove_score
+	    << ", keep_score = " << keep_score << ", install_score = " << install_score
+	    << ", upgrade_score = " << upgrade_score << ", non_default_score = "
+	    << non_default_score << ", essential_remove = " << essential_remove
+	    << ", full_replacement_score = " << full_replacement_score
+	    << ", undo_full_replacement_score = " << undo_full_replacement_score
+	    << ", break_hold_score = " << break_hold_score
+	    << ", allow_break_holds_and_forbids = " << (allow_break_holds_and_forbids ? "true" : "false")
+	    << ", default_resolution_score = " << default_resolution_score);
+  LOG_TRACE(loggerTiers, "Setting up action scores; tier parameters: safe_tier = " << safe_tier
+	    << ", keep_all_tier = " << keep_all_tier << ", remove_tier = " << remove_tier
+	    << ", break_hold_tier = " << break_hold_tier << ", non_default_tier = "
+	    << non_default_tier << ", remove_essential_tier = " << remove_essential_tier << ".");
 
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
