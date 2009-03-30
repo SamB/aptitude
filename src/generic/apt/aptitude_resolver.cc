@@ -671,6 +671,36 @@ aptitude_resolver::hint::~hint()
 {
 }
 
+aptitude_resolver::tier aptitude_resolver::get_safe_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
+}
+
+aptitude_resolver::tier aptitude_resolver::get_keep_all_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
+}
+
+aptitude_resolver::tier aptitude_resolver::get_remove_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "30000"));
+}
+
+aptitude_resolver::tier aptitude_resolver::get_break_hold_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
+}
+
+aptitude_resolver::tier aptitude_resolver::get_non_default_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
+}
+
+aptitude_resolver::tier aptitude_resolver::get_remove_essential_tier()
+{
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
+}
+
 aptitude_resolver::aptitude_resolver(int step_score,
 				     int broken_score,
 				     int unfixed_soft_score,
@@ -689,7 +719,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
   using cwidget::util::ref_ptr;
   using aptitude::matching::pattern;
 
-  tier keep_all_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000")));
+  tier keep_all_tier(get_keep_all_tier());
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
@@ -1124,11 +1154,11 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  const std::map<package, bool> &initial_state_manual_flags,
 					  const std::vector<hint> &hints)
 {
-  tier safe_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000")));
-  tier remove_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Removal-Tier", "30000")));
-  tier break_hold_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000")));
-  tier non_default_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000")));
-  tier remove_essential_tier(parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000")));
+  tier safe_tier(get_safe_tier());
+  tier remove_tier(get_remove_tier());
+  tier break_hold_tier(get_break_hold_tier());
+  tier non_default_tier(get_non_default_tier());
+  tier remove_essential_tier(get_remove_essential_tier());
 
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
