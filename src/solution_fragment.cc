@@ -322,9 +322,7 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
 	fragments.push_back(cw::fragf("%ls%n", dep_text(*i).c_str()));
     }
 
-  char buf[512];
-  snprintf(buf, 512, _("Score is %d"), sol.get_score());
-  fragments.push_back(cw::fragf("%s", buf));
+  fragments.push_back(cw::fragf(_("Tier: %s"), aptitude_universe::get_tier_name(sol.get_tier()).c_str()));
 
   return flowbox(cw::sequence_fragment(fragments));
 }
