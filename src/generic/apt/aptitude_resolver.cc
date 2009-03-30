@@ -677,11 +677,19 @@ aptitude_resolver::aptitude_resolver(int step_score,
 
   for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
     {
-      pkgDepCache::StateCache &s((*cache)[i]);
+      package p(i, cache);
+      version curr;
+      if(i->CurrentState != pkgCache::State::NotInstalled &&
+	 i->CurrentState != pkgCache::State::ConfigFiles)
+	curr = version(i, i.CurrentVer(), cache);
+      else
+	curr = version(i, pkgCache::VerIterator(*cache), cache);
 
-      if(!s.Keep())
-	keep_all_solution.insert_or_narrow(choice::make_install_version(version(i, i.CurrentVer(), cache),
-									dep(), 0));
+      if(get_initial_state().version_of(p) == curr)
+	{
+	  choice c(choice::make_install_version(curr, dep(), 0));
+	  keep_all_solution.insert_or_narrow(c);
+	}
     }
 
   bool discardNullSolution = aptcfg->FindB(PACKAGE "::ProblemResolver::Discard-Null-Solution", false);
