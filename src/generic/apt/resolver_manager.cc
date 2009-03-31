@@ -1797,6 +1797,8 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 
   reset_resolver();
 
+  background_suspender bs(*this);
+
   for(pkgCache::PkgIterator p = (*cache_file)->PkgBegin();
       !p.end(); ++p)
     {
