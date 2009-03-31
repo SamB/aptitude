@@ -1816,6 +1816,12 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	  reject_version(remove_p);
 	}
 
+      // Look up the version that's to-be-installed according to the
+      // resolver's initial state.
+      aptitude_resolver_package aptitude_p(p, *cache_file);
+      aptitude_resolver_version p_initial_version =
+	resolver->get_initial_state().version_of(aptitude_p);
+
       // Forbid all real versions that aren't the current version or
       // the candidate version.
       for(pkgCache::VerIterator v = p.VersionList();
@@ -1827,8 +1833,17 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	    p->CurrentState != pkgCache::State::NotInstalled &&
 	    p->CurrentState != pkgCache::State::ConfigFiles;
 
-	  const bool p_will_install =
-	    (*cache_file)[p].Install();
+	  bool p_will_install;
+	  if(!p_initial_version.get_ver().end())
+	    {
+	      if(p->CurrentState == pkgCache::State::NotInstalled ||
+		 p->CurrentState == pkgCache::State::ConfigFiles)
+		p_will_install = true;
+	      else
+		p_will_install = (p.CurrentVer() != p_initial_version.get_ver());
+	    }
+	  else
+	    p_will_install = false;
 
 	  const bool v_is_a_new_install = !p_is_installed && !p_will_install;
 	  const bool v_is_a_new_upgrade = p_is_installed && p_will_install;
