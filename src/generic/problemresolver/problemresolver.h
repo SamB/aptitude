@@ -2741,6 +2741,14 @@ public:
      promotions(_universe),
      version_tiers(new tier[_universe.get_version_count()])
   {
+    LOG_DEBUG(logger, "Creating new problem resolver: step_score = " << _step_score
+	      << ", broken_score = " << _broken_score
+	      << ", unfixed_soft_score = " << _unfixed_soft_score
+	      << ", infinity = " << infinity
+	      << ", full_solution_score = " << _full_solution_score
+	      << ", future_horizon = " << _future_horizon
+	      << ", initial_state = " << _initial_state);
+
     for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
       version_tiers[i] = minimum_tier;
 
