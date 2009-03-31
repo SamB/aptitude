@@ -647,18 +647,31 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
 void aptitudeDepCache::get_upgradable(bool ignore_removed,
 				      std::set<pkgCache::PkgIterator> &upgradable)
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
+  LOG_TRACE(logger, "Fetching the list of upgradable packages.");
+
   for(pkgCache::PkgIterator p = PkgBegin(); !p.end(); ++p)
     {
       StateCache &state = (*this)[p];
       aptitude_state &estate = get_ext_state(p);
 
       if(p.CurrentVer().end())
-	continue;
+	{
+	  LOG_TRACE(logger, p.Name() << " is not upgradable: it is not currently installed.");
+	  continue;
+	}
 
       bool do_upgrade = false;
 
       if(!ignore_removed)
-	do_upgrade = state.Status > 0 && !is_held(p);
+	{
+	  do_upgrade = state.Status > 0 && !is_held(p);
+	  if(do_upgrade)
+	    LOG_DEBUG(logger, p.Name() << " is upgradable.");
+	  else
+	    LOG_TRACE(logger, p.Name() << " is not upgradable: no newer version is available, or it is held back.");
+	}
       else
 	{
 	  switch(estate.selection_state)
@@ -666,13 +679,20 @@ void aptitudeDepCache::get_upgradable(bool ignore_removed,
 	      // This case shouldn't really happen:
 	    case pkgCache::State::Unknown:
 	      estate.selection_state = pkgCache::State::Install;
+	      LOG_WARN(logger, p.Name() << " has not been seen before, but it should have been initialized on startup.");
 
 	      // Fall through
 	    case pkgCache::State::Install:
 	      if(state.Status > 0 && !is_held(p))
-		do_upgrade = true;
+		{
+		  do_upgrade = true;
+		  LOG_TRACE(logger, p.Name() << " is upgradable.");
+		}
+	      else
+		LOG_TRACE(logger, p.Name() << " is not upgradable: no newer version is available, or it is held back.");
 	      break;
 	    default:
+	      LOG_TRACE(logger, p.Name() << " is not upgradable: its state is " << estate.selection_state << " instead of " << pkgCache::State::Install << ".");
 	      break;
 	    }
 	}
