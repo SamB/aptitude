@@ -287,7 +287,7 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
   if(!ver.end())
     {
       if(instver != ver && curver != ver)
-	return cw::fragf("%s", statestr);
+	return cw::fragf("%s%s", statestr, holdstr);
       else if(instver == ver)
 	{
 	  if(curver != instver)
@@ -296,15 +296,15 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 		 pkg->CurrentState == pkgCache::State::ConfigFiles)
 		{
 		  if(state.Flags & pkgCache::Flag::Auto)
-		    return cw::fragf(_("%s; will be installed"), statestr);
+		    return cw::fragf(_("%s%s; will be installed"), statestr, holdstr);
 		  else
-		    return cw::fragf(_("%s; will be installed automatically"), statestr);
+		    return cw::fragf(_("%s%s; will be installed automatically"), statestr, holdstr);
 		}
 	      else
 		return version_change_fragment(statestr, holdstr, curver, instver);
 	    }
 	  else
-	    return cw::fragf("%s", statestr);
+	    return cw::fragf("%s%s", statestr, holdstr);
 	}
       else if(instver.end()) // Now curver is ver.
 	return deletion_fragment(statestr, state, estate);
