@@ -12,6 +12,7 @@
 #include "cmdline_util.h"
 
 #include <aptitude.h>
+#include <loggers.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptitude_resolver_universe.h>
@@ -26,6 +27,8 @@
 #include <apt-pkg/packagemanager.h>
 #include <apt-pkg/policy.h>
 #include <apt-pkg/progress.h>
+
+using aptitude::Loggers;
 
 namespace
 {
@@ -115,6 +118,9 @@ int cmdline_upgrade(int argc, char *argv[],
 
   if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, true, show_resolver_actions))
     {
+      LOG_ERROR(Loggers::getAptitudeResolverSafeResolver(),
+		"Failed to find a safe resolution to these dependencies; falling back to the classic apt algorithm.");
+
       {
 	aptitudeDepCache::action_group action_group(*apt_cache_file);
 
