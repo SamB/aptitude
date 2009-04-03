@@ -218,6 +218,9 @@ type TreeViewStore  = TreeStore TreeViewEntry
 type ChronViewStore = ListStore ChronViewEntry
 type RunListStore   = ListStore (Integer, [ProcessingStep])
 
+data TargetFormat = PS | PNG
+    deriving(Eq, Ord, Show, Read)
+
 -- | Parameters the user can set at the command-line.
 data Params =
     Params {
@@ -227,11 +230,14 @@ data Params =
       -- | The first step to start rendering.
       firstStep :: Maybe Integer,
       -- | Where and whether to send dot output.
-      dotOutput :: Maybe String
+      dotOutput :: Maybe String,
+      -- | The target output format.
+      targetFormat :: Maybe TargetFormat
     } deriving(Eq, Ord, Show)
 defaultParams = Params { maxSteps  = Nothing,
                          firstStep = Nothing,
-                         dotOutput = Nothing }
+                         dotOutput = Nothing,
+                         targetFormat = Nothing }
 
 -- | Shared context for the visualizer.
 data VisualizeContext =
@@ -950,6 +956,11 @@ filterUserParams ("--first-step":(n:args)) params = let params' = params { first
                                                     filterUserParams args params'
 filterUserParams ("--dot-output":(fn:args)) params = let params' = params { dotOutput = Just $ fn } in
                                                      filterUserParams args params'
+filterUserParams ("--target-format":(fmt:args)) params =
+    case reads fmt of
+      []             -> error (printf "Unknown target format %s" (show fmt))
+      ((fmt', _):_)  -> let params' = params { targetFormat = Just fmt' } in
+                        filterUserParams args params'
 filterUserParams (arg:args) params = let (args', params') = filterUserParams args params in
                                      (arg:args', params')
 
@@ -973,6 +984,19 @@ inBounds params n = let first = maybe 0 id (firstStep params) in
 dotChoiceLabel :: LinkChoice -> String
 dotChoiceLabel lc@(LinkChoice c) = choiceText lc
 dotChoiceLabel Unknown           = ""
+
+inferTargetFormat :: Params -> TargetFormat
+inferTargetFormat (Params { targetFormat = fmt,
+                            dotOutput    = output }) =
+    case fmt of
+      Nothing -> PS
+      Just fmt' -> fmt'
+
+cloudImage :: Params -> String
+cloudImage params =
+    case inferTargetFormat params of
+      PS -> "cloud.eps"
+      PNG -> "cloud.png"
 
 dotStepNode :: Params -> ProcessingStep -> Node
 dotStepNode params step = let n = node (name $ printf "step%d" (stepOrder step))
@@ -1004,7 +1028,7 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
           excluded    = [ node (name $ printf "step%d" (stepOrder step))
                                    ..= ("label", printf "%d nodes..." (stepBranchSize step))
                                    ..= ("shape", "plaintext")
-                                   ..= ("image", "cloud.png")
+                                   ..= ("image", cloudImage params)
                           | (Successor { successorStep = step }) <- stepSuccessors step,
                             not $ inBounds params (stepOrder step) ]
 
