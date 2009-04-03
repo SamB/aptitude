@@ -9,7 +9,8 @@ module Dot(
            Name(), AttrValue(),
            name, attrValue,
            node, edge, digraph,
-           genNodes
+           genNodes,
+           (.=), (..=), (.!)
           )
            where
 
@@ -60,6 +61,10 @@ class Attributed a where
 
 (.=) :: (Attributed a, AttributeValue v) => a -> (String, v) -> a
 a .= (nameString, v) = addAttribute a (name nameString) (Just $ valueString v)
+
+-- EW: hack to pretend-overload .= on strings.
+(..=) :: (Attributed a) => a -> (String, String) -> a
+a ..= (nameString, valString) = addAttribute a (name nameString) (Just $ attrValue valString)
 
 (.!) :: Attributed a => a -> Name -> a
 a .! name = addAttribute a name Nothing
