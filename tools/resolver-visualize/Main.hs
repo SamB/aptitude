@@ -1044,6 +1044,14 @@ dotEdges params step = processed ++ unprocessed
                           | ((Unprocessed { successorChoice = succChoice }), stepNum)
                               <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
 
+dotOrderEdges steps =
+    [ edge (node (name $ printf "step%d" (stepOrder step1)))
+           (node (name $ printf "step%d" (stepOrder step2)))
+      ..= ("constraint", "false")
+      ..= ("style", "dotted")
+      ..= ("color", "blue")
+      | (step1, step2) <- zip steps (drop 1 steps) ]
+
 renderDot :: Params -> [ProcessingStep] -> Digraph
 renderDot params steps =
     let droppedSteps   = maybe steps (\n -> genericDrop n steps) (firstStep params)
@@ -1052,8 +1060,9 @@ renderDot params steps =
     then error "No steps to render."
     else let stepNodes          = map (dotStepNode params) truncatedSteps
              unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
-             edges              = concat $ map (dotEdges params) truncatedSteps in
-         digraph (stepNodes ++ unprocessed) edges
+             stepEdges          = concat $ map (dotEdges params) truncatedSteps
+             orderEdges         = dotOrderEdges truncatedSteps in
+         digraph (stepNodes ++ unprocessed) (stepEdges ++ orderEdges)
 
 writeDotRun params steps outputFile =
     do let dot = renderDot params steps
