@@ -105,7 +105,7 @@ instance Attributed Edge where
 
 
 showsAttribute :: Name -> Maybe AttrValue -> ShowS
-showsAttriubte (Name name) Nothing = shows name
+showsAttribute (Name name) Nothing = shows name
 showsAttribute (Name name) (Just (AttrValue value)) =
     shows name . ('=':) . shows value
 
