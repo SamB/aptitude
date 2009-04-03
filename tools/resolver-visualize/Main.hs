@@ -975,24 +975,31 @@ dotChoiceLabel lc@(LinkChoice c) = choiceText lc
 dotChoiceLabel Unknown           = ""
 
 dotStepNode :: Params -> ProcessingStep -> Node
-dotStepNode params step = node (name $ printf "step%d" (stepOrder step))
-                          ..= ("label", printf "Step: %d\nScore: %d\nTier: %s"
-                                          (stepOrder step)
-                                          (solScore $ stepSol step)
-                                          (show $ solTier $ stepSol step))
+dotStepNode params step = let n = node (name $ printf "step%d" (stepOrder step))
+                                  ..= ("label", printf "Step: %d\nScore: %d\nTier: %s"
+                                                  (stepOrder step)
+                                                  (solScore $ stepSol step)
+                                                  (show $ solTier $ stepSol step)) in
+                          if Set.null $ solBrokenDeps (stepSol step)
+                          then n ..= ("style", "filled")
+                                 ..= ("fillecolor", "lightgrey")
+                          else n
 
 -- Generate nodes for any successors that were not processed in the
 -- render.
 dotUnprocessedSuccs :: Params -> ProcessingStep -> [Node]
 dotUnprocessedSuccs params step = unprocessed ++ excluded
-    where unprocessed = [ node (name $ printf "step%dunproc%d" (stepOrder step) n)
-                                   ..= ("label", printf "Unprocessed\nScore: %d\nTier: %s"
-                                                   (solScore succSol)
-                                                   (show $ solTier succSol))
-                                   ..= ("style", "dashed")
+    where unprocessed = [ let n = node (name $ printf "step%dunproc%d" (stepOrder step) stepNum)
+                                  ..= ("label", printf "Unprocessed\nScore: %d\nTier: %s"
+                                                  (solScore succSol)
+                                                  (show $ solTier succSol)) in
+                          if Set.null $ solBrokenDeps (stepSol step)
+                          then n ..= ("style", "dashed,filled")
+                                 ..= ("fillcolor", "lightgrey")
+                          else n ..= ("style", "dashed")
                           | ((Unprocessed { successorChoice    = succChoice,
                                             successorSolution  = succSol }),
-                             n)
+                             stepNum)
                           <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
           excluded    = [ node (name $ printf "step%d" (stepOrder step))
                                    ..= ("label", printf "%d nodes..." (stepBranchSize step))
@@ -1008,9 +1015,9 @@ dotEdges params step = processed ++ unprocessed
                           | Successor { successorStep   = step',
                                         successorChoice = succChoice } <- stepSuccessors step ]
           unprocessed = [ edge (node (name $ printf "step%d" (stepOrder step)))
-                               (node (name $ printf "step%dunproc%d" (stepOrder step) n))
+                               (node (name $ printf "step%dunproc%d" (stepOrder step) stepNum))
                           ..= ("label", dotChoiceLabel succChoice)
-                          | ((Unprocessed { successorChoice = succChoice }), n)
+                          | ((Unprocessed { successorChoice = succChoice }), stepNum)
                               <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
 
 renderDot :: Params -> [ProcessingStep] -> Digraph
