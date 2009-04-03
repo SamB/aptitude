@@ -8,7 +8,7 @@ module Dot(
            AttributeValue, Attributed,
            Name(), AttrValue(),
            name, attrValue,
-           node, edge,
+           node, edge, digraph,
            genNodes
           )
            where
@@ -84,6 +84,11 @@ edge :: Node -> Node -> Edge
 edge from to = Edge { edgeFrom = from,
                       edgeTo = to,
                       edgeAttributes = Map.empty }
+
+digraph :: [Node] -> [Edge] -> Digraph
+digraph nodes edges = Digraph { digraphNodes = nodes,
+                                digraphEdges = edges,
+                                digraphAttributes = Map.empty }
 
 -- | An infinite list of nodes with arbitrary names.
 genNodes = [node (name $ "node" ++ show n) | n <- [1..]]
