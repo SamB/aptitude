@@ -15,7 +15,7 @@ module Dot(
 
 import qualified Data.List as List
 import qualified Data.Map as Map
-import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS
 
 newtype Name = Name String deriving(Eq, Ord)
 newtype AttrValue = AttrValue String deriving(Eq, Ord)
@@ -48,7 +48,7 @@ instance AttributeValue AttrValue where
     valueString = id
 
 instance AttributeValue BS.ByteString where
-    valueString = attrValue . show
+    valueString = attrValue . BS.unpack
 
 
 
