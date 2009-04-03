@@ -15,6 +15,7 @@ import System.Environment(getArgs)
 import System.Glib.MainLoop
 import System.Glib.Types
 import Data.IORef
+import Data.List
 import Data.Maybe
 import qualified Data.Map as Map
 import qualified Data.Set as Set
@@ -214,6 +215,19 @@ newRunListColumns =
 type TreeViewStore  = TreeStore TreeViewEntry
 type ChronViewStore = ListStore ChronViewEntry
 type RunListStore   = ListStore (Integer, [ProcessingStep])
+
+-- | Parameters the user can set at the command-line.
+data Params =
+    Params {
+      -- | The maximum number of steps to visualize (the whole file is
+      -- always loaded, but only this many are rendered).
+      maxSteps :: Maybe Integer,
+      -- | The first step to start rendering.
+      firstStep :: Maybe Integer
+    } deriving(Eq, Ord, Show)
+defaultParams = Params { maxSteps  = Nothing,
+                         firstStep = Nothing }
+
 -- | Shared context for the visualizer.
 data VisualizeContext =
     VisualizeContext { treeView :: TreeView,
@@ -227,6 +241,7 @@ data VisualizeContext =
                        runListStore :: RunListStore,
                        logView :: SourceView,
                        mainContext :: MainLoopContext,
+                       params :: Params,
                        loadedFile :: IORef (Maybe LoadedLogFile),
                        activeRun  :: IORef (Maybe (Integer, [ProcessingStep])) }
 
@@ -269,6 +284,9 @@ getLogView = do ctx <- ask; return $ logView ctx
 
 getMainCtx :: VisM MainLoopContext
 getMainCtx = do ctx <- ask; return $ mainContext ctx
+
+getParams :: VisM Params
+getParams = do ctx <- ask; return $ params ctx
 
 
 getLog :: VisM (Maybe LogFile)
@@ -326,6 +344,12 @@ data TreeViewEntry =
       entryStepNum      :: Integer,
       entryTreeInfo     :: EntryTreeInfo
     }
+  -- | The maximum number of search nodes was rendered.
+  | Horizon {
+      entryChoice       :: LinkChoice,
+      entryStepNum      :: Integer,
+      entryTreeInfo     :: EntryTreeInfo
+    }
   -- | A Step node would have been produced, but the
   -- same solution was already generated as a Step
   -- node.  The attached Solution node could be used
@@ -354,45 +378,69 @@ data TreeViewEntry =
 forceList :: [a] -> [a]
 forceList = foldr (\a b -> a `seq` (a:b)) []
 
+-- Each node in the tree refers either to a node's successor or to a
+-- number of nodes below that node (precomputed).
+data SuccessorOrHorizon = NodeSuccessor Successor
+                        | NodeHorizon TreeViewEntry
+
 -- | The tree-view building monad contains local state remembering
 -- which nodes have already been incorporated into the tree, so we
 -- don't display them more than once.
 type BuildTreeView = State.State (Set.Set Solution)
-unfoldSuccessor :: Successor -> BuildTreeView (TreeViewEntry, [Successor])
-unfoldSuccessor (Successor step choice forced) =
+unfoldSuccessor :: Params -> SuccessorOrHorizon -> BuildTreeView (TreeViewEntry, [SuccessorOrHorizon])
+unfoldSuccessor params (NodeHorizon entry) =
+    return (entry, [])
+unfoldSuccessor params (NodeSuccessor (Successor step choice forced)) =
     do seen <- State.get
        let sol        = stepSol step
            stepNum    = stepOrder step
-       (if sol `Set.member` seen
-        then let numChoices = toInteger $ Map.size $ solChoices sol
-                 brokenDeps = toInteger $ Set.size $ solBrokenDeps sol
-                 textStart  = stepTextStart step
-                 textLength = stepTextLength step in
-             return $ sol `seq` choice `seq` stepNum `seq` textStart `seq`
-                    textLength `seq` numChoices `seq` brokenDeps `seq`
-                                   (AlreadyGeneratedStep { entrySol        = sol,
-                                                           entryChoice     = choice,
-                                                           entryStepNum    = stepNum,
-                                                           entryNumChoices = numChoices,
-                                                           entryBrokenDeps = brokenDeps,
-                                                           entryTextStart  = textStart,
-                                                           entryTextLength = textLength },
-                                    [])
-        else let newState       = Set.insert sol seen
-                 numChoices     = toInteger $ Map.size $ solChoices $ stepSol step
-                 brokenDeps     = toInteger $ Set.size $ solBrokenDeps $ stepSol step
-                 treeInfo       = getTreeInfo step in
-             step `seq` choice `seq` stepNum `seq` newState `seq`
-             numChoices `seq` brokenDeps `seq` treeInfo `seq`
-             do State.put $ Set.insert sol seen
-                return (Step { entryStep       = step,
-                               entryChoice     = choice,
-                               entryStepNum    = stepNum,
-                               entryNumChoices = numChoices,
-                               entryBrokenDeps = brokenDeps,
-                               entryTreeInfo   = treeInfo },
-                        forceList $ stepSuccessors step))
-unfoldSuccessor (Unprocessed sol choice forced) =
+       case undefined of
+         _ | maybe False (stepNum>=) (maxSteps params) ->
+               let numChoices     = toInteger $ Map.size $ solChoices $ stepSol step
+                   brokenDeps     = toInteger $ Set.size $ solBrokenDeps $ stepSol step
+                   treeInfo       = getTreeInfo step
+                   horizon        = Horizon { entryChoice     = choice,
+                                              entryStepNum    = stepNum,
+                                              entryTreeInfo   = treeInfo } in
+               step `seq` choice `seq` stepNum `seq` treeInfo `seq`
+               do return (Step { entryStep       = step,
+                                 entryChoice     = choice,
+                                 entryStepNum    = stepNum,
+                                 entryNumChoices = numChoices,
+                                 entryBrokenDeps = brokenDeps,
+                                 entryTreeInfo   = treeInfo },
+                          [NodeHorizon horizon])
+           | sol `Set.member` seen ->
+               let numChoices = toInteger $ Map.size $ solChoices sol
+                   brokenDeps = toInteger $ Set.size $ solBrokenDeps sol
+                   textStart  = stepTextStart step
+                   textLength = stepTextLength step in
+               return $ sol `seq` choice `seq` stepNum `seq` textStart `seq`
+               textLength `seq` numChoices `seq` brokenDeps `seq`
+               (AlreadyGeneratedStep { entrySol        = sol,
+                                       entryChoice     = choice,
+                                       entryStepNum    = stepNum,
+                                       entryNumChoices = numChoices,
+                                       entryBrokenDeps = brokenDeps,
+                                       entryTextStart  = textStart,
+                                       entryTextLength = textLength },
+                [])
+           | otherwise ->
+               let newState       = Set.insert sol seen
+                   numChoices     = toInteger $ Map.size $ solChoices $ stepSol step
+                   brokenDeps     = toInteger $ Set.size $ solBrokenDeps $ stepSol step
+                   treeInfo       = getTreeInfo step in
+               step `seq` choice `seq` stepNum `seq` newState `seq`
+               numChoices `seq` brokenDeps `seq` treeInfo `seq`
+               do State.put newState
+                  return (Step { entryStep       = step,
+                                 entryChoice     = choice,
+                                 entryStepNum    = stepNum,
+                                 entryNumChoices = numChoices,
+                                 entryBrokenDeps = brokenDeps,
+                                 entryTreeInfo   = treeInfo },
+                          forceList $ map NodeSuccessor $ stepSuccessors step)
+unfoldSuccessor _ (NodeSuccessor (Unprocessed sol choice forced)) =
     let brokenDeps = toInteger $ Set.size $ solBrokenDeps sol
         numChoices = toInteger $ Map.size $ solChoices sol in
     sol `seq` choice `seq` brokenDeps `seq` numChoices `seq`
@@ -402,11 +450,17 @@ unfoldSuccessor (Unprocessed sol choice forced) =
                      entryNumChoices = numChoices },
             [])
 
-runToForest :: [ProcessingStep] -> Forest TreeViewEntry
-runToForest steps = case steps of
-                      [] -> [Node (Error { entryErrorText = "No steps in this run.",
-                                           entryStepNum = 0 }) []]
-                      (root:rest) -> State.evalState (makeWholeTree root rest) Set.empty
+runToForest :: Params -> [ProcessingStep] -> Forest TreeViewEntry
+runToForest params steps =
+    case steps of
+      [] -> [Node (Error { entryErrorText = "No steps in this run.",
+                           entryStepNum = 0 }) []]
+      (first:rest) -> let hasRoot        = maybe False (==0) (firstStep params)
+                          root           = if hasRoot then Just first else Nothing
+                          droppedSteps   = maybe steps (\n -> genericDrop n steps) (firstStep params)
+                          droppedRest    = if hasRoot then drop 1 droppedSteps else droppedSteps
+                          truncatedRest  = maybe droppedRest (\n -> genericTake n droppedRest) (maxSteps params) in
+                      State.evalState (makeWholeTree root truncatedRest) Set.empty
     where makeTree :: (ProcessingStep -> TreeViewEntry) -> ProcessingStep -> BuildTreeView (Maybe (Tree TreeViewEntry))
           makeTree f root =
               do seen <- State.get
@@ -415,15 +469,11 @@ runToForest steps = case steps of
                   then return $ Nothing
                   else do State.put $ Set.insert rootSol seen
                           let rootSucc = stepSuccessors root
-                          succ <- unfoldForestM unfoldSuccessor rootSucc
+                          succ <- unfoldForestM (unfoldSuccessor params) (map NodeSuccessor rootSucc)
                           return $ f `seq` root `seq` forceList succ `seq` Just $ Node (f root) succ)
-          makeWholeTree :: ProcessingStep -> [ProcessingStep] -> BuildTreeView (Forest TreeViewEntry)
+          makeWholeTree :: Maybe ProcessingStep -> [ProcessingStep] -> BuildTreeView (Forest TreeViewEntry)
           makeWholeTree root rest =
-              do first <- makeTree makeRootTree root
-                 -- This is always the first node we
-                 -- process, so it should never
-                 -- appear in "seen".
-                 when (not $ isJust first) (error "Internal error: how can the root be seen already?")
+              do first <- maybe (return Nothing) (makeTree makeRootTree) root
                  rest' <- sequence $ map (makeTree makeOrphanedTree) rest
                  return $ catMaybes (first:rest')
           makeRootTree     root = let numChoices = toInteger $ Map.size $ solChoices $ stepSol root
@@ -474,6 +524,7 @@ choiceText Unknown = "(...)"
 entryColumnText :: TreeViewEntry -> String
 entryColumnText (Root {}) = "Root"
 entryColumnText (Step { entryChoice = choice}) = choiceText choice
+entryColumnText (Horizon { entryTreeInfo = inf }) = (show $ treeInfoChildren inf) ++ " search nodes..."
 entryColumnText (AlreadyGeneratedStep { entryChoice = choice }) = "Already seen: " ++ choiceText choice
 entryColumnText (NoStep { entryChoice = choice }) = "Never visited: " ++ choiceText choice
 entryColumnText (Error { entryErrorText = err }) = err
@@ -481,6 +532,7 @@ entryColumnText (Error { entryErrorText = err }) = err
 entryColumnNumChoices :: TreeViewEntry -> String
 entryColumnNumChoices (Root { entryNumChoices = n })                    = show n
 entryColumnNumChoices (Step { entryNumChoices = n })                    = show n
+entryColumnNumChoices (Horizon {})                                      = ""
 entryColumnNumChoices (AlreadyGeneratedStep { entryNumChoices = n })    = show n
 entryColumnNumChoices (NoStep { entryNumChoices = n })                  = show n
 entryColumnNumChoices (Error {})                                        = ""
@@ -488,6 +540,7 @@ entryColumnNumChoices (Error {})                                        = ""
 entryColumnBrokenDeps :: TreeViewEntry -> String
 entryColumnBrokenDeps (Root { entryBrokenDeps = n })                    = show n
 entryColumnBrokenDeps (Step { entryBrokenDeps = n })                    = show n
+entryColumnBrokenDeps (Horizon {})                                      = ""
 entryColumnBrokenDeps (AlreadyGeneratedStep { entryBrokenDeps = n })    = show n
 entryColumnBrokenDeps (NoStep { entryBrokenDeps = n })                  = show n
 entryColumnBrokenDeps (Error {})                                        = ""
@@ -495,6 +548,7 @@ entryColumnBrokenDeps (Error {})                                        = ""
 entryColumnStepNum :: TreeViewEntry -> String
 entryColumnStepNum (Root { entryStepNum = n })                          = show n
 entryColumnStepNum (Step { entryStepNum = n })                          = show n
+entryColumnStepNum (Horizon { entryStepNum = n })                       = show n
 entryColumnStepNum (AlreadyGeneratedStep { entryStepNum = n })          = show n
 entryColumnStepNum (NoStep {})                                          = ""
 entryColumnStepNum (Error {})                                           = ""
@@ -502,6 +556,7 @@ entryColumnStepNum (Error {})                                           = ""
 entryColumnChildren :: TreeViewEntry -> String
 entryColumnChildren (Root { entryTreeInfo = inf })                      = show $ treeInfoChildren inf
 entryColumnChildren (Step { entryTreeInfo = inf })                      = show $ treeInfoChildren inf
+entryColumnChildren (Horizon { entryTreeInfo = inf })                   = show $ treeInfoChildren inf
 entryColumnChildren (AlreadyGeneratedStep {})                           = ""
 entryColumnChildren (NoStep { })                                        = ""
 entryColumnChildren (Error {})                                          = ""
@@ -510,6 +565,7 @@ entryColumnChildren (Error {})                                          = ""
 entryColumnHeight :: TreeViewEntry -> String
 entryColumnHeight (Root { entryTreeInfo = inf })                        = show $ treeInfoHeight inf
 entryColumnHeight (Step { entryTreeInfo = inf })                        = show $ treeInfoHeight inf
+entryColumnHeight (Horizon { entryTreeInfo = inf })                     = show $ treeInfoHeight inf
 entryColumnHeight (AlreadyGeneratedStep { })                            = ""
 entryColumnHeight (NoStep { })                                          = ""
 entryColumnHeight (Error {})                                            = ""
@@ -517,6 +573,7 @@ entryColumnHeight (Error {})                                            = ""
 entryColumnSubtreeSize :: TreeViewEntry -> String
 entryColumnSubtreeSize (Root { entryTreeInfo = inf })                   = show $ treeInfoSubtreeSize inf
 entryColumnSubtreeSize (Step { entryTreeInfo = inf })                   = show $ treeInfoSubtreeSize inf
+entryColumnSubtreeSize (Horizon { entryTreeInfo = inf })                = show $ treeInfoSubtreeSize inf
 entryColumnSubtreeSize (AlreadyGeneratedStep { })                       = ""
 entryColumnSubtreeSize (NoStep { })                                     = ""
 entryColumnSubtreeSize (Error {})                                       = ""
@@ -524,6 +581,7 @@ entryColumnSubtreeSize (Error {})                                       = ""
 entryColumnTier :: TreeViewEntry -> String
 entryColumnTier (Root { entryStep = step })                             = show $ solTier $ stepSol step
 entryColumnTier (Step { entryStep = step })                             = show $ solTier $ stepSol step
+entryColumnTier (Horizon {})                                            = ""
 entryColumnTier (AlreadyGeneratedStep { entrySol = sol })               = show $ solTier sol
 entryColumnTier (NoStep { entrySol = sol })                             = show $ solTier sol
 entryColumnTier (Error {})                                              = ""
@@ -531,15 +589,18 @@ entryColumnTier (Error {})                                              = ""
 entryColumnScore :: TreeViewEntry -> String
 entryColumnScore (Root { entryStep = step })                            = show $ solScore $ stepSol step
 entryColumnScore (Step { entryStep = step })                            = show $ solScore $ stepSol step
+entryColumnScore (Horizon {})                                           = ""
 entryColumnScore (AlreadyGeneratedStep { entrySol = sol })              = show $ solScore sol
 entryColumnScore (NoStep { entrySol = sol })                            = show $ solScore sol
 entryColumnScore (Error {})                                             = ""
 
-renderTreeView :: [ProcessingStep] -> TreeViewStore -> IO ()
-renderTreeView steps model = do let forest = runToForest steps
-                                treeStoreClear model
-                                mapM_ (\(n, tree) -> treeStoreInsertTree model [] n tree)
-                                      (zip [0..] forest)
+renderTreeView :: Params -> [ProcessingStep] -> TreeViewStore -> IO ()
+renderTreeView params steps model =
+    do let forest = runToForest params steps
+           taggedForest = zip [0..] forest
+       treeStoreClear model
+       mapM_ (\(n, tree) -> treeStoreInsertTree model [] n tree)
+             taggedForest
 
 data ChronViewEntry =
     ChronStep { chronNumChoices   :: Integer,
@@ -573,9 +634,11 @@ makeChronStep step =
                 chronTier        = tier,
                 chronScore       = score }
 
-renderChronView :: [ProcessingStep] -> ChronViewStore -> IO ()
-renderChronView steps model =
-    do let list = [ makeChronStep step | step <- steps ]
+renderChronView :: Params -> [ProcessingStep] -> ChronViewStore -> IO ()
+renderChronView params steps model =
+    do let stepsAdvanced  = maybe steps (\n -> genericDrop n steps) (firstStep params)
+           stepsTruncated = maybe stepsAdvanced (\n -> genericTake n stepsAdvanced) (maxSteps params)
+           list           = [ makeChronStep step | step <- stepsTruncated ]
        listStoreClear model
        mapM_ (listStoreAppend model) list
 
@@ -626,13 +689,15 @@ setRun (Just (n, steps)) =
                treeViewColInfo  <- getTreeViewColumnInfo
                chronViewColInfo <- getChronologicalViewColumnInfo
 
+               params           <- getParams
+
                logView <- getLogView
                liftIO $ do -- Update the UI for the new log file.
                  rawLogViewBuffer <- textViewGetBuffer logView
                  textBufferSetText rawLogViewBuffer ""
 
-                 renderTreeView  steps treeStore
-                 renderChronView steps chronStore
+                 renderTreeView  params steps treeStore
+                 renderChronView params steps chronStore
 
 setLog :: LogFile -> VisM ()
 setLog lf =
@@ -757,8 +822,8 @@ runSelectionChanged ctx selection model = do
            run <- listStoreGetValue model  i
            runVis (setRun (Just run)) ctx)
 
-newCtx :: GladeXML -> MainM VisualizeContext
-newCtx xml =
+newCtx :: GladeXML -> Params -> MainM VisualizeContext
+newCtx xml params =
     do mainCtx <- ask
        (treeViewColInf, chronViewColumnInf, runListColumnInf) <- createMainWindowColumns xml
        liftIO $ do sourceView <- setupMainWindow xml
@@ -785,6 +850,7 @@ newCtx xml =
                                                 runListStore = runModel,
                                                 logView = sourceView,
                                                 loadedFile = lf,
+                                                params = params,
                                                 activeRun = runRef,
                                                 mainContext = mainCtx }
 
@@ -807,11 +873,11 @@ newCtx xml =
 
 
 
-newMainWindow :: MainM (GladeXML, VisualizeContext)
-newMainWindow =
+newMainWindow :: Params -> MainM (GladeXML, VisualizeContext)
+newMainWindow params =
     do mainContext <- ask
        (xml, mainWindow) <- liftIO $ loadMainWindowXML
-       ctx <- newCtx xml
+       ctx <- newCtx xml params
        mainWindowOpened
        liftIO $ on mainWindow deleteEvent (liftIO $ doMainWindowClosed mainContext)
        return (xml, ctx)
@@ -825,28 +891,29 @@ milliToPicoseconds n = n * 1000000000
 -- main window.
 --
 -- TODO: support displaying in an existing main window.
-load :: FilePath -> MainM ()
-load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
-                                       title       <- xmlGetWidget xml castToLabel "label_title"
-                                       progressBar <- xmlGetWidget xml castToProgressBar "load_progress"
-                                       status      <- xmlGetWidget xml castToLabel "label_statistics"
-                                       -- Should be done in a separate thread but GHC/Gtk2HS
-                                       -- suck for threaded GUI programming.  See
-                                       --
-                                       -- http://haskell.org/gtk2hs/archives/2005/07/24/writing-multi-threaded-guis/1/
-                                       --
-                                       -- for (very gory) details.
-                                       labelSetText title ("Loading " ++ fn ++ "...")
-                                       widgetShow win
-                                       h   <- openFile fn ReadMode
-                                       lastTime <- newIORef Nothing
-                                       log <- loadLogFile h fn (showProgress progressBar lastTime)
-                                       widgetDestroy win
-                                       return log
-             (xml, ctx) <- newMainWindow
-             liftIO $ runVis (setLog loadedFile) ctx
-             liftIO $ xmlGetWidget xml castToWindow "main_window" >>= widgetShowAll
-             return ()
+load :: Params -> FilePath -> MainM ()
+load params fn =
+    do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
+                                 title       <- xmlGetWidget xml castToLabel "label_title"
+                                 progressBar <- xmlGetWidget xml castToProgressBar "load_progress"
+                                 status      <- xmlGetWidget xml castToLabel "label_statistics"
+                                 -- Should be done in a separate thread but GHC/Gtk2HS
+                                 -- suck for threaded GUI programming.  See
+                                 --
+                                 -- http://haskell.org/gtk2hs/archives/2005/07/24/writing-multi-threaded-guis/1/
+                                 --
+                                 -- for (very gory) details.
+                                 labelSetText title ("Loading " ++ fn ++ "...")
+                                 widgetShow win
+                                 h   <- openFile fn ReadMode
+                                 lastTime <- newIORef Nothing
+                                 log <- loadLogFile h fn (showProgress progressBar lastTime)
+                                 widgetDestroy win
+                                 return log
+       (xml, ctx) <- newMainWindow params
+       liftIO $ runVis (setLog loadedFile) ctx
+       liftIO $ xmlGetWidget xml castToWindow "main_window" >>= widgetShowAll
+       return ()
     where showProgress :: ProgressBar -> IORef (Maybe ClockTime) -> Integer -> Integer -> IO ()
           showProgress pb lastTime cur max =
               do oldf     <- progressBarGetFraction pb
@@ -870,6 +937,15 @@ load fn = do loadedFile <- liftIO $ do (xml, win)  <- loadLoadingProgressXML
                                        while (mainContextIteration mainContextDefault False) (return ()) ()
                                        return ())
 
+filterUserParams :: [String] -> Params -> ([String], Params)
+filterUserParams [] params = ([], params)
+filterUserParams ("--max-steps":(n:args)) params = let params' = params { maxSteps = Just $ read n } in
+                                                   filterUserParams args params'
+filterUserParams ("--first-step":(n:args)) params = let params' = params { firstStep = Just $ read n } in
+                                                    filterUserParams args params'
+filterUserParams (arg:args) params = let (args', params') = filterUserParams args params in
+                                     (arg:args', params')
+
 main :: IO ()
 main = do -- Gtk2Hs whines loudly if it gets loaded into a threaded
           -- runtime, but runhaskell always loads a threaded runtime,
@@ -880,11 +956,12 @@ main = do -- Gtk2Hs whines loudly if it gets loaded into a threaded
           let mainLoopContext = MainLoopContext { numMainWindows = mainWindows,
                                                   mainLoop = mainLoop }
           args <- getArgs
-          case args of
-            [] -> do (xml, ctx) <- runMain newMainWindow mainLoopContext
+          let (args', params) = filterUserParams args defaultParams
+          case args' of
+            [] -> do (xml, ctx) <- runMain (newMainWindow params) mainLoopContext
                      mainWin <- xmlGetWidget xml castToWindow "main_window"
                      widgetShow (toWidget mainWin)
-            [filename] -> runMain (load filename) mainLoopContext
+            [filename] -> runMain (load params filename) mainLoopContext
             otherwise -> error "Too many arguments; expected at most one (the log file to load)."
           mainLoopRun mainLoop
 
