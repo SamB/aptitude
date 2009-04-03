@@ -7,6 +7,7 @@ import qualified Control.Monad.State as State
 import Control.Monad.Trans(liftIO)
 import Data.ByteString.Char8 as ByteString(ByteString, empty, hGet, pack, unpack)
 import Data.List(intersperse)
+import Dot
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.SourceView
@@ -25,6 +26,7 @@ import Resolver.Types
 import Resolver.Util
 import System.IO
 import System.Time
+import Text.Printf
 
 xmlFilename = "resolver-visualize.glade"
 
@@ -223,10 +225,13 @@ data Params =
       -- always loaded, but only this many are rendered).
       maxSteps :: Maybe Integer,
       -- | The first step to start rendering.
-      firstStep :: Maybe Integer
+      firstStep :: Maybe Integer,
+      -- | Where and whether to send dot output.
+      dotOutput :: Maybe String
     } deriving(Eq, Ord, Show)
 defaultParams = Params { maxSteps  = Nothing,
-                         firstStep = Nothing }
+                         firstStep = Nothing,
+                         dotOutput = Nothing }
 
 -- | Shared context for the visualizer.
 data VisualizeContext =
@@ -943,8 +948,98 @@ filterUserParams ("--max-steps":(n:args)) params = let params' = params { maxSte
                                                    filterUserParams args params'
 filterUserParams ("--first-step":(n:args)) params = let params' = params { firstStep = Just $ read n } in
                                                     filterUserParams args params'
+filterUserParams ("--dot-output":(fn:args)) params = let params' = params { dotOutput = Just $ fn } in
+                                                     filterUserParams args params'
 filterUserParams (arg:args) params = let (args', params') = filterUserParams args params in
                                      (arg:args', params')
+
+textProgress :: IORef Integer -> Integer -> Integer -> IO ()
+textProgress ref cur max =
+    do lastPercent <- readIORef ref
+       (if cur >= (max * (lastPercent + 10) `div` 100)
+        then do let newPercent = lastPercent + 10
+                print newPercent
+                writeIORef ref newPercent
+        else return ())
+
+makeTextProgress :: IO (Integer -> Integer -> IO ())
+makeTextProgress = do ref <- newIORef 0
+                      return $ textProgress ref
+
+inBounds :: Params -> Integer -> Bool
+inBounds params n = let first = maybe 0 id (firstStep params) in
+                    n >= first && maybe True (\max -> n < first + max) (maxSteps params)
+
+dotChoiceLabel :: LinkChoice -> String
+dotChoiceLabel lc@(LinkChoice c) = choiceText lc
+dotChoiceLabel Unknown           = ""
+
+dotStepNode :: Params -> ProcessingStep -> Node
+dotStepNode params step = node (name $ printf "step%d" (stepOrder step))
+                          ..= ("label", printf "Step: %d\nScore: %d\nTier: %s"
+                                          (stepOrder step)
+                                          (solScore $ stepSol step)
+                                          (show $ solTier $ stepSol step))
+
+-- Generate nodes for any successors that were not processed in the
+-- render.
+dotUnprocessedSuccs :: Params -> ProcessingStep -> [Node]
+dotUnprocessedSuccs params step = unprocessed ++ excluded
+    where unprocessed = [ node (name $ printf "step%dunproc%d" (stepOrder step) n)
+                                   ..= ("label", printf "Unprocessed\nScore: %d\nTier: %s"
+                                                   (solScore succSol)
+                                                   (show $ solTier succSol))
+                                   ..= ("style", "dashed")
+                          | ((Unprocessed { successorChoice    = succChoice,
+                                            successorSolution  = succSol }),
+                             n)
+                          <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
+          excluded    = [ node (name $ printf "step%d" (stepOrder step))
+                                   ..= ("label", printf "%d nodes..." (stepBranchSize step))
+                                   ..= ("shape", "plaintext")
+                                   ..= ("image", "cloud.png")
+                          | (Successor { successorStep = step }) <- stepSuccessors step,
+                            not $ inBounds params (stepOrder step) ]
+
+dotEdges params step = processed ++ unprocessed
+    where processed   = [ edge (node (name $ printf "step%d" (stepOrder step)))
+                               (node (name $ printf "step%d" (stepOrder step')))
+                          ..= ("label", dotChoiceLabel succChoice)
+                          | Successor { successorStep   = step',
+                                        successorChoice = succChoice } <- stepSuccessors step ]
+          unprocessed = [ edge (node (name $ printf "step%d" (stepOrder step)))
+                               (node (name $ printf "step%dunproc%d" (stepOrder step) n))
+                          ..= ("label", dotChoiceLabel succChoice)
+                          | ((Unprocessed { successorChoice = succChoice }), n)
+                              <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
+
+renderDot :: Params -> [ProcessingStep] -> Digraph
+renderDot params steps =
+    let droppedSteps   = maybe steps (\n -> genericDrop n steps) (firstStep params)
+        truncatedSteps = maybe steps (\n -> genericTake n steps) (maxSteps params) in
+    if null truncatedSteps
+    then error "No steps to render."
+    else let stepNodes          = map (dotStepNode params) truncatedSteps
+             unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
+             edges              = concat $ map (dotEdges params) truncatedSteps in
+         digraph (stepNodes ++ unprocessed) edges
+
+writeDotRun params steps outputFile =
+    do let dot = renderDot params steps
+       withFile outputFile WriteMode $ \h ->
+           hPutStrLn h (show dot)
+
+writeDotOutput params logFile outputFile =
+    -- TODO: show progress better.
+    do progress <- makeTextProgress
+       withFile logFile ReadMode $ \h ->
+           do log <- loadLogFile h logFile progress
+              (if null $ runs log
+               then return ()
+               else if (null (drop 1 $ runs log))
+                    then writeDotRun params (head $ runs log) outputFile
+                    else sequence_ [ writeDotRun params steps (printf "%s-%d" outputFile n)
+                                         | (steps, n) <- zip (runs log) ([1..] :: [Integer]) ])
 
 main :: IO ()
 main = do -- Gtk2Hs whines loudly if it gets loaded into a threaded
@@ -961,7 +1056,10 @@ main = do -- Gtk2Hs whines loudly if it gets loaded into a threaded
             [] -> do (xml, ctx) <- runMain (newMainWindow params) mainLoopContext
                      mainWin <- xmlGetWidget xml castToWindow "main_window"
                      widgetShow (toWidget mainWin)
-            [filename] -> runMain (load params filename) mainLoopContext
+                     mainLoopRun mainLoop
+            [filename] ->
+                case params of
+                  Params { dotOutput = Just output } -> writeDotOutput params filename output
+                  _ -> runMain (load params filename) mainLoopContext >> mainLoopRun mainLoop
             otherwise -> error "Too many arguments; expected at most one (the log file to load)."
-          mainLoopRun mainLoop
 
