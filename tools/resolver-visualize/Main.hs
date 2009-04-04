@@ -7,7 +7,6 @@ import qualified Control.Monad.State as State
 import Control.Monad.Trans(liftIO)
 import Data.ByteString.Char8 as ByteString(ByteString, empty, hGet, pack, unpack)
 import Data.List(intersperse)
-import Dot
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.SourceView
@@ -22,11 +21,14 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Tree
 import Resolver.Log
+import Resolver.PrettyPrint
 import Resolver.Types
 import Resolver.Util
 import System.IO
 import System.Time
 import Text.Printf
+import DotRender
+import Types
 
 xmlFilename = "resolver-visualize.glade"
 
@@ -218,26 +220,6 @@ type TreeViewStore  = TreeStore TreeViewEntry
 type ChronViewStore = ListStore ChronViewEntry
 type RunListStore   = ListStore (Integer, [ProcessingStep])
 
-data TargetFormat = PS | PNG
-    deriving(Eq, Ord, Show, Read)
-
--- | Parameters the user can set at the command-line.
-data Params =
-    Params {
-      -- | The maximum number of steps to visualize (the whole file is
-      -- always loaded, but only this many are rendered).
-      maxSteps :: Maybe Integer,
-      -- | The first step to start rendering.
-      firstStep :: Maybe Integer,
-      -- | Where and whether to send dot output.
-      dotOutput :: Maybe String,
-      -- | The target output format.
-      targetFormat :: Maybe TargetFormat
-    } deriving(Eq, Ord, Show)
-defaultParams = Params { maxSteps  = Nothing,
-                         firstStep = Nothing,
-                         dotOutput = Nothing,
-                         targetFormat = Nothing }
 
 -- | Shared context for the visualizer.
 data VisualizeContext =
@@ -525,23 +507,6 @@ runToForest params steps =
                                          entryBrokenDeps = brokenDeps,
                                          entryStepNum    = stepNum,
                                          entryTreeInfo   = treeInfo }
-
-class PP a where
-    ppS :: a -> ShowS
-
-instance PP Version where
-    ppS (Version pkg verName) = ppS pkg . (' ':) . (unpack verName++)
-
-instance PP Package where
-    ppS (Package pkgName) = (unpack pkgName++)
-
-instance PP Dep where
-    ppS (Dep src solvers isSoft) = let arrow = if isSoft
-                                               then " -S> {"
-                                               else " -> {" in
-                                   ppS src . (arrow++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
-
-pp x = ppS x ""
 
 choiceText :: LinkChoice -> String
 choiceText (LinkChoice (InstallVersion ver _ _)) = "Install " ++ pp ver
@@ -1091,98 +1056,6 @@ textProgress ref cur max =
 makeTextProgress :: IO (Integer -> Integer -> IO ())
 makeTextProgress = do ref <- newIORef 0
                       return $ textProgress ref
-
-inBounds :: Params -> Integer -> Bool
-inBounds params n = let first = maybe 0 id (firstStep params) in
-                    n >= first && maybe True (\max -> n < first + max) (maxSteps params)
-
-dotChoiceLabel :: LinkChoice -> String
-dotChoiceLabel lc@(LinkChoice c) = choiceText lc
-dotChoiceLabel Unknown           = ""
-
-inferTargetFormat :: Params -> TargetFormat
-inferTargetFormat (Params { targetFormat = fmt,
-                            dotOutput    = output }) =
-    case fmt of
-      Nothing -> PS
-      Just fmt' -> fmt'
-
-cloudImage :: Params -> String
-cloudImage params =
-    case inferTargetFormat params of
-      PS -> "cloud.eps"
-      PNG -> "cloud.png"
-
-dotStepNode :: Params -> ProcessingStep -> Node
-dotStepNode params step = let n = node (name $ printf "step%d" (stepOrder step))
-                                  ..= ("label", printf "Step: %d\nScore: %d\nTier: %s"
-                                                  (stepOrder step)
-                                                  (solScore $ stepSol step)
-                                                  (show $ solTier $ stepSol step)) in
-                          if Set.null $ solBrokenDeps (stepSol step)
-                          then n ..= ("style", "filled")
-                                 ..= ("fillecolor", "lightgrey")
-                          else n
-
--- Generate nodes for any successors that were not processed in the
--- render.
-dotUnprocessedSuccs :: Params -> ProcessingStep -> [Node]
-dotUnprocessedSuccs params step = unprocessed ++ excluded
-    where unprocessed = [ let n = node (name $ printf "step%dunproc%d" (stepOrder step) stepNum)
-                                  ..= ("label", printf "Unprocessed\nScore: %d\nTier: %s"
-                                                  (solScore succSol)
-                                                  (show $ solTier succSol)) in
-                          if Set.null $ solBrokenDeps (stepSol step)
-                          then n ..= ("style", "dashed,filled")
-                                 ..= ("fillcolor", "lightgrey")
-                          else n ..= ("style", "dashed")
-                          | ((Unprocessed { successorChoice    = succChoice,
-                                            successorSolution  = succSol }),
-                             stepNum)
-                          <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
-          excluded    = [ node (name $ printf "step%d" (stepOrder step))
-                                   ..= ("label", printf "Step %d+\n%d nodes..." (stepOrder step) (stepBranchSize step))
-                                   ..= ("shape", "plaintext")
-                                   ..= ("image", cloudImage params)
-                          | (Successor { successorStep = step }) <- stepSuccessors step,
-                            not $ inBounds params (stepOrder step) ]
-
-dotEdges params step = processed ++ unprocessed
-    where processed   = [ edge (node (name $ printf "step%d" (stepOrder step)))
-                               (node (name $ printf "step%d" (stepOrder step')))
-                          ..= ("label", dotChoiceLabel succChoice)
-                          | Successor { successorStep   = step',
-                                        successorChoice = succChoice } <- stepSuccessors step ]
-          unprocessed = [ edge (node (name $ printf "step%d" (stepOrder step)))
-                               (node (name $ printf "step%dunproc%d" (stepOrder step) stepNum))
-                          ..= ("label", dotChoiceLabel succChoice)
-                          | ((Unprocessed { successorChoice = succChoice }), stepNum)
-                              <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
-
-dotOrderEdges steps =
-    [ edge (node (name $ printf "step%d" (stepOrder step1)))
-           (node (name $ printf "step%d" (stepOrder step2)))
-      ..= ("constraint", "false")
-      ..= ("style", "dotted")
-      ..= ("color", "blue")
-      | (step1, step2) <- zip steps (drop 1 steps) ]
-
-renderDot :: Params -> [ProcessingStep] -> Digraph
-renderDot params steps =
-    let droppedSteps   = maybe steps (\n -> genericDrop n steps) (firstStep params)
-        truncatedSteps = maybe steps (\n -> genericTake n steps) (maxSteps params) in
-    if null truncatedSteps
-    then error "No steps to render."
-    else let stepNodes          = map (dotStepNode params) truncatedSteps
-             unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
-             stepEdges          = concat $ map (dotEdges params) truncatedSteps
-             orderEdges         = dotOrderEdges truncatedSteps in
-         digraph (stepNodes ++ unprocessed) (stepEdges ++ orderEdges)
-
-writeDotRun params steps outputFile =
-    do let dot = renderDot params steps
-       withFile outputFile WriteMode $ \h ->
-           hPutStrLn h (show dot)
 
 writeDotOutput params logFile outputFile =
     -- TODO: show progress better.

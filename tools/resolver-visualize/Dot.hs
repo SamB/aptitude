@@ -6,17 +6,21 @@
 module Dot(
            Digraph, Node, Edge,
            AttributeValue, Attributed,
-           Name(), AttrValue(),
+           Name(), AttrValue(), AttrOp(),
            name, attrValue,
            node, edge, digraph,
            genNodes,
-           (.=), (..=), (.!)
+           (<<<), set, set', enable, andAlso, thenDo
           )
            where
 
 import qualified Data.List as List
 import qualified Data.Map as Map
 import qualified Data.ByteString.Char8 as BS
+
+infixl 1 <<<
+infixl 5 `andAlso`
+infix  4 `thenDo`
 
 newtype Name = Name String deriving(Eq, Ord)
 newtype AttrValue = AttrValue String deriving(Eq, Ord)
@@ -57,18 +61,31 @@ instance AttributeValue BS.ByteString where
 type Attributes = Map.Map Name (Maybe AttrValue)
 
 class Attributed a where
-    addAttribute :: a -> Name -> (Maybe AttrValue) -> a
+    addAttribute :: Name -> (Maybe AttrValue) -> a -> a
 
-(.=) :: (Attributed a, AttributeValue v) => a -> (String, v) -> a
-a .= (nameString, v) = addAttribute a (name nameString) (Just $ valueString v)
+newtype AttrOp = AttrOp (Attributed a => a -> a)
 
--- EW: hack to pretend-overload .= on strings.
-(..=) :: (Attributed a) => a -> (String, String) -> a
-a ..= (nameString, valString) = addAttribute a (name nameString) (Just $ attrValue valString)
+(<<<) :: Attributed a => a -> AttrOp -> a
+a <<< (AttrOp f) = f a
 
-(.!) :: Attributed a => a -> Name -> a
-a .! name = addAttribute a name Nothing
 
+set :: String -> String -> AttrOp
+set nameString valString = AttrOp (addAttribute (name nameString) (Just $ attrValue valString))
+
+set' :: (AttributeValue v) => String -> v -> AttrOp
+set' nameString v = AttrOp (addAttribute (name nameString) (Just $ valueString v))
+
+-- | Set an attribute with no value.
+enable :: String -> AttrOp
+enable nameString = AttrOp (addAttribute (name nameString) Nothing)
+
+-- AttrOp combinators:
+andAlso :: AttrOp -> AttrOp -> AttrOp
+(AttrOp f1) `andAlso` (AttrOp f2) = AttrOp (f1 . f2)
+
+thenDo :: Bool -> AttrOp -> AttrOp
+False `thenDo` _ = AttrOp id
+True `thenDo` op = op
 
 data Digraph = Digraph { digraphNodes :: [Node],
                          digraphEdges :: [Edge],
@@ -100,13 +117,13 @@ genNodes = [node (name $ "node" ++ show n) | n <- [1..]]
 
 
 instance Attributed Digraph where
-    addAttribute dg name value = dg { digraphAttributes = Map.insert name value (digraphAttributes dg) }
+    addAttribute name value dg = dg { digraphAttributes = Map.insert name value (digraphAttributes dg) }
 
 instance Attributed Node where
-    addAttribute n name value = n { nodeAttributes = Map.insert name value (nodeAttributes n) }
+    addAttribute name value n = n { nodeAttributes = Map.insert name value (nodeAttributes n) }
 
 instance Attributed Edge where
-    addAttribute e name value = e { edgeAttributes = Map.insert name value (edgeAttributes e) }
+    addAttribute name value e = e { edgeAttributes = Map.insert name value (edgeAttributes e) }
 
 
 showsAttribute :: Name -> Maybe AttrValue -> ShowS

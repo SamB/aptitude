@@ -9,11 +9,12 @@ Build-Type: Simple
 Executable test-load-time
   Build-Depends: array, base, bytestring, containers, mtl, parsec, regex-base, regex-posix
   Main-Is: TestLoadTime.hs
-  Other-Modules: Resolver.Log, Resolver.Parse, Resolver.Types
+  Other-Modules: Resolver.Log, Resolver.Parse, Resolver.PrettyPrint, Resolver.Types
 
 Executable resolver-visualize
   Build-Depends: array, base, bytestring, containers, glib,
                  glade, gtk, gtksourceview2, mtl, old-time,
                  parsec, regex-base, regex-posix
   Main-Is: Main.hs
-  Other-Modules: Resolver.Log, Resolver.Parse, Resolver.Types
+  Other-Modules: Dot, DotRender, Resolver.Log, Resolver.Parse, Resolver.PrettyPrint, Resolver.Types, Types
+  Extensions: RankNTypes
