@@ -251,6 +251,9 @@ data VisualizeContext =
                        runListColumnInfo :: RunListColumnInfo,
                        runListStore :: RunListStore,
                        logView :: SourceView,
+                       statusbar :: Statusbar,
+                       mainStatusCtx :: ContextId, -- ^ The context ID used for the "main" messages.
+                       mainWindow :: Window,
                        mainContext :: MainLoopContext,
                        params :: Params,
                        loadedFile :: IORef (Maybe LoadedLogFile),
@@ -292,6 +295,15 @@ getRunListStore = do ctx <- ask; return $ runListStore ctx
 
 getLogView :: VisM SourceView
 getLogView = do ctx <- ask; return $ logView ctx
+
+getStatusbar :: VisM Statusbar
+getStatusbar = do ctx <- ask; return $ statusbar ctx
+
+getMainStatusCtx :: VisM ContextId
+getMainStatusCtx = do ctx <- ask; return $ mainStatusCtx ctx
+
+getMainWindow :: VisM Window
+getMainWindow = do ctx <- ask; return $ mainWindow ctx
 
 getMainCtx :: VisM MainLoopContext
 getMainCtx = do ctx <- ask; return $ mainContext ctx
@@ -678,6 +690,15 @@ stepSelected (Just step) = showText (stepTextStart step) (stepTextLength step)
 setupTextColumn inf model ops =
     cellLayoutSetAttributes (textColumn inf) (textRenderer inf) model ops
 
+-- Returns the number of *actual* solutions (search nodes with no
+-- broken dependencies).
+numSolutions :: [ProcessingStep] -> Integer
+numSolutions steps = genericLength [ step | step <- steps,
+                                     Set.null $ solBrokenDeps $ stepSol step ]
+
+maxTier :: [ProcessingStep] -> Tier
+maxTier = maximum . map (solTier . stepSol)
+
 setRun :: Maybe (Integer, [ProcessingStep]) -> VisM ()
 setRun Nothing =
     do treeView         <- getTreeView
@@ -691,7 +712,18 @@ setRun Nothing =
 
        ctx <- ask
 
-       liftIO $ do treeStoreClear treeStore
+       statusbar        <- getStatusbar
+       statusCtx        <- getMainStatusCtx
+       log              <- getLog
+
+       liftIO $ do statusbarPop statusbar statusCtx
+                   (case log of
+                      Nothing -> statusbarPush statusbar statusCtx "No file loaded."
+                      Just lf -> let sourceName = logFilename lf
+                                     numRuns    = length $ runs lf in
+                                 statusbarPush statusbar statusCtx $
+                                               printf "%s: %d runs." sourceName numRuns)
+                   treeStoreClear treeStore
                    listStoreClear chronStore
                    writeIORef (activeRun ctx) Nothing
 
@@ -710,8 +742,25 @@ setRun (Just (n, steps)) =
 
                params           <- getParams
 
+               statusbar        <- getStatusbar
+               statusCtx        <- getMainStatusCtx
+               log              <- getLog
+
                logView <- getLogView
                liftIO $ do -- Update the UI for the new log file.
+                 statusbarPop statusbar statusCtx
+                 (case log of
+                    Nothing -> statusbarPush statusbar statusCtx "Error: bad state"
+                    Just lf -> let sourceName = logFilename lf
+                                   numRuns    = length $ runs lf
+                                   numSteps   = length steps
+                                   numSols    = numSolutions steps in
+                               statusbarPush statusbar statusCtx $
+                                             printf "%s: run %d/%d; %d %s, %d %s, maximum tier %s."
+                                                    sourceName n numRuns
+                                                    numSteps (if numSteps == 1 then "step" else "steps")
+                                                    numSols (if numSols == 1 then "solution" else "solutions")
+                                                    (show $ maxTier steps))
                  rawLogViewBuffer <- textViewGetBuffer logView
                  textBufferSetText rawLogViewBuffer ""
 
@@ -724,7 +773,18 @@ setLog lf =
     do runModel <- getRunListStore
        runView  <- getRunList
        ctx      <- ask
-       liftIO $ do listStoreClear runModel
+       mainWindow <- getMainWindow
+       statusbar  <- getStatusbar
+       statusCtx  <- getMainStatusCtx
+       liftIO $ do windowSetTitle mainWindow $
+                                  printf "resolver-visualize: %s" (logFilename lf)
+                   let sourceName = logFilename lf
+                       numRuns    = length $ runs lf
+                   statusbarPop statusbar statusCtx
+                   statusbarPush statusbar statusCtx $
+                                 printf "%s: %d runs." sourceName numRuns
+                   writeIORef (loadedFile ctx) $ Just LoadedLogFile { logFile = lf }
+                   listStoreClear runModel
                    mapM_ (listStoreAppend runModel) $ (zip [1..] $ runs lf)
                    -- Make sure the first iterator is selected.
                    firstIter <- treeModelGetIterFirst runModel
@@ -732,7 +792,6 @@ setLog lf =
                    (case firstIter of
                       Nothing -> return ()
                       Just i  -> treeSelectionSelectIter selection i)
-                   writeIORef (loadedFile ctx) $ Just LoadedLogFile { logFile = lf }
        return ()
 
 -- | Load a widget from the Glade file by name.
@@ -891,6 +950,11 @@ newCtx xml params =
                    (treeModel, chronModel, runModel) <-
                        createMainWindowStores treeViewColInf chronViewColumnInf runListColumnInf
 
+                   statusbar <- xmlGetWidget xml castToStatusbar "main_statusbar"
+                   mainWindow <- xmlGetWidget xml castToWindow "main_window"
+
+                   mainStatusCtx <- statusbarGetContextId statusbar "Status"
+
                    lf <- newIORef Nothing
                    runRef <- newIORef Nothing
 
@@ -904,6 +968,9 @@ newCtx xml params =
                                                 runListColumnInfo = runListColumnInf,
                                                 runListStore = runModel,
                                                 logView = sourceView,
+                                                statusbar = statusbar,
+                                                mainStatusCtx = mainStatusCtx,
+                                                mainWindow= mainWindow,
                                                 loadedFile = lf,
                                                 params = params,
                                                 activeRun = runRef,
@@ -926,6 +993,8 @@ newCtx xml params =
                    treeViewSetModel runView runModel
 
                    setupMenus xml params ctx
+
+                   windowSetTitle mainWindow "resolver-visualize"
 
                    return ctx
 

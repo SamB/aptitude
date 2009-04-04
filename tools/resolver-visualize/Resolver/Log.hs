@@ -37,6 +37,9 @@ data LogFile = LogFile { logFileH :: Handle,
                          -- ^ Get the file handle associated with this
                          -- log file.  Use this, for instance, to load
                          -- the text associated with a log entry.
+                         logFilename :: String,
+                         -- ^ Get the file name from which the log
+                         -- file was loaded.
                          runs :: [[ProcessingStep]]
                          -- ^ Get the resolver runs contained in this
                          -- log, as sequences of processing steps, in
@@ -619,7 +622,8 @@ seqList lst x = foldr seq x lst
 
 processFile :: Handle -> ProgressCallback -> LogParse LogFile
 processFile h progress =
-    do forEachLine h processLogLine progress
+    do sourceName <- getSourceName
+       forEachLine h processLogLine progress
        --forEachLine h $ (\s -> forceEverything $ processLogLine s)
        -- The last step won't have a length because we update it when
        -- we add a new step; fix that.
@@ -629,7 +633,7 @@ processFile h progress =
        let steps    = reverse stepsReversed
            runs     = splitRuns steps
            outRuns  = map extractProcessingSteps runs
-       (map seqList outRuns) `seqList` return $ LogFile h outRuns
+       (map seqList outRuns) `seqList` return $ LogFile h sourceName outRuns
 
 -- | Load a log file from a handle.
 --
