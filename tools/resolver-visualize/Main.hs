@@ -1026,7 +1026,7 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
                              stepNum)
                           <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
           excluded    = [ node (name $ printf "step%d" (stepOrder step))
-                                   ..= ("label", printf "%d nodes..." (stepBranchSize step))
+                                   ..= ("label", printf "Step %d+\n%d nodes..." (stepOrder step) (stepBranchSize step))
                                    ..= ("shape", "plaintext")
                                    ..= ("image", cloudImage params)
                           | (Successor { successorStep = step }) <- stepSuccessors step,
