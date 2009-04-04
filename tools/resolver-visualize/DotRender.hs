@@ -76,12 +76,19 @@ dotEdges params step = processed ++ unprocessed
     where processed   = [ edge (node (name $ printf "step%d" (stepOrder step)))
                                (node (name $ printf "step%d" (stepOrder step')))
                           <<< set "label" (dotChoiceLabel succChoice)
+                          <<< forced `thenDo`
+                              set "style" "bold" `andAlso`
+                              set "color" "darkgreen" `andAlso`
+                              set "labelcolor" "darkgreen"
                           | Successor { successorStep   = step',
-                                        successorChoice = succChoice } <- stepSuccessors step ]
+                                        successorChoice = succChoice,
+                                        successorForced = forced } <- stepSuccessors step ]
           unprocessed = [ edge (node (name $ printf "step%d" (stepOrder step)))
                                (node (name $ printf "step%dunproc%d" (stepOrder step) stepNum))
                           <<< set "label" (dotChoiceLabel succChoice)
-                          | ((Unprocessed { successorChoice = succChoice }), stepNum)
+                          <<< forced `thenDo` set "style" "bold"
+                          | ((Unprocessed { successorChoice = succChoice,
+                                            successorForced = forced  }), stepNum)
                               <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
 
 dotOrderEdges steps =
