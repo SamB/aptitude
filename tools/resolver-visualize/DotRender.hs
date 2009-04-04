@@ -102,7 +102,7 @@ dotOrderEdges steps =
 renderDot :: Params -> [ProcessingStep] -> Digraph
 renderDot params steps =
     let droppedSteps   = maybe steps (\n -> genericDrop n steps) (firstStep params)
-        truncatedSteps = maybe steps (\n -> genericTake n steps) (maxSteps params) in
+        truncatedSteps = maybe droppedSteps (\n -> genericTake n droppedSteps) (maxSteps params) in
     if null truncatedSteps
     then error "No steps to render."
     else let stepNodes          = map (dotStepNode params) truncatedSteps
