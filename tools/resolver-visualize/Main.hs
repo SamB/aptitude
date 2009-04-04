@@ -310,6 +310,11 @@ getRunNumber = do ctx <- ask
                   runInf <- liftIO $ readIORef $ activeRun ctx
                   return $ fmap fst runInf
 
+getActiveRun :: VisM (Maybe [ProcessingStep])
+getActiveRun = do ctx <- ask
+                  runInf <- liftIO $ readIORef $ activeRun ctx
+                  return $ fmap snd runInf
+
 isActiveRun :: Integer -> VisM Bool
 isActiveRun n = do current <- getRunNumber
                    case current of
@@ -684,8 +689,11 @@ setRun Nothing =
        treeViewColInfo  <- getTreeViewColumnInfo
        chronViewColInfo <- getChronologicalViewColumnInfo
 
+       ctx <- ask
+
        liftIO $ do treeStoreClear treeStore
                    listStoreClear chronStore
+                   writeIORef (activeRun ctx) Nothing
 
 setRun (Just (n, steps)) =
     do isActive <- isActiveRun n
@@ -709,6 +717,7 @@ setRun (Just (n, steps)) =
 
                  renderTreeView  params steps treeStore
                  renderChronView params steps chronStore
+                 writeIORef (activeRun ctx) (Just (n, steps))
 
 setLog :: LogFile -> VisM ()
 setLog lf =
@@ -746,6 +755,10 @@ loadAboutBoxXML = loadXmlWidget "about_box" castToAboutDialog
 -- | Load the loading progress window from the Glade file.
 loadLoadingProgressXML :: IO (GladeXML, Window)
 loadLoadingProgressXML = loadXmlWidget "window_load_progress" castToWindow
+
+-- | Load the export params dialog from the Glade file.
+loadParamsDialogXML :: IO (GladeXML, Dialog)
+loadParamsDialogXML = loadXmlWidget "params_dialog" castToDialog
 
 setupMainWindow :: GladeXML -> IO SourceView
 setupMainWindow xml =
@@ -833,6 +846,37 @@ runSelectionChanged ctx selection model = do
            run <- listStoreGetValue model  i
            runVis (setRun (Just run)) ctx)
 
+setupMenus :: GladeXML -> Params -> VisualizeContext -> IO ()
+setupMenus xml params ctx = do
+  mainWin <- liftIO $ xmlGetWidget xml castToWindow "main_window"
+  menuItemGraphviz <- liftIO $ xmlGetWidget xml castToMenuItem "menuitem_export_graphviz"
+  menuItemQuit <- liftIO $ xmlGetWidget xml castToMenuItem "menuitem_quit"
+
+  afterActivateLeaf menuItemGraphviz $ runVis (doExport mainWin) ctx
+  afterActivateLeaf menuItemQuit $
+                    do mainLoopQuit $ mainLoop $ mainContext ctx
+  return ()
+    where doExport mainWin =
+              do activeRun <- getActiveRun
+                 liftIO $ (case activeRun of
+                             Nothing    -> return ()
+                             Just steps -> do dlg <- makeParamsDialog params steps (doExport' mainWin steps)
+                                              windowSetTransientFor (paramsDialog dlg) mainWin
+                                              return ())
+                 return ()
+
+          doExport' mainWin steps params =
+              do dlg <- fileChooserDialogNew Nothing (Just mainWin)
+                            FileChooserActionOpen [(stockCancel, ResponseCancel), (stockSave, ResponseOk)]
+                 afterResponse dlg (\response -> do (if response /= ResponseOk
+                                                     then return ()
+                                                     else do maybeFilename <- fileChooserGetFilename dlg
+                                                             case maybeFilename of
+                                                               (Just filename) -> writeDotRun params steps filename
+                                                               Nothing -> return ())
+                                                    widgetDestroy dlg)
+                 widgetShow dlg
+
 newCtx :: GladeXML -> Params -> MainM VisualizeContext
 newCtx xml params =
     do mainCtx <- ask
@@ -880,8 +924,10 @@ newCtx xml params =
                    treeViewSetModel treeView treeModel
                    treeViewSetModel chronView chronModel
                    treeViewSetModel runView runModel
-                   return ctx
 
+                   setupMenus xml params ctx
+
+                   return ctx
 
 
 newMainWindow :: Params -> MainM (GladeXML, VisualizeContext)
@@ -1080,6 +1126,114 @@ writeDotOutput params logFile outputFile =
                     then writeDotRun params (head $ runs log) outputFile
                     else sequence_ [ writeDotRun params steps (printf "%s-%d" outputFile n)
                                          | (steps, n) <- zip (runs log) ([1..] :: [Integer]) ])
+
+data MaybeNumberEntry = MaybeNumberEntry { mnCheckbox :: CheckButton,
+                                           mnSpinner  :: SpinButton }
+
+setMaybeNumberEntry :: MaybeNumberEntry -> Maybe Integer -> IO ()
+setMaybeNumberEntry (MaybeNumberEntry { mnCheckbox = cb, mnSpinner = sb }) val =
+    do (case val of
+          Nothing -> toggleButtonSetActive cb False
+          Just n  -> do toggleButtonSetActive cb True
+                        spinButtonSetValue sb $ fromIntegral n)
+       widgetSetSensitive sb (isJust val)
+
+getMaybeNumberEntry :: MaybeNumberEntry -> IO (Maybe Integer)
+getMaybeNumberEntry entry =
+    do cbActive <- toggleButtonGetActive (mnCheckbox entry)
+       spinButtonValue <- spinButtonGetValueAsInt (mnSpinner entry)
+       (if cbActive
+        then return $ Just $ toInteger spinButtonValue
+        else return Nothing)
+
+makeMaybeNumberEntry :: CheckButton -> SpinButton -> Maybe Integer -> (Integer, Integer) -> IO MaybeNumberEntry
+makeMaybeNumberEntry cb sb val (min, max) =
+    do let rval = MaybeNumberEntry { mnCheckbox = cb, mnSpinner = sb }
+       spinButtonSetRange sb (fromIntegral min) (fromIntegral max)
+       setMaybeNumberEntry rval val
+       -- Update the sensitivity of the spin-box based on whether the
+       -- check-button is set.
+       afterToggled cb $ do cbActive <- toggleButtonGetActive cb
+                            widgetSetSensitive sb cbActive
+       return rval
+
+data ParamsDialog = ParamsDialog { paramsDialog :: Dialog,
+                                   paramsHboxTruncateRun :: HBox,
+                                   paramsTruncateRunNumberEntry :: MaybeNumberEntry,
+                                   paramsLabelTruncateRunMaxSteps :: Label,
+                                   paramsHboxSkipSteps :: HBox,
+                                   paramsSkipStepsNumberEntry :: MaybeNumberEntry,
+                                   paramsLabelSkipStepsMaxSteps :: Label,
+                                   paramsOkButton :: Button,
+                                   paramsCancelButton :: Button }
+
+-- Should we ever say "out of %d step"?  I think the plural is always
+-- right here?
+stepLimitLabelText n = printf " out of %d steps" n
+
+getTruncateEntryLimit :: Maybe Integer -> Integer -> Integer
+getTruncateEntryLimit firstStep numSteps =
+    max 0 $ numSteps - maybe 0 id firstStep
+
+skipStepsLabelText :: Integer -> String
+skipStepsLabelText numSteps = stepLimitLabelText numSteps
+
+makeParamsDialog :: Params -> [ProcessingStep] -> (Params -> IO ()) -> IO ParamsDialog
+makeParamsDialog params steps callback =
+    do (xml, dialog) <- loadParamsDialogXML
+       hboxTruncate <- xmlGetWidget xml castToHBox "hbox_truncate_run"
+       cbTruncateRun <- xmlGetWidget xml castToCheckButton "checkbutton_do_truncate_run"
+       sbTruncateRun <- xmlGetWidget xml castToSpinButton "spinbutton_truncate_run"
+       labelTruncateRun <- xmlGetWidget xml castToLabel "label_truncate_run_max_steps"
+
+       hboxSkip <- xmlGetWidget xml castToHBox "hbox_skip_first_steps"
+       cbSkip <- xmlGetWidget xml castToCheckButton "checkbutton_do_skip_steps"
+       sbSkip <- xmlGetWidget xml castToSpinButton "spinbutton_skip_steps"
+       labelSkip <- xmlGetWidget xml castToLabel "label_skip_max_steps"
+
+       ok <- xmlGetWidget xml castToButton "params_ok"
+       cancel <- xmlGetWidget xml castToButton "params_cancel"
+
+       -- Set some initial parameters.
+       let numSteps = genericLength steps
+           initialTruncateLimit = getTruncateEntryLimit (firstStep params) numSteps
+       truncateRunEntry <- makeMaybeNumberEntry cbTruncateRun sbTruncateRun
+                                                (maxSteps params) (0, initialTruncateLimit)
+       skipEntry <- makeMaybeNumberEntry cbSkip sbSkip (firstStep params) (0, numSteps)
+       labelSetText labelTruncateRun (stepLimitLabelText initialTruncateLimit)
+       labelSetText labelSkip (skipStepsLabelText $ numSteps)
+
+       -- When the number of skipped steps is changed, we have to
+       -- update the range and text of the max-steps box.
+       afterValueSpinned sbSkip (do firstStep <- getMaybeNumberEntry skipEntry
+                                    let truncateLimit = getTruncateEntryLimit firstStep numSteps
+                                    labelSetText labelTruncateRun (stepLimitLabelText truncateLimit)
+                                    spinButtonSetRange sbTruncateRun 0 (fromIntegral truncateLimit))
+
+       afterResponse dialog (handleResponse dialog truncateRunEntry skipEntry)
+
+       widgetShow dialog
+
+       return $ ParamsDialog { paramsDialog = dialog,
+                               paramsHboxTruncateRun = hboxTruncate,
+                               paramsTruncateRunNumberEntry = truncateRunEntry,
+                               paramsLabelTruncateRunMaxSteps = labelTruncateRun,
+                               paramsHboxSkipSteps = hboxSkip,
+                               paramsSkipStepsNumberEntry = skipEntry,
+                               paramsLabelSkipStepsMaxSteps = labelSkip,
+                               paramsOkButton = ok,
+                               paramsCancelButton = cancel }
+  where handleResponse dialog truncateRunEntry skipEntry ResponseOk =
+            do maxSteps <- getMaybeNumberEntry truncateRunEntry
+               firstStep <- getMaybeNumberEntry skipEntry
+               let params' = params { maxSteps = maxSteps,
+                                      firstStep = firstStep }
+               callback params'
+               widgetDestroy dialog
+               return ()
+        handleResponse dialog _ _ _ =
+            do widgetDestroy dialog
+               return ()
 
 main :: IO ()
 main = do -- Gtk2Hs whines loudly if it gets loaded into a threaded
