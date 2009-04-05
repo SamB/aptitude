@@ -160,7 +160,10 @@ minimumTier = Tier [minimumTierNum]
 -- The Show instance mainly special-cases the special tiers so they
 -- get pretty-printed.
 instance Show Tier where
-    showsPrec _ (Tier [num]) = ('T':) . showsTierComponent num
+    showsPrec _ (Tier (first:_))
+        | first == maximumTierNum          = ("T(conflict)"++)
+        | first == deferTierNum            = ("T(defer)"++)
+        | first == alreadyGeneratedTierNum = ("T(redundant)"++)
     showsPrec _ (Tier nums)  = ("T("++) .
                                foldr (.) id (intersperse (", "++) (map showsTierComponent nums)) .
                                (')':)
@@ -168,8 +171,6 @@ instance Show Tier where
 -- | Display a user-friendly description of a tier number.
 showsTierComponent tierNum
     | tierNum == maximumTierNum          = ("maximum"++)
-    | tierNum == deferTierNum            = ("defer"++)
-    | tierNum == alreadyGeneratedTierNum = ("redundant"++)
     | tierNum == minimumTierNum          = ("minimum"++)
     | otherwise                          = shows tierNum
 
