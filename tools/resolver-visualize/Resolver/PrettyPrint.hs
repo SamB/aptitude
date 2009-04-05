@@ -2,6 +2,7 @@ module Resolver.PrettyPrint where
 
 import Data.ByteString.Char8(unpack)
 import Data.List
+import qualified Data.Set as Set
 import Resolver.Types
 
 class PP a where
@@ -22,5 +23,10 @@ instance PP Dep where
 instance PP Choice where
     ppS (InstallVersion ver _ _) = ("Install "++) . ppS ver
     ppS (BreakSoftDep d) = ("Break "++) . ppS d
+
+instance PP Promotion where
+    ppS (Promotion choices tier) = ('(':) . shows tier . (": ("++) .
+                                   (foldl' (.) id $ intersperse (", "++) $ map ppS $ Set.toList choices) .
+                                   (')':)
 
 pp x = ppS x ""

@@ -11,6 +11,8 @@ data Params =
       maxSteps :: Maybe Integer,
       -- | The first step to start rendering.
       firstStep :: Maybe Integer,
+      -- | Whether to display promotions as nodes.
+      showPromotions :: Bool,
       -- | Where and whether to send dot output.
       dotOutput :: Maybe String,
       -- | The target output format.
@@ -18,5 +20,6 @@ data Params =
     } deriving(Eq, Ord, Show)
 defaultParams = Params { maxSteps  = Nothing,
                          firstStep = Nothing,
+                         showPromotions = False,
                          dotOutput = Nothing,
                          targetFormat = Nothing }

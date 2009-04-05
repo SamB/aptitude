@@ -1089,6 +1089,8 @@ filterUserParams ("--max-steps":(n:args)) params = let params' = params { maxSte
                                                    filterUserParams args params'
 filterUserParams ("--first-step":(n:args)) params = let params' = params { firstStep = Just $ read n } in
                                                     filterUserParams args params'
+filterUserParams ("--show-promotions":args) params = let params' = params { showPromotions = True } in
+                                                     filterUserParams args params'
 filterUserParams ("--dot-output":(fn:args)) params = let params' = params { dotOutput = Just $ fn } in
                                                      filterUserParams args params'
 filterUserParams ("--target-format":(fmt:args)) params =
@@ -1161,6 +1163,7 @@ data ParamsDialog = ParamsDialog { paramsDialog :: Dialog,
                                    paramsHboxSkipSteps :: HBox,
                                    paramsSkipStepsNumberEntry :: MaybeNumberEntry,
                                    paramsLabelSkipStepsMaxSteps :: Label,
+                                   paramsCheckboxShowPromotions :: CheckButton,
                                    paramsOkButton :: Button,
                                    paramsCancelButton :: Button }
 
@@ -1188,6 +1191,8 @@ makeParamsDialog params steps callback =
        sbSkip <- xmlGetWidget xml castToSpinButton "spinbutton_skip_steps"
        labelSkip <- xmlGetWidget xml castToLabel "label_skip_max_steps"
 
+       cbShowPromotions <- xmlGetWidget xml castToCheckButton "checkbutton_show_promotions"
+
        ok <- xmlGetWidget xml castToButton "params_ok"
        cancel <- xmlGetWidget xml castToButton "params_cancel"
 
@@ -1199,6 +1204,7 @@ makeParamsDialog params steps callback =
        skipEntry <- makeMaybeNumberEntry cbSkip sbSkip (firstStep params) (0, numSteps)
        labelSetText labelTruncateRun (stepLimitLabelText initialTruncateLimit)
        labelSetText labelSkip (skipStepsLabelText $ numSteps)
+       toggleButtonSetActive cbShowPromotions (showPromotions params)
 
        -- When the number of skipped steps is changed, we have to
        -- update the range and text of the max-steps box.
@@ -1207,7 +1213,9 @@ makeParamsDialog params steps callback =
                                     labelSetText labelTruncateRun (stepLimitLabelText truncateLimit)
                                     spinButtonSetRange sbTruncateRun 0 (fromIntegral truncateLimit))
 
-       afterResponse dialog (handleResponse dialog truncateRunEntry skipEntry)
+       -- TODO: should pass in the ParamsDialog if we add any more
+       -- widgets, rather than just tacking on parameters.
+       afterResponse dialog (handleResponse dialog truncateRunEntry skipEntry cbShowPromotions)
 
        widgetShow dialog
 
@@ -1218,17 +1226,20 @@ makeParamsDialog params steps callback =
                                paramsHboxSkipSteps = hboxSkip,
                                paramsSkipStepsNumberEntry = skipEntry,
                                paramsLabelSkipStepsMaxSteps = labelSkip,
+                               paramsCheckboxShowPromotions = cbShowPromotions,
                                paramsOkButton = ok,
                                paramsCancelButton = cancel }
-  where handleResponse dialog truncateRunEntry skipEntry ResponseOk =
+  where handleResponse dialog truncateRunEntry skipEntry showPromotionsButton ResponseOk =
             do maxSteps <- getMaybeNumberEntry truncateRunEntry
                firstStep <- getMaybeNumberEntry skipEntry
+               showPromotions <- toggleButtonGetActive showPromotionsButton
                let params' = params { maxSteps = maxSteps,
-                                      firstStep = firstStep }
+                                      firstStep = firstStep,
+                                      showPromotions = showPromotions }
                callback params'
                widgetDestroy dialog
                return ()
-        handleResponse dialog _ _ _ =
+        handleResponse dialog _ _ _ _ =
             do widgetDestroy dialog
                return ()
 

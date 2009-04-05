@@ -74,7 +74,23 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
                           | (Successor { successorStep = step }) <- stepSuccessors step,
                             not $ inBounds params (stepOrder step) ]
 
-dotEdges params step = processed ++ unprocessed
+dotPromotions params step =
+    if not $ showPromotions params
+    then []
+    else [ node (name $ printf "step%dpromotion%d" (stepOrder step) promotionNum)
+           <<< set "label" (makeLabel promotion)
+           <<< set "shape" "oval"
+           | (promotion, promotionNum) <- zip (Set.toList $ stepPromotions step) ([0..] :: [Integer]) ]
+    where makeLabel p = if Set.size (promotionChoices p) <= 5
+                        then printf "%s\n%s"
+                                 (show $ promotionTier p)
+                                 (concat $ intersperse "\n"
+                                             [pp c | c <- Set.toList $ promotionChoices p])
+                        else printf "(T%s: %d choices)"
+                                 (show $ promotionTier p)
+                                 (Set.size $ promotionChoices p)
+
+dotEdges params step = processed ++ unprocessed ++ promotions
     where processed   = [ edge (node (name $ printf "step%d" (stepOrder step)))
                                (node (name $ printf "step%d" (stepOrder step')))
                           <<< set "label" (dotChoiceLabel succChoice)
@@ -92,6 +108,11 @@ dotEdges params step = processed ++ unprocessed
                           | ((Unprocessed { successorChoice = succChoice,
                                             successorForced = forced  }), stepNum)
                               <- zip (stepSuccessors step) ([0..] :: [Integer]) ]
+          promotions  = if (not $ showPromotions params) || (Set.null $ stepPromotions step)
+                        then []
+                        else [ edge (node (name $ printf "step%d" (stepOrder step)))
+                                    (node (name $ printf "step%dpromotion%d" (stepOrder step) promotionNum))
+                               | promotionNum <- [0..((Set.size $ stepPromotions step) - 1)] ]
 
 dotOrderEdges steps =
     [ edge (node (name $ printf "step%d" (stepOrder step1)))
@@ -109,9 +130,10 @@ renderDot params steps =
     then error "No steps to render."
     else let stepNodes          = map (dotStepNode params) truncatedSteps
              unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
+             promotions         = concat $ map (dotPromotions params) truncatedSteps
              stepEdges          = concat $ map (dotEdges params) truncatedSteps
              orderEdges         = dotOrderEdges truncatedSteps in
-         digraph (stepNodes ++ unprocessed) (stepEdges ++ orderEdges)
+         digraph (stepNodes ++ unprocessed ++ promotions) (stepEdges ++ orderEdges)
 
 writeDotRun params steps outputFile =
     do let dot = renderDot params steps
