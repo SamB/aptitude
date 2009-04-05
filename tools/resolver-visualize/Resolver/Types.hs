@@ -1,12 +1,38 @@
 -- | The core data types used to represent packages, versions, and
 -- other problem resolver structures.
 
-module Resolver.Types where
+module Resolver.Types(
+                      Package(..),
+                      Version(..),
+                      Dep(..),
+                      Choice(..),
+                      Solution(..),
+                      FastSolution(fastSol, fastSolHash),
+                      makeFastSolution,
+                      maximumTierNum,
+                      alreadyGeneratedTierNum,
+                      deferTierNum,
+                      minimumTierNum,
+                      Tier(..),
+                      maximumTier,
+                      conflictTier,
+                      alreadyGeneratedTier,
+                      deferTier,
+                      minimumTier,
+                      showsTierComponent,
+                      Promotion(..),
+                      FastPromotion(fastPromotion, fastPromotionHash),
+                      makeFastPromotion
+                     ) where
 
 import Data.ByteString.Char8(ByteString)
+import Data.HashTable(hashString)
+import Data.Int(Int32)
 import Data.Set(Set)
+import qualified Data.Set as Set
 import Data.List
 import Data.Map(Map)
+import qualified Data.Map as Map
 
 -- | Represents a package.
 --
@@ -92,11 +118,33 @@ instance Ord Solution where
     sol1 `compare` sol2 =
         foldr combine EQ [solScore sol1 `compare` solScore sol2,
                           solTier sol1 `compare` solTier sol2,
+                          Set.size (solBrokenDeps sol1) `compare` Set.size (solBrokenDeps sol2),
+                          Set.size (solForbiddenVersions sol1) `compare` Set.size (solForbiddenVersions sol2),
+                          Map.size (solChoices sol1) `compare` Map.size (solChoices sol2),
                           solBrokenDeps sol1 `compare` solBrokenDeps sol2,
                           solForbiddenVersions sol1 `compare` solForbiddenVersions sol2,
                           solChoices sol1 `compare` solChoices sol2]
             where combine EQ o2 = o2
                   combine o1 _  = o1
+
+-- | Used to insert solutions into hash tables reasonably quickly.
+--
+-- Created by hashing the output of the Show instance.
+data FastSolution = FastSolution { fastSol :: Solution, fastSolHash :: Int32 }
+                  deriving(Show)
+
+instance Eq FastSolution where
+    fs1 == fs2 = fastSolHash fs1 == fastSolHash fs2 &&
+                 fastSol fs1 == fastSol fs2
+
+instance Ord FastSolution where
+    fs1 `compare` fs2 = case fastSolHash fs1 `compare` fastSolHash fs2 of
+                          EQ -> fastSol fs1 `compare` fastSol fs2
+                          o  -> o
+
+makeFastSolution :: Solution -> FastSolution
+makeFastSolution sol = FastSolution { fastSol = sol,
+                                      fastSolHash = hashString $ show sol }
 
 maximumTierNum = 2147483647
 alreadyGeneratedTierNum = maximumTierNum - 1
@@ -130,5 +178,37 @@ data Promotion = Promotion { -- | The choices that produced this promotion.
                              promotionChoices :: Set Choice,
                              -- | The tier of this promotion.
                              promotionTier :: Tier }
-               deriving(Ord, Eq, Show)
+               deriving(Show)
 
+instance Eq Promotion where
+    p1 == p2 =
+        promotionTier p1 == promotionTier p2 &&
+        Set.size (promotionChoices p1) == Set.size (promotionChoices p2) &&
+        promotionChoices p1 == promotionChoices p2
+
+instance Ord Promotion where
+    p1 `compare` p2 =
+        foldr combine EQ [promotionTier p1 `compare` promotionTier p2,
+                          Set.size (promotionChoices p1) `compare` Set.size (promotionChoices p2),
+                          promotionChoices p1 `compare` promotionChoices p2]
+        where combine EQ o2 = o2
+              combine o1 _  = o1
+
+data FastPromotion = FastPromotion { fastPromotion :: Promotion,
+                                     fastPromotionHash :: Int32 }
+                   deriving(Show)
+
+instance Eq FastPromotion where
+    fp1 == fp2 =
+        fastPromotionHash fp1 == fastPromotionHash fp2 &&
+        fastPromotion fp1 == fastPromotion fp2
+
+instance Ord FastPromotion where
+    fp1 `compare` fp2 =
+        case fastPromotionHash fp1 `compare` fastPromotionHash fp2 of
+          EQ -> fastPromotion fp1 `compare` fastPromotion fp2
+          o  -> o
+
+makeFastPromotion :: Promotion -> FastPromotion
+makeFastPromotion p = FastPromotion { fastPromotion = p,
+                                      fastPromotionHash = hashString $ show p }

@@ -15,9 +15,10 @@ import Control.Monad.Reader
 import Control.Monad.ST
 import Data.Array
 import Data.ByteString.Char8(ByteString)
+import qualified Data.HashTable as HashTable
 import Data.IORef
 import Data.List(foldl')
-import Data.Maybe(catMaybes, listToMaybe)
+import Data.Maybe(catMaybes, isJust, listToMaybe)
 import Resolver.Parse
 import Resolver.Types
 import Resolver.Util(while)
@@ -214,14 +215,14 @@ data LogParseState = LogParseState {
       --
       -- Used to ensure that only new promotions are included in the
       -- promotions of a particular step.
-      logParseSeenPromotions :: Set.Set Promotion,
+      logParseSeenPromotions :: Maybe (HashTable.HashTable FastPromotion ()),
       -- | The last seen line indicating the resolver is examining a
       -- choice.
       --
       -- Could be "trying to resolve (dep) by installing (ver)", or
       -- "trying to leave (dep) unresolved".
       logParseLastSeenTryChoice :: !LinkChoice
-    } deriving(Show)
+    }
 
 initialState sourceName =
     LogParseState { logParseParseState = initialParseState,
@@ -231,7 +232,7 @@ initialState sourceName =
                     logParseCurrentLine = 0,
                     logParseCurrentLineStart = 0,
                     logParseGeneratingSuccessorsInfo = Nothing,
-                    logParseSeenPromotions = Set.empty,
+                    logParseSeenPromotions = Nothing,
                     logParseLastSeenTryChoice = Unknown }
 
 -- | The log parsing state monad.
@@ -263,7 +264,7 @@ startNewRun loc =
                       st { logParseAllStepsReversed         = [],
                            logParseAllRunsReversed          = runsRev',
                            logParseGeneratingSuccessorsInfo = Nothing,
-                           logParseSeenPromotions           = Set.empty,
+                           logParseSeenPromotions           = Nothing,
                            logParseLastSeenTryChoice        = Unknown }
        put st'
 
@@ -324,15 +325,23 @@ getGeneratingSuccessorsInfo = get >>= return . logParseGeneratingSuccessorsInfo
 
 promotionIsSeen :: Promotion -> LogParse Bool
 promotionIsSeen p = do st <- get
-                       return $ Set.member p (logParseSeenPromotions st)
+                       (case logParseSeenPromotions st of
+                          Nothing   -> return False
+                          Just (ht) -> do found <- liftIO $ HashTable.lookup ht (makeFastPromotion p)
+                                          return $ isJust found)
+
+getOrMakeSeenPromotionsTable :: LogParse (HashTable.HashTable FastPromotion ())
+getOrMakeSeenPromotionsTable =
+    do st <- get
+       case logParseSeenPromotions st of
+         Just ht -> return ht
+         Nothing -> do rval <- liftIO $ HashTable.new (==) fastPromotionHash
+                       put st { logParseSeenPromotions = Just rval }
+                       return rval
 
 addSeenPromotion :: Promotion -> LogParse ()
-addSeenPromotion p = do st <- get
-                        let seenPromotions  = logParseSeenPromotions st
-                            seenPromotions' = Set.insert p seenPromotions
-                            st'             = st { logParseSeenPromotions = seenPromotions' }
-                        (p `seq` seenPromotions' `seq`
-                         put st')
+addSeenPromotion p = do hashTable <- getOrMakeSeenPromotionsTable
+                        liftIO $ HashTable.insert hashTable (makeFastPromotion p) ()
 
 -- | Not strict in the contents of the Maybe.
 setGeneratingSuccessorsInfo :: Maybe GeneratingSuccessorsInfo -> LogParse ()
