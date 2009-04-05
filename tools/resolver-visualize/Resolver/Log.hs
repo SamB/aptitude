@@ -348,24 +348,48 @@ parseMatch subParser source (start, length) =
            text = extract (start, length) source
        parse (setPosition pos >> subParser) sourceName text
 
+-- | Close off the current step and start a new one, given the new
+-- step's solution.
+startNewStep :: Solution -> LogParse ()
+startNewStep sol =
+    do -- Close off the existing step.  The only thing
+       -- that needs to be updated is its length.
+      lineStart <- getCurrentLineStart
+      modifyLastStep (\lastStep ->
+                          let start = (pstepTextStart lastStep)
+                              len   = lineStart - start in
+                          len `seq` lastStep { pstepTextLength = Just len })
+      -- Add the new step.
+      sol `seq` addNewStep (newPartialStep sol lineStart)
+      -- Reset state variables.
+      setGeneratingSuccessorsInfo Nothing
+      setLastSeenTryChoice Unknown
+
+-- | Add a successor to a partial step.
+--
+-- The file-name and line number are taken as arguments in order to
+-- produce a reasonable error if sanity-checking fails.
+addSuccessor :: (Solution, LinkChoice, Bool) -> FilePath -> Int -> PartialStep -> PartialStep
+addSuccessor succInf@(s, _, _) filename lineNum lastStep =
+    -- Sanity-check to avoid circular deps:
+    if pstepSol lastStep == s
+    then if Set.null $ solBrokenDeps s
+         -- If there are no broken dependencies, the runtime spits out
+         -- a dummy "enqueuing" message for the full solution; we
+         -- suppress this link to avoid cycles in the successor tree.
+         then lastStep
+         else error (filename ++ ":" ++ show lineNum ++ ": The solution " ++ show s ++ " is its own successor.")
+    else
+        let oldSuccessors = pstepReverseSuccessors lastStep
+            newSuccessors = succInf:oldSuccessors in
+        lastStep { pstepReverseSuccessors = newSuccessors }
+
 -- | Process a line of the log file from a match array produced by
 -- processingStepStart.
 processStepStartLine :: ByteString -> MatchArray -> LogParse ()
 processStepStartLine source matches =
     do sol <- parseMatch solution source (matches!1)
-       -- Close off the existing step.  The only thing
-       -- that needs to be updated is its length.
-       lineStart <- getCurrentLineStart
-       modifyLastStep (\lastStep ->
-                           let start = (pstepTextStart lastStep)
-                               len   = lineStart - start in
-                           len `seq` lastStep { pstepTextLength = Just len })
-       -- Add the new step.
-       sol `seq` addNewStep (newPartialStep sol lineStart)
-       -- Reset state variables.
-       setGeneratingSuccessorsInfo Nothing
-       setLastSeenTryChoice Unknown
-       return ()
+       startNewStep sol
 
 -- | Process a line of the log file if it looks like it produced a new
 -- promotion.
@@ -434,24 +458,24 @@ processGeneratedLine source matches =
                         -> return forced'
                     Nothing
                         -> return False)
+
+       -- If we see a "generated successor" line when the last
+       -- successor was forced, then we forced two dependencies at
+       -- once, and we should insert a new step for the previous one
+       -- (otherwise it would look like both were children of the same
+       -- parent, and one of them was never visited).  "generated
+       -- successor" lines will insert into the successors list, so
+       -- look there.
+       maybeLastStep <- getLastStep
+       (case maybeLastStep of
+          (Just (PartialStep { pstepReverseSuccessors = (lastSol, _, True):_ })) ->
+              startNewStep lastSol
+          _ -> return ())
+
        -- NB: I assume here that the last-seen choice object was made
        -- strict when it was entered into the parse state.
        s `seq`
-         modifyLastStep (\lastStep ->
-                             if pstepSol lastStep == s
-                             then if Set.null $ solBrokenDeps s
-                                  -- If there are no broken
-                                  -- dependencies, the runtime spits
-                                  -- out a dummy "enqueuing" message
-                                  -- for the full solution; we
-                                  -- suppress this link to avoid
-                                  -- cycles in the successor tree.
-                                  then lastStep
-                                  else error (fn ++ ":" ++ show lineNum ++ ": The solution " ++ show s ++ " is its own successor.")
-                             else
-                                 let oldSuccessors = pstepReverseSuccessors lastStep
-                                     newSuccessors = (s, lastSeenChoice, forced):oldSuccessors in
-                                 lastStep { pstepReverseSuccessors = newSuccessors })
+         modifyLastStep $ addSuccessor (s, lastSeenChoice, forced) fn lineNum
 
 
 -- | Process a single line of the log file.
