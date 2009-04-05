@@ -47,6 +47,7 @@ dotStepNode params step = node (name $ printf "step%d" (stepOrder step))
                                            (show $ solTier $ stepSol step))
                           <<< Set.null (solBrokenDeps (stepSol step)) `thenDo`
                               set "style" "filled" `andAlso`
+                              set "peripheries" "2" `andAlso`
                               set "fillColor" "lightgrey"
 
 -- Generate nodes for any successors that were not processed in the
@@ -60,6 +61,7 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
                           <<< set "style" "dashed"
                           <<< Set.null (solBrokenDeps (stepSol step)) `thenDo`
                               set "style" "dashed,filled" `andAlso`
+                              set "peripheries" "2" `andAlso`
                               set "fillcolor" "lightgrey"
                           | ((Unprocessed { successorChoice    = succChoice,
                                             successorSolution  = succSol }),
