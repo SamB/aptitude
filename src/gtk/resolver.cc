@@ -737,7 +737,8 @@ namespace gui
     if(!last_sol)
       pResolverStatus->set_text(state.solutions_exhausted ? _("No solutions.") : _("No solutions yet."));
     else
-      pResolverStatus->set_text(ssprintf(_("Solution %d of %d (score: %d)"), state.selected_solution + 1, state.generated_solutions, last_sol.get_score()));
+      pResolverStatus->set_text(ssprintf(_("Solution %d of %d (tier %s)"), state.selected_solution + 1, state.generated_solutions,
+					 aptitude_universe::get_tier_name(last_sol.get_tier()).c_str()));
 
     pResolverPrevious->set_sensitive(do_previous_solution_enabled_from_state(state));
     pResolverNext->set_sensitive(do_next_solution_enabled_from_state(state));
