@@ -73,7 +73,30 @@ data Solution = Solution { -- | The choices made in this solution.
                            solScore :: Integer,
                            -- | The tier of this solution.
                            solTier  :: Tier }
-              deriving(Ord, Eq, Show)
+              deriving(Show)
+
+-- Custom Eq and Ord instances here to adjust the order in which the
+-- parts of the Solution structure are compared.  As in the C++ code,
+-- this exploits the fact that scores are very nearly unique among the
+-- solutions in a particular run to avoid comparing sets most of the
+-- time.
+instance Eq Solution where
+    sol1 == sol2 =
+        solScore sol1 == solScore sol2 &&
+        solTier sol1 == solTier sol2 &&
+        solBrokenDeps sol1 == solBrokenDeps sol2 &&
+        solForbiddenVersions sol1 == solForbiddenVersions sol2 &&
+        solChoices sol1 == solChoices sol2
+
+instance Ord Solution where
+    sol1 `compare` sol2 =
+        foldr combine EQ [solScore sol1 `compare` solScore sol2,
+                          solTier sol1 `compare` solTier sol2,
+                          solBrokenDeps sol1 `compare` solBrokenDeps sol2,
+                          solForbiddenVersions sol1 `compare` solForbiddenVersions sol2,
+                          solChoices sol1 `compare` solChoices sol2]
+            where combine EQ o2 = o2
+                  combine o1 _  = o1
 
 maximumTierNum = 2147483647
 minimumTierNum = -2147483648
