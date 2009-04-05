@@ -528,7 +528,7 @@ namespace gui
 				     make_safe_slot(aborted_slot),
 				     *upgrade_resolver);
 
-	  upgrade_resolver->safe_resolve_deps_background(false, false, k);
+	  upgrade_resolver->safe_resolve_deps_background(false, true, k);
 	}
 
 	LOG_TRACE(logger, "Setting up the progress bar.");
