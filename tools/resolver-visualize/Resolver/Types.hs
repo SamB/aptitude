@@ -99,25 +99,31 @@ instance Ord Solution where
                   combine o1 _  = o1
 
 maximumTierNum = 2147483647
+alreadyGeneratedTierNum = maximumTierNum - 1
+deferTierNum = alreadyGeneratedTierNum - 1
 minimumTierNum = -2147483648
 newtype Tier = Tier { tierLevels :: [Integer] } deriving(Ord, Eq)
 maximumTier = Tier [maximumTierNum]
 conflictTier = maximumTier
-alreadyGeneratedTier = Tier [maximumTierNum - 1]
-deferTier = Tier [maximumTierNum - 2]
+alreadyGeneratedTier = Tier [alreadyGeneratedTierNum]
+deferTier = Tier [deferTierNum]
 minimumTier = Tier [minimumTierNum]
 
 -- The Show instance mainly special-cases the special tiers so they
 -- get pretty-printed.
 instance Show Tier where
-    showsPrec _ tier
-        | tier == conflictTier         = ("T:conflict"++)
-        | tier == deferTier            = ("T:defer"++)
-        | tier == alreadyGeneratedTier = ("T:redundant"++)
-        | tier == minimumTier          = ("T:minimum"++)
-        | otherwise =  case tier of
-                         Tier [num] -> ('T':) . shows (num)
-                         Tier nums  -> ("T("++) . foldr (.) id (intersperse (", "++) (map shows nums)) . (')':)
+    showsPrec _ (Tier [num]) = ('T':) . showsTierComponent num
+    showsPrec _ (Tier nums)  = ("T("++) .
+                               foldr (.) id (intersperse (", "++) (map showsTierComponent nums)) .
+                               (')':)
+
+-- | Display a user-friendly description of a tier number.
+showsTierComponent tierNum
+    | tierNum == maximumTierNum          = ("maximum"++)
+    | tierNum == deferTierNum            = ("defer"++)
+    | tierNum == alreadyGeneratedTierNum = ("redundant"++)
+    | tierNum == minimumTierNum          = ("minimum"++)
+    | otherwise                          = shows tierNum
 
 -- | Represents a promotion to a tier.
 data Promotion = Promotion { -- | The choices that produced this promotion.
