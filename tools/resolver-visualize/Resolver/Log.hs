@@ -193,10 +193,13 @@ data LogParseState = LogParseState {
       -- contains intern sets that should be shared over all parse
       -- steps.
       logParseParseState :: !ParseState,
-      -- | All the steps in the file, in reverse order.  The first
-      -- element in this list is the step currently being parsed (if
-      -- any).
+      -- | All the steps in the current run, in reverse order.  The
+      -- first element in this list is the step currently being parsed
+      -- (if any).
       logParseAllStepsReversed :: ![PartialStep],
+      -- | All the runs in the file, in reverse order (but the runs
+      -- are individually in order).
+      logParseAllRunsReversed :: ![[PartialStep]],
       -- | The name of the file being parsed.  Read-only.
       logParseSourceName :: !String,
       -- | The current line.
@@ -207,6 +210,11 @@ data LogParseState = LogParseState {
       -- generating successors for the dependency dep; otherwise
       -- Nothing.
       logParseGeneratingSuccessorsInfo :: !(Maybe GeneratingSuccessorsInfo),
+      -- | All the promotions that have been seen so far.
+      --
+      -- Used to ensure that only new promotions are included in the
+      -- promotions of a particular step.
+      logParseSeenPromotions :: Set.Set Promotion,
       -- | The last seen line indicating the resolver is examining a
       -- choice.
       --
@@ -218,10 +226,12 @@ data LogParseState = LogParseState {
 initialState sourceName =
     LogParseState { logParseParseState = initialParseState,
                     logParseAllStepsReversed = [],
+                    logParseAllRunsReversed = [],
                     logParseSourceName = sourceName,
                     logParseCurrentLine = 0,
                     logParseCurrentLineStart = 0,
                     logParseGeneratingSuccessorsInfo = Nothing,
+                    logParseSeenPromotions = Set.empty,
                     logParseLastSeenTryChoice = Unknown }
 
 -- | The log parsing state monad.
@@ -234,6 +244,28 @@ get = do ref <- ask
 put :: LogParseState -> LogParse ()
 put st = st `seq` do ref <- ask
                      liftIO $ writeIORef ref st
+
+-- | Reset the parts of the state dealing with the current run and
+-- insert the run into the list.
+--
+-- The argument is the file location that will be the "end" of the
+-- run.
+startNewRun :: Integer -> LogParse ()
+startNewRun loc =
+    do modifyLastStep (\lastStep -> lastStep { pstepTextLength = Just (loc - pstepTextStart lastStep) })
+       st <- get
+       let stepsRev = logParseAllStepsReversed st
+           steps    = reverse stepsRev
+           runsRev  = logParseAllRunsReversed st
+           runsRev' = if null stepsRev then runsRev
+                      else steps `seq` steps:runsRev
+           st'      = runsRev' `seq`
+                      st { logParseAllStepsReversed         = [],
+                           logParseAllRunsReversed          = runsRev',
+                           logParseGeneratingSuccessorsInfo = Nothing,
+                           logParseSeenPromotions           = Set.empty,
+                           logParseLastSeenTryChoice        = Unknown }
+       put st'
 
 -- | Run a parser using the embedded state.
 parse p sourceName source =
@@ -266,6 +298,10 @@ setAllStepsReversed steps =
     steps `seq` do st <- get
                    put $ st { logParseAllStepsReversed = steps }
 
+getAllRunsReversed :: LogParse [[PartialStep]]
+getAllRunsReversed = do st <- get
+                        return $ logParseAllRunsReversed st
+
 getSourceName :: LogParse String
 getSourceName = get >>= return . logParseSourceName
 
@@ -285,6 +321,18 @@ setCurrentLineStart n = n `seq` do st <- get
 
 getGeneratingSuccessorsInfo :: LogParse (Maybe GeneratingSuccessorsInfo)
 getGeneratingSuccessorsInfo = get >>= return . logParseGeneratingSuccessorsInfo
+
+promotionIsSeen :: Promotion -> LogParse Bool
+promotionIsSeen p = do st <- get
+                       return $ Set.member p (logParseSeenPromotions st)
+
+addSeenPromotion :: Promotion -> LogParse ()
+addSeenPromotion p = do st <- get
+                        let seenPromotions  = logParseSeenPromotions st
+                            seenPromotions' = Set.insert p seenPromotions
+                            st'             = st { logParseSeenPromotions = seenPromotions' }
+                        (p `seq` seenPromotions' `seq`
+                         put st')
 
 -- | Not strict in the contents of the Maybe.
 setGeneratingSuccessorsInfo :: Maybe GeneratingSuccessorsInfo -> LogParse ()
@@ -389,6 +437,9 @@ addSuccessor succInf@(s, _, _) filename lineNum lastStep =
 processStepStartLine :: ByteString -> MatchArray -> LogParse ()
 processStepStartLine source matches =
     do sol <- parseMatch solution source (matches!1)
+       loc <- getCurrentLineStart
+       -- If the solution is empty, assume we're starting a new run.
+       when (Map.null $ solChoices sol) (startNewRun loc)
        startNewStep sol
 
 -- | Process a line of the log file if it looks like it produced a new
@@ -396,11 +447,14 @@ processStepStartLine source matches =
 processNewPromotionLine :: ByteString -> MatchArray -> LogParse ()
 processNewPromotionLine source matches =
     do p <- parseMatch promotion source (matches!1)
-       -- Add the promotion to the current step.
-       p `seq` modifyLastStep (\lastStep ->
-                               let oldPromotions = pstepPromotions lastStep
-                                   newPromotions = (p:oldPromotions) in
-                               lastStep { pstepPromotions = newPromotions })
+       seen <- promotionIsSeen p
+       unless seen $ do
+         addSeenPromotion p
+         -- Add the promotion to the current step.
+         p `seq` modifyLastStep (\lastStep ->
+                                     let oldPromotions = pstepPromotions lastStep
+                                         newPromotions = (p:oldPromotions) in
+                                     lastStep { pstepPromotions = newPromotions })
 
 -- | Process a line of the log file that starts successor generation.
 processSuccessorsStartLine :: ByteString -> MatchArray -> LogParse ()
@@ -518,22 +572,6 @@ extractPredecessorLinks (step:steps) =
      | (childSolution, childChoice, _) <- pstepReverseSuccessors step]
     ++ extractPredecessorLinks steps
 
--- | Take a list of partial steps and split it up into distinct runs
--- of the resolver.
-splitRuns :: [PartialStep] -> [[PartialStep]]
-splitRuns steps = doSplitRuns steps []
-    where doSplitRuns [] rval = reverse (map reverse rval)
-          doSplitRuns (first:rest) rval =
-              -- Solutions with no choices are assumed to start a run
-              -- of the resolver.
-              let rval' = if Map.null (solChoices $ pstepSol first)
-                          then ([first]:rval)
-                          else case rval of
-                                 []             -> [[first]]
-                                 (first':rest') -> (first:first'):rest'
-              in
-                rval' `seq` doSplitRuns rest rval'
-
 -- | Map a list of partial processing steps (in order) to a collection
 -- of processing steps.
 extractProcessingSteps :: [PartialStep] -> [ProcessingStep]
@@ -588,7 +626,7 @@ extractProcessingSteps partialSteps =
               start          = pstepTextStart pstep
               len            = case pstepTextLength pstep of
                                  Just len -> len
-                                 Nothing -> error "Internal error: missing text length."
+                                 Nothing -> error $ "Internal error: missing text length in step " ++ (show n) ++ "."
           in
           sol `seq` n `seq` depth `seq` branchSize `seq` promotions `seq` start `seq` len `seq` ProcessingStep {
         stepPredecessor = Map.lookup sol parentMap,
@@ -652,10 +690,9 @@ processFile h progress =
        -- The last step won't have a length because we update it when
        -- we add a new step; fix that.
        loc <- liftIO $ hTell h
-       modifyLastStep (\lastStep -> lastStep { pstepTextLength = Just (loc - pstepTextStart lastStep) })
-       stepsReversed <- getAllStepsReversed
-       let steps    = reverse stepsReversed
-           runs     = splitRuns steps
+       startNewRun loc -- Force the current run onto the runs list.
+       runsReversed <- getAllRunsReversed
+       let runs     = reverse runsReversed
            outRuns  = map extractProcessingSteps runs
        (map seqList outRuns) `seqList` return $ LogFile h sourceName outRuns
 
