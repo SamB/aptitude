@@ -75,7 +75,8 @@ data TreeViewColumnInfo =
                          treeViewHeight      :: TextColumnInfo,
                          treeViewSubtreeSize :: TextColumnInfo,
                          treeViewTier        :: TextColumnInfo,
-                         treeViewScore       :: TextColumnInfo }
+                         treeViewScore       :: TextColumnInfo,
+                         treeViewDep         :: TextColumnInfo }
 
 treeViewColumnInfoRenderers :: TreeViewColumnInfo -> [CellRenderer]
 treeViewColumnInfoRenderers inf =
@@ -87,7 +88,8 @@ treeViewColumnInfoRenderers inf =
       toCellRenderer $ textRenderer $ treeViewHeight inf,
       toCellRenderer $ textRenderer $ treeViewSubtreeSize inf,
       toCellRenderer $ textRenderer $ treeViewTier inf,
-      toCellRenderer $ textRenderer $ treeViewScore inf ]
+      toCellRenderer $ textRenderer $ treeViewScore inf,
+      toCellRenderer $ textRenderer $ treeViewDep inf ]
 
 treeViewColumnInfoColumns :: TreeViewColumnInfo -> [TreeViewColumn]
 treeViewColumnInfoColumns inf =
@@ -99,7 +101,8 @@ treeViewColumnInfoColumns inf =
       textColumn $ treeViewHeight inf,
       textColumn $ treeViewSubtreeSize inf,
       textColumn $ treeViewTier inf,
-      textColumn $ treeViewScore inf ]
+      textColumn $ treeViewScore inf,
+      textColumn $ treeViewDep inf ]
 
 -- | Discard attribute bindings for the tree view.
 treeViewColumnInfoClear :: TreeViewColumnInfo -> IO ()
@@ -117,6 +120,7 @@ newTreeViewColumns =
        subtreeSize       <- textColumnNew "Size"
        tier              <- textColumnNew "Tier"
        score             <- textColumnNew "Score"
+       dep               <- textColumnNew "Dep"
        return TreeViewColumnInfo { treeViewText          = text,
                                    treeViewNumChoices    = numChoices,
                                    treeViewBrokenDeps    = brokenDeps,
@@ -125,7 +129,8 @@ newTreeViewColumns =
                                    treeViewHeight        = height,
                                    treeViewSubtreeSize   = subtreeSize,
                                    treeViewTier          = tier,
-                                   treeViewScore         = score }
+                                   treeViewScore         = score,
+                                   treeViewDep           = dep }
 
 -- | Information about the columns and renderers of the chronological
 -- display.
@@ -137,7 +142,11 @@ data ChronologicalViewColumnInfo =
                                   chronViewHeight      :: TextColumnInfo,
                                   chronViewSubtreeSize :: TextColumnInfo,
                                   chronViewTier        :: TextColumnInfo,
-                                  chronViewScore       :: TextColumnInfo }
+                                  chronViewScore       :: TextColumnInfo,
+                                  chronViewParent      :: TextColumnInfo,
+                                  chronViewChoice      :: TextColumnInfo,
+                                  chronViewDep         :: TextColumnInfo
+                                }
 
 chronViewColumnInfoRenderers :: ChronologicalViewColumnInfo -> [CellRenderer]
 chronViewColumnInfoRenderers inf =
@@ -148,7 +157,10 @@ chronViewColumnInfoRenderers inf =
       toCellRenderer $ textRenderer $ chronViewHeight inf,
       toCellRenderer $ textRenderer $ chronViewSubtreeSize inf,
       toCellRenderer $ textRenderer $ chronViewTier inf,
-      toCellRenderer $ textRenderer $ chronViewScore inf ]
+      toCellRenderer $ textRenderer $ chronViewScore inf,
+      toCellRenderer $ textRenderer $ chronViewParent inf,
+      toCellRenderer $ textRenderer $ chronViewChoice inf,
+      toCellRenderer $ textRenderer $ chronViewDep inf ]
 
 chronViewColumnInfoColumns :: ChronologicalViewColumnInfo -> [TreeViewColumn]
 chronViewColumnInfoColumns inf =
@@ -159,7 +171,10 @@ chronViewColumnInfoColumns inf =
       textColumn $ chronViewHeight inf,
       textColumn $ chronViewSubtreeSize inf,
       textColumn $ chronViewTier inf,
-      textColumn $ chronViewScore inf ]
+      textColumn $ chronViewScore inf,
+      textColumn $ chronViewParent inf,
+      textColumn $ chronViewChoice inf,
+      textColumn $ chronViewDep inf ]
 
 -- | Discard attribute bindings for the chronological view.
 chronViewColumnInfoClear :: ChronologicalViewColumnInfo -> IO ()
@@ -176,6 +191,9 @@ newChronViewColumns =
        subtreeSize       <- textColumnNew "Size"
        tier              <- textColumnNew "Tier"
        score             <- textColumnNew "Score"
+       parent            <- textColumnNew "Parent"
+       dep               <- textColumnNew "Dep"
+       choice            <- textColumnNew "Step"
        return ChronologicalViewColumnInfo {
                     chronViewNumChoices   = numChoices,
                     chronViewBrokenDeps   = brokenDeps,
@@ -184,7 +202,10 @@ newChronViewColumns =
                     chronViewHeight       = height,
                     chronViewSubtreeSize  = subtreeSize,
                     chronViewTier         = tier,
-                    chronViewScore        = score
+                    chronViewScore        = score,
+                    chronViewParent       = parent,
+                    chronViewDep          = dep,
+                    chronViewChoice       = choice
                   }
 
 -- | Information about the columns and renderers of the run list.
@@ -509,8 +530,7 @@ runToForest params steps =
                                          entryTreeInfo   = treeInfo }
 
 choiceText :: LinkChoice -> String
-choiceText (LinkChoice (InstallVersion ver _ _)) = "Install " ++ pp ver
-choiceText (LinkChoice (BreakSoftDep d)) = "Break " ++ pp d
+choiceText (LinkChoice c) = pp c
 choiceText Unknown = "(...)"
 
 -- Column definitions for tree view entries.
@@ -587,6 +607,23 @@ entryColumnScore (AlreadyGeneratedStep { entrySol = sol })              = show $
 entryColumnScore (NoStep { entrySol = sol })                            = show $ solScore sol
 entryColumnScore (Error {})                                             = ""
 
+entryColumnDep :: TreeViewEntry -> String
+entryColumnDep (Root {}) = ""
+entryColumnDep (Step { entryChoice = choice }) =
+    case choice of
+      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
+      _ -> ""
+entryColumnDep (Horizon { }) = ""
+entryColumnDep (AlreadyGeneratedStep { entryChoice = choice }) =
+    case choice of
+      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
+      _ -> ""
+entryColumnDep (NoStep { entryChoice = choice }) =
+    case choice of
+      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
+      _ -> ""
+entryColumnDep (Error { entryErrorText = err }) = ""
+
 renderTreeView :: Params -> [ProcessingStep] -> TreeViewStore -> IO ()
 renderTreeView params steps model =
     do let forest = runToForest params steps
@@ -604,6 +641,9 @@ data ChronViewEntry =
                 chronSubtreeSize  :: Integer,
                 chronTier         :: Tier,
                 chronScore        :: Integer,
+                chronParent       :: Maybe Integer,
+                chronDep          :: Maybe Dep,
+                chronChoice       :: Maybe Choice,
                 chronStep         :: ProcessingStep }
 
 makeChronStep :: ProcessingStep -> ChronViewEntry
@@ -615,8 +655,16 @@ makeChronStep step =
         height      = stepDepth step
         subtreeSize = stepBranchSize step
         tier        = solTier $ stepSol step
-        score       = solScore $ stepSol step in
+        score       = solScore $ stepSol step
+        parent      = fmap (stepOrder . parentLinkParent) $ stepPredecessor step
+        choice      = case stepPredecessor step of
+                        Just (ParentLink { parentLinkAction = LinkChoice c }) -> Just c
+                        _ -> Nothing
+        dep         = case choice of
+                        Just (InstallVersion { choiceVerReason = maybeDep }) -> maybeDep
+                        _ -> Nothing in
     numChoices `seq` brokenDeps `seq` stepNum `seq` children `seq` height `seq` subtreeSize `seq` step `seq` tier `seq` score `seq`
+    choice `seq` parent `seq` dep `seq`
     ChronStep { chronNumChoices  = numChoices,
                 chronBrokenDeps  = brokenDeps,
                 chronStepNum     = stepNum,
@@ -625,7 +673,10 @@ makeChronStep step =
                 chronSubtreeSize = subtreeSize,
                 chronStep        = step,
                 chronTier        = tier,
-                chronScore       = score }
+                chronScore       = score,
+                chronParent      = parent,
+                chronDep         = dep,
+                chronChoice      = choice }
 
 renderChronView :: Params -> [ProcessingStep] -> ChronViewStore -> IO ()
 renderChronView params steps model =
@@ -817,7 +868,8 @@ createMainWindowStores treeViewInf chronViewInf runListInf = do
                     (treeViewHeight,       entryColumnHeight),
                     (treeViewSubtreeSize,  entryColumnSubtreeSize),
                     (treeViewTier,         entryColumnTier),
-                    (treeViewScore,        entryColumnScore)]
+                    (treeViewScore,        entryColumnScore),
+                    (treeViewDep,          entryColumnDep)]
       chronCols  = [(chronViewNumChoices,  show . chronNumChoices),
                     (chronViewBrokenDeps,  show . chronBrokenDeps),
                     (chronViewStepNum,     show . chronStepNum),
@@ -825,7 +877,10 @@ createMainWindowStores treeViewInf chronViewInf runListInf = do
                     (chronViewHeight,      show . chronHeight),
                     (chronViewSubtreeSize, show . chronSubtreeSize),
                     (chronViewTier,        show . chronTier),
-                    (chronViewScore,       show . chronScore)]
+                    (chronViewScore,       show . chronScore),
+                    (chronViewDep,         maybe "" pp . chronDep),
+                    (chronViewParent,      maybe "" show . chronParent),
+                    (chronViewChoice,      maybe "" pp . chronChoice)]
       runCols = [(runListNumber,     show . fst),
                  (runListLength,     show . length . snd)]
   mapM_ (makeCol treeViewInf treeModel) treeCols

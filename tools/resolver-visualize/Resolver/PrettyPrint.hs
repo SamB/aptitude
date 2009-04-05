@@ -19,4 +19,8 @@ instance PP Dep where
                                                else " -> {" in
                                    ppS src . (arrow++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
 
+instance PP Choice where
+    ppS (InstallVersion ver _ _) = ("Install "++) . ppS ver
+    ppS (BreakSoftDep d) = ("Break "++) . ppS d
+
 pp x = ppS x ""
