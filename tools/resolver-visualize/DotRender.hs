@@ -77,9 +77,9 @@ dotEdges params step = processed ++ unprocessed
                                (node (name $ printf "step%d" (stepOrder step')))
                           <<< set "label" (dotChoiceLabel succChoice)
                           <<< forced `thenDo`
-                              set "style" "bold" `andAlso`
-                              set "color" "darkgreen" `andAlso`
-                              set "labelcolor" "darkgreen"
+                              -- This gives us an arrow drawn with two
+                              -- parallel lines.
+                              set "color" "black:black"
                           | Successor { successorStep   = step',
                                         successorChoice = succChoice,
                                         successorForced = forced } <- stepSuccessors step ]
