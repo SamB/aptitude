@@ -691,14 +691,6 @@ private:
     // universally valid but was discovered in the context of this
     // step.  No attempt is made to eliminate redundant promotions at
     // the moment.
-    //
-    // TODO: should probably put some sort of a limit on the number of
-    // these; in theory we can keep accumulating them till the cows
-    // come home, but the number could become unbounded in
-    // pathological cases.  More than a hundred is probably a bad
-    // sign, for instance.  Dropping some arbitrarily will never cause
-    // problems (except that the resolver might miss opportunities to
-    // prune branches).
     std::set<promotion> promotions;
 
     // The same, but in the order that they were added; used to
@@ -760,6 +752,16 @@ private:
     }
   };
 
+  /** \brief The maximum number of promotions to propagate
+   *  through any one step.
+   *
+   *  This avoids an exponential growth in the size of promotion sets;
+   *  I expect that in normal usage there will be only a few dozen
+   *  promotions at the very most.  Throwing away promotions
+   *  arbitrarily is OK -- it just means we won't have quite as much
+   *  information available to prune the search tree.
+   */
+  static const int max_propagated_promotions = 100;
   std::deque<step> steps;
   // Steps whose children have pending propagation requests.  Stored
   // in reverse order, because we should handle later steps first
@@ -768,33 +770,10 @@ private:
   std::set<int, std::greater<int> > steps_pending_promotion_propagation;
 
   // Step-related routines.
-  bool all_children_have_promotions(const step &s)
-  {
-    int childNum = s.firstChild;
-    while(childNum != -1)
-      {
-	const step &child(steps[childNum]);
-
-	if(!child.has_promotion)
-	  return false;
-
-	if(child.is_last_child)
-	  childNum = -1;
-	else
-	  ++childNum;
-      }
-
-    return true;
-  }
 
   // Used to recursively build the set of all the promotions in the
   // Cartesian product of the sub-promotions that include at least one
   // promotion that's "new".
-  //
-  // Normally there should only be "a few" entries in this
-  // cross-product (say, in unusual cases two dozen).  Once I see how
-  // this performs I should add some code to stop when we get "too
-  // many" promotions. (where "too many" might be one or two hundred)
   //
   // Returns "true" if anything was generated.  We care because we
   // need to know whether to queue the parent of the parent for
@@ -803,8 +782,10 @@ private:
 			    const choice_set &choices, const tier &t)
   {
     step &parent = steps[parentNum];
-    // TODO: should check here if there are too many steps in the
-    // parent step and abort if so.
+    // Don't do anything if the parent has too many propagations
+    // already.
+    if(parent.promotions_list.size() >= max_propagated_promotions)
+      return false;
 
     const step &child = steps[childNum];
 
@@ -816,7 +797,8 @@ private:
       begin = child.promotions_list.begin();
 
     bool rval = false;
-    for(typename std::vector<promotion>::const_iterator it = begin; it != end; ++it)
+    for(typename std::vector<promotion>::const_iterator it = begin;
+	it != end && parent.promotions_list_size() < max_propagated_promotions; ++it)
       {
 	bool current_is_new_promotion =
 	  (it - child.promotions_list.begin()) >= child.promotions_list_new_promotions;
@@ -876,6 +858,9 @@ private:
     return rval;
   }
 
+  // TODO: log when we first fail to add a promotion because we hit
+  // the maximum number -- that's actually not trivial to do without
+  // complicating the code.
   void maybe_collect_child_promotions(int stepNum)
   {
     step &parentStep(steps[stepNum]);
@@ -902,8 +887,8 @@ private:
       LOG_TRACE(logger, "No new promotion at step " << stepNum);
   }
 
-  void add_promotion(int stepNum,
-		     const promotion &p)
+  void schedule_promotion_propagation(int stepNum,
+				      const promotion &p)
   {
     step &targetStep(steps[stepNum]);
 
@@ -919,6 +904,64 @@ private:
 	targetStep.promotions_list.push_back(p);
 	if(targetStep.parent != -1)
 	  steps_pending_promotion_propagation.insert(stepNum);
+      }
+  }
+
+  /** \brief Execute any pending promotion propagations. */
+  void run_scheduled_promotion_propagations()
+  {
+    while(!steps_pending_promotion_propagation.empty())
+      {
+	// Make a temporary copy to iterate over.
+	std::set<int, std::greater<int> > tmp;
+	tmp.swap(steps_pending_promotion_propagation);
+	for(std::set<int>::const_iterator it = tmp.begin();
+	    it != tmp.end(); ++it)
+	  maybe_collect_child_promotions(*it);
+      }
+  }
+
+  struct is_deferred
+  {
+    bool operator()(const promotion &p) const
+    {
+      const tier &p_tier(p.get_tier());
+
+      return
+	p_tier >= defer_tier &&
+	p_tier < conflict_tier;
+    }
+  };
+
+  /** \brief Remove any propagated promotions from the deferred
+   *  tier.
+   */
+  void remove_deferred_propagations()
+  {
+    is_deferred is_deferred_f;
+
+    for(typename std::deque<step>::iterator step_it = steps.begin();
+	step_it != steps.end(); ++step_it)
+      {
+	step &curr_step(*step_it);
+
+	for(typename std::vector<promotion>::const_iterator p_it =
+	      curr_step.promotions_list.begin();
+	    p_it != curr_step.promotions_list.end(); ++p_it)
+	  {
+	    const promotion &p(*p_it);
+
+	    if(is_deferred_f(p))
+	      curr_step.promotions.erase(p);
+	  }
+
+	typename std::vector<promotion>::iterator new_end =
+	  std::remove_if(curr_step.promotions_list.begin(),
+			 curr_step.promotions_list.end(),
+			 is_deferred_f);
+
+
+	curr_step.promotions_list.erase(new_end, curr_step.promotions_list.end());
       }
   }
 
@@ -2235,6 +2278,10 @@ private:
    */
   void reexamine_deferred()
   {
+    // Throw out all the defer-tier promotions that were discovered
+    // during promotion propagation.
+    remove_deferred_propagations();
+
     // \todo If we un-defer a search node that has a lower tier than
     // the current maximum tier, should we reset the maximum tier to
     // be lower?  i.e., if we are at the "remove packages" tier, and
