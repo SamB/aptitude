@@ -2864,7 +2864,7 @@ private:
   void generate_successors(const solution &s,
 			   const dep &d,
 			   SolutionGenerator &generator,
-			   std::set<package> *visited_packages) const
+			   std::set<package> *visited_packages)
   {
     version source = d.get_source();
 
@@ -2983,6 +2983,7 @@ private:
       {
 	promotion p(forcing_reasons, succ_tier);
 	LOG_DEBUG(logger, "Inserting new promotion: " << p);
+	promotions.insert(p);
       }
   }
 
