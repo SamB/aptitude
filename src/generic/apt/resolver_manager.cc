@@ -1629,7 +1629,7 @@ public:
     // If the solution changed (i.e., we managed to find some new
     // upgrades), we should try again; otherwise we've found the
     // solution that we'll return to the user.
-    if(!(last_sol &&
+    if(!(last_sol.valid() &&
 	 sol.get_choices() == last_sol.get_choices()))
       {
 	// The solution changed; prepare the resolver for the next
@@ -1720,7 +1720,7 @@ public:
   {
     log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
-    if(last_sol)
+    if(last_sol.valid())
       {
 	LOG_TRACE(logger, "safe_resolve_deps: no more solutions; returning the last seen solution.");
 
@@ -1744,7 +1744,7 @@ public:
   {
     log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
-    if(last_sol)
+    if(last_sol.valid())
       {
 	LOG_TRACE(logger, "safe_resolve_deps: ran out of time searching for a solution; returning the last one that was computed.");
 

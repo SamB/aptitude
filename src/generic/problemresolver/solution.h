@@ -503,7 +503,7 @@ public:
     return real_soln != other.real_soln;
   }
 
-  operator bool() const
+  bool valid() const
   {
     return real_soln != 0;
   }

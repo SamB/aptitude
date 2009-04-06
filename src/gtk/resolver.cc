@@ -734,7 +734,7 @@ namespace gui
 
     // NB: here I rely on the fact that last_sol is set above to the
     // last solution we saw.
-    if(!last_sol)
+    if(!last_sol.valid())
       pResolverStatus->set_text(state.solutions_exhausted ? _("No solutions.") : _("No solutions yet."));
     else
       pResolverStatus->set_text(ssprintf(_("Solution %d of %d (tier %s)"), state.selected_solution + 1, state.generated_solutions,

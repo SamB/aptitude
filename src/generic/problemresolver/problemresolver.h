@@ -37,6 +37,7 @@
 #define PROBLEMRESOLVER_H
 
 #include <algorithm>
+#include <deque>
 #include <map>
 #include <queue>
 #include <set>
@@ -614,6 +615,232 @@ private:
   log4cxx::LoggerPtr logger;
   log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
 
+  // Structures that store the search graph.
+  //
+  // This information is used to backpropagate promotions/conflicts.
+  // If all the children of a step ended up in a conflict, we can use
+  // that information to infer a conflict for the step itself.  But
+  // since aptitude has a flexible search order, the children might be
+  // run after we've "finished" processing the parent step.  So it's
+  // necessary to somehow store all the steps with children that are
+  // pending evaluation.
+  //
+  // Actually, *all* steps are stored, not just ones with pending
+  // children: this lets us handle situations where promotions are
+  // generated more than once for the same step (for instance, if a
+  // step eventually ends up at tier 40,000 but has one child that
+  // passes through tier 30,000, it will first be promoted to tier
+  // 30,000, then later to tier 40,000).
+  //
+  // The lifetime of a step is as follows:
+  //  (1) Created with no children and maybe a parent link.
+  //  (2) Children added, along with successor constraints.
+  //  (3) When each of its children has registered a promotion,
+  //      the step's promotion is set and its parent is examined
+  //      to see if it should get a promotion now.
+  //
+  // Regarding (3), what we do is this: when a promotion is computed
+  // for a step and either (i) the step has no promotion, or (ii) the
+  // new promotion is not a superset of the existing one or it has a
+  // higher tier, then we assign the promotion and examine the parent
+  // of that step.  If each other child of the parent also has a
+  // promotion, then we calculate a new promotion for the parent and
+  // recur.
+  //
+  // To save space and keep things compact, the tree is represented as
+  // an array (actually a deque), with parent and child links stored
+  // as indices into the array.
+  struct step
+  {
+    // If true, this is the last child in its parent's child list.
+    // Meaningless if parent is -1 (meaning there is no parent node).
+    bool is_last_child : 1;
+    // If true, this step has been processed and has a promotion.
+    // Used by the parent to decide whether it can generate a
+    // promotion of its own.
+    bool has_promotion : 1;
+    // Index of the parent step, or -1 if there is no parent.
+    int parent;
+    // Index of the first child step, or -1 if there are no children.
+    // This is always -1 to start with, and is updated when the step's
+    // successors are generated.
+    int first_child;
+    // The solution associated with this step.
+    solution sol;
+    // The choice associated with this step (meaningless if parent ==
+    // -1).  Set when the step is created, and used when
+    // backpropagating promotions: when the parent is computing its
+    // promotion, it removes each child's reason from that child's
+    // promotion's choice set.
+    choice reason;
+    // The choices that constrained the successors to this node.  This
+    // is used, along with information from the successors, to compute
+    // the promotion associated with this node (if any).
+    //
+    // This only has a meaningful value if first_child is not -1.
+    choice_set successor_constraints;
+    // The promotion associated with this step (meaningless if
+    // has_promotion is false).  Read by the parent once all its
+    // children have promotions.
+    promotion p;
+
+    /** \brief Remove the promotion information if it is in the
+     *  deferral tier.
+     */
+    void blank_deferral_promotion()
+    {
+      if(has_promotion &&
+	 p.get_tier() >= defer_tier &&
+	 p.get_tier() < conflict_tier)
+	{
+	  has_promotion = false;
+	  p = promotion();
+	}
+    }
+
+    /** \brief Default step constructor; only exists for use
+     *  by STL containers.
+     */
+    step()
+      : is_last_child(true), has_promotion(false),
+	parent(-1), first_child(-1), sol(), reason(),
+	successor_constraints(), p()
+    {
+    }
+
+    /** \brief Make a step suitable for use at the root.
+     *
+     *  The step has no parent, children, promotion, or successor
+     *  constraints.
+     */
+    step(const solution &_sol)
+      : is_last_child(true), has_promotion(false),
+	parent(-1), first_child(-1), sol(_sol), reason(),
+	successor_constraints(), p()
+    {
+    }
+
+    /** \brief Make a step with the given parent.
+     *
+     *  The step initially has no children, promotion, or successor
+     *  constraints.
+     */
+    step(solution &_sol, int _parent,
+	 const choice &_reason, bool _is_last_child)
+      : is_last_child(_is_last_child),
+	has_promotion(false), parent(_parent),
+	first_child(-1), sol(_sol), reason(_reason),
+	successor_constraints(), p()
+    {
+    }
+  };
+
+  std::deque<step> steps;
+
+  // Step-related routines.
+  bool all_children_have_promotions(const step &s)
+  {
+    int childNum = s.firstChild;
+    while(childNum != -1)
+      {
+	const step &child(steps[childNum]);
+
+	if(!child.has_promotion)
+	  return false;
+
+	if(child.is_last_child)
+	  childNum = -1;
+	else
+	  ++childNum;
+      }
+
+    return true;
+  }
+
+  void maybe_collect_child_promotions(int stepNum)
+  {
+    step &parentStep(steps[stepNum]);
+    LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum << ": " << parentStep.sol);
+
+    if(parentStep.first_child == -1)
+      {
+	LOG_ERROR(logger, "Step " << stepNum << " has no children; no promotions to backpropagate.");
+	return;
+      }
+
+    // Do a first pass to quickly check whether all the children have
+    // promotions.
+    if(!all_children_have_promotions(parentStep))
+      {
+	LOG_TRACE(logger, "Not all the children of step " << stepNum << " have promotions yet; nothing to do.");
+	return;
+      }
+
+    // The tier of the promotion that's currently being generated.  It
+    // is decreased whenever we encounter a solution whose tier is
+    // below the current promotion tier.
+    tier promotion_tier(maximum_tier);
+    // True if we can generate a useful promotion; set to false if the
+    // promotion tier drops to the tier of the current step's
+    // solution, since then the promotion doesn't help anything.
+    bool promotion_ok = true;
+    choice_set forcing_choices;
+
+    int childNum = parentStep.firstChild;
+    while(childNum != -1 && promotion_ok)
+      {
+	const step &child(steps[childNum]);
+
+
+	choice_set child_choices = child.p.get_choices();
+	child_choices.remove_overlaps(child.reason);
+
+
+	const tier &child_tier(child.p.get_tier());
+	if(child_tier < promotion_tier)
+	  {
+	    promotion_tier = child.p.get_tier();
+	    promotion_ok = parentStep.sol.get_tier() < child_tier;
+	  }
+
+	if(promotion_ok)
+	  forcing_choices.insert_or_narrow(child_choices);
+
+
+	if(child.is_last_child)
+	  childNum = -1;
+	else
+	  ++childNum;
+      }
+
+    if(promotion_ok)
+      {
+	promotion p(forcing_choices, promotion_tier);
+	LOG_DEBUG(logger, "Created backpropagated promotion at step " << stepNum << ": " << p);
+	set_promotion(stepNum, p);
+      }
+    else
+      LOG_TRACE(logger, "No new promotion at step " << stepNum);
+  }
+
+  void set_promotion(int stepNum,
+		     const promotion &p)
+  {
+    step &targetStep(steps[stepNum]);
+
+    // Ignore promotions that are guaranteed to be redundant.
+    if(targetStep.has_promotion &&
+       p.get_tier() <= targetStep.p.get_tier() &&
+       p.get_choices().contains(targetStep.p.get_choices()))
+      return;
+
+    targetStep.has_promotion = true;
+    targetStep.p = p;
+
+    if(targetStep.parent != -1)
+      maybe_collect_child_promotions(targetStep.parent);
+  }
+
   /** Hash function for packages: */
   struct ExtractPackageId
   {
@@ -626,11 +853,21 @@ private:
 
   typedef ExtractPackageId PackageHash;
 
-  /** Compares solutions according to their "goodness". */
-  struct solution_goodness_compare
+  /** Compares steps according to their "goodness". */
+  struct step_goodness_compare
   {
-    bool operator()(const solution &s1, const solution &s2) const
+    const std::deque<step> &steps;
+
+    step_goodness_compare(const std::deque<step> &_steps)
+      : steps(_steps)
     {
+    }
+
+    bool operator()(int step_num1, int step_num2) const
+    {
+      const solution &s1(steps[step_num1].sol);
+      const solution &s2(steps[step_num2].sol);
+
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
       return s2.get_tier() < s1.get_tier() ||
@@ -707,6 +944,25 @@ private:
 	return false;
       else
 	return cs1 < cs2;
+    }
+  };
+
+  struct step_contents_compare
+  {
+    const std::deque<step> &steps;
+    solution_contents_compare comparer;
+
+    step_contents_compare(const std::deque<step> &_steps)
+      : steps(_steps)
+    {
+    }
+
+    bool operator()(int step_num1, int step_num2) const
+    {
+      const solution &s1(steps[step_num1].sol);
+      const solution &s2(steps[step_num2].sol);
+
+      return comparer(s1, s2);
     }
   };
 
@@ -809,8 +1065,11 @@ private:
 
 
 
-  /** The working queue: */
-  std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> open;
+  /** The working queue.
+   *
+   *  Each entry is a step number.
+   */
+  std::priority_queue<int, std::vector<int>, step_goodness_compare> open;
 
   /** \brief The current minimum search tier.
    *
@@ -829,12 +1088,13 @@ private:
    */
   tier maximum_search_tier;
 
-  /** Solutions generated "in the future".
+  /** Solutions generated "in the future", stored by reference to
+   *  their step numbers.
    *
    *  The main reason this is persistent at the moment is so we don't
    *  lose solutions if find_next_solution() throws an exception.
    */
-  std::priority_queue<solution, std::vector<solution>, solution_goodness_compare> future_solutions;
+  std::priority_queue<int, std::vector<int>, step_goodness_compare> future_solutions;
 
   /** \brief Stores already-seen solutions that had their successors
    *  generated.
@@ -847,7 +1107,7 @@ private:
    *  Note: conflict_tier will never have an entry in this set;
    *  solutions at that tier are thrown away rather than deferred.
    */
-  std::map<tier, std::set<solution, solution_contents_compare> > deferred;
+  std::map<tier, std::set<int, step_contents_compare> > deferred;
 
   /** Like deferred, but for future solutions.
    *
@@ -856,7 +1116,7 @@ private:
    *  to be split by tier: the solutions are always all at the current
    *  tier.
    */
-  std::set<solution, solution_contents_compare> deferred_future_solutions;
+  std::set<int, step_contents_compare> deferred_future_solutions;
 
 
   /** Stores tier promotions: sets of installations that will force a
@@ -1913,7 +2173,7 @@ private:
 
     // Place any deferred entries that are no longer deferred back
     // into the "open" queue.
-    const typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+    const typename std::map<tier, std::set<int, step_contents_compare> >::iterator
       first_deferred = deferred.lower_bound(defer_tier),
       first_already_generated = deferred.lower_bound(already_generated_tier);
 
@@ -1921,24 +2181,24 @@ private:
       {
 	LOG_TRACE(logger, "Re-examining the deferred tier.");
 
-	for(typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+	for(typename std::map<tier, std::set<int, step_contents_compare> >::iterator
 	      it = first_deferred; it != first_already_generated; ++it)
 	  {
 	    // Walk down the set associated with this tier and move
 	    // anything that's not deferred any more back to the open
 	    // queue.
-	    typename std::set<solution, solution_contents_compare>::iterator
+	    typename std::set<int, step_contents_compare>::iterator
 	      i = it->second.begin(), j = i;
 
 	    while(i != it->second.end())
 	      {
-		LOG_TRACE(logger, "Re-examining the solution " << *i);
+		LOG_TRACE(logger, "Re-examining step " << *i);
 
 		++j;
 
-		if(!breaks_user_constraint(*i))
+		if(!breaks_user_constraint(steps[*i].sol))
 		  {
-		    LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+		    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
 		    open.push(*i);
 		    it->second.erase(i);
@@ -1953,18 +2213,18 @@ private:
 
     LOG_TRACE(logger, "Re-examining the future deferred set.");
 
-    typename std::set<solution, solution_contents_compare>::const_iterator
+    typename std::set<int, step_contents_compare>::const_iterator
       i = deferred_future_solutions.begin(), j = i;
 
     while(i != deferred_future_solutions.end())
       {
-	LOG_TRACE(logger, "Re-examining the solution " << *i);
+	LOG_TRACE(logger, "Re-examining step " << *i);
 
 	++j;
 
-	if(!breaks_user_constraint(*i))
+	if(!breaks_user_constraint(steps[*i].sol))
 	  {
-	    LOG_DEBUG(logger, "The solution " << *i << " is no longer deferred, placing it back on the open queue.");
+	    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
 	    future_solutions.push(*i);
 	    deferred_future_solutions.erase(i);
@@ -1978,11 +2238,11 @@ private:
     // for processing!
     if(finished && (!open.empty() || !future_solutions.empty()))
       {
-	LOG_DEBUG(logger, "More solutions are available; clearing the \"finished\" flag on the dependency solver.");
+	LOG_DEBUG(logger, "More steps are available; clearing the \"finished\" flag on the dependency solver.");
 	finished = false;
       }
 
-    LOG_TRACE(logger, "Done re-examining the deferred solution lists.");
+    LOG_TRACE(logger, "Done re-examining the deferred step lists.");
 
     deferred_dirty = false;
   }
@@ -2020,9 +2280,22 @@ private:
     return false;
   }
 
-  /** Tries to enqueue the given solution. */
-  void try_enqueue(const solution &s)
+  /** \brief Defer a step to the given tier. */
+  void defer_step(const tier &t, int step_num)
   {
+    typename std::map<tier, std::set<int, step_contents_compare> >::iterator
+      found(deferred.find(t));
+    if(found == deferred.end())
+      found = deferred.insert(found, std::make_pair(t,
+						    std::set<int, step_contents_compare>(step_contents_compare(steps))));
+
+    found->second.insert(step_num);
+  }
+
+  /** Tries to enqueue the given step. */
+  void try_enqueue(const int step_num)
+  {
+    const solution &s = steps[step_num].sol;
     const tier &s_tier = get_solution_tier(s);
     if(maximum_search_tier < s_tier)
       {
@@ -2037,7 +2310,7 @@ private:
 	    else
 	      LOG_TRACE(logger, "Deferring " << s << " until tier " << s_tier);
 
-	    deferred[s_tier].insert(s);
+	    defer_step(s_tier, step_num);
 	  }
       }
     else if(irrelevant(s))
@@ -2047,22 +2320,31 @@ private:
     else if(breaks_user_constraint(s))
       {
 	LOG_WARN(logger, "Deferring rejected solution " << s);
-	deferred[defer_tier].insert(s);
+	defer_step(defer_tier, step_num);
       }
     else
       {
 	LOG_TRACE(logger, "Enqueuing " << s);
 
-	open.push(s);
+	open.push(step_num);
       }
   }
 
-  /** Try to enqueue the given collection of packages. */
-  void try_enqueue(const std::vector<solution> &sols)
+  /** Try to enqueue the children of the given step. */
+  void try_enqueue_children(int parent_step_num)
   {
-    for(typename std::vector<solution>::const_iterator
-	  succi = sols.begin();	succi != sols.end(); ++succi)
-      try_enqueue(*succi);
+    if(parent_step_num == -1)
+      return;
+
+    int child_step_num = steps[parent_step_num].first_child;
+    while(child_step_num != -1)
+      {
+	try_enqueue(child_step_num);
+	if(steps[child_step_num].is_last_child)
+	  child_step_num = -1;
+	else
+	  ++child_step_num;
+      }
   }
 
   /** Internal routine to check for the legality of a 'move' and
@@ -2122,40 +2404,69 @@ private:
       }
   }
 
-  /** Generate a solution and push it onto an encapsulated vector of
-   *  solutions.
+  /** Generate a solution and add a resolver step for it.
+   *
+   *  Note: correctness here relies on the fact that we don't
+   *  interleave generation.  There's a sanity-check to ensure this.
    */
-  class real_generator
+  struct real_generator
   {
-    std::vector<solution> &target;
+    // The first time a step is generated, we update the parent's
+    // child pointer.
+    bool first;
+    int parent_step_num;
+    std::deque<step> &steps;
+    typename std::deque<step>::size_type steps_size;
     std::set<package> *visited_packages;
     const log4cxx::LoggerPtr &logger;
   public:
-    real_generator(std::vector<solution> &_target,
+    real_generator(int _parent_step_num,
+		   std::deque<step> &_steps,
 		   std::set<package> *_visited_packages,
 		   const log4cxx::LoggerPtr &_logger)
-      :target(_target), visited_packages(_visited_packages), logger(_logger)
+      : first(true),
+	parent_step_num(_parent_step_num),
+	steps(_steps),
+	steps_size(steps.size()),
+	visited_packages(_visited_packages),
+	logger(_logger)
     {
     }
 
-    template<typename c_iter>
     void make_successor(const solution &s,
-			const c_iter &cbegin, const c_iter &cend,
+			const choice &c,
 			const tier &succ_tier,
 			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights) const
+			const solution_weights<PackageUniverse> &weights)
     {
-      target.push_back(solution::successor(s,
-					   cbegin, cend,
-					   succ_tier,
-					   universe, weights));
+      eassert(steps.size() == steps_size);
 
-      LOG_TRACE(logger, "Generated successor: " << target.back());
+      // Update the parent's child link the first time through.
+      if(first)
+	{
+	  if(parent_step_num != -1)
+	    steps[parent_step_num].first_child = steps.size();
+	  first = false;
+	}
+      else
+	// On subsequent trips through this routine, move forward the
+	// "last child" flag.
+	steps[steps.size() - 1].is_last_child = false;
+
+      solution sol(solution::successor(s,
+				       &c, (&c) + 1,
+				       succ_tier,
+				       universe, weights));
+      steps.push_back(step(sol, parent_step_num, c, true));
+
+      steps_size = steps.size();
+
+      LOG_TRACE(logger, "Generated successor (step " << steps_size - 1 << "): " << steps.back().sol);
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
 	{
-	  const solution &generated(target.back());
+	  const solution &generated(steps.back().sol);
 
 	  for(typename imm::set<dep>::const_iterator bi =
 		generated.get_broken().begin();
@@ -2186,9 +2497,8 @@ private:
     {
     }
 
-    template<typename c_iter>
     void make_successor(const solution &s,
-			const c_iter &cbegin, const c_iter &cend,
+			const choice &c,
 			const tier & succ_tier,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
@@ -2264,7 +2574,7 @@ private:
 				 const version &v,
 				 bool from_dep_source,
 				 promotion &result_promotion,
-				 const SolutionGenerator &generator,
+				 SolutionGenerator &generator,
 				 std::set<package> *visited_packages) const
   {
     // Note: it's essential for correctness that the set of forcing
@@ -2374,7 +2684,7 @@ private:
 	      promotion_tier = current_tier;
 
 
-	    generator.make_successor(s, &new_choice, &new_choice + 1,
+	    generator.make_successor(s, new_choice,
 				     promotion_tier,
 				     universe, weights);
 	  }
@@ -2425,7 +2735,7 @@ private:
   template<typename SolutionGenerator>
   void generate_successors(const solution &s,
 			   const dep &d,
-			   const SolutionGenerator &generator,
+			   SolutionGenerator &generator,
 			   std::set<package> *visited_packages) const
   {
     version source = d.get_source();
@@ -2527,7 +2837,7 @@ private:
 	  }
 	LOG_TRACE(logger, "Trying to leave " << d << " unresolved");
 	generator.make_successor(s,
-				 &break_d, &break_d + 1,
+				 break_d,
 				 unresolved_tier,
 				 universe, weights);
 
@@ -2551,14 +2861,15 @@ private:
   /** Processes the given solution by enqueuing its successor nodes
    *  (if any are available).
    */
-  void process_solution(const solution &s,
+  void process_solution(int step_num,
 			std::set<package> *visited_packages)
   {
     // Any forcings are immediately applied to 'curr', so that
     // forcings are performed ASAP.
-    solution curr = s;
+    int curr_step_num = step_num;
+    solution curr = steps[curr_step_num].sol;
 
-    eassert_on_soln(!s.get_broken().empty(), s);
+    eassert_on_soln(!curr.get_broken().empty(), curr);
 
     // Set to \b true if this search node is untenable.
     bool dead_end = false;
@@ -2572,7 +2883,7 @@ private:
     bool done = false;
     while(!done)
       {
-	LOG_DEBUG(logger, "Processing " << curr);
+	LOG_DEBUG(logger, "Processing step " << curr_step_num << ": " << curr);
 
 	done = true;
 
@@ -2636,9 +2947,11 @@ private:
 
 
 	    int num_successors = 0;
-	    generate_successors(curr, *bi,
-				null_generator(num_successors),
-				visited_packages);
+	    {
+	      null_generator g(num_successors);
+	      generate_successors(curr, *bi, g,
+				  visited_packages);
+	    }
 
 	    if(num_least_successors == -1 ||
 	       num_successors < num_least_successors)
@@ -2651,16 +2964,18 @@ private:
 	      dead_end = true;
 	    else if(num_successors == 1)
 	      {
-		LOG_TRACE(logger, "Forced resolution of " << *bi);
+		LOG_TRACE(logger, "Forced resolution (step " << curr_step_num << ") of " << *bi);
 
-		std::vector<solution> v;
-		real_generator g(v, visited_packages, logger);
+		real_generator g(curr_step_num, steps, visited_packages, logger);
 		generate_successors(curr, *bi,
 				    g, visited_packages);
 
-		eassert_on_dep(v.size() == 1, s, *bi);
+		curr_step_num = steps[curr_step_num].first_child;
+		eassert_on_dep(curr_step_num != -1 &&
+			       steps[curr_step_num].is_last_child,
+			       curr, *bi);
 
-		curr = v.back();
+		curr = steps[curr_step_num].sol;
 		done = false;
 
 		num_least_successors = -1;
@@ -2678,25 +2993,21 @@ private:
     // and stop (a full solution has no successors to generate).
     if(curr.is_full_solution())
       {
-	try_enqueue(curr);
+	try_enqueue(curr_step_num);
 	return;
       }
-
-    unsigned int nsols = 0;
 
     // Should never happen unless we have no broken dependencies.
     if(num_least_successors != -1)
       {
 	LOG_TRACE(logger,
-		  "Generating successors for "
+		  "Generating successors for step " << curr_step_num << " and dep "
 		  << least_successors);
 
-	std::vector<solution> v;
-	generate_successors(curr, least_successors,
-			    real_generator(v, visited_packages, logger),
+	real_generator g(curr_step_num, steps, visited_packages, logger);
+	generate_successors(curr, least_successors, g,
 			    visited_packages);
-	try_enqueue(v);
-	nsols += v.size();
+	try_enqueue_children(curr_step_num);
       }
   }
 public:
@@ -2736,8 +3047,12 @@ public:
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
+     open(step_goodness_compare(steps)),
      minimum_search_tier(minimum_tier),
      maximum_search_tier(minimum_tier),
+     future_solutions(step_goodness_compare(steps)),
+     closed(solution_contents_compare()),
+     deferred_future_solutions(step_contents_compare(steps)),
      promotions(_universe),
      version_tiers(new tier[_universe.get_version_count()])
   {
@@ -3127,7 +3442,7 @@ public:
     // \todo Track this more efficiently (we just need to wrap up the
     // deferred map and keep a counter in the encapsulating class).
     size_t rval = 0;
-    for(typename std::map<tier, std::set<solution, solution_contents_compare> >::const_iterator
+    for(typename std::map<tier, std::set<int, step_contents_compare> >::const_iterator
 	  it = deferred.begin(); it != deferred.end(); ++it)
       rval += it->second.size();
 
@@ -3228,11 +3543,12 @@ public:
       {
 	closed.clear();
 
-	open.push(solution::root_node(initial_broken,
-				      universe,
-				      weights,
-				      initial_state,
-				      minimum_tier));
+	steps.push_back(step(solution::root_node(initial_broken,
+						 universe,
+						 weights,
+						 initial_state,
+						 minimum_tier)));
+	open.push(0);
       }
 
     // Here the outer loop is used to ensure that we don't get
@@ -3258,7 +3574,8 @@ public:
 	update_counts_cache();
 
 
-	solution s=open.top();
+	int curr_step_num = open.top();
+	solution s = steps[curr_step_num].sol;
 	open.pop();
 
 	++odometer;
@@ -3286,14 +3603,14 @@ public:
 	  {
 	    LOG_DEBUG(logger, "Deferring solution " << s << " to tier " << s_tier
 		      << ": it is beyond the current horizon of " << maximum_search_tier);
-	    deferred[s_tier].insert(s);
+	    defer_step(s_tier, curr_step_num);
 	    continue;
 	  }
 	else if(breaks_user_constraint(s))
 	  {
 	    LOG_DEBUG(logger, "Deferring rejected solution " << s);
 
-	    deferred[defer_tier].insert(s);
+	    defer_step(defer_tier, curr_step_num);
 	    continue;
 	  }
 
@@ -3304,46 +3621,25 @@ public:
 	  {
 	    LOG_INFO(logger, " --- Found solution " << s);
 
-	    solution minimized = remove_stupid ? eliminate_stupid(s) : s;
+	    // Remember this solution, so we don't try to return it
+	    // again in the future.  (note that we remove
+	    // from-dep-source information so that we match any
+	    // solution with the same version content)
+	    promotions.insert(promotion(get_solution_choices_without_dep_info(s),
+					already_generated_tier));
 
-	    // We only want to re-enqueue the solution if it changed
-	    // in version content, meaning that it changed in *size*
-	    // (recall that the new version content is always a subset
-	    // of the old).  If we do this whenever the solution
-	    // *changed*, we sometimes end up re-inserting something
-	    // with the same version content and hence something
-	    // that's already on the closed queue.
-	    if(minimized.get_choices().size() != s.get_choices().size())
-	      {
-		// Make it fend for itself! (although I expect it to
-		// come up again immediately; hrm)
-		LOG_TRACE(logger, " --- Placing de-stupidified solution back on the open queue");
-		finished = false;
-		open.push(minimized);
-	      }
-	    else
-	      {
-		closed.insert(minimized);
-		// Remember this solution, so we don't try to return
-		// it again in the future.  (note that we remove
-		// from-dep-source information so that we match any
-		// solution with the same version content)
-		promotions.insert(promotion(get_solution_choices_without_dep_info(minimized),
-					    already_generated_tier));
+	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
-		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
+	    LOG_INFO(logger, " *** open: " << open.size()
+		     << "; closed: " << closed.size()
+		     << "; promotions: " << promotions.size()
+		     << "; deferred: " << get_num_deferred());
 
-		LOG_INFO(logger, " *** open: " << open.size()
-			 << "; closed: " << closed.size()
-			 << "; promotions: " << promotions.size()
-			 << "; deferred: " << get_num_deferred());
-
-		future_solutions.push(minimized);
-	      }
+	    future_solutions.push(curr_step_num);
 	  }
 	// Nope, let's go enqueue successor nodes.
 	else
-	  process_solution(s, visited_packages);
+	  process_solution(curr_step_num, visited_packages);
 
 	// Keep track of the "future horizon".  If we haven't found a
 	// solution, we aren't using those steps up at all.
@@ -3360,11 +3656,11 @@ public:
 	      deferred.begin()->first < already_generated_tier &&
 	      deferred.begin()->first < conflict_tier)
 	  {
-	    const typename std::map<tier, std::set<solution, solution_contents_compare> >::iterator
+	    const typename std::map<tier, std::set<int, step_contents_compare> >::iterator
 	      deferred_begin = deferred.begin();
-	    const std::pair<tier, std::set<solution, solution_contents_compare> > &first_pair = *deferred_begin;
+	    const std::pair<tier, std::set<int, step_contents_compare> > &first_pair = *deferred_begin;
 	    const tier &first_tier = first_pair.first;
-	    const std::set<solution, solution_contents_compare> &first_solutions = first_pair.second;
+	    const std::set<int, step_contents_compare> &first_solutions = first_pair.second;
 
 	    LOG_TRACE(logger, "Advancing to tier " << first_tier
 		      << " and inserting " << first_solutions.size()
@@ -3372,7 +3668,7 @@ public:
 
 	    maximum_search_tier = first_tier;
 
-	    for(typename std::set<solution, solution_contents_compare>::const_iterator
+	    for(typename std::set<int, step_contents_compare>::const_iterator
 		  it = first_solutions.begin(); it != first_solutions.end(); ++it)
 	      // We can probably just do .push(), but doing this will
 	      // avoid any nasty surprises due to not checking what
@@ -3387,21 +3683,22 @@ public:
       {
 	solution rval;
 
-	while(!future_solutions.empty() && !rval)
+	while(!future_solutions.empty() && !rval.valid())
 	  {
-	    solution tmp = future_solutions.top();
+	    int tmp_step = future_solutions.top();
+	    solution tmp = steps[tmp_step].sol;
 	    future_solutions.pop();
 
 	    if(breaks_user_constraint(tmp))
 	      {
 		LOG_TRACE(logger, "Deferring the future solution " << tmp);
-		deferred_future_solutions.insert(tmp);
+		deferred_future_solutions.insert(tmp_step);
 	      }
 	    else
 	      rval = tmp;
 	  }
 
-	if(rval)
+	if(rval.valid())
 	  {
 	    if(open.empty() && future_solutions.empty())
 	      finished = true;

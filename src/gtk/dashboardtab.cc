@@ -89,7 +89,7 @@ namespace gui
   {
     log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
-    if(sol)
+    if(sol.valid())
       LOG_DEBUG(logger, "Manually fixing the remaining upgrades from the solution " << sol);
     else
       LOG_DEBUG(logger, "Manually fixing the upgrade.");
@@ -97,7 +97,7 @@ namespace gui
     // Figure out the initial set of installations.
     imm::map<aptitude_resolver_package, aptitude_resolver_version> initial_versions;
 
-    if(sol)
+    if(sol.valid())
       {
 	// Start with the initial versions of this solution.
 	std::set<aptitude_resolver_version> sol_initial_versions;
@@ -242,7 +242,7 @@ namespace gui
     {
       aptitudeDepCache::action_group group(*apt_cache_file, NULL);
 
-      if(upgrade_solution)
+      if(upgrade_solution.valid())
 	(*apt_cache_file)->apply_solution(upgrade_solution, NULL);
       else
 	// If there is no solution, assume that the upgrade can be
@@ -586,7 +586,7 @@ namespace gui
 
     upgrade_solution = sol;
 
-    if(sol)
+    if(sol.valid())
       LOG_TRACE(logger, "Upgrade solution computed: " << sol);
     else
       LOG_TRACE(logger, "No upgrade solution computed because there were no problems to solve.");
@@ -598,7 +598,7 @@ namespace gui
 
     // Find out how many upgrades will be installed.
     int num_upgrades_selected;
-    if(sol)
+    if(sol.valid())
       {
 	num_upgrades_selected = 0;
 	for(std::set<pkgCache::PkgIterator>::const_iterator it = upgrades.begin();

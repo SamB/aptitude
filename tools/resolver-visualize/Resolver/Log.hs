@@ -157,13 +157,13 @@ newPartialStep sol startPos =
 compile :: String -> Regex
 compile = makeRegex
 
-processingStepStart = compile "Processing (.*)$"
+processingStepStart = compile "Processing (step [0-9]*: )?(.*)$"
 newPromotion        = compile "Inserting new promotion: (.*)$"
 -- Note: if we see a "forced" dependency and no "generated" line, we
 -- magically know that the next "Processing" line will be for its
 -- successor (and we use that to ensure that they get linked up).
-successorsStart     = compile "(Generating successors for|Forced resolution of) (.*)$"
-madeSuccessor       = compile "Generated successor: (.*)$"
+successorsStart     = compile "(Generating successors for( step [0-9]* and dep)?|Forced resolution (\\(step [0-9]*\\) )?of) (.*)$"
+madeSuccessor       = compile "Generated successor( \\(step [0-9]*\\))?: (.*)$"
 tryingResolution    = compile "Trying to resolve (.*) by installing (.*)(from the dependency source)?$"
 tryingUnresolved    = compile "Trying to leave (.*) unresolved$"
 enqueuing           = compile "Enqueuing (.*)$"
@@ -445,7 +445,7 @@ addSuccessor succInf@(s, _, _) filename lineNum lastStep =
 -- processingStepStart.
 processStepStartLine :: ByteString -> MatchArray -> LogParse ()
 processStepStartLine source matches =
-    do sol <- parseMatch solution source (matches!1)
+    do sol <- parseMatch solution source (matches!2)
        loc <- getCurrentLineStart
        -- If the solution is empty, assume we're starting a new run.
        when (Map.null $ solChoices sol) (startNewRun loc)
@@ -468,7 +468,7 @@ processNewPromotionLine source matches =
 -- | Process a line of the log file that starts successor generation.
 processSuccessorsStartLine :: ByteString -> MatchArray -> LogParse ()
 processSuccessorsStartLine source matches =
-    do d <- parseMatch dep source (matches!2)
+    do d <- parseMatch dep source (matches!4)
        let forced = extract (matches!1) source == BS.pack "Forced resolution of"
        d `seq` forced `seq` setGeneratingSuccessorsInfo $
          Just (GeneratingSuccessorsInfo { generatingForced = forced,
@@ -511,7 +511,7 @@ processTryingUnresolvedLine source matches =
 -- is being inserted into the queue.
 processGeneratedLine :: ByteString -> MatchArray -> LogParse ()
 processGeneratedLine source matches =
-    do s <- parseMatch solution source (matches!1)
+    do s <- parseMatch solution source (matches!2)
        lastSeenChoice <- getLastSeenTryChoice
        fn <- getSourceName
        lineNum <- getCurrentLine

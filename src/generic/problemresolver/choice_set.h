@@ -327,6 +327,26 @@ public:
     insert_choice_narrow(*this)(c);
   }
 
+  /** \brief Remove everything that overlaps the given choice from
+   *  this set.
+   *
+   *  This is used to narrow promotion sets while backpropagating
+   *  promotions.
+   */
+  void remove_overlaps(const choice &c)
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	install_version_choices.erase(c.get_ver().get_package());
+	break;
+
+      default:
+	not_install_version_choices.erase(c);
+	break;
+      }
+  }
+
   bool contains(const choice &c) const
   {
     switch(c.get_type())
