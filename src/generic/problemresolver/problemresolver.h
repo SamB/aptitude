@@ -633,32 +633,30 @@ private:
   // 30,000, then later to tier 40,000).
   //
   // The lifetime of a step is as follows:
-  //  (1) Created with no children and maybe a parent link.
+  //  (1) Created with no children, an initial intrinsic promotion,
+  //      and maybe a parent link.
   //  (2) Children added, along with successor constraints.
   //  (3) When each of its children has registered a promotion,
   //      the step's promotion is set and its parent is examined
   //      to see if it should get a promotion now.
   //
-  // Regarding (3), what we do is this: when a promotion is computed
-  // for a step and either (i) the step has no promotion, or (ii) the
-  // new promotion is not a superset of the existing one or it has a
-  // higher tier, then we assign the promotion and examine the parent
-  // of that step.  If each other child of the parent also has a
-  // promotion, then we calculate a new promotion for the parent and
-  // recur.
+  // Regarding (3), what we do is this: whenever a new promotion is
+  // computed for a step, it goes into the set of promotions for that
+  // step and onto the list of promotions if it was really new.  Then,
+  // we add the parent to a set of nodes that should be examined for
+  // promotion propagation.  After the step finishes, the nodes in
+  // this set are processed for propagation from their children.
   //
   // To save space and keep things compact, the tree is represented as
   // an array (actually a deque), with parent and child links stored
-  // as indices into the array.
+  // as indices into the array.  This made more sense when it had just
+  // a few members; maybe now it should be allocated on the heap and
+  // reference-counted?
   struct step
   {
     // If true, this is the last child in its parent's child list.
     // Meaningless if parent is -1 (meaning there is no parent node).
     bool is_last_child : 1;
-    // If true, this step has been processed and has a promotion.
-    // Used by the parent to decide whether it can generate a
-    // promotion of its own.
-    bool has_promotion : 1;
     // Index of the parent step, or -1 if there is no parent.
     int parent;
     // Index of the first child step, or -1 if there are no children.
@@ -677,34 +675,60 @@ private:
     // is used, along with information from the successors, to compute
     // the promotion associated with this node (if any).
     //
+    // This contains versions that either structurally knocked out
+    // possible resolutions to the dependency that was selected for
+    // expansion, *or* that caused a resolution to hit a conflict /
+    // already-generated promotion.  NOTE: the entries in this set
+    // might not be represented in every promotion at this step; some
+    // promotions could be generated from dependencies that weren't
+    // actually expanded.  This is used when accumulating this node's
+    // sub-promotions and filling in new promotions; the parent
+    // shouldn't examine it.
+    //
     // This only has a meaningful value if first_child is not -1.
     choice_set successor_constraints;
-    // The promotion associated with this step (meaningless if
-    // has_promotion is false).  Read by the parent once all its
-    // children have promotions.
-    promotion p;
+    // All the promotions associated with this step; each promotion is
+    // universally valid but was discovered in the context of this
+    // step.  No attempt is made to eliminate redundant promotions at
+    // the moment.
+    //
+    // TODO: should probably put some sort of a limit on the number of
+    // these; in theory we can keep accumulating them till the cows
+    // come home, but the number could become unbounded in
+    // pathological cases.  More than a hundred is probably a bad
+    // sign, for instance.  Dropping some arbitrarily will never cause
+    // problems (except that the resolver might miss opportunities to
+    // prune branches).
+    std::set<promotion> promotions;
+
+    // The same, but in the order that they were added; used to
+    // quickly partition the list into "new" and "old" promotions.
+    //
+    // TODO: should be a list of const_iterators referencing the above
+    // set.
+    std::vector<promotion> promotions_list;
+
+    // The number of "new" promotions added to the list since the
+    // parent last scanned it.
+    int promotions_list_new_promotions;
 
     /** \brief Remove the promotion information if it is in the
      *  deferral tier.
      */
     void blank_deferral_promotion()
     {
-      if(has_promotion &&
-	 p.get_tier() >= defer_tier &&
-	 p.get_tier() < conflict_tier)
-	{
-	  has_promotion = false;
-	  p = promotion();
-	}
+      eassert(false);
+      // TODO: implement.
     }
 
     /** \brief Default step constructor; only exists for use
      *  by STL containers.
      */
     step()
-      : is_last_child(true), has_promotion(false),
+      : is_last_child(true),
 	parent(-1), first_child(-1), sol(), reason(),
-	successor_constraints(), p()
+	successor_constraints(), promotions(),
+	promotions_list(), promotions_list_new_promotions(0)
     {
     }
 
@@ -714,28 +738,34 @@ private:
      *  constraints.
      */
     step(const solution &_sol)
-      : is_last_child(true), has_promotion(false),
+      : is_last_child(true),
 	parent(-1), first_child(-1), sol(_sol), reason(),
-	successor_constraints(), p()
+	successor_constraints(), promotions(),
+	promotions_list(), promotions_list_new_promotions(0)
     {
     }
 
     /** \brief Make a step with the given parent.
      *
-     *  The step initially has no children, promotion, or successor
-     *  constraints.
+     *  The step initially has no children or successor constraints.
      */
     step(solution &_sol, int _parent,
 	 const choice &_reason, bool _is_last_child)
       : is_last_child(_is_last_child),
-	has_promotion(false), parent(_parent),
+	parent(_parent),
 	first_child(-1), sol(_sol), reason(_reason),
-	successor_constraints(), p()
+	successor_constraints(), promotions(),
+	promotions_list(), promotions_list_new_promotions(0)
     {
     }
   };
 
   std::deque<step> steps;
+  // Steps whose children have pending propagation requests.  Stored
+  // in reverse order, because we should handle later steps first
+  // (since they might be children of earlier steps and thus add new
+  // promotions to them).
+  std::set<int, std::greater<int> > steps_pending_promotion_propagation;
 
   // Step-related routines.
   bool all_children_have_promotions(const step &s)
@@ -757,6 +787,95 @@ private:
     return true;
   }
 
+  // Used to recursively build the set of all the promotions in the
+  // Cartesian product of the sub-promotions that include at least one
+  // promotion that's "new".
+  //
+  // Normally there should only be "a few" entries in this
+  // cross-product (say, in unusual cases two dozen).  Once I see how
+  // this performs I should add some code to stop when we get "too
+  // many" promotions. (where "too many" might be one or two hundred)
+  //
+  // Returns "true" if anything was generated.  We care because we
+  // need to know whether to queue the parent of the parent for
+  // propagation.
+  bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
+			    const choice_set &choices, const tier &t)
+  {
+    step &parent = steps[parentNum];
+    // TODO: should check here if there are too many steps in the
+    // parent step and abort if so.
+
+    const step &child = steps[childNum];
+
+    typename std::vector<promotion>::const_iterator begin, end = child.promotions_list.end();
+    if(child.is_last_child && !has_new_promotion)
+      // Only process new promotions if we don't have one yet.
+      begin = child.promotions_list.begin() + child.promotions_list_new_promotions;
+    else
+      begin = child.promotions_list.begin();
+
+    bool rval = false;
+    for(typename std::vector<promotion>::const_iterator it = begin; it != end; ++it)
+      {
+	bool current_is_new_promotion =
+	  (it - child.promotions_list.begin()) >= child.promotions_list_new_promotions;
+
+	choice_set new_choices(choices);
+	tier new_tier(t);
+
+	const promotion &p(*it);
+	choice_set p_choices(p.get_choices());
+	// Strip out the child's link before merging with the existing
+	// choice set.
+	p_choices.remove(child.reason);
+	const tier &p_tier(p.get_tier());
+	// Augment the choice set with these new choices.  Narrowing
+	// is appropriate: anything matching the promotion should
+	// match all the choices we found.
+	new_choices.insert_or_narrow(p_choices);
+	if(p_tier < new_tier)
+	  new_tier = p_tier;
+
+	if(parent.sol.get_tier() >= new_tier)
+	  // No point in generating a promotion whose tier is below
+	  // the parent's tier.
+	  continue;
+
+
+	if(child.is_last_child)
+	  {
+	    promotion new_promotion(new_choices, new_tier);
+
+	    LOG_DEBUG(logger, "Created backpropagated promotion at step "
+		      << parentNum << ": " << new_promotion);
+
+	    // Actually output a new promotion in the parent.
+	    std::pair<std::set<promotion>, bool> insert_info =
+	      parent.promotions.insert(new_promotion);
+
+	    if(insert_info.second)
+	      // Otherwise this promotion was already generated.
+	      parent.promotions_list.push_back(new_promotion);
+
+	    rval = true;
+	  }
+	else
+	  {
+	    bool new_has_new_promotion = has_new_promotion || current_is_new_promotion;
+	    // Recur.
+	    bool generated_anything =
+	      add_child_promotions(parentNum, childNum + 1,
+				   new_has_new_promotion,
+				   new_choices, new_tier);
+
+	    rval = rval && generated_anything;
+	  }
+      }
+
+    return rval;
+  }
+
   void maybe_collect_child_promotions(int stepNum)
   {
     step &parentStep(steps[stepNum]);
@@ -768,77 +887,39 @@ private:
 	return;
       }
 
-    // Do a first pass to quickly check whether all the children have
-    // promotions.
-    if(!all_children_have_promotions(parentStep))
+    if(add_child_promotions(stepNum, parentStep.firstChild,
+			     false, parentStep.successor_constraints,
+			     maximum_tier))
       {
-	LOG_TRACE(logger, "Not all the children of step " << stepNum << " have promotions yet; nothing to do.");
-	return;
-      }
-
-    // The tier of the promotion that's currently being generated.  It
-    // is decreased whenever we encounter a solution whose tier is
-    // below the current promotion tier.
-    tier promotion_tier(maximum_tier);
-    // True if we can generate a useful promotion; set to false if the
-    // promotion tier drops to the tier of the current step's
-    // solution, since then the promotion doesn't help anything.
-    bool promotion_ok = true;
-    choice_set forcing_choices;
-
-    int childNum = parentStep.firstChild;
-    while(childNum != -1 && promotion_ok)
-      {
-	const step &child(steps[childNum]);
-
-
-	choice_set child_choices = child.p.get_choices();
-	child_choices.remove_overlaps(child.reason);
-
-
-	const tier &child_tier(child.p.get_tier());
-	if(child_tier < promotion_tier)
+	if(parentStep.parent != -1)
 	  {
-	    promotion_tier = child.p.get_tier();
-	    promotion_ok = parentStep.sol.get_tier() < child_tier;
+	    LOG_TRACE(logger, "Scheduling step " << parentStep.parent
+		      << " for promotion propagation.");
+	    steps_pending_promotion_propagation.insert(parentStep.parent);
 	  }
-
-	if(promotion_ok)
-	  forcing_choices.insert_or_narrow(child_choices);
-
-
-	if(child.is_last_child)
-	  childNum = -1;
-	else
-	  ++childNum;
-      }
-
-    if(promotion_ok)
-      {
-	promotion p(forcing_choices, promotion_tier);
-	LOG_DEBUG(logger, "Created backpropagated promotion at step " << stepNum << ": " << p);
-	set_promotion(stepNum, p);
       }
     else
       LOG_TRACE(logger, "No new promotion at step " << stepNum);
   }
 
-  void set_promotion(int stepNum,
+  void add_promotion(int stepNum,
 		     const promotion &p)
   {
     step &targetStep(steps[stepNum]);
 
-    // Ignore promotions that are guaranteed to be redundant.
-    if(targetStep.has_promotion &&
-       p.get_tier() <= targetStep.p.get_tier() &&
-       p.get_choices().contains(targetStep.p.get_choices()))
-      return;
+    // TODO: could do a slow check for redundant promotions here?
 
-    targetStep.has_promotion = true;
-    targetStep.p = p;
-
-    if(targetStep.parent != -1)
-      maybe_collect_child_promotions(targetStep.parent);
+    std::pair<typename std::set<step>::iterator, bool>
+      insert_info(targetStep.promotions.insert(p));
+    if(insert_info.second)
+      {
+	LOG_TRACE(logger, "Adding the promotion " << p
+		  << " to step " << stepNum
+		  << " and scheduling it for propagation.");
+	targetStep.promotions_list.push_back(p);
+	if(targetStep.parent != -1)
+	  steps_pending_promotion_propagation.insert(stepNum);
+      }
   }
 
   /** Hash function for packages: */
