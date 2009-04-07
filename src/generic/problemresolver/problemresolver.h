@@ -761,7 +761,7 @@ private:
    *  arbitrarily is OK -- it just means we won't have quite as much
    *  information available to prune the search tree.
    */
-  static const int max_propagated_promotions = 100;
+  static const unsigned int max_propagated_promotions = 100;
   std::deque<step> steps;
   // Steps whose children have pending propagation requests.  Stored
   // in reverse order, because we should handle later steps first
@@ -770,6 +770,20 @@ private:
   std::set<int, std::greater<int> > steps_pending_promotion_propagation;
 
   // Step-related routines.
+
+  step &get_step(int n)
+  {
+    eassert(n >= 0);
+    eassert((unsigned)n < steps.size());
+    return steps[n];
+  }
+
+  const step &get_step(int n) const
+  {
+    eassert(n >= 0);
+    eassert(n < steps.size());
+    return steps[n];
+  }
 
   // Used to recursively build the set of all the promotions in the
   // Cartesian product of the sub-promotions that include at least one
@@ -781,13 +795,13 @@ private:
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
 			    const choice_set &choices, const tier &t)
   {
-    step &parent = steps[parentNum];
+    step &parent = get_step(parentNum);
     // Don't do anything if the parent has too many propagations
     // already.
     if(parent.promotions_list.size() >= max_propagated_promotions)
       return false;
 
-    const step &child = steps[childNum];
+    const step &child = get_step(childNum);
 
     typename std::vector<promotion>::const_iterator begin, end = child.promotions_list.end();
     if(child.is_last_child && !has_new_promotion)
@@ -798,7 +812,7 @@ private:
 
     bool rval = false;
     for(typename std::vector<promotion>::const_iterator it = begin;
-	it != end && parent.promotions_list_size() < max_propagated_promotions; ++it)
+	it != end && parent.promotions_list.size() < max_propagated_promotions; ++it)
       {
 	bool current_is_new_promotion =
 	  (it - child.promotions_list.begin()) >= child.promotions_list_new_promotions;
@@ -808,9 +822,13 @@ private:
 
 	const promotion &p(*it);
 	choice_set p_choices(p.get_choices());
+
+	LOG_TRACE(logger, "Backpropagating " << p << " through the successor link " << child.reason
+		  << " and adding to the current choice set " << choices);
+
 	// Strip out the child's link before merging with the existing
 	// choice set.
-	p_choices.remove(child.reason);
+	p_choices.remove_overlaps(child.reason);
 	const tier &p_tier(p.get_tier());
 	// Augment the choice set with these new choices.  Narrowing
 	// is appropriate: anything matching the promotion should
@@ -832,8 +850,12 @@ private:
 	    LOG_DEBUG(logger, "Created backpropagated promotion at step "
 		      << parentNum << ": " << new_promotion);
 
+	    // Stash the promotion away in the global set of
+	    // promotions.
+	    promotions.insert(new_promotion);
+
 	    // Actually output a new promotion in the parent.
-	    std::pair<std::set<promotion>, bool> insert_info =
+	    std::pair<typename std::set<promotion>::const_iterator, bool> insert_info =
 	      parent.promotions.insert(new_promotion);
 
 	    if(insert_info.second)
@@ -863,7 +885,7 @@ private:
   // complicating the code.
   void maybe_collect_child_promotions(int stepNum)
   {
-    step &parentStep(steps[stepNum]);
+    step &parentStep(get_step(stepNum));
     LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum << ": " << parentStep.sol);
 
     if(parentStep.first_child == -1)
@@ -872,7 +894,7 @@ private:
 	return;
       }
 
-    if(add_child_promotions(stepNum, parentStep.firstChild,
+    if(add_child_promotions(stepNum, parentStep.first_child,
 			     false, parentStep.successor_constraints,
 			     maximum_tier))
       {
@@ -890,11 +912,19 @@ private:
   void schedule_promotion_propagation(int stepNum,
 				      const promotion &p)
   {
-    step &targetStep(steps[stepNum]);
+    step &targetStep(get_step(stepNum));
+
+    if(targetStep.promotions.size() == max_propagated_promotions)
+      {
+	LOG_TRACE(logger, "Not adding the promotion " << p
+		  << " to step " << stepNum
+		  << " since that step has the maximum number of promotions already.");
+	return;
+      }
 
     // TODO: could do a slow check for redundant promotions here?
 
-    std::pair<typename std::set<step>::iterator, bool>
+    std::pair<typename std::set<promotion>::iterator, bool>
       insert_info(targetStep.promotions.insert(p));
     if(insert_info.second)
       {
@@ -989,6 +1019,11 @@ private:
 
     bool operator()(int step_num1, int step_num2) const
     {
+      eassert(step_num1 >= 0);
+      eassert((unsigned)step_num1 < steps.size());
+      eassert(step_num2 >= 0);
+      eassert((unsigned)step_num2 < steps.size());
+
       const solution &s1(steps[step_num1].sol);
       const solution &s2(steps[step_num2].sol);
 
@@ -1083,6 +1118,11 @@ private:
 
     bool operator()(int step_num1, int step_num2) const
     {
+      eassert(step_num1 >= 0);
+      eassert((unsigned)step_num1 < steps.size());
+      eassert(step_num2 >= 0);
+      eassert((unsigned)step_num2 < steps.size());
+
       const solution &s1(steps[step_num1].sol);
       const solution &s2(steps[step_num2].sol);
 
@@ -2324,7 +2364,7 @@ private:
 
 		++j;
 
-		if(!breaks_user_constraint(steps[*i].sol))
+		if(!breaks_user_constraint(get_step(*i).sol))
 		  {
 		    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
@@ -2350,7 +2390,7 @@ private:
 
 	++j;
 
-	if(!breaks_user_constraint(steps[*i].sol))
+	if(!breaks_user_constraint(get_step(*i).sol))
 	  {
 	    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
@@ -2423,7 +2463,7 @@ private:
   /** Tries to enqueue the given step. */
   void try_enqueue(const int step_num)
   {
-    const solution &s = steps[step_num].sol;
+    const solution &s = get_step(step_num).sol;
     const tier &s_tier = get_solution_tier(s);
     if(maximum_search_tier < s_tier)
       {
@@ -2464,11 +2504,11 @@ private:
     if(parent_step_num == -1)
       return;
 
-    int child_step_num = steps[parent_step_num].first_child;
+    int child_step_num = get_step(parent_step_num).first_child;
     while(child_step_num != -1)
       {
 	try_enqueue(child_step_num);
-	if(steps[child_step_num].is_last_child)
+	if(get_step(child_step_num).is_last_child)
 	  child_step_num = -1;
 	else
 	  ++child_step_num;
@@ -2573,13 +2613,20 @@ private:
       if(first)
 	{
 	  if(parent_step_num != -1)
-	    steps[parent_step_num].first_child = steps.size();
+	    {
+	      eassert(parent_step_num >= 0);
+	      eassert((unsigned)parent_step_num < steps.size());
+	      steps[parent_step_num].first_child = steps.size();
+	    }
 	  first = false;
 	}
       else
 	// On subsequent trips through this routine, move forward the
 	// "last child" flag.
-	steps[steps.size() - 1].is_last_child = false;
+	{
+	  eassert(!steps.empty());
+	  steps[steps.size() - 1].is_last_child = false;
+	}
 
       solution sol(solution::successor(s,
 				       &c, (&c) + 1,
@@ -2861,11 +2908,19 @@ private:
    *                          to compute the successors will be
    *                          pushed.
    *
+   *  \param curr_step        the step whose successors are being generated.
+   *  \param successor_constraints
+   *                          a set into which the successor constraints
+   *                          that were generated should be stored, or a
+   *                          NULL pointer to not accumulate them.
+   *
    *  \param out a vector onto which the successors should be pushed.
    */
   template<typename SolutionGenerator>
   void generate_successors(const solution &s,
 			   const dep &d,
+			   int curr_step,
+			   choice_set *successor_constraints,
 			   SolutionGenerator &generator,
 			   std::set<package> *visited_packages)
   {
@@ -2886,9 +2941,8 @@ private:
     // This is the least tier generated by installing any solver for
     // the dependency.
     tier succ_tier = maximum_tier;
-    // The set of choices that explain the promotion that we're
-    // calculating.
-    choice_set forcing_reasons;
+    // The choices attached to any subpromotions included in the successor tier.
+    choice_set subpromotion_choices;
 
     // Try moving the source, if it is legal to do so.
     //
@@ -2898,7 +2952,12 @@ private:
     if(!d.is_soft())
       {
 	if(source_was_modified)
-	  forcing_reasons.insert_or_narrow(choice::make_install_version(source, dep(), -1));
+	  {
+	    choice change_source(choice::make_install_version(source, dep(), -1));
+	    if(successor_constraints != NULL)
+	      successor_constraints->insert_or_narrow(change_source);
+	    subpromotion_choices.insert_or_narrow(change_source);
+	  }
 	else
 	  {
 	    eassert_on_2objs_soln(source == initial_state.version_of(source.get_package()),
@@ -2914,9 +2973,15 @@ private:
 		  generate_single_successor(s, d, *vi, true, p, generator,
 					    visited_packages);
 
+		  if(successor_constraints != NULL &&
+		     p.get_tier() >= already_generated_tier)
+		    {
+		      successor_constraints->insert_or_narrow(p.get_choices());
+		      LOG_TRACE(logger, "Added " << p << " to the successor constraints, which are now " << successor_constraints);
+		    }
 		  if(s.get_tier() < succ_tier)
 		    {
-		      forcing_reasons.insert_or_narrow(p.get_choices());
+		      subpromotion_choices.insert_or_narrow(p.get_choices());
 		      if(p.get_tier() < succ_tier)
 			succ_tier = p.get_tier();
 		    }
@@ -2936,9 +3001,13 @@ private:
 				  visited_packages);
 
 
+	if(successor_constraints != NULL &&
+	   p.get_tier() >= already_generated_tier)
+	  successor_constraints->insert_or_narrow(p.get_choices());
+
 	if(s.get_tier() < succ_tier)
 	  {
-	    forcing_reasons.insert_or_narrow(p.get_choices());
+	    subpromotion_choices.insert_or_narrow(p.get_choices());
 	    if(p.get_tier() < succ_tier)
 	      succ_tier = p.get_tier();
 	  }
@@ -2961,8 +3030,13 @@ private:
 	tier unresolved_tier = s.get_tier();
 	if(found != promotions.end() && unresolved_tier < found->get_tier())
 	  {
+	    const promotion &p(*found);
+	    if(successor_constraints != NULL &&
+	       p.get_tier() >= already_generated_tier)
+	      successor_constraints->insert_or_narrow(p.get_choices());
+
 	    if(s.get_tier() < succ_tier)
-	      forcing_reasons.insert_or_narrow(found->get_choices());
+	      subpromotion_choices.insert_or_narrow(p.get_choices());
 	    unresolved_tier = found->get_tier();
 	    LOG_TRACE(logger, "Breaking " << d << " triggers a promotion to tier " << unresolved_tier);
 	  }
@@ -2984,9 +3058,15 @@ private:
     // set of forced reasons that we've been accumulating.
     if(s.get_tier() < succ_tier)
       {
-	promotion p(forcing_reasons, succ_tier);
+	promotion p(subpromotion_choices, succ_tier);
 	LOG_DEBUG(logger, "Inserting new promotion: " << p);
 	promotions.insert(p);
+
+	// Update the step graph.
+
+	// Schedule the new promotion to be propagated to the parent
+	// steps.
+	schedule_promotion_propagation(curr_step, p);
       }
   }
 
@@ -2999,7 +3079,7 @@ private:
     // Any forcings are immediately applied to 'curr', so that
     // forcings are performed ASAP.
     int curr_step_num = step_num;
-    solution curr = steps[curr_step_num].sol;
+    solution curr = get_step(curr_step_num).sol;
 
     eassert_on_soln(!curr.get_broken().empty(), curr);
 
@@ -3081,7 +3161,8 @@ private:
 	    int num_successors = 0;
 	    {
 	      null_generator g(num_successors);
-	      generate_successors(curr, *bi, g,
+	      generate_successors(curr, *bi,
+				  curr_step_num, NULL, g,
 				  visited_packages);
 	    }
 
@@ -3099,15 +3180,26 @@ private:
 		LOG_TRACE(logger, "Forced resolution (step " << curr_step_num << ") of " << *bi);
 
 		real_generator g(curr_step_num, steps, visited_packages, logger);
+		choice_set successor_constraints;
 		generate_successors(curr, *bi,
+				    curr_step_num,
+				    &successor_constraints,
 				    g, visited_packages);
 
-		curr_step_num = steps[curr_step_num].first_child;
+		// Now that the successor constraints have been
+		// calculated, restore the invariant that the
+		// successor constraints are meaningful if the step
+		// has children.
+		LOG_TRACE(logger, "Setting the succcessor constraints of step " << curr_step_num << " to " << successor_constraints);
+		get_step(curr_step_num).successor_constraints = successor_constraints;
+
+
+		curr_step_num = get_step(curr_step_num).first_child;
 		eassert_on_dep(curr_step_num != -1 &&
-			       steps[curr_step_num].is_last_child,
+			       get_step(curr_step_num).is_last_child,
 			       curr, *bi);
 
-		curr = steps[curr_step_num].sol;
+		curr = get_step(curr_step_num).sol;
 		done = false;
 
 		num_least_successors = -1;
@@ -3137,8 +3229,18 @@ private:
 		  << least_successors);
 
 	real_generator g(curr_step_num, steps, visited_packages, logger);
-	generate_successors(curr, least_successors, g,
-			    visited_packages);
+	choice_set successor_constraints;
+	generate_successors(curr, least_successors,
+			    curr_step_num,
+			    &successor_constraints,
+			    g, visited_packages);
+
+	// Now that the successor constraints have been calculated,
+	// restore the invariant that the successor constraints are
+	// meaningful if the step has children.
+	LOG_TRACE(logger, "Setting the succcessor constraints of step " << curr_step_num << " to " << successor_constraints);
+	get_step(curr_step_num).successor_constraints = successor_constraints;
+
 	try_enqueue_children(curr_step_num);
       }
   }
@@ -3707,7 +3809,7 @@ public:
 
 
 	int curr_step_num = open.top();
-	solution s = steps[curr_step_num].sol;
+	solution s = get_step(curr_step_num).sol;
 	open.pop();
 
 	++odometer;
@@ -3773,6 +3875,10 @@ public:
 	else
 	  process_solution(curr_step_num, visited_packages);
 
+	// Propagate any new promotions that we discovered up the
+	// search tree.
+	run_scheduled_promotion_propagations();
+
 	// Keep track of the "future horizon".  If we haven't found a
 	// solution, we aren't using those steps up at all.
 	// Otherwise, we count up until we hit 50.
@@ -3818,7 +3924,7 @@ public:
 	while(!future_solutions.empty() && !rval.valid())
 	  {
 	    int tmp_step = future_solutions.top();
-	    solution tmp = steps[tmp_step].sol;
+	    solution tmp = get_step(tmp_step).sol;
 	    future_solutions.pop();
 
 	    if(breaks_user_constraint(tmp))
