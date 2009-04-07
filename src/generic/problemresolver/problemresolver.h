@@ -915,7 +915,7 @@ private:
 	// Make a temporary copy to iterate over.
 	std::set<int, std::greater<int> > tmp;
 	tmp.swap(steps_pending_promotion_propagation);
-	for(std::set<int>::const_iterator it = tmp.begin();
+	for(std::set<int, std::greater<int> >::const_iterator it = tmp.begin();
 	    it != tmp.end(); ++it)
 	  maybe_collect_child_promotions(*it);
       }

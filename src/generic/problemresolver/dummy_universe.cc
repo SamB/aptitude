@@ -154,7 +154,7 @@ void dummy_universe::add_dep(const string &pkg_name, const string &pkg_ver,
     {
       set<dummy_version *> targets2;
 
-      for(set<dummy_package *>::const_iterator i=packages.begin();
+      for(set<dummy_package *, compare_dummy_packages>::const_iterator i=packages.begin();
 	  i!=packages.end(); ++i)
 	for(dummy_package::version_iterator j=(*i)->versions_begin();
 	    j!=(*i)->versions_end(); ++j)
