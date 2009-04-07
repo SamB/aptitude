@@ -2817,8 +2817,11 @@ private:
 				     universe, weights);
 	  }
 	else
-	  LOG_TRACE(logger, "Discarding " << v << " due to conflict "
-		    << found->get_choices());
+	  {
+	    LOG_TRACE(logger, "Discarding " << v << " due to conflict "
+		      << found->get_choices());
+	    promotion_tier = found->get_tier();
+	  }
 
 	// Now add anything that we learned to forcing_choices and
 	// extend the output promotion.
