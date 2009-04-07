@@ -643,7 +643,7 @@ public:
     {
       if(c1.get_type() < c2.get_type())
 	return true;
-      else if(c1.get_type() < c2.get_type())
+      else if(c2.get_type() < c1.get_type())
 	return false;
       else
 	switch(c1.get_type())
