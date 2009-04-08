@@ -187,7 +187,7 @@ tryingUnresolved    = compile "Trying to leave (.*) unresolved$"
 enqueuing           = compile "Enqueuing (.*)$"
 successorsEnd       = compile "Done generating successors\\."
 -- Start generating backpropagations.
-backpropagationsBegin = compile "Backpropagating solutions to step ([0-9]*): (.*)$"
+backpropagationsBegin = compile "Backpropagating promotions to step ([0-9]*): (.*)$"
 backpropagationAdd  = compile "Created backpropagated promotion at step ([0-9]*): (.*)$"
 
 -- | The log lines we know how to parse: the first regex that matches
