@@ -3,6 +3,7 @@ module DotRender(
                 ) where
 
 import Data.List
+import Data.Maybe
 import Dot
 import Resolver.Log
 import Resolver.PrettyPrint
@@ -74,6 +75,19 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
                           | (Successor { successorStep = step }) <- stepSuccessors step,
                             not $ inBounds params (stepOrder step) ]
 
+-- | If the parent of the given step was excluded from the render,
+-- build and return a node for it.
+dotExcludedParent :: Params -> ProcessingStep -> Maybe Node
+dotExcludedParent params step =
+    do (ParentLink {parentLinkParent = parentStep}) <- stepPredecessor step
+       (if inBounds params $ stepOrder parentStep
+        then fail "Not an excluded step."
+        else return $
+             node (name $ printf "step%d" (stepOrder parentStep))
+                      <<< set "label" (printf "Step %d" (stepOrder step))
+                      <<< set "shape" "plaintext"
+                      <<< set "image" (cloudImage params))
+
 dotPromotions params step =
     if not $ showPromotions params
     then []
@@ -144,7 +158,8 @@ dotEdges params step = cutIncoming ++ processed ++ unprocessed ++ promotions ++ 
                           | ParentLink { parentLinkAction = choice,
                                          parentLinkForced = forced,
                                          parentLinkParent = parentStep }
-                              <- maybeToList $ stepPredecessor step ]
+                              <- maybeToList $ stepPredecessor step,
+                            not $ inBounds params $ stepOrder parentStep ]
 
 dotOrderEdges steps =
     [ edge (node (name $ printf "step%d" (stepOrder step1)))
@@ -162,10 +177,12 @@ renderDot params steps =
     then error "No steps to render."
     else let stepNodes          = map (dotStepNode params) truncatedSteps
              unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
+             excludedParents    = catMaybes $ map (dotExcludedParent params) truncatedSteps
              promotions         = concat $ map (dotPromotions params) truncatedSteps
              stepEdges          = concat $ map (dotEdges params) truncatedSteps
              orderEdges         = dotOrderEdges truncatedSteps in
-         digraph (stepNodes ++ unprocessed ++ promotions) (stepEdges ++ orderEdges)
+         digraph (stepNodes ++ excludedParents ++
+                  unprocessed ++ promotions) (stepEdges ++ orderEdges)
 
 writeDotRun params steps outputFile =
     do let dot = renderDot params steps
