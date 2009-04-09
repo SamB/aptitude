@@ -691,8 +691,8 @@ extractProcessingSteps partialSteps =
       findBackpropagation :: (Solution, Promotion) -> Backpropagation
       findBackpropagation (sol, p) =
           case Map.lookup sol stepMap of
-            Just step -> step `seq` p `seq` Backpropagation { backpropagationStep = step,
-                                                              backpropagationPromotion = p }
+            Just step -> p `seq` Backpropagation { backpropagationStep = step,
+                                                   backpropagationPromotion = p }
             Nothing -> error $ "No match for the solution " ++ show sol ++ " when adding the backpropagated promotion " ++ show p
 
       -- How to build an output step from an input step.  This is
