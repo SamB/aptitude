@@ -43,6 +43,7 @@ class Choice_Set_Test : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(Choice_Set_Test);
 
   CPPUNIT_TEST(testInsertNarrow);
+  CPPUNIT_TEST(testRemoveOverlaps);
   CPPUNIT_TEST(testGetVersionOf);
   CPPUNIT_TEST(testClone);
   CPPUNIT_TEST(testContainsChoice);
@@ -247,6 +248,49 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
     CPPUNIT_ASSERT_EQUAL(s, make_choice_set_narrow(expected));
     test_contents_iterator(s);
+  }
+
+  void testRemoveOverlaps()
+  {
+    const choice c1(make_install_version(av1));
+    const choice c2(make_install_version_from_dep_source(bv1, bv2d1));
+    const choice c3(make_install_version(cv2));
+    const choice c4(make_break_soft_dep(av2d1));
+    const choice c5(make_break_soft_dep(bv2d1));
+
+    choice_set s;
+    s.insert_or_narrow(c1);
+    s.insert_or_narrow(c2);
+    s.insert_or_narrow(c3);
+    s.insert_or_narrow(c4);
+    s.insert_or_narrow(c5);
+
+
+    CPPUNIT_ASSERT(s.contains(c1));
+    const choice r1(make_install_version_from_dep_source(av1, av2d1));
+    s.remove_overlaps(r1);
+    CPPUNIT_ASSERT(!s.contains(r1));
+    CPPUNIT_ASSERT(!s.contains(c1));
+
+    CPPUNIT_ASSERT(s.contains(c2));
+    const choice r2(make_install_version(bv1));
+    s.remove_overlaps(r2);
+    CPPUNIT_ASSERT(!s.contains(r2));
+    CPPUNIT_ASSERT(!s.contains(c2));
+
+    CPPUNIT_ASSERT(s.contains(c3));
+    const choice r3(make_install_version(cv2));
+    s.remove_overlaps(r3);
+    CPPUNIT_ASSERT(!s.contains(r3));
+    CPPUNIT_ASSERT(!s.contains(c3));
+
+    CPPUNIT_ASSERT(s.contains(c4));
+    const choice r4(make_break_soft_dep(av2d1));
+    s.remove_overlaps(r4);
+    CPPUNIT_ASSERT(!s.contains(r4));
+    CPPUNIT_ASSERT(!s.contains(c4));
+
+    CPPUNIT_ASSERT(s.contains(c5));
   }
 
   void testContainsChoice()
