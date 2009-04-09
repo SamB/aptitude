@@ -516,8 +516,8 @@ processNewPromotionLine source matches =
 -- | Process a line of the log file that starts successor generation.
 processSuccessorsStartLine :: ByteString -> MatchArray -> LogParse ()
 processSuccessorsStartLine source matches =
-    do d <- parseMatch dep source (matches!4)
-       let forced = extract (matches!1) source == BS.pack "Forced resolution of"
+    do d <- parseMatch dep source (matches!5)
+       let forced = extract (matches!3) source == BS.pack "Forced resolution "
        d `seq` forced `seq` setGeneratingSuccessorsInfo $
          Just (GeneratingSuccessorsInfo { generatingForced = forced,
                                           generatingDep    = d })
