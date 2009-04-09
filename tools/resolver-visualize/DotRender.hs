@@ -75,18 +75,32 @@ dotUnprocessedSuccs params step = unprocessed ++ excluded
                           | (Successor { successorStep = step }) <- stepSuccessors step,
                             not $ inBounds params (stepOrder step) ]
 
--- | If the parent of the given step was excluded from the render,
--- build and return a node for it.
-dotExcludedParent :: Params -> ProcessingStep -> Maybe Node
-dotExcludedParent params step =
-    do (ParentLink {parentLinkParent = parentStep}) <- stepPredecessor step
-       (if inBounds params $ stepOrder parentStep
-        then fail "Not an excluded step."
-        else return $
-             node (name $ printf "step%d" (stepOrder parentStep))
-                      <<< set "label" (printf "Step %d" (stepOrder step))
-                      <<< set "shape" "plaintext"
-                      <<< set "image" (cloudImage params))
+-- | If the parent of the given step (or of one of its
+-- backpropagations) was excluded from the render, build and return a
+-- node for it.
+--
+-- TODO: should show links between excluded nodes, etc...that will
+-- need a bit of an overhaul though.
+dotExcludedIndices :: Params -> ProcessingStep -> [Integer]
+dotExcludedIndices params step =
+    (maybeToList $ do (ParentLink {parentLinkParent = parentStep}) <- stepPredecessor step
+                      (if inBounds params $ stepOrder parentStep
+                       then fail "Not an excluded step."
+                       else return $ stepOrder parentStep))
+    ++
+    [ parentStepNum
+      | Backpropagation {
+          backpropagationStep =
+              ProcessingStep {
+                stepOrder = parentStepNum
+          } } <- stepBackpropagations step,
+        not $ inBounds params parentStepNum ]
+
+dotExcludedParentNode :: Params -> Integer -> Node
+dotExcludedParentNode params stepNum = node (name $ printf "step%d" stepNum)
+                                       <<< set "label" (printf "Step %d" stepNum)
+                                       <<< set "shape" "plaintext"
+                                       <<< set "image" (cloudImage params)
 
 dotPromotions params step =
     if not $ showPromotions params
@@ -177,7 +191,9 @@ renderDot params steps =
     then error "No steps to render."
     else let stepNodes          = map (dotStepNode params) truncatedSteps
              unprocessed        = concat $ map (dotUnprocessedSuccs params) truncatedSteps
-             excludedParents    = catMaybes $ map (dotExcludedParent params) truncatedSteps
+             excludedParentIndices = concat $ map (dotExcludedIndices params) truncatedSteps
+             excludedParentIndicesUnique = Set.toList $ Set.fromList excludedParentIndices
+             excludedParents    = map (dotExcludedParentNode params) excludedParentIndicesUnique
              promotions         = concat $ map (dotPromotions params) truncatedSteps
              stepEdges          = concat $ map (dotEdges params) truncatedSteps
              orderEdges         = dotOrderEdges truncatedSteps in
