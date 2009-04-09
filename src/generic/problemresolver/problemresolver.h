@@ -2589,21 +2589,19 @@ private:
     // child pointer.
     bool first;
     int parent_step_num;
-    std::deque<step> &steps;
+
+    generic_problem_resolver &resolver;
     typename std::deque<step>::size_type steps_size;
     std::set<package> *visited_packages;
-    const log4cxx::LoggerPtr &logger;
   public:
     real_generator(int _parent_step_num,
-		   std::deque<step> &_steps,
-		   std::set<package> *_visited_packages,
-		   const log4cxx::LoggerPtr &_logger)
+		   generic_problem_resolver &_resolver,
+		   std::set<package> *_visited_packages)
       : first(true),
 	parent_step_num(_parent_step_num),
-	steps(_steps),
-	steps_size(steps.size()),
-	visited_packages(_visited_packages),
-	logger(_logger)
+	resolver(_resolver),
+	steps_size(resolver.steps.size()),
+	visited_packages(_visited_packages)
     {
     }
 
@@ -2613,7 +2611,7 @@ private:
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights)
     {
-      eassert(steps.size() == steps_size);
+      eassert(resolver.steps.size() == steps_size);
 
       // Update the parent's child link the first time through.
       if(first)
@@ -2621,8 +2619,8 @@ private:
 	  if(parent_step_num != -1)
 	    {
 	      eassert(parent_step_num >= 0);
-	      eassert((unsigned)parent_step_num < steps.size());
-	      steps[parent_step_num].first_child = steps.size();
+	      eassert((unsigned)parent_step_num < resolver.steps.size());
+	      resolver.steps[parent_step_num].first_child = resolver.steps.size();
 	    }
 	  first = false;
 	}
@@ -2630,24 +2628,44 @@ private:
 	// On subsequent trips through this routine, move forward the
 	// "last child" flag.
 	{
-	  eassert(!steps.empty());
-	  steps[steps.size() - 1].is_last_child = false;
+	  eassert(!resolver.steps.empty());
+	  resolver.steps[resolver.steps.size() - 1].is_last_child = false;
 	}
 
       solution sol(solution::successor(s,
 				       &c, (&c) + 1,
 				       succ_tier,
-				       universe, weights));
-      steps.push_back(step(sol, parent_step_num, c, true));
+				       resolver.universe, resolver.weights));
+      resolver.steps.push_back(step(sol, parent_step_num, c, true));
 
-      steps_size = steps.size();
+      steps_size = resolver.steps.size();
 
-      LOG_TRACE(logger, "Generated successor (step " << steps_size - 1 << "): " << steps.back().sol);
+      LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): " << resolver.steps.back().sol);
+
+      // If the choice itself caused a promotion to a higher tier, add
+      // a promotion for it to the set of promotions attached to the
+      // last step.  Without this we can't properly accumulate
+      // promotions via back-propagation (since this step could appear
+      // to have no promotions, so its parent couldn't get a
+      // backpropagated promotion).
+      if(c.get_type() == choice::install_version)
+	{
+	  const version &v(c.get_ver());
+	  const tier &ver_tier = resolver.version_tiers[v.get_id()];
+	  if(resolver.maximum_search_tier < ver_tier)
+	    {
+	      choice_set tmp_set;
+	      tmp_set.insert_or_narrow(c);
+	      promotion tmp_p(tmp_set, ver_tier);
+
+	      resolver.schedule_promotion_propagation(steps_size - 1, tmp_p);
+	    }
+	}
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
 	{
-	  const solution &generated(steps.back().sol);
+	  const solution &generated(resolver.steps.back().sol);
 
 	  for(typename imm::set<dep>::const_iterator bi =
 		generated.get_broken().begin();
@@ -3185,7 +3203,7 @@ private:
 	      {
 		LOG_TRACE(logger, "Forced resolution (step " << curr_step_num << ") of " << *bi);
 
-		real_generator g(curr_step_num, steps, visited_packages, logger);
+		real_generator g(curr_step_num, *this, visited_packages);
 		choice_set successor_constraints;
 		generate_successors(curr, *bi,
 				    curr_step_num,
@@ -3234,7 +3252,7 @@ private:
 		  "Generating successors for step " << curr_step_num << " and dep "
 		  << least_successors);
 
-	real_generator g(curr_step_num, steps, visited_packages, logger);
+	real_generator g(curr_step_num, *this, visited_packages);
 	choice_set successor_constraints;
 	generate_successors(curr, least_successors,
 			    curr_step_num,
