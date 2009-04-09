@@ -2832,7 +2832,6 @@ private:
 				  v << " will promote this solution to tier " << found_tier
 				  << " due to the promotion " << *found);
 			promotion_tier = found_tier;
-			forcing_choices = found->get_choices();
 		      }
 		    else
 		      promotion_tier = current_tier;
@@ -2886,7 +2885,8 @@ private:
 	    const promotion &p(*found);
 	    const choice_set &choices(p.get_choices());
 
-	    choices.for_each(add_choices_not_for_version(forcing_choices, v));
+	    forcing_choices = choices;
+	    forcing_choices.remove_overlaps(new_choice);
 	  }
       }
 
