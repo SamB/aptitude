@@ -2642,6 +2642,10 @@ private:
 
       LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): " << resolver.steps.back().sol);
 
+      // TODO: maybe we should pass the promotion in from outside.
+      // Right now this won't detect cases where the successor was
+      // promoted due to a promotion set.
+      //
       // If the choice itself caused a promotion to a higher tier, add
       // a promotion for it to the set of promotions attached to the
       // last step.  Without this we can't properly accumulate
