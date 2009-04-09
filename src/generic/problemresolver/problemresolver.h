@@ -928,12 +928,18 @@ private:
       insert_info(targetStep.promotions.insert(p));
     if(insert_info.second)
       {
-	LOG_TRACE(logger, "Adding the promotion " << p
-		  << " to step " << stepNum
-		  << " and scheduling it for propagation.");
 	targetStep.promotions_list.push_back(p);
 	if(targetStep.parent != -1)
-	  steps_pending_promotion_propagation.insert(stepNum);
+	  {
+	    LOG_TRACE(logger, "Adding the promotion " << p
+		      << " to step " << stepNum
+		      << " and scheduling its parent, step " << targetStep.parent << " for propagation.");
+	    steps_pending_promotion_propagation.insert(targetStep.parent);
+	  }
+	else
+	  LOG_TRACE(logger, "Adding the promotion " << p
+		    << " to step " << stepNum
+		    << "; it has no parent, so not scheduling propagation.");
       }
   }
 
