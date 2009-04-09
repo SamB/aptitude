@@ -180,7 +180,7 @@ newPromotion        = compile "Inserting new promotion: (.*)$"
 -- Note: if we see a "forced" dependency and no "generated" line, we
 -- magically know that the next "Processing" line will be for its
 -- successor (and we use that to ensure that they get linked up).
-successorsStart     = compile "(Generating successors for( step [0-9]* and dep)?|Forced resolution (\\(step [0-9]*\\) )?of) (.*)$"
+successorsStart     = compile "(Generating successors for( step [0-9]* and dep)?|(Forced resolution )(\\(step [0-9]*\\) )?of) (.*)$"
 madeSuccessor       = compile "Generated successor( \\(step [0-9]*\\))?: (.*)$"
 tryingResolution    = compile "Trying to resolve (.*) by installing (.*)(from the dependency source)?$"
 tryingUnresolved    = compile "Trying to leave (.*) unresolved$"
