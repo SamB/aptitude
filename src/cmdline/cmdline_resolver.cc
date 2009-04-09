@@ -859,6 +859,8 @@ namespace aptitude
       if(!resman->resolver_exists())
 	return true;
 
+      cmdline_dump_resolver();
+
       try
 	{
 	  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
