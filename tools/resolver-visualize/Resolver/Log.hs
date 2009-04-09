@@ -175,7 +175,7 @@ newPartialStep sol startPos =
 compile :: String -> Regex
 compile = makeRegex
 
-processingStepStart = compile "Processing (step [0-9]*: )?(.*)$"
+processingStepStart = compile "(Processing (step [0-9]*: )?|--- Found solution )(.*)$"
 newPromotion        = compile "Inserting new promotion: (.*)$"
 -- Note: if we see a "forced" dependency and no "generated" line, we
 -- magically know that the next "Processing" line will be for its
@@ -493,7 +493,7 @@ addSuccessor succInf@(s, _, _) filename lineNum lastStep =
 -- processingStepStart.
 processStepStartLine :: ByteString -> MatchArray -> LogParse ()
 processStepStartLine source matches =
-    do sol <- parseMatch solution source (matches!2)
+    do sol <- parseMatch solution source (matches!3)
        loc <- getCurrentLineStart
        -- If the solution is empty, assume we're starting a new run.
        when (Map.null $ solChoices sol) (startNewRun loc)
