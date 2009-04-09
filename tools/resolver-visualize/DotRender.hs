@@ -146,11 +146,6 @@ dotEdges params step = cutIncoming ++ processed ++ unprocessed ++ promotions ++ 
                         else [ edge (node (name $ printf "step%d" (stepOrder step)))
                                     (node (name $ printf "step%dpromotion%d" (stepOrder step) promotionNum))
                                | promotionNum <- [0..((Set.size $ stepPromotions step) - 1)] ]
-                             ++
-                             -- Structural edges to backpropagations.
-                             [ edge (node (name $ printf "step%d" (stepOrder $ backpropagationStep backprop)))
-                                    (node (name $ printf "step%dbackprop%d" (stepOrder step) backpropNum))
-                               | (backprop, backpropNum) <- zip (stepBackpropagations step) ([0..] :: [Integer]) ]
           backprops   = let attrs = set "color" "red" `andAlso`
                                     set "style" "dashed" `andAlso`
                                     set "constraint" "false" in
@@ -165,6 +160,12 @@ dotEdges params step = cutIncoming ++ processed ++ unprocessed ++ promotions ++ 
                                    (node (name $ printf "step%dbackprop%d" (stepOrder step) (backpropNum + 1)))
                               <<< attrs
                               | backpropNum <- [0..((length $ stepBackpropagations step) - 2)] ]
+                             ++
+                             -- Structural edges to backpropagations.
+                             [ edge (node (name $ printf "step%d" (stepOrder $ backpropagationStep backprop)))
+                                    (node (name $ printf "step%dbackprop%d" (stepOrder step) backpropNum))
+                               | (backprop, backpropNum) <- zip (stepBackpropagations step) ([0..] :: [Integer]) ]
+
           cutIncoming = [ edge (node (name $ printf "step%d" (stepOrder parentStep)))
                                (node (name $ printf "step%d" (stepOrder step)))
                           <<< set "label" (dotChoiceLabel choice)
