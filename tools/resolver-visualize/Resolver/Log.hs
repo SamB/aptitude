@@ -419,7 +419,10 @@ setPromotionBackpropagationState sol =
 addBackpropagatedPromotionToCurrentStep :: Solution -> Promotion -> LogParse ()
 addBackpropagatedPromotionToCurrentStep p sol =
     p `seq` sol `seq`
-    modifyLastStep (\lastStep -> lastStep {
+    modifyLastStep (\lastStep -> let pair   = (p, sol)
+                                     props  = pstepReverseBackpropagations lastStep
+                                     props' = pair:props in
+                                 pair `seq` props `seq` props' `seq` lastStep {
                                    pstepReverseBackpropagations =
                                        (p, sol):(pstepReverseBackpropagations lastStep)
                                  })
