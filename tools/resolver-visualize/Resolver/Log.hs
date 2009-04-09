@@ -536,7 +536,8 @@ processSuccessorsEndLine source matches =
 processBackpropagationsBegin :: ByteString -> MatchArray -> LogParse ()
 processBackpropagationsBegin source matches =
     do sol <- parseMatch solution source (matches!2)
-       sol `seq` setPromotionBackpropagationState (Just sol)
+       let newState = Just sol
+       sol `seq` newState `seq` setPromotionBackpropagationState newState
 
 -- | Process a line of the log file that indicates that a new
 -- backpropagation was emitted.
