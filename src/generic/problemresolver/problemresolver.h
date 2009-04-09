@@ -2473,6 +2473,9 @@ private:
     const tier &s_tier = get_solution_tier(s);
     if(maximum_search_tier < s_tier)
       {
+	// TODO: accumulate a promotion describing why the tier is
+	// what it is and backpropagate it.
+
 	if(s_tier >= conflict_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
 	else if(s_tier >= already_generated_tier)
@@ -2493,6 +2496,8 @@ private:
       LOG_WARN(logger, "Unexpectedly irrelevant solution " << s);
     else if(breaks_user_constraint(s))
       {
+	// TODO: accumulate a promotion describing the breakage and
+	// backpropagate it.
 	LOG_WARN(logger, "Deferring rejected solution " << s);
 	defer_step(defer_tier, step_num);
       }
