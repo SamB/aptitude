@@ -1627,6 +1627,8 @@ void aptitudeDepCache::sweep()
   if(!aptcfg->FindB(PACKAGE "::Delete-Unused", true))
     return;
 
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
   // Suppress intermediate removals.
   //
   // \todo this may cause problems if we do undo tracking via ActionGroups.
@@ -1648,6 +1650,8 @@ void aptitudeDepCache::sweep()
 	      // not previously being deleted.
 	      if(!PkgState[pkg->ID].Delete())
 		{
+		  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Removing " << pkg.Name() << ": it is unused.");
+
 		  pre_package_state_changed();
 		  MarkDelete(pkg, purge_unused);
 		  package_states[pkg->ID].selection_state =
@@ -1667,11 +1671,16 @@ void aptitudeDepCache::sweep()
 	      else
 		package_states[pkg->ID].selection_state = pkgCache::State::Install;
 	      pre_package_state_changed();
+
+	      if(!PkgState[pkg->ID].Keep())
+		LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Cancelling the installation of " << pkg.Name() << ": it is unused.");
+
 	      MarkKeep(pkg, false, false);
 	    }
 	}
       else if(PkgState[pkg->ID].Delete() && package_states[pkg->ID].remove_reason == unused)
 	{
+	  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Cancelling the removal of " << pkg.Name() << ": it is no longer unused.");
 	  pre_package_state_changed();
 	  MarkKeep(pkg, false, false);
 	}
