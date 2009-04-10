@@ -2017,22 +2017,35 @@ private:
   /** \brief Determine the tier of the given solution using only the
    *  promotions set.
    *
+   *  \param has_new_promotion    Set to true if a promotion
+   *                              to a higher tier was found.
+   *  \param new_promotion        Set to the new promotion (if any)
+   *                              of the solution.
+   *
    *  For a completely correct calculation of the solution's tier,
    *  callers should ensure that tier information from each version
    *  contained in the solution is already "baked in" (this is true
    *  for anything we pull from the open queue).
    */
-  const tier &get_solution_tier(const solution &s) const
+  const tier &get_solution_tier(const solution &s,
+				bool &has_new_promotion,
+				promotion &new_promotion) const
   {
+    has_new_promotion = false;
     const tier &s_tier(s.get_tier());
     choice_set choices = s.get_choices();
     typename promotion_set::const_iterator found =
       promotions.find_highest_promotion_for(choices);
     if(found != promotions.end())
       {
-	const tier &found_tier(found->get_tier());
+	const promotion &found_p(*found);
+	const tier &found_tier(found_p.get_tier());
 	if(s_tier < found_tier)
-	  return found_tier;
+	  {
+	    has_new_promotion = true;
+	    new_promotion = found_p;
+	    return found_tier;
+	  }
 	else
 	  return s_tier;
       }
@@ -2470,12 +2483,28 @@ private:
   void try_enqueue(const int step_num)
   {
     const solution &s = get_step(step_num).sol;
-    const tier &s_tier = get_solution_tier(s);
+    // Check whether a promotion to a higher tier has been added since
+    // the solution was placed onto the queue.
+    bool s_has_new_promotion = false;
+    promotion s_new_promotion;
+    const tier &s_tier = get_solution_tier(s, s_has_new_promotion,
+					   s_new_promotion);
+
+    // If there is a new promotion, incorporate it into the
+    // propagation set.  This typically happens, for instance, when a
+    // solution contains a promotion that didn't exist when it was
+    // created.  For instance, we might plan to install a package X,
+    // but later we discover that another choice implies that the
+    // solution that installs X has to be promoted.
+    //
+    // Without this code, the newly formed promotion won't be
+    // propagated up the search tree.
+    if(s_has_new_promotion &&
+       maximum_search_tier < s_new_promotion.get_tier())
+      schedule_promotion_propagation(step_num, s_new_promotion);
+
     if(maximum_search_tier < s_tier)
       {
-	// TODO: accumulate a promotion describing why the tier is
-	// what it is and backpropagate it.
-
 	if(s_tier >= conflict_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
 	else if(s_tier >= already_generated_tier)
@@ -3850,7 +3879,13 @@ public:
 	// Check whether the solution has been promoted since it was
 	// inserted into the open queue.  If it has, defer it until we
 	// get to the appropriate tier.
-	const tier &s_tier = get_solution_tier(s);
+	bool s_has_new_promotion;
+	promotion s_new_promotion;
+	const tier &s_tier = get_solution_tier(s, s_has_new_promotion, s_new_promotion);
+	if(s_has_new_promotion &&
+	   maximum_search_tier < s_new_promotion.get_tier())
+	  schedule_promotion_propagation(curr_step_num, s_new_promotion);
+
 	if(s_tier >= conflict_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping conflicted solution " << s);
