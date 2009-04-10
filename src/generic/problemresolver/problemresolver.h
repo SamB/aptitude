@@ -2642,6 +2642,7 @@ private:
     void make_successor(const solution &s,
 			const choice &c,
 			const tier &succ_tier,
+			const promotion &succ_promotion,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights)
     {
@@ -2676,29 +2677,10 @@ private:
 
       LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): " << resolver.steps.back().sol);
 
-      // TODO: maybe we should pass the promotion in from outside.
-      // Right now this won't detect cases where the successor was
-      // promoted due to a promotion set.
-      //
-      // If the choice itself caused a promotion to a higher tier, add
-      // a promotion for it to the set of promotions attached to the
-      // last step.  Without this we can't properly accumulate
-      // promotions via back-propagation (since this step could appear
-      // to have no promotions, so its parent couldn't get a
-      // backpropagated promotion).
-      if(c.get_type() == choice::install_version)
-	{
-	  const version &v(c.get_ver());
-	  const tier &ver_tier = resolver.version_tiers[v.get_id()];
-	  if(resolver.maximum_search_tier < ver_tier)
-	    {
-	      choice_set tmp_set;
-	      tmp_set.insert_or_narrow(c);
-	      promotion tmp_p(tmp_set, ver_tier);
-
-	      resolver.schedule_promotion_propagation(steps_size - 1, tmp_p);
-	    }
-	}
+      // If the given successor promotion exceeds the current maximum
+      // tier, add it to the step graph.
+      if(resolver.maximum_search_tier < succ_promotion.get_tier())
+	resolver.schedule_promotion_propagation(steps_size - 1, succ_promotion);
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
@@ -2737,6 +2719,7 @@ private:
     void make_successor(const solution &s,
 			const choice &c,
 			const tier & succ_tier,
+			const promotion &succ_promotion,
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights) const
     {
@@ -2883,6 +2866,16 @@ private:
 	    const tier &current_tier = s.get_tier();
 	    const tier &ver_tier = version_tiers[v.get_id()];
 
+	    // The promotion that will be attached to the new step in
+	    // the versions graph (if any).  If a promotion is found
+	    // that promotes to a higher tier than the version's
+	    // intrinsic tier, that promotion is stored here;
+	    // otherwise, the version's tier is stored here if it's
+	    // higher than the solution's current tier; otherwise,
+	    // this stores an empty promotion to the minimum tier.
+	    promotion successor_promotion(choice_set(), minimum_tier);
+
+	    bool set_from_found = false;
 	    if(found != promotions.end())
 	      {
 		const tier &found_tier = found->get_tier();
@@ -2894,34 +2887,42 @@ private:
 				  v << " will promote this solution to tier " << found_tier
 				  << " due to the promotion " << *found);
 			promotion_tier = found_tier;
+			successor_promotion = *found;
 		      }
 		    else
 		      promotion_tier = current_tier;
+
+		    set_from_found = true;
+		  }
+	      }
+
+	    if(!set_from_found)
+	      {
+		if(current_tier < ver_tier)
+		  {
+		    LOG_TRACE(logger,
+			      v << " will promote this solution to tier " << ver_tier);
+		    promotion_tier = ver_tier;
+
+		    choice_set promotion_s;
+		    // Note that the choice we insert is *not* a
+		    // from-dep-source choice.  This is deliberate:
+		    // since the tier is tied to the package version
+		    // and not to the set of excluded versions, we can
+		    // use the wider version, thus promoting more
+		    // search nodes.
+		    choice promotion_s_c(choice::make_install_version(v, d, newid));
+		    promotion_s.insert_or_narrow(promotion_s_c);
+		    successor_promotion = promotion(promotion_s, ver_tier);
 		  }
 		else
-		  {
-		    if(current_tier < ver_tier)
-		      {
-			LOG_TRACE(logger,
-				  v << " will promote this solution to tier " << ver_tier);
-			promotion_tier = ver_tier;
-		      }
-		    else
-		      promotion_tier = current_tier;
-		  }
+		  promotion_tier = current_tier;
 	      }
-	    else if(current_tier < ver_tier)
-	      {
-		LOG_TRACE(logger,
-			  v << " will promote this solution to tier " << ver_tier);
-		promotion_tier = ver_tier;
-	      }
-	    else
-	      promotion_tier = current_tier;
 
 
 	    generator.make_successor(s, new_choice,
 				     promotion_tier,
+				     successor_promotion,
 				     universe, weights);
 	  }
 	else
@@ -3090,9 +3091,12 @@ private:
 	  promotions.find_highest_promotion_containing(choices, break_d);
 
 	tier unresolved_tier = s.get_tier();
+	promotion successor_promotion(choice_set(), minimum_tier);
 	if(found != promotions.end() && unresolved_tier < found->get_tier())
 	  {
 	    const promotion &p(*found);
+	    successor_promotion = p;
+
 	    if(successor_constraints != NULL &&
 	       p.get_tier() >= already_generated_tier)
 	      successor_constraints->insert_or_narrow(p.get_choices());
@@ -3106,6 +3110,7 @@ private:
 	generator.make_successor(s,
 				 break_d,
 				 unresolved_tier,
+				 successor_promotion,
 				 universe, weights);
 
         if(s.get_tier() < succ_tier)
