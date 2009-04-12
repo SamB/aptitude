@@ -119,7 +119,7 @@ dotPromotions params step =
                                  (show $ promotionTier p)
                                  (concat $ intersperse "\n"
                                              [pp c | c <- Set.toList $ promotionChoices p])
-                        else printf "(T%s: %d choices)"
+                        else printf "(%s\n%d choices...)"
                                  (show $ promotionTier p)
                                  (Set.size $ promotionChoices p)
 
