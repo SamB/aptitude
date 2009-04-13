@@ -663,6 +663,19 @@ private:
     // This is always -1 to start with, and is updated when the step's
     // successors are generated.
     int first_child;
+
+    // A set listing all the clones of this step (steps that have the
+    // same solution).  If this is non-empty, this step is the
+    // canonical copy of its clones.  What that means is that the
+    // "promotions" set of the canonical copy is used whenever the set
+    // of promotions is needed; same for the "promotions" list (but
+    // the index of the last promotion propagated to the parent is
+    // different in each clone!).
+    std::set<int> clones;
+
+    // The canonical copy of this step, or -1 if none.
+    int canonical_clone;
+
     // The solution associated with this step.
     solution sol;
     // The choice associated with this step (meaningless if parent ==
@@ -691,17 +704,27 @@ private:
     // universally valid but was discovered in the context of this
     // step.  No attempt is made to eliminate redundant promotions at
     // the moment.
+    //
+    // If this is a cloned step, this variable will never be used (the
+    // canonical clone's version will be used -- but since this is
+    // only used when adding new promotions and new promotions are
+    // added to the canonical clone, the promotions set isn't used).
     std::set<promotion> promotions;
 
     // The same, but in the order that they were added; used to
     // quickly partition the list into "new" and "old" promotions.
+    //
+    // If this is a cloned step, the vector in the canonical clone
+    // will be used instead.
     //
     // TODO: should be a list of const_iterators referencing the above
     // set.
     std::vector<promotion> promotions_list;
 
     // The first index in the promotions list that represents a "new"
-    // promotion.
+    // promotion.  This is always used even in cloned steps (each step
+    // could have a different number of promotions that haven't been
+    // propagated to its particular parent).
     typename std::vector<promotion>::size_type promotions_list_first_new_promotion;
 
     /** \brief Default step constructor; only exists for use
@@ -709,7 +732,7 @@ private:
      */
     step()
       : is_last_child(true),
-	parent(-1), first_child(-1), sol(), reason(),
+	parent(-1), first_child(-1), canonical_clone(-1), sol(), reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
     {
@@ -722,7 +745,7 @@ private:
      */
     step(const solution &_sol)
       : is_last_child(true),
-	parent(-1), first_child(-1), sol(_sol), reason(),
+	parent(-1), first_child(-1), canonical_clone(-1), sol(_sol), reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
     {
@@ -736,7 +759,7 @@ private:
 	 const choice &_reason, bool _is_last_child)
       : is_last_child(_is_last_child),
 	parent(_parent),
-	first_child(-1), sol(_sol), reason(_reason),
+	first_child(-1), canonical_clone(-1), sol(_sol), reason(_reason),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
     {
@@ -776,6 +799,24 @@ private:
     return steps[n];
   }
 
+  // Retrieve the promotions list of the given step, returning the
+  // canonical copy if this step is a clone.
+  std::vector<promotion> &get_promotions_list(step &s)
+  {
+    if(s.canonical_clone == -1)
+      return s.promotions_list;
+    else
+      return get_step(s.canonical_clone).promotions_list;
+  }
+
+  const std::vector<promotion> &get_promotions_list(const step &s) const
+  {
+    if(s.canonical_clone == -1)
+      return s.promotions_list;
+    else
+      return get_step(s.canonical_clone).promotions_list;
+  }
+
   // Used to recursively build the set of all the promotions in the
   // Cartesian product of the sub-promotions that include at least one
   // promotion that's "new".
@@ -786,41 +827,53 @@ private:
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
 			    const choice_set &choices, const tier &t)
   {
-    LOG_TRACE(logger, "Propagating promotions from the step " << childNum
-	      << " to its parent, step " << parentNum);
+    // Where to insert any promotions we run into.
+    const step &parent = get_step(parentNum);
+    int canonicalParentNum = (parent.canonical_clone == -1
+			      ? parentNum
+			      : parent.canonical_clone);
+    const step &canonicalParent = get_step(canonicalParentNum);
+    const std::vector<promotion> &canonicalParentPromotionsList = get_promotions_list(parent);
 
-    step &parent = get_step(parentNum);
+    if(canonicalParentNum == parentNum)
+      LOG_TRACE(logger, "Propagating promotions from the step " << childNum
+		<< " to its parent, step " << parentNum);
+    else
+      LOG_TRACE(logger, "Propagating promotions from the step " << childNum
+		<< " to its parent's canonical clone, step " << parentNum);
+
     // Don't do anything if the parent has too many propagations
     // already.
-    if(parent.promotions_list.size() >= max_propagated_promotions)
+    if(canonicalParentPromotionsList.size() >= max_propagated_promotions)
       {
 	LOG_TRACE(logger, "Not creating a new promotion: the parent already has too many promotions.");
 	return false;
       }
 
     step &child = get_step(childNum);
+    const std::vector<promotion> &canonicalChildPromotionsList = get_promotions_list(child);
 
-    typename std::vector<promotion>::const_iterator begin, end = child.promotions_list.end();
+    typename std::vector<promotion>::const_iterator begin, end = canonicalChildPromotionsList.end();
     if(child.is_last_child && !has_new_promotion)
       {
 	// Only process new promotions if we don't have one yet.
-	begin = child.promotions_list.begin() + child.promotions_list_first_new_promotion;
+	begin = canonicalChildPromotionsList.begin() + child.promotions_list_first_new_promotion;
 	if(begin == end)
 	  LOG_TRACE(logger, "No new promotions to process (step " << childNum << ")");
       }
     else
       {
-	begin = child.promotions_list.begin();
+	begin = canonicalChildPromotionsList.begin();
 	if(begin == end)
 	  LOG_TRACE(logger, "No promotions to process (step " << childNum << ")");
       }
 
     bool rval = false;
     for(typename std::vector<promotion>::const_iterator it = begin;
-	it != end && parent.promotions_list.size() < max_propagated_promotions; ++it)
+	it != end && canonicalParentPromotionsList.size() < max_propagated_promotions; ++it)
       {
 	bool current_is_new_promotion =
-	  (it - child.promotions_list.begin()) >= (signed)child.promotions_list_first_new_promotion;
+	  (it - canonicalChildPromotionsList.begin()) >= (signed)child.promotions_list_first_new_promotion;
 
 	choice_set new_choices(choices);
 	tier new_tier(t);
@@ -844,15 +897,15 @@ private:
 	if(p_tier < new_tier)
 	  new_tier = p_tier;
 
-	if(parent.sol.get_tier() >= new_tier)
+	if(canonicalParent.sol.get_tier() >= new_tier)
 	  // No point in generating a promotion whose tier is below
 	  // the parent's tier.
 	  {
 	    LOG_TRACE(logger, "Not backpropagating this promotion: its tier, "
 		      << new_tier
 		      << " is not above the tier of step "
-		      << parentNum << ", "
-		      << parent.sol.get_tier());
+		      << canonicalParentNum << ", "
+		      << canonicalParent.sol.get_tier());
 	    continue;
 	  }
 
@@ -865,21 +918,11 @@ private:
 	    // promotions.
 	    promotions.insert(new_promotion);
 
-	    // Actually output a new promotion in the parent.
-	    std::pair<typename std::set<promotion>::const_iterator, bool> insert_info =
-	      parent.promotions.insert(new_promotion);
-
-	    if(insert_info.second)
-	      {
-		// Otherwise this promotion was already generated.
-		parent.promotions_list.push_back(new_promotion);
-		LOG_DEBUG(logger, "Created backpropagated promotion at step "
-			  << parentNum << ": " << new_promotion);
-	      }
-	    else
-	      LOG_DEBUG(logger, "Dropping redundant promotion at step "
-			<< parentNum << ": " << new_promotion);
-
+	    // Actually output a new promotion in the canonical
+	    // parent.
+	    LOG_TRACE(logger, "New backpropagated promotion at step "
+		      << canonicalParentNum << ": " << new_promotion);
+	    schedule_promotion_propagation(canonicalParentNum, new_promotion);
 
 	    rval = true;
 	  }
@@ -896,7 +939,7 @@ private:
 	  }
       }
 
-    child.promotions_list_first_new_promotion = child.promotions_list.size();
+    child.promotions_list_first_new_promotion = canonicalChildPromotionsList.size();
 
     return rval;
   }
@@ -935,6 +978,16 @@ private:
   {
     step &targetStep(get_step(stepNum));
 
+    if(targetStep.canonical_clone != -1)
+      {
+	LOG_TRACE(logger, "Adding the promotion " << p
+		  << " to step " << targetStep.canonical_clone
+		  << " instead of to its clone, step "
+		  << stepNum << ".");
+	schedule_promotion_propagation(targetStep.canonical_clone, p);
+	return;
+      }
+
     if(targetStep.promotions.size() == max_propagated_promotions)
       {
 	LOG_TRACE(logger, "Not adding the promotion " << p
@@ -961,6 +1014,75 @@ private:
 	  LOG_TRACE(logger, "Adding a promotion to step " << stepNum
 		    << "; it has no parent, so not scheduling propagation: "
 		    << p);
+      }
+
+    if(!targetStep.clones.empty())
+      {
+	LOG_TRACE(logger, "Also scheduling the parents of the clones of step " << stepNum << " for propagation.");
+	for(std::set<int>::const_iterator it = targetStep.clones.begin();
+	    it != targetStep.clones.end(); ++it)
+	  {
+	    int cloneNum = *it;
+	    const step &clone(get_step(cloneNum));
+
+	    if(clone.parent != -1)
+	      {
+		LOG_TRACE(logger, "Scheduling the parent (step "
+			  << clone.parent << ") of a clone (step " << cloneNum
+			  << ") of step " << stepNum << " for propagation.");
+		steps_pending_promotion_propagation.insert(clone.parent);
+	      }
+	    else
+	      // Should never happen, but be careful.  (this would
+	      // mean we had a clone of the root node!  Madness!)
+	      LOG_ERROR(logger, "Not scheduling the parent of a clone (step " << cloneNum
+			<< ") for propagation: it has no parent (something is very wrong!).");
+	  }
+	LOG_TRACE(logger, "Done scheduling the clones of step " << stepNum << " for propagation.");
+      }
+  }
+
+  /** \brief Mark the second step as being a clone of the first step.
+   *
+   *  \param canonicalNum    The step number to use as the canonical copy.
+   *  \param cloneNum        The step number to mark as a clone.
+   */
+  void add_clone(int canonicalNum, int cloneNum)
+  {
+    LOG_TRACE(logger, "Marking step " << cloneNum << " as a clone of step " << canonicalNum << ".");
+
+    step &canonicalStep(get_step(canonicalNum));
+    step &cloneStep(get_step(cloneNum));
+
+    if(cloneStep.canonical_clone == canonicalNum)
+      {
+	LOG_TRACE(logger, "Not marking step " << cloneNum
+		  << " as a clone of step " << canonicalNum
+		  << " since it is already listed as a clone.");
+	return;
+      }
+
+    // These cases should never come up, so assert against them
+    // instead of trying to write clever code to handle them.
+    eassert(canonicalNum != cloneNum);
+    eassert(cloneStep.canonical_clone == -1);
+    eassert(cloneStep.clones.empty());
+
+    canonicalStep.clones.insert(cloneNum);
+    cloneStep.canonical_clone = canonicalNum;
+
+    // NB: no need to do anything special with successor_constraints;
+    // it's only used to generate promotions and we take those from
+    // the canonical clone.
+    const int cloneParentNum = cloneStep.parent;
+    if(!canonicalStep.promotions.empty() &&
+       cloneParentNum != -1)
+      {
+	LOG_TRACE(logger, "The canonical step " << canonicalNum
+		  << " has some promotions, so scheduling the parent (step "
+		  << cloneParentNum << ") of the clone (step "
+		  << cloneNum << ") for backpropagation.");
+	steps_pending_promotion_propagation.insert(cloneParentNum);
       }
   }
 
@@ -1318,8 +1440,13 @@ private:
 
   /** \brief Stores already-seen solutions that had their successors
    *  generated.
+   *
+   *  Each solution is mapped to the "canonical" step number that
+   *  corresponds to it.  A list of clones is accumulated at that
+   *  step, along with a single copy of the promotion set for all the
+   *  clones.
    */
-  std::set<solution, solution_contents_compare> closed;
+  std::map<solution, int, solution_contents_compare> closed;
 
   /** \brief Stores solutions that are known to have a higher tier
    *  than the current search tier.
@@ -2518,18 +2645,31 @@ private:
     deferred_dirty = false;
   }
 
+  /** \brief If the given step is already "seen", mark it as a clone
+   *  and return true (telling our caller to abort).
+   */
+  bool is_already_seen(int stepNum)
+  {
+    step &s(get_step(stepNum));
+
+    typename std::map<solution, int, solution_contents_compare>::const_iterator found =
+      closed.find(s.sol);
+    if(found != closed.end())
+      {
+	LOG_TRACE(logger, s.sol << " is irrelevant: it was already encountered in this search.");
+	add_clone(found->second, stepNum);
+	return true;
+      }
+    else
+      return false;
+  }
+
   /** \return \b true if the given solution is "irrelevant": that is,
    *  either it was already generated and placed in the closed queue,
    *  or it includes an already-generated solution as a proper subset.
    */
   bool irrelevant(const solution &s)
   {
-    if(closed.find(s) != closed.end())
-      {
-	LOG_TRACE(logger, s << " is irrelevant: it was already encountered in this search.");
-	return true;
-      }
-
     const tier &s_tier = s.get_tier();
     if(s_tier >= conflict_tier)
       {
@@ -2603,6 +2743,8 @@ private:
 	    defer_step(s_tier, step_num);
 	  }
       }
+    else if(is_already_seen(step_num))
+      LOG_WARN(logger, "Unexpectedly already seen step " << step_num);
     else if(irrelevant(s))
       // Shouldn't happen: we should have caught irrelevant solutions
       // earlier in the process.
@@ -4007,6 +4149,11 @@ public:
 	    LOG_DEBUG(logger, "Dropping already generated solution " << s);
 	    continue;
 	  }
+	else if(is_already_seen(curr_step_num))
+	  {
+	    LOG_DEBUG(logger, "Dropping already generated search node " << s);
+	    continue;
+	  }
 	else if(irrelevant(s))
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant solution " << s);
@@ -4033,7 +4180,7 @@ public:
 	      }
 	  }
 
-	closed.insert(s);
+	closed[s] = curr_step_num;
 
 	// If all dependencies are satisfied, we found a solution.
 	if(s.is_full_solution())
