@@ -786,20 +786,34 @@ private:
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
 			    const choice_set &choices, const tier &t)
   {
+    LOG_TRACE(logger, "Propagating promotions from the step " << childNum
+	      << " to its parent, step " << parentNum);
+
     step &parent = get_step(parentNum);
     // Don't do anything if the parent has too many propagations
     // already.
     if(parent.promotions_list.size() >= max_propagated_promotions)
-      return false;
+      {
+	LOG_TRACE(logger, "Not creating a new promotion: the parent already has too many promotions.");
+	return false;
+      }
 
     step &child = get_step(childNum);
 
     typename std::vector<promotion>::const_iterator begin, end = child.promotions_list.end();
     if(child.is_last_child && !has_new_promotion)
-      // Only process new promotions if we don't have one yet.
-      begin = child.promotions_list.begin() + child.promotions_list_first_new_promotion;
+      {
+	// Only process new promotions if we don't have one yet.
+	begin = child.promotions_list.begin() + child.promotions_list_first_new_promotion;
+	if(begin == end)
+	  LOG_TRACE(logger, "No new promotions to process (step " << childNum << ")");
+      }
     else
-      begin = child.promotions_list.begin();
+      {
+	begin = child.promotions_list.begin();
+	if(begin == end)
+	  LOG_TRACE(logger, "No promotions to process (step " << childNum << ")");
+      }
 
     bool rval = false;
     for(typename std::vector<promotion>::const_iterator it = begin;
@@ -814,8 +828,10 @@ private:
 	const promotion &p(*it);
 	choice_set p_choices(p.get_choices());
 
-	LOG_TRACE(logger, "Backpropagating " << p << " through the successor link " << child.reason
-		  << " and adding to the current choice set " << choices);
+	LOG_TRACE(logger, "Using the successor link of step " << childNum
+		  << ", " << child.reason
+		  << ", to backpropagate the promotion " << p
+		  << " and add it to the current choice set " << choices);
 
 	// Strip out the child's link before merging with the existing
 	// choice set.
@@ -831,7 +847,14 @@ private:
 	if(parent.sol.get_tier() >= new_tier)
 	  // No point in generating a promotion whose tier is below
 	  // the parent's tier.
-	  continue;
+	  {
+	    LOG_TRACE(logger, "Not backpropagating this promotion: its tier, "
+		      << new_tier
+		      << " is not above the tier of step "
+		      << parentNum << ", "
+		      << parent.sol.get_tier());
+	    continue;
+	  }
 
 
 	if(child.is_last_child)
@@ -854,7 +877,8 @@ private:
 			  << parentNum << ": " << new_promotion);
 	      }
 	    else
-	      LOG_DEBUG(logger, "Dropping redundant promotion " << new_promotion << " at step " << parentNum);
+	      LOG_DEBUG(logger, "Dropping redundant promotion at step "
+			<< parentNum << ": " << new_promotion);
 
 
 	    rval = true;
@@ -887,7 +911,7 @@ private:
 
     if(parentStep.first_child == -1)
       {
-	LOG_ERROR(logger, "Step " << stepNum << " has no children; no promotions to backpropagate.");
+	LOG_ERROR(logger, "No children at step " << stepNum << ", so no promotions to backpropagate.");
 	return;
       }
 
@@ -928,15 +952,15 @@ private:
 	targetStep.promotions_list.push_back(p);
 	if(targetStep.parent != -1)
 	  {
-	    LOG_TRACE(logger, "Adding the promotion " << p
-		      << " to step " << stepNum
-		      << " and scheduling its parent, step " << targetStep.parent << " for propagation.");
+	    LOG_TRACE(logger, "Adding a promotion to step " << stepNum
+		      << " and scheduling its parent, step " << targetStep.parent << " for propagation: "
+		      << p);
 	    steps_pending_promotion_propagation.insert(targetStep.parent);
 	  }
 	else
-	  LOG_TRACE(logger, "Adding the promotion " << p
-		    << " to step " << stepNum
-		    << "; it has no parent, so not scheduling propagation.");
+	  LOG_TRACE(logger, "Adding a promotion to step " << stepNum
+		    << "; it has no parent, so not scheduling propagation: "
+		    << p);
       }
   }
 
@@ -985,7 +1009,12 @@ private:
 	    const promotion &p(*p_it);
 
 	    if(is_deferred_f(p))
-	      curr_step.promotions.erase(p);
+	      {
+		LOG_TRACE(logger, "Removing a promotion from the promotion set of step "
+			  << step_it - steps.begin()
+			  << ": " << p);
+		curr_step.promotions.erase(p);
+	      }
 	  }
 
 	// Drop the deferred entries from the list of promotions,
@@ -998,6 +1027,9 @@ private:
 	    while(read_loc < curr_step.promotions_list.size() &&
 		  is_deferred_f(curr_step.promotions_list[read_loc]))
 	      {
+		LOG_TRACE(logger, "Removing a promotion from the promotion list of step "
+			  << step_it - steps.begin()
+			  << ": " << curr_step.promotions_list[read_loc]);
 		if(read_loc < curr_step.promotions_list_first_new_promotion)
 		  ++num_old_promotions_deleted;
 		++read_loc;
@@ -3959,7 +3991,11 @@ public:
 	const tier &s_tier = get_solution_tier(s, s_has_new_promotion, s_new_promotion);
 	if(s_has_new_promotion &&
 	   maximum_search_tier < s_new_promotion.get_tier())
-	  schedule_promotion_propagation(curr_step_num, s_new_promotion);
+	  {
+	    LOG_TRACE(logger, "Processing the promotion " << s_new_promotion
+		      << ", which was added since this step was placed onto the open queue.");
+	    schedule_promotion_propagation(curr_step_num, s_new_promotion);
+	  }
 
 	if(s_tier >= conflict_tier)
 	  {

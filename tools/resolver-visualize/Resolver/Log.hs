@@ -177,7 +177,7 @@ newPartialStep sol startPos =
 compile :: String -> Regex
 compile = makeRegex
 
-processingStepStart = compile "(Processing (step [0-9]*: )?|--- Found solution )(.*)$"
+processingStepStart = compile "(Processing (step [0-9]*: )?|--- Found solution )(<.*)$"
 newPromotion        = compile "Inserting new promotion: (.*)$"
 -- Note: if we see a "forced" dependency and no "generated" line, we
 -- magically know that the next "Processing" line will be for its
