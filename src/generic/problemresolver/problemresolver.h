@@ -2415,13 +2415,21 @@ private:
 
 		++j;
 
-		choice_set dummy;
-		if(!breaks_user_constraint(get_step(*i).sol, dummy))
+		choice_set reasons;
+		if(!breaks_user_constraint(get_step(*i).sol, reasons))
 		  {
 		    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
 		    open.push(*i);
 		    it->second.erase(i);
+		  }
+		else
+		  {
+		    // We threw out this information above, so we have
+		    // to put it back in now.
+		    promotion deferral(reasons, defer_tier);
+		    LOG_TRACE(logger, "Deferring step " << *i << " and attaching the promotion " << deferral << " to it.");
+		    schedule_promotion_propagation(*i, deferral);
 		  }
 
 		i = j;
@@ -2442,13 +2450,21 @@ private:
 
 	++j;
 
-	choice_set dummy;
-	if(!breaks_user_constraint(get_step(*i).sol, dummy))
+	choice_set reasons;
+	if(!breaks_user_constraint(get_step(*i).sol, reasons))
 	  {
 	    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
 	    future_solutions.push(*i);
 	    deferred_future_solutions.erase(i);
+	  }
+	else
+	  {
+	    // We threw out this information above, so we have
+	    // to put it back in now.
+	    promotion deferral(reasons, defer_tier);
+	    LOG_TRACE(logger, "Deferring step " << *i << " and attaching the promotion " << deferral << " to it.");
+	    schedule_promotion_propagation(*i, deferral);
 	  }
 
 	i = j;
