@@ -700,18 +700,9 @@ private:
     // set.
     std::vector<promotion> promotions_list;
 
-    // The number of "new" promotions added to the list since the
-    // parent last scanned it.
-    int promotions_list_new_promotions;
-
-    /** \brief Remove the promotion information if it is in the
-     *  deferral tier.
-     */
-    void blank_deferral_promotion()
-    {
-      eassert(false);
-      // TODO: implement.
-    }
+    // The first index in the promotions list that represents a "new"
+    // promotion.
+    typename std::vector<promotion>::size_type promotions_list_first_new_promotion;
 
     /** \brief Default step constructor; only exists for use
      *  by STL containers.
@@ -720,7 +711,7 @@ private:
       : is_last_child(true),
 	parent(-1), first_child(-1), sol(), reason(),
 	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_new_promotions(0)
+	promotions_list(), promotions_list_first_new_promotion(0)
     {
     }
 
@@ -733,7 +724,7 @@ private:
       : is_last_child(true),
 	parent(-1), first_child(-1), sol(_sol), reason(),
 	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_new_promotions(0)
+	promotions_list(), promotions_list_first_new_promotion(0)
     {
     }
 
@@ -747,7 +738,7 @@ private:
 	parent(_parent),
 	first_child(-1), sol(_sol), reason(_reason),
 	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_new_promotions(0)
+	promotions_list(), promotions_list_first_new_promotion(0)
     {
     }
   };
@@ -801,12 +792,12 @@ private:
     if(parent.promotions_list.size() >= max_propagated_promotions)
       return false;
 
-    const step &child = get_step(childNum);
+    step &child = get_step(childNum);
 
     typename std::vector<promotion>::const_iterator begin, end = child.promotions_list.end();
     if(child.is_last_child && !has_new_promotion)
       // Only process new promotions if we don't have one yet.
-      begin = child.promotions_list.begin() + child.promotions_list_new_promotions;
+      begin = child.promotions_list.begin() + child.promotions_list_first_new_promotion;
     else
       begin = child.promotions_list.begin();
 
@@ -815,7 +806,7 @@ private:
 	it != end && parent.promotions_list.size() < max_propagated_promotions; ++it)
       {
 	bool current_is_new_promotion =
-	  (it - child.promotions_list.begin()) >= child.promotions_list_new_promotions;
+	  (it - child.promotions_list.begin()) >= (signed)child.promotions_list_first_new_promotion;
 
 	choice_set new_choices(choices);
 	tier new_tier(t);
@@ -847,9 +838,6 @@ private:
 	  {
 	    promotion new_promotion(new_choices, new_tier);
 
-	    LOG_DEBUG(logger, "Created backpropagated promotion at step "
-		      << parentNum << ": " << new_promotion);
-
 	    // Stash the promotion away in the global set of
 	    // promotions.
 	    promotions.insert(new_promotion);
@@ -859,8 +847,15 @@ private:
 	      parent.promotions.insert(new_promotion);
 
 	    if(insert_info.second)
-	      // Otherwise this promotion was already generated.
-	      parent.promotions_list.push_back(new_promotion);
+	      {
+		// Otherwise this promotion was already generated.
+		parent.promotions_list.push_back(new_promotion);
+		LOG_DEBUG(logger, "Created backpropagated promotion at step "
+			  << parentNum << ": " << new_promotion);
+	      }
+	    else
+	      LOG_DEBUG(logger, "Dropping redundant promotion " << new_promotion << " at step " << parentNum);
+
 
 	    rval = true;
 	  }
@@ -873,9 +868,11 @@ private:
 				   new_has_new_promotion,
 				   new_choices, new_tier);
 
-	    rval = rval && generated_anything;
+	    rval = rval || generated_anything;
 	  }
       }
+
+    child.promotions_list_first_new_promotion = child.promotions_list.size();
 
     return rval;
   }
@@ -991,13 +988,34 @@ private:
 	      curr_step.promotions.erase(p);
 	  }
 
-	typename std::vector<promotion>::iterator new_end =
-	  std::remove_if(curr_step.promotions_list.begin(),
-			 curr_step.promotions_list.end(),
-			 is_deferred_f);
+	// Drop the deferred entries from the list of promotions,
+	// updating the "new" pointer so that new promotions will be
+	// detected as being "new".
+	typename std::vector<promotion>::size_type write_loc = 0, read_loc = 0;
+	typename std::vector<promotion>::size_type num_old_promotions_deleted = 0;
+	while(read_loc < curr_step.promotions_list.size())
+	  {
+	    while(read_loc < curr_step.promotions_list.size() &&
+		  is_deferred_f(curr_step.promotions_list[read_loc]))
+	      {
+		if(read_loc < curr_step.promotions_list_first_new_promotion)
+		  ++num_old_promotions_deleted;
+		++read_loc;
+	      }
 
+	    if(read_loc < curr_step.promotions_list.size())
+	      {
+		if(write_loc != read_loc)
+		  curr_step.promotions_list[write_loc] = curr_step.promotions_list[read_loc];
 
-	curr_step.promotions_list.erase(new_end, curr_step.promotions_list.end());
+		++write_loc;
+		++read_loc;
+	      }
+	  }
+	if(read_loc != write_loc)
+	  curr_step.promotions_list.erase(curr_step.promotions_list.begin() + write_loc,
+					  curr_step.promotions_list.end());
+	curr_step.promotions_list_first_new_promotion -= num_old_promotions_deleted;
       }
   }
 
