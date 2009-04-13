@@ -1321,6 +1321,23 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineOptionLogResolver'>
+	<term>
+	  <literal>--log-resolver</literal>
+	</term>
+
+	<listitem>
+	  <para>
+	    Set some standard log levels related to the resolver, to
+	    produce logging output suitable for processing with
+	    automated tools.  This is equivalent to the command-line
+	    options
+	    <literal>--log-level=aptitude.resolver.search:trace
+	    --log-level=aptitude.resolver.search.tiers:warn</literal>.
+	  </para>
+	</listitem>
+      </varlistentry>
+
       <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
 	<term>
 	  <literal>--no-new-installs</literal>

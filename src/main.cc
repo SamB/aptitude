@@ -80,6 +80,7 @@
 #include "gtk/gui.h"
 #endif
 
+#include "loggers.h"
 #include "progress.h"
 #include "pkg_columnizer.h"
 #include "pkg_grouppolicy.h"
@@ -231,6 +232,7 @@ enum {
   OPTION_LOG_LEVEL,
   OPTION_LOG_FILE,
   OPTION_LOG_CONFIG_FILE,
+  OPTION_LOG_RESOLVER,
   OPTION_SHOW_SUMMARY
 };
 int getopt_result;
@@ -279,6 +281,7 @@ option opts[]={
   {"log-level", 1, &getopt_result, OPTION_LOG_LEVEL},
   {"log-file", 1, &getopt_result, OPTION_LOG_FILE},
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
+  {"log-resolver", 0, &getopt_result, OPTION_LOG_RESOLVER},
   {"show-summary", 2, &getopt_result, OPTION_SHOW_SUMMARY},
   {0,0,0,0}
 };
@@ -436,6 +439,24 @@ namespace
     for(Configuration::Item *item = tree->Child; item != NULL;
 	item = item->Next)
       apply_logging_level(item->Value);
+  }
+
+  /** \brief Set some standard logging levels to output log
+   *  information about the resolver.
+   *
+   *  The information this generates is enough to let the log parser
+   *  show a visualization of what happened.
+   */
+  void enable_resolver_log()
+  {
+    using aptitude::Loggers;
+    using namespace log4cxx;
+
+    LevelPtr trace = Level::getTrace();
+    LevelPtr warn = Level::getWarn();
+
+    Loggers::getAptitudeResolverSearch()->setLevel(trace);
+    Loggers::getAptitudeResolverSearchTiers()->setLevel(warn);
   }
 }
 
@@ -774,6 +795,9 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_LOG_FILE:
 	      log_file = optarg;
+	      break;
+	    case OPTION_LOG_RESOLVER:
+	      enable_resolver_log();
 	      break;
 
 	    case OPTION_SHOW_SUMMARY:
