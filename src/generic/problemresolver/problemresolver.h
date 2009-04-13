@@ -3663,6 +3663,12 @@ public:
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
+	// Mandating a version could actually cause some solutions to
+	// no longer be deferred.  Solutions that avoided an approved
+	// version, but that installed the version that is now
+	// approved, would have been deferred before this new mandate
+	// was added, and aren't deferred any more.
+	deferred_dirty = true;
 	unreject_version(ver, undo);
       }
   }
@@ -3750,6 +3756,13 @@ public:
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
+
+	// Approving a broken dependency could actually cause some
+	// solutions to no longer be deferred.  Solutions that avoided
+	// an approved version, but that left this dependency broken,
+	// would have been deferred before this constraint was added,
+	// and aren't deferred any more.
+	deferred_dirty = true;
 	unharden(d, undo);
       }
   }
