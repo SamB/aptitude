@@ -3977,8 +3977,10 @@ public:
 	    // again in the future.  (note that we remove
 	    // from-dep-source information so that we match any
 	    // solution with the same version content)
-	    promotions.insert(promotion(get_solution_choices_without_dep_info(s),
-					already_generated_tier));
+	    promotion already_generated_promotion(get_solution_choices_without_dep_info(s),
+						  already_generated_tier);
+	    promotions.insert(already_generated_promotion);
+	    schedule_promotion_propagation(curr_step_num, already_generated_promotion);
 
 	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
