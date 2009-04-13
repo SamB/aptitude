@@ -986,7 +986,7 @@ private:
 
       return
 	p_tier >= defer_tier &&
-	p_tier < conflict_tier;
+	p_tier < already_generated_tier;
     }
   };
 
