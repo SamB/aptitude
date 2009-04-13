@@ -112,7 +112,9 @@ dotPromotions params step =
          ++
          [ node (name $ printf "step%dbackprop%d" (stepOrder step) backpropNum)
            <<< set "label" (makeLabel $ backpropagationPromotion backprop)
-           <<< set "shape" "oval" 
+           <<< set "shape" "oval"
+           <<< backpropagationRedundant backprop `thenDo`
+               set "style" "dashed"
            | (backprop, backpropNum) <- zip (stepBackpropagations step) ([0..] :: [Integer]) ]
     where makeLabel p = if Set.size (promotionChoices p) <= 5
                         then printf "%s\n%s"
