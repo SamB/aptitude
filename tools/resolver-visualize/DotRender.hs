@@ -19,7 +19,7 @@ inBounds params n = let first = maybe 0 id (firstStep params) in
                     n >= first && maybe True (\max -> n < first + max) (maxSteps params)
 
 choiceText :: LinkChoice -> String
-choiceText (LinkChoice (InstallVersion ver _ _)) = "Install " ++ pp ver
+choiceText (LinkChoice (InstallVersion ver _)) = "Install " ++ pp ver
 choiceText (LinkChoice (BreakSoftDep d)) = "Break " ++ pp d
 choiceText Unknown = "(...)"
 

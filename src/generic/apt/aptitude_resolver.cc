@@ -688,7 +688,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
 
       if(get_initial_state().version_of(p) == curr)
 	{
-	  choice c(choice::make_install_version(curr, dep(), 0));
+	  choice c(choice::make_install_version(curr, 0));
 	  keep_all_solution.insert_or_narrow(c);
 	}
     }

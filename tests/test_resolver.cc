@@ -206,14 +206,14 @@ private:
       u_broken.insert(*bi);
 
     choice c1(choice::make_install_version(u.find_package("a").version_from_name("v1"),
-					   d1, 49));
+					   false, d1, 49));
     choice c2(choice::make_install_version(u.find_package("a").version_from_name("v1"),
-					   d2, 21));
+					   false, d2, 21));
     choice c3(choice::make_install_version(u.find_package("a").version_from_name("v2"),
-					   d1, 49));
+					   false, d1, 49));
 
     choice c4(choice::make_install_version(u.find_package("c").version_from_name("v3"),
-					   d2, 21));
+					   false, d2, 21));
 
     choice c5(choice::make_break_soft_dep(d1, 443));
 
@@ -255,7 +255,7 @@ private:
     assertLtInequivalent(s0, s7, solcmp);
 
     assertLtEquivalent(s1, s1, solcmp);
-    assertLtEquivalent(s1, s2, solcmp);
+    assertLtInequivalent(s1, s2, solcmp);
     assertLtInequivalent(s1, s3, solcmp);
     assertLtInequivalent(s1, s4, solcmp);
     assertLtInequivalent(s1, s5, solcmp);
@@ -330,11 +330,11 @@ private:
     version cv2 = c.version_from_name("v2");
 
     choice_set av1_choices;
-    av1_choices.insert_or_narrow(choice::make_install_version(bv2, dep(), 0));
-    av1_choices.insert_or_narrow(choice::make_install_version(cv2, dep(), 0));
+    av1_choices.insert_or_narrow(choice::make_install_version(bv2, 0));
+    av1_choices.insert_or_narrow(choice::make_install_version(cv2, 0));
 
     choice_set av2_choices;
-    av2_choices.insert_or_narrow(choice::make_install_version(av2, dep(), 0));
+    av2_choices.insert_or_narrow(choice::make_install_version(av2, 0));
 
     // Verify that without a tier we get the shorter solution first.
     // Without this we aren't testing anything!

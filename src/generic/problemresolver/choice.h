@@ -65,36 +65,44 @@ private:
   // The dependency, if any, associated with this choice.
   //
   // Meaningful for install_version choices and for break_soft_dep
-  // choices.  If type is install_version and from_dep_source is set,
-  // this is part of the "identity" of this object (so it will be used
-  // in equality comparisons, contains() checks, etc); all other
-  // install_version choices include it only for informational
-  // purposes.
+  // choices.  This is part of the "identity" of this object (so it
+  // will be used in equality comparisons).  Normally this is ignored
+  // by "contains" checks, but if one of the choices is
+  // dependency-scoped, it can matter.
   dep d;
 
   // True if the choice was to remove the source of the dependency.
   bool from_dep_source:1;
+
+  // True if the dependency is part of the "identity" of the choice
+  // object.  These dependencies are more specific than choices
+  // without dep scoping and less specific than choices with
+  // from_dep_source set.
+  bool dep_scoped:1;
+
+  // True if the choice *has* an attached dependency at all.
+  bool has_dep:1;
 
   // The type of this choice object.
   type tp:1;
 
   /** \brief The order in which this choice was made.
    */
-  int id:30;
+  int id:28;
 
-  generic_choice(const version &_ver, bool _from_dep_source, const dep &_d, int _id)
-    : ver(_ver), d(_d), from_dep_source(_from_dep_source), tp(install_version), id(_id)
+  generic_choice(const version &_ver, bool _from_dep_source, bool _dep_scoped, bool _has_dep, const dep &_d, int _id)
+    : ver(_ver), d(_d), from_dep_source(_from_dep_source), dep_scoped(_dep_scoped), has_dep(_has_dep), tp(install_version), id(_id)
   {
   }
 
   generic_choice(const dep &_d, int _id)
-    : d(_d), from_dep_source(false), tp(break_soft_dep), id(_id)
+    : d(_d), from_dep_source(false), dep_scoped(true), has_dep(true), tp(break_soft_dep), id(_id)
   {
   }
 
 public:
   generic_choice()
-    : from_dep_source(false), tp(install_version), id(-1)
+    : from_dep_source(false), dep_scoped(false), has_dep(false), tp(install_version), id(-1)
   {
   }
 
@@ -104,12 +112,31 @@ public:
    *  \param d   The dependency that caused this choice.  This is
    *             included for informational purposes only and is
    *             ignored by all operations except get_dep().
+   *  \param dep_scoped   True if this choice only "contains"
+   *                      choices with the same dependency.
    *  \param id  An arbitrary integer associated with this choice.
    *             Ignored by all operations except get_id().
    */
-  static generic_choice make_install_version(const version &ver, const dep &d, int id)
+  static generic_choice make_install_version(const version &ver, bool dep_scoped, const dep &d, int id)
   {
-    return generic_choice(ver, false, d, id);
+    return generic_choice(ver, false, dep_scoped, true, d, id);
+  }
+
+  /** \brief Create a new choice that installs the given version and
+   *  has no attached dependency.
+   *
+   *  \param ver The version that is installed by this choice.
+   *  \param d   The dependency that caused this choice.  This is
+   *             included for informational purposes only and is
+   *             ignored by all operations except get_dep().
+   *  \param dep_scoped   True if this choice only "contains" choices
+   *                      with the same dependency.
+   *  \param id  An arbitrary integer associated with this choice.
+   *             Ignored by all operations except get_id().
+   */
+  static generic_choice make_install_version(const version &ver, int id)
+  {
+    return generic_choice(ver, false, false, false, dep(), id);
   }
 
   /** \brief Create a new choice that installs the given version to
@@ -123,7 +150,7 @@ public:
    */
   static generic_choice make_install_version_from_dep_source(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, true, d, id);
+    return generic_choice(ver, true, true, true, d, id);
   }
 
   /** \brief Create a new choice that leaves the given soft dependency
@@ -156,10 +183,16 @@ public:
 	    return false;
 	  else // ver == other.ver
 	    {
-	      if(!from_dep_source)
+	      if(!dep_scoped)
 		return true;
+	      else if(from_dep_source && !other.from_dep_source)
+		return false;
+	      else if(!has_dep && other.has_dep)
+		return true;
+	      else if(has_dep && !other.has_dep)
+		return false;
 	      else
-		return other.from_dep_source && d == other.d;
+		return d == other.d;
 	    }
 
 	case break_soft_dep:
@@ -191,12 +224,20 @@ public:
 	      return false;
 	    else
 	      {
-		if(!from_dep_source && other.from_dep_source)
+		if(!dep_scoped && other.dep_scoped)
+		  return true;
+		else if(dep_scoped && !other.dep_scoped)
+		  return false;
+		else if(!from_dep_source && other.from_dep_source)
 		  return true;
 		else if(from_dep_source && !other.from_dep_source)
 		  return false;
-		else if(!from_dep_source)
-		  return false; // They are equal.
+		else if(!has_dep && other.has_dep)
+		  return true;
+		else if(has_dep && !other.has_dep)
+		  return false;
+		else if(!has_dep)
+		  return false;
 		else
 		  return d < other.d;
 	      }
@@ -225,7 +266,13 @@ public:
 	    if(from_dep_source != other.from_dep_source)
 	      return false;
 
-	    if(!from_dep_source)
+	    if(dep_scoped != other.dep_scoped)
+	      return false;
+
+	    if(has_dep != other.has_dep)
+	      return false;
+
+	    if(!has_dep)
 	      return true;
 	    else
 	      return d == other.d;
@@ -248,10 +295,22 @@ public:
     return ver;
   }
 
+  bool get_dep_scoped() const
+  {
+    eassert(tp == install_version);
+    return dep_scoped;
+  }
+
   bool get_from_dep_source() const
   {
     eassert(tp == install_version);
     return from_dep_source;
+  }
+
+  bool get_has_dep() const
+  {
+    eassert(tp == install_version);
+    return has_dep;
   }
 
   const dep &get_dep() const
@@ -267,10 +326,19 @@ inline std::ostream &operator<<(std::ostream &out, const generic_choice<PackageU
     {
     case generic_choice<PackageUniverse>::install_version:
       out << "Install(" << choice.get_ver();
-      if(choice.get_from_dep_source())
-	return out << " [" << choice.get_dep() << "])";
+      if(!choice.get_has_dep())
+	{
+	  out << ")";
+	  return out;
+	}
+      else if(choice.get_from_dep_source())
+	out << " <source: ";
+      else if(choice.get_dep_scoped())
+	out << " <scope: ";
       else
-	return out << ")";
+	out << " <";
+
+      return out << choice.get_dep() << ">)";
 
     case generic_choice<PackageUniverse>::break_soft_dep:
       return out << "Break(" << choice.get_dep() << ")";

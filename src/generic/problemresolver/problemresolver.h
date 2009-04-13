@@ -1992,7 +1992,7 @@ private:
       switch(c.get_type())
 	{
 	case choice::install_version:
-	  rval.insert_or_narrow(choice::make_install_version(c.get_ver(), c.get_dep(), c.get_id()));
+	  rval.insert_or_narrow(choice::make_install_version(c.get_ver(), false, c.get_dep(), c.get_id()));
 	  break;
 
 	case choice::break_soft_dep:
@@ -2095,6 +2095,7 @@ private:
     const std::set<dep> &hardened_deps;
     const std::set<dep> &approved_broken_deps;
     const resolver_initial_state<PackageUniverse> &initial_state;
+    choice_set &reasons;
     log4cxx::LoggerPtr logger;
 
     choice_does_not_break_user_constraint(const std::set<version> &_rejected_versions,
@@ -2102,12 +2103,14 @@ private:
 					  const std::set<dep> &_hardened_deps,
 					  const std::set<dep> &_approved_broken_deps,
 					  const resolver_initial_state<PackageUniverse> &_initial_state,
+					  choice_set &_reasons,
 					  const log4cxx::LoggerPtr &_logger)
       : rejected_versions(_rejected_versions),
 	mandated_versions(_mandated_versions),
 	hardened_deps(_hardened_deps),
 	approved_broken_deps(_approved_broken_deps),
 	initial_state(_initial_state),
+	reasons(_reasons),
 	logger(_logger)
     {
     }
@@ -2137,6 +2140,7 @@ private:
 	    if(rejected_versions.find(ver) != rejected_versions.end())
 	      {
 		LOG_TRACE(logger, c << " is rejected: it installs the rejected version " << ver);
+		reasons.insert_or_narrow(choice::make_install_version(c.get_ver(), c.get_id()));
 		return false;
 	      }
 
@@ -2153,6 +2157,7 @@ private:
 	    if(hardened_deps.find(d) != hardened_deps.end())
 	      {
 		LOG_TRACE(logger, c << " is rejected: it breaks the hardened soft dependency " << d);
+		reasons.insert_or_narrow(choice::make_break_soft_dep(c.get_dep(), c.get_id()));
 		return false;
 	      }
 
@@ -2198,6 +2203,8 @@ private:
 		      {
 			LOG_TRACE(logger, c << " avoids installing the mandated version "
 				  << alternate << " to solve the dependency " << d);
+			reasons.insert_or_narrow(choice::make_install_version(chosen,
+									      true, d, c.get_id()));
 			return false;
 		      }
 		  }
@@ -2216,6 +2223,8 @@ private:
 		      {
 			LOG_TRACE(logger, c << " avoids installing the mandated version "
 				  << solver << " to solve the dependency " << d);
+			reasons.insert_or_narrow(choice::make_install_version(chosen,
+									      true, d, c.get_id()));
 			return false;
 		      }
 		  }
@@ -2250,6 +2259,7 @@ private:
 		      {
 			LOG_TRACE(logger, c << " solves the soft dependency " << rd
 				  << " which was mandated to be broken.");
+			reasons.insert_or_narrow(choice::make_install_version(chosen, true, d, c.get_id()));
 			return false;
 		      }
 		  }
@@ -2267,6 +2277,7 @@ private:
 		      {
 			LOG_TRACE(logger, c << " solves the soft dependency " << rd
 				  << " which was mandated to be broken.");
+			reasons.insert_or_narrow(choice::make_install_version(chosen, true, d, c.get_id()));
 			return false;
 		      }
 		  }
@@ -2294,6 +2305,7 @@ private:
 		   mandated_versions.find(alternate) != mandated_versions.end())
 		  {
 		    LOG_TRACE(logger, c << " fails to install the mandated version " << alternate);
+		    reasons.insert_or_narrow(choice::make_break_soft_dep(d, c.get_id()));
 		    return false;
 		  }
 	      }
@@ -2306,6 +2318,7 @@ private:
 		if(mandated_versions.find(solver) != mandated_versions.end())
 		  {
 		    LOG_TRACE(logger, c << " fails to install the mandated version " << solver);
+		    reasons.insert_or_narrow(choice::make_break_soft_dep(d, c.get_id()));
 		    return false;
 		  }
 	      }
@@ -2322,11 +2335,12 @@ private:
   /** \return \b true if the given solution breaks a constraint
    *  imposed by the user.
    */
-  bool breaks_user_constraint(const solution &s) const
+  bool breaks_user_constraint(const solution &s,
+			      choice_set &reasons) const
   {
     choice_does_not_break_user_constraint f(user_rejected, user_mandated,
 					    user_hardened, user_approved_broken,
-					    initial_state, logger);
+					    initial_state, reasons, logger);
 
     bool does_not_break_user_constraint = s.get_choices().for_each(f);
     return !does_not_break_user_constraint;
@@ -2383,7 +2397,8 @@ private:
 
 		++j;
 
-		if(!breaks_user_constraint(get_step(*i).sol))
+		choice_set dummy;
+		if(!breaks_user_constraint(get_step(*i).sol, dummy))
 		  {
 		    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
@@ -2409,7 +2424,8 @@ private:
 
 	++j;
 
-	if(!breaks_user_constraint(get_step(*i).sol))
+	choice_set dummy;
+	if(!breaks_user_constraint(get_step(*i).sol, dummy))
 	  {
 	    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
 
@@ -2523,18 +2539,23 @@ private:
       // Shouldn't happen: we should have caught irrelevant solutions
       // earlier in the process.
       LOG_WARN(logger, "Unexpectedly irrelevant solution " << s);
-    else if(breaks_user_constraint(s))
-      {
-	// TODO: accumulate a promotion describing the breakage and
-	// backpropagate it.
-	LOG_WARN(logger, "Deferring rejected solution " << s);
-	defer_step(defer_tier, step_num);
-      }
     else
       {
-	LOG_TRACE(logger, "Enqueuing " << s);
+	choice_set defer_reason;
+	if(breaks_user_constraint(s, defer_reason))
+	  {
+	    LOG_WARN(logger, "Deferring rejected solution " << s);
+	    // Add a singleton promotion here?
+	    promotion defer_promotion(defer_reason, defer_tier);
+	    schedule_promotion_propagation(step_num, defer_promotion);
+	    defer_step(defer_tier, step_num);
+	  }
+	else
+	  {
+	    LOG_TRACE(logger, "Enqueuing " << s);
 
-	open.push(step_num);
+	    open.push(step_num);
+	  }
       }
   }
 
@@ -2578,7 +2599,7 @@ private:
 		  "Discarding " << v
 		  << ": monotonicity violation");
 
-	out_choice = choice::make_install_version(inst, dep(), -1);
+	out_choice = choice::make_install_version(inst, -1);
 	return false;
       }
     else
@@ -2835,7 +2856,7 @@ private:
 	if(from_dep_source)
 	  new_choice = choice::make_install_version_from_dep_source(v, d, newid);
 	else
-	  new_choice = choice::make_install_version(v, d, newid);
+	  new_choice = choice::make_install_version(v, false, d, newid);
 
 	// Speculatively form the new set of actions; doing this
 	// rather than forming the whole solution allows us to avoid
@@ -2911,7 +2932,7 @@ private:
 		    // and not to the set of excluded versions, we can
 		    // use the wider version, thus promoting more
 		    // search nodes.
-		    choice promotion_s_c(choice::make_install_version(v, d, newid));
+		    choice promotion_s_c(choice::make_install_version(v, false, d, newid));
 		    promotion_s.insert_or_narrow(promotion_s_c);
 		    successor_promotion = promotion(promotion_s, ver_tier);
 		  }
@@ -3016,7 +3037,7 @@ private:
       {
 	if(source_was_modified)
 	  {
-	    choice change_source(choice::make_install_version(source, dep(), -1));
+	    choice change_source(choice::make_install_version(source, -1));
 	    if(successor_constraints != NULL)
 	      successor_constraints->insert_or_narrow(change_source);
 	    subpromotion_choices.insert_or_narrow(change_source);
@@ -3913,12 +3934,18 @@ public:
 	    defer_step(s_tier, curr_step_num);
 	    continue;
 	  }
-	else if(breaks_user_constraint(s))
+	else
 	  {
-	    LOG_DEBUG(logger, "Deferring rejected solution " << s);
+	    choice_set defer_reason;
+	    if(breaks_user_constraint(s, defer_reason))
+	      {
+		LOG_DEBUG(logger, "Deferring rejected solution " << s);
 
-	    defer_step(defer_tier, curr_step_num);
-	    continue;
+		promotion defer_promotion(defer_reason, defer_tier);
+		schedule_promotion_propagation(curr_step_num, defer_promotion);
+		defer_step(defer_tier, curr_step_num);
+		continue;
+	      }
 	  }
 
 	closed.insert(s);
@@ -4000,10 +4027,13 @@ public:
 	    solution tmp = get_step(tmp_step).sol;
 	    future_solutions.pop();
 
-	    if(breaks_user_constraint(tmp))
+	    choice_set defer_reason;
+	    if(breaks_user_constraint(tmp, defer_reason))
 	      {
 		LOG_TRACE(logger, "Deferring the future solution " << tmp);
 		deferred_future_solutions.insert(tmp_step);
+		promotion defer_promotion(defer_reason, defer_tier);
+		schedule_promotion_propagation(tmp_step, defer_promotion);
 	      }
 	    else
 	      rval = tmp;

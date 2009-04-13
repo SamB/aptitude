@@ -140,7 +140,7 @@ class Choice_Set_Test : public CppUnit::TestFixture
   // routines that use a dummy value.
   static choice make_install_version(const version &v)
   {
-    return choice::make_install_version(v, dep(), -1);
+    return choice::make_install_version(v, -1);
   }
 
   static choice make_install_version_from_dep_source(const version &v, const dep &d)

@@ -64,7 +64,12 @@ class Choice_Test : public CppUnit::TestFixture
   // routines that use a dummy value.
   static choice make_install_version(const version &v)
   {
-    return choice::make_install_version(v, dep(), -1);
+    return choice::make_install_version(v, -1);
+  }
+
+  static choice make_install_version(const version &v, bool dep_scoped, const dep &d)
+  {
+    return choice::make_install_version(v, dep_scoped, d, -1);
   }
 
   static choice make_install_version_from_dep_source(const version &v, const dep &d)
@@ -105,6 +110,8 @@ public:
 
     const choice cav1 = make_install_version(av1);
     const choice cav1av2d1 = make_install_version_from_dep_source(av1, av2d1);
+    const choice cav1av2d1_scoped = make_install_version(av1, true, av2d1);
+    const choice cav1av2d1_unscoped = make_install_version(av1, false, av2d1);
     const choice cav1av3d1 = make_install_version_from_dep_source(av1, av3d1);
     const choice cav2 = make_install_version(av2);
     const choice cbv1 = make_install_version(bv1);
@@ -114,6 +121,8 @@ public:
     // Check that all the containment relations here are correct.
     CPPUNIT_ASSERT(cav1.contains(cav1));
     CPPUNIT_ASSERT(cav1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(cav1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(cav1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(cav1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cav1.contains(cav2));
     CPPUNIT_ASSERT(!cav1.contains(cbv1));
@@ -122,14 +131,38 @@ public:
 
     CPPUNIT_ASSERT(!cav1av2d1.contains(cav1));
     CPPUNIT_ASSERT(cav1av2d1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cav1av2d1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cav1av2d1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(!cav1av2d1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cav1av2d1.contains(cav2));
     CPPUNIT_ASSERT(!cav1av2d1.contains(cbv1));
     CPPUNIT_ASSERT(!cav1av2d1.contains(cav1d1));
     CPPUNIT_ASSERT(!cav1av2d1.contains(cav2d1));
 
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cav1));
+    CPPUNIT_ASSERT(cav1av2d1_scoped.contains(cav1av2d1));
+    CPPUNIT_ASSERT(cav1av2d1_scoped.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(cav1av2d1_scoped.contains(cav1av2d1_unscoped));
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cav1av3d1));
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cav2));
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cbv1));
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cav1d1));
+    CPPUNIT_ASSERT(!cav1av2d1_scoped.contains(cav2d1));
+
+    CPPUNIT_ASSERT(cav1av2d1_unscoped.contains(cav1));
+    CPPUNIT_ASSERT(cav1av2d1_unscoped.contains(cav1av2d1));
+    CPPUNIT_ASSERT(cav1av2d1_unscoped.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(cav1av2d1_unscoped.contains(cav1av2d1_unscoped));
+    CPPUNIT_ASSERT(cav1av2d1_unscoped.contains(cav1av3d1));
+    CPPUNIT_ASSERT(!cav1av2d1_unscoped.contains(cav2));
+    CPPUNIT_ASSERT(!cav1av2d1_unscoped.contains(cbv1));
+    CPPUNIT_ASSERT(!cav1av2d1_unscoped.contains(cav1d1));
+    CPPUNIT_ASSERT(!cav1av2d1_unscoped.contains(cav2d1));
+
     CPPUNIT_ASSERT(!cav1av3d1.contains(cav1));
     CPPUNIT_ASSERT(!cav1av3d1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cav1av3d1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cav1av3d1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(cav1av3d1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cav1av3d1.contains(cav2));
     CPPUNIT_ASSERT(!cav1av3d1.contains(cbv1));
@@ -140,6 +173,8 @@ public:
 
     CPPUNIT_ASSERT(!cav2.contains(cav1));
     CPPUNIT_ASSERT(!cav2.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cav2.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cav2.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(!cav2.contains(cav1av3d1));
     CPPUNIT_ASSERT(cav2.contains(cav2));
     CPPUNIT_ASSERT(!cav2.contains(cbv1));
@@ -148,6 +183,8 @@ public:
 
     CPPUNIT_ASSERT(!cbv1.contains(cav1));
     CPPUNIT_ASSERT(!cbv1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cbv1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cbv1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(!cbv1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cbv1.contains(cav2));
     CPPUNIT_ASSERT(cbv1.contains(cbv1));
@@ -156,6 +193,8 @@ public:
 
     CPPUNIT_ASSERT(!cav1d1.contains(cav1));
     CPPUNIT_ASSERT(!cav1d1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cav1d1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cav1d1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(!cav1d1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cav1d1.contains(cav2));
     CPPUNIT_ASSERT(!cav1d1.contains(cbv1));
@@ -164,6 +203,8 @@ public:
 
     CPPUNIT_ASSERT(!cav2d1.contains(cav1));
     CPPUNIT_ASSERT(!cav2d1.contains(cav1av2d1));
+    CPPUNIT_ASSERT(!cav2d1.contains(cav1av2d1_scoped));
+    CPPUNIT_ASSERT(!cav2d1.contains(cav1av2d1_unscoped));
     CPPUNIT_ASSERT(!cav2d1.contains(cav1av3d1));
     CPPUNIT_ASSERT(!cav2d1.contains(cav2));
     CPPUNIT_ASSERT(!cav2d1.contains(cbv1));

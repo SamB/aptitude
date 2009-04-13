@@ -607,21 +607,17 @@ entryColumnScore (AlreadyGeneratedStep { entrySol = sol })              = show $
 entryColumnScore (NoStep { entrySol = sol })                            = show $ solScore sol
 entryColumnScore (Error {})                                             = ""
 
+linkChoiceDepText :: LinkChoice -> String
+linkChoiceDepText (LinkChoice (InstallVersion { choiceVerDepInfo = Just di })) =
+    pp (depInfoDep di)
+linkChoiceDepText _ = ""
+
 entryColumnDep :: TreeViewEntry -> String
 entryColumnDep (Root {}) = ""
-entryColumnDep (Step { entryChoice = choice }) =
-    case choice of
-      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
-      _ -> ""
+entryColumnDep (Step { entryChoice = choice }) = linkChoiceDepText choice
 entryColumnDep (Horizon { }) = ""
-entryColumnDep (AlreadyGeneratedStep { entryChoice = choice }) =
-    case choice of
-      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
-      _ -> ""
-entryColumnDep (NoStep { entryChoice = choice }) =
-    case choice of
-      LinkChoice (InstallVersion { choiceVerReason = Just d }) -> pp d
-      _ -> ""
+entryColumnDep (AlreadyGeneratedStep { entryChoice = choice }) = linkChoiceDepText choice
+entryColumnDep (NoStep { entryChoice = choice }) = linkChoiceDepText choice
 entryColumnDep (Error { entryErrorText = err }) = ""
 
 renderTreeView :: Params -> [ProcessingStep] -> TreeViewStore -> IO ()
@@ -661,7 +657,7 @@ makeChronStep step =
                         Just (ParentLink { parentLinkAction = LinkChoice c }) -> Just c
                         _ -> Nothing
         dep         = case choice of
-                        Just (InstallVersion { choiceVerReason = maybeDep }) -> maybeDep
+                        Just (InstallVersion { choiceVerDepInfo = maybeDi }) -> fmap depInfoDep maybeDi
                         _ -> Nothing in
     numChoices `seq` brokenDeps `seq` stepNum `seq` children `seq` height `seq` subtreeSize `seq` step `seq` tier `seq` score `seq`
     choice `seq` parent `seq` dep `seq`

@@ -121,16 +121,23 @@ instance Internable Dep where
            deps' `seq` (pkgName $ verPkg $ depSource rval) `seq` (verName $ depSource rval)
                  `seq` (seqList $ depSolvers rval) `seq` return rval
 
+instance Internable ChoiceDepInfo where
+    intern depInfo =
+        do let dep = depInfoDep depInfo
+           dep' <- intern dep
+           let rval = depInfo { depInfoDep = dep' }
+           dep' `seq` rval `seq` return rval
+
 instance Internable Choice where
-    intern c@(InstallVersion ver reason fromDepSource) =
+    intern c@(InstallVersion ver depInfo) =
         do ver'     <- intern ver
-           reason'  <- maybeIntern reason
+           depInfo' <- maybeIntern depInfo
            st       <- getState
            let choices           = internedChoices st
-               (choices', rval)  = doIntern choices c (InstallVersion ver' reason' fromDepSource)
+               (choices', rval)  = doIntern choices c (InstallVersion ver' depInfo')
            putState st { internedChoices = choices' }
-           choices' `seq` (verPkg $ choiceVer rval) `seq` (choiceVerReason rval)
-                    `seq` (choiceFromDepSource rval) `seq` return rval
+           choices' `seq` (verPkg $ choiceVer rval)
+                    `seq` depInfo' `seq` return rval
     intern c@(BreakSoftDep dep) =
         do dep'     <- intern dep
            st       <- getState
@@ -269,22 +276,32 @@ depWithoutTerminators terminators =
 dep :: Parser Dep
 dep = depWithoutTerminators []
 
--- | A choice is either Install(ver) or Break(dep)
+-- | A choice is either Install(ver) or Break(dep); versions can have
+-- [dep] after them (old-style from-dep-source), or <dep> (new-style
+-- unscoped, or <"source:" dep> / <"scope:" dep> (new-style
+-- from-dep-source or scoped).
 choice :: Parser Choice
 choice = (lexeme $ do installChoice <|> breakDepChoice) <?> "choice"
     where installChoice = do try (symbol "Install")
                              parens $ do
                                v <- versionWithoutTerminators [rightParen]
                                v `seq` ((do d <- squares dep
-                                            let fromDepSource = Just True
-                                                reason        = Just d
-                                            (d `seq` fromDepSource `seq` reason `seq`
+                                            let reason  = FromSource d
+                                                depInfo = Just reason
+                                            (d `seq` reason `seq` depInfo `seq`
                                              (intern InstallVersion { choiceVer = v,
-                                                                      choiceVerReason = reason,
-                                                                      choiceFromDepSource = fromDepSource }))) <|>
+                                                                      choiceVerDepInfo = depInfo }))) <|>
+                                        (angles $ do k <- ((try (symbol "source:") >> return FromSource) <|>
+                                                           (try (symbol "scope:") >> return Scoped) <|>
+                                                           (return Unscoped))
+                                                     d <- dep
+                                                     let reason  = k d
+                                                         depInfo = Just reason
+                                                     d `seq` reason `seq` depInfo `seq`
+                                                           (intern InstallVersion { choiceVer = v,
+                                                                                    choiceVerDepInfo = depInfo })) <|>
                                         (intern InstallVersion { choiceVer = v,
-                                                                 choiceVerReason = Nothing,
-                                                                 choiceFromDepSource = Nothing }))
+                                                                 choiceVerDepInfo = Nothing }))
           breakDepChoice = do try (symbol "Break")
                               d <- parens dep
                               d `seq` intern $ BreakSoftDep { choiceDep = d }
@@ -342,8 +359,7 @@ solution = do installVersionChoices <- solutionInstalls
                  v <- lexeme $ readCharsTill [comma, rightAngle]
                  return $ InstallVersion { choiceVer = Version { verPkg = p,
                                                                  verName = BS.pack v },
-                                           choiceVerReason = Nothing,
-                                           choiceFromDepSource = Nothing }
+                                           choiceVerDepInfo = Nothing }
           solutionUnresolvedSoftDeps =
               do spaces
                  (do try (symbol "<!")

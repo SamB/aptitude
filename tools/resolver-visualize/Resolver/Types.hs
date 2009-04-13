@@ -5,6 +5,7 @@ module Resolver.Types(
                       Package(..),
                       Version(..),
                       Dep(..),
+                      ChoiceDepInfo(..),
                       Choice(..),
                       Solution(..),
                       FastSolution(fastSol, fastSolHash),
@@ -61,6 +62,10 @@ data Dep = Dep { -- | The version that declares this dependency.
                  depIsSoft :: Bool}
          deriving(Ord, Eq, Show)
 
+data ChoiceDepInfo = Unscoped   { depInfoDep :: Dep }
+                   | Scoped     { depInfoDep :: Dep }
+                   | FromSource { depInfoDep :: Dep }
+              deriving(Ord, Eq, Show)
 
 -- | Represents a choice made by the dependency resolver.
 data Choice = InstallVersion { -- | The version to install.
@@ -69,11 +74,7 @@ data Choice = InstallVersion { -- | The version to install.
                                -- installation.
                                --
                                -- Will be Nothing if it is not known.
-                               choiceVerReason :: Maybe Dep,
-                               -- | True if this choice was made to
-                               -- alter the source of the dependency.
-                               -- Nothing if it is not known.
-                               choiceFromDepSource :: Maybe Bool }
+                               choiceVerDepInfo :: Maybe ChoiceDepInfo }
             -- ^ Install a single version.
             -- | Leave a soft dependency unresolved.
             | BreakSoftDep { -- | The dependency that was not

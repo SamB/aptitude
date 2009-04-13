@@ -21,7 +21,11 @@ instance PP Dep where
                                    ppS src . (arrow++) . (\x -> foldr (++) x $ intersperse ", " $ map pp solvers) . ('}':)
 
 instance PP Choice where
-    ppS (InstallVersion ver _ _) = ("Install "++) . ppS ver
+    ppS (InstallVersion ver di) = ("Install "++) . case di of
+                                                     Nothing             -> ppS ver
+                                                     Just (Unscoped _)   -> ppS ver
+                                                     Just (Scoped d)     -> ("<scope: "++) . ppS d . (">"++)
+                                                     Just (FromSource d) -> ("<source: "++) . ppS d . (">"++)
     ppS (BreakSoftDep d) = ("Break "++) . ppS d
 
 instance PP Promotion where

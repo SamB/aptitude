@@ -566,8 +566,7 @@ processTryingResolutionLine source matches =
        let fromDep = (fst (matches!3) /= (-1))
            c = InstallVersion {
                  choiceVer = v,
-                 choiceVerReason = (Just d),
-                 choiceFromDepSource = (Just fromDep)
+                 choiceVerDepInfo = Just (FromSource d)
                }
            lc = LinkChoice c
        d `seq` v `seq` c `seq` lc `seq`
@@ -765,8 +764,9 @@ forceEverything a =
       forceSol sol = ()
       forcePromotion p = ()
       forceDep (Dep source solvers isSoft) = forceMap forceVersion solvers `seq` forceVersion source `seq` isSoft `seq` ()
-      forceChoice (InstallVersion ver dep fromDepSource) =
-          forceVersion ver `seq` forceMaybe forceDep dep `seq` forceMaybe id fromDepSource `seq` ()
+      forceDepInfo di = forceDep (depInfoDep di) `seq` ()
+      forceChoice (InstallVersion ver depInfo) =
+          forceVersion ver `seq` forceMaybe forceDepInfo depInfo `seq` ()
       forceChoice (BreakSoftDep dep) =
           forceDep dep `seq` ()
       forceVersion (Version p name) =
