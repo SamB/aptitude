@@ -2411,16 +2411,17 @@ private:
 
 	    while(i != it->second.end())
 	      {
-		LOG_TRACE(logger, "Re-examining step " << *i);
+		const int step_num(*i);
+		LOG_TRACE(logger, "Re-examining step " << step_num);
 
 		++j;
 
 		choice_set reasons;
-		if(!breaks_user_constraint(get_step(*i).sol, reasons))
+		if(!breaks_user_constraint(get_step(step_num).sol, reasons))
 		  {
-		    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
+		    LOG_DEBUG(logger, "Step " << step_num << " is no longer deferred, placing it back on the open queue.");
 
-		    open.push(*i);
+		    open.push(step_num);
 		    it->second.erase(i);
 		  }
 		else
@@ -2428,8 +2429,8 @@ private:
 		    // We threw out this information above, so we have
 		    // to put it back in now.
 		    promotion deferral(reasons, defer_tier);
-		    LOG_TRACE(logger, "Deferring step " << *i << " and attaching the promotion " << deferral << " to it.");
-		    schedule_promotion_propagation(*i, deferral);
+		    LOG_TRACE(logger, "Deferring step " << step_num << " and attaching the promotion " << deferral << " to it.");
+		    schedule_promotion_propagation(step_num, deferral);
 		  }
 
 		i = j;
@@ -2446,16 +2447,17 @@ private:
 
     while(i != deferred_future_solutions.end())
       {
-	LOG_TRACE(logger, "Re-examining step " << *i);
+	const int step_num(*i);
+	LOG_TRACE(logger, "Re-examining step " << step_num);
 
 	++j;
 
 	choice_set reasons;
-	if(!breaks_user_constraint(get_step(*i).sol, reasons))
+	if(!breaks_user_constraint(get_step(step_num).sol, reasons))
 	  {
-	    LOG_DEBUG(logger, "Step " << *i << " is no longer deferred, placing it back on the open queue.");
+	    LOG_DEBUG(logger, "Step " << step_num << " is no longer deferred, placing it back on the open queue.");
 
-	    future_solutions.push(*i);
+	    future_solutions.push(step_num);
 	    deferred_future_solutions.erase(i);
 	  }
 	else
@@ -2463,8 +2465,8 @@ private:
 	    // We threw out this information above, so we have
 	    // to put it back in now.
 	    promotion deferral(reasons, defer_tier);
-	    LOG_TRACE(logger, "Deferring step " << *i << " and attaching the promotion " << deferral << " to it.");
-	    schedule_promotion_propagation(*i, deferral);
+	    LOG_TRACE(logger, "Deferring step " << step_num << " and attaching the promotion " << deferral << " to it.");
+	    schedule_promotion_propagation(step_num, deferral);
 	  }
 
 	i = j;
