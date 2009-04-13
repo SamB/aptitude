@@ -772,7 +772,7 @@ private:
   const step &get_step(int n) const
   {
     eassert(n >= 0);
-    eassert(n < steps.size());
+    eassert((unsigned)n < steps.size());
     return steps[n];
   }
 
