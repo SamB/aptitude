@@ -22,7 +22,11 @@ module Resolver.Types(
                       minimumTier,
                       showsTierComponent,
                       Promotion(..),
-                      FastPromotion(fastPromotion, fastPromotionHash),
+                      Hashed(..),
+                      makeHashed,
+                      FastPromotion,
+                      fastPromotionHash,
+                      fastPromotion,
                       makeFastPromotion
                      ) where
 
@@ -196,21 +200,32 @@ instance Ord Promotion where
         where combine EQ o2 = o2
               combine o1 _  = o1
 
-data FastPromotion = FastPromotion { fastPromotion :: Promotion,
-                                     fastPromotionHash :: Int32 }
-                   deriving(Show)
+data Hashed a = Hashed { hashedVal :: a,
+                         hashedHash :: Int32 }
 
-instance Eq FastPromotion where
-    fp1 == fp2 =
-        fastPromotionHash fp1 == fastPromotionHash fp2 &&
-        fastPromotion fp1 == fastPromotion fp2
+instance Eq a => Eq (Hashed a) where
+    h1 == h2 =
+        hashedHash h1 == hashedHash h2 &&
+        hashedVal h1 == hashedVal h2
 
-instance Ord FastPromotion where
-    fp1 `compare` fp2 =
-        case fastPromotionHash fp1 `compare` fastPromotionHash fp2 of
-          EQ -> fastPromotion fp1 `compare` fastPromotion fp2
+instance Ord a => Ord (Hashed a) where
+    h1 `compare` h2 =
+        case hashedHash h1 `compare` hashedHash h2 of
+          EQ -> hashedVal h1 `compare` hashedVal h2
           o  -> o
 
+-- | Use a value's Show instance to hash it.
+makeHashed :: Show a => a -> Hashed a
+makeHashed a = Hashed { hashedVal = a,
+                        hashedHash = hashString $ show a }
+
+type FastPromotion = Hashed Promotion
+
+fastPromotion :: FastPromotion -> Promotion
+fastPromotion = hashedVal
+
+fastPromotionHash :: FastPromotion -> Int32
+fastPromotionHash = hashedHash
+
 makeFastPromotion :: Promotion -> FastPromotion
-makeFastPromotion p = FastPromotion { fastPromotion = p,
-                                      fastPromotionHash = hashString $ show p }
+makeFastPromotion = makeHashed

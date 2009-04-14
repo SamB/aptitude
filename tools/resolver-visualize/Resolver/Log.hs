@@ -241,6 +241,13 @@ data LogParseState = LogParseState {
       -- Used to ensure that only new promotions are included in the
       -- promotions of a particular step.
       logParseSeenPromotions :: Maybe (HashTable.HashTable FastPromotion ()),
+      -- | All the backpropagations that have been seen.
+      --
+      -- It's interesting to show redundant backpropagations once, at
+      -- each step, but not that interesting to show them every time
+      -- they arise.  This stores which promotions have been seen
+      -- attached to each solution/step.
+      logParseSeenBackpropagations :: Maybe (HashTable.HashTable (Hashed (Solution, Promotion)) ()),
       -- | The last seen line indicating the resolver is examining a
       -- choice.
       --
@@ -261,6 +268,7 @@ initialState sourceName =
                     logParseCurrentLineStart = 0,
                     logParseGeneratingSuccessorsInfo = Nothing,
                     logParseSeenPromotions = Nothing,
+                    logParseSeenBackpropagations = Nothing,
                     logParseLastSeenTryChoice = Unknown,
                     logParsePromotionBackpropagationState = Nothing }
 
@@ -371,6 +379,28 @@ getOrMakeSeenPromotionsTable =
 addSeenPromotion :: Promotion -> LogParse ()
 addSeenPromotion p = do hashTable <- getOrMakeSeenPromotionsTable
                         liftIO $ HashTable.insert hashTable (makeFastPromotion p) ()
+
+backpropagationIsSeen :: Solution -> Promotion -> LogParse Bool
+backpropagationIsSeen sol p =
+    do st <- get
+       (case logParseSeenBackpropagations st of
+          Nothing -> return False
+          Just ht -> do found <- liftIO $ HashTable.lookup ht (makeHashed (sol, p))
+                        return $ isJust found)
+
+getOrMakeSeenBackpropagationsTable :: LogParse (HashTable.HashTable (Hashed (Solution, Promotion)) ())
+getOrMakeSeenBackpropagationsTable =
+    do st <- get
+       case logParseSeenBackpropagations st of
+         Just ht -> return ht
+         Nothing -> do rval <- liftIO $ HashTable.new (==) hashedHash
+                       put st { logParseSeenBackpropagations = Just rval }
+                       return rval
+
+addSeenBackpropagation :: Solution -> Promotion -> LogParse ()
+addSeenBackpropagation sol p =
+    do hashTable <- getOrMakeSeenBackpropagationsTable
+       liftIO $ HashTable.insert hashTable (makeHashed (sol, p)) ()
 
 -- | Not strict in the contents of the Maybe.
 setGeneratingSuccessorsInfo :: Maybe GeneratingSuccessorsInfo -> LogParse ()
@@ -549,9 +579,12 @@ processBackpropagationAdd source matches =
           Nothing  -> return ()
           Just sol ->
               do p <- parseMatch promotion source (matches!2)
-                 seen <- promotionIsSeen p
-                 addSeenPromotion p
-                 p `seq` sol `seq` seen `seq` addBackpropagatedPromotionToCurrentStep sol p seen)
+                 backpropSeen <- backpropagationIsSeen sol p
+                 unless backpropSeen $ do
+                   seen <- promotionIsSeen p
+                   addSeenPromotion p
+                   addSeenBackpropagation sol p
+                   p `seq` sol `seq` seen `seq` addBackpropagatedPromotionToCurrentStep sol p seen)
 
 -- | Process a line of the log file that indicates that a particular
 -- resolution was attempted.
