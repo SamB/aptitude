@@ -124,8 +124,8 @@ namespace gui
     Glib::RefPtr<Gtk::TreeStore> render_as_explanation(const aptitude_solution &sol);
 
       std::string archives_text(const pkgCache::VerIterator &ver);
-      std::string dep_targets(const pkgCache::DepIterator &start);
-      std::wstring dep_text(const pkgCache::DepIterator &d);
+      std::string dep_targets(const pkgCache::DepIterator &start) const;
+      std::wstring dep_text(const pkgCache::DepIterator &d) const;
       bool do_previous_solution_enabled();
       bool do_previous_solution_enabled_from_state(const resolver_manager::state &state);
       void do_previous_solution();
