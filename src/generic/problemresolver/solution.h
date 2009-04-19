@@ -240,6 +240,10 @@ public:
  *  problem.  Solutions are transparently refcounted to save on
  *  memory and avoid copies.
  *
+ *  A solution is simply a set of choices.  Solutions also carry
+ *  around the set of dependencies that they don't solve, for the sake
+ *  of convenience.
+ *
  *  Solution identity is based on both the mapping stored in the
  *  solution and on the set of unfixed soft dependencies stored in it.
  *  Dependencies in unfixed_soft_deps are removed from broken_deps so
