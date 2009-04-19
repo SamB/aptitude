@@ -436,7 +436,8 @@ namespace gui
       cwidget::threads::thread *t;
     public:
       ensure_done_callback(const safe_slot1<void, cwidget::threads::thread *> _done_callback)
-	: done_callback(_done_callback)
+	: done_callback(_done_callback),
+	  t(NULL)
       {
       }
 
