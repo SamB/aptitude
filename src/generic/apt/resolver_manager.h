@@ -752,6 +752,15 @@ public:
    */
   sigc::signal0<void> state_changed;
 
+  /** \brief This signal is emitted when the mandated/rejected state
+   *  of any resolver version is changed via the resolver_manager.
+   */
+  sigc::signal<void, aptitude_resolver_version> version_accept_reject_changed;
+  /** \brief This signal is emitted when the mandated/rjected state of
+   *  any break-dependency action is changed via the resolver manager.
+   */
+  sigc::signal<void, aptitude_resolver_dep> break_dep_accept_reject_changed;
+
   /** \brief Safe resolver logic. */
   // @{
 

@@ -1363,12 +1363,14 @@ void resolver_manager::reject_version(const aptitude_resolver_version &ver)
 {
   resolver_manipulation(ver, &aptitude_resolver::reject_version,
 			resolver_interaction::RejectVersion(ver));
+  version_accept_reject_changed(ver);
 }
 
 void resolver_manager::unreject_version(const aptitude_resolver_version &ver)
 {
   resolver_manipulation(ver, &aptitude_resolver::unreject_version,
 			resolver_interaction::UnRejectVersion(ver));
+  version_accept_reject_changed(ver);
 }
 
 bool resolver_manager::is_rejected(const aptitude_resolver_version &ver)
@@ -1383,12 +1385,14 @@ void resolver_manager::mandate_version(const aptitude_resolver_version &ver)
 {
   resolver_manipulation(ver, &aptitude_resolver::mandate_version,
 			resolver_interaction::MandateVersion(ver));
+  version_accept_reject_changed(ver);
 }
 
 void resolver_manager::unmandate_version(const aptitude_resolver_version &ver)
 {
   resolver_manipulation(ver, &aptitude_resolver::unmandate_version,
 			resolver_interaction::UnMandateVersion(ver));
+  version_accept_reject_changed(ver);
 }
 
 bool resolver_manager::is_mandatory(const aptitude_resolver_version &ver)
@@ -1403,12 +1407,14 @@ void resolver_manager::harden_dep(const aptitude_resolver_dep &dep)
 {
   resolver_manipulation(dep, &aptitude_resolver::harden,
 			resolver_interaction::HardenDep(dep));
+  break_dep_accept_reject_changed(dep);
 }
 
 void resolver_manager::unharden_dep(const aptitude_resolver_dep &dep)
 {
   resolver_manipulation(dep, &aptitude_resolver::unharden,
 			resolver_interaction::UnHardenDep(dep));
+  break_dep_accept_reject_changed(dep);
 }
 
 bool resolver_manager::is_hardened(const aptitude_resolver_dep &dep)
@@ -1423,12 +1429,14 @@ void resolver_manager::approve_broken_dep(const aptitude_resolver_dep &dep)
 {
   resolver_manipulation(dep, &aptitude_resolver::approve_break,
 			resolver_interaction::ApproveBrokenDep(dep));
+  break_dep_accept_reject_changed(dep);
 }
 
 void resolver_manager::unapprove_broken_dep(const aptitude_resolver_dep &dep)
 {
   resolver_manipulation(dep, &aptitude_resolver::unapprove_break,
 			resolver_interaction::UnApproveBrokenDep(dep));
+  break_dep_accept_reject_changed(dep);
 }
 
 bool resolver_manager::is_approved_broken(const aptitude_resolver_dep &dep)
