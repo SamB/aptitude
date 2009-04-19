@@ -22,6 +22,8 @@
 #include "resolver.h"
 #include "aptitude.h"
 
+#include "treeview_cell_tooltips.h"
+
 #undef OK
 #include <gtkmm.h>
 #include <libglademm/xml.h>
@@ -34,6 +36,7 @@
 
 #include <generic/apt/apt_undo_group.h>
 #include <generic/problemresolver/exceptions.h>
+#include <generic/problemresolver/solution.h>
 
 #include <gui.h>
 
@@ -161,35 +164,298 @@ namespace gui
     add(VerIterator);
     add(Name);
     add(Action);
+    add(BgSet);
+    add(BgColor);
+    add(PreferenceIcon);
+    add(PreferenceIconTooltip);
+    add(Choice);
   }
 
-  template <class ColumnType>
-  int ResolverView::append_column(Glib::ustring title,
-      Gtk::TreeViewColumn * treeview_column,
-      Gtk::TreeModelColumn<ColumnType>& model_column,
-      int size)
+  void ResolverView::set_column_properties(Gtk::TreeViewColumn *treeview_column,
+					   int size)
   {
-    treeview_column = manage(new Gtk::TreeViewColumn(title, model_column));
-    treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
-    treeview_column->set_fixed_width(size);
-    treeview_column->set_resizable(true);
+    Glib::ListHandle<Gtk::CellRenderer *> renderers = treeview_column->get_cell_renderers();
+    for(Glib::ListHandle<Gtk::CellRenderer *>::const_iterator it  =
+	  renderers.begin(); it != renderers.end(); ++it)
+      {
+	treeview_column->add_attribute((*it)->property_cell_background_set(), resolver_columns.BgSet);
+	treeview_column->add_attribute((*it)->property_cell_background(), resolver_columns.BgColor);
+      }
+    if (size < 0)
+      treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+    else
+      {
+        treeview_column->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
+        treeview_column->set_fixed_width(size);
+        treeview_column->set_resizable(true);
+      }
     treeview_column->set_reorderable(true);
-    treeview_column->set_sort_column(model_column);
-    return Gtk::TreeView::append_column(*treeview_column);
   }
 
-  ResolverView::ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-  : Gtk::TreeView(cobject) //Calls the base class constructor
+  template<typename ColumnType>
+  int ResolverView::append_column(const Glib::ustring &title,
+				  Gtk::TreeViewColumn *out_treeview_column,
+				  const Gtk::TreeModelColumn<ColumnType> &model_column,
+				  int size)
   {
+    out_treeview_column = manage(new Gtk::TreeViewColumn(title, model_column));
+    set_column_properties(out_treeview_column, size);
+
+    return view->append_column(*out_treeview_column);
+  }
+
+
+  ResolverView::preference_info ResolverView::get_preference_info(const generic_choice<aptitude_universe> &c,
+								  resolver_manager *manager) const
+  {
+    typedef generic_choice<aptitude_universe> choice;
+    using cwidget::util::ssprintf;
+
+    if(manager == NULL)
+      return preference_info();
+    else
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    pkgCache::VerIterator ver = c.get_ver().get_ver();
+	    pkgCache::PkgIterator pkg = c.get_ver().get_pkg();
+
+	    if(manager->is_rejected(c.get_ver()))
+	      {
+		Glib::ustring icon_tooltip;
+		// Generate a friendly message about what's happening.
+		if(ver.end())
+		  icon_tooltip = ssprintf(_("Removing %s is rejected."), pkg.Name());
+		else if(ver == pkg.CurrentVer() &&
+			pkg->CurrentState != pkgCache::State::NotInstalled &&
+			pkg->CurrentState != pkgCache::State::ConfigFiles)
+		  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
+					  pkg.Name(),
+					  pkg.CurrentVer().VerStr());
+		else
+		  icon_tooltip = ssprintf(_("Installing %s version %s is rejected."),
+					  pkg.Name(),
+					  pkg.CurrentVer().VerStr());
+
+		return preference_info(Gtk::Stock::CANCEL.id,
+				       icon_tooltip,
+				       lightred_background_color,
+				       true);
+	      }
+	    else if(manager->is_mandatory(c.get_ver()))
+	      {
+		Glib::ustring icon_tooltip;
+		if(ver.end())
+		  icon_tooltip = ssprintf(_("Removing %s is preferred over all un-accepted alternatives."),
+					  pkg.Name());
+		else if(ver == pkg.CurrentVer() &&
+			pkg->CurrentState != pkgCache::State::NotInstalled &&
+			pkg->CurrentState != pkgCache::State::ConfigFiles)
+		  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
+					  pkg.Name(),
+					  pkg.CurrentVer().VerStr());
+		else
+		  icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
+					  pkg.Name(),
+					  pkg.CurrentVer().VerStr());
+
+		return preference_info(Gtk::Stock::APPLY.id,
+				       icon_tooltip,
+				       lightgreen_background_color,
+				       true);
+	      }
+	    else
+	      return preference_info();
+	  }
+
+	case choice::break_soft_dep:
+	  if(manager->is_hardened(c.get_dep()))
+	    return preference_info(Gtk::Stock::CANCEL.id,
+				   ssprintf(_("Leaving %ls unresolved is rejected."),
+					    dep_text(c.get_dep().get_dep()).c_str()),
+				   lightred_background_color,
+				   true);
+	  else if(manager->is_approved_broken(c.get_dep()))
+	    return preference_info(Gtk::Stock::APPLY.id,
+				   ssprintf(_("Leaving %ls unresolved is preferred over all un-accepted alternatives."),
+					    dep_text(c.get_dep().get_dep()).c_str()),
+				   lightgreen_background_color,
+				   true);
+	  else
+	    return preference_info();
+
+	default:
+	  LOG_ERROR(Loggers::getAptitudeGtkResolver(),
+		    "Bad choice type " << c.get_type());
+	  return preference_info(Gtk::Stock::DIALOG_ERROR.id,
+				 "",
+				 "",
+				 false);
+	}
+  }
+
+  void ResolverView::set_preference_info(Gtk::TreeModel::Row &row,
+					 const ResolverView::preference_info &pref_inf) const
+  {
+    row[resolver_columns.PreferenceIcon] = pref_inf.icon;
+    row[resolver_columns.PreferenceIconTooltip] = pref_inf.icon_tooltip;
+    // Even if the color will have no effect because it isn't set, we
+    // need to set a legal color name here; otherwise GTK+ will
+    // complain that it doesn't know about the color "".  Black is
+    // picked so it's really obvious when this has happened.
+    if(pref_inf.background.empty())
+      row[resolver_columns.BgColor] = "black";
+    else
+      row[resolver_columns.BgColor] = pref_inf.background;
+    row[resolver_columns.BgSet] = pref_inf.background_set;
+
+    // Sanity-check.
+    if(pref_inf.background.empty() && pref_inf.background_set)
+      LOG_ERROR(Loggers::getAptitudeGtkResolver(),
+		"The row \"" << row[resolver_columns.Name] << "\" has no background but its background is set.");
+  }
+
+  void ResolverView::set_preference_info(Gtk::TreeModel::Row &row,
+					 const generic_choice<aptitude_universe> &c,
+					 resolver_manager *manager) const
+  {
+    preference_info pref_inf(get_preference_info(c, manager));
+    set_preference_info(row, pref_inf);
+  }
+
+  bool ResolverView::update_preference_info(const Gtk::TreeModel::iterator &iter,
+					    resolver_manager *manager)
+  {
+    Gtk::TreeModel::Row row(*iter);
+
+    typedef generic_choice<aptitude_universe> choice;
+    maybe<choice> maybe_c(row[resolver_columns.Choice]);
+    choice c;
+    if(maybe_c.extract(c))
+      set_preference_info(row,
+			  c,
+			  manager);
+    else
+      set_preference_info(row, preference_info());
+
+    return false;
+  }
+
+  void ResolverView::update_version(const aptitude_resolver_version &version,
+				    resolver_manager *manager)
+  {
+    std::map<aptitude_resolver_version, Gtk::TreeModel::iterator>::iterator
+      found = version_backpointers.find(version);
+
+    if(found != version_backpointers.end())
+      {
+	typedef generic_choice<aptitude_universe> choice;
+	Gtk::TreeModel::Row row(*found->second);
+	set_preference_info(row,
+			    choice::make_install_version(version, -1),
+			    manager);
+      }
+  }
+
+  void ResolverView::update_dep(const aptitude_resolver_dep &dep,
+				resolver_manager *manager)
+  {
+    std::map<aptitude_resolver_dep, Gtk::TreeModel::iterator>::iterator
+      found = dep_backpointers.find(dep);
+
+    if(found != dep_backpointers.end())
+      {
+	typedef generic_choice<aptitude_universe> choice;
+	Gtk::TreeModel::Row row(*found->second);
+	set_preference_info(row,
+			    choice::make_break_soft_dep(dep, -1),
+			    manager);
+      }
+  }
+
+  ResolverView::ResolverView(Gtk::TreeView *_view)
+    : view(_view)
+  {
+    {
+      Gtk::CellRendererPixbuf *preference_icon_renderer = manage(new Gtk::CellRendererPixbuf);
+      PreferenceIcon = manage(new Gtk::TreeViewColumn("", *preference_icon_renderer));
+      PreferenceIcon->add_attribute(preference_icon_renderer->property_stock_id(),
+				    resolver_columns.PreferenceIcon);
+      set_column_properties(PreferenceIcon, -1);
+      view->append_column(*PreferenceIcon);
+    }
+    set_text_tooltip(view, PreferenceIcon, resolver_columns.PreferenceIconTooltip);
+
     append_column(Glib::ustring(_("Name")), Name, resolver_columns.Name, 200);
     append_column(Glib::ustring(_("Action")), Section, resolver_columns.Action, 200);
-    set_search_column(resolver_columns.Name);
+
+    view->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+    view->set_search_column(resolver_columns.Name);
+  }
+
+  cwidget::util::ref_ptr<ResolverView>
+  ResolverView::create(Gtk::TreeView *view)
+  {
+    return new ResolverView(view);
+  }
+
+  bool ResolverView::add_backpointer(const Gtk::TreeModel::Path &path,
+				     const Gtk::TreeModel::iterator &iter)
+  {
+    typedef generic_choice<aptitude_universe> choice;
+    const maybe<choice> &maybe_c((*iter)[resolver_columns.Choice]);
+    choice c;
+    if(maybe_c.extract(c))
+      {
+	switch(c.get_type())
+	  {
+	  case choice::install_version:
+	    version_backpointers[c.get_ver()] = iter;
+	    break;
+
+	  case choice::break_soft_dep:
+	    dep_backpointers[c.get_dep()] = iter;
+	    break;
+	  }
+      }
+
+    return false;
+  }
+
+  bool ResolverView::sanity_check_iter(const Gtk::TreeModel::iterator &iter) const
+  {
+    Glib::ustring bgColor = (*iter)[resolver_columns.BgColor];
+    if((*iter)[resolver_columns.BgSet] && bgColor.empty())
+      {
+	LOG_ERROR(Loggers::getAptitudeGtkResolver(),
+		  "Sanity-check failed: the resolver row \""
+		  << (*iter)[resolver_columns.Name]
+		  << "\" has an empty background color.");
+      }
+
+    return false;
+  }
+
+  void ResolverView::set_model(const Glib::RefPtr<Gtk::TreeModel> &model,
+			       resolver_manager *manager)
+  {
+    model->foreach_iter(sigc::bind(sigc::mem_fun(*this, &ResolverView::update_preference_info),
+				   manager));
+    model->foreach_iter(sigc::mem_fun(*this, &ResolverView::sanity_check_iter));
+
+    view->set_model(model);
+    version_backpointers.clear();
+    dep_backpointers.clear();
+
+    model->foreach(sigc::mem_fun(*this, &ResolverView::add_backpointer));
   }
 
   ResolverTab::ResolverTab(const Glib::ustring &label) :
     Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "main_resolver_vbox"), "main_resolver_vbox"),
     resolver(NULL),
-    using_internal_resolver(false)
+    using_internal_resolver(false),
+    toggle_signals_suppressed(false)
   {
     get_xml()->get_widget("main_resolver_status", pResolverStatus);
     get_xml()->get_widget("main_resolver_previous", pResolverPrevious);
@@ -205,15 +471,30 @@ namespace gui
     get_xml()->get_widget("resolver_group_by_action", pButtonGroupByAction);
     get_xml()->get_widget("resolver_show_explanation", pButtonShowExplanation);
 
+    get_xml()->get_widget("resolver_acceptreject_label", acceptreject_label);
+    get_xml()->get_widget("resolver_reject_button", reject_button);
+    get_xml()->get_widget("resolver_no_preference_button", no_preference_button);
+    get_xml()->get_widget("resolver_accept_button", accept_button);
+
+    reject_button->set_image(*new Gtk::Image(Gtk::Stock::CANCEL, Gtk::ICON_SIZE_BUTTON));
+    accept_button->set_image(*new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON));
+
     // TODO: ideally, instead of rereading the state, we should
-    // trigger an update using the last seen state.  Or maybe buildtwo
+    // trigger an update using the last seen state.  Or maybe build two
     // models and swap between them.
     pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 							      true));
     pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 								true));
 
-    get_xml()->get_widget_derived("main_resolver_treeview", pResolverView);
+    reject_button->signal_toggled().connect(sigc::mem_fun(*this, &ResolverTab::reject_button_toggled));
+    no_preference_button->signal_toggled().connect(sigc::mem_fun(*this, &ResolverTab::no_preference_button_toggled));
+    accept_button->signal_toggled().connect(sigc::mem_fun(*this, &ResolverTab::accept_button_toggled));
+
+    Gtk::TreeView *solution_treeview;
+    get_xml()->get_widget("main_resolver_treeview", solution_treeview);
+    solution_view = ResolverView::create(solution_treeview);
+    solution_treeview->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &ResolverTab::update_reject_accept_buttons));
 
     update(true);
 
@@ -223,15 +504,346 @@ namespace gui
     resolver_state_changed_connection =
       get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						       false));
+
+    resolver_version_accept_reject_changed_connection =
+      get_resolver()->version_accept_reject_changed.connect(sigc::mem_fun(*this, &ResolverTab::version_accept_reject_changed));
+    resolver_break_dep_accept_reject_changed_connection =
+      get_resolver()->break_dep_accept_reject_changed.connect(sigc::mem_fun(*this, &ResolverTab::break_dep_accept_reject_changed));
   }
 
   void ResolverTab::update(bool force_update)
   {
+    update_reject_accept_buttons();
+
     if(get_resolver() == NULL)
       return;
 
     resolver_manager::state state = get_resolver()->state_snapshot();
     update_from_state(state, force_update);
+  }
+
+  void ResolverTab::version_accept_reject_changed(const aptitude_resolver_version &ver)
+  {
+    solution_view->update_version(ver, get_resolver());
+  }
+
+  void ResolverTab::break_dep_accept_reject_changed(const aptitude_resolver_dep &dep)
+  {
+    solution_view->update_dep(dep, get_resolver());
+  }
+
+  class ResolverTab::update_reject_accept_counter
+  {
+    // Counts how many things are selected.
+    int count;
+    bool contains_rejected;
+    bool contains_accepted;
+    bool contains_no_preference;
+    const ResolverTab &parent;
+    const ResolverColumns &columns;
+
+  public:
+    update_reject_accept_counter(const ResolverTab &_parent,
+				 const ResolverColumns &_columns)
+      : count(0),
+	contains_rejected(false),
+	contains_accepted(false),
+	contains_no_preference(false),
+	parent(_parent),
+	columns(_columns)
+    {
+    }
+
+    void process(const Gtk::TreeModel::iterator &iter)
+    {
+      typedef generic_choice<aptitude_universe> choice;
+      const maybe<choice> &maybe_c((*iter)[columns.Choice]);
+      choice c;
+      if(maybe_c.extract(c))
+	{
+	  ++count;
+
+	  switch(c.get_type())
+	    {
+	    case choice::install_version:
+	      if(parent.get_resolver()->is_rejected(c.get_ver()))
+		contains_rejected = true;
+	      else if(parent.get_resolver()->is_mandatory(c.get_ver()))
+		contains_accepted = true;
+	      else
+		contains_no_preference = true;
+	      break;
+
+	    case choice::break_soft_dep:
+	      if(parent.get_resolver()->is_hardened(c.get_dep()))
+		contains_rejected = true;
+	      else if(parent.get_resolver()->is_approved_broken(c.get_dep()))
+		contains_accepted = true;
+	      else
+		contains_no_preference = true;
+	      break;
+	    }
+	}
+    }
+
+    int get_count() const { return count; }
+    bool get_contains_rejected() const { return contains_rejected; }
+    bool get_contains_no_preference() const { return contains_no_preference; }
+    bool get_contains_accepted() const { return contains_accepted; }
+  };
+
+  void ResolverTab::update_reject_accept_buttons()
+  {
+    suppress_toggle_signals suppressor(*this);
+
+    if(get_resolver() == NULL ||
+       !get_resolver()->resolver_exists())
+      {
+	accept_button->set_sensitive(false);
+	no_preference_button->set_sensitive(false);
+	reject_button->set_sensitive(false);
+
+	accept_button->set_active(false);
+	no_preference_button->set_active(false);
+	reject_button->set_active(false);
+
+	return;
+      }
+
+    // Find out what's selected.
+    update_reject_accept_counter counter(*this,
+					 solution_view->get_columns());;
+
+    Glib::RefPtr<Gtk::TreeSelection> selection =
+      solution_view->get_treeview()->get_selection();
+
+    selection->selected_foreach_iter(sigc::mem_fun(counter,
+						   &update_reject_accept_counter::process));
+
+    const int count = counter.get_count();
+    const bool contains_rejected = counter.get_contains_rejected();
+    const bool contains_no_preference = counter.get_contains_no_preference();
+    const bool contains_accepted = counter.get_contains_accepted();
+
+    using cwidget::util::ssprintf;
+    // TODO: this frame title is lame.
+    acceptreject_label->set_markup(ssprintf("<b>%s</b>",
+					    Glib::Markup::escape_text(ngettext("How to treat the selected action",
+									       "How to treat the selected actions",
+									       count)).c_str()));
+
+    reject_button->set_tooltip_text(ngettext("Ignore solutions containing this action.",
+					     "Ignore solutions containing these actions.",
+					     count));
+
+    no_preference_button->set_tooltip_text(ngettext("Allow solutions containing this action, but do not prefer them to other solutions.",
+						    "Allow solutions containing these actions, but do not prefer them to other solutions.",
+						    count));
+
+    accept_button->set_tooltip_text(ngettext("Always prefer this action over alternatives that have not been accepted.",
+					     "Always prefer these actions over alternatives that have not been accepted.",
+					     count));
+
+    if(contains_rejected)
+      {
+	reject_button->set_active(true);
+
+	reject_button->set_inconsistent(contains_accepted ||
+					contains_no_preference);
+      }
+    else
+      {
+	reject_button->set_active(false);
+	reject_button->set_inconsistent(false);
+      }
+
+    if(contains_no_preference)
+      {
+	no_preference_button->set_active(true);
+
+	no_preference_button->set_inconsistent(contains_rejected ||
+					       contains_accepted);
+      }
+    else
+      {
+	no_preference_button->set_active(false);
+	no_preference_button->set_inconsistent(false);
+      }
+
+    if(contains_accepted)
+      {
+	accept_button->set_active(true);
+
+	accept_button->set_inconsistent(contains_rejected ||
+					contains_no_preference);
+      }
+    else
+      {
+	accept_button->set_active(false);
+	accept_button->set_inconsistent(false);
+      }
+
+    bool sensitive;
+
+    if(count == 0)
+      {
+	// Maybe hide the buttons and/or show a label saying to select
+	// an action?
+	sensitive = false;
+
+	accept_button->set_active(false);
+	no_preference_button->set_active(false);
+	reject_button->set_active(false);
+      }
+    else
+      sensitive = true;
+
+    accept_button->set_sensitive(sensitive);
+    no_preference_button->set_sensitive(sensitive);
+    reject_button->set_sensitive(sensitive);
+  }
+
+  void ResolverTab::do_reject_iterator(const Gtk::TreeModel::iterator &iter)
+  {
+    typedef generic_choice<aptitude_universe> choice;
+    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
+    choice c;
+
+    if(maybe_c.extract(c))
+      {
+	switch(c.get_type())
+	  {
+	  case choice::install_version:
+	    get_resolver()->reject_version(c.get_ver());
+	    break;
+
+	  case choice::break_soft_dep:
+	    get_resolver()->harden_dep(c.get_dep());
+	    break;
+	  }
+      }
+  }
+
+  void ResolverTab::do_no_preference_iterator(const Gtk::TreeModel::iterator &iter)
+  {
+    typedef generic_choice<aptitude_universe> choice;
+    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
+    choice c;
+    if(maybe_c.extract(c))
+      {
+	switch(c.get_type())
+	  {
+	  case choice::install_version:
+	    get_resolver()->unreject_version(c.get_ver());
+	    get_resolver()->unmandate_version(c.get_ver());
+	    break;
+
+	  case choice::break_soft_dep:
+	    get_resolver()->unharden_dep(c.get_dep());
+	    get_resolver()->unapprove_broken_dep(c.get_dep());
+	    break;
+	  }
+      }
+  }
+
+  void ResolverTab::do_accept_iterator(const Gtk::TreeModel::iterator &iter)
+  {
+    typedef generic_choice<aptitude_universe> choice;
+    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
+    choice c;
+    if(maybe_c.extract(c))
+      {
+	switch(c.get_type())
+	  {
+	  case choice::install_version:
+	    get_resolver()->mandate_version(c.get_ver());
+	    break;
+
+	  case choice::break_soft_dep:
+	    get_resolver()->approve_broken_dep(c.get_dep());
+	    break;
+	  }
+      }
+  }
+
+  void ResolverTab::reject_button_toggled()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    if(toggle_signals_suppressed ||
+       get_resolver() == NULL ||
+       !get_resolver()->resolver_exists())
+      {
+	LOG_TRACE(logger, "reject_button_toggled: not rejecting packages.");
+	return;
+      }
+
+    suppress_toggle_signals suppressor(*this);
+
+    // Don't do anything unless the reject button is newly active.
+    if(!reject_button->get_active())
+      {
+	LOG_TRACE(logger, "reject_button_toggled: the reject button was un-toggled; not doing anything.");
+	return;
+      }
+
+    LOG_DEBUG(logger, "reject_button_toggled: rejecting the selected choices.");
+
+    Glib::RefPtr<Gtk::TreeSelection> selection =
+      solution_view->get_treeview()->get_selection();
+
+    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_reject_iterator));
+  }
+
+  void ResolverTab::no_preference_button_toggled()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    if(toggle_signals_suppressed ||
+       get_resolver() == NULL ||
+       !get_resolver()->resolver_exists())
+      {
+	LOG_TRACE(logger, "no_preference_button_toggled: not clearing states.");
+	return;
+      }
+
+    suppress_toggle_signals suppressor(*this);
+
+    if(!no_preference_button->get_active())
+      {
+	LOG_TRACE(logger, "no_preference_button_toggled: the no-preference button was un-toggled; not doing anything.");
+	return;
+      }
+
+    Glib::RefPtr<Gtk::TreeSelection> selection =
+      solution_view->get_treeview()->get_selection();
+
+    LOG_DEBUG(logger, "no_preference_button_toggled: clearing reject/accept states of the selected choices.");
+    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_no_preference_iterator));
+  }
+
+  void ResolverTab::accept_button_toggled()
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    if(toggle_signals_suppressed ||
+       get_resolver() == NULL ||
+       !get_resolver()->resolver_exists())
+      {
+	LOG_TRACE(logger, "accept_button_toggled: not clearing states.");
+	return;
+      }
+
+    suppress_toggle_signals suppressor(*this);
+
+    if(!accept_button->get_active())
+      {
+	LOG_TRACE(logger, "accept_button_toggled: the accept button was un-toggled; not doing anything.");
+	return;
+      }
+
+    Glib::RefPtr<Gtk::TreeSelection> selection =
+      solution_view->get_treeview()->get_selection();
+
+    LOG_DEBUG(logger, "accept_button_toggled: accepting the selected choices.");
+    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_accept_iterator));
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
@@ -326,98 +938,6 @@ namespace gui
       }
   }
 
-  const char * const reject_background = "light red";
-  const char * const accept_background = "light green";
-
-  ResolverTab::preference_info ResolverTab::get_preference_info(const generic_choice<aptitude_universe> &c) const
-  {
-    typedef generic_choice<aptitude_universe> choice;
-    using cwidget::util::ssprintf;
-
-    if(get_resolver() == NULL)
-      return preference_info();
-    else
-      switch(c.get_type())
-	{
-	case choice::install_version:
-	  {
-	    pkgCache::VerIterator ver = c.get_ver().get_ver();
-	    pkgCache::PkgIterator pkg = c.get_ver().get_pkg();
-
-	    if(get_resolver()->is_rejected(c.get_ver()))
-	      {
-		Glib::ustring icon_tooltip;
-		// Generate a friendly message about what's happening.
-		if(ver.end())
-		  icon_tooltip = ssprintf(_("Removing %s is rejected."), pkg.Name());
-		else if(ver == pkg.CurrentVer() &&
-			pkg->CurrentState != pkgCache::State::NotInstalled &&
-			pkg->CurrentState != pkgCache::State::ConfigFiles)
-		  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-		else
-		  icon_tooltip = ssprintf(_("Installing %s version %s is rejected."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-
-		return preference_info(Gtk::Stock::CANCEL.id,
-				       icon_tooltip,
-				       reject_background,
-				       true);
-	      }
-	    else if(get_resolver()->is_mandatory(c.get_ver()))
-	      {
-		Glib::ustring icon_tooltip;
-		if(ver.end())
-		  icon_tooltip = ssprintf(_("Removing %s is preferred over all un-accepted alternatives."),
-					  pkg.Name());
-		else if(ver == pkg.CurrentVer() &&
-			pkg->CurrentState != pkgCache::State::NotInstalled &&
-			pkg->CurrentState != pkgCache::State::ConfigFiles)
-		  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-		else
-		  icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-
-		return preference_info(Gtk::Stock::APPLY.id,
-				       icon_tooltip,
-				       accept_background,
-				       true);
-	      }
-	    else
-	      return preference_info();
-	  }
-
-	case choice::break_soft_dep:
-	  if(get_resolver()->is_hardened(c.get_dep()))
-	    return preference_info(Gtk::Stock::CANCEL.id,
-				   ssprintf(_("Leaving %ls unresolved is rejected."),
-					    dep_text(c.get_dep().get_dep()).c_str()),
-				   reject_background,
-				   true);
-	  else if(get_resolver()->is_approved_broken(c.get_dep()))
-	    return preference_info(Gtk::Stock::APPLY.id,
-				   ssprintf(_("Leaving %ls unresolved is preferred over all un-accepted alternatives."),
-					    dep_text(c.get_dep().get_dep()).c_str()),
-				   accept_background,
-				   true);
-	  else
-	    return preference_info();
-
-	default:
-	  LOG_ERROR(Loggers::getAptitudeGtkResolver(),
-		    "Bad choice type " << c.get_type());
-	  return preference_info(Gtk::Stock::DIALOG_ERROR.id,
-				 "",
-				 "",
-				 false);
-	}
-  }
-
   Glib::RefPtr<Gtk::TreeStore> ResolverTab::render_as_action_groups(const aptitude_solution &sol)
   {
     Glib::RefPtr<Gtk::TreeStore> store(Gtk::TreeStore::create(solution_view->get_columns()));
@@ -427,6 +947,7 @@ namespace gui
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[solution_view->get_columns().Name] = _("Internal error: unexpected null solution.");
+	row[solution_view->get_columns().BgSet] = false;
       }
     else
       {
@@ -506,20 +1027,16 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Remove the following packages:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = remove_packages.begin();
 		i!=remove_packages.end(); ++i)
 	      {
 		pkgCache::PkgIterator pkg(i->get_ver().get_pkg());
-		preference_info pref_inf(get_preference_info(*i));
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
 		row[solution_view->get_columns().Name] = pkg.Name();
 		row[solution_view->get_columns().Action] = "";
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -529,11 +1046,11 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Install the following packages:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = install_packages.begin();
 		i!=install_packages.end(); ++i)
 	      {
 		aptitude_resolver_version ver(i->get_ver());
-		preference_info pref_inf(get_preference_info(*i));
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
@@ -541,10 +1058,6 @@ namespace gui
 		row[solution_view->get_columns().Action] = ssprintf("[%s (%s)]",
 								    ver.get_ver().VerStr(),
 								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -554,11 +1067,11 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Keep the following packages:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = keep_packages.begin();
 		i!=keep_packages.end(); ++i)
 	      {
 		pkgCache::PkgIterator pkg(i->get_ver().get_pkg());
-		preference_info pref_inf(get_preference_info(*i));
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
@@ -575,10 +1088,6 @@ namespace gui
 									pkg.CurrentVer().VerStr(),
 									archives_text(pkg.CurrentVer()).c_str());
 		  }
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -588,11 +1097,11 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Upgrade the following packages:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = upgrade_packages.begin();
 		i!=upgrade_packages.end(); ++i)
 	      {
 		aptitude_resolver_version ver(i->get_ver());
-		preference_info pref_inf(get_preference_info(*i));
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
@@ -602,10 +1111,6 @@ namespace gui
 								    archives_text(ver.get_pkg().CurrentVer()).c_str(),
 								    ver.get_ver().VerStr(),
 								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -615,11 +1120,11 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Downgrade the following packages:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = downgrade_packages.begin();
 		i!=downgrade_packages.end(); ++i)
 	      {
 		aptitude_resolver_version ver(i->get_ver());
-		preference_info pref_inf(get_preference_info(*i));
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
@@ -629,10 +1134,6 @@ namespace gui
 								    archives_text(ver.get_pkg().CurrentVer()).c_str(),
 								    ver.get_ver().VerStr(),
 								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -642,19 +1143,15 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = _("Leave the following dependencies unresolved:");
+	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(std::vector<choice>::const_iterator i = unresolved.begin();
 		i != unresolved.end(); ++i)
 	      {
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
-		preference_info pref_inf(get_preference_info(*i));
 
 		row[solution_view->get_columns().Name] = cwidget::util::transcode(dep_text(i->get_dep().get_dep()).c_str(), "UTF-8");
 		row[solution_view->get_columns().Action] = "";
-		row[solution_view->get_columns().PreferenceIcon] = pref_inf.icon;
-		row[solution_view->get_columns().PreferenceIconTooltip] = pref_inf.icon_tooltip;
-		row[solution_view->get_columns().BgColor] = pref_inf.background;
-		row[solution_view->get_columns().BgSet] = pref_inf.background_set;
 		row[solution_view->get_columns().Choice] = *i;
 	      }
 	  }
@@ -672,6 +1169,7 @@ namespace gui
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[solution_view->get_columns().Name] = _("Internal error: unexpected null solution.");
+	row[solution_view->get_columns().BgSet] = false;
       }
     else
       {
@@ -709,6 +1207,7 @@ namespace gui
 		  Gtk::TreeModel::Row parent_row = *parent_iter;
 
 		  parent_row[solution_view->get_columns().Name] = cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8");
+		  parent_row[solution_view->get_columns().BgSet] = false;
 
 		  Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		  Gtk::TreeModel::Row row = *iter;
@@ -804,7 +1303,8 @@ namespace gui
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[solution_view->get_columns().Name] = _("Nothing to do: there are no broken packages.");
-	solution_view->set_model(store);
+	row[solution_view->get_columns().BgSet] = false;
+	solution_view->set_model(store, get_resolver());
       }
     else if(state.solutions_exhausted && state.generated_solutions == 0)
       {
@@ -812,6 +1312,7 @@ namespace gui
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	row[solution_view->get_columns().Name] = _("No resolutions found.");
+	row[solution_view->get_columns().BgSet] = false;
 	last_sol.nullify();
       }
     else if(state.selected_solution >= state.generated_solutions)
@@ -824,6 +1325,7 @@ namespace gui
 	    Gtk::TreeModel::iterator iter = store->append();
 	    Gtk::TreeModel::Row row = *iter;
 	    row[solution_view->get_columns().Name] = state.background_thread_abort_msg;
+	    row[solution_view->get_columns().BgSet] = false;
 	  }
 	else
 	  {
@@ -840,10 +1342,12 @@ namespace gui
 	    const Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().Name] = msg;
+	    parent_row[solution_view->get_columns().BgSet] = false;
 
 	    Gtk::TreeModel::iterator child_iter = store->append(parent_iter->children());
 	    Gtk::TreeModel::Row child_row = *child_iter;
 	    child_row[solution_view->get_columns().Name] = generation_info;
+	    child_row[solution_view->get_columns().BgSet] = false;
 	  }
 
 	last_sol.nullify();
@@ -867,7 +1371,7 @@ namespace gui
 	  store = render_as_action_groups(sol);
       }
 
-    solution_view->set_model(store);
+    solution_view->set_model(store, get_resolver());
     solution_view->get_treeview()->expand_all();
 
     // NB: here I rely on the fact that last_sol is set above to the

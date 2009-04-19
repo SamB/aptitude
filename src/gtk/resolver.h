@@ -30,7 +30,9 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/apt/resolver_manager.h>
+#include <generic/problemresolver/choice.h>
 #include <generic/problemresolver/solution.h>
+#include <generic/util/maybe.h>
 #include <generic/util/util.h>
 
 #include <gtk/tab.h>
@@ -45,26 +47,131 @@ namespace gui
       Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
       Gtk::TreeModelColumn<Glib::ustring> Name;
       Gtk::TreeModelColumn<Glib::ustring> Action;
+    Gtk::TreeModelColumn<bool> BgSet;
+    Gtk::TreeModelColumn<Glib::ustring> BgColor;
+    Gtk::TreeModelColumn<Glib::ustring> PreferenceIcon;
+    Gtk::TreeModelColumn<Glib::ustring> PreferenceIconTooltip;
+    Gtk::TreeModelColumn<maybe<generic_choice<aptitude_universe> > > Choice;
 
       ResolverColumns();
   };
 
-  class ResolverView : public Gtk::TreeView
+  // Wrapper that adds automatic updates of resolver item states to
+  // the resolver view.
+  class ResolverView : public aptitude::util::refcounted_base_threadsafe
   {
-    private:
-      Gtk::TreeViewColumn * Name;
-      Gtk::TreeViewColumn * Section;
-      template <class ColumnType>
-      int append_column(Glib::ustring title,
-          Gtk::TreeViewColumn * treeview_column,
-          Gtk::TreeModelColumn<ColumnType>& model_column,
-          int size);
+  private:
+    Gtk::TreeViewColumn * Name;
+    Gtk::TreeViewColumn * Section;
+    Gtk::TreeViewColumn * PreferenceIcon;
 
-    public:
-      Glib::RefPtr<Gtk::TreeStore> resolver_store;
-      ResolverColumns resolver_columns;
+    Gtk::TreeView *view;
+    ResolverColumns resolver_columns;
 
-      ResolverView(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+    // These backpointers track the current state of the store; they
+    // are used to respond to signals from the resolver manager about
+    // changes to reject/approve states.
+    std::map<aptitude_resolver_version, Gtk::TreeModel::iterator> version_backpointers;
+    std::map<aptitude_resolver_dep, Gtk::TreeModel::iterator> dep_backpointers;
+
+    // Set up some common column properties.
+    void set_column_properties(Gtk::TreeViewColumn *treeview_column,
+			       int size);
+
+    template<typename ColumnType>
+    int append_column(const Glib::ustring &title,
+		      Gtk::TreeViewColumn *out_treeview_column,
+		      const Gtk::TreeModelColumn<ColumnType> &model_column,
+		      int size);
+
+    bool add_backpointer(const Gtk::TreeModel::Path &path,
+			 const Gtk::TreeModel::iterator &iter);
+
+    bool sanity_check_iter(const Gtk::TreeModel::iterator &iter) const;
+
+    // Routines and structures that manage the accepted/rejected
+    // states of rows; placed here so that the incremental update can
+    // be a member function.
+
+    /** \brief Information about how to display the user's preference
+     *  about a package.
+     */
+    struct preference_info
+    {
+      Glib::ustring icon;
+      Glib::ustring icon_tooltip;
+      Glib::ustring background;
+      bool background_set;
+
+      preference_info()
+	: icon(),
+	  icon_tooltip(),
+	  background(),
+	  background_set(false)
+      {
+      }
+
+      preference_info(const Glib::ustring &_icon,
+		      const Glib::ustring &_icon_tooltip,
+		      const Glib::ustring &_background,
+		      bool _background_set)
+	: icon(_icon),
+	  icon_tooltip(_icon_tooltip),
+	  background(_background),
+	  background_set(_background_set)
+      {
+      }
+    };
+    preference_info get_preference_info(const generic_choice<aptitude_universe> &c,
+					resolver_manager *manager) const;
+    void set_preference_info(Gtk::TreeModel::Row &row,
+			     const preference_info &pref_inf) const;
+    void set_preference_info(Gtk::TreeModel::Row &row,
+			     const generic_choice<aptitude_universe> &c,
+			     resolver_manager *manager) const;
+
+    // Used to iterate over the model when it's first set and update
+    // its preference-information columns.
+    bool update_preference_info(const Gtk::TreeModel::iterator &iter,
+				resolver_manager *manager);
+
+    ResolverView(Gtk::TreeView *view);
+  public:
+    /** \brief Create a new resolver view.
+     *
+     *  The given view is customized with the standard set of columns
+     *  for a resolver-view.
+     */
+    static cwidget::util::ref_ptr<ResolverView> create(Gtk::TreeView *view);
+
+    /** \brief Retrieve the column structure associated with this view. */
+    const ResolverColumns &get_columns() const { return resolver_columns; }
+
+    /** \brief Set the model displayed by this view.
+     *
+     *  \param model    The new tree-model to display.
+     *  \param manager  The resolver-manager to use to flesh out
+     *                  the model.
+     *
+     *  This routine updates the tree-view and builds the backpointer
+     *  maps; it also fills in preference information columns.
+     */
+    void set_model(const Glib::RefPtr<Gtk::TreeModel> &model,
+		   resolver_manager *manager);
+
+    /** \brief Update the preference state of rows attached to the
+     *  given version.
+     */
+    void update_version(const aptitude_resolver_version &version,
+			resolver_manager *manager);
+
+    /** \brief Update the preference state of rows attached to the
+     *  given dependency.
+     */
+    void update_dep(const aptitude_resolver_dep &dep,
+		    resolver_manager *manager);
+
+    Gtk::TreeView *get_treeview() const { return view; }
   };
 
   class ResolverTab : public Tab
@@ -84,8 +191,10 @@ namespace gui
     }
 
     sigc::connection resolver_state_changed_connection;
+    sigc::connection resolver_version_accept_reject_changed_connection;
+    sigc::connection resolver_break_dep_accept_reject_changed_connection;
 
-      ResolverView * pResolverView;
+    cwidget::util::ref_ptr<ResolverView> solution_view;
       Gtk::Label * pResolverStatus;
       Gtk::Button * pResolverPrevious;
       Gtk::Button * pResolverNext;
@@ -101,6 +210,11 @@ namespace gui
     Gtk::RadioButton * pButtonGroupByAction;
     Gtk::RadioButton * pButtonShowExplanation;
 
+    Gtk::Label * acceptreject_label;
+    Gtk::ToggleButton * reject_button;
+    Gtk::ToggleButton * no_preference_button;
+    Gtk::ToggleButton * accept_button;
+
       // The last solution that was displayed, or invalid if there
       // was no last solution.
       //
@@ -108,10 +222,6 @@ namespace gui
       // rebuilding the tree if the solution didn't actually change.
       aptitude_solution last_sol;
 
-    /** \brief Create a new, empty tree store with the correct columns
-     *  for the resolver view.
-     */
-    Glib::RefPtr<Gtk::TreeStore> createstore();
     /** \brief Create a new tree store and populate it with the given
      *  solution, rendered with actions collected by type.
      */
@@ -154,9 +264,57 @@ namespace gui
        *  the current solution hasn't changed.
        */
       void update(bool force_update);
+
+    // Helper class used by update_reject_accept_buttons.
+    class update_reject_accept_counter;
+
+    void version_accept_reject_changed(const aptitude_resolver_version &ver);
+    void break_dep_accept_reject_changed(const aptitude_resolver_dep &dep);
+
+    // Updates the label by the reject/accept buttons and might change
+    // the sensitivity of the buttons.  Invoked when the selection
+    // state changes, when the resolver state changes, and when a new
+    // solution is selected.
+    void update_reject_accept_buttons();
+
+    // We need to avoid responding to toggle messages while the
+    // buttons are being updated; otherwise we could end up with
+    // unexpected or inefficient behavior.  This Boolean value and the
+    // accompanying RAII class are used to suppress toggle button
+    // responses.
+    bool toggle_signals_suppressed;
+    class suppress_toggle_signals
+    {
+      ResolverTab &parent;
+      bool old_toggle_signals_suppressed;
+
+    public:
+      suppress_toggle_signals(ResolverTab &_parent)
+	: parent(_parent),
+	  old_toggle_signals_suppressed(_parent.toggle_signals_suppressed)
+      {
+	parent.toggle_signals_suppressed = true;
+      }
+
+      ~suppress_toggle_signals()
+      {
+	parent.toggle_signals_suppressed = false;
+      }
+    };
+
+    // Helpers, applied to each element in the selection to implement
+    // the various action buttons.
+    void do_reject_iterator(const Gtk::TreeModel::iterator &iter);
+    void do_no_preference_iterator(const Gtk::TreeModel::iterator &iter);
+    void do_accept_iterator(const Gtk::TreeModel::iterator &iter);
+
+    void reject_button_toggled();
+    void no_preference_button_toggled();
+    void accept_button_toggled();
+
     public:
       ResolverTab(const Glib::ustring &label);
-      ResolverView * get_packages_view() { return pResolverView; };
+    const cwidget::util::ref_ptr<ResolverView> &get_solution_view() const { return solution_view; };
 
     /** \brief Enable the "fix upgrade manually" mode on this resolver
      *  tab, using the given resolver manager.
