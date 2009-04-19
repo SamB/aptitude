@@ -361,6 +361,9 @@ namespace gui
   extern const entity_state_info forbid_columns;
   extern const entity_state_info broken_columns;
 
+  extern const char *lightred_background_color;
+  extern const char *lightgreen_background_color;
+
   /** @} */
 }
 

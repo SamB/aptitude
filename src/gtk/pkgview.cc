@@ -135,9 +135,9 @@ namespace gui
     if (state.Delete())
       return ((state.iFlags & pkgDepCache::Purge) ? "#FFBBFF" : "#FFEEFF");
     if (state.InstBroken())
-      return "#FFCCCC";
+      return lightred_background_color;
     if (state.NewInstall())
-      return "#DDFFDD";
+      return lightgreen_background_color;
     if (state.Install() && (state.iFlags & pkgDepCache::ReInstall))
       return "#BBFFBB";
     if (state.Upgrade())

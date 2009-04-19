@@ -97,6 +97,9 @@ namespace gui
   const entity_state_info broken_columns("B", N_("Unsatisfied dependencies"), Gtk::Stock::DIALOG_ERROR);
 
 
+  const char *lightred_background_color = "#FFCCCC";
+  const char *lightgreen_background_color = "#DDFFDD";
+
   Glib::RefPtr<Gnome::Glade::Xml> refXml;
   std::string glade_main_file;
   Gtk::Main * pKit;
