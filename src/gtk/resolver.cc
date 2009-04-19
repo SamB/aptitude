@@ -1500,7 +1500,9 @@ namespace gui
       // manually.
       if(using_internal_resolver)
 	pMainWindow->do_preview();
-      tab_del(this);
+      // No need to delete the tab manually here: it will be deleted
+      // when there aren't any more dependencies to solve.  Deleting
+      // it here would introduce a double-free bug.
     }
   }
 
