@@ -652,7 +652,7 @@ namespace gui
 						    num_upgrades_selected),
 					   upgrade_button->get_label().c_str(),
 					   num_upgrades_selected,
-					   upgrades.size());
+					   (int)upgrades.size());
 
 	    if(num_upgrades_not_selected > 0)
 	      {
