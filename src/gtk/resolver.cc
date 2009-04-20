@@ -149,6 +149,71 @@ namespace gui
       // We may have missed a signal before making the connection:
       do_start_solution_calculation(false, resman);
     }
+
+    /** \brief Render the given choice in "short" form, not including
+     *  a description of the choice.
+     *
+     *  The output is suitable for use in a list with a heading such
+     *  as "Install the following packages".
+     */
+    std::string render_choice_brief_markup(const choice &c)
+    {
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    aptitude_resolver_version ver(c.get_ver());
+
+	    switch(analyze_action(ver))
+	      {
+	      case action_remove:
+		return Glib::Markup::escape_text(ver.get_pkg().Name());
+
+	      case action_keep:
+		if(ver.get_ver().end())
+		  return ssprintf("%s [%s]",
+				  Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+				  Glib::Markup::escape_text(_("Not Installed")).c_str());
+		else
+		  return ssprintf("%s [<big>%s</big> (%s)]",
+				  Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+				  Glib::Markup::escape_text(ver.get_pkg().CurrentVer().VerStr()).c_str(),
+				  Glib::Markup::escape_text(archives_text(ver.get_pkg().CurrentVer())).c_str());
+
+	      case action_install:
+		return ssprintf("%s [<big>%s</big> (%s)]",
+				Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+				Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+				Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
+
+	      case action_downgrade:
+	      case action_upgrade:
+		return ssprintf("%s [<big>%s</big> (%s) -> <big>%s</big> (%s)]",
+				Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+				Glib::Markup::escape_text(ver.get_pkg().CurrentVer().VerStr()).c_str(),
+				Glib::Markup::escape_text(archives_text(ver.get_pkg().CurrentVer())).c_str(),
+				Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+				Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
+
+	      default:
+		return "<big>UNKNOWN ACTION TYPE</big>";
+	      }
+	  }
+	  break;
+
+	case choice::break_soft_dep:
+	  {
+	    const std::string dep_render =
+	      cwidget::util::transcode(dep_text(c.get_dep().get_dep()), "UTF-8");
+
+	    return ssprintf("<b>%s</b>",
+			    Glib::Markup::escape_text(dep_render).c_str());
+	  }
+
+	default:
+	  return "<big>UNKNOWN CHOICE TYPE</big>";
+	}
+    }
   }
 
   void init_resolver()
@@ -165,8 +230,7 @@ namespace gui
   {
     add(PkgIterator);
     add(VerIterator);
-    add(Name);
-    add(Action);
+    add(ActionMarkup);
     add(BgSet);
     add(BgColor);
     add(PreferenceIcon);
@@ -325,7 +389,7 @@ namespace gui
     // Sanity-check.
     if(pref_inf.background.empty() && pref_inf.background_set)
       LOG_ERROR(Loggers::getAptitudeGtkResolver(),
-		"The row \"" << row[resolver_columns.Name] << "\" has no background but its background is set.");
+		"The row \"" << row[resolver_columns.ActionMarkup] << "\" has no background but its background is set.");
   }
 
   void ResolverView::set_preference_info(Gtk::TreeModel::Row &row,
@@ -394,16 +458,25 @@ namespace gui
       PreferenceIcon = manage(new Gtk::TreeViewColumn("", *preference_icon_renderer));
       PreferenceIcon->add_attribute(preference_icon_renderer->property_stock_id(),
 				    resolver_columns.PreferenceIcon);
+      PreferenceIcon->set_sort_column(resolver_columns.PreferenceIcon);
       set_column_properties(PreferenceIcon, -1);
       view->append_column(*PreferenceIcon);
     }
     set_text_tooltip(view, PreferenceIcon, resolver_columns.PreferenceIconTooltip);
 
-    append_column(Glib::ustring(_("Name")), Name, resolver_columns.Name, 200);
-    append_column(Glib::ustring(_("Action")), Section, resolver_columns.Action, 200);
+    {
+      Gtk::CellRendererText *action_renderer = manage(new Gtk::CellRendererText);
+      ActionMarkup = manage(new Gtk::TreeViewColumn("Action", *action_renderer));
+      ActionMarkup->add_attribute(action_renderer->property_markup(),
+				  resolver_columns.ActionMarkup);
+      set_column_properties(ActionMarkup, -1);
+      ActionMarkup->set_sort_column(resolver_columns.Choice);
+      view->append_column(*ActionMarkup);
+    }
+    set_markup_tooltip(view, ActionMarkup, resolver_columns.ActionMarkup);
 
     view->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
-    view->set_search_column(resolver_columns.Name);
+    view->set_search_column(resolver_columns.ActionMarkup);
   }
 
   cwidget::util::ref_ptr<ResolverView>
@@ -442,7 +515,7 @@ namespace gui
       {
 	LOG_ERROR(Loggers::getAptitudeGtkResolver(),
 		  "Sanity-check failed: the resolver row \""
-		  << (*iter)[resolver_columns.Name]
+		  << (*iter)[resolver_columns.ActionMarkup]
 		  << "\" has an empty background color.");
       }
 
@@ -977,6 +1050,18 @@ namespace gui
       }
   }
 
+  void ResolverTab::append_choice(const Glib::RefPtr<Gtk::TreeStore> &store,
+				  const cwidget::util::ref_ptr<ResolverView> &view,
+				  const Gtk::TreeModel::Row &parent_row,
+				  const choice &c) const
+  {
+    Gtk::TreeModel::iterator iter = store->append(parent_row.children());
+    Gtk::TreeModel::Row row(*iter);
+
+    row[view->get_columns().ActionMarkup] = render_choice_brief_markup(c);
+    row[view->get_columns().Choice] = c;
+  }
+
   Glib::RefPtr<Gtk::TreeStore> ResolverTab::render_as_action_groups(const aptitude_solution &sol)
   {
     Glib::RefPtr<Gtk::TreeStore> store(Gtk::TreeStore::create(solution_view->get_columns()));
@@ -985,7 +1070,8 @@ namespace gui
       {
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
-	row[solution_view->get_columns().Name] = _("Internal error: unexpected null solution.");
+	row[solution_view->get_columns().ActionMarkup] =
+	  Glib::Markup::escape_text(_("Internal error: unexpected null solution."));
 	row[solution_view->get_columns().BgSet] = false;
       }
     else
@@ -1065,134 +1151,79 @@ namespace gui
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Remove the following packages:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Remove the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
+
 	    for(vector<choice>::const_iterator i = remove_packages.begin();
 		i!=remove_packages.end(); ++i)
-	      {
-		pkgCache::PkgIterator pkg(i->get_ver().get_pkg());
-
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-		row[solution_view->get_columns().Name] = pkg.Name();
-		row[solution_view->get_columns().Action] = "";
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
 
 	if(!install_packages.empty())
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Install the following packages:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Install the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = install_packages.begin();
 		i!=install_packages.end(); ++i)
-	      {
-		aptitude_resolver_version ver(i->get_ver());
-
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-		row[solution_view->get_columns().Name] = ver.get_ver().ParentPkg().Name();
-		row[solution_view->get_columns().Action] = ssprintf("[%s (%s)]",
-								    ver.get_ver().VerStr(),
-								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
 
 	if(!keep_packages.empty())
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Keep the following packages:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Keep the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = keep_packages.begin();
 		i!=keep_packages.end(); ++i)
-	      {
-		pkgCache::PkgIterator pkg(i->get_ver().get_pkg());
-
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-		if(i->get_ver().get_ver().end())
-		  {
-		    row[solution_view->get_columns().Name] = pkg.Name();
-		    row[solution_view->get_columns().Action] = ssprintf("[%s]",
-									   _("Not Installed"));
-		  }
-		else
-		  {
-		    row[solution_view->get_columns().Name] = pkg.Name();
-		    row[solution_view->get_columns().Action] = ssprintf("[%s (%s)]",
-									pkg.CurrentVer().VerStr(),
-									archives_text(pkg.CurrentVer()).c_str());
-		  }
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
 
 	if(!upgrade_packages.empty())
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Upgrade the following packages:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Upgrade the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = upgrade_packages.begin();
 		i!=upgrade_packages.end(); ++i)
-	      {
-		aptitude_resolver_version ver(i->get_ver());
-
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-		row[solution_view->get_columns().Name] = ver.get_pkg().Name();
-		row[solution_view->get_columns().Action] = ssprintf("[%s (%s) -> %s (%s)]",
-								    ver.get_pkg().CurrentVer().VerStr(),
-								    archives_text(ver.get_pkg().CurrentVer()).c_str(),
-								    ver.get_ver().VerStr(),
-								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
 
 	if(!downgrade_packages.empty())
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Downgrade the following packages:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Downgrade the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = downgrade_packages.begin();
 		i!=downgrade_packages.end(); ++i)
-	      {
-		aptitude_resolver_version ver(i->get_ver());
-
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-		row[solution_view->get_columns().Name] = ver.get_pkg().Name();
-		row[solution_view->get_columns().Action] = ssprintf("[%s (%s) -> %s (%s)]",
-								    ver.get_pkg().CurrentVer().VerStr(),
-								    archives_text(ver.get_pkg().CurrentVer()).c_str(),
-								    ver.get_ver().VerStr(),
-								    archives_text(ver.get_ver()).c_str());
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
 
 	if(!unresolved.empty())
 	  {
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = _("Leave the following dependencies unresolved:");
+	    parent_row[solution_view->get_columns().ActionMarkup] =
+	      ssprintf("<b>%s</b>",
+		       Glib::Markup::escape_text(_("Leave the following dependencies unresolved:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(std::vector<choice>::const_iterator i = unresolved.begin();
 		i != unresolved.end(); ++i)
-	      {
-		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
-		Gtk::TreeModel::Row row = *iter;
-
-		row[solution_view->get_columns().Name] = cwidget::util::transcode(dep_text(i->get_dep().get_dep()).c_str(), "UTF-8");
-		row[solution_view->get_columns().Action] = "";
-		row[solution_view->get_columns().Choice] = *i;
-	      }
+	      append_choice(store, solution_view, parent_row, *i);
 	  }
       }
 
@@ -1207,7 +1238,8 @@ namespace gui
       {
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
-	row[solution_view->get_columns().Name] = _("Internal error: unexpected null solution.");
+	row[solution_view->get_columns().ActionMarkup] =
+	  Glib::Markup::escape_text(_("Internal error: unexpected null solution."));
 	row[solution_view->get_columns().BgSet] = false;
       }
     else
@@ -1245,12 +1277,13 @@ namespace gui
 		  Gtk::TreeModel::iterator parent_iter = store->append();
 		  Gtk::TreeModel::Row parent_row = *parent_iter;
 
-		  parent_row[solution_view->get_columns().Name] = cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8");
+		  parent_row[solution_view->get_columns().ActionMarkup] =
+		    cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8");
 		  parent_row[solution_view->get_columns().BgSet] = false;
 
 		  Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		  Gtk::TreeModel::Row row = *iter;
-		  Glib::ustring name;
+		  Glib::ustring markup;
 
 		  aptitude_resolver_version ver((*it).get_ver());
 		  pkgCache::PkgIterator pkg = ver.get_pkg();
@@ -1261,57 +1294,57 @@ namespace gui
 		  switch(action)
 		    {
 		    case action_remove:
-		      name = ssprintf(_("Remove %s [%s (%s)]"),
-				      pkg.Name(),
-				      pkg.CurrentVer().VerStr(),
-				      archives_text(pkg.CurrentVer()).c_str());
+		      markup = ssprintf(_("Remove %s [<big>%s</big> (%s)]"),
+					Glib::Markup::escape_text(pkg.Name()).c_str(),
+					Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str());
 		      break;
 
 		    case action_install:
-		      name = ssprintf(_("Install %s [%s (%s)]"),
-				      pkg.Name(),
-				      ver.get_ver().VerStr(),
-				      archives_text(ver.get_ver()).c_str());
+		      markup = ssprintf(_("Install %s [<big>%s</big> (%s)]"),
+					Glib::Markup::escape_text(pkg.Name()).c_str(),
+					Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
 		      break;
 
 		    case action_keep:
 		      if(ver.get_ver().end())
-			name = ssprintf(_("Cancel the installation of %s"),
-					pkg.Name());
+			markup = ssprintf(_("Cancel the installation of %s"),
+					  Glib::Markup::escape_text(pkg.Name()).c_str());
 		      else if(ver.get_package().current_version().get_ver().end())
-			name = ssprintf(_("Cancel the removal of %s"),
+			markup = ssprintf(_("Cancel the removal of %s"),
 					pkg.Name());
 		      else
-			name = ssprintf(_("Keep %s at version %s (%s)"),
-					pkg.Name(), 
-					ver.get_ver().VerStr(),
-					archives_text(ver.get_ver()).c_str());
+			markup = ssprintf(_("Keep %s at version <big>%s</big> (%s)"),
+					  Glib::Markup::escape_text(pkg.Name()).c_str(),
+					  Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+					  Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
 		      break;
 
 		    case action_upgrade:
-		      name = ssprintf(_("Upgrade %s [%s (%s) -> %s (%s)]"),
-				      pkg.Name(),
-				      pkg.CurrentVer().VerStr(),
-				      archives_text(pkg.CurrentVer()).c_str(),
-				      ver.get_ver().VerStr(),
-				      archives_text(ver.get_ver()).c_str());
+		      markup = ssprintf(_("Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"),
+					Glib::Markup::escape_text(pkg.Name()).c_str(),
+					Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
+					Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
 		      break;
 
 		    case action_downgrade:
-		      name = ssprintf(_("Downgrade %s [%s (%s) -> %s (%s)]"),
-				      pkg.Name(),
-				      pkg.CurrentVer().VerStr(),
-				      archives_text(pkg.CurrentVer()).c_str(),
-				      ver.get_ver().VerStr(),
-				      archives_text(ver.get_ver()).c_str());
+		      markup = ssprintf(_("Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"),
+					Glib::Markup::escape_text(pkg.Name()).c_str(),
+					Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
+					Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+					Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
 		      break;
 
 		    default:
-		      name = "Internal error: bad action type";
+		      markup = "Internal error: bad action type";
 		      break;
 		    }
 
-		  row[solution_view->get_columns().Name] = name;
+		  row[solution_view->get_columns().ActionMarkup] = markup;
 		}
 
 		break;
@@ -1577,11 +1610,7 @@ namespace gui
 			   Glib::Markup::escape_text(_("Remove the following packages:")).c_str());
 	  for(std::vector<choice>::const_iterator it = remove.begin();
 	      it != remove.end(); ++it)
-	    {
-	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
-	      rval += ssprintf("\n  %s",
-			       Glib::Markup::escape_text(pkg.Name()).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       if(!install.empty())
@@ -1593,13 +1622,7 @@ namespace gui
 			   Glib::Markup::escape_text(_("Install the following packages:")).c_str());
 	  for(std::vector<choice>::const_iterator it = install.begin();
 	      it != install.end(); ++it)
-	    {
-	      aptitude_resolver_version ver(it->get_ver());
-	      rval += ssprintf("\n  %s [<big>%s</big> (%s)]",
-			       Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
-			       Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
-			       Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       if(!keep.empty())
@@ -1611,19 +1634,7 @@ namespace gui
 			   Glib::Markup::escape_text(_("Keep the following packages:")).c_str());
 	  for(std::vector<choice>::const_iterator it = keep.begin();
 	      it != keep.end(); ++it)
-	    {
-	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
-
-	      if(it->get_ver().get_ver().end())
-		rval += ssprintf("\n  %s [%s]",
-				 Glib::Markup::escape_text(pkg.Name()).c_str(),
-				 Glib::Markup::escape_text(_("Not Installed")).c_str());
-	      else
-		rval += ssprintf("\n  %s [<big>%s</big> (%s)]",
-				 Glib::Markup::escape_text(pkg.Name()).c_str(),
-				 Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
-				 Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       if(!upgrade.empty())
@@ -1636,17 +1647,7 @@ namespace gui
 
 	  for(std::vector<choice>::const_iterator it = upgrade.begin();
 	      it != upgrade.end(); ++it)
-	    {
-	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
-	      pkgCache::VerIterator ver(it->get_ver().get_ver());
-
-	      rval += ssprintf("\n  %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]",
-			       Glib::Markup::escape_text(pkg.Name()).c_str(),
-			       Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
-			       Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
-			       Glib::Markup::escape_text(ver.VerStr()).c_str(),
-			       Glib::Markup::escape_text(archives_text(ver)).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       if(!downgrade.empty())
@@ -1659,17 +1660,7 @@ namespace gui
 
 	  for(std::vector<choice>::const_iterator it = downgrade.begin();
 	      it != downgrade.end(); ++it)
-	    {
-	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
-	      pkgCache::VerIterator ver(it->get_ver().get_ver());
-
-	      rval += ssprintf("\n  %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]",
-			       Glib::Markup::escape_text(pkg.Name()).c_str(),
-			       Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
-			       Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
-			       Glib::Markup::escape_text(ver.VerStr()).c_str(),
-			       Glib::Markup::escape_text(archives_text(ver)).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       if(!unresolved.empty())
@@ -1682,12 +1673,7 @@ namespace gui
 
 	  for(std::vector<choice>::const_iterator it = unresolved.begin();
 	      it != unresolved.end(); ++it)
-	    {
-	      pkgCache::DepIterator dep(it->get_dep().get_dep());
-
-	      rval += ssprintf("\n  %s",
-			       Glib::Markup::escape_text(cwidget::util::transcode(dep_text(dep), "UTF-8")).c_str());
-	    }
+	    rval += ssprintf("\n  %s", render_choice_brief_markup(*it).c_str());
 	}
 
       return rval;

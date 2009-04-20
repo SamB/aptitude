@@ -45,8 +45,7 @@ namespace gui
     public:
       Gtk::TreeModelColumn<pkgCache::PkgIterator> PkgIterator;
       Gtk::TreeModelColumn<pkgCache::VerIterator> VerIterator;
-      Gtk::TreeModelColumn<Glib::ustring> Name;
-      Gtk::TreeModelColumn<Glib::ustring> Action;
+    Gtk::TreeModelColumn<Glib::ustring> ActionMarkup;
     Gtk::TreeModelColumn<bool> BgSet;
     Gtk::TreeModelColumn<Glib::ustring> BgColor;
     Gtk::TreeModelColumn<Glib::ustring> PreferenceIcon;
@@ -77,8 +76,7 @@ namespace gui
   class ResolverView : public aptitude::util::refcounted_base_threadsafe
   {
   private:
-    Gtk::TreeViewColumn * Name;
-    Gtk::TreeViewColumn * Section;
+    Gtk::TreeViewColumn * ActionMarkup;
     Gtk::TreeViewColumn * PreferenceIcon;
 
     Gtk::TreeView *view;
@@ -240,6 +238,14 @@ namespace gui
     // The solution, if any, that is currently displayed in the
     // solution pane.
     aptitude_solution displayed_solution;
+
+    /** \brief Add a child of the given iterator and populate it from
+     *  the given choice.
+     */
+    void append_choice(const Glib::RefPtr<Gtk::TreeStore> &store,
+		       const cwidget::util::ref_ptr<ResolverView> &view,
+		       const Gtk::TreeModel::Row &parent_row,
+		       const generic_choice<aptitude_universe> &c) const;
 
     /** \brief Create a new tree store and populate it with the given
      *  solution, rendered with actions collected by type.
