@@ -769,13 +769,16 @@ private:
   /** \brief The maximum number of promotions to propagate
    *  through any one step.
    *
-   *  This avoids an exponential growth in the size of promotion sets;
-   *  I expect that in normal usage there will be only a few dozen
-   *  promotions at the very most.  Throwing away promotions
-   *  arbitrarily is OK -- it just means we won't have quite as much
-   *  information available to prune the search tree.
+   *  This avoids an exponential growth in the size of promotion sets.
+   *  This is disabled for the moment: I was seeing aptitude
+   *  allocating truly enormous amounts of memory for propagated
+   *  promotions, and the benefits of backpropagation have been
+   *  minimal in practice.  If additional enhancements to the resolver
+   *  framework are implemented, I expect that we might see
+   *  backpropagation become cheaper and more useful, in which case it
+   *  could be worth turning it on again (but beware of bugs!).
    */
-  static const unsigned int max_propagated_promotions = 100;
+  static const unsigned int max_propagated_promotions = 0;
   std::deque<step> steps;
   // Steps whose children have pending propagation requests.  Stored
   // in reverse order, because we should handle later steps first
