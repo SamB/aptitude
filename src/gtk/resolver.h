@@ -56,6 +56,22 @@ namespace gui
       ResolverColumns();
   };
 
+  class AlreadyGeneratedSolutionColumns : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+    // A column showing the index of the solution (as a string).
+    Gtk::TreeModelColumn<Glib::ustring> Index;
+    // The same information, as an integer (for internal use).
+    Gtk::TreeModelColumn<int> IndexNum;
+    // The main "markup" column.
+    Gtk::TreeModelColumn<Glib::ustring> Markup;
+    // The column storing the "tooltip" associated with each solution.
+    Gtk::TreeModelColumn<Glib::ustring> TooltipMarkup;
+    Gtk::TreeModelColumn<generic_solution<aptitude_universe> > Solution;
+
+    AlreadyGeneratedSolutionColumns();
+  };
+
   // Wrapper that adds automatic updates of resolver item states to
   // the resolver view.
   class ResolverView : public aptitude::util::refcounted_base_threadsafe
@@ -195,10 +211,16 @@ namespace gui
     sigc::connection resolver_break_dep_accept_reject_changed_connection;
 
     cwidget::util::ref_ptr<ResolverView> solution_view;
+
+    // The columns and tree-view for the list of previously generated
+    // solutions.
+    AlreadyGeneratedSolutionColumns already_generated_columns;
+    Gtk::TreeView * already_generated_view;
+    Glib::RefPtr<Gtk::ListStore> already_generated_model;
+
       Gtk::Label * pResolverStatus;
-      Gtk::Button * pResolverPrevious;
-      Gtk::Button * pResolverNext;
       Gtk::Button * pResolverApply;
+    Gtk::Button *find_next_solution_button;
 
     // The top container for the "fixing upgrade..." message.  Used to
     // show and hide it.
@@ -215,12 +237,9 @@ namespace gui
     Gtk::ToggleButton * no_preference_button;
     Gtk::ToggleButton * accept_button;
 
-      // The last solution that was displayed, or invalid if there
-      // was no last solution.
-      //
-      // The sole purpose of this member is to avoid destroying and
-      // rebuilding the tree if the solution didn't actually change.
-      aptitude_solution last_sol;
+    // The solution, if any, that is currently displayed in the
+    // solution pane.
+    aptitude_solution displayed_solution;
 
     /** \brief Create a new tree store and populate it with the given
      *  solution, rendered with actions collected by type.
@@ -233,17 +252,36 @@ namespace gui
      */
     Glib::RefPtr<Gtk::TreeStore> render_as_explanation(const aptitude_solution &sol);
 
+    /** \brief Fill in a row in the list of generated solutions.
+     *
+     *  \param sol   The solution that the row represents.
+     *  \param index The index of this solution.
+     *  \param row   The row to fill in.
+     */
+    void render_already_generated_row(const aptitude_solution &sol,
+				      int index,
+				      Gtk::TreeModel::Row &row) const;
+
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start) const;
       std::wstring dep_text(const pkgCache::DepIterator &d) const;
-      bool do_previous_solution_enabled();
-      bool do_previous_solution_enabled_from_state(const resolver_manager::state &state);
-      void do_previous_solution();
-      bool do_next_solution_enabled();
-      bool do_next_solution_enabled_from_state(const resolver_manager::state &state);
-      void do_next_solution();
-      bool do_apply_solution_enabled_from_state(const resolver_manager::state &state);
+    bool do_find_next_solution_enabled();
+    bool do_find_next_solution_enabled_from_state(const resolver_manager::state &state);
+    void do_find_next_solution();
       void do_apply_solution();
+
+    /** \brief Update the solution pane from the currently selected
+     *  solution in the solution list.
+     *
+     *  If there is no currently selected solution, the solution pane
+     *  is always updated with an explanation of why; otherwise, it is
+     *  only updated if the solution actually changed.
+     *
+     *  \param force_update   If true, the pane will be updated even if
+     *                        there is no new solution.  Used to change
+     *                        the view mode.
+     */
+    void update_solution_pane(bool force_update);
 
       /** \brief Updates the tab with the given resolver state.
        *

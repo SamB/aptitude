@@ -48,6 +48,9 @@ namespace gui
 {
   namespace
   {
+    typedef generic_choice<aptitude_universe> choice;
+    typedef generic_choice_set<aptitude_universe> choice_set;
+
     void do_start_solution_calculation(bool blocking,
 				       resolver_manager *resolver);
 
@@ -169,6 +172,15 @@ namespace gui
     add(PreferenceIcon);
     add(PreferenceIconTooltip);
     add(Choice);
+  }
+
+  AlreadyGeneratedSolutionColumns::AlreadyGeneratedSolutionColumns()
+  {
+    add(Index);
+    add(IndexNum);
+    add(Markup);
+    add(TooltipMarkup);
+    add(Solution);
   }
 
   void ResolverView::set_column_properties(Gtk::TreeViewColumn *treeview_column,
@@ -452,16 +464,14 @@ namespace gui
   }
 
   ResolverTab::ResolverTab(const Glib::ustring &label) :
-    Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "main_resolver_vbox"), "main_resolver_vbox"),
+    Tab(Resolver, label, Gnome::Glade::Xml::create(glade_main_file, "resolver_main"), "resolver_main"),
     resolver(NULL),
     using_internal_resolver(false),
     toggle_signals_suppressed(false)
   {
     get_xml()->get_widget("main_resolver_status", pResolverStatus);
-    get_xml()->get_widget("main_resolver_previous", pResolverPrevious);
-    pResolverPrevious->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_previous_solution));
-    get_xml()->get_widget("main_resolver_next", pResolverNext);
-    pResolverNext->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_next_solution));
+    get_xml()->get_widget("main_resolver_find_next", find_next_solution_button);
+    find_next_solution_button->signal_clicked().connect(sigc::mem_fun(*this, &ResolverTab::do_find_next_solution));
     get_xml()->get_widget("main_resolver_apply", pResolverApply);
     get_xml()->get_widget("resolver_fixing_upgrade_message", resolver_fixing_upgrade_message);
     get_xml()->get_widget("resolver_fixing_upgrade_progress_bar", resolver_fixing_upgrade_progress_bar);
@@ -482,9 +492,9 @@ namespace gui
     // TODO: ideally, instead of rereading the state, we should
     // trigger an update using the last seen state.  Or maybe build two
     // models and swap between them.
-    pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+    pButtonGroupByAction->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update_solution_pane),
 							      true));
-    pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
+    pButtonShowExplanation->signal_toggled().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update_solution_pane),
 								true));
 
     reject_button->signal_toggled().connect(sigc::mem_fun(*this, &ResolverTab::reject_button_toggled));
@@ -496,6 +506,35 @@ namespace gui
     solution_view = ResolverView::create(solution_treeview);
     solution_treeview->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &ResolverTab::update_reject_accept_buttons));
 
+    // Set up the list of already-generated solutions.
+    get_xml()->get_widget("already_generated_treeview",
+			  already_generated_view);
+    already_generated_model = Gtk::ListStore::create(already_generated_columns);
+    already_generated_view->set_model(already_generated_model);
+    already_generated_view->set_tooltip_column(already_generated_columns.TooltipMarkup.index());
+    already_generated_view->get_selection()->set_mode(Gtk::SELECTION_BROWSE);
+    already_generated_view->get_selection()->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update_solution_pane),
+										 false));
+
+    {
+      Gtk::TreeViewColumn *index_column =
+	manage(new Gtk::TreeViewColumn("Index", already_generated_columns.Index));
+      index_column->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+      index_column->set_sort_column(already_generated_columns.IndexNum);
+
+      Gtk::CellRendererText *markup_renderer = manage(new Gtk::CellRendererText);
+      Gtk::TreeViewColumn *markup_column =
+	manage(new Gtk::TreeViewColumn("Solution", *markup_renderer));
+      markup_column->add_attribute(markup_renderer->property_markup(),
+				   already_generated_columns.Markup);
+      markup_column->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+      markup_column->set_sort_column(already_generated_columns.Markup);
+
+      already_generated_view->append_column(*index_column);
+      already_generated_view->append_column(*markup_column);
+    }
+
+    // Initialize the interface with the current state:
     update(true);
 
     get_widget()->show();
@@ -1075,7 +1114,7 @@ namespace gui
 
 		Gtk::TreeModel::iterator iter = store->append(parent_row.children());
 		Gtk::TreeModel::Row row = *iter;
-		if(pkg.CurrentVer().end())
+		if(i->get_ver().get_ver().end())
 		  {
 		    row[solution_view->get_columns().Name] = pkg.Name();
 		    row[solution_view->get_columns().Action] = ssprintf("[%s]",
@@ -1287,6 +1326,409 @@ namespace gui
     return store;
   }
 
+  // Helpers to make render_already_generated_row less huge.
+  namespace
+  {
+    std::string largenum(int n)
+    {
+      return cwidget::util::ssprintf("<big>%d</big>", n);
+    }
+
+    std::string render_solution_single_line(const generic_solution<aptitude_universe> &sol)
+    {
+      std::string list_text;
+
+      bool first = true;
+      for(choice_set::const_iterator it = sol.get_choices().begin();
+	  it != sol.get_choices().end(); ++it)
+	{
+	  if(!first)
+	    list_text += ", ";
+
+	  switch(it->get_type())
+	    {
+	    case choice::install_version:
+	      {
+		aptitude_resolver_version ver(it->get_ver());
+		switch(analyze_action(ver))
+		  {
+		  case action_remove:
+		    {
+		      const char * const
+			tmpl(first ? _("<b>Remove</b> %s") : _("<b>remove</b> %s"));
+		      list_text += ssprintf(tmpl,
+					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str());
+		    }
+		    break;
+		  case action_keep:
+		    {
+		      const char * const
+			tmpl(first ? _("<b>Keep</b> %s at version %s") : _("<b>keep</b> %s at version %s"));
+		      list_text += ssprintf(tmpl,
+					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+					    Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
+		    }
+		    break;
+		  case action_install:
+		    {
+		      const char * const
+			tmpl(first ? _("<b>Install</b> %s %s") : _("<b>install</b> %s %s"));
+		      list_text += ssprintf(tmpl,
+					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+					    Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
+		    }
+		    break;
+		  case action_downgrade:
+		    {
+		      const char * const
+			tmpl(first ? _("<b>Downgrade</b> %s to version %s") : _("<b>downgrade</b> %s to version %s"));
+		      list_text += ssprintf(tmpl,
+					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+					    Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
+		    }
+		    break;
+		  case action_upgrade:
+		    {
+		      const char * const
+			tmpl(first ? _("<b>Upgrade</b> %s to version %s") : _("<b>upgrade</b> %s to version %s"));
+		      list_text += ssprintf(tmpl,
+					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+					    Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
+		    }
+		    break;
+		  }
+	      }
+	      break;
+
+	    case choice::break_soft_dep:
+	      {
+		const char * const
+		  tmpl(first ? _("Leave %s unresolved") : _("leave %s unresolved"));
+		const std::string dep_string =
+		  cwidget::util::transcode(dep_text(it->get_dep().get_dep()), "UTF-8");
+		list_text += ssprintf(tmpl,
+				      Glib::Markup::escape_text(dep_string).c_str());
+	      }
+	      break;
+	    }
+
+	  first = false;
+	}
+
+      return list_text;
+    }
+
+    std::string render_solution_summary(const generic_solution<aptitude_universe> &sol,
+					const std::string &separator)
+    {
+      int num_remove = 0;
+      int num_keep = 0;
+      int num_install = 0;
+      int num_downgrade = 0;
+      int num_upgrade = 0;
+      int num_unresolved = 0;
+
+      for(choice_set::const_iterator it = sol.get_choices().begin();
+	  it != sol.get_choices().end(); ++it)
+	{
+	  switch(it->get_type())
+	    {
+	    case choice::install_version:
+	      {
+		aptitude_resolver_version ver(it->get_ver());
+
+		switch(analyze_action(ver))
+		  {
+		  case action_remove:
+		    ++num_remove;
+		    break;
+
+		  case action_keep:
+		    ++num_keep;
+		    break;
+
+		  case action_install:
+		    ++num_install;
+		    break;
+
+		  case action_downgrade:
+		    ++num_downgrade;
+		    break;
+
+		  case action_upgrade:
+		    ++num_upgrade;
+		    break;
+		  }
+	      }
+	      break;
+
+	    case choice::break_soft_dep:
+	      ++num_unresolved;
+	      break;
+	    }
+	}
+
+      using cwidget::util::ssprintf;
+      std::vector<std::string> rval;
+      if(num_install > 0)
+	rval.push_back(ssprintf(ngettext("%s install",
+					 "%s installs",
+					 num_install),
+				largenum(num_install).c_str()));
+      if(num_remove > 0)
+	rval.push_back(ssprintf(ngettext("%s remove",
+					 "%s removes",
+					 num_remove),
+				largenum(num_remove).c_str()));
+
+      if(num_keep > 0)
+	rval.push_back(ssprintf(ngettext("%s keep",
+					 "%s keeps",
+					 num_keep),
+				largenum(num_keep).c_str()));
+
+      if(num_upgrade > 0)
+	rval.push_back(ssprintf(ngettext("%s upgrade",
+					 "%s upgrades",
+					 num_upgrade),
+				largenum(num_upgrade).c_str()));
+
+      if(num_downgrade > 0)
+	rval.push_back(ssprintf(ngettext("%s downgrade",
+					 "%s downgrades",
+					 num_downgrade),
+				largenum(num_downgrade).c_str()));
+
+      if(num_unresolved > 0)
+	rval.push_back(ssprintf(ngettext("%s unresolved recommendation",
+					 "%s unresolved recommendations",
+					 num_unresolved),
+				largenum(num_unresolved).c_str()));
+
+      std::string tmp;
+      for(std::vector<std::string>::const_iterator it =
+	    rval.begin(); it != rval.end(); ++it)
+	{
+	  if(!tmp.empty())
+	    tmp += separator;
+	  tmp += *it;
+	}
+      return tmp;
+    }
+
+    std::string render_solution_long_markup(const generic_solution<aptitude_universe> &sol)
+    {
+      std::vector<choice> remove, keep, install,
+	downgrade, upgrade, unresolved;
+
+      for(choice_set::const_iterator it = sol.get_choices().begin();
+	  it != sol.get_choices().end(); ++it)
+	{
+	  switch(it->get_type())
+	    {
+	    case choice::install_version:
+	      {
+		aptitude_resolver_version ver(it->get_ver());
+
+		switch(analyze_action(ver))
+		  {
+		  case action_remove:
+		    remove.push_back(*it);
+		    break;
+
+		  case action_keep:
+		    keep.push_back(*it);
+		    break;
+
+		  case action_install:
+		    install.push_back(*it);
+		    break;
+
+		  case action_downgrade:
+		    downgrade.push_back(*it);
+		    break;
+
+		  case action_upgrade:
+		    upgrade.push_back(*it);
+		    break;
+		  }
+	      }
+	      break;
+
+	    case choice::break_soft_dep:
+	      unresolved.push_back(*it);
+	      break;
+	    }
+	}
+
+      typedef generic_solution<aptitude_universe>::choice_name_lt choice_name_lt;
+      std::sort(remove.begin(), remove.end(), choice_name_lt());
+      std::sort(keep.begin(), keep.end(), choice_name_lt());
+      std::sort(install.begin(), install.end(), choice_name_lt());
+      std::sort(downgrade.begin(), downgrade.end(), choice_name_lt());
+      std::sort(upgrade.begin(), upgrade.end(), choice_name_lt());
+      std::sort(unresolved.begin(), unresolved.end(), choice_name_lt());
+
+      std::string rval;
+      using cwidget::util::ssprintf;
+      if(!remove.empty())
+	{
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Remove the following packages:")).c_str());
+	  for(std::vector<choice>::const_iterator it = remove.begin();
+	      it != remove.end(); ++it)
+	    {
+	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
+	      rval += ssprintf("\n  %s",
+			       Glib::Markup::escape_text(pkg.Name()).c_str());
+	    }
+	}
+
+      if(!install.empty())
+	{
+	  if(!rval.empty())
+	    rval += "\n\n";
+
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Install the following packages:")).c_str());
+	  for(std::vector<choice>::const_iterator it = install.begin();
+	      it != install.end(); ++it)
+	    {
+	      aptitude_resolver_version ver(it->get_ver());
+	      rval += ssprintf("\n  %s [<big>%s</big> (%s)]",
+			       Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+			       Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str(),
+			       Glib::Markup::escape_text(archives_text(ver.get_ver())).c_str());
+	    }
+	}
+
+      if(!keep.empty())
+	{
+	  if(!rval.empty())
+	    rval += "\n\n";
+
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Keep the following packages:")).c_str());
+	  for(std::vector<choice>::const_iterator it = keep.begin();
+	      it != keep.end(); ++it)
+	    {
+	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
+
+	      if(it->get_ver().get_ver().end())
+		rval += ssprintf("\n  %s [%s]",
+				 Glib::Markup::escape_text(pkg.Name()).c_str(),
+				 Glib::Markup::escape_text(_("Not Installed")).c_str());
+	      else
+		rval += ssprintf("\n  %s [<big>%s</big> (%s)]",
+				 Glib::Markup::escape_text(pkg.Name()).c_str(),
+				 Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+				 Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str());
+	    }
+	}
+
+      if(!upgrade.empty())
+	{
+	  if(!rval.empty())
+	    rval += "\n\n";
+
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Upgrade the following packages:")).c_str());
+
+	  for(std::vector<choice>::const_iterator it = upgrade.begin();
+	      it != upgrade.end(); ++it)
+	    {
+	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
+	      pkgCache::VerIterator ver(it->get_ver().get_ver());
+
+	      rval += ssprintf("\n  %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]",
+			       Glib::Markup::escape_text(pkg.Name()).c_str(),
+			       Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+			       Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
+			       Glib::Markup::escape_text(ver.VerStr()).c_str(),
+			       Glib::Markup::escape_text(archives_text(ver)).c_str());
+	    }
+	}
+
+      if(!downgrade.empty())
+	{
+	  if(!rval.empty())
+	    rval += "\n\n";
+
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Downgrade the following packages:")).c_str());
+
+	  for(std::vector<choice>::const_iterator it = downgrade.begin();
+	      it != downgrade.end(); ++it)
+	    {
+	      pkgCache::PkgIterator pkg(it->get_ver().get_pkg());
+	      pkgCache::VerIterator ver(it->get_ver().get_ver());
+
+	      rval += ssprintf("\n  %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]",
+			       Glib::Markup::escape_text(pkg.Name()).c_str(),
+			       Glib::Markup::escape_text(pkg.CurrentVer().VerStr()).c_str(),
+			       Glib::Markup::escape_text(archives_text(pkg.CurrentVer())).c_str(),
+			       Glib::Markup::escape_text(ver.VerStr()).c_str(),
+			       Glib::Markup::escape_text(archives_text(ver)).c_str());
+	    }
+	}
+
+      if(!unresolved.empty())
+	{
+	  if(!rval.empty())
+	    rval += "\n\n";
+
+	  rval += ssprintf("<b>%s</b>",
+			   Glib::Markup::escape_text(_("Leave the following dependencies unresolved:")).c_str());
+
+	  for(std::vector<choice>::const_iterator it = unresolved.begin();
+	      it != unresolved.end(); ++it)
+	    {
+	      pkgCache::DepIterator dep(it->get_dep().get_dep());
+
+	      rval += ssprintf("\n  %s",
+			       Glib::Markup::escape_text(cwidget::util::transcode(dep_text(dep), "UTF-8")).c_str());
+	    }
+	}
+
+      return rval;
+    }
+  }
+
+  void ResolverTab::render_already_generated_row(const aptitude_solution &sol,
+						 int index,
+						 Gtk::TreeModel::Row &row) const
+  {
+    // How large a solution can be before we give up on rendering it
+    // fully in the list.
+    const unsigned int list_render_limit = 3;
+    // How large a solution can be before we give up on rendering it
+    // fully in the tooltip.
+    const unsigned int tooltip_render_limit = 20;
+
+    row[already_generated_columns.Index]    = cwidget::util::ssprintf("%d", index);
+    row[already_generated_columns.IndexNum] = index;
+
+    if(sol.get_choices().size() <= list_render_limit)
+      row[already_generated_columns.Markup] = render_solution_single_line(sol);
+    else
+      row[already_generated_columns.Markup] = render_solution_summary(sol, ", ");
+
+    if(sol.get_choices().size() <= tooltip_render_limit)
+      row[already_generated_columns.TooltipMarkup] = render_solution_long_markup(sol);
+    else
+      row[already_generated_columns.TooltipMarkup] = render_solution_summary(sol, "\n");
+
+    row[already_generated_columns.Solution] = sol;
+  }
+
+  // The resolver tab manages the resolver state as follows.
+  //
+  // The resolver state is always set to the most recently generated
+  // solution, or one past that point if a new solution is being
+  // generated.  Pressing "find next" moves to the next solution after
+  // the last generated solution, if possible.  If a solution is being
+  // calculated, an appropriate message is shown to inform the user of
+  // this fact and the "find next" button is disabled.
   void ResolverTab::update_from_state(const resolver_manager::state &state,
 				      bool force_update)
   {
@@ -1297,94 +1739,33 @@ namespace gui
 
     Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(solution_view->get_columns());
 
-    if(!state.resolver_exists)
+    bool added_anything = false;
+    while(already_generated_model->children().size() < (unsigned)state.generated_solutions)
       {
-	LOG_DEBUG(logger, "Resolver tab: no resolver has been created.");
-	Gtk::TreeModel::iterator iter = store->append();
-	Gtk::TreeModel::Row row = *iter;
-	row[solution_view->get_columns().Name] = _("Nothing to do: there are no broken packages.");
-	row[solution_view->get_columns().BgSet] = false;
-	solution_view->set_model(store, get_resolver());
-      }
-    else if(state.solutions_exhausted && state.generated_solutions == 0)
-      {
-	LOG_DEBUG(logger, "Resolver tab: search exhausted before any solutions were produced.");
-	Gtk::TreeModel::iterator iter = store->append();
-	Gtk::TreeModel::Row row = *iter;
-	row[solution_view->get_columns().Name] = _("No resolutions found.");
-	row[solution_view->get_columns().BgSet] = false;
-	last_sol.nullify();
-      }
-    else if(state.selected_solution >= state.generated_solutions)
-      {
-	// TODO: in this case we probably ought to avoid blowing away
-	// the tree, but that requires more complex state management.
-	if(state.background_thread_aborted)
-	  {
-	    LOG_DEBUG(logger, "Resolver tab: resolver aborted: " << state.background_thread_abort_msg);
-	    Gtk::TreeModel::iterator iter = store->append();
-	    Gtk::TreeModel::Row row = *iter;
-	    row[solution_view->get_columns().Name] = state.background_thread_abort_msg;
-	    row[solution_view->get_columns().BgSet] = false;
-	  }
-	else
-	  {
-	    LOG_DEBUG(logger, "Resolver tab: resolver running: open: "
-		      << state.open_size
-		      << "; closed: " << state.closed_size
-		      << "; defer: " << state.deferred_size
-		      << "; conflict: " << state.conflicts_size);
-	    std::string generation_info = ssprintf(_("open: %d; closed: %d; defer: %d; conflict: %d"),
-						   (int)state.open_size, (int)state.closed_size,
-						   (int)state.deferred_size, (int)state.conflicts_size).c_str();
-	    std::string msg = _("Resolving dependencies...");
+	const int next_solution_num = already_generated_model->children().size();
+	aptitude_solution sol = get_resolver()->get_solution(next_solution_num, 0);
+	Gtk::TreeModel::iterator iter = already_generated_model->append();
+	Gtk::TreeModel::Row row(*iter);
 
-	    const Gtk::TreeModel::iterator parent_iter = store->append();
-	    Gtk::TreeModel::Row parent_row = *parent_iter;
-	    parent_row[solution_view->get_columns().Name] = msg;
-	    parent_row[solution_view->get_columns().BgSet] = false;
+	LOG_DEBUG(logger, "Resolver tab: adding a solution: " << sol);
 
-	    Gtk::TreeModel::iterator child_iter = store->append(parent_iter->children());
-	    Gtk::TreeModel::Row child_row = *child_iter;
-	    child_row[solution_view->get_columns().Name] = generation_info;
-	    child_row[solution_view->get_columns().BgSet] = false;
-	  }
-
-	last_sol.nullify();
-      }
-    else
-      {
-	aptitude_solution sol = get_resolver()->get_solution(state.selected_solution, 0);
-
-	LOG_DEBUG(logger, "Resolver tab: showing solution: " << sol);
-
-	// Break out without doing anything if the current solution
-	// isn't changed.
-	if(!force_update && sol == last_sol)
-	  return;
-
-	last_sol = sol;
-
-	if(pButtonShowExplanation->get_active())
-	  store = render_as_explanation(sol);
-	else
-	  store = render_as_action_groups(sol);
+	render_already_generated_row(sol, next_solution_num + 1, row);
+	added_anything = true;
       }
 
-    solution_view->set_model(store, get_resolver());
-    solution_view->get_treeview()->expand_all();
+    // If we added a row, select the most recent solution (i.e., the
+    // last one in the list).
+    if(added_anything)
+      {
+	Gtk::TreeModel::iterator last = already_generated_model->children().end();
+	--last;
+	LOG_TRACE(logger, "Resolver tab: selecting the newly added solution.");
+	already_generated_view->get_selection()->select(last);
+      }
 
-    // NB: here I rely on the fact that last_sol is set above to the
-    // last solution we saw.
-    if(!last_sol.valid())
-      pResolverStatus->set_text(state.solutions_exhausted ? _("No solutions.") : _("No solutions yet."));
-    else
-      pResolverStatus->set_text(ssprintf(_("Solution %d of %d (tier %s)"), state.selected_solution + 1, state.generated_solutions,
-					 aptitude_universe::get_tier_name(last_sol.get_tier()).c_str()));
+    update_solution_pane(false);
 
-    pResolverPrevious->set_sensitive(do_previous_solution_enabled_from_state(state));
-    pResolverNext->set_sensitive(do_next_solution_enabled_from_state(state));
-    pResolverApply->set_sensitive(do_apply_solution_enabled_from_state(state));
+    find_next_solution_button->set_sensitive(do_find_next_solution_enabled_from_state(state));
 
     // WARNING:Minor hack.
     //
@@ -1399,64 +1780,186 @@ namespace gui
       tab_del(this);
   }
 
-  bool ResolverTab::do_previous_solution_enabled_from_state(const resolver_manager::state &state)
+  void ResolverTab::update_solution_pane(bool force_update)
   {
-    return state.selected_solution > 0;
-  }
+    LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+	      "Resolver tab: updating the solution pane.");
 
-  bool ResolverTab::do_previous_solution_enabled()
-  {
-    if (get_resolver() == NULL)
-      return false;
+    resolver_manager::state state(get_resolver()->state_snapshot());
+    aptitude_solution new_solution;
+    // "index" is the "number" of the solution in the solutions list;
+    // it has a meaningful value whenever new_solution is valid.
+    int index = -1;
 
-    resolver_manager::state state = get_resolver()->state_snapshot();
-
-    return do_previous_solution_enabled_from_state(state);
-  }
-
-  void ResolverTab::do_previous_solution()
-  {
-    if (do_previous_solution_enabled())
+    if(already_generated_view->get_selection()->count_selected_rows() == 1)
       {
-	LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Moving to the previous solution.");
-	get_resolver()->select_previous_solution();
+	Gtk::TreeModel::iterator selected_iter =
+	  already_generated_view->get_selection()->get_selected();
+
+	// Should never ever happen, but this is an extra
+	// sanity-check.
+	if(selected_iter)
+	  {
+	    new_solution = (*selected_iter)[already_generated_columns.Solution];
+	    index = (*selected_iter)[already_generated_columns.IndexNum];
+	  }
+      }
+
+    // If there is no new solution, always update the displayed text
+    // in case the state changed.
+    if(!new_solution.valid())
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		  "Resolver tab: there is no selected solution.");
+	displayed_solution = new_solution;
+
+#if 0
+	/* This code is commented out because the solution treeview
+           doesn't seem to be useful for displaying messages (they
+           get truncated).  Maybe we could swap it out for a textview
+           when there's nothing to show? */
+
+	// Display some text to let the user know there's nothing
+	// to see.
+	Glib::RefPtr<Gtk::TreeStore> store = Gtk::TreeStore::create(solution_view->get_columns());
+	Gtk::TreeModel::iterator text_row_iter = store->append();
+	Gtk::TreeModel::Row text_row(*text_row_iter);
+
+	if(already_generated_model->children().empty())
+	  {
+	    // It could be empty because we haven't found a
+	    // solution yet, or because no solutions were found at
+	    // all.  (if there are solutions that aren't in the
+	    // list yet, I assume that we'll add them momentarily
+	    // anyway)
+	    if(state.generated_solutions > 0 ||
+	       !state.solutions_exhausted)
+	      {
+		LOG_DEBUG(Loggers::getAptitudeGtkResolver(),
+			  "Resolver tab: dependencies are still being resolved.");
+		text_row[solution_view->get_columns().Name] =
+		  _("Resolving dependencies...");
+		pResolverStatus->set_text(_("No solutions yet."));
+	      }
+	    else
+	      {
+		LOG_DEBUG(Loggers::getAptitudeGtkResolver(),
+			  "Resolver tab: no dependency solution was found.");
+		text_row[solution_view->get_columns().Name] =
+		  _("No dependency solution was found.");
+		pResolverStatus->set_text(_("No solutions."));
+	      }
+	  }
+	else
+	  {
+	    LOG_WARN(Loggers::getAptitudeGtkResolver(),
+		     "Resolver tab: there are solutions, but no solution is selected!");
+	    // This message shouldn't appear, but if it does the
+	    // user would probably like to know how to make it go
+	    // away. :-)
+	    text_row[solution_view->get_columns().Name] =
+	      _("To view a solution, select it from the list to the right.");
+	    pResolverStatus->set_text(ssprintf(_("%u solutions."),
+					       already_generated_model->children().size()));
+	  }
+
+	solution_view->set_model(store, get_resolver());
+	solution_view->get_treeview()->expand_all();
+#endif
+      }
+    else if(force_update || new_solution != displayed_solution)
+      {
+	if(LOG4CXX_UNLIKELY(Loggers::getAptitudeGtkResolver()->isDebugEnabled()))
+	  {
+	    if(new_solution != displayed_solution)
+	      LOG_DEBUG(Loggers::getAptitudeGtkResolver(),
+			"Resolver tab: displaying a different solution: " << new_solution);
+	    else
+	      LOG_DEBUG(Loggers::getAptitudeGtkResolver(),
+			"Resolver tab: the solution " << new_solution
+			<< " is already displayed, but forcing an update as requested.");
+	  }
+	displayed_solution = new_solution;
+
+	Glib::RefPtr<Gtk::TreeModel> store;
+	if(pButtonShowExplanation->get_active())
+	  store = render_as_explanation(displayed_solution);
+	else
+	  store = render_as_action_groups(displayed_solution);
+
+	solution_view->set_model(store, get_resolver());
+	solution_view->get_treeview()->expand_all();
+	const std::string tier_name(aptitude_universe::get_tier_name(displayed_solution.get_tier()));
+	pResolverStatus->set_markup(ssprintf(_("Solution %s of %s (tier %s)."),
+					     largenum(index).c_str(),
+					     largenum(state.generated_solutions).c_str(),
+					     Glib::Markup::escape_text(tier_name).c_str()));
+      }
+    else
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		"Resolver tab: the solution " << new_solution << " is already displayed.");
+
+    pResolverApply->set_sensitive(displayed_solution.valid());
+  }
+
+  bool ResolverTab::do_find_next_solution_enabled_from_state(const resolver_manager::state &state)
+  {
+    if(state.selected_solution >= state.generated_solutions)
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		  "Resolver tab: disabling the find-next-solution button: solution number "
+		  << state.selected_solution
+		  << " is currently selected, but only "
+		  << state.generated_solutions
+		  << (state.generated_solutions == 1 ? " solution has" : " solutions have")
+		  << " been generated.");
+	return false;
+      }
+    else if(state.selected_solution + 1 == state.generated_solutions &&
+	    state.solutions_exhausted)
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		  "Resolver tab: disabling the find-next-solution button: solution number "
+		  << state.selected_solution
+		  << " is currently selected, but only "
+		  << state.generated_solutions
+		  << (state.generated_solutions == 1 ? " solution has" : " solutions have")
+		  << " been generated.");
+	return false;
+      }
+    else
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		  "Resolver tab: enabling the find-next-solution button: solution number "
+		  << state.selected_solution
+		  << " is currently selected, and it is among the "
+		  << state.generated_solutions
+		  << (state.generated_solutions == 1 ? " solution that has" : " solutions that have")
+		  << " been generated.");
+	return true;
       }
   }
 
-  bool ResolverTab::do_next_solution_enabled_from_state(const resolver_manager::state &state)
-  {
-    return state.selected_solution < state.generated_solutions &&
-      !(state.selected_solution + 1 == state.generated_solutions &&
-	state.solutions_exhausted);
-  }
-
-  bool ResolverTab::do_next_solution_enabled()
+  bool ResolverTab::do_find_next_solution_enabled()
   {
     if (get_resolver() == NULL)
       return false;
 
     resolver_manager::state state = get_resolver()->state_snapshot();
-    return do_next_solution_enabled_from_state(state);
+    return do_find_next_solution_enabled_from_state(state);
   }
 
-  void ResolverTab::do_next_solution()
+  void ResolverTab::do_find_next_solution()
   {
-    if (do_next_solution_enabled())
-    {
-      LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Moving to the next solution.");
-      // If an error was encountered, pressing "next solution"
-      // skips it.
-      get_resolver()->discard_error_information();
-      get_resolver()->select_next_solution();
-    }
-  }
+    resolver_manager::state state = get_resolver()->state_snapshot();
 
-  bool ResolverTab::do_apply_solution_enabled_from_state(const resolver_manager::state &state)
-  {
-    return
-      state.resolver_exists &&
-      state.selected_solution >= 0 &&
-      state.selected_solution < state.generated_solutions;
+    if(do_find_next_solution_enabled_from_state(state))
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: moving to solution number "
+		  << state.selected_solution + 1);
+	get_resolver()->discard_error_information();
+	get_resolver()->select_solution(state.selected_solution + 1);
+      }
   }
 
   void ResolverTab::do_apply_solution()
@@ -1464,34 +1967,17 @@ namespace gui
     if (!apt_cache_file || get_resolver() == NULL)
       return;
 
-    resolver_manager::state state = get_resolver()->state_snapshot();
-
-    if (do_apply_solution_enabled_from_state(state))
+    if (displayed_solution.valid())
     {
-      LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: Applying the current solution.");
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		"Resolver tab: Applying the current solution: "
+		<< displayed_solution);
 
       undo_group *undo = new apt_undo_group;
-      try
-      {
-	aptitudeDepCache::action_group group(*apt_cache_file, NULL);
-	(*apt_cache_file)->apply_solution(get_resolver()->get_solution(state.selected_solution, 0), undo);
-      }
-      catch (NoMoreSolutions)
-      {
-        Gtk::MessageDialog dialog(*pMainWindow, _("Unable to find a solution to apply."), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-        dialog.run();
-      }
-      catch (NoMoreTime)
-      {
-        Gtk::MessageDialog dialog(*pMainWindow, _("Ran out of time while trying to find a solution."), false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-        dialog.run();
-      }
+      (*apt_cache_file)->apply_solution(displayed_solution, undo);
 
       if (!undo->empty())
-      {
         apt_undos->add_item(undo);
-        //package_states_changed();
-      }
       else
         delete undo;
 
