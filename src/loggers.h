@@ -168,6 +168,11 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverSearchTiers();
 
+    /** \brief The logger for events related to setting up and running
+     *  the background resolver thread.
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverThread();
+
     /** \brief The logger for setting up tiers for the dependency
      *  resolver.
      *

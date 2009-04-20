@@ -113,6 +113,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.search");
   }
 
+  LoggerPtr Loggers::getAptitudeResolverThread()
+  {
+    return Logger::getLogger("aptitude.resolver.thread");
+  }
+
   LoggerPtr Loggers::getAptitudeResolverSearchTiers()
   {
     return Logger::getLogger("aptitude.resolver.search.tiers");

@@ -511,6 +511,8 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
 // interactively)
 void resolver_manager::background_thread_execution()
 {
+  log4cxx::LoggerPtr logger = Loggers::getAptitudeResolverThread();
+  LOG_TRACE(logger, "Resolver thread: starting.");
   std::set<aptitude_resolver_package> visited_packages;
 
   cwidget::threads::mutex::lock l(background_control_mutex);
@@ -520,13 +522,49 @@ void resolver_manager::background_thread_execution()
     {
       while((background_thread_suspend_count > 0 || resolver_null || pending_jobs.empty()) &&
 	    !background_thread_killed)
-	background_control_cond.wait(l);
+	{
+	  if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+	    {
+	      std::vector<std::string> why_suspended;
+	      if(background_thread_suspend_count > 0)
+		why_suspended.push_back("waiting to be unsuspended");
+	      if(resolver_null)
+		why_suspended.push_back("waiting for a resolver to be created");
+	      if(pending_jobs.empty())
+		why_suspended.push_back("waiting for a job");
+
+	      if(!why_suspended.empty())
+		{
+		  std::string msg;
+		  for(std::vector<std::string>::const_iterator it = why_suspended.begin();
+		      it != why_suspended.end(); ++it)
+		    {
+		      if(!msg.empty())
+			msg += ", ";
+		      msg += *it;
+		    }
+
+		  LOG_TRACE(logger, "Resolver thread: " << msg << ".");
+		}
+	    }
+
+	  background_control_cond.wait(l);
+	}
 
       if(background_thread_killed)
-	break;
+	{
+	  LOG_TRACE(logger, "Resolver thread: exiting (killed).");
+	  break;
+	}
 
       job_request job = pending_jobs.top();
       pending_jobs.pop();
+
+      LOG_DEBUG(logger,
+		"Resolver thread: got a new job { solution number = "
+		<< job.sol_num << ", max steps = " << job.max_steps
+		<< ", continuation = " << job.k << " }");
+
       background_thread_in_resolver = true;
       background_resolver_cond.wake_all();
       l.release();
@@ -537,6 +575,9 @@ void resolver_manager::background_thread_execution()
 	    do_get_solution(job.max_steps,
 			    job.sol_num,
 			    visited_packages);
+
+	  LOG_DEBUG(logger,
+		    "Resolver thread: got a solution: " << *sol);
 
 	  // Set the state variable BEFORE exiting the resolver; this
 	  // is done so that if there are no more jobs, the foreground
@@ -555,6 +596,13 @@ void resolver_manager::background_thread_execution()
 	{
 	  // Put it back into the pot.
 	  l.acquire();
+
+	  LOG_DEBUG(logger,
+		    "Resolver thread: interrupted, pushing a job back on the queue "
+		    << "{ solution number = " << job.sol_num
+		    << ", max_steps = " << job.max_steps
+		    << ", continuation = " << job.k << "}");
+
 	  dump_visited_packages(visited_packages,
 				job.sol_num);
 	  background_thread_in_resolver = false;
@@ -568,6 +616,10 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreSolutions)
 	{
 	  l.acquire();
+
+	  LOG_DEBUG(logger,
+		    "Resolver thread: out of solutions.");
+
 	  dump_visited_packages(visited_packages,
 				job.sol_num);
 	  background_thread_in_resolver = false;
@@ -579,6 +631,10 @@ void resolver_manager::background_thread_execution()
       catch(NoMoreTime)
 	{
 	  l.acquire();
+
+	  LOG_DEBUG(logger,
+		    "Resolver thread: out of time.");
+
 	  dump_visited_packages(visited_packages,
 				job.sol_num);
 	  background_thread_in_resolver = false;
@@ -589,6 +645,10 @@ void resolver_manager::background_thread_execution()
 	}
       catch(cwidget::util::Exception &e)
 	{
+	  LOG_ERROR(logger,
+		    "Resolver thread: caught a fatal error from the resolver: "
+		    << e.errmsg());
+
 	  dump_visited_packages(visited_packages,
 				job.sol_num);
 	  job.k->aborted(e);
