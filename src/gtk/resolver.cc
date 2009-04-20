@@ -301,18 +301,51 @@ namespace gui
 	      {
 		Glib::ustring icon_tooltip;
 		// Generate a friendly message about what's happening.
-		if(ver.end())
-		  icon_tooltip = ssprintf(_("Removing %s is rejected."), pkg.Name());
-		else if(ver == pkg.CurrentVer() &&
-			pkg->CurrentState != pkgCache::State::NotInstalled &&
-			pkg->CurrentState != pkgCache::State::ConfigFiles)
-		  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-		else
-		  icon_tooltip = ssprintf(_("Installing %s version %s is rejected."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
+		switch(analyze_action(c.get_ver()))
+		  {
+		  case action_remove:
+		    icon_tooltip = ssprintf(_("Removing %s is rejected."), pkg.Name());
+		    break;
+
+		  case action_keep:
+		    if(ver.end())
+		      icon_tooltip = ssprintf(_("Canceling the installation of %s is rejected."),
+					      pkg.Name());
+		    else
+		      {
+			aptitude_resolver_package
+			  resolver_pkg(c.get_ver().get_package());
+			aptitude_resolver_version
+			  resolver_pkg_current_ver(resolver_pkg.current_version());
+
+			if(resolver_pkg_current_ver.get_ver().end())
+			  icon_tooltip = ssprintf(_("Canceling the removal of %s is rejected."),
+						  pkg.Name());
+			else
+			  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
+						  pkg.Name(),
+						  pkg.CurrentVer().VerStr());
+		      }
+		    break;
+
+		  case action_install:
+		    icon_tooltip = ssprintf(_("Installing %s version %s is rejected."),
+					    pkg.Name(),
+					    pkg.CurrentVer().VerStr());
+		    break;
+
+		  case action_downgrade:
+		    icon_tooltip = ssprintf(_("Downgrading %s to version %s is rejected."),
+					    pkg.Name(),
+					    ver.VerStr());
+		    break;
+
+		  case action_upgrade:
+		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is rejected."),
+					    pkg.Name(),
+					    ver.VerStr());
+		    break;
+		  }
 
 		return preference_info(Gtk::Stock::CANCEL.id,
 				       icon_tooltip,
@@ -322,19 +355,51 @@ namespace gui
 	    else if(manager->is_mandatory(c.get_ver()))
 	      {
 		Glib::ustring icon_tooltip;
-		if(ver.end())
-		  icon_tooltip = ssprintf(_("Removing %s is preferred over all un-accepted alternatives."),
-					  pkg.Name());
-		else if(ver == pkg.CurrentVer() &&
-			pkg->CurrentState != pkgCache::State::NotInstalled &&
-			pkg->CurrentState != pkgCache::State::ConfigFiles)
-		  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
-		else
-		  icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
-					  pkg.Name(),
-					  pkg.CurrentVer().VerStr());
+		switch(analyze_action(c.get_ver()))
+		  {
+		  case action_remove:
+		    icon_tooltip = ssprintf(_("Removing %s is preferred over all un-accepted alternatives."), pkg.Name());
+		    break;
+
+		  case action_keep:
+		    if(ver.end())
+		      icon_tooltip = ssprintf(_("Canceling the installation of %s is preferred over all un-accepted alternatives."),
+					      pkg.Name());
+		    else
+		      {
+			aptitude_resolver_package
+			  resolver_pkg(c.get_ver().get_package());
+			aptitude_resolver_version
+			  resolver_pkg_current_ver(resolver_pkg.current_version());
+
+			if(resolver_pkg_current_ver.get_ver().end())
+			  icon_tooltip = ssprintf(_("Canceling the removal of %s is preferred over all un-accepted alternatives."),
+						  pkg.Name());
+			else
+			  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
+						  pkg.Name(),
+						  pkg.CurrentVer().VerStr());
+		      }
+		    break;
+
+		  case action_install:
+		    icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
+					    pkg.Name(),
+					    pkg.CurrentVer().VerStr());
+		    break;
+
+		  case action_downgrade:
+		    icon_tooltip = ssprintf(_("Downgrading %s to version %s is preferred over all un-accepted alternatives."),
+					    pkg.Name(),
+					    ver.VerStr());
+		    break;
+
+		  case action_upgrade:
+		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is preferred over all un-accpted alternatives."),
+					    pkg.Name(),
+					    ver.VerStr());
+		    break;
+		  }
 
 		return preference_info(Gtk::Stock::APPLY.id,
 				       icon_tooltip,
