@@ -677,7 +677,25 @@ namespace gui
 
     get_widget()->show();
 
-    // \todo This is never reconnected after a cache reload!
+    cache_closed.connect(sigc::mem_fun(*this, &ResolverTab::handle_cache_closed));
+    cache_reloaded.connect(sigc::mem_fun(*this, &ResolverTab::setup_resolver_connections));
+
+    setup_resolver_connections();
+  }
+
+  void ResolverTab::handle_cache_closed()
+  {
+    resolver_state_changed_connection.disconnect();
+    resolver_version_accept_reject_changed_connection.disconnect();
+    resolver_break_dep_accept_reject_changed_connection.disconnect();
+
+    already_generated_model->clear();
+
+    // TODO: what about encapsulated resolvers?
+  }
+
+  void ResolverTab::setup_resolver_connections()
+  {
     resolver_state_changed_connection =
       get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						       false));

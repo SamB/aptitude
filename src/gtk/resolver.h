@@ -247,6 +247,12 @@ namespace gui
 		       const Gtk::TreeModel::Row &parent_row,
 		       const generic_choice<aptitude_universe> &c) const;
 
+    // These two routines manage the connections to the resolver and
+    // other state that has to be thrown away and recreated when the
+    // cache is reloaded.
+    void handle_cache_closed();
+    void setup_resolver_connections();
+
     /** \brief Create a new tree store and populate it with the given
      *  solution, rendered with actions collected by type.
      */
