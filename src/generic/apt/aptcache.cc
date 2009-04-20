@@ -1680,9 +1680,13 @@ void aptitudeDepCache::sweep()
 	}
       else if(PkgState[pkg->ID].Delete() && package_states[pkg->ID].remove_reason == unused)
 	{
-	  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Cancelling the removal of " << pkg.Name() << ": it is no longer unused.");
-	  pre_package_state_changed();
-	  MarkKeep(pkg, false, false);
+	  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Would cancel the removal of " << pkg.Name()
+		    << " because it is no longer unused, but reinstating unused packages is disabled.");
+	  // We don't do this any more because it could lead to
+	  // situations where a valid resolver solution led to broken
+	  // dependencies.  For instance, the package that's being
+	  // brought back onto the system might conflict with another
+	  // package that's being installed by this solution!
 	}
     }
 }
