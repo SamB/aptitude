@@ -4139,32 +4139,31 @@ public:
 	    schedule_promotion_propagation(curr_step_num, s_new_promotion);
 	  }
 
+	// Unless this is set to "true", the step will be ignored
+	// (either thrown away or deferred).
+	bool process_step = false;
+
 	if(s_tier >= conflict_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping conflicted solution " << s);
-	    continue;
 	  }
 	else if(s_tier >= already_generated_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping already generated solution " << s);
-	    continue;
 	  }
 	else if(is_already_seen(curr_step_num))
 	  {
 	    LOG_DEBUG(logger, "Dropping already generated search node " << s);
-	    continue;
 	  }
 	else if(irrelevant(s))
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant solution " << s);
-	    continue;
 	  }
 	else if(maximum_search_tier < s_tier)
 	  {
 	    LOG_DEBUG(logger, "Deferring solution " << s << " to tier " << s_tier
 		      << ": it is beyond the current horizon of " << maximum_search_tier);
 	    defer_step(s_tier, curr_step_num);
-	    continue;
 	  }
 	else
 	  {
@@ -4176,52 +4175,56 @@ public:
 		promotion defer_promotion(defer_reason, defer_tier);
 		schedule_promotion_propagation(curr_step_num, defer_promotion);
 		defer_step(defer_tier, curr_step_num);
-		continue;
 	      }
+	    else
+	      process_step = true;
 	  }
 
-	closed[s] = curr_step_num;
-
-	// If all dependencies are satisfied, we found a solution.
-	if(s.is_full_solution())
+	if(process_step)
 	  {
-	    LOG_INFO(logger, " --- Found solution " << s);
+	    closed[s] = curr_step_num;
 
-	    // Remember this solution, so we don't try to return it
-	    // again in the future.  (note that we remove
-	    // from-dep-source information so that we match any
-	    // solution with the same version content)
-	    promotion already_generated_promotion(get_solution_choices_without_dep_info(s),
-						  already_generated_tier);
-	    promotions.insert(already_generated_promotion);
-	    schedule_promotion_propagation(curr_step_num, already_generated_promotion);
+	    // If all dependencies are satisfied, we found a solution.
+	    if(s.is_full_solution())
+	      {
+		LOG_INFO(logger, " --- Found solution " << s);
 
-	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
+		// Remember this solution, so we don't try to return it
+		// again in the future.  (note that we remove
+		// from-dep-source information so that we match any
+		// solution with the same version content)
+		promotion already_generated_promotion(get_solution_choices_without_dep_info(s),
+						      already_generated_tier);
+		promotions.insert(already_generated_promotion);
+		schedule_promotion_propagation(curr_step_num, already_generated_promotion);
 
-	    LOG_INFO(logger, " *** open: " << open.size()
-		     << "; closed: " << closed.size()
-		     << "; promotions: " << promotions.size()
-		     << "; deferred: " << get_num_deferred());
+		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
-	    future_solutions.push(curr_step_num);
+		LOG_INFO(logger, " *** open: " << open.size()
+			 << "; closed: " << closed.size()
+			 << "; promotions: " << promotions.size()
+			 << "; deferred: " << get_num_deferred());
+
+		future_solutions.push(curr_step_num);
+	      }
+	    // Nope, let's go enqueue successor nodes.
+	    else
+	      process_solution(curr_step_num, visited_packages);
+
+	    // Propagate any new promotions that we discovered up the
+	    // search tree.
+	    run_scheduled_promotion_propagations();
+
+	    // Keep track of the "future horizon".  If we haven't found a
+	    // solution, we aren't using those steps up at all.
+	    // Otherwise, we count up until we hit 50.
+	    if(!future_solutions.empty())
+	      ++most_future_solution_steps;
+
+	    LOG_TRACE(logger, "Done generating successors.");
+
+	    --max_steps;
 	  }
-	// Nope, let's go enqueue successor nodes.
-	else
-	  process_solution(curr_step_num, visited_packages);
-
-	// Propagate any new promotions that we discovered up the
-	// search tree.
-	run_scheduled_promotion_propagations();
-
-	// Keep track of the "future horizon".  If we haven't found a
-	// solution, we aren't using those steps up at all.
-	// Otherwise, we count up until we hit 50.
-	if(!future_solutions.empty())
-	  ++most_future_solution_steps;
-
-	LOG_TRACE(logger, "Done generating successors.");
-
-	--max_steps;
 
 	while(open.empty() && !deferred.empty() &&
 	      deferred.begin()->first < defer_tier &&
@@ -4249,6 +4252,12 @@ public:
 
 	    deferred.erase(deferred_begin);
 	  }
+
+	if(open.empty() && !deferred.empty())
+	  LOG_TRACE(logger, "Out of steps to process: the open queue is empty and the lowest deferred tier is "
+		    << deferred.begin()->first);
+	else if(open.empty())
+	  LOG_TRACE(logger, "Out of steps to process: the open queue is empty and there are no deferred steps.");
       }
 
     if(!future_solutions.empty())
