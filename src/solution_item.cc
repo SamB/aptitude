@@ -1,6 +1,6 @@
 // solution_item.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -52,7 +52,8 @@ action_type analyze_action(const aptitude_universe::version &ver)
   pkgCache::VerIterator curver=pkg.CurrentVer();
   pkgCache::VerIterator newver=ver.get_ver();
 
-  if(curver.end())
+  if(curver.end() ||
+     pkg->CurrentState == pkgCache::State::ConfigFiles)
     {
       if(newver.end())
 	return action_keep;
