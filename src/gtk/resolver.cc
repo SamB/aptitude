@@ -136,18 +136,43 @@ namespace gui
       }
     };
 
+    // Used by the upgrade resolver to automatically push itself to
+    // the next solution.
     void do_start_solution_calculation(bool blocking, resolver_manager *resolver)
     {
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		"Restarting the resolver thread if necessary.");
       resolver->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resolver));
     }
 
-    // This isn't parameterized by the resolver, because only the
-    // global resolver should automatically be started calculating.
+    // Start computing the first solution if it's not computed yet.
+    void do_start_first_solution_calculation(bool blocking, resolver_manager *resolver)
+    {
+      if(resolver->generated_solution_count() == 0)
+	{
+	  // Note: there is no race condition here.  If the background
+	  // thread computes a solution before we enqueue the job,
+	  // then maybe_start_solution_calculation just won't do
+	  // anything (because the selected solution is 0, so there's
+	  // nothing to do -- the first solution is already
+	  // generated).
+	  LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		    "Making sure the first solution is computed.");
+	  resolver->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resolver));
+	}
+    }
+
+    // The global resolver will always be set to start calculating the
+    // first solution as soon as it's created; after that we only
+    // calculate solutions when the user presses the "find new
+    // solution" button.
     void do_connect_resolver_callback()
     {
-      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true, resman));
+      LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		"Connecting the callback to compute the first solution when the resolver state changes.");
+      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), true, resman));
       // We may have missed a signal before making the connection:
-      do_start_solution_calculation(false, resman);
+      do_start_first_solution_calculation(false, resman);
     }
 
     /** \brief Render the given choice in "short" form, not including
@@ -1973,40 +1998,26 @@ namespace gui
 
   bool ResolverTab::do_find_next_solution_enabled_from_state(const resolver_manager::state &state)
   {
-    if(state.selected_solution >= state.generated_solutions)
+    if(!state.resolver_exists)
       {
 	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
-		  "Resolver tab: disabling the find-next-solution button: solution number "
-		  << state.selected_solution
-		  << " is currently selected, but only "
-		  << state.generated_solutions
-		  << (state.generated_solutions == 1 ? " solution has" : " solutions have")
-		  << " been generated.");
+		  "Resolver tab: disabling the find-next-solution button: there are no broken dependencies.");
 	return false;
       }
-    else if(state.selected_solution + 1 == state.generated_solutions &&
-	    state.solutions_exhausted)
+    else if(state.background_thread_active)
       {
 	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
-		  "Resolver tab: disabling the find-next-solution button: solution number "
-		  << state.selected_solution
-		  << " is currently selected, but only "
-		  << state.generated_solutions
-		  << (state.generated_solutions == 1 ? " solution has" : " solutions have")
-		  << " been generated.");
+		  "Resolver tab: disabling the find-next-solution button: the resolver is already running.");
+	return false;
+      }
+    else if(state.solutions_exhausted)
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
+		  "Resolver tab: disabling the find-next-solution button: there are no more solutions.");
 	return false;
       }
     else
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkResolver(),
-		  "Resolver tab: enabling the find-next-solution button: solution number "
-		  << state.selected_solution
-		  << " is currently selected, and it is among the "
-		  << state.generated_solutions
-		  << (state.generated_solutions == 1 ? " solution that has" : " solutions that have")
-		  << " been generated.");
-	return true;
-      }
+      return true;
   }
 
   bool ResolverTab::do_find_next_solution_enabled()
@@ -2025,9 +2036,10 @@ namespace gui
     if(do_find_next_solution_enabled_from_state(state))
       {
 	LOG_TRACE(Loggers::getAptitudeGtkResolver(), "Resolver tab: moving to solution number "
-		  << state.selected_solution + 1);
+		  << state.generated_solutions);
 	get_resolver()->discard_error_information();
-	get_resolver()->select_solution(state.selected_solution + 1);
+	get_resolver()->select_solution(state.generated_solutions);
+	do_start_solution_calculation(true, get_resolver());
       }
   }
 
