@@ -3670,7 +3670,7 @@ public:
       }
     else
       {
-	logger->setLevel(NULL);
+	logger->setLevel(log4cxx::Level::getOff());
 	logger->removeAppender(appender);
       }
   }
