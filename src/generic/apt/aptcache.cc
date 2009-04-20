@@ -1687,6 +1687,8 @@ void aptitudeDepCache::sweep()
 	  // dependencies.  For instance, the package that's being
 	  // brought back onto the system might conflict with another
 	  // package that's being installed by this solution!
+	  //
+	  // See Debian bugs #522881 and #524667.
 	}
     }
 }
