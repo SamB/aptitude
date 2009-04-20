@@ -206,7 +206,7 @@ namespace gui
 	    const std::string dep_render =
 	      cwidget::util::transcode(dep_text(c.get_dep().get_dep()), "UTF-8");
 
-	    return ssprintf("<b>%s</b>",
+	    return ssprintf("%s",
 			    Glib::Markup::escape_text(dep_render).c_str());
 	  }
 
