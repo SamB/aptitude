@@ -776,7 +776,8 @@ private:
    *  minimal in practice.  If additional enhancements to the resolver
    *  framework are implemented, I expect that we might see
    *  backpropagation become cheaper and more useful, in which case it
-   *  could be worth turning it on again (but beware of bugs!).
+   *  could be worth turning it on again (but beware of possible
+   *  bitrot!).
    */
   static const unsigned int max_propagated_promotions = 0;
   std::deque<step> steps;
