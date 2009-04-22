@@ -186,6 +186,7 @@ namespace
 	    rval = false;
 
 	    std::string build_dep_description = pkgSrcRecords::Parser::BuildDepType(it->Type);;
+	    build_dep_description += ": ";
 	    for(BuildDepList::const_iterator it2 = or_group_start;
 		it2 <= it; ++it2)
 	      {
@@ -201,7 +202,7 @@ namespace
 		    build_dep_description += ")";
 		  }
 	      }
-	    printf(_("Unable to satisfy the build-depends: %s."),
+	    printf(_("Unable to satisfy the build-depends: %s.\n"),
 		   build_dep_description.c_str());
 	  }
       }
