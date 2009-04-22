@@ -236,6 +236,24 @@ bool package_recommended(const pkgCache::PkgIterator &pkg);
  */
 bool package_trusted(const pkgCache::VerIterator &ver);
 
+/** \return the package version that is to be installed for the given
+ *  package, or an invalid iterator if the package will be removed or
+ *  will not be installed.
+ *
+ *  Handles various corner cases in the apt database.
+ */
+pkgCache::VerIterator install_version(const pkgCache::PkgIterator &pkg,
+				      aptitudeDepCache &cache);
+
+/** \return the first conflict between the given version and a
+ * to-be-installed package version, if any.
+ *
+ *  Breaks are treated as Conflicts for the purposes of this routine.
+ *  End iterators are never conflicted.
+ */
+pkgCache::DepIterator is_conflicted(const pkgCache::VerIterator &ver,
+				    aptitudeDepCache &cache);
+
 /** A pair (veriterator,verfile) -- used for building a list of
  *  versions sorted by file location.
  */

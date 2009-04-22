@@ -1622,12 +1622,235 @@ void aptitudeDepCache::duplicate_cache(apt_state_snapshot *target)
   target->iBadCount=iBadCount;
 }
 
+// Helpers for aptitudeDepCache::sweep().
+namespace
+{
+  // Remove reverse dependencies of the given version from the set of
+  // reinstated packages.  All the packages in the set are assumed to
+  // be installed at their current version when checking dependencies.
+  void remove_reverse_current_versions(std::set<pkgCache::PkgIterator> &reinstated,
+				       pkgCache::VerIterator bad_ver)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+    LOG_TRACE(logger, "Removing reverse dependencies of "
+	      << bad_ver.ParentPkg().Name() << " "
+	      << bad_ver.VerStr() << " from the reinstate set.");
+    // Follow direct revdeps.
+    for(pkgCache::DepIterator dep = bad_ver.ParentPkg().RevDependsList();
+	!dep.end(); ++dep)
+      {
+	// Skip self-deps.
+	if(dep.ParentPkg() == bad_ver.ParentPkg())
+	  continue;
+
+	// Skip packages that aren't in the reinstate set.
+	if(reinstated.find(dep.ParentPkg()) == reinstated.end())
+	  continue;
+
+	if((dep->Type == pkgCache::Dep::Depends ||
+	    dep->Type == pkgCache::Dep::PreDepends) &&
+	   dep.ParentVer() == dep.ParentPkg().CurrentVer() &&
+	   _system->VS->CheckDep(bad_ver.VerStr(),
+				 dep->CompareOp,
+				 dep.TargetVer()))
+	  {
+	    LOG_DEBUG(logger,
+		      "Not reinstating " << dep.ParentPkg().Name()
+		      << " due to its dependency on "
+		      << bad_ver.ParentPkg().Name()
+		      << " " << bad_ver.VerStr());
+	    reinstated.erase(dep.ParentPkg());
+	    remove_reverse_current_versions(reinstated, dep.ParentVer());
+	  }
+      }
+
+    // Follow indirect revdeps.
+    for(pkgCache::PrvIterator prv = bad_ver.ProvidesList();
+	!prv.end(); ++prv)
+      for(pkgCache::DepIterator dep = prv.ParentPkg().RevDependsList();
+	  !dep.end(); ++dep)
+	{
+	  // Skip self-deps.
+	  if(dep.ParentPkg() == bad_ver.ParentPkg())
+	    continue;
+
+	  // Skip packages that aren't in the reinstate set.
+	  if(reinstated.find(dep.ParentPkg()) == reinstated.end())
+	    continue;
+
+	  if((dep->Type == pkgCache::Dep::Depends ||
+	      dep->Type == pkgCache::Dep::PreDepends) &&
+	     dep.ParentVer() == dep.ParentPkg().CurrentVer() &&
+	     _system->VS->CheckDep(prv.ProvideVersion(),
+				   dep->CompareOp,
+				   dep.TargetVer()))
+	    {
+	      LOG_DEBUG(logger,
+			"Not reinstating " << dep.ParentPkg().Name()
+			<< " due to its dependency on "
+			<< bad_ver.ParentPkg().Name()
+			<< " " << bad_ver.VerStr()
+			<< " via the virtual package "
+			<< prv.ParentPkg().Name());
+	      reinstated.erase(dep.ParentPkg());
+	      remove_reverse_current_versions(reinstated, dep.ParentVer());
+	    }
+	}
+  }
+
+  // Given a package that we know is not orphaned, add all the
+  // transitive dependencies of its current version that are in
+  // "reinstated" to the not-orphaned set.  (the condition on
+  // reinstated is so we don't pick the wrong branch of an OR)
+  void trace_not_orphaned(const pkgCache::PkgIterator &notOrphan,
+			  const std::set<pkgCache::PkgIterator> &reinstated,
+			  pkgDepCache &cache,
+			  std::set<pkgCache::PkgIterator> &not_orphaned)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
+    if(not_orphaned.find(notOrphan) != not_orphaned.end())
+      {
+	LOG_TRACE(logger, "Ignoring " << notOrphan.Name()
+		  << ": it was already visited.");
+	return;
+      }
+
+    // Sanity-check.
+    if(notOrphan->CurrentState == pkgCache::State::NotInstalled ||
+       notOrphan->CurrentState == pkgCache::State::ConfigFiles ||
+       notOrphan.CurrentVer().end())
+      {
+	LOG_WARN(logger, "Sanity-check failed: assuming the package "
+		 << notOrphan.Name()
+		 << " is orphaned, since it is not currently installed.");
+	return;
+      }
+
+    if(reinstated.find(notOrphan) == reinstated.end())
+      {
+	LOG_DEBUG(logger, "Treating the package "
+		  << notOrphan.Name()
+		  << " as an orphan, since it is not in the reinstatement set.");
+	return;
+      }
+
+    LOG_DEBUG(logger, "The package " << notOrphan.Name()
+	      << " is not an orphan.");
+
+    not_orphaned.insert(notOrphan);
+    for(pkgCache::DepIterator dep = notOrphan.CurrentVer().DependsList();
+	!dep.end(); ++dep)
+      {
+	if(!cache.IsImportantDep(dep))
+	  continue;
+
+	// If the target is installed, check if it matches the dep and
+	// is reinstated.
+	pkgCache::PkgIterator targetPkg(dep.TargetPkg());
+	if(!(targetPkg->CurrentState == pkgCache::State::NotInstalled ||
+	     targetPkg->CurrentState == pkgCache::State::ConfigFiles))
+	  {
+	    if(_system->VS->CheckDep(targetPkg.CurrentVer().VerStr(),
+				     dep->CompareOp,
+				     dep.TargetVer()))
+	      trace_not_orphaned(targetPkg,
+				 reinstated,
+				 cache,
+				 not_orphaned);
+	  }
+
+	for(pkgCache::PrvIterator prv = targetPkg.ProvidesList();
+	    !prv.end(); ++prv)
+	  {
+	    if(_system->VS->CheckDep(prv.ProvideVersion(),
+				     dep->CompareOp,
+				     dep.TargetVer()))
+	      trace_not_orphaned(prv.OwnerPkg(),
+				 reinstated,
+				 cache,
+				 not_orphaned);
+	  }
+      }
+  }
+
+  // If the given package is a direct
+  // dependency/pre-dependency/recommendation of a manually installed
+  // package, find the set of its transitive dependencies that's
+  // closed under reinstatement.  NB: we can assume here that the
+  // reinstated set is consistent (all dependencies will be met)
+  // because any strong dependencies on stuff that was thrown out
+  // would also have been thrown out.
+  void find_not_orphaned(const pkgCache::PkgIterator &maybeOrphan,
+			 const std::set<pkgCache::PkgIterator> &reinstated,
+			 pkgDepCache &cache,
+			 std::set<pkgCache::PkgIterator> &not_orphaned)
+  {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+
+    // Sanity-check.
+    if(maybeOrphan->CurrentState == pkgCache::State::NotInstalled ||
+       maybeOrphan->CurrentState == pkgCache::State::ConfigFiles ||
+       maybeOrphan.CurrentVer().end())
+      {
+	LOG_WARN(logger, "Sanity-check failed: assuming the package "
+		 << maybeOrphan.Name()
+		 << " is orphaned, since it is not currently installed.");
+	return;
+      }
+
+    pkgCache::VerIterator maybeOrphanCurrentVer(maybeOrphan.CurrentVer());
+    for(pkgCache::DepIterator dep = maybeOrphan.RevDependsList();
+	!dep.end(); ++dep)
+      {
+	if(dep.ParentPkg() != maybeOrphan &&
+	   (dep->Type == pkgCache::Dep::Depends ||
+	    dep->Type == pkgCache::Dep::PreDepends))
+	  {
+	    if(_system->VS->CheckDep(maybeOrphanCurrentVer.VerStr(),
+				     dep->CompareOp,
+				     dep.TargetVer()))
+	      trace_not_orphaned(maybeOrphan, reinstated, cache, not_orphaned);
+	  }
+      }
+
+
+    for(pkgCache::PrvIterator prv = maybeOrphanCurrentVer.ProvidesList();
+	!prv.end(); ++prv)
+      for(pkgCache::DepIterator dep = prv.ParentPkg().RevDependsList();
+	  !dep.end(); ++dep)
+	{
+	  if(dep.ParentPkg() != maybeOrphan &&
+	     (dep->Type == pkgCache::Dep::Depends ||
+	      dep->Type == pkgCache::Dep::PreDepends))
+	    {
+	      if(_system->VS->CheckDep(prv.ProvideVersion(),
+				       dep->CompareOp,
+				       dep.TargetVer()))
+		trace_not_orphaned(maybeOrphan, reinstated, cache, not_orphaned);
+	    }
+	}
+  }
+}
+
 void aptitudeDepCache::sweep()
 {
   if(!aptcfg->FindB(PACKAGE "::Delete-Unused", true))
     return;
 
   log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+  // "reinstated" holds packages that should be reinstated, and
+  // "reinstated_bad" holds packages that *shouldn't* be reinstated
+  // because they conflict with an installed package.
+  //
+  // We have to be careful because reinstating packages could lead to
+  // situations where a valid resolver solution led to broken
+  // dependencies.  For instance, the package that's being brought
+  // back onto the system might conflict with another package that's
+  // being installed by this solution!
+  //
+  // See Debian bugs #522881 and #524667.
+  std::set<pkgCache::PkgIterator> reinstated, reinstated_bad;
 
   // Suppress intermediate removals.
   //
@@ -1680,16 +1903,50 @@ void aptitudeDepCache::sweep()
 	}
       else if(PkgState[pkg->ID].Delete() && package_states[pkg->ID].remove_reason == unused)
 	{
-	  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Would cancel the removal of " << pkg.Name()
-		    << " because it is no longer unused, but reinstating unused packages is disabled.");
-	  // We don't do this any more because it could lead to
-	  // situations where a valid resolver solution led to broken
-	  // dependencies.  For instance, the package that's being
-	  // brought back onto the system might conflict with another
-	  // package that's being installed by this solution!
-	  //
-	  // See Debian bugs #522881 and #524667.
+	  pkgCache::DepIterator conflict = is_conflicted(pkg.CurrentVer(), *this);
+	  if(!conflict.end())
+	    {
+	      LOG_DEBUG(logger, "aptitudeDepCache::sweep(): not scheduling "
+			<< pkg.Name() << " for reinstatement due to the conflict between "
+			<< conflict.ParentPkg().Name()
+			<< " and " << conflict.TargetPkg().Name());
+
+	      reinstated_bad.insert(pkg);
+	    }
+	  else
+	    {
+	      LOG_DEBUG(logger, "aptitudeDepCache::sweep(): provisionally scheduling "
+			<< pkg.Name() << " for reinstatement.");
+
+
+	      reinstated.insert(pkg);
+	    }
 	}
+    }
+
+  // Remove packages that transitively depend on a package in
+  // reinstated_bad from reinstated.
+  for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	reinstated_bad.begin(); it != reinstated_bad.end(); ++it)
+    remove_reverse_current_versions(reinstated, it->CurrentVer());
+
+  // Figure out which reinstated packages aren't orphaned.
+  std::set<pkgCache::PkgIterator> not_orphaned;
+  for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	reinstated.begin(); it != reinstated.end(); ++it)
+    find_not_orphaned(*it,
+		      reinstated,
+		      *this,
+		      not_orphaned);
+
+  // The ones that survived should be reinstated:
+  for(std::set<pkgCache::PkgIterator>::const_iterator it =
+	not_orphaned.begin(); it != not_orphaned.end(); ++it)
+    {
+      pkgCache::PkgIterator pkg(*it);
+      LOG_INFO(logger, "aptitudeDepCache::sweep(): reinstating "
+	       << pkg.Name());
+      MarkKeep(pkg, false, false);
     }
 }
 

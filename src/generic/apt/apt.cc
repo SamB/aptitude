@@ -792,6 +792,106 @@ bool package_trusted(const pkgCache::VerIterator &ver)
   return false;
 }
 
+pkgCache::VerIterator install_version(const pkgCache::PkgIterator &pkg,
+				      aptitudeDepCache &cache)
+{
+  if(pkg.VersionList().end())
+    return pkgCache::VerIterator(cache);
+
+  pkgDepCache::StateCache &state(cache[pkg]);
+
+  if(state.Delete())
+    return pkgCache::VerIterator(cache);
+  else if(state.Install())
+    return state.InstVerIter(cache);
+  else // state.Keep()
+    {
+      if(pkg->CurrentState == pkgCache::State::NotInstalled ||
+	 pkg->CurrentState == pkgCache::State::ConfigFiles)
+	return pkgCache::VerIterator(cache);
+      else
+	return pkg.CurrentVer();
+    }
+}
+
+pkgCache::DepIterator is_conflicted(const pkgCache::VerIterator &ver,
+				    aptitudeDepCache &cache)
+{
+  if(ver.end())
+    return pkgCache::DepIterator();
+
+  pkgCache::PkgIterator parentPkg = ver.ParentPkg();
+
+  // Look for forward conflicts:
+  for(pkgCache::DepIterator dep = ver.DependsList(); !dep.end(); ++dep)
+    if(dep->Type == pkgCache::Dep::Conflicts ||
+       dep->Type == pkgCache::Dep::DpkgBreaks)
+    {
+      // Look for direct conflicts:
+      pkgCache::VerIterator depTargetPkgInstallVer(install_version(dep.TargetPkg(),
+								   cache));
+	if(dep.TargetPkg() != parentPkg &&
+	   !depTargetPkgInstallVer.end() &&
+	   _system->VS->CheckDep(depTargetPkgInstallVer.VerStr(),
+				 dep->CompareOp,
+				 dep.TargetVer()))
+	return dep;
+
+      // Look for virtual conflicts:
+      for(pkgCache::PrvIterator prv = dep.TargetPkg().ProvidesList();
+	  !prv.end(); ++prv)
+	{
+	  if(prv.OwnerPkg() != parentPkg &&
+	     install_version(prv.OwnerPkg(), cache) == prv.OwnerVer() &&
+	     _system->VS->CheckDep(prv.ProvideVersion(),
+				   dep->CompareOp,
+				   dep.TargetVer()))
+	    return dep;
+	}
+    }
+
+  // Look for reverse conflicts:
+
+  // Look for direct reverse conflicts:
+  for(pkgCache::DepIterator dep = parentPkg.RevDependsList();
+      !dep.end(); ++dep)
+    {
+      if(dep->Type == pkgCache::Dep::Conflicts ||
+	 dep->Type == pkgCache::Dep::DpkgBreaks)
+	{
+	  if(dep.ParentPkg() != parentPkg &&
+	     install_version(dep.ParentPkg(), cache) == dep.ParentVer() &&
+	     _system->VS->CheckDep(ver.VerStr(),
+				   dep->CompareOp,
+				   dep.TargetVer()))
+	    return dep;
+	}
+    }
+
+  // Look for indirect reverse conflicts: that is, things that
+  // conflict with a package that this version provides.
+  for(pkgCache::PrvIterator prv = ver.ProvidesList();
+      !prv.end(); ++prv)
+    {
+      for(pkgCache::DepIterator dep = prv.ParentPkg().RevDependsList();
+	  !dep.end(); ++dep)
+	{
+	  if(dep->Type == pkgCache::Dep::Conflicts ||
+	     dep->Type == pkgCache::Dep::DpkgBreaks)
+	    {
+	      if(dep.ParentPkg() != parentPkg &&
+		 install_version(dep.ParentPkg(), cache) == dep.ParentVer() &&
+		 _system->VS->CheckDep(prv.ProvideVersion(),
+				       dep->CompareOp,
+				       dep.TargetVer()))
+		return dep;
+	    }
+	}
+    }
+
+  return pkgCache::DepIterator(cache, 0, (pkgCache::Version *)0);
+}
+
 /** \return \b true if d1 subsumes d2; that is, if one of the
  *  following holds:
  *
