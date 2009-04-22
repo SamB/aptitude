@@ -4371,11 +4371,147 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</para>
       </section>
 
+      <section id='secDependencyResolutionSearchTiers'>
+	<title>Search tiers in the interactive dependency resolver</title>
+
+	<figure id='figureSearchTiers'>
+	  <title>Search tiers</title>
+
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata fileref='images/search-tier-diagram.png'/>
+	    </imageobject>
+	  </mediaobject>
+	</figure>
+
+	<para>
+	  When generating solutions, &aptitude; places them in order
+	  according to their <firstterm>tier</firstterm>.  Tiers can
+	  be thought of as a way of dividing solutions into several
+	  numbered <quote>compartments</quote>; the dependency
+	  resolver will search each compartment in numerical order
+	  from lowest to highest, but will not leave a compartment
+	  until all the solutions it contains have been
+	  generated<footnote><para><quote>Generated</quote> solutions
+	  include those solutions that are rejected as described in
+	  <xref linkend='secResolver'/>; it is not necessary to
+	  actually look at all the solutions in a particular tier to
+	  skip past that tier!</para></footnote>.  <xref
+	  linkend='figureSearchTiers'/> shows how this works with
+	  &aptitude;'s default settings.
+	</para>
+
+	<para>
+	  By default, &aptitude; initializes the resolver with a
+	  <quote>reasonable</quote> set of tiers.  They are:
+	</para>
+
+	<table id='tableDefaultTiers'>
+	  <title>Default tiers</title>
+
+	  <tgroup cols='3'>
+	    <thead>
+	      <row>
+		<entry>Tier number</entry>
+		<entry>Description</entry>
+		<entry>Configuration option</entry>
+	      </row>
+	    </thead>
+
+	    <tbody>
+	      <row>
+		<entry>10,000</entry>
+		<entry>
+		  <quote>Safe</quote> actions: no removals, broken
+		  holds, or non-default versions.
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Safe-Tier'>Aptitude::ProblemResolver::Safe-Tier</link></literal></entry>
+	      </row>
+
+	      <row>
+		<entry>20,000</entry>
+		<entry>
+		  The solution that cancels all the user's actions.
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Keep-All-Tier'>Aptitude::ProblemResolver::Keep-All-Tier</link></literal></entry>
+	      </row>
+
+	      <row>
+		<entry>30,000</entry>
+		<entry>
+		  Solutions that remove packages.
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Remove-Tier'>Aptitude::ProblemResolver::Remove-Tier</link></literal></entry>
+	      </row>
+
+	      <row>
+		<entry>40,000</entry>
+		<entry>
+		  Solutions that break holds set by the user or
+		  install forbidden versions.
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Break-Hold-Tier'>Aptitude::ProblemResolver::Break-Hold-Tier</link></literal></entry>
+	      </row>
+
+	      <row>
+		<entry>50,000</entry>
+		<entry>
+		  Solutions that install packages from non-default
+		  versions (such as
+		  <quote><literal>experimental</literal></quote>, for
+		  instance).
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Non-Default-Tier'>Aptitude::ProblemResolver::Non-Default-Tier</link></literal></entry>
+	      </row>
+
+	      <row>
+		<entry>60,000</entry>
+		<entry>
+		  Solutions that remove Essential packages.
+		</entry>
+		<entry><literal><link linkend='configProblemResolver-Remove-Essential-Tier'>Aptitude::ProblemResolver::Remove-Essential-Tier</link></literal></entry>
+	      </row>
+	    </tbody>
+	  </tgroup>
+	</table>
+
+	<para>
+	  With the exception of tier 20,000, which is applied to
+	  exactly one solution, each of these tiers is applied on an
+	  action-by-action basis.  For instance, actions that remove
+	  packages are assigned tier 30,000, while actions that
+	  upgrade a package to its default version are assigned tier
+	  10,000.  The tier of a solution is the highest tier of any
+	  action it contains: a solution that upgrades one package to
+	  its default version and removes a second package will be
+	  placed at tier 30,000.  You can adjust the tiers of
+	  individual versions using resolver hints; see <xref
+	  linkend='secDependencyResolutionHints'/> for details.  The
+	  default tiers are illustrated in <xref
+	  linkend='figureSearchTiers'/>.
+	</para>
+
+	<para>
+	  Within each tier, &aptitude; orders solutions according to
+	  the lowest pin priority of any package in the solution.
+	  That is: if one solution contains packages with priorities
+	  500, 1000, and 0, and another solution contains only
+	  packages with priority 50, the second solution will appear
+	  first.  If two solutions have the same priority according to
+	  this rule, they are sorted according to their
+	  <quote>score</quote>.  However, the score of a solution is
+	  only a heuristic and solutions with a lower score might
+	  appear before solutions with a higher score.  If you need a
+	  guarantee that solutions will appear in a particular order,
+	  you should use the tiering system.
+	</para>
+      </section>
+
       <section id='secDependencyResolutionConfiguration'>
 	<title>Configuring the interactive dependency resolver</title>
 
 	<section id='secDependencyResolutionHints'>
-	  <title>Resolver hints</title>
+	  <title>Configuring resolver hints</title>
 
 	  <para>
 	    To improve the quality of the dependency solutions that
@@ -4435,6 +4571,82 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		linkend='menuResolverReject'>&resolver-reject;</link>
 		had been invoked on it.
 	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<quote><literal>increase-tier
+		<replaceable>number</replaceable></literal></quote>:
+		increase the tier of this version to
+		<replaceable>number</replaceable>; if its tier is
+		already higher than <replaceable>number</replaceable>,
+		this hint has no effect.  Solutions containing
+		higher-tiered versions will appear after solutions
+		with only lower-tiered versions; see <xref
+		linkend='secDependencyResolutionSearchTiers'/> for details.
+	      </para>
+
+	      <para>
+		Several special tiers can be chosen by name:
+
+		<orderedlist>
+		  <listitem>
+		    <para>
+		      <literal>conflict</literal>: the highest
+		      possible tier.<footnote><para>This is a synonym
+		      for the largest signed integer that your
+		      computer can represent.</para></footnote> Unlike
+		      other tiers, solutions generated at this tier
+		      are discarded immediately: they will never
+		      appear in the output list.  Thus, a hint of
+		      <quote><literal>increase-tier
+		      conflict</literal></quote> is similar to a
+		      <quote><literal>reject</literal></quote> hint:
+		      the difference is that the rejection can be
+		      canceled by the user at run-time, whereas once a
+		      version is set to the conflict tier, the only
+		      way to remove it is to change the configuration
+		      and restart &aptitude;.
+		    </para>
+		  </listitem>
+
+		  <listitem>
+		    <para>
+		      <literal>minimum</literal>: the lowest possible
+		      tier.<footnote><para>This is a synonym for the
+		      smallest signed integer that your computer can
+		      represent.</para></footnote> All searches start
+		      at this tier, so <quote>increasing</quote> a
+		      version to this tier has no effect.  However,
+		      this value can also be used when adjusting the
+		      predefined tiers: for instance, setting <link
+		      linkend='configProblemResolver-Remove-Tier'><literal>Aptitude::ProblemResolver::Remove-Tier</literal></link>
+		      to <quote><literal>minimum</literal></quote>
+		      will cause removed packages to have no effect on
+		      the tier of a solution.
+		    </para>
+		  </listitem>
+		</orderedlist>
+	      </para>
+
+	      <note>
+		<para>
+		  The <literal>increase-tier</literal> hint is applied
+		  <emphasis>in addition</emphasis> to any default tier
+		  that is set for the version: all the default tiers
+		  listed in <xref linkend='tableDefaultTiers'/> except
+		  for the <quote>cancel all the user's actions</quote>
+		  tier are set on a per-package basis and will
+		  interact with this tier.  For instance, a hint that
+		  increases the tier of <quote>install
+		  <systemitem>hal</systemitem> from
+		  <systemitem>experimental</systemitem></quote> to
+		  15,000 will have no effect, because that action is
+		  already at tier 50,000 (assuming that this version
+		  of <systemitem>hal</systemitem> is not the default
+		  candidate version).
+		</para>
+	      </note>
 	    </listitem>
 
 	    <listitem>
@@ -10799,6 +11011,18 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-Break-Hold-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Break-Hold-Tier</literal></seg>
+	      <seg><literal>50000</literal></seg>
+	      <seg>
+		The search tier assigned to actions that break a hold
+		set by the user (by upgrading a held package or by
+		installing a forbidden version of a package).  See
+		<xref linkend='secDependencyResolutionSearchTiers'/>
+		for a description of how search tiers work.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-BrokenScore'>
 	      <seg><literal>Aptitude::ProblemResolver::BrokenScore</literal></seg>
 	      <seg><literal>-100</literal></seg>
@@ -10844,6 +11068,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg>
 		How much to reward or penalize solutions that remove
 		an Essential package.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-Remove-Essential-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Remove-Essential-Tier</literal></seg>
+	      <seg><literal>60000</literal></seg>
+	      <seg>
+		The search tier assigned to actions that remove an
+		Essential package.  See <xref
+		linkend='secDependencyResolutionSearchTiers'/> for a
+		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
 
@@ -10931,6 +11166,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-Keep-All-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Keep-All-Tier</literal></seg>
+	      <seg><literal>20000</literal></seg>
+	      <seg>
+		The search tier assigned to the single solution that
+		cancels all of the actions selected by the user.  See
+		<xref linkend='secDependencyResolutionSearchTiers'/>
+		for a description of how search tiers work.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-KeepScore'>
 	      <seg><literal>Aptitude::ProblemResolver::KeepScore</literal></seg>
 	      <seg><literal>0</literal></seg>
@@ -10950,6 +11196,21 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		installing a non-default version of the package (one
 		that is not the current version and not the
 		<quote>candidate version</quote>).
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-Non-Default-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Non-Default-Tier</literal></seg>
+	      <seg><literal>50000</literal></seg>
+	      <seg>
+		The search tier assigned to actions that install
+		non-default versions of a package.  For instance, if
+		version 5 of a package is installed, versions 6, 7,
+		and 8 are available, and version 7 is the default
+		version, then versions 6 and 8 will be placed in this
+		tier.  See <xref
+		linkend='secDependencyResolutionSearchTiers'/> for a
+		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
 
@@ -10992,6 +11253,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configProblemResolver-Remove-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Remove-Tier</literal></seg>
+	      <seg><literal>30000</literal></seg>
+	      <seg>
+		The search tier assigned to actions that remove a
+		package.  See <xref
+		linkend='secDependencyResolutionSearchTiers'/> for a
+		description of how search tiers work.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configProblemResolver-RequiredScore'>
 	      <seg><literal>Aptitude::ProblemResolver::RequiredScore</literal></seg>
 	      <seg><literal>4</literal></seg>
@@ -11011,6 +11283,22 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		In addition to all other scoring factors, proposed
 		solutions that actually resolve all unsatisfied
 		dependencies are awarded this many extra points.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configProblemResolver-Safe-Tier'>
+	      <seg><literal>Aptitude::ProblemResolver::Safe-Tier</literal></seg>
+	      <seg><literal>10000</literal></seg>
+	      <seg>
+		The search tier assigned to actions that install the
+		default version of a package, upgrade a package to its
+		default version, or cancel installing or upgrading a
+		package.  Solutions generated in this tier could be
+		generated by <link
+		linkend='cmdlineSafeUpgrade'><literal>aptitude
+		safe-upgrade</literal></link>.  See <xref
+		linkend='secDependencyResolutionSearchTiers'/> for a
+		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
 
