@@ -58,7 +58,7 @@ namespace
 					  pkgPolicy *policy)
   {
     if(ver.end())
-      return aptitude_resolver::tier(base.get_policy(), INT_MAX);
+      return aptitude_resolver::tier(base.get_policy(), INT_MIN);
     else
       {
 	int apt_priority = INT_MIN;
