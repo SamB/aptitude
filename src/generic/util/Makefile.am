@@ -9,6 +9,7 @@ libgeneric_util_a_SOURCES = \
 	dense_setset.h \
 	dirent_safe.h \
 	immset.h \
+	maybe.h \
 	mut_fun.h \
 	refcounted_base.cc \
 	refcounted_base.h \
