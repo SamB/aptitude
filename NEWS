@@ -17,7 +17,14 @@ KNOWN BUGS:
   + [all] The aptitude dependency solver now supports a "tiered
           search".  Hopefully this will make dependency resolution
           more predictable and allow more meaningful configuration.
-          See the user's manual for details.
+          In particular, removals are not attempted until all
+          solutions involving only keeps, installs and upgrades are
+          exhausted, and solutions involving versions that aren't the
+          default candidate are deferred until removals are exhausted.
+
+	   See the user's manual for details.
+
+	  Closes: #514820, #514930, #524221, #473296
 
   + [gtk] The resolver tab has been completely overhauled.  It now
           supports all the features of the backend dependency solver,
