@@ -1,3 +1,182 @@
+[4/22/2009]
+Version 0.5.2                               "Ramparts of the Dawn"
+
+This release merges in the work that was done on the lenny branch of
+the program but not the post-lenny one (mostly translation work).
+
+KNOWN BUGS:
+
+  + Ctrl-W should close a tab, but instead it crashes the program.  Do
+    not press Ctrl-W and you will be happier.
+
+- New features:
+
+  + [all] aptitude now uses liblog4cxx to provide diagnostic logging
+          of much of the program.
+
+  + [all] The aptitude dependency solver now supports a "tiered
+          search".  Hopefully this will make dependency resolution
+          more predictable and allow more meaningful configuration.
+          See the user's manual for details.
+
+  + [gtk] The resolver tab has been completely overhauled.  It now
+          supports all the features of the backend dependency solver,
+          and it has an interface that is much more suitable for a
+          GTK+ program.
+
+  + [gtk] The dpkg tab now attempts to detect when something is
+          waiting for input, by keeping track of how long it's been
+          since dpkg sent a status message.  When input is available,
+          the "view details" button is flashed to hopefully get the
+          user's attention.
+
+  + [gtk] The procedure for upgrading has been streamlined.  aptitude
+          computes an upgrade in the background automatically using
+          the same algorithm that backs "safe-upgrade".  The user can
+          either accept the solution or try to fix the remaining
+          dependencies manually.
+
+  + [cmdline] Added a new command-line option, "--show-summary", to
+              the "why" command-line action.  This option causes
+              aptitude to show a brief list of the first package in
+              each dependency chain that would have been displayed.
+              So combined with the "-v" option, you can easily get a
+              list of all the manually installed packages that require
+              a given package.
+
+  + [gtk] When the user clicks on a package in the dashboard's list of
+          upgrades, the changelog display automatically scrolls to
+          that package.
+
+  + [gtk] Some common notifications are now marked with the icon of
+          the task they're performing.
+
+  + [gtk] Initial support for incremental search (currently you have
+          to click the "incremental" toggle button to enable it).
+
+  + [gtk] Ctrl-PageDown and Ctrl-PageUp, or F7 and F6, now switch to
+          the next or previous tab, respectively.
+
+  + [gtk] A link now exists below the package description to open all
+          the other packages from the same source package.
+
+  + [all] The aptitude dependency resolver now continues searching for
+          a few steps after it finds a solution, in the hope that it
+          can find a better one. (Closes: #482825)
+
+  + [all] The aptitude dependency resolver now adds a bonus to the
+          default apt resolution for a dependency (that is, the first
+          non-virtual package listed).  The default bonus is 400 and
+          it may be configured via
+          Aptitude::ProblemResolver::DefaultResolutionScore.
+
+  + [all] Setting the environment variable APT_ROOTDIR to a directory
+          name will cause aptitude to use the given directory as the
+          root for the purpose of locating apt files.
+
+- Crashes and serious errors:
+
+  + [gtk] Don't crash in the dependency chains tab. (Closes: #514714)
+
+  + [gtk] Don't crash when the user views the information tab of a
+          virtual package.
+
+  + [all] Fixed some serious inefficiencies in the algorithm used by
+          safe-upgrade.  It's still a bit slow on very large upgrades,
+          but not as ridiculously slow as it was before.
+
+  + [all] Fixed a bad interaction between the dependency solver and
+          reinstatement of unused packages, which could cause a
+          situation where a "solution" from the solver would actually
+          lead to broken dependencies, due to a conflict declared on
+          the newly reinstated package. (Closes: #522881, #524667)
+
+- Cosmetic and UI bugs:
+
+  + [gtk] Changelogs are now downloaded and parsed in the background.
+          aptitude still sets the download up in the foreground, and
+          this can take a long time if there are lots of available
+          upgrades.
+
+  + [gtk] A background thread is used to find the packages that match
+          a search pattern and to build the list of matching packages
+          for display.
+
+  + [gtk] Some work on the download screen, although more is needed.
+
+  + [curses] Don't warn the user about removing an Essential package
+             if they're just purging the configuration files of one
+             they removed already.  (Closes: #513472)
+
+  + [curses] Don't compute an excessive amount of "why" information
+             every time a package is selected.  Should make the curses
+             interface much less sluggish. (Closes: #516296)
+
+  + [cmdline] Add a missing newline in the error message that
+              "aptitude why" prints if it has no arguments.
+	      (Closes: #514676)
+
+  + [cmdline] Fix some badly formatted messages that are displayed
+              when a build dependency can't be installed: they were
+              missing punctuation and newlines. (Closes: #492615)
+
+  + [cmdline] Make the warning asking the user to use safe-upgrade
+              instead of upgrade a bit clearer.
+
+  + [cmdline] Always display [held] next to the state of held
+              packages.
+
+  + [cmdline] Pre-compute the column sizes needed to display "why", so
+              that columns don't wrap in Stupid Places[tm].
+	      (Closes: #516389)
+
+- Minor bugs:
+
+  + [all] The dependency resolver's scoring of full package
+          replacement was not behaving as intended in the corner case
+          that the package was replaced due to a virtual package it
+          provided, and some other version of the replaced package
+          didn't provide that virtual package.  The intent was to give
+          the non-providing package a bonus, but instead the versions
+          that got replaced were getting a bonus (more or less
+          negating the whole point of the full replacement score).
+
+  + [all] The resolver should now more correctly obey approval
+          constraints set by the user (solutions that were previously
+          rejected and aren't rejected any more can be returned).
+
+- Internal changes:
+
+  + [all] The dependency resolver now supports "hypothetical
+          reasoning": it can calculate a solution to a dependency
+          problem from a starting state that isn't the "live" state of
+          the package cache.  This is used, for instance, to compute
+          an upgrade before any packages are marked for upgrade.
+
+  + [all] Implemented support in the dependency resolver for
+          propagating knowledge about dead-ends up the search tree.
+          Currently disabled as it turned out to greatly increase the
+          memory and CPU overhead of a search without significantly
+          decreasing the number of steps needed.
+
+  + [all] The dependency resolver now stores solutions as sets of
+          "choices" rather than explicitly maintaining several lists
+          for the different types of choices a solution can contain
+          (for instance, installing a version vs leaving a Recommends
+          unresolved).  This makes things a bit cleaner and should
+          make it easier to add new types of choices if that turns out
+          to be useful.
+
+  + [gtk] The Glade file now stores each tab as a separate top-level
+          widget, which makes it a lot easier to edit and add tabs.
+
+- Documentation:
+
+  + [doc] Improve the documentation of --purge-unused.
+
+  + [doc] Improved documentation of the resolver (in addition to
+          documenting the new features).
+
 [1/18/2009]
 Version 0.5.1                               "One step at a time"
 
