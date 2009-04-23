@@ -4476,35 +4476,37 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</table>
 
 	<para>
-	  With the exception of tier 20,000, which is applied to
-	  exactly one solution, each of these tiers is applied on an
-	  action-by-action basis.  For instance, actions that remove
-	  packages are assigned tier 30,000, while actions that
-	  upgrade a package to its default version are assigned tier
-	  10,000.  The tier of a solution is the highest tier of any
-	  action it contains: a solution that upgrades one package to
-	  its default version and removes a second package will be
-	  placed at tier 30,000.  You can adjust the tiers of
-	  individual versions using resolver hints; see <xref
+	  If a solution qualifies for several tiers, it will be placed
+	  in the highest (that is to say, latest) one.  For example, a
+	  solution that upgrades one package to its default version
+	  and removes a second package will be placed at tier 30,000.
+	  You can adjust the tiers of individual versions using
+	  resolver hints; see <xref
 	  linkend='secDependencyResolutionHints'/> for details.  The
 	  default tiers are illustrated in <xref
 	  linkend='figureSearchTiers'/>.
 	</para>
 
-	<para>
-	  Within each tier, &aptitude; orders solutions according to
-	  the lowest pin priority of any package in the solution.
-	  That is: if one solution contains packages with priorities
-	  500, 1000, and 0, and another solution contains only
-	  packages with priority 50, the second solution will appear
-	  first.  If two solutions have the same priority according to
-	  this rule, they are sorted according to their
-	  <quote>score</quote>.  However, the score of a solution is
-	  only a heuristic and solutions with a lower score might
-	  appear before solutions with a higher score.  If you need a
-	  guarantee that solutions will appear in a particular order,
-	  you should use the tiering system.
-	</para>
+	<tip>
+	  <para>
+	    Within each tier, &aptitude; orders solutions according to
+	    the lowest pin priority of any package in the solution.
+	    That is: if one solution contains packages with priorities
+	    500, 1000, and 0, and another solution contains only
+	    packages with priority 50, the second solution will appear
+	    first.
+	  </para>
+
+	  <para>
+	    If two solutions in the same tier have the same pin
+	    priority, &aptitude; will attempt to produce them in order
+	    according to their <quote>score</quote>.  However, the
+	    score of a solution is only a guideline, and solutions
+	    with a lower score might appear before solutions with a
+	    higher score.  If you need a guarantee that solutions will
+	    appear in a particular order, you should use search tiers.
+	  </para>
+	</tip>
       </section>
 
       <section id='secDependencyResolutionConfiguration'>
@@ -4577,13 +4579,15 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <para>
 		<quote><literal>increase-tier
 		<replaceable>number</replaceable></literal></quote>:
-		increase the tier of this version to
-		<replaceable>number</replaceable>; if its tier is
-		already higher than <replaceable>number</replaceable>,
-		this hint has no effect.  Solutions containing
-		higher-tiered versions will appear after solutions
-		with only lower-tiered versions; see <xref
-		linkend='secDependencyResolutionSearchTiers'/> for details.
+		increase the tier of any solution that contains the
+		version to <replaceable>number</replaceable>; if its
+		tier is already higher than
+		<replaceable>number</replaceable>, this hint has no
+		effect.  Solutions containing higher-tiered versions
+		will appear after solutions with only lower-tiered
+		versions; see <xref
+		linkend='secDependencyResolutionSearchTiers'/> for
+		details.
 	      </para>
 
 	      <para>
@@ -4593,12 +4597,10 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  <listitem>
 		    <para>
 		      <literal>conflict</literal>: the highest
-		      possible tier.<footnote><para>This is a synonym
-		      for the largest signed integer that your
-		      computer can represent.</para></footnote> Unlike
-		      other tiers, solutions generated at this tier
-		      are discarded immediately: they will never
-		      appear in the output list.  Thus, a hint of
+		      possible tier.  Unlike other tiers, solutions
+		      generated at this tier are discarded
+		      immediately: they will never appear in the
+		      output list.  Thus, a hint of
 		      <quote><literal>increase-tier
 		      conflict</literal></quote> is similar to a
 		      <quote><literal>reject</literal></quote> hint:
@@ -4613,13 +4615,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  <listitem>
 		    <para>
 		      <literal>minimum</literal>: the lowest possible
-		      tier.<footnote><para>This is a synonym for the
-		      smallest signed integer that your computer can
-		      represent.</para></footnote> All searches start
-		      at this tier, so <quote>increasing</quote> a
-		      version to this tier has no effect.  However,
-		      this value can also be used when adjusting the
-		      predefined tiers: for instance, setting <link
+		      tier. All searches start at this tier, so
+		      <quote>increasing</quote> a version to this tier
+		      has no effect.  However, this value can also be
+		      used when adjusting the predefined tiers: for
+		      instance, setting <link
 		      linkend='configProblemResolver-Remove-Tier'><literal>Aptitude::ProblemResolver::Remove-Tier</literal></link>
 		      to <quote><literal>minimum</literal></quote>
 		      will cause removed packages to have no effect on
@@ -4633,13 +4633,9 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<para>
 		  The <literal>increase-tier</literal> hint is applied
 		  <emphasis>in addition</emphasis> to any default tier
-		  that is set for the version: all the default tiers
-		  listed in <xref linkend='tableDefaultTiers'/> except
-		  for the <quote>cancel all the user's actions</quote>
-		  tier are set on a per-package basis and will
-		  interact with this tier.  For instance, a hint that
-		  increases the tier of <quote>install
-		  <systemitem>hal</systemitem> from
+		  that is set due to the selected action.  For
+		  instance, a hint that increases the tier of
+		  <quote>install <systemitem>hal</systemitem> from
 		  <systemitem>experimental</systemitem></quote> to
 		  15,000 will have no effect, because that action is
 		  already at tier 50,000 (assuming that this version
