@@ -802,7 +802,7 @@ int main(int argc, char *argv[])
 
 	    case OPTION_SHOW_SUMMARY:
 	      if(optarg == NULL)
-		show_why_summary_mode = "last-package";
+		show_why_summary_mode = "first-package";
 	      else
 		show_why_summary_mode = optarg;
 	      break;
@@ -826,9 +826,9 @@ int main(int argc, char *argv[])
   aptitude::why::roots_string_mode why_display_mode;
   if(show_why_summary_mode == "no-summary" || show_why_summary_mode == _("no-summary"))
     why_display_mode = aptitude::why::no_summary;
-  else if(show_why_summary_mode == "last-package" || show_why_summary_mode == _("last-package"))
+  else if(show_why_summary_mode == "first-package" || show_why_summary_mode == _("first-package"))
     why_display_mode = aptitude::why::show_requiring_packages;
-  else if(show_why_summary_mode == "last-package-and-type" || show_why_summary_mode == _("last-package-and-type"))
+  else if(show_why_summary_mode == "first-package-and-type" || show_why_summary_mode == _("first-package-and-type"))
     why_display_mode = aptitude::why::show_requiring_packages_and_strength;
   else if(show_why_summary_mode == "all-packages" || show_why_summary_mode == _("all-packages"))
     why_display_mode = aptitude::why::show_chain;
@@ -838,7 +838,7 @@ int main(int argc, char *argv[])
     {
       // ForTranslators: "why" here is the aptitude command name and
       // should not be translated.
-      _error->Error(_("Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"last-package\", \"last-package-and-type\", \"all-packages\", or \"all-packages-with-dep-versions\"."),
+      _error->Error(_("Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package\", \"first-package-and-type\", \"all-packages\", or \"all-packages-with-dep-versions\"."),
 		    show_why_summary_mode.c_str());
       why_display_mode = aptitude::why::no_summary;
     }
