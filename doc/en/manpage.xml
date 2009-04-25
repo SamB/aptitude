@@ -1673,6 +1673,147 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
+      <varlistentry id='cmdlineOptionShowSummary'>
+	<term><literal>--show-summary<optional>=<replaceable>MODE</replaceable></optional></literal></term>
+
+	<listitem>
+	  <para>
+	    Changes the behavior of <quote><literal>aptitude
+	    why</literal></quote> to summarize each dependency chain
+	    that it outputs, rather than displaying it in long form.
+	    If this option is present and
+	    <replaceable>MODE</replaceable> is not
+	    <quote><literal>no-summary</literal></quote>, chains that
+	    contain Suggests dependencies will not be displayed:
+	    combine <literal>--show-summary</literal> with
+	    <literal>-v</literal> to see a summary of all the reasons
+	    for the target package to be installed.
+	  </para>
+
+	  <para>
+	    <replaceable>MODE</replaceable> can be any one of the
+	    following:
+	  </para>
+
+	  <orderedlist>
+	    <listitem>
+	      <para>
+		<literal>no-summary</literal>: don't show a summary
+		(the default behavior if
+		<literal>--show-summary</literal> is not present).
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<literal>first-package</literal>: display the first
+		package in each chain.  This is the default value of
+		<replaceable>MODE</replaceable> if it is not present.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<literal>first-package-and-type</literal>: display the
+		first package in each chain, along with the strength
+		of the weakest dependency in the chain.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		<literal>all-packages</literal>: briefly display each
+		chain of dependencies leading to the target package.
+	      </para>
+	    </listitem>
+
+	     <listitem>
+	       <para>
+		 <literal>all-packages-with-dep-versions</literal>:
+		 briefly display each chain of dependencies leading to
+		 the target package, including the target version of
+		 each dependency.
+	       </para>
+	     </listitem>
+	  </orderedlist>
+
+	  <para>
+	    This option corresponds to the configuration item <link
+	    linkend='configCmdLine-Show-Summary'><literal>Aptitude::CmdLine::Show-Summary</literal></link>;
+	    if <literal>--show-summary</literal> is present on the
+	    command-line, it will override <link
+	    linkend='configCmdLine-Show-Summary'><literal>Aptitude::CmdLine::Show-Summary</literal></link>.
+	  </para>
+
+	  <example>
+	    <title>Usage of <literal>--show-summary</literal></title>
+
+	    <para>
+	      <literal>--show-summary</literal> used with
+	      <literal>-v</literal> to display all the reasons a
+	      package is installed:
+	    </para>
+
+	    <screen>$ aptitude -v --show-summary why foomatic-db
+Packages requiring foomatic-db:
+  cupsys-driver-gutenprint
+  foomatic-db-engine
+  foomatic-db-gutenprint
+  foomatic-db-hpijs
+  foomatic-filters-ppds
+  foomatic-gui
+  kde
+  printconf
+  wine
+
+$ aptitude -v --show-summary=first-package-and-type why foomatic-db
+Packages requiring foomatic-db:
+  [Depends] cupsys-driver-gutenprint
+  [Depends] foomatic-db-engine
+  [Depends] foomatic-db-gutenprint
+  [Depends] foomatic-db-hpijs
+  [Depends] foomatic-filters-ppds
+  [Depends] foomatic-gui
+  [Depends] kde
+  [Depends] printconf
+  [Depends] wine
+
+$ aptitude -v --show-summary=all-packages why foomatic-db
+Packages requiring foomatic-db:
+  cupsys-driver-gutenprint D: cups-driver-gutenprint D: cups R: foomatic-filters R: foomatic-db-engine D: foomatic-db
+  foomatic-filters-ppds D: foomatic-filters R: foomatic-db-engine D: foomatic-db
+  kde D: kdeadmin R: system-config-printer-kde D: system-config-printer R: hal-cups-utils D: cups R: foomatic-filters R: foomatic-db-engine D: foomatic-db
+  wine D: libwine-print D: cups-bsd R: cups R: foomatic-filters R: foomatic-db-engine D: foomatic-db
+  foomatic-db-engine D: foomatic-db
+  foomatic-db-gutenprint D: foomatic-db
+  foomatic-db-hpijs D: foomatic-db
+  foomatic-gui D: python-foomatic D: foomatic-db-engine D: foomatic-db
+  printconf D: foomatic-db
+
+$ aptitude -v --show-summary=all-packages-with-dep-versions why foomatic-db
+Packages requiring foomatic-db:
+  cupsys-driver-gutenprint D: cups-driver-gutenprint (>= 5.0.2-4) D: cups (>= 1.3.0) R: foomatic-filters (>= 4.0) R: foomatic-db-engine (>= 4.0) D: foomatic-db (>= 20090301)
+  foomatic-filters-ppds D: foomatic-filters R: foomatic-db-engine (>= 4.0) D: foomatic-db (>= 20090301)
+  kde D: kdeadmin (>= 4:3.5.5) R: system-config-printer-kde (>= 4:4.2.2-1) D: system-config-printer (>= 1.0.0) R: hal-cups-utils D: cups R: foomatic-filters (>= 4.0) R: foomatic-db-engine (>= 4.0) D: foomatic-db (>= 20090301)
+  wine D: libwine-print (= 1.1.15-1) D: cups-bsd R: cups R: foomatic-filters (>= 4.0) R: foomatic-db-engine (>= 4.0) D: foomatic-db (>= 20090301)
+  foomatic-db-engine D: foomatic-db
+  foomatic-db-gutenprint D: foomatic-db
+  foomatic-db-hpijs D: foomatic-db
+  foomatic-gui D: python-foomatic (>= 0.7.9.2) D: foomatic-db-engine D: foomatic-db (>= 20090301)
+  printconf D: foomatic-db
+	    </screen>
+
+	    <para>
+	      <literal>--show-summary</literal> used to list a chain on one line:
+	    </para>
+
+	    <screen>$ aptitude --show-summary=all-packages why aptitude-gtk libglib2.0-data
+Packages requiring libglib2.0-data:
+  aptitude-gtk D: libglib2.0-0 R: libglib2.0-data</screen>
+	  </example>
+	</listitem>
+      </varlistentry>
+
       <varlistentry>
 	<term><literal>-t</literal> <replaceable>release</replaceable>, <literal>--target-release</literal> <replaceable>release</replaceable></term>
 

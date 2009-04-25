@@ -1502,8 +1502,6 @@ namespace aptitude
 			  entry += const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name();
 			}
 
-		      entry += " ";
-
 		      entry += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
 		      entry += "<- ";
 
