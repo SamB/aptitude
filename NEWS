@@ -9,6 +9,10 @@ KNOWN BUGS:
   + Ctrl-W should close a tab, but instead it crashes the program.  Do
     not press Ctrl-W and you will be happier.
 
+  + When you reject or accept a resolver choice, the corresponding row
+    in the solution might not update to reflect your change.  If you
+    switch to another solution and back, it will update correctly.
+
 - New features:
 
   + [all] aptitude now uses liblog4cxx to provide diagnostic logging
