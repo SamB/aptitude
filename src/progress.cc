@@ -63,6 +63,7 @@ void progress::paint(const cw::style &st)
 
       mvaddstr(0, 0, cw::util::transcode(p->Op));
       mvaddstr(0, width - percentstr.size(), cw::util::transcode(percentstr));
+      refresh();
     }
   else
     erase();
