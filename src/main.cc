@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
   bool showwhy = aptcfg->FindB(PACKAGE "::CmdLine::Show-Why", false);
-  string show_why_summary_mode = aptcfg->Find(PACKAGE "::CmdLine::Why-Display-Mode", "no-summary");
+  string show_why_summary_mode = aptcfg->Find(PACKAGE "::CmdLine::Show-Summary", "no-summary");
   bool visual_preview=aptcfg->FindB(PACKAGE "::CmdLine::Visual-Preview", false);
   bool always_prompt=aptcfg->FindB(PACKAGE "::CmdLine::Always-Prompt", false);
   int verbose=aptcfg->FindI(PACKAGE "::CmdLine::Verbose", 0);
