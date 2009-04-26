@@ -944,6 +944,24 @@ namespace gui
       }
   }
 
+  namespace
+  {
+    struct collect_iterators
+    {
+      std::vector<Gtk::TreeModel::iterator> &target;
+
+      collect_iterators(std::vector<Gtk::TreeModel::iterator> &_target)
+	: target(_target)
+      {
+      }
+
+      void visit(const Gtk::TreeModel::iterator &iter) const
+      {
+	target.push_back(iter);
+      }
+    };
+  }
+
   void ResolverTab::do_no_preference_iterator(const Gtk::TreeModel::iterator &iter)
   {
     typedef generic_choice<aptitude_universe> choice;
@@ -1011,7 +1029,14 @@ namespace gui
     Glib::RefPtr<Gtk::TreeSelection> selection =
       solution_view->get_treeview()->get_selection();
 
-    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_reject_iterator));
+    std::vector<Gtk::TreeModel::iterator> selected_iters;
+    collect_iterators collector(selected_iters);
+    selection->selected_foreach_iter(sigc::mem_fun(collector,
+						   &collect_iterators::visit));
+    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
+	  selected_iters.begin();
+	it != selected_iters.end(); ++it)
+      do_reject_iterator(*it);
   }
 
   void ResolverTab::no_preference_button_toggled()
@@ -1037,7 +1062,14 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "no_preference_button_toggled: clearing reject/accept states of the selected choices.");
-    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_no_preference_iterator));
+    std::vector<Gtk::TreeModel::iterator> selected_iters;
+    collect_iterators collector(selected_iters);
+    selection->selected_foreach_iter(sigc::mem_fun(collector,
+						   &collect_iterators::visit));
+    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
+	  selected_iters.begin();
+	it != selected_iters.end(); ++it)
+      do_no_preference_iterator(*it);
   }
 
   void ResolverTab::accept_button_toggled()
@@ -1063,7 +1095,14 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "accept_button_toggled: accepting the selected choices.");
-    selection->selected_foreach_iter(sigc::mem_fun(*this, &ResolverTab::do_accept_iterator));
+    std::vector<Gtk::TreeModel::iterator> selected_iters;
+    collect_iterators collector(selected_iters);
+    selection->selected_foreach_iter(sigc::mem_fun(collector,
+						   &collect_iterators::visit));
+    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
+	  selected_iters.begin();
+	it != selected_iters.end(); ++it)
+      do_accept_iterator(*it);
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
