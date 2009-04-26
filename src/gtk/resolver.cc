@@ -2054,6 +2054,11 @@ namespace gui
 		"Resolver tab: Applying the current solution: "
 		<< displayed_solution);
 
+      const bool safe_using_internal_resolver = using_internal_resolver;
+
+      // BIG FAT WARNING: applying the solution will destroy this tab
+      // as a side effect!  From here on out we can't refer to members
+      // of this instance.
       undo_group *undo = new apt_undo_group;
       (*apt_cache_file)->apply_solution(displayed_solution, undo);
 
@@ -2065,11 +2070,11 @@ namespace gui
       // This is a bit of a hack, to ensure that the user doesn't get
       // dropped back at the dashboard after fixing an upgrade
       // manually.
-      if(using_internal_resolver)
+      if(safe_using_internal_resolver)
 	pMainWindow->do_preview();
-      // No need to delete the tab manually here: it will be deleted
-      // when there aren't any more dependencies to solve.  Deleting
-      // it here would introduce a double-free bug.
+      // No need to delete the tab manually here: it should already
+      // have been deleted.  Deleting it here would introduce a
+      // double-free bug.
     }
   }
 
