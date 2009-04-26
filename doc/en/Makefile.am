@@ -71,7 +71,7 @@ doc-html-stamp: aptitude.xml manpage.xml $(srcdir)/../aptitude-html.xsl $(srcdir
 
 	mkdir output-html/images/
 	ln -f $(srcdir)/images/*.png output-html/images/
-	set -e; for x in $(srcdir)/images/*.svg; do inkscape -D -b white -e output-html/images/$$(basename $${x%.svg}.png) $$x; done
+	set -e; for x in $(srcdir)/images/*.svg; do rsvg-convert -f png -o output-html/images/$$(basename $${x%.svg}.png) $$x; done
 	for x in caution important note tip warning; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.png output-html/images/; done
 	for x in home next prev up; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.gif output-html/images/; done
 
