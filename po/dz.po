@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-04-25 10:56-0700\n"
+"POT-Creation-Date: 2009-04-26 20:39-0700\n"
 "PO-Revision-Date: 2007-06-14 03:27+0530\n"
 "Last-Translator: Tshewang Norbu <bumthap2006@hotmail.com>\n"
 "Language-Team: Dzongkha <pgeyleg@dit.gov.bt>\n"
@@ -540,8 +540,8 @@ msgstr "མུས་མཐུན་པ་ནང་ཚུབ་ཅན་གྱི
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་དོ།"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1182
-#: src/gtk/resolver.cc:1350 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1221
+#: src/gtk/resolver.cc:1389 src/solution_dialog.cc:140
 #: src/solution_screen.cc:568
 msgid "Internal error: unexpected null solution."
 msgstr "ནང་འཁོད་འཛོལ་བ:རེ་འདུན་མེད་པའི་ ཐབས་ཤེས་སྟོང་ཆ།"
@@ -1601,7 +1601,7 @@ msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
-#: src/gtk/resolver.cc:1935 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:1974 src/solution_dialog.cc:127
 #: src/solution_screen.cc:545
 msgid "Resolving dependencies..."
 msgstr "རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་འབད་དོ།"
@@ -1705,7 +1705,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་གིས་གཞན་རྟེན་དང་མ་ཕྱེད་པས:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1085 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1124 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<སྟོང་ཆ།>"
 
@@ -3218,8 +3218,8 @@ msgstr "གྲོགས་རམ།"
 msgid "gtk-about"
 msgstr ""
 
-#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1550
-#: src/gtk/gui.cc:1744
+#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1554
+#: src/gtk/gui.cc:1748
 msgid "Dashboard"
 msgstr ""
 
@@ -4136,7 +4136,7 @@ msgstr "ལག་ལེན་པའི་ལག་དེབ།"
 msgid "Toggle automatic status"
 msgstr ""
 
-#: src/gtk/gui.cc:1723
+#: src/gtk/gui.cc:1727
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
@@ -4627,191 +4627,191 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1133 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%sདེ་གིས་%sདེ་ལུ་བརྟེན་དོ་ཡོདཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1136 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1175 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s དེ་གིས་ཧེ་མ་རང་%s་དེ་ལུ་བརྟེན་དོ་ཡོདཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1139 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s དེ་གིས་ %s དེ་བསམ་འཆར་བཀོདཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1142 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1181 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s་དེ་གིས་%s དེ་འོས་སྦྱོར་འབདཝ་ཨིན།"
 
-#: src/gtk/resolver.cc:1145 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1184 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s་དེ་%s་དང་གཅིག་ཁར་མི་མཐུནམ་ཨིན།"
 
-#: src/gtk/resolver.cc:1148 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:123
 #, fuzzy, c-format
 #| msgid "%s replaces %s"
 msgid "%s breaks %s"
 msgstr "%s དེགིས་%sདེ་ཚབ་བཙུགསཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1151 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1190 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s དེགིས་%sདེ་ཚབ་བཙུགསཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1154 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s དེགིས་%s ཕན་མེད་བཟོཝ་ཨིན།"
 
-#: src/gtk/resolver.cc:1264 src/gtk/resolver.cc:1718
+#: src/gtk/resolver.cc:1303 src/gtk/resolver.cc:1757
 #: src/solution_screen.cc:271
 msgid "Remove the following packages:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་རཙ་བསྐྲད་གཏང:"
 
-#: src/gtk/resolver.cc:1278 src/gtk/resolver.cc:1730
+#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1769
 #: src/solution_screen.cc:295
 msgid "Install the following packages:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་གཞི་བཙུགས་འབད:"
 
-#: src/gtk/resolver.cc:1291 src/gtk/resolver.cc:1742
+#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་ཚུ་རཙ་བསྐྲད་གཏང:"
 
-#: src/gtk/resolver.cc:1304 src/gtk/resolver.cc:1754
+#: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
 #: src/solution_screen.cc:307
 msgid "Upgrade the following packages:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་ཡར་བསྐྱེད་འབད:"
 
-#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1767
+#: src/gtk/resolver.cc:1356 src/gtk/resolver.cc:1806
 #: src/solution_screen.cc:319
 msgid "Downgrade the following packages:"
 msgstr "འོག་ལུ་ཡོད་མི་ཐུམ་སྒྲིལ་དེ་ཚུ་མར་ཕབ་འབད:"
 
-#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1780
+#: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "འོག་ལུ་ཡོད་མི་རྟེན་འབྲེལ་ཚུ་མོས་མཐུན་མ་འབད་བར་་བཞག:%n"
 
-#: src/gtk/resolver.cc:1405
+#: src/gtk/resolver.cc:1444
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "%F [%s (%s)] དེ་རྩ་བསྐྲད་གཏང་།"
 
-#: src/gtk/resolver.cc:1412
+#: src/gtk/resolver.cc:1451
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "%F [%s (%s)] དེ་གཞི་བཙུགས་འབད།"
 
-#: src/gtk/resolver.cc:1420
+#: src/gtk/resolver.cc:1459
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr " %F གཞི་བཙུགས་འབད་ནི་དེ་ཆ་མེད་གཏང་།"
 
-#: src/gtk/resolver.cc:1423
+#: src/gtk/resolver.cc:1462
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "%F རཙ་བསྐྲད་གཏང་ནིདེ་ཆ་མེད་གཏང་།"
 
-#: src/gtk/resolver.cc:1426
+#: src/gtk/resolver.cc:1465
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "%Fདེ་ཐོན་རིམ་%s (%s)གུར་བཞག"
 
-#: src/gtk/resolver.cc:1433
+#: src/gtk/resolver.cc:1472
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "%F [%s (%s) -> %s (%s)] དེ་ཡར་བསྐྱེད་འབད།"
 
-#: src/gtk/resolver.cc:1442
+#: src/gtk/resolver.cc:1481
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "%F [%s (%s) -> %s (%s)] དེ་མར་ཕབ་འབད།"
 
-#: src/gtk/resolver.cc:1499
+#: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
 msgid "<b>Remove</b> %s"
 msgstr "རྩ་བསྐྲད།"
 
-#: src/gtk/resolver.cc:1499
+#: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
 msgid "<b>remove</b> %s"
 msgstr "རྩ་བསྐྲད།"
 
-#: src/gtk/resolver.cc:1507
+#: src/gtk/resolver.cc:1546
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "%Fདེ་ཐོན་རིམ་%s (%s)གུར་བཞག"
 
-#: src/gtk/resolver.cc:1507
+#: src/gtk/resolver.cc:1546
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "%Fདེ་ཐོན་རིམ་%s (%s)གུར་བཞག"
 
-#: src/gtk/resolver.cc:1516
+#: src/gtk/resolver.cc:1555
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "%F [%s (%s)] དེ་གཞི་བཙུགས་འབད།"
 
-#: src/gtk/resolver.cc:1516
+#: src/gtk/resolver.cc:1555
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "%F [%s (%s)] དེ་གཞི་བཙུགས་འབད།"
 
-#: src/gtk/resolver.cc:1525
+#: src/gtk/resolver.cc:1564
 #, fuzzy, c-format
 #| msgid "libsigc++ version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "libsigc++ཐོན་རིམ་: %s\n"
 
-#: src/gtk/resolver.cc:1525
+#: src/gtk/resolver.cc:1564
 #, fuzzy, c-format
 #| msgid "libsigc++ version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "libsigc++ཐོན་རིམ་: %s\n"
 
-#: src/gtk/resolver.cc:1534
+#: src/gtk/resolver.cc:1573
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s  ཐོན་རིམ་ཚུ།"
 
-#: src/gtk/resolver.cc:1534
+#: src/gtk/resolver.cc:1573
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s  ཐོན་རིམ་ཚུ།"
 
-#: src/gtk/resolver.cc:1547
+#: src/gtk/resolver.cc:1586
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1547
+#: src/gtk/resolver.cc:1586
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1615
+#: src/gtk/resolver.cc:1654
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4820,7 +4820,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d གཞི་བཙུགས་འབད་ནི།"
 msgstr[1] "%d གཞི་བཙུགས་འབད་ནི་ཚུ།"
 
-#: src/gtk/resolver.cc:1620
+#: src/gtk/resolver.cc:1659
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4829,7 +4829,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d རྩ་བསྐྲད།"
 msgstr[1] "%d རྩ་བསྐྲད་ཚུ།"
 
-#: src/gtk/resolver.cc:1626
+#: src/gtk/resolver.cc:1665
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4838,7 +4838,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d བདག་འཛིན་སྦེ་བཞག"
 msgstr[1] "%d བདག་འཛིན་སྦེ་བཞགཔ་ཨིན།"
 
-#: src/gtk/resolver.cc:1632
+#: src/gtk/resolver.cc:1671
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4847,7 +4847,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d ཡར་བསྐྱེད་འབད།"
 msgstr[1] "%d ཡར་བསྐྱེད་འབདཝ་ཨིན། "
 
-#: src/gtk/resolver.cc:1638
+#: src/gtk/resolver.cc:1677
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -4856,7 +4856,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d མར་ཕབ་འབད།"
 msgstr[1] "%d མར་ཕབ་འབདཝ་ཨིན།"
 
-#: src/gtk/resolver.cc:1644
+#: src/gtk/resolver.cc:1683
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -4864,40 +4864,40 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "རྩིས་ཞིབ་འོས་སྦྱོར།(^R)"
 msgstr[1] "རྩིས་ཞིབ་འོས་སྦྱོར།(^R)"
 
-#: src/gtk/resolver.cc:1936
+#: src/gtk/resolver.cc:1975
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "ཐབས་ཤེས་དེ་ལས་ལྷག་སྟེ་མེད།"
 
-#: src/gtk/resolver.cc:1943
+#: src/gtk/resolver.cc:1982
 #, fuzzy
 #| msgid "^Dependency handling"
 msgid "No dependency solution was found."
 msgstr "རྟེན་འབྲེལ་ལེགས་སྐྱོང་འཐབ་ནི།(^D)"
 
-#: src/gtk/resolver.cc:1944
+#: src/gtk/resolver.cc:1983
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "ཐབས་ཤེས་དེ་ལས་ལྷག་སྟེ་མེད།"
 
-#: src/gtk/resolver.cc:1955
+#: src/gtk/resolver.cc:1994
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:1956
+#: src/gtk/resolver.cc:1995
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "ཐབས་ཤེས་དེ་ལས་ལྷག་སྟེ་མེད།"
 
-#: src/gtk/resolver.cc:1987
+#: src/gtk/resolver.cc:2026
 #, c-format
 msgid "Solution %s of %s (tier %s)."
 msgstr ""
 
-#: src/gtk/tab.cc:64
+#: src/gtk/tab.cc:68
 #, fuzzy
 #| msgid "[Downloaded]"
 msgid "Download"

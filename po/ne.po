@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ne\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-04-25 10:56-0700\n"
+"POT-Creation-Date: 2009-04-26 20:39-0700\n"
 "PO-Revision-Date: 2007-08-05 17:09+0545\n"
 "Last-Translator: Nabin Gautam <nabin@mpp.org.np>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -536,8 +536,8 @@ msgstr "समाधानकर्तामा घातक त्रुटि"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] निर्भरता हल गरिदैछ"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1182
-#: src/gtk/resolver.cc:1350 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1221
+#: src/gtk/resolver.cc:1389 src/solution_dialog.cc:140
 #: src/solution_screen.cc:568
 msgid "Internal error: unexpected null solution."
 msgstr "आन्तरिक त्रुटि: अनपेक्षित शून्य समाधान ।"
@@ -1599,7 +1599,7 @@ msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
-#: src/gtk/resolver.cc:1935 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:1974 src/solution_dialog.cc:127
 #: src/solution_screen.cc:545
 msgid "Resolving dependencies..."
 msgstr "निर्भरताहरू पुन समाधान गर्दैछ..."
@@ -1702,7 +1702,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "निम्न प्याकेजहरु संग अनुपयोक्त निर्भरताहरू छन्:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1085 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1124 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -3206,8 +3206,8 @@ msgstr "मद्दत"
 msgid "gtk-about"
 msgstr ""
 
-#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1550
-#: src/gtk/gui.cc:1744
+#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1554
+#: src/gtk/gui.cc:1748
 msgid "Dashboard"
 msgstr ""
 
@@ -4120,7 +4120,7 @@ msgstr "म्यानुअल प्रयोग गर्नुहोस्"
 msgid "Toggle automatic status"
 msgstr ""
 
-#: src/gtk/gui.cc:1723
+#: src/gtk/gui.cc:1727
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
@@ -4607,191 +4607,191 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1133 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s मा आधारित %s"
 
-#: src/gtk/resolver.cc:1136 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1175 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s मा पुर्व आधारित %s"
 
-#: src/gtk/resolver.cc:1139 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s सुझाव गर्दछ %s"
 
-#: src/gtk/resolver.cc:1142 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1181 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s सिफारिशहरू %s"
 
-#: src/gtk/resolver.cc:1145 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1184 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s संग द्धन्द %s"
 
-#: src/gtk/resolver.cc:1148 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:123
 #, fuzzy, c-format
 #| msgid "%s replaces %s"
 msgid "%s breaks %s"
 msgstr "%s बदल्नुहोस् %s"
 
-#: src/gtk/resolver.cc:1151 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1190 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s बदल्नुहोस् %s"
 
-#: src/gtk/resolver.cc:1154 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s अप्रचलितहरु %s"
 
-#: src/gtk/resolver.cc:1264 src/gtk/resolver.cc:1718
+#: src/gtk/resolver.cc:1303 src/gtk/resolver.cc:1757
 #: src/solution_screen.cc:271
 msgid "Remove the following packages:"
 msgstr "निम्न प्याकेजहरू हटाउनुहोस्:"
 
-#: src/gtk/resolver.cc:1278 src/gtk/resolver.cc:1730
+#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1769
 #: src/solution_screen.cc:295
 msgid "Install the following packages:"
 msgstr "निम्न प्याकेजहरू स्थापना गर्नुहोस्"
 
-#: src/gtk/resolver.cc:1291 src/gtk/resolver.cc:1742
+#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "निम्न प्याकेजहरू हटाउनुहोस्:"
 
-#: src/gtk/resolver.cc:1304 src/gtk/resolver.cc:1754
+#: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
 #: src/solution_screen.cc:307
 msgid "Upgrade the following packages:"
 msgstr "निम्न प्याकेजहरू उन्नत गर्नुहोस:"
 
-#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1767
+#: src/gtk/resolver.cc:1356 src/gtk/resolver.cc:1806
 #: src/solution_screen.cc:319
 msgid "Downgrade the following packages:"
 msgstr "निम्न प्याकेजहरू अवनति गर्नुहोस्:"
 
-#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1780
+#: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "निम्न निर्भरताहरू विचाररहितमा छाड्नुहोस्:%n"
 
-#: src/gtk/resolver.cc:1405
+#: src/gtk/resolver.cc:1444
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "हटाउनुहोस् %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1412
+#: src/gtk/resolver.cc:1451
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "स्थापना गर्नुहोस् %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1420
+#: src/gtk/resolver.cc:1459
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "%F को स्थापना रद्द गर्नुहोस्"
 
-#: src/gtk/resolver.cc:1423
+#: src/gtk/resolver.cc:1462
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr " %Fको हटाउने रद्द गर्नुहोस्"
 
-#: src/gtk/resolver.cc:1426
+#: src/gtk/resolver.cc:1465
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "राख्नुहोस् %F at version %s (%s)"
 
-#: src/gtk/resolver.cc:1433
+#: src/gtk/resolver.cc:1472
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "उन्नति %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1442
+#: src/gtk/resolver.cc:1481
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "अवनति %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1499
+#: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
 msgid "<b>Remove</b> %s"
 msgstr "हटाउनुहोस्"
 
-#: src/gtk/resolver.cc:1499
+#: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
 msgid "<b>remove</b> %s"
 msgstr "हटाउनुहोस्"
 
-#: src/gtk/resolver.cc:1507
+#: src/gtk/resolver.cc:1546
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "राख्नुहोस् %F at version %s (%s)"
 
-#: src/gtk/resolver.cc:1507
+#: src/gtk/resolver.cc:1546
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "राख्नुहोस् %F at version %s (%s)"
 
-#: src/gtk/resolver.cc:1516
+#: src/gtk/resolver.cc:1555
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "स्थापना गर्नुहोस् %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1516
+#: src/gtk/resolver.cc:1555
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "स्थापना गर्नुहोस् %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1525
+#: src/gtk/resolver.cc:1564
 #, fuzzy, c-format
 #| msgid "libsigc++ version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "libsigc++ version: %s\n"
 
-#: src/gtk/resolver.cc:1525
+#: src/gtk/resolver.cc:1564
 #, fuzzy, c-format
 #| msgid "libsigc++ version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "libsigc++ version: %s\n"
 
-#: src/gtk/resolver.cc:1534
+#: src/gtk/resolver.cc:1573
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s संस्करणहरू"
 
-#: src/gtk/resolver.cc:1534
+#: src/gtk/resolver.cc:1573
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s संस्करणहरू"
 
-#: src/gtk/resolver.cc:1547
+#: src/gtk/resolver.cc:1586
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1547
+#: src/gtk/resolver.cc:1586
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1615
+#: src/gtk/resolver.cc:1654
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4800,7 +4800,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d स्थापना गर्नुहोस्"
 msgstr[1] "%d स्थापना गर्छ"
 
-#: src/gtk/resolver.cc:1620
+#: src/gtk/resolver.cc:1659
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4809,7 +4809,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d हटाइएको"
 msgstr[1] "%d हटाउने कामहरू"
 
-#: src/gtk/resolver.cc:1626
+#: src/gtk/resolver.cc:1665
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4818,7 +4818,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d राख्नुहोस्"
 msgstr[1] "%d राख्छ"
 
-#: src/gtk/resolver.cc:1632
+#: src/gtk/resolver.cc:1671
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4827,7 +4827,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d स्तरवृद्धि गर्नुहोस्"
 msgstr[1] "%d स्तरवृद्धि गर्छ"
 
-#: src/gtk/resolver.cc:1638
+#: src/gtk/resolver.cc:1677
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -4836,7 +4836,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d स्तरकम गर्नुहोस्"
 msgstr[1] "%d स्तरकम गर्छ"
 
-#: src/gtk/resolver.cc:1644
+#: src/gtk/resolver.cc:1683
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -4844,40 +4844,40 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "सिफारिशहरू लेखा जाँच्नुहोस्"
 msgstr[1] "सिफारिशहरू लेखा जाँच्नुहोस्"
 
-#: src/gtk/resolver.cc:1936
+#: src/gtk/resolver.cc:1975
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "बढि समाधानहरू छैन ।"
 
-#: src/gtk/resolver.cc:1943
+#: src/gtk/resolver.cc:1982
 #, fuzzy
 #| msgid "^Dependency handling"
 msgid "No dependency solution was found."
 msgstr "^निर्भरता ह्यान्डलिङ्"
 
-#: src/gtk/resolver.cc:1944
+#: src/gtk/resolver.cc:1983
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "बढि समाधानहरू छैन ।"
 
-#: src/gtk/resolver.cc:1955
+#: src/gtk/resolver.cc:1994
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:1956
+#: src/gtk/resolver.cc:1995
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "बढि समाधानहरू छैन ।"
 
-#: src/gtk/resolver.cc:1987
+#: src/gtk/resolver.cc:2026
 #, c-format
 msgid "Solution %s of %s (tier %s)."
 msgstr ""
 
-#: src/gtk/tab.cc:64
+#: src/gtk/tab.cc:68
 #, fuzzy
 #| msgid "[Downloaded]"
 msgid "Download"
