@@ -1,3 +1,51 @@
+[4/26/2009]
+Version 0.5.2.1                             "Albatross!"
+
+- Crashes and serious errors:
+
+  + Don't crash when tabs are closed from the menu or using Ctrl-W.
+
+- Internal changes:
+
+  + [gtk] Always use trampolines (via the main loop's idle handler) to
+          delete tabs, to hopefully avoid bad interactions when a tab
+          is closed as a side effect of some other action.
+
+- Cosmetic and UI bugs:
+
+  + [gtk] Eliminated some warnings that were caused by modifying a
+          tree model while iterating over its selection list.
+
+  + [curses] Work around some buggy terminals so that the progress bar
+             doesn't get truncated or corrupted. (Closes: #455220)
+
+  + [cmdline] Change the "last-package" summary mode to
+              "first-package".  aptitude prints the package that's
+              selected by this option at the beginning of a chain, so
+              it seems counterintuitive to me to call it the "last"
+              package.
+
+  + [cmdline] Renamed the configuration option
+              "Aptitude::Why-Display-Mode" to
+              "Aptitude::Show-Summary", to match the command-line flag
+              that it corresponds to (--show-summary).
+
+  + [cmdline] Removed a stray space in the output of "aptitude why".
+
+- Documentation:
+
+  + [doc] Document --show-summary and Aptitude::CmdLine::Show-Summary.
+
+  + [doc] Use rsvg instead of Inkscape to convert svg diagrams to png
+          files for the time being.  Also cropped rsvg to the drawing
+          boundaries.
+
+  + [doc] Add search-tier-diagram.svg to the distributed .tar.gz file.
+
+- Translation updates:
+
+  + French
+
 [4/22/2009]
 Version 0.5.2                               "Ramparts of the Dawn"
 
