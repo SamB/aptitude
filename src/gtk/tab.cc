@@ -28,6 +28,7 @@
 
 #include <gtk/gui.h>
 #include <gtk/notify.h>
+#include <gtk/util/property.h>
 
 #include <iostream>
 
@@ -40,7 +41,7 @@ namespace gui
     /** \brief The named property we use to attach a tab pointer to
      *  its main widget for inspection or deletion.
      */
-    Glib::Quark tab_property("aptitude-tab-manager-tab-object");
+    property<Tab *> tab_property("aptitude-tab-manager-tab-object");
   }
 
   Tab::Tab(TabType _type, const Glib::ustring &_label,
@@ -86,7 +87,7 @@ namespace gui
     // Maybe we should create a close() method on the Tab so it can clean itself up or make a destructor.
     label_button->signal_clicked().connect(close_clicked.make_slot());
 
-    get_widget()->set_data(tab_property, this);
+    tab_property.set_on(get_widget(), this);
 
     if (_label != "")
     {
@@ -126,7 +127,7 @@ namespace gui
     for(int i = 0; i < get_n_pages(); ++i)
       {
 	Gtk::Widget *page = get_nth_page(i);
-	Tab *tab = (Tab*)page->get_data(tab_property);
+	Tab *tab = tab_property.get_from(page);
 
 	if(tab != NULL && tab->get_type() == type)
 	  ++count;
@@ -174,7 +175,7 @@ namespace gui
   int TabsManager::append_page(Tab &tab)
   {
     {
-      Tab *claimed_tab = (Tab*)tab.get_widget()->get_data(tab_property);
+      Tab *claimed_tab = tab_property.get_from(tab.get_widget());
       LOG_DEBUG(Loggers::getAptitudeGtkTabs(),
 		"Appending page: tab object " << (&tab)
 		<< ", tab property " << (&claimed_tab)
@@ -230,7 +231,7 @@ namespace gui
     Gtk::Widget *current = get_nth_page(get_current_page());
     if(current != NULL)
     {
-      Tab * tab = (Tab*)current->get_data(tab_property);
+      Tab * tab = tab_property.get_from(current);
       if(tab != NULL)
 	{
 	  if(tab->get_autodestroy())
@@ -266,7 +267,7 @@ namespace gui
 	      << ", widget " << widget);
     if(widget != NULL)
       {
-	Tab *tab = (Tab*)widget->get_data(tab_property);
+	Tab *tab = tab_property.get_from(widget);
 
 	LOG_DEBUG(Loggers::getAptitudeGtkTabs(),
 		  "The tab " << tab << " has been closed.");
@@ -286,7 +287,7 @@ namespace gui
   {
     Gtk::Widget *current = get_nth_page(get_current_page());
     if(current != NULL)
-      return (Tab *)current->get_data(tab_property);
+      return tab_property.get_from(current);
     else
       return NULL;
   }
@@ -309,7 +310,7 @@ namespace gui
     Gtk::Widget *current_widget = get_nth_page(previous_page);
     if (current_widget != NULL)
     {
-      Tab *current = (Tab *)current_widget->get_data(tab_property);
+      Tab *current = tab_property.get_from(current_widget);
       if(current != NULL)
         current->set_active(false);
     }
@@ -321,7 +322,7 @@ namespace gui
     Widget *next = get_nth_page(page_idx);
     if(next != NULL)
       {
-	tab = (Tab *)next->get_data(tab_property);
+	tab = tab_property.get_from(next);
 	package_menu_actions_changed_connection =
 	  tab->package_menu_actions_changed.connect(package_menu_actions_changed.make_slot());
 	undo_available_changed_connection =
