@@ -230,24 +230,33 @@ namespace gui
     Gtk::Widget *current = get_nth_page(get_current_page());
     if(current != NULL)
     {
-      Tab * tab = (Tab*)current;
-      if(tab->get_autodestroy())
+      Tab * tab = (Tab*)current->get_data(tab_property);
+      if(tab != NULL)
 	{
-	  LOG_TRACE(Loggers::getAptitudeGtkTabs(),
-		    "Closing the current tab: widget pointer is "
-		    << current << ", tab pointer is "
-		    << tab);
-	  remove_page(*tab);
+	  if(tab->get_autodestroy())
+	    {
+	      LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+			"Closing the current tab: widget pointer is "
+			<< current << ", tab pointer is "
+			<< tab);
+	      remove_page(*tab);
+	    }
+	  else
+	    {
+	      LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+			"Hiding the current tab: widget pointer is "
+			<< current << ", tab pointer is "
+			<< tab);
+	      current->hide();
+	    }
 	}
       else
-	{
-	  LOG_TRACE(Loggers::getAptitudeGtkTabs(),
-		    "Hiding the current tab: widget pointer is "
-		    << current << ", tab pointer is "
-		    << tab);
-	  current->hide();
-	}
+	LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		  "Not closing the current page: it has no associated tab object.");
     }
+    else
+      LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		"Not closing the current page: it is NULL.");
   }
 
   void TabsManager::page_removed(Gtk::Widget *widget, int page)
