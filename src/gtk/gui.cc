@@ -1487,8 +1487,12 @@ namespace gui
     refGlade->get_widget("menu_tab_next", pMenuTabNext);
     pMenuTabNext->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::next_page));
 
+    // Tab closes are handled via post_event to ensure that tabs
+    // aren't destroyed while we're still running methods on them.
     refGlade->get_widget("menu_tab_close", pMenuTabClose);
-    pMenuTabClose->signal_activate().connect(sigc::mem_fun(pNotebook, &TabsManager::maybe_close_current_page));
+    sigc::slot<void> maybe_close_slot(sigc::mem_fun(pNotebook, &TabsManager::maybe_close_current_page));
+    pMenuTabClose->signal_activate().connect(sigc::bind(sigc::ptr_fun(&post_event),
+							make_safe_slot(maybe_close_slot)));
 
     refGlade->get_widget("menu_undo_undo", menu_undo_undo);
     menu_undo_undo->signal_activate().connect(sigc::mem_fun(this, &AptitudeWindow::do_undo));
