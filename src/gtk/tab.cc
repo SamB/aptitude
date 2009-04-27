@@ -20,6 +20,7 @@
 
 #include "tab.h"
 #include "aptitude.h"
+#include "loggers.h"
 
 #undef OK
 #include <gtkmm.h>
@@ -29,6 +30,8 @@
 #include <gtk/notify.h>
 
 #include <iostream>
+
+using aptitude::Loggers;
 
 namespace gui
 {
@@ -170,6 +173,14 @@ namespace gui
 
   int TabsManager::append_page(Tab &tab)
   {
+    {
+      Tab *claimed_tab = (Tab*)tab.get_widget()->get_data(tab_property);
+      LOG_DEBUG(Loggers::getAptitudeGtkTabs(),
+		"Appending page: tab object " << (&tab)
+		<< ", tab property " << (&claimed_tab)
+		<< ", tab widget " << tab.get_widget());
+    }
+
     int rval = 0;
     switch (tab.get_type())
       {
@@ -194,13 +205,23 @@ namespace gui
   void TabsManager::maybe_close_page(Tab &tab)
   {
     if(tab.get_autodestroy())
-      remove_page(tab);
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		  "Removing the autodestroy page " << (&tab));
+	remove_page(tab);
+      }
     else
-      tab.get_widget()->hide();
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		  "Hiding the non-autodestroy page " << (&tab));
+	tab.get_widget()->hide();
+      }
   }
 
   void TabsManager::remove_page(Tab &tab)
   {
+    LOG_DEBUG(Loggers::getAptitudeGtkTabs(),
+	      "Removing the tab " << (&tab));
     Gtk::Notebook::remove_page(*(tab.get_widget()));
   }
 
@@ -211,20 +232,40 @@ namespace gui
     {
       Tab * tab = (Tab*)current;
       if(tab->get_autodestroy())
-        remove_page(*tab);
+	{
+	  LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		    "Closing the current tab: widget pointer is "
+		    << current << ", tab pointer is "
+		    << tab);
+	  remove_page(*tab);
+	}
       else
-        current->hide();
+	{
+	  LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		    "Hiding the current tab: widget pointer is "
+		    << current << ", tab pointer is "
+		    << tab);
+	  current->hide();
+	}
     }
   }
 
   void TabsManager::page_removed(Gtk::Widget *widget, int page)
   {
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+	      "Tab closed: page number " << page
+	      << ", widget " << widget);
     if(widget != NULL)
       {
 	Tab *tab = (Tab*)widget->get_data(tab_property);
 
+	LOG_DEBUG(Loggers::getAptitudeGtkTabs(),
+		  "The tab " << tab << " has been closed.");
 	if(tab != NULL)
 	  tab->closed();
+
+	LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+		  "Deleting the tab " << tab);
 
 	delete tab;
       }
@@ -246,9 +287,15 @@ namespace gui
     const int previous_page = last_active_page;
     last_active_page = page_idx;
 
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+	      "Switching from tab " << previous_page
+	      << " to tab " << page_idx);
+
     package_menu_actions_changed_connection.disconnect();
     undo_available_changed_connection.disconnect();
     edit_columns_available_changed_connection.disconnect();
+
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(), "Making the old tab inactive.");
 
     Gtk::Widget *current_widget = get_nth_page(previous_page);
     if (current_widget != NULL)
@@ -257,6 +304,9 @@ namespace gui
       if(current != NULL)
         current->set_active(false);
     }
+
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(),
+	      "Setting up connections for the new tab.");
 
     Tab *tab = NULL;
     Widget *next = get_nth_page(page_idx);
@@ -271,9 +321,13 @@ namespace gui
 	  tab->edit_columns_available_changed.connect(edit_columns_available_changed.make_slot());
       }
 
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(), "Making the new tab active.");
+
     if(tab != NULL)
       tab->set_active(true);
     tab_status_button_changed(tab);
+
+    LOG_TRACE(Loggers::getAptitudeGtkTabs(), "Updating menu sensitivity.");
 
     package_menu_actions_changed();
     undo_available_changed();
