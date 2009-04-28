@@ -1541,13 +1541,20 @@ namespace gui
 		    }
 		    break;
 		  case action_keep:
-		    {
-		      const char * const
-			tmpl(first ? _("<b>Keep</b> %s at version %s") : _("<b>keep</b> %s at version %s"));
-		      list_text += ssprintf(tmpl,
-					    Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
-					    Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
-		    }
+		    if(!ver.get_ver().end())
+		      {
+			const char * const
+			  tmpl(first ? _("<b>Keep</b> %s at version %s") : _("<b>keep</b> %s at version %s"));
+			list_text += ssprintf(tmpl,
+					      Glib::Markup::escape_text(ver.get_pkg().Name()).c_str(),
+					      Glib::Markup::escape_text(ver.get_ver().VerStr()).c_str());
+		      }
+		    else
+		      {
+			const char * const
+			  tmpl(first ? _("<b>Cancel</b> the installation of %s") : _("<b>cancel</b> the installation of %s"));
+			list_text += ssprintf(tmpl, Glib::Markup::escape_text(ver.get_pkg().Name()).c_str());
+		      }
 		    break;
 		  case action_install:
 		    {
