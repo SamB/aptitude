@@ -721,6 +721,9 @@ namespace gui
 
   void ResolverTab::setup_resolver_connections()
   {
+    if(get_resolver() == NULL)
+      return;
+
     resolver_state_changed_connection =
       get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						       false));
