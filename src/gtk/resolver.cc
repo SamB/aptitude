@@ -175,6 +175,46 @@ namespace gui
       do_start_first_solution_calculation(false, resman);
     }
 
+    std::string render_choice_description_markup(const choice &c)
+    {
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    aptitude_resolver_version ver(c.get_ver());
+	    pkgCache::VerIterator descver;
+	    if(!ver.get_ver().end())
+	      descver = ver.get_ver();
+	    else
+	      {
+		aptitude_resolver_version curr_ver(ver.get_package().current_version());
+		if(!curr_ver.get_ver().end())
+		  descver = curr_ver.get_ver();
+		else if(!ver.get_pkg().CurrentVer().end())
+		  descver = ver.get_pkg().CurrentVer();
+		else if(!ver.get_pkg().VersionList().end())
+		  descver = ver.get_pkg().VersionList();
+		else
+		  descver = pkgCache::VerIterator();
+	      }
+
+	    // Note that virtual packages shouldn't happen!  This is
+	    // just a safeguard.
+	    using cwidget::util::transcode;
+	    std::string description_markup =
+	      descver.end()
+	      ? ssprintf("<i>%s</i>",
+			 Glib::Markup::escape_text(_("Virtual package")).c_str()).c_str()
+	      : Glib::Markup::escape_text(transcode(get_short_description(descver, apt_package_records))).c_str();
+
+	    return description_markup;
+	  }
+
+	default:
+	  return "";
+	}
+    }
+
     /** \brief Render the given choice in "short" form, not including
      *  a description of the choice.
      *
@@ -1219,7 +1259,9 @@ namespace gui
     Gtk::TreeModel::iterator iter = store->append(parent_row.children());
     Gtk::TreeModel::Row row(*iter);
 
-    row[view->get_columns().ActionMarkup] = render_choice_brief_markup(c);
+    row[view->get_columns().ActionMarkup] =
+      "<b>" + render_choice_brief_markup(c) + "</b>\n<small>" +
+      render_choice_description_markup(c) + "</small>";
     row[view->get_columns().Choice] = c;
   }
 
@@ -1313,7 +1355,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Remove the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 
@@ -1327,7 +1369,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Install the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = install_packages.begin();
@@ -1340,7 +1382,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Keep the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = keep_packages.begin();
@@ -1353,7 +1395,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Upgrade the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = upgrade_packages.begin();
@@ -1366,7 +1408,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Downgrade the following packages:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(vector<choice>::const_iterator i = downgrade_packages.begin();
@@ -1379,7 +1421,7 @@ namespace gui
 	    Gtk::TreeModel::iterator parent_iter = store->append();
 	    Gtk::TreeModel::Row parent_row = *parent_iter;
 	    parent_row[solution_view->get_columns().ActionMarkup] =
-	      ssprintf("<b>%s</b>",
+	      ssprintf("<big><b>%s</b></big>",
 		       Glib::Markup::escape_text(_("Leave the following dependencies unresolved:")).c_str());
 	    parent_row[solution_view->get_columns().BgSet] = false;
 	    for(std::vector<choice>::const_iterator i = unresolved.begin();
@@ -1439,7 +1481,7 @@ namespace gui
 		  Gtk::TreeModel::Row parent_row = *parent_iter;
 
 		  parent_row[solution_view->get_columns().ActionMarkup] =
-		    cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8");
+		    "<big><b>" + cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8") + "</b></big>";
 		  parent_row[solution_view->get_columns().BgSet] = false;
 
 		  Gtk::TreeModel::iterator iter = store->append(parent_row.children());
@@ -1505,7 +1547,9 @@ namespace gui
 		      break;
 		    }
 
-		  row[solution_view->get_columns().ActionMarkup] = markup;
+		  std::string description_markup(render_choice_description_markup(*it));
+		  row[solution_view->get_columns().ActionMarkup] =
+		    "<b>" + markup + "</b>\n<small>" + description_markup + "</small>";
 		}
 
 		break;
