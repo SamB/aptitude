@@ -2168,6 +2168,7 @@ namespace gui
       }
 
     resolver_fixing_upgrade_message->show();
+    setup_resolver_connections();
     update(true);
   }
 
