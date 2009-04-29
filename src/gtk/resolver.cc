@@ -1481,7 +1481,9 @@ namespace gui
 		  Gtk::TreeModel::Row parent_row = *parent_iter;
 
 		  parent_row[solution_view->get_columns().ActionMarkup] =
-		    "<big><b>" + dep_text((*it).get_dep().get_dep()) + "</b></big>";
+		    "<big><b>" +
+		    Glib::Markup::escape_text(dep_text((*it).get_dep().get_dep())) +
+		    "</b></big>";
 		  parent_row[solution_view->get_columns().BgSet] = false;
 
 		  Gtk::TreeModel::iterator iter = store->append(parent_row.children());
