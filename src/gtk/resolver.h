@@ -276,7 +276,7 @@ namespace gui
 
       std::string archives_text(const pkgCache::VerIterator &ver);
       std::string dep_targets(const pkgCache::DepIterator &start) const;
-      std::wstring dep_text(const pkgCache::DepIterator &d) const;
+    std::string dep_text(const pkgCache::DepIterator &d) const;
     bool do_find_next_solution_enabled();
     bool do_find_next_solution_enabled_from_state(const resolver_manager::state &state);
     void do_find_next_solution();

@@ -1214,7 +1214,7 @@ namespace gui
     return rval;
   }
 
-  std::wstring ResolverTab::dep_text(const pkgCache::DepIterator &d) const
+  std::string ResolverTab::dep_text(const pkgCache::DepIterator &d) const
   {
     const char *name = const_cast<pkgCache::DepIterator &>(d).ParentPkg().Name();
 
@@ -1223,28 +1223,28 @@ namespace gui
     switch(d->Type)
       {
       case pkgCache::Dep::Depends:
-        return swsprintf(W_("%s depends upon %s").c_str(),
+        return swsprintf(_("%s depends upon %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::PreDepends:
-        return swsprintf(W_("%s pre-depends upon %s").c_str(),
+        return swsprintf(_("%s pre-depends upon %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::Suggests:
-        return swsprintf(W_("%s suggests %s").c_str(),
+        return swsprintf(_("%s suggests %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::Recommends:
-        return swsprintf(W_("%s recommends %s").c_str(),
+        return swsprintf(_("%s recommends %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::Conflicts:
-        return swsprintf(W_("%s conflicts with %s").c_str(),
+        return swsprintf(_("%s conflicts with %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::DpkgBreaks:
-        return swsprintf(W_("%s breaks %s").c_str(),
+        return swsprintf(_("%s breaks %s").c_str(),
                          name, targets.c_str());
       case pkgCache::Dep::Replaces:
-        return swsprintf(W_("%s replaces %s").c_str(),
+        return swsprintf(_("%s replaces %s").c_str(),
                                    name, targets.c_str());
       case pkgCache::Dep::Obsoletes:
-        return swsprintf(W_("%s obsoletes %s").c_str(),
+        return swsprintf(_("%s obsoletes %s").c_str(),
                                    name, targets.c_str());
       default:
         abort();
@@ -1481,7 +1481,7 @@ namespace gui
 		  Gtk::TreeModel::Row parent_row = *parent_iter;
 
 		  parent_row[solution_view->get_columns().ActionMarkup] =
-		    "<big><b>" + cwidget::util::transcode(dep_text((*it).get_dep().get_dep()), "UTF-8") + "</b></big>";
+		    "<big><b>" + dep_text((*it).get_dep().get_dep()) + "</b></big>";
 		  parent_row[solution_view->get_columns().BgSet] = false;
 
 		  Gtk::TreeModel::iterator iter = store->append(parent_row.children());
@@ -1649,8 +1649,7 @@ namespace gui
 	      {
 		const char * const
 		  tmpl(first ? _("Leave %s unresolved") : _("leave %s unresolved"));
-		const std::string dep_string =
-		  cwidget::util::transcode(dep_text(it->get_dep().get_dep()), "UTF-8");
+		const std::string dep_string = dep_text(it->get_dep().get_dep());
 		list_text += ssprintf(tmpl,
 				      Glib::Markup::escape_text(dep_string).c_str());
 	      }
