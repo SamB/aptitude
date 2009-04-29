@@ -1223,29 +1223,29 @@ namespace gui
     switch(d->Type)
       {
       case pkgCache::Dep::Depends:
-        return swsprintf(_("%s depends upon %s").c_str(),
-                         name, targets.c_str());
+        return ssprintf(_("%s depends upon %s"),
+			name, targets.c_str());
       case pkgCache::Dep::PreDepends:
-        return swsprintf(_("%s pre-depends upon %s").c_str(),
-                         name, targets.c_str());
+        return ssprintf(_("%s pre-depends upon %s"),
+			name, targets.c_str());
       case pkgCache::Dep::Suggests:
-        return swsprintf(_("%s suggests %s").c_str(),
-                         name, targets.c_str());
+        return ssprintf(_("%s suggests %s"),
+			name, targets.c_str());
       case pkgCache::Dep::Recommends:
-        return swsprintf(_("%s recommends %s").c_str(),
-                         name, targets.c_str());
+        return ssprintf(_("%s recommends %s"),
+			name, targets.c_str());
       case pkgCache::Dep::Conflicts:
-        return swsprintf(_("%s conflicts with %s").c_str(),
-                         name, targets.c_str());
+        return ssprintf(_("%s conflicts with %s"),
+			name, targets.c_str());
       case pkgCache::Dep::DpkgBreaks:
-        return swsprintf(_("%s breaks %s").c_str(),
+        return ssprintf(_("%s breaks %s"),
                          name, targets.c_str());
       case pkgCache::Dep::Replaces:
-        return swsprintf(_("%s replaces %s").c_str(),
-                                   name, targets.c_str());
+        return ssprintf(_("%s replaces %s"),
+			name, targets.c_str());
       case pkgCache::Dep::Obsoletes:
-        return swsprintf(_("%s obsoletes %s").c_str(),
-                                   name, targets.c_str());
+        return ssprintf(_("%s obsoletes %s"),
+			name, targets.c_str());
       default:
         abort();
       }
@@ -1649,7 +1649,8 @@ namespace gui
 	      {
 		const char * const
 		  tmpl(first ? _("Leave %s unresolved") : _("leave %s unresolved"));
-		const std::string dep_string = dep_text(it->get_dep().get_dep());
+		const std::string dep_string =
+		  cwidget::util::transcode(dep_text(it->get_dep().get_dep()), "UTF-8");
 		list_text += ssprintf(tmpl,
 				      Glib::Markup::escape_text(dep_string).c_str());
 	      }
