@@ -731,6 +731,10 @@ namespace gui
 
     LOG_TRACE(logger, "Setting up connections on the resolver manager " << get_resolver());
 
+    resolver_state_changed_connection.disconnect();
+    resolver_version_accept_reject_changed_connection.disconnect();
+    resolver_break_dep_accept_reject_changed_connection.disconnect();
+
     resolver_state_changed_connection =
       get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						       false));
