@@ -721,8 +721,15 @@ namespace gui
 
   void ResolverTab::setup_resolver_connections()
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+
     if(get_resolver() == NULL)
-      return;
+      {
+	LOG_TRACE(logger, "Not setting up resolver connections: the resolver is NULL.");
+	return;
+      }
+
+    LOG_TRACE(logger, "Setting up connections on the resolver manager " << get_resolver());
 
     resolver_state_changed_connection =
       get_resolver()->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
@@ -2129,6 +2136,9 @@ namespace gui
 
   void ResolverTab::set_fix_upgrade_resolver(resolver_manager *manager)
   {
+    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    LOG_TRACE(logger, "Setting the resolver manager to " << manager);
+
     resolver_state_changed_connection.disconnect();
 
     using_internal_resolver = true;
