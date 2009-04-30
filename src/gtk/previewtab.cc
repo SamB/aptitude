@@ -34,6 +34,7 @@
 #include <gtk/packageinformation.h>
 #include <gtk/packagestab.h> // For PackageSearchEntry.
 #include <gtk/pkgview.h>
+#include <gtk/progress.h>
 #include <gtk/notify.h>
 
 namespace gui
@@ -109,12 +110,14 @@ namespace gui
 
   PreviewView::PreviewView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 			   const Glib::ustring &gladename,
-			   const Glib::ustring &limit)
+			   const Glib::ustring &limit,
+			   const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k)
     : PkgViewBase(sigc::ptr_fun(&Generator::create),
 		  refGlade,
 		  gladename,
 		  _("Preview"),
-		  limit)
+		  limit,
+		  build_progress_k)
   {
   }
 
@@ -136,7 +139,9 @@ namespace gui
     pSearchEntry->activated.connect(sigc::mem_fun(*this, &PreviewTab::limit_changed));
 
     using cwidget::util::ref_ptr;
-    pPkgView = ref_ptr<PreviewView>(new PreviewView(get_xml(), "main_packages_treeview"));
+    pPkgView = ref_ptr<PreviewView>(new PreviewView(get_xml(), "main_packages_treeview", "",
+						    sigc::bind(sigc::ptr_fun(&gtkEntryOpProgress::create),
+							       sigc::ref(*pLimitEntry))));
 
     pPkgView->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &PreviewTab::activated_package_handler));
 

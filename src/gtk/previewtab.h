@@ -66,7 +66,8 @@ namespace gui
 
     PreviewView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		const Glib::ustring &gladename,
-		const Glib::ustring &limit = "");
+		const Glib::ustring &limit,
+		const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k);
   };
 
   class PreviewTab : public Tab

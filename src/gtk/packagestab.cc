@@ -39,6 +39,7 @@
 #include <gtk/gui.h>
 #include <gtk/packageinformation.h>
 #include <gtk/pkgview.h>
+#include <gtk/progress.h>
 #include <gtk/util/property.h>
 
 #include <cwidget/generic/util/ssprintf.h>
@@ -334,7 +335,9 @@ namespace gui
 
     using cwidget::util::ref_ptr;
     ref_ptr<PkgView> pPkgView(new PkgView(get_xml(), "main_packages_treeview",
-					  get_label(), ""));
+					  get_label(), "",
+					  sigc::bind(sigc::ptr_fun(&gtkEntryOpProgress::create),
+						     sigc::ref(*pLimitEntry))));
 
     // TODO: We prevent the tab from closing itself, but we should rather make closing
     //       the tab gracefully stop the generator from doing whatever it's doing

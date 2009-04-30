@@ -747,7 +747,8 @@ namespace gui
     package_search_entry->activated.connect(sigc::hide(sigc::mem_fun(*this, &DashboardTab::do_search)));
 
     upgrades_pkg_view = cwidget::util::ref_ptr<PkgView>(new PkgView(get_xml(), "dashboard_upgrades_treeview",
-								    _("Dashboard"), ""));
+								    _("Dashboard"), "",
+								    sigc::ptr_fun(&guiOpProgress::create)));
     upgrades_pkg_view->get_treeview()->signal_selection.connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
     upgrades_pkg_view->get_treeview()->signal_cursor_changed().connect(sigc::mem_fun(*this, &DashboardTab::activated_upgrade_package_handler));
 

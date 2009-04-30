@@ -27,6 +27,7 @@
 #include "gui.h"
 #include "packagestab.h"
 #include "pkgview.h"
+#include "progress.h"
 
 #include <cmdline/cmdline_why.h>
 
@@ -74,9 +75,13 @@ namespace gui
 
     using cwidget::util::ref_ptr;
     ref_ptr<PkgView> start_package_view(new PkgView(get_xml(), "dependency_path_start_packages_treeview",
-						    _("Find dependency chains: start"), ""));
+						    _("Find dependency chains: start"), "",
+						    sigc::bind(sigc::ptr_fun(&gtkEntryOpProgress::create),
+							       sigc::ref(*start_package_entry))));
     ref_ptr<PkgView> end_package_view(new PkgView(get_xml(), "dependency_path_end_packages_treeview",
-						  _("Find dependency chains: end"), ""));
+						  _("Find dependency chains: end"), "",
+						  sigc::bind(sigc::ptr_fun(&gtkEntryOpProgress::create),
+							     sigc::ref(*end_package_entry))));
     results_view = ref_ptr<EntityView>(new EntityView(get_xml(), "dependency_path_results_treeview",
 						      _("Find dependency chains: results")));
 

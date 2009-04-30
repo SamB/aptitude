@@ -369,8 +369,10 @@ namespace gui
 			   const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 			   const Glib::ustring &gladename,
 			   const Glib::ustring &parent_title,
-			   const Glib::ustring &_limit)
-    : EntityView(refGlade, gladename, parent_title)
+			   const Glib::ustring &_limit,
+			   const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k)
+    : EntityView(refGlade, gladename, parent_title),
+      background_builder(build_progress_k)
   {
     generatorK = _generatorK;
     limit = aptitude::matching::parse(_limit);
@@ -574,8 +576,9 @@ namespace gui
     post_event(bound_k);
   }
 
-  PkgViewBase::background_build_store::background_build_store()
-    : builder(NULL)
+  PkgViewBase::background_build_store::background_build_store(const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &_builder_progress_k)
+    : builder(NULL),
+      builder_progress_k(_builder_progress_k)
   {
   }
 
@@ -605,7 +608,7 @@ namespace gui
     pulse_connection = Glib::signal_timeout().connect(sigc::mem_fun(*this, &background_build_store::pulse_progress),
 						      200);
 
-    builder_progress = guiOpProgress::create();
+    builder_progress = builder_progress_k();
     builder_cancel = cancel_flag::create();
     sigc::slot<void, Glib::RefPtr<Gtk::TreeModel> > k =
       sigc::mem_fun(*this, &background_build_store::rebuild_store_finished);
@@ -804,12 +807,14 @@ namespace gui
   PkgView::PkgView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		   const Glib::ustring &gladename,
 		   const Glib::ustring &parent_title,
-		   const Glib::ustring &limit)
+		   const Glib::ustring &limit,
+		   const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k)
     : PkgViewBase(sigc::ptr_fun(&Generator::create),
 		  refGlade,
 		  gladename,
 		  parent_title,
-		  limit)
+		  limit,
+		  build_progress_k)
   {
   }
 }

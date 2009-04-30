@@ -221,6 +221,11 @@ namespace gui
        */
       void thread_stopped(cwidget::threads::thread *t);
 
+      /** \brief Tells us how to create a new progres bar for
+       *  displaying the build progress.
+       */
+      sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > builder_progress_k;
+
       /** \brief Holds a reference to the progress bar of the current
        *  builder, if any.
        *
@@ -245,7 +250,7 @@ namespace gui
       void rebuild_store_finished(Glib::RefPtr<Gtk::TreeModel> model);
 
     public:
-      background_build_store();
+      background_build_store(const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &_builder_progress_k);
       ~background_build_store();
 
       /** \brief Start rebuilding the store.
@@ -305,7 +310,8 @@ namespace gui
 		const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 		const Glib::ustring &gladename,
 		const Glib::ustring &parent_title,
-		const Glib::ustring &limit);
+		const Glib::ustring &limit,
+		const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k);
 
     virtual ~PkgViewBase();
 
@@ -345,7 +351,8 @@ namespace gui
     PkgView(const Glib::RefPtr<Gnome::Glade::Xml> &refGlade,
 	    const Glib::ustring &gladename,
 	    const Glib::ustring &parent_title,
-	    const Glib::ustring &limit);
+	    const Glib::ustring &limit,
+	    const sigc::slot<cwidget::util::ref_ptr<refcounted_progress> > &build_progress_k);
   };
 }
 
