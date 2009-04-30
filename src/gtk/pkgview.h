@@ -44,10 +44,10 @@ namespace cwidget
   }
 }
 
+class refcounted_progress;
+
 namespace gui
 {
-  class guiOpProgress;
-
   class PkgEntity : public Entity
   {
     private:
@@ -226,7 +226,7 @@ namespace gui
        *
        *  This is set and cleared in the same cases as builder.
        */
-      cwidget::util::ref_ptr<guiOpProgress> builder_progress;
+      cwidget::util::ref_ptr<refcounted_progress> builder_progress;
 
       /** \brief The connection that pulses the main progress bar, if
        *  any.
