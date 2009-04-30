@@ -1,6 +1,6 @@
 // progress.cc
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,8 +24,7 @@
 
 namespace gui
 {
-
-  double guiOpProgress::sanitizePercentFraction(float percent)
+  static double sanitizePercentFraction(float percent)
   {
     double rval = (double)percent / 100;
     if (rval < 0)
@@ -64,6 +63,38 @@ namespace gui
 	pMainWindow->get_progress_bar()->set_text("");
 	pMainWindow->get_progress_bar()->set_fraction(0);
 	pMainWindow->get_progress_bar()->hide();
+      }
+  }
+
+
+  gtkEntryOpProgress::gtkEntryOpProgress(Gtk::Entry *_entry)
+    : entry(_entry), destroyed(false)
+  {
+  }
+
+  gtkEntryOpProgress::~gtkEntryOpProgress()
+  {
+    destroy();
+  }
+
+  void gtkEntryOpProgress::Update()
+  {
+    if(!destroyed)
+      {
+	if(CheckChange(0.1))
+	  {
+	    entry->set_progress_fraction(sanitizePercentFraction(Percent));
+	    gtk_update();
+	  }
+      }
+  }
+
+  void gtkEntryOpProgress::destroy()
+  {
+    if(!destroyed)
+      {
+	destroyed = true;
+	entry->set_progress_fraction(0);
       }
   }
 }

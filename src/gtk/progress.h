@@ -2,7 +2,7 @@
 
 // progress.h
 //
-//  Copyright 1999-2008 Daniel Burrows
+//  Copyright 1999-2009 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -27,14 +27,16 @@
 
 #include "../ui_download_manager.h" // For refcounted_progress.
 
+namespace Gtk
+{
+  class Entry;
+}
+
 namespace gui
 {
-
   class guiOpProgress : public refcounted_progress
   { // must derive to read protected member..
   private:
-    double sanitizePercentFraction(float percent);
-
     bool destroyed;
 
     guiOpProgress();
@@ -49,6 +51,25 @@ namespace gui
     void Update();
 
     // Clear out the progress bar.
+    void destroy();
+  };
+
+  class gtkEntryOpProgress : public refcounted_progress
+  {
+    Gtk::Entry *entry;
+    bool destroyed;
+
+    gtkEntryOpProgress(Gtk::Entry *_entry);
+
+  public:
+    ~gtkEntryOpProgress();
+
+    static cwidget::util::ref_ptr<gtkEntryOpProgress> create(Gtk::Entry *entry)
+    {
+      return new gtkEntryOpProgress(entry);
+    }
+
+    void Update();
     void destroy();
   };
 }
