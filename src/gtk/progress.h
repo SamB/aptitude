@@ -56,15 +56,17 @@ namespace gui
 
   class gtkEntryOpProgress : public refcounted_progress
   {
-    Gtk::Entry *entry;
+    // A slot is used to ensure that we don't have any problems if the
+    // entry is destroyed.
+    sigc::slot<void, double> set_progress_fraction;
     bool destroyed;
 
-    gtkEntryOpProgress(Gtk::Entry *_entry);
+    gtkEntryOpProgress(Gtk::Entry &entry);
 
   public:
     ~gtkEntryOpProgress();
 
-    static cwidget::util::ref_ptr<gtkEntryOpProgress> create(Gtk::Entry *entry)
+    static cwidget::util::ref_ptr<gtkEntryOpProgress> create(Gtk::Entry &entry)
     {
       return new gtkEntryOpProgress(entry);
     }

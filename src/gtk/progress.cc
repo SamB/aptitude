@@ -67,8 +67,9 @@ namespace gui
   }
 
 
-  gtkEntryOpProgress::gtkEntryOpProgress(Gtk::Entry *_entry)
-    : entry(_entry), destroyed(false)
+  gtkEntryOpProgress::gtkEntryOpProgress(Gtk::Entry &entry)
+    : set_progress_fraction(sigc::mem_fun(entry, &Gtk::Entry::set_progress_fraction)),
+      destroyed(false)
   {
   }
 
@@ -83,7 +84,7 @@ namespace gui
       {
 	if(CheckChange(0.1))
 	  {
-	    entry->set_progress_fraction(sanitizePercentFraction(Percent));
+	    set_progress_fraction(sanitizePercentFraction(Percent));
 	    gtk_update();
 	  }
       }
@@ -94,7 +95,7 @@ namespace gui
     if(!destroyed)
       {
 	destroyed = true;
-	entry->set_progress_fraction(0);
+	set_progress_fraction(0);
       }
   }
 }
