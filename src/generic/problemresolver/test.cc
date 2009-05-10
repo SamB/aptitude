@@ -52,6 +52,11 @@ log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearch()
   return log4cxx::Logger::getLogger("aptitude.resolver.search");
 }
 
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchGraph()
+{
+  return log4cxx::Logger::getLogger("aptitude.resolver.search.graph");
+}
+
 log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchTiers()
 {
   return log4cxx::Logger::getLogger("aptitude.resolver.search.tiers");

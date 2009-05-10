@@ -815,9 +815,9 @@ aptitude_universe::tier aptitude_universe::parse_tier(const std::string &s)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
   if(s == "conflict")
-    return aptitude_resolver::conflict_tier;
+    return aptitude_resolver::tier_limits::conflict_tier;
   else if(s == "minimum" || s == "")
-    return aptitude_resolver::minimum_tier;
+    return aptitude_resolver::tier_limits::minimum_tier;
   else
     {
       char *endptr;
@@ -827,7 +827,7 @@ aptitude_universe::tier aptitude_universe::parse_tier(const std::string &s)
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
 	  _error->Error(_(msg.c_str()));
-	  return aptitude_resolver::minimum_tier;
+	  return aptitude_resolver::tier_limits::minimum_tier;
 	}
       else
 	{
@@ -921,11 +921,11 @@ void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string>
 std::string aptitude_universe::get_tier_name(const tier &t)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
-  if(t >= aptitude_resolver::conflict_tier)
+  if(t >= aptitude_resolver::tier_limits::conflict_tier)
     return "Unsolvable search nodes"; // Should never happen in a returned solution.
-  else if(t >= aptitude_resolver::already_generated_tier)
+  else if(t >= aptitude_resolver::tier_limits::already_generated_tier)
     return "Already generated solutions"; // Should never happen in a returned solution.
-  else if(t >= aptitude_resolver::defer_tier)
+  else if(t >= aptitude_resolver::tier_limits::defer_tier)
     return "Deferred search nodes"; // Should never happen in a returned solution.
   else
     {

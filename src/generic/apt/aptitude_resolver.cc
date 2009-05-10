@@ -699,9 +699,9 @@ aptitude_resolver::aptitude_resolver(int step_score,
       if(discardNullSolution)
 	{
 	  LOG_DEBUG(loggerScores, "Rejecting the solution that reverts all the user's actions (" << keep_all_solution << ")");
-	  add_promotion(keep_all_solution, conflict_tier);
+	  add_promotion(keep_all_solution, tier_limits::conflict_tier);
 	}
-      else if(minimum_tier < keep_all_tier)
+      else if(tier_limits::minimum_tier < keep_all_tier)
 	{
 	  LOG_DEBUG(loggerTiers, "Promoting the solution that reverts all the user's actions (" << keep_all_solution << ") to tier " << keep_all_tier);
 	  add_promotion(keep_all_solution, keep_all_tier);

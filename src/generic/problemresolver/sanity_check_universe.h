@@ -366,7 +366,7 @@ void sanity_check_universe(const PackageUniverse &universe)
 						   universe,
 						   solution_weights<PackageUniverse>(0, 0, 0, 0, 0, initial_state),
 						   initial_state,
-						   generic_problem_resolver<PackageUniverse>::minimum_tier);
+						   generic_tier_limits<PackageUniverse>::minimum_tier);
 
   for(broken_dep_iterator bdIt = universe.broken_begin();
       !bdIt.end(); ++bdIt)

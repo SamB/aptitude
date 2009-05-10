@@ -1592,6 +1592,19 @@ public:
       }
   }
 
+  /** \brief Throw away all the promotions in this set. */
+  void clear()
+  {
+    entries.clear();
+    break_soft_dep_index.clear();
+    num_promotions = 0;
+    for(int i = 0; i < num_versions; ++i)
+      {
+	delete install_version_index[i];
+	install_version_index[i] = NULL;
+      }
+  }
+
   generic_promotion_set(const PackageUniverse &u)
     : logger(aptitude::Loggers::getAptitudeResolverSearchTiers()),
       num_promotions(0),

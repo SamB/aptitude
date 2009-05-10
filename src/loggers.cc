@@ -123,6 +123,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.thread");
   }
 
+  LoggerPtr Loggers::getAptitudeResolverSearchGraph()
+  {
+    return Logger::getLogger("aptitude.resolver.search.graph");
+  }
+
   LoggerPtr Loggers::getAptitudeResolverSearchTiers()
   {
     return Logger::getLogger("aptitude.resolver.search.tiers");

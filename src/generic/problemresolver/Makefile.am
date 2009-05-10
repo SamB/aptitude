@@ -9,4 +9,5 @@ test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a
 test_SOURCES=test.cc choice.h choice_set.h dump_universe.h \
 	dummy_universe.cc dummy_universe.h \
 	exceptions.h problemresolver.h \
-	promotion_set.h sanity_check_universe.h solution.h
+	promotion_set.h sanity_check_universe.h \
+	search_graph.h solution.h tier_limits.h

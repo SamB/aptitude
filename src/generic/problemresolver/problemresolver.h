@@ -55,6 +55,8 @@
 #include "promotion_set.h"
 #include "solution.h"
 #include "resolver_undo.h"
+#include "search_graph.h"
+#include "tier_limits.h"
 
 #include "log4cxx/consoleappender.h"
 #include "log4cxx/logger.h"
@@ -553,39 +555,10 @@ public:
   typedef generic_choice_set<PackageUniverse> choice_set;
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
+  typedef generic_search_graph<PackageUniverse> search_graph;
+  typedef generic_tier_limits<PackageUniverse> tier_limits;
 
-  static const int maximum_tier_num = INT_MAX;
-
-  /** \brief The maximum tier; reserved for solutions that contain a
-   *  logical conflict and thus are dead-ends.
-   *
-   *  Search nodes at this tier are discarded without being visited.
-   */
-  static const int conflict_tier_num = maximum_tier_num;
-
-  /** \brief The second highest tier; reserved for solutions that were
-   *  already generated (to prevent them from being generated again).
-   *
-   *  Search nodes at this tier are discarded without being visited.
-   */
-  static const int already_generated_tier_num = conflict_tier_num - 1;
-
-  /** \brief The third highest tier; reserved for solutions that
-   *  violate a user constraint and will be deferred until the
-   *  constraints are changed.
-   */
-  static const int defer_tier_num = conflict_tier_num - 2;
-
-  /** \brief The minimum tier; this is the initial tier of the empty
-   *  solution.
-   */
-  static const int minimum_tier_num = INT_MIN;
-
-  static const tier maximum_tier;
-  static const tier conflict_tier;
-  static const tier already_generated_tier;
-  static const tier defer_tier;
-  static const tier minimum_tier;
+  typedef typename search_graph::step step;
 
   /** Information about the sizes of the various resolver queues. */
   struct queue_counts
@@ -615,567 +588,7 @@ private:
   log4cxx::LoggerPtr logger;
   log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
 
-  // Structures that store the search graph.
-  //
-  // This information is used to backpropagate promotions/conflicts.
-  // If all the children of a step ended up in a conflict, we can use
-  // that information to infer a conflict for the step itself.  But
-  // since aptitude has a flexible search order, the children might be
-  // run after we've "finished" processing the parent step.  So it's
-  // necessary to somehow store all the steps with children that are
-  // pending evaluation.
-  //
-  // Actually, *all* steps are stored, not just ones with pending
-  // children: this lets us handle situations where promotions are
-  // generated more than once for the same step (for instance, if a
-  // step eventually ends up at tier 40,000 but has one child that
-  // passes through tier 30,000, it will first be promoted to tier
-  // 30,000, then later to tier 40,000).
-  //
-  // The lifetime of a step is as follows:
-  //  (1) Created with no children, an initial intrinsic promotion,
-  //      and maybe a parent link.
-  //  (2) Children added, along with successor constraints.
-  //  (3) When each of its children has registered a promotion,
-  //      the step's promotion is set and its parent is examined
-  //      to see if it should get a promotion now.
-  //
-  // Regarding (3), what we do is this: whenever a new promotion is
-  // computed for a step, it goes into the set of promotions for that
-  // step and onto the list of promotions if it was really new.  Then,
-  // we add the parent to a set of nodes that should be examined for
-  // promotion propagation.  After the step finishes, the nodes in
-  // this set are processed for propagation from their children.
-  //
-  // To save space and keep things compact, the tree is represented as
-  // an array (actually a deque), with parent and child links stored
-  // as indices into the array.  This made more sense when it had just
-  // a few members; maybe now it should be allocated on the heap and
-  // reference-counted?
-  struct step
-  {
-    // If true, this is the last child in its parent's child list.
-    // Meaningless if parent is -1 (meaning there is no parent node).
-    bool is_last_child : 1;
-    // Index of the parent step, or -1 if there is no parent.
-    int parent;
-    // Index of the first child step, or -1 if there are no children.
-    // This is always -1 to start with, and is updated when the step's
-    // successors are generated.
-    int first_child;
-
-    // A set listing all the clones of this step (steps that have the
-    // same solution).  If this is non-empty, this step is the
-    // canonical copy of its clones.  What that means is that the
-    // "promotions" set of the canonical copy is used whenever the set
-    // of promotions is needed; same for the "promotions" list (but
-    // the index of the last promotion propagated to the parent is
-    // different in each clone!).
-    std::set<int> clones;
-
-    // The canonical copy of this step, or -1 if none.
-    int canonical_clone;
-
-    // The solution associated with this step.
-    solution sol;
-    // The choice associated with this step (meaningless if parent ==
-    // -1).  Set when the step is created, and used when
-    // backpropagating promotions: when the parent is computing its
-    // promotion, it removes each child's reason from that child's
-    // promotion's choice set.
-    choice reason;
-    // The choices that constrained the successors to this node.  This
-    // is used, along with information from the successors, to compute
-    // the promotion associated with this node (if any).
-    //
-    // This contains versions that either structurally knocked out
-    // possible resolutions to the dependency that was selected for
-    // expansion, *or* that caused a resolution to hit a conflict /
-    // already-generated promotion.  NOTE: the entries in this set
-    // might not be represented in every promotion at this step; some
-    // promotions could be generated from dependencies that weren't
-    // actually expanded.  This is used when accumulating this node's
-    // sub-promotions and filling in new promotions; the parent
-    // shouldn't examine it.
-    //
-    // This only has a meaningful value if first_child is not -1.
-    choice_set successor_constraints;
-    // All the promotions associated with this step; each promotion is
-    // universally valid but was discovered in the context of this
-    // step.  No attempt is made to eliminate redundant promotions at
-    // the moment.
-    //
-    // If this is a cloned step, this variable will never be used (the
-    // canonical clone's version will be used -- but since this is
-    // only used when adding new promotions and new promotions are
-    // added to the canonical clone, the promotions set isn't used).
-    std::set<promotion> promotions;
-
-    // The same, but in the order that they were added; used to
-    // quickly partition the list into "new" and "old" promotions.
-    //
-    // If this is a cloned step, the vector in the canonical clone
-    // will be used instead.
-    //
-    // TODO: should be a list of const_iterators referencing the above
-    // set.
-    std::vector<promotion> promotions_list;
-
-    // The first index in the promotions list that represents a "new"
-    // promotion.  This is always used even in cloned steps (each step
-    // could have a different number of promotions that haven't been
-    // propagated to its particular parent).
-    typename std::vector<promotion>::size_type promotions_list_first_new_promotion;
-
-    /** \brief Default step constructor; only exists for use
-     *  by STL containers.
-     */
-    step()
-      : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1), sol(), reason(),
-	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_first_new_promotion(0)
-    {
-    }
-
-    /** \brief Make a step suitable for use at the root.
-     *
-     *  The step has no parent, children, promotion, or successor
-     *  constraints.
-     */
-    step(const solution &_sol)
-      : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1), sol(_sol), reason(),
-	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_first_new_promotion(0)
-    {
-    }
-
-    /** \brief Make a step with the given parent.
-     *
-     *  The step initially has no children or successor constraints.
-     */
-    step(solution &_sol, int _parent,
-	 const choice &_reason, bool _is_last_child)
-      : is_last_child(_is_last_child),
-	parent(_parent),
-	first_child(-1), canonical_clone(-1), sol(_sol), reason(_reason),
-	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_first_new_promotion(0)
-    {
-    }
-  };
-
-  /** \brief The maximum number of promotions to propagate
-   *  through any one step.
-   *
-   *  This avoids an exponential growth in the size of promotion sets.
-   *  This is disabled for the moment: I was seeing aptitude
-   *  allocating truly enormous amounts of memory for propagated
-   *  promotions, and the benefits of backpropagation have been
-   *  minimal in practice.  If additional enhancements to the resolver
-   *  framework are implemented, I expect that we might see
-   *  backpropagation become cheaper and more useful, in which case it
-   *  could be worth turning it on again (but beware of possible
-   *  bitrot!).
-   */
-  static const unsigned int max_propagated_promotions = 0;
-  std::deque<step> steps;
-  // Steps whose children have pending propagation requests.  Stored
-  // in reverse order, because we should handle later steps first
-  // (since they might be children of earlier steps and thus add new
-  // promotions to them).
-  std::set<int, std::greater<int> > steps_pending_promotion_propagation;
-
-  // Step-related routines.
-
-  step &get_step(int n)
-  {
-    eassert(n >= 0);
-    eassert((unsigned)n < steps.size());
-    return steps[n];
-  }
-
-  const step &get_step(int n) const
-  {
-    eassert(n >= 0);
-    eassert((unsigned)n < steps.size());
-    return steps[n];
-  }
-
-  // Retrieve the promotions list of the given step, returning the
-  // canonical copy if this step is a clone.
-  std::vector<promotion> &get_promotions_list(step &s)
-  {
-    if(s.canonical_clone == -1)
-      return s.promotions_list;
-    else
-      return get_step(s.canonical_clone).promotions_list;
-  }
-
-  const std::vector<promotion> &get_promotions_list(const step &s) const
-  {
-    if(s.canonical_clone == -1)
-      return s.promotions_list;
-    else
-      return get_step(s.canonical_clone).promotions_list;
-  }
-
-  // Used to recursively build the set of all the promotions in the
-  // Cartesian product of the sub-promotions that include at least one
-  // promotion that's "new".
-  //
-  // Returns "true" if anything was generated.  We care because we
-  // need to know whether to queue the parent of the parent for
-  // propagation.
-  bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
-			    const choice_set &choices, const tier &t)
-  {
-    // Where to insert any promotions we run into.
-    const step &parent = get_step(parentNum);
-    int canonicalParentNum = (parent.canonical_clone == -1
-			      ? parentNum
-			      : parent.canonical_clone);
-    const step &canonicalParent = get_step(canonicalParentNum);
-    const std::vector<promotion> &canonicalParentPromotionsList = get_promotions_list(parent);
-
-    if(canonicalParentNum == parentNum)
-      LOG_TRACE(logger, "Propagating promotions from the step " << childNum
-		<< " to its parent, step " << parentNum);
-    else
-      LOG_TRACE(logger, "Propagating promotions from the step " << childNum
-		<< " to its parent's canonical clone, step " << parentNum);
-
-    // Don't do anything if the parent has too many propagations
-    // already.
-    if(canonicalParentPromotionsList.size() >= max_propagated_promotions)
-      {
-	LOG_TRACE(logger, "Not creating a new promotion: the parent already has too many promotions.");
-	return false;
-      }
-
-    step &child = get_step(childNum);
-    const std::vector<promotion> &canonicalChildPromotionsList = get_promotions_list(child);
-
-    typename std::vector<promotion>::const_iterator begin, end = canonicalChildPromotionsList.end();
-    if(child.is_last_child && !has_new_promotion)
-      {
-	// Only process new promotions if we don't have one yet.
-	begin = canonicalChildPromotionsList.begin() + child.promotions_list_first_new_promotion;
-	if(begin == end)
-	  LOG_TRACE(logger, "No new promotions to process (step " << childNum << ")");
-      }
-    else
-      {
-	begin = canonicalChildPromotionsList.begin();
-	if(begin == end)
-	  LOG_TRACE(logger, "No promotions to process (step " << childNum << ")");
-      }
-
-    bool rval = false;
-    for(typename std::vector<promotion>::const_iterator it = begin;
-	it != end && canonicalParentPromotionsList.size() < max_propagated_promotions; ++it)
-      {
-	bool current_is_new_promotion =
-	  (it - canonicalChildPromotionsList.begin()) >= (signed)child.promotions_list_first_new_promotion;
-
-	choice_set new_choices(choices);
-	tier new_tier(t);
-
-	const promotion &p(*it);
-	choice_set p_choices(p.get_choices());
-
-	LOG_TRACE(logger, "Using the successor link of step " << childNum
-		  << ", " << child.reason
-		  << ", to backpropagate the promotion " << p
-		  << " and add it to the current choice set " << choices);
-
-	// Strip out the child's link before merging with the existing
-	// choice set.
-	p_choices.remove_overlaps(child.reason);
-	const tier &p_tier(p.get_tier());
-	// Augment the choice set with these new choices.  Narrowing
-	// is appropriate: anything matching the promotion should
-	// match all the choices we found.
-	new_choices.insert_or_narrow(p_choices);
-	if(p_tier < new_tier)
-	  new_tier = p_tier;
-
-	if(canonicalParent.sol.get_tier() >= new_tier)
-	  // No point in generating a promotion whose tier is below
-	  // the parent's tier.
-	  {
-	    LOG_TRACE(logger, "Not backpropagating this promotion: its tier, "
-		      << new_tier
-		      << " is not above the tier of step "
-		      << canonicalParentNum << ", "
-		      << canonicalParent.sol.get_tier());
-	    continue;
-	  }
-
-
-	if(child.is_last_child)
-	  {
-	    promotion new_promotion(new_choices, new_tier);
-
-	    // Stash the promotion away in the global set of
-	    // promotions.
-	    promotions.insert(new_promotion);
-
-	    // Actually output a new promotion in the canonical
-	    // parent.
-	    LOG_TRACE(logger, "New backpropagated promotion at step "
-		      << canonicalParentNum << ": " << new_promotion);
-	    schedule_promotion_propagation(canonicalParentNum, new_promotion);
-
-	    rval = true;
-	  }
-	else
-	  {
-	    bool new_has_new_promotion = has_new_promotion || current_is_new_promotion;
-	    // Recur.
-	    bool generated_anything =
-	      add_child_promotions(parentNum, childNum + 1,
-				   new_has_new_promotion,
-				   new_choices, new_tier);
-
-	    rval = rval || generated_anything;
-	  }
-      }
-
-    child.promotions_list_first_new_promotion = canonicalChildPromotionsList.size();
-
-    return rval;
-  }
-
-  // TODO: log when we first fail to add a promotion because we hit
-  // the maximum number -- that's actually not trivial to do without
-  // complicating the code.
-  void maybe_collect_child_promotions(int stepNum)
-  {
-    step &parentStep(get_step(stepNum));
-    LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum << ": " << parentStep.sol);
-
-    if(parentStep.first_child == -1)
-      {
-	LOG_ERROR(logger, "No children at step " << stepNum << ", so no promotions to backpropagate.");
-	return;
-      }
-
-    if(add_child_promotions(stepNum, parentStep.first_child,
-			     false, parentStep.successor_constraints,
-			     maximum_tier))
-      {
-	if(parentStep.parent != -1)
-	  {
-	    LOG_TRACE(logger, "Scheduling step " << parentStep.parent
-		      << " for promotion propagation.");
-	    steps_pending_promotion_propagation.insert(parentStep.parent);
-	  }
-      }
-    else
-      LOG_TRACE(logger, "No new promotion at step " << stepNum);
-  }
-
-  void schedule_promotion_propagation(int stepNum,
-				      const promotion &p)
-  {
-    step &targetStep(get_step(stepNum));
-
-    if(targetStep.canonical_clone != -1)
-      {
-	LOG_TRACE(logger, "Adding the promotion " << p
-		  << " to step " << targetStep.canonical_clone
-		  << " instead of to its clone, step "
-		  << stepNum << ".");
-	schedule_promotion_propagation(targetStep.canonical_clone, p);
-	return;
-      }
-
-    if(targetStep.promotions.size() == max_propagated_promotions)
-      {
-	LOG_TRACE(logger, "Not adding the promotion " << p
-		  << " to step " << stepNum
-		  << " since that step has the maximum number of promotions already.");
-	return;
-      }
-
-    // TODO: could do a slow check for redundant promotions here?
-
-    std::pair<typename std::set<promotion>::iterator, bool>
-      insert_info(targetStep.promotions.insert(p));
-    if(insert_info.second)
-      {
-	targetStep.promotions_list.push_back(p);
-	if(targetStep.parent != -1)
-	  {
-	    LOG_TRACE(logger, "Adding a promotion to step " << stepNum
-		      << " and scheduling its parent, step " << targetStep.parent << " for propagation: "
-		      << p);
-	    steps_pending_promotion_propagation.insert(targetStep.parent);
-	  }
-	else
-	  LOG_TRACE(logger, "Adding a promotion to step " << stepNum
-		    << "; it has no parent, so not scheduling propagation: "
-		    << p);
-      }
-
-    if(!targetStep.clones.empty())
-      {
-	LOG_TRACE(logger, "Also scheduling the parents of the clones of step " << stepNum << " for propagation.");
-	for(std::set<int>::const_iterator it = targetStep.clones.begin();
-	    it != targetStep.clones.end(); ++it)
-	  {
-	    int cloneNum = *it;
-	    const step &clone(get_step(cloneNum));
-
-	    if(clone.parent != -1)
-	      {
-		LOG_TRACE(logger, "Scheduling the parent (step "
-			  << clone.parent << ") of a clone (step " << cloneNum
-			  << ") of step " << stepNum << " for propagation.");
-		steps_pending_promotion_propagation.insert(clone.parent);
-	      }
-	    else
-	      // Should never happen, but be careful.  (this would
-	      // mean we had a clone of the root node!  Madness!)
-	      LOG_ERROR(logger, "Not scheduling the parent of a clone (step " << cloneNum
-			<< ") for propagation: it has no parent (something is very wrong!).");
-	  }
-	LOG_TRACE(logger, "Done scheduling the clones of step " << stepNum << " for propagation.");
-      }
-  }
-
-  /** \brief Mark the second step as being a clone of the first step.
-   *
-   *  \param canonicalNum    The step number to use as the canonical copy.
-   *  \param cloneNum        The step number to mark as a clone.
-   */
-  void add_clone(int canonicalNum, int cloneNum)
-  {
-    LOG_TRACE(logger, "Marking step " << cloneNum << " as a clone of step " << canonicalNum << ".");
-
-    step &canonicalStep(get_step(canonicalNum));
-    step &cloneStep(get_step(cloneNum));
-
-    if(cloneStep.canonical_clone == canonicalNum)
-      {
-	LOG_TRACE(logger, "Not marking step " << cloneNum
-		  << " as a clone of step " << canonicalNum
-		  << " since it is already listed as a clone.");
-	return;
-      }
-
-    // These cases should never come up, so assert against them
-    // instead of trying to write clever code to handle them.
-    eassert(canonicalNum != cloneNum);
-    eassert(cloneStep.canonical_clone == -1);
-    eassert(cloneStep.clones.empty());
-
-    canonicalStep.clones.insert(cloneNum);
-    cloneStep.canonical_clone = canonicalNum;
-
-    // NB: no need to do anything special with successor_constraints;
-    // it's only used to generate promotions and we take those from
-    // the canonical clone.
-    const int cloneParentNum = cloneStep.parent;
-    if(!canonicalStep.promotions.empty() &&
-       cloneParentNum != -1)
-      {
-	LOG_TRACE(logger, "The canonical step " << canonicalNum
-		  << " has some promotions, so scheduling the parent (step "
-		  << cloneParentNum << ") of the clone (step "
-		  << cloneNum << ") for backpropagation.");
-	steps_pending_promotion_propagation.insert(cloneParentNum);
-      }
-  }
-
-  /** \brief Execute any pending promotion propagations. */
-  void run_scheduled_promotion_propagations()
-  {
-    while(!steps_pending_promotion_propagation.empty())
-      {
-	// Make a temporary copy to iterate over.
-	std::set<int, std::greater<int> > tmp;
-	tmp.swap(steps_pending_promotion_propagation);
-	for(std::set<int, std::greater<int> >::const_iterator it = tmp.begin();
-	    it != tmp.end(); ++it)
-	  maybe_collect_child_promotions(*it);
-      }
-  }
-
-  struct is_deferred
-  {
-    bool operator()(const promotion &p) const
-    {
-      const tier &p_tier(p.get_tier());
-
-      return
-	p_tier >= defer_tier &&
-	p_tier < already_generated_tier;
-    }
-  };
-
-  /** \brief Remove any propagated promotions from the deferred
-   *  tier.
-   */
-  void remove_deferred_propagations()
-  {
-    is_deferred is_deferred_f;
-
-    for(typename std::deque<step>::iterator step_it = steps.begin();
-	step_it != steps.end(); ++step_it)
-      {
-	step &curr_step(*step_it);
-
-	for(typename std::vector<promotion>::const_iterator p_it =
-	      curr_step.promotions_list.begin();
-	    p_it != curr_step.promotions_list.end(); ++p_it)
-	  {
-	    const promotion &p(*p_it);
-
-	    if(is_deferred_f(p))
-	      {
-		LOG_TRACE(logger, "Removing a promotion from the promotion set of step "
-			  << step_it - steps.begin()
-			  << ": " << p);
-		curr_step.promotions.erase(p);
-	      }
-	  }
-
-	// Drop the deferred entries from the list of promotions,
-	// updating the "new" pointer so that new promotions will be
-	// detected as being "new".
-	typename std::vector<promotion>::size_type write_loc = 0, read_loc = 0;
-	typename std::vector<promotion>::size_type num_old_promotions_deleted = 0;
-	while(read_loc < curr_step.promotions_list.size())
-	  {
-	    while(read_loc < curr_step.promotions_list.size() &&
-		  is_deferred_f(curr_step.promotions_list[read_loc]))
-	      {
-		LOG_TRACE(logger, "Removing a promotion from the promotion list of step "
-			  << step_it - steps.begin()
-			  << ": " << curr_step.promotions_list[read_loc]);
-		if(read_loc < curr_step.promotions_list_first_new_promotion)
-		  ++num_old_promotions_deleted;
-		++read_loc;
-	      }
-
-	    if(read_loc < curr_step.promotions_list.size())
-	      {
-		if(write_loc != read_loc)
-		  curr_step.promotions_list[write_loc] = curr_step.promotions_list[read_loc];
-
-		++write_loc;
-		++read_loc;
-	      }
-	  }
-	if(read_loc != write_loc)
-	  curr_step.promotions_list.erase(curr_step.promotions_list.begin() + write_loc,
-					  curr_step.promotions_list.end());
-	curr_step.promotions_list_first_new_promotion -= num_old_promotions_deleted;
-      }
-  }
+  search_graph graph;
 
   /** Hash function for packages: */
   struct ExtractPackageId
@@ -1192,22 +605,17 @@ private:
   /** Compares steps according to their "goodness". */
   struct step_goodness_compare
   {
-    const std::deque<step> &steps;
+    const search_graph &graph;
 
-    step_goodness_compare(const std::deque<step> &_steps)
-      : steps(_steps)
+    step_goodness_compare(const search_graph &_graph)
+      : graph(_graph)
     {
     }
 
     bool operator()(int step_num1, int step_num2) const
     {
-      eassert(step_num1 >= 0);
-      eassert((unsigned)step_num1 < steps.size());
-      eassert(step_num2 >= 0);
-      eassert((unsigned)step_num2 < steps.size());
-
-      const solution &s1(steps[step_num1].sol);
-      const solution &s2(steps[step_num2].sol);
+      const solution &s1(graph.get_step(step_num1).sol);
+      const solution &s2(graph.get_step(step_num2).sol);
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
@@ -1290,23 +698,18 @@ private:
 
   struct step_contents_compare
   {
-    const std::deque<step> &steps;
+    const search_graph &graph;
     solution_contents_compare comparer;
 
-    step_contents_compare(const std::deque<step> &_steps)
-      : steps(_steps)
+    step_contents_compare(const search_graph &_graph)
+      : graph(_graph)
     {
     }
 
     bool operator()(int step_num1, int step_num2) const
     {
-      eassert(step_num1 >= 0);
-      eassert((unsigned)step_num1 < steps.size());
-      eassert(step_num2 >= 0);
-      eassert((unsigned)step_num2 < steps.size());
-
-      const solution &s1(steps[step_num1].sol);
-      const solution &s2(steps[step_num2].sol);
+      const solution &s1(graph.get_step(step_num1).sol);
+      const solution &s2(graph.get_step(step_num2).sol);
 
       return comparer(s1, s2);
     }
@@ -2534,7 +1937,7 @@ private:
   {
     // Throw out all the defer-tier promotions that were discovered
     // during promotion propagation.
-    remove_deferred_propagations();
+    graph.remove_deferred_propagations();
 
     // \todo If we un-defer a search node that has a lower tier than
     // the current maximum tier, should we reset the maximum tier to
@@ -2551,13 +1954,14 @@ private:
     // (how?) "tag" each entry in the promotion set with the deferrals
     // that it is associated with.  Then only the promotions that have
     // actually become irrelevant need to be thrown away.
-    promotions.remove_between_tiers(defer_tier, already_generated_tier);
+    promotions.remove_between_tiers(tier_limits::defer_tier,
+				    tier_limits::already_generated_tier);
 
     // Place any deferred entries that are no longer deferred back
     // into the "open" queue.
     const typename std::map<tier, std::set<int, step_contents_compare> >::iterator
-      first_deferred = deferred.lower_bound(defer_tier),
-      first_already_generated = deferred.lower_bound(already_generated_tier);
+      first_deferred = deferred.lower_bound(tier_limits::defer_tier),
+      first_already_generated = deferred.lower_bound(tier_limits::already_generated_tier);
 
     if(first_deferred != first_already_generated)
       {
@@ -2580,7 +1984,7 @@ private:
 		++j;
 
 		choice_set reasons;
-		if(!breaks_user_constraint(get_step(step_num).sol, reasons))
+		if(!breaks_user_constraint(graph.get_step(step_num).sol, reasons))
 		  {
 		    LOG_DEBUG(logger, "Step " << step_num << " is no longer deferred, placing it back on the open queue.");
 
@@ -2591,9 +1995,9 @@ private:
 		  {
 		    // We threw out this information above, so we have
 		    // to put it back in now.
-		    promotion deferral(reasons, defer_tier);
+		    promotion deferral(reasons, tier_limits::defer_tier);
 		    LOG_TRACE(logger, "Deferring step " << step_num << " and attaching the promotion " << deferral << " to it.");
-		    schedule_promotion_propagation(step_num, deferral);
+		    graph.schedule_promotion_propagation(step_num, deferral);
 		  }
 
 		i = j;
@@ -2616,7 +2020,7 @@ private:
 	++j;
 
 	choice_set reasons;
-	if(!breaks_user_constraint(get_step(step_num).sol, reasons))
+	if(!breaks_user_constraint(graph.get_step(step_num).sol, reasons))
 	  {
 	    LOG_DEBUG(logger, "Step " << step_num << " is no longer deferred, placing it back on the open queue.");
 
@@ -2627,9 +2031,9 @@ private:
 	  {
 	    // We threw out this information above, so we have
 	    // to put it back in now.
-	    promotion deferral(reasons, defer_tier);
+	    promotion deferral(reasons, tier_limits::defer_tier);
 	    LOG_TRACE(logger, "Deferring step " << step_num << " and attaching the promotion " << deferral << " to it.");
-	    schedule_promotion_propagation(step_num, deferral);
+	    graph.schedule_promotion_propagation(step_num, deferral);
 	  }
 
 	i = j;
@@ -2654,14 +2058,14 @@ private:
    */
   bool is_already_seen(int stepNum)
   {
-    step &s(get_step(stepNum));
+    step &s(graph.get_step(stepNum));
 
     typename std::map<solution, int, solution_contents_compare>::const_iterator found =
       closed.find(s.sol);
     if(found != closed.end())
       {
 	LOG_TRACE(logger, s.sol << " is irrelevant: it was already encountered in this search.");
-	add_clone(found->second, stepNum);
+	graph.add_clone(found->second, stepNum);
 	return true;
       }
     else
@@ -2675,12 +2079,12 @@ private:
   bool irrelevant(const solution &s)
   {
     const tier &s_tier = s.get_tier();
-    if(s_tier >= conflict_tier)
+    if(s_tier >= tier_limits::conflict_tier)
       {
 	LOG_TRACE(logger, s << " is irrelevant: it contains a conflict.");
 	return true;
       }
-    else if(s_tier >= already_generated_tier)
+    else if(s_tier >= tier_limits::already_generated_tier)
       {
 	LOG_TRACE(logger, s << " is irrelevant: it was already produced as a result.");
 	return true;
@@ -2702,7 +2106,7 @@ private:
       found(deferred.find(t));
     if(found == deferred.end())
       found = deferred.insert(found, std::make_pair(t,
-						    std::set<int, step_contents_compare>(step_contents_compare(steps))));
+						    std::set<int, step_contents_compare>(step_contents_compare(graph))));
 
     found->second.insert(step_num);
   }
@@ -2710,7 +2114,7 @@ private:
   /** Tries to enqueue the given step. */
   void try_enqueue(const int step_num)
   {
-    const solution &s = get_step(step_num).sol;
+    const solution &s = graph.get_step(step_num).sol;
     // Check whether a promotion to a higher tier has been added since
     // the solution was placed onto the queue.
     bool s_has_new_promotion = false;
@@ -2729,17 +2133,17 @@ private:
     // propagated up the search tree.
     if(s_has_new_promotion &&
        maximum_search_tier < s_new_promotion.get_tier())
-      schedule_promotion_propagation(step_num, s_new_promotion);
+      graph.schedule_promotion_propagation(step_num, s_new_promotion);
 
     if(maximum_search_tier < s_tier)
       {
-	if(s_tier >= conflict_tier)
+	if(s_tier >= tier_limits::conflict_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
-	else if(s_tier >= already_generated_tier)
+	else if(s_tier >= tier_limits::already_generated_tier)
 	  LOG_TRACE(logger, "Dropping solution " << s << " (it was already generated as a solution).");
 	else
 	  {
-	    if(s_tier >= defer_tier)
+	    if(s_tier >= tier_limits::defer_tier)
 	      LOG_TRACE(logger, "Deferring rejected solution " << s << " (it breaks a user constraint).");
 	    else
 	      LOG_TRACE(logger, "Deferring " << s << " until tier " << s_tier);
@@ -2760,9 +2164,9 @@ private:
 	  {
 	    LOG_WARN(logger, "Deferring rejected solution " << s);
 	    // Add a singleton promotion here?
-	    promotion defer_promotion(defer_reason, defer_tier);
-	    schedule_promotion_propagation(step_num, defer_promotion);
-	    defer_step(defer_tier, step_num);
+	    promotion defer_promotion(defer_reason, tier_limits::defer_tier);
+	    graph.schedule_promotion_propagation(step_num, defer_promotion);
+	    defer_step(tier_limits::defer_tier, step_num);
 	  }
 	else
 	  {
@@ -2779,11 +2183,11 @@ private:
     if(parent_step_num == -1)
       return;
 
-    int child_step_num = get_step(parent_step_num).first_child;
+    int child_step_num = graph.get_step(parent_step_num).first_child;
     while(child_step_num != -1)
       {
 	try_enqueue(child_step_num);
-	if(get_step(child_step_num).is_last_child)
+	if(graph.get_step(child_step_num).is_last_child)
 	  child_step_num = -1;
 	else
 	  ++child_step_num;
@@ -2869,7 +2273,7 @@ private:
       : first(true),
 	parent_step_num(_parent_step_num),
 	resolver(_resolver),
-	steps_size(resolver.steps.size()),
+	steps_size(resolver.graph.get_num_steps()),
 	visited_packages(_visited_packages)
     {
     }
@@ -2881,7 +2285,7 @@ private:
 			const PackageUniverse &universe,
 			const solution_weights<PackageUniverse> &weights)
     {
-      eassert(resolver.steps.size() == steps_size);
+      eassert(resolver.graph.get_num_steps() == steps_size);
 
       // Update the parent's child link the first time through.
       if(first)
@@ -2889,8 +2293,8 @@ private:
 	  if(parent_step_num != -1)
 	    {
 	      eassert(parent_step_num >= 0);
-	      eassert((unsigned)parent_step_num < resolver.steps.size());
-	      resolver.steps[parent_step_num].first_child = resolver.steps.size();
+	      eassert((unsigned)parent_step_num < resolver.graph.get_num_steps());
+	      resolver.graph.get_step(parent_step_num).first_child = resolver.graph.get_num_steps();
 	    }
 	  first = false;
 	}
@@ -2898,29 +2302,30 @@ private:
 	// On subsequent trips through this routine, move forward the
 	// "last child" flag.
 	{
-	  eassert(!resolver.steps.empty());
-	  resolver.steps[resolver.steps.size() - 1].is_last_child = false;
+	  eassert(resolver.graph.get_num_steps() > 0);
+	  resolver.graph.get_step(resolver.graph.get_num_steps() - 1).is_last_child = false;
 	}
 
       solution sol(solution::successor(s,
 				       &c, (&c) + 1,
 				       succ_tier,
 				       resolver.universe, resolver.weights));
-      resolver.steps.push_back(step(sol, parent_step_num, c, true));
+      resolver.graph.add_step(sol, parent_step_num, c, true);
 
-      steps_size = resolver.steps.size();
+      steps_size = resolver.graph.get_num_steps();
 
-      LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): " << resolver.steps.back().sol);
+      LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): "
+		<< resolver.graph.get_step(resolver.graph.get_num_steps() - 1).sol);
 
       // If the given successor promotion exceeds the current maximum
       // tier, add it to the step graph.
       if(resolver.maximum_search_tier < succ_promotion.get_tier())
-	resolver.schedule_promotion_propagation(steps_size - 1, succ_promotion);
+	resolver.graph.schedule_promotion_propagation(steps_size - 1, succ_promotion);
 
       // Touch all the packages that are involved in broken dependencies
       if(visited_packages != NULL)
 	{
-	  const solution &generated(resolver.steps.back().sol);
+	  const solution &generated(resolver.graph.get_step(resolver.graph.get_num_steps() - 1).sol);
 
 	  for(typename imm::set<dep>::const_iterator bi =
 		generated.get_broken().begin();
@@ -3056,12 +2461,12 @@ private:
     const int newid = s.get_choices().size();
 
     // The contents of the promotion to return.
-    tier promotion_tier(minimum_tier);
+    tier promotion_tier(tier_limits::minimum_tier);
     choice_set forcing_choices;
 
     if(!is_legal(s, v, why_illegal))
       {
-	promotion_tier = conflict_tier;
+	promotion_tier = tier_limits::conflict_tier;
 	forcing_choices.insert_or_narrow(why_illegal);
       }
     else
@@ -3089,8 +2494,8 @@ private:
 	// away, go ahead and generate successors.  The caller will
 	// defer them or put them into the open queue, as appropriate.
 	if(!(found != promotions.end() &&
-	     (found->get_tier() >= conflict_tier ||
-	      found->get_tier() >= already_generated_tier)))
+	     (found->get_tier() >= tier_limits::conflict_tier ||
+	      found->get_tier() >= tier_limits::already_generated_tier)))
 	  {
 	    // Figure out the tier of the new solution.  It will be at
 	    // least the tier of the current solution, but if we
@@ -3108,7 +2513,7 @@ private:
 	    // otherwise, the version's tier is stored here if it's
 	    // higher than the solution's current tier; otherwise,
 	    // this stores an empty promotion to the minimum tier.
-	    promotion successor_promotion(choice_set(), minimum_tier);
+	    promotion successor_promotion(choice_set(), tier_limits::minimum_tier);
 
 	    bool set_from_found = false;
 	    if(found != promotions.end())
@@ -3238,7 +2643,7 @@ private:
 
     // This is the least tier generated by installing any solver for
     // the dependency.
-    tier succ_tier = maximum_tier;
+    tier succ_tier = tier_limits::maximum_tier;
     // The choices attached to any subpromotions included in the successor tier.
     choice_set subpromotion_choices;
 
@@ -3272,7 +2677,7 @@ private:
 					    visited_packages);
 
 		  if(successor_constraints != NULL &&
-		     p.get_tier() >= already_generated_tier)
+		     p.get_tier() >= tier_limits::already_generated_tier)
 		    {
 		      successor_constraints->insert_or_narrow(p.get_choices());
 		      LOG_TRACE(logger, "Added " << p << " to the successor constraints, which are now " << successor_constraints);
@@ -3300,7 +2705,7 @@ private:
 
 
 	if(successor_constraints != NULL &&
-	   p.get_tier() >= already_generated_tier)
+	   p.get_tier() >= tier_limits::already_generated_tier)
 	  successor_constraints->insert_or_narrow(p.get_choices());
 
 	if(s.get_tier() < succ_tier)
@@ -3326,14 +2731,14 @@ private:
 	  promotions.find_highest_promotion_containing(choices, break_d);
 
 	tier unresolved_tier = s.get_tier();
-	promotion successor_promotion(choice_set(), minimum_tier);
+	promotion successor_promotion(choice_set(), tier_limits::minimum_tier);
 	if(found != promotions.end() && unresolved_tier < found->get_tier())
 	  {
 	    const promotion &p(*found);
 	    successor_promotion = p;
 
 	    if(successor_constraints != NULL &&
-	       p.get_tier() >= already_generated_tier)
+	       p.get_tier() >= tier_limits::already_generated_tier)
 	      successor_constraints->insert_or_narrow(p.get_choices());
 
 	    if(s.get_tier() < succ_tier)
@@ -3368,7 +2773,7 @@ private:
 
 	// Schedule the new promotion to be propagated to the parent
 	// steps.
-	schedule_promotion_propagation(curr_step, p);
+	graph.schedule_promotion_propagation(curr_step, p);
       }
   }
 
@@ -3381,7 +2786,7 @@ private:
     // Any forcings are immediately applied to 'curr', so that
     // forcings are performed ASAP.
     int curr_step_num = step_num;
-    solution curr = get_step(curr_step_num).sol;
+    solution curr = graph.get_step(curr_step_num).sol;
 
     eassert_on_soln(!curr.get_broken().empty(), curr);
 
@@ -3493,15 +2898,15 @@ private:
 		// successor constraints are meaningful if the step
 		// has children.
 		LOG_TRACE(logger, "Setting the succcessor constraints of step " << curr_step_num << " to " << successor_constraints);
-		get_step(curr_step_num).successor_constraints = successor_constraints;
+		graph.get_step(curr_step_num).successor_constraints = successor_constraints;
 
 
-		curr_step_num = get_step(curr_step_num).first_child;
+		curr_step_num = graph.get_step(curr_step_num).first_child;
 		eassert_on_dep(curr_step_num != -1 &&
-			       get_step(curr_step_num).is_last_child,
+			       graph.get_step(curr_step_num).is_last_child,
 			       curr, *bi);
 
-		curr = get_step(curr_step_num).sol;
+		curr = graph.get_step(curr_step_num).sol;
 		done = false;
 
 		num_least_successors = -1;
@@ -3541,7 +2946,7 @@ private:
 	// restore the invariant that the successor constraints are
 	// meaningful if the step has children.
 	LOG_TRACE(logger, "Setting the succcessor constraints of step " << curr_step_num << " to " << successor_constraints);
-	get_step(curr_step_num).successor_constraints = successor_constraints;
+	graph.get_step(curr_step_num).successor_constraints = successor_constraints;
 
 	try_enqueue_children(curr_step_num);
       }
@@ -3574,6 +2979,7 @@ public:
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolverSearch()),
      appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     graph(promotions),
      initial_state(_initial_state, _universe.get_package_count()),
      weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count(),
@@ -3583,12 +2989,12 @@ public:
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
-     open(step_goodness_compare(steps)),
-     minimum_search_tier(minimum_tier),
-     maximum_search_tier(minimum_tier),
-     future_solutions(step_goodness_compare(steps)),
+     open(step_goodness_compare(graph)),
+     minimum_search_tier(tier_limits::minimum_tier),
+     maximum_search_tier(tier_limits::minimum_tier),
+     future_solutions(step_goodness_compare(graph)),
      closed(solution_contents_compare()),
-     deferred_future_solutions(step_contents_compare(steps)),
+     deferred_future_solutions(step_contents_compare(graph)),
      promotions(_universe),
      version_tiers(new tier[_universe.get_version_count()])
   {
@@ -3601,7 +3007,7 @@ public:
 	      << ", initial_state = " << _initial_state);
 
     for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
-      version_tiers[i] = minimum_tier;
+      version_tiers[i] = tier_limits::minimum_tier;
 
     // Used for sanity-checking below; create this only once for
     // efficiency's sake.
@@ -3609,7 +3015,7 @@ public:
 						universe,
 						weights,
 						initial_state,
-						minimum_tier));
+						tier_limits::minimum_tier));
     // Find all the broken deps.
     for(typename PackageUniverse::dep_iterator di = universe.deps_begin();
 	!di.end(); ++di)
@@ -4005,7 +3411,7 @@ public:
     counts.open       = open.size();
     counts.closed     = closed.size();
     counts.deferred   = get_num_deferred();
-    counts.conflicts  = promotions.tier_size_above(conflict_tier);
+    counts.conflicts  = promotions.tier_size_above(tier_limits::conflict_tier);
     counts.promotions = promotions.size() - counts.conflicts;
     counts.finished   = finished;
   }
@@ -4090,13 +3496,14 @@ public:
     // should enqueue a new root node.
     if(open.empty())
       {
+	LOG_INFO(logger, "Starting a new search.");
 	closed.clear();
 
-	steps.push_back(step(solution::root_node(initial_broken,
-						 universe,
-						 weights,
-						 initial_state,
-						 minimum_tier)));
+	graph.add_root(solution::root_node(initial_broken,
+					   universe,
+					   weights,
+					   initial_state,
+					   tier_limits::minimum_tier));
 	open.push(0);
       }
 
@@ -4124,7 +3531,7 @@ public:
 
 
 	int curr_step_num = open.top();
-	solution s = get_step(curr_step_num).sol;
+	solution s = graph.get_step(curr_step_num).sol;
 	open.pop();
 
 	++odometer;
@@ -4140,18 +3547,18 @@ public:
 	  {
 	    LOG_TRACE(logger, "Processing the promotion " << s_new_promotion
 		      << ", which was added since this step was placed onto the open queue.");
-	    schedule_promotion_propagation(curr_step_num, s_new_promotion);
+	    graph.schedule_promotion_propagation(curr_step_num, s_new_promotion);
 	  }
 
 	// Unless this is set to "true", the step will be ignored
 	// (either thrown away or deferred).
 	bool process_step = false;
 
-	if(s_tier >= conflict_tier)
+	if(s_tier >= tier_limits::conflict_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping conflicted solution " << s);
 	  }
-	else if(s_tier >= already_generated_tier)
+	else if(s_tier >= tier_limits::already_generated_tier)
 	  {
 	    LOG_DEBUG(logger, "Dropping already generated solution " << s);
 	  }
@@ -4176,9 +3583,9 @@ public:
 	      {
 		LOG_DEBUG(logger, "Deferring rejected solution " << s);
 
-		promotion defer_promotion(defer_reason, defer_tier);
-		schedule_promotion_propagation(curr_step_num, defer_promotion);
-		defer_step(defer_tier, curr_step_num);
+		promotion defer_promotion(defer_reason, tier_limits::defer_tier);
+		graph.schedule_promotion_propagation(curr_step_num, defer_promotion);
+		defer_step(tier_limits::defer_tier, curr_step_num);
 	      }
 	    else
 	      process_step = true;
@@ -4198,9 +3605,9 @@ public:
 		// from-dep-source information so that we match any
 		// solution with the same version content)
 		promotion already_generated_promotion(get_solution_choices_without_dep_info(s),
-						      already_generated_tier);
+						      tier_limits::already_generated_tier);
 		promotions.insert(already_generated_promotion);
-		schedule_promotion_propagation(curr_step_num, already_generated_promotion);
+		graph.schedule_promotion_propagation(curr_step_num, already_generated_promotion);
 
 		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
@@ -4217,7 +3624,7 @@ public:
 
 	    // Propagate any new promotions that we discovered up the
 	    // search tree.
-	    run_scheduled_promotion_propagations();
+	    graph.run_scheduled_promotion_propagations();
 
 	    // Keep track of the "future horizon".  If we haven't found a
 	    // solution, we aren't using those steps up at all.
@@ -4231,9 +3638,9 @@ public:
 	  }
 
 	while(open.empty() && !deferred.empty() &&
-	      deferred.begin()->first < defer_tier &&
-	      deferred.begin()->first < already_generated_tier &&
-	      deferred.begin()->first < conflict_tier)
+	      deferred.begin()->first < tier_limits::defer_tier &&
+	      deferred.begin()->first < tier_limits::already_generated_tier &&
+	      deferred.begin()->first < tier_limits::conflict_tier)
 	  {
 	    const typename std::map<tier, std::set<int, step_contents_compare> >::iterator
 	      deferred_begin = deferred.begin();
@@ -4271,7 +3678,7 @@ public:
 	while(!future_solutions.empty() && !rval.valid())
 	  {
 	    int tmp_step = future_solutions.top();
-	    solution tmp = get_step(tmp_step).sol;
+	    solution tmp = graph.get_step(tmp_step).sol;
 	    future_solutions.pop();
 
 	    choice_set defer_reason;
@@ -4279,8 +3686,8 @@ public:
 	      {
 		LOG_TRACE(logger, "Deferring the future solution " << tmp);
 		deferred_future_solutions.insert(tmp_step);
-		promotion defer_promotion(defer_reason, defer_tier);
-		schedule_promotion_propagation(tmp_step, defer_promotion);
+		promotion defer_promotion(defer_reason, tier_limits::defer_tier);
+		graph.schedule_promotion_propagation(tmp_step, defer_promotion);
 	      }
 	    else
 	      rval = tmp;
@@ -4363,39 +3770,5 @@ public:
     out << "}" << std::endl;
   }
 };
-
-// Appease the C++ gods by writing dummy definitions of these things.
-// g++ happily accepts definitions of static constants inside a class,
-// but they aren't actually defined unless you define them outside the
-// class and don't give a definition in the definition, so without
-// these dummy lines, the linker will complain that there are
-// undefined references to the constants defined above because their
-// definitions aren't really definitions.  Hopefully that's all
-// obvious.
-template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::maximum_tier_num;
-template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::conflict_tier_num;
-template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::already_generated_tier_num;
-template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::defer_tier_num;
-template<typename PackageUniverse>
-const int generic_problem_resolver<PackageUniverse>::minimum_tier_num;
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::maximum_tier(maximum_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::conflict_tier(conflict_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::already_generated_tier(already_generated_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::defer_tier(defer_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_problem_resolver<PackageUniverse>::minimum_tier(minimum_tier_num);
 
 #endif

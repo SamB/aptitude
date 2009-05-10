@@ -167,6 +167,10 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverSearch();
 
+    /** \brief The logger for the resolver's search-graph maintenance.
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverSearchGraph();
+
     /** \brief The logger for the tiering component of the resolver's
      *  search logic.
      *
