@@ -29,6 +29,9 @@
 #include "solution.h"
 #include "tier_limits.h"
 
+#include <generic/util/immlist.h>
+#include <generic/util/immset.h>
+
 /** \brief Represents the current search graph.
  *
  *  This structure and its operations track all the visited search
@@ -50,6 +53,7 @@ class generic_search_graph
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
   typedef generic_tier_limits<PackageUniverse> tier_limits;
+  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
 
   // Structures that store the search graph.
   //
@@ -100,6 +104,122 @@ public:
     // This is always -1 to start with, and is updated when the step's
     // successors are generated.
     int first_child;
+
+    /** \brief Members related to generating a step's
+     *  successor.
+     */
+
+    // @{
+
+    /** \brief Information about a single solver of a dependency.
+     *
+     *  The solver itself is not stored here; this just tracks
+     *  metadata.
+     */
+    class solver_information
+    {
+      tier t;
+      choice_set reasons;
+
+    public:
+      /** \brief Create a new solver_information.
+       *
+       *  \param _t       The tier of the associated solver.
+       *  \param _reason  The reasons for the solver's tier (can
+       *                  be the solver itself).
+       */
+      solver_information(const tier &_t,
+			 const choice &_reasons)
+	: t(_t), reasons(_reasons)
+      {
+      }
+
+      /** \brief Retrieve the tier of the associated solver. */
+      const tier &get_tier() const { return t; }
+
+      /** \brief Retrieve the reason that this solver has the tier
+       *  that it does.
+       */
+      const choice &get_reasons() const { return reasons; }
+    };
+
+    /** \brief A structure that tracks the state of the solvers of a
+     *  dependency.
+     */
+    class dep_solvers
+    {
+      imm::map<choice, solver_information, compare_choices_by_effects> solvers;
+      imm::list<choice> structural_reasons;
+
+    public:
+      dep_solvers()
+      {
+      }
+
+      /** \brief Return the outstanding solvers of this dependency and
+       *  the current state of each one.
+       */
+      imm::map<version, solver_information> &get_solvers()
+      {
+	return solvers;
+      }
+
+      /** \brief Return the outstanding solvers of this dependency and
+       *  the current state of each one.
+       */
+      const imm::map<version, solver_information> &get_solvers() const
+      {
+	return solvers;
+      }
+
+      /** \brief Return the reasons that the set of solvers for this
+       *  dependency was narrowed.
+       */
+      imm::list<choice> &get_structural_reasons()
+      {
+	return structural_reasons;
+      }
+
+      /** \brief Return the reasons that the set of solvers for this
+       *  dependency was narrowed.
+       */
+      const imm::list<choice> &get_structural_reasons() const
+      {
+	return structural_reasons;
+      }
+    };
+
+    /** \brief The dependencies that are unresolved in this step; each
+     *	one maps to the reasons that any of its solvers were
+     *	dropped.
+     */
+    imm::map<dep, dep_solvers> unresolved_deps;
+
+    /** \brief The unresolved dependencies, sorted by the number of
+     *  solvers each one has.
+     *
+     *  This is a "poor man's heap".
+     */
+    imm::set<std::pair<int, dep> > unresolved_deps_by_num_solvers;
+
+    /** \brief Maps choices to lists of the dependencies that they
+     *  solve.
+     *
+     *  Every unresolved dependency is represented here, but some
+     *  dependencies in each list might already be resolved.  We defer
+     *  dropping them to save time and memory (no need to make copies
+     *  of (part of) the list just to throw entries away).
+     */
+    imm::map<choice, imm::list<dep>, compare_choices_by_effects> deps_solved_by_choice;
+
+    /** \brief Choices that are structurally forbidden. */
+    imm::set<choice, compare_choices_by_effects> forbidden_choices;
+
+    // @}
+
+    /** \brief Members related to backpropagating promotions. */
+
+    // @{
 
     // A set listing all the clones of this step (steps that have the
     // same solution).  If this is non-empty, this step is the
@@ -163,6 +283,8 @@ public:
     // could have a different number of promotions that haven't been
     // propagated to its particular parent).
     typename std::vector<promotion>::size_type promotions_list_first_new_promotion;
+
+    // @}
 
     /** \brief Default step constructor; only exists for use
      *  by STL containers.
