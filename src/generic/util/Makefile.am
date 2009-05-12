@@ -8,6 +8,7 @@ noinst_LIBRARIES = libgeneric-util.a
 libgeneric_util_a_SOURCES = \
 	dense_setset.h \
 	dirent_safe.h \
+	immlist.h \
 	immset.h \
 	maybe.h \
 	mut_fun.h \
