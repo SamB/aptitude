@@ -23,9 +23,6 @@
 
 namespace imm
 {
-  // TODO: Maybe the list itself should be "mutable", following the
-  // imm::set model?
-
   /** \brief Immutable list, using the standard head/tail breakdown.
    *
    *  The empty list is represented by a default-constructed ref_ptr.
@@ -35,31 +32,92 @@ namespace imm
    *  single-threaded.
    */
   template<typename T>
-  class list : public aptitude::util::refcounted_base_not_threadsafe
+  class list
   {
-    T head;
+  public:
+    typedef unsigned int size_type;
 
-    cwidget::util::ref_ptr<list> tail;
+  private:
+    class node : public aptitude::util::refcounted_base_not_threadsafe
+    {
+      T head;
 
-    list(const T &_head, const cwidget::util::ref_ptr<list> &_tail)
-      : head(_head), tail(_tail)
+      cwidget::util::ref_ptr<list> tail;
+
+      size_type size;
+
+    public:
+      node(const T &_head, const cwidget::util::ref_ptr<list> &_tail)
+	: head(_head), tail(_tail), size(_tail->size() + 1)
+      {
+      }
+
+      const T &get_head() const { return head; }
+      const cwidget::util::ref_ptr<list> &get_tail() const { return tail; }
+      size_type get_size() const { return size; }
+    };
+
+    cwidget::util::ref_ptr<node> lst;
+
+    list()
+      : lst()
+    {
+    }
+
+    list(const T &head, const list &tail)
+      : lst(new node(head, tail))
     {
     }
 
   public:
-    static cwidget::util::ref_ptr<list> make_empty()
+    static list make_empty() { return list(); }
+    static list make_cons(const T &head, const list &tail)
     {
-      return cwidget::util::ref_ptr<list>();
+      return list(head, tail);
     }
 
-    static cwidget::util::ref_ptr<list> make_cons(const T &_head,
-						  const cwidget::util::ref_ptr<list> &_tail)
+    /** \brief Check whether the list is empty. */
+    bool empty() const { return !lst.valid(); }
+    /** \brief Retrieve the size of this list.
+     *
+     *  We store sizes in list nodes, so this is O(1).  We can do this
+     *  only because the list is immutable.
+     */
+    size_type size() const
     {
-      return cwidget::util::ref_ptr<list>(new list(_head, _tail));
+      if(lst.valid())
+	return lst->get_size();
+      else
+	return 0;
     }
 
-    const T &get_head() const { return head; }
-    const cwidget::util::ref_ptr<list> &get_tail() const { return tail; }
+    /** \brief Add a new value to the front of this list. */
+    void push_front(const T &t)
+    {
+      lst = cwidget::util::ref_ptr<node>(new node(t, lst));
+    }
+
+    /** \brief Remove the first value from this list.
+     *
+     *  Undefined behavior if the list is empty.
+     */
+    void pop_front()
+    {
+      eassert(lst.valid());
+
+      lst = lst->get_tail();
+    }
+
+    /** \brief Retrieve the first value from this list.
+     *
+     *  Undefined behavior if the list is empty.
+     */
+    const T &front() const
+    {
+      eassert(lst.valid());
+
+      return lst->get_head();
+    }
 
     /** \brief Iterates down a single imm::list.
      *
@@ -69,13 +127,13 @@ namespace imm
      */
     class const_iterator
     {
-      cwidget::util::ref_ptr<list> lst;
+      cwidget::util::ref_ptr<node> lst;
 
     public:
       /** \brief Construct a const_iterator that iterates down the
        *  given list.
        */
-      const_iterator(const cwidget::util::ref_ptr<list> &_lst)
+      const_iterator(const cwidget::util::ref_ptr<node> &_lst)
 	: lst(_lst)
       {
       }
@@ -101,11 +159,15 @@ namespace imm
       const T *operator->() const { return lst->get_tail().operator->(); }
     };
 
+    /** \brief Retrieve an iterator pointing to the front of the list.
+     */
     const_iterator begin() const
     {
-      return const_iterator(cwidget::util::ref_ptr<list>(this));
+      return const_iterator(lst);
     }
 
+    /** \brief Retrieve an iterator pointing past the end of the list.
+     */
     const_iterator end() const
     {
       return const_iterator();
