@@ -319,6 +319,32 @@ public:
   }
 };
 
+/** \brief Compares choices by their effects on the solution.
+ *
+ *  e.g., two choices that install the same version will always
+ *  compare equal.
+ */
+template<typename PackageUniverse>
+struct generic_compare_choices_by_effects
+{
+  bool operator()(const generic_choice<PackageUniverse> &c1, const generic_choice<PackageUniverse> &c2) const
+  {
+    if(c1.get_type() < c2.get_type())
+      return true;
+    else if(c2.get_type() < c1.get_type())
+      return false;
+    else
+      switch(c1.get_type())
+	{
+	case generic_choice<PackageUniverse>::install_version:
+	  return c1.get_ver() < c2.get_ver();
+
+	case generic_choice<PackageUniverse>::break_soft_dep:
+	  return c1.get_dep() < c2.get_dep();
+	}
+  }
+};
+
 template<typename PackageUniverse>
 inline std::ostream &operator<<(std::ostream &out, const generic_choice<PackageUniverse> &choice)
 {

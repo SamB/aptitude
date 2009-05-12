@@ -557,6 +557,7 @@ public:
   typedef generic_promotion_set<PackageUniverse> promotion_set;
   typedef generic_search_graph<PackageUniverse> search_graph;
   typedef generic_tier_limits<PackageUniverse> tier_limits;
+  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
 
   typedef typename search_graph::step step;
 
@@ -621,32 +622,6 @@ private:
       // reversed comparison there.
       return s2.get_tier() < s1.get_tier() ||
 	(s1.get_tier() == s2.get_tier() && s1.get_score() < s2.get_score());
-    }
-  };
-
-  /** \brief Compares choices by their effects on the solution.
-   *
-   *  e.g., two choices that install the same version will always
-   *  compare equal.  This is used to check for choices that the user
-   *  has rejected or approved.
-   */
-  struct compare_choices_by_effects
-  {
-    bool operator()(const choice &c1, const choice &c2) const
-    {
-      if(c1.get_type() < c2.get_type())
-	return true;
-      else if(c2.get_type() < c1.get_type())
-	return false;
-      else
-	switch(c1.get_type())
-	  {
-	  case choice::install_version:
-	    return c1.get_ver() < c2.get_ver();
-
-	  case choice::break_soft_dep:
-	    return c1.get_dep() < c2.get_dep();
-	  }
     }
   };
 
