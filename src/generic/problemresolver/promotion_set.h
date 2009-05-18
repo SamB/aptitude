@@ -129,6 +129,21 @@ std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUnive
  *      existing promotion that has a higher tier, it should not be
  *      inserted.
  *
+ *   4. We need to be able to learn which promotions would match a
+ *      step with a single extra choice, and what that choice is.
+ *      This is used to update the solver status of a step.
+ 
+ *   5. We need to be able to learn which promotions containing a
+ *      particular choice would match a step with a single extra
+ *      choice, and one choice that should be contained in the result.
+ *      This is used to update the solver status when generating a
+ *      step successor.
+ *
+ *  In (4) and (5), the caller passes in a list of versions that it's
+ *  interested in.  Only promotions that are matched by adding one of
+ *  these versions are returned, and for each version, a maximal
+ *  promotion is returned.
+ *
  *  This object gets some of its efficiencies from actually knowing
  *  the structure of choices (e.g., it indexes choices to break soft
  *  dependencies differently from choices to install versions).
@@ -160,12 +175,20 @@ private:
 
     /** \brief Used when searching for a promotion.
      *
+     *  True if this was touched by the current search.
+     *
      *  Never copied when entries are copied.
      */
-    mutable unsigned int hit_count;
+    mutable bool active : 1;
+
+    /** \brief Used when searching for a promotion.
+     *
+     *  Never copied when entries are copied.
+     */
+    mutable unsigned int hit_count : (8*(sizeof(int))-1);
 
     entry(const promotion &_p)
-      : p(_p), hit_count(0)
+      : p(_p), active(false), hit_count(0)
     {
     }
   };
@@ -582,6 +605,8 @@ private:
     }
   };
 
+  // Sets visited entries to be active, and increments their hit
+  // counts.
   struct increment_entry_count_op
   {
     log4cxx::LoggerPtr logger;
@@ -594,6 +619,7 @@ private:
     bool operator()(entry_ref r) const
     {
       LOG_TRACE(logger, "increment_entry_count: incrementing the hit count for " << r->p);
+      r->active = true;
       ++r->hit_count;
 
       return true;
@@ -630,7 +656,7 @@ private:
 
     bool operator()(entry_ref r) const
     {
-      if(r->hit_count > 0)
+      if(r->active)
 	{
 	  if(r->hit_count == r->p.get_choices().size())
 	    {
@@ -660,6 +686,7 @@ private:
 		      << " is not matched (needed " << r->p.get_choices().size()
 		      << " hits, but got only " << r->hit_count);
 
+	  r->active = false;
 	  r->hit_count = 0;
 	}
       else
@@ -718,7 +745,7 @@ private:
 
     bool operator()(entry_ref r) const
     {
-      if(r->hit_count > 0)
+      if(r->active)
 	{
 	  if(maximum_tier < r->p.get_tier())
 	    {
@@ -741,6 +768,7 @@ private:
 		LOG_TRACE(logger, "find_entry_supersets_op: resetting the hit count for " << r->p << " to 0, but not returning it: it only has " << r->hit_count << " hits (needed " << required_hits << ")");
 	    }
 
+	  r->active = false;
 	  r->hit_count = 0;
 	}
       else
@@ -792,6 +820,136 @@ public:
 	    return const_iterator(tier_found, entries.end(), result_entry);
 	  }
       }
+  }
+
+  /** \brief Function object that updates the output map for
+   *  find_highest_incipient_promotion and friends.
+   *
+   *  This is initialized with a promotion, the output domain, and an
+   *  output location, then invoked with various choices.  For each of
+   *  the choices that is contained in the output domain, the
+   *  corresponding cell in the output map is updated if the new
+   *  promotion is higher than the old one.
+   *
+   *  Normally the choices this is invoked on represent the choices in
+   *  the promotion.
+   */
+  class update_incipient_output
+  {
+    const promotion &p;
+    const choice_set &output_domain;
+    std::map<choice, promotion> &output;
+
+  public:
+    update_incipient_output(const promotion &_p,
+			    const choice_set &_output_domain,
+			    std::map<choice, promotion> &_output)
+      : p(_p), output_domain(_output_domain), output(_output)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      if(output_domain.contains(c))
+	{
+	  typedef typename std::map<choice, promotion>::iterator
+	    out_iterator;
+
+	  std::pair<out_iterator, out_iterator> found =
+	    output.equal_range(c);
+
+	  if(found.first == found.second)
+	    output.insert(found.first, p);
+	  else if(found.first->second.get_tier() < p.get_tier())
+	    found.first->second = p;
+	}
+
+      return true;
+    }
+  };
+
+  /** \brief Finds near-subsets of the input set (one that
+   *         would be a subset if exactly one choice was added
+   *         to the input).
+   *
+   *  Similar to find_entry_subset_op, but finds incipient subsets
+   *  instead of subsets, and fills in a map with its results rather
+   *  than simply storing the single highest tier.
+   */
+  class find_incipient_entry_subset_op
+  {
+    const choice_set &output_domain;
+    std::map<choice, promotion> &output;
+    log4cxx::LoggerPtr logger;
+
+  public:
+    find_incipient_entry_subset_op(const choice_set &_output_domain,
+				   std::map<choice, promotion> &_output,
+				   const log4cxx::LoggerPtr &_logger)
+      : output_domain(_output_domain),
+	output(_output),
+	logger(_logger)
+    {
+    }
+
+    bool operator()(entry_ref r) const
+    {
+      if(r->active)
+	{
+	  if(r->hit_count + 1 == r->p.get_choices().size())
+	    {
+	      LOG_DEBUG(logger, "find_incipient_entry_subset_op: generating output entries for " << r->p << " and resetting its hit count to 0.");
+	      update_incipient_output updater(r->p, output_domain, output);
+	      r->p.get_choices().for_each(updater);
+	    }
+	  else
+	    LOG_DEBUG(logger, "find_incipient_entry_subset_op: " << r->p << " is not an incipient promotion; resetting its hit count to 0 and not returning it.");
+
+	  r->active = false;
+	  r->hit_count = 0;
+	}
+      else
+	LOG_TRACE(logger, "find_incipient_entry_subset_op: skipping already processed promotion " << r->p);
+
+      return true;
+    }
+  };
+
+public:
+
+  /** \brief Find the highest-tier incipient promotion containing a
+   *  particular choice.
+   *
+   *  An incipient promotion is one that doesn't match now, but that
+   *  would match if a single choice was added to the set of choices.
+   *
+   *  \param choices  The choice set to test.
+   *  \param output_domain
+   *                  Additional choices, one of which must be contained
+   *                  in every returned promotion.  The return values
+   *                  are organized according to which of these choices
+   *                  each one contained, and only the highest-tier
+   *                  promotion for each choice is returned.
+   *  \param output   A map in which to store the results of the search.
+   *                  Choices in output_domain that were matched are
+   *                  mapped to the highest-tier promotion that they
+   *                  would trigger.
+   */
+  void find_highest_incipient_promotion(const choice_set &choices,
+					const choice_set &output_domain,
+					std::map<choice, promotion> &output) const
+  {
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
+
+    traverse_intersections<increment_entry_count_op>
+      increment_f(*this, true, increment_entry_count_op(logger));
+    traverse_intersections<find_incipient_entry_subset_op>
+      find_result_f(*this, true, find_entry_subset_op(output_domain, output, logger));
+
+    choices.for_each(increment_f);
+    // We have to run this even if the increment aborted, since we
+    // need to reset all the counters to 0 for the next run.
+    choices.for_each(find_result_f);
   }
 
 private:
@@ -847,13 +1005,24 @@ private:
 
   /** \brief Used to check whether a set of choices matches the values
    *  stored in the local indices.
+   *
+   *  This returns true if exactly "num_mismatches" of its input
+   *  choices are NOT in the local indices.  It is used with
+   *  num_mismatches=0 to check that promotions are strictly contained
+   *  in the input, and with num_mismatches=1 to check for promotions
+   *  that would match if a single choice was added.
    */
-  struct all_choices_in_local_indices
+  struct check_choices_in_local_indices
   {
     /** \brief Set to true if all the choices were found, and false
      *  otherwise.
      */
-    mutable bool rval;
+    bool &rval;
+
+    // The number of mismatches to look for.  Decremented as we
+    // encounter mismatches.  If it becomes negative, the traversal
+    // aborts.
+    int num_mismatches;
 
     // Maps versions to choices associated with installing those
     // versions.
@@ -864,14 +1033,18 @@ private:
 
     log4cxx::LoggerPtr logger;
 
-    all_choices_in_local_indices(const std::map<version, choice> &_choices_by_install_version,
-				 const std::set<dep> &_broken_soft_deps,
-				 const log4cxx::LoggerPtr &_logger)
-      : rval(true),
-	choices_by_install_version(_choices_by_install_version),
+    check_choices_in_local_indices(const std::map<version, choice> &_choices_by_install_version,
+				   const std::set<dep> &_broken_soft_deps,
+				   const log4cxx::LoggerPtr &_logger,
+				   int _num_mismatches,
+				   bool &_rval)
+      : choices_by_install_version(_choices_by_install_version),
 	broken_soft_deps(_broken_soft_deps),
-	logger(_logger)
+	logger(_logger),
+	num_mismatches(_num_mismatches),
+	rval(_rval)
     {
+      rval = (num_mismatches == 0);
     }
 
     bool operator()(const choice &c) const
@@ -906,7 +1079,7 @@ private:
 	    if(ok)
 	      LOG_TRACE(logger, "The choice " << c << " contains the input choice " << found->second);
 	    else
-	      rval = false;
+	      --num_mismatches;
 	  }
 
 	  break;
@@ -926,11 +1099,15 @@ private:
 
 	default:
 	  LOG_ERROR(logger, "Bad choice type " << c.get_type());
-	  rval = false;
+	  --num_mismatches;
 	  break;
 	}
 
-      return rval;
+      // We succeeded if we found exactly the desired number of
+      // mismatches.  If the desired number is still above zero, then
+      // we could still succeed; otherwise we fail hard.
+      rval = (num_mismatches == 0);
+      return num_mismatches >= 0;
     }
   };
 
@@ -1021,6 +1198,80 @@ public:
 	      {
 		LOG_TRACE(logger, "find_highest_promotion_containing: returning a reference to " << highest_entry->p);
 		return const_iterator(tier_found, entries.end(), highest_entry);
+	      }
+	  }
+      }
+  }
+
+  /** \brief Find the highest-tier incipient promotion containing a
+   *  particular choice.
+   *
+   *  An incipient promotion is one that doesn't match now, but that
+   *  would match if a single choice was added to the set of choices.
+   *
+   *  \param choices  The choice set to test.
+   *  \param c        A choice that must be contained in every returned
+   *                  promotion.
+   *  \param output_domain
+   *                  Additional choices, one of which must be contained
+   *                  in every returned promotion.  The return values
+   *                  are organized according to which of these choices
+   *                  each one contained, and only the highest-tier
+   *                  promotion for each choice is returned.
+   *  \param output   A map in which to store the results of the search.
+   *                  Choices in output_domain that were matched are
+   *                  mapped to the highest-tier promotion that they
+   *                  would trigger.
+   */
+  void find_highest_incipient_promotions_containing(const choice_set &choices,
+						    const choice &c,
+						    const choice_set &output_domain,
+						    std::map<choice, promotion> &output) const
+  {
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_containing(" << choices << ", " << c << ")");
+
+    const std::vector<entry_ref> *index_entries = find_index_list(c);
+
+    if(index_entries == NULL || index_entries->empty())
+      {
+	LOG_TRACE(logger, "find_highest_incipient_promotion_containing: There are no index entries for " << c << "; returning an empty map.");
+      }
+    else
+      {
+	// Build local indices, used to make it reasonable to compare all
+	// the promotions in index_entries to the input choice list.
+
+	std::map<version, choice> choices_by_install_version;
+	std::set<dep> broken_soft_deps;
+	build_local_indices build_indices_f(choices_by_install_version,
+					    broken_soft_deps, logger);
+
+
+	LOG_TRACE(logger, "find_highest_incipient_promotion_containing: Building local index.");
+	choices.for_each(build_indices_f);
+
+
+	LOG_TRACE(logger, "find_highest_incipient_promotion_containing: Matching indexed entries for " << c << " to the local index.");
+
+	bool found_anything = false;
+	entry_ref highest_entry;
+	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
+	    it != index_entries->end(); ++it)
+	  {
+	    bool is_incipient = false;
+	    check_choices_in_local_indices
+	      choices_found_f(choices_by_install_version,
+			      broken_soft_deps, logger,
+			      1, is_incipient);
+
+	    const promotion &p((*it)->p);
+	    p.get_choices().for_each(all_choices_found_f);
+	    if(is_incipient)
+	      {
+		update_incipient_output updater(p, output_domain, output);
+		LOG_TRACE(logger, "find_highest_incipient_promotion_containing: found a match: " << p);
+		p.get_choices().for_each(updater);
+		found_anything = true;
 	      }
 	  }
       }

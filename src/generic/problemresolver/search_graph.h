@@ -95,6 +95,9 @@ class generic_search_graph
 public:
   struct step
   {
+    // The index of this step; mainly useful when generating debug
+    // output.
+    int step_num;
     // If true, this is the last child in its parent's child list.
     // Meaningless if parent is -1 (meaning there is no parent node).
     bool is_last_child : 1;
@@ -120,17 +123,20 @@ public:
     {
       tier t;
       choice_set reasons;
+      cwidget::util::ref_ptr<expression<bool> > is_deferred;
 
     public:
       /** \brief Create a new solver_information.
        *
        *  \param _t       The tier of the associated solver.
-       *  \param _reason  The reasons for the solver's tier (can
-       *                  be the solver itself).
+       *  \param _reason  The reasons for the solver's tier (other than
+       *                  the solver itself).
        */
       solver_information(const tier &_t,
-			 const choice &_reasons)
-	: t(_t), reasons(_reasons)
+			 const choice_set &_reasons,
+			 cwidget::util::ref_ptr<expression<bool> > &_is_deferred)
+	: t(_t), reasons(_reasons),
+	  is_deferred(_is_deferred)
       {
       }
 
@@ -141,6 +147,15 @@ public:
        *  that it does.
        */
       const choice &get_reasons() const { return reasons; }
+
+      /** \brief Retrieve an expression that returns whether this
+       *  solver is deferred.
+       */
+      const cwidget::util::ref_ptr<expression<bool> > &
+      get_is_deferred() const
+      {
+	return is_deferred;
+      }
     };
 
     /** \brief A structure that tracks the state of the solvers of a
@@ -159,7 +174,7 @@ public:
       /** \brief Return the outstanding solvers of this dependency and
        *  the current state of each one.
        */
-      imm::map<version, solver_information> &get_solvers()
+      imm::map<choice, solver_information, compare_choices_by_size> &get_solvers()
       {
 	return solvers;
       }
@@ -167,7 +182,7 @@ public:
       /** \brief Return the outstanding solvers of this dependency and
        *  the current state of each one.
        */
-      const imm::map<version, solver_information> &get_solvers() const
+      const imm::map<choice, solver_information, compare_choices_by_size> &get_solvers() const
       {
 	return solvers;
       }
@@ -188,6 +203,26 @@ public:
 	return structural_reasons;
       }
     };
+
+    /** \brief The actions performed by this step. */
+    choice_set actions;
+
+    /** \brief The score of this step. */
+    int score;
+
+    /** \brief The combined score due to choices that were made and
+     *  distance from the root -- "score" is calculated by adding the
+     *  broken-dependency count to this.
+     */
+    int action_score;
+
+    /** \brief The tier of this step. */
+    tier step_tier;
+
+    /** \brief An incremental expression that computes "true" if the
+     *  step is deferred and "false" otherwise.
+     */
+    cwidget::util::ref_ptr<expression<bool> > is_deferred;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were
@@ -212,8 +247,10 @@ public:
      */
     imm::map<choice, imm::list<dep>, compare_choices_by_effects> deps_solved_by_choice;
 
-    /** \brief Choices that are structurally forbidden. */
-    imm::set<choice, compare_choices_by_effects> forbidden_choices;
+    /** \brief Versions that are structurally forbidden and the reason
+     *  each one is forbidden.
+     */
+    imm::map<version, choice> forbidden_versions;
 
     // @}
 
@@ -233,8 +270,6 @@ public:
     // The canonical copy of this step, or -1 if none.
     int canonical_clone;
 
-    // The solution associated with this step.
-    solution sol;
     // The choice associated with this step (meaningless if parent ==
     // -1).  Set when the step is created, and used when
     // backpropagating promotions: when the parent is computing its
@@ -293,7 +328,8 @@ public:
       : is_last_child(true),
 	parent(-1), first_child(-1), canonical_clone(-1), sol(), reason(),
 	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_first_new_promotion(0)
+	promotions_list(), promotions_list_first_new_promotion(0),
+	is_deferred()
     {
     }
 
@@ -302,9 +338,16 @@ public:
      *  The step has no parent, children, promotion, or successor
      *  constraints.
      */
-    step(const solution &_sol)
+    step(const choice_set &_actions,
+	 int _score,
+	 int _action_score)
       : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1), sol(_sol), reason(),
+	parent(-1), first_child(-1), canonical_clone(-1)
+	actions(_actions),
+	score(_score),
+	action_score(_action_score),
+	is_deferred(var_expression::create(false)),
+	reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
     {
@@ -314,16 +357,35 @@ public:
      *
      *  The step initially has no children or successor constraints.
      */
-    step(const solution &_sol, int _parent,
+    step(const choice_set &_actions,
+	 int _score, int _action_score,
+	 int _parent,
 	 const choice &_reason, bool _is_last_child)
       : is_last_child(_is_last_child),
 	parent(_parent),
-	first_child(-1), canonical_clone(-1), sol(_sol), reason(_reason),
+	first_child(-1), canonical_clone(-1),
+	actions(_actions),
+	score(_score),
+	action_score(_action_score),
+	reason(_reason),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
     {
     }
   };
+
+  /** \brief Used to track why a choice is associated with a
+   *         particular step.
+   */
+  enum choice_mapping_type
+    {
+      /** \brief The choice is a solver of the step. */
+      choice_mapping_from_solver,
+      /** \brief The choice is one of the actions contained in the
+       *         step.
+       */
+      choice_mapping_from_action
+    };
 
 private:
   /** \brief The maximum number of promotions to propagate
@@ -354,8 +416,73 @@ private:
   // promotions to them).
   std::set<int, std::greater<int> > steps_pending_promotion_propagation;
 
-  // Step-related routines.
+  /** \brief The step numbers that contain each choice in their
+   *  installed list or in one of their solvers.
+   *
+   *  This is used to efficiently update existing steps that are "hit"
+   *  by a new promotion.  Each step number is mapped to "true" if the
+   *  choice is part of the step's action set and "false" if it's a
+   *  solver.
+   *
+   *  This set needs to be updated when a new step is added to the
+   *  graph, and also when one of a version's successors is struck.
+   */
+  std::map<choice, std::map<int, choice_mapping_type>, compare_choices_by_effects> steps_related_to_choices;
+
 public:
+  /** \brief RAII wrapper to ensure proper access to one entry in the
+   *         global steps-related-to-choices map.
+   *
+   *  When this object is constructed, it creates a new set if no set
+   *  exists.  When it is destroyed, it removes the set from the map
+   *  if it's empty.
+   */
+  class steps_related_to_choices_reference
+  {
+    search_graph &graph;
+    std::map<version, std::map<int, choice_mapping_type>, compare_choices_by_effects>::iterator it;
+
+  public:
+    steps_related_to_choices_references(search_graph &_graph,
+					const choice &c)
+      : graph(_graph)
+    {
+      it = graph.steps_related_to_choices.find(c);
+      if(it == graph.end())
+	it = graph.steps_related_to_choices.insert(std::make_pair(v, std::set<int>())).first;
+    }
+
+    /** \brief Retrieve the referenced set. */
+    std::map<int, choice_mapping_type> &operator*() const
+    {
+      return it->second;
+    }
+
+    /** \brief Retrieve the referenced set. */
+    std::map<int, choice_mapping_type> *operator->() const
+    {
+      return &it->second;
+    }
+
+    ~successor_info_by_version_reference()
+    {
+      if(it->second.empty())
+	graph.steps_related_to_choices.erase(it);
+    }
+  };
+
+  std::set<int> *find_steps_related_to_choice(const choice &c) const
+  {
+    std::map<choice, std::set<int>, compare_choices_by_effects>::const_iterator
+      found = steps_related_to_choices.find(c);
+
+    if(found == steps_related_to_choices.end())
+      return NULL;
+    else
+      return found->second;
+  }
+
+
   /** \brief Create a search graph.
    *
    *  \param _promotions  The promotion set associated with this object.
@@ -393,15 +520,19 @@ public:
     return steps.size();
   }
 
+public:
   /** \brief Add the root step. */
-  void add_root(const solution &sol)
+  void add_root(const imm::set<dep> &broken,
+		const solution_weights<PackageUniverse> &weights,
+		const resolver_initial_state<PackageUniverse> &initial_state,
+		const tier &root_tier)
   {
-    // In practice we sometimes add a root when this is not empty. o_O
-    // This shouldn't happen, but I'm currently just refactoring and
-    // keeping old behavior.
-    //
-    //eassert(steps.empty());
-    steps.push_back(step(sol));
+    int score = broken.size() * weights.broken_score;
+
+    if(broken.empty())
+      score += weights.full_solution_score;
+    steps.push_back(step(choice_set(), score, 0));
+    steps.back().step_num = steps.size() - 1;
   }
 
   /** \brief Add a step.
@@ -410,11 +541,14 @@ public:
    *  caller is expected to manage invariants regarding child flags,
    *  etc.
    */
-  void add_step(const solution &sol, int parent_step_num,
+  void add_step(const choice_set &choices,
+		int score, int action_score,
+		int parent_step_num,
 		const choice &c, bool is_first_child)
   {
     eassert(!steps.empty());
-    steps.push_back(step(sol, parent_step_num, c, is_first_child));
+    steps.push_back(step(actions, score, action_score, parent_step_num, c, is_first_child));
+    steps.back().step_num = steps.size() - 1;
   }
 
   /** \brief Throw away all step information. */
@@ -422,6 +556,7 @@ public:
   {
     steps.clear();
     steps_pending_promotion_propagation.clear();
+    steps_related_to_choices.clear();
   }
 
   /** Retrieve the promotions list of the given step, returning the
@@ -454,8 +589,10 @@ private:
   // Returns "true" if anything was generated.  We care because we
   // need to know whether to queue the parent of the parent for
   // propagation.
+  template<typename AddPromotion>
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
-			    const choice_set &choices, const tier &t)
+			    const choice_set &choices, const tier &t,
+			    const AddPromotion &addPromotion)
   {
     // Where to insert any promotions we run into.
     const step &parent = get_step(parentNum);
@@ -544,15 +681,13 @@ private:
 	  {
 	    promotion new_promotion(new_choices, new_tier);
 
-	    // Stash the promotion away in the global set of
-	    // promotions.
-	    promotions.insert(new_promotion);
+	    // Emit a new promotion.
+	    addPromotion(canonicalParentNum, new_promotion);
 
 	    // Actually output a new promotion in the canonical
 	    // parent.
 	    LOG_TRACE(logger, "New backpropagated promotion at step "
 		      << canonicalParentNum << ": " << new_promotion);
-	    schedule_promotion_propagation(canonicalParentNum, new_promotion);
 
 	    rval = true;
 	  }
@@ -577,7 +712,8 @@ private:
   // TODO: log when we first fail to add a promotion because we hit
   // the maximum number -- that's actually not trivial to do without
   // complicating the code.
-  void maybe_collect_child_promotions(int stepNum)
+  template<typename AddPromotion>
+  void maybe_collect_child_promotions(int stepNum, const AddPromotion &addPromotion)
   {
     step &parentStep(get_step(stepNum));
     LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum << ": " << parentStep.sol);
@@ -721,7 +857,8 @@ public:
   }
 
   /** \brief Execute any pending promotion propagations. */
-  void run_scheduled_promotion_propagations()
+  template<typename AddPromotion>
+  void run_scheduled_promotion_propagations(const AddPromotion &addPromotion)
   {
     while(!steps_pending_promotion_propagation.empty())
       {
@@ -730,7 +867,7 @@ public:
 	tmp.swap(steps_pending_promotion_propagation);
 	for(std::set<int, std::greater<int> >::const_iterator it = tmp.begin();
 	    it != tmp.end(); ++it)
-	  maybe_collect_child_promotions(*it);
+	  maybe_collect_child_promotions(*it, addPromotion);
       }
   }
 
@@ -812,5 +949,12 @@ public:
       }
   }
 };
+
+template<typename PackageUniverse>
+ostream &operator<<(ostream &out, const typename generic_step<PackageUniverse>::solver_information &info)
+{
+  return out << "(" << info.get_tier()
+	     << ":" << info.get_reasons() << ")";
+}
 
 #endif

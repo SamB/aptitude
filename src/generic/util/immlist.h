@@ -70,10 +70,14 @@ namespace imm
     }
 
   public:
-    static list make_empty() { return list(); }
-    static list make_cons(const T &head, const list &tail)
+    static cwidget::util::ref_ptr<list> make_empty() { return new list; }
+    static cwidget::util::ref_ptr<list> make_cons(const T &head, const list &tail)
     {
-      return list(head, tail);
+      return new list(head, tail);
+    }
+    static cwidget::util::ref_ptr<list> make_singleton(const T &head)
+    {
+      return new list(head, new list());
     }
 
     /** \brief Check whether the list is empty. */

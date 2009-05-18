@@ -52,6 +52,7 @@
 #include "choice_set.h"
 #include "dump_universe.h"
 #include "exceptions.h"
+#include "incremental_expressions.h"
 #include "promotion_set.h"
 #include "solution.h"
 #include "resolver_undo.h"
@@ -853,6 +854,11 @@ private:
    */
   promotion_set promotions;
 
+  /** Stores newly generated promotions that haven't been checked
+   *  against the existing set of steps.
+   */
+  std::deque<promotion> pending_promotions;
+
   /** The initial set of broken dependencies.  Kept here for use in
    *  the stupid-elimination algorithm.
    */
@@ -868,26 +874,50 @@ private:
    */
   tier *version_tiers;
 
-  /** Stores versions that have been rejected by the user; distinct
-   *  from the per-solution reject sets that track changes on a single
-   *  inference path.
+  /** \brief Used to track whether a single choice is approved or
+   *  rejected.
+   *
+   *  The variables are used as the leaves in a large Boolean
+   *  expression tree that is used to efficiently update the deferred
+   *  status of steps and solvers.
    */
-  std::set<version> user_rejected;
+  class approved_or_rejected_info
+  {
+    // True if the choice is rejected.
+    cwidget::util::ref_ptr<var_e<bool> > rejected; 
+    // True if the choice is approved.
+    cwidget::util::ref_ptr<var_e<bool> > approved;
 
-  /** Stores versions that have been mandated by the user; we should
-   *  always pick these versions if the chance arises.
-   */
-  std::set<version> user_mandated;
+  public:
+    approved_or_rejected_info()
+      : rejected(var_e::create(false)),
+	approved(var_e::create(false))
+    {
+    }
 
-  /** Stores dependencies that have been "hardened" by the user (that
-   *  aren't allowed to default).
-   */
-  std::set<dep> user_hardened;
+    const cwidget::util::ref_ptr<var_e<bool> > &get_rejected() const
+    {
+      return rejected;
+    }
 
-  /** Stores dependencies that the user has said should be broken if
-   *  they come up.
+    const cwidget::util::ref_ptr<var_e<bool> > &get_approved() const
+    {
+      return approved;
+    }
+  };
+
+  /** \brief Stores the approved and rejected status of versions. */
+  std::map<version, approved_or_rejected_info> user_approved_or_rejected_versions;
+
+  /** \brief Stores the approved and rejected status of dependencies. */
+  std::map<dep, approved_or_rejected_info> user_approved_or_rejected_broken_deps;
+
+  /** \brief Memoizes "is this deferred?" expressions for every choice
+   *  in the search.
+   *
+   *  \sa build_is_deferred, build_is_deferred_real
    */
-  std::set<dep> user_approved_broken;
+  std::map<choice, expression_weak_ref<expression<bool> > > > memoized_is_deferred;
 
 
   typedef std::set<std::pair<version, version> > stupid_table;
@@ -2086,493 +2116,1011 @@ private:
     found->second.insert(step_num);
   }
 
-  /** Tries to enqueue the given step. */
-  void try_enqueue(const int step_num)
-  {
-    const solution &s = graph.get_step(step_num).sol;
-    // Check whether a promotion to a higher tier has been added since
-    // the solution was placed onto the queue.
-    bool s_has_new_promotion = false;
-    promotion s_new_promotion;
-    const tier &s_tier = get_solution_tier(s, s_has_new_promotion,
-					   s_new_promotion);
-
-    // If there is a new promotion, incorporate it into the
-    // propagation set.  This typically happens, for instance, when a
-    // solution contains a promotion that didn't exist when it was
-    // created.  For instance, we might plan to install a package X,
-    // but later we discover that another choice implies that the
-    // solution that installs X has to be promoted.
-    //
-    // Without this code, the newly formed promotion won't be
-    // propagated up the search tree.
-    if(s_has_new_promotion &&
-       maximum_search_tier < s_new_promotion.get_tier())
-      graph.schedule_promotion_propagation(step_num, s_new_promotion);
-
-    if(maximum_search_tier < s_tier)
-      {
-	if(s_tier >= tier_limits::conflict_tier)
-	  LOG_TRACE(logger, "Dropping solution " << s << " (it is at the conflict tier).");
-	else if(s_tier >= tier_limits::already_generated_tier)
-	  LOG_TRACE(logger, "Dropping solution " << s << " (it was already generated as a solution).");
-	else
-	  {
-	    if(s_tier >= tier_limits::defer_tier)
-	      LOG_TRACE(logger, "Deferring rejected solution " << s << " (it breaks a user constraint).");
-	    else
-	      LOG_TRACE(logger, "Deferring " << s << " until tier " << s_tier);
-
-	    defer_step(s_tier, step_num);
-	  }
-      }
-    else if(is_already_seen(step_num))
-      LOG_WARN(logger, "Unexpectedly already seen step " << step_num);
-    else if(irrelevant(s))
-      // Shouldn't happen: we should have caught irrelevant solutions
-      // earlier in the process.
-      LOG_WARN(logger, "Unexpectedly irrelevant solution " << s);
-    else
-      {
-	choice_set defer_reason;
-	if(breaks_user_constraint(s, defer_reason))
-	  {
-	    LOG_WARN(logger, "Deferring rejected solution " << s);
-	    // Add a singleton promotion here?
-	    promotion defer_promotion(defer_reason, tier_limits::defer_tier);
-	    graph.schedule_promotion_propagation(step_num, defer_promotion);
-	    defer_step(tier_limits::defer_tier, step_num);
-	  }
-	else
-	  {
-	    LOG_TRACE(logger, "Enqueuing " << s);
-
-	    open.push(step_num);
-	  }
-      }
-  }
-
-  /** Try to enqueue the children of the given step. */
-  void try_enqueue_children(int parent_step_num)
-  {
-    if(parent_step_num == -1)
-      return;
-
-    int child_step_num = graph.get_step(parent_step_num).first_child;
-    while(child_step_num != -1)
-      {
-	try_enqueue(child_step_num);
-	if(graph.get_step(child_step_num).is_last_child)
-	  child_step_num = -1;
-	else
-	  ++child_step_num;
-      }
-  }
-
-  /** Internal routine to check for the legality of a 'move' and
-   *  generate a conflictor if it's not legal.
+  /** \brief Add a promotion to the global set of promotions.
    *
-   *  \param s   A solution giving the current context.
-   *  \param v   The version to consider installing.
-   *  \param out_choice   If v is illegal, this will be set
-   *                      to an existing choice in s that
-   *                      rendered v illegal.
+   *  This routine handles all the book-keeping that needs to take
+   *  place: it adds the promotion to the global set and also adds it
+   *  to the list of promotions that need to be tested against all
+   *  existing steps.
    */
-  bool is_legal(const solution &s,
-		const version &v,
-		choice &out_choice) const
+  void add_promotion(const promotion &p)
   {
-    package p = v.get_package();
-    version cur = initial_state.version_of(p);
-    version inst = s.version_of(p);
-
-    if(inst != cur)
-      {
-	LOG_TRACE(logger,
-		  "Discarding " << v
-		  << ": monotonicity violation");
-
-	out_choice = choice::make_install_version(inst, -1);
-	return false;
-      }
-    else
-      {
-	eassert_on_ver(v != cur, s, v);
-
-	typename imm::map<version, dep>::node found
-	  = s.get_forbidden_versions().lookup(v);
-
-	if(!found.isValid())
-	  return true;
-	else
-	  {
-	    // \todo Store choices instead of deps as the reason for
-	    // forbidden versions; then we can also forbid resolving a
-	    // broken soft dependency, which should cut down the
-	    // branching factor.
-	    const dep &found_d = found.getVal().second;
-
-	    LOG_TRACE(logger,
-		      "Discarding " << v
-		      << ": forbidden by the resolution of " << found_d);
-
-	    // The version that was installed to change the
-	    // dependency's source.
-	    version culprit_ver = s.version_of(found_d.get_source().get_package());
-	    out_choice = choice::make_install_version_from_dep_source(culprit_ver, found_d, -1);
-
-	    return false;
-	  }
-      }
+    promotions.insert(p);
+    pending_promotions.push_back(p);
   }
 
-  /** Generate a solution and add a resolver step for it.
+  /** \brief Add a promotion to the global set of promotions
+   *  for a particular step.
    *
-   *  Note: correctness here relies on the fact that we don't
-   *  interleave generation.  There's a sanity-check to ensure this.
+   *  This routine handles all the book-keeping that needs to take
+   *  place: it adds the promotion to the global set, adds it to the
+   *  list of promotions that need to be tested against all existing
+   *  steps, and also attaches it to the step graph.
    */
-  struct real_generator
+  void add_promotion(int step_num, const promotion &p)
   {
-    // The first time a step is generated, we update the parent's
-    // child pointer.
-    bool first;
-    int parent_step_num;
+    add_promotion(p);
+    graph.schedule_promotion_propagation(step_num, p);
+  }
 
-    generic_problem_resolver &resolver;
-    typename std::deque<step>::size_type steps_size;
-    std::set<package> *visited_packages;
-  public:
-    real_generator(int _parent_step_num,
-		   generic_problem_resolver &_resolver,
-		   std::set<package> *_visited_packages)
-      : first(true),
-	parent_step_num(_parent_step_num),
-	resolver(_resolver),
-	steps_size(resolver.graph.get_num_steps()),
-	visited_packages(_visited_packages)
+  /** \brief Utility structure used to find incipient promotions.
+   *
+   *  While searching for incipient promotions, we allocate one of
+   *  these for each step hit by a promotion.  A promotion is
+   *  incipient in a given step if each of its choices is mapped to
+   *  the step in the global choice index, and if exactly one of those
+   *  choices is a solver.
+   *
+   *  Note that it matters that the global index compare choices by
+   *  effects: there might be several distinct choices that contain a
+   *  particular element of a promotion, but they will have the same
+   *  effect.  If the structure of choices is changed this might
+   *  become an issue.
+   */
+  struct incipient_promotion_search_info
+  {
+    /** \brief Counts the number of times the promotion hits the
+     *	action set.
+     */
+    int action_hits;
+
+    /** \brief Counts the number of times the promotion hits the
+     *  solver set.
+     */
+    int solver_hits;
+
+    /** \brief Set to the first choice in the solver set that the
+     *  promotion hit.
+     */
+    choice solver;
+
+    incipient_promotion_search_info()
+      : action_hits(0), solver_hits(0)
     {
-    }
-
-    void make_successor(const solution &s,
-			const choice &c,
-			const tier &succ_tier,
-			const promotion &succ_promotion,
-			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights)
-    {
-      eassert(resolver.graph.get_num_steps() == steps_size);
-
-      // Update the parent's child link the first time through.
-      if(first)
-	{
-	  if(parent_step_num != -1)
-	    {
-	      eassert(parent_step_num >= 0);
-	      eassert((unsigned)parent_step_num < resolver.graph.get_num_steps());
-	      resolver.graph.get_step(parent_step_num).first_child = resolver.graph.get_num_steps();
-	    }
-	  first = false;
-	}
-      else
-	// On subsequent trips through this routine, move forward the
-	// "last child" flag.
-	{
-	  eassert(resolver.graph.get_num_steps() > 0);
-	  resolver.graph.get_step(resolver.graph.get_num_steps() - 1).is_last_child = false;
-	}
-
-      solution sol(solution::successor(s,
-				       &c, (&c) + 1,
-				       succ_tier,
-				       resolver.universe, resolver.weights));
-      resolver.graph.add_step(sol, parent_step_num, c, true);
-
-      steps_size = resolver.graph.get_num_steps();
-
-      LOG_TRACE(resolver.logger, "Generated successor (step " << steps_size - 1 << "): "
-		<< resolver.graph.get_step(resolver.graph.get_num_steps() - 1).sol);
-
-      // If the given successor promotion exceeds the current maximum
-      // tier, add it to the step graph.
-      if(resolver.maximum_search_tier < succ_promotion.get_tier())
-	resolver.graph.schedule_promotion_propagation(steps_size - 1, succ_promotion);
-
-      // Touch all the packages that are involved in broken dependencies
-      if(visited_packages != NULL)
-	{
-	  const solution &generated(resolver.graph.get_step(resolver.graph.get_num_steps() - 1).sol);
-
-	  for(typename imm::set<dep>::const_iterator bi =
-		generated.get_broken().begin();
-	      bi != generated.get_broken().end(); ++bi)
-	    {
-	      for(typename dep::solver_iterator si =
-		    (*bi).solvers_begin(); !si.end(); ++si)
-		visited_packages->insert((*si).get_package());
-
-	      visited_packages->insert((*bi).get_source().get_package());
-	    }
-	}
     }
   };
 
-  /** Don't actually generate solutions; instead, just count how many
-   *  *would* be generated.  Each time a solution would be generated,
-   *  the integer referenced by this object is incremented (it is
-   *  never set to 0; if you need it to be initialized to 0, do that
-   *  yourself).
-   */
-  class null_generator
+  class find_steps_containing_incipient_promotion
   {
-    int &count;
+    // Note: would it be more efficient to use an array?  Usually
+    // there aren't that many steps anyway.  I could even store this
+    // information in the global step array; that would more or less
+    // eliminate the cost of maintaining this structure, and it would
+    // be safe since this isn't reentrant (same trick I use for
+    // promotions).
+    std::map<int, incipient_promotion_search_info> &output;
+    const search_graph &graph;
+
   public:
-    null_generator(int &_count)
-      :count(_count)
-    {
-    }
-
-    void make_successor(const solution &s,
-			const choice &c,
-			const tier & succ_tier,
-			const promotion &succ_promotion,
-			const PackageUniverse &universe,
-			const solution_weights<PackageUniverse> &weights) const
-    {
-      ++count;
-    }
-
-    int get_count() const
-    {
-      return count;
-    }
-  };
-
-  /** \brief Function object that inserts each choice it is invoked on
-   *  into a given choice set if the choice does not install a given
-   *  version.
-   *
-   *  Used in generate_single_successor().
-   */
-  struct add_choices_not_for_version
-  {
-    choice_set &output;
-    const version &ver;
-
-    add_choices_not_for_version(choice_set &_output,
-				const version &_ver)
-      : output(_output), ver(_ver)
+    find_steps_containing_incipient_promotion(std::set<int> &_output,
+					      const search_graph &_graph)
+      : output(_output),
+	graph(_graph)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      bool ok = true;
+      std::map<int, search_graph::choice_mapping_type> *
+	steps(graph.find_steps_related_to_choice(c));
 
-      switch(c.get_type())
+      if(steps != NULL)
 	{
-	case choice::install_version:
-	  ok = (ver != c.get_ver());
-	  break;
+	  for(std::map<int, search_graph::choice_mapping_type>::const_iterator
+		it = steps->begin(); it != steps->end(); ++it)
+	    {
+	      incipient_promotion_search_info &inf(output[it->first]);
 
-	default:
-	  break;
+	      switch(it->second)
+		{
+		case search_graph::choice_mapping_from_action:
+		  ++inf.action_hits;
+		  break;
+
+		case search_graph::choice_mapping_from_solver:
+		  if(inf.solver_hits == 0)
+		    inf.solver = c;
+		  ++inf.solver_hits;
+		  break;
+		}
+	    }
 	}
-
-      if(ok)
-	output.insert_or_narrow(c);
 
       return true;
     }
   };
 
-  /** Convenience routine for the below: try to generate a successor
-   *  by installing a single package version.  NB: assumes that the
-   *  solution's choices have dense identifiers (i.e., less than
-   *  s.get_choices().size()).
-   *
-   *  \param s the solution for which a successor should be generated
-   *  \param v the version to install
-   *  \param d the dependency for which the successor is being generated.
-   *  \param from_dep_source if \b true, this successor is the result
-   *                         of an action on the source of a dependency
-   *  \param result_promotion    set to an empty promotion to the lowest
-   *                             tier if no promotion was found;
-   *                             otherwise, set to the promotion that
-   *                             was found for this particular successor.
-   *
-   *  \param generator an object supporting the make_successor() routine,
-   *                   as real_generator and null_generator above.
-   */
-  template<typename SolutionGenerator>
-  void generate_single_successor(const solution &s,
-				 const dep &d,
-				 const version &v,
-				 bool from_dep_source,
-				 promotion &result_promotion,
-				 SolutionGenerator &generator,
-				 std::set<package> *visited_packages) const
+  /** \brief Reprocess a single promotion. */
+  void process_promotion(const promotion &p) const
   {
-    // Note: it's essential for correctness that the set of forcing
-    // choices ends up containing every choice that "caused" the
-    // dependency to be broken.  Currently this happens
-    // coincidentally: if the source was modified so as to cause the
-    // dependency to become relevant, then it can't be changed again
-    // (so that installation is one reason), and if a solver was
-    // modified from being installed to not, then it can't be changed
-    // again (so that's another reason).  If the generation of
-    // promotions becomes more intelligent, I'll need to think a
-    // little more about whether this is right.
-    if(visited_packages != NULL)
-      visited_packages->insert(v.get_package());
+    LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
 
-    choice why_illegal;
+    std::map<int, incipient_promotion_search_info> search_result;
+    p.for_each(collect_steps_hit_by_promotion(steps_hit_by_promotions));
 
-    LOG_TRACE(logger,
-	      "Trying to resolve " << d << " by installing "
-	      << v.get_package().get_name() << " "
-	      << v.get_name()
-	      << (from_dep_source ? " from the dependency source" : ""));
-
-    const int newid = s.get_choices().size();
-
-    // The contents of the promotion to return.
-    tier promotion_tier(tier_limits::minimum_tier);
-    choice_set forcing_choices;
-
-    if(!is_legal(s, v, why_illegal))
+    int num_promotion_choices = p.get_choices().size();
+    for(std::map<int, incipient_promotion_search_info>::const_iterator
+	  it = search_result.begin(); it != search_resut.end(); ++it)
       {
-	promotion_tier = tier_limits::conflict_tier;
-	forcing_choices.insert_or_narrow(why_illegal);
+	const int step_num(it->first);
+	const incipient_promotion_search_info &inf(it->second);
+
+	if(inf.action_hits == num_promotion_choices)
+	  {
+	    step &s(get_step(step_num));
+	    if(s.get_tier() < p.get_tier())
+	      {
+		LOG_TRACE(logger, "Step " << step_num
+			  << " contains " << p
+			  << " as an active promotion; modifying its tier accordingly.");
+
+		s.tier = p.get_tier();
+		graph.schedule_promotion_propagation(step_num, p);
+	      }
+	  }
+	else if(inf.action_hits + 1 != num_promotion_choices)
+	  {
+	    LOG_TRACE(logger, "Step " << step_num
+		      << " does not contain " << p
+		      << " as an incipient promotion; it includes "
+		      << inf.action_hits
+		      << " choices from the promotion (needed "
+		      << (num_promotion_choices - 1)
+		      << ")");
+	  }
+	else if(inf.solver_hits != 1)
+	  {
+	    LOG_TRACE(logger, "Step " << step_num
+		      << " does not contain " << p
+		      << " as an incipient promotion: "
+		      << inf.solver_hits
+		      << " of its solvers are contained in the promotion (needed 1).");
+	  }
+	else
+	  {
+	    LOG_DEBUG(logger, "Step " << step_num
+		      << " contains " << p
+		      << " as an incipient promotion for the solver "
+		      << inf.solver);
+
+	    increase_solver_tier(graph.get_step(step_num),
+				 p,
+				 inf.solver);
+	  }
+      }
+  }
+
+  /** \brief Process all pending promotions. */
+  void process_pending_promotions()
+  {
+    while(!pending_promotions.empty())
+      {
+	promotion p(pending_promotions.front());
+	pending_promotions.pop_front();
+
+	process_promotion(p);
+      }
+  }
+
+  /** \brief Drop all dependencies from the given set that are solved
+   *  by the given choice.
+   */
+  void drop_deps_solved_by(const choice &c, step &s) const
+  {
+    LOG_TRACE(logger, "Dropping dependencies in step "
+	      << s.step_num << " that are solved by " << c);
+    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
+      choices_solved_by_c = s.deps_solved_by_choice.lookup(c);
+    if(choices_solved_by_c.valid())
+      {
+	const imm::list<dep> &deps(choices_solved_by_c.getVal());
+
+	for(imm::list<dep>::const_iterator it = deps.begin();
+	    it != deps.end(); ++it)
+	  {
+	    const dep &d(*it);
+
+	    // Need to look up the solvers of the dep in order to know
+	    // the number of solvers that it was entered into the
+	    // by-num-solvers set with.
+	    imm::map<dep, search_graph::dep_solvers>::node
+	      solvers = s.unresolved_deps_by_num_solvers.lookup(d);
+
+	    if(solvers.valid())
+	      {
+		const imm::map<version, solver_information> &solver_map =
+		  solvers.getVal().get_solvers();
+		LOG_TRACE(logger,
+			  "Removing the dependency " << d
+			  << " with a solver set of " << solver_map);
+		int num_solvers = solvers.getVal().get_solvers().size();
+		s.unresolved_deps_by_num_solvers.remove(std::make_pair(num_solvers, d));
+	      }
+	    else
+	      LOG_TRACE(logger, "The dependency " << d
+			<< " has no solver set, assuming it was already solved.");
+
+	    s.unresolved_deps.remove(d);
+	  }
+      }
+
+    LOG_TRACE(logger, "Done dropping dependencies in step "
+	      << s.step_num << " that are solved by " << c);
+  }
+
+  class add_to_choice_list
+  {
+    imm::list<choice> &target;
+
+  public:
+    add_to_choice_list(imm::list<choice> &_target)
+      : target(_target)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      target.push_front(c);
+      return true;
+    }
+  };
+
+  /** \brief Strike the given choice from all solver lists in the
+   *         given step.
+   */
+  void strike_choice(const step &s,
+		     const choice &victim,
+		     const choice_set &reason) const
+  {
+    LOG_TRACE(logger, "Striking " << victim
+	      << " from all solver lists in step " << s.step_num
+	      << " with the reason set " << reason);
+
+    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
+      solved_by_victim_found(s.deps_solved_by_choice.lookup(victim));
+
+    if(solved_by_victim_found.isValid())
+      {
+	const imm::list<dep> &solved_by_victim(solved_by_victim_found.getVal());
+
+	for(imm::list<dep>::const_iterator it = solved_by_victim.begin();
+	    it != solved_by_victim.end(); ++it)
+	  {
+	    const dep &d(*it);
+
+	    // Find the current number of solvers so we can yank the
+	    // dependency out of the unresolved-by-num-solvers set.
+	    imm::map<dep, dep_solvers>::node current_solver_set_found =
+	      s.unresolved_deps.lookup(d);
+
+	    if(current_solver_set_found.isValid())
+	      {
+		const dep_solvers &current_solvers(current_solver_set_found.getVal());
+		const int current_num_solvers = current_solvers.get_solvers().size();
+
+		dep_solvers new_solvers(current_solvers);
+
+		LOG_TRACE(logger,
+			  "Removing the choice " << victim
+			  << " from the solver set of " << d
+			  << " in step " << s.step_num
+			  << ": " << new_solvers.get_solvers());
+
+		new_solvers.get_solvers().erase(d);
+		add_to_choice_list adder(new_solvers.get_structural_reasons());
+		reasons.for_each(adder);
+
+		// Actually update the solvers of the dep.
+		s.unresolved_deps.put(d, new_solvers);
+
+		const int new_num_solvers = new_solvers.get_solvers().size();
+
+		if(current_num_solvers != new_num_solvers)
+		  {
+		    LOG_TRACE(logger, "Changing the number of solvers of "
+			      << d << " from " << current_num_solvers
+			      << " to " << new_num_solvers
+			      << " in step " << s.step_num);
+		    // Update the number of solvers.
+		    s.unresolved_deps_by_num_solvers.erase(std::make_pair(current_num_solvers, d));
+		    s.unresolved_deps_by_num_solvers.insert(std::make_pair(new_num_solvers, d));
+		  }
+
+		build_solvers_promotion(s, new_solvers);
+	      }
+	    else
+	      LOG_TRACE(logger, "The dependency " << d
+			<< " has no solver set, assuming it was already solved.");
+	  }
+      }
+
+    // Remove this step from the set of steps related to the solver
+    // that was deleted.
+    search_graph::steps_related_to_choices_reference(search_graph, c)->erase(s.step_num);
+  }
+
+  /** \brief Strike choices that are structurally forbidden by the
+   *  given choice from the given step, and update the set of
+   *  forbidden versions.
+   */
+  void strike_structurally_forbidden(step &s,
+				     const choice &c) const
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	{
+	  {
+	    choice_set reason;
+	    // Throw out the from-dep-sourceness.
+	    reason.insert_or_narrow(choice::make_install_version(c.get_ver(),
+								 false,
+								 d,
+								 c.get_id()));
+
+	    for(typename package::version_iterator vi =
+		  c.get_ver().get_pkg().versions_begin();
+		!vi.end(); ++vi)
+	      {
+		ver current(*vi);
+
+		if(current != c.get_ver())
+		  {
+		    LOG_TRACE(logger,
+			      "Discarding " << ver
+			      << ": monotonicity violation");
+		    strike_choice(output,
+				  choice::make_install_version(current, -1),
+				  reason);
+		  }
+	      }
+	  }
+
+
+	  if(c.get_from_dep_source())
+	    {
+	      const version &c_ver = c.get_ver();
+	      choice_set reason;
+	      reason.insert_or_narrow(c);
+	      for(typename dep::solver_iterator si =
+		    c.get_dep().solvers_begin();
+		  !si.end(); ++si)
+		{
+		  ver current(*si);
+
+		  if(current != c_ver)
+		    {
+		      LOG_TRACE(logger,
+				"Discarding " << current
+				<< ": forbidden by the resolution of "
+				<< c.get_dep());
+		      strike_choice(output,
+				    choice::make_install_version(current, -1),
+				    reason);
+		      s.forbidden_versions.put(current, c_ver);
+		    }
+		}
+	    }
+	}
+	break;
+
+      case choice::break_soft_dep:
+	// \todo For broken soft deps, forbid each target of the
+	// dependency.
+	break;
+      }
+  }
+
+  /** \brief Build an expression that computes whether the given
+   *  choice is deferred.
+   *
+   *  This is normally invoked through its memoized frontend (without
+   *  the _real suffix).
+   */
+  cwidget::util::ref_ptr<expression<bool> > build_is_deferred_real(const choice &c)
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	{
+	  const version &c_ver(c.get_ver());
+	  const approved_or_rejected_info &c_info =
+	    user_approved_or_rejected_versions[c_ver];
+
+	  const cwidget::util::ref_ptr<expression<bool> > &c_rejected(c_info.get_rejected());
+	  const cwidget::util::ref_ptr<expression<bool> > &c_approved(c_info.get_approved());
+
+	  // Versions are deferred if they are rejected, OR if they
+	  // are NOT approved AND some other solver of the same
+	  // dependency (which might include breaking it!) is
+	  // approved.
+	  std::vector<cwidget::util::ref_ptr<expression<bool> > >
+	    others_approved;
+	  const dep &c_dep(c.get_dep());
+	  for(typename dep::solver_iterator si = c_dep.solvers_begin();
+	      !si.end(); ++si)
+	    {
+	      version solver(*si);
+	      if(solver != c_ver)
+		others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+	    }
+
+	  if(c_dep.is_soft())
+	    others_approved.push_back(user_approved_or_rejected_broken_deps[c_dep].get_approved());
+
+	  return
+	    or_e::create(c_rejected,
+			 and_e::create(not_e::create(c_approved),
+				       or_e::create(others_approved.begin(),
+						    others_approved.end())));
+	}
+	break;
+
+      case choice::break_soft_dep:
+	{
+	  const dep &c_dep(c.get_dep());
+	  const approved_or_rejected_info &c_info =
+	    user_approved_or_rejected_broken_deps[c_dep];
+
+
+
+	  const cwidget::util::ref_ptr<expression<bool> > &c_rejected(c_info.get_rejected());
+	  const cwidget::util::ref_ptr<expression<bool> > &c_approved(c_info.get_approved());
+
+	  // Broken dependencies are deferred if they are rejected, OR
+	  // if they are NOT approved AND some solver of the same
+	  // dependency is approved.
+	  std::vector<cwidget::util::ref_ptr<expression<bool> >
+	    others_approved;
+	  for(typename dep::solver_iterator si = c_dep.solvers_begin();
+	      !si.end(); ++si)
+	    {
+	      version solver(*si);
+	      others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+	    }
+
+	  return
+	    or_e::create(c_rejected,
+			 and_e::create(not_e::create(c_approved),
+				       or_e::create(others_approved.begin(),
+						    others_approved.end())));
+	}
+	break;
+
+      default:
+	LOG_ERROR(logger, "Internal error: bad choice type " << c.get_type());
+	return var_e::create(false);
+      }
+  }
+
+  /** \brief Memoized version of build_is_deferred. */
+  cwidget::util::ref_ptr<expression<bool> > build_is_deferred(const choice &c)
+  {
+    std::map<choice, expression_weak_ref<expression<bool> > > >::const_iterator
+      found = memoized_is_deferred.find(c);
+
+    if(found != memoized_is_deferred.end())
+      {
+	expression_weak_ref &ref(found->second);
+	if(ref.get_valid())
+	  return ref.get_value();
+      }
+
+    cwidget::util::ref_ptr<expression<bool> > rval(build_is_deferred_real(c));
+    memoized_is_deferred[c] = rval;
+    return rval;
+  }
+
+
+  /** \brief Find promotions triggered by the given solver and
+   *  increment its tier accordingly.
+   */
+  void find_promotions_for_solver(step &s,
+				  const choice &solver)
+  {
+    // \todo There must be a more efficient way of doing this.
+    choice_set output_domain;
+    std::map<choice, promotion> triggered_promotions;
+
+    output_domain.insert_or_narrow(solver);
+
+    promotions.find_highest_incipient_promotions_containing(s.get_actions(),
+							    solver,
+							    output_domain,
+							    triggered_promotions);
+
+    for(std::map<choice, promotion>::const_iterator it =
+	  triggered_promotions.begin();
+	it != triggered_promotions.end(); ++it)
+      increase_solver_tier(s, it->second, it->first);
+  }
+
+  /** \brief Add a solver to a list of dependency solvers for a
+   *  particular step.
+   *
+   *  \param s         The step to update.
+   *  \param solvers   The solvers set to fill in.
+   *  \param d         The dependency whose solvers are being updated
+   *                   (used to update the reverse map).
+   *  \param solver    The choice to add.
+   *
+   *  If the solver is structurally forbidden in the step, the reason
+   *  is added to the structural reasons list of the solvers
+   *  structure; otherwise, the choice is added to the solvers list.
+   */
+  void add_solver(step &s,
+		  search_graph::step::dep_solvers &solvers,
+		  const dep &d,
+		  const choice &solver) const
+  {
+    // The solver is structurally forbidden if it is in the forbidden
+    // map, OR if another version of the same package is selected.
+    //
+    // First we check if the solver is forbidden, and return early if
+    // it is.
+    if(solver.get_type() == choice::install_version)
+      {
+	const version ver(solver.get_ver());
+	version selected;
+	if(s.actions.get_version_of(solver.get_ver().get_pkg(), selected))
+	  {
+	    if(selected == ver)
+	      // There's not really anything we can do to fix this: the
+	      // dependency just shouldn't be inserted at all!
+	      LOG_ERROR(logger,
+			"Internal error: the solver "
+			<< solver << " of a supposedly unresolved dependency is already installed in step "
+			<< s.step_num);
+	    else
+	      {
+		LOG_TRACE(logger,
+			  "Not adding " << solver
+			  << ": monotonicity violation due to "
+			  << selected);
+		choice reason(choice::make_install_version(selected, -1));
+		solvers.get_structural_reason().push_front(reason);
+	      }
+
+	    return; // If the package is already modified, abort.
+	  }
+	else
+	  {
+	    imm::map<version, choice>::node forbidden_found =
+	      s.forbidden_versions.lookup(solver);
+
+	    if(forbidden_found.isValid())
+	      {
+		const choice &reason(forbidden_found.getVal());
+
+		LOG_TRACE(logger,
+			  "Not adding " << solver
+			  << ": it is forbidden due to the action "
+			  << reason);
+		solvers.get_structural_reasons().push_front(reason);
+
+		return;
+	      }
+	  }
+      }
+
+    // The choice is added with its intrinsic tier to start with.
+    // Later, in step 6 of the update algorithm, we'll find promotions
+    // that include the new solvers and update tiers appropriately.
+    tier choice_tier;
+    cwidget::util::ref_ptr<expression<bool> > is_deferred =
+      build_is_deferred(c);
+    switch(solver.get_type())
+      {
+      case choice::install_version:
+	choice_tier = version_tiers[solver.get_ver().get_id()];
+	break;
+
+      case choice::break_soft_dep:
+	// \todo Have a tier based on breaking soft deps?
+	choice_tier = tier_limits::minimum_tier;
+	break;
+      }
+    LOG_TRACE(logger, "Adding the solver " << solver
+	      << " with initial tier " << choice_tier);
+    solvers.get_solvers().put(solver,
+			      solver_information(choice_tier,
+						 choice_set(),
+						 is_deferred));
+
+    // Update the deps-solved-by-choice map (add the dep being
+    // processed to the list).
+    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
+      solved_by_choice_found(deps_solved_by_choice.lookup(solver));
+
+    if(!solved_by_choice_found.isValid())
+      deps_solved_by_choice.put(solver, imm::list<dep>::make_singleton(d));
+    else
+      {
+	imm::list<dep> new_deps_solved(imm::list<dep>::make_cons(d, solved_by_choice_found.getVal()));
+	deps_solved_by_choice.put(solver, new_deps_solved);
+      }
+
+    // Add this step to the set of steps related to the new solver.
+    search_graph::steps_related_to_choices_reference(search_graph, c)->insert(s.step_num);
+
+    find_promotions_for_solver(s, solver);
+  }
+
+  // Build a generalized promotion from the entries of a dep-solvers
+  // set.
+  class build_promotion
+  {
+    tier &output_tier;
+    choice_set &output_reasons;
+
+  public:
+    build_promotion(tier &_output_tier, choice_set &_output_reasons)
+      : output_tier(_output_tier),
+	output_reasons(_output_reasons)
+    {
+      output_tier = tier_limits::maximum_tier;
+      output_reasons = choice_set();
+    }
+
+    bool operator()(const std::pair<choice, search_graph::solver_information> &entry) const
+    {
+      if(output_tier > entry.second.get_tier())
+	// Maybe we have a new, lower tier.
+	output_tier = entry.second.get_tier();
+
+      // Correctness here depends on the fact that the reason set is
+      // pre-generalized (the solver itself is already removed).
+      output_reasons.insert_or_narrow(entry.second.get_reasons());
+    }
+  };
+
+  /** \brief If the given dependency solver set implies a promotion,
+   *         attempt to insert that promotion; also, update the tier
+   *         of the step to be at least the lowest tier of any of the
+   *         solvers in the given list.
+   *
+   *  If the set is empty, this just inserts a conflict.
+   */
+  void check_solvers_tier(step &s, const dep_solvers &solvers)
+  {
+    tier t;
+    choice_set reasons;
+
+    solvers.get_solvers().for_each(build_promotion(t, reasons));
+
+    for(imm::list<choice>::const_iterator it =
+	  solvers.get_structural_reasons().begin();
+	it != solvers.get_structural_reasons().end(); ++it)
+      {
+	reasons.insert(*it);
+      }
+
+    if(t > maximum_search_tier)
+      {
+	promotion p(reasons, t);
+	LOG_TRACE(logger, "Emitting a new promotion " << p
+		  << " at step " << s.step_num);
+
+	add_promotion(s.step_num, p);
+      }
+
+    if(t > s.step_tier)
+      s.step_tier = t;
+  }
+
+  /** \brief Increase the tier of a solver (for instance, because a
+   *  new incipient promotion was detected).
+   */
+  void increase_solver_tier(step &s,
+			    const promotion &p,
+			    const choice &solver) const
+  {
+    LOG_TRACE(logger, "Applying the promotion " << p
+	      << " to the solver " << solver
+	      << " in the step " << s.step_num);
+    const tier &new_tier(p.get_tier());
+    // There are really two cases here: either the tier was increased
+    // to the point that the solver should be ejected, or the tier
+    // should just be bumped up a bit.  Either way, we might end up
+    // changing the tier of the whole step.
+    if(new_tier >= tier_limits::conflict_tier ||
+       new_tier >= tier_limits::already_generated_tier)
+      {
+	// \todo this throws away information about whether we're at
+	// the already-generated tier.  This isn't that important,
+	// except that it means that the already-generated tier will
+	// become fairly meaningless.  I could store this information
+	// at the cost of a little extra space in every solver cell,
+	// or I could get rid of the already-generated tier (just use
+	// the conflict tier), or I could not worry about it.
+
+	strike_choice(s, solver, p.get_choices());
       }
     else
       {
-	choice new_choice;
-	if(from_dep_source)
-	  new_choice = choice::make_install_version_from_dep_source(v, d, newid);
-	else
-	  new_choice = choice::make_install_version(v, false, d, newid);
+	choice_set new_choices(p.get_choices());
+	new_choices.remove_overlaps(solver);
 
-	// Speculatively form the new set of actions; doing this
-	// rather than forming the whole solution allows us to avoid
-	// several rather expensive steps in the successor routine
-	// (most notably the formation of the new broken packages
-	// set).
-	choice_set new_choices = s.get_choices();
-	new_choices.insert_or_narrow(new_choice);
+	LOG_TRACE(logger, "Increasing the tier of " << solver
+		  << " to " << new_tier << " in all solver lists in step "
+		  << s.step_num << " with the reason set " << new_choices);
+	imm::map<choice, imm::list<dep>, compare_choices_by_effect>::node
+	  solved_found(s.deps_solved_by_choice.lookup(solver));
 
- 	typename promotion_set::const_iterator
-	  found = promotions.find_highest_promotion_containing(new_choices,
-							       new_choice);
-
-	// If we didn't find a promotion, or the promotion didn't push
-	// the solution to a level that would cause it to be thrown
-	// away, go ahead and generate successors.  The caller will
-	// defer them or put them into the open queue, as appropriate.
-	if(!(found != promotions.end() &&
-	     (found->get_tier() >= tier_limits::conflict_tier ||
-	      found->get_tier() >= tier_limits::already_generated_tier)))
+	if(solved_found.isValid())
 	  {
-	    // Figure out the tier of the new solution.  It will be at
-	    // least the tier of the current solution, but if we
-	    // encountered a promotion or if the version that was
-	    // selected has a higher tier, we need to promote the new
-	    // solution to that tier (and generate promotion
-	    // information).
-	    const tier &current_tier = s.get_tier();
-	    const tier &ver_tier = version_tiers[v.get_id()];
+	    const imm::list<dep> &solved(solved_found.getVal());
 
-	    // The promotion that will be attached to the new step in
-	    // the versions graph (if any).  If a promotion is found
-	    // that promotes to a higher tier than the version's
-	    // intrinsic tier, that promotion is stored here;
-	    // otherwise, the version's tier is stored here if it's
-	    // higher than the solution's current tier; otherwise,
-	    // this stores an empty promotion to the minimum tier.
-	    promotion successor_promotion(choice_set(), tier_limits::minimum_tier);
-
-	    bool set_from_found = false;
-	    if(found != promotions.end())
+	    for(imm::list<dep>::const_iterator it = solved.begin();
+		it != solved.end(); ++it)
 	      {
-		const tier &found_tier = found->get_tier();
-		if(ver_tier < found_tier)
+		const dep &d(*it);
+
+		imm::map<dep, dep_solvers>::node current_solver_set_found =
+		  s.unresolved_deps.lookup(d);
+
+		if(current_solver_set_found.isValid())
 		  {
-		    if(current_tier < found_tier)
-		      {
-			LOG_TRACE(logger,
-				  v << " will promote this solution to tier " << found_tier
-				  << " due to the promotion " << *found);
-			promotion_tier = found_tier;
-			successor_promotion = *found;
-		      }
+		    const dep_solvers &current_solvers(current_solver_set_found.getVal());
+
+		    dep_solvers new_solvers(current_solvers);
+
+		    // Sanity-check: verify that the solver really
+		    // resides in the solver set of this dependency.
+		    imm::map<choice, solver_information, compare_choices_by_size>::node
+		      solver_found(new_solvers.find(solver));
+
+		    if(!solver_found.isValid())
+		      LOG_ERROR(logger, "Internal error: in step " << s.step_num
+				<< ", the solver " << solver
+				<< " is claimed to be a solver of " << d
+				<< " but does not appear in its solvers list.");
 		    else
-		      promotion_tier = current_tier;
+		      {
+			LOG_TRACE(logger, "Increasing the tier of "
+				  << solver << " to " << new_tier
+				  << " in the solvers list of "
+				  << d << " in step " << s.step_num
+				  << " with the reason set " << new_choices);
+			new_solvers.put(solver, solver_information(new_tier, new_choices));
+		      }
 
-		    set_from_found = true;
+		    s.unresolved_deps.put(d, new_solvers);
+		    build_solvers_promotion(s, new_solvers);
 		  }
 	      }
-
-	    if(!set_from_found)
-	      {
-		if(current_tier < ver_tier)
-		  {
-		    LOG_TRACE(logger,
-			      v << " will promote this solution to tier " << ver_tier);
-		    promotion_tier = ver_tier;
-
-		    choice_set promotion_s;
-		    // Note that the choice we insert is *not* a
-		    // from-dep-source choice.  This is deliberate:
-		    // since the tier is tied to the package version
-		    // and not to the set of excluded versions, we can
-		    // use the wider version, thus promoting more
-		    // search nodes.
-		    choice promotion_s_c(choice::make_install_version(v, false, d, newid));
-		    promotion_s.insert_or_narrow(promotion_s_c);
-		    successor_promotion = promotion(promotion_s, ver_tier);
-		  }
-		else
-		  promotion_tier = current_tier;
-	      }
-
-
-	    generator.make_successor(s, new_choice,
-				     promotion_tier,
-				     successor_promotion,
-				     universe, weights);
-	  }
-	else
-	  {
-	    LOG_TRACE(logger, "Discarding " << v << " due to conflict "
-		      << found->get_choices());
-	    promotion_tier = found->get_tier();
-	  }
-
-	// Now add anything that we learned to forcing_choices and
-	// extend the output promotion.
-
-	// Note that the output promotion contains the reasons that
-	// installing this version triggered a promotion; i.e., all
-	// the choices in the promotion *except* the one under
-	// consideration.  This means that if the version itself
-	// triggered a promotion, we just ignore it: installing this
-	// version triggers the promotion all by itself in that case.
-	// We only need to "remember" choices that had to do with a
-	// promotion that we hit.
-	if(found != promotions.end())
-	  {
-	    const promotion &p(*found);
-	    const choice_set &choices(p.get_choices());
-
-	    forcing_choices = choices;
-	    forcing_choices.remove_overlaps(new_choice);
 	  }
       }
+  }
 
-    // Note that we have to pass all the candidate promotions up to
-    // the parent because the reasons for all the candidate
-    // installations have to be combined to form the final promotion
-    // for a solution.
-    result_promotion = promotion(forcing_choices, promotion_tier);
+  /** \brief Add a single unresolved dependency to a step.
+   *
+   *  This routine does not check that the dependency is really
+   *  unresolved.
+   */
+  void add_unresolved_dep(step &s, const dep &d) const
+  {
+    if(s.unresolved_deps.contains(d))
+      {
+	LOG_TRACE("The dependency " << d << " is already unresolved in step "
+		  << s.step_num << ", not adding it again.");
+	return;
+      }
+
+    LOG_TRACE("Marking the dependency " << d << " as unresolved in step "
+	      << s.step_num);
+
+    // Build up a list of the possible solvers of the dependency.
+    dep_solvers solvers;
+    for(dep::solver_iterator si = d.solvers_begin();
+	!si.end(); ++si)
+      add_solver(s, solvers, d, choice::make_install_version(*si, false, d, -1));
+
+    // If it isn't a soft dependency, consider removing the source to
+    // fix it.
+    if(!d.is_soft())
+      {
+	version source(d.get_source());
+	package source_pkg(source.get_pkg());
+
+	for(package::version_iterator vi = source_pkg.versions_begin();
+	    !vi.end(); ++vi)
+	  {
+	    version ver(*vi);
+
+	    if(ver != source)
+	      add_solver(s, solvers,
+			 choice::make_install_version_from_dep_source(ver, d, -1));
+	  }
+      }
+    else
+      add_solver(s, solvers,
+		 choice::make_break_soft_dep(d, -1));
+
+    s.unresolved_deps.put(d, solvers);
+
+    const int num_solvers = solvers.get_solvers().size();
+    s.unresolved_deps_by_num_solvers.put(num_solvers, d);
+
+    build_solvers_promotion(s, solvers);
+  }
+
+  /** \brief Used to convert a step into a model of Installation. */
+  class step_installation
+  {
+    const choice_set &actions;
+    const resolver_initial_state<PackageUniverse> &initial_state;
+
+  public:
+    step_installation(const choice_set &_actions,
+		      const resolver_initial_state<PackageUniverse> &_initial_state)
+      : actions(_actions),
+	initial_state(_initial_state)
+    {
+    }
+
+    version version_of(const package &p) const
+    {
+      version rval;
+      if(actions.get_version_of(p, rval))
+	return rval;
+      else
+	return initial_state.version_of(p);
+    }
+  };
+
+  /** \brief Find all the dependencies that are unresolved in step s
+   *  and that involve c in some way, then add them to the unresolved
+   *  set.
+   *
+   *  c must already be contained in s.actions.
+   */
+  void add_new_unresolved_deps(step &s, const choice &c) const
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	{
+	  step_installation test_installation(s, initial_state);
+
+	  version new_version = c.get_ver();
+	  version old_version = initial_state.version_of(new_version.get_pkg());
+
+	  // Check reverse deps of the old version.
+	  for(typename version::revdep_iterator rdi = old_version.revdeps_begin();
+	      !rdi.end(); ++rdi)
+	    {
+	      dep rd(*rdi);
+
+	      if(rd.broken_under(test_installation))
+		{
+		  if(!(rd.is_soft() &&
+		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
+		    add_unresolved_dep(s, rd);
+		}
+	    }
+
+	  for(typename version::revdep_iterator rdi = new_version.revdeps_begin();
+	      !rdi.end(); ++rdi)
+	    {
+	      dep rd(*rdi);
+
+	      if(rd.broken_under(test_installation))
+		{
+		  if(!(rd.is_soft() &&
+		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
+		    add_unresolved_dep(s, rd);
+		}
+	    }
+	}
+
+	break;
+      }
+  }
+
+  // Generalizes each solver in the global solvers set
+  // and inserts it into the output set.
+  struct build_solvers_set
+  {
+    choice_set &output;
+
+  public:
+    build_solvers_set(choice_set &_output)
+      : output(_output)
+    {
+    }
+
+    bool operator()(const std::pair<choice, imm::list<dep> > &inf) const
+    {
+      output.insert(inf.first.generalize());
+    }
+  };
+
+  /** \brief Find incipient promotions for the given step that contain
+   *  the given choice.
+   */
+  void find_new_incipient_promotions(step &s,
+				     const choice &c)
+  {
+    choice_set output_domain;
+    std::map<choice, promotion> output;
+
+    s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
+    promotions.find_highest_incipient_promotions_containing(s.actions,
+							    c,
+							    output_domain,
+							    output);
+
+    for(std::map<choice, promotion>::const_iterator it =
+	  output.begin(); it != output.end(); ++it)
+      increase_solver_tier(s, it->second, it->first);
+  }
+
+  /** \brief Fill in the given output step with a successor of the
+   *         input step generated by performing the given action.
+   */
+  void generate_single_successor(const step &input,
+				 const choice &c,
+				 const tier &output_tier,
+				 step &output)
+  {
+    // Copy all the state information over so we can work in-place on
+    // the output set.
+    output.actions = input.actions;
+    output.score = input.score;
+    output.action_score = input.action_score;
+    output.step_tier = output_tier;
+    output.unresolved_deps = input.unresolved_deps;
+    output.unresolved_deps_by_num_solvers = input.unresolved_deps_by_num_solvers;
+    output.deps_solved_by_choice = input.deps_solved_by_choice;
+    output.forbidden_versions = input.forbidden_versions;
+
+
+    LOG_TRACE(logger, "Generating a successor to step " << input.step_num
+	      << " for the action " << c << " with tier "
+	      << output_tier << " and outputting to  step " << output.step_num);
+
+    // Insert the new choice into the output list of choices.  This
+    // will be used below (in steps 3, 4, 5, 6 and 7).
+    output.actions.insert_or_narrow(c);
+
+    // 1. Find the list of solved dependencies and drop each one from
+    // the map of unresolved dependencies, and from the set sorted by
+    // the number of solvers.
+    //
+    // Note that some of these dependencies might not be unresolved
+    // any more.
+    drop_deps_solved_by(c, output);
+
+    // 2. Drop the version from the reverse index of choices to solved
+    // dependencies.
+    output.deps_solved_by_choice.erase(c);
+
+    // 3. For any versions that are structurally forbidden by this
+    // choice, locate those choices in the reverse index, strike them
+    // from the corresponding solver lists, add forcing reasons to the
+    // corresponding force list, and drop them from the reverse index.
+    //
+    // 4. Add solvers of the dep, if it was a from-source choice, to
+    // the set of forbidden versions.
+    strike_structurally_forbidden(output, c);
+
+    // 5. Find newly unsatisfied dependencies.  For each one that's
+    // not in the unresolved map, add it to the unresolved map with
+    // its solvers paired with their intrinsic tiers.  Structurally
+    // forbidden solvers are not added to the solvers list; instead,
+    // they are used to create the initial list of forcing reasons.
+    // Also, insert the dependency into the by-num-solvers list and
+    // insert it into the reverse index for each one of its solvers.
+    //
+    // This also processes the incipient promotions that are completed
+    // by each solver of a dependency.  \todo If the solvers were
+    // stored in a central list, the number of promotion lookups
+    // required could be vastly decreased.
+    add_new_unresolved_deps(s, c);
+
+    // 6. Find incipient promotions for the new step.
+    find_new_incipient_promotions(s, c);
   }
 
   /** Build the successors of a solution node for a particular
@@ -2742,13 +3290,7 @@ private:
       {
 	promotion p(subpromotion_choices, succ_tier);
 	LOG_DEBUG(logger, "Inserting new promotion: " << p);
-	promotions.insert(p);
-
-	// Update the step graph.
-
-	// Schedule the new promotion to be propagated to the parent
-	// steps.
-	graph.schedule_promotion_propagation(curr_step, p);
+	add_promotion(curr_step, p);
       }
   }
 
@@ -3111,7 +3653,7 @@ public:
    */
   void add_promotion(const choice_set &choices, const tier &promotion_tier)
   {
-    promotions.insert(promotion(choices, promotion_tier));
+    add_promotion(promotion(choices, promotion_tier));
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -3581,8 +4123,7 @@ public:
 		// solution with the same version content)
 		promotion already_generated_promotion(get_solution_choices_without_dep_info(s),
 						      tier_limits::already_generated_tier);
-		promotions.insert(already_generated_promotion);
-		graph.schedule_promotion_propagation(curr_step_num, already_generated_promotion);
+		add_promotion(curr_step_num, already_generated_promotion);
 
 		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 

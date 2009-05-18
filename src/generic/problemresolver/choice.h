@@ -164,6 +164,24 @@ public:
     return generic_choice(d, id);
   }
 
+  /** \brief Return a choice that contains any choice with the same
+   *  effect as this choice.
+   */
+  choice generalize() const
+  {
+    switch(tp)
+      {
+      case install_version:
+	return make_install_version(ver, false, d, id);
+
+      case break_soft_dep:
+	return *this;
+      }
+
+    eassert(!"We should never get here.");
+    return choice();
+  }
+
   /** \brief Test whether this choice "contains" another choice.
    *
    *  This is true if the two choices are equal, or if this choice is
