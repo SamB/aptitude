@@ -100,6 +100,7 @@ public:
   }
 
   expression_weak_ref(T *_expr);
+  expression_weak_ref(const cwidget::util::ref_ptr<T> &_expr);
 
   expression_weak_ref(const expression_weak_ref &other);
 
@@ -266,6 +267,13 @@ public:
 template<typename T>
 expression_weak_ref<T>::expression_weak_ref(T *_expr)
   : expression_weak_ref_generic(true), expr(_expr)
+{
+  expr->add_weak_ref(this);
+}
+
+template<typename T>
+expression_weak_ref<T>::expression_weak_ref(const cwidget::util::ref_ptr<T> &_expr)
+  : expression_weak_ref_generic(true), expr(_expr.unsafe_get_ref())
 {
   expr->add_weak_ref(this);
 }
