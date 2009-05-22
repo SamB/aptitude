@@ -29,6 +29,8 @@
 #include <algorithm>
 #include <set>
 
+#include <ostream>
+
 // A system of incrementally computed expressions stored as a DAG.
 // NOT THREADSAFE (the weak-reference system would utterly break in
 // the presence of threads without a lot of expensive locking, and
@@ -187,6 +189,7 @@ public:
   }
 
   virtual T get_value() = 0;
+  virtual void dump(std::ostream &out) = 0;
 };
 
 /** \brief Base class for expressions that can contain other
@@ -242,6 +245,22 @@ public:
 
     children.erase(new_end, children.end());
   }
+
+  virtual std::string get_name() = 0;
+
+  virtual void dump(std::ostream &out)
+  {
+    out << get_name() << "(";
+    for(std::vector<cwidget::util::ref_ptr<expression<bool> > >::const_iterator
+	  it = get_children().begin(); it != get_children().end(); ++it)
+      {
+	if(it != get_children().begin())
+	  out << ", ";
+
+	(*it)->dump(out);
+      }
+    out << ")";
+  }
 };
 
 template<typename T>
@@ -285,6 +304,9 @@ expression_weak_ref<T>::~expression_weak_ref()
  *
  *  Variables can be modified arbitrarily; changes are immediately
  *  propagated to parent expressions.
+ *
+ *  It would be nice if the user could attach names for better
+ *  printing of expressions, but that would take a lot of memory.
  */
 template<typename T>
 class var_e : public expression<T>
@@ -317,6 +339,11 @@ public:
 	value = new_value;
 	signal_value_changed(old_value, new_value);
       }
+  }
+
+  void dump(std::ostream &out)
+  {
+    out << "v" << this;
   }
 };
 
@@ -383,6 +410,8 @@ public:
   }
 
   bool get_value();
+  std::string get_name();
+  void dump(std::ostream &out);
 };
 
 class or_e : public counting_bool_e
@@ -413,6 +442,8 @@ public:
   }
 
   bool get_value();
+  std::string get_name();
+  void dump(std::ostream &out);
 };
 
 class not_e : public expression_container<bool>
@@ -435,7 +466,16 @@ public:
 		      bool old_value,
 		      bool new_value);
   bool get_value();
+  void dump(std::ostream &out);
 };
+
+template<typename T>
+std::ostream &operator<<(std::ostream &out,
+			 const cwidget::util::ref_ptr<expression<T> > &o)
+{
+  o->dump(out);
+  return out;
+}
 
 // @}
 

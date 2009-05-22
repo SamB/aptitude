@@ -91,9 +91,19 @@ bool and_e::get_value()
   return get_num_true() == get_children().size();
 }
 
+std::string and_e::get_name()
+{
+  return "and";
+}
+
 bool or_e::get_value()
 {
   return get_num_true() > 0;
+}
+
+std::string or_e::get_name()
+{
+  return "or";
 }
 
 void not_e::child_modified(const cwidget::util::ref_ptr<expression<bool> > &child,
@@ -106,4 +116,9 @@ void not_e::child_modified(const cwidget::util::ref_ptr<expression<bool> > &chil
 bool not_e::get_value()
 {
   return !child->get_value();
+}
+
+void not_e::dump(std::ostream &out)
+{
+  out << "~" << child;
 }
