@@ -261,7 +261,7 @@ public:
   virtual void dump(std::ostream &out)
   {
     out << get_name() << "(";
-    for(std::vector<cwidget::util::ref_ptr<expression<bool> > >::const_iterator
+    for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
 	  it = get_children().begin(); it != get_children().end(); ++it)
       {
 	if(it != get_children().begin())
