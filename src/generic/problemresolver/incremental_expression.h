@@ -234,6 +234,9 @@ public:
   expression_container_base(Iter begin, Iter end)
     : children(begin, end)
   {
+    for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
+	  it = get_children().begin(); it != get_children().end(); ++it)
+      (*it)->add_parent(this);
   }
 
   const std::vector<cwidget::util::ref_ptr<expression<T> > > &get_children() const
@@ -470,6 +473,7 @@ class not_e : public expression_container<bool>
   not_e(const cwidget::util::ref_ptr<expression<bool> > &_child)
     : child(_child)
   {
+    child->add_parent(this);
   }
 
 public:
