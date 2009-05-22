@@ -189,6 +189,14 @@ public:
                        // surprises.
   }
 
+  // Add a weak reference to the given expression; its
+  // child_modified() routine will be invoked when this child's value
+  // changes.
+  void add_parent(const cwidget::util::ref_ptr<expression_container<T> > &parent)
+  {
+    parents.push_back(parent);
+  }
+
   virtual T get_value() = 0;
   virtual void dump(std::ostream &out) = 0;
 };
