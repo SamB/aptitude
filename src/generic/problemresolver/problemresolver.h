@@ -2946,12 +2946,12 @@ private:
   {
     if(s.unresolved_deps.contains(d))
       {
-	LOG_TRACE("The dependency " << d << " is already unresolved in step "
+	LOG_TRACE(logger, "The dependency " << d << " is already unresolved in step "
 		  << s.step_num << ", not adding it again.");
 	return;
       }
 
-    LOG_TRACE("Marking the dependency " << d << " as unresolved in step "
+    LOG_TRACE(logger, "Marking the dependency " << d << " as unresolved in step "
 	      << s.step_num);
 
     // Build up a list of the possible solvers of the dependency.
