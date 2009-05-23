@@ -113,6 +113,16 @@ public:
     return expr;
   }
 
+  bool operator==(const expression_weak_ref &other) const
+  {
+    return expr == other.expr;
+  }
+
+  bool operator==(const T *other) const
+  {
+    return expr == other;
+  }
+
   ~expression_weak_ref();
 };
 
@@ -198,6 +208,33 @@ public:
       parents.push_back(parent);
   }
 
+private:
+  class parent_equals_weak_ref
+  {
+    const expression_container<T> *parent;
+
+  public:
+    parent_equals_weak_ref(const expression_container<T> *_parent)
+      : parent(_parent)
+    {
+    }
+
+    bool operator()(const expression_weak_ref<expression_container<T> > &other) const
+    {
+      return other == parent;
+    }
+  };
+
+public:
+  void remove_parent(expression_container<T> *parent)
+  {
+    // Will be inefficient if this happens a lot, but I don't expect
+    // it to be a common operation.
+    parents.erase(std::remove_if(parents.begin(), parents.end(),
+				 parent_equals_weak_ref(parent)),
+		  parents.end());
+  }
+
   virtual T get_value() = 0;
   virtual void dump(std::ostream &out) = 0;
 };
@@ -256,6 +293,7 @@ public:
     typename std::vector<cwidget::util::ref_ptr<expression<T> > >::iterator
       new_end = std::remove(children.begin(), children.end(), child);
 
+    child->remove_parent(this);
     children.erase(new_end, children.end());
   }
 
