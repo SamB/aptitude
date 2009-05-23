@@ -29,11 +29,13 @@
 #include <iostream>
 
 #include <generic/util/immset.h>
+#include <cwidget/generic/util/ref_ptr.h>
 
 #include <loggers.h>
 
 #include "choice.h"
 #include "choice_set.h"
+#include "incremental_expression.h"
 
 /** \brief Represents a tier promotion: the knowledge that
  *  a set of choices forces a solution to a higher tier.
@@ -49,21 +51,40 @@ public:
 private:
   choice_set choices;
   tier promotion_tier;
+  // An expression that is "true" when this promotion is valid and
+  // "false" otherwise; it is NULL if the promotion is universally
+  // valid.  Invalid promotions are culled from the promotion set.
+  //
+  // Currently the only invalid promotions are ones that are due to a
+  // constraint posted by the user which was later retracted.  All
+  // other promotions have a NULL pointer here.
+  cwidget::util::ref_ptr<expression<bool> > valid_condition;
 
 public:
   generic_promotion()
-    : choices(), promotion_tier()
+    : choices(), promotion_tier(), valid_condition()
   {
   }
 
   /** \brief Create a new promotion. */
   generic_promotion(const choice_set &_choices, const tier &_promotion_tier)
-    : choices(_choices), promotion_tier(_promotion_tier)
+    : choices(_choices), promotion_tier(_promotion_tier), valid_condition()
+  {
+  }
+
+  /** \brief Create a new promotion with a validity condition. */
+  generic_promotion(const choice_set &_choices,
+		    const tier &_promotion_tier,
+		    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
+    : choices(_choices),
+      promotion_tier(_promotion_tier),
+      valid_condition(_valid_condition)
   {
   }
 
   const choice_set &get_choices() const { return choices; }
   const tier &get_tier() const { return promotion_tier; }
+  const cwidget::util::ref_ptr<expression<bool> > &get_valid_condition() const { return valid_condition; }
 
   bool operator<(const generic_promotion &other) const
   {
@@ -101,7 +122,13 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUniverse> &p)
 {
-  return out << "(T" << p.get_tier() << ": " << p.get_choices() << ")";
+  return out << "(T" << p.get_tier() << ": " << p.get_choices();
+
+  if(p.get_valid_condition().valid())
+    // Output p.get_valid_condition() if it isn't null.
+    out << "; V:" << p.get_valid_condition();
+
+  out << ")";
 }
 
 /** \brief Represents a set of "promotions": mappings from sets of
@@ -166,12 +193,25 @@ public:
 private:
   log4cxx::LoggerPtr logger;
 
+  struct entry;
+
   /** \brief The structure used to store information about
    *  a promotion.
    */
   struct entry
   {
     promotion p;
+
+    /** \brief An expression that will retract this entry when it
+     *  becomes true.
+     *
+     *  Stored via a ref_ptr and not as a member partly because
+     *  otherwise I'd need a nasty hack to avoid circular references,
+     *  and partly because currently most promotions don't have a
+     *  validity condition, so this lets us save some space (by
+     *  storing NULL for most promotions).
+     */
+    cwidget::util::ref_ptr<expression<bool> > retraction_expression;
 
     /** \brief Used when searching for a promotion.
      *
@@ -188,8 +228,65 @@ private:
     mutable unsigned int hit_count : (8*(sizeof(int))-1);
 
     entry(const promotion &_p)
-      : p(_p), active(false), hit_count(0)
+      : p(_p),
+	retraction_expression(),
+	active(false),
+	hit_count(0)
     {
+    }
+  };
+
+  typedef typename std::list<entry>::const_iterator entry_const_ref;
+  typedef typename std::list<entry>::iterator entry_ref;
+
+  /** \brief An expression that ejects a promotion from its parent set
+   *  when that promotion becomes invalid.
+   */
+  class eject_promotion_when_invalid : public expression_container<bool>
+  {
+    cwidget::util::ref_ptr<expression<bool> > promotion_valid_expression;
+    entry_ref entry_to_drop;
+    generic_promotion_set *parent;
+
+    eject_promotion_when_invalid(const cwidget::util::ref_ptr<expression<bool> > &
+				 _promotion_valid_expression,
+				 const entry_ref &_entry_to_drop,
+				 generic_promotion_set *_parent)
+      : promotion_valid_expression(_promotion_valid_expression),
+	entry_to_drop(_entry_to_drop),
+	parent(_parent)
+    {
+      if(promotion_valid_expression.valid())
+	promotion_valid_expression->add_parent(this);
+    }
+
+  public:
+    static cwidget::util::ref_ptr<eject_promotion_when_invalid>
+    create(const cwidget::util::ref_ptr<expression<bool> > &promotion_valid_expression,
+	   const entry_ref &entry_to_drop,
+	   generic_promotion_set *parent)
+    {
+      return new eject_promotion_when_invalid(promotion_valid_expression,
+					      entry_to_drop,
+					      parent);
+    }
+
+    void dump(std::ostream &out)
+    {
+      out << "drop-if(" << promotion_valid_expression << ")";
+    }
+
+    bool get_value()
+    {
+      return promotion_valid_expression->get_value();
+    }
+
+    void child_modified(const cwidget::util::ref_ptr<expression<bool> > &child,
+			bool old_value,
+			bool new_value)
+    {
+      if(!new_value)
+	parent->eject(entry_to_drop);
     }
   };
 
@@ -203,9 +300,6 @@ private:
   std::map<tier, std::list<entry> > entries;
 
   unsigned int num_promotions;
-
-  typedef typename std::list<entry>::const_iterator entry_const_ref;
-  typedef typename std::list<entry>::iterator entry_ref;
 
   /** \brief An entry in the index related to install_version entries.
    *
@@ -269,6 +363,98 @@ private:
   // promotions.  So saving space is more important than being as fast
   // as possible.
   std::map<dep, break_soft_dep_index_entry> break_soft_dep_index;
+
+  // Used to drop backpointers to an entry, one choice at a time.  Not
+  // as efficient as the bulk operations below, but more general.
+  struct drop_choice
+  {
+    install_version_index_entry **install_version_index;
+    std::map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
+    // The entry being removed.
+    entry_ref victim;
+
+    drop_choice(install_version_index_entry **_install_version_index,
+		std::map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
+		const entry_ref &_victim)
+      : install_version_index(_install_version_index),
+	break_soft_dep_index(_break_soft_dep_index),
+	victim(_victim)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  {
+	    const int id = c.get_ver().get_id();
+	    install_version_index_entry *index_entry = install_version_index[id];
+	    if(index_entry != NULL)
+	      {
+		if(!c.get_from_dep_source())
+		  {
+		    index_entry->not_from_dep_source_entries.erase(victim);
+		    for(typename std::map<dep, std::vector<entry_ref> >::iterator
+			  it = index_entry->from_dep_source_entries.begin();
+			it != index_entry->from_dep_source_entries.end();
+			++it)
+		      it->second.erase(victim);
+		  }
+		else
+		  {
+		    const typename std::map<dep, std::vector<entry_ref> >::iterator
+		      found = index_entry->from_dep_source_entries.find(c.get_dep());
+		    if(found != index_entry->from_dep_source_entries.end())
+		      found->second.erase(victim);
+		  }
+	      }
+	  }
+	  break;
+
+	case choice::break_soft_dep:
+	  {
+	    const typename std::map<dep, break_soft_dep_index_entry>::iterator
+	      found = break_soft_dep_index.find(c.get_dep());
+	    if(found != break_soft_dep_index.end())
+	      found->second.erase(victim);
+	  }
+	  break;
+	}
+
+      return true;
+    }
+  };
+
+  void eject(const entry_ref &victim)
+  {
+    const promotion &p(victim->p);
+
+    // First, find the promotion's tier.
+    const typename std::map<tier, std::list<entry> >::iterator
+      found = entries.find(p.get_tier());
+    if(found == entries.end())
+      LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
+    else
+      {
+	std::list<entry> &tier_entries(found->second);
+
+	LOG_TRACE(logger, "Ejecting promotion: " << p);
+	// Remove the promotion from the reverse indices.
+	p.get_choices().for_each(drop_choice(install_version_index,
+					     break_soft_dep_index,
+					     victim));
+	// Drop it from the tier.
+	tier_entries.erase(victim);
+
+	if(tier_entries.empty())
+	  {
+	    LOG_TRACE(logger, "The tier " << found->first
+		      << " is now empty, removing it.");
+	    entries.erase(found);
+	  }
+      }
+  }
 
 public:
   typedef unsigned int size_type;
@@ -1832,7 +2018,16 @@ public:
 	// Insert the new entry into the list of entries in this tier.
 	std::list<entry> &p_tier_entries = p_tier_found->second;
 	const entry_ref new_entry =
-	  p_tier_entries.insert(p_tier_entries.end(), p);
+	  p_tier_entries.insert(p_tier_entries.end(),
+				entry(p));
+	if(p.get_valid_condition().valid())
+	  // Check that p.get_valid_condition() isn't NULL.
+	  {
+	    new_entry->retraction_expression =
+	      eject_promotion_when_invalid::create(p.get_valid(),
+						   new_entry,
+						   this);
+	  }
 	++num_promotions;
 
 	LOG_TRACE(logger, "Building index entries for " << p);
