@@ -2298,7 +2298,7 @@ private:
 			  << " contains " << p
 			  << " as an active promotion; modifying its tier accordingly.");
 
-		s.tier = p.get_tier();
+		set_tier(s.step_num, p.get_tier());
 		graph.schedule_promotion_propagation(step_num, p);
 	      }
 	  }
