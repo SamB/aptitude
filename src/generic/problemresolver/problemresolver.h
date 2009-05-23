@@ -52,7 +52,7 @@
 #include "choice_set.h"
 #include "dump_universe.h"
 #include "exceptions.h"
-#include "incremental_expressions.h"
+#include "incremental_expression.h"
 #include "promotion_set.h"
 #include "solution.h"
 #include "resolver_undo.h"
@@ -910,12 +910,52 @@ private:
   /** \brief Stores the approved and rejected status of dependencies. */
   std::map<dep, approved_or_rejected_info> user_approved_or_rejected_broken_deps;
 
+  /** \brief Comparison operator on choices that treats choices which
+   *  could have distinct deferral status as different.
+   */
+  struct compare_choices_for_deferral
+  {
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      if(c1.get_type() < c2.get_type())
+	return true;
+      else if(c2.get_type() < c1.get_type())
+	return false;
+      else switch(c1.get_type())
+	     {
+	     case choice::install_version:
+	       if(c1.get_from_dep_source() < c2.get_from_dep_source())
+		 return true;
+	       else if(c2.get_from_dep_source() < c1.get_from_dep_source())
+		 return false;
+	       else if(c1.get_ver() < c2.get_ver())
+		 return true;
+	       else if(c2.get_ver() < c1.get_ver())
+		 return false;
+	       else if(c1.get_has_dep() < c2.get_has_dep())
+		 return true;
+	       else if(c2.get_has_dep() < c1.get_has_dep())
+		 return false;
+	       else if(c1.get_dep() < c2.get_dep())
+		 return true;
+	       else
+		 return false;
+
+	     case choice::break_soft_dep:
+	       return c1.get_dep() < c2.get_dep();
+
+	     default: return false; // Treat all invalid choices as equal.
+	     }
+    }
+  };
+
   /** \brief Memoizes "is this deferred?" expressions for every choice
    *  in the search.
    *
    *  \sa build_is_deferred, build_is_deferred_real
    */
-  std::map<choice, expression_weak_ref<expression<bool> > > > memoized_is_deferred;
+  std::map<choice, expression_weak_ref<expression<bool> >,
+	   compare_choices_for_deferral> memoized_is_deferred;
 
 
   typedef std::set<std::pair<version, version> > stupid_table;
