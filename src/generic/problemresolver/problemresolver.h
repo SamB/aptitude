@@ -604,7 +604,9 @@ private:
 
   typedef ExtractPackageId PackageHash;
 
-  /** Compares steps according to their "goodness". */
+  /** Compares steps according to their "goodness": their tier, then
+   *  thier score, then their contents.
+   */
   struct step_goodness_compare
   {
     const search_graph &graph;
@@ -616,13 +618,27 @@ private:
 
     bool operator()(int step_num1, int step_num2) const
     {
-      const solution &s1(graph.get_step(step_num1).sol);
-      const solution &s2(graph.get_step(step_num2).sol);
+      // Optimization: a step always equals itself.
+      if(step_num1 == step_num2)
+	return false;
+
+      const step &step1(graph.get_step(step_num1));
+      const step &step2(graph.get_step(step_num2));
+      const solution &s1(step1.sol);
+      const solution &s2(step2.sol);
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
-      return s2.get_tier() < s1.get_tier() ||
-	(s1.get_tier() == s2.get_tier() && s1.get_score() < s2.get_score());
+      if(step2.tier < step1.tier)
+	return true;
+      else if(step1
+	return false;
+      else if(s1.get_score() < s2.get_score())
+	return true;
+      else if(s2.get_score() < s1.get_score())
+	return false;
+      else
+	return s1 < s2;
     }
   };
 
@@ -790,11 +806,11 @@ private:
 
 
 
-  /** The working queue.
+  /** All the steps that have not yet been processed.
    *
-   *  Each entry is a step number.
+   *  Steps are sorted by tier, then by score, then by their contents.
    */
-  std::priority_queue<int, std::vector<int>, step_goodness_compare> open;
+  std::set<int, step_goodness_compare> pending;
 
   /** \brief The current minimum search tier.
    *
@@ -819,7 +835,7 @@ private:
    *  The main reason this is persistent at the moment is so we don't
    *  lose solutions if find_next_solution() throws an exception.
    */
-  std::priority_queue<int, std::vector<int>, step_goodness_compare> future_solutions;
+  std::set<int, step_goodness_compare> pending_future_solutions;
 
   /** \brief Stores already-seen solutions that had their successors
    *  generated.
@@ -830,24 +846,6 @@ private:
    *  clones.
    */
   std::map<solution, int, solution_contents_compare> closed;
-
-  /** \brief Stores solutions that are known to have a higher tier
-   *  than the current search tier.
-   *
-   *  Note: conflict_tier will never have an entry in this set;
-   *  solutions at that tier are thrown away rather than deferred.
-   */
-  std::map<tier, std::set<int, step_contents_compare> > deferred;
-
-  /** Like deferred, but for future solutions.
-   *
-   *  Note: because we only generate a deferred future solution when
-   *  we would otherwise have returned a solution, this doesn't need
-   *  to be split by tier: the solutions are always all at the current
-   *  tier.
-   */
-  std::set<int, step_contents_compare> deferred_future_solutions;
-
 
   /** Stores tier promotions: sets of installations that will force a
    *  solution to a higher tier of the search.
@@ -2104,16 +2102,22 @@ private:
     return false;
   }
 
-  /** \brief Defer a step to the given tier. */
-  void defer_step(const tier &t, int step_num)
+  /** \brief Adjust the tier of a step, keeping everything consistent. */
+  void set_step_tier(const tier &t, int step_num)
   {
-    typename std::map<tier, std::set<int, step_contents_compare> >::iterator
-      found(deferred.find(t));
-    if(found == deferred.end())
-      found = deferred.insert(found, std::make_pair(t,
-						    std::set<int, step_contents_compare>(step_contents_compare(graph))));
+    step &s(graph.get_step(step_num));
 
-    found->second.insert(step_num);
+    bool was_in_pending =  (pending.erase(step_num) > 0);
+    bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
+
+
+    s.step_tier = t;
+
+
+    if(was_in_pending)
+      pending.insert(step_num);
+    if(was_in_pending_future_solutions)
+      pending_future_solutions.insert(step_num);
   }
 
   /** \brief Add a promotion to the global set of promotions.
@@ -2805,7 +2809,7 @@ private:
       }
 
     if(t > s.step_tier)
-      s.step_tier = t;
+      set_tier(s.step_num, t);
   }
 
   /** \brief Increase the tier of a solver (for instance, because a
