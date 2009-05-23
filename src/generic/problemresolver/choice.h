@@ -167,7 +167,7 @@ public:
   /** \brief Return a choice that contains any choice with the same
    *  effect as this choice.
    */
-  choice generalize() const
+  generic_choice generalize() const
   {
     switch(tp)
       {
@@ -179,7 +179,7 @@ public:
       }
 
     eassert(!"We should never get here.");
-    return choice();
+    return generic_choice();
   }
 
   /** \brief Test whether this choice "contains" another choice.
