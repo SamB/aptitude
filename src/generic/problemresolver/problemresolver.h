@@ -629,9 +629,9 @@ private:
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
-      if(step2.tier < step1.tier)
+      if(step2.step_tier < step1.step_tier)
 	return true;
-      else if(step1
+      else if(step1.step_tier < step2.step_tier)
 	return false;
       else if(s1.get_score() < s2.get_score())
 	return true;
