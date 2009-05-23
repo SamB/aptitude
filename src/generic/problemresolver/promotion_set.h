@@ -366,13 +366,22 @@ private:
 
   // Used to drop backpointers to an entry, one choice at a time.  Not
   // as efficient as the bulk operations below, but more general.
-  struct drop_choice
+  class drop_choice
   {
     install_version_index_entry **install_version_index;
     std::map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
     // The entry being removed.
     entry_ref victim;
 
+    static void do_drop(std::vector<entry_ref> &entries,
+			const entry_ref &victim)
+    {
+      typename std::vector<entry_ref>::iterator new_end =
+	std::remove(entries.begin(), entries.end(), victim);
+      entries.erase(new_end, entries.end());
+    }
+
+  public:
     drop_choice(install_version_index_entry **_install_version_index,
 		std::map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
 		const entry_ref &_victim)
@@ -394,19 +403,19 @@ private:
 	      {
 		if(!c.get_from_dep_source())
 		  {
-		    index_entry->not_from_dep_source_entries.erase(victim);
+		    do_drop(index_entry->not_from_dep_source_entries, victim);
 		    for(typename std::map<dep, std::vector<entry_ref> >::iterator
 			  it = index_entry->from_dep_source_entries.begin();
 			it != index_entry->from_dep_source_entries.end();
 			++it)
-		      it->second.erase(victim);
+		      do_drop(it->second, victim);
 		  }
 		else
 		  {
 		    const typename std::map<dep, std::vector<entry_ref> >::iterator
 		      found = index_entry->from_dep_source_entries.find(c.get_dep());
 		    if(found != index_entry->from_dep_source_entries.end())
-		      found->second.erase(victim);
+		      do_drop(found->second, victim);
 		  }
 	      }
 	  }
@@ -417,7 +426,7 @@ private:
 	    const typename std::map<dep, break_soft_dep_index_entry>::iterator
 	      found = break_soft_dep_index.find(c.get_dep());
 	    if(found != break_soft_dep_index.end())
-	      found->second.erase(victim);
+	      do_drop(found->second, victim);
 	  }
 	  break;
 	}
@@ -1208,7 +1217,7 @@ private:
     // The number of mismatches to look for.  Decremented as we
     // encounter mismatches.  If it becomes negative, the traversal
     // aborts.
-    int num_mismatches;
+    int &num_mismatches;
 
     // Maps versions to choices associated with installing those
     // versions.
@@ -1222,7 +1231,7 @@ private:
     check_choices_in_local_indices(const std::map<version, choice> &_choices_by_install_version,
 				   const std::set<dep> &_broken_soft_deps,
 				   const log4cxx::LoggerPtr &_logger,
-				   int _num_mismatches,
+				   int &_num_mismatches,
 				   bool &_rval)
       : choices_by_install_version(_choices_by_install_version),
 	broken_soft_deps(_broken_soft_deps),
@@ -1337,9 +1346,11 @@ public:
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
-	    all_choices_in_local_indices
+	    int num_mismatches = 0;
+	    check_choices_in_local_indices
 	      all_choices_found_f(choices_by_install_version,
-				  broken_soft_deps, logger);
+				  broken_soft_deps, num_mismatches,
+				  logger);
 
 	    const promotion &p((*it)->p);
 	    p.get_choices().for_each(all_choices_found_f);
@@ -1445,13 +1456,14 @@ public:
 	    it != index_entries->end(); ++it)
 	  {
 	    bool is_incipient = false;
+	    int num_mismatches = 1;
 	    check_choices_in_local_indices
 	      choices_found_f(choices_by_install_version,
 			      broken_soft_deps, logger,
-			      1, is_incipient);
+			      num_mismatches, is_incipient);
 
 	    const promotion &p((*it)->p);
-	    p.get_choices().for_each(all_choices_found_f);
+	    p.get_choices().for_each(choices_found_f);
 	    if(is_incipient)
 	      {
 		update_incipient_output updater(p, output_domain, output);
@@ -2024,7 +2036,7 @@ public:
 	  // Check that p.get_valid_condition() isn't NULL.
 	  {
 	    new_entry->retraction_expression =
-	      eject_promotion_when_invalid::create(p.get_valid(),
+	      eject_promotion_when_invalid::create(p.get_valid_condition(),
 						   new_entry,
 						   this);
 	  }
