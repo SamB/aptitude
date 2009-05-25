@@ -48,22 +48,13 @@ class generic_choice_indexed_map
 
   typedef generic_choice<PackageUniverse> choice;
 
-  /** \brief Stores all the objects whose choice is scoped to a
-   *  particular dependency.
-   */
-  struct dep_info
-  {
-    maybe<ValueType> not_from_dep_source;
-    maybe<ValueType> from_dep_source;
-  };
-
   /** \brief Represents information about all the objects whose
    *  choices install a version.
    */
   struct version_info
   {
-    maybe<ValueType> not_dep_scoped;
-    imm::map<dep, dep_info> dep_scoped;
+    maybe<ValueType> not_from_dep_source;
+    imm::map<dep, ValueType> from_dep_source;
   };
 
   // Objects stored for the choice (Install(v), t).
@@ -91,24 +82,10 @@ public:
 	    inf = found_ver.getVal();
 
 
-	  if(!c.get_dep_scoped())
-	    inf.not_dep_scoped = value;
+	  if(!c.get_from_dep_source())
+	    inf.not_from_dep_source = value;
 	  else
-	    {
-	      typename imm::map<dep, dep_info>::node
-		found_dep = inf.dep_scoped.lookup(c.get_dep());
-
-	      dep_info dep_inf;
-	      if(found_dep.isValid())
-		dep_inf = found_dep.getVal();
-
-	      if(c.get_from_dep_source())
-		dep_inf.from_dep_source = value;
-	      else
-		dep_inf.not_from_dep_source = value;
-
-	      inf.dep_scoped.put(c.get_dep(), dep_inf);
-	    }
+	    inf.from_dep_source.put(c.get_dep(), value);
 
 	  install_version_objects.put(c.get_ver(), inf);
 	}
@@ -142,11 +119,11 @@ public:
 	    {
 	      const version_info &ver_inf(found_ver.getVal());
 
-	      if(!c.get_dep_scoped())
+	      if(!c.get_from_dep_source())
 		{
-		  if(ver_inf.not_dep_scoped.get_has_value())
+		  if(ver_inf.not_from_dep_source.get_has_value())
 		    {
-		      output = ver_inf.not_dep_scoped.get_value();
+		      output = ver_inf.not_from_dep_source.get_value();
 		      return true;
 		    }
 		  else
@@ -154,33 +131,16 @@ public:
 		}
 	      else
 		{
-		  typename imm::map<dep, dep_info>::node
-		    found_dep = inf.dep_scoped.lookup(c.get_dep());
+		  typename imm::map<dep, ValueType>::node
+		    found_dep = inf.from_dep_source.lookup(c.get_dep());
 
-		  dep_info dep_inf;
 		  if(found_dep.isValid())
-		    dep_inf = found_dep.getVal();
-
-		  if(c.get_from_dep_source())
 		    {
-		      if(dep_inf.from_dep_source.get_has_value())
-			{
-			  output = dep_inf.from_dep_source.get_value();
-			  return true;
-			}
-		      else
-			return false;
+		      output = found_dep.getVal();
+		      return true;
 		    }
 		  else
-		    {
-		      if(dep_inf.not_from_dep_source.get_has_value())
-			{
-			  output = dep_inf.not_from_dep_source.get_value();
-			  return true;
-			}
-		      else
-			return false;
-		    }
+		    return false;
 		}
 	    }
 	  else
@@ -220,24 +180,10 @@ public:
 	    inf = found_ver.getVal();
 
 
-	  if(!c.get_dep_scoped())
-	    inf.not_dep_scoped = maybe<ValueType>();
+	  if(!c.get_from_dep_source())
+	    inf.not_from_dep_source = maybe<ValueType>();
 	  else
-	    {
-	      typename imm::map<dep, dep_info>::node
-		found_dep = inf.dep_scoped.lookup(c.get_dep());
-
-	      dep_info dep_inf;
-	      if(found_dep.isValid())
-		dep_inf = found_dep.getVal();
-
-	      if(c.get_from_dep_source())
-		dep_inf.from_dep_source = maybe<ValueType>();
-	      else
-		dep_inf.not_from_dep_source = maybe<ValueType>();
-
-	      inf.dep_scoped.put(c.get_dep(), dep_inf);
-	    }
+	    inf.from_dep_source.erase(c.get_dep());
 
 	  install_version_objects.put(c.get_ver(), inf);
 	}
@@ -250,38 +196,21 @@ public:
   }
 
   // Applies the given function to (choice, value) for each (choice,
-  // value) pair in the dependency scope that this object was applied
-  // to.
+  // value) pair in the set of dependency -> value bindings.
   template<typename F>
-  struct for_each_by_dep_scope
+  struct for_each_from_dep_source
   {
     version v;
     F f;
 
-    for_each_by_dep_scope(const version &_v, F _f)
+    for_each_from_dep_source(const version &_v, F _f)
       : f(_f), v(_v)
     {
     }
 
-    bool operator()(const std::pair<dep, dep_info> &scope) const
+    bool operator()(const std::pair<dep, ValueType> &p) const
     {
-      const dep &scope_d(scope.first);
-      const maybe<ValueType> &not_from_dep_source = scope.second.not_from_dep_source;
-      const maybe<ValueType> &from_dep_source = scope.second.from_dep_source;
-
-      if(not_from_dep_source.get_has_value())
-	{
-	  if(!f(choice::make_install_version(v, true, scope_d, -1),
-		not_from_dep_source.get_value()))
-	    return false;
-	}
-
-      if(from_dep_source.get_has_value())
-	{
-	  if(!f(choice::make_install_version_from_dep_source(v, scope_d, -1),
-		from_dep_source.get_value()))
-	    return false;
-	}
+      return f(p.first, p.second);
     }
   };
 
@@ -311,56 +240,36 @@ public:
 	    {
 	      const version_inf &ver_inf(found_ver.getVal());
 
-	      if(!c.get_dep_scoped())
+	      if(!c.get_from_dep_source())
 		{
-		  // If the choice isn't dep-scoped, apply the
-		  // function to the not-dep-scoped cell and to
-		  // anything that's dep-scoped.
-		  for_each_with_choice<F>
-		    without_dep_f(choice::make_install_version(v, -1));
-
-		  if(ver_inf.not_dep_scoped.get_has_value())
+		  // If the choice isn't a from-dep-source choice,
+		  // apply the function to the not-from-dep-source
+		  // cell and to all the from-dep-source cells.
+		  if(ver_inf.not_from_dep_source.get_has_value())
 		    {
 		      if(!f(choice::make_install_version(v, -1),
-			    ver_inf.get_value()))
+			    ver_inf.not_from_dep_source.get_value()))
 			return false;
 		    }
 
-		  for_each_by_dep_scope<F> dep_scope_f(v, f);
-		  if(!ver_inf.dep_scoped.for_each(dep_scope_f))
+		  for_each_from_dep_source<F> from_dep_source_f(v, f);
+		  if(!ver_inf.from_dep_source.for_each(from_dep_source_f))
 		    return false;
 		}
 	      else
 		{
-		  // If the choice is dep-scoped, find the particular
-		  // dependency that it applies to and apply f.
-		  typename imm::map<dep, dep_info>::node found_dep =
-		    ver_inf.dep_scoped.find(c.get_dep());
+		  // If the choice is a from-dep-source choice, find
+		  // the particular dependency that it applies to and
+		  // apply f.
+		  typename imm::map<dep, ValueType>::node found_dep =
+		    ver_inf.from_dep_source.find(c.get_dep());
 
 		  if(found_dep.isValid())
 		    {
 		      const dep &d(c.get_dep());
-		      const dep_info &dep_inf(found_dep.getVal());
-
-		      if(!c.get_from_dep_source())
-			{
-			  // If it's not a from-dep-source dependency,
-			  // apply f to the not-from-dep-source cell.
-			  if(dep_inf.not_from_dep_source.get_has_value())
-			    {
-			      if(!f(choice::make_install_version(v, true, d, -1),
-				    dep_inf.not_from_dep_source.get_value()))
-				return false;
-			    }
-			}
-
-		      // Apply f to the from-dep-source cell.
-		      if(dep_inf.from_dep_source.get_has_value())
-			{
-			  if(!f(choice::make_install_version_from_dep_source(v, d, -1),
-				dep_inf.from_dep_source.get+value()))
-			    return false;
-			}
+		      if(!f(choice::make_install_version_from_dep_source(v, d, -1),
+			    found_dep.getValue()))
+			return false;
 		    }
 		}
 	    }
