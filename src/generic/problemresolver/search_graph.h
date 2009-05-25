@@ -24,6 +24,7 @@
 #include <loggers.h>
 
 #include "choice.h"
+#include "choice_indexed_set.h"
 #include "choice_set.h"
 #include "promotion_set.h"
 #include "solution.h"
@@ -245,7 +246,7 @@ public:
      *  dropping them to save time and memory (no need to make copies
      *  of (part of) the list just to throw entries away).
      */
-    imm::map<choice, imm::list<dep>, compare_choices_by_effects> deps_solved_by_choice;
+    choice_indexed_map<imm::list<dep> > deps_solved_by_choice;
 
     /** \brief Versions that are structurally forbidden and the reason
      *  each one is forbidden.
@@ -387,6 +388,65 @@ public:
       choice_mapping_from_action
     };
 
+  /** \brief Store a step that a choice is associated with and how the
+   *  choice is associated with that step.
+   */
+  class choice_mapping_info
+  {
+    int step_num;
+    choice_mapping_type tp;
+
+    // This only makes sense for solver mappings.
+    //
+    // This is not strictly necessary.  The main reason for including
+    // it is simply that it makes it easier to keep the mapping
+    // structures up to date: without this, we would have to be
+    // slightly more careful when removing entries from a solver set
+    // (we would want to check first whether anything else has exactly
+    // the same choice, and not remove it if that's the case).  This
+    // would require a simple routine in choice_indexed_set to test
+    // whether an exact match to a choice is registered as an index
+    // value.
+    //
+    // Eliminating this would save a chunk of time and memory, since
+    // often lots of different deps will be solved by the same choice.
+    dep solved_dep;
+
+  public:
+    choice_mapping_info(int _step_num, choice_mapping_type _tp,
+			const dep &_solved_dep)
+      : step_num(_step_num), tp(_tp),
+	solved_dep(_solved_dep)
+    {
+    }
+
+    /** \brief Get the step number associated with the choice. */
+    int get_step_num() const { return step_num; }
+
+    /** \brief Get how the choice is associated with the step. */
+    choice_mapping_type get_type() const { return tp; }
+
+    /** \brief If the type is choice_mapping_from_solver, get the
+     *  dependency solved by the choice.
+     */
+    const dep &get_solved_dep() const { return solved_dep; }
+
+    /** \brief Compare two choice_mapping_info objects. */
+    bool operator<(const choice_mapping_info &other) const
+    {
+      if(step_num < other.step_num)
+	return true;
+      else if(other.step_num < step_num)
+	return false;
+      else if(tp < other.tp)
+	return true;
+      else if(other.tp < tp)
+	return false;
+      else
+	return solved_dep < other.solved_dep;
+    }
+  };
+
 private:
   /** \brief The maximum number of promotions to propagate
    *  through any one step.
@@ -420,66 +480,62 @@ private:
    *  installed list or in one of their solvers.
    *
    *  This is used to efficiently update existing steps that are "hit"
-   *  by a new promotion.  Each step number is mapped to "true" if the
-   *  choice is part of the step's action set and "false" if it's a
-   *  solver.
+   *  by a new promotion.
    *
    *  This set needs to be updated when a new step is added to the
    *  graph, and also when one of a version's successors is struck.
    */
-  std::map<choice, std::map<int, choice_mapping_type>, compare_choices_by_effects> steps_related_to_choices;
+  choice_indexed_set<choice, choice_mapping_info> steps_related_to_choices;
 
 public:
-  /** \brief RAII wrapper to ensure proper access to one entry in the
-   *         global steps-related-to-choices map.
-   *
-   *  When this object is constructed, it creates a new set if no set
-   *  exists.  When it is destroyed, it removes the set from the map
-   *  if it's empty.
+  /** \brief Add an entry in the choice->step reverse index indicating
+   *  that c is contained in a step as described by inf.
    */
-  class steps_related_to_choices_reference
+  void bind_choice(const choice &c, const choice_mapping_info &inf)
   {
-    search_graph &graph;
-    std::map<version, std::map<int, choice_mapping_type>, compare_choices_by_effects>::iterator it;
+    // \todo Write a proper operator<<.
+    const char *type_desc;
+    switch(c.get_type())
+      {
+      case choice_mapping_from_action: type_desc = "an action"; break;
+      case choice_mapping_from_solver: type_desc = "a solver"; break;
+      default: type_desc = "an error"; break;
+      }
 
-  public:
-    steps_related_to_choices_references(search_graph &_graph,
-					const choice &c)
-      : graph(_graph)
-    {
-      it = graph.steps_related_to_choices.find(c);
-      if(it == graph.end())
-	it = graph.steps_related_to_choices.insert(std::make_pair(v, std::set<int>())).first;
-    }
+    LOG_TRACE(logger, "Marking the choice " << c
+	      << " as " << type_desc << " in step "
+	      << int.get_step_num());
 
-    /** \brief Retrieve the referenced set. */
-    std::map<int, choice_mapping_type> &operator*() const
-    {
-      return it->second;
-    }
+    steps_related_to_choices.insert(c, inf);
+  }
 
-    /** \brief Retrieve the referenced set. */
-    std::map<int, choice_mapping_type> *operator->() const
-    {
-      return &it->second;
-    }
-
-    ~successor_info_by_version_reference()
-    {
-      if(it->second.empty())
-	graph.steps_related_to_choices.erase(it);
-    }
-  };
-
-  std::set<int> *find_steps_related_to_choice(const choice &c) const
+  /** \brief Remove an entry from the choice->step reverse index. */
+  void remove_choice(const choice &c, const choice_mapping_info &inf)
   {
-    std::map<choice, std::set<int>, compare_choices_by_effects>::const_iterator
-      found = steps_related_to_choices.find(c);
+    // \todo Write a proper operator<<.
+    const char *type_desc;
+    switch(c.get_type())
+      {
+      case choice_mapping_from_action: type_desc = "an action"; break;
+      case choice_mapping_from_solver: type_desc = "a solver"; break;
+      default: type_desc = "an error"; break;
+      }
 
-    if(found == steps_related_to_choices.end())
-      return NULL;
-    else
-      return found->second;
+    LOG_TRACE(logger, "Removing the choice " << c
+	      << " as " << type_desc << " in step "
+	      << int.get_step_num());
+
+    steps_related_to_choices.remove(c, inf);
+  }
+
+  /** \brief Apply the given function object to (c', info) for each
+   *  pair (c', info) in the choice->step reverse index such that c'
+   *  is contained in c.
+   */
+  template<typename F>
+  void for_each_step_related_to_choice(const choice &c, const F &f)
+  {
+    steps_related_to_choices.for_each_contained_in(c, f);
   }
 
 

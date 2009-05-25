@@ -2194,12 +2194,6 @@ private:
    *  incipient in a given step if each of its choices is mapped to
    *  the step in the global choice index, and if exactly one of those
    *  choices is a solver.
-   *
-   *  Note that it matters that the global index compare choices by
-   *  effects: there might be several distinct choices that contain a
-   *  particular element of a promotion, but they will have the same
-   *  effect.  If the structure of choices is changed this might
-   *  become an issue.
    */
   struct incipient_promotion_search_info
   {
@@ -2215,12 +2209,63 @@ private:
 
     /** \brief Set to the first choice in the solver set that the
      *  promotion hit.
+     *
+     *  We only need to store one because there will only be a single
+     *  choice stored as a solver in steps that contain all but one
+     *  choice as an action.  We can count on that because actions and
+     *  solvers are not allowed to overlap.
      */
     choice solver;
 
     incipient_promotion_search_info()
       : action_hits(0), solver_hits(0)
     {
+    }
+  };
+
+  // Helper function for find_steps_containing_incipient_promotion.
+  // Processes mapping information and updates the counters.
+  //
+  // Note that the same choice could show up as a solver for several
+  // different dependencies, so we need to remember which steps we
+  // already incremented the solver-hits counter for.
+  class update_incipient_promotion_information
+  {
+    std::map<int, incipient_promotion_search_info> &output;
+    std::set<int> &visited_solver_steps;
+
+  public:
+    update_incipient_promotion_information(std::map<int, incipient_promotion_search_info> &_output,
+					   std::set<int> &_visited_solver_steps)
+      : output(_output),
+	visited_solver_steps(_visited_solver_steps)
+    {
+    }
+
+    bool operator()(const choice &c, const typename search_graph::choice_mapping_info &inf) const
+    {
+      incipient_promotion_search_info &output_inf(output[inf.get_step_num()]);
+
+      switch(inf.get_type())
+	{
+	case search_graph::choice_mapping_from_action:
+	  ++output_inf.action_hits;
+	  break;
+
+	case search_graph::choice_mapping_from_solver:
+	  {
+	    bool already_visited =
+	      !visited_solver_steps.insert(inf.get_step_num()).second;
+
+	    if(already_visited)
+	      return true;
+	  }
+
+	  ++output_inf.solver_hits;
+	  break;
+	}
+
+      return true;
     }
   };
 
@@ -2233,11 +2278,11 @@ private:
     // be safe since this isn't reentrant (same trick I use for
     // promotions).
     std::map<int, incipient_promotion_search_info> &output;
-    const search_graph &graph;
+    search_graph &graph;
 
   public:
-    find_steps_containing_incipient_promotion(std::set<int> &_output,
-					      const search_graph &_graph)
+    find_steps_containing_incipient_promotion(std::map<int, incipient_promotion_search_info> &_output,
+					      search_graph &_graph)
       : output(_output),
 	graph(_graph)
     {
@@ -2245,30 +2290,11 @@ private:
 
     bool operator()(const choice &c) const
     {
-      std::map<int, search_graph::choice_mapping_type> *
-	steps(graph.find_steps_related_to_choice(c));
+      std::set<int> steps_containing_c_as_a_solver;
+      update_incipient_promotion_information
+	update_f(output, steps_containing_c_as_a_solver);
 
-      if(steps != NULL)
-	{
-	  for(std::map<int, search_graph::choice_mapping_type>::const_iterator
-		it = steps->begin(); it != steps->end(); ++it)
-	    {
-	      incipient_promotion_search_info &inf(output[it->first]);
-
-	      switch(it->second)
-		{
-		case search_graph::choice_mapping_from_action:
-		  ++inf.action_hits;
-		  break;
-
-		case search_graph::choice_mapping_from_solver:
-		  if(inf.solver_hits == 0)
-		    inf.solver = c;
-		  ++inf.solver_hits;
-		  break;
-		}
-	    }
-	}
+      graph.for_each_step_related_to_choice(c, update_f);
 
       return true;
     }
@@ -2280,11 +2306,15 @@ private:
     LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
 
     std::map<int, incipient_promotion_search_info> search_result;
-    p.for_each(collect_steps_hit_by_promotion(steps_hit_by_promotions));
+    {
+      find_steps_containing_incipient_promotion
+	find_promotion_f(search_result, graph);
+      p.get_choices().for_each(find_promotion_f);
+    }
 
     int num_promotion_choices = p.get_choices().size();
     for(std::map<int, incipient_promotion_search_info>::const_iterator
-	  it = search_result.begin(); it != search_resut.end(); ++it)
+	  it = search_result.begin(); it != search_result.end(); ++it)
       {
 	const int step_num(it->first);
 	const incipient_promotion_search_info &inf(it->second);
@@ -2346,50 +2376,61 @@ private:
       }
   }
 
+  class do_drop_deps_solved_by
+  {
+    step &s;
+
+  public:
+    do_drop_deps_solved_by(step &_s)
+      : s(_s)
+    {
+    }
+
+    bool operator()(const choice &c, const imm::list<dep> &deps) const
+    {
+      for(imm::list<dep>::const_iterator it = deps.begin();
+	  it != deps.end(); ++it)
+	{
+	  const dep &d(*it);
+
+	  // Need to look up the solvers of the dep in order to know
+	  // the number of solvers that it was entered into the
+	  // by-num-solvers set with.
+	  imm::map<dep, search_graph::dep_solvers>::node
+	    solvers = s.unresolved_deps_by_num_solvers.lookup(d);
+
+	  if(solvers.valid())
+	    {
+	      const imm::map<version, solver_information> &solver_map =
+		solvers.getVal().get_solvers();
+	      LOG_TRACE(logger,
+			"Removing the dependency " << d
+			<< " with a solver set of " << solver_map);
+	      int num_solvers = solvers.getVal().get_solvers().size();
+	      s.unresolved_deps_by_num_solvers.remove(std::make_pair(num_solvers, d));
+	    }
+	  else
+	    LOG_TRACE(logger, "The dependency " << d
+		      << " has no solver set, assuming it was already solved.");
+
+	  s.unresolved_deps.remove(d);
+	}
+    }
+  };
+
   /** \brief Drop all dependencies from the given set that are solved
    *  by the given choice.
    */
   void drop_deps_solved_by(const choice &c, step &s) const
   {
+    choice c_general(c.generalize());
     LOG_TRACE(logger, "Dropping dependencies in step "
-	      << s.step_num << " that are solved by " << c);
-    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
-      choices_solved_by_c = s.deps_solved_by_choice.lookup(c);
-    if(choices_solved_by_c.valid())
-      {
-	const imm::list<dep> &deps(choices_solved_by_c.getVal());
+	      << s.step_num << " that are solved by " << c_general);
 
-	for(imm::list<dep>::const_iterator it = deps.begin();
-	    it != deps.end(); ++it)
-	  {
-	    const dep &d(*it);
-
-	    // Need to look up the solvers of the dep in order to know
-	    // the number of solvers that it was entered into the
-	    // by-num-solvers set with.
-	    imm::map<dep, search_graph::dep_solvers>::node
-	      solvers = s.unresolved_deps_by_num_solvers.lookup(d);
-
-	    if(solvers.valid())
-	      {
-		const imm::map<version, solver_information> &solver_map =
-		  solvers.getVal().get_solvers();
-		LOG_TRACE(logger,
-			  "Removing the dependency " << d
-			  << " with a solver set of " << solver_map);
-		int num_solvers = solvers.getVal().get_solvers().size();
-		s.unresolved_deps_by_num_solvers.remove(std::make_pair(num_solvers, d));
-	      }
-	    else
-	      LOG_TRACE(logger, "The dependency " << d
-			<< " has no solver set, assuming it was already solved.");
-
-	    s.unresolved_deps.remove(d);
-	  }
-      }
+    s.for_each_contained_in(c_general, do_drop_deps_solved_by(s));
 
     LOG_TRACE(logger, "Done dropping dependencies in step "
-	      << s.step_num << " that are solved by " << c);
+	      << s.step_num << " that are solved by " << c_general);
   }
 
   class add_to_choice_list
@@ -2409,8 +2450,100 @@ private:
     }
   };
 
-  /** \brief Strike the given choice from all solver lists in the
-   *         given step.
+  // Helper for strike_choice.  For each dependency that's solved by a
+  // choice, remove the choice from the solvers list of that
+  // dependency.  Also, update the global search graph's reverse index
+  // so it doesn't map the choice to that dependency any more.
+  class do_strike_choice
+  {
+    const step &s;
+    const choice_set &reason;
+    search_graph &graph;
+
+  public:
+    do_strike_choice(const step &_s,
+		     const choice_set &_reason,
+		     search_graph &_graph)
+      : s(_s),
+	reason(_reason),
+	graph(_graph)
+    {
+    }
+
+    // One slight subtlety here: the "victim" passed in might differ
+    // from the "victim" passed to strike_choice.  Here, "victim" is
+    // the choice linked to the actual solver; i.e., it could be a
+    // from-dep-source choice.  In strike_choice, "victim" could be
+    // more general.  Using the more specific victim means that we
+    // remove the correct entries (there could be both general and
+    // specific entries that need to be removed when striking a broad
+    // choice).
+    bool operator()(const choice &victim,
+		    imm::list<dep> solved_by_victim) const
+    {
+      for(imm::list<dep>::const_iterator it = solved_by_victim.begin();
+	  it != solved_by_victim.end(); ++it)
+	{
+	  const dep &d(*it);
+
+	  // Remove this step from the set of steps related to the
+	  // solver that was deleted.
+	  choice_mapping_info inf_to_delete(s.step_num,
+					    search_graph::choice_mapping_from_solver,
+					    d);
+
+	  graph.remove_choice(c, inf_to_delete);
+
+	  // Find the current number of solvers so we can yank the
+	  // dependency out of the unresolved-by-num-solvers set.
+	  imm::map<dep, dep_solvers>::node current_solver_set_found =
+	    s.unresolved_deps.lookup(d);
+
+	  if(current_solver_set_found.isValid())
+	    {
+	      const dep_solvers &current_solvers(current_solver_set_found.getVal());
+	      const int current_num_solvers = current_solvers.get_solvers().size();
+
+	      dep_solvers new_solvers(current_solvers);
+
+	      LOG_TRACE(logger,
+			"Removing the choice " << victim
+			<< " from the solver set of " << d
+			<< " in step " << s.step_num
+			<< ": " << new_solvers.get_solvers());
+
+	      new_solvers.get_solvers().erase(d);
+	      add_to_choice_list adder(new_solvers.get_structural_reasons());
+	      reasons.for_each(adder);
+
+	      // Actually update the solvers of the dep.
+	      s.unresolved_deps.put(d, new_solvers);
+
+	      const int new_num_solvers = new_solvers.get_solvers().size();
+
+	      if(current_num_solvers != new_num_solvers)
+		{
+		  LOG_TRACE(logger, "Changing the number of solvers of "
+			    << d << " from " << current_num_solvers
+			    << " to " << new_num_solvers
+			    << " in step " << s.step_num);
+		  // Update the number of solvers.
+		  s.unresolved_deps_by_num_solvers.erase(std::make_pair(current_num_solvers, d));
+		  s.unresolved_deps_by_num_solvers.insert(std::make_pair(new_num_solvers, d));
+		}
+
+	      // Rescan the solvers, maybe updating the step's tier.
+	      check_solvers_tier(s, new_solvers);
+	    }
+	  else
+	    LOG_TRACE(logger, "The dependency " << d
+		      << " has no solver set, assuming it was already solved.");
+	}
+    }
+  };
+
+  /** \brief Strike the given choice and any choice that it contains
+   *         from all solver lists in the given step.
    */
   void strike_choice(const step &s,
 		     const choice &victim,
@@ -2420,67 +2553,9 @@ private:
 	      << " from all solver lists in step " << s.step_num
 	      << " with the reason set " << reason);
 
-    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
-      solved_by_victim_found(s.deps_solved_by_choice.lookup(victim));
 
-    if(solved_by_victim_found.isValid())
-      {
-	const imm::list<dep> &solved_by_victim(solved_by_victim_found.getVal());
-
-	for(imm::list<dep>::const_iterator it = solved_by_victim.begin();
-	    it != solved_by_victim.end(); ++it)
-	  {
-	    const dep &d(*it);
-
-	    // Find the current number of solvers so we can yank the
-	    // dependency out of the unresolved-by-num-solvers set.
-	    imm::map<dep, dep_solvers>::node current_solver_set_found =
-	      s.unresolved_deps.lookup(d);
-
-	    if(current_solver_set_found.isValid())
-	      {
-		const dep_solvers &current_solvers(current_solver_set_found.getVal());
-		const int current_num_solvers = current_solvers.get_solvers().size();
-
-		dep_solvers new_solvers(current_solvers);
-
-		LOG_TRACE(logger,
-			  "Removing the choice " << victim
-			  << " from the solver set of " << d
-			  << " in step " << s.step_num
-			  << ": " << new_solvers.get_solvers());
-
-		new_solvers.get_solvers().erase(d);
-		add_to_choice_list adder(new_solvers.get_structural_reasons());
-		reasons.for_each(adder);
-
-		// Actually update the solvers of the dep.
-		s.unresolved_deps.put(d, new_solvers);
-
-		const int new_num_solvers = new_solvers.get_solvers().size();
-
-		if(current_num_solvers != new_num_solvers)
-		  {
-		    LOG_TRACE(logger, "Changing the number of solvers of "
-			      << d << " from " << current_num_solvers
-			      << " to " << new_num_solvers
-			      << " in step " << s.step_num);
-		    // Update the number of solvers.
-		    s.unresolved_deps_by_num_solvers.erase(std::make_pair(current_num_solvers, d));
-		    s.unresolved_deps_by_num_solvers.insert(std::make_pair(new_num_solvers, d));
-		  }
-
-		build_solvers_promotion(s, new_solvers);
-	      }
-	    else
-	      LOG_TRACE(logger, "The dependency " << d
-			<< " has no solver set, assuming it was already solved.");
-	  }
-      }
-
-    // Remove this step from the set of steps related to the solver
-    // that was deleted.
-    search_graph::steps_related_to_choices_reference(search_graph, c)->erase(s.step_num);
+    do_strike_choice striker_f(s, reason, graph);
+    s.deps_solved_by_choice.for_each_key_contained_in(victim, striker_f);
   }
 
   /** \brief Strike choices that are structurally forbidden by the
@@ -2659,7 +2734,7 @@ private:
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
-  void find_promotions_for_solver(step &s,
+  void find_promotions_for_solver(const search_graph::step &s,
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
@@ -2672,6 +2747,12 @@ private:
 							    solver,
 							    output_domain,
 							    triggered_promotions);
+
+    // Sanity-check.
+    if(triggered_promotions.size() > 1)
+      LOG_ERROR(logger,
+		"Internal error: found " << triggered_promotions.size()
+		<< " (choice -> promotion) mappings for a single choice.");
 
     for(std::map<choice, promotion>::const_iterator it =
 	  triggered_promotions.begin();
@@ -2773,21 +2854,24 @@ private:
 
     // Update the deps-solved-by-choice map (add the dep being
     // processed to the list).
-    imm::map<choice, imm::list<dep>, compare_choices_by_effects>::node
-      solved_by_choice_found(deps_solved_by_choice.lookup(solver));
+    imm::list<dep> old_deps_solved;
 
-    if(!solved_by_choice_found.isValid())
-      deps_solved_by_choice.put(solver, imm::list<dep>::make_singleton(d));
+    if(!s.deps_solved_by_choice.try_get(solver, old_deps_solved))
+      s.deps_solved_by_choice.put(solver, imm::list<dep>::make_singleton(d));
     else
       {
 	imm::list<dep> new_deps_solved(imm::list<dep>::make_cons(d, solved_by_choice_found.getVal()));
-	deps_solved_by_choice.put(solver, new_deps_solved);
+	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
+    choice_mapping_info
+      solver_mapping_inf(s.step_num,
+			 search_graph::choice_mapping_from_solver,
+			 d);
+    graph.bind_choice(solver, solver_mapping_inf);
+		      
     // Add this step to the set of steps related to the new solver.
     search_graph::steps_related_to_choices_reference(search_graph, c)->insert(s.step_num);
-
-    find_promotions_for_solver(s, solver);
   }
 
   // Build a generalized promotion from the entries of a dep-solvers
@@ -2852,10 +2936,69 @@ private:
       set_tier(s.step_num, t);
   }
 
+  // Increases the tier of each dependency in each dependency list
+  // this is applied to.  Helper for increase_solver_tier.
+  struct do_increase_solver_tier
+  {
+    typename search_graph::step &s;
+    const tier &new_tier;
+    const choice_set &new_choices;
+
+  public:
+    do_increase_solver_tier(search_graph::step &_s,
+			    const tier &_new_tier,
+			    const choice_set &_new_choices)
+      : s(_s), new_tier(_new_tier), new_choices(_new_choices)
+    {
+    }
+
+    bool operator()(const choice &solver, const imm::list<dep> &solved) const
+    {
+      for(imm::list<dep>::const_iterator it = solved.begin();
+	  it != solved.end(); ++it)
+	{
+	  const dep &d(*it);
+
+	  imm::map<dep, dep_solvers>::node current_solver_set_found =
+	    s.unresolved_deps.lookup(d);
+
+	  if(current_solver_set_found.isValid())
+	    {
+	      const dep_solvers &current_solvers(current_solver_set_found.getVal());
+
+	      dep_solvers new_solvers(current_solvers);
+
+	      // Sanity-check: verify that the solver really
+	      // resides in the solver set of this dependency.
+	      imm::map<choice, solver_information, compare_choices_by_size>::node
+		solver_found(new_solvers.find(solver));
+
+	      if(!solver_found.isValid())
+		LOG_ERROR(logger, "Internal error: in step " << s.step_num
+			  << ", the solver " << solver
+			  << " is claimed to be a solver of " << d
+			  << " but does not appear in its solvers list.");
+	      else
+		{
+		  LOG_TRACE(logger, "Increasing the tier of "
+			    << solver << " to " << new_tier
+			    << " in the solvers list of "
+			    << d << " in step " << s.step_num
+			    << " with the reason set " << new_choices);
+		  new_solvers.put(solver, solver_information(new_tier, new_choices));
+		}
+
+	      s.unresolved_deps.put(d, new_solvers);
+	      check_solvers_tier(s, new_solvers);
+	    }
+	}
+    }
+  };
+
   /** \brief Increase the tier of a solver (for instance, because a
    *  new incipient promotion was detected).
    */
-  void increase_solver_tier(step &s,
+  void increase_solver_tier(typename search_graph::step &s,
 			    const promotion &p,
 			    const choice &solver) const
   {
@@ -2888,52 +3031,46 @@ private:
 	LOG_TRACE(logger, "Increasing the tier of " << solver
 		  << " to " << new_tier << " in all solver lists in step "
 		  << s.step_num << " with the reason set " << new_choices);
-	imm::map<choice, imm::list<dep>, compare_choices_by_effect>::node
-	  solved_found(s.deps_solved_by_choice.lookup(solver));
 
-	if(solved_found.isValid())
-	  {
-	    const imm::list<dep> &solved(solved_found.getVal());
+	do_increase_solver_tier
+	  do_increase_solver_tier_f(s, new_iter, new_choices);
 
-	    for(imm::list<dep>::const_iterator it = solved.begin();
-		it != solved.end(); ++it)
-	      {
-		const dep &d(*it);
+	s.deps_solved_by_choice.for_each_key_contained_by(solver, 
+							  do_increase_solver_tier_f);
+      }
+  }
 
-		imm::map<dep, dep_solvers>::node current_solver_set_found =
-		  s.unresolved_deps.lookup(d);
+  class do_find_promotions_for_solver
+  {
+    generic_problem_resolver &r;
+    step &s;
 
-		if(current_solver_set_found.isValid())
-		  {
-		    const dep_solvers &current_solvers(current_solver_set_found.getVal());
+  public:
+    do_find_promotions_for_solver(generic_problem_resolver &_r,
+				  step &_s)
+      : r(_r), s(_s)
+    {
+    }
 
-		    dep_solvers new_solvers(current_solvers);
+    bool operator()(const std::pair<choice, search_graph::step::solver_information> &p) const
+    {
+      r.find_promotions_for_solver(s, p.first);
+      return true;
+    }
+  };
 
-		    // Sanity-check: verify that the solver really
-		    // resides in the solver set of this dependency.
-		    imm::map<choice, solver_information, compare_choices_by_size>::node
-		      solver_found(new_solvers.find(solver));
+  /** \brief Check for promotions at each solver of the given
+   *  dependency.
+   */
+  void find_promotions_for_dep_solvers(step &s, const dep &d) const
+  {
+    typename imm::map<dep, dep_solvers>::node found =
+      s.unresolved_deps.lookup(d);
 
-		    if(!solver_found.isValid())
-		      LOG_ERROR(logger, "Internal error: in step " << s.step_num
-				<< ", the solver " << solver
-				<< " is claimed to be a solver of " << d
-				<< " but does not appear in its solvers list.");
-		    else
-		      {
-			LOG_TRACE(logger, "Increasing the tier of "
-				  << solver << " to " << new_tier
-				  << " in the solvers list of "
-				  << d << " in step " << s.step_num
-				  << " with the reason set " << new_choices);
-			new_solvers.put(solver, solver_information(new_tier, new_choices));
-		      }
-
-		    s.unresolved_deps.put(d, new_solvers);
-		    build_solvers_promotion(s, new_solvers);
-		  }
-	      }
-	  }
+    if(found.isValid())
+      {
+	do_find_promotions_for_solver find_promotions_f(*this, s);
+	found.getVal().get_solvers().for_each(find_promotions_f);
       }
   }
 
@@ -2986,7 +3123,8 @@ private:
     const int num_solvers = solvers.get_solvers().size();
     s.unresolved_deps_by_num_solvers.put(num_solvers, d);
 
-    build_solvers_promotion(s, solvers);
+    find_promotions_for_dep_solvers(s, d);
+    check_solvers_tier(s, solvers);
   }
 
   /** \brief Used to convert a step into a model of Installation. */
