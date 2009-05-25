@@ -124,7 +124,7 @@ public:
     {
       tier t;
       choice_set reasons;
-      cwidget::util::ref_ptr<expression<bool> > is_deferred;
+      cwidget::util::ref_ptr<expression<bool> > tier_valid;
 
     public:
       /** \brief Create a new solver_information.
@@ -135,9 +135,9 @@ public:
        */
       solver_information(const tier &_t,
 			 const choice_set &_reasons,
-			 cwidget::util::ref_ptr<expression<bool> > &_is_deferred)
+			 cwidget::util::ref_ptr<expression<bool> > &_tier_valid)
 	: t(_t), reasons(_reasons),
-	  is_deferred(_is_deferred)
+	  tier_valid(_tier_valid)
       {
       }
 
@@ -153,9 +153,9 @@ public:
        *  solver is deferred.
        */
       const cwidget::util::ref_ptr<expression<bool> > &
-      get_is_deferred() const
+      get_tier_valid() const
       {
-	return is_deferred;
+	return tier_valid;
       }
     };
 
@@ -223,7 +223,7 @@ public:
     /** \brief An incremental expression that computes "true" if the
      *  step is deferred and "false" otherwise.
      */
-    cwidget::util::ref_ptr<expression<bool> > is_deferred;
+    cwidget::util::ref_ptr<expression<bool> > tier_valid;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were
@@ -330,7 +330,7 @@ public:
 	parent(-1), first_child(-1), canonical_clone(-1), sol(), reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0),
-	is_deferred()
+	tier_vlaid()
     {
     }
 
@@ -347,7 +347,7 @@ public:
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
-	is_deferred(var_expression::create(false)),
+	tier_valid(var_expression::create(true)),
 	reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
@@ -375,75 +375,41 @@ public:
     }
   };
 
-  /** \brief Used to track why a choice is associated with a
-   *         particular step.
-   */
-  enum choice_mapping_type
-    {
-      /** \brief The choice is a solver of the step. */
-      choice_mapping_from_solver,
-      /** \brief The choice is one of the actions contained in the
-       *         step.
-       */
-      choice_mapping_from_action
-    };
-
-  /** \brief Store a step that a choice is associated with and how the
-   *  choice is associated with that step.
+  /** \brief Stores all steps where a choice occurs.
+   *
+   *  Steps where the choice occurs as an action are indexed by the
+   *  dependency that's solved.  This allows us to easily pick the
+   *  right solver to modify when a deferral is canceled.
    */
   class choice_mapping_info
   {
-    int step_num;
-    choice_mapping_type tp;
+    // The steps (if any) containing this choice as an action.
+    imm::set<int> action_steps;
 
-    // This only makes sense for solver mappings.
-    //
-    // This is not strictly necessary.  The main reason for including
-    // it is simply that it makes it easier to keep the mapping
-    // structures up to date: without this, we would have to be
-    // slightly more careful when removing entries from a solver set
-    // (we would want to check first whether anything else has exactly
-    // the same choice, and not remove it if that's the case).  This
-    // would require a simple routine in choice_indexed_set to test
-    // whether an exact match to a choice is registered as an index
-    // value.
-    //
-    // Eliminating this would save a chunk of time and memory, since
-    // often lots of different deps will be solved by the same choice.
-    dep solved_dep;
+    // The steps (if any) containing this choice as a solver, grouped
+    // by the dependency that each one solves.
+    imm::map<dep, imm::set<int> > solver_steps;
 
   public:
-    choice_mapping_info(int _step_num, choice_mapping_type _tp,
-			const dep &_solved_dep)
-      : step_num(_step_num), tp(_tp),
-	solved_dep(_solved_dep)
+    choice_mapping_info()
     {
     }
 
-    /** \brief Get the step number associated with the choice. */
-    int get_step_num() const { return step_num; }
-
-    /** \brief Get how the choice is associated with the step. */
-    choice_mapping_type get_type() const { return tp; }
-
-    /** \brief If the type is choice_mapping_from_solver, get the
-     *  dependency solved by the choice.
-     */
-    const dep &get_solved_dep() const { return solved_dep; }
-
-    /** \brief Compare two choice_mapping_info objects. */
-    bool operator<(const choice_mapping_info &other) const
+    choice_mapping_info(const imm::set<int> &_action_steps,
+			const imm::map<dep, imm::set<int> > &_solver_steps)
+      : action_steps(_action_steps),
+	solver_steps(_solver_steps)
     {
-      if(step_num < other.step_num)
-	return true;
-      else if(other.step_num < step_num)
-	return false;
-      else if(tp < other.tp)
-	return true;
-      else if(other.tp < tp)
-	return false;
-      else
-	return solved_dep < other.solved_dep;
+    }
+
+    const imm::set<int> &get_action_steps() const
+    {
+      return action_steps;
+    }
+
+    const imm::map<dep, imm::set<int> > &get_solver_steps() const
+    {
+      return solver_steps;
     }
   };
 
@@ -480,64 +446,273 @@ private:
    *  installed list or in one of their solvers.
    *
    *  This is used to efficiently update existing steps that are "hit"
-   *  by a new promotion.
+   *  by a new promotion, and to efficiently un-defer steps when the
+   *  set of user constraints changes.
    *
-   *  This set needs to be updated when a new step is added to the
+   *  This map needs to be updated when a new step is added to the
    *  graph, and also when one of a version's successors is struck.
    */
-  choice_indexed_set<choice, choice_mapping_info> steps_related_to_choices;
+  choice_indexed_map<choice, choice_mapping_info> steps_related_to_choices;
 
 public:
-  /** \brief Add an entry in the choice->step reverse index indicating
-   *  that c is contained in a step as described by inf.
+  /** \brief Describes how a choice occurs in a step. */
+  enum choice_mapping_type
+    {
+      /** \brief The choice is an action performed by the step. */
+      choice_mapping_action,
+
+      /** \brief The choice solves a dependency that is unresolved
+       *  in the step.
+       */
+      choice_mapping_solver
+    };
+
+  /** \brief Add an entry to the choice->step reverse index.
+   *
+   *  \param c         The choice to bind.
+   *  \param step_num  The step number in which c occurs.
+   *  \param how       The type of mapping to add.
+   *  \param reason    The dependency that this choice solves, if how
+   *                   is choice_mapping_solver.
    */
-  void bind_choice(const choice &c, const choice_mapping_info &inf)
+  void bind_choice(const choice &c, int step_num, choice_mapping_type how, dep reason = dep())
   {
     // \todo Write a proper operator<<.
     const char *type_desc;
-    switch(c.get_type())
+    switch(how)
       {
-      case choice_mapping_from_action: type_desc = "an action"; break;
-      case choice_mapping_from_solver: type_desc = "a solver"; break;
+      case choice_mapping_action: type_desc = "an action"; break;
+      case choice_mapping_solver: type_desc = "a solver"; break;
       default: type_desc = "an error"; break;
       }
 
     LOG_TRACE(logger, "Marking the choice " << c
 	      << " as " << type_desc << " in step "
-	      << int.get_step_num());
+	      << step_num);
 
-    steps_related_to_choices.insert(c, inf);
+    choice_mapping_info inf;
+    steps_related_to_choices.try_get(c, inf);
+
+    switch(how)
+      {
+      case choice_mapping_action:
+	{
+	  imm::set<int> new_action_steps(inf.get_action_steps());
+	  new_action_steps.insert(step_num);
+	  steps_related_to_choices.put(c,
+				       choice_mapping_info(new_actions_steps,
+							   inf.get_solver_steps()));
+	}
+	break;
+
+      case choice_mapping_solver:
+	{
+	  imm::map<dep, imm::set<int> > new_solver_steps(inf.get_solver_steps());
+
+	  imm::set<int> new_dep_solver_steps(new_solver_steps.get(reason,
+								  imm::set<int>()));
+
+	  new_dep_solver_steps.insert(step_num);
+	  new_solver_steps.put(reason, new_dep_solver_steps);
+
+	  steps_related_to_choices.put(c,
+				       choice_mapping_info(inf.get_action_steps(),
+							   new_solver_steps));
+	}
+	break;
+      }
   }
 
-  /** \brief Remove an entry from the choice->step reverse index. */
-  void remove_choice(const choice &c, const choice_mapping_info &inf)
+  /** \brief Remove an entry from the choice->step reverse index.
+   *
+   *  \param c         The choice to unbind.
+   *  \param step_num  The step number in which c no longer occurs.
+   *  \param how       The type of mapping to remove.
+   *  \param reason    The dependency that this choice solved, if how
+   *                   is choice_mapping_solver.
+   */
+   */
+  void remove_choice(const choice &c, int step_num, choice_mapping_type how, const dep &reason = dep())
   {
     // \todo Write a proper operator<<.
     const char *type_desc;
-    switch(c.get_type())
+    switch(how)
       {
-      case choice_mapping_from_action: type_desc = "an action"; break;
-      case choice_mapping_from_solver: type_desc = "a solver"; break;
+      case choice_mapping_action: type_desc = "an action"; break;
+      case choice_mapping_solver: type_desc = "a solver"; break;
       default: type_desc = "an error"; break;
       }
 
     LOG_TRACE(logger, "Removing the choice " << c
 	      << " as " << type_desc << " in step "
-	      << int.get_step_num());
+	      << step_num);
 
-    steps_related_to_choices.remove(c, inf);
+    choice_mapping_info info;
+    if(steps_related_to_choices.try_get(c, info))
+      {
+	switch(how)
+	  {
+	  case choice_mapping_action:
+	    {
+	      imm::set<int> new_action_steps(info.get_action_steps());
+	      new_action_steps.erase(step_num);
+
+	      choice_mapping_info new_info(new_action_steps,
+					   info.get_solver_steps());
+	      steps_related_to_choices.put(c, new_info);
+	    }
+	    break;
+
+	  case choice_mapping_solver:
+	    {
+	      imm::map<dep, imm::set<int> > new_solver_steps(info.get_solver_steps());
+	      typename imm::map<dep, imm::set<int> >::node
+		found_solver(new_solver_steps.lookup(reason));
+	      if(found_solver.isValid())
+		{
+		  imm::set<int> new_dep_solver_steps(found_solver.getVal());
+		  new_dep_solver_steps.erase(step_num);
+		  if(new_dep_solver_steps.empty())
+		    new_solver_steps.erase(reason);
+		  else
+		    new_solver_steps.put(reason, new_dep_solver_steps);
+		}
+
+	      choice_mapping_info new_info(info.get_action_steps(),
+					   new_solver_steps);
+	      steps_related_to_choices.put(c, new_info);
+	    }
+	    break;
+	  }
+      }
   }
 
-  /** \brief Apply the given function object to (c', info) for each
-   *  pair (c', info) in the choice->step reverse index such that c'
-   *  is contained in c.
+private:
+  template<typename F>
+  class visit_choice_mapping_steps
+  {
+    // The choice to pass to the sub-function.
+    const choice &c;
+    // The mapping type to pass to the sub-function.
+    choice_mapping_type how;
+
+    F f;
+
+  public:
+    visit_choice_mapping_steps(const choice &_c, choice_mapping_type _how, F _f)
+      : c(_c), how(_how), f(_f)
+    {
+    }
+
+    bool operator()(int step_num) const
+    {
+      return f(c, how, step_num);
+    }
+  };
+
+  /** \brief Apply the given function object to (c', how, step_num)
+   *  for each step in each dependency mapping passed to this object.
    */
   template<typename F>
-  void for_each_step_related_to_choice(const choice &c, const F &f)
+  class visit_choice_dep_mapping
   {
-    steps_related_to_choices.for_each_contained_in(c, f);
+    const choice &c;
+
+    choice_mapping_type how;
+
+    F f;
+
+  public:
+    visit_choice_dep_mapping(const choice &_c, choice_mapping_type _how, F _f)
+      : c(_c), how(_how), f(_f)
+    {
+    }
+
+    bool operator()(const std::pair<dep, imm::set<int> > &mapping) const
+    {
+      mapping.second.for_each(visit_choice_mapping_steps<F>(c, how, f));
+    }
+  };
+
+  /** \brief Apply the given function object to (c', how, step_num)
+   *  for each step in each mapping information structure visited.
+   */
+  template<typename F>
+  class visit_choice_mapping
+  {
+    F f;
+
+  public:
+    visit_choice_mapping(F _f)
+      : f(_f)
+    {
+    }
+
+    bool operator()(const choice &c, const choice_mapping_info &inf) const
+    {
+      const imm::set<int> &action_steps(inf.get_action_steps());
+      if(!action_steps.for_each(visit_choice_mapping_steps<F>(c, choice_mapping_action, f)))
+	return false;
+
+      const imm::map<dep, imm::set<int> > &solver_steps(inf.get_solver_steps());
+      return solver_steps.for_each(visit_choice_dep_mapping<F>(c, choice_mapping_solver, f));
+    }
+  };
+
+public:
+  /** \brief Apply the given function object to (c', how, step_num)
+   *  for each binding (c', how, step_num) in the choice->step reverse
+   *  index such that c' is contained in c.
+   */
+  template<typename F>
+  void for_each_step_related_to_choice(const choice &c, F f) const
+  {
+    visit_choice_mapping<F> visit_mappings_f(f);
+    steps_related_to_choices.for_each_contained_in(c, visit_mappings_f);
   }
 
+private:
+
+  template<typename F>
+  class visit_choice_mapping_solvers_of_dep
+  {
+    // The dependency to visit.
+    dep d;
+
+    F f;
+
+  public:
+    visit_choice_mapping_solvers_of_dep(const dep &_d, F _f)
+      : d(_d), f(_f)
+    {
+    }
+
+    bool operator()(const choice &c, const choice_mapping_info &info) const
+    {
+      typename imm::map<dep, imm::set<int> >::node
+	found(info.get_solver_steps().lookup(d));
+
+      if(found.isValid())
+	{
+	  visit_choice_mapping_steps visit_step_f(c, choice_mapping_solver, f);
+	  return found.getVal().for_each(visit_step_f);
+	}
+      else
+	return true;
+    }
+  };
+
+public:
+  /** \brief Apply the given function to (c', how, step_num) for each
+   *  binding (c', how, step_num) in the choice->step reverse index
+   *  such that c' is contained in c and c' was added as a solver for
+   *  the given dependency.
+   */
+  void for_each_step_related_to_choice_with_dep(const choice &c, const dep &d, F f) const
+  {
+    visit_choice_mapping_solvers_of_dep visit_mappings_by_dep_f(d, f);
+    steps_related_to_choices.for_each_contained_in(c, visit_mappings_by_dep_f);
+  }
 
   /** \brief Create a search graph.
    *
@@ -946,6 +1121,9 @@ public:
    *
    *  This should be invoked when the set of deferred solutions might
    *  have changed.
+   *
+   *  \todo This is no longer right with the incremental resolver; we
+   *  can remove exactly the right set of promotions if we want.
    */
   void remove_deferred_propagations()
   {

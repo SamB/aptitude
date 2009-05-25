@@ -910,8 +910,68 @@ private:
   /** \brief Stores the approved and rejected status of dependencies. */
   std::map<dep, approved_or_rejected_info> user_approved_or_rejected_broken_deps;
 
+  /** \brief Expression class that calls back into the resolver when
+   *         the value of its sub-expression changes.
+   *
+   *  The attached information is the choice that this expression
+   *  affects; that choice must have an associated dependency.
+   */
+  class deferral_updating_expression : public expression_container<bool>
+  {
+    cwidget::util::ref_ptr<expression<bool> > child;
+    choice deferred_choice;
+
+    generic_resolver &resolver;
+
+    deferral_updating_expression(const cwidget::util::ref_ptr<expression<bool> > &_child,
+				 const choice &_deferred_choice,
+				 generic_resolver &_resolver)
+      : child(_child),
+	deferred_choice(_deferred_choice),
+	resolver(_resolver)
+    {
+      // Sanity-check.
+      eassert(deferred_choice.get_has_dep());
+
+      child->add_parent(this);
+    }
+
+  public:
+    static cwidget::util::ref_ptr<deferral_updating_expression>
+    create(const cwidget::util::ref_ptr<expression<bool> > &child,
+	   const choice &deferred_choice,
+	   generic_resolver &resolver)
+    {
+      return new deferral_updating_expression(child,
+					      deferred_choice,
+					      resolver);
+    }
+
+    void child_modified(const cwidget::util::ref_ptr<expression<bool> > &,
+			bool old_value,
+			bool new_value)
+    {
+      if(!new_value)
+	resolver.deferral_retracted(deferred_choice,
+				    deferred_choice.get_dep());
+    }
+
+    bool get_value()
+    {
+      return child->get_value();
+    }
+
+    void dump(std::ostream &out)
+    {
+      child->dump(out);
+    }
+  };
+
   /** \brief Comparison operator on choices that treats choices which
    *  could have distinct deferral status as different.
+   *
+   *  In particular, dependencies are always significant, even if the
+   *  choice is not a from-dep-source choice.
    */
   struct compare_choices_for_deferral
   {
@@ -935,6 +995,8 @@ private:
 	       else if(c1.get_has_dep() < c2.get_has_dep())
 		 return true;
 	       else if(c2.get_has_dep() < c1.get_has_dep())
+		 return false;
+	       else if(!c1.get_has_dep())
 		 return false;
 	       else if(c1.get_dep() < c2.get_dep())
 		 return true;
@@ -2242,20 +2304,22 @@ private:
     {
     }
 
-    bool operator()(const choice &c, const typename search_graph::choice_mapping_info &inf) const
+    bool operator()(const choice &c,
+		    const typename search_graph::choice_mapping_type how,
+		    int step_num) const
     {
-      incipient_promotion_search_info &output_inf(output[inf.get_step_num()]);
+      incipient_promotion_search_info &output_inf(output[step_num]);
 
-      switch(inf.get_type())
+      switch(how)
 	{
-	case search_graph::choice_mapping_from_action:
+	case search_graph::choice_mapping_action:
 	  ++output_inf.action_hits;
 	  break;
 
-	case search_graph::choice_mapping_from_solver:
+	case search_graph::choice_mapping_solver:
 	  {
 	    bool already_visited =
-	      !visited_solver_steps.insert(inf.get_step_num()).second;
+	      !visited_solver_steps.insert(step_num).second;
 
 	    if(already_visited)
 	      return true;
@@ -2488,11 +2552,8 @@ private:
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  choice_mapping_info inf_to_delete(s.step_num,
-					    search_graph::choice_mapping_from_solver,
-					    d);
-
-	  graph.remove_choice(c, inf_to_delete);
+	  graph.remove_choice(c, s.step_num,
+			      search_graph::choice_mapping_solver, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
@@ -2642,6 +2703,13 @@ private:
       {
       case choice::install_version:
 	{
+	  // We can't correctly compute deferral information for a
+	  // choice with no dependency.  And since this should only be
+	  // invoked on a solver, it's an error if there is no
+	  // dependency: all solvers ought to have a dependency
+	  // attached.
+	  eassert(c.get_has_dep());
+
 	  const version &c_ver(c.get_ver());
 	  const approved_or_rejected_info &c_info =
 	    user_approved_or_rejected_versions[c_ver];
@@ -2726,10 +2794,47 @@ private:
       }
 
     cwidget::util::ref_ptr<expression<bool> > rval(build_is_deferred_real(c));
-    memoized_is_deferred[c] = rval;
+    memoized_is_deferred[c] =
+      deferral_updating_expression::create(rval, c, *this);;
     return rval;
   }
 
+  class invoke_recompute_solver_tier
+  {
+    generic_problem_resolver &resolver;
+    const dep &d;
+
+  public:
+    do_recompute_tier(generic_problem_resolver &_resolver,
+		      const dep &_d)
+      : resolver(_resolver),
+	d(_d)
+    {
+    }
+
+    bool operator()(const choice &c,
+		    search_graph::choice_mapping_type how,
+		    int step_num) const
+    {
+      resolver.recompute_solver_tier(step_num, d, c);
+
+      return true;
+    }
+  };
+
+  /** \brief Invoked when a deferral expression becomes invalid.
+   *
+   *  Locates the solver that is no longer deferred in each step that
+   *  it solves, tosses its deferral, and recomputes it from scratch.
+   *
+   *  The solver might also be an action that was chosen for a step;
+   *  that's handled by a separate piece of code.
+   */
+  void deferral_retracted(const choice &deferral_choice,
+			  const dep &deferral_dep)
+  {
+    
+  }
 
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
@@ -2758,6 +2863,37 @@ private:
 	  triggered_promotions.begin();
 	it != triggered_promotions.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
+  }
+
+  /** \brief Compute the basic tier information of a choice.
+   *
+   *  This is the tier it will have unless it's hit by a promotion.
+   */
+  void get_solver_tier(const choice &c,
+		       tier &out_tier,
+		       cwidget::util::ref_ptr<expression<bool> > &out_tier_valid) const
+  {
+    // Right now only deferrals can be retracted; other tier
+    // assignments are immutable.
+    out_tier_valid = build_is_deferred(c);
+
+    out_tier = tier_limits::minimum_tier;
+    if(out_tier_valid->get_value())
+      out_tier = tier_limits::defer_tier;
+    else
+      {
+	switch(c.get_type())
+	  {
+	  case choice::install_version:
+	    out_tier = version_tiers[c.get_ver().get_id()];
+	    break;
+
+	  case choice::break_soft_dep:
+	    // \todo Have a tier based on breaking soft deps?
+	    out_tier = tier_limits::minimum_tier;
+	    break;
+	  }
+      }
   }
 
   /** \brief Add a solver to a list of dependency solvers for a
@@ -2832,19 +2968,9 @@ private:
     // Later, in step 6 of the update algorithm, we'll find promotions
     // that include the new solvers and update tiers appropriately.
     tier choice_tier;
-    cwidget::util::ref_ptr<expression<bool> > is_deferred =
-      build_is_deferred(c);
-    switch(solver.get_type())
-      {
-      case choice::install_version:
-	choice_tier = version_tiers[solver.get_ver().get_id()];
-	break;
+    cwidget::util::ref_ptr<expression<bool> > choice_tier_valid;
+    get_solver_tier(solver, choice_tier, choice_tier_valid);
 
-      case choice::break_soft_dep:
-	// \todo Have a tier based on breaking soft deps?
-	choice_tier = tier_limits::minimum_tier;
-	break;
-      }
     LOG_TRACE(logger, "Adding the solver " << solver
 	      << " with initial tier " << choice_tier);
     solvers.get_solvers().put(solver,
@@ -2864,12 +2990,9 @@ private:
 	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
-    choice_mapping_info
-      solver_mapping_inf(s.step_num,
-			 search_graph::choice_mapping_from_solver,
-			 d);
-    graph.bind_choice(solver, solver_mapping_inf);
-		      
+    graph.bind_choice(solver, s.step_num,
+		      search_graph::choice_mapping_solver, d);
+
     // Add this step to the set of steps related to the new solver.
     search_graph::steps_related_to_choices_reference(search_graph, c)->insert(s.step_num);
   }
