@@ -123,6 +123,11 @@ public:
     return expr == other;
   }
 
+  bool operator<(const expression_weak_ref &other) const
+  {
+    return expr < other.expr;
+  }
+
   ~expression_weak_ref();
 };
 
