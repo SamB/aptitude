@@ -3229,12 +3229,15 @@ private:
     typename search_graph::step &s;
     const tier &new_tier;
     const choice_set &new_choices;
+    const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
 
   public:
     do_increase_solver_tier(search_graph::step &_s,
 			    const tier &_new_tier,
-			    const choice_set &_new_choices)
-      : s(_s), new_tier(_new_tier), new_choices(_new_choices)
+			    const choice_set &_new_choices,
+			    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
+      : s(_s), new_tier(_new_tier), new_choices(_new_choices),
+	valid_condition(_valid_condition)
     {
     }
 
@@ -3271,7 +3274,10 @@ private:
 			    << " in the solvers list of "
 			    << d << " in step " << s.step_num
 			    << " with the reason set " << new_choices);
-		  new_solvers.put(solver, solver_information(new_tier, new_choices));
+		  new_solvers.put(solver,
+				  solver_information(new_tier,
+						     new_choices,
+						     valid_condition));
 		}
 
 	      s.unresolved_deps.put(d, new_solvers);
@@ -3314,12 +3320,15 @@ private:
 	choice_set new_choices(p.get_choices());
 	new_choices.remove_overlaps(solver);
 
+	const cwidget::util::ref_ptr<expression<bool> > &
+	  valid_condition(p.get_valid_condition());
+
 	LOG_TRACE(logger, "Increasing the tier of " << solver
 		  << " to " << new_tier << " in all solver lists in step "
 		  << s.step_num << " with the reason set " << new_choices);
 
 	do_increase_solver_tier
-	  do_increase_solver_tier_f(s, new_iter, new_choices);
+	  do_increase_solver_tier_f(s, new_iter, new_choices, valid_condition);
 
 	s.deps_solved_by_choice.for_each_key_contained_by(solver, 
 							  do_increase_solver_tier_f);
