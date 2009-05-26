@@ -251,6 +251,50 @@ public:
 			      T new_value) = 0;
 };
 
+/** \brief Base class for objects that have a single sub-expression. */
+template<typename T>
+class expression_box : public expression_container<T>
+{
+  cwidget::util::ref_ptr<expression<T> > child;
+
+public:
+  expression_box() : child() { }
+
+  expression_box(const cwidget::util::ref_ptr<expression<T> > &_child)
+    : child(_child)
+  {
+    if(child.valid())
+      child->add_parent(this);
+  }
+
+  expression_box(const expression_box &other)
+    : child(other.child)
+  {
+    if(child.valid())
+      child->add_parent(this);
+  }
+
+  ~expression_box()
+  {
+    child->remove_parent(this);
+  }
+
+  void set_child(const cwidget::util::ref_ptr<expression<T> > &new_child)
+  {
+    child->remove_parent(this);
+    child = new_child;
+    new_child->add_parent(this);
+  }
+
+  const cwidget::util::ref_ptr<expression<T> > &get_child() const
+  {
+    return child;
+  }
+
+  /** \brief Returns the child's value. */
+  T get_value() { return child->get_value(); }
+};
+
 /** \brief Base class for N-ary containers that support adding and
  *  removing children.
  */
