@@ -312,6 +312,17 @@ public:
     else
       return T();
   }
+
+  /** \brief Write this expression to the given stream.
+   *
+   *  The default implementation writes nothing if the child is
+   *  invalid, and writes the child if the child is valid.
+   */
+  void dump(std::ostream &out)
+  {
+    if(get_child().valid())
+      get_child()->dump(out);
+  }
 };
 
 /** \brief Base class for N-ary containers that support adding and
