@@ -289,6 +289,14 @@ public:
       new_child->add_parent(this);
   }
 
+  /** \brief Set the child of this box to the child of the other box.
+   */
+  expression_box &operator=(const expression_box &other)
+  {
+    set_child(other.child);
+    return *this;
+  }
+
   const cwidget::util::ref_ptr<expression<T> > &get_child() const
   {
     return child;
