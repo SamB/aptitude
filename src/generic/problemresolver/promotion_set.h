@@ -242,22 +242,20 @@ private:
   /** \brief An expression that ejects a promotion from its parent set
    *  when that promotion becomes invalid.
    */
-  class eject_promotion_when_invalid : public expression_container<bool>
+  class eject_promotion_when_invalid : public expression_wrapper<bool>
   {
-    cwidget::util::ref_ptr<expression<bool> > promotion_valid_expression;
     entry_ref entry_to_drop;
     generic_promotion_set *parent;
 
     eject_promotion_when_invalid(const cwidget::util::ref_ptr<expression<bool> > &
-				 _promotion_valid_expression,
+				 promotion_valid_expression,
 				 const entry_ref &_entry_to_drop,
 				 generic_promotion_set *_parent)
-      : promotion_valid_expression(_promotion_valid_expression),
+      : expression_wrapper<bool>(promotion_valid_expression),
 	entry_to_drop(_entry_to_drop),
 	parent(_parent)
     {
-      if(promotion_valid_expression.valid())
-	promotion_valid_expression->add_parent(this);
+      eassert(get_child().valid());
     }
 
   public:
@@ -273,17 +271,10 @@ private:
 
     void dump(std::ostream &out)
     {
-      out << "drop-if(" << promotion_valid_expression << ")";
+      out << "drop-if(" << get_child() << ")";
     }
 
-    bool get_value()
-    {
-      return promotion_valid_expression->get_value();
-    }
-
-    void child_modified(const cwidget::util::ref_ptr<expression<bool> > &child,
-			bool old_value,
-			bool new_value)
+    void changed(bool new_value)
     {
       if(!new_value)
 	parent->eject(entry_to_drop);
