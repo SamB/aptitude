@@ -276,14 +276,17 @@ public:
 
   ~expression_box()
   {
-    child->remove_parent(this);
+    if(child.valid())
+      child->remove_parent(this);
   }
 
   void set_child(const cwidget::util::ref_ptr<expression<T> > &new_child)
   {
-    child->remove_parent(this);
+    if(child.valid())
+      child->remove_parent(this);
     child = new_child;
-    new_child->add_parent(this);
+    if(new_child.valid())
+      new_child->add_parent(this);
   }
 
   const cwidget::util::ref_ptr<expression<T> > &get_child() const
