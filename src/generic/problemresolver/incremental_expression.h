@@ -302,8 +302,16 @@ public:
     return child;
   }
 
-  /** \brief Returns the child's value. */
-  T get_value() { return child->get_value(); }
+  /** \brief Returns the child's value, or a default-constructed T if
+   *  there is no child.
+   */
+  T get_value()
+  {
+    if(child.valid())
+      return child->get_value();
+    else
+      return T();
+  }
 };
 
 /** \brief Base class for N-ary containers that support adding and
