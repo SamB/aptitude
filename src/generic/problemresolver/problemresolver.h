@@ -2816,7 +2816,8 @@ private:
 		    search_graph::choice_mapping_type how,
 		    int step_num) const
     {
-      resolver.recompute_solver_tier(step_num, d, c);
+      step &s(resolver.graph.get_step(step_num));
+      resolver.recompute_solver_tier(s, d, c);
 
       return true;
     }
@@ -2833,7 +2834,59 @@ private:
   void deferral_retracted(const choice &deferral_choice,
 			  const dep &deferral_dep)
   {
-    
+    invoke_recompute_solver_tier recompute_f(*this, deferral_dep);
+    graph.for_each_step_related_to_choice_with_dep(deferral_choice,
+						   deferral_dep,
+						   recompute_f);
+  }
+
+  /** \brief Recompute the solver of a single tier in the given
+   *  step.
+   */
+  void recompute_solver_tier(step &s,
+			     const dep &solver_dep,
+			     const choice &solver)
+  {
+    LOG_TRACE(logger, "Recomputing the tier of "
+	      << solver << " in the solver list of "
+	      << solver_dep << " in step " << s.step_num);
+    typename imm::map<dep, dep_solvers>::node
+      found_solvers(s.unresolved_deps.lookup(solver_dep));
+
+    if(found_solvers.isValid())
+      {
+	dep_solvers new_dep_solvers(found_solvers.getVal());
+	imm::map<choice, solver_information, compare_choices_by_effects> &
+	  new_solvers(new_dep_solvers.get_solvers());
+
+	typename imm::map<choice, solver_information, compare_choices_by_effects>::node
+	  found_solver(new_solvers.lookup(solver));
+	if(!found_solver.isValid())
+	  LOG_ERROR(logger, "Internal error: the choice " << solver
+		    << " is listed in the reverse index for step "
+		    << s.step_num << " as a solver for "
+		    << solver_dep << ", but it doesn't appear in that step.");
+	else
+	  {
+	    tier new_tier;
+	    cwidget::util::ref_ptr<expression<bool> > new_tier_valid;
+	    get_solver_tier(solver.copy_and_set_dep(solver_dep),
+			    new_tier, new_tier_valid);
+	    new_solvers.put(solver,
+			    solver_information(new_tier,
+					       choice_set(),
+					       new_tier_valid));
+	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
+
+
+	    find_promotions_for_solver(s, solver);
+	    // Recompute the step's tier from scratch.
+	    //
+	    // \todo Only do this if the tier went down, and just do a
+	    // local recomputation otherwise?
+	    recompute_step_tier(s);
+	  }
+      }
   }
 
   /** \brief Find promotions triggered by the given solver and
@@ -2995,6 +3048,86 @@ private:
 
     // Add this step to the set of steps related to the new solver.
     search_graph::steps_related_to_choices_reference(search_graph, c)->insert(s.step_num);
+  }
+
+  /** \brief Find the smallest tier out of the solvers of a single
+   *  dependency.
+   */
+  class find_solvers_tier
+  {
+    tier &output_tier;
+    cwidget::util::ref_ptr<expression<bool> > &output_tier_valid;
+
+  public:
+    find_solvers_tier(tier &_output_tier,
+		      const cwidget::util::ref_ptr<expression<bool> > &_output_tier_valid)
+      : output_tier(_output_tier),
+	output_tier_valid(_output_tier_valid)
+    {
+      output_tier = tier_limits::maximum_tier;
+      output_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
+    }
+
+    bool operator()(const std::pair<choice, search_graph::solver_information> &p) const
+    {
+      const tier &p_tier(p.get_tier());
+      if(p_tier < output_tier)
+	{
+	  output_tier = p_tier;
+	  output_tier_valid = p.get_tier_valid();
+	}
+
+      return true;
+    }
+  };
+
+  /** \brief Find the largest tier of any dependency. */
+  class find_largest_dep_tier
+  {
+    tier &output_tier;
+    cwidget::util::ref_ptr<expression<bool> > &output_tier_valid;
+
+  public:
+    find_largest_dep_tier(tier &_output_tier,
+			  tier_valid &_output_tier_valid)
+      : output_tier(_output_tier),
+	output_tier_valid(_output_tier_valid)
+    {
+    }
+
+    bool operator()(const std::pair<dep, dep_solvers> &p) const
+    {
+      tier dep_tier;
+      cwidget::util::ref_ptr<expression<bool> > dep_tier_valid;
+
+      p.second.get_solvers().for_each(find_solvers_tier(dep_tier, dep_tier_valid));
+
+      if(output_tier < dep_tier)
+	{
+	  output_tier = dep_tier;
+	  output_tier_valid = dep_tier_valid;
+	}
+
+      return true;
+    }
+  };
+
+  /** \brief Recompute a step's tier from scratch.
+   *
+   *  It is assumed that all the solvers in the step have the correct
+   *  tier; the recomputation is based on them.
+   *
+   *  This is a bit of a sledgehammer.  The places where this is used
+   *  could be tuned to not need it; currently I'm just hoping it's
+   *  invoked few enough times to not matter.
+   */
+  void recompute_step_tier(step &s)
+  {
+    LOG_TRACE(logger, "Recomputing the tier of step " << s.step_num
+	      << " (was " << s.step_tier << ")");
+
+    s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier,
+						     s.step_tier_valid));
   }
 
   // Build a generalized promotion from the entries of a dep-solvers

@@ -175,7 +175,7 @@ public:
       /** \brief Return the outstanding solvers of this dependency and
        *  the current state of each one.
        */
-      imm::map<choice, solver_information, compare_choices_by_size> &get_solvers()
+      imm::map<choice, solver_information, compare_choices_by_effects> &get_solvers()
       {
 	return solvers;
       }
@@ -183,7 +183,7 @@ public:
       /** \brief Return the outstanding solvers of this dependency and
        *  the current state of each one.
        */
-      const imm::map<choice, solver_information, compare_choices_by_size> &get_solvers() const
+      const imm::map<choice, solver_information, compare_choices_by_effects> &get_solvers() const
       {
 	return solvers;
       }
@@ -221,9 +221,12 @@ public:
     tier step_tier;
 
     /** \brief An incremental expression that computes "true" if the
-     *  step is deferred and "false" otherwise.
+     *  step's tier is valid and "false" otherwise.
+     *
+     *  Like the valid constraints of solvers, the only reason to hold
+     *  this is to keep it alive so it can side-effect this step.
      */
-    cwidget::util::ref_ptr<expression<bool> > tier_valid;
+    cwidget::util::ref_ptr<expression<bool> > step_tier_valid;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were

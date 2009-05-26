@@ -287,6 +287,19 @@ public:
     eassert(!"We should never get here.");
   }
 
+  /** \brief Create a new choice that is identical to
+   *  this choice, except that the dependency is set to
+   *  the given value.
+   */
+  choice copy_and_set_dep(const dep &new_dep) const
+  {
+    choice rval(*this);
+    rval.has_dep = true;
+    rval.d = new_dep;
+
+    return rval;
+  }
+
   int get_id() const { return id; }
   type get_type() const { return tp; }
 
