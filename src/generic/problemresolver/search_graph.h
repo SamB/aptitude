@@ -150,7 +150,11 @@ public:
       const choice &get_reasons() const { return reasons; }
 
       /** \brief Retrieve an expression that returns whether this
-       *  solver is deferred.
+       *  solver's tier is valid.
+       *
+       *  This is held here mainly because it will side-effect and
+       *  reset this solver's tier.  Also, it can be used to generate
+       *  promotion validity conditions.
        */
       const cwidget::util::ref_ptr<expression<bool> > &
       get_tier_valid() const
