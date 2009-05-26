@@ -3136,14 +3136,18 @@ private:
   {
     tier &output_tier;
     choice_set &output_reasons;
+    std::vector<cwidget::util::ref_ptr<expression<bool> > > & output_valid_conditions;
 
   public:
-    build_promotion(tier &_output_tier, choice_set &_output_reasons)
+    build_promotion(tier &_output_tier, choice_set &_output_reasons,
+		    std::vector<cwidget::util::ref_ptr<expression<bool> > > &_output_valid_conditions)
       : output_tier(_output_tier),
-	output_reasons(_output_reasons)
+	output_reasons(_output_reasons),
+	output_valid_conditions(_output_valid_conditions)
     {
       output_tier = tier_limits::maximum_tier;
       output_reasons = choice_set();
+      output_valid_conditions.clear();
     }
 
     bool operator()(const std::pair<choice, search_graph::solver_information> &entry) const
@@ -3155,6 +3159,8 @@ private:
       // Correctness here depends on the fact that the reason set is
       // pre-generalized (the solver itself is already removed).
       output_reasons.insert_or_narrow(entry.second.get_reasons());
+      if(entry.get_tier_valid().valid())
+	output_valid_conditions.push_back(entry.get_tier_valid());
     }
   };
 
@@ -3169,8 +3175,9 @@ private:
   {
     tier t;
     choice_set reasons;
+    std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.get_solvers().for_each(build_promotion(t, reasons));
+    solvers.get_solvers().for_each(build_promotion(t, reasons, valid_condition));
 
     for(imm::list<choice>::const_iterator it =
 	  solvers.get_structural_reasons().begin();
@@ -3179,9 +3186,32 @@ private:
 	reasons.insert(*it);
       }
 
+    cwidget::util::ref_ptr<expression<bool> > valid_condition;
+    switch(valid_conditions.size())
+      {
+      case 0:
+	// If there are no validity conditions, don't create one for
+	// the promotion.
+	break;
+
+      case 1:
+	// If there's just one validity condition, copy it to the
+	// promotion.
+	valid_condition = valid_conditions.front();
+	break;
+
+      default:
+	// If there are multiple validity conditions, the promotion
+	// depends on them all.
+	valid_condition = and_e::create(valid_conditions.begin(),
+					valid_conditions.end());
+	break;
+      }
+
+
     if(t > maximum_search_tier)
       {
-	promotion p(reasons, t);
+	promotion p(reasons, t, valid_condition);
 	LOG_TRACE(logger, "Emitting a new promotion " << p
 		  << " at step " << s.step_num);
 
