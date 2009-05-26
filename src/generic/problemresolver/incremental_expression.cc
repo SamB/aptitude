@@ -115,10 +115,10 @@ void not_e::child_modified(const cwidget::util::ref_ptr<expression<bool> > &chil
 
 bool not_e::get_value()
 {
-  return !child->get_value();
+  return !get_child()->get_value();
 }
 
 void not_e::dump(std::ostream &out)
 {
-  out << "~" << child;
+  out << "~" << get_child();
 }

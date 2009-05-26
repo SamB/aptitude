@@ -542,14 +542,11 @@ public:
   void dump(std::ostream &out);
 };
 
-class not_e : public expression_container<bool>
+class not_e : public expression_box<bool>
 {
-  cwidget::util::ref_ptr<expression<bool> > child;
-
   not_e(const cwidget::util::ref_ptr<expression<bool> > &_child)
-    : child(_child)
+    : expression_box<bool>(_child)
   {
-    child->add_parent(this);
   }
 
 public:
