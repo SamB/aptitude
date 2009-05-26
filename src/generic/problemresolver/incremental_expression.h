@@ -144,7 +144,7 @@ template<typename T>
 class expression : public aptitude::util::refcounted_base_not_threadsafe
 {
   // Weak references to parents.
-  std::vector<expression_weak_ref<expression_container<T> > > parents;
+  std::set<expression_weak_ref<expression_container<T> > > parents;
 
   // Incoming weak references.
   std::set<expression_weak_ref_generic *> weak_refs;
@@ -168,29 +168,22 @@ protected:
     cwidget::util::ref_ptr<expression> self(this);
 
     // Strip out dead references as we go, to save a bit of space.
-    typename std::vector<expression_weak_ref<expression_container<T> > >::iterator
-      read = parents.begin(), write = read;
+    typename std::set<expression_weak_ref<expression_container<T> > >::iterator
+      curr = parents.begin();
 
-    while(read != parents.end())
+    while(curr != parents.end())
       {
-	bool advance_write = false;
-	if(read->get_valid())
-	  {
-	    read->get_value()->child_modified(self, old_value, new_value);
-	    advance_write = true;
-	  }
+	typename std::set<expression_weak_ref<expression_container<T> > >::iterator
+	  next = curr;
+	++next;
 
-	++read;
+	if(curr->get_valid())
+	  curr->get_value()->child_modified(self, old_value, new_value);
+	else
+	  parents.erase(curr);
 
-	if(read != write)
-	  *write = *read;
-
-	if(advance_write)
-	  ++write;
+	curr = next;
       }
-
-    if(read != write)
-      parents.erase(write, parents.end());
   }
 
 public:
@@ -210,7 +203,7 @@ public:
   void add_parent(expression_container<T> *parent)
   {
     if(parent != NULL)
-      parents.push_back(parent);
+      parents.insert(parent);
   }
 
 private:
@@ -233,11 +226,7 @@ private:
 public:
   void remove_parent(expression_container<T> *parent)
   {
-    // Will be inefficient if this happens a lot, but I don't expect
-    // it to be a common operation.
-    parents.erase(std::remove_if(parents.begin(), parents.end(),
-				 parent_equals_weak_ref(parent)),
-		  parents.end());
+    parents.erase(expression_weak_ref<expression_container<T> >(parent));
   }
 
   virtual T get_value() = 0;
