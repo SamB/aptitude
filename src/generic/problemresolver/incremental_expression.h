@@ -325,6 +325,45 @@ public:
   }
 };
 
+/** \brief Base class for expressions that trivially wrap their
+ *  subexpression.
+ */
+template<typename T>
+class expression_wrapper : public expression_box<T>
+{
+public:
+  expression_wrapper() : expression_box<T>() { }
+  expression_wrapper(const cwidget::util::ref_ptr<expression<T> > &child)
+    : expression_box<T>(child)
+  {
+  }
+  expression_wrapper(const expression_wrapper &other)
+    : expression_box<T>(other)
+  {
+  }
+
+  expression_wrapper &operator=(const expression_wrapper &other)
+  {
+    set_child(other.get_child);
+    return *this;
+  }
+
+  /** \brief Invoked by the default implementation of child_modified.
+   *
+   *  This method's default implementation does nothing.
+   */
+  virtual void changed(T new_value)
+  {
+  }
+
+  void child_modified(const cwidget::util::ref_ptr<expression<T> > &child,
+		      T old_value,
+		      T new_value)
+  {
+    changed(new_value);
+  }		      
+};
+
 /** \brief Base class for N-ary containers that support adding and
  *  removing children.
  */
