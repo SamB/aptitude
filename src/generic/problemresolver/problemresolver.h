@@ -3273,7 +3273,8 @@ private:
 			    << solver << " to " << new_tier
 			    << " in the solvers list of "
 			    << d << " in step " << s.step_num
-			    << " with the reason set " << new_choices);
+			    << " with the reason set " << new_choices
+			    << " and validity condition " << valid_condition);
 		  new_solvers.put(solver,
 				  solver_information(new_tier,
 						     new_choices,
