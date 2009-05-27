@@ -124,7 +124,8 @@ public:
     {
       tier t;
       choice_set reasons;
-      cwidget::util::ref_ptr<expression<bool> > tier_valid;
+      cwidget::util::ref_ptr<expression_box<bool> > tier_valid_listener;
+      cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
     public:
       /** \brief Create a new solver_information.
@@ -132,12 +133,20 @@ public:
        *  \param _t       The tier of the associated solver.
        *  \param _reason  The reasons for the solver's tier (other than
        *                  the solver itself).
+       *  \param _tier_valid_listener
+       *                  A side-effecting expression that computes
+       *                  "true" if the tier assignment is valid.
+       *  \param deferred A side-effecting expression whose
+       *                  sub-expression is true exactly when this solver
+       *                  violates a user-imposed constraint.
        */
       solver_information(const tier &_t,
 			 const choice_set &_reasons,
-			 cwidget::util::ref_ptr<expression<bool> > &_tier_valid)
+			 const cwidget::util::ref_ptr<expression_box<bool> > &_tier_valid_listener,
+			 const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
 	: t(_t), reasons(_reasons),
-	  tier_valid(_tier_valid)
+	  tier_valid_listener(_tier_valid_listener),
+	  is_deferred_listener(_is_deferred_listener)
       {
       }
 
@@ -149,6 +158,12 @@ public:
        */
       const choice &get_reasons() const { return reasons; }
 
+      const cwidget::util::ref_ptr<expression_box<bool> > &
+      get_tier_valid_listener() const
+      {
+	return tier_valid_listener;
+      }
+
       /** \brief Retrieve an expression that returns whether this
        *  solver's tier is valid.
        *
@@ -156,10 +171,34 @@ public:
        *  reset this solver's tier.  Also, it can be used to generate
        *  promotion validity conditions.
        */
-      const cwidget::util::ref_ptr<expression<bool> > &
+      cwidget::util::ref_ptr<expression<bool> >
       get_tier_valid() const
       {
-	return tier_valid;
+	if(tier_valid_listener.valid())
+	  return tier_valid_listener->get_child();
+        else
+	  return cwidget::util::ref_ptr<expression_box<bool> >();
+      }
+
+      /** \brief Retrieve the listener that tracks whether the solver
+       *  is deferred.
+       */
+      const cwidget::util::ref_ptr<expression_box<bool> > &
+      get_is_deferred_listener() const
+      {
+	return is_deferred_listener;
+      }
+
+      /** \brief Retrieve an expression that returns whether the
+       *  solver is deferred.
+       */
+      cwidget::util::ref_ptr<expression<bool> >
+      get_is_deferred() const
+      {
+	if(is_deferred_listener.valid())
+	  return is_deferred_listener->get_child();
+	else
+	  return cwidget::util::ref_ptr<expression<bool> >();
       }
     };
 
@@ -226,9 +265,6 @@ public:
 
     /** \brief An incremental expression that computes "true" if the
      *  step's tier is valid and "false" otherwise.
-     *
-     *  Like the valid constraints of solvers, the only reason to hold
-     *  this is to keep it alive so it can side-effect this step.
      */
     cwidget::util::ref_ptr<expression<bool> > step_tier_valid;
 

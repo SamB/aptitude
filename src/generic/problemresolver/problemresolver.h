@@ -916,24 +916,24 @@ private:
    *  The attached information is the choice that this expression
    *  affects; that choice must have an associated dependency.
    */
-  class deferral_updating_expression : public expression_container<bool>
+  class deferral_updating_expression : public expression_wrapper<bool>
   {
-    cwidget::util::ref_ptr<expression<bool> > child;
     choice deferred_choice;
 
     generic_resolver &resolver;
+    bool fired; // Set to true when this has fired, to avoid
+		// accidentally firing twice.
 
     deferral_updating_expression(const cwidget::util::ref_ptr<expression<bool> > &_child,
 				 const choice &_deferred_choice,
 				 generic_resolver &_resolver)
-      : child(_child),
+      : expression_wrapper<bool>(_child),
 	deferred_choice(_deferred_choice),
-	resolver(_resolver)
+	resolver(_resolver),
+	fired(false)
     {
       // Sanity-check.
       eassert(deferred_choice.get_has_dep());
-
-      child->add_parent(this);
     }
 
   public:
@@ -947,23 +947,16 @@ private:
 					      resolver);
     }
 
-    void child_modified(const cwidget::util::ref_ptr<expression<bool> > &,
-			bool old_value,
-			bool new_value)
+    void changed(bool new_value)
     {
+      if(fired)
+	return;
+
+      fired = true;
+
       if(!new_value)
 	resolver.deferral_retracted(deferred_choice,
 				    deferred_choice.get_dep());
-    }
-
-    bool get_value()
-    {
-      return child->get_value();
-    }
-
-    void dump(std::ostream &out)
-    {
-      child->dump(out);
     }
   };
 
@@ -1014,9 +1007,13 @@ private:
   /** \brief Memoizes "is this deferred?" expressions for every choice
    *  in the search.
    *
+   *  Each expression is contained in a wrapper whose sole purpose is
+   *  to recompute the tier of the corresponding choice in all steps
+   *  when it fires.
+   *
    *  \sa build_is_deferred, build_is_deferred_real
    */
-  std::map<choice, expression_weak_ref<expression<bool> >,
+  std::map<choice, expression_weak_ref<expression_box<bool> >,
 	   compare_choices_for_deferral> memoized_is_deferred;
 
 
@@ -2781,9 +2778,9 @@ private:
   }
 
   /** \brief Memoized version of build_is_deferred. */
-  cwidget::util::ref_ptr<expression<bool> > build_is_deferred(const choice &c)
+  cwidget::util::ref_ptr<expression_box<bool> > build_is_deferred_listener(const choice &c)
   {
-    std::map<choice, expression_weak_ref<expression<bool> > > >::const_iterator
+    std::map<choice, expression_weak_ref<expression_box<bool> > > >::const_iterator
       found = memoized_is_deferred.find(c);
 
     if(found != memoized_is_deferred.end())
@@ -2793,9 +2790,9 @@ private:
 	  return ref.get_value();
       }
 
-    cwidget::util::ref_ptr<expression<bool> > rval(build_is_deferred_real(c));
-    memoized_is_deferred[c] =
-      deferral_updating_expression::create(rval, c, *this);;
+    cwidget::util::ref_ptr<expression<bool> > expr(build_is_deferred_real(c));
+    cwidget::util::ref_ptr<expression_box<bool> > rval(deferral_updating_expression::create(expr, c, *this));
+    memoized_is_deferred[c] = rval;
     return rval;
   }
 
@@ -2823,13 +2820,10 @@ private:
     }
   };
 
-  /** \brief Invoked when a deferral expression becomes invalid.
+  /** \brief Invoked when a solver's tier needs to be recomputed.
    *
-   *  Locates the solver that is no longer deferred in each step that
-   *  it solves, tosses its deferral, and recomputes it from scratch.
-   *
-   *  The solver might also be an action that was chosen for a step;
-   *  that's handled by a separate piece of code.
+   *  Locates the solver in each step that it solves, tosses its tier,
+   *  and recomputes it from scratch.
    */
   void deferral_retracted(const choice &deferral_choice,
 			  const dep &deferral_dep)
@@ -2875,7 +2869,8 @@ private:
 	    new_solvers.put(solver,
 			    solver_information(new_tier,
 					       choice_set(),
-					       new_tier_valid));
+					       new_tier_valid,
+					       solver.get_is_deferred_listener()));
 	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
 
 
@@ -3029,6 +3024,7 @@ private:
     solvers.get_solvers().put(solver,
 			      solver_information(choice_tier,
 						 choice_set(),
+						 is_deferred,
 						 is_deferred));
 
     // Update the deps-solved-by-choice map (add the dep being
@@ -3278,7 +3274,8 @@ private:
 		  new_solvers.put(solver,
 				  solver_information(new_tier,
 						     new_choices,
-						     valid_condition));
+						     valid_condition,
+						     solver_found.getVal().get_is_deferred_listener()));
 		}
 
 	      s.unresolved_deps.put(d, new_solvers);
