@@ -2402,7 +2402,7 @@ private:
 			  << " contains " << p
 			  << " as an active promotion; modifying its tier accordingly.");
 
-		set_tier(s.step_num, p.get_tier());
+		set_step_tier(s.step_num, p.get_tier());
 		graph.schedule_promotion_propagation(step_num, p);
 	      }
 	  }
@@ -3228,7 +3228,7 @@ private:
       }
 
     if(t > s.step_tier)
-      set_tier(s.step_num, t);
+      set_step_tier(s.step_num, t);
   }
 
   // Increases the tier of each dependency in each dependency list
