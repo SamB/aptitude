@@ -276,8 +276,20 @@ private:
 
     void changed(bool new_value)
     {
+      // This should never be invoked twice, but add a safety check in
+      // case it is.
+      if(parent == NULL)
+	{
+	  LOG_ERROR(aptitude::Loggers::getAptitudeGtkResolverSearchTier(),
+		    "Internal error: a promotion was ejected twice!");
+	  return;
+	}
+
       if(!new_value)
-	parent->eject(entry_to_drop);
+	{
+	  parent->eject(entry_to_drop);
+	  parent = NULL;
+	}
     }
   };
 
