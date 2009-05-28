@@ -2214,8 +2214,43 @@ private:
     return false;
   }
 
+  class step_tier_valid_listener : public expression_wrapper<bool>
+  {
+    generic_problem_resolver &resolver;
+    int step_num;
+
+    step_tier_valid_listener(generic_problem_resolver &_resolver,
+			     int _step_num,
+			     const cwidget::util::ref_ptr<bool> &child)
+      : expression_wrapper<bool>(child),
+	resolver(_resolver),
+	step_num(_step_num)
+    {
+    }
+
+  public:
+    static cwidget::util::ref_ptr<step_tier_valid_listener>
+    create(generic_problem_resolver &resolver,
+	   int step_num,
+	   const cwidget::util::ref_ptr<bool> &child)
+    {
+      return new step_tier_valid_listener(resolver, step_num, child);
+    }
+
+    void changed(bool new_value)
+    {
+      if(!new_value)
+	{
+	  step &s(resolver.graph.get_step(step_num));
+	  resolver.recompute_step_tier(s);
+	}
+    }
+  };
+
   /** \brief Adjust the tier of a step, keeping everything consistent. */
-  void set_step_tier(const tier &t, int step_num)
+  void set_step_tier(const tier &t,
+		     const cwidget::util::ref_ptr<expression<bool> > &t_valid,
+		     int step_num)
   {
     step &s(graph.get_step(step_num));
 
@@ -2224,6 +2259,7 @@ private:
 
 
     s.step_tier = t;
+    s.step_tier_valid = step_tier_valid_listener::create(*this, step_num, t_valid);
 
 
     if(was_in_pending)
@@ -2402,7 +2438,8 @@ private:
 			  << " contains " << p
 			  << " as an active promotion; modifying its tier accordingly.");
 
-		set_step_tier(s.step_num, p.get_tier());
+		set_step_tier(s.step_num, p.get_tier(),
+			      p.get_valid_condition());
 		graph.schedule_promotion_propagation(step_num, p);
 	      }
 	  }
@@ -3228,7 +3265,18 @@ private:
       }
 
     if(t > s.step_tier)
-      set_step_tier(s.step_num, t);
+      set_step_tier(s.step_num, t, valid_condition);
+  }
+
+  /** \brief Increases the tier of a single step. */
+  void increase_step_tier(step &s,
+			  const promotion &p)
+  {
+    const tier &p_tier(p.get_tier());
+    const cwidget::util::ref_ptr<expression<bool> > &valid_condition(p.get_valid_condition());
+
+    if(s.step_tier < p_tier)
+      set_step_tier(s, p_tier, valid_condition);
   }
 
   // Increases the tier of each dependency in each dependency list
@@ -3375,7 +3423,7 @@ private:
 	  break;
 
 	case search_graph::choice_mapping_solver:
-	  r.increase_step_tier(s, p, solver);
+	  r.increase_step_tier(s, p);
 	}
     }
   };

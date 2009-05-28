@@ -263,10 +263,12 @@ public:
     /** \brief The tier of this step. */
     tier step_tier;
 
-    /** \brief An incremental expression that computes "true" if the
-     *  step's tier is valid and "false" otherwise.
+    /** \brief A side-effecting expression that fires when this step's
+     *  tier changes.
+     *
+     *  The pure validity condition is a child of this value.
      */
-    cwidget::util::ref_ptr<expression<bool> > step_tier_valid;
+    cwidget::util::ref_ptr<expression_box<bool> > step_tier_valid;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were
