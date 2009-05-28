@@ -426,33 +426,23 @@ public:
    */
   class choice_mapping_info
   {
-    // The steps (if any) containing this choice as an action.
-    imm::set<int> action_steps;
-
-    // The steps (if any) containing this choice as a solver, grouped
-    // by the dependency that each one solves.
-    imm::map<dep, imm::set<int> > solver_steps;
+    // The steps (if any) containing this choice as a solver or an
+    // action, grouped by the dependency that each one solves.
+    imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > steps;
 
   public:
     choice_mapping_info()
     {
     }
 
-    choice_mapping_info(const imm::set<int> &_action_steps,
-			const imm::map<dep, imm::set<int> > &_solver_steps)
-      : action_steps(_action_steps),
-	solver_steps(_solver_steps)
+    choice_mapping_info(const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &_steps)
+      : steps(_steps)
     {
     }
 
-    const imm::set<int> &get_action_steps() const
+    const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &get_steps() const
     {
-      return action_steps;
-    }
-
-    const imm::map<dep, imm::set<int> > &get_solver_steps() const
-    {
-      return solver_steps;
+      return steps;
     }
   };
 
@@ -518,7 +508,7 @@ public:
    *  \param reason    The dependency that this choice solves, if how
    *                   is choice_mapping_solver.
    */
-  void bind_choice(const choice &c, int step_num, choice_mapping_type how, dep reason = dep())
+  void bind_choice(const choice &c, int step_num, choice_mapping_type how, dep reason)
   {
     // \todo Write a proper operator<<.
     const char *type_desc;
@@ -531,39 +521,18 @@ public:
 
     LOG_TRACE(logger, "Marking the choice " << c
 	      << " as " << type_desc << " in step "
-	      << step_num);
+	      << step_num << " with dependency " << reason);
 
     choice_mapping_info inf;
     steps_related_to_choices.try_get(c, inf);
+    imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
+      new_steps(inf.get_steps());
+    imm::set<std::pair<choice_mapping_type, int> >
+      new_dep_steps(new_steps.get(reason, imm::set<int>()));
 
-    switch(how)
-      {
-      case choice_mapping_action:
-	{
-	  imm::set<int> new_action_steps(inf.get_action_steps());
-	  new_action_steps.insert(step_num);
-	  steps_related_to_choices.put(c,
-				       choice_mapping_info(new_actions_steps,
-							   inf.get_solver_steps()));
-	}
-	break;
-
-      case choice_mapping_solver:
-	{
-	  imm::map<dep, imm::set<int> > new_solver_steps(inf.get_solver_steps());
-
-	  imm::set<int> new_dep_solver_steps(new_solver_steps.get(reason,
-								  imm::set<int>()));
-
-	  new_dep_solver_steps.insert(step_num);
-	  new_solver_steps.put(reason, new_dep_solver_steps);
-
-	  steps_related_to_choices.put(c,
-				       choice_mapping_info(inf.get_action_steps(),
-							   new_solver_steps));
-	}
-	break;
-      }
+    new_dep_steps.insert(std::make_pair(how, step_num));
+    new_steps.put(c, new_dep_steps);
+    steps_related_to_choices.put(c, choice_mapping_info(new_steps));
   }
 
   /** \brief Remove an entry from the choice->step reverse index.
@@ -593,40 +562,26 @@ public:
     choice_mapping_info info;
     if(steps_related_to_choices.try_get(c, info))
       {
-	switch(how)
+	imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
+	  new_steps(info.get_solver_steps());
+
+	typename imm::map<dep, imm::set<int> >::node
+	  found_solver(new_solver_steps.lookup(reason));
+
+	if(found_solver.isValid())
 	  {
-	  case choice_mapping_action:
-	    {
-	      imm::set<int> new_action_steps(info.get_action_steps());
-	      new_action_steps.erase(step_num);
+	    imm::set<std::pair<choice_mapping_type, int> >
+	      new_dep_steps(found_solver.getVal());
 
-	      choice_mapping_info new_info(new_action_steps,
-					   info.get_solver_steps());
-	      steps_related_to_choices.put(c, new_info);
-	    }
-	    break;
-
-	  case choice_mapping_solver:
-	    {
-	      imm::map<dep, imm::set<int> > new_solver_steps(info.get_solver_steps());
-	      typename imm::map<dep, imm::set<int> >::node
-		found_solver(new_solver_steps.lookup(reason));
-	      if(found_solver.isValid())
-		{
-		  imm::set<int> new_dep_solver_steps(found_solver.getVal());
-		  new_dep_solver_steps.erase(step_num);
-		  if(new_dep_solver_steps.empty())
-		    new_solver_steps.erase(reason);
-		  else
-		    new_solver_steps.put(reason, new_dep_solver_steps);
-		}
-
-	      choice_mapping_info new_info(info.get_action_steps(),
-					   new_solver_steps);
-	      steps_related_to_choices.put(c, new_info);
-	    }
-	    break;
+	    new_dep_steps.erase(std::make_pair(how, step_num));
+	    if(new_dep_steps.empty())
+	      new_steps.erase(reason);
+	    else
+	      new_steps.put(reason, new_dep_solver_steps);
 	  }
+
+	choice_mapping_info new_info(new_steps);
+	steps_related_to_choices.put(c, new_info);
       }
   }
 
@@ -636,19 +591,20 @@ private:
   {
     // The choice to pass to the sub-function.
     const choice &c;
-    // The mapping type to pass to the sub-function.
-    choice_mapping_type how;
 
     F f;
 
   public:
-    visit_choice_mapping_steps(const choice &_c, choice_mapping_type _how, F _f)
-      : c(_c), how(_how), f(_f)
+    visit_choice_mapping_steps(const choice &_c, F _f)
+      : c(_c), f(_f)
     {
     }
 
-    bool operator()(int step_num) const
+    bool operator()(const std::pair<choice_mapping_type, int> p) const
     {
+      const choice_mapping_type how(p.first);
+      const int step_num(p.second);
+
       return f(c, how, step_num);
     }
   };
@@ -661,19 +617,17 @@ private:
   {
     const choice &c;
 
-    choice_mapping_type how;
-
     F f;
 
   public:
-    visit_choice_dep_mapping(const choice &_c, choice_mapping_type _how, F _f)
-      : c(_c), how(_how), f(_f)
+    visit_choice_dep_mapping(const choice &_c, F _f)
+      : c(_c), f(_f)
     {
     }
 
-    bool operator()(const std::pair<dep, imm::set<int> > &mapping) const
+    bool operator()(const std::pair<dep, imm::set<std::pair<choice_mapping_type, int> > > &mapping) const
     {
-      mapping.second.for_each(visit_choice_mapping_steps<F>(c, how, f));
+      mapping.second.for_each(visit_choice_mapping_steps<F>(c, f));
     }
   };
 
@@ -697,8 +651,8 @@ private:
       if(!action_steps.for_each(visit_choice_mapping_steps<F>(c, choice_mapping_action, f)))
 	return false;
 
-      const imm::map<dep, imm::set<int> > &solver_steps(inf.get_solver_steps());
-      return solver_steps.for_each(visit_choice_dep_mapping<F>(c, choice_mapping_solver, f));
+      const imm::map<dep, imm::set<int> > &steps(inf.get_steps());
+      return steps.for_each(visit_choice_dep_mapping<F>(c, f));
     }
   };
 

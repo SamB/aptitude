@@ -921,16 +921,13 @@ private:
     choice deferred_choice;
 
     generic_resolver &resolver;
-    bool fired; // Set to true when this has fired, to avoid
-		// accidentally firing twice.
 
     deferral_updating_expression(const cwidget::util::ref_ptr<expression<bool> > &_child,
 				 const choice &_deferred_choice,
 				 generic_resolver &_resolver)
       : expression_wrapper<bool>(_child),
 	deferred_choice(_deferred_choice),
-	resolver(_resolver),
-	fired(false)
+	resolver(_resolver)
     {
       // Sanity-check.
       eassert(deferred_choice.get_has_dep());
@@ -949,14 +946,30 @@ private:
 
     void changed(bool new_value)
     {
-      if(fired)
-	return;
-
-      fired = true;
-
       if(!new_value)
 	resolver.deferral_retracted(deferred_choice,
 				    deferred_choice.get_dep());
+      else
+	{
+	  // Note that this is not quite right in logical terms.
+	  // Technically, the promotion we generate should contain the
+	  // choice that led to the deferral.  However, that's not
+	  // right either: we don't have a choice object that can
+	  // fully describe the reason this deferral occurred.
+	  //
+	  // However, this isn't actually a problem: the promotion
+	  // will be used only to produce a generalized promotion, and
+	  // generalization would remove the choice that was deferred
+	  // anyway.  So we can just produce an (incorrect) empty
+	  // promotion.
+	  //
+	  // (the alternative is to expand the types of choices we can
+	  // handle, but that would impose costs on the rest of the
+	  // program for a feature that would never be used)
+	  promotion p(choice_set(), tier_limits::defer_tier,
+		      get_child());
+	  resolver.increase_solver_tier_everywhere(deferred_choice, p);
+	}
     }
   };
 
@@ -3333,6 +3346,52 @@ private:
       }
   }
 
+  /** \brief Increase the tier of each solver that it's applied to.
+   */
+  class do_increase_solver_tier_everywhere
+  {
+    generic_problem_resolver &r;
+    const choice &solver;
+    const promotion &p;
+
+  public:
+    do_increase_solver_tier_everywhere(generic_problem_resolver &_r,
+				       const choice &_solver,
+				       const promotion &_p)
+      : r(_r), solver(_solver), p(_p)
+    {
+    }
+
+    bool operator()(const choice &c,
+		    search_graph::choice_mapping_type tp,
+		    int step_num)
+    {
+      step &s(r.graph.get_step(step_num));
+
+      switch(tp)
+	{
+	case search_graph::choice_mapping_solver:
+	  r.increase_solver_tier_in_step(s, p, solver);
+	  break;
+
+	case search_graph::choice_mapping_solver:
+	  r.increase_step_tier(s, p, solver);
+	}
+    }
+  };
+
+  /** \brief Increase the tier of a solver everywhere it appears: that
+   *  is, both in solver lists and in action sets.
+   */
+  void increase_solver_tier_everywhere(const choice &solver,
+				       const promotion &p)
+  {
+    do_increase_solver_tier_everywhere
+      increase_solver_tier_everywhere_f(*this, solver, p);
+
+    graph.for_each_step_related_to_choice_with_dep(increase_solver_tier_everywhere_f);
+  }
+
   class do_find_promotions_for_solver
   {
     generic_problem_resolver &r;
@@ -3589,7 +3648,8 @@ private:
 
     bool operator()(const choice &c) const
     {
-      g.bind_choice(c, step_num, choice_mapping_action);
+      g.bind_choice(c, step_num, choice_mapping_action,
+		    c.get_dep());
 
       return true;
     }
