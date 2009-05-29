@@ -291,9 +291,9 @@ public:
    *  this choice, except that the dependency is set to
    *  the given value.
    */
-  choice copy_and_set_dep(const dep &new_dep) const
+  generic_choice copy_and_set_dep(const dep &new_dep) const
   {
-    choice rval(*this);
+    generic_choice rval(*this);
     rval.has_dep = true;
     rval.d = new_dep;
 

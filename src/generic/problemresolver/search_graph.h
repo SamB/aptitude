@@ -24,7 +24,7 @@
 #include <loggers.h>
 
 #include "choice.h"
-#include "choice_indexed_set.h"
+#include "choice_indexed_map.h"
 #include "choice_set.h"
 #include "promotion_set.h"
 #include "solution.h"
@@ -291,7 +291,7 @@ public:
      *  dropping them to save time and memory (no need to make copies
      *  of (part of) the list just to throw entries away).
      */
-    choice_indexed_map<imm::list<dep> > deps_solved_by_choice;
+    generic_choice_indexed_map<PackageUniverse, imm::list<dep> > deps_solved_by_choice;
 
     /** \brief Versions that are structurally forbidden and the reason
      *  each one is forbidden.
@@ -372,10 +372,10 @@ public:
      */
     step()
       : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1), sol(), reason(),
+	parent(-1), first_child(-1), canonical_clone(-1), reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0),
-	tier_vlaid()
+	step_tier_valid()
     {
     }
 
@@ -388,11 +388,11 @@ public:
 	 int _score,
 	 int _action_score)
       : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1)
+	parent(-1), first_child(-1), canonical_clone(-1),
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
-	tier_valid(var_expression::create(true)),
+	step_tier_valid(),
 	reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
@@ -419,6 +419,19 @@ public:
     {
     }
   };
+
+  /** \brief Describes how a choice occurs in a step. */
+  enum choice_mapping_type
+    {
+      /** \brief The choice is an action performed by the step. */
+      choice_mapping_action,
+
+      /** \brief The choice solves a dependency that is unresolved
+       *  in the step.
+       */
+      choice_mapping_solver
+    };
+
 
   /** \brief Stores all steps where a choice occurs.
    *
@@ -487,21 +500,9 @@ private:
    *  This map needs to be updated when a new step is added to the
    *  graph, and also when one of a version's successors is struck.
    */
-  choice_indexed_map<choice, choice_mapping_info> steps_related_to_choices;
+  generic_choice_indexed_map<PackageUniverse, choice_mapping_info> steps_related_to_choices;
 
 public:
-  /** \brief Describes how a choice occurs in a step. */
-  enum choice_mapping_type
-    {
-      /** \brief The choice is an action performed by the step. */
-      choice_mapping_action,
-
-      /** \brief The choice solves a dependency that is unresolved
-       *  in the step.
-       */
-      choice_mapping_solver
-    };
-
   /** \brief Add an entry to the choice->step reverse index.
    *
    *  \param c         The choice to bind.
@@ -545,7 +546,6 @@ public:
    *  \param reason    The dependency that this choice solved, if how
    *                   is choice_mapping_solver.
    */
-   */
   void remove_choice(const choice &c, int step_num, choice_mapping_type how, const dep &reason = dep())
   {
     // \todo Write a proper operator<<.
@@ -567,8 +567,8 @@ public:
 	imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
 	  new_steps(info.get_solver_steps());
 
-	typename imm::map<dep, imm::set<int> >::node
-	  found_solver(new_solver_steps.lookup(reason));
+	typename imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >::node
+	  found_solver(new_steps.lookup(reason));
 
 	if(found_solver.isValid())
 	  {
@@ -579,7 +579,7 @@ public:
 	    if(new_dep_steps.empty())
 	      new_steps.erase(reason);
 	    else
-	      new_steps.put(reason, new_dep_solver_steps);
+	      new_steps.put(reason, new_dep_steps);
 	  }
 
 	choice_mapping_info new_info(new_steps);
@@ -629,7 +629,7 @@ private:
 
     bool operator()(const std::pair<dep, imm::set<std::pair<choice_mapping_type, int> > > &mapping) const
     {
-      mapping.second.for_each(visit_choice_mapping_steps<F>(c, f));
+      return mapping.second.for_each(visit_choice_mapping_steps<F>(c, f));
     }
   };
 
@@ -693,7 +693,7 @@ private:
 
       if(found.isValid())
 	{
-	  visit_choice_mapping_steps visit_step_f(c, choice_mapping_solver, f);
+	  visit_choice_mapping_steps<F> visit_step_f(c, choice_mapping_solver, f);
 	  return found.getVal().for_each(visit_step_f);
 	}
       else
@@ -707,9 +707,10 @@ public:
    *  such that c' is contained in c and c' was added as a solver for
    *  the given dependency.
    */
+  template<typename F>
   void for_each_step_related_to_choice_with_dep(const choice &c, const dep &d, F f) const
   {
-    visit_choice_mapping_solvers_of_dep visit_mappings_by_dep_f(d, f);
+    visit_choice_mapping_solvers_of_dep<F> visit_mappings_by_dep_f(d, f);
     steps_related_to_choices.for_each_contained_in(c, visit_mappings_by_dep_f);
   }
 
@@ -777,7 +778,7 @@ public:
 		const choice &c, bool is_first_child)
   {
     eassert(!steps.empty());
-    steps.push_back(step(actions, score, action_score, parent_step_num, c, is_first_child));
+    steps.push_back(step(choices, score, action_score, parent_step_num, c, is_first_child));
     steps.back().step_num = steps.size() - 1;
   }
 
@@ -1184,7 +1185,7 @@ public:
 };
 
 template<typename PackageUniverse>
-ostream &operator<<(ostream &out, const typename generic_step<PackageUniverse>::solver_information &info)
+std::ostream &operator<<(std::ostream &out, const typename generic_search_graph<PackageUniverse>::step::solver_information &info)
 {
   return out << "(" << info.get_tier()
 	     << ":" << info.get_reasons() << ")";

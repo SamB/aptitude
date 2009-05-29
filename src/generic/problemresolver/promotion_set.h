@@ -280,7 +280,7 @@ private:
       // case it is.
       if(parent == NULL)
 	{
-	  LOG_ERROR(aptitude::Loggers::getAptitudeGtkResolverSearchTier(),
+	  LOG_ERROR(aptitude::Loggers::getAptitudeResolverSearchTiers(),
 		    "Internal error: a promotion was ejected twice!");
 	  return;
 	}

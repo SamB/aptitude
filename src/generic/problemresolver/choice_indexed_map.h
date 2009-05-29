@@ -132,7 +132,7 @@ public:
 	      else
 		{
 		  typename imm::map<dep, ValueType>::node
-		    found_dep = inf.from_dep_source.lookup(c.get_dep());
+		    found_dep = ver_inf.from_dep_source.lookup(c.get_dep());
 
 		  if(found_dep.isValid())
 		    {
@@ -230,7 +230,7 @@ public:
       case choice::install_version:
 	{
 	  const version &v(c.get_ver());
-	  typename imm::map<version, ver_info>::node
+	  typename imm::map<version, version_info>::node
 	    found_ver(install_version_objects.find(v));
 	  // Note that since we save a reference to the original,
 	  // immutable node, we will always iterate over everything
@@ -238,7 +238,7 @@ public:
 
 	  if(found_ver.isValid())
 	    {
-	      const version_inf &ver_inf(found_ver.getVal());
+	      const version_info &ver_inf(found_ver.getVal());
 
 	      if(!c.get_from_dep_source())
 		{
@@ -310,6 +310,8 @@ public:
 template<typename PackageUniverse, typename T, typename Compare = std::less<T> >
 class generic_choice_indexed_set
 {
+  typedef generic_choice<PackageUniverse> choice;
+
   generic_choice_indexed_map<PackageUniverse, imm::set<T, Compare> > parent;
 
   // The comparison object.
@@ -352,7 +354,7 @@ public:
     choice c;
     F f;
 
-    for_each_by_choice(const choice &_c, F _f)
+    for_each_with_choice(const choice &_c, F _f)
       : c(_c), f(_f)
     {
     }
@@ -389,7 +391,7 @@ public:
   template<typename F>
   bool for_each_contained_in(const choice &c, F f) const
   {
-    parent.for_each_key_contained_in(c, for_each_set<F>(f));
+    return parent.for_each_key_contained_in(c, for_each_set<F>(f));
   }
 };
 

@@ -888,8 +888,8 @@ private:
 
   public:
     approved_or_rejected_info()
-      : rejected(var_e::create(false)),
-	approved(var_e::create(false))
+      : rejected(var_e<bool>::create(false)),
+	approved(var_e<bool>::create(false))
     {
     }
 
@@ -920,11 +920,11 @@ private:
   {
     choice deferred_choice;
 
-    generic_resolver &resolver;
+    generic_problem_resolver &resolver;
 
     deferral_updating_expression(const cwidget::util::ref_ptr<expression<bool> > &_child,
 				 const choice &_deferred_choice,
-				 generic_resolver &_resolver)
+				 generic_problem_resolver &_resolver)
       : expression_wrapper<bool>(_child),
 	deferred_choice(_deferred_choice),
 	resolver(_resolver)
@@ -937,7 +937,7 @@ private:
     static cwidget::util::ref_ptr<deferral_updating_expression>
     create(const cwidget::util::ref_ptr<expression<bool> > &child,
 	   const choice &deferred_choice,
-	   generic_resolver &resolver)
+	   generic_problem_resolver &resolver)
     {
       return new deferral_updating_expression(child,
 					      deferred_choice,
@@ -2852,15 +2852,15 @@ private:
     const dep &d;
 
   public:
-    do_recompute_tier(generic_problem_resolver &_resolver,
-		      const dep &_d)
+    invoke_recompute_solver_tier(generic_problem_resolver &_resolver,
+				 const dep &_d)
       : resolver(_resolver),
 	d(_d)
     {
     }
 
     bool operator()(const choice &c,
-		    search_graph::choice_mapping_type how,
+		    typename search_graph::choice_mapping_type how,
 		    int step_num) const
     {
       step &s(resolver.graph.get_step(step_num));
@@ -2937,7 +2937,7 @@ private:
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
-  void find_promotions_for_solver(const search_graph::step &s,
+  void find_promotions_for_solver(const typename search_graph::step &s,
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
@@ -3008,7 +3008,7 @@ private:
    *  structure; otherwise, the choice is added to the solvers list.
    */
   void add_solver(step &s,
-		  search_graph::step::dep_solvers &solvers,
+		  typename search_graph::step::dep_solvers &solvers,
 		  const dep &d,
 		  const choice &solver) const
   {
@@ -3114,7 +3114,7 @@ private:
       output_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
     }
 
-    bool operator()(const std::pair<choice, search_graph::solver_information> &p) const
+    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &p) const
     {
       const tier &p_tier(p.get_tier());
       if(p_tier < output_tier)
@@ -3135,13 +3135,13 @@ private:
 
   public:
     find_largest_dep_tier(tier &_output_tier,
-			  tier_valid &_output_tier_valid)
+			  const cwidget::util::ref_ptr<expression<bool> > &_output_tier_valid)
       : output_tier(_output_tier),
 	output_tier_valid(_output_tier_valid)
     {
     }
 
-    bool operator()(const std::pair<dep, dep_solvers> &p) const
+    bool operator()(const std::pair<dep, typename search_graph::dep_solvers> &p) const
     {
       tier dep_tier;
       cwidget::util::ref_ptr<expression<bool> > dep_tier_valid;
@@ -3196,7 +3196,7 @@ private:
       output_valid_conditions.clear();
     }
 
-    bool operator()(const std::pair<choice, search_graph::solver_information> &entry) const
+    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &entry) const
     {
       if(output_tier > entry.second.get_tier())
 	// Maybe we have a new, lower tier.
@@ -3217,7 +3217,7 @@ private:
    *
    *  If the set is empty, this just inserts a conflict.
    */
-  void check_solvers_tier(step &s, const dep_solvers &solvers)
+  void check_solvers_tier(step &s, const typename search_graph::dep_solvers &solvers)
   {
     tier t;
     choice_set reasons;
@@ -3289,7 +3289,7 @@ private:
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
 
   public:
-    do_increase_solver_tier(search_graph::step &_s,
+    do_increase_solver_tier(typename search_graph::step &_s,
 			    const tier &_new_tier,
 			    const choice_set &_new_choices,
 			    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
@@ -3411,7 +3411,7 @@ private:
     }
 
     bool operator()(const choice &c,
-		    search_graph::choice_mapping_type tp,
+		    typename search_graph::choice_mapping_type tp,
 		    int step_num)
     {
       step &s(r.graph.get_step(step_num));
@@ -3452,7 +3452,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, search_graph::step::solver_information> &p) const
+    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &p) const
     {
       r.find_promotions_for_solver(s, p.first);
       return true;
