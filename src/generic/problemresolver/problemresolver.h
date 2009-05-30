@@ -730,6 +730,30 @@ private:
     }
   };
 
+  /** \brief Used to convert a choice set into a model of Installation. */
+  class choice_set_installation
+  {
+    const choice_set &actions;
+    const resolver_initial_state<PackageUniverse> &initial_state;
+
+  public:
+    choice_set_installation(const choice_set &_actions,
+			    const resolver_initial_state<PackageUniverse> &_initial_state)
+      : actions(_actions),
+	initial_state(_initial_state)
+    {
+    }
+
+    version version_of(const package &p) const
+    {
+      version rval;
+      if(actions.get_version_of(p, rval))
+	return rval;
+      else
+	return initial_state.version_of(p);
+    }
+  };
+
   /** \brief The initial state of the resolver.
    *
    *  If this is not NULL, we need to use a more clever technique to
@@ -3389,30 +3413,6 @@ private:
     check_solvers_tier(s, solvers);
   }
 
-  /** \brief Used to convert a step into a model of Installation. */
-  class step_installation
-  {
-    const choice_set &actions;
-    const resolver_initial_state<PackageUniverse> &initial_state;
-
-  public:
-    step_installation(const choice_set &_actions,
-		      const resolver_initial_state<PackageUniverse> &_initial_state)
-      : actions(_actions),
-	initial_state(_initial_state)
-    {
-    }
-
-    version version_of(const package &p) const
-    {
-      version rval;
-      if(actions.get_version_of(p, rval))
-	return rval;
-      else
-	return initial_state.version_of(p);
-    }
-  };
-
   /** \brief Find all the dependencies that are unresolved in step s
    *  and that involve c in some way, then add them to the unresolved
    *  set.
@@ -3425,7 +3425,7 @@ private:
       {
       case choice::install_version:
 	{
-	  step_installation test_installation(s, initial_state);
+	  choice_set_installation test_installation(s, initial_state);
 
 	  version new_version = c.get_ver();
 	  version old_version = initial_state.version_of(new_version.get_pkg());
