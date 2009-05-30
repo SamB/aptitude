@@ -74,12 +74,6 @@ private:
   // True if the choice was to remove the source of the dependency.
   bool from_dep_source:1;
 
-  // True if the dependency is part of the "identity" of the choice
-  // object.  These dependencies are more specific than choices
-  // without dep scoping and less specific than choices with
-  // from_dep_source set.
-  bool dep_scoped:1;
-
   // True if the choice *has* an attached dependency at all.
   bool has_dep:1;
 
@@ -88,21 +82,21 @@ private:
 
   /** \brief The order in which this choice was made.
    */
-  int id:28;
+  int id:29;
 
-  generic_choice(const version &_ver, bool _from_dep_source, bool _dep_scoped, bool _has_dep, const dep &_d, int _id)
-    : ver(_ver), d(_d), from_dep_source(_from_dep_source), dep_scoped(_dep_scoped), has_dep(_has_dep), tp(install_version), id(_id)
+  generic_choice(const version &_ver, bool _from_dep_source, bool _has_dep, const dep &_d, int _id)
+    : ver(_ver), d(_d), from_dep_source(_from_dep_source), has_dep(_has_dep), tp(install_version), id(_id)
   {
   }
 
   generic_choice(const dep &_d, int _id)
-    : d(_d), from_dep_source(false), dep_scoped(true), has_dep(true), tp(break_soft_dep), id(_id)
+    : d(_d), from_dep_source(false), has_dep(true), tp(break_soft_dep), id(_id)
   {
   }
 
 public:
   generic_choice()
-    : from_dep_source(false), dep_scoped(false), has_dep(false), tp(install_version), id(-1)
+    : from_dep_source(false), has_dep(false), tp(install_version), id(-1)
   {
   }
 
@@ -112,14 +106,12 @@ public:
    *  \param d   The dependency that caused this choice.  This is
    *             included for informational purposes only and is
    *             ignored by all operations except get_dep().
-   *  \param dep_scoped   True if this choice only "contains"
-   *                      choices with the same dependency.
    *  \param id  An arbitrary integer associated with this choice.
    *             Ignored by all operations except get_id().
    */
-  static generic_choice make_install_version(const version &ver, bool dep_scoped, const dep &d, int id)
+  static generic_choice make_install_version(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, false, dep_scoped, true, d, id);
+    return generic_choice(ver, false, true, d, id);
   }
 
   /** \brief Create a new choice that installs the given version and
@@ -129,8 +121,6 @@ public:
    *  \param d   The dependency that caused this choice.  This is
    *             included for informational purposes only and is
    *             ignored by all operations except get_dep().
-   *  \param dep_scoped   True if this choice only "contains" choices
-   *                      with the same dependency.
    *  \param id  An arbitrary integer associated with this choice.
    *             Ignored by all operations except get_id().
    */
@@ -167,7 +157,7 @@ public:
   /** \brief Return a choice that contains any choice with the same
    *  effect as this choice.
    */
-  choice generalize() const
+  generic_choice generalize() const
   {
     switch(tp)
       {
@@ -179,7 +169,7 @@ public:
       }
 
     eassert(!"We should never get here.");
-    return choice();
+    return generic_choice();
   }
 
   /** \brief Test whether this choice "contains" another choice.
@@ -201,9 +191,9 @@ public:
 	    return false;
 	  else // ver == other.ver
 	    {
-	      if(!dep_scoped)
+	      if(!from_dep_source)
 		return true;
-	      else if(from_dep_source && !other.from_dep_source)
+	      else if(!other.from_dep_source)
 		return false;
 	      else if(!has_dep && other.has_dep)
 		return true;
@@ -242,11 +232,7 @@ public:
 	      return false;
 	    else
 	      {
-		if(!dep_scoped && other.dep_scoped)
-		  return true;
-		else if(dep_scoped && !other.dep_scoped)
-		  return false;
-		else if(!from_dep_source && other.from_dep_source)
+		if(!from_dep_source && other.from_dep_source)
 		  return true;
 		else if(from_dep_source && !other.from_dep_source)
 		  return false;
@@ -284,9 +270,6 @@ public:
 	    if(from_dep_source != other.from_dep_source)
 	      return false;
 
-	    if(dep_scoped != other.dep_scoped)
-	      return false;
-
 	    if(has_dep != other.has_dep)
 	      return false;
 
@@ -304,6 +287,19 @@ public:
     eassert(!"We should never get here.");
   }
 
+  /** \brief Create a new choice that is identical to
+   *  this choice, except that the dependency is set to
+   *  the given value.
+   */
+  generic_choice copy_and_set_dep(const dep &new_dep) const
+  {
+    generic_choice rval(*this);
+    rval.has_dep = true;
+    rval.d = new_dep;
+
+    return rval;
+  }
+
   int get_id() const { return id; }
   type get_type() const { return tp; }
 
@@ -311,12 +307,6 @@ public:
   {
     eassert(tp == install_version);
     return ver;
-  }
-
-  bool get_dep_scoped() const
-  {
-    eassert(tp == install_version);
-    return dep_scoped;
   }
 
   bool get_from_dep_source() const
@@ -377,8 +367,6 @@ inline std::ostream &operator<<(std::ostream &out, const generic_choice<PackageU
 	}
       else if(choice.get_from_dep_source())
 	out << " <source: ";
-      else if(choice.get_dep_scoped())
-	out << " <scope: ";
       else
 	out << " <";
 

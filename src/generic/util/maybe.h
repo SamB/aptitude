@@ -51,6 +51,20 @@ public:
    *  \return \b true if this object has a value.
    */
   bool extract(T &out) const { if(has_value) out = value; return has_value; }
+
+  /** \brief Directly extract the value.
+   *
+   *  This is efficient but unsafe; it assumes the user has already
+   *  invoked get_has_value().
+   */
+  const T &get_value() const { return value; }
+
+  /** \brief Directly extract the value.
+   *
+   *  This is efficient but unsafe; it assumes the user has already
+   *  invoked get_has_value().
+   */
+  T &get_value() { return value; }
 };
 
 #endif // MAYBE_H

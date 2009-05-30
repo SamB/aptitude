@@ -29,6 +29,8 @@
 #include <algorithm>
 #include <set>
 
+#include <ostream>
+
 // A system of incrementally computed expressions stored as a DAG.
 // NOT THREADSAFE (the weak-reference system would utterly break in
 // the presence of threads without a lot of expensive locking, and
@@ -98,6 +100,7 @@ public:
   }
 
   expression_weak_ref(T *_expr);
+  expression_weak_ref(const cwidget::util::ref_ptr<T> &_expr);
 
   expression_weak_ref(const expression_weak_ref &other);
 
@@ -108,6 +111,21 @@ public:
     eassert(valid);
 
     return expr;
+  }
+
+  bool operator==(const expression_weak_ref &other) const
+  {
+    return expr == other.expr;
+  }
+
+  bool operator==(const T *other) const
+  {
+    return expr == other;
+  }
+
+  bool operator<(const expression_weak_ref &other) const
+  {
+    return expr < other.expr;
   }
 
   ~expression_weak_ref();
@@ -126,7 +144,7 @@ template<typename T>
 class expression : public aptitude::util::refcounted_base_not_threadsafe
 {
   // Weak references to parents.
-  std::vector<expression_weak_ref<expression_container<T> > > parents;
+  std::set<expression_weak_ref<expression_container<T> > > parents;
 
   // Incoming weak references.
   std::set<expression_weak_ref_generic *> weak_refs;
@@ -150,29 +168,22 @@ protected:
     cwidget::util::ref_ptr<expression> self(this);
 
     // Strip out dead references as we go, to save a bit of space.
-    typename std::vector<expression_weak_ref<expression_container<T> > >::iterator
-      read = parents.begin(), write = read;
+    typename std::set<expression_weak_ref<expression_container<T> > >::iterator
+      curr = parents.begin();
 
-    while(read != parents.end())
+    while(curr != parents.end())
       {
-	bool advance_write = false;
-	if(read->get_valid())
-	  {
-	    read->get_value()->child_modified(self, old_value, new_value);
-	    advance_write = true;
-	  }
+	typename std::set<expression_weak_ref<expression_container<T> > >::iterator
+	  next = curr;
+	++next;
 
-	++read;
+	if(curr->get_valid())
+	  curr->get_value()->child_modified(self, old_value, new_value);
+	else
+	  parents.erase(curr);
 
-	if(read != write)
-	  *write = *read;
-
-	if(advance_write)
-	  ++write;
+	curr = next;
       }
-
-    if(read != write)
-      parents.erase(write, parents.end());
   }
 
 public:
@@ -186,7 +197,40 @@ public:
                        // surprises.
   }
 
+  // Add a weak reference to the given expression; its
+  // child_modified() routine will be invoked when this child's value
+  // changes.
+  void add_parent(expression_container<T> *parent)
+  {
+    if(parent != NULL)
+      parents.insert(parent);
+  }
+
+private:
+  class parent_equals_weak_ref
+  {
+    const expression_container<T> *parent;
+
+  public:
+    parent_equals_weak_ref(const expression_container<T> *_parent)
+      : parent(_parent)
+    {
+    }
+
+    bool operator()(const expression_weak_ref<expression_container<T> > &other) const
+    {
+      return other == parent;
+    }
+  };
+
+public:
+  void remove_parent(expression_container<T> *parent)
+  {
+    parents.erase(expression_weak_ref<expression_container<T> >(parent));
+  }
+
   virtual T get_value() = 0;
+  virtual void dump(std::ostream &out) = 0;
 };
 
 /** \brief Base class for expressions that can contain other
@@ -207,6 +251,119 @@ public:
 			      T new_value) = 0;
 };
 
+/** \brief Base class for objects that have a single sub-expression. */
+template<typename T>
+class expression_box : public expression_container<T>
+{
+  cwidget::util::ref_ptr<expression<T> > child;
+
+public:
+  expression_box() : child() { }
+
+  expression_box(const cwidget::util::ref_ptr<expression<T> > &_child)
+    : child(_child)
+  {
+    if(child.valid())
+      child->add_parent(this);
+  }
+
+  expression_box(const expression_box &other)
+    : child(other.child)
+  {
+    if(child.valid())
+      child->add_parent(this);
+  }
+
+  ~expression_box()
+  {
+    if(child.valid())
+      child->remove_parent(this);
+  }
+
+  void set_child(const cwidget::util::ref_ptr<expression<T> > &new_child)
+  {
+    if(child.valid())
+      child->remove_parent(this);
+    child = new_child;
+    if(new_child.valid())
+      new_child->add_parent(this);
+  }
+
+  /** \brief Set the child of this box to the child of the other box.
+   */
+  expression_box &operator=(const expression_box &other)
+  {
+    set_child(other.child);
+    return *this;
+  }
+
+  const cwidget::util::ref_ptr<expression<T> > &get_child() const
+  {
+    return child;
+  }
+
+  /** \brief Returns the child's value, or a default-constructed T if
+   *  there is no child.
+   */
+  T get_value()
+  {
+    if(child.valid())
+      return child->get_value();
+    else
+      return T();
+  }
+
+  /** \brief Write this expression to the given stream.
+   *
+   *  The default implementation writes nothing if the child is
+   *  invalid, and writes the child if the child is valid.
+   */
+  void dump(std::ostream &out)
+  {
+    if(get_child().valid())
+      get_child()->dump(out);
+  }
+};
+
+/** \brief Base class for expressions that trivially wrap their
+ *  subexpression.
+ */
+template<typename T>
+class expression_wrapper : public expression_box<T>
+{
+public:
+  expression_wrapper() : expression_box<T>() { }
+  expression_wrapper(const cwidget::util::ref_ptr<expression<T> > &child)
+    : expression_box<T>(child)
+  {
+  }
+  expression_wrapper(const expression_wrapper &other)
+    : expression_box<T>(other)
+  {
+  }
+
+  expression_wrapper &operator=(const expression_wrapper &other)
+  {
+    set_child(other.get_child);
+    return *this;
+  }
+
+  /** \brief Invoked by the default implementation of child_modified.
+   *
+   *  This method's default implementation does nothing.
+   */
+  virtual void changed(T new_value)
+  {
+  }
+
+  void child_modified(const cwidget::util::ref_ptr<expression<T> > &child,
+		      T old_value,
+		      T new_value)
+  {
+    changed(new_value);
+  }		      
+};
+
 /** \brief Base class for N-ary containers that support adding and
  *  removing children.
  */
@@ -221,6 +378,9 @@ public:
   expression_container_base(Iter begin, Iter end)
     : children(begin, end)
   {
+    for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
+	  it = get_children().begin(); it != get_children().end(); ++it)
+      (*it)->add_parent(this);
   }
 
   const std::vector<cwidget::util::ref_ptr<expression<T> > > &get_children() const
@@ -240,13 +400,37 @@ public:
     typename std::vector<cwidget::util::ref_ptr<expression<T> > >::iterator
       new_end = std::remove(children.begin(), children.end(), child);
 
+    child->remove_parent(this);
     children.erase(new_end, children.end());
+  }
+
+  virtual std::string get_name() = 0;
+
+  virtual void dump(std::ostream &out)
+  {
+    out << get_name() << "(";
+    for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
+	  it = get_children().begin(); it != get_children().end(); ++it)
+      {
+	if(it != get_children().begin())
+	  out << ", ";
+
+	(*it)->dump(out);
+      }
+    out << ")";
   }
 };
 
 template<typename T>
 expression_weak_ref<T>::expression_weak_ref(T *_expr)
   : expression_weak_ref_generic(true), expr(_expr)
+{
+  expr->add_weak_ref(this);
+}
+
+template<typename T>
+expression_weak_ref<T>::expression_weak_ref(const cwidget::util::ref_ptr<T> &_expr)
+  : expression_weak_ref_generic(true), expr(_expr.unsafe_get_ref())
 {
   expr->add_weak_ref(this);
 }
@@ -285,6 +469,9 @@ expression_weak_ref<T>::~expression_weak_ref()
  *
  *  Variables can be modified arbitrarily; changes are immediately
  *  propagated to parent expressions.
+ *
+ *  It would be nice if the user could attach names for better
+ *  printing of expressions, but that would take a lot of memory.
  */
 template<typename T>
 class var_e : public expression<T>
@@ -317,6 +504,11 @@ public:
 	value = new_value;
 	signal_value_changed(old_value, new_value);
       }
+  }
+
+  void dump(std::ostream &out)
+  {
+    out << "v" << this;
   }
 };
 
@@ -383,6 +575,8 @@ public:
   }
 
   bool get_value();
+  std::string get_name();
+  void dump(std::ostream &out);
 };
 
 class or_e : public counting_bool_e
@@ -413,14 +607,14 @@ public:
   }
 
   bool get_value();
+  std::string get_name();
+  void dump(std::ostream &out);
 };
 
-class not_e : public expression_container<bool>
+class not_e : public expression_box<bool>
 {
-  cwidget::util::ref_ptr<expression<bool> > child;
-
   not_e(const cwidget::util::ref_ptr<expression<bool> > &_child)
-    : child(_child)
+    : expression_box<bool>(_child)
   {
   }
 
@@ -435,7 +629,16 @@ public:
 		      bool old_value,
 		      bool new_value);
   bool get_value();
+  void dump(std::ostream &out);
 };
+
+template<typename T>
+std::ostream &operator<<(std::ostream &out,
+			 const cwidget::util::ref_ptr<expression<T> > &o)
+{
+  o->dump(out);
+  return out;
+}
 
 // @}
 
