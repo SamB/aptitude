@@ -4043,13 +4043,10 @@ public:
     for(unsigned int i = 0; i < _universe.get_version_count(); ++i)
       version_tiers[i] = tier_limits::minimum_tier;
 
-    // Used for sanity-checking below; create this only once for
-    // efficiency's sake.
-    solution empty_solution(solution::root_node(initial_broken,
-						universe,
-						weights,
-						initial_state,
-						tier_limits::minimum_tier));
+    // Used for sanity-checking below.
+    choice_set_installation empty_step(choice_set(),
+				       initial_state);
+
     // Find all the broken deps.
     for(typename PackageUniverse::dep_iterator di = universe.deps_begin();
 	!di.end(); ++di)
@@ -4058,7 +4055,8 @@ public:
 
 	if(d.broken_under(initial_state))
 	  {
-	    eassert_on_dep(d.broken_under(empty_solution), empty_solution, d);
+	    eassert_on_dep(d.broken_under(empty_installation),
+			   choice_set(), d);
 
 	    initial_broken.insert(d);
 	  }
