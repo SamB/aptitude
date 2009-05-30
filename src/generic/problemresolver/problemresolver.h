@@ -4229,14 +4229,14 @@ public:
    */
   void reject_version(const version &ver, undo_group *undo = NULL)
   {
-    std::pair<typename std::set<version>::const_iterator, bool>
-      insert_result = user_rejected.insert(ver);
+    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(insert_result.second)
+    if(!inf.rejected->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unreject_version));
 
+	inf.rejected->set_value(true);
 	unmandate_version(ver, undo);
       }
   }
@@ -4246,63 +4246,75 @@ public:
    */
   void unreject_version(const version &ver, undo_group *undo = NULL)
   {
-    typename std::set<version>::size_type
-      erased_count = user_rejected.erase(ver);
+    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(erased_count > 0)
+    if(inf.rejected->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
+
+	inf.rejected->set_value(false);
       }
   }
 
   void mandate_version(const version &ver, undo_group *undo = NULL)
   {
-    std::pair<typename std::set<version>::const_iterator, bool>
-      insert_result = user_mandated.insert(ver);
+    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(insert_result.second)
+    if(!inf.approved->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
-	// Mandating a version could actually cause some solutions to
-	// no longer be deferred.  Solutions that avoided an approved
-	// version, but that installed the version that is now
-	// approved, would have been deferred before this new mandate
-	// was added, and aren't deferred any more.
+	inf.mandated->set_value(true);
 	unreject_version(ver, undo);
       }
   }
 
   void unmandate_version(const version &ver, undo_group *undo = NULL)
   {
-    typename std::set<version>::size_type
-      erased_count = user_mandated.erase(ver);
+    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(erased_count > 0)
+    if(inf.approved->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
+
+	inf.approved->set_value(false);
       }
   }
 
   /** Query whether the given version is rejected. */
   bool is_rejected(const version &ver) const
   {
-    return user_rejected.find(ver) != user_rejected.end();
+    std::map<version, approved_or_rejected_info>::const_iterator found =
+      user_approved_or_rejected_versions.find(ver);
+
+    return
+      found != user_approved_or_rejected_versions.end() &&
+      found->rejected->get_value();
   }
 
   /** Query whether the given version is mandated. */
   bool is_mandatory(const version &ver) const
   {
-    return user_mandated.find(ver) != user_mandated.end();
+    std::map<version, approved_or_rejected_info>::const_iterator found =
+      user_approved_or_rejected_versions.find(ver);
+
+    return
+      found != user_approved_or_rejected_versions.end() &&
+      found->approved->get_value();
   }
 
   /** Query whether the given dependency is hardened. */
   bool is_hardened(const dep &d) const
   {
-    return user_hardened.find(d) != user_hardened.end();
+    std::map<version, approved_or_rejected_info>::const_iterator found =
+      user_approved_or_rejected_broken_deps.find(d);
+
+    return
+      found != user_approved_or_rejected_broken_deps.end() &&
+      found->rejected->get_value();
   }
 
   /** Harden the given dependency. */
@@ -4310,14 +4322,14 @@ public:
   {
     eassert(d.is_soft());
 
-    std::pair<typename std::set<dep>::const_iterator, bool>
-      insert_result = user_hardened.insert(d);
+    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(insert_result.second)
+    if(!inf.rejected->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unharden));
 
+	inf.rejected->set_value(true);
 	unapprove_break(d, undo);
       }
   }
@@ -4325,13 +4337,14 @@ public:
   /** Un-harden (soften?) the given dependency. */
   void unharden(const dep &d, undo_group *undo = NULL)
   {
-    typename std::set<dep>::size_type
-      erased_count = user_hardened.erase(d);
+    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(erased_count > 0)
+    if(inf.rejected->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
+
+	inf.rejected->set_value(false);
       }
   }
 
@@ -4340,26 +4353,25 @@ public:
    */
   bool is_approved_broken(const dep &d) const
   {
-    return user_approved_broken.find(d) != user_approved_broken.end();
+    std::map<version, approved_or_rejected_info>::const_iterator found =
+      user_approved_or_rejected_broken_deps.find(d);
+
+    return
+      found != user_approved_or_rejected_broken_deps.end() &&
+      found->approved->get_value();
   }
 
   /** Approve the breaking of the given dependency. */
   void approve_break(const dep &d, undo_group *undo = NULL)
   {
-    std::pair<typename std::set<dep>::const_iterator, bool>
-      insert_result = user_approved_broken.insert(d);
+    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(insert_result.second)
+    if(!inf.approved->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
-
-	// Approving a broken dependency could actually cause some
-	// solutions to no longer be deferred.  Solutions that avoided
-	// an approved version, but that left this dependency broken,
-	// would have been deferred before this constraint was added,
-	// and aren't deferred any more.
+	inf.approved->set_value(true);
 	unharden(d, undo);
       }
   }
@@ -4367,13 +4379,14 @@ public:
   /** Cancel the required breaking of the given dependency. */
   void unapprove_break(const dep &d, undo_group *undo = NULL)
   {
-    typename std::set<dep>::size_type erased_count
-      = user_approved_broken.erase(d);
+    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(erased_count > 0)
+    if(inf.approved->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
+
+	inf.approved->set_value(false);
       }
   }
 
