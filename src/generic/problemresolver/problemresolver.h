@@ -642,68 +642,65 @@ private:
     }
   };
 
-  /** Compares solutions according to their contents; used to
-   *  manage "closed".
+  /** \brief Represents the "essential" information about a step.
    *
-   *  Note that this does not attempt to merge choices that have the
-   *  same effect; it just ensures that a particular set of choices is
-   *  only placed on the open queue once.
+   *  This information consists of the step's scores and its actions.
+   *  Since these values never change over the course of a search and
+   *  are unique to a step, they can be used to form an index of steps
+   *  to avoid duplicates.  Also, since the scores are "mostly"
+   *  unique, they can be used as an up-front "hash" of the step, to
+   *  avoid an expensive set comparison operation.
+   *
+   *  Note that we don't try to pre-detect duplicates, because that
+   *  would be a lot more complicated and it's not clear that it's
+   *  worth the trouble (plus, it's not clear what should happen if
+   *  all the children of a step are duplicates; it should be thrown
+   *  out, but not go to the conflict tier!).
    */
-  struct solution_contents_compare
+  class step_contents
   {
-    bool operator()(const solution &s1, const solution &s2) const
+    int score;
+    int action_score;
+    choice_set actions;
+
+  public:
+    step_contents()
+      : score(0), action_score(0), actions()
     {
-      // Variation on lexicographical comparison.
-      //
-      // S1 < S2 if
-      //   - S1(p)=S2(p) for all p<p' and S1(p')<S2(p'), where
-      //     p,p' \in \dom(S1) \cup dom(S2)
+    }
 
+    step_contents(int _score, int _action_score,
+		  const choice_set &_actions)
+      : score(_score), action_score(_action_score), actions(_actions)
+    {
+    }
 
-      // NB: the correctness of this code depends implicitly on the
-      // invariant that the score is a function of the contents of the
-      // solution.  Essentially we're using the score as a sort of
-      // hash value on solutions!
-      if(s1.get_score() < s2.get_score())
+    step_contents(const search_graph::step &s)
+      : score(s.score), actions_score(s.action_score),
+	actions(s.actions)
+    {
+    }
+
+    bool operator<(const step_contents &other) const
+    {
+      if(score < other.score)
 	return true;
-      else if(s2.get_score() < s1.get_score())
+      else if(other.score < score)
 	return false;
-      else if(s1.get_action_score() < s2.get_action_score())
+      else if(action_score < other.action_score)
 	return true;
-      else if(s2.get_action_score() < s1.get_action_score())
+      else if(other.action_score < action_score)
 	return false;
-
-      const choice_set
-	&cs1 = s1.get_choices(), &cs2 = s2.get_choices();
 
 
       // Speed hack: order by size first to avoid traversing the whole
       // tree.
-      if(cs1.size() < cs2.size())
+      if(actions.size() < other.actions.size())
 	return true;
-      else if(cs2.size() < cs1.size())
+      else if(other.actions.size() < actions.size())
 	return false;
       else
-	return cs1 < cs2;
-    }
-  };
-
-  struct step_contents_compare
-  {
-    const search_graph &graph;
-    solution_contents_compare comparer;
-
-    step_contents_compare(const search_graph &_graph)
-      : graph(_graph)
-    {
-    }
-
-    bool operator()(int step_num1, int step_num2) const
-    {
-      const solution &s1(graph.get_step(step_num1).sol);
-      const solution &s2(graph.get_step(step_num2).sol);
-
-      return comparer(s1, s2);
+	return actions < other.actions;
     }
   };
 
@@ -837,15 +834,15 @@ private:
    */
   std::set<int, step_goodness_compare> pending_future_solutions;
 
-  /** \brief Stores already-seen solutions that had their successors
-   *  generated.
+  /** \brief Stores already-seen search nodes that had their
+   *  successors generated.
    *
-   *  Each solution is mapped to the "canonical" step number that
+   *  Each search node is mapped to the "canonical" step number that
    *  corresponds to it.  A list of clones is accumulated at that
    *  step, along with a single copy of the promotion set for all the
    *  clones.
    */
-  std::map<solution, int, solution_contents_compare> closed;
+  std::map<step_contents, int> closed;
 
   /** Stores tier promotions: sets of installations that will force a
    *  solution to a higher tier of the search.
@@ -1275,6 +1272,7 @@ private:
     forbid_iter_builder(const typename dep::solver_iterator &_i,
 			const dep &_d)
       :i(_i), d(_d)
+
     {
     }
 
@@ -2175,11 +2173,11 @@ private:
   {
     step &s(graph.get_step(stepNum));
 
-    typename std::map<solution, int, solution_contents_compare>::const_iterator found =
-      closed.find(s.sol);
+    typename std::map<step_contents, int>::const_iterator found =
+      closed.find(step_contents(s));
     if(found != closed.end())
       {
-	LOG_TRACE(logger, s.sol << " is irrelevant: it was already encountered in this search.");
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already encountered in this search.");
 	graph.add_clone(found->second, stepNum);
 	return true;
       }
@@ -2187,11 +2185,12 @@ private:
       return false;
   }
 
-  /** \return \b true if the given solution is "irrelevant": that is,
+  /** \return \b true if the given step is "irrelevant": that is,
    *  either it was already generated and placed in the closed queue,
-   *  or it includes an already-generated solution as a proper subset.
+   *  or it was marked as having a conflict, or it is infinitely
+   *  "bad".
    */
-  bool irrelevant(const solution &s)
+  bool irrelevant(const step &s)
   {
     const tier &s_tier = s.get_tier();
     if(s_tier >= tier_limits::conflict_tier)
@@ -4162,12 +4161,11 @@ public:
      universe(_universe), finished(false), deferred_dirty(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
-     open(step_goodness_compare(graph)),
+     pending(step_goodness_compare(graph)),
      minimum_search_tier(tier_limits::minimum_tier),
      maximum_search_tier(tier_limits::minimum_tier),
-     future_solutions(step_goodness_compare(graph)),
-     closed(solution_contents_compare()),
-     deferred_future_solutions(step_contents_compare(graph)),
+     pending_future_solutions(step_goodness_compare(graph)),
+     closed(),
      promotions(_universe),
      version_tiers(new tier[_universe.get_version_count()])
   {
