@@ -783,11 +783,6 @@ private:
   /** If \b true, we have exhausted the list of solutions. */
   bool finished:1;
 
-  /** If \b true, it is possible that some deferred solutions are
-   *  no longer "forbidden".
-   */
-  bool deferred_dirty:1;
-
   /** If \b true, so-called "stupid" pairs of actions will be
    *  eliminated from solutions. (see paper)
    */
@@ -4021,7 +4016,7 @@ public:
 	     initial_state),
      minimum_score(-infinity),
      future_horizon(_future_horizon),
-     universe(_universe), finished(false), deferred_dirty(false),
+     universe(_universe), finished(false),
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
      pending(step_goodness_compare(graph)),
@@ -4138,20 +4133,14 @@ public:
   /** \return \b true if no solutions have been examined yet.
    *  This implies that it is safe to modify package scores.
    */
-  bool fresh()
+  bool fresh() const
   {
-    if(deferred_dirty)
-      reexamine_deferred();
-
     return open.empty() && !finished;
   }
 
   /** \return \b true if the open queue is empty. */
-  bool exhausted()
+  bool exhausted() const
   {
-    if(deferred_dirty)
-      reexamine_deferred();
-
     return open.empty() && finished;
   }
 
@@ -4264,8 +4253,6 @@ public:
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
-
-	deferred_dirty = true;
       }
   }
 
@@ -4284,7 +4271,6 @@ public:
 	// version, but that installed the version that is now
 	// approved, would have been deferred before this new mandate
 	// was added, and aren't deferred any more.
-	deferred_dirty = true;
 	unreject_version(ver, undo);
       }
   }
@@ -4298,8 +4284,6 @@ public:
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
-
-	deferred_dirty = true;
       }
   }
 
@@ -4348,8 +4332,6 @@ public:
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
-
-	deferred_dirty = true;
       }
   }
 
@@ -4378,7 +4360,6 @@ public:
 	// an approved version, but that left this dependency broken,
 	// would have been deferred before this constraint was added,
 	// and aren't deferred any more.
-	deferred_dirty = true;
 	unharden(d, undo);
       }
   }
@@ -4393,8 +4374,6 @@ public:
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
-
-	deferred_dirty = true;
       }
   }
 
@@ -4458,8 +4437,6 @@ public:
     cwidget::threads::mutex::lock l(execution_mutex);
     if(!solver_executing)
       {
-	if(deferred_dirty)
-	  reexamine_deferred();
 	update_counts_cache();
       }
   }
@@ -4517,9 +4494,6 @@ public:
     // defining the best semantics for it.  Another possibility would
     // be to always return the first "future" solution that we find.
     int most_future_solution_steps = 0;
-
-    if(deferred_dirty)
-      reexamine_deferred();
 
     if(finished)
       throw NoMoreSolutions();
