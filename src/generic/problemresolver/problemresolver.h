@@ -676,7 +676,7 @@ private:
     }
 
     step_contents(const step &s)
-      : score(s.score), actions_score(s.action_score),
+      : score(s.score), action_score(s.action_score),
 	actions(s.actions)
     {
     }
