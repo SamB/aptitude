@@ -675,7 +675,7 @@ private:
     {
     }
 
-    step_contents(const search_graph::step &s)
+    step_contents(const step &s)
       : score(s.score), actions_score(s.action_score),
 	actions(s.actions)
     {
@@ -2388,7 +2388,7 @@ private:
 	  // Need to look up the solvers of the dep in order to know
 	  // the number of solvers that it was entered into the
 	  // by-num-solvers set with.
-	  imm::map<dep, search_graph::dep_solvers>::node
+	  imm::map<dep, typename search_graph::step::dep_solvers>::node
 	    solvers = s.unresolved_deps_by_num_solvers.lookup(d);
 
 	  if(solvers.valid())
@@ -2818,7 +2818,7 @@ private:
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
-  void find_promotions_for_solver(const typename search_graph::step &s,
+  void find_promotions_for_solver(const step &s,
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
@@ -3022,7 +3022,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<dep, typename search_graph::dep_solvers> &p) const
+    bool operator()(const std::pair<dep, typename search_graph::step::dep_solvers> &p) const
     {
       tier dep_tier;
       cwidget::util::ref_ptr<expression<bool> > dep_tier_valid;
@@ -3098,7 +3098,7 @@ private:
    *
    *  If the set is empty, this just inserts a conflict.
    */
-  void check_solvers_tier(step &s, const typename search_graph::dep_solvers &solvers)
+  void check_solvers_tier(step &s, const typename search_graph::step::dep_solvers &solvers)
   {
     tier t;
     choice_set reasons;
@@ -3164,13 +3164,13 @@ private:
   // this is applied to.  Helper for increase_solver_tier.
   struct do_increase_solver_tier
   {
-    typename search_graph::step &s;
+    step &s;
     const tier &new_tier;
     const choice_set &new_choices;
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
 
   public:
-    do_increase_solver_tier(typename search_graph::step &_s,
+    do_increase_solver_tier(step &_s,
 			    const tier &_new_tier,
 			    const choice_set &_new_choices,
 			    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
@@ -3230,7 +3230,7 @@ private:
   /** \brief Increase the tier of a solver (for instance, because a
    *  new incipient promotion was detected).
    */
-  void increase_solver_tier(typename search_graph::step &s,
+  void increase_solver_tier(step &s,
 			    const promotion &p,
 			    const choice &solver) const
   {
