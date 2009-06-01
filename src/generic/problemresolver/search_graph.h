@@ -156,7 +156,7 @@ public:
       /** \brief Retrieve the reason that this solver has the tier
        *  that it does.
        */
-      const choice &get_reasons() const { return reasons; }
+      const choice_set &get_reasons() const { return reasons; }
 
       const cwidget::util::ref_ptr<expression_box<bool> > &
       get_tier_valid_listener() const
