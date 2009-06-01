@@ -286,25 +286,8 @@ private:
     /** \brief The choices made in this solution. */
     choice_set choices;
 
-    /** The full list of currently broken dependencies. */
-    imm::set<dep> broken_deps;
-
-    /** A set of versions that have been "locked out" by this
-     *	solution.  Primarily used to optimize the common case of
-     *	having to "climb a hill" as removals propagate up the
-     *	dependency chain.  (this allows us to easily force the search
-     *	in the direction it has to go)
-     */
-    imm::map<version, dep> forbidden_versions;
-
     /** The score of this solution. */
     int score;
-
-    /** The combined score due to choices that were made and distance
-     *  from the root -- "score" is calculated by adding the
-     *  broken-dependency count to this.
-     */
-    int action_score;
 
     /** \brief The tier of this solution.
      *
@@ -322,17 +305,11 @@ private:
 
     /** Construct a new solution_rep directly. */
     solution_rep(const choice_set &_choices,
-		 const imm::set<dep> &_broken_deps,
-		 const imm::map<version, dep> &_forbidden_versions,
 		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
-		 int _action_score,
 		 const tier &_sol_tier)
       : initial_state(_initial_state), choices(_choices),
-	broken_deps(_broken_deps),
-	forbidden_versions(_forbidden_versions),
 	score(_score),
-	action_score(_action_score),
 	sol_tier(_sol_tier),
 	refcount(1)
     {
@@ -343,23 +320,12 @@ private:
       return initial_state;
     }
 
-    const imm::set<dep> &get_broken_deps() const
-    {
-      return broken_deps;
-    }
-
     const choice_set &get_choices() const
     {
       return choices;
     }
 
-    const imm::map<version, dep> &get_forbidden_versions() const
-    {
-      return forbidden_versions;
-    }
-
     int get_score() const {return score;}
-    int get_action_score() const {return action_score;}
     const tier &get_tier() const { return sol_tier; }
 
     version version_of(const package &pkg) const
@@ -425,6 +391,14 @@ public:
       real_soln->incref();
   }
 
+  generic_solution(const choice_set &choices,
+		   const resolver_initial_state<PackageUniverse> &initial_state,
+		   int score,
+		   const tier &sol_tier)
+    : real_soln(new solution_rep(choices, initial_state, score, sol_tier))
+  {
+  }
+
   /** Generate a new, identical solution that shares no memory with
    *  this solution and hence is safe to hand to another thread.  Note
    *  that as with other refcounted structures, the handover should be
@@ -434,33 +408,11 @@ public:
   generic_solution clone() const
   {
     return generic_solution(new solution_rep(get_choices().clone(),
-					     get_broken().clone(),
-					     get_forbidden_versions().clone(),
 					     get_initial_state(),
 					     get_score(),
-					     get_action_score(),
 					     get_tier()));
   }
 
-
-  /** Generate the root node for a search in the given universe. */
-  static generic_solution root_node(const imm::set<dep> &initial_broken,
-				    const PackageUniverse &universe,
-				    const solution_weights<PackageUniverse> &weights,
-				    const resolver_initial_state<PackageUniverse> &initial_state,
-				    const tier &sol_tier);
-
-  /** Generate a successor to the given solution.
-   *
-   *  \param [cbegin, cend) a range of choices to perform
-   */
-  template<typename c_iter>
-  static generic_solution successor(const generic_solution &s,
-				    const c_iter &cbegin,
-				    const c_iter &cend,
-				    const tier &sol_tier,
-				    const PackageUniverse &universe,
-				    const solution_weights<PackageUniverse> &weights);
 
   ~generic_solution()
   {
@@ -517,28 +469,9 @@ public:
     return real_soln->get_parent();
   }
 
-  /** \return an immutable list of all the broken dependencies
-   *  in this solution.  The list will live at least as long as
-   *  the reference from which it was retrieved.
-   */
-  const imm::set<dep> &get_broken() const
-  {
-    return real_soln->get_broken_deps();
-  }
-
   const choice_set &get_choices() const
   {
     return real_soln->get_choices();
-  }
-
-  const imm::map<version, dep> &get_forbidden_versions() const
-  {
-    return real_soln->get_forbidden_versions();
-  }
-
-  bool is_full_solution() const
-  {
-    return get_broken().empty();
   }
 
   /** \return the initial state of the solution. */
@@ -551,12 +484,6 @@ public:
   int get_score() const
   {
     return real_soln->get_score();
-  }
-
-  /** \return the score of the solution's actions. */
-  int get_action_score() const
-  {
-    return real_soln->get_action_score();
   }
 
   /** \return The tier at which this solution was calculated. */
@@ -716,40 +643,6 @@ public:
 	  out << "[#" << it->get_id() << "]";
       }
     out << ">;";
-
-
-    std::vector<dep> broken_deps;
-    get_broken().for_each(accumulate<dep>(broken_deps));
-    sort(broken_deps.begin(), broken_deps.end(), dep_name_lt());
-
-    out << "[";
-
-    for(typename std::vector<dep>::const_iterator i = broken_deps.begin();
-	i != broken_deps.end(); ++i)
-      {
-	if(i != broken_deps.begin())
-	  out << ", ";
-	out << *i;
-      }
-
-    out<< "];";
-
-    if(!get_forbidden_versions().empty())
-      {
-	std::vector<version> forbidden_vers;
-	get_forbidden_versions().for_each(accumulate_1st<version, dep>(forbidden_vers));
-	sort(forbidden_vers.begin(), forbidden_vers.end(), ver_name_lt());
-
-	out << "!!";
-	for(typename std::vector<version>::const_iterator i = forbidden_vers.begin();
-	    i != forbidden_vers.end(); ++i)
-	  {
-	    if(i != forbidden_vers.begin())
-	      out << ", ";
-	    out << i->get_package().get_name() << " " << i->get_name();
-	  }
-	out << "!!;";
-      }
 
     out << "T" << get_tier() << "S" << get_score();
   }
@@ -970,178 +863,5 @@ public:
   const std::vector<std::pair<imm::set<version>, int> > &
   get_joint_scores_list() const { return joint_scores_list; }
 };
-
-template<typename PackageUniverse>
-inline generic_solution<PackageUniverse>
-generic_solution<PackageUniverse>::root_node(const imm::set<dep> &initial_broken,
-					     const PackageUniverse &universe,
-					     const solution_weights<PackageUniverse> &weights,
-					     const resolver_initial_state<PackageUniverse> &initial_state,
-					     const tier &sol_tier)
-{
-  int score = initial_broken.size() * weights.broken_score;
-
-  if(initial_broken.empty())
-    score += weights.full_solution_score;
-
-  return generic_solution(new solution_rep(choice_set(),
-					   initial_broken,
-					   imm::map<version, dep>(),
-					   initial_state,
-					   score,
-					   0,
-					   sol_tier));
-}
-
-
-template<typename PackageUniverse>
-template<typename c_iter>
-inline generic_solution<PackageUniverse>
-generic_solution<PackageUniverse>::successor(const generic_solution &s,
-					     const c_iter &cbegin,
-					     const c_iter &cend,
-					     const tier &sol_tier,
-					     const PackageUniverse &universe,
-					     const solution_weights<PackageUniverse> &weights)
-{
-  const resolver_initial_state<PackageUniverse>
-    &initial_state(s.get_initial_state());
-
-  imm::set<dep> broken_deps = s.get_broken();
-  choice_set choices = s.get_choices();
-  imm::map<version, dep> forbidden_versions = s.get_forbidden_versions();
-  int action_score = s.get_action_score();
-
-  for(c_iter ci = cbegin; ci != cend; ++ci)
-    {
-      const choice &c = *ci;
-      choices.insert_or_narrow(c);
-
-      switch(c.get_type())
-	{
-	case choice::break_soft_dep:
-	  {
-	    action_score += weights.unfixed_soft_score;
-	    const dep &d = c.get_dep();
-	    broken_deps.erase(d);
-	    break;
-	  }
-
-	case choice::install_version:
-	  {
-	    const version &ver = c.get_ver();
-	    eassert(ver != initial_state.version_of(ver.get_package()));
-
-	    action_score += weights.step_score;
-	    action_score += weights.version_scores[ver.get_id()];
-	    action_score -= weights.version_scores[initial_state.version_of(ver.get_package()).get_id()];
-
-	    // Look for joint score constraints triggered by adding
-	    // this choice.
-	    const typename solution_weights<PackageUniverse>::joint_score_set::const_iterator
-	      joint_scores_found = weights.get_joint_scores().find(c);
-	    if(joint_scores_found != weights.get_joint_scores().end())
-	      {
-		typedef typename solution_weights<PackageUniverse>::joint_score joint_score;
-		for(typename std::vector<joint_score>::const_iterator it =
-		      joint_scores_found->second.begin();
-		    it != joint_scores_found->second.end(); ++it)
-		  {
-		    if(choices.contains(it->get_choices()))
-		      action_score += it->get_score();
-		  }
-	      }
-
-	    if(c.get_from_dep_source())
-	      {
-		const dep &d = c.get_dep();
-		for(typename dep::solver_iterator si = c.get_dep().solvers_begin();
-		    !si.end(); ++si)
-		  forbidden_versions.put(*si, d);
-	      }
-
-
-	    // Update the set of broken dependencies, trying to re-use
-	    // as much of the former set as possible.
-	    version old_version = s.version_of(ver.get_package());
-	    solution_map_wrapper tmpsol(choices, initial_state);
-
-	    // Check reverse deps of the old version
-	    for(typename version::revdep_iterator rdi=old_version.revdeps_begin();
-		!rdi.end(); ++rdi)
-	      {
-		dep rd = *rdi;
-
-		if((rd).broken_under(tmpsol))
-		  {
-		    if(!choices.contains(choice::make_break_soft_dep(rd, -1)))
-		      broken_deps.insert(rd);
-		  }
-		else
-		  {
-		    broken_deps.erase(rd);
-		  }
-	      }
-
-	    // Check reverse deps of the new version
-	    //
-	    // Because reverse deps of a version might be fixed by its
-	    // removal, we need to check brokenness and insert or erase as
-	    // appropriate.
-	    for(typename version::revdep_iterator rdi = ver.revdeps_begin();
-		!rdi.end(); ++rdi)
-	      {
-		dep rd = *rdi;
-
-		if((rd).broken_under(tmpsol))
-		  {
-		    if(!choices.contains(choice::make_break_soft_dep(rd, -1)))
-		      broken_deps.insert(rd);
-		  }
-		else
-		  {
-		    broken_deps.erase(rd);
-		  }
-	      }
-
-	    // Remove all forward deps of the old version (they're
-	    // automagically fixed)
-	    for(typename version::dep_iterator di = old_version.deps_begin();
-		!di.end(); ++di)
-	      {
-		dep d = *di;
-
-		broken_deps.erase(d);
-	      }
-
-	    // Check forward deps of the new version (no need to erase
-	    // non-broken dependencies since they're automatically
-	    // non-broken at the start)
-	    for(typename version::dep_iterator di = ver.deps_begin();
-		!di.end(); ++di)
-	      {
-		dep d = *di;
-
-		if((d).broken_under(tmpsol))
-		  broken_deps.insert(d);
-	      }
-	  }
-	}
-    }
-
-  int score
-    = action_score + broken_deps.size() * weights.broken_score;
-
-  if(broken_deps.empty())
-    score += weights.full_solution_score;
-
-  return generic_solution(new solution_rep(choices,
-					   broken_deps,
-					   forbidden_versions,
-					   initial_state,
-					   score,
-					   action_score,
-					   sol_tier));
-}
 
 #endif // SOLUTION_H
