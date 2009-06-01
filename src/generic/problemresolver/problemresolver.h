@@ -3706,7 +3706,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, search_graph::step::solver_information> &solver_pair) const
+    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &solver_pair) const
     {
       if(first)
 	first = false;
