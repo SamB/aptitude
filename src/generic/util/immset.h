@@ -820,6 +820,18 @@ namespace imm
       return root;
     }
 
+    node get_minimum() const
+    {
+      if(!root.isValid())
+	return root;
+
+      node rval = root;
+      while(rval.getLeft().isValid())
+	rval = rval.getLeft();
+
+      return rval;
+    }
+
     size_type size() const
     {
       return root.size();

@@ -745,6 +745,18 @@ public:
     return steps[n];
   }
 
+  step &get_last_step()
+  {
+    eassert(!steps.empty());
+    return steps.back();
+  }
+
+  const step &get_last_step() const
+  {
+    eassert(!steps.empty());
+    return steps.back();
+  }
+
   /** \brief Retrieve the number of steps. */
   typename std::vector<step>::size_type get_num_steps() const
   {
@@ -752,34 +764,12 @@ public:
   }
 
 public:
-  /** \brief Add the root step. */
-  void add_root(const imm::set<dep> &broken,
-		const solution_weights<PackageUniverse> &weights,
-		const resolver_initial_state<PackageUniverse> &initial_state,
-		const tier &root_tier)
+  step &add_step()
   {
-    int score = broken.size() * weights.broken_score;
-
-    if(broken.empty())
-      score += weights.full_solution_score;
-    steps.push_back(step(choice_set(), score, 0));
-    steps.back().step_num = steps.size() - 1;
-  }
-
-  /** \brief Add a step.
-   *
-   *  The list of steps is not well encapsulated at the moment: the
-   *  caller is expected to manage invariants regarding child flags,
-   *  etc.
-   */
-  void add_step(const choice_set &choices,
-		int score, int action_score,
-		int parent_step_num,
-		const choice &c, bool is_first_child)
-  {
-    eassert(!steps.empty());
-    steps.push_back(step(choices, score, action_score, parent_step_num, c, is_first_child));
-    steps.back().step_num = steps.size() - 1;
+    steps.push_back(step());
+    step &rval(steps.back);
+    rval.step_num = steps.size() - 1;
+    return rval;
   }
 
   /** \brief Throw away all step information. */
