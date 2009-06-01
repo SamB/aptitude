@@ -4419,88 +4419,54 @@ public:
 	    // Keep track of the "future horizon".  If we haven't found a
 	    // solution, we aren't using those steps up at all.
 	    // Otherwise, we count up until we hit 50.
-	    if(!future_solutions.empty())
+	    if(pending_future_solutions_contains_candidate())
 	      ++most_future_solution_steps;
+	    else
+	      most_future_solution_steps = 0;
 
 	    LOG_TRACE(logger, "Done generating successors.");
 
 	    --max_steps;
 	  }
-
-	while(open.empty() && !deferred.empty() &&
-	      deferred.begin()->first < tier_limits::defer_tier &&
-	      deferred.begin()->first < tier_limits::already_generated_tier &&
-	      deferred.begin()->first < tier_limits::conflict_tier)
-	  {
-	    const typename std::map<tier, std::set<int, step_contents_compare> >::iterator
-	      deferred_begin = deferred.begin();
-	    const std::pair<tier, std::set<int, step_contents_compare> > &first_pair = *deferred_begin;
-	    const tier &first_tier = first_pair.first;
-	    const std::set<int, step_contents_compare> &first_solutions = first_pair.second;
-
-	    LOG_TRACE(logger, "Advancing to tier " << first_tier
-		      << " and inserting " << first_solutions.size()
-		      << " entries into the open list.");
-
-	    maximum_search_tier = first_tier;
-
-	    for(typename std::set<int, step_contents_compare>::const_iterator
-		  it = first_solutions.begin(); it != first_solutions.end(); ++it)
-	      // We can probably just do .push(), but doing this will
-	      // avoid any nasty surprises due to not checking what
-	      // try_enqueue usually checks.
-	      try_enqueue(*it);
-
-	    deferred.erase(deferred_begin);
-	  }
-
-	if(open.empty() && !deferred.empty())
-	  LOG_TRACE(logger, "Out of steps to process: the open queue is empty and the lowest deferred tier is "
-		    << deferred.begin()->first);
-	else if(open.empty())
-	  LOG_TRACE(logger, "Out of steps to process: the open queue is empty and there are no deferred steps.");
       }
 
-    if(!future_solutions.empty())
+    if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
       {
-	solution rval;
+	if(most_future_horizon_steps > future_horizon)
+	  LOG_TRACE(logger, "Done examining future steps for a better solution.");
+	else if(!pending_contains_candidate)
+	  LOG_TRACE(logger, "Exhausted all search branches.");
+	else
+	  LOG_TRACE(logger, "Ran out of time.");
+      }
 
-	while(!future_solutions.empty() && !rval.valid())
+    if(pending_future_solutions_contains_candidate())
+      {
+	int best_future_solution = *pending_future_solutions.begin();
+	step &best_future_solution_step = graph.get_step(best_future_solution);
+	if(best_future_solution_step.step_tier < tier_limits::defer_tier)
 	  {
-	    int tmp_step = future_solutions.top();
-	    solution tmp = graph.get_step(tmp_step).sol;
-	    future_solutions.pop();
+	    solution rval(best_future_solution_step.actions,
+			  initial_state,
+			  best_future_solution_step.score,
+			  best_future_solution_step.step_tier);
 
-	    choice_set defer_reason;
-	    if(breaks_user_constraint(tmp, defer_reason))
-	      {
-		LOG_TRACE(logger, "Deferring the future solution " << tmp);
-		deferred_future_solutions.insert(tmp_step);
-		promotion defer_promotion(defer_reason, tier_limits::defer_tier);
-		graph.schedule_promotion_propagation(tmp_step, defer_promotion);
-	      }
-	    else
-	      rval = tmp;
-	  }
+	    LOG_INFO(logger, "--- Returning the future solution "
+		     << rval << " from step " << best_future_solution);
 
-	if(rval.valid())
-	  {
-	    if(open.empty() && future_solutions.empty())
-	      finished = true;
-
-	    LOG_DEBUG(logger, "--- Returning the future solution " << rval);
+	    pending_future_solutions.erase(pending_future_solutions.begin());
 
 	    return rval;
 	  }
-	else
-	  most_future_solution_steps = 0;
-      }
       }
 
     // Oh no, we either ran out of solutions or ran out of steps.
 
-    if(max_steps==0)
-      throw NoMoreTime();
+    if(pending_contains_candidate())
+      {
+	LOG_INFO(logger, " *** Out of time after " << odometer << " steps.");
+	throw NoMoreTime();
+      }
 
     eassert(open.empty());
 
