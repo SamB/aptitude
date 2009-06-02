@@ -1767,15 +1767,18 @@ private:
   class do_drop_deps_solved_by
   {
     step &s;
+    log4cxx::LoggerPtr logger;
 
   public:
-    do_drop_deps_solved_by(step &_s)
-      : s(_s)
+    do_drop_deps_solved_by(step &_s, const log4cxx::LoggerPtr &_logger)
+      : s(_s), logger(_logger)
     {
     }
 
     bool operator()(const choice &c, const imm::list<dep> &deps) const
     {
+      LOG_TRACE(logger, "Removing dependencies solved by " << c);
+
       for(typename imm::list<dep>::const_iterator it = deps.begin();
 	  it != deps.end(); ++it)
 	{
@@ -1785,25 +1788,29 @@ private:
 	  // the number of solvers that it was entered into the
 	  // by-num-solvers set with.
 	  typename imm::map<dep, typename search_graph::step::dep_solvers>::node
-	    solvers = s.unresolved_deps_by_num_solvers.lookup(d);
+	    solvers = s.unresolved_deps.lookup(d);
 
-	  if(solvers.valid())
+	  if(solvers.isValid())
 	    {
-	      const imm::map<version, typename step::solver_information> &solver_map =
-		solvers.getVal().get_solvers();
+	      const typename search_graph::step::dep_solvers &
+		dep_solvers(solvers.getVal().second);
+
+	      const imm::map<choice, typename step::solver_information, compare_choices_by_effects> &solver_map =
+		dep_solvers.get_solvers();
 	      LOG_TRACE(logger,
 			"Removing the dependency " << d
 			<< " with a solver set of " << solver_map);
-	      int num_solvers = solvers.getVal().get_solvers().size();
-	      s.unresolved_deps_by_num_solvers.remove(std::make_pair(num_solvers, d));
+	      int num_solvers = solver_map.size();
+	      s.unresolved_deps_by_num_solvers.erase(std::make_pair(num_solvers, d));
 	    }
 	  else
 	    LOG_TRACE(logger, "The dependency " << d
 		      << " has no solver set, assuming it was already solved.");
 
-	  s.unresolved_deps.remove(d);
+	  s.unresolved_deps.erase(d);
 	}
 
+      s.deps_solved_by_choice.erase(c);
       return true;
     }
   };
@@ -1818,7 +1825,7 @@ private:
 	      << s.step_num << " that are solved by " << c_general);
 
     s.deps_solved_by_choice.for_each_key_contained_in(c_general,
-						      do_drop_deps_solved_by(s));
+						      do_drop_deps_solved_by(s, logger));
 
     LOG_TRACE(logger, "Done dropping dependencies in step "
 	      << s.step_num << " that are solved by " << c_general);
@@ -1938,7 +1945,7 @@ private:
    */
   void strike_choice(const step &s,
 		     const choice &victim,
-		     const choice_set &reason) const
+		     const choice_set &reason)
   {
     LOG_TRACE(logger, "Striking " << victim
 	      << " from all solver lists in step " << s.step_num
@@ -1954,7 +1961,7 @@ private:
    *  forbidden versions.
    */
   void strike_structurally_forbidden(step &s,
-				     const choice &c) const
+				     const choice &c)
   {
     switch(c.get_type())
       {
@@ -2292,7 +2299,7 @@ private:
   void add_solver(step &s,
 		  typename step::dep_solvers &solvers,
 		  const dep &d,
-		  const choice &solver) const
+		  const choice &solver)
   {
     // The solver is structurally forbidden if it is in the forbidden
     // map, OR if another version of the same package is selected.
@@ -2303,7 +2310,7 @@ private:
       {
 	const version ver(solver.get_ver());
 	version selected;
-	if(s.actions.get_version_of(solver.get_ver().get_pkg(), selected))
+	if(s.actions.get_version_of(ver.get_package(), selected))
 	  {
 	    if(selected == ver)
 	      // There's not really anything we can do to fix this: the
@@ -2319,7 +2326,7 @@ private:
 			  << ": monotonicity violation due to "
 			  << selected);
 		choice reason(choice::make_install_version(selected, -1));
-		solvers.get_structural_reason().push_front(reason);
+		solvers.get_structural_reasons().push_front(reason);
 	      }
 
 	    return; // If the package is already modified, abort.
@@ -2327,11 +2334,11 @@ private:
 	else
 	  {
 	    typename imm::map<version, choice>::node forbidden_found =
-	      s.forbidden_versions.lookup(solver);
+	      s.forbidden_versions.lookup(ver);
 
 	    if(forbidden_found.isValid())
 	      {
-		const choice &reason(forbidden_found.getVal());
+		const choice &reason(forbidden_found.getVal().second);
 
 		LOG_TRACE(logger,
 			  "Not adding " << solver
@@ -2353,11 +2360,14 @@ private:
 
     LOG_TRACE(logger, "Adding the solver " << solver
 	      << " with initial tier " << choice_tier);
-    solvers.get_solvers().put(solver,
-			      solver_information(choice_tier,
-						 choice_set(),
-						 choice_tier_valid,
-						 choice_tier_valid));
+    {
+      typename step::solver_information
+	new_solver_inf(choice_tier,
+		       choice_set(),
+		       choice_tier_valid,
+		       choice_tier_valid);
+      solvers.get_solvers().put(solver, new_solver_inf);
+    }
 
     // Update the deps-solved-by-choice map (add the dep being
     // processed to the list).
@@ -2634,7 +2644,7 @@ private:
    */
   void increase_solver_tier(step &s,
 			    const promotion &p,
-			    const choice &solver) const
+			    const choice &solver)
   {
     LOG_TRACE(logger, "Applying the promotion " << p
 	      << " to the solver " << solver
@@ -2672,7 +2682,7 @@ private:
 	do_increase_solver_tier
 	  do_increase_solver_tier_f(s, new_tier, new_choices, valid_condition);
 
-	s.deps_solved_by_choice.for_each_key_contained_by(solver, 
+	s.deps_solved_by_choice.for_each_key_contained_in(solver, 
 							  do_increase_solver_tier_f);
       }
   }
@@ -2747,7 +2757,7 @@ private:
   /** \brief Check for promotions at each solver of the given
    *  dependency.
    */
-  void find_promotions_for_dep_solvers(step &s, const dep &d) const
+  void find_promotions_for_dep_solvers(step &s, const dep &d)
   {
     typename imm::map<dep, typename step::dep_solvers>::node found =
       s.unresolved_deps.lookup(d);
@@ -2755,7 +2765,8 @@ private:
     if(found.isValid())
       {
 	do_find_promotions_for_solver find_promotions_f(*this, s);
-	found.getVal().get_solvers().for_each(find_promotions_f);
+	const typename step::dep_solvers &dep_solvers(found.getVal().second);
+	dep_solvers.get_solvers().for_each(find_promotions_f);
       }
   }
 
@@ -2764,9 +2775,9 @@ private:
    *  This routine does not check that the dependency is really
    *  unresolved.
    */
-  void add_unresolved_dep(step &s, const dep &d) const
+  void add_unresolved_dep(step &s, const dep &d)
   {
-    if(s.unresolved_deps.contains(d))
+    if(s.unresolved_deps.domain_contains(d))
       {
 	LOG_TRACE(logger, "The dependency " << d << " is already unresolved in step "
 		  << s.step_num << ", not adding it again.");
@@ -2780,14 +2791,14 @@ private:
     typename step::dep_solvers solvers;
     for(typename dep::solver_iterator si = d.solvers_begin();
 	!si.end(); ++si)
-      add_solver(s, solvers, d, choice::make_install_version(*si, false, d, -1));
+      add_solver(s, solvers, d, choice::make_install_version(*si, d, -1));
 
     // If it isn't a soft dependency, consider removing the source to
     // fix it.
     if(!d.is_soft())
       {
 	version source(d.get_source());
-	package source_pkg(source.get_pkg());
+	package source_pkg(source.get_package());
 
 	for(typename package::version_iterator vi = source_pkg.versions_begin();
 	    !vi.end(); ++vi)
@@ -2795,18 +2806,18 @@ private:
 	    version ver(*vi);
 
 	    if(ver != source)
-	      add_solver(s, solvers,
+	      add_solver(s, solvers, d,
 			 choice::make_install_version_from_dep_source(ver, d, -1));
 	  }
       }
     else
-      add_solver(s, solvers,
+      add_solver(s, solvers, d,
 		 choice::make_break_soft_dep(d, -1));
 
     s.unresolved_deps.put(d, solvers);
 
     const int num_solvers = solvers.get_solvers().size();
-    s.unresolved_deps_by_num_solvers.put(num_solvers, d);
+    s.unresolved_deps_by_num_solvers.insert(std::make_pair(num_solvers, d));
 
     find_promotions_for_dep_solvers(s, d);
     check_solvers_tier(s, solvers);
@@ -2818,7 +2829,7 @@ private:
    *
    *  c must already be contained in s.actions.
    */
-  void add_new_unresolved_deps(step &s, const choice &c) const
+  void add_new_unresolved_deps(step &s, const choice &c)
   {
     switch(c.get_type())
       {

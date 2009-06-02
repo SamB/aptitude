@@ -205,7 +205,7 @@ private:
     F f;
 
     for_each_from_dep_source(const version &_v, F _f)
-      : f(_f), v(_v)
+      : v(_v), f(_f)
     {
     }
 
