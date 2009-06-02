@@ -195,6 +195,7 @@ public:
       }
   }
 
+private:
   // Applies the given function to (choice, value) for each (choice,
   // value) pair in the set of dependency -> value bindings.
   template<typename F>
@@ -210,9 +211,70 @@ public:
 
     bool operator()(const std::pair<dep, ValueType> &p) const
     {
-      return f(p.first, p.second);
+      return f(choice::make_install_version_from_dep_source(v, p.first, -1),
+	       p.second);
     }
   };
+  // Applies the given function to (choice, value) for each (choice,
+  // value) pair in the set of dependency -> value bindings
+  // representing broken-dependency choices.
+  template<typename F>
+  struct for_each_break_soft_dep
+  {
+    F f;
+
+    for_each_break_soft_dep(F _f)
+      : f(_f)
+    {
+    }
+
+    bool operator()(const std::pair<dep, ValueType> &p) const
+    {
+      return f(choice::make_break_soft_dep(p.first, -1),
+	       p.second);
+    }
+  };
+
+  // Applies a function to (choice, value) for each entry associated
+  // with each version that it is applied to.
+  template<typename F>
+  class for_each_version_info
+  {
+    F f;
+
+  public:
+    for_each_version_info(F _f)
+      : f(_f)
+    {
+    }
+
+    bool operator()(const std::pair<version, version_info> &p) const
+    {
+      const version &v(p.first);
+      const version_info &v_inf(p.second);
+
+      if(v_inf.not_from_dep_source.get_has_value())
+	{
+	  if(!f(choice::make_install_version(v),
+		v_inf.not_from_dep_source.get_value()))
+	    return false;
+	}
+
+      return v_inf.from_dep_source.for_each(for_each_from_dep_source<F>(v, f));
+    }
+  };
+
+public:
+  /** \brief Apply the given function object to (c, value) for each
+   *  entry (c -> value) in this map.
+   */
+  template<typename F>
+  bool for_each(F f)
+  {
+    return
+      install_version_objects.for_each(for_each_version_info<F>(f)) &&
+      break_dep_objects.for_each(for_each_break_soft_dep<F>(f));
+  }
 
   /** \brief Apply the given function object to (c', value) for each
    *  mapping (c' -> value) in this set such that c' is contained in
