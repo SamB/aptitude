@@ -3033,9 +3033,12 @@ private:
    */
   void generate_single_successor(const step &parent,
 				 step &output,
-				 const choice &c,
+				 const choice &c_original,
 				 const tier &output_tier)
   {
+    choice c(c_original);
+    c.set_id(parent.actions.size());
+
     // Copy all the state information over so we can work in-place on
     // the output set.
     output.actions = parent.actions;
