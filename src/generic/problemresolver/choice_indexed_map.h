@@ -293,14 +293,14 @@ public:
 	{
 	  const version &v(c.get_ver());
 	  typename imm::map<version, version_info>::node
-	    found_ver(install_version_objects.find(v));
+	    found_ver(install_version_objects.lookup(v));
 	  // Note that since we save a reference to the original,
 	  // immutable node, we will always iterate over everything
 	  // even if the structure of the tree is changed.
 
 	  if(found_ver.isValid())
 	    {
-	      const version_info &ver_inf(found_ver.getVal());
+	      const version_info &ver_inf(found_ver.getVal().second);
 
 	      if(!c.get_from_dep_source())
 		{
@@ -324,13 +324,13 @@ public:
 		  // the particular dependency that it applies to and
 		  // apply f.
 		  typename imm::map<dep, ValueType>::node found_dep =
-		    ver_inf.from_dep_source.find(c.get_dep());
+		    ver_inf.from_dep_source.lookup(c.get_dep());
 
 		  if(found_dep.isValid())
 		    {
 		      const dep &d(c.get_dep());
 		      if(!f(choice::make_install_version_from_dep_source(v, d, -1),
-			    found_dep.getValue()))
+			    found_dep.getVal().second))
 			return false;
 		    }
 		}
@@ -347,7 +347,7 @@ public:
 	  if(found.isValid())
 	    {
 	      if(!f(choice::make_break_soft_dep(d, -1),
-		    found.getVal()))
+		    found.getVal().second))
 		return false;
 	    }
 	}
