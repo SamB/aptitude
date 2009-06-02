@@ -888,7 +888,7 @@ private:
 	if(p_tier < new_tier)
 	  new_tier = p_tier;
 
-	if(canonicalParent.sol.get_tier() >= new_tier)
+	if(canonicalParent.step_tier >= new_tier)
 	  // No point in generating a promotion whose tier is below
 	  // the parent's tier.
 	  {
@@ -896,7 +896,7 @@ private:
 		      << new_tier
 		      << " is not above the tier of step "
 		      << canonicalParentNum << ", "
-		      << canonicalParent.sol.get_tier());
+		      << canonicalParent.step_tier);
 	    continue;
 	  }
 
@@ -922,7 +922,8 @@ private:
 	    bool generated_anything =
 	      add_child_promotions(parentNum, childNum + 1,
 				   new_has_new_promotion,
-				   new_choices, new_tier);
+				   new_choices, new_tier,
+				   addPromotion);
 
 	    rval = rval || generated_anything;
 	  }

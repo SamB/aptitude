@@ -59,21 +59,21 @@ namespace imm
 
     cwidget::util::ref_ptr<node> lst;
 
-    list()
-      : lst()
-    {
-    }
-
     list(const T &head, const list &tail)
       : lst(new node(head, tail))
     {
     }
 
   public:
-    static cwidget::util::ref_ptr<list> make_empty() { return new list; }
+    list()
+      : lst()
+    {
+    }
+
+    static cwidget::util::ref_ptr<list> make_empty() { return list(); }
     static cwidget::util::ref_ptr<list> make_cons(const T &head, const list &tail)
     {
-      return new list(head, tail);
+      return list(head, tail);
     }
     static cwidget::util::ref_ptr<list> make_singleton(const T &head)
     {

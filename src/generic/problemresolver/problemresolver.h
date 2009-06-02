@@ -1817,7 +1817,8 @@ private:
     LOG_TRACE(logger, "Dropping dependencies in step "
 	      << s.step_num << " that are solved by " << c_general);
 
-    s.for_each_contained_in(c_general, do_drop_deps_solved_by(s));
+    s.deps_solved_by_choice.for_each_key_contained_in(c_general,
+						      do_drop_deps_solved_by(s));
 
     LOG_TRACE(logger, "Done dropping dependencies in step "
 	      << s.step_num << " that are solved by " << c_general);
@@ -1963,12 +1964,11 @@ private:
 	    choice_set reason;
 	    // Throw out the from-dep-sourceness.
 	    reason.insert_or_narrow(choice::make_install_version(c.get_ver(),
-								 false,
 								 c.get_dep(),
 								 c.get_id()));
 
 	    for(typename package::version_iterator vi =
-		  c.get_ver().get_pkg().versions_begin();
+		  c.get_ver().get_package().versions_begin();
 		!vi.end(); ++vi)
 	      {
 		version current(*vi);
@@ -2006,7 +2006,7 @@ private:
 		      strike_choice(s,
 				    choice::make_install_version(current, -1),
 				    reason);
-		      s.forbidden_versions.put(current, c_ver);
+		      s.forbidden_versions.put(current, c);
 		    }
 		}
 	    }
@@ -2824,10 +2824,11 @@ private:
       {
       case choice::install_version:
 	{
-	  choice_set_installation test_installation(s, initial_state);
+	  choice_set_installation
+	    test_installation(s.actions, initial_state);
 
 	  version new_version = c.get_ver();
-	  version old_version = initial_state.version_of(new_version.get_pkg());
+	  version old_version = initial_state.version_of(new_version.get_package());
 
 	  // Check reverse deps of the old version.
 	  for(typename version::revdep_iterator rdi = old_version.revdeps_begin();
@@ -2857,6 +2858,11 @@ private:
 	    }
 	}
 
+	break;
+
+      case choice::break_soft_dep:
+	// Leaving a soft dependency broken never causes any other
+	// dependency to become broken.
 	break;
       }
   }
@@ -2996,7 +3002,7 @@ private:
 	  const typename solution_weights<PackageUniverse>::joint_score_set::const_iterator
 	    joint_scores_found = weights.get_joint_scores().find(c);
 
-	  if(joint_scores_found != weights.end())
+	  if(joint_scores_found != weights.get_joint_scores().end())
 	    {
 	      typedef typename solution_weights<PackageUniverse>::joint_score joint_score;
 	      for(typename std::vector<joint_score>::const_iterator it =
@@ -3102,13 +3108,15 @@ private:
     const step &parent;
     generic_problem_resolver &resolver;
 
-    bool first;
+    bool &first;
 
   public:
     do_generate_single_successor(const step &_parent,
-				 generic_problem_resolver &_resolver)
-      : parent(_parent), resolver(_resolver), first(true)
+				 generic_problem_resolver &_resolver,
+				 bool &_first)
+      : parent(_parent), resolver(_resolver), first(_first)
     {
+      first = false;
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &solver_pair) const
@@ -3122,7 +3130,7 @@ private:
       const typename step::solver_information &inf(solver_pair.second);
 
       step &output = resolver.graph.add_step();
-      output.parent_step = parent.step_num;
+      output.parent = parent.step_num;
       output.is_last_child = true;
 
       resolver.generate_single_successor(parent,
@@ -3166,7 +3174,9 @@ private:
 	return;
       }
 
-    do_generate_single_successor generate_successor_f(s, *this);
+    bool first_successor = false;
+    do_generate_single_successor generate_successor_f(s, *this,
+						      first_successor);
     bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
   }
 

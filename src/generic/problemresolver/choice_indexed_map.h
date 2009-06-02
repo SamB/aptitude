@@ -177,7 +177,7 @@ public:
 
 	  version_info inf;
 	  if(found_ver.isValid())
-	    inf = found_ver.getVal();
+	    inf = found_ver.getVal().second;
 
 
 	  if(!c.get_from_dep_source())

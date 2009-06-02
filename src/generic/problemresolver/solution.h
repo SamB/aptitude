@@ -809,7 +809,7 @@ private:
       if(version == initial_state.version_of(version.get_package()))
 	any_is_current = true;
 
-      output.insert_or_narrow(choice::make_install_version(version, false, dep(), 0));
+      output.insert_or_narrow(choice::make_install_version(version, dep(), 0));
 
       return true;
     }
