@@ -301,6 +301,12 @@ public:
     return rval;
   }
 
+  /** \brief Update the ID of this choice. */
+  void set_id(int new_id)
+  {
+    id = new_id;
+  }
+
   int get_id() const { return id; }
   type get_type() const { return tp; }
 
