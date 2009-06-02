@@ -361,17 +361,11 @@ void sanity_check_universe(const PackageUniverse &universe)
 
   resolver_initial_state<PackageUniverse>
     initial_state(imm::map<package, version>(), universe.get_package_count());
-  generic_solution<PackageUniverse> empty_solution
-    = generic_solution<PackageUniverse>::root_node(imm::set<dep>(),
-						   universe,
-						   solution_weights<PackageUniverse>(0, 0, 0, 0, 0, initial_state),
-						   initial_state,
-						   generic_tier_limits<PackageUniverse>::minimum_tier);
 
   for(broken_dep_iterator bdIt = universe.broken_begin();
       !bdIt.end(); ++bdIt)
     {
-      if(!(*bdIt).broken_under(empty_solution))
+      if(!(*bdIt).broken_under(initial_state))
 	{
 	  std::cout << "Error: "
 		    << (*bdIt)

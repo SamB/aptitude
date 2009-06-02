@@ -372,10 +372,13 @@ public:
      */
     step()
       : is_last_child(true),
-	parent(-1), first_child(-1), canonical_clone(-1), reason(),
+	parent(-1), first_child(-1),
+	step_tier_valid(),
+	canonical_clone(-1),
+	reason(),
 	successor_constraints(), promotions(),
-	promotions_list(), promotions_list_first_new_promotion(0),
-	step_tier_valid()
+	promotions_list(),
+	promotions_list_first_new_promotion(0)
     {
     }
 
@@ -767,7 +770,7 @@ public:
   step &add_step()
   {
     steps.push_back(step());
-    step &rval(steps.back);
+    step &rval(steps.back());
     rval.step_num = steps.size() - 1;
     return rval;
   }
@@ -937,7 +940,7 @@ private:
   void maybe_collect_child_promotions(int stepNum, const AddPromotion &addPromotion)
   {
     step &parentStep(get_step(stepNum));
-    LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum << ": " << parentStep.sol);
+    LOG_TRACE(logger, "Backpropagating promotions to step " << stepNum);
 
     if(parentStep.first_child == -1)
       {
@@ -946,8 +949,9 @@ private:
       }
 
     if(add_child_promotions(stepNum, parentStep.first_child,
-			     false, parentStep.successor_constraints,
-			    tier_limits::maximum_tier))
+			    false, parentStep.successor_constraints,
+			    tier_limits::maximum_tier,
+			    addPromotion))
       {
 	if(parentStep.parent != -1)
 	  {

@@ -162,7 +162,8 @@ public:
     switch(tp)
       {
       case install_version:
-	return make_install_version(ver, false, d, id);
+	// Discard the from-dep-source-ness, if any, of this choice.
+	return make_install_version(ver, d, id);
 
       case break_soft_dep:
 	return *this;

@@ -624,8 +624,6 @@ private:
 
       const step &step1(graph.get_step(step_num1));
       const step &step2(graph.get_step(step_num2));
-      const solution &s1(step1.sol);
-      const solution &s2(step2.sol);
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
@@ -633,12 +631,12 @@ private:
 	return true;
       else if(step1.step_tier < step2.step_tier)
 	return false;
-      else if(s1.get_score() < s2.get_score())
+      else if(step1.score < step2.score)
 	return true;
-      else if(s2.get_score() < s1.get_score())
+      else if(step2.score < step1.score)
 	return false;
       else
-	return s1 < s2;
+	return step1.actions < step2.actions;
     }
   };
 
@@ -827,6 +825,9 @@ private:
    *  Steps are sorted by tier, then by score, then by their contents.
    */
   std::set<int, step_goodness_compare> pending;
+
+  /** \brief Counts how many steps are deferred. */
+  int num_deferred;
 
   /** \brief The current minimum search tier.
    *
@@ -1432,21 +1433,21 @@ private:
    */
   bool irrelevant(const step &s)
   {
-    const tier &s_tier = s.get_tier();
+    const tier &s_tier = s.step_tier;
     if(s_tier >= tier_limits::conflict_tier)
       {
-	LOG_TRACE(logger, s << " is irrelevant: it contains a conflict.");
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it contains a conflict.");
 	return true;
       }
     else if(s_tier >= tier_limits::already_generated_tier)
       {
-	LOG_TRACE(logger, s << " is irrelevant: it was already produced as a result.");
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already produced as a result.");
 	return true;
       }
 
-    if(s.get_score() < minimum_score)
+    if(s.score < minimum_score)
       {
-	LOG_TRACE(logger, s << "is irrelevant: it has infinite badness " << s.get_score() << "<" << minimum_score);
+	LOG_TRACE(logger, "Step " << s.step_num << "is irrelevant: it has infinite badness " << s.score << "<" << minimum_score);
 	return true;
       }
 
@@ -1497,6 +1498,15 @@ private:
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
 
+    if(s.step_tier >= tier_limits::defer_tier &&
+       s.step_tier < tier_limits::already_generated_tier)
+      {
+	if(was_in_pending)
+	  --num_deferred;
+	if(was_in_pending_future_solutions)
+	  --num_deferred;
+      }
+
     s.step_tier = t;
     s.step_tier_valid = step_tier_valid_listener::create(*this, step_num, t_valid);
 
@@ -1505,6 +1515,16 @@ private:
       pending.insert(step_num);
     if(was_in_pending_future_solutions)
       pending_future_solutions.insert(step_num);
+
+
+    if(s.step_tier >= tier_limits::defer_tier &&
+       s.step_tier < tier_limits::already_generated_tier)
+      {
+	if(was_in_pending)
+	  ++num_deferred;
+	if(was_in_pending_future_solutions)
+	  ++num_deferred;
+      }
   }
 
   /** \brief Add a promotion to the global set of promotions.
@@ -1519,6 +1539,24 @@ private:
     promotions.insert(p);
     pending_promotions.push_back(p);
   }
+
+  // Used as a callback by subroutines that want to add a promotion to
+  // the global set.
+  class promotion_adder
+  {
+    generic_problem_resolver &resolver;
+
+  public:
+    promotion_adder(generic_problem_resolver &_resolver)
+      : resolver(_resolver)
+    {
+    }
+
+    void operator()(int step_num, const promotion &p) const
+    {
+      resolver.add_promotion(step_num, p);
+    }
+  };
 
   /** \brief Add a promotion to the global set of promotions
    *  for a particular step.
@@ -1662,7 +1700,7 @@ private:
     }
 
     int num_promotion_choices = p.get_choices().size();
-    for(std::map<int, incipient_promotion_search_info>::const_iterator
+    for(typename std::map<int, incipient_promotion_search_info>::const_iterator
 	  it = search_result.begin(); it != search_result.end(); ++it)
       {
 	const int step_num(it->first);
@@ -1670,7 +1708,7 @@ private:
 
 	if(inf.action_hits == num_promotion_choices)
 	  {
-	    step &s(get_step(step_num));
+	    step &s(graph.get_step(step_num));
 	    if(s.get_tier() < p.get_tier())
 	      {
 		LOG_TRACE(logger, "Step " << step_num
@@ -1738,7 +1776,7 @@ private:
 
     bool operator()(const choice &c, const imm::list<dep> &deps) const
     {
-      for(imm::list<dep>::const_iterator it = deps.begin();
+      for(typename imm::list<dep>::const_iterator it = deps.begin();
 	  it != deps.end(); ++it)
 	{
 	  const dep &d(*it);
@@ -1746,12 +1784,12 @@ private:
 	  // Need to look up the solvers of the dep in order to know
 	  // the number of solvers that it was entered into the
 	  // by-num-solvers set with.
-	  imm::map<dep, typename search_graph::step::dep_solvers>::node
+	  typename imm::map<dep, typename search_graph::step::dep_solvers>::node
 	    solvers = s.unresolved_deps_by_num_solvers.lookup(d);
 
 	  if(solvers.valid())
 	    {
-	      const imm::map<version, solver_information> &solver_map =
+	      const imm::map<version, typename step::solver_information> &solver_map =
 		solvers.getVal().get_solvers();
 	      LOG_TRACE(logger,
 			"Removing the dependency " << d
@@ -1765,6 +1803,8 @@ private:
 
 	  s.unresolved_deps.remove(d);
 	}
+
+      return true;
     }
   };
 
@@ -1807,15 +1847,15 @@ private:
   class do_strike_choice
   {
     const step &s;
-    const choice_set &reason;
+    const choice_set &reasons;
     search_graph &graph;
 
   public:
     do_strike_choice(const step &_s,
-		     const choice_set &_reason,
+		     const choice_set &_reasons,
 		     search_graph &_graph)
       : s(_s),
-	reason(_reason),
+	reasons(_reasons),
 	graph(_graph)
     {
     }
@@ -1831,27 +1871,28 @@ private:
     bool operator()(const choice &victim,
 		    imm::list<dep> solved_by_victim) const
     {
-      for(imm::list<dep>::const_iterator it = solved_by_victim.begin();
+      for(typename imm::list<dep>::const_iterator it = solved_by_victim.begin();
 	  it != solved_by_victim.end(); ++it)
 	{
 	  const dep &d(*it);
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  graph.remove_choice(c, s.step_num,
+	  graph.remove_choice(victim, s.step_num,
 			      search_graph::choice_mapping_solver, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
-	  imm::map<dep, dep_solvers>::node current_solver_set_found =
-	    s.unresolved_deps.lookup(d);
+	  typename imm::map<dep, typename step::dep_solvers>::node
+	    current_solver_set_found = s.unresolved_deps.lookup(d);
 
 	  if(current_solver_set_found.isValid())
 	    {
-	      const dep_solvers &current_solvers(current_solver_set_found.getVal());
+	      const typename step::dep_solvers &
+		current_solvers(current_solver_set_found.getVal());
 	      const int current_num_solvers = current_solvers.get_solvers().size();
 
-	      dep_solvers new_solvers(current_solvers);
+	      typename step::dep_solvers new_solvers(current_solvers);
 
 	      LOG_TRACE(logger,
 			"Removing the choice " << victim
@@ -1886,6 +1927,8 @@ private:
 	    LOG_TRACE(logger, "The dependency " << d
 		      << " has no solver set, assuming it was already solved.");
 	}
+
+      return true;
     }
   };
 
@@ -1921,21 +1964,21 @@ private:
 	    // Throw out the from-dep-sourceness.
 	    reason.insert_or_narrow(choice::make_install_version(c.get_ver(),
 								 false,
-								 d,
+								 c.get_dep(),
 								 c.get_id()));
 
 	    for(typename package::version_iterator vi =
 		  c.get_ver().get_pkg().versions_begin();
 		!vi.end(); ++vi)
 	      {
-		ver current(*vi);
+		version current(*vi);
 
 		if(current != c.get_ver())
 		  {
 		    LOG_TRACE(logger,
-			      "Discarding " << ver
+			      "Discarding " << current
 			      << ": monotonicity violation");
-		    strike_choice(output,
+		    strike_choice(s,
 				  choice::make_install_version(current, -1),
 				  reason);
 		  }
@@ -1952,7 +1995,7 @@ private:
 		    c.get_dep().solvers_begin();
 		  !si.end(); ++si)
 		{
-		  ver current(*si);
+		  version current(*si);
 
 		  if(current != c_ver)
 		    {
@@ -1960,7 +2003,7 @@ private:
 				"Discarding " << current
 				<< ": forbidden by the resolution of "
 				<< c.get_dep());
-		      strike_choice(output,
+		      strike_choice(s,
 				    choice::make_install_version(current, -1),
 				    reason);
 		      s.forbidden_versions.put(current, c_ver);
@@ -2043,7 +2086,7 @@ private:
 	  // Broken dependencies are deferred if they are rejected, OR
 	  // if they are NOT approved AND some solver of the same
 	  // dependency is approved.
-	  std::vector<cwidget::util::ref_ptr<expression<bool> >
+	  std::vector<cwidget::util::ref_ptr<expression<bool> > >
 	    others_approved;
 	  for(typename dep::solver_iterator si = c_dep.solvers_begin();
 	      !si.end(); ++si)
@@ -2062,19 +2105,19 @@ private:
 
       default:
 	LOG_ERROR(logger, "Internal error: bad choice type " << c.get_type());
-	return var_e::create(false);
+	return var_e<bool>::create(false);
       }
   }
 
   /** \brief Memoized version of build_is_deferred. */
   cwidget::util::ref_ptr<expression_box<bool> > build_is_deferred_listener(const choice &c)
   {
-    std::map<choice, expression_weak_ref<expression_box<bool> > > >::const_iterator
+    typename std::map<choice, expression_weak_ref<expression_box<bool> > >::const_iterator
       found = memoized_is_deferred.find(c);
 
     if(found != memoized_is_deferred.end())
       {
-	expression_weak_ref &ref(found->second);
+	expression_weak_ref<expression_box<bool> > &ref(found->second);
 	if(ref.get_valid())
 	  return ref.get_value();
       }
@@ -2133,16 +2176,16 @@ private:
     LOG_TRACE(logger, "Recomputing the tier of "
 	      << solver << " in the solver list of "
 	      << solver_dep << " in step " << s.step_num);
-    typename imm::map<dep, dep_solvers>::node
+    typename imm::map<dep, typename step::dep_solvers>::node
       found_solvers(s.unresolved_deps.lookup(solver_dep));
 
     if(found_solvers.isValid())
       {
-	dep_solvers new_dep_solvers(found_solvers.getVal());
-	imm::map<choice, solver_information, compare_choices_by_effects> &
+	typename step::dep_solvers new_dep_solvers(found_solvers.getVal());
+	imm::map<choice, typename step::solver_information, compare_choices_by_effects> &
 	  new_solvers(new_dep_solvers.get_solvers());
 
-	typename imm::map<choice, solver_information, compare_choices_by_effects>::node
+	typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
 	  found_solver(new_solvers.lookup(solver));
 	if(!found_solver.isValid())
 	  LOG_ERROR(logger, "Internal error: the choice " << solver
@@ -2196,7 +2239,7 @@ private:
 		"Internal error: found " << triggered_promotions.size()
 		<< " (choice -> promotion) mappings for a single choice.");
 
-    for(std::map<choice, promotion>::const_iterator it =
+    for(typename std::map<choice, promotion>::const_iterator it =
 	  triggered_promotions.begin();
 	it != triggered_promotions.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
@@ -2247,7 +2290,7 @@ private:
    *  structure; otherwise, the choice is added to the solvers list.
    */
   void add_solver(step &s,
-		  typename search_graph::step::dep_solvers &solvers,
+		  typename step::dep_solvers &solvers,
 		  const dep &d,
 		  const choice &solver) const
   {
@@ -2283,7 +2326,7 @@ private:
 	  }
 	else
 	  {
-	    imm::map<version, choice>::node forbidden_found =
+	    typename imm::map<version, choice>::node forbidden_found =
 	      s.forbidden_versions.lookup(solver);
 
 	    if(forbidden_found.isValid())
@@ -2313,8 +2356,8 @@ private:
     solvers.get_solvers().put(solver,
 			      solver_information(choice_tier,
 						 choice_set(),
-						 is_deferred,
-						 is_deferred));
+						 choice_tier_valid,
+						 choice_tier_valid));
 
     // Update the deps-solved-by-choice map (add the dep being
     // processed to the list).
@@ -2324,15 +2367,12 @@ private:
       s.deps_solved_by_choice.put(solver, imm::list<dep>::make_singleton(d));
     else
       {
-	imm::list<dep> new_deps_solved(imm::list<dep>::make_cons(d, solved_by_choice_found.getVal()));
+	imm::list<dep> new_deps_solved(imm::list<dep>::make_cons(d, old_deps_solved));
 	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
     graph.bind_choice(solver, s.step_num,
 		      search_graph::choice_mapping_solver, d);
-
-    // Add this step to the set of steps related to the new solver.
-    search_graph::steps_related_to_choices_reference(search_graph, c)->insert(s.step_num);
   }
 
   /** \brief Find the smallest tier out of the solvers of a single
@@ -2353,7 +2393,7 @@ private:
       output_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
     }
 
-    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &p) const
+    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
       const tier &p_tier(p.get_tier());
       if(p_tier < output_tier)
@@ -2380,7 +2420,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<dep, typename search_graph::step::dep_solvers> &p) const
+    bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
     {
       tier dep_tier;
       cwidget::util::ref_ptr<expression<bool> > dep_tier_valid;
@@ -2435,7 +2475,7 @@ private:
       output_valid_conditions.clear();
     }
 
-    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &entry) const
+    bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
     {
       if(output_tier > entry.second.get_tier())
 	// Maybe we have a new, lower tier.
@@ -2446,6 +2486,8 @@ private:
       output_reasons.insert_or_narrow(entry.second.get_reasons());
       if(entry.get_tier_valid().valid())
 	output_valid_conditions.push_back(entry.get_tier_valid());
+
+      return true;
     }
   };
 
@@ -2456,15 +2498,15 @@ private:
    *
    *  If the set is empty, this just inserts a conflict.
    */
-  void check_solvers_tier(step &s, const typename search_graph::step::dep_solvers &solvers)
+  void check_solvers_tier(step &s, const typename step::dep_solvers &solvers)
   {
     tier t;
     choice_set reasons;
     std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.get_solvers().for_each(build_promotion(t, reasons, valid_condition));
+    solvers.get_solvers().for_each(build_promotion(t, reasons, valid_conditions));
 
-    for(imm::list<choice>::const_iterator it =
+    for(typename imm::list<choice>::const_iterator it =
 	  solvers.get_structural_reasons().begin();
 	it != solvers.get_structural_reasons().end(); ++it)
       {
@@ -2539,23 +2581,23 @@ private:
 
     bool operator()(const choice &solver, const imm::list<dep> &solved) const
     {
-      for(imm::list<dep>::const_iterator it = solved.begin();
+      for(typename imm::list<dep>::const_iterator it = solved.begin();
 	  it != solved.end(); ++it)
 	{
 	  const dep &d(*it);
 
-	  imm::map<dep, dep_solvers>::node current_solver_set_found =
+	  typename imm::map<dep, typename step::dep_solvers>::node current_solver_set_found =
 	    s.unresolved_deps.lookup(d);
 
 	  if(current_solver_set_found.isValid())
 	    {
-	      const dep_solvers &current_solvers(current_solver_set_found.getVal());
+	      const typename step::dep_solvers &current_solvers(current_solver_set_found.getVal());
 
-	      dep_solvers new_solvers(current_solvers);
+	      typename step::dep_solvers new_solvers(current_solvers);
 
 	      // Sanity-check: verify that the solver really
 	      // resides in the solver set of this dependency.
-	      imm::map<choice, solver_information, compare_choices_by_size>::node
+	      typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
 		solver_found(new_solvers.find(solver));
 
 	      if(!solver_found.isValid())
@@ -2582,6 +2624,8 @@ private:
 	      check_solvers_tier(s, new_solvers);
 	    }
 	}
+
+      return true;
     }
   };
 
@@ -2626,7 +2670,7 @@ private:
 		  << s.step_num << " with the reason set " << new_choices);
 
 	do_increase_solver_tier
-	  do_increase_solver_tier_f(s, new_iter, new_choices, valid_condition);
+	  do_increase_solver_tier_f(s, new_tier, new_choices, valid_condition);
 
 	s.deps_solved_by_choice.for_each_key_contained_by(solver, 
 							  do_increase_solver_tier_f);
@@ -2664,6 +2708,8 @@ private:
 	case search_graph::choice_mapping_solver:
 	  r.increase_step_tier(s, p);
 	}
+
+      return true;
     }
   };
 
@@ -2691,7 +2737,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &p) const
+    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
       r.find_promotions_for_solver(s, p.first);
       return true;
@@ -2703,7 +2749,7 @@ private:
    */
   void find_promotions_for_dep_solvers(step &s, const dep &d) const
   {
-    typename imm::map<dep, dep_solvers>::node found =
+    typename imm::map<dep, typename step::dep_solvers>::node found =
       s.unresolved_deps.lookup(d);
 
     if(found.isValid())
@@ -2731,8 +2777,8 @@ private:
 	      << s.step_num);
 
     // Build up a list of the possible solvers of the dependency.
-    dep_solvers solvers;
-    for(dep::solver_iterator si = d.solvers_begin();
+    typename step::dep_solvers solvers;
+    for(typename dep::solver_iterator si = d.solvers_begin();
 	!si.end(); ++si)
       add_solver(s, solvers, d, choice::make_install_version(*si, false, d, -1));
 
@@ -2743,7 +2789,7 @@ private:
 	version source(d.get_source());
 	package source_pkg(source.get_pkg());
 
-	for(package::version_iterator vi = source_pkg.versions_begin();
+	for(typename package::version_iterator vi = source_pkg.versions_begin();
 	    !vi.end(); ++vi)
 	  {
 	    version ver(*vi);
@@ -2830,6 +2876,7 @@ private:
     bool operator()(const std::pair<choice, imm::list<dep> > &inf) const
     {
       output.insert(inf.first.generalize());
+      return true;
     }
   };
 
@@ -2848,7 +2895,7 @@ private:
 							    output_domain,
 							    output);
 
-    for(std::map<choice, promotion>::const_iterator it =
+    for(typename std::map<choice, promotion>::const_iterator it =
 	  output.begin(); it != output.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
   }
@@ -2867,7 +2914,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &p) const
+    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
       g.bind_choice(p.first, step_num, search_graph::choice_mapping_solver, d);
 
@@ -2887,7 +2934,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<dep, typename search_graph::step::dep_solvers> &p) const
+    bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
     {
       add_solver_information_to_reverse_index
 	add_solvers_f(g, step_num, p.first);
@@ -2911,7 +2958,7 @@ private:
 
     bool operator()(const choice &c) const
     {
-      g.bind_choice(c, step_num, choice_mapping_action,
+      g.bind_choice(c, step_num, search_graph::choice_mapping_action,
 		    c.get_dep());
 
       return true;
@@ -2946,7 +2993,7 @@ private:
 
 	  // Look for joint score constraints triggered by adding this
 	  // choice.
-	  cosnt typename solution_weights<PackageUniverse>::joint_score_set::const_iterator
+	  const typename solution_weights<PackageUniverse>::joint_score_set::const_iterator
 	    joint_scores_found = weights.get_joint_scores().find(c);
 
 	  if(joint_scores_found != weights.end())
@@ -3041,13 +3088,13 @@ private:
     // by each solver of a dependency.  \todo If the solvers were
     // stored in a central list, the number of promotion lookups
     // required could be vastly decreased.
-    add_new_unresolved_deps(s, c);
+    add_new_unresolved_deps(output, c);
 
     // 6. Find incipient promotions for the new step.
-    find_new_incipient_promotions(s, c);
+    find_new_incipient_promotions(output, c);
 
     if(output.step_tier < tier_limits::defer_tier)
-      open.push(output.step_num);
+      pending.insert(output.step_num);
   }
 
   class do_generate_single_successor
@@ -3064,7 +3111,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, typename search_graph::step::solver_information> &solver_pair) const
+    bool operator()(const std::pair<choice, typename step::solver_information> &solver_pair) const
     {
       if(first)
 	first = false;
@@ -3072,7 +3119,7 @@ private:
 	resolver.graph.get_last_step().is_last_child = false;
 
       const choice &solver(solver_pair.first);
-      const search_graph::step::solver_information &inf(solver_pair.second);
+      const typename step::solver_information &inf(solver_pair.second);
 
       step &output = resolver.graph.add_step();
       output.parent_step = parent.step_num;
@@ -3108,7 +3155,7 @@ private:
 	return;
       }
 
-    typename imm::map<dep, dep_solvers>::node bestSolvers =
+    typename imm::map<dep, typename step::dep_solvers>::node bestSolvers =
       s.unresolved_deps.lookup(best.getVal().second);
 
     if(!bestSolvers.isValid())
@@ -3119,8 +3166,8 @@ private:
 	return;
       }
 
-    do_generate_successor generate_successor_f(s, *this);
-    bestSolvers.getVal().get_solvers().for_each(generate_successor_f);
+    do_generate_single_successor generate_successor_f(s, *this);
+    bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
   }
 
 public:
@@ -3162,6 +3209,7 @@ public:
      remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
      pending(step_goodness_compare(graph)),
+     num_deferred(0),
      minimum_search_tier(tier_limits::minimum_tier),
      maximum_search_tier(tier_limits::minimum_tier),
      pending_future_solutions(step_goodness_compare(graph)),
@@ -3192,10 +3240,11 @@ public:
 
 	if(d.broken_under(initial_state))
 	  {
-	    eassert_on_dep(d.broken_under(empty_installation),
-			   choice_set(), d);
-
-	    initial_broken.insert(d);
+	    if(!d.broken_under(empty_step))
+	      LOG_ERROR(logger, "Internal error: the dependency "
+			<< d << " is claimed to be broken, but it doesn't appear to be broken in the initial state.");
+	    else
+	      initial_broken.insert(d);
 	  }
       }
   }
@@ -3265,7 +3314,10 @@ public:
   void reset()
   {
     finished=false;
-    open.clear();
+    pending.clear();
+    pending_future_solutions.clear();
+    pending_promotions.clear();
+    graph.clear();
     closed.clear();
 
     for(size_t i=0; i<universe.get_version_count(); ++i)
@@ -3277,13 +3329,17 @@ public:
    */
   bool fresh() const
   {
-    return open.empty() && !finished;
+    // \todo Have a Boolean flag that tracks this explicitly.
+    return
+      pending.empty() && pending_future_solutions.empty() &&
+      closed.empty() && !finished;
   }
 
   /** \return \b true if the open queue is empty. */
   bool exhausted() const
   {
-    return open.empty() && finished;
+    return !(pending_contains_candidate() || pending_future_solutions_contains_candidate())
+      && finished;
   }
 
   /** \return the initial state of the resolver. */
@@ -3429,7 +3485,7 @@ public:
   /** Query whether the given version is rejected. */
   bool is_rejected(const version &ver) const
   {
-    std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<version, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_versions.find(ver);
 
     return
@@ -3440,7 +3496,7 @@ public:
   /** Query whether the given version is mandated. */
   bool is_mandatory(const version &ver) const
   {
-    std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<version, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_versions.find(ver);
 
     return
@@ -3451,7 +3507,7 @@ public:
   /** Query whether the given dependency is hardened. */
   bool is_hardened(const dep &d) const
   {
-    std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<version, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
@@ -3495,7 +3551,7 @@ public:
    */
   bool is_approved_broken(const dep &d) const
   {
-    std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<version, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
@@ -3558,23 +3614,16 @@ public:
     return counts;
   }
 
-  size_t get_num_deferred()
+  size_t get_num_deferred() const
   {
-    // \todo Track this more efficiently (we just need to wrap up the
-    // deferred map and keep a counter in the encapsulating class).
-    size_t rval = 0;
-    for(typename std::map<tier, std::set<int, step_contents_compare> >::const_iterator
-	  it = deferred.begin(); it != deferred.end(); ++it)
-      rval += it->second.size();
-
-    return rval;
+    return num_deferred;
   }
 
   /** Update the cached queue sizes. */
   void update_counts_cache()
   {
     cwidget::threads::mutex::lock l(counts_mutex);
-    counts.open       = open.size();
+    counts.open       = pending.size();
     counts.closed     = closed.size();
     counts.deferred   = get_num_deferred();
     counts.conflicts  = promotions.tier_size_above(tier_limits::conflict_tier);
@@ -3604,7 +3653,7 @@ private:
   {
     return
       !pending.empty() &&
-      get_step(*pending.begin()).step_tier < tier_limits::defer_tier;
+      graph.get_step(*pending.begin()).step_tier < tier_limits::defer_tier;
   }
 
   /** \brief Returns \b true if the pending future solutions queue
@@ -3614,7 +3663,7 @@ private:
   {
     return
       !pending_future_solutions.empty() &&
-      get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
+      graph.get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
   }
 
 public:
@@ -3687,7 +3736,7 @@ public:
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
 
-	open.push(root.step_num);
+	pending.insert(root.step_num);
       }
 
     while(max_steps > 0 &&
@@ -3708,10 +3757,10 @@ public:
 	update_counts_cache();
 
 
-	int curr_step_num = *open.begin();
-	open.erase(open.begin());
+	int curr_step_num = *pending.begin();
+	pending.erase(pending.begin());
 
-	step &s = graph.get_step(curr_step_num).sol;
+	step &s = graph.get_step(curr_step_num);
 
 	++odometer;
 
@@ -3750,7 +3799,7 @@ public:
 		// Remember this solution, so we don't try to return it
 		// again in the future.
 		choice_set generalized_actions;
-		for(choice_set::const_iterator it = s.actions.begin();
+		for(typename choice_set::const_iterator it = s.actions.begin();
 		    it != s.actions.end(); ++it)
 		  generalized_actions.insert_or_narrow(it->generalize());
 		promotion already_generated_promotion(generalized_actions,
@@ -3759,7 +3808,7 @@ public:
 
 		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
-		LOG_INFO(logger, " *** open: " << open.size()
+		LOG_INFO(logger, " *** open: " << pending.size()
 			 << "; closed: " << closed.size()
 			 << "; promotions: " << promotions.size()
 			 << "; deferred: " << get_num_deferred());
@@ -3772,7 +3821,7 @@ public:
 
 	    // Propagate any new promotions that we discovered up the
 	    // search tree.
-	    graph.run_scheduled_promotion_propagations();
+	    graph.run_scheduled_promotion_propagations(promotion_adder(*this));
 
 	    // Keep track of the "future horizon".  If we haven't found a
 	    // solution, we aren't using those steps up at all.
@@ -3790,9 +3839,9 @@ public:
 
     if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
       {
-	if(most_future_horizon_steps > future_horizon)
+	if(most_future_solution_steps > future_horizon)
 	  LOG_TRACE(logger, "Done examining future steps for a better solution.");
-	else if(!pending_contains_candidate)
+	else if(!pending_contains_candidate())
 	  LOG_TRACE(logger, "Exhausted all search branches.");
 	else
 	  LOG_TRACE(logger, "Ran out of time.");
@@ -3826,15 +3875,13 @@ public:
 	throw NoMoreTime();
       }
 
-    eassert(open.empty());
-
     finished=true;
 
     update_counts_cache();
 
     LOG_INFO(logger, " *** Out of solutions after " << odometer << " steps.");
     LOG_INFO(logger ,
-	     " *** open: " << open.size()
+	     " *** open: " << pending.size()
 	     << "; closed: " << closed.size()
 	     << "; promotions: " << promotions.size()
 	     << "; deferred: " << get_num_deferred());
