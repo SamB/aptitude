@@ -126,7 +126,7 @@ public:
    */
   static generic_choice make_install_version(const version &ver, int id)
   {
-    return generic_choice(ver, false, false, false, dep(), id);
+    return generic_choice(ver, false, false, dep(), id);
   }
 
   /** \brief Create a new choice that installs the given version to
@@ -140,7 +140,7 @@ public:
    */
   static generic_choice make_install_version_from_dep_source(const version &ver, const dep &d, int id)
   {
-    return generic_choice(ver, true, true, true, d, id);
+    return generic_choice(ver, true, true, d, id);
   }
 
   /** \brief Create a new choice that leaves the given soft dependency
