@@ -159,6 +159,16 @@ namespace imm
 	lst = lst->get_tail();
       }
 
+      bool operator==(const const_iterator &other) const
+      {
+	return lst == other.lst;
+      }
+
+      bool operator!=(const const_iterator &other) const
+      {
+	return lst != other.lst;
+      }
+
       const T &operator*() const { return lst->get_head(); }
       const T *operator->() const { return lst->get_tail().operator->(); }
     };
