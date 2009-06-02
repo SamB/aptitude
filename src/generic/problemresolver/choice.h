@@ -356,6 +356,9 @@ struct generic_compare_choices_by_effects
 
 	case generic_choice<PackageUniverse>::break_soft_dep:
 	  return c1.get_dep() < c2.get_dep();
+
+	default:
+	  return false;
 	}
   }
 };

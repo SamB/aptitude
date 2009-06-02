@@ -79,7 +79,7 @@ public:
 
 	  version_info inf;
 	  if(found_ver.isValid())
-	    inf = found_ver.getVal();
+	    inf = found_ver.getVal().second;
 
 
 	  if(!c.get_from_dep_source())
@@ -117,7 +117,7 @@ public:
 
 	  if(found_ver.isValid())
 	    {
-	      const version_info &ver_inf(found_ver.getVal());
+	      const version_info &ver_inf(found_ver.getVal().second);
 
 	      if(!c.get_from_dep_source())
 		{
@@ -136,7 +136,7 @@ public:
 
 		  if(found_dep.isValid())
 		    {
-		      output = found_dep.getVal();
+		      output = found_dep.getVal().second;
 		      return true;
 		    }
 		  else
@@ -153,7 +153,7 @@ public:
 	    found_dep = break_dep_objects.lookup(c.get_dep());
 
 	  if(found_dep.isValid())
-	    output = found_dep.getVal();
+	    output = found_dep.getVal().second;
 
 	  return found_dep.isValid();
 	}
@@ -255,7 +255,7 @@ private:
 
       if(v_inf.not_from_dep_source.get_has_value())
 	{
-	  if(!f(choice::make_install_version(v),
+	  if(!f(choice::make_install_version(v, -1),
 		v_inf.not_from_dep_source.get_value()))
 	    return false;
 	}

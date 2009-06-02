@@ -406,7 +406,7 @@ public:
 
   virtual std::string get_name() = 0;
 
-  virtual void dump(std::ostream &out)
+  void dump(std::ostream &out)
   {
     out << get_name() << "(";
     for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
@@ -576,7 +576,6 @@ public:
 
   bool get_value();
   std::string get_name();
-  void dump(std::ostream &out);
 };
 
 class or_e : public counting_bool_e
@@ -608,7 +607,6 @@ public:
 
   bool get_value();
   std::string get_name();
-  void dump(std::ostream &out);
 };
 
 class not_e : public expression_box<bool>

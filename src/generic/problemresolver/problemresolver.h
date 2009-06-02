@@ -580,8 +580,14 @@ public:
      */
     bool finished;
 
+    /** \brief The search tier of the next solution to consider.
+     */
+    tier current_tier;
+
     queue_counts()
-      : open(0), closed(0), deferred(0), conflicts(0), promotions(0), finished(false)
+      : open(0), closed(0), deferred(0), conflicts(0), promotions(0),
+	finished(false),
+	current_tier(tier_limits::minimum_tier)
     {
     }
   };
@@ -1461,7 +1467,7 @@ private:
 
     step_tier_valid_listener(generic_problem_resolver &_resolver,
 			     int _step_num,
-			     const cwidget::util::ref_ptr<bool> &child)
+			     const cwidget::util::ref_ptr<expression<bool> > &child)
       : expression_wrapper<bool>(child),
 	resolver(_resolver),
 	step_num(_step_num)
@@ -1472,7 +1478,7 @@ private:
     static cwidget::util::ref_ptr<step_tier_valid_listener>
     create(generic_problem_resolver &resolver,
 	   int step_num,
-	   const cwidget::util::ref_ptr<bool> &child)
+	   const cwidget::util::ref_ptr<expression<bool> > &child)
     {
       return new step_tier_valid_listener(resolver, step_num, child);
     }
@@ -1488,9 +1494,9 @@ private:
   };
 
   /** \brief Adjust the tier of a step, keeping everything consistent. */
-  void set_step_tier(const tier &t,
-		     const cwidget::util::ref_ptr<expression<bool> > &t_valid,
-		     int step_num)
+  void set_step_tier(int step_num,
+		     const tier &t,
+		     const cwidget::util::ref_ptr<expression<bool> > &t_valid)
   {
     step &s(graph.get_step(step_num));
 
@@ -1508,7 +1514,7 @@ private:
       }
 
     s.step_tier = t;
-    s.step_tier_valid = step_tier_valid_listener::create(*this, step_num, t_valid);
+    s.step_tier_valid_listener = step_tier_valid_listener::create(*this, step_num, t_valid);
 
 
     if(was_in_pending)
@@ -1854,17 +1860,23 @@ private:
   // so it doesn't map the choice to that dependency any more.
   class do_strike_choice
   {
-    const step &s;
+    step &s;
     const choice_set &reasons;
     search_graph &graph;
+    generic_problem_resolver &resolver;
+    log4cxx::LoggerPtr logger;
 
   public:
-    do_strike_choice(const step &_s,
+    do_strike_choice(step &_s,
 		     const choice_set &_reasons,
-		     search_graph &_graph)
+		     search_graph &_graph,
+		     generic_problem_resolver &_resolver,
+		     const log4cxx::LoggerPtr &_logger)
       : s(_s),
 	reasons(_reasons),
-	graph(_graph)
+	graph(_graph),
+	resolver(_resolver),
+	logger(_logger)
     {
     }
 
@@ -1897,7 +1909,7 @@ private:
 	  if(current_solver_set_found.isValid())
 	    {
 	      const typename step::dep_solvers &
-		current_solvers(current_solver_set_found.getVal());
+		current_solvers(current_solver_set_found.getVal().second);
 	      const int current_num_solvers = current_solvers.get_solvers().size();
 
 	      typename step::dep_solvers new_solvers(current_solvers);
@@ -1908,7 +1920,7 @@ private:
 			<< " in step " << s.step_num
 			<< ": " << new_solvers.get_solvers());
 
-	      new_solvers.get_solvers().erase(d);
+	      new_solvers.get_solvers().erase(victim);
 	      add_to_choice_list adder(new_solvers.get_structural_reasons());
 	      reasons.for_each(adder);
 
@@ -1929,7 +1941,7 @@ private:
 		}
 
 	      // Rescan the solvers, maybe updating the step's tier.
-	      check_solvers_tier(s, new_solvers);
+	      resolver.check_solvers_tier(s, new_solvers);
 	    }
 	  else
 	    LOG_TRACE(logger, "The dependency " << d
@@ -1943,7 +1955,7 @@ private:
   /** \brief Strike the given choice and any choice that it contains
    *         from all solver lists in the given step.
    */
-  void strike_choice(const step &s,
+  void strike_choice(step &s,
 		     const choice &victim,
 		     const choice_set &reason)
   {
@@ -1952,7 +1964,7 @@ private:
 	      << " with the reason set " << reason);
 
 
-    do_strike_choice striker_f(s, reason, graph);
+    do_strike_choice striker_f(s, reason, graph, *this, logger);
     s.deps_solved_by_choice.for_each_key_contained_in(victim, striker_f);
   }
 
@@ -2124,7 +2136,7 @@ private:
 
     if(found != memoized_is_deferred.end())
       {
-	expression_weak_ref<expression_box<bool> > &ref(found->second);
+	const expression_weak_ref<expression_box<bool> > &ref(found->second);
 	if(ref.get_valid())
 	  return ref.get_value();
       }
@@ -2188,7 +2200,7 @@ private:
 
     if(found_solvers.isValid())
       {
-	typename step::dep_solvers new_dep_solvers(found_solvers.getVal());
+	typename step::dep_solvers new_dep_solvers(found_solvers.getVal().second);
 	imm::map<choice, typename step::solver_information, compare_choices_by_effects> &
 	  new_solvers(new_dep_solvers.get_solvers());
 
@@ -2202,14 +2214,16 @@ private:
 	else
 	  {
 	    tier new_tier;
-	    cwidget::util::ref_ptr<expression<bool> > new_tier_valid;
+	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
 	    get_solver_tier(solver.copy_and_set_dep(solver_dep),
-			    new_tier, new_tier_valid);
-	    new_solvers.put(solver,
-			    solver_information(new_tier,
-					       choice_set(),
-					       new_tier_valid,
-					       solver.get_is_deferred_listener()));
+			    new_tier, new_tier_is_deferred);
+
+	    typename step::solver_information
+	      new_solver_inf(new_tier,
+			     choice_set(),
+			     new_tier_is_deferred,
+			     new_tier_is_deferred);
+	    new_solvers.put(solver, new_solver_inf);
 	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
 
 
@@ -2226,7 +2240,7 @@ private:
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
-  void find_promotions_for_solver(const step &s,
+  void find_promotions_for_solver(step &s,
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
@@ -2235,7 +2249,7 @@ private:
 
     output_domain.insert_or_narrow(solver);
 
-    promotions.find_highest_incipient_promotions_containing(s.get_actions(),
+    promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
 							    output_domain,
 							    triggered_promotions);
@@ -2258,14 +2272,14 @@ private:
    */
   void get_solver_tier(const choice &c,
 		       tier &out_tier,
-		       cwidget::util::ref_ptr<expression<bool> > &out_tier_valid) const
+		       cwidget::util::ref_ptr<expression_box<bool> > &out_c_is_deferred)
   {
     // Right now only deferrals can be retracted; other tier
     // assignments are immutable.
-    out_tier_valid = build_is_deferred(c);
+    out_c_is_deferred = build_is_deferred_listener(c);
 
     out_tier = tier_limits::minimum_tier;
-    if(out_tier_valid->get_value())
+    if(out_c_is_deferred->get_value())
       out_tier = tier_limits::defer_tier;
     else
       {
@@ -2355,8 +2369,8 @@ private:
     // Later, in step 6 of the update algorithm, we'll find promotions
     // that include the new solvers and update tiers appropriately.
     tier choice_tier;
-    cwidget::util::ref_ptr<expression<bool> > choice_tier_valid;
-    get_solver_tier(solver, choice_tier, choice_tier_valid);
+    cwidget::util::ref_ptr<expression_box<bool> > choice_is_deferred;
+    get_solver_tier(solver, choice_tier, choice_is_deferred);
 
     LOG_TRACE(logger, "Adding the solver " << solver
 	      << " with initial tier " << choice_tier);
@@ -2364,8 +2378,8 @@ private:
       typename step::solver_information
 	new_solver_inf(choice_tier,
 		       choice_set(),
-		       choice_tier_valid,
-		       choice_tier_valid);
+		       choice_is_deferred,
+		       choice_is_deferred);
       solvers.get_solvers().put(solver, new_solver_inf);
     }
 
@@ -2391,25 +2405,25 @@ private:
   class find_solvers_tier
   {
     tier &output_tier;
-    cwidget::util::ref_ptr<expression<bool> > &output_tier_valid;
+    cwidget::util::ref_ptr<expression_box<bool> > &output_tier_valid;
 
   public:
     find_solvers_tier(tier &_output_tier,
-		      const cwidget::util::ref_ptr<expression<bool> > &_output_tier_valid)
+		      cwidget::util::ref_ptr<expression_box<bool> > &_output_tier_valid)
       : output_tier(_output_tier),
 	output_tier_valid(_output_tier_valid)
     {
       output_tier = tier_limits::maximum_tier;
-      output_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
+      output_tier_valid = cwidget::util::ref_ptr<expression_box<bool> >();
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
-      const tier &p_tier(p.get_tier());
+      const tier &p_tier(p.second.get_tier());
       if(p_tier < output_tier)
 	{
 	  output_tier = p_tier;
-	  output_tier_valid = p.get_tier_valid();
+	  output_tier_valid = p.second.get_tier_valid_listener();
 	}
 
       return true;
@@ -2420,27 +2434,27 @@ private:
   class find_largest_dep_tier
   {
     tier &output_tier;
-    cwidget::util::ref_ptr<expression<bool> > &output_tier_valid;
+    cwidget::util::ref_ptr<expression_box<bool> > &output_tier_valid_listener;
 
   public:
     find_largest_dep_tier(tier &_output_tier,
-			  const cwidget::util::ref_ptr<expression<bool> > &_output_tier_valid)
+			  cwidget::util::ref_ptr<expression_box<bool> > &_output_tier_valid_listener)
       : output_tier(_output_tier),
-	output_tier_valid(_output_tier_valid)
+	output_tier_valid_listener(_output_tier_valid_listener)
     {
     }
 
     bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
     {
       tier dep_tier;
-      cwidget::util::ref_ptr<expression<bool> > dep_tier_valid;
+      cwidget::util::ref_ptr<expression_box<bool> > dep_tier_valid_listener;
 
-      p.second.get_solvers().for_each(find_solvers_tier(dep_tier, dep_tier_valid));
+      p.second.get_solvers().for_each(find_solvers_tier(dep_tier, dep_tier_valid_listener));
 
       if(output_tier < dep_tier)
 	{
 	  output_tier = dep_tier;
-	  output_tier_valid = dep_tier_valid;
+	  output_tier_valid_listener = dep_tier_valid_listener;
 	}
 
       return true;
@@ -2462,7 +2476,7 @@ private:
 	      << " (was " << s.step_tier << ")");
 
     s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier,
-						     s.step_tier_valid));
+						     s.step_tier_valid_listener));
   }
 
   // Build a generalized promotion from the entries of a dep-solvers
@@ -2487,15 +2501,16 @@ private:
 
     bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
     {
-      if(output_tier > entry.second.get_tier())
+      if(entry.second.get_tier() < output_tier)
 	// Maybe we have a new, lower tier.
 	output_tier = entry.second.get_tier();
 
       // Correctness here depends on the fact that the reason set is
       // pre-generalized (the solver itself is already removed).
       output_reasons.insert_or_narrow(entry.second.get_reasons());
-      if(entry.get_tier_valid().valid())
-	output_valid_conditions.push_back(entry.get_tier_valid());
+      cwidget::util::ref_ptr<expression<bool> > tier_valid(entry.second.get_tier_valid());
+      if(tier_valid.valid())
+	output_valid_conditions.push_back(tier_valid);
 
       return true;
     }
@@ -2520,7 +2535,7 @@ private:
 	  solvers.get_structural_reasons().begin();
 	it != solvers.get_structural_reasons().end(); ++it)
       {
-	reasons.insert(*it);
+	reasons.insert_or_narrow(*it);
       }
 
     cwidget::util::ref_ptr<expression<bool> > valid_condition;
@@ -2546,7 +2561,7 @@ private:
       }
 
 
-    if(t > maximum_search_tier)
+    if(get_current_search_tier() < t)
       {
 	promotion p(reasons, t, valid_condition);
 	LOG_TRACE(logger, "Emitting a new promotion " << p
@@ -2555,7 +2570,7 @@ private:
 	add_promotion(s.step_num, p);
       }
 
-    if(t > s.step_tier)
+    if(s.step_tier < t)
       set_step_tier(s.step_num, t, valid_condition);
   }
 
@@ -2567,7 +2582,7 @@ private:
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition(p.get_valid_condition());
 
     if(s.step_tier < p_tier)
-      set_step_tier(s, p_tier, valid_condition);
+      set_step_tier(s.step_num, p_tier, valid_condition);
   }
 
   // Increases the tier of each dependency in each dependency list
@@ -2578,14 +2593,20 @@ private:
     const tier &new_tier;
     const choice_set &new_choices;
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
+    generic_problem_resolver &resolver;
+    log4cxx::LoggerPtr logger;
 
   public:
     do_increase_solver_tier(step &_s,
 			    const tier &_new_tier,
 			    const choice_set &_new_choices,
-			    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
+			    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition,
+			    generic_problem_resolver &_resolver,
+			    const log4cxx::LoggerPtr &_logger)
       : s(_s), new_tier(_new_tier), new_choices(_new_choices),
-	valid_condition(_valid_condition)
+	valid_condition(_valid_condition),
+	resolver(_resolver),
+	logger(_logger)
     {
     }
 
@@ -2601,14 +2622,14 @@ private:
 
 	  if(current_solver_set_found.isValid())
 	    {
-	      const typename step::dep_solvers &current_solvers(current_solver_set_found.getVal());
+	      const typename step::dep_solvers &current_solvers(current_solver_set_found.getVal().second);
 
 	      typename step::dep_solvers new_solvers(current_solvers);
 
 	      // Sanity-check: verify that the solver really
 	      // resides in the solver set of this dependency.
 	      typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
-		solver_found(new_solvers.find(solver));
+		solver_found(new_solvers.get_solvers().lookup(solver));
 
 	      if(!solver_found.isValid())
 		LOG_ERROR(logger, "Internal error: in step " << s.step_num
@@ -2623,15 +2644,21 @@ private:
 			    << d << " in step " << s.step_num
 			    << " with the reason set " << new_choices
 			    << " and validity condition " << valid_condition);
-		  new_solvers.put(solver,
-				  solver_information(new_tier,
-						     new_choices,
-						     valid_condition,
-						     solver_found.getVal().get_is_deferred_listener()));
+		  const typename step::solver_information &old_inf =
+		    solver_found.getVal().second;
+
+		  typename step::solver_information
+		    new_inf(new_tier,
+			    new_choices,
+			    step_tier_valid_listener::create(resolver,
+							     s.step_num,
+							     valid_condition),
+			    old_inf.get_is_deferred_listener());
+		  new_solvers.get_solvers().put(solver, new_inf);
 		}
 
 	      s.unresolved_deps.put(d, new_solvers);
-	      check_solvers_tier(s, new_solvers);
+	      resolver.check_solvers_tier(s, new_solvers);
 	    }
 	}
 
@@ -2680,7 +2707,10 @@ private:
 		  << s.step_num << " with the reason set " << new_choices);
 
 	do_increase_solver_tier
-	  do_increase_solver_tier_f(s, new_tier, new_choices, valid_condition);
+	  do_increase_solver_tier_f(s, new_tier, new_choices,
+				    valid_condition,
+				    *this,
+				    logger);
 
 	s.deps_solved_by_choice.for_each_key_contained_in(solver, 
 							  do_increase_solver_tier_f);
@@ -2705,17 +2735,17 @@ private:
 
     bool operator()(const choice &c,
 		    typename search_graph::choice_mapping_type tp,
-		    int step_num)
+		    int step_num) const
     {
       step &s(r.graph.get_step(step_num));
 
       switch(tp)
 	{
 	case search_graph::choice_mapping_solver:
-	  r.increase_solver_tier_in_step(s, p, solver);
+	  r.increase_solver_tier(s, p, solver);
 	  break;
 
-	case search_graph::choice_mapping_solver:
+	case search_graph::choice_mapping_action:
 	  r.increase_step_tier(s, p);
 	}
 
@@ -2732,7 +2762,8 @@ private:
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
-    graph.for_each_step_related_to_choice_with_dep(increase_solver_tier_everywhere_f);
+    graph.for_each_step_related_to_choice(solver,
+					  increase_solver_tier_everywhere_f);
   }
 
   class do_find_promotions_for_solver
@@ -2890,9 +2921,9 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, imm::list<dep> > &inf) const
+    bool operator()(const choice &solver, const imm::list<dep> &deps) const
     {
-      output.insert(inf.first.generalize());
+      output.insert_or_narrow(solver.generalize());
       return true;
     }
   };
@@ -3653,6 +3684,7 @@ public:
     counts.conflicts  = promotions.tier_size_above(tier_limits::conflict_tier);
     counts.promotions = promotions.size() - counts.conflicts;
     counts.finished   = finished;
+    counts.current_tier = get_current_search_tier();
   }
 
   /** If no resolver is running, run through the deferred list and
@@ -3667,6 +3699,18 @@ public:
       {
 	update_counts_cache();
       }
+  }
+
+  /** \brief Returns the "current" search tier, the tier of the next
+   *  solution that would be considered (or minimum_search_tier if
+   *  pending is empty).
+   */
+  const tier &get_current_search_tier() const
+  {
+    if(pending.empty())
+      return tier_limits::minimum_tier;
+    else
+      return graph.get_step(*pending.begin()).step_tier;
   }
 
 private:

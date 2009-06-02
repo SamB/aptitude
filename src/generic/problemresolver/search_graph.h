@@ -33,6 +33,163 @@
 #include <generic/util/immlist.h>
 #include <generic/util/immset.h>
 
+// solver_information and dep_solvers are top-level declarations so
+// they can easily get an operator<< that works.
+
+/** \brief Information about a single solver of a dependency.
+ *
+ *  The solver itself is not stored here; this just tracks
+ *  metadata.
+ */
+template<typename PackageUniverse>
+class generic_solver_information
+{
+public:
+  typedef typename PackageUniverse::tier tier;
+  typedef generic_choice_set<PackageUniverse> choice_set;
+  typedef generic_tier_limits<PackageUniverse> tier_limits;
+
+private:
+  tier t;
+  choice_set reasons;
+  cwidget::util::ref_ptr<expression_box<bool> > tier_valid_listener;
+  cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
+
+public:
+  generic_solver_information()
+    : t(tier_limits::minimum_tier),
+      reasons(),
+      tier_valid_listener(),
+      is_deferred_listener()
+  {
+  }
+
+  /** \brief Create a new solver_information.
+   *
+   *  \param _t       The tier of the associated solver.
+   *  \param _reason  The reasons for the solver's tier (other than
+   *                  the solver itself).
+   *  \param _tier_valid_listener
+   *                  A side-effecting expression that computes
+   *                  "true" if the tier assignment is valid.
+   *  \param deferred A side-effecting expression whose
+   *                  sub-expression is true exactly when this solver
+   *                  violates a user-imposed constraint.
+   */
+  generic_solver_information(const tier &_t,
+			     const choice_set &_reasons,
+			     const cwidget::util::ref_ptr<expression_box<bool> > &_tier_valid_listener,
+			     const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
+    : t(_t), reasons(_reasons),
+      tier_valid_listener(_tier_valid_listener),
+      is_deferred_listener(_is_deferred_listener)
+  {
+  }
+
+  /** \brief Retrieve the tier of the associated solver. */
+  const tier &get_tier() const { return t; }
+
+  /** \brief Retrieve the reason that this solver has the tier
+   *  that it does.
+   */
+  const choice_set &get_reasons() const { return reasons; }
+
+  const cwidget::util::ref_ptr<expression_box<bool> > &
+  get_tier_valid_listener() const
+  {
+    return tier_valid_listener;
+  }
+
+  /** \brief Retrieve an expression that returns whether this
+   *  solver's tier is valid.
+   *
+   *  This is held here mainly because it will side-effect and
+   *  reset this solver's tier.  Also, it can be used to generate
+   *  promotion validity conditions.
+   */
+  cwidget::util::ref_ptr<expression<bool> >
+  get_tier_valid() const
+  {
+    if(tier_valid_listener.valid())
+      return tier_valid_listener->get_child();
+    else
+      return cwidget::util::ref_ptr<expression_box<bool> >();
+  }
+
+  /** \brief Retrieve the listener that tracks whether the solver
+   *  is deferred.
+   */
+  const cwidget::util::ref_ptr<expression_box<bool> > &
+  get_is_deferred_listener() const
+  {
+    return is_deferred_listener;
+  }
+
+  /** \brief Retrieve an expression that returns whether the
+   *  solver is deferred.
+   */
+  cwidget::util::ref_ptr<expression<bool> >
+  get_is_deferred() const
+  {
+    if(is_deferred_listener.valid())
+      return is_deferred_listener->get_child();
+    else
+      return cwidget::util::ref_ptr<expression<bool> >();
+  }
+};
+
+/** \brief A structure that tracks the state of the solvers of a
+ *  dependency.
+ */
+template<typename PackageUniverse>
+class generic_dep_solvers
+{
+public:
+  typedef generic_choice<PackageUniverse> choice;
+  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
+
+private:
+  imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> solvers;
+  imm::list<choice> structural_reasons;
+
+public:
+  generic_dep_solvers()
+  {
+  }
+
+  /** \brief Return the outstanding solvers of this dependency and
+   *  the current state of each one.
+   */
+  imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &get_solvers()
+  {
+    return solvers;
+  }
+
+  /** \brief Return the outstanding solvers of this dependency and
+   *  the current state of each one.
+   */
+  const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &get_solvers() const
+  {
+    return solvers;
+  }
+
+  /** \brief Return the reasons that the set of solvers for this
+   *  dependency was narrowed.
+   */
+  imm::list<choice> &get_structural_reasons()
+  {
+    return structural_reasons;
+  }
+
+  /** \brief Return the reasons that the set of solvers for this
+   *  dependency was narrowed.
+   */
+  const imm::list<choice> &get_structural_reasons() const
+  {
+    return structural_reasons;
+  }
+};
+
 /** \brief Represents the current search graph.
  *
  *  This structure and its operations track all the visited search
@@ -115,138 +272,8 @@ public:
 
     // @{
 
-    /** \brief Information about a single solver of a dependency.
-     *
-     *  The solver itself is not stored here; this just tracks
-     *  metadata.
-     */
-    class solver_information
-    {
-      tier t;
-      choice_set reasons;
-      cwidget::util::ref_ptr<expression_box<bool> > tier_valid_listener;
-      cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
-
-    public:
-      /** \brief Create a new solver_information.
-       *
-       *  \param _t       The tier of the associated solver.
-       *  \param _reason  The reasons for the solver's tier (other than
-       *                  the solver itself).
-       *  \param _tier_valid_listener
-       *                  A side-effecting expression that computes
-       *                  "true" if the tier assignment is valid.
-       *  \param deferred A side-effecting expression whose
-       *                  sub-expression is true exactly when this solver
-       *                  violates a user-imposed constraint.
-       */
-      solver_information(const tier &_t,
-			 const choice_set &_reasons,
-			 const cwidget::util::ref_ptr<expression_box<bool> > &_tier_valid_listener,
-			 const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
-	: t(_t), reasons(_reasons),
-	  tier_valid_listener(_tier_valid_listener),
-	  is_deferred_listener(_is_deferred_listener)
-      {
-      }
-
-      /** \brief Retrieve the tier of the associated solver. */
-      const tier &get_tier() const { return t; }
-
-      /** \brief Retrieve the reason that this solver has the tier
-       *  that it does.
-       */
-      const choice_set &get_reasons() const { return reasons; }
-
-      const cwidget::util::ref_ptr<expression_box<bool> > &
-      get_tier_valid_listener() const
-      {
-	return tier_valid_listener;
-      }
-
-      /** \brief Retrieve an expression that returns whether this
-       *  solver's tier is valid.
-       *
-       *  This is held here mainly because it will side-effect and
-       *  reset this solver's tier.  Also, it can be used to generate
-       *  promotion validity conditions.
-       */
-      cwidget::util::ref_ptr<expression<bool> >
-      get_tier_valid() const
-      {
-	if(tier_valid_listener.valid())
-	  return tier_valid_listener->get_child();
-        else
-	  return cwidget::util::ref_ptr<expression_box<bool> >();
-      }
-
-      /** \brief Retrieve the listener that tracks whether the solver
-       *  is deferred.
-       */
-      const cwidget::util::ref_ptr<expression_box<bool> > &
-      get_is_deferred_listener() const
-      {
-	return is_deferred_listener;
-      }
-
-      /** \brief Retrieve an expression that returns whether the
-       *  solver is deferred.
-       */
-      cwidget::util::ref_ptr<expression<bool> >
-      get_is_deferred() const
-      {
-	if(is_deferred_listener.valid())
-	  return is_deferred_listener->get_child();
-	else
-	  return cwidget::util::ref_ptr<expression<bool> >();
-      }
-    };
-
-    /** \brief A structure that tracks the state of the solvers of a
-     *  dependency.
-     */
-    class dep_solvers
-    {
-      imm::map<choice, solver_information, compare_choices_by_effects> solvers;
-      imm::list<choice> structural_reasons;
-
-    public:
-      dep_solvers()
-      {
-      }
-
-      /** \brief Return the outstanding solvers of this dependency and
-       *  the current state of each one.
-       */
-      imm::map<choice, solver_information, compare_choices_by_effects> &get_solvers()
-      {
-	return solvers;
-      }
-
-      /** \brief Return the outstanding solvers of this dependency and
-       *  the current state of each one.
-       */
-      const imm::map<choice, solver_information, compare_choices_by_effects> &get_solvers() const
-      {
-	return solvers;
-      }
-
-      /** \brief Return the reasons that the set of solvers for this
-       *  dependency was narrowed.
-       */
-      imm::list<choice> &get_structural_reasons()
-      {
-	return structural_reasons;
-      }
-
-      /** \brief Return the reasons that the set of solvers for this
-       *  dependency was narrowed.
-       */
-      const imm::list<choice> &get_structural_reasons() const
-      {
-	return structural_reasons;
-      }
-    };
+    typedef generic_solver_information<PackageUniverse> solver_information;
+    typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
     /** \brief The actions performed by this step. */
     choice_set actions;
@@ -268,7 +295,7 @@ public:
      *
      *  The pure validity condition is a child of this value.
      */
-    cwidget::util::ref_ptr<expression_box<bool> > step_tier_valid;
+    cwidget::util::ref_ptr<expression_box<bool> > step_tier_valid_listener;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were
@@ -373,7 +400,7 @@ public:
     step()
       : is_last_child(true),
 	parent(-1), first_child(-1),
-	step_tier_valid(),
+	step_tier_valid_listener(),
 	canonical_clone(-1),
 	reason(),
 	successor_constraints(), promotions(),
@@ -395,7 +422,7 @@ public:
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
-	step_tier_valid(),
+	step_tier_valid_listener(),
 	reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
@@ -446,6 +473,10 @@ public:
   {
     // The steps (if any) containing this choice as a solver or an
     // action, grouped by the dependency that each one solves.
+    //
+    // The first element of each pair tells how the choice is hit by
+    // the step, and the second element gives the step number that the
+    // choice is related to.
     imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > steps;
 
   public:
@@ -534,10 +565,10 @@ public:
     imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
       new_steps(inf.get_steps());
     imm::set<std::pair<choice_mapping_type, int> >
-      new_dep_steps(new_steps.get(reason, imm::set<int>()));
+      new_dep_steps(new_steps.get(reason, imm::set<std::pair<choice_mapping_type, int> >()));
 
     new_dep_steps.insert(std::make_pair(how, step_num));
-    new_steps.put(c, new_dep_steps);
+    new_steps.put(reason, new_dep_steps);
     steps_related_to_choices.put(c, choice_mapping_info(new_steps));
   }
 
@@ -568,7 +599,7 @@ public:
     if(steps_related_to_choices.try_get(c, info))
       {
 	imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
-	  new_steps(info.get_solver_steps());
+	  new_steps(info.get_steps());
 
 	typename imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >::node
 	  found_solver(new_steps.lookup(reason));
@@ -576,7 +607,7 @@ public:
 	if(found_solver.isValid())
 	  {
 	    imm::set<std::pair<choice_mapping_type, int> >
-	      new_dep_steps(found_solver.getVal());
+	      new_dep_steps(found_solver.getVal().second);
 
 	    new_dep_steps.erase(std::make_pair(how, step_num));
 	    if(new_dep_steps.empty())
@@ -652,11 +683,7 @@ private:
 
     bool operator()(const choice &c, const choice_mapping_info &inf) const
     {
-      const imm::set<int> &action_steps(inf.get_action_steps());
-      if(!action_steps.for_each(visit_choice_mapping_steps<F>(c, choice_mapping_action, f)))
-	return false;
-
-      const imm::map<dep, imm::set<int> > &steps(inf.get_steps());
+      const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &steps(inf.get_steps());
       return steps.for_each(visit_choice_dep_mapping<F>(c, f));
     }
   };
@@ -670,7 +697,7 @@ public:
   void for_each_step_related_to_choice(const choice &c, F f) const
   {
     visit_choice_mapping<F> visit_mappings_f(f);
-    steps_related_to_choices.for_each_contained_in(c, visit_mappings_f);
+    steps_related_to_choices.for_each_key_contained_in(c, visit_mappings_f);
   }
 
 private:
@@ -691,13 +718,13 @@ private:
 
     bool operator()(const choice &c, const choice_mapping_info &info) const
     {
-      typename imm::map<dep, imm::set<int> >::node
-	found(info.get_solver_steps().lookup(d));
+      typename imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >::node
+	found(info.get_steps().lookup(d));
 
       if(found.isValid())
 	{
-	  visit_choice_mapping_steps<F> visit_step_f(c, choice_mapping_solver, f);
-	  return found.getVal().for_each(visit_step_f);
+	  visit_choice_mapping_steps<F> visit_step_f(c, f);
+	  return found.getVal().second.for_each(visit_step_f);
 	}
       else
 	return true;
@@ -714,7 +741,7 @@ public:
   void for_each_step_related_to_choice_with_dep(const choice &c, const dep &d, F f) const
   {
     visit_choice_mapping_solvers_of_dep<F> visit_mappings_by_dep_f(d, f);
-    steps_related_to_choices.for_each_contained_in(c, visit_mappings_by_dep_f);
+    steps_related_to_choices.for_each_key_contained_in(c, visit_mappings_by_dep_f);
   }
 
   /** \brief Create a search graph.
@@ -1180,10 +1207,21 @@ public:
 };
 
 template<typename PackageUniverse>
-std::ostream &operator<<(std::ostream &out, const typename generic_search_graph<PackageUniverse>::step::solver_information &info)
+std::ostream &operator<<(std::ostream &out, const generic_solver_information<PackageUniverse> &info)
 {
   return out << "(" << info.get_tier()
 	     << ":" << info.get_reasons() << ")";
+}
+
+template<typename PackageUniverse>
+std::ostream &operator<<(std::ostream &out,
+			 const generic_dep_solvers<PackageUniverse> &solvers)
+{
+  return out << "("
+	     << solvers.get_structural_reasons()
+	     << ": "
+	     << solvers.get_solvers()
+	     << ")";
 }
 
 #endif

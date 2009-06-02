@@ -448,24 +448,7 @@ private:
     if(found == entries.end())
       LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
     else
-      {
-	std::list<entry> &tier_entries(found->second);
-
-	LOG_TRACE(logger, "Ejecting promotion: " << p);
-	// Remove the promotion from the reverse indices.
-	p.get_choices().for_each(drop_choice(install_version_index,
-					     break_soft_dep_index,
-					     victim));
-	// Drop it from the tier.
-	tier_entries.erase(victim);
-
-	if(tier_entries.empty())
-	  {
-	    LOG_TRACE(logger, "The tier " << found->first
-		      << " is now empty, removing it.");
-	    entries.erase(found);
-	  }
-      }
+      erase(iterator(found, entries.end(), victim));
   }
 
 public:
@@ -494,25 +477,27 @@ public:
     return rval;
   }
 
-  class const_iterator
+private:
+  template<typename tier_iter, typename entry_iter>
+  class iterator_base
   {
     // This is the only place where it's awkward to have a
     // map-of-lists be the canonical location where all the entries in
     // this object are stored.
-    typename std::map<tier, std::list<entry> >::const_iterator entries_it;
+    tier_iter entries_it;
     // The end iterator for the map -- necessary so that we know
     // whether it's safe to start walking down the current list.
-    typename std::map<tier, std::list<entry> >::const_iterator entries_end;
+    tier_iter entries_end;
 
     // The current entry in the current list.
-    typename std::list<entry>::const_iterator entry_list_it;
+    entry_iter entry_list_it;
 
     friend class generic_promotion_set;
 
     // This overload is used for non-end iterators.
-    const_iterator(typename std::map<tier, std::list<entry> >::const_iterator _entries_it,
-		   typename std::map<tier, std::list<entry> >::const_iterator _entries_end,
-		   typename std::list<entry>::const_iterator _entry_list_it)
+    iterator_base(tier_iter _entries_it,
+		  tier_iter _entries_end,
+		  entry_iter _entry_list_it)
       : entries_it(_entries_it),
 	entries_end(_entries_end),
 	entry_list_it(_entry_list_it)
@@ -530,15 +515,15 @@ public:
     }
 
     // This overload is used only to create an end iterator.
-    const_iterator(typename std::map<tier, std::list<entry> >::const_iterator _entries_it,
-		   typename std::map<tier, std::list<entry> >::const_iterator _entries_end)
+    iterator_base(tier_iter _entries_it,
+		  tier_iter _entries_end)
       : entries_it(_entries_it),
 	entries_end(_entries_end)
     {
     }
 
   public:
-    const_iterator()
+    iterator_base()
     {
     }
 
@@ -556,7 +541,7 @@ public:
       return &entry_list_it->p;
     }
 
-    const_iterator &operator++()
+    iterator_base &operator++()
     {
       eassert(entries_it != entries_end);
 
@@ -577,7 +562,8 @@ public:
       return *this;
     }
 
-    bool operator==(const const_iterator &other) const
+    template<typename other_tier_iter, typename other_entry_iter>
+    bool operator==(const iterator_base<other_tier_iter, other_entry_iter> &other) const
     {
       eassert(entries_end == other.entries_end);
 
@@ -590,7 +576,8 @@ public:
 	return entry_list_it == other.entry_list_it;
     }
 
-    bool operator!=(const const_iterator &other) const
+    template<typename other_tier_iter, typename other_entry_iter>
+    bool operator!=(const iterator_base<other_tier_iter, other_entry_iter> &other) const
     {
       eassert(entries_end == other.entries_end);
 
@@ -604,7 +591,22 @@ public:
     }
   };
 
+public:
+  typedef iterator_base<typename std::map<tier, std::list<entry> >::const_iterator,
+			typename std::list<entry>::const_iterator> const_iterator;
+
+  typedef iterator_base<typename std::map<tier, std::list<entry> >::iterator,
+			typename std::list<entry>::iterator> iterator;
+
   const_iterator begin() const
+  {
+    if(entries.empty())
+      return end();
+    else
+      return const_iterator(entries.begin(), entries.end(), entries.begin()->second.begin());
+  }
+
+  iterator begin()
   {
     if(entries.empty())
       return end();
@@ -615,6 +617,47 @@ public:
   const_iterator end() const
   {
     return const_iterator(entries.end(), entries.end());
+  }
+
+  iterator end()
+  {
+    return iterator(entries.end(), entries.end());
+  }
+
+  void erase(const iterator &victim)
+  {
+    if(victim == end())
+      {
+	LOG_ERROR(logger, "Can't erase an end iterator.");
+	return;
+      }
+
+    const promotion &p(victim->p);
+
+    // First, find the promotion's tier.
+    const typename std::map<tier, std::list<entry> >::iterator
+      found = victim.entries_it;
+    if(found == entries.end())
+      LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
+    else
+      {
+	std::list<entry> &tier_entries(found->second);
+
+	LOG_TRACE(logger, "Ejecting promotion: " << p);
+	// Remove the promotion from the reverse indices.
+	p.get_choices().for_each(drop_choice(install_version_index,
+					     break_soft_dep_index,
+					     victim));
+	// Drop it from the tier.
+	tier_entries.erase(victim);
+
+	if(tier_entries.empty())
+	  {
+	    LOG_TRACE(logger, "The tier " << found->first
+		      << " is now empty, removing it.");
+	    entries.erase(found);
+	  }
+      }
   }
 
 private:
@@ -1057,7 +1100,7 @@ public:
 	    output.equal_range(c);
 
 	  if(found.first == found.second)
-	    output.insert(found.first, p);
+	    output.insert(std::make_pair(found.first->first, p));
 	  else if(found.first->second.get_tier() < p.get_tier())
 	    found.first->second = p;
 	}
@@ -1236,11 +1279,11 @@ private:
 				   const log4cxx::LoggerPtr &_logger,
 				   int &_num_mismatches,
 				   bool &_rval)
-      : choices_by_install_version(_choices_by_install_version),
-	broken_soft_deps(_broken_soft_deps),
-	logger(_logger),
+      : rval(_rval),
 	num_mismatches(_num_mismatches),
-	rval(_rval)
+	choices_by_install_version(_choices_by_install_version),
+	broken_soft_deps(_broken_soft_deps),
+	logger(_logger)
     {
       rval = (num_mismatches == 0);
     }
@@ -1945,8 +1988,11 @@ public:
    *  the same tier or higher is a subset of it; otherwise, it will be
    *  inserted and all existing promotions of the same tier or lower
    *  that are supersets of the new promotion will be removed.
+   *
+   *  \return   an iterator pointing at the new promotion if one was
+   *            actually inserted, or an end iterator otherwise.
    */
-  void insert(const promotion &p)
+  iterator insert(const promotion &p)
   {
     const tier &p_tier = p.get_tier();
     const choice_set &choices = p.get_choices();
@@ -1955,7 +2001,10 @@ public:
 
     const const_iterator highest(find_highest_promotion_for(choices));
     if(highest != end() && highest->get_tier() >= p_tier)
-      LOG_TRACE(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
+      {
+	LOG_TRACE(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
+	return end();
+      }
     else
       {
 	std::vector<entry_ref> superseded_entries;
@@ -2035,14 +2084,6 @@ public:
 	const entry_ref new_entry =
 	  p_tier_entries.insert(p_tier_entries.end(),
 				entry(p));
-	if(p.get_valid_condition().valid())
-	  // Check that p.get_valid_condition() isn't NULL.
-	  {
-	    new_entry->retraction_expression =
-	      eject_promotion_when_invalid::create(p.get_valid_condition(),
-						   new_entry,
-						   this);
-	  }
 	++num_promotions;
 
 	LOG_TRACE(logger, "Building index entries for " << p);
@@ -2050,6 +2091,8 @@ public:
 						    install_version_index,
 						    break_soft_dep_index,
 						    logger));
+
+	return iterator(p_tier_found, entries.end(), new_entry);
       }
   }
 

@@ -42,25 +42,25 @@ namespace imm
     {
       T head;
 
-      cwidget::util::ref_ptr<list> tail;
+      cwidget::util::ref_ptr<node> tail;
 
       size_type size;
 
     public:
-      node(const T &_head, const cwidget::util::ref_ptr<list> &_tail)
-	: head(_head), tail(_tail), size(_tail->size() + 1)
+      node(const T &_head, const cwidget::util::ref_ptr<node> &_tail)
+	: head(_head), tail(_tail), size(_tail->size + 1)
       {
       }
 
       const T &get_head() const { return head; }
-      const cwidget::util::ref_ptr<list> &get_tail() const { return tail; }
+      const cwidget::util::ref_ptr<node> &get_tail() const { return tail; }
       size_type get_size() const { return size; }
     };
 
     cwidget::util::ref_ptr<node> lst;
 
     list(const T &head, const list &tail)
-      : lst(new node(head, tail))
+      : lst(new node(head, tail.lst))
     {
     }
 
@@ -157,6 +157,7 @@ namespace imm
       const_iterator &operator++()
       {
 	lst = lst->get_tail();
+	return *this;
       }
 
       bool operator==(const const_iterator &other) const
@@ -187,4 +188,24 @@ namespace imm
       return const_iterator();
     }
   };
+
+  template<typename T>
+  std::ostream &operator<<(std::ostream &out, const imm::list<T> &lst)
+  {
+    out << "[";
+    bool first = true;
+    for(typename imm::list<T>::const_iterator it = lst.begin();
+	it != lst.end(); ++it)
+      {
+	if(first)
+	  first = false;
+	else
+	  out << ", ";
+
+	out << *it;
+      }
+
+    out << "]";
+    return out;
+  }
 }
