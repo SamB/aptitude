@@ -1474,7 +1474,7 @@ public:
 						    const choice_set &output_domain,
 						    std::map<choice, promotion> &output) const
   {
-    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_containing(" << choices << ", " << c << ")");
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ")");
 
     const std::vector<entry_ref> *index_entries = find_index_list(c);
 
