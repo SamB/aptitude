@@ -3875,6 +3875,8 @@ public:
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
 	  }
+	else
+	  process_step = true;
 
 	if(process_step)
 	  {
