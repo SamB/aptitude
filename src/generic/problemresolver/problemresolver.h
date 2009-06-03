@@ -3863,10 +3863,6 @@ public:
 	    break;
 	  }
 
-	// Unless this is set to "true", the step will be ignored
-	// (either thrown away or deferred).
-	bool process_step = false;
-
 	if(is_already_seen(curr_step_num))
 	  {
 	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
@@ -3876,9 +3872,6 @@ public:
 	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
 	  }
 	else
-	  process_step = true;
-
-	if(process_step)
 	  {
 	    LOG_TRACE(logger, "Processing step " << curr_step_num);
 
