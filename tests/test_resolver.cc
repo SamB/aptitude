@@ -320,6 +320,8 @@ private:
 
   void testTiers()
   {
+    LOG_TRACE(log4cxx::Logger::getLogger("test.resolver.testTiers"), "Entering testTiers");
+
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
     package a = u.find_package("a");
