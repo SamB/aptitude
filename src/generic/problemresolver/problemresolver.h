@@ -3044,9 +3044,19 @@ private:
       case choice::install_version:
 	{
 	  const version &ver(c.get_ver());
+	  const version old_ver(initial_state.version_of(ver.get_package()));
+	  const int new_score = weights.version_scores[ver.get_id()];
+	  const int old_score = weights.version_scores[old_ver.get_id()];
 
-	  s.action_score += weights.version_scores[ver.get_id()];
-	  s.action_score -= weights.version_scores[initial_state.version_of(ver.get_package()).get_id()];
+	  LOG_TRACE(logger, "Modifying the score of step "
+		    << s.step_num << " by "
+		    << std::showpos << (new_score - old_score)
+		    << std::noshowpos << " to account for the replacement of "
+		    << old_ver << " (score " << old_score << ") by "
+		    << ver << " (score " << new_score << ")");
+
+	  s.action_score += new_score;
+	  s.action_score -= old_score;
 
 	  // Look for joint score constraints triggered by adding this
 	  // choice.
