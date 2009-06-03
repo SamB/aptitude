@@ -3103,7 +3103,7 @@ private:
 
     LOG_TRACE(logger, "Generating a successor to step " << parent.step_num
 	      << " for the action " << c << " with tier "
-	      << output_tier << " and outputting to  step " << output.step_num);
+	      << output_tier << " and outputting to step " << output.step_num);
 
     // Compute the new score.
     extend_score_to_new_step(output, c);
