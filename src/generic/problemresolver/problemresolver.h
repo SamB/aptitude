@@ -3192,6 +3192,8 @@ private:
    */
   void generate_successors(int step_num, std::set<package> *visited_packages)
   {
+    LOG_TRACE(logger, "Generating successors for step " << step_num);
+
     // \todo Should thread visited_packages through all the machinery
     // above.
 
@@ -3219,6 +3221,10 @@ private:
 	return;
       }
 
+    LOG_TRACE(logger, "Generating successors for step " << step_num
+	      << " for the dependency " << best.getVal().second
+	      << " with " << best.getVal().first << " solvers: "
+	      << bestSolvers.getVal().second.get_solvers());
     bool first_successor = false;
     do_generate_single_successor generate_successor_f(s, *this,
 						      first_successor);
@@ -3836,6 +3842,8 @@ public:
 
 	step &s = graph.get_step(curr_step_num);
 
+	LOG_INFO(logger, "Examining step " << curr_step_num);
+
 	++odometer;
 
 	if(s.step_tier >= tier_limits::defer_tier)
@@ -3862,6 +3870,8 @@ public:
 
 	if(process_step)
 	  {
+	    LOG_TRACE(logger, "Processing step " << curr_step_num);
+
 	    closed[step_contents(s.score, s.action_score, s.actions)] =
 	      curr_step_num;
 
