@@ -5,7 +5,7 @@ LDADD = $(top_builddir)/src/loggers.o			       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
-$(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.o   \
+$(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
 $(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit
 
 check_PROGRAMS = test
