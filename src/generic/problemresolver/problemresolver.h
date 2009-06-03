@@ -3484,12 +3484,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(!inf.rejected->get_value())
+    if(!inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unreject_version));
 
-	inf.rejected->set_value(true);
+	inf.get_rejected()->set_value(true);
 	unmandate_version(ver, undo);
       }
   }
@@ -3501,12 +3501,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(inf.rejected->get_value())
+    if(inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
 
-	inf.rejected->set_value(false);
+	inf.get_rejected()->set_value(false);
       }
   }
 
@@ -3514,12 +3514,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(!inf.approved->get_value())
+    if(!inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
-	inf.mandated->set_value(true);
+	inf.get_approved()->set_value(true);
 	unreject_version(ver, undo);
       }
   }
@@ -3528,12 +3528,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(inf.approved->get_value())
+    if(inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
 
-	inf.approved->set_value(false);
+	inf.get_approved()->set_value(false);
       }
   }
 
@@ -3545,7 +3545,7 @@ public:
 
     return
       found != user_approved_or_rejected_versions.end() &&
-      found->rejected->get_value();
+      found->second.get_rejected()->get_value();
   }
 
   /** Query whether the given version is mandated. */
@@ -3556,18 +3556,18 @@ public:
 
     return
       found != user_approved_or_rejected_versions.end() &&
-      found->approved->get_value();
+      found->second.get_approved()->get_value();
   }
 
   /** Query whether the given dependency is hardened. */
   bool is_hardened(const dep &d) const
   {
-    typename std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<dep, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
       found != user_approved_or_rejected_broken_deps.end() &&
-      found->rejected->get_value();
+      found->second.get_rejected()->get_value();
   }
 
   /** Harden the given dependency. */
@@ -3577,12 +3577,12 @@ public:
 
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(!inf.rejected->get_value())
+    if(!inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unharden));
 
-	inf.rejected->set_value(true);
+	inf.get_rejected()->set_value(true);
 	unapprove_break(d, undo);
       }
   }
@@ -3592,12 +3592,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(inf.rejected->get_value())
+    if(inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
 
-	inf.rejected->set_value(false);
+	inf.get_rejected()->set_value(false);
       }
   }
 
@@ -3606,12 +3606,12 @@ public:
    */
   bool is_approved_broken(const dep &d) const
   {
-    typename std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<dep, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
       found != user_approved_or_rejected_broken_deps.end() &&
-      found->approved->get_value();
+      found->second.get_approved()->get_value();
   }
 
   /** Approve the breaking of the given dependency. */
@@ -3619,12 +3619,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(!inf.approved->get_value())
+    if(!inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
-	inf.approved->set_value(true);
+	inf.get_approved()->set_value(true);
 	unharden(d, undo);
       }
   }
@@ -3634,12 +3634,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(inf.approved->get_value())
+    if(inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
 
-	inf.approved->set_value(false);
+	inf.get_approved()->set_value(false);
       }
   }
 
