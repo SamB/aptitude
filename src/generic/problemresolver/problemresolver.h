@@ -3093,7 +3093,18 @@ private:
     // Copy all the state information over so we can work in-place on
     // the output set.
     output.actions = parent.actions;
+    // A brief note on scores.
+    //
+    // These values are wrong.  They will be corrected at the bottom
+    // of this routine.  However, they will be referenced before that,
+    // in order to check whether this step exists in "pending" yet.
+    // It doesn't, so it won't be found no matter what we include here
+    // (which is as it should be).  But by including dummy values, we
+    // avoid reading uninitialized memory, which means that (a) any
+    // problems that do occur will be deterministic, and (b) valgrind
+    // won't spit out false positives.
     output.action_score = parent.action_score;
+    output.score = parent.score;
     output.step_tier = output_tier;
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
