@@ -3153,6 +3153,10 @@ private:
     // 6. Find incipient promotions for the new step.
     find_new_incipient_promotions(output, c);
 
+    LOG_TRACE(logger, "Generated step " << output.step_num
+	      << ": " << output.actions << ";T" << output.step_tier
+	      << "S" << output.score);
+
     if(output.step_tier < tier_limits::defer_tier)
       pending.insert(output.step_num);
   }
