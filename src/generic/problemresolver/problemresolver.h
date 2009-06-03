@@ -3804,6 +3804,12 @@ public:
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
 
+	root.step_tier = tier_limits::minimum_tier;
+
+	for(typename imm::set<dep>::const_iterator it = initial_broken.begin();
+	    it != initial_broken.end(); ++it)
+	  add_unresolved_dep(root, *it);
+
 	pending.insert(root.step_num);
       }
 
