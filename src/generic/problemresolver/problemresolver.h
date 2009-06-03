@@ -3854,7 +3854,9 @@ public:
 
 	step &s = graph.get_step(curr_step_num);
 
-	LOG_INFO(logger, "Examining step " << curr_step_num);
+	LOG_INFO(logger, "Examining step " << curr_step_num
+		 << ": " << s.actions << ";T" << s.step_tier
+		 << "S" << s.score);
 
 	++odometer;
 
@@ -3885,7 +3887,9 @@ public:
 	    // If all dependencies are satisfied, we found a solution.
 	    if(s.unresolved_deps.empty())
 	      {
-		LOG_INFO(logger, " --- Found solution at step " << s.step_num);
+		LOG_INFO(logger, " --- Found solution at step " << s.step_num
+			 << ": " << s.actions << ";T" << s.step_tier
+			 << "S" << s.score);
 
 		// Remember this solution, so we don't try to return it
 		// again in the future.
