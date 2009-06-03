@@ -612,6 +612,9 @@ private:
 
   /** Compares steps according to their "goodness": their tier, then
    *  thier score, then their contents.
+   *
+   *  The comparisons are reversed, so better solutions compare
+   *  "below" worse ones.
    */
   struct step_goodness_compare
   {
@@ -633,16 +636,16 @@ private:
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
-      if(step2.step_tier < step1.step_tier)
+      if(step1.step_tier < step2.step_tier)
 	return true;
-      else if(step1.step_tier < step2.step_tier)
+      else if(step2.step_tier < step1.step_tier)
 	return false;
-      else if(step1.score < step2.score)
-	return true;
       else if(step2.score < step1.score)
+	return true;
+      else if(step1.score < step2.score)
 	return false;
       else
-	return step1.actions < step2.actions;
+	return step2.actions < step1.actions;
     }
   };
 
