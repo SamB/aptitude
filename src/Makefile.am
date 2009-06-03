@@ -15,7 +15,8 @@ bin_PROGRAMS=aptitude
 
 LDADD=@LIBINTL@ $(MAYBE_LIBGTK) cmdline/libcmdline.a mine/libcmine.a \
 	generic/util/libgeneric-util.a generic/apt/libgeneric-apt.a \
-	generic/apt/matching/libgeneric-matching.a
+	generic/apt/matching/libgeneric-matching.a \
+	generic/problemresolver/libgeneric-problemresolver.a
 
 aptitude_SOURCES= 	\
 	aptitude.h	\
