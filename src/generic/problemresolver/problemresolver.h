@@ -1500,6 +1500,12 @@ private:
   {
     step &s(graph.get_step(step_num));
 
+    if(s.step_tier == t)
+      return;
+
+    LOG_TRACE(logger, "Setting the tier of step " << step_num
+	      << " to " << t);
+
     bool was_in_pending =  (pending.erase(step_num) > 0);
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
