@@ -2250,10 +2250,10 @@ private:
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
-    choice_set output_domain;
+    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
     std::map<choice, promotion> triggered_promotions;
 
-    output_domain.insert_or_narrow(solver);
+    output_domain.put(solver, true);
 
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
@@ -2919,17 +2919,17 @@ private:
   // and inserts it into the output set.
   struct build_solvers_set
   {
-    choice_set &output;
+    generic_choice_indexed_map<PackageUniverse, bool> &output;
 
   public:
-    build_solvers_set(choice_set &_output)
+    build_solvers_set(generic_choice_indexed_map<PackageUniverse, bool> &_output)
       : output(_output)
     {
     }
 
     bool operator()(const choice &solver, const imm::list<dep> &deps) const
     {
-      output.insert_or_narrow(solver.generalize());
+      output.put(solver.generalize(), true);
       return true;
     }
   };
@@ -2940,7 +2940,7 @@ private:
   void find_new_incipient_promotions(step &s,
 				     const choice &c)
   {
-    choice_set output_domain;
+    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
     std::map<choice, promotion> output;
 
     s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
