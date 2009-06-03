@@ -23,6 +23,8 @@
 #include "choice.h"
 #include <generic/util/immset.h>
 
+#include <loggers.h>
+
 #include <iostream>
 
 template<typename PackageUniverse> class generic_choice_set;
@@ -224,7 +226,9 @@ private:
 		else if(c.contains(existing_choice))
 		  ; // c is more general than the existing choice.
 		else
-		  eassert(!"Internal error: attempted to add conflicting choices to the same set.");
+		  LOG_ERROR(aptitude::Loggers::getAptitudeResolver(),
+			    "Internal error: attempted to add conflicting choices "
+			    << c << " and " << existing_choice << " to the same set.");
 	      }
 	  }
 	  break;
