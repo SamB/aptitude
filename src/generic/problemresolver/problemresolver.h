@@ -3822,6 +3822,8 @@ public:
 	    it != initial_broken.end(); ++it)
 	  add_unresolved_dep(root, *it);
 
+	LOG_TRACE(logger, "Inserting the root at step " << root.step_num
+		  << " with tier " << root.step_tier);
 	pending.insert(root.step_num);
       }
 
