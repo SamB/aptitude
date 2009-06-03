@@ -3105,9 +3105,6 @@ private:
 	      << " for the action " << c << " with tier "
 	      << output_tier << " and outputting to step " << output.step_num);
 
-    // Compute the new score.
-    extend_score_to_new_step(output, c);
-
     // Insert the new choice into the output list of choices.  This
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
@@ -3152,6 +3149,11 @@ private:
 
     // 6. Find incipient promotions for the new step.
     find_new_incipient_promotions(output, c);
+
+    // Compute the new score.  Do this after everything else so
+    // solutions get the expected bonus (otherwise we don't know
+    // whether this step has unresolved dependencies).
+    extend_score_to_new_step(output, c);
 
     LOG_TRACE(logger, "Generated step " << output.step_num
 	      << ": " << output.actions << ";T" << output.step_tier
