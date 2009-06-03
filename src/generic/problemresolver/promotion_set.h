@@ -1886,7 +1886,11 @@ public:
 
     if(entries.size() > 0)
       {
-	const tier &curr_min_tier = entries.begin()->first;
+	// Note: we have to copy this instead of taking a reference
+	// because the source will be deleted, and the callee assumes
+	// that the ending tier is valid even after the deletion takes
+	// place.
+	const tier curr_min_tier(entries.begin()->first);
 	if(curr_min_tier < min_tier)
 	  remove_between_tiers(curr_min_tier, min_tier);
       }
