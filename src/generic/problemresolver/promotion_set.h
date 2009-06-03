@@ -1392,15 +1392,18 @@ public:
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
+	    bool contains_match = false;
 	    int num_mismatches = 0;
 	    check_choices_in_local_indices
 	      all_choices_found_f(choices_by_install_version,
-				  broken_soft_deps, num_mismatches,
-				  logger);
+				  broken_soft_deps,
+				  logger,
+				  num_mismatches,
+				  contains_match);
 
 	    const promotion &p((*it)->p);
 	    p.get_choices().for_each(all_choices_found_f);
-	    if(all_choices_found_f.rval)
+	    if(contains_match)
 	      {
 		if(!found_anything)
 		  {
