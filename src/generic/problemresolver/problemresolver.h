@@ -3059,7 +3059,8 @@ private:
 		{
 		  if(s.actions.contains(it->get_choices()))
 		    {
-		      LOG_TRACE(logger, "Adjusting the score by "
+		      LOG_TRACE(logger, "Adjusting the score of "
+				<< s.step_num << " by "
 				<< std::showpos << it->get_score()
 				<< std::noshowpos
 				<< " for a joint score constraint on "
@@ -3074,6 +3075,8 @@ private:
     s.score = s.action_score + s.unresolved_deps.size() * weights.broken_score;
     if(s.unresolved_deps.empty())
       s.score += weights.full_solution_score;
+    LOG_TRACE(logger, "Updated the score of step "
+	      << s.step_num << " to " << s.score);
   }
 
   /** \brief Fill in a new step with a successor of the parent step
