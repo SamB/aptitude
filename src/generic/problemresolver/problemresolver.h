@@ -3815,6 +3815,7 @@ public:
 	closed.clear();
 
 	step &root = graph.add_step();
+	root.action_score = 0;
 	root.score = initial_broken.size() * weights.broken_score;
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
