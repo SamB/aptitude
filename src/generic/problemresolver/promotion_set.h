@@ -1100,7 +1100,7 @@ public:
 	    output.equal_range(c);
 
 	  if(found.first == found.second)
-	    output.insert(std::make_pair(found.first->first, p));
+	    output.insert(found.first, std::make_pair(c, p));
 	  else if(found.first->second.get_tier() < p.get_tier())
 	    found.first->second = p;
 	}
