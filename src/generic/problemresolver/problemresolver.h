@@ -3524,12 +3524,11 @@ public:
     if(finished)
       throw NoMoreSolutions();
 
-    // If the open queue is empty, then we're between searches and
-    // should enqueue a new root node.
-    if(pending.empty())
+    // If nothing has been processed, then we need to start a new
+    // search.
+    if(pending.empty() && pending_future_solutions.empty() && closed.empty())
       {
 	LOG_INFO(logger, "Starting a new search.");
-	closed.clear();
 
 	step &root = graph.add_step();
 	root.action_score = 0;
