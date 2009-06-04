@@ -1253,9 +1253,8 @@ private:
      */
     int solver_hits;
 
-    /** \brief Set to the first choice in the solver set that the
-     *  promotion hit; if we later get a more general solver, we
-     *  update this member.
+    /** \brief Set to the first choice in the promotion that was
+     *  mapped to a solver.
      *
      *  We only need to store one because there will only be a single
      *  choice stored as a solver in steps that contain all but one
@@ -1280,12 +1279,15 @@ private:
   {
     std::map<int, incipient_promotion_search_info> &output;
     std::set<int> &visited_solver_steps;
+    const choice &promotion_c;
 
   public:
     update_incipient_promotion_information(std::map<int, incipient_promotion_search_info> &_output,
-					   std::set<int> &_visited_solver_steps)
+					   std::set<int> &_visited_solver_steps,
+					   const choice &_promotion_c)
       : output(_output),
-	visited_solver_steps(_visited_solver_steps)
+	visited_solver_steps(_visited_solver_steps),
+	promotion_c(_promotion_c)
     {
     }
 
@@ -1307,19 +1309,11 @@ private:
 	      !visited_solver_steps.insert(step_num).second;
 
 	    if(already_visited)
-	      {
-		// If this is more general than the currently stored
-		// solver, replace that solver with this one.  (this
-		// handles things like hitting a from-dep-source
-		// solver first, then another solver later)
-		if(c.contains(output_inf.solver))
-		  output_inf.solver = c;
-		return true;
-	      }
+	      return true;
 	  }
 
 	  ++output_inf.solver_hits;
-	  output_inf.solver = c;
+	  output_inf.solver = promotion_c;
 	  break;
 	}
 
@@ -1350,7 +1344,7 @@ private:
     {
       std::set<int> steps_containing_c_as_a_solver;
       update_incipient_promotion_information
-	update_f(output, steps_containing_c_as_a_solver);
+	update_f(output, steps_containing_c_as_a_solver, c);
 
       graph.for_each_step_related_to_choice(c, update_f);
 
