@@ -437,6 +437,8 @@ private:
   // Check that initial states work.
   void testInitialState()
   {
+    LOG_TRACE(log4cxx::Logger::getLogger("test.resolver.testInitialState"), "Entering testInitialState");
+
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
     package a = u.find_package("a");
