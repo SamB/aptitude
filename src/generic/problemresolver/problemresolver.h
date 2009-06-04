@@ -1608,7 +1608,8 @@ private:
     int solver_hits;
 
     /** \brief Set to the first choice in the solver set that the
-     *  promotion hit.
+     *  promotion hit; if we later get a more general solver, we
+     *  update this member.
      *
      *  We only need to store one because there will only be a single
      *  choice stored as a solver in steps that contain all but one
@@ -1660,10 +1661,19 @@ private:
 	      !visited_solver_steps.insert(step_num).second;
 
 	    if(already_visited)
-	      return true;
+	      {
+		// If this is more general than the currently stored
+		// solver, replace that solver with this one.  (this
+		// handles things like hitting a from-dep-source
+		// solver first, then another solver later)
+		if(c.contains(output_inf.solver))
+		  output_inf.solver = c;
+		return true;
+	      }
 	  }
 
 	  ++output_inf.solver_hits;
+	  output_inf.solver = c;
 	  break;
 	}
 
