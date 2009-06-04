@@ -1703,7 +1703,7 @@ private:
   };
 
   /** \brief Reprocess a single promotion. */
-  void process_promotion(const promotion &p) const
+  void process_promotion(const promotion &p)
   {
     LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
 
