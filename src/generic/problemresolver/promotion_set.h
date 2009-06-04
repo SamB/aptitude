@@ -34,6 +34,7 @@
 #include <loggers.h>
 
 #include "choice.h"
+#include "choice_indexed_map.h"
 #include "choice_set.h"
 #include "incremental_expression.h"
 
@@ -1063,6 +1064,25 @@ public:
       }
   }
 
+  /** \brief A functor that, when applied to a Boolean value,
+   *  returns the opposite of that value.
+   *
+   *  Used to check whether for_each hit any "true" values.  Note that
+   *  correctness relies on the fact that for_each returns "true" when
+   *  it didn't hit anything.
+   *
+   *  The reason for inverting the result is that it allows for_each
+   *  to short-circuit correctly.
+   */
+  class not_f
+  {
+  public:
+    bool operator()(const choice &c, bool b) const
+    {
+      return !b;
+    }
+  };
+
   /** \brief Function object that updates the output map for
    *  find_highest_incipient_promotion and friends.
    *
@@ -1078,12 +1098,12 @@ public:
   class update_incipient_output
   {
     const promotion &p;
-    const choice_set &output_domain;
+    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain;
     std::map<choice, promotion> &output;
 
   public:
     update_incipient_output(const promotion &_p,
-			    const choice_set &_output_domain,
+			    const generic_choice_indexed_map<PackageUniverse, bool> &_output_domain,
 			    std::map<choice, promotion> &_output)
       : p(_p), output_domain(_output_domain), output(_output)
     {
@@ -1091,7 +1111,7 @@ public:
 
     bool operator()(const choice &c) const
     {
-      if(output_domain.contains(c))
+      if(!output_domain.for_each_key_contained_in(c, not_f()))
 	{
 	  typedef typename std::map<choice, promotion>::iterator
 	    out_iterator;
@@ -1100,7 +1120,7 @@ public:
 	    output.equal_range(c);
 
 	  if(found.first == found.second)
-	    output.insert(std::make_pair(found.first->first, p));
+	    output.insert(found.first, std::make_pair(c, p));
 	  else if(found.first->second.get_tier() < p.get_tier())
 	    found.first->second = p;
 	}
@@ -1119,12 +1139,12 @@ public:
    */
   class find_incipient_entry_subset_op
   {
-    const choice_set &output_domain;
+    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain;
     std::map<choice, promotion> &output;
     log4cxx::LoggerPtr logger;
 
   public:
-    find_incipient_entry_subset_op(const choice_set &_output_domain,
+    find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, bool> &_output_domain,
 				   std::map<choice, promotion> &_output,
 				   const log4cxx::LoggerPtr &_logger)
       : output_domain(_output_domain),
@@ -1175,9 +1195,17 @@ public:
    *                  Choices in output_domain that were matched are
    *                  mapped to the highest-tier promotion that they
    *                  would trigger.
+   *
+   *  output_domain should take each choice it contains to "true" or
+   *  "false" depending on whether the corresponding choice should be
+   *  considered part of the output domain.
+   *
+   *  In the common use case, "choices" represents the actions taken
+   *  by a step and "output_domain" contains all the solvers of the
+   *  step, mapped to "true".
    */
   void find_highest_incipient_promotion(const choice_set &choices,
-					const choice_set &output_domain,
+					const generic_choice_indexed_map<PackageUniverse, bool> &output_domain,
 					std::map<choice, promotion> &output) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
@@ -1392,15 +1420,18 @@ public:
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
+	    bool contains_match = false;
 	    int num_mismatches = 0;
 	    check_choices_in_local_indices
 	      all_choices_found_f(choices_by_install_version,
-				  broken_soft_deps, num_mismatches,
-				  logger);
+				  broken_soft_deps,
+				  logger,
+				  num_mismatches,
+				  contains_match);
 
 	    const promotion &p((*it)->p);
 	    p.get_choices().for_each(all_choices_found_f);
-	    if(all_choices_found_f.rval)
+	    if(contains_match)
 	      {
 		if(!found_anything)
 		  {
@@ -1465,13 +1496,21 @@ public:
    *                  Choices in output_domain that were matched are
    *                  mapped to the highest-tier promotion that they
    *                  would trigger.
+   *
+   *  output_domain should take each choice it contains to "true" or
+   *  "false" depending on whether the corresponding choice should be
+   *  considered part of the output domain.
+   *
+   *  In the common use case, "choices" represents the actions taken
+   *  by a step, "c" is a new solver being added, and "output_domain"
+   *  contains all the solvers of the step, mapped to "true".
    */
   void find_highest_incipient_promotions_containing(const choice_set &choices,
 						    const choice &c,
-						    const choice_set &output_domain,
+						    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain,
 						    std::map<choice, promotion> &output) const
   {
-    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_containing(" << choices << ", " << c << ")");
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ")");
 
     const std::vector<entry_ref> *index_entries = find_index_list(c);
 
@@ -1847,7 +1886,11 @@ public:
 
     if(entries.size() > 0)
       {
-	const tier &curr_min_tier = entries.begin()->first;
+	// Note: we have to copy this instead of taking a reference
+	// because the source will be deleted, and the callee assumes
+	// that the ending tier is valid even after the deletion takes
+	// place.
+	const tier curr_min_tier(entries.begin()->first);
 	if(curr_min_tier < min_tier)
 	  remove_between_tiers(curr_min_tier, min_tier);
       }

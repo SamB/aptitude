@@ -1,6 +1,6 @@
 // Main test program for the generic aptitude code.
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,9 +24,27 @@
 #include <log4cxx/level.h>
 #include <log4cxx/logger.h>
 
+#include <stdio.h>
+#include <string.h>
+
 int main(int argc, char **argv)
 {
-  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
+  bool debug = false;
+  for(int i = 1; i < argc; ++i)
+    {
+      if(!strcmp(argv[i], "--debug"))
+	debug = true;
+      else
+	{
+	  fprintf(stderr, "Invalid argument \"%s\".", argv[i]);
+	  return -1;
+	}
+    }
+
+  if(debug)
+    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getTrace());
+  else
+    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
   log4cxx::BasicConfigurator::configure();
 
   CppUnit::TextUi::TestRunner runner;

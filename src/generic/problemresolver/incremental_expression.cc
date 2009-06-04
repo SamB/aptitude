@@ -27,7 +27,8 @@ void counting_bool_e::init_num_true()
   num_true = 0;
   for(std::vector<cwidget::util::ref_ptr<expression<bool> > >::const_iterator
 	it = children.begin(); it != children.end(); ++it)
-    ++num_true;
+    if((*it)->get_value())
+      ++num_true;
 }
 
 void counting_bool_e::child_modified(const cwidget::util::ref_ptr<expression<bool> > &child,

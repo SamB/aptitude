@@ -612,6 +612,9 @@ private:
 
   /** Compares steps according to their "goodness": their tier, then
    *  thier score, then their contents.
+   *
+   *  The comparisons are reversed, so better solutions compare
+   *  "below" worse ones.
    */
   struct step_goodness_compare
   {
@@ -633,16 +636,16 @@ private:
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
-      if(step2.step_tier < step1.step_tier)
+      if(step1.step_tier < step2.step_tier)
 	return true;
-      else if(step1.step_tier < step2.step_tier)
+      else if(step2.step_tier < step1.step_tier)
 	return false;
-      else if(step1.score < step2.score)
-	return true;
       else if(step2.score < step1.score)
+	return true;
+      else if(step1.score < step2.score)
 	return false;
       else
-	return step1.actions < step2.actions;
+	return step2.actions < step1.actions;
     }
   };
 
@@ -1500,6 +1503,12 @@ private:
   {
     step &s(graph.get_step(step_num));
 
+    if(s.step_tier == t)
+      return;
+
+    LOG_TRACE(logger, "Setting the tier of step " << step_num
+	      << " to " << t);
+
     bool was_in_pending =  (pending.erase(step_num) > 0);
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
@@ -1599,7 +1608,8 @@ private:
     int solver_hits;
 
     /** \brief Set to the first choice in the solver set that the
-     *  promotion hit.
+     *  promotion hit; if we later get a more general solver, we
+     *  update this member.
      *
      *  We only need to store one because there will only be a single
      *  choice stored as a solver in steps that contain all but one
@@ -1651,10 +1661,19 @@ private:
 	      !visited_solver_steps.insert(step_num).second;
 
 	    if(already_visited)
-	      return true;
+	      {
+		// If this is more general than the currently stored
+		// solver, replace that solver with this one.  (this
+		// handles things like hitting a from-dep-source
+		// solver first, then another solver later)
+		if(c.contains(output_inf.solver))
+		  output_inf.solver = c;
+		return true;
+	      }
 	  }
 
 	  ++output_inf.solver_hits;
+	  output_inf.solver = c;
 	  break;
 	}
 
@@ -1694,7 +1713,7 @@ private:
   };
 
   /** \brief Reprocess a single promotion. */
-  void process_promotion(const promotion &p) const
+  void process_promotion(const promotion &p)
   {
     LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
 
@@ -1715,7 +1734,7 @@ private:
 	if(inf.action_hits == num_promotion_choices)
 	  {
 	    step &s(graph.get_step(step_num));
-	    if(s.get_tier() < p.get_tier())
+	    if(s.step_tier < p.get_tier())
 	      {
 		LOG_TRACE(logger, "Step " << step_num
 			  << " contains " << p
@@ -2244,10 +2263,10 @@ private:
 				  const choice &solver)
   {
     // \todo There must be a more efficient way of doing this.
-    choice_set output_domain;
+    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
     std::map<choice, promotion> triggered_promotions;
 
-    output_domain.insert_or_narrow(solver);
+    output_domain.put(solver, true);
 
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
@@ -2913,17 +2932,17 @@ private:
   // and inserts it into the output set.
   struct build_solvers_set
   {
-    choice_set &output;
+    generic_choice_indexed_map<PackageUniverse, bool> &output;
 
   public:
-    build_solvers_set(choice_set &_output)
+    build_solvers_set(generic_choice_indexed_map<PackageUniverse, bool> &_output)
       : output(_output)
     {
     }
 
     bool operator()(const choice &solver, const imm::list<dep> &deps) const
     {
-      output.insert_or_narrow(solver.generalize());
+      output.put(solver.generalize(), true);
       return true;
     }
   };
@@ -2934,7 +2953,7 @@ private:
   void find_new_incipient_promotions(step &s,
 				     const choice &c)
   {
-    choice_set output_domain;
+    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
     std::map<choice, promotion> output;
 
     s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
@@ -3035,9 +3054,19 @@ private:
       case choice::install_version:
 	{
 	  const version &ver(c.get_ver());
+	  const version old_ver(initial_state.version_of(ver.get_package()));
+	  const int new_score = weights.version_scores[ver.get_id()];
+	  const int old_score = weights.version_scores[old_ver.get_id()];
 
-	  s.action_score += weights.version_scores[ver.get_id()];
-	  s.action_score -= weights.version_scores[initial_state.version_of(ver.get_package()).get_id()];
+	  LOG_TRACE(logger, "Modifying the score of step "
+		    << s.step_num << " by "
+		    << std::showpos << (new_score - old_score)
+		    << std::noshowpos << " to account for the replacement of "
+		    << old_ver << " (score " << old_score << ") by "
+		    << ver << " (score " << new_score << ")");
+
+	  s.action_score += new_score;
+	  s.action_score -= old_score;
 
 	  // Look for joint score constraints triggered by adding this
 	  // choice.
@@ -3053,7 +3082,8 @@ private:
 		{
 		  if(s.actions.contains(it->get_choices()))
 		    {
-		      LOG_TRACE(logger, "Adjusting the score by "
+		      LOG_TRACE(logger, "Adjusting the score of "
+				<< s.step_num << " by "
 				<< std::showpos << it->get_score()
 				<< std::noshowpos
 				<< " for a joint score constraint on "
@@ -3067,7 +3097,15 @@ private:
 
     s.score = s.action_score + s.unresolved_deps.size() * weights.broken_score;
     if(s.unresolved_deps.empty())
-      s.score += weights.full_solution_score;
+      {
+	LOG_TRACE(logger, "Modifying the score of step "
+		  << s.step_num << " by "
+		  << std::showpos << weights.full_solution_score << std::noshowpos
+		  << " because it is a full solution.");
+	s.score += weights.full_solution_score;
+      }
+    LOG_TRACE(logger, "Updated the score of step "
+	      << s.step_num << " to " << s.score);
   }
 
   /** \brief Fill in a new step with a successor of the parent step
@@ -3084,7 +3122,18 @@ private:
     // Copy all the state information over so we can work in-place on
     // the output set.
     output.actions = parent.actions;
+    // A brief note on scores.
+    //
+    // These values are wrong.  They will be corrected at the bottom
+    // of this routine.  However, they will be referenced before that,
+    // in order to check whether this step exists in "pending" yet.
+    // It doesn't, so it won't be found no matter what we include here
+    // (which is as it should be).  But by including dummy values, we
+    // avoid reading uninitialized memory, which means that (a) any
+    // problems that do occur will be deterministic, and (b) valgrind
+    // won't spit out false positives.
     output.action_score = parent.action_score;
+    output.score = parent.score;
     output.step_tier = output_tier;
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
@@ -3094,10 +3143,7 @@ private:
 
     LOG_TRACE(logger, "Generating a successor to step " << parent.step_num
 	      << " for the action " << c << " with tier "
-	      << output_tier << " and outputting to  step " << output.step_num);
-
-    // Compute the new score.
-    extend_score_to_new_step(output, c);
+	      << output_tier << " and outputting to step " << output.step_num);
 
     // Insert the new choice into the output list of choices.  This
     // will be used below (in steps 3, 4, 5, 6 and 7).
@@ -3143,6 +3189,15 @@ private:
 
     // 6. Find incipient promotions for the new step.
     find_new_incipient_promotions(output, c);
+
+    // Compute the new score.  Do this after everything else so
+    // solutions get the expected bonus (otherwise we don't know
+    // whether this step has unresolved dependencies).
+    extend_score_to_new_step(output, c);
+
+    LOG_TRACE(logger, "Generated step " << output.step_num
+	      << ": " << output.actions << ";T" << output.step_tier
+	      << "S" << output.score);
 
     if(output.step_tier < tier_limits::defer_tier)
       pending.insert(output.step_num);
@@ -3192,6 +3247,8 @@ private:
    */
   void generate_successors(int step_num, std::set<package> *visited_packages)
   {
+    LOG_TRACE(logger, "Generating successors for step " << step_num);
+
     // \todo Should thread visited_packages through all the machinery
     // above.
 
@@ -3219,6 +3276,10 @@ private:
 	return;
       }
 
+    LOG_TRACE(logger, "Generating successors for step " << step_num
+	      << " for the dependency " << best.getVal().second
+	      << " with " << best.getVal().first << " solvers: "
+	      << bestSolvers.getVal().second.get_solvers());
     bool first_successor = false;
     do_generate_single_successor generate_successor_f(s, *this,
 						      first_successor);
@@ -3484,12 +3545,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(!inf.rejected->get_value())
+    if(!inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unreject_version));
 
-	inf.rejected->set_value(true);
+	inf.get_rejected()->set_value(true);
 	unmandate_version(ver, undo);
       }
   }
@@ -3501,12 +3562,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(inf.rejected->get_value())
+    if(inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
 
-	inf.rejected->set_value(false);
+	inf.get_rejected()->set_value(false);
       }
   }
 
@@ -3514,12 +3575,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(!inf.approved->get_value())
+    if(!inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
-	inf.mandated->set_value(true);
+	inf.get_approved()->set_value(true);
 	unreject_version(ver, undo);
       }
   }
@@ -3528,12 +3589,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
 
-    if(inf.approved->get_value())
+    if(inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
 
-	inf.approved->set_value(false);
+	inf.get_approved()->set_value(false);
       }
   }
 
@@ -3545,7 +3606,7 @@ public:
 
     return
       found != user_approved_or_rejected_versions.end() &&
-      found->rejected->get_value();
+      found->second.get_rejected()->get_value();
   }
 
   /** Query whether the given version is mandated. */
@@ -3556,18 +3617,18 @@ public:
 
     return
       found != user_approved_or_rejected_versions.end() &&
-      found->approved->get_value();
+      found->second.get_approved()->get_value();
   }
 
   /** Query whether the given dependency is hardened. */
   bool is_hardened(const dep &d) const
   {
-    typename std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<dep, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
       found != user_approved_or_rejected_broken_deps.end() &&
-      found->rejected->get_value();
+      found->second.get_rejected()->get_value();
   }
 
   /** Harden the given dependency. */
@@ -3577,12 +3638,12 @@ public:
 
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(!inf.rejected->get_value())
+    if(!inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unharden));
 
-	inf.rejected->set_value(true);
+	inf.get_rejected()->set_value(true);
 	unapprove_break(d, undo);
       }
   }
@@ -3592,12 +3653,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(inf.rejected->get_value())
+    if(inf.get_rejected()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
 
-	inf.rejected->set_value(false);
+	inf.get_rejected()->set_value(false);
       }
   }
 
@@ -3606,12 +3667,12 @@ public:
    */
   bool is_approved_broken(const dep &d) const
   {
-    typename std::map<version, approved_or_rejected_info>::const_iterator found =
+    typename std::map<dep, approved_or_rejected_info>::const_iterator found =
       user_approved_or_rejected_broken_deps.find(d);
 
     return
       found != user_approved_or_rejected_broken_deps.end() &&
-      found->approved->get_value();
+      found->second.get_approved()->get_value();
   }
 
   /** Approve the breaking of the given dependency. */
@@ -3619,12 +3680,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(!inf.approved->get_value())
+    if(!inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
-	inf.approved->set_value(true);
+	inf.get_approved()->set_value(true);
 	unharden(d, undo);
       }
   }
@@ -3634,12 +3695,12 @@ public:
   {
     approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
 
-    if(inf.approved->get_value())
+    if(inf.get_approved()->get_value())
       {
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
 
-	inf.approved->set_value(false);
+	inf.get_approved()->set_value(false);
       }
   }
 
@@ -3800,10 +3861,19 @@ public:
 	closed.clear();
 
 	step &root = graph.add_step();
+	root.action_score = 0;
 	root.score = initial_broken.size() * weights.broken_score;
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
 
+	root.step_tier = tier_limits::minimum_tier;
+
+	for(typename imm::set<dep>::const_iterator it = initial_broken.begin();
+	    it != initial_broken.end(); ++it)
+	  add_unresolved_dep(root, *it);
+
+	LOG_TRACE(logger, "Inserting the root at step " << root.step_num
+		  << " with tier " << root.step_tier);
 	pending.insert(root.step_num);
       }
 
@@ -3830,6 +3900,10 @@ public:
 
 	step &s = graph.get_step(curr_step_num);
 
+	LOG_INFO(logger, "Examining step " << curr_step_num
+		 << ": " << s.actions << ";T" << s.step_tier
+		 << "S" << s.score);
+
 	++odometer;
 
 	if(s.step_tier >= tier_limits::defer_tier)
@@ -3841,10 +3915,6 @@ public:
 	    break;
 	  }
 
-	// Unless this is set to "true", the step will be ignored
-	// (either thrown away or deferred).
-	bool process_step = false;
-
 	if(is_already_seen(curr_step_num))
 	  {
 	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
@@ -3853,16 +3923,19 @@ public:
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
 	  }
-
-	if(process_step)
+	else
 	  {
+	    LOG_TRACE(logger, "Processing step " << curr_step_num);
+
 	    closed[step_contents(s.score, s.action_score, s.actions)] =
 	      curr_step_num;
 
 	    // If all dependencies are satisfied, we found a solution.
 	    if(s.unresolved_deps.empty())
 	      {
-		LOG_INFO(logger, " --- Found solution at step " << s.step_num);
+		LOG_INFO(logger, " --- Found solution at step " << s.step_num
+			 << ": " << s.actions << ";T" << s.step_tier
+			 << "S" << s.score);
 
 		// Remember this solution, so we don't try to return it
 		// again in the future.
@@ -3903,6 +3976,8 @@ public:
 
 	    --max_steps;
 	  }
+
+	process_pending_promotions();
       }
 
     if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))

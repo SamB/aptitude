@@ -118,7 +118,6 @@ class ResolverTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ResolverTest);
 
-  CPPUNIT_TEST(testSolutionCompare);
   CPPUNIT_TEST(testRejections);
   CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testInitialState);
@@ -159,6 +158,9 @@ private:
     CPPUNIT_ASSERT_MESSAGE("The set " + str1 + " does not contain " + str2 + ".",
 			   s1.contains(s2));
   }
+
+#if 0
+  // Old routines that need to be adapted to the new resolver code.
 
   /** Generate a successor solution that just contains the given
    *  information by using internal constructors of the solution
@@ -289,6 +291,7 @@ private:
 
     assertLtEquivalent(s7, s7, solcmp);
   }
+#endif
 
   // Check that rejections of versions don't block out all versions of
   // the package (this actually happened once).  As installing version
@@ -317,6 +320,8 @@ private:
 
   void testTiers()
   {
+    LOG_TRACE(log4cxx::Logger::getLogger("test.resolver.testTiers"), "Entering testTiers");
+
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
     package a = u.find_package("a");

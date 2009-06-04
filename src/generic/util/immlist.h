@@ -48,7 +48,7 @@ namespace imm
 
     public:
       node(const T &_head, const cwidget::util::ref_ptr<node> &_tail)
-	: head(_head), tail(_tail), size(_tail->size + 1)
+	: head(_head), tail(_tail), size(_tail.valid() ? (_tail->size + 1) : 1)
       {
       }
 
