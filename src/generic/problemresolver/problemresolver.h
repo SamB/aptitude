@@ -1724,7 +1724,7 @@ private:
 	if(inf.action_hits == num_promotion_choices)
 	  {
 	    step &s(graph.get_step(step_num));
-	    if(s.get_tier() < p.get_tier())
+	    if(s.step_tier < p.get_tier())
 	      {
 		LOG_TRACE(logger, "Step " << step_num
 			  << " contains " << p
