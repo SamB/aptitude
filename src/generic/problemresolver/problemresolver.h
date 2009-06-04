@@ -3966,6 +3966,8 @@ public:
 
 	    --max_steps;
 	  }
+
+	process_pending_promotions();
       }
 
     if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
