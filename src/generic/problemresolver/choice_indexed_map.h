@@ -27,6 +27,7 @@
 #include <generic/util/maybe.h>
 
 #include <functional>
+#include <iostream>
 #include <utility>
 
 /** \brief A map from choices to objects, with support for iterating
@@ -63,6 +64,29 @@ class generic_choice_indexed_map
   // Objects stored for the choice (Break(d), t).
   imm::map<dep, ValueType> break_dep_objects;
 
+  class do_dump_entry
+  {
+    std::ostream &out;
+    bool &first;
+  public:
+    do_dump_entry(std::ostream &_out, bool &_first)
+      : out(_out), first(_first)
+    {
+      first = true;
+    }
+
+    bool operator()(const choice &c, ValueType value) const
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << c << " -> " << value;
+
+      return true;
+    }
+  };
 public:
   generic_choice_indexed_map()
   {
@@ -195,6 +219,17 @@ public:
       }
   }
 
+  /** \brief Dump this map to a stream, if ValueType supports
+   *  operator<<.
+   */
+  void dump(std::ostream &out) const
+  {
+    out << "{";
+    bool first = true;
+    for_each(do_dump_entry(out, first));
+    out << "}";
+  }
+
 private:
   // Applies the given function to (choice, value) for each (choice,
   // value) pair in the set of dependency -> value bindings.
@@ -269,7 +304,7 @@ public:
    *  entry (c -> value) in this map.
    */
   template<typename F>
-  bool for_each(F f)
+  bool for_each(F f) const
   {
     return
       install_version_objects.for_each(for_each_version_info<F>(f)) &&
@@ -456,5 +491,12 @@ public:
     return parent.for_each_key_contained_in(c, for_each_set<F>(f));
   }
 };
+
+template<typename PackageUniverse, typename ValueType>
+std::ostream &operator<<(std::ostream &out, const generic_choice_indexed_map<PackageUniverse, ValueType> &m)
+{
+  m.dump(out);
+  return out;
+}
 
 #endif // CHOICE_INDEXED_SET_H
