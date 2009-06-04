@@ -3087,7 +3087,13 @@ private:
 
     s.score = s.action_score + s.unresolved_deps.size() * weights.broken_score;
     if(s.unresolved_deps.empty())
-      s.score += weights.full_solution_score;
+      {
+	LOG_TRACE(logger, "Modifying the score of step "
+		  << s.step_num << " by "
+		  << std::showpos << weights.full_solution_score << std::noshowpos
+		  << " because it is a full solution.");
+	s.score += weights.full_solution_score;
+      }
     LOG_TRACE(logger, "Updated the score of step "
 	      << s.step_num << " to " << s.score);
   }
