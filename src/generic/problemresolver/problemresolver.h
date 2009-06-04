@@ -956,7 +956,8 @@ private:
 	resolver(_resolver)
     {
       // Sanity-check.
-      eassert(deferred_choice.get_has_dep());
+      if(deferred_choice.get_type() == choice::install_version)
+	eassert(deferred_choice.get_has_dep());
     }
 
   public:
