@@ -1556,6 +1556,10 @@ private:
     bool operator()(const choice &victim,
 		    imm::list<dep> solved_by_victim) const
     {
+      LOG_TRACE(logger, "Removing the choice " << victim
+		<< " from the solver lists of " << solved_by_victim
+		<< " in step " << s.step_num);
+
       for(typename imm::list<dep>::const_iterator it = solved_by_victim.begin();
 	  it != solved_by_victim.end(); ++it)
 	{
