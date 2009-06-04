@@ -123,13 +123,15 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUniverse> &p)
 {
-  return out << "(T" << p.get_tier() << ": " << p.get_choices();
+  out << "(T" << p.get_tier() << ": " << p.get_choices();
 
   if(p.get_valid_condition().valid())
     // Output p.get_valid_condition() if it isn't null.
     out << "; V:" << p.get_valid_condition();
 
   out << ")";
+
+  return out;
 }
 
 /** \brief Represents a set of "promotions": mappings from sets of
