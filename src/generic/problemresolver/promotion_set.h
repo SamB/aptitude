@@ -1485,6 +1485,9 @@ public:
    *  An incipient promotion is one that doesn't match now, but that
    *  would match if a single choice was added to the set of choices.
    *
+   *  \tparam Pred    A function type used to filter the returned
+   *                  promotions.
+   *
    *  \param choices  The choice set to test.
    *  \param c        A choice that must be contained in every returned
    *                  promotion.
@@ -1494,6 +1497,9 @@ public:
    *                  are organized according to which of these choices
    *                  each one contained, and only the highest-tier
    *                  promotion for each choice is returned.
+   *  \param pred     A predicate used to filter the returned promotions.
+   *                  Only promotions for which pred returns \b true are
+   *                  returned.
    *  \param output   A map in which to store the results of the search.
    *                  Choices in output_domain that were matched are
    *                  mapped to the highest-tier promotion that they
@@ -1505,11 +1511,15 @@ public:
    *
    *  In the common use case, "choices" represents the actions taken
    *  by a step, "c" is a new solver being added, and "output_domain"
-   *  contains all the solvers of the step, mapped to "true".
+   *  contains all the solvers of the step, mapped to "true".  The
+   *  predicate is used to throw away promotions that are invalid for
+   *  whatever reason if the target step is a "blessed" solution.
    */
+  template<typename Pred>
   void find_highest_incipient_promotions_containing(const choice_set &choices,
 						    const choice &c,
 						    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain,
+						    Pred pred,
 						    std::map<choice, promotion> &output) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ")");
@@ -1542,6 +1552,10 @@ public:
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
+	    const promotion &p((*it)->p);
+	    if(!pred(p))
+	      continue;
+
 	    bool is_incipient = false;
 	    int num_mismatches = 1;
 	    check_choices_in_local_indices
@@ -1549,7 +1563,6 @@ public:
 			      broken_soft_deps, logger,
 			      num_mismatches, is_incipient);
 
-	    const promotion &p((*it)->p);
 	    p.get_choices().for_each(choices_found_f);
 	    if(is_incipient)
 	      {

@@ -1145,6 +1145,13 @@ private:
     if(s.step_tier == t)
       return;
 
+    if(s.is_blessed_solution && t >= tier_limits::already_generated_tier)
+      {
+	LOG_TRACE(logger, "Step " << s.step_num
+		  << " is a blessed solution; ignoring the attempt to promote it to tier " << t);
+	return;
+      }
+
     LOG_TRACE(logger, "Setting the tier of step " << step_num
 	      << " to " << t);
 
@@ -1895,6 +1902,25 @@ private:
       }
   }
 
+  /** \brief Predicate used to throw away promotions whose tier is too
+   *  high.
+   */
+  class not_above_tier
+  {
+    const tier &t;
+
+  public:
+    not_above_tier(const tier &_t)
+      : t(_t)
+    {
+    }
+
+    bool operator()(const promotion &p) const
+    {
+      return !(p.get_tier() >= t);
+    }
+  };
+
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
@@ -1907,9 +1933,13 @@ private:
 
     output_domain.put(solver, true);
 
+    not_above_tier not_above_p(s.is_blessed_solution
+			       ? tier_limits::already_generated_tier
+			       : tier_limits::maximum_tier);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
 							    output_domain,
+							    not_above_p,
 							    triggered_promotions);
 
     // Sanity-check.
@@ -2596,9 +2626,13 @@ private:
     std::map<choice, promotion> output;
 
     s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
+    not_above_tier not_above_p(s.is_blessed_solution
+			       ? tier_limits::already_generated_tier
+			       : tier_limits::maximum_tier);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    c,
 							    output_domain,
+							    not_above_p,
 							    output);
 
     for(typename std::map<choice, promotion>::const_iterator it =
@@ -3593,6 +3627,7 @@ public:
 			 << "; promotions: " << promotions.size()
 			 << "; deferred: " << get_num_deferred());
 
+		s.is_blessed_solution = true;
 		pending_future_solutions.insert(curr_step_num);
 	      }
 	    // Nope, let's go enqueue successor nodes.

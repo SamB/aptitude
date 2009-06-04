@@ -259,6 +259,24 @@ public:
     // If true, this is the last child in its parent's child list.
     // Meaningless if parent is -1 (meaning there is no parent node).
     bool is_last_child : 1;
+    // If true, this step is a "blessed" solution.  The tier of a
+    // blessed solution cannot be increased above the deferral tier
+    // (hence it will not be discarded).  Blessed solutions are
+    // solutions that have been moved into the pending future
+    // solutions queue and are just waiting for the future solution
+    // "counter" to be exhausted.
+    //
+    // \todo One subtlety here: it would be nice if we could throw out
+    // already-visited solutions if we found another solution that was
+    // a strict subset.  However, that's rather unlikely and I don't
+    // want to introduce lots of mechanism (e.g., a whole new matching
+    // mode for promotions) just to accomplish it.  I could instead
+    // just filter out promotions that are exactly the size of a
+    // blessed solution -- but that could easily run into problems
+    // with generalized promotions built from the already-generated
+    // promotion ... better to just say "if we've processed it, it's
+    // safe".
+    bool is_blessed_solution : 1;
     // Index of the parent step, or -1 if there is no parent.
     int parent;
     // Index of the first child step, or -1 if there are no children.
@@ -399,6 +417,7 @@ public:
      */
     step()
       : is_last_child(true),
+	is_blessed_solution(false),
 	parent(-1), first_child(-1),
 	step_tier_valid_listener(),
 	canonical_clone(-1),
@@ -418,6 +437,7 @@ public:
 	 int _score,
 	 int _action_score)
       : is_last_child(true),
+	is_blessed_solution(false),
 	parent(-1), first_child(-1), canonical_clone(-1),
 	actions(_actions),
 	score(_score),
@@ -438,6 +458,7 @@ public:
 	 int _parent,
 	 const choice &_reason, bool _is_last_child)
       : is_last_child(_is_last_child),
+	is_blessed_solution(false),
 	parent(_parent),
 	first_child(-1), canonical_clone(-1),
 	actions(_actions),
