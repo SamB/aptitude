@@ -3472,60 +3472,79 @@ private:
    */
   void process_step(int step_num, std::set<package> *visited_packages)
   {
-    step &s = graph.get_step(step_num);
+    bool done;
 
-    LOG_INFO(logger, "Examining step " << step_num
-	     << ": " << s.actions << ";T" << s.step_tier
-	     << "S" << s.score);
-
-    if(s.step_tier >= tier_limits::defer_tier)
+    do
       {
-	LOG_ERROR(logger, "Internal error: the tier of step "
-		  << s.step_num
-		  << " is an unprocessed tier, so why is it a candidate?");
-	// Bail out.
-	return;
-      }
+	done = true;
 
-    if(is_already_seen(step_num))
-      {
-	LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
-      }
-    else if(irrelevant(s))
-      {
-	LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
-      }
-    else
-      {
-	LOG_TRACE(logger, "Processing step " << step_num);
+	step &s = graph.get_step(step_num);
 
-	closed[step_contents(s.score, s.action_score, s.actions)] =
-	  step_num;
+	LOG_INFO(logger, "Examining step " << step_num
+		 << ": " << s.actions << ";T" << s.step_tier
+		 << "S" << s.score);
 
-	// If all dependencies are satisfied, we found a solution.
-	if(s.unresolved_deps.empty())
+	if(s.step_tier >= tier_limits::defer_tier)
 	  {
-	    LOG_INFO(logger, " --- Found solution at step " << s.step_num
-		     << ": " << s.actions << ";T" << s.step_tier
-		     << "S" << s.score);
-
-	    // Remember this solution, so we don't try to return it
-	    // again in the future.
-	    choice_set generalized_actions;
-	    for(typename choice_set::const_iterator it = s.actions.begin();
-		it != s.actions.end(); ++it)
-	      generalized_actions.insert_or_narrow(it->generalize());
-	    promotion already_generated_promotion(generalized_actions,
-						  tier_limits::already_generated_tier);
-	    add_promotion(step_num, already_generated_promotion);
-
-	    s.is_blessed_solution = true;
-	    pending_future_solutions.insert(step_num);
+	    LOG_ERROR(logger, "Internal error: the tier of step "
+		      << s.step_num
+		      << " is an unprocessed tier, so why is it a candidate?");
+	    // Bail out.
+	    return;
 	  }
-	// Nope, let's go enqueue successor nodes.
+
+	if(is_already_seen(step_num))
+	  {
+	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
+	  }
+	else if(irrelevant(s))
+	  {
+	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
+	  }
 	else
-	  generate_successors(step_num, visited_packages);
-      }
+	  {
+	    LOG_TRACE(logger, "Processing step " << step_num);
+
+	    closed[step_contents(s.score, s.action_score, s.actions)] =
+	      step_num;
+
+	    // If all dependencies are satisfied, we found a solution.
+	    if(s.unresolved_deps.empty())
+	      {
+		LOG_INFO(logger, " --- Found solution at step " << s.step_num
+			 << ": " << s.actions << ";T" << s.step_tier
+			 << "S" << s.score);
+
+		// Remember this solution, so we don't try to return it
+		// again in the future.
+		choice_set generalized_actions;
+		for(typename choice_set::const_iterator it = s.actions.begin();
+		    it != s.actions.end(); ++it)
+		  generalized_actions.insert_or_narrow(it->generalize());
+		promotion already_generated_promotion(generalized_actions,
+						      tier_limits::already_generated_tier);
+		add_promotion(step_num, already_generated_promotion);
+
+		s.is_blessed_solution = true;
+		pending_future_solutions.insert(step_num);
+	      }
+	    // Nope, let's go enqueue successor nodes.
+	    else
+	      {
+		generate_successors(step_num, visited_packages);
+		// If we enqueued *exactly* one successor, then this
+		// was a forced dependency and we should process that
+		// successor before returning.
+		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child)
+		  {
+		    LOG_TRACE(logger, "Following forced dependency resolution from step "
+			      << step_num << " to step " << s.first_child);
+		    step_num = s.first_child;
+		    done = false;
+		  }
+	      }
+	  }
+      } while(!done);
   }
 
 public:
