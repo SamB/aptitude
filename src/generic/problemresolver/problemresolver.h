@@ -3467,6 +3467,67 @@ private:
       graph.get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
   }
 
+  /** \brief Process the given step number and generate its
+   *  successors.
+   */
+  void process_step(int step_num, std::set<package> *visited_packages)
+  {
+    step &s = graph.get_step(step_num);
+
+    LOG_INFO(logger, "Examining step " << step_num
+	     << ": " << s.actions << ";T" << s.step_tier
+	     << "S" << s.score);
+
+    if(s.step_tier >= tier_limits::defer_tier)
+      {
+	LOG_ERROR(logger, "Internal error: the tier of step "
+		  << s.step_num
+		  << " is an unprocessed tier, so why is it a candidate?");
+	// Bail out.
+	return;
+      }
+
+    if(is_already_seen(step_num))
+      {
+	LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
+      }
+    else if(irrelevant(s))
+      {
+	LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
+      }
+    else
+      {
+	LOG_TRACE(logger, "Processing step " << step_num);
+
+	closed[step_contents(s.score, s.action_score, s.actions)] =
+	  step_num;
+
+	// If all dependencies are satisfied, we found a solution.
+	if(s.unresolved_deps.empty())
+	  {
+	    LOG_INFO(logger, " --- Found solution at step " << s.step_num
+		     << ": " << s.actions << ";T" << s.step_tier
+		     << "S" << s.score);
+
+	    // Remember this solution, so we don't try to return it
+	    // again in the future.
+	    choice_set generalized_actions;
+	    for(typename choice_set::const_iterator it = s.actions.begin();
+		it != s.actions.end(); ++it)
+	      generalized_actions.insert_or_narrow(it->generalize());
+	    promotion already_generated_promotion(generalized_actions,
+						  tier_limits::already_generated_tier);
+	    add_promotion(step_num, already_generated_promotion);
+
+	    s.is_blessed_solution = true;
+	    pending_future_solutions.insert(step_num);
+	  }
+	// Nope, let's go enqueue successor nodes.
+	else
+	  generate_successors(step_num, visited_packages);
+      }
+  }
+
 public:
   /** Try to find the "next" solution: remove partial solutions from
    *  the open queue and place them in the closed queue until one of
@@ -3569,86 +3630,26 @@ public:
 	int curr_step_num = *pending.begin();
 	pending.erase(pending.begin());
 
-	step &s = graph.get_step(curr_step_num);
-
-	LOG_INFO(logger, "Examining step " << curr_step_num
-		 << ": " << s.actions << ";T" << s.step_tier
-		 << "S" << s.score);
-
 	++odometer;
 
-	if(s.step_tier >= tier_limits::defer_tier)
-	  {
-	    LOG_ERROR(logger, "Internal error: the tier of step "
-		      << s.step_num
-		      << " is an unprocessed tier, so why is it a candidate?");
-	    // Bail out.
-	    break;
-	  }
+	process_step(curr_step_num, visited_packages);
 
-	if(is_already_seen(curr_step_num))
-	  {
-	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
-	  }
-	else if(irrelevant(s))
-	  {
-	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
-	  }
+	// Keep track of the "future horizon".  If we haven't found a
+	// solution, we aren't using those steps up at all.
+	// Otherwise, we count up until we hit 50.
+	if(pending_future_solutions_contains_candidate())
+	  ++most_future_solution_steps;
 	else
-	  {
-	    LOG_TRACE(logger, "Processing step " << curr_step_num);
+	  most_future_solution_steps = 0;
 
-	    closed[step_contents(s.score, s.action_score, s.actions)] =
-	      curr_step_num;
+	LOG_TRACE(logger, "Done generating successors.");
 
-	    // If all dependencies are satisfied, we found a solution.
-	    if(s.unresolved_deps.empty())
-	      {
-		LOG_INFO(logger, " --- Found solution at step " << s.step_num
-			 << ": " << s.actions << ";T" << s.step_tier
-			 << "S" << s.score);
+	--max_steps;
 
-		// Remember this solution, so we don't try to return it
-		// again in the future.
-		choice_set generalized_actions;
-		for(typename choice_set::const_iterator it = s.actions.begin();
-		    it != s.actions.end(); ++it)
-		  generalized_actions.insert_or_narrow(it->generalize());
-		promotion already_generated_promotion(generalized_actions,
-						      tier_limits::already_generated_tier);
-		add_promotion(curr_step_num, already_generated_promotion);
 
-		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
-
-		LOG_INFO(logger, " *** open: " << pending.size()
-			 << "; closed: " << closed.size()
-			 << "; promotions: " << promotions.size()
-			 << "; deferred: " << get_num_deferred());
-
-		s.is_blessed_solution = true;
-		pending_future_solutions.insert(curr_step_num);
-	      }
-	    // Nope, let's go enqueue successor nodes.
-	    else
-	      generate_successors(curr_step_num, visited_packages);
-
-	    // Propagate any new promotions that we discovered up the
-	    // search tree.
-	    graph.run_scheduled_promotion_propagations(promotion_adder(*this));
-
-	    // Keep track of the "future horizon".  If we haven't found a
-	    // solution, we aren't using those steps up at all.
-	    // Otherwise, we count up until we hit 50.
-	    if(pending_future_solutions_contains_candidate())
-	      ++most_future_solution_steps;
-	    else
-	      most_future_solution_steps = 0;
-
-	    LOG_TRACE(logger, "Done generating successors.");
-
-	    --max_steps;
-	  }
-
+	// Propagate any new promotions that we discovered up the
+	// search tree.
+	graph.run_scheduled_promotion_propagations(promotion_adder(*this));
 	process_pending_promotions();
       }
 
@@ -3672,6 +3673,13 @@ public:
 			  initial_state,
 			  best_future_solution_step.score,
 			  best_future_solution_step.step_tier);
+
+	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
+
+	    LOG_INFO(logger, " *** open: " << pending.size()
+		     << "; closed: " << closed.size()
+		     << "; promotions: " << promotions.size()
+		     << "; deferred: " << get_num_deferred());
 
 	    LOG_INFO(logger, "--- Returning the future solution "
 		     << rval << " from step " << best_future_solution);
