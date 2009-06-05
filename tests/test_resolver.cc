@@ -437,7 +437,8 @@ private:
   // Check that initial states work.
   void testInitialState()
   {
-    LOG_TRACE(log4cxx::Logger::getLogger("test.resolver.testInitialState"), "Entering testInitialState");
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testInitialState"));
+    LOG_TRACE(logger, "Entering testInitialState");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
@@ -484,6 +485,7 @@ private:
 
     try
       {
+	LOG_TRACE(logger, "Checking that the empty solution is the first solution.");
 	dummy_solution sol = r.find_next_solution(1000000, NULL);
 
 	CPPUNIT_ASSERT_MESSAGE("There are no broken deps, so only the empty solution should be returned.",
@@ -500,6 +502,7 @@ private:
 			       expected_initial_state);
 	}
 
+	LOG_TRACE(logger, "Checking that the empty solution is the only solution.");
 	bool out_of_solutions = false;
 	try
 	  {
