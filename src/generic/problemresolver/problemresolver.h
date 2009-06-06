@@ -956,7 +956,8 @@ private:
 	resolver(_resolver)
     {
       // Sanity-check.
-      eassert(deferred_choice.get_has_dep());
+      if(deferred_choice.get_type() == choice::install_version)
+	eassert(deferred_choice.get_has_dep());
     }
 
   public:
@@ -1055,367 +1056,6 @@ private:
   std::map<choice, expression_weak_ref<expression_box<bool> >,
 	   compare_choices_for_deferral> memoized_is_deferred;
 
-  /** \brief Used to convert a set of choices to a (possibly) more
-   *  inclusive set that includes any choices which have the same
-   *  effect on the package cache.
-   *
-   *  This is used to ensure that solutions which have been returned
-   *  from the resolver are never produced again.
-   */
-  struct widen_choices_to_contents
-  {
-    choice_set &rval;
-
-    widen_choices_to_contents(choice_set &_rval)
-      : rval(_rval)
-    {
-    }
-
-    bool operator()(const choice &c) const
-    {
-      switch(c.get_type())
-	{
-	case choice::install_version:
-	  rval.insert_or_narrow(choice::make_install_version(c.get_ver(), false, c.get_dep(), c.get_id()));
-	  break;
-
-	case choice::break_soft_dep:
-	  rval.insert_or_narrow(c);
-	  break;
-	}
-
-      return true;
-    }
-  };
-
-  static choice_set get_solution_choices_without_dep_info(const solution &s)
-  {
-    choice_set rval;
-    widen_choices_to_contents populator(rval);
-
-    s.get_choices().for_each(populator);
-
-    return rval;
-  }
-
-  /** \brief Determine the tier of the given solution using only the
-   *  promotions set.
-   *
-   *  \param has_new_promotion    Set to true if a promotion
-   *                              to a higher tier was found.
-   *  \param new_promotion        Set to the new promotion (if any)
-   *                              of the solution.
-   *
-   *  For a completely correct calculation of the solution's tier,
-   *  callers should ensure that tier information from each version
-   *  contained in the solution is already "baked in" (this is true
-   *  for anything we pull from the open queue).
-   */
-  const tier &get_solution_tier(const solution &s,
-				bool &has_new_promotion,
-				promotion &new_promotion) const
-  {
-    has_new_promotion = false;
-    const tier &s_tier(s.get_tier());
-    choice_set choices = s.get_choices();
-    typename promotion_set::const_iterator found =
-      promotions.find_highest_promotion_for(choices);
-    if(found != promotions.end())
-      {
-	const promotion &found_p(*found);
-	const tier &found_tier(found_p.get_tier());
-	if(s_tier < found_tier)
-	  {
-	    has_new_promotion = true;
-	    new_promotion = found_p;
-	    return found_tier;
-	  }
-	else
-	  return s_tier;
-      }
-    else
-      return s_tier;
-  }
-
-  /** \brief Determine the tier of the given solution, based only
-   *  on promotions containing the given choice.
-   */
-  const tier &get_solution_tier_containing(const solution &s,
-					   const choice &c) const
-  {
-    // Build a set of choices.  \todo Maybe solutions should be based
-    // on the "choice" object instead of versions / broken deps?
-
-    const tier &s_tier = s.get_tier();
-    choice_set choices = s.get_choices();
-
-    typename promotion_set::const_iterator found =
-      promotions.find_highest_promotion_containing(choices, c);
-
-    if(found != promotions.end())
-      {
-	const tier &found_tier = found->get_tier();
-	if(found_tier > s_tier)
-	  return found_tier;
-	else
-	  return s_tier;
-      }
-    else
-      return s_tier;
-  }
-
-  // Note that these routines are slower than they could be: with some
-  // extra indexing in choice_set and/or more generic stuff in immset,
-  // they could use the fast set containment algorithm that immset
-  // provides.  But they are only invoked when the user constraints
-  // are changed, or when a solution is being added to or removed from
-  // the queue.  This is a relatively infrequent operation, and it
-  // wouldn't be worth the trouble to speed it up.
-
-  struct choice_does_not_break_user_constraint
-  {
-    const std::set<version> &rejected_versions;
-    const std::set<version> &mandated_versions;
-    const std::set<dep> &hardened_deps;
-    const std::set<dep> &approved_broken_deps;
-    const resolver_initial_state<PackageUniverse> &initial_state;
-    choice_set &reasons;
-    log4cxx::LoggerPtr logger;
-
-    choice_does_not_break_user_constraint(const std::set<version> &_rejected_versions,
-					  const std::set<version> &_mandated_versions,
-					  const std::set<dep> &_hardened_deps,
-					  const std::set<dep> &_approved_broken_deps,
-					  const resolver_initial_state<PackageUniverse> &_initial_state,
-					  choice_set &_reasons,
-					  const log4cxx::LoggerPtr &_logger)
-      : rejected_versions(_rejected_versions),
-	mandated_versions(_mandated_versions),
-	hardened_deps(_hardened_deps),
-	approved_broken_deps(_approved_broken_deps),
-	initial_state(_initial_state),
-	reasons(_reasons),
-	logger(_logger)
-    {
-    }
-
-    /** \brief Test whether a choice violates a user-specified
-     *  constraint.
-     *
-     *  \return \b true if the choice is OK, \b false if it breaks a
-     *  user constraint.
-     *
-     *  Because this returns \b false if it breaks a user constraint,
-     *  it is suitable for use with choice_set::for_each (it will
-     *  short-circuit and cause for_each() to return true or false as
-     *  appropriate).
-     */
-    bool operator()(const choice &c) const
-    {
-      // Check the easy cases first: it's rejected (in which case it
-      // violates a constraint) or it's mandated (in which case it
-      // definitely doesn't).  The only remaining case is that it
-      // avoids a mandated choice; that's handled below.
-      switch(c.get_type())
-	{
-	case choice::install_version:
-	  {
-	    version ver(c.get_ver());
-	    if(rejected_versions.find(ver) != rejected_versions.end())
-	      {
-		LOG_TRACE(logger, c << " is rejected: it installs the rejected version " << ver);
-		reasons.insert_or_narrow(choice::make_install_version(c.get_ver(), c.get_id()));
-		return false;
-	      }
-
-	    if(mandated_versions.find(ver) != mandated_versions.end())
-	      return true;
-
-	    break;
-	  }
-
-	case choice::break_soft_dep:
-	  {
-	    dep d(c.get_dep());
-
-	    if(hardened_deps.find(d) != hardened_deps.end())
-	      {
-		LOG_TRACE(logger, c << " is rejected: it breaks the hardened soft dependency " << d);
-		reasons.insert_or_narrow(choice::make_break_soft_dep(c.get_dep(), c.get_id()));
-		return false;
-	      }
-
-	    if(approved_broken_deps.find(d) != approved_broken_deps.end())
-	      return true;
-	  }
-
-	  break;
-	}
-
-      // Testing whether the choice avoids a mandated choice is
-      // trickier; we have to unpack it and look at what the
-      // alternatives were.
-
-
-      // \todo This preserves the old behavior, but I don't think it's
-      // right.  If an approved alternative was thrown out because it
-      // was illegal, that shouldn't cause all the other alternatives
-      // to be deferred.  We should invoke is_legal() to double-check
-      // that each alternative could actually be chosen (and thus this
-      // routine should take a solution so that we have some context).
-      switch(c.get_type())
-	{
-	case choice::install_version:
-	  {
-	    const dep &d(c.get_dep());
-	    const version &chosen(c.get_ver());
-
-	    // We could have avoided this choice by installing a
-	    // version of the dependency's source that's not the
-	    // version we chose or the source itself.
-	    version source(d.get_source());
-	    package source_p(source.get_package());
-
-	    for(typename package::version_iterator vi = source_p.versions_begin();
-		!vi.end(); ++vi)
-	      {
-		version alternate(*vi);
-
-		if(alternate != source && alternate != chosen)
-		  {
-		    if(mandated_versions.find(alternate) != mandated_versions.end())
-		      {
-			LOG_TRACE(logger, c << " avoids installing the mandated version "
-				  << alternate << " to solve the dependency " << d);
-			reasons.insert_or_narrow(choice::make_install_version(chosen,
-									      true, d, c.get_id()));
-			return false;
-		      }
-		  }
-	      }
-
-	    // We could also have avoided this choice by installing a
-	    // different solver of the same dependency.
-	    for(typename dep::solver_iterator si = d.solvers_begin();
-		!si.end(); ++si)
-	      {
-		version solver(*si);
-
-		if(solver != chosen)
-		  {
-		    if(mandated_versions.find(solver) != mandated_versions.end())
-		      {
-			LOG_TRACE(logger, c << " avoids installing the mandated version "
-				  << solver << " to solve the dependency " << d);
-			reasons.insert_or_narrow(choice::make_install_version(chosen,
-									      true, d, c.get_id()));
-			return false;
-		      }
-		  }
-	      }
-
-
-
-	    // We could also have violated a user constraint by
-	    // accidentally solving a soft dependency that the user
-	    // told us to break.  Because of the possibly inconsistent
-	    // reverse dependency links, we need to check the reverse
-	    // dependencies of both the target and the initial
-	    // versions, to ensure that all the dependencies are
-	    // found.
-	    //
-	    // (note: in the apt case, checking both lists isn't
-	    // necessary because soft dependencies always appear in
-	    // the right place (only Conflicts are a problem and
-	    // they're never soft); however, this double check makes
-	    // the code more obviously correct)
-	    if(!d.is_soft())
-	      return true;
-
-	    for(typename version::revdep_iterator rdi = chosen.revdeps_begin();
-		!rdi.end(); ++rdi)
-	      {
-		dep rd(*rdi);
-
-		if(rd.is_soft())
-		  {
-		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
-		      {
-			LOG_TRACE(logger, c << " solves the soft dependency " << rd
-				  << " which was mandated to be broken.");
-			reasons.insert_or_narrow(choice::make_install_version(chosen, true, d, c.get_id()));
-			return false;
-		      }
-		  }
-	      }
-
-	    version chosen_initial(initial_state.version_of(chosen.get_package()));
-	    for(typename version::revdep_iterator rdi = chosen_initial.revdeps_begin();
-		!rdi.end(); ++rdi)
-	      {
-		dep rd(*rdi);
-
-		if(rd.is_soft())
-		  {
-		    if(approved_broken_deps.find(rd) != approved_broken_deps.end())
-		      {
-			LOG_TRACE(logger, c << " solves the soft dependency " << rd
-				  << " which was mandated to be broken.");
-			reasons.insert_or_narrow(choice::make_install_version(chosen, true, d, c.get_id()));
-			return false;
-		      }
-		  }
-	      }
-	  }
-
-	  return true;
-
-	case choice::break_soft_dep:
-	  // This could only avoid a mandated choice if a move that
-	  // would have solved the dependency was mandated.  That is:
-	  // we need to check other versions of the source, and each
-	  // solver of the dependency.
-	  {
-	    const dep &d(c.get_dep());
-	    version source(d.get_source());
-	    package source_p(source.get_package());
-
-	    for(typename package::version_iterator vi = source_p.versions_begin();
-		!vi.end(); ++vi)
-	      {
-		version alternate(*vi);
-
-		if(alternate != source &&
-		   mandated_versions.find(alternate) != mandated_versions.end())
-		  {
-		    LOG_TRACE(logger, c << " fails to install the mandated version " << alternate);
-		    reasons.insert_or_narrow(choice::make_break_soft_dep(d, c.get_id()));
-		    return false;
-		  }
-	      }
-
-	    for(typename dep::solver_iterator si = d.solvers_begin();
-		!si.end(); ++si)
-	      {
-		version solver(*si);
-
-		if(mandated_versions.find(solver) != mandated_versions.end())
-		  {
-		    LOG_TRACE(logger, c << " fails to install the mandated version " << solver);
-		    reasons.insert_or_narrow(choice::make_break_soft_dep(d, c.get_id()));
-		    return false;
-		  }
-	      }
-	  }
-
-	  return true;
-	}
-
-      LOG_ERROR(logger, c << " is an unknown choice type!");
-      return true;
-    }
-  };
-
   /** \brief If the given step is already "seen", mark it as a clone
    *  and return true (telling our caller to abort).
    */
@@ -1425,7 +1065,7 @@ private:
 
     typename std::map<step_contents, int>::const_iterator found =
       closed.find(step_contents(s));
-    if(found != closed.end())
+    if(found != closed.end() && found->second != stepNum)
       {
 	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already encountered in this search.");
 	graph.add_clone(found->second, stepNum);
@@ -1505,6 +1145,13 @@ private:
 
     if(s.step_tier == t)
       return;
+
+    if(s.is_blessed_solution && t >= tier_limits::already_generated_tier)
+      {
+	LOG_TRACE(logger, "Step " << s.step_num
+		  << " is a blessed solution; ignoring the attempt to promote it to tier " << t);
+	return;
+      }
 
     LOG_TRACE(logger, "Setting the tier of step " << step_num
 	      << " to " << t);
@@ -1607,9 +1254,8 @@ private:
      */
     int solver_hits;
 
-    /** \brief Set to the first choice in the solver set that the
-     *  promotion hit; if we later get a more general solver, we
-     *  update this member.
+    /** \brief Set to the first choice in the promotion that was
+     *  mapped to a solver.
      *
      *  We only need to store one because there will only be a single
      *  choice stored as a solver in steps that contain all but one
@@ -1634,12 +1280,15 @@ private:
   {
     std::map<int, incipient_promotion_search_info> &output;
     std::set<int> &visited_solver_steps;
+    const choice &promotion_c;
 
   public:
     update_incipient_promotion_information(std::map<int, incipient_promotion_search_info> &_output,
-					   std::set<int> &_visited_solver_steps)
+					   std::set<int> &_visited_solver_steps,
+					   const choice &_promotion_c)
       : output(_output),
-	visited_solver_steps(_visited_solver_steps)
+	visited_solver_steps(_visited_solver_steps),
+	promotion_c(_promotion_c)
     {
     }
 
@@ -1661,19 +1310,11 @@ private:
 	      !visited_solver_steps.insert(step_num).second;
 
 	    if(already_visited)
-	      {
-		// If this is more general than the currently stored
-		// solver, replace that solver with this one.  (this
-		// handles things like hitting a from-dep-source
-		// solver first, then another solver later)
-		if(c.contains(output_inf.solver))
-		  output_inf.solver = c;
-		return true;
-	      }
+	      return true;
 	  }
 
 	  ++output_inf.solver_hits;
-	  output_inf.solver = c;
+	  output_inf.solver = promotion_c;
 	  break;
 	}
 
@@ -1704,7 +1345,7 @@ private:
     {
       std::set<int> steps_containing_c_as_a_solver;
       update_incipient_promotion_information
-	update_f(output, steps_containing_c_as_a_solver);
+	update_f(output, steps_containing_c_as_a_solver, c);
 
       graph.for_each_step_related_to_choice(c, update_f);
 
@@ -1910,6 +1551,10 @@ private:
     bool operator()(const choice &victim,
 		    imm::list<dep> solved_by_victim) const
     {
+      LOG_TRACE(logger, "Removing the choice " << victim
+		<< " from the solver lists of " << solved_by_victim
+		<< " in step " << s.step_num);
+
       for(typename imm::list<dep>::const_iterator it = solved_by_victim.begin();
 	  it != solved_by_victim.end(); ++it)
 	{
@@ -1917,8 +1562,7 @@ private:
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  graph.remove_choice(victim, s.step_num,
-			      search_graph::choice_mapping_solver, d);
+	  graph.remove_choice(victim, s.step_num, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
@@ -2256,6 +1900,25 @@ private:
       }
   }
 
+  /** \brief Predicate used to throw away promotions whose tier is too
+   *  high.
+   */
+  class not_above_tier
+  {
+    const tier &t;
+
+  public:
+    not_above_tier(const tier &_t)
+      : t(_t)
+    {
+    }
+
+    bool operator()(const promotion &p) const
+    {
+      return !(p.get_tier() >= t);
+    }
+  };
+
   /** \brief Find promotions triggered by the given solver and
    *  increment its tier accordingly.
    */
@@ -2268,9 +1931,13 @@ private:
 
     output_domain.put(solver, true);
 
+    not_above_tier not_above_p(s.is_blessed_solution
+			       ? tier_limits::already_generated_tier
+			       : tier_limits::maximum_tier);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
 							    output_domain,
+							    not_above_p,
 							    triggered_promotions);
 
     // Sanity-check.
@@ -2414,8 +2081,7 @@ private:
 	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
-    graph.bind_choice(solver, s.step_num,
-		      search_graph::choice_mapping_solver, d);
+    graph.bind_choice(solver, s.step_num, d);
   }
 
   /** \brief Find the smallest tier out of the solvers of a single
@@ -2957,85 +2623,18 @@ private:
     std::map<choice, promotion> output;
 
     s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
+    not_above_tier not_above_p(s.is_blessed_solution
+			       ? tier_limits::already_generated_tier
+			       : tier_limits::maximum_tier);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    c,
 							    output_domain,
+							    not_above_p,
 							    output);
 
     for(typename std::map<choice, promotion>::const_iterator it =
 	  output.begin(); it != output.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
-  }
-
-  class add_solver_information_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-    dep d; // The dependency whose solvers are being examined.
-
-  public:
-    add_solver_information_to_reverse_index(search_graph &_g,
-					    int _step_num,
-					    const dep &_d)
-      : g(_g), step_num(_step_num), d(_d)
-    {
-    }
-
-    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
-    {
-      g.bind_choice(p.first, step_num, search_graph::choice_mapping_solver, d);
-
-      return true;
-    }
-  };
-
-  class add_dep_solvers_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_dep_solvers_to_reverse_index(search_graph &_g,
-				     int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
-    {
-      add_solver_information_to_reverse_index
-	add_solvers_f(g, step_num, p.first);
-      p.second.get_solvers().for_each(add_solvers_f);
-
-      return true;
-    }
-  };
-
-  class add_action_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_action_to_reverse_index(search_graph &_g,
-				int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const choice &c) const
-    {
-      g.bind_choice(c, step_num, search_graph::choice_mapping_action,
-		    c.get_dep());
-
-      return true;
-    }
-  };
-
-  void add_step_contents_to_reverse_index(const step &s)
-  {
-    s.actions.for_each(add_action_to_reverse_index(graph, s.step_num));
-    s.unresolved_deps.for_each(add_dep_solvers_to_reverse_index(graph, s.step_num));
   }
 
   /** \brief Update a step's score to compute its successor, given
@@ -3145,12 +2744,27 @@ private:
 	      << " for the action " << c << " with tier "
 	      << output_tier << " and outputting to step " << output.step_num);
 
+    if(c.get_type() == choice::install_version && !c.get_has_dep())
+      LOG_ERROR(logger, "No dependency attached to the choice " << c
+		<< " used to generate step " << output.step_num
+		<< ", expect trouble ahead.");
+
     // Insert the new choice into the output list of choices.  This
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
 
-    // Add the new step into the global reverse index.
-    add_step_contents_to_reverse_index(output);
+    // Don't do this, because it isn't necessary and will cause
+    // trouble.
+    //
+    // By definition, this step is a child of a step where c occurs as
+    // a solver, hence it will be contained in the tree trace rooted
+    // at the step where c was introduced as a solver.  If we also
+    // added c as an action here, we would have to somehow guard in
+    // the search graph code against traversing this subtree twice,
+    // which is a bit of a nuisance and not necessary.
+    //
+    //  graph.bind_choice(c, output.step_num, c.get_dep());
+
 
     // 1. Find the list of solved dependencies and drop each one from
     // the map of unresolved dependencies, and from the set sorted by
@@ -3205,16 +2819,16 @@ private:
 
   class do_generate_single_successor
   {
-    const step &parent;
+    int parent_step_num;
     generic_problem_resolver &resolver;
 
     bool &first;
 
   public:
-    do_generate_single_successor(const step &_parent,
+    do_generate_single_successor(int _parent_step_num,
 				 generic_problem_resolver &_resolver,
 				 bool &_first)
-      : parent(_parent), resolver(_resolver), first(_first)
+      : parent_step_num(_parent_step_num), resolver(_resolver), first(_first)
     {
       first = false;
     }
@@ -3229,8 +2843,11 @@ private:
       const choice &solver(solver_pair.first);
       const typename step::solver_information &inf(solver_pair.second);
 
+      step &parent = resolver.graph.get_step(parent_step_num);
       step &output = resolver.graph.add_step();
       output.parent = parent.step_num;
+      if(parent.first_child == -1)
+	parent.first_child = output.step_num;
       output.is_last_child = true;
 
       resolver.generate_single_successor(parent,
@@ -3281,7 +2898,7 @@ private:
 	      << " with " << best.getVal().first << " solvers: "
 	      << bestSolvers.getVal().second.get_solvers());
     bool first_successor = false;
-    do_generate_single_successor generate_successor_f(s, *this,
+    do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
     bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
   }
@@ -3795,6 +3412,86 @@ private:
       graph.get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
   }
 
+  /** \brief Process the given step number and generate its
+   *  successors.
+   */
+  void process_step(int step_num, std::set<package> *visited_packages)
+  {
+    bool done;
+
+    do
+      {
+	done = true;
+
+	step &s = graph.get_step(step_num);
+
+	LOG_INFO(logger, "Examining step " << step_num
+		 << ": " << s.actions << ";T" << s.step_tier
+		 << "S" << s.score);
+
+	if(s.step_tier >= tier_limits::defer_tier)
+	  {
+	    LOG_ERROR(logger, "Internal error: the tier of step "
+		      << s.step_num
+		      << " is an unprocessed tier, so why is it a candidate?");
+	    // Bail out.
+	    return;
+	  }
+
+	if(is_already_seen(step_num))
+	  {
+	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
+	  }
+	else if(irrelevant(s))
+	  {
+	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
+	  }
+	else
+	  {
+	    LOG_TRACE(logger, "Processing step " << step_num);
+
+	    closed[step_contents(s.score, s.action_score, s.actions)] =
+	      step_num;
+
+	    // If all dependencies are satisfied, we found a solution.
+	    if(s.unresolved_deps.empty())
+	      {
+		LOG_INFO(logger, " --- Found solution at step " << s.step_num
+			 << ": " << s.actions << ";T" << s.step_tier
+			 << "S" << s.score);
+
+		// Remember this solution, so we don't try to return it
+		// again in the future.
+		choice_set generalized_actions;
+		for(typename choice_set::const_iterator it = s.actions.begin();
+		    it != s.actions.end(); ++it)
+		  generalized_actions.insert_or_narrow(it->generalize());
+		promotion already_generated_promotion(generalized_actions,
+						      tier_limits::already_generated_tier);
+		add_promotion(step_num, already_generated_promotion);
+
+		s.is_blessed_solution = true;
+		pending_future_solutions.insert(step_num);
+	      }
+	    // Nope, let's go enqueue successor nodes.
+	    else
+	      {
+		generate_successors(step_num, visited_packages);
+		// If we enqueued *exactly* one successor, then this
+		// was a forced dependency and we should process that
+		// successor before returning.
+		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child)
+		  {
+		    LOG_TRACE(logger, "Following forced dependency resolution from step "
+			      << step_num << " to step " << s.first_child);
+		    step_num = s.first_child;
+		    done = false;
+		  }
+	      }
+	  }
+      } while(!done);
+  }
+
 public:
   /** Try to find the "next" solution: remove partial solutions from
    *  the open queue and place them in the closed queue until one of
@@ -3853,12 +3550,11 @@ public:
     if(finished)
       throw NoMoreSolutions();
 
-    // If the open queue is empty, then we're between searches and
-    // should enqueue a new root node.
-    if(pending.empty())
+    // If nothing has been processed, then we need to start a new
+    // search.
+    if(pending.empty() && pending_future_solutions.empty() && closed.empty())
       {
 	LOG_INFO(logger, "Starting a new search.");
-	closed.clear();
 
 	step &root = graph.add_step();
 	root.action_score = 0;
@@ -3898,85 +3594,26 @@ public:
 	int curr_step_num = *pending.begin();
 	pending.erase(pending.begin());
 
-	step &s = graph.get_step(curr_step_num);
-
-	LOG_INFO(logger, "Examining step " << curr_step_num
-		 << ": " << s.actions << ";T" << s.step_tier
-		 << "S" << s.score);
-
 	++odometer;
 
-	if(s.step_tier >= tier_limits::defer_tier)
-	  {
-	    LOG_ERROR(logger, "Internal error: the tier of step "
-		      << s.step_num
-		      << " is an unprocessed tier, so why is it a candidate?");
-	    // Bail out.
-	    break;
-	  }
+	process_step(curr_step_num, visited_packages);
 
-	if(is_already_seen(curr_step_num))
-	  {
-	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
-	  }
-	else if(irrelevant(s))
-	  {
-	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
-	  }
+	// Keep track of the "future horizon".  If we haven't found a
+	// solution, we aren't using those steps up at all.
+	// Otherwise, we count up until we hit 50.
+	if(pending_future_solutions_contains_candidate())
+	  ++most_future_solution_steps;
 	else
-	  {
-	    LOG_TRACE(logger, "Processing step " << curr_step_num);
+	  most_future_solution_steps = 0;
 
-	    closed[step_contents(s.score, s.action_score, s.actions)] =
-	      curr_step_num;
+	LOG_TRACE(logger, "Done generating successors.");
 
-	    // If all dependencies are satisfied, we found a solution.
-	    if(s.unresolved_deps.empty())
-	      {
-		LOG_INFO(logger, " --- Found solution at step " << s.step_num
-			 << ": " << s.actions << ";T" << s.step_tier
-			 << "S" << s.score);
+	--max_steps;
 
-		// Remember this solution, so we don't try to return it
-		// again in the future.
-		choice_set generalized_actions;
-		for(typename choice_set::const_iterator it = s.actions.begin();
-		    it != s.actions.end(); ++it)
-		  generalized_actions.insert_or_narrow(it->generalize());
-		promotion already_generated_promotion(generalized_actions,
-						      tier_limits::already_generated_tier);
-		add_promotion(curr_step_num, already_generated_promotion);
 
-		LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
-
-		LOG_INFO(logger, " *** open: " << pending.size()
-			 << "; closed: " << closed.size()
-			 << "; promotions: " << promotions.size()
-			 << "; deferred: " << get_num_deferred());
-
-		pending_future_solutions.insert(curr_step_num);
-	      }
-	    // Nope, let's go enqueue successor nodes.
-	    else
-	      generate_successors(curr_step_num, visited_packages);
-
-	    // Propagate any new promotions that we discovered up the
-	    // search tree.
-	    graph.run_scheduled_promotion_propagations(promotion_adder(*this));
-
-	    // Keep track of the "future horizon".  If we haven't found a
-	    // solution, we aren't using those steps up at all.
-	    // Otherwise, we count up until we hit 50.
-	    if(pending_future_solutions_contains_candidate())
-	      ++most_future_solution_steps;
-	    else
-	      most_future_solution_steps = 0;
-
-	    LOG_TRACE(logger, "Done generating successors.");
-
-	    --max_steps;
-	  }
-
+	// Propagate any new promotions that we discovered up the
+	// search tree.
+	graph.run_scheduled_promotion_propagations(promotion_adder(*this));
 	process_pending_promotions();
       }
 
@@ -4000,6 +3637,13 @@ public:
 			  initial_state,
 			  best_future_solution_step.score,
 			  best_future_solution_step.step_tier);
+
+	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
+
+	    LOG_INFO(logger, " *** open: " << pending.size()
+		     << "; closed: " << closed.size()
+		     << "; promotions: " << promotions.size()
+		     << "; deferred: " << get_num_deferred());
 
 	    LOG_INFO(logger, "--- Returning the future solution "
 		     << rval << " from step " << best_future_solution);

@@ -196,10 +196,6 @@ public:
 		return true;
 	      else if(!other.from_dep_source)
 		return false;
-	      else if(!has_dep && other.has_dep)
-		return true;
-	      else if(has_dep && !other.has_dep)
-		return false;
 	      else
 		return d == other.d;
 	    }
