@@ -2831,7 +2831,7 @@ private:
 				 bool &_first)
       : parent_step_num(_parent_step_num), resolver(_resolver), first(_first)
     {
-      first = false;
+      first = true;
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &solver_pair) const
