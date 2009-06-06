@@ -2877,16 +2877,16 @@ private:
 
   class do_generate_single_successor
   {
-    const step &parent;
+    int parent_step_num;
     generic_problem_resolver &resolver;
 
     bool &first;
 
   public:
-    do_generate_single_successor(const step &_parent,
+    do_generate_single_successor(int _parent_step_num,
 				 generic_problem_resolver &_resolver,
 				 bool &_first)
-      : parent(_parent), resolver(_resolver), first(_first)
+      : parent_step_num(_parent_step_num), resolver(_resolver), first(_first)
     {
       first = false;
     }
@@ -2901,6 +2901,7 @@ private:
       const choice &solver(solver_pair.first);
       const typename step::solver_information &inf(solver_pair.second);
 
+      step &parent = resolver.graph.get_step(parent_step_num);
       step &output = resolver.graph.add_step();
       output.parent = parent.step_num;
       output.is_last_child = true;
@@ -2953,7 +2954,7 @@ private:
 	      << " with " << best.getVal().first << " solvers: "
 	      << bestSolvers.getVal().second.get_solvers());
     bool first_successor = false;
-    do_generate_single_successor generate_successor_f(s, *this,
+    do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
     bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
   }
