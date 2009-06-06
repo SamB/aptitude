@@ -2817,7 +2817,7 @@ private:
 	      << " for the action " << c << " with tier "
 	      << output_tier << " and outputting to step " << output.step_num);
 
-    if(!c.get_has_dep())
+    if(c.get_type() == choice::install_version && !c.get_has_dep())
       LOG_ERROR(logger, "No dependency attached to the choice " << c
 		<< " used to generate step " << output.step_num
 		<< ", expect trouble ahead.");
