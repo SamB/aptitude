@@ -2733,6 +2733,7 @@ private:
     // won't spit out false positives.
     output.action_score = parent.action_score;
     output.score = parent.score;
+    output.reason = c;
     output.step_tier = output_tier;
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
