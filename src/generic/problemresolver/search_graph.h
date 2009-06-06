@@ -1310,6 +1310,45 @@ public:
 	curr_step.promotions_list_first_new_promotion -= num_old_promotions_deleted;
       }
   }
+
+  /** \brief Dump a dot-format representation of this graph to the
+   *  given stream.
+   *
+   *  For debugging purposes.
+   */
+  void write_graph(std::ostream &out)
+  {
+    out << "digraph {" << std::endl;
+    for(typename std::deque<step>::const_iterator it = steps.begin();
+	it != steps.end(); ++it)
+      {
+	out << it->step_num << " [label=\"Step " << it->step_num << "\\n"
+	    << it->actions.size() << " actions\", shape=box";
+
+	if(it->is_last_child)
+	  out << ", style=filled, fillcolor=lightgray";
+
+	out << "];" << std::endl;
+
+	int i = it->first_child;
+	while(i != -1)
+	  {
+	    const step &child(steps[i]);
+
+	    if(child.parent != it->step_num)
+	      // It's a phantom link; graph accordingly.
+	      out << it->step_num << " -> " << child.step_num << " [style=dashed];" << std::endl;
+	    else
+	      out << it->step_num << " -> " << child.step_num << " [label=\"" << child.reason << "\"];" << std::endl;
+
+	    if(child.is_last_child)
+	      i = -1;
+	    else
+	      ++i;
+	  }
+      }
+    out << "}" << std::endl;
+  }
 };
 
 template<typename PackageUniverse>
