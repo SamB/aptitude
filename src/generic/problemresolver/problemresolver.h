@@ -2894,6 +2894,9 @@ private:
 	return;
       }
 
+    if(bestSolvers.getVal().second.get_solvers().empty())
+      LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
+
     LOG_TRACE(logger, "Generating successors for step " << step_num
 	      << " for the dependency " << best.getVal().second
 	      << " with " << best.getVal().first << " solvers: "
