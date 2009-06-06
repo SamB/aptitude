@@ -2817,6 +2817,11 @@ private:
 	      << " for the action " << c << " with tier "
 	      << output_tier << " and outputting to step " << output.step_num);
 
+    if(!c.get_has_dep())
+      LOG_ERROR(logger, "No dependency attached to the choice " << c
+		<< " used to generate step " << output.step_num
+		<< ", expect trouble ahead.");
+
     // Insert the new choice into the output list of choices.  This
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
