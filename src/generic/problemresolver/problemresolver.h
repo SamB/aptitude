@@ -1065,7 +1065,7 @@ private:
 
     typename std::map<step_contents, int>::const_iterator found =
       closed.find(step_contents(s));
-    if(found != closed.end())
+    if(found != closed.end() && found->second != stepNum)
       {
 	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already encountered in this search.");
 	graph.add_clone(found->second, stepNum);
