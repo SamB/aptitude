@@ -1562,8 +1562,7 @@ private:
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  graph.remove_choice(victim, s.step_num,
-			      search_graph::choice_mapping_solver, d);
+	  graph.remove_choice(victim, s.step_num, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
@@ -2082,8 +2081,7 @@ private:
 	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
-    graph.bind_choice(solver, s.step_num,
-		      search_graph::choice_mapping_solver, d);
+    graph.bind_choice(solver, s.step_num, d);
   }
 
   /** \brief Find the smallest tier out of the solvers of a single
@@ -2639,77 +2637,6 @@ private:
       increase_solver_tier(s, it->second, it->first);
   }
 
-  class add_solver_information_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-    dep d; // The dependency whose solvers are being examined.
-
-  public:
-    add_solver_information_to_reverse_index(search_graph &_g,
-					    int _step_num,
-					    const dep &_d)
-      : g(_g), step_num(_step_num), d(_d)
-    {
-    }
-
-    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
-    {
-      g.bind_choice(p.first, step_num, search_graph::choice_mapping_solver, d);
-
-      return true;
-    }
-  };
-
-  class add_dep_solvers_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_dep_solvers_to_reverse_index(search_graph &_g,
-				     int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
-    {
-      add_solver_information_to_reverse_index
-	add_solvers_f(g, step_num, p.first);
-      p.second.get_solvers().for_each(add_solvers_f);
-
-      return true;
-    }
-  };
-
-  class add_action_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_action_to_reverse_index(search_graph &_g,
-				int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const choice &c) const
-    {
-      g.bind_choice(c, step_num, search_graph::choice_mapping_action,
-		    c.get_dep());
-
-      return true;
-    }
-  };
-
-  void add_step_contents_to_reverse_index(const step &s)
-  {
-    s.actions.for_each(add_action_to_reverse_index(graph, s.step_num));
-    s.unresolved_deps.for_each(add_dep_solvers_to_reverse_index(graph, s.step_num));
-  }
-
   /** \brief Update a step's score to compute its successor, given
    *  that the given choice was added to its action set.
    */
@@ -2826,8 +2753,18 @@ private:
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
 
-    // Add the new step into the global reverse index.
-    add_step_contents_to_reverse_index(output);
+    // Don't do this, because it isn't necessary and will cause
+    // trouble.
+    //
+    // By definition, this step is a child of a step where c occurs as
+    // a solver, hence it will be contained in the tree trace rooted
+    // at the step where c was introduced as a solver.  If we also
+    // added c as an action here, we would have to somehow guard in
+    // the search graph code against traversing this subtree twice,
+    // which is a bit of a nuisance and not necessary.
+    //
+    //  graph.bind_choice(c, output.step_num, c.get_dep());
+
 
     // 1. Find the list of solved dependencies and drop each one from
     // the map of unresolved dependencies, and from the set sorted by
