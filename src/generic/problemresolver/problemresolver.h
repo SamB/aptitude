@@ -2909,6 +2909,8 @@ private:
       step &parent = resolver.graph.get_step(parent_step_num);
       step &output = resolver.graph.add_step();
       output.parent = parent.step_num;
+      if(parent.first_child == -1)
+	parent.first_child = output.step_num;
       output.is_last_child = true;
 
       resolver.generate_single_successor(parent,
