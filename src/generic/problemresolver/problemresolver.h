@@ -1198,8 +1198,15 @@ private:
    */
   void add_promotion(const promotion &p)
   {
-    promotions.insert(p);
-    pending_promotions.push_back(p);
+    if(promotions.insert(p) != promotions.end())
+      {
+	LOG_TRACE(logger, "Added the promotion " << p
+		  << " to the global promotion set; preparing to apply it to all active steps.");
+	pending_promotions.push_back(p);
+      }
+    else
+      LOG_TRACE(logger, "Not applying " << p
+		<< " to all active steps: it was redundant with an existing promotion.");
   }
 
   // Used as a callback by subroutines that want to add a promotion to
