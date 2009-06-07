@@ -1982,14 +1982,15 @@ private:
 	  {
 	    tier new_tier;
 	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
+	    cwidget::util::ref_ptr<expression<bool> > new_tier_valid;
 	    choice solver_with_dep(solver.copy_and_set_dep(solver_dep));
 	    get_solver_tier(solver_with_dep,
-			    new_tier, new_tier_is_deferred);
+			    new_tier, new_tier_is_deferred, new_tier_valid);
 
 	    typename step::solver_information
 	      new_solver_inf(new_tier,
 			     choice_set(),
-			     new_tier_is_deferred,
+			     new_tier_valid,
 			     new_tier_is_deferred);
 	    new_solvers.put(solver_with_dep, new_solver_inf);
 	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
@@ -2067,7 +2068,8 @@ private:
    */
   void get_solver_tier(const choice &c,
 		       tier &out_tier,
-		       cwidget::util::ref_ptr<expression_box<bool> > &out_c_is_deferred)
+		       cwidget::util::ref_ptr<expression_box<bool> > &out_c_is_deferred,
+		       cwidget::util::ref_ptr<expression<bool> > &out_tier_valid)
   {
     // Right now only deferrals can be retracted; other tier
     // assignments are immutable.
@@ -2075,9 +2077,13 @@ private:
 
     out_tier = tier_limits::minimum_tier;
     if(out_c_is_deferred->get_value())
-      out_tier = tier_limits::defer_tier;
+      {
+	out_tier = tier_limits::defer_tier;
+	out_tier_valid = out_c_is_deferred->get_child();
+      }
     else
       {
+	out_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
 	switch(c.get_type())
 	  {
 	  case choice::install_version:
@@ -2165,7 +2171,8 @@ private:
     // that include the new solvers and update tiers appropriately.
     tier choice_tier;
     cwidget::util::ref_ptr<expression_box<bool> > choice_is_deferred;
-    get_solver_tier(solver, choice_tier, choice_is_deferred);
+    cwidget::util::ref_ptr<expression<bool> > choice_tier_valid;
+    get_solver_tier(solver, choice_tier, choice_is_deferred, choice_tier_valid);
 
     LOG_TRACE(logger, "Adding the solver " << solver
 	      << " with initial tier " << choice_tier);
@@ -2173,7 +2180,7 @@ private:
       typename step::solver_information
 	new_solver_inf(choice_tier,
 		       choice_set(),
-		       choice_is_deferred,
+		       choice_tier_valid,
 		       choice_is_deferred);
       solvers.get_solvers().put(solver, new_solver_inf);
     }
