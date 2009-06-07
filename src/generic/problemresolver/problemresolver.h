@@ -1590,7 +1590,7 @@ private:
 			"Removing the choice " << victim
 			<< " from the solver set of " << d
 			<< " in step " << s.step_num
-			<< ": " << new_solvers.get_solvers());
+			<< ", new solvers: " << new_solvers.get_solvers());
 
 	      new_solvers.get_solvers().erase(victim);
 	      add_to_choice_list adder(new_solvers.get_structural_reasons());
@@ -1868,9 +1868,6 @@ private:
 			     const dep &solver_dep,
 			     const choice &solver)
   {
-    LOG_TRACE(logger, "Recomputing the tier of "
-	      << solver << " in the solver list of "
-	      << solver_dep << " in step " << s.step_num);
     typename imm::map<dep, typename step::dep_solvers>::node
       found_solvers(s.unresolved_deps.lookup(solver_dep));
 
@@ -1901,6 +1898,10 @@ private:
 			     new_tier_is_deferred);
 	    new_solvers.put(solver, new_solver_inf);
 	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
+	    LOG_TRACE(logger, "Recomputed the tier of "
+		      << solver << " in the solver list of "
+		      << solver_dep << " in step " << s.step_num
+		      << "; new solver list: " << new_dep_solvers);
 
 
 	    find_promotions_for_solver(s, solver);
@@ -2345,13 +2346,6 @@ private:
 		  // tiers hadn't actually changed.
 		  if(old_inf.get_tier() < new_tier)
 		    {
-		      LOG_TRACE(logger, "Increasing the tier of "
-				<< solver << " to " << new_tier
-				<< " in the solvers list of "
-				<< d << " in step " << s.step_num
-				<< " with the reason set " << new_choices
-				<< " and validity condition " << valid_condition);
-
 		      typename step::solver_information
 			new_inf(new_tier,
 				new_choices,
@@ -2363,6 +2357,15 @@ private:
 
 		      s.unresolved_deps.put(d, new_solvers);
 		      resolver.check_solvers_tier(s, new_solvers);
+
+		      LOG_TRACE(logger, "Increased the tier of "
+				<< solver << " to " << new_tier
+				<< " in the solvers list of "
+				<< d << " in step " << s.step_num
+				<< " with the reason set " << new_choices
+				<< " and validity condition " << valid_condition
+				<< "; new solvers list: " << new_solvers);
+
 		    }
 		}
 	    }
@@ -2552,6 +2555,9 @@ private:
 		 choice::make_break_soft_dep(d, -1));
 
     s.unresolved_deps.put(d, solvers);
+    LOG_TRACE(logger, "Marked the dependency " << d
+	      << " as unresolved in step " << s.step_num
+	      << " with solver list " << solvers);
 
     const int num_solvers = solvers.get_solvers().size();
     s.unresolved_deps_by_num_solvers.insert(std::make_pair(num_solvers, d));
