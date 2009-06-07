@@ -1386,8 +1386,18 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_solver_information<PackageUniverse> &info)
 {
-  return out << "(" << info.get_tier()
-	     << ":" << info.get_reasons() << ")";
+  out << "(" << info.get_tier()
+      << ":" << info.get_reasons();
+
+  if(info.get_tier_valid().valid())
+    out << "; V: " << info.get_tier_valid().unsafe_get_ref();
+
+  if(info.get_is_deferred_listener().valid())
+    out << "; L: " << info.get_is_deferred_listener().unsafe_get_ref();
+
+  out << ")";
+
+  return out;
 }
 
 template<typename PackageUniverse>
