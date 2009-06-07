@@ -2332,27 +2332,35 @@ private:
 			  << " but does not appear in its solvers list.");
 	      else
 		{
-		  LOG_TRACE(logger, "Increasing the tier of "
-			    << solver << " to " << new_tier
-			    << " in the solvers list of "
-			    << d << " in step " << s.step_num
-			    << " with the reason set " << new_choices
-			    << " and validity condition " << valid_condition);
 		  const typename step::solver_information &old_inf =
 		    solver_found.getVal().second;
 
-		  typename step::solver_information
-		    new_inf(new_tier,
-			    new_choices,
-			    step_tier_valid_listener::create(resolver,
-							     s.step_num,
-							     valid_condition),
-			    old_inf.get_is_deferred_listener());
-		  new_solvers.get_solvers().put(solver, new_inf);
-		}
+		  // Don't do anything if the tier won't increase.
+		  // Empirically, the resolver was wasting lots of
+		  // time and memory increasing tiers when the solver
+		  // tiers hadn't actually changed.
+		  if(old_inf.get_tier() < new_tier)
+		    {
+		      LOG_TRACE(logger, "Increasing the tier of "
+				<< solver << " to " << new_tier
+				<< " in the solvers list of "
+				<< d << " in step " << s.step_num
+				<< " with the reason set " << new_choices
+				<< " and validity condition " << valid_condition);
 
-	      s.unresolved_deps.put(d, new_solvers);
-	      resolver.check_solvers_tier(s, new_solvers);
+		      typename step::solver_information
+			new_inf(new_tier,
+				new_choices,
+				step_tier_valid_listener::create(resolver,
+								 s.step_num,
+								 valid_condition),
+				old_inf.get_is_deferred_listener());
+		      new_solvers.get_solvers().put(solver, new_inf);
+
+		      s.unresolved_deps.put(d, new_solvers);
+		      resolver.check_solvers_tier(s, new_solvers);
+		    }
+		}
 	    }
 	}
 
