@@ -2353,7 +2353,7 @@ private:
 								 s.step_num,
 								 valid_condition),
 				old_inf.get_is_deferred_listener());
-		      new_solvers.get_solvers().put(solver, new_inf);
+		      new_solvers.get_solvers().put(solver.copy_and_set_dep(d), new_inf);
 
 		      s.unresolved_deps.put(d, new_solvers);
 		      resolver.check_solvers_tier(s, new_solvers);
