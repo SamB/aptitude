@@ -1534,6 +1534,7 @@ private:
   /** \brief Process all pending promotions. */
   void process_pending_promotions()
   {
+    LOG_TRACE(logger, "Processing pending promotions and applying them to all steps.");
     while(!pending_promotions.empty())
       {
 	promotion p(pending_promotions.front());
