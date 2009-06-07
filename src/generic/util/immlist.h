@@ -22,6 +22,7 @@
 #include "refcounted_base.h"
 
 #include <algorithm>
+#include <iterator>
 
 namespace imm
 {
@@ -151,6 +152,12 @@ namespace imm
       {
       }
 
+      typedef typename std::forward_iterator_tag iterator_category;
+      typedef int difference_type;
+      typedef T value_type;
+      typedef T* pointer;
+      typedef T& reference;
+
       /** \brief Return \b true if the iterator points at a valid
        *  member of the list.
        */
@@ -160,6 +167,13 @@ namespace imm
       {
 	lst = lst->get_tail();
 	return *this;
+      }
+
+      const_iterator operator++(int)
+      {
+	const_iterator rval(this);
+	++(*this);
+	return rval;
       }
 
       bool operator==(const const_iterator &other) const
