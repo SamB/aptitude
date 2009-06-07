@@ -1198,7 +1198,9 @@ private:
    */
   void add_promotion(const promotion &p)
   {
-    if(promotions.insert(p) != promotions.end())
+    if(p.get_choices().size() == 0)
+      LOG_TRACE(logger, "Ignoring the empty promotion " << p);
+    else if(promotions.insert(p) != promotions.end())
       {
 	LOG_TRACE(logger, "Added the promotion " << p
 		  << " to the global promotion set; preparing to apply it to all active steps.");
