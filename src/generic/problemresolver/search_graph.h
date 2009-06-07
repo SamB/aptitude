@@ -215,12 +215,8 @@ public:
       return true;
     else if(other.solvers < solvers)
       return false;
-    else if(structural_reasons < other.structural_reasons)
-      return true;
-    else if(other.structural_reasons < structural_reasons)
-      return false;
     else
-      return true;
+      return structural_reasons < other.structural_reasons;
   }
 };
 
