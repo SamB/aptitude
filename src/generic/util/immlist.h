@@ -21,6 +21,8 @@
 #include <cwidget/generic/util/ref_ptr.h>
 #include "refcounted_base.h"
 
+#include <algorithm>
+
 namespace imm
 {
   /** \brief Immutable list, using the standard head/tail breakdown.
@@ -186,6 +188,12 @@ namespace imm
     const_iterator end() const
     {
       return const_iterator();
+    }
+
+    bool operator<(const list &other) const
+    {
+      return std::lexicographical_compare(begin(), end(),
+					  other.begin(), other.end());
     }
   };
 
