@@ -1620,6 +1620,10 @@ private:
 		      << " has no solver set, assuming it was already solved.");
 	}
 
+      LOG_TRACE(logger, "Removing all solved-by links for " << victim
+		<< " in step " << s.step_num);
+      s.deps_solved_by_choice.erase(victim);
+
       return true;
     }
   };
