@@ -127,6 +127,32 @@ public:
     else
       return cwidget::util::ref_ptr<expression<bool> >();
   }
+
+  /** \brief Compare two solver_information objects.
+   *
+   *  solver_informations are compared according to their fields.
+   *  This comparison is used to memoize solver_information objects;
+   *  the resolver is careful to ensure that solvers which can be
+   *  merged have the same deferred listeners and tier-valid
+   *  expressions.
+   */
+  bool operator<(const generic_solver_information &other) const
+  {
+    if(tier_valid < other.tier_valid)
+      return true;
+    else if(other.tier_valid < tier_valid)
+      return false;
+    else if(is_deferred_listener < other.is_deferred_listener)
+      return true;
+    else if(other.is_deferred_listener < is_deferred_listener)
+      return false;
+    else if(t < other.t)
+      return true;
+    else if(other.t < t)
+      return false;
+    else
+      return reasons < other.reasons;
+  }
 };
 
 /** \brief A structure that tracks the state of the solvers of a
@@ -178,6 +204,23 @@ public:
   const imm::list<choice> &get_structural_reasons() const
   {
     return structural_reasons;
+  }
+
+  /** \todo This should use some sort of precomputed mostly-unique
+   *  value to speed up comparisons.
+   */
+  bool operator<(const generic_dep_solvers &other) const
+  {
+    if(solvers < other.solvers)
+      return true;
+    else if(other.solvers < solvers)
+      return false;
+    else if(structural_reasons < other.structural_reasons)
+      return true;
+    else if(other.structural_reasons < structural_reasons)
+      return false;
+    else
+      return true;
   }
 };
 
