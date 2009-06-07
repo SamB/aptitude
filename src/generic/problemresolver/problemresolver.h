@@ -1056,6 +1056,29 @@ private:
   std::map<choice, expression_weak_ref<expression_box<bool> >,
 	   compare_choices_for_deferral> memoized_is_deferred;
 
+  /** \todo This should hold weak references to heap-allocated
+   *  structures so that memoizations wouldn't last longer than needed
+   *  (if every instance of a solver set was changed, that solver set
+   *  would be dropped).
+   */
+  std::set<typename step::dep_solvers> memoized_dep_solvers;
+
+  typename step::dep_solvers memoize_dep_solvers(const typename step::dep_solvers &solvers)
+  {
+    typename std::set<typename step::dep_solvers>::const_iterator found =
+      memoized_dep_solvers.find(solvers);
+
+    if(found != memoized_dep_solvers.end())
+      return *found;
+    else
+      {
+	LOG_TRACE(logger, "Memoized new solver set: " << solvers);
+
+	memoized_dep_solvers.insert(solvers);
+	return solvers;
+      }
+  }
+
   /** \brief If the given step is already "seen", mark it as a clone
    *  and return true (telling our caller to abort).
    */
@@ -1679,7 +1702,7 @@ private:
 	      reasons.for_each(adder);
 
 	      // Actually update the solvers of the dep.
-	      s.unresolved_deps.put(d, new_solvers);
+	      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
 
 	      const int new_num_solvers = new_solvers.get_solvers().size();
 
@@ -1993,7 +2016,7 @@ private:
 			     new_tier_valid,
 			     new_tier_is_deferred);
 	    new_solvers.put(solver_with_dep, new_solver_inf);
-	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
+	    s.unresolved_deps.put(solver_dep, memoize_dep_solvers(new_dep_solvers));
 	    LOG_TRACE(logger, "Recomputed the tier of "
 		      << solver << " in the solver list of "
 		      << solver_dep << " in step " << s.step_num
@@ -2440,7 +2463,7 @@ private:
 				old_inf.get_is_deferred_listener());
 		      new_solvers.get_solvers().put(solver_with_dep, new_inf);
 
-		      s.unresolved_deps.put(d, new_solvers);
+		      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
 		      resolver.check_solvers_tier(s, new_solvers);
 
 		      LOG_TRACE(logger, "Increased the tier of "
@@ -2639,7 +2662,7 @@ private:
       add_solver(s, solvers, d,
 		 choice::make_break_soft_dep(d, -1));
 
-    s.unresolved_deps.put(d, solvers);
+    s.unresolved_deps.put(d, memoize_dep_solvers(solvers));
     LOG_TRACE(logger, "Marked the dependency " << d
 	      << " as unresolved in step " << s.step_num
 	      << " with solver list " << solvers);
