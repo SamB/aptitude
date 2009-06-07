@@ -1568,10 +1568,11 @@ private:
 	  it != solved_by_victim.end(); ++it)
 	{
 	  const dep &d(*it);
+	  choice victim_with_dep(victim.copy_and_set_dep(d));
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  graph.remove_choice(victim, s.step_num, d);
+	  graph.remove_choice(victim_with_dep, s.step_num, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
@@ -1587,12 +1588,12 @@ private:
 	      typename step::dep_solvers new_solvers(current_solvers);
 
 	      LOG_TRACE(logger,
-			"Removing the choice " << victim
+			"Removing the choice " << victim_with_dep
 			<< " from the solver set of " << d
 			<< " in step " << s.step_num
 			<< ", new solvers: " << new_solvers.get_solvers());
 
-	      new_solvers.get_solvers().erase(victim);
+	      new_solvers.get_solvers().erase(victim_with_dep);
 	      add_to_choice_list adder(new_solvers.get_structural_reasons());
 	      reasons.for_each(adder);
 
@@ -1888,7 +1889,8 @@ private:
 	  {
 	    tier new_tier;
 	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
-	    get_solver_tier(solver.copy_and_set_dep(solver_dep),
+	    choice solver_with_dep(solver.copy_and_set_dep(solver_dep));
+	    get_solver_tier(solver_with_dep,
 			    new_tier, new_tier_is_deferred);
 
 	    typename step::solver_information
@@ -1896,7 +1898,7 @@ private:
 			     choice_set(),
 			     new_tier_is_deferred,
 			     new_tier_is_deferred);
-	    new_solvers.put(solver, new_solver_inf);
+	    new_solvers.put(solver_with_dep, new_solver_inf);
 	    s.unresolved_deps.put(solver_dep, new_dep_solvers);
 	    LOG_TRACE(logger, "Recomputed the tier of "
 		      << solver << " in the solver list of "
@@ -1904,7 +1906,7 @@ private:
 		      << "; new solver list: " << new_dep_solvers);
 
 
-	    find_promotions_for_solver(s, solver);
+	    find_promotions_for_solver(s, solver_with_dep);
 	    // Recompute the step's tier from scratch.
 	    //
 	    // \todo Only do this if the tier went down, and just do a
@@ -2315,6 +2317,7 @@ private:
 	  it != solved.end(); ++it)
 	{
 	  const dep &d(*it);
+	  choice solver_with_dep(solver.copy_and_set_dep(d));
 
 	  typename imm::map<dep, typename step::dep_solvers>::node current_solver_set_found =
 	    s.unresolved_deps.lookup(d);
@@ -2328,7 +2331,7 @@ private:
 	      // Sanity-check: verify that the solver really
 	      // resides in the solver set of this dependency.
 	      typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
-		solver_found(new_solvers.get_solvers().lookup(solver));
+		solver_found(new_solvers.get_solvers().lookup(solver_with_dep));
 
 	      if(!solver_found.isValid())
 		LOG_ERROR(logger, "Internal error: in step " << s.step_num
@@ -2353,13 +2356,13 @@ private:
 								 s.step_num,
 								 valid_condition),
 				old_inf.get_is_deferred_listener());
-		      new_solvers.get_solvers().put(solver.copy_and_set_dep(d), new_inf);
+		      new_solvers.get_solvers().put(solver_with_dep, new_inf);
 
 		      s.unresolved_deps.put(d, new_solvers);
 		      resolver.check_solvers_tier(s, new_solvers);
 
 		      LOG_TRACE(logger, "Increased the tier of "
-				<< solver << " to " << new_tier
+				<< solver_with_dep << " to " << new_tier
 				<< " in the solvers list of "
 				<< d << " in step " << s.step_num
 				<< " with the reason set " << new_choices
