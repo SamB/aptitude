@@ -236,12 +236,20 @@ class Promotion_SetTest : public CppUnit::TestFixture
     return choice::make_break_soft_dep(d, -1);
   }
 
+  class dummy_promotion_set_callbacks : public promotion_set_callbacks<dummy_universe_ref>
+  {
+    void promotion_retracted(const promotion &)
+    {
+    }
+  };
+
 public:
   // Test searching for the highest promotion contained in a 
   void testFindHighestPromotion()
   {
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
-    dummy_promotion_set p(u);
+    dummy_promotion_set_callbacks callbacks;
+    dummy_promotion_set p(u, callbacks);
 
     package a(u.find_package("a"));
     package b(u.find_package("b"));
@@ -435,7 +443,8 @@ public:
   void testRemoveBetweenTiers()
   {
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
-    dummy_promotion_set p(u);
+    dummy_promotion_set_callbacks callbacks;
+    dummy_promotion_set p(u, callbacks);
 
     package a(u.find_package("a"));
     package b(u.find_package("b"));
@@ -549,7 +558,8 @@ public:
   void testRemoveBelowTier()
   {
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
-    dummy_promotion_set p(u);
+    dummy_promotion_set_callbacks callbacks;
+    dummy_promotion_set p(u, callbacks);
 
     package a(u.find_package("a"));
     package b(u.find_package("b"));

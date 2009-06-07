@@ -134,6 +134,15 @@ std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUnive
   return out;
 }
 
+/** \brief Interface used by the promotion set to call back into the
+ *  main resolver.
+ */
+template<typename PackageUniverse>
+class promotion_set_callbacks
+{
+  virtual void promotion_retracted(const generic_promotion<PackageUniverse> &p) = 0;
+};
+
 /** \brief Represents a set of "promotions": mappings from sets of
  *  choices to tiers of the search space.
  *
@@ -195,6 +204,7 @@ public:
 
 private:
   log4cxx::LoggerPtr logger;
+  promotion_set_callbacks<PackageUniverse> &callbacks;
 
   struct entry;
 
@@ -443,7 +453,7 @@ private:
 
   void eject(const entry_ref &victim)
   {
-    const promotion &p(victim->p);
+    promotion p(victim->p);
 
     // First, find the promotion's tier.
     const typename std::map<tier, std::list<entry> >::iterator
@@ -451,7 +461,10 @@ private:
     if(found == entries.end())
       LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
     else
-      erase(iterator(found, entries.end(), victim));
+      {
+	erase(iterator(found, entries.end(), victim));
+	callbacks.promotion_retracted(p);
+      }
   }
 
 public:
@@ -2167,8 +2180,10 @@ public:
       }
   }
 
-  generic_promotion_set(const PackageUniverse &u)
+  generic_promotion_set(const PackageUniverse &u,
+			promotion_set_callbacks<PackageUniverse> &_callbacks)
     : logger(aptitude::Loggers::getAptitudeResolverSearchTiers()),
+      callbacks(_callbacks),
       num_promotions(0),
       num_versions(u.get_version_count()),
       install_version_index(new install_version_index_entry*[num_versions])

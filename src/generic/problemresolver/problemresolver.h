@@ -541,7 +541,7 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  \sa \ref problemresolver, \ref universe_universe
  */
 template<class PackageUniverse>
-class generic_problem_resolver
+class generic_problem_resolver : public promotion_set_callbacks<PackageUniverse>
 {
 public:
   friend class ResolverTest;
@@ -1103,43 +1103,9 @@ private:
     return false;
   }
 
-  class step_tier_valid_listener : public expression_wrapper<bool>
-  {
-    generic_problem_resolver &resolver;
-    int step_num;
-
-    step_tier_valid_listener(generic_problem_resolver &_resolver,
-			     int _step_num,
-			     const cwidget::util::ref_ptr<expression<bool> > &child)
-      : expression_wrapper<bool>(child),
-	resolver(_resolver),
-	step_num(_step_num)
-    {
-    }
-
-  public:
-    static cwidget::util::ref_ptr<step_tier_valid_listener>
-    create(generic_problem_resolver &resolver,
-	   int step_num,
-	   const cwidget::util::ref_ptr<expression<bool> > &child)
-    {
-      return new step_tier_valid_listener(resolver, step_num, child);
-    }
-
-    void changed(bool new_value)
-    {
-      if(!new_value)
-	{
-	  step &s(resolver.graph.get_step(step_num));
-	  resolver.recompute_step_tier(s);
-	}
-    }
-  };
-
   /** \brief Adjust the tier of a step, keeping everything consistent. */
   void set_step_tier(int step_num,
-		     const tier &t,
-		     const cwidget::util::ref_ptr<expression<bool> > &t_valid)
+		     const tier &t)
   {
     step &s(graph.get_step(step_num));
 
@@ -1170,7 +1136,6 @@ private:
       }
 
     s.step_tier = t;
-    s.step_tier_valid_listener = step_tier_valid_listener::create(*this, step_num, t_valid);
 
 
     if(was_in_pending)
@@ -1340,11 +1305,11 @@ private:
     // be safe since this isn't reentrant (same trick I use for
     // promotions).
     std::map<int, incipient_promotion_search_info> &output;
-    search_graph &graph;
+    const search_graph &graph;
 
   public:
     find_steps_containing_incipient_promotion(std::map<int, incipient_promotion_search_info> &_output,
-					      search_graph &_graph)
+					      const search_graph &_graph)
       : output(_output),
 	graph(_graph)
     {
@@ -1362,11 +1327,14 @@ private:
     }
   };
 
-  /** \brief Reprocess a single promotion. */
-  void process_promotion(const promotion &p)
+  /** \brief For every step containing the promotion, invoke
+   *  callbacks.incipient(step_num, solver) if the promotion is
+   *  contained as an incipient promotion, and
+   *  callbacks.active(step_num) if it's contained in the action set.
+   */
+  template<typename Callbacks>
+  void for_each_promotion_hit(const promotion &p, Callbacks callbacks) const
   {
-    LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
-
     std::map<int, incipient_promotion_search_info> search_result;
     {
       find_steps_containing_incipient_promotion
@@ -1383,16 +1351,14 @@ private:
 
 	if(inf.action_hits == num_promotion_choices)
 	  {
-	    step &s(graph.get_step(step_num));
+	    const step &s(graph.get_step(step_num));
 	    if(s.step_tier < p.get_tier())
 	      {
 		LOG_TRACE(logger, "Step " << step_num
 			  << " contains " << p
-			  << " as an active promotion; modifying its tier accordingly.");
+			  << " as an active promotion.");
 
-		set_step_tier(s.step_num, p.get_tier(),
-			      p.get_valid_condition());
-		graph.schedule_promotion_propagation(step_num, p);
+		callbacks.active(step_num);
 	      }
 	  }
 	else if(inf.action_hits + 1 != num_promotion_choices)
@@ -1420,12 +1386,127 @@ private:
 		      << " as an incipient promotion for the solver "
 		      << inf.solver);
 
-	    increase_solver_tier(graph.get_step(step_num),
-				 p,
-				 inf.solver);
+	    callbacks.incipient(step_num, inf.solver);
 	  }
       }
   }
+
+  /** \brief For each promotion hit, increase its tier in a solver set
+   *  if it's incipient and in an action set if it's not.
+   */
+  class do_process_promotion
+  {
+    generic_problem_resolver &resolver;
+    const promotion &p;
+
+  public:
+    do_process_promotion(generic_problem_resolver &_resolver,
+			 const promotion &_p)
+      : resolver(_resolver), p(_p)
+    {
+    }
+
+    void incipient(int step_num, const choice &solver) const
+    {
+      resolver.increase_solver_tier(resolver.graph.get_step(step_num),
+				    p, solver);
+    }
+
+    void active(int step_num) const
+    {
+      resolver.set_step_tier(step_num, p.get_tier());
+      resolver.graph.schedule_promotion_propagation(step_num, p);
+    }
+  };
+
+  /** \brief Find existing steps that contain the given promotion and
+   *  apply it to them.
+   */
+  void process_promotion(const promotion &p)
+  {
+    LOG_TRACE(logger, "Processing the promotion " << p << " and applying it to all existing steps.");
+
+    for_each_promotion_hit(p, do_process_promotion(*this, p));
+  }
+
+
+  // NB: this might visit more than is strictly necessary, since the
+  // solver might only need to be recomputed when it's attached to a
+  // particular dependency.  It would take too much book-keeping to
+  // figure out which dependency needs to be re-examined ahead of
+  // time.
+  //
+  // Only solvers whose tier equals the given tier are recomputed.
+  class recompute_solver_tier_for_dep
+  {
+    generic_problem_resolver &resolver;
+    step &s;
+    const tier &t;
+
+  public:
+    recompute_solver_tier_for_dep(generic_problem_resolver &_resolver,
+				  step &_s,
+				  const tier &_t)
+      : resolver(_resolver), s(_s), t(_t)
+    {
+    }
+
+    bool operator()(const choice &solver,
+		    const imm::list<dep> &deps) const
+    {
+      for(typename imm::list<dep>::const_iterator it = deps.begin();
+	  it != deps.end(); ++it)
+	resolver.recompute_solver_tier(s, *it, solver, t);
+
+      return true;
+    }
+  };
+
+  /** \brief For each promotion hit, recompute the solver tier if it's
+   *  an incipient promotion and the step tier otherwise.
+   */
+  class recompute_tier_hits
+  {
+    generic_problem_resolver &resolver;
+    const tier &t;
+
+  public:
+    recompute_tier_hits(generic_problem_resolver &_resolver,
+			const tier &_t)
+      : resolver(_resolver), t(_t)
+    {
+    }
+
+    void incipient(int step_num, const choice &solver) const
+    {
+      step &s(resolver.graph.get_step(step_num));
+
+      recompute_solver_tier_for_dep
+	recompute_solver_tier_f(resolver, s, t);
+
+      s.deps_solved_by_choice.for_each_key_contained_in(solver,
+							recompute_solver_tier_f);
+    }
+
+    void active(int step_num) const
+    {
+      step &s(resolver.graph.get_step(step_num));
+
+      // The promotion could only have affected the step's tier if the
+      // step's tier is at least as high.
+      if(s.step_tier >= t)
+	resolver.recompute_step_tier(resolver.graph.get_step(step_num));
+    }
+  };
+
+  void promotion_retracted(const promotion &p)
+  {
+    LOG_TRACE(logger, "Retracting all tier assignments that might be linked to " << p);
+
+    for_each_promotion_hit(p, recompute_tier_hits(*this, p.get_tier()));
+  }
+
+
 
   /** \brief Process all pending promotions. */
   void process_pending_promotions()
@@ -1864,10 +1945,22 @@ private:
 
   /** \brief Recompute the solver of a single tier in the given
    *  step.
+   *
+   *  The tier is only recomputed if it equals check_tier.
+   *  recompute_solver_tier() is used to retract promotions; if the
+   *  tier of the solver is not equal to the tier of the promotion
+   *  (passed as check_tier), then another promotion must have
+   *  elevated the tier even farther, so there's no need to recompute
+   *  it.
+   *
+   *  check_tier and do_check_tier are a bit hacky, but they avoid
+   *  having to have two instantiations of this code.
    */
   void recompute_solver_tier(step &s,
 			     const dep &solver_dep,
-			     const choice &solver)
+			     const choice &solver,
+			     const tier &check_tier = tier_limits::minimum_tier,
+			     bool do_check_tier = false)
   {
     typename imm::map<dep, typename step::dep_solvers>::node
       found_solvers(s.unresolved_deps.lookup(solver_dep));
@@ -1885,7 +1978,7 @@ private:
 		    << " is listed in the reverse index for step "
 		    << s.step_num << " as a solver for "
 		    << solver_dep << ", but it doesn't appear in that step.");
-	else
+	else if(!do_check_tier || found_solver.getVal().second.get_tier() == check_tier)
 	  {
 	    tier new_tier;
 	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
@@ -2106,26 +2199,19 @@ private:
   class find_solvers_tier
   {
     tier &output_tier;
-    cwidget::util::ref_ptr<expression_box<bool> > &output_tier_valid;
 
   public:
-    find_solvers_tier(tier &_output_tier,
-		      cwidget::util::ref_ptr<expression_box<bool> > &_output_tier_valid)
-      : output_tier(_output_tier),
-	output_tier_valid(_output_tier_valid)
+    find_solvers_tier(tier &_output_tier)
+      : output_tier(_output_tier)
     {
       output_tier = tier_limits::maximum_tier;
-      output_tier_valid = cwidget::util::ref_ptr<expression_box<bool> >();
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
       const tier &p_tier(p.second.get_tier());
       if(p_tier < output_tier)
-	{
-	  output_tier = p_tier;
-	  output_tier_valid = p.second.get_tier_valid_listener();
-	}
+	output_tier = p_tier;
 
       return true;
     }
@@ -2135,28 +2221,21 @@ private:
   class find_largest_dep_tier
   {
     tier &output_tier;
-    cwidget::util::ref_ptr<expression_box<bool> > &output_tier_valid_listener;
 
   public:
-    find_largest_dep_tier(tier &_output_tier,
-			  cwidget::util::ref_ptr<expression_box<bool> > &_output_tier_valid_listener)
-      : output_tier(_output_tier),
-	output_tier_valid_listener(_output_tier_valid_listener)
+    find_largest_dep_tier(tier &_output_tier)
+      : output_tier(_output_tier)
     {
     }
 
     bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
     {
       tier dep_tier;
-      cwidget::util::ref_ptr<expression_box<bool> > dep_tier_valid_listener;
 
-      p.second.get_solvers().for_each(find_solvers_tier(dep_tier, dep_tier_valid_listener));
+      p.second.get_solvers().for_each(find_solvers_tier(dep_tier));
 
       if(output_tier < dep_tier)
-	{
-	  output_tier = dep_tier;
-	  output_tier_valid_listener = dep_tier_valid_listener;
-	}
+	output_tier = dep_tier;
 
       return true;
     }
@@ -2176,8 +2255,7 @@ private:
     LOG_TRACE(logger, "Recomputing the tier of step " << s.step_num
 	      << " (was " << s.step_tier << ")");
 
-    s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier,
-						     s.step_tier_valid_listener));
+    s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier));
   }
 
   // Build a generalized promotion from the entries of a dep-solvers
@@ -2272,7 +2350,7 @@ private:
       }
 
     if(s.step_tier < t)
-      set_step_tier(s.step_num, t, valid_condition);
+      set_step_tier(s.step_num, t);
   }
 
   /** \brief Increases the tier of a single step. */
@@ -2280,10 +2358,9 @@ private:
 			  const promotion &p)
   {
     const tier &p_tier(p.get_tier());
-    const cwidget::util::ref_ptr<expression<bool> > &valid_condition(p.get_valid_condition());
 
     if(s.step_tier < p_tier)
-      set_step_tier(s.step_num, p_tier, valid_condition);
+      set_step_tier(s.step_num, p_tier);
   }
 
   // Increases the tier of each dependency in each dependency list
@@ -2352,9 +2429,7 @@ private:
 		      typename step::solver_information
 			new_inf(new_tier,
 				new_choices,
-				step_tier_valid_listener::create(resolver,
-								 s.step_num,
-								 valid_condition),
+				valid_condition,
 				old_inf.get_is_deferred_listener());
 		      new_solvers.get_solvers().put(solver_with_dep, new_inf);
 
@@ -2765,6 +2840,7 @@ private:
     output.score = parent.score;
     output.reason = c;
     output.step_tier = output_tier;
+    output.is_deferred_listener = build_is_deferred_listener(c);
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
     output.deps_solved_by_choice = parent.deps_solved_by_choice;
@@ -2981,7 +3057,7 @@ public:
      maximum_search_tier(tier_limits::minimum_tier),
      pending_future_solutions(step_goodness_compare(graph)),
      closed(),
-     promotions(_universe),
+     promotions(_universe, *this),
      version_tiers(new tier[_universe.get_version_count()])
   {
     LOG_DEBUG(logger, "Creating new problem resolver: step_score = " << _step_score

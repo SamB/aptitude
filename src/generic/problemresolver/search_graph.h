@@ -52,14 +52,14 @@ public:
 private:
   tier t;
   choice_set reasons;
-  cwidget::util::ref_ptr<expression_box<bool> > tier_valid_listener;
+  cwidget::util::ref_ptr<expression<bool> > tier_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
 public:
   generic_solver_information()
     : t(tier_limits::minimum_tier),
       reasons(),
-      tier_valid_listener(),
+      tier_valid(),
       is_deferred_listener()
   {
   }
@@ -69,19 +69,23 @@ public:
    *  \param _t       The tier of the associated solver.
    *  \param _reason  The reasons for the solver's tier (other than
    *                  the solver itself).
-   *  \param _tier_valid_listener
-   *                  A side-effecting expression that computes
-   *                  "true" if the tier assignment is valid.
-   *  \param deferred A side-effecting expression whose
-   *                  sub-expression is true exactly when this solver
-   *                  violates a user-imposed constraint.
+   *  \param _tier_valid
+   *                  A pure expression indicating whether the tier
+   *                  of this solver is valid.  Used to create
+   *                  promotions.
+   *  \param _is_deferred_listener
+   *                  A side-effecting expression whose sub-expression
+   *                  is true exactly when this solver violates a
+   *                  user-imposed constraint.  A reference is stored
+   *                  here to ensure that the expression remains alive
+   *                  while this solver exists.
    */
   generic_solver_information(const tier &_t,
 			     const choice_set &_reasons,
-			     const cwidget::util::ref_ptr<expression_box<bool> > &_tier_valid_listener,
+			     const cwidget::util::ref_ptr<expression<bool> > &_tier_valid,
 			     const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
     : t(_t), reasons(_reasons),
-      tier_valid_listener(_tier_valid_listener),
+      tier_valid(_tier_valid),
       is_deferred_listener(_is_deferred_listener)
   {
   }
@@ -94,26 +98,13 @@ public:
    */
   const choice_set &get_reasons() const { return reasons; }
 
-  const cwidget::util::ref_ptr<expression_box<bool> > &
-  get_tier_valid_listener() const
-  {
-    return tier_valid_listener;
-  }
-
-  /** \brief Retrieve an expression that returns whether this
-   *  solver's tier is valid.
-   *
-   *  This is held here mainly because it will side-effect and
-   *  reset this solver's tier.  Also, it can be used to generate
-   *  promotion validity conditions.
+  /** \brief Retrieve an expression that returns whether the
+   *  tier is valid (if true, the tier is always valid).
    */
-  cwidget::util::ref_ptr<expression<bool> >
+  const cwidget::util::ref_ptr<expression<bool> > &
   get_tier_valid() const
   {
-    if(tier_valid_listener.valid())
-      return tier_valid_listener->get_child();
-    else
-      return cwidget::util::ref_ptr<expression_box<bool> >();
+    return tier_valid;
   }
 
   /** \brief Retrieve the listener that tracks whether the solver
@@ -308,12 +299,14 @@ public:
     /** \brief The tier of this step. */
     tier step_tier;
 
-    /** \brief A side-effecting expression that fires when this step's
-     *  tier changes.
+    /** \brief A side-effecting expression that fires when the most
+     *  recently added action becomes deferred or un-deferred.
      *
-     *  The pure validity condition is a child of this value.
+     *  This is stored here merely to ensure that the corresponding
+     *  listeners stay alive.  The other choices in this step are kept
+     *  alive by its parents.
      */
-    cwidget::util::ref_ptr<expression_box<bool> > step_tier_valid_listener;
+    cwidget::util::ref_ptr<expression<bool> > is_deferred_listener;
 
     /** \brief The dependencies that are unresolved in this step; each
      *	one maps to the reasons that any of its solvers were
@@ -419,7 +412,7 @@ public:
       : is_last_child(true),
 	is_blessed_solution(false),
 	parent(-1), first_child(-1),
-	step_tier_valid_listener(),
+	is_deferred_listener(),
 	canonical_clone(-1),
 	reason(),
 	successor_constraints(), promotions(),
@@ -442,7 +435,7 @@ public:
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
-	step_tier_valid_listener(),
+	is_deferred_listener(),
 	reason(),
 	successor_constraints(), promotions(),
 	promotions_list(), promotions_list_first_new_promotion(0)
