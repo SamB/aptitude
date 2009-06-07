@@ -391,6 +391,27 @@ public:
 
     return true;
   }
+
+private:
+  // Whenever something is visited, aborts the for_each and returns
+  // false.
+  class not_visited
+  {
+  public:
+    bool operator()(const choice &c, const ValueType &v) const
+    {
+      return false;
+    }
+  };
+
+public:
+  /** \brief Test whether this set contains a key that is contained in
+   *  the given choice.
+   */
+  bool contains_key(const choice &c) const
+  {
+    return !for_each_key_contained_in(c, not_visited());
+  }
 };
 
 /** \brief A set of objects, indexed for retrieval by an associated

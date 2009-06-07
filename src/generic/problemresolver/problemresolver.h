@@ -1065,7 +1065,7 @@ private:
 
     typename std::map<step_contents, int>::const_iterator found =
       closed.find(step_contents(s));
-    if(found != closed.end())
+    if(found != closed.end() && found->second != stepNum)
       {
 	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already encountered in this search.");
 	graph.add_clone(found->second, stepNum);
@@ -1198,8 +1198,17 @@ private:
    */
   void add_promotion(const promotion &p)
   {
-    promotions.insert(p);
-    pending_promotions.push_back(p);
+    if(p.get_choices().size() == 0)
+      LOG_TRACE(logger, "Ignoring the empty promotion " << p);
+    else if(promotions.insert(p) != promotions.end())
+      {
+	LOG_TRACE(logger, "Added the promotion " << p
+		  << " to the global promotion set; preparing to apply it to all active steps.");
+	pending_promotions.push_back(p);
+      }
+    else
+      LOG_TRACE(logger, "Not applying " << p
+		<< " to all active steps: it was redundant with an existing promotion.");
   }
 
   // Used as a callback by subroutines that want to add a promotion to
@@ -1562,8 +1571,7 @@ private:
 
 	  // Remove this step from the set of steps related to the
 	  // solver that was deleted.
-	  graph.remove_choice(victim, s.step_num,
-			      search_graph::choice_mapping_solver, d);
+	  graph.remove_choice(victim, s.step_num, d);
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
@@ -2082,8 +2090,7 @@ private:
 	s.deps_solved_by_choice.put(solver, new_deps_solved);
       }
 
-    graph.bind_choice(solver, s.step_num,
-		      search_graph::choice_mapping_solver, d);
+    graph.bind_choice(solver, s.step_num, d);
   }
 
   /** \brief Find the smallest tier out of the solvers of a single
@@ -2639,77 +2646,6 @@ private:
       increase_solver_tier(s, it->second, it->first);
   }
 
-  class add_solver_information_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-    dep d; // The dependency whose solvers are being examined.
-
-  public:
-    add_solver_information_to_reverse_index(search_graph &_g,
-					    int _step_num,
-					    const dep &_d)
-      : g(_g), step_num(_step_num), d(_d)
-    {
-    }
-
-    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
-    {
-      g.bind_choice(p.first, step_num, search_graph::choice_mapping_solver, d);
-
-      return true;
-    }
-  };
-
-  class add_dep_solvers_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_dep_solvers_to_reverse_index(search_graph &_g,
-				     int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
-    {
-      add_solver_information_to_reverse_index
-	add_solvers_f(g, step_num, p.first);
-      p.second.get_solvers().for_each(add_solvers_f);
-
-      return true;
-    }
-  };
-
-  class add_action_to_reverse_index
-  {
-    search_graph &g;
-    int step_num;
-
-  public:
-    add_action_to_reverse_index(search_graph &_g,
-				int _step_num)
-      : g(_g), step_num(_step_num)
-    {
-    }
-
-    bool operator()(const choice &c) const
-    {
-      g.bind_choice(c, step_num, search_graph::choice_mapping_action,
-		    c.get_dep());
-
-      return true;
-    }
-  };
-
-  void add_step_contents_to_reverse_index(const step &s)
-  {
-    s.actions.for_each(add_action_to_reverse_index(graph, s.step_num));
-    s.unresolved_deps.for_each(add_dep_solvers_to_reverse_index(graph, s.step_num));
-  }
-
   /** \brief Update a step's score to compute its successor, given
    *  that the given choice was added to its action set.
    */
@@ -2806,6 +2742,7 @@ private:
     // won't spit out false positives.
     output.action_score = parent.action_score;
     output.score = parent.score;
+    output.reason = c;
     output.step_tier = output_tier;
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
@@ -2817,12 +2754,27 @@ private:
 	      << " for the action " << c << " with tier "
 	      << output_tier << " and outputting to step " << output.step_num);
 
+    if(c.get_type() == choice::install_version && !c.get_has_dep())
+      LOG_ERROR(logger, "No dependency attached to the choice " << c
+		<< " used to generate step " << output.step_num
+		<< ", expect trouble ahead.");
+
     // Insert the new choice into the output list of choices.  This
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
 
-    // Add the new step into the global reverse index.
-    add_step_contents_to_reverse_index(output);
+    // Don't do this, because it isn't necessary and will cause
+    // trouble.
+    //
+    // By definition, this step is a child of a step where c occurs as
+    // a solver, hence it will be contained in the tree trace rooted
+    // at the step where c was introduced as a solver.  If we also
+    // added c as an action here, we would have to somehow guard in
+    // the search graph code against traversing this subtree twice,
+    // which is a bit of a nuisance and not necessary.
+    //
+    //  graph.bind_choice(c, output.step_num, c.get_dep());
+
 
     // 1. Find the list of solved dependencies and drop each one from
     // the map of unresolved dependencies, and from the set sorted by
@@ -2877,18 +2829,18 @@ private:
 
   class do_generate_single_successor
   {
-    const step &parent;
+    int parent_step_num;
     generic_problem_resolver &resolver;
 
     bool &first;
 
   public:
-    do_generate_single_successor(const step &_parent,
+    do_generate_single_successor(int _parent_step_num,
 				 generic_problem_resolver &_resolver,
 				 bool &_first)
-      : parent(_parent), resolver(_resolver), first(_first)
+      : parent_step_num(_parent_step_num), resolver(_resolver), first(_first)
     {
-      first = false;
+      first = true;
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &solver_pair) const
@@ -2901,8 +2853,11 @@ private:
       const choice &solver(solver_pair.first);
       const typename step::solver_information &inf(solver_pair.second);
 
+      step &parent = resolver.graph.get_step(parent_step_num);
       step &output = resolver.graph.add_step();
       output.parent = parent.step_num;
+      if(parent.first_child == -1)
+	parent.first_child = output.step_num;
       output.is_last_child = true;
 
       resolver.generate_single_successor(parent,
@@ -2948,12 +2903,15 @@ private:
 	return;
       }
 
+    if(bestSolvers.getVal().second.get_solvers().empty())
+      LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
+
     LOG_TRACE(logger, "Generating successors for step " << step_num
 	      << " for the dependency " << best.getVal().second
 	      << " with " << best.getVal().first << " solvers: "
 	      << bestSolvers.getVal().second.get_solvers());
     bool first_successor = false;
-    do_generate_single_successor generate_successor_f(s, *this,
+    do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
     bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
   }

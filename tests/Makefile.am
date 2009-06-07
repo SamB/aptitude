@@ -18,6 +18,9 @@ EXTRADIST = resolver_inputs
 
 interactive_set_test_SOURCES = interactive_set_test.cc
 
+test_choice.o test_choice_set.o test_resolver.o: $(top_srcdir)/src/generic/problemresolver/*.h
+test_promotion_set.o test_resolver_hints.o: $(top_srcdir)/src/generic/problemresolver/*.h
+
 # Note: test_apt_universe is not built by default because it takes way
 # too long.  Of course, ideally this would be done in a less ad-hoc
 # way...

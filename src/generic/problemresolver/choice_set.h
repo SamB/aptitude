@@ -351,7 +351,11 @@ public:
       }
   }
 
-  bool contains(const choice &c) const
+  /** \brief If a choice in this set is contained in c, store it in
+   *  out and return true.
+   */
+  bool get_contained_choice(const choice &c,
+			    choice &out) const
   {
     switch(c.get_type())
       {
@@ -365,13 +369,35 @@ public:
 	    {
 	      std::pair<package, choice> existing_choice_pair(n.getVal());
 	      choice &existing_choice(existing_choice_pair.second);
-	      return existing_choice.contains(c);
+	      if(existing_choice.contains(c))
+		{
+		  out = existing_choice;
+		  return true;
+		}
+	      else
+		return false;
 	    }
 	}
 
       default:
-	return not_install_version_choices.contains(c);
+	{
+	  typename imm::set<choice>::node
+	    found = not_install_version_choices.find_node(c);
+	  if(found.isValid())
+	    {
+	      out = found.getVal();
+	      return true;
+	    }
+	  else
+	    return false;
+	}
       }
+  }
+
+  bool contains(const choice &c) const
+  {
+    choice dummy;
+    return get_contained_choice(c, dummy);
   }
 
   typedef unsigned int size_type;

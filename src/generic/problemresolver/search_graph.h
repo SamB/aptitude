@@ -492,25 +492,21 @@ public:
    */
   class choice_mapping_info
   {
-    // The steps (if any) containing this choice as a solver or an
-    // action, grouped by the dependency that each one solves.
-    //
-    // The first element of each pair tells how the choice is hit by
-    // the step, and the second element gives the step number that the
-    // choice is related to.
-    imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > steps;
+    // The steps (if any) that introduced this choice as a solver or
+    // an action, grouped by the dependency that each one solves.
+    imm::map<dep, imm::set<int> > steps;
 
   public:
     choice_mapping_info()
     {
     }
 
-    choice_mapping_info(const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &_steps)
+    choice_mapping_info(const imm::map<dep, imm::set<int> > &_steps)
       : steps(_steps)
     {
     }
 
-    const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &get_steps() const
+    const imm::map<dep, imm::set<int> > &get_steps() const
     {
       return steps;
     }
@@ -545,8 +541,8 @@ private:
   // promotions to them).
   std::set<int, std::greater<int> > steps_pending_promotion_propagation;
 
-  /** \brief The step numbers that contain each choice in their
-   *  installed list or in one of their solvers.
+  /** \brief The step numbers in which a choice was introduced as an
+   *  action or a solver.
    *
    *  This is used to efficiently update existing steps that are "hit"
    *  by a new promotion, and to efficiently un-defer steps when the
@@ -562,107 +558,145 @@ public:
    *
    *  \param c         The choice to bind.
    *  \param step_num  The step number in which c occurs.
-   *  \param how       The type of mapping to add.
    *  \param reason    The dependency that this choice solves, if how
    *                   is choice_mapping_solver.
    */
-  void bind_choice(const choice &c, int step_num, choice_mapping_type how, dep reason)
+  void bind_choice(const choice &c, int step_num, dep reason)
   {
     // \todo Write a proper operator<<.
-    const char *type_desc;
-    switch(how)
-      {
-      case choice_mapping_action: type_desc = "an action"; break;
-      case choice_mapping_solver: type_desc = "a solver"; break;
-      default: type_desc = "an error"; break;
-      }
-
     LOG_TRACE(logger, "Marking the choice " << c
-	      << " as " << type_desc << " in step "
+	      << " as present in step "
 	      << step_num << " with dependency " << reason);
 
     choice_mapping_info inf;
     steps_related_to_choices.try_get(c, inf);
-    imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
+    imm::map<dep, imm::set<int> >
       new_steps(inf.get_steps());
-    imm::set<std::pair<choice_mapping_type, int> >
-      new_dep_steps(new_steps.get(reason, imm::set<std::pair<choice_mapping_type, int> >()));
+    imm::set<int>
+      new_dep_steps(new_steps.get(reason, imm::set<int>()));
 
-    new_dep_steps.insert(std::make_pair(how, step_num));
+    new_dep_steps.insert(step_num);
     new_steps.put(reason, new_dep_steps);
     steps_related_to_choices.put(c, choice_mapping_info(new_steps));
   }
 
   /** \brief Remove an entry from the choice->step reverse index.
    *
+   *  This will remove the mapping associated with the top of a "tree"
+   *  of occurrences.
+   *
+   *  \warning Correctness of this protocol relies on the fact that
+   *  the structure of the resolver means that if a solver becomes
+   *  irrelevant in a step, it will also be irrelevant in all children
+   *  of that step.  Proof: there are only two ways a solver can
+   *  become irrelevant.  It could be structurally excluded (in which
+   *  case all children lack it by default), or it could be knocked
+   *  out by a promotion.  In the latter case, since children are
+   *  supersets of their parents, each child will contain the same
+   *  promotion, and hence the choice will be knocked out in every
+   *  child that it occurs in.
+   *
+   *  This also relies on the fact that promotions that knock out
+   *  choices are never retracted (if they are, we'll have to be
+   *  careful to only reinstate a choice in the top step it occurs in,
+   *  but that is not likely in the near future).
+   *
    *  \param c         The choice to unbind.
    *  \param step_num  The step number in which c no longer occurs.
-   *  \param how       The type of mapping to remove.
    *  \param reason    The dependency that this choice solved, if how
    *                   is choice_mapping_solver.
    */
-  void remove_choice(const choice &c, int step_num, choice_mapping_type how, const dep &reason = dep())
+  void remove_choice(const choice &c, int step_num, const dep &reason)
   {
     // \todo Write a proper operator<<.
-    const char *type_desc;
-    switch(how)
-      {
-      case choice_mapping_action: type_desc = "an action"; break;
-      case choice_mapping_solver: type_desc = "a solver"; break;
-      default: type_desc = "an error"; break;
-      }
-
-    LOG_TRACE(logger, "Removing the choice " << c
-	      << " as " << type_desc << " in step "
-	      << step_num);
+    LOG_TRACE(logger, "Marking the choice " << c
+              << " as not present in step "
+              << step_num);
 
     choice_mapping_info info;
     if(steps_related_to_choices.try_get(c, info))
       {
-	imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >
-	  new_steps(info.get_steps());
+        imm::map<dep, imm::set<int> >
+          new_steps(info.get_steps());
 
-	typename imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >::node
-	  found_solver(new_steps.lookup(reason));
+        typename imm::map<dep, imm::set<int> >::node
+          found_solver(new_steps.lookup(reason));
 
-	if(found_solver.isValid())
-	  {
-	    imm::set<std::pair<choice_mapping_type, int> >
-	      new_dep_steps(found_solver.getVal().second);
+        if(found_solver.isValid())
+          {
+            imm::set<int>
+              new_dep_steps(found_solver.getVal().second);
 
-	    new_dep_steps.erase(std::make_pair(how, step_num));
-	    if(new_dep_steps.empty())
-	      new_steps.erase(reason);
-	    else
-	      new_steps.put(reason, new_dep_steps);
-	  }
+            new_dep_steps.erase(step_num);
+            if(new_dep_steps.empty())
+              new_steps.erase(reason);
+            else
+              new_steps.put(reason, new_dep_steps);
+          }
 
-	choice_mapping_info new_info(new_steps);
-	steps_related_to_choices.put(c, new_info);
+        choice_mapping_info new_info(new_steps);
+        steps_related_to_choices.put(c, new_info);
       }
   }
 
 private:
+  // Walks down a list of siblings, applying the given function to
+  // each of them, until either the function returns false or it runs
+  // out of siblings.  If step_num is -1, nothing is visited.
+  template<typename F>
+  bool visit_siblings(int step_num,
+		      F f) const
+  {
+    while(step_num != -1)
+      {
+	if(!f(step_num))
+	  return false;
+
+	if(get_step(step_num).is_last_child)
+	  step_num = -1;
+	else
+	  ++step_num;
+      }
+
+    return true;
+  }
+
   template<typename F>
   class visit_choice_mapping_steps
   {
     // The choice to pass to the sub-function.
     const choice &c;
+    const generic_search_graph &graph;
 
     F f;
 
+    // Could save some code by merging this with
+    // visit_choice_mapping_steps_for_dep() (using a virtual
+    // function?).
+    bool visit(const step &s, choice_mapping_type how) const
+    {
+      if(!f(c, how, s.step_num))
+	return false;
+      else
+	return graph.visit_siblings(s.first_child, *this);
+    }
+
   public:
-    visit_choice_mapping_steps(const choice &_c, F _f)
-      : c(_c), f(_f)
+    visit_choice_mapping_steps(const choice &_c,
+			       const generic_search_graph &_graph, F _f)
+      : c(_c), graph(_graph), f(_f)
     {
     }
 
-    bool operator()(const std::pair<choice_mapping_type, int> p) const
+    bool operator()(int step_num) const
     {
-      const choice_mapping_type how(p.first);
-      const int step_num(p.second);
-
-      return f(c, how, step_num);
+      const step &s(graph.get_step(step_num));
+      if(s.actions.contains(c))
+	return visit(s, choice_mapping_action);
+      else if(s.deps_solved_by_choice.contains_key(c))
+	return visit(s, choice_mapping_solver);
+      else
+	return true;
     }
   };
 
@@ -673,18 +707,20 @@ private:
   class visit_choice_dep_mapping
   {
     const choice &c;
+    const generic_search_graph &graph;
 
     F f;
 
   public:
-    visit_choice_dep_mapping(const choice &_c, F _f)
-      : c(_c), f(_f)
+    visit_choice_dep_mapping(const choice &_c,
+			     const generic_search_graph &_graph, F _f)
+      : c(_c), graph(_graph), f(_f)
     {
     }
 
-    bool operator()(const std::pair<dep, imm::set<std::pair<choice_mapping_type, int> > > &mapping) const
+    bool operator()(const std::pair<dep, imm::set<int> > &mapping) const
     {
-      return mapping.second.for_each(visit_choice_mapping_steps<F>(c, f));
+      return mapping.second.for_each(visit_choice_mapping_steps<F>(c, graph, f));
     }
   };
 
@@ -695,56 +731,105 @@ private:
   class visit_choice_mapping
   {
     F f;
+    const generic_search_graph &graph;
 
   public:
-    visit_choice_mapping(F _f)
-      : f(_f)
+    visit_choice_mapping(const generic_search_graph &_graph, F _f)
+      : f(_f), graph(_graph)
     {
     }
 
     bool operator()(const choice &c, const choice_mapping_info &inf) const
     {
-      const imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > > &steps(inf.get_steps());
-      return steps.for_each(visit_choice_dep_mapping<F>(c, f));
+      const imm::map<dep, imm::set<int> > &steps(inf.get_steps());
+      return steps.for_each(visit_choice_dep_mapping<F>(c, graph, f));
     }
   };
 
 public:
   /** \brief Apply the given function object to (c', how, step_num)
-   *  for each binding (c', how, step_num) in the choice->step reverse
-   *  index such that c' is contained in c.
+   *  for each binding (c', step_num) in the choice->step reverse
+   *  index such that c' is contained in c as indicated by how.
    */
   template<typename F>
   void for_each_step_related_to_choice(const choice &c, F f) const
   {
-    visit_choice_mapping<F> visit_mappings_f(f);
+    visit_choice_mapping<F> visit_mappings_f(*this, f);
     steps_related_to_choices.for_each_key_contained_in(c, visit_mappings_f);
   }
 
 private:
+  template<typename F>
+  class visit_choice_mapping_steps_solvers_of_dep
+  {
+    // The choice to pass to the sub-function.
+    const choice &c;
+    // The dependency whose solvers are being visited.
+    const dep &d;
+    const generic_search_graph &graph;
+
+    F f;
+
+    bool visit(const step &s, choice_mapping_type how) const
+    {
+      if(!f(c, how, s.step_num))
+	return false;
+      else
+	return graph.visit_siblings(s.first_child, *this);
+    }
+
+  public:
+    visit_choice_mapping_steps_solvers_of_dep(const choice &_c,
+					      const dep &_d,
+					      const generic_search_graph &_graph, F _f)
+      : c(_c), d(_d), graph(_graph), f(_f)
+    {
+    }
+
+    bool operator()(int step_num) const
+    {
+      const step &s(graph.get_step(step_num));
+      choice step_choice;
+      if(s.actions.get_contained_choice(c, step_choice) &&
+	 step_choice.get_dep() == d)
+	return visit(s, choice_mapping_action);
+      else
+	{
+	  typename imm::map<dep, typename step::dep_solvers>::node found =
+	    s.unresolved_deps.lookup(d);
+	  if(found.isValid() &&
+	     found.getVal().second.get_solvers().domain_contains(c))
+	    return visit(s, choice_mapping_solver);
+	  else
+	    return true;
+	}
+    }
+  };
 
   template<typename F>
   class visit_choice_mapping_solvers_of_dep
   {
     // The dependency to visit.
     dep d;
+    const generic_search_graph &graph;
 
     F f;
 
   public:
-    visit_choice_mapping_solvers_of_dep(const dep &_d, F _f)
-      : d(_d), f(_f)
+    visit_choice_mapping_solvers_of_dep(const dep &_d,
+					const generic_search_graph &_graph, F _f)
+      : d(_d), graph(_graph), f(_f)
     {
     }
 
     bool operator()(const choice &c, const choice_mapping_info &info) const
     {
-      typename imm::map<dep, imm::set<std::pair<choice_mapping_type, int> > >::node
+      typename imm::map<dep, imm::set<int> >::node
 	found(info.get_steps().lookup(d));
 
       if(found.isValid())
 	{
-	  visit_choice_mapping_steps<F> visit_step_f(c, f);
+	  visit_choice_mapping_steps_solvers_of_dep<F> visit_step_f(c, d, graph, f);
 	  return found.getVal().second.for_each(visit_step_f);
 	}
       else
@@ -761,7 +846,7 @@ public:
   template<typename F>
   void for_each_step_related_to_choice_with_dep(const choice &c, const dep &d, F f) const
   {
-    visit_choice_mapping_solvers_of_dep<F> visit_mappings_by_dep_f(d, f);
+    visit_choice_mapping_solvers_of_dep<F> visit_mappings_by_dep_f(d, *this, f);
     steps_related_to_choices.for_each_key_contained_in(c, visit_mappings_by_dep_f);
   }
 
@@ -1224,6 +1309,45 @@ public:
 					  curr_step.promotions_list.end());
 	curr_step.promotions_list_first_new_promotion -= num_old_promotions_deleted;
       }
+  }
+
+  /** \brief Dump a dot-format representation of this graph to the
+   *  given stream.
+   *
+   *  For debugging purposes.
+   */
+  void write_graph(std::ostream &out)
+  {
+    out << "digraph {" << std::endl;
+    for(typename std::deque<step>::const_iterator it = steps.begin();
+	it != steps.end(); ++it)
+      {
+	out << it->step_num << " [label=\"Step " << it->step_num << "\\n"
+	    << it->actions.size() << " actions\", shape=box";
+
+	if(it->is_last_child)
+	  out << ", style=filled, fillcolor=lightgray";
+
+	out << "];" << std::endl;
+
+	int i = it->first_child;
+	while(i != -1)
+	  {
+	    const step &child(steps[i]);
+
+	    if(child.parent != it->step_num)
+	      // It's a phantom link; graph accordingly.
+	      out << it->step_num << " -> " << child.step_num << " [style=dashed];" << std::endl;
+	    else
+	      out << it->step_num << " -> " << child.step_num << " [label=\"" << child.reason << "\"];" << std::endl;
+
+	    if(child.is_last_child)
+	      i = -1;
+	    else
+	      ++i;
+	  }
+      }
+    out << "}" << std::endl;
   }
 };
 
