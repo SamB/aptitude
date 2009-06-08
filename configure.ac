@@ -358,6 +358,7 @@ AC_CONFIG_FILES([
 	doc/de/Makefile
 	doc/en/Makefile
 	doc/en/images/Makefile
+	doc/es/Makefile
 	doc/fi/Makefile
 	doc/fi/images/Makefile
 	doc/fr/Makefile
@@ -367,6 +368,7 @@ AC_CONFIG_FILES([
 	doc/po4a/Makefile
 	doc/po4a/po/Makefile
 	doc/po4a/add_de/Makefile
+	doc/po4a/add_es/Makefile
 	doc/po4a/add_fr/Makefile
 	m4/Makefile
 	po/Makefile.in
