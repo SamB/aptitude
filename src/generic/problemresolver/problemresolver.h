@@ -978,6 +978,7 @@ private:
 				    deferred_choice.get_dep());
       else
 	{
+	  LOG_TRACE(resolver.logger, deferred_choice << " is now deferred; marking it as such in all active steps.");
 	  // Note that this is not quite right in logical terms.
 	  // Technically, the promotion we generate should contain the
 	  // choice that led to the deferral.  However, that's not
@@ -2577,6 +2578,9 @@ private:
   void increase_solver_tier_everywhere(const choice &solver,
 				       const promotion &p)
   {
+    LOG_TRACE(logger, "Increasing the tier of " << solver
+	      << " according to the promotion " << p
+	      << " in all active steps.");
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
@@ -3305,6 +3309,8 @@ public:
 
     if(!inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Rejecting " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unreject_version));
 
@@ -3322,6 +3328,8 @@ public:
 
     if(inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Canceling the rejection of " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
 
@@ -3335,6 +3343,8 @@ public:
 
     if(!inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Mandating " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
@@ -3349,6 +3359,8 @@ public:
 
     if(inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Un-mandating " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
 
@@ -3398,6 +3410,8 @@ public:
 
     if(!inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Hardening " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unharden));
 
@@ -3413,6 +3427,8 @@ public:
 
     if(inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Un-hardening " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
 
@@ -3440,6 +3456,8 @@ public:
 
     if(!inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Approving breaking " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
@@ -3455,6 +3473,8 @@ public:
 
     if(inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Un-approving breaking " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
 
