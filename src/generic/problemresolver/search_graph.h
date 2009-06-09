@@ -314,6 +314,41 @@ public:
     // successors are generated.
     int first_child;
 
+    /** \brief Members used while searching promotions in existing
+     *  steps.
+     */
+
+    // @{
+
+    /** \brief The index of the last promotion search.
+     *
+     *  Initially zero; the promotion searcher uses this to determine
+     *  whether the hit counts need to be reset to zero.
+     */
+    unsigned int last_promotion_search;
+
+    /** \brief The number of times that the choice set was hit by a
+     *  promotion.
+     *
+     *  Initially zero.
+     */
+    unsigned int choice_set_hit_count;
+
+    /** \brief The number of times that the solver set was hit by a
+     * promotion.
+     *
+     *  Initially zero.
+     */
+    unsigned int solver_set_hit_count;
+
+    /** \brief The first solver that was found to hit a promotion.
+     *
+     *  Only meaningful if solver_set_hit_count > 0.
+     */
+    choice first_solver_hit;
+
+    // @}
+
     /** \brief Members related to generating a step's
      *  successor.
      */
@@ -451,6 +486,10 @@ public:
       : is_last_child(true),
 	is_blessed_solution(false),
 	parent(-1), first_child(-1),
+	last_promotion_search(0),
+	choice_set_hit_count(0),
+	solver_set_hit_count(0),
+	first_solver_hit(),
 	is_deferred_listener(),
 	canonical_clone(-1),
 	reason(),
@@ -470,7 +509,12 @@ public:
 	 int _action_score)
       : is_last_child(true),
 	is_blessed_solution(false),
-	parent(-1), first_child(-1), canonical_clone(-1),
+	parent(-1), first_child(-1),
+	last_promotion_search(0),
+	choice_set_hit_count(0),
+	solver_set_hit_count(0),
+	first_solver_hit(),
+	canonical_clone(-1),
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
@@ -492,7 +536,12 @@ public:
       : is_last_child(_is_last_child),
 	is_blessed_solution(false),
 	parent(_parent),
-	first_child(-1), canonical_clone(-1),
+	first_child(-1),
+	last_promotion_search(0),
+	choice_set_hit_count(0),
+	solver_set_hit_count(0),
+	first_solver_hit(),
+	canonical_clone(-1),
 	actions(_actions),
 	score(_score),
 	action_score(_action_score),
@@ -584,6 +633,17 @@ private:
    *  graph, and also when one of a version's successors is struck.
    */
   generic_choice_indexed_map<PackageUniverse, choice_mapping_info> steps_related_to_choices;
+
+  /** \brief The index of the next promotion search.
+   *
+   *  This is used as an alternative to maintaining costly structures
+   *  to determine which steps we hit and/or to clear hit counts.  Hit
+   *  counts in a step are only valid if the step's
+   *  last_promotion_search member is equal to the index of the
+   *  current promotion search.  Otherwise, they are presumed to be
+   *  zero.
+   */
+  int next_promotion_search_index;
 
 public:
   /** \brief Add an entry to the choice->step reverse index.
@@ -893,7 +953,8 @@ public:
    */
   generic_search_graph(promotion_set &_promotions)
     : logger(aptitude::Loggers::getAptitudeResolverSearchGraph()),
-      promotions(_promotions)
+      promotions(_promotions),
+      next_promotion_search_index(0)
   {
   }
 
@@ -929,6 +990,16 @@ public:
   typename std::vector<step>::size_type get_num_steps() const
   {
     return steps.size();
+  }
+
+  /** \brief Retrieve the next promotion search index, incrementing it
+   *  in the process.
+   */
+  int get_and_increment_promotion_search_index()
+  {
+    const int rval = next_promotion_search_index;
+    ++next_promotion_search_index;
+    return rval;
   }
 
 public:
