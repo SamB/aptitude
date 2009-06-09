@@ -320,7 +320,8 @@ private:
 
   void testTiers()
   {
-    LOG_TRACE(log4cxx::Logger::getLogger("test.resolver.testTiers"), "Entering testTiers");
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTiers"));
+    LOG_TRACE(logger, "Entering testTiers");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
@@ -340,6 +341,8 @@ private:
 
     choice_set av2_choices;
     av2_choices.insert_or_narrow(choice::make_install_version(av2, 0));
+
+    LOG_TRACE(logger, "Verifying that without a tier the shortest solution is produced first and there are two solutions.");
 
     // Verify that without a tier we get the shorter solution first.
     // Without this we aren't testing anything!
@@ -361,6 +364,8 @@ private:
 	  CPPUNIT_FAIL("Expected two solutions, got none.");
 	}
 
+      LOG_TRACE(logger, "Got first solution: " << sol);
+
       assertSameEffect(av2_choices, sol.get_choices());
 
       try
@@ -372,20 +377,27 @@ private:
 	  CPPUNIT_FAIL("Expected two solutions, got only one.");
 	}
 
+      LOG_TRACE(logger, "Got second solution: " << sol);
+
       assertSameEffect(av1_choices, sol.get_choices());
 
       bool done = false;
       try
 	{
-	  r.find_next_solution(1000000, NULL);
+	  sol = r.find_next_solution(1000000, NULL);
 	}
       catch(NoMoreSolutions)
 	{
 	  done = true;
 	}
 
+      if(!done)
+	LOG_ERROR(logger, "Got unexpected third solution: " << sol);
+
       CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
     }
+
+    LOG_TRACE(logger, "Checking that adjusting tiers changes the output.");
 
     // Now check that adjusting tiers changes the output.
     {
@@ -407,6 +419,8 @@ private:
 	  CPPUNIT_FAIL("Expected two solutions, got none.");
 	}
 
+      LOG_TRACE(logger, "Got first solution: " << sol);
+
       assertSameEffect(av1_choices, sol.get_choices());
 
       try
@@ -418,17 +432,22 @@ private:
 	  CPPUNIT_FAIL("Expected two solutions, got only one.");
 	}
 
+      LOG_TRACE(logger, "Got second solution: " << sol);
+
       assertSameEffect(av2_choices, sol.get_choices());
 
       bool done = false;
       try
 	{
-	  r.find_next_solution(1000000, NULL);
+	  sol = r.find_next_solution(1000000, NULL);
 	}
       catch(NoMoreSolutions)
 	{
 	  done = true;
 	}
+
+      if(!done)
+	LOG_ERROR(logger, "Got an unexpected third solution: " << sol);
 
       CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
     }

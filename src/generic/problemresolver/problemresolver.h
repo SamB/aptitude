@@ -978,6 +978,7 @@ private:
 				    deferred_choice.get_dep());
       else
 	{
+	  LOG_TRACE(resolver.logger, deferred_choice << " is now deferred; marking it as such in all active steps.");
 	  // Note that this is not quite right in logical terms.
 	  // Technically, the promotion we generate should contain the
 	  // choice that led to the deferral.  However, that's not
@@ -1231,61 +1232,49 @@ private:
     graph.schedule_promotion_propagation(step_num, p);
   }
 
-  /** \brief Utility structure used to find incipient promotions.
-   *
-   *  While searching for incipient promotions, we allocate one of
-   *  these for each step hit by a promotion.  A promotion is
-   *  incipient in a given step if each of its choices is mapped to
-   *  the step in the global choice index, and if exactly one of those
-   *  choices is a solver.
-   */
-  struct incipient_promotion_search_info
-  {
-    /** \brief Counts the number of times the promotion hits the
-     *	action set.
-     */
-    int action_hits;
-
-    /** \brief Counts the number of times the promotion hits the
-     *  solver set.
-     */
-    int solver_hits;
-
-    /** \brief Set to the first choice in the promotion that was
-     *  mapped to a solver.
-     *
-     *  We only need to store one because there will only be a single
-     *  choice stored as a solver in steps that contain all but one
-     *  choice as an action.  We can count on that because actions and
-     *  solvers are not allowed to overlap.
-     */
-    choice solver;
-
-    incipient_promotion_search_info()
-      : action_hits(0), solver_hits(0)
-    {
-    }
-  };
-
   // Helper function for find_steps_containing_incipient_promotion.
-  // Processes mapping information and updates the counters.
+  // Processes mapping information and updates the counters; when a
+  // hit is found, inserts it into an output set.
   //
-  // Note that the same choice could show up as a solver for several
-  // different dependencies, so we need to remember which steps we
-  // already incremented the solver-hits counter for.
+  // We don't immediately invoke a callback, because that might
+  // actually lead to doing the wrong thing.  If several different
+  // solvers (say, different from-source-dep solvers that install the
+  // same version) hit the same promotion, then applying the promotion
+  // immediately when we see the first solver might remove the other
+  // ones.  When the caller finishes tracing the tree for the first
+  // solver, it'll notice that the root step lacks the other solver
+  // and not visit anything.
   class update_incipient_promotion_information
   {
-    std::map<int, incipient_promotion_search_info> &output;
-    std::set<int> &visited_solver_steps;
+    generic_problem_resolver &resolver;
+    const unsigned int promotion_search_index;
+    const unsigned int promotion_size;
     const choice &promotion_c;
+    std::set<int> &active_hits; // Steps that contain the promotion in
+			        // their action set.
+    std::set<int> &incipient_hits; // Steps that contain the promotion
+  				   // as an incipient promotion.
+
+    void too_many_choices(int choices) const
+    {
+      LOG_ERROR(resolver.logger, "Internal error: the choice " << promotion_c
+		<< " is match number " << choices
+		<< " against a promotion of size " << promotion_size);
+    }
 
   public:
-    update_incipient_promotion_information(std::map<int, incipient_promotion_search_info> &_output,
-					   std::set<int> &_visited_solver_steps,
-					   const choice &_promotion_c)
-      : output(_output),
-	visited_solver_steps(_visited_solver_steps),
-	promotion_c(_promotion_c)
+    update_incipient_promotion_information(generic_problem_resolver &_resolver,
+					   unsigned int _promotion_search_index,
+					   unsigned int _promotion_size,
+					   const choice &_promotion_c,
+					   std::set<int> &_active_hits,
+					   std::set<int> &_incipient_hits)
+      : resolver(_resolver),
+	promotion_search_index(_promotion_search_index),
+	promotion_size(_promotion_size),
+	promotion_c(_promotion_c),
+	active_hits(_active_hits),
+	incipient_hits(_incipient_hits)
     {
     }
 
@@ -1293,58 +1282,124 @@ private:
 		    const typename search_graph::choice_mapping_type how,
 		    int step_num) const
     {
-      incipient_promotion_search_info &output_inf(output[step_num]);
+      step &s(resolver.graph.get_step(step_num));
+      LOG_TRACE(resolver.logger, "update_incipient_promotion_information: visiting step " << step_num << " for " << c);
+
+      if(s.last_promotion_search != promotion_search_index)
+	{
+	  s.last_promotion_search = promotion_search_index;
+	  s.choice_set_hit_count = 0;
+	  s.solver_set_hit_count = 0;
+	}
+      // Short-circuit if we can't possibly match.
+      else if(s.solver_set_hit_count > 1)
+	return true;
 
       switch(how)
 	{
 	case search_graph::choice_mapping_action:
-	  ++output_inf.action_hits;
+	  LOG_TRACE(resolver.logger, "Hit step " << step_num << " as an action with " << c);
+	  ++s.choice_set_hit_count;
+	  if(s.choice_set_hit_count > promotion_size)
+	    {
+	      too_many_choices(s.choice_set_hit_count);
+	      return true;
+	    }
 	  break;
 
 	case search_graph::choice_mapping_solver:
-	  {
-	    bool already_visited =
-	      !visited_solver_steps.insert(step_num).second;
-
-	    if(already_visited)
+	  LOG_TRACE(resolver.logger, "Hit step " << step_num << " as a solver with " << c);
+	  if(s.solver_set_hit_count == 0)
+	    {
+	      s.solver_set_hit_count = 1;
+	      s.first_solver_hit = promotion_c;
+	    }
+	  else if(s.first_solver_hit.contains(promotion_c))
+	    // This is the same choice we already stored, so do
+	    // nothing.
+	    return true;
+	  else if(promotion_c.contains(s.first_solver_hit))
+	    // This is a more general version of the choice we already
+	    // stored.
+	    {
+	      s.first_solver_hit = promotion_c;
 	      return true;
-	  }
+	    }
+	  else
+	    // If we see a new solver, increment the solver hit count
+	    // (thus marking this solver as invalid).
+	    ++s.solver_set_hit_count;
 
-	  ++output_inf.solver_hits;
-	  output_inf.solver = promotion_c;
 	  break;
+	}
+
+      if(s.solver_set_hit_count <= 1 &&
+	 s.choice_set_hit_count + s.solver_set_hit_count == promotion_size)
+	{
+	  if(s.solver_set_hit_count == 0)
+	    active_hits.insert(step_num);
+	  else
+	    incipient_hits.insert(step_num);
 	}
 
       return true;
     }
   };
 
+  template<typename Callbacks>
   class find_steps_containing_incipient_promotion
   {
-    // Note: would it be more efficient to use an array?  Usually
-    // there aren't that many steps anyway.  I could even store this
-    // information in the global step array; that would more or less
-    // eliminate the cost of maintaining this structure, and it would
-    // be safe since this isn't reentrant (same trick I use for
-    // promotions).
-    std::map<int, incipient_promotion_search_info> &output;
-    const search_graph &graph;
+    generic_problem_resolver &resolver;
+    unsigned int promotion_search_index;
+    const promotion &p;
+    Callbacks callbacks;
 
   public:
-    find_steps_containing_incipient_promotion(std::map<int, incipient_promotion_search_info> &_output,
-					      const search_graph &_graph)
-      : output(_output),
-	graph(_graph)
+    find_steps_containing_incipient_promotion(generic_problem_resolver &_resolver,
+					      unsigned int _promotion_search_index,
+					      const promotion &_p,
+					      Callbacks _callbacks)
+      : resolver(_resolver),
+	promotion_search_index(_promotion_search_index),
+	p(_p),
+	callbacks(_callbacks)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      std::set<int> steps_containing_c_as_a_solver;
-      update_incipient_promotion_information
-	update_f(output, steps_containing_c_as_a_solver, c);
+      std::set<int> active_hits;
+      std::set<int> incipient_hits;
 
-      graph.for_each_step_related_to_choice(c, update_f);
+      update_incipient_promotion_information
+	update_f(resolver,
+		 promotion_search_index,
+		 p.get_choices().size(),
+		 c,
+		 active_hits,
+		 incipient_hits);
+
+      resolver.graph.for_each_step_related_to_choice(c, update_f);
+
+      for(std::set<int>::const_iterator it = active_hits.begin();
+	  it != active_hits.end(); ++it)
+	{
+	  int step_num(*it);
+
+	  LOG_DEBUG(resolver.logger, "Step " << step_num
+		    << " contains " << p
+		    << " as an active promotion.");
+	  callbacks.active(step_num);
+	}
+
+      for(std::set<int>::const_iterator it = incipient_hits.begin();
+	  it != incipient_hits.end(); ++it)
+	{
+	  int step_num(*it);
+	  step &s(resolver.graph.get_step(step_num));
+
+	  callbacks.incipient(step_num, s.first_solver_hit);
+	}
 
       return true;
     }
@@ -1356,62 +1411,14 @@ private:
    *  callbacks.active(step_num) if it's contained in the action set.
    */
   template<typename Callbacks>
-  void for_each_promotion_hit(const promotion &p, Callbacks callbacks) const
+  void for_each_promotion_hit(const promotion &p, Callbacks callbacks)
   {
-    std::map<int, incipient_promotion_search_info> search_result;
-    {
-      find_steps_containing_incipient_promotion
-	find_promotion_f(search_result, graph);
-      p.get_choices().for_each(find_promotion_f);
-    }
-
-    int num_promotion_choices = p.get_choices().size();
-    for(typename std::map<int, incipient_promotion_search_info>::const_iterator
-	  it = search_result.begin(); it != search_result.end(); ++it)
-      {
-	const int step_num(it->first);
-	const incipient_promotion_search_info &inf(it->second);
-
-	if(inf.action_hits == num_promotion_choices)
-	  {
-	    const step &s(graph.get_step(step_num));
-	    if(s.step_tier < p.get_tier())
-	      {
-		LOG_TRACE(logger, "Step " << step_num
-			  << " contains " << p
-			  << " as an active promotion.");
-
-		callbacks.active(step_num);
-	      }
-	  }
-	else if(inf.action_hits + 1 != num_promotion_choices)
-	  {
-	    LOG_TRACE(logger, "Step " << step_num
-		      << " does not contain " << p
-		      << " as an incipient promotion; it includes "
-		      << inf.action_hits
-		      << " choices from the promotion (needed "
-		      << (num_promotion_choices - 1)
-		      << ")");
-	  }
-	else if(inf.solver_hits != 1)
-	  {
-	    LOG_TRACE(logger, "Step " << step_num
-		      << " does not contain " << p
-		      << " as an incipient promotion: "
-		      << inf.solver_hits
-		      << " of its solvers are contained in the promotion (needed 1).");
-	  }
-	else
-	  {
-	    LOG_DEBUG(logger, "Step " << step_num
-		      << " contains " << p
-		      << " as an incipient promotion for the solver "
-		      << inf.solver);
-
-	    callbacks.incipient(step_num, inf.solver);
-	  }
-      }
+    find_steps_containing_incipient_promotion<Callbacks>
+      find_promotion_f(*this,
+		       graph.get_and_increment_promotion_search_index(),
+		       p,
+		       callbacks);
+    p.get_choices().for_each(find_promotion_f);
   }
 
   /** \brief For each promotion hit, increase its tier in a solver set
@@ -2577,6 +2584,9 @@ private:
   void increase_solver_tier_everywhere(const choice &solver,
 				       const promotion &p)
   {
+    LOG_TRACE(logger, "Increasing the tier of " << solver
+	      << " according to the promotion " << p
+	      << " in all active steps.");
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
@@ -3305,6 +3315,8 @@ public:
 
     if(!inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Rejecting " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unreject_version));
 
@@ -3322,6 +3334,8 @@ public:
 
     if(inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Canceling the rejection of " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::reject_version));
 
@@ -3335,6 +3349,8 @@ public:
 
     if(!inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Mandating " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::unmandate_version));
 
@@ -3349,6 +3365,8 @@ public:
 
     if(inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Un-mandating " << ver);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, version>(this, ver, &generic_problem_resolver<PackageUniverse>::mandate_version));
 
@@ -3398,6 +3416,8 @@ public:
 
     if(!inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Hardening " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unharden));
 
@@ -3413,6 +3433,8 @@ public:
 
     if(inf.get_rejected()->get_value())
       {
+	LOG_TRACE(logger, "Un-hardening " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::harden));
 
@@ -3440,6 +3462,8 @@ public:
 
     if(!inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Approving breaking " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::unapprove_break));
 
@@ -3455,6 +3479,8 @@ public:
 
     if(inf.get_approved()->get_value())
       {
+	LOG_TRACE(logger, "Un-approving breaking " << d);
+
 	if(undo != NULL)
 	  undo->add_item(new undo_resolver_manipulation<PackageUniverse, dep>(this, d, &generic_problem_resolver<PackageUniverse>::approve_break));
 
