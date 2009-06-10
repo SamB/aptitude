@@ -27,6 +27,8 @@
 
 #include <iostream>
 
+#include <generic/util/compare3.h>
+
 template<typename PackageUniverse> class generic_choice_set;
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniverse> &choices);
@@ -418,16 +420,20 @@ public:
     return !(*this == other);
   }
 
+  int compare(const generic_choice_set &other) const
+  {
+    const int cmp_install_version_choices =
+      aptitude::util::compare3(install_version_choices, other.install_version_choices);
+
+    if(cmp_install_version_choices != 0)
+      return cmp_install_version_choices;
+    else
+      return aptitude::util::compare3(not_install_version_choices, other.not_install_version_choices);
+  }
+
   bool operator<(const generic_choice_set &other) const
   {
-    // \todo We should have a compare-and-return-int function on sets
-    // to avoid always comparing them twice.
-    if(install_version_choices < other.install_version_choices)
-      return true;
-    else if(other.install_version_choices < install_version_choices)
-      return false;
-    else
-      return not_install_version_choices < other.not_install_version_choices;
+    return compare(other) < 0;
   }
 
   /** \brief Check whether each entry in the other set is contained by

@@ -24,6 +24,8 @@
 
 #include <iostream>
 
+#include <generic/util/compare3.h>
+
 /** \brief Represents a decision made by the resolver.
  *
  *  This is used to keep track of which choices imply that we end up
@@ -212,44 +214,57 @@ public:
    *
    *  Choices are ordered arbitrarily.
    */
-  bool operator<(const generic_choice &other) const
+  int compare(const generic_choice &other) const
   {
+    using aptitude::util::compare3;
+
     if(tp < other.tp)
-      return true;
+      return -1;
     else if(tp > other.tp)
-      return false;
+      return 1;
     else // tp == other.tp
       {
 	switch(tp)
 	  {
 	  case install_version:
-	    if(ver < other.ver)
-	      return true;
-	    else if(other.ver < ver)
-	      return false;
-	    else
-	      {
-		if(!from_dep_source && other.from_dep_source)
-		  return true;
-		else if(from_dep_source && !other.from_dep_source)
-		  return false;
-		else if(!has_dep && other.has_dep)
-		  return true;
-		else if(has_dep && !other.has_dep)
-		  return false;
-		else if(!has_dep)
-		  return false;
-		else
-		  return d < other.d;
-	      }
+	    {
+	      const int ver_cmp = compare3(ver, other.ver);
+
+	      if(ver_cmp != 0)
+		return ver_cmp;
+	      else
+		{
+		  if(!from_dep_source && other.from_dep_source)
+		    return -1;
+		  else if(from_dep_source && !other.from_dep_source)
+		    return 1;
+		  else if(!has_dep && other.has_dep)
+		    return -1;
+		  else if(has_dep && !other.has_dep)
+		    return 1;
+		  else if(!has_dep)
+		    return 0;
+		  else
+		    return compare3(d, other.d);
+		}
+	    }
 
 	  case break_soft_dep:
-	    return d < other.d;
+	    return compare3(d, other.d);
 	  }
       }
 
     eassert(!"We should never get here.");
     return false;
+  };
+
+  /** \brief Compare two choices.
+   *
+   *  Choices are ordered arbitrarily.
+   */
+  bool operator<(const generic_choice &other) const
+  {
+    return compare(other) < 0;
   }
 
   bool operator==(const generic_choice &other) const
@@ -330,6 +345,24 @@ public:
   }
 };
 
+// Overload compare3 on choices.
+namespace aptitude
+{
+  namespace util
+  {
+    template<typename PackageUniverse>
+    class compare3_f<generic_choice<PackageUniverse> >
+    {
+    public:
+      int operator()(const generic_choice<PackageUniverse> &c1,
+		     const generic_choice<PackageUniverse> &c2) const
+      {
+	return c1.compare(c2);
+      }
+    };
+  }
+}
+
 /** \brief Compares choices by their effects on the solution.
  *
  *  e.g., two choices that install the same version will always
@@ -338,8 +371,12 @@ public:
 template<typename PackageUniverse>
 struct generic_compare_choices_by_effects
 {
-  bool operator()(const generic_choice<PackageUniverse> &c1, const generic_choice<PackageUniverse> &c2) const
+  int operator()(const generic_choice<PackageUniverse> &c1, const generic_choice<PackageUniverse> &c2) const
   {
+    typedef typename PackageUniverse::version version;
+    typedef typename PackageUniverse::dep dep;
+    using aptitude::util::compare3;
+
     if(c1.get_type() < c2.get_type())
       return true;
     else if(c2.get_type() < c1.get_type())
@@ -348,10 +385,10 @@ struct generic_compare_choices_by_effects
       switch(c1.get_type())
 	{
 	case generic_choice<PackageUniverse>::install_version:
-	  return c1.get_ver() < c2.get_ver();
+	  return compare3(c1.get_ver(), c2.get_ver());
 
 	case generic_choice<PackageUniverse>::break_soft_dep:
-	  return c1.get_dep() < c2.get_dep();
+	  return compare3(c1.get_dep(), c2.get_dep());
 
 	default:
 	  return false;

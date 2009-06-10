@@ -26,6 +26,8 @@
 
 #include <vector>
 
+#include "compare3.h"
+
 /** \brief A class to represent immutable sets
  *
  * 
@@ -411,7 +413,7 @@ namespace imm
 
   /** An entire weighted tree.
    */
-  template<typename Val, typename Compare = std::less<Val>, int w = 4 >
+  template<typename Val, typename Compare = aptitude::util::compare3_f<Val>, int w = 4 >
   class set
   {
   public:
@@ -520,16 +522,21 @@ namespace imm
     {
       if(n.empty())
 	return node(x, node(), node());
-      else if(value_compare(x, n.getVal()))
-	return node(n.getVal(),
-		    add(n.getLeft(), x),
-		    n.getRight()).rebalance();
-      else if(value_compare(n.getVal(), x))
-	return node(n.getVal(),
-		    n.getLeft(),
-		    add(n.getRight(), x)).rebalance();
       else
-	return n;
+	{
+	  int cmp = value_compare(x, n.getVal());
+
+	  if(cmp < 0)
+	    return node(n.getVal(),
+			add(n.getLeft(), x),
+			n.getRight()).rebalance();
+	  else if(cmp > 0)
+	    return node(n.getVal(),
+			n.getLeft(),
+			add(n.getRight(), x)).rebalance();
+	  else
+	    return n;
+	}
     }
 
     /** Returns a balanced tree constructed by adding x to n.  Will
@@ -539,16 +546,21 @@ namespace imm
     {
       if(n.empty())
         return node(x, node(), node());
-      else if(value_compare(x, n.getVal()))
-	return node(n.getVal(),
-		    addUpdate(n.getLeft(), x),
-		    n.getRight()).rebalance();
-      else if(value_compare(n.getVal(), x))
-	return node(n.getVal(),
-		    n.getLeft(),
-		    addUpdate(n.getRight(), x)).rebalance();
       else
-	return node(x, n.getLeft(), n.getRight());
+	{
+	  int cmp = value_compare(x, n.getVal());
+
+	  if(cmp < 0)
+	    return node(n.getVal(),
+			addUpdate(n.getLeft(), x),
+			n.getRight()).rebalance();
+	  else if(cmp > 0)
+	    return node(n.getVal(),
+			n.getLeft(),
+			addUpdate(n.getRight(), x)).rebalance();
+	  else
+	    return node(x, n.getLeft(), n.getRight());
+	}
     }
 
     /** Given a node, find and return its minimum element while
@@ -600,24 +612,25 @@ namespace imm
         return false;
       else if(n2.empty())
         return false;
-      else if(value_compare(n1.getVal(), n2.getVal()))
-        {
-	  return
-	    nodes_intersect(n1.getRight(), n2, f) ||
-	    nodes_intersect(n1, n2.getLeft(), f);
-        }
-      else if(value_compare(n2.getVal(), n1.getVal()))
-        {
-	  return
-	    nodes_intersect(n1.getLeft(), n2, f) ||
-	    nodes_intersect(n1, n2.getRight(), f);
-        }
-      else if(f(n1.getVal(), n2.getVal()))
-        return true;
       else
-        return
-          nodes_intersect(n1.getLeft(), n2.getLeft(), f) ||
-          nodes_intersect(n1.getRight(), n2.getRight(), f);
+	{
+	  int cmp = value_compare(n1.getVal(), n2.getVal());
+
+	  if(cmp < 0)
+	    return
+	      nodes_intersect(n1.getRight(), n2, f) ||
+	      nodes_intersect(n1, n2.getLeft(), f);
+	  else if(cmp > 0)
+	    return
+	      nodes_intersect(n1.getLeft(), n2, f) ||
+	      nodes_intersect(n1, n2.getRight(), f);
+	  else if(f(n1.getVal(), n2.getVal()))
+	    return true;
+	  else
+	    return
+	      nodes_intersect(n1.getLeft(), n2.getLeft(), f) ||
+	      nodes_intersect(n1.getRight(), n2.getRight(), f);
+	}
     }
 
     /** \return \b true if n1 contains n2 under f; i.e., if for each
@@ -632,29 +645,34 @@ namespace imm
         return true;
       else if(n1.empty())
         return false;
-      else if(value_compare(n1.getVal(), n2.getVal()))
-        {
-	  // Strip the left subtree of n2.
-	  node n2repl = n2.getLeft().empty()
-	    ? n2 : node(n2.getVal(), node(), n2.getRight());
-
-	  return node_contains(n1, n2.getLeft(), f) &&
-	         node_contains(n1.getRight(), n2repl, f);
-        }
-      else if(value_compare(n2.getVal(), n1.getVal()))
-        {
-	  // Strip the right subtree of n2.
-	  node n2repl = n2.getRight().empty()
-	    ? n2 : node(n2.getVal(), n2.getLeft(), node());
-
-	  return node_contains(n1, n2.getRight(), f) &&
-	         node_contains(n1.getLeft(), n2repl, f);
-	}
       else
-        {
-	  return f(n2.getVal(), n1.getVal()) &&
-	         node_contains(n1.getLeft(), n2.getLeft(), f) &&
-	         node_contains(n1.getRight(), n2.getRight(), f);
+	{
+	  int cmp = value_compare(n1.getVal(), n2.getVal());
+
+	  if(cmp < 0)
+	    {
+	      // Strip the left subtree of n2.
+	      node n2repl = n2.getLeft().empty()
+		? n2 : node(n2.getVal(), node(), n2.getRight());
+
+	      return node_contains(n1, n2.getLeft(), f) &&
+		node_contains(n1.getRight(), n2repl, f);
+	    }
+	  else if(cmp > 0)
+	    {
+	      // Strip the right subtree of n2.
+	      node n2repl = n2.getRight().empty()
+		? n2 : node(n2.getVal(), n2.getLeft(), node());
+
+	      return node_contains(n1, n2.getRight(), f) &&
+		node_contains(n1.getLeft(), n2repl, f);
+	    }
+	  else
+	    {
+	      return f(n2.getVal(), n1.getVal()) &&
+		node_contains(n1.getLeft(), n2.getLeft(), f) &&
+		node_contains(n1.getRight(), n2.getRight(), f);
+	    }
 	}
     }
 
@@ -663,16 +681,21 @@ namespace imm
     {
       if(n.empty())
         return n;
-      else if(value_compare(x, n.getVal()))
-        return node(n.getVal(),
-		    remove(n.getLeft(), x),
-		    n.getRight()).rebalance();
-      else if(value_compare(n.getVal(), x))
-        return node(n.getVal(),
-		    n.getLeft(),
-		    remove(n.getRight(), x)).rebalance();
-      else // found an equivalent node:
-        return splice_trees(n.getLeft(), n.getRight());
+      else
+	{
+	  const int cmp = value_compare(x, n.getVal());
+
+	  if(cmp < 0)
+	    return node(n.getVal(),
+			remove(n.getLeft(), x),
+			n.getRight()).rebalance();
+	  else if(cmp > 0)
+	    return node(n.getVal(),
+			n.getLeft(),
+			remove(n.getRight(), x)).rebalance();
+	  else // found an equivalent node:
+	    return splice_trees(n.getLeft(), n.getRight());
+	}
     }
 
     set(const node &n, const Compare &_value_compare)
@@ -788,9 +811,11 @@ namespace imm
 
       while(rval.isValid())
       {
-	if(value_compare(x, rval.getVal()))
+	int cmp = value_compare(x, rval.getVal());
+
+	if(cmp < 0)
 	  rval = rval.getLeft();
-	else if(value_compare(rval.getVal(), x))
+	else if(cmp > 0)
 	  rval = rval.getRight();
 	else
 	  return rval;
@@ -894,39 +919,38 @@ namespace imm
 
     return out;
   }
+}
 
+namespace aptitude
+{
+  namespace util
+  {
+    /** Compare two sets.  Will produce strange results unless the two
+     *  sets have the same comparison *object*; you are responsible for
+     *  ensuring that this is the case. (i.e., if the comparator has
+     *  associated data, it should be identical in the two sets)
+     */
+    template<typename Val, typename Compare, int w>
+    class compare3_f<imm::set<Val, Compare, w> >
+    {
+    public:
+      int operator()(const imm::set<Val, Compare, w> &s1,
+		     const imm::set<Val, Compare, w> &s2) const
+      {
+	return aptitude::util::lexicographical_compare3(s1.begin(), s1.end(),
+							s2.begin(), s2.end());
+      }
+    };
+  }
+}
 
-  /** Compare two sets.  Will produce strange results unless the two
-   *  sets have the same comparison *object*; you are responsible for
-   *  ensuring that this is the case. (i.e., if the comparator has
-   *  associated data, it should be identical in the two sets)
-   */
+namespace imm
+{
   template<typename Val, typename Compare, int w>
   inline bool operator<(const set<Val, Compare, w> &s1,
 			const set<Val, Compare, w> &s2)
   {
-    typename set<Val, Compare, w>::const_iterator
-      i1 = s1.begin(), i2 = s2.begin();
-
-    while(i1 != s1.end() && i2 != s2.end())
-      {
-	if(*i1 < *i2)
-	  return true;
-	else if(*i2 < *i1)
-	  return false;
-	else
-	  {
-	    ++i1;
-	    ++i2;
-	  }
-      }
-
-    if(i1 != s1.end())
-      return false;
-    else if(i2 != s2.end())
-      return true;
-    else
-      return false;
+    return aptitude::util::compare3(s1, s2) < 0;
   }
 
   /** Compare two sets for equality, with the same caveat as operator<. */
@@ -963,14 +987,14 @@ namespace imm
     {
     }
 
-    bool operator()(const std::pair<Key, Val> &p1,
-		    const std::pair<Key, Val> &p2) const
+    int operator()(const std::pair<Key, Val> &p1,
+		   const std::pair<Key, Val> &p2) const
     {
       return real_cmp(p1.first, p2.first);
     }
   };
 
-  template<typename Key, typename Val, typename Compare = std::less<Key> >
+  template<typename Key, typename Val, typename Compare = aptitude::util::compare3_f<Key> >
   class map
   {
   public:
@@ -1182,5 +1206,28 @@ namespace imm
     return out;
   }
 };
+
+
+namespace aptitude
+{
+  namespace util
+  {
+    /** Compare two sets.  Will produce strange results unless the two
+     *  sets have the same comparison *object*; you are responsible for
+     *  ensuring that this is the case. (i.e., if the comparator has
+     *  associated data, it should be identical in the two sets)
+     */
+    template<typename Key, typename Val, typename Compare>
+    class compare3_f<imm::map<Key, Val, Compare> >
+    {
+    public:
+      int operator()(const imm::map<Key, Val, Compare> &m1,
+		     const imm::map<Key, Val, Compare> &m2) const
+      {
+	return compare3(m1.get_bindings(), m2.get_bindings());
+      }
+    };
+  }
+}
 
 #endif

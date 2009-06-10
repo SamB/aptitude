@@ -58,7 +58,7 @@
  *  this set?" can be produced.  At the moment this object increases
  *  monotonically, to keep things simple.
  */
-template<typename Val, typename Compare = std::less<Val> >
+template<typename Val, typename Compare = aptitude::util::compare3_f<Val> >
 class setset
 {
 private:
@@ -317,7 +317,7 @@ public:
 };
 
 template<typename Key, typename Val,
-	 typename Compare = std::less<Key> >
+	 typename Compare = aptitude::util::compare3_f<Key> >
 class mapset
 {
   typedef setset<std::pair<Key, Val>,

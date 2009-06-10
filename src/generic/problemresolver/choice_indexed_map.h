@@ -23,6 +23,7 @@
 
 #include "choice.h"
 
+#include <generic/util/compare3.h>
 #include <generic/util/immset.h>
 #include <generic/util/maybe.h>
 
@@ -425,7 +426,7 @@ public:
  *  \tparam T        The type of object stored in this set.
  *  \tparam Compare  How to compare T objects.
  */
-template<typename PackageUniverse, typename T, typename Compare = std::less<T> >
+template<typename PackageUniverse, typename T, typename Compare = aptitude::util::compare3_f<T> >
 class generic_choice_indexed_set
 {
   typedef generic_choice<PackageUniverse> choice;

@@ -28,6 +28,7 @@
 
 #include <iostream>
 
+#include <generic/util/compare3.h>
 #include <generic/util/immset.h>
 #include <cwidget/generic/util/ref_ptr.h>
 
@@ -87,14 +88,22 @@ public:
   const tier &get_tier() const { return promotion_tier; }
   const cwidget::util::ref_ptr<expression<bool> > &get_valid_condition() const { return valid_condition; }
 
+  int compare(const generic_promotion &other) const
+  {
+    using aptitude::util::compare3;
+
+    const int promotion_cmp =
+      compare3(promotion_tier, other.promotion_tier);
+
+    if(promotion_cmp != 0)
+      return promotion_cmp;
+    else
+      return compare3(choices, other.choices);
+  }
+
   bool operator<(const generic_promotion &other) const
   {
-    if(promotion_tier < other.promotion_tier)
-      return false;
-    else if(other.promotion_tier < promotion_tier)
-      return true;
-    else
-      return choices < other.choices;
+    return compare(other) < 0;
   }
 
   bool operator==(const generic_promotion &other) const
@@ -119,6 +128,23 @@ public:
     return false;
   }
 };
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<typename PackageUniverse>
+    class compare3_f<generic_promotion<PackageUniverse> >
+    {
+    public:
+      int operator()(const generic_promotion<PackageUniverse> &p1,
+		     const generic_promotion<PackageUniverse> &p2) const
+      {
+	return p1.compare(p2);
+      }
+    };
+  }
+}
 
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUniverse> &p)

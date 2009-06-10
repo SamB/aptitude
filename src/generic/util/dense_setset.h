@@ -59,7 +59,7 @@
  *  this set?" can be produced.  At the moment this object increases
  *  monotonically, to keep things simple.
  */
-template<typename Val, typename IdFunc, typename Compare = std::less<Val> >
+template<typename Val, typename IdFunc, typename Compare = aptitude::util::compare3_f<Val> >
 class dense_setset
 {
 private:
@@ -347,7 +347,7 @@ public:
 };
 
 template<typename Key, typename Val, typename IdFunc,
-	 typename Compare = std::less<Key> >
+	 typename Compare = aptitude::util::compare3_f<Key> >
 class dense_mapset
 {
   struct key_id

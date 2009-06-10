@@ -24,6 +24,7 @@
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include <generic/util/compare3.h>
 #include <generic/util/refcounted_base.h>
 
 #include <algorithm>
@@ -123,6 +124,11 @@ public:
     return expr == other;
   }
 
+  int compare(const expression_weak_ref &other) const
+  {
+    return aptitude::util::compare3(expr, other.expr);
+  }
+
   bool operator<(const expression_weak_ref &other) const
   {
     return expr < other.expr;
@@ -130,6 +136,23 @@ public:
 
   ~expression_weak_ref();
 };
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<typename T>
+    class compare3_f<expression_weak_ref<T> >
+    {
+    public:
+      int operator()(const expression_weak_ref<T> &r1,
+		     const expression_weak_ref<T> &r2) const
+      {
+	return r1.compare(r2);
+      }
+    };
+  }
+}
 
 template<typename T>
 class expression_container;

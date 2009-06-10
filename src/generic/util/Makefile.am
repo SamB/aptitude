@@ -6,6 +6,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 noinst_LIBRARIES = libgeneric-util.a
 libgeneric_util_a_SOURCES = \
+	compare3.h \
 	dense_setset.h \
 	dirent_safe.h \
 	immlist.h \

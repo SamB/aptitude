@@ -30,6 +30,7 @@
 #include "solution.h"
 #include "tier_limits.h"
 
+#include <generic/util/compare3.h>
 #include <generic/util/immlist.h>
 #include <generic/util/immset.h>
 
@@ -136,22 +137,31 @@ public:
    *  merged have the same deferred listeners and tier-valid
    *  expressions.
    */
-  bool operator<(const generic_solver_information &other) const
+  int compare(const generic_solver_information &other) const
   {
     if(tier_valid < other.tier_valid)
-      return true;
+      return -1;
     else if(other.tier_valid < tier_valid)
-      return false;
+      return -1;
     else if(is_deferred_listener < other.is_deferred_listener)
-      return true;
+      return -1;
     else if(other.is_deferred_listener < is_deferred_listener)
-      return false;
-    else if(t < other.t)
-      return true;
-    else if(other.t < t)
-      return false;
+      return 1;
     else
-      return reasons < other.reasons;
+      {
+	const int tier_compare =
+	  aptitude::util::compare3<tier>(t, other.t);
+
+	if(tier_compare != 0)
+	  return tier_compare;
+	else
+	  return aptitude::util::compare3<choice_set>(reasons, other.reasons);
+      }
+  }
+
+  bool operator<(const generic_solver_information &other) const
+  {
+    return compare(other) < 0;
   }
 };
 
@@ -209,14 +219,21 @@ public:
   /** \todo This should use some sort of precomputed mostly-unique
    *  value to speed up comparisons.
    */
+  int compare(const generic_dep_solvers &other) const
+  {
+    const int solvers_cmp = aptitude::util::compare3(solvers, other.solvers);
+    if(solvers_cmp != 0)
+      return solvers_cmp;
+    else
+      return aptitude::util::compare3(structural_reasons, other.structural_reasons);
+  }
+
+  /** \todo This should use some sort of precomputed mostly-unique
+   *  value to speed up comparisons.
+   */
   bool operator<(const generic_dep_solvers &other) const
   {
-    if(solvers < other.solvers)
-      return true;
-    else if(other.solvers < solvers)
-      return false;
-    else
-      return structural_reasons < other.structural_reasons;
+    return compare(other) < 0;
   }
 };
 
