@@ -195,9 +195,9 @@ namespace aptitude
 	  ++it2;
 	}
 
-      if(it1 == end1)
+      if(it2 != end2)
 	return -1;
-      else if(it2 == end2)
+      else if(it1 != end1)
 	return 1;
       else
 	return 0;
