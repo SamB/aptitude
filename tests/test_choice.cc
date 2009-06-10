@@ -20,6 +20,8 @@
 #include <generic/problemresolver/choice.h>
 #include <generic/problemresolver/dummy_universe.h>
 
+#include <generic/util/compare3.h>
+
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <iostream>
@@ -45,6 +47,7 @@ class Choice_Test : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(Choice_Test);
 
   CPPUNIT_TEST(testContains);
+  CPPUNIT_TEST(testCompare);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -83,6 +86,87 @@ class Choice_Test : public CppUnit::TestFixture
   }
 
 public:
+  void testCompare()
+  {
+    dummy_universe_ref u(parseUniverse(dummy_universe_1));
+
+    package a(u.find_package("a"));
+    package b(u.find_package("b"));
+    package c(u.find_package("c"));
+
+    version av1(a.version_from_name("v1"));
+    version av2(a.version_from_name("v2"));
+    version av3(a.version_from_name("v3"));
+
+    version bv1(b.version_from_name("v1"));
+    version bv2(b.version_from_name("v2"));
+    version bv3(b.version_from_name("v3"));
+
+    version cv1(c.version_from_name("v1"));
+    version cv2(c.version_from_name("v2"));
+    version cv3(c.version_from_name("v3"));
+
+    dep av1d1(*av1.deps_begin());
+    dep bv2d1(*bv2.deps_begin());
+    dep av2d1(*av2.deps_begin());
+    dep av3d1(*av3.deps_begin());
+
+    std::vector<choice> choices;
+    choices.push_back(make_install_version(av1));
+    choices.push_back(make_install_version_from_dep_source(av1, av2d1));
+    choices.push_back(make_install_version(av1, av2d1));
+    choices.push_back(make_install_version_from_dep_source(av1, av3d1));
+    choices.push_back(make_install_version(av2));
+    choices.push_back(make_install_version(bv1));
+    choices.push_back(make_break_soft_dep(av1d1));
+    choices.push_back(make_break_soft_dep(av2d1));
+    choices.push_back(make_install_version_from_dep_source(bv1, bv2d1));
+    choices.push_back(make_install_version(cv2));
+
+    using aptitude::util::compare3;
+    for(std::vector<choice>::const_iterator itA = choices.begin(); itA != choices.end(); ++itA)
+      {
+	// Check reflexivity.
+	CPPUNIT_ASSERT_EQUAL(0, compare3(*itA, *itA));
+	CPPUNIT_ASSERT_EQUAL(*itA, *itA);
+
+	for(std::vector<choice>::const_iterator itB = choices.begin(); itB != choices.end(); ++itB)
+	  {
+	    int cmpAB = compare3(*itA, *itB);
+	    int cmpBA = compare3(*itB, *itA);
+
+	    if(itA != itB)
+	      {
+		CPPUNIT_ASSERT(!(*itA == *itB));
+		CPPUNIT_ASSERT(cmpAB != 0);
+		CPPUNIT_ASSERT(cmpBA != 0);
+	      }
+
+	    // Check antisymmetry.
+	    if(cmpAB < 0)
+	      CPPUNIT_ASSERT(cmpBA > 0);
+	    else if(cmpAB > 0)
+	      CPPUNIT_ASSERT(cmpBA < 0);
+	    else
+	      CPPUNIT_ASSERT_EQUAL(0, cmpBA);
+
+	    for(std::vector<choice>::const_iterator itC = choices.begin(); itC != choices.end(); ++itC)
+	      {
+		// Check transitivity.
+		int cmpBC = compare3(*itB, *itC);
+		int cmpAC = compare3(*itA, *itC);
+
+		if(cmpAB == 0 && cmpBC == 0)
+		  CPPUNIT_ASSERT_EQUAL(0, cmpAC);
+		else if(cmpAB <= 0 && cmpBC <= 0)
+		  CPPUNIT_ASSERT(cmpAC < 0);
+		else if(cmpAB >= 0 && cmpBC >= 0)
+		  CPPUNIT_ASSERT(cmpAC > 0);
+	      }
+	  }
+      }
+  }
+
   void testContains()
   {
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
