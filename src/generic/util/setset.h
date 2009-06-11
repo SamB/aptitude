@@ -79,12 +79,32 @@ private:
     }
   };
 
+  class CompareLT
+  {
+    Compare comparer;
+
+  public:
+    CompareLT()
+    {
+    }
+
+    CompareLT(Compare _comparer)
+      : comparer(_comparer)
+    {
+    }
+
+    bool operator()(const Val &v1, const Val &v2) const
+    {
+      return comparer(v1, v2) < 0;
+    }
+  };
+
   typedef std::vector<entry> entries_list;
   entries_list entries;
 
   typedef std::pair<typename entries_list::size_type, Val> index_entry;
 
-  typedef std::map<Val, std::vector<index_entry>, Compare> index_type;
+  typedef std::map<Val, std::vector<index_entry>, CompareLT> index_type;
 
   index_type sets_by_key;
 
