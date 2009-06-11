@@ -108,9 +108,9 @@ public:
   struct HalfCmp
   {
   public:
-    bool operator()(int a, int b) const
+    int operator()(int a, int b) const
     {
-      return a/2 < b/2;
+      return aptitude::util::compare3(a/2, b/2);
     }
   };
 
