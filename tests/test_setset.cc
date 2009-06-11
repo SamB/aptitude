@@ -51,32 +51,58 @@ public:
     s3.insert(4);
     s3.insert(5);
 
-    setset<int> S;
+    setset<int> S1;
+    setset<int> S2;
 
-    S.insert(s1);
-    S.insert(s2);
-    S.insert(s3);
+    imm::set<int> t1;
 
-    imm::set<int> t;
+    t1.insert(1);
 
-    t.insert(1);
+    imm::set<int> t2(t1);
 
-    setset<int>::const_iterator found = S.find_subset(t);
-    CPPUNIT_ASSERT(found == S.end());
+    t2.insert(5);
 
-    t.insert(5);
+    imm::set<int> t3(t2);
+
+    t3.insert(6);
+    t3.insert(4);
+    t3.insert(3);
+
+    S1.insert(s1);
+    CPPUNIT_ASSERT(S1.find_subset(t1) == S1.end());
+    CPPUNIT_ASSERT(S1.find_subset(t2) == S1.end());
+    CPPUNIT_ASSERT(S1.find_subset(t3) == S1.end());
+
+    S1.insert(s2);
+    S2.insert(s2);
+
+    CPPUNIT_ASSERT(S2.find_subset(t1) == S2.end());
 
     LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
-	      "Searching for " << t << " in " << S);
-    found = S.find_subset(t);
-    CPPUNIT_ASSERT(found != S.end());
-    CPPUNIT_ASSERT_EQUAL(s2, *found);
+	      "Searching for " << t2 << " in " << S2);
+    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+	      "Search complete");
 
-    t.insert(6);
-    t.insert(4);
-    t.insert(3);
+    CPPUNIT_ASSERT(S2.find_subset(t2) != S2.end());
+    CPPUNIT_ASSERT_EQUAL(s2, *S2.find_subset(t2));
 
-    CPPUNIT_ASSERT(S.find_subset(t) != S.end());
+    CPPUNIT_ASSERT(S2.find_subset(t3) != S2.end());
+    CPPUNIT_ASSERT_EQUAL(s2, *S2.find_subset(t3));
+
+    CPPUNIT_ASSERT(S1.find_subset(t1) == S1.end());
+
+    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+	      "Searching for " << t2 << " in " << S1);
+    CPPUNIT_ASSERT(S1.find_subset(t2) != S1.end());
+    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+	      "Search complete");
+
+    S1.insert(s3);
+    CPPUNIT_ASSERT(S1.find_subset(t1) == S1.end());
+    CPPUNIT_ASSERT(S1.find_subset(t2) != S1.end());
+    CPPUNIT_ASSERT(s2 == *S1.find_subset(t2) ||
+		   s3 == *S1.find_subset(t2));
+    CPPUNIT_ASSERT(S1.find_subset(t3) == S1.end());
   }
 
   struct HalfCmp
