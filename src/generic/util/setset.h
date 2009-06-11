@@ -455,5 +455,47 @@ public:
   }
 };
 
+template<typename Val, typename Compare>
+std::ostream &operator<<(std::ostream &out, const setset<Val, Compare> &s)
+{
+  out << "{";
+  bool first = true;
+  for(typename setset<Val, Compare>::const_iterator it = s.begin();
+      it != s.end(); ++it)
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << *it;
+    }
+  out << "}";
+
+  return out;
+}
+
+template<typename Key, typename Val, typename Compare>
+std::ostream &operator<<(std::ostream &out, const mapset<Key, Val, Compare> &ms)
+{
+  out << "{";
+  bool first = true;
+  for(typename mapset<Key, Val, Compare>::const_iterator it = ms.begin();
+      it != ms.end(); ++it)
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << it->first;
+      out << " -> ";
+      out << it->second;
+    }
+  out << "}";
+
+  return out;
+}
+
 #endif // SETSET_H
 
