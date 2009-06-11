@@ -23,6 +23,8 @@
 
 #include <iostream>
 
+#include <loggers.h>
+
 class SetSetTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(SetSetTest);
@@ -64,6 +66,8 @@ public:
 
     t.insert(5);
 
+    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+	      "Searching for " << t << " in " << S);
     found = S.find_subset(t);
     CPPUNIT_ASSERT(found != S.end());
     CPPUNIT_ASSERT_EQUAL(s2, *found);
