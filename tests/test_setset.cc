@@ -102,7 +102,8 @@ public:
     CPPUNIT_ASSERT(S1.find_subset(t2) != S1.end());
     CPPUNIT_ASSERT(s2 == *S1.find_subset(t2) ||
 		   s3 == *S1.find_subset(t2));
-    CPPUNIT_ASSERT(S1.find_subset(t3) == S1.end());
+    CPPUNIT_ASSERT(S1.find_subset(t3) != S1.end());
+    CPPUNIT_ASSERT_EQUAL(s2, *S1.find_subset(t3));
   }
 
   struct HalfCmp
