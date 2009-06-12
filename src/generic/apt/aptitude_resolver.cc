@@ -686,7 +686,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
       else
 	curr = version(i, pkgCache::VerIterator(*cache), cache);
 
-      if(get_initial_state().version_of(p) == curr)
+      if(get_initial_state().version_of(p) != curr)
 	{
 	  choice c(choice::make_install_version(curr, 0));
 	  keep_all_solution.insert_or_narrow(c);
