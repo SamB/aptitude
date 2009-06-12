@@ -898,17 +898,21 @@ private:
     bool operator()(int step_num) const
     {
       const step &s(graph.get_step(step_num));
-      choice step_choice;
-      if(s.actions.get_contained_choice(c, step_choice) &&
-	 step_choice.get_dep() == d)
-	return visit(s, choice_mapping_action);
+      // Check if we have a solver in this step first -- if you think
+      // about it, it's more likely that this is true than that we
+      // have an action.
+      typename imm::map<dep, typename step::dep_solvers>::node found =
+	s.unresolved_deps.lookup(d);
+
+      if(found.isValid() &&
+	 found.getVal().second.get_solvers().domain_contains(c))
+	return visit(s, choice_mapping_solver);
       else
 	{
-	  typename imm::map<dep, typename step::dep_solvers>::node found =
-	    s.unresolved_deps.lookup(d);
-	  if(found.isValid() &&
-	     found.getVal().second.get_solvers().domain_contains(c))
-	    return visit(s, choice_mapping_solver);
+	  choice step_choice;
+	  if(s.actions.get_contained_choice(c, step_choice) &&
+	     step_choice.get_dep() == d)
+	    return visit(s, choice_mapping_action);
 	  else
 	    return true;
 	}
