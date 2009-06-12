@@ -1066,18 +1066,16 @@ private:
 
   typename step::dep_solvers memoize_dep_solvers(const typename step::dep_solvers &solvers)
   {
-    typename std::set<typename step::dep_solvers>::const_iterator found =
-      memoized_dep_solvers.find(solvers);
+    // std::set will insert a new element only if it doesn't already
+    // contain an element with the same key, which is exactly what we
+    // want here.
+    std::pair<typename std::set<typename step::dep_solvers>::const_iterator, bool>
+      insert_result = memoized_dep_solvers.insert(solvers);
 
-    if(found != memoized_dep_solvers.end())
-      return *found;
-    else
-      {
-	LOG_TRACE(logger, "Memoized new solver set: " << solvers);
+    if(insert_result.second)
+      LOG_TRACE(logger, "Memoized new solver set: " << solvers);
 
-	memoized_dep_solvers.insert(solvers);
-	return solvers;
-      }
+    return *insert_result.first;
   }
 
   /** \brief If the given step is already "seen", mark it as a clone
