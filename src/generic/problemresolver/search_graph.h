@@ -159,6 +159,11 @@ public:
       }
   }
 
+  bool operator==(const generic_solver_information &other) const
+  {
+    return compare(other) == 0;
+  }
+
   bool operator<(const generic_solver_information &other) const
   {
     return compare(other) < 0;
