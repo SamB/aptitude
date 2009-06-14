@@ -34,6 +34,8 @@
 #include <generic/util/immlist.h>
 #include <generic/util/immset.h>
 
+#include <boost/functional/hash.hpp>
+
 // solver_information and dep_solvers are top-level declarations so
 // they can easily get an operator<< that works.
 
@@ -47,6 +49,7 @@ class generic_solver_information
 {
 public:
   typedef typename PackageUniverse::tier tier;
+  typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
   typedef generic_tier_limits<PackageUniverse> tier_limits;
 
@@ -55,6 +58,23 @@ private:
   choice_set reasons;
   cwidget::util::ref_ptr<expression<bool> > tier_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
+
+  class combine_reason_hashes
+  {
+    std::size_t &target;
+  public:
+    combine_reason_hashes(std::size_t &_target)
+      : target(_target)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      boost::hash_combine(target, c);
+
+      return true;
+    }
+  };
 
 public:
   generic_solver_information()
@@ -129,6 +149,17 @@ public:
       return cwidget::util::ref_ptr<expression<bool> >();
   }
 
+  std::size_t get_hash_value() const
+  {
+    std::size_t rval = 0;
+    boost::hash_combine(rval, tier_valid.unsafe_get_ref());
+    boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
+    boost::hash_combine(rval, t);
+    reasons.for_each(combine_reason_hashes(rval));
+
+    return rval;
+  }
+
   /** \brief Compare two solver_information objects.
    *
    *  solver_informations are compared according to their fields.
@@ -170,6 +201,12 @@ public:
   }
 };
 
+template<typename PackageUniverse>
+std::size_t hash_value(const generic_solver_information<PackageUniverse> &inf)
+{
+  return inf.get_hash_value();
+}
+
 /** \brief A structure that tracks the state of the solvers of a
  *  dependency.
  */
@@ -183,18 +220,84 @@ public:
 private:
   imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> solvers;
   imm::list<choice> structural_reasons;
+  mutable std::size_t hash_cache;
+  mutable bool hash_dirty;
+
+  class hash_choices
+  {
+    std::size_t &hash_val;
+  public:
+    hash_choices(std::size_t &_hash_val)
+      : hash_val(_hash_val)
+    {
+    }
+
+    bool operator()(const std::pair<choice, generic_solver_information<PackageUniverse> > &p) const
+    {
+      boost::hash_combine(hash_val, p);
+
+      return true;
+    }
+  };
 
 public:
   generic_dep_solvers()
   {
   }
 
-  /** \brief Return the outstanding solvers of this dependency and
-   *  the current state of each one.
-   */
-  imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &get_solvers()
+  generic_dep_solvers(const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &_solvers,
+		      const imm::list<choice> &_structural_reasons)
+    : solvers(_solvers), structural_reasons(_structural_reasons),
+      hash_dirty(true)
   {
-    return solvers;
+  }
+
+  std::size_t get_hash_value() const
+  {
+    if(hash_dirty)
+      {
+	hash_cache = 0;
+	// Correctness of just iterating the solver set relies on the
+	// fact that imm::map places keys in sorted order.
+	solvers.for_each(hash_choices(hash_cache));
+	// Try to avoid any confusion caused by mixing the structural
+	// reasons with the solvers.
+	boost::hash_combine(hash_cache, 987654321);
+	for(typename imm::list<choice>::const_iterator it = structural_reasons.begin();
+	    it != structural_reasons.end(); ++it)
+	  boost::hash_combine(hash_cache, *it);
+
+	hash_dirty = false;
+      }
+
+    return hash_cache;
+  }
+
+  /** \brief Manipulators. */
+
+  // @{
+  void add_structural_reason(const choice &c)
+  {
+    hash_dirty = true;
+    structural_reasons.push_front(c);
+  }
+
+  void set_solver_information(const choice &c, const generic_solver_information<PackageUniverse> &solver)
+  {
+    hash_dirty = true;
+    solvers.put(c, solver);
+  }
+
+  void remove_solver(const choice &c)
+  {
+    hash_dirty = true;
+    solvers.erase(c);
+  }
+  // @}
+
+  bool operator==(const generic_dep_solvers &other) const
+  {
+    return solvers == other.solvers && structural_reasons == other.structural_reasons;
   }
 
   /** \brief Return the outstanding solvers of this dependency and
@@ -203,14 +306,6 @@ public:
   const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &get_solvers() const
   {
     return solvers;
-  }
-
-  /** \brief Return the reasons that the set of solvers for this
-   *  dependency was narrowed.
-   */
-  imm::list<choice> &get_structural_reasons()
-  {
-    return structural_reasons;
   }
 
   /** \brief Return the reasons that the set of solvers for this
@@ -241,6 +336,12 @@ public:
     return compare(other) < 0;
   }
 };
+
+template<typename PackageUniverse>
+std::size_t hash_value(const generic_dep_solvers<PackageUniverse> &dep_solvers)
+{
+  return dep_solvers.get_hash_value();
+}
 
 /** \brief Represents the current search graph.
  *

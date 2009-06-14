@@ -27,6 +27,8 @@ pkgdata_DATA = $(TLHELPTXTS) COPYING NEWS FAQ \
 	function_groups function_pkgs aptitude-defaults section-descriptions \
 	$(TLDEFAULTS)
 
+TESTS = check_boost.sh
+
 install-data-local:
 	[ -d $(DESTDIR)$(STATEDIR) ] || $(mkinstalldirs) $(DESTDIR)$(STATEDIR)
 # FIXME: this really ought to use the autoconf directory variables

@@ -26,6 +26,8 @@
 
 #include <cwidget/generic/util/eassert.h>
 
+#include <boost/functional/hash.hpp>
+
 #include "apt.h"
 #include "aptcache.h"
 
@@ -76,6 +78,12 @@ public:
     return pkg->ID;
   }
 
+  std::size_t get_hash_value() const
+  {
+    boost::hash<const pkgCache::Package *> hasher;
+    return hasher(pkg);
+  }
+
   /** \return The name of the package. */
   const char *get_name() const
   {
@@ -114,6 +122,11 @@ public:
   /** \return The first entry in the list of versions of this package. */
   version_iterator versions_begin() const;
 };
+
+inline std::size_t hash_value(const aptitude_resolver_package &p)
+{
+  return p.get_hash_value();
+}
 
 /** \brief Translates a version of an apt package into the abstract
  *  realm.
@@ -206,6 +219,12 @@ public:
     return aptitude_resolver_package(pkg, cache);
   }
 
+  std::size_t get_hash_value() const
+  {
+    boost::hash<const pkgCache::Version *> hasher;
+    return hasher(ver);
+  }
+
   /** \return \b true if this is the same version as other. */
   bool operator==(const aptitude_resolver_version &other) const
   {
@@ -244,6 +263,11 @@ public:
    */
   dep_iterator deps_begin() const;
 };
+
+inline std::size_t hash_value(const aptitude_resolver_version &v)
+{
+  return v.get_hash_value();
+}
 
 inline aptitude_resolver_version aptitude_resolver_package::current_version() const
 {
@@ -344,6 +368,16 @@ public:
     return start->Type == pkgCache::Dep::Recommends;
   }
 
+  std::size_t get_hash_value() const
+  {
+    std::size_t rval = 0;
+    boost::hash_combine(rval, (const pkgCache::Dependency *)start);
+    if(is_conflict(start->Type))
+      boost::hash_combine(rval, (const pkgCache::Provides *)prv);
+
+    return rval;
+  }
+
   /** \brief Compare two dependencies for equality. */
   bool operator==(const aptitude_resolver_dep &other) const
   {
@@ -418,6 +452,11 @@ public:
   /** \return The head of the target list for this dependency. */
   solver_iterator solvers_begin() const;
 };
+
+inline std::size_t hash_value(const aptitude_resolver_dep &d)
+{
+  return d.get_hash_value();
+}
 
 /** \brief Iterate over the versions of a package.
  *
@@ -961,6 +1000,15 @@ public:
       entries[1] = apt_priority;
     }
 
+    std::size_t get_hash_value() const
+    {
+      std::size_t rval = 0;
+      boost::hash_combine(rval, entries[0]);
+      boost::hash_combine(rval, entries[1]);
+
+      return rval;
+    }
+
     int get_policy() const { return entries[0]; }
     int apt_priority() const { return entries[1]; }
 
@@ -1266,6 +1314,11 @@ public:
   /** \brief Return a string description of the given tier. */
   static std::string get_tier_name(const tier &t);
 };
+
+inline std::size_t hash_value(const aptitude_universe::tier &t)
+{
+  return t.get_hash_value();
+}
 
 /** \brief Write an aptitude_resolver_package to the given stream. */
 std::ostream &operator<<(ostream &out, const aptitude_resolver_package &p);

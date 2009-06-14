@@ -70,6 +70,8 @@
 
 #include <generic/util/dense_setset.h>
 
+#include <boost/unordered_set.hpp>
+
 /** \brief Generic problem resolver
  *
  * 
@@ -1062,14 +1064,14 @@ private:
    *  (if every instance of a solver set was changed, that solver set
    *  would be dropped).
    */
-  std::set<typename step::dep_solvers> memoized_dep_solvers;
+  boost::unordered_set<typename step::dep_solvers> memoized_dep_solvers;
 
   typename step::dep_solvers memoize_dep_solvers(const typename step::dep_solvers &solvers)
   {
     // std::set will insert a new element only if it doesn't already
     // contain an element with the same key, which is exactly what we
     // want here.
-    std::pair<typename std::set<typename step::dep_solvers>::const_iterator, bool>
+    std::pair<typename boost::unordered_set<typename step::dep_solvers>::const_iterator, bool>
       insert_result = memoized_dep_solvers.insert(solvers);
 
     if(insert_result.second)
@@ -1616,19 +1618,19 @@ private:
 	      << s.step_num << " that are solved by " << c_general);
   }
 
-  class add_to_choice_list
+  class add_to_structural_reasons
   {
-    imm::list<choice> &target;
+    typename step::dep_solvers &target;
 
   public:
-    add_to_choice_list(imm::list<choice> &_target)
+    add_to_structural_reasons(typename step::dep_solvers &_target)
       : target(_target)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      target.push_front(c);
+      target.add_structural_reason(c);
       return true;
     }
   };
@@ -1703,8 +1705,8 @@ private:
 			<< " in step " << s.step_num
 			<< ", new solvers: " << new_solvers.get_solvers());
 
-	      new_solvers.get_solvers().erase(victim_with_dep);
-	      add_to_choice_list adder(new_solvers.get_structural_reasons());
+	      new_solvers.remove_solver(victim_with_dep);
+	      add_to_structural_reasons adder(new_solvers);
 	      reasons.for_each(adder);
 
 	      // Actually update the solvers of the dep.
@@ -1997,7 +1999,7 @@ private:
     if(found_solvers.isValid())
       {
 	typename step::dep_solvers new_dep_solvers(found_solvers.getVal().second);
-	imm::map<choice, typename step::solver_information, compare_choices_by_effects> &
+	const imm::map<choice, typename step::solver_information, compare_choices_by_effects> &
 	  new_solvers(new_dep_solvers.get_solvers());
 
 	typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
@@ -2021,7 +2023,7 @@ private:
 			     choice_set(),
 			     new_tier_valid,
 			     new_tier_is_deferred);
-	    new_solvers.put(solver_with_dep, new_solver_inf);
+	    new_dep_solvers.set_solver_information(solver_with_dep, new_solver_inf);
 	    s.unresolved_deps.put(solver_dep, memoize_dep_solvers(new_dep_solvers));
 	    LOG_TRACE(logger, "Recomputed the tier of "
 		      << solver << " in the solver list of "
@@ -2170,7 +2172,7 @@ private:
 			  << ": monotonicity violation due to "
 			  << selected);
 		choice reason(choice::make_install_version(selected, -1));
-		solvers.get_structural_reasons().push_front(reason);
+		solvers.add_structural_reason(reason);
 	      }
 
 	    return; // If the package is already modified, abort.
@@ -2188,7 +2190,7 @@ private:
 			  "Not adding " << solver
 			  << ": it is forbidden due to the action "
 			  << reason);
-		solvers.get_structural_reasons().push_front(reason);
+		solvers.add_structural_reason(reason);
 
 		return;
 	      }
@@ -2211,7 +2213,7 @@ private:
 		       choice_set(),
 		       choice_tier_valid,
 		       choice_is_deferred);
-      solvers.get_solvers().put(solver, new_solver_inf);
+      solvers.set_solver_information(solver, new_solver_inf);
     }
 
     // Update the deps-solved-by-choice map (add the dep being
@@ -2467,7 +2469,7 @@ private:
 				new_choices,
 				valid_condition,
 				old_inf.get_is_deferred_listener());
-		      new_solvers.get_solvers().put(solver_with_dep, new_inf);
+		      new_solvers.set_solver_information(solver_with_dep, new_inf);
 
 		      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
 		      resolver.check_solvers_tier(s, new_solvers);

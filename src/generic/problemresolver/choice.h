@@ -26,6 +26,8 @@
 
 #include <generic/util/compare3.h>
 
+#include <boost/functional/hash.hpp>
+
 /** \brief Represents a decision made by the resolver.
  *
  *  This is used to keep track of which choices imply that we end up
@@ -343,7 +345,37 @@ public:
   {
     return d;
   }
+
+  /** \brief Compute a hash value on choices. */
+  std::size_t get_hash_value() const
+  {
+    std::size_t rval = 0;
+    boost::hash_combine(rval, tp);
+    switch(tp)
+      {
+      case install_version:
+	boost::hash_combine(rval, ver);
+	boost::hash_combine(rval, from_dep_source);
+	boost::hash_combine(rval, has_dep);
+
+	if(has_dep)
+	  boost::hash_combine(rval, d);
+	break;
+
+      case break_soft_dep:
+	boost::hash_combine(rval, d);
+	break;
+      }
+
+    return rval;
+  }
 };
+
+template<typename PackageUniverse>
+std::size_t hash_value(const generic_choice<PackageUniverse> &c)
+{
+  return c.get_hash_value();
+}
 
 // Overload compare3 on choices.
 namespace aptitude

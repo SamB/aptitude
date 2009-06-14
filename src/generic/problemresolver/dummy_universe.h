@@ -30,6 +30,8 @@
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/exception.h>
 
+#include <boost/functional/hash.hpp>
+
 /** \brief A package dependency universe
  *
  * 
@@ -314,6 +316,12 @@ public:
 
     typedef wrap_ptr_iter<dummy_version, version> version_iterator;
 
+    std::size_t get_hash_value() const
+    {
+      boost::hash<const dummy_package *> hasher;
+      return hasher(real_package);
+    }
+
     bool operator==(const package &other) const
     {
       return real_package==other.real_package;
@@ -366,6 +374,12 @@ public:
     version(const dummy_version *_real_version)
       :real_version(_real_version)
     {
+    }
+
+    std::size_t get_hash_value() const
+    {
+      boost::hash<const dummy_version *> hasher;
+      return hasher(real_version);
     }
 
     bool operator==(const version &other) const
@@ -433,6 +447,12 @@ public:
       return real_dep->is_soft();
     }
 
+    std::size_t get_hash_value() const
+    {
+      boost::hash<const dummy_dep *> hasher;
+      return hasher(real_dep);
+    }
+
     bool operator==(const dep &other) const
     {
       return real_dep==other.real_dep;
@@ -494,6 +514,12 @@ public:
     explicit tier(int first)
       : values(1, first)
     {
+    }
+
+    std::size_t get_hash_value() const
+    {
+      boost::hash<std::vector<int> > hasher;
+      return hasher(values);
     }
 
     typedef std::vector<int>::const_iterator const_iterator;
@@ -677,6 +703,26 @@ public:
     return broken_dep_iterator(deps.begin(), deps.end());
   }
 };
+
+inline std::size_t hash_value(const dummy_universe::package &p)
+{
+  return p.get_hash_value();
+}
+
+inline std::size_t hash_value(const dummy_universe::version &v)
+{
+  return v.get_hash_value();
+}
+
+inline std::size_t hash_value(const dummy_universe::dep &d)
+{
+  return d.get_hash_value();
+}
+
+inline std::size_t hash_value(const dummy_universe::tier &t)
+{
+  return t.get_hash_value();
+}
 
 // A refcounting wrapper for a dummy_universe; used to sanitize memory
 // management without copying all over (and because the resolver
