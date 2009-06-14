@@ -132,14 +132,14 @@ namespace imm
 
       void incref() const
       {
-	eassert(refcount>0);
+	//eassert(refcount>0);
 
 	++refcount;
       }
 
       void decref() const
       {
-	eassert(refcount>0);
+	//eassert(refcount>0);
 	--refcount;
 
 	if(refcount == 0)

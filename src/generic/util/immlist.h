@@ -110,7 +110,7 @@ namespace imm
      */
     void pop_front()
     {
-      eassert(lst.valid());
+      //eassert(lst.valid());
 
       lst = lst->get_tail();
     }
@@ -137,7 +137,7 @@ namespace imm
      */
     const T &front() const
     {
-      eassert(lst.valid());
+      //eassert(lst.valid());
 
       return lst->get_head();
     }
