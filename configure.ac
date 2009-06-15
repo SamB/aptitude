@@ -52,6 +52,16 @@ PKG_CHECK_MODULES(LOG4CXX, liblog4cxx)
 
 PKG_CHECK_MODULES(VTE, vte)
 
+dnl Check for Boost headers.  Place each one on a line by itself and
+dnl write "dnl" at the end: the "dnl" deletes the newline, and without
+dnl it you'll get an error when you run the configure script.
+AC_CHECK_HEADERS( dnl
+boost/functional/hash.hpp dnl
+boost/unordered_set.hpp dnl
+                  ,
+		  ,
+		  [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
+
 HAVE_GTK=1
 AC_ARG_ENABLE(gtk,
 	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),

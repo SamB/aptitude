@@ -110,9 +110,25 @@ namespace imm
      */
     void pop_front()
     {
-      eassert(lst.valid());
+      //eassert(lst.valid());
 
       lst = lst->get_tail();
+    }
+
+    bool operator==(const list &other) const
+    {
+      cwidget::util::ref_ptr<node> this_n(lst), other_n(other.lst);
+
+      while(this_n.valid() && other_n.valid())
+	{
+	  if(!(this_n->get_head() == other_n->get_head()))
+	    return false;
+
+	  this_n = this_n->get_tail();
+	  other_n = other_n->get_tail();
+	}
+
+      return !this_n.valid() && !other_n.valid();
     }
 
     /** \brief Retrieve the first value from this list.
@@ -121,7 +137,7 @@ namespace imm
      */
     const T &front() const
     {
-      eassert(lst.valid());
+      //eassert(lst.valid());
 
       return lst->get_head();
     }
