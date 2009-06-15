@@ -3570,7 +3570,7 @@ private:
   }
 
   /** \brief Returns \b true if the pending future solutions queue
-   *  contains a step that can be returned.
+   *  contains a step that can be processed.
    */
   bool pending_future_solutions_contains_candidate() const
   {
