@@ -2070,7 +2070,7 @@ private:
     // instantiations of
     // find_highest_incipient_promotions_containing().
     generic_choice_indexed_map<PackageUniverse, imm::list<dep> > output_domain;
-    std::map<choice, promotion> triggered_promotions;
+    boost::unordered_map<choice, promotion> triggered_promotions;
 
     output_domain.put(solver, imm::list<dep>());
 
@@ -2089,7 +2089,7 @@ private:
 		"Internal error: found " << triggered_promotions.size()
 		<< " (choice -> promotion) mappings for a single choice.");
 
-    for(typename std::map<choice, promotion>::const_iterator it =
+    for(typename boost::unordered_map<choice, promotion>::const_iterator it =
 	  triggered_promotions.begin();
 	it != triggered_promotions.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
@@ -2748,7 +2748,7 @@ private:
   void find_new_incipient_promotions(step &s,
 				     const choice &c)
   {
-    std::map<choice, promotion> output;
+    boost::unordered_map<choice, promotion> output;
 
     not_above_tier not_above_p(s.is_blessed_solution
 			       ? tier_limits::already_generated_tier
@@ -2759,7 +2759,7 @@ private:
 							    not_above_p,
 							    output);
 
-    for(typename std::map<choice, promotion>::const_iterator it =
+    for(typename boost::unordered_map<choice, promotion>::const_iterator it =
 	  output.begin(); it != output.end(); ++it)
       increase_solver_tier(s, it->second, it->first);
   }

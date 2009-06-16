@@ -1147,12 +1147,12 @@ public:
   {
     const promotion &p;
     const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
-    std::map<choice, promotion> &output;
+    boost::unordered_map<choice, promotion> &output;
 
   public:
     update_incipient_output(const promotion &_p,
 			    const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
-			    std::map<choice, promotion> &_output)
+			    boost::unordered_map<choice, promotion> &_output)
       : p(_p), output_domain(_output_domain), output(_output)
     {
     }
@@ -1161,7 +1161,7 @@ public:
     {
       if(!output_domain.for_each_key_contained_in(c, not_f<T>()))
 	{
-	  typedef typename std::map<choice, promotion>::iterator
+	  typedef typename boost::unordered_map<choice, promotion>::iterator
 	    out_iterator;
 
 	  std::pair<out_iterator, out_iterator> found =
@@ -1189,12 +1189,12 @@ public:
   class find_incipient_entry_subset_op
   {
     const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
-    std::map<choice, promotion> &output;
+    boost::unordered_map<choice, promotion> &output;
     log4cxx::LoggerPtr logger;
 
   public:
     find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
-				   std::map<choice, promotion> &_output,
+				   boost::unordered_map<choice, promotion> &_output,
 				   const log4cxx::LoggerPtr &_logger)
       : output_domain(_output_domain),
 	output(_output),
@@ -1255,7 +1255,7 @@ public:
   template<typename T>
   void find_highest_incipient_promotion(const choice_set &choices,
 					const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
-					std::map<choice, promotion> &output) const
+					boost::unordered_map<choice, promotion> &output) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
 
@@ -1567,7 +1567,7 @@ public:
 						    const choice &c,
 						    const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
 						    Pred pred,
-						    std::map<choice, promotion> &output) const
+						    boost::unordered_map<choice, promotion> &output) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ")");
 
