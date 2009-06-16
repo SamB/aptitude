@@ -1120,7 +1120,7 @@ public:
   public:
     bool operator()(const choice &c, bool b) const
     {
-      return !b;
+      return false;
     }
   };
 
@@ -1136,6 +1136,7 @@ public:
    *  Normally the choices this is invoked on represent the choices in
    *  the promotion.
    */
+  template<typename T>
   class update_incipient_output
   {
     const promotion &p;
@@ -1144,7 +1145,7 @@ public:
 
   public:
     update_incipient_output(const promotion &_p,
-			    const generic_choice_indexed_map<PackageUniverse, bool> &_output_domain,
+			    const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
 			    std::map<choice, promotion> &_output)
       : p(_p), output_domain(_output_domain), output(_output)
     {
@@ -1178,14 +1179,15 @@ public:
    *  instead of subsets, and fills in a map with its results rather
    *  than simply storing the single highest tier.
    */
+  template<typename T>
   class find_incipient_entry_subset_op
   {
-    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain;
+    const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
     std::map<choice, promotion> &output;
     log4cxx::LoggerPtr logger;
 
   public:
-    find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, bool> &_output_domain,
+    find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
 				   std::map<choice, promotion> &_output,
 				   const log4cxx::LoggerPtr &_logger)
       : output_domain(_output_domain),
@@ -1201,7 +1203,7 @@ public:
 	  if(r->hit_count + 1 == r->p.get_choices().size())
 	    {
 	      LOG_DEBUG(logger, "find_incipient_entry_subset_op: generating output entries for " << r->p << " and resetting its hit count to 0.");
-	      update_incipient_output updater(r->p, output_domain, output);
+	      update_incipient_output<T> updater(r->p, output_domain, output);
 	      r->p.get_choices().for_each(updater);
 	    }
 	  else
@@ -1237,24 +1239,24 @@ public:
    *                  mapped to the highest-tier promotion that they
    *                  would trigger.
    *
-   *  output_domain should take each choice it contains to "true" or
-   *  "false" depending on whether the corresponding choice should be
-   *  considered part of the output domain.
+   *  The values that output_domain associates with the choices it
+   *  stores are ignored.
    *
    *  In the common use case, "choices" represents the actions taken
    *  by a step and "output_domain" contains all the solvers of the
-   *  step, mapped to "true".
+   *  step, each mapped to the dependencies that it solves.
    */
+  template<typename T>
   void find_highest_incipient_promotion(const choice_set &choices,
-					const generic_choice_indexed_map<PackageUniverse, bool> &output_domain,
+					const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
 					std::map<choice, promotion> &output) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
-    traverse_intersections<find_incipient_entry_subset_op>
-      find_result_f(*this, true, find_entry_subset_op(output_domain, output, logger));
+    traverse_intersections<find_incipient_entry_subset_op<T> >
+      find_result_f(*this, true, find_incipient_entry_subset_op<T>(output_domain, output, logger));
 
     choices.for_each(increment_f);
     // We have to run this even if the increment aborted, since we
@@ -1544,20 +1546,20 @@ public:
    *                  mapped to the highest-tier promotion that they
    *                  would trigger.
    *
-   *  output_domain should take each choice it contains to "true" or
-   *  "false" depending on whether the corresponding choice should be
-   *  considered part of the output domain.
+   *  The values that output_domain associates with the choices it
+   *  stores are ignored.
    *
    *  In the common use case, "choices" represents the actions taken
    *  by a step, "c" is a new solver being added, and "output_domain"
-   *  contains all the solvers of the step, mapped to "true".  The
-   *  predicate is used to throw away promotions that are invalid for
-   *  whatever reason if the target step is a "blessed" solution.
+   *  contains all the solvers of the step, each mapped to the
+   *  dependencies that it solves.  The predicate is used to throw
+   *  away promotions that are invalid for whatever reason if the
+   *  target step is a "blessed" solution.
    */
-  template<typename Pred>
+  template<typename Pred, typename T>
   void find_highest_incipient_promotions_containing(const choice_set &choices,
 						    const choice &c,
-						    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain,
+						    const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
 						    Pred pred,
 						    std::map<choice, promotion> &output) const
   {
@@ -1605,7 +1607,7 @@ public:
 	    p.get_choices().for_each(choices_found_f);
 	    if(is_incipient)
 	      {
-		update_incipient_output updater(p, output_domain, output);
+		update_incipient_output<T> updater(p, output_domain, output);
 		LOG_TRACE(logger, "find_highest_incipient_promotion_containing: found a match: " << p);
 		p.get_choices().for_each(updater);
 		found_anything = true;
