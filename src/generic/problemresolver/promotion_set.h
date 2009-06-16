@@ -1115,10 +1115,11 @@ public:
    *  The reason for inverting the result is that it allows for_each
    *  to short-circuit correctly.
    */
+  template<typename T>
   class not_f
   {
   public:
-    bool operator()(const choice &c, bool b) const
+    bool operator()(const choice &c, const T &t) const
     {
       return false;
     }
@@ -1140,7 +1141,7 @@ public:
   class update_incipient_output
   {
     const promotion &p;
-    const generic_choice_indexed_map<PackageUniverse, bool> &output_domain;
+    const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
     std::map<choice, promotion> &output;
 
   public:
@@ -1153,7 +1154,7 @@ public:
 
     bool operator()(const choice &c) const
     {
-      if(!output_domain.for_each_key_contained_in(c, not_f()))
+      if(!output_domain.for_each_key_contained_in(c, not_f<T>()))
 	{
 	  typedef typename std::map<choice, promotion>::iterator
 	    out_iterator;
