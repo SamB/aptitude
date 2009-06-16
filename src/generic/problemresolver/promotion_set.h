@@ -34,6 +34,9 @@
 
 #include <loggers.h>
 
+#include <boost/unordered_map.hpp>
+#include <boost/unordered_set.hpp>
+
 #include "choice.h"
 #include "choice_indexed_map.h"
 #include "choice_set.h"
@@ -371,7 +374,7 @@ private:
      *  should be a win, since the promotion set is a read-mostly
      *  structure.
      */
-    std::map<dep, std::vector<entry_ref> > from_dep_source_entries;
+    boost::unordered_map<dep, std::vector<entry_ref> > from_dep_source_entries;
   };
 
   /** \brief The version count used to set up the internal index. */
@@ -402,16 +405,18 @@ private:
   // array here because there are lots of dependencies (e.g., around
   // 180,000 as of this writing), most dependencies are not soft, and
   // I *think* that soft dependencies won't usually participate in
-  // promotions.  So saving space is more important than being as fast
-  // as possible.
-  std::map<dep, break_soft_dep_index_entry> break_soft_dep_index;
+  // promotions.
+  //
+  // \todo Would a boost::unordered_multimap be better here?  I don't
+  // understand the cost/benefit tradeoffs to using one.
+  boost::unordered_map<dep, break_soft_dep_index_entry> break_soft_dep_index;
 
   // Used to drop backpointers to an entry, one choice at a time.  Not
   // as efficient as the bulk operations below, but more general.
   class drop_choice
   {
     install_version_index_entry **install_version_index;
-    std::map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
+    boost::unordered_map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
     // The entry being removed.
     entry_ref victim;
 
@@ -425,7 +430,7 @@ private:
 
   public:
     drop_choice(install_version_index_entry **_install_version_index,
-		std::map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
+		boost::unordered_map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
 		const entry_ref &_victim)
       : install_version_index(_install_version_index),
 	break_soft_dep_index(_break_soft_dep_index),
@@ -446,7 +451,7 @@ private:
 		if(!c.get_from_dep_source())
 		  {
 		    do_drop(index_entry->not_from_dep_source_entries, victim);
-		    for(typename std::map<dep, std::vector<entry_ref> >::iterator
+		    for(typename boost::unordered_map<dep, std::vector<entry_ref> >::iterator
 			  it = index_entry->from_dep_source_entries.begin();
 			it != index_entry->from_dep_source_entries.end();
 			++it)
@@ -454,7 +459,7 @@ private:
 		  }
 		else
 		  {
-		    const typename std::map<dep, std::vector<entry_ref> >::iterator
+		    const typename boost::unordered_map<dep, std::vector<entry_ref> >::iterator
 		      found = index_entry->from_dep_source_entries.find(c.get_dep());
 		    if(found != index_entry->from_dep_source_entries.end())
 		      do_drop(found->second, victim);
@@ -465,7 +470,7 @@ private:
 
 	case choice::break_soft_dep:
 	  {
-	    const typename std::map<dep, break_soft_dep_index_entry>::iterator
+	    const typename boost::unordered_map<dep, break_soft_dep_index_entry>::iterator
 	      found = break_soft_dep_index.find(c.get_dep());
 	    if(found != break_soft_dep_index.end())
 	      do_drop(found->second, victim);
@@ -727,7 +732,7 @@ private:
 		}
 	      else
 		{
-		  typename std::map<dep, std::vector<entry_ref> >::const_iterator found =
+		  typename boost::unordered_map<dep, std::vector<entry_ref> >::const_iterator found =
 		    index_entry->from_dep_source_entries.find(c.get_dep());
 
 		  if(found != index_entry->from_dep_source_entries.end())
@@ -761,7 +766,7 @@ private:
 
       case choice::break_soft_dep:
 	{
-	  typename std::map<dep, break_soft_dep_index_entry>::const_iterator found =
+	  typename boost::unordered_map<dep, break_soft_dep_index_entry>::const_iterator found =
 	    break_soft_dep_index.find(c.get_dep());
 	  if(found == break_soft_dep_index.end())
 	    {
@@ -1275,15 +1280,15 @@ private:
   {
     // Maps versions to choices associated with installing those
     // versions.
-    std::map<version, choice> &choices_by_install_version;
+    boost::unordered_map<version, choice> &choices_by_install_version;
 
     // Stores the set of broken soft dependencies.
-    std::set<dep> &broken_soft_deps;
+    boost::unordered_set<dep> &broken_soft_deps;
 
     log4cxx::LoggerPtr logger;
 
-    build_local_indices(std::map<version, choice> &_choices_by_install_version,
-			std::set<dep> &_broken_soft_deps,
+    build_local_indices(boost::unordered_map<version, choice> &_choices_by_install_version,
+			boost::unordered_set<dep> &_broken_soft_deps,
 			const log4cxx::LoggerPtr &_logger)
       : choices_by_install_version(_choices_by_install_version),
 	broken_soft_deps(_broken_soft_deps),
@@ -1339,15 +1344,15 @@ private:
 
     // Maps versions to choices associated with installing those
     // versions.
-    const std::map<version, choice> &choices_by_install_version;
+    const boost::unordered_map<version, choice> &choices_by_install_version;
 
     // Stores the set of broken soft dependencies.
-    const std::set<dep> &broken_soft_deps;
+    const boost::unordered_set<dep> &broken_soft_deps;
 
     log4cxx::LoggerPtr logger;
 
-    check_choices_in_local_indices(const std::map<version, choice> &_choices_by_install_version,
-				   const std::set<dep> &_broken_soft_deps,
+    check_choices_in_local_indices(const boost::unordered_map<version, choice> &_choices_by_install_version,
+				   const boost::unordered_set<dep> &_broken_soft_deps,
 				   const log4cxx::LoggerPtr &_logger,
 				   int &_num_mismatches,
 				   bool &_rval)
@@ -1366,7 +1371,7 @@ private:
 	{
 	case choice::install_version:
 	  {
-	    typename std::map<version, choice>::const_iterator found =
+	    typename boost::unordered_map<version, choice>::const_iterator found =
 	      choices_by_install_version.find(c.get_ver());
 
 	    bool ok = false;
@@ -1399,7 +1404,7 @@ private:
 
 	case choice::break_soft_dep:
 	  {
-	    typename std::set<dep>::const_iterator found =
+	    typename boost::unordered_set<dep>::const_iterator found =
 	      broken_soft_deps.find(c.get_dep());
 
 	    if(found == broken_soft_deps.end())
@@ -1447,8 +1452,8 @@ public:
 	// Build local indices, used to make it reasonable to compare all
 	// the promotions in index_entries to the input choice list.
 
-	std::map<version, choice> choices_by_install_version;
-	std::set<dep> broken_soft_deps;
+	boost::unordered_map<version, choice> choices_by_install_version;
+	boost::unordered_set<dep> broken_soft_deps;
 	build_local_indices build_indices_f(choices_by_install_version,
 					    broken_soft_deps, logger);
 
@@ -1577,8 +1582,8 @@ public:
 	// Build local indices, used to make it reasonable to compare all
 	// the promotions in index_entries to the input choice list.
 
-	std::map<version, choice> choices_by_install_version;
-	std::set<dep> broken_soft_deps;
+	boost::unordered_map<version, choice> choices_by_install_version;
+	boost::unordered_set<dep> broken_soft_deps;
 	build_local_indices build_indices_f(choices_by_install_version,
 					    broken_soft_deps, logger);
 
@@ -1714,8 +1719,8 @@ private:
    *  to a single choice.
    */
   static void collect_indexers(const choice &c,
-			       std::set<version> &installed_versions,
-			       std::set<dep> &broken_soft_deps,
+			       boost::unordered_set<version> &installed_versions,
+			       boost::unordered_set<dep> &broken_soft_deps,
 			       const log4cxx::LoggerPtr &logger)
   {
     switch(c.get_type())
@@ -1741,12 +1746,12 @@ private:
    */
   struct do_collect_indexers
   {
-    std::set<version> &installed_versions;
-    std::set<dep> &broken_soft_deps;
+    boost::unordered_set<version> &installed_versions;
+    boost::unordered_set<dep> &broken_soft_deps;
     log4cxx::LoggerPtr logger;
 
-    do_collect_indexers(std::set<version> &_installed_versions,
-			std::set<dep> &_broken_soft_deps,
+    do_collect_indexers(boost::unordered_set<version> &_installed_versions,
+			boost::unordered_set<dep> &_broken_soft_deps,
 			const log4cxx::LoggerPtr &_logger)
       : installed_versions(_installed_versions),
 	broken_soft_deps(_broken_soft_deps),
@@ -1765,8 +1770,8 @@ private:
    *  to a single entry.
    */
   static void collect_indexers(const entry &e,
-			       std::set<version> &installed_versions,
-			       std::set<dep> &broken_soft_deps,
+			       boost::unordered_set<version> &installed_versions,
+			       boost::unordered_set<dep> &broken_soft_deps,
 			       const log4cxx::LoggerPtr &logger)
   {
     e.p.get_choices().for_each(do_collect_indexers(installed_versions,
@@ -1778,8 +1783,8 @@ private:
    *  each choice in a tier.
    */
   static void collect_indexers(const std::list<entry> &tier_entries,
-			       std::set<version> &installed_versions,
-			       std::set<dep> &broken_soft_deps,
+			       boost::unordered_set<version> &installed_versions,
+			       boost::unordered_set<dep> &broken_soft_deps,
 			       const log4cxx::LoggerPtr &logger)
   {
     for(typename std::list<entry>::const_iterator it = tier_entries.begin();
@@ -1816,10 +1821,10 @@ private:
    *               which entries to drop.
    */
   template<typename Pred>
-  void drop_install_version_index_entries(const std::set<version> &installed_versions,
+  void drop_install_version_index_entries(const boost::unordered_set<version> &installed_versions,
 					  const Pred &pred)
   {
-    for(typename std::set<version>::const_iterator it = installed_versions.begin();
+    for(typename boost::unordered_set<version>::const_iterator it = installed_versions.begin();
 	it != installed_versions.end(); ++it)
       {
 	install_version_index_entry *index_entry(install_version_index[it->get_id()]);
@@ -1830,7 +1835,7 @@ private:
 	    erase_vector_entries(index_entry->not_from_dep_source_entries,
 				 logger, pred);
 	    bool from_dep_source_map_empty = true;
-	    for(typename std::map<dep, std::vector<entry_ref> >::iterator
+	    for(typename boost::unordered_map<dep, std::vector<entry_ref> >::iterator
 		  from_dep_source_it
 		  = index_entry->from_dep_source_entries.begin();
 		from_dep_source_it !=
@@ -1857,13 +1862,13 @@ private:
   }
 
   template<typename Pred>
-  void drop_broken_soft_dep_index_entries(const std::set<dep> &broken_soft_deps,
+  void drop_broken_soft_dep_index_entries(const boost::unordered_set<dep> &broken_soft_deps,
 					  const Pred &pred)
   {
-    for(typename std::set<dep>::iterator it = broken_soft_deps.begin();
+    for(typename boost::unordered_set<dep>::iterator it = broken_soft_deps.begin();
 	it != broken_soft_deps.end(); ++it)
       {
-	typename std::map<dep, break_soft_dep_index_entry>::iterator
+	typename boost::unordered_map<dep, break_soft_dep_index_entry>::iterator
 	  found = break_soft_dep_index.find(*it);
 
 	if(found == break_soft_dep_index.end())
@@ -1903,8 +1908,8 @@ public:
 
     // Collect the versions and soft dependencies related to each
     // choice in the selected tiers.
-    std::set<version> installed_versions;
-    std::set<dep> broken_soft_deps;
+    boost::unordered_set<version> installed_versions;
+    boost::unordered_set<dep> broken_soft_deps;
 
     int num_promotions_erased = 0;
     for(typename std::map<tier, std::list<entry> >::iterator it = start;
@@ -1962,12 +1967,12 @@ private:
     // A reference to the newly inserted promotion.
     entry_ref new_entry;
     install_version_index_entry **install_version_index;
-    std::map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
+    boost::unordered_map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
     log4cxx::LoggerPtr logger;
 
     make_index_entries(entry_ref _new_entry,
 		       install_version_index_entry **_install_version_index,
-		       std::map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
+		       boost::unordered_map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
 		       const log4cxx::LoggerPtr &_logger)
       : new_entry(_new_entry),
 	install_version_index(_install_version_index),
@@ -2001,7 +2006,7 @@ private:
 	      {
 		LOG_TRACE(logger, "Inserting " << c << " into the not-from-dep-source-list.");
 		index_entry->not_from_dep_source_entries.push_back(new_entry);
-		for(typename std::map<dep, std::vector<entry_ref> >::iterator
+		for(typename boost::unordered_map<dep, std::vector<entry_ref> >::iterator
 		      from_dep_source_it = index_entry->from_dep_source_entries.begin();
 		    from_dep_source_it != index_entry->from_dep_source_entries.end();
 		    ++from_dep_source_it)
@@ -2012,7 +2017,7 @@ private:
 	      }
 	    else
 	      {
-		typename std::map<dep, std::vector<entry_ref> >::iterator found =
+		typename boost::unordered_map<dep, std::vector<entry_ref> >::iterator found =
 		  index_entry->from_dep_source_entries.find(c.get_dep());
 
 		if(found == index_entry->from_dep_source_entries.end())
@@ -2040,7 +2045,7 @@ private:
 	    // We could just do a straightforward insertion, but doing
 	    // things this way lets us provide better debug traces
 	    // (more info about when memory is being allocated).
-	    typename std::map<dep, break_soft_dep_index_entry>::iterator found =
+	    typename boost::unordered_map<dep, break_soft_dep_index_entry>::iterator found =
 	      break_soft_dep_index.find(d);
 
 	    if(found == break_soft_dep_index.end())
@@ -2068,9 +2073,9 @@ private:
    */
   struct entry_ref_in_dropped_set_pred
   {
-    const std::set<entry *> &dropped_set;
+    const boost::unordered_set<entry *> &dropped_set;
 
-    entry_ref_in_dropped_set_pred(const std::set<entry *> &_dropped_set)
+    entry_ref_in_dropped_set_pred(const boost::unordered_set<entry *> &_dropped_set)
       : dropped_set(_dropped_set)
     {
     }
@@ -2114,8 +2119,8 @@ public:
 	{
 	  // Purge the index entries associated with these superseded
 	  // entries.
-	  std::set<version> installed_versions;
-	  std::set<dep> broken_soft_deps;
+	  boost::unordered_set<version> installed_versions;
+	  boost::unordered_set<dep> broken_soft_deps;
 
 	  for(typename std::vector<entry_ref>::const_iterator it = superseded_entries.begin();
 	      it != superseded_entries.end(); ++it)
@@ -2128,7 +2133,7 @@ public:
 	  // Note: This relies on knowing that pointers to entries are
 	  // stable as long as we don't modify the lists that contain
 	  // them.
-	  std::set<entry *> superseded_entries_set;
+	  boost::unordered_set<entry *> superseded_entries_set;
 	  for(typename std::vector<entry_ref>::const_iterator it = superseded_entries.begin();
 	      it != superseded_entries.end(); ++it)
 	    superseded_entries_set.insert(&**it);
