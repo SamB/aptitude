@@ -2066,11 +2066,13 @@ private:
   void find_promotions_for_solver(step &s,
 				  const choice &solver)
   {
-    // \todo There must be a more efficient way of doing this.
-    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
+    // \note imm::list<dep> is used so we don't have two separate
+    // instantiations of
+    // find_highest_incipient_promotions_containing().
+    generic_choice_indexed_map<PackageUniverse, imm::list<dep> > output_domain;
     std::map<choice, promotion> triggered_promotions;
 
-    output_domain.put(solver, true);
+    output_domain.put(solver, imm::list<dep>());
 
     not_above_tier not_above_p(s.is_blessed_solution
 			       ? tier_limits::already_generated_tier
@@ -2740,41 +2742,20 @@ private:
       }
   }
 
-  // Generalizes each solver in the global solvers set
-  // and inserts it into the output set.
-  struct build_solvers_set
-  {
-    generic_choice_indexed_map<PackageUniverse, bool> &output;
-
-  public:
-    build_solvers_set(generic_choice_indexed_map<PackageUniverse, bool> &_output)
-      : output(_output)
-    {
-    }
-
-    bool operator()(const choice &solver, const imm::list<dep> &deps) const
-    {
-      output.put(solver.generalize(), true);
-      return true;
-    }
-  };
-
   /** \brief Find incipient promotions for the given step that contain
    *  the given choice.
    */
   void find_new_incipient_promotions(step &s,
 				     const choice &c)
   {
-    generic_choice_indexed_map<PackageUniverse, bool> output_domain;
     std::map<choice, promotion> output;
 
-    s.deps_solved_by_choice.for_each(build_solvers_set(output_domain));
     not_above_tier not_above_p(s.is_blessed_solution
 			       ? tier_limits::already_generated_tier
 			       : tier_limits::maximum_tier);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    c,
-							    output_domain,
+							    s.deps_solved_by_choice,
 							    not_above_p,
 							    output);
 
