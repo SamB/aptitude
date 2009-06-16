@@ -69,6 +69,7 @@
 #include <cwidget/generic/util/eassert.h>
 
 #include <generic/util/dense_setset.h>
+#include <generic/util/maybe.h>
 
 #include <boost/unordered_set.hpp>
 
@@ -1181,23 +1182,18 @@ private:
   /** \brief Add a promotion to the global set of promotions.
    *
    *  This routine handles all the book-keeping that needs to take
-   *  place: it adds the promotion to the global set and also adds it
-   *  to the list of promotions that need to be tested against all
-   *  existing steps.
+   *  place.
    */
   void add_promotion(const promotion &p)
   {
     if(p.get_choices().size() == 0)
       LOG_TRACE(logger, "Ignoring the empty promotion " << p);
     else if(promotions.insert(p) != promotions.end())
-      {
-	LOG_TRACE(logger, "Added the promotion " << p
-		  << " to the global promotion set; preparing to apply it to all active steps.");
-	pending_promotions.push_back(p);
-      }
+      LOG_TRACE(logger, "Added the promotion " << p
+		<< " to the global promotion set.");
     else
-      LOG_TRACE(logger, "Not applying " << p
-		<< " to all active steps: it was redundant with an existing promotion.");
+      LOG_TRACE(logger, "Did not add " << p
+		<< " to the global promotion set: it was redundant with an existing promotion.");
   }
 
   // Used as a callback by subroutines that want to add a promotion to
@@ -1541,6 +1537,8 @@ private:
   /** \brief Process all pending promotions. */
   void process_pending_promotions()
   {
+#if 0
+    // Processing promotions like this turned out to be too expensive.
     LOG_TRACE(logger, "Processing pending promotions and applying them to all steps.");
     while(!pending_promotions.empty())
       {
@@ -1549,6 +1547,7 @@ private:
 
 	process_promotion(p);
       }
+#endif
   }
 
   class do_drop_deps_solved_by
@@ -3560,6 +3559,33 @@ private:
       graph.get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
   }
 
+  void check_for_new_promotions(int step_num)
+  {
+    step &s = graph.get_step(step_num);
+
+    boost::unordered_map<choice, promotion> incipient_promotions;
+    maybe<promotion> non_incipient_promotion;
+
+
+    promotions.find_highest_incipient_promotions(s.actions,
+						 s.deps_solved_by_choice,
+						 incipient_promotions,
+						 non_incipient_promotion);
+
+    if(non_incipient_promotion.get_has_value())
+      {
+	const promotion &p(non_incipient_promotion.get_value());
+	LOG_TRACE(logger, "Found a new promotion in the action set of step "
+		  << step_num << ": " << p);
+	increase_step_tier(s, p);
+      }
+
+    for(typename boost::unordered_map<choice, promotion>::const_iterator it =
+	  incipient_promotions.begin();
+	it != incipient_promotions.end(); ++it)
+      increase_solver_tier(s, it->second, it->first);
+  }
+
   /** \brief Process the given step number and generate its
    *  successors.
    */
@@ -3586,6 +3612,8 @@ private:
 	    return;
 	  }
 
+	check_for_new_promotions(step_num);
+
 	if(is_already_seen(step_num))
 	  {
 	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
@@ -3593,6 +3621,14 @@ private:
 	else if(irrelevant(s))
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
+	  }
+	// The step might have been promoted to the defer tier by
+	// check_for_new_promotions.
+	else if(s.step_tier >= tier_limits::defer_tier)
+	  {
+	    LOG_DEBUG(logger, "Skipping newly deferred step " << s.step_num);
+	    // Stick it back into the open queue.
+	    pending.insert(step_num);
 	  }
 	else
 	  {

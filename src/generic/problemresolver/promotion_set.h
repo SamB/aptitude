@@ -28,8 +28,12 @@
 
 #include <iostream>
 
+#include <boost/unordered_map.hpp>
+
 #include <generic/util/compare3.h>
 #include <generic/util/immset.h>
+#include <generic/util/maybe.h>
+
 #include <cwidget/generic/util/ref_ptr.h>
 
 #include <loggers.h>
@@ -1181,23 +1185,26 @@ public:
    *         would be a subset if exactly one choice was added
    *         to the input).
    *
-   *  Similar to find_entry_subset_op, but finds incipient subsets
-   *  instead of subsets, and fills in a map with its results rather
-   *  than simply storing the single highest tier.
+   *  Similar to find_entry_subset_op, but finds incipient subsets as
+   *  well as subsets, and fills in a map with its results rather than
+   *  simply storing the single highest tier.
    */
   template<typename T>
   class find_incipient_entry_subset_op
   {
     const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
-    boost::unordered_map<choice, promotion> &output;
+    boost::unordered_map<choice, promotion> &output_incipient;
+    maybe<promotion> &output_non_incipient;
     log4cxx::LoggerPtr logger;
 
   public:
     find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
-				   boost::unordered_map<choice, promotion> &_output,
+				   boost::unordered_map<choice, promotion> &_output_incipient,
+				   maybe<promotion> &_output_non_incipient,
 				   const log4cxx::LoggerPtr &_logger)
       : output_domain(_output_domain),
-	output(_output),
+	output_incipient(_output_incipient),
+	output_non_incipient(_output_non_incipient),
 	logger(_logger)
     {
     }
@@ -1206,11 +1213,28 @@ public:
     {
       if(r->active)
 	{
-	  if(r->hit_count + 1 == r->p.get_choices().size())
+	  if((unsigned)r->hit_count + 1 == r->p.get_choices().size())
 	    {
-	      LOG_DEBUG(logger, "find_incipient_entry_subset_op: generating output entries for " << r->p << " and resetting its hit count to 0.");
-	      update_incipient_output<T> updater(r->p, output_domain, output);
+	      LOG_DEBUG(logger, "find_incipient_entry_subset_op: generating incipient output entries for " << r->p << " and resetting its hit count to 0.");
+	      update_incipient_output<T> updater(r->p, output_domain, output_incipient);
 	      r->p.get_choices().for_each(updater);
+	    }
+	  else if(r->hit_count == r->p.get_choices().size())
+	    {
+	      bool hit = true;
+	      if(output_non_incipient.get_has_value())
+		{
+		  if(output_non_incipient.get_value().get_tier() >= r->p.get_tier())
+		    hit = false;
+		}
+
+	      if(hit)
+		{
+		  LOG_DEBUG(logger, "find_incipient_entry_subset_op: updating the non-incipient output value to " << r->p << " and resetting its hit count to 0.");
+		  output_non_incipient = r->p;
+		}
+
+	      output_non_incipient = maybe<promotion>(r->p);
 	    }
 	  else
 	    LOG_DEBUG(logger, "find_incipient_entry_subset_op: " << r->p << " is not an incipient promotion; resetting its hit count to 0 and not returning it.");
@@ -1236,14 +1260,17 @@ public:
    *  \param choices  The choice set to test.
    *  \param output_domain
    *                  Additional choices, one of which must be contained
-   *                  in every returned promotion.  The return values
+   *                  in every incipient promotion.  The return values
    *                  are organized according to which of these choices
    *                  each one contained, and only the highest-tier
    *                  promotion for each choice is returned.
-   *  \param output   A map in which to store the results of the search.
+   *  \param output_incipient   A map in which to store the results of the search.
    *                  Choices in output_domain that were matched are
    *                  mapped to the highest-tier promotion that they
    *                  would trigger.
+   *  \param output_non_incipient   A location in which to store the
+   *                  promotion, if any, that was found in the choice set
+   *                  itself.
    *
    *  The values that output_domain associates with the choices it
    *  stores are ignored.
@@ -1253,16 +1280,21 @@ public:
    *  step, each mapped to the dependencies that it solves.
    */
   template<typename T>
-  void find_highest_incipient_promotion(const choice_set &choices,
-					const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
-					boost::unordered_map<choice, promotion> &output) const
+  void find_highest_incipient_promotions(const choice_set &choices,
+					 const generic_choice_indexed_map<PackageUniverse, T> &output_domain,
+					 boost::unordered_map<choice, promotion> &output_incipient,
+					 maybe<promotion> &output_non_incipient) const
   {
     LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
     traverse_intersections<find_incipient_entry_subset_op<T> >
-      find_result_f(*this, true, find_incipient_entry_subset_op<T>(output_domain, output, logger));
+      find_result_f(*this, true,
+		    find_incipient_entry_subset_op<T>(output_domain,
+						      output_incipient,
+						      output_non_incipient,
+						      logger));
 
     choices.for_each(increment_f);
     // We have to run this even if the increment aborted, since we
