@@ -119,6 +119,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(ResolverTest);
 
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testSimpleResolution);
   CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
@@ -316,6 +317,50 @@ private:
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
       }
+  }
+
+  void testSimpleResolution()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testSimpleResolution"));
+
+    LOG_TRACE(logger, "Entering testSimpleResolution");
+
+    // dummy_universe_1 has only one solution: installing bv2 and cv2.
+    dummy_universe_ref u = parseUniverse(dummy_universe_1);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version bv2 = b.version_from_name("v2");
+    version cv2 = c.version_from_name("v2");
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(bv2, 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(cv2, 0));
+    LOG_TRACE(logger, "Expected solution: " << expected_solution);
+
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(50, NULL);
+	LOG_TRACE(logger, "Got solution: " << sol << ".");
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Unable to find a solution.");
+	CPPUNIT_FAIL("Unable to find a solution.");
+      }
+    catch(NoMoreTime)
+      {
+	LOG_TRACE(logger, "No more time to find a solution.");
+	CPPUNIT_FAIL("No more time to find a solution.");
+      }
+
+    assertSameEffect(expected_solution, sol.get_choices());
   }
 
   void testTiers()
