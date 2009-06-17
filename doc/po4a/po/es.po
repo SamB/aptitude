@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude doc es 0.5.2.1\n"
 "POT-Creation-Date: 2009-04-26 20:35-0600\n"
-"PO-Revision-Date: 2009-06-08 23:39+0200\n"
+"PO-Revision-Date: 2009-06-17 11:10+0200\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +114,7 @@ msgid ""
 "<menuchoice><guimenu>Actions</guimenu><guimenuitem>Play Minesweeper</"
 "guimenuitem></menuchoice>"
 msgstr ""
-"<menuchoice><guimenu>Acciones</guimenu><guimenuitem>Jugar al buscaminas</"
+"<menuchoice><guimenu>Acciones</guimenu><guimenuitem>Jugar al Buscaminas</"
 "guimenuitem></menuchoice>"
 
 # type: Content of the actions-su entity
@@ -365,13 +365,12 @@ msgstr ""
 
 # type: Content of the search-repeat-find-back entity
 #: en/aptitude.xml:53
-#, fuzzy
 msgid ""
 "<menuchoice><shortcut><keycap>N</keycap></shortcut><guimenu>Search</"
 "guimenu><guimenuitem>Find Again Backwards</guimenuitem></menuchoice>"
 msgstr ""
-"<menuchoice><shortcut><keycap>N</keycap><de nuevo hacia atrás</guimenuitem></"
-"menuchoice>"
+"<menuchoice><shortcut><keycap>N</keycap></shortcut><guimenu>Buscar</"
+"guimenu><guimenuitem>Buscar de nuevo hacia atrás</guimenuitem></menuchoice>"
 
 # type: Content of the search-limit entity
 #: en/aptitude.xml:54
@@ -861,7 +860,7 @@ msgstr "es"
 # type: Content of: <book><bookinfo><title>
 #: en/aptitude.xml:143
 msgid "&aptitude; user's manual"
-msgstr "Manual de uso de Aptitude"
+msgstr "Manual de uso de &aptitude;"
 
 # type: Content of: <book><bookinfo><subtitle>
 #: en/aptitude.xml:144
@@ -949,7 +948,7 @@ msgid ""
 "bloody well everything else.</quote> Several years later, the novice "
 "suddenly achieved enlightenment."
 msgstr ""
-"<quote>No veo porqué no,</quote>respondió el maestro.  <quote>Va sobrado en "
+"<quote>No veo porqué no,</quote> respondió el maestro.  <quote>Va sobrado en "
 "todo lo demás.</quote> Varios años después, de repente, el novicio alcanzó "
 "la iluminación."
 
@@ -962,14 +961,14 @@ msgid ""
 "linkend='chapGettingStarted'/>."
 msgstr ""
 "Hola y bienvenido al manual de usuario de &aptitude;! Esta sección "
-"introductoria explica que es &aptitude; y como meter las manos en ello; en "
-"lo referente a la información para usarlo de verdad, , por favor, dirigete a "
-"<xref linkend='chapGettingStarted'/>."
+"introductoria explica qué es &aptitude; y como conseguirlo; en lo referente "
+"a la información para manejarlo, por favor, dirigete a <xref "
+"linkend='chapGettingStarted'/>."
 
 # type: Content of: <book><preface><section><title>
 #: en/aptitude.xml:213
 msgid "What is this aptitude thing, anyway?"
-msgstr "Bueno, pero que esta cosa de aptitude?"
+msgstr "¿Qué es aptitude?"
 
 # type: Content of: <book><preface><section><para>
 #: en/aptitude.xml:216
@@ -982,7 +981,7 @@ msgstr ""
 "&aptitude; es un gestor de paquetes con múltiples características diseñado "
 "para sistemas Debian GNU/Linux, basado en la infraestructura del conocido "
 "gestor de paquetes &apt;  &aptitude; provee la funcionalidad de &dselect; y "
-"&apt-get; asi como otras funcionalidades adicionales que no se encuentran en "
+"&apt-get; así como otras funcionalidades adicionales que no se encuentran en "
 "ningunos de los programas anteriormente mencionados."
 
 # type: Content of: <book><preface><section><title>
@@ -1001,7 +1000,7 @@ msgid ""
 "together and can be installed and removed as a group."
 msgstr ""
 "Un <firstterm> gestor de paquetes </firstterm> mantiene un registro de qué "
-"software se instala en tu ordenador, y te permite instalar software nuevo, "
+"software se instala en su ordenador, y le permite instalar software nuevo, "
 "actualizarlo o eliminar software de una manera sencilla.  Como su propio "
 "nombre sugiere, los gestores de paquetes manejan <firstterm>paquetes</"
 "firstterm>:conjuntos de ficheros que son agrupados y que se pueden instalar "
@@ -1043,10 +1042,10 @@ msgid ""
 "firstterm>, <firstterm>suggest</firstterm>, <firstterm>break</firstterm>, or "
 "<firstterm>conflict</firstterm> with other packages."
 msgstr ""
-"Algunos paquete requieren otros para funcionar.  En Debían, algunos paquetes "
-"pueden <firstterm>depender</firstterm>, <firstterm>recomendar</firstterm>, "
-"<firstterm>sugerir</firstterm>, <firstterm>romper</firstterm>, o entrar en "
-"<firstterm>conflicto</firstterm> con otros paquetes."
+"Algunos paquetes requieren otros para funcionar.  En Debían, algunos "
+"paquetes pueden <firstterm>depender</firstterm>, <firstterm>recomendar</"
+"firstterm>, <firstterm>sugerir</firstterm>, <firstterm>romper</firstterm>, o "
+"entrar en <firstterm>conflicto</firstterm> con otros paquetes."
 
 # type: Content of: <book><preface><section><itemizedlist><listitem><para>
 #: en/aptitude.xml:270
@@ -1060,8 +1059,8 @@ msgstr ""
 "Si el paquete A depende de otro paquete B, entonces B es requerido para que "
 "A funcione correctamente.  Por ejemplo, el paquete <systemitem>gimp</"
 "systemitem> depende del paquete <systemitem>gimp-data</systemitem> para "
-"asegurarse de que el editor gráfico <ulink url='http://www.gimp.org'>GIMP</"
-"ulink> pueda acceder a sus ficheros críticos de datos."
+"permitir que el editor gráfico <ulink url='http://www.gimp.org'>GIMP</ulink> "
+"pueda acceder a sus ficheros críticos de datos."
 
 # type: Content of: <book><preface><section><itemizedlist><listitem><para>
 #: en/aptitude.xml:282
@@ -1083,8 +1082,8 @@ msgstr ""
 "cual añade la capacidad para la transferencia segura de datos al navegador "
 "web <ulink url='http://www.mozilla.org'>Mozilla</ulink>.  Aunque "
 "<systemitem>mozilla-psm</systemitem> no es estrictamente requerido para que "
-"Mozilla funcione, la mayoría de usuarios desearían que Mozilla diese soporte "
-"a la transmisión de datos confidenciales (tales como los números de una "
+"Mozilla funcione, la mayoría de usuarios desearán que Mozilla de soporte a "
+"la transmisión de datos confidenciales (tales como los números de una "
 "tarjeta de crédito)."
 
 # type: Content of: <book><preface><section><itemizedlist><listitem><para>
@@ -1114,7 +1113,7 @@ msgid ""
 msgstr ""
 "Si el paquete A entra en conflicto con otro paquete B, entonces los dos "
 "paquetes no pueden estar instalados a la vez.  Por ejemplo, <systemitem>fb-"
-"music-hi</systemitem>entra en concflicto con <systemitem>fb-music-low</"
+"music-hi</systemitem>entra en conflicto con <systemitem>fb-music-low</"
 "systemitem> porque proveen conjuntos alternativos de sonidos para el juego "
 "<ulink url='http://www.frozen-bubble.org'>Frozen Bubble</ulink>."
 
@@ -1128,7 +1127,7 @@ msgid ""
 msgstr ""
 "La labor de un gestor de paquetes es la de presentar una interfaz que asista "
 "al usuario en la tarea de gestionar el conjunto de paquetes que están "
-"instalados en su sistema \n"
+"instalados en el sistema \n"
 "&aptitude; proporciona una interfaz basandose en el sistema de gestión de "
 "paquetes &apt;."
 
@@ -1152,14 +1151,14 @@ msgid ""
 msgstr ""
 "Ser capaz de instalar y eliminar paquetes esta muy bien, pero el software "
 "básico que realiza esta función (conocido como <systemitem>dpkg</"
-"systemitem>) hace exactamente esto y nada más.  Esto esta bien si te "
-"descargas uno o dos paquetes a mano, pero enseguida se convierte en una "
-"ardua tarea cuando intentas gestionar un número grande de paquetes. Mas aún, "
-"si tu flamante paquete nuevo requiere software que no esta instalado "
-"previamente, vas a tener que bajarte los paquetes recién requeridos a mano.  "
-"Y si después decides remover el ya-no-tan-flamante software, estos paquetes "
-"extra se quedarán en tu sistema, consumiendo espacio, a menos que los "
-"elimines manualmente."
+"systemitem>) hace exactamente esto y nada más.  Esto es suficiente si se "
+"descarga uno o dos paquetes a mano, pero enseguida se convierte en una ardua "
+"tarea cuando intenta gestionar un número grande de paquetes. Mas aún, si tu "
+"flamante paquete nuevo requiere software que no esta instalado previamente, "
+"tendrá que bajarse los paquetes recién requeridos a mano.  Y si después "
+"decides remover el ya-no-tan-flamante software, estos paquetes extra se "
+"quedarán en el sistema, consumiendo espacio, a menos que los elimine "
+"manualmente."
 
 # type: Content of: <book><preface><section><para>
 #: en/aptitude.xml:347
@@ -1170,9 +1169,9 @@ msgid ""
 "addition to &aptitude;, programs such as <command>synaptic</command> and "
 "<command>apt-watch</command> make use of &apt;."
 msgstr ""
-"Obviamente, todo este labor manual es tedioso, y por lo tanto la mayoría de "
+"Obviamente, toda esta labor manual es tediosa, y por lo tanto la mayoría de "
 "sistemas de gestión de paquetes vienen con software que se ocupa de algo o "
-"de toda  esta labor por ti. &apt; proporciona una base común sobre la que "
+"de toda esta labor para Ud. &apt; proporciona una base común sobre la que "
 "construir estos programas: además de &aptitude;, programas tales como "
 "<command>synaptic</command> y <command>apt-watch</command> hacen uso de "
 "&apt;."
@@ -1187,10 +1186,10 @@ msgid ""
 "it will find any additional required packages and install those as well."
 msgstr ""
 "&apt; funciona mediante el registro de una lista de los paquetes que pueden "
-"ser descargados desde Debían en tu ordenador.  Esta lista es útil a la hora "
+"ser descargados desde Debían a su ordenador.  Esta lista es útil a la hora "
 "de encontrar los paquetes que necesitan ser actualizados y para instalar "
 "paquetes nuevos.  &apt; puede también resolver problemas de dependencias "
-"automáticamente: por ejemplo, cuando escoges instalar un paquete, encontrará "
+"automáticamente: por ejemplo, cuando escoga instalar un paquete, encontrará "
 "cualquier paquete adicional requerido e instalar esos también."
 
 # type: Content of: <book><preface><section><para>
@@ -1204,13 +1203,13 @@ msgid ""
 "<firstterm>commit</firstterm> your selections by actually performing the "
 "installations, removals, etc."
 msgstr ""
-"Cuando usas un gestor de paquetes basado en &apt;, tales como &aptitude;, "
-"por general realizaras tres tareas básicas: <firstterm>actualizar</"
-"firstterm> la lista de paquetes que están disponibles mediante la descarga "
-"de nuevas listas de los servidores de Debian, <firstterm>seleccionar</"
-"firstterm> qué paquetes deben ser instalados, actualizados o eliminados, y "
-"finalmente, <firstterm>confirmar</firstterm> tus selecciones realizando de "
-"verdad las instalaciones, eliminaciones, etc."
+"Cuando use un gestor de paquetes basado en &apt;, tales como &aptitude;, por "
+"general realizara tres tareas básicas: <firstterm>actualizar</firstterm> la "
+"lista de paquetes que están disponibles mediante la descarga de nuevas "
+"listas de los servidores de Debian, <firstterm>seleccionar</firstterm> qué "
+"paquetes deben ser instalados, actualizados o eliminados, y finalmente, "
+"<firstterm>confirmar</firstterm> sus selecciones ejecutando finalmente las "
+"instalaciones, eliminaciones, etc."
 
 # type: Content of: <book><preface><section><para>
 #: en/aptitude.xml:377
@@ -1230,7 +1229,7 @@ msgstr ""
 # type: Content of: <book><preface><section><title>
 #: en/aptitude.xml:388
 msgid "How can I get &aptitude;?"
-msgstr "¿Como puedo instalar &aptitude;?"
+msgstr "¿Como puedo conseguir &aptitude;?"
 
 # type: Content of: <book><preface><section><para>
 #: en/aptitude.xml:392
@@ -1240,10 +1239,10 @@ msgid ""
 "situation.  Most people should head straight for the section on <link "
 "linkend='secBinaryPackages'>binary packages</link>."
 msgstr ""
-"En el caso de que estés leyendo este manual sin que &aptitude; esté ya "
-"instalado en tu sistema, esta sección te ayudará a corregir esta "
-"desafortunada situación.  La mayoría de la gente debería ir directamente a "
-"la sección en <link linkend='secBinaryPackages'>binary packages</link>."
+"En el caso de que esté leyendo este manual sin que &aptitude; esté ya "
+"instalado en tu sistema, esta sección le ayudará a corregir esta "
+"desafortunada situación.  La mayoría de los usuaios debería ir directamente "
+"a la sección en <link linkend='secBinaryPackages'>binary packages</link>."
 
 # type: Content of: <book><preface><section><section><title>
 #: en/aptitude.xml:400
@@ -1263,10 +1262,10 @@ msgid ""
 "binary packages."
 msgstr ""
 "Paquetes precompilados, o paquetes <quote>binarios</quote> proporcionan la "
-"manera mas sencilla y común de instalar &aptitude;.  Solo se debe intentar "
+"manera más sencilla y común de instalar &aptitude;.  Solo se debe intentar "
 "una <link linkend='secSourceInstall'>instalación desde las fuentes</link> si "
-"los paquetes binarios no están disponibles por alguna razón, y si tienes "
-"necesidades especiales que no son disponibles con los paquetes binarios."
+"los paquetes binarios no están disponibles por alguna razón, y si tiene "
+"necesidades especiales que no están disponibles con los paquetes binarios."
 
 # type: Content of: <book><preface><section><section><para>
 #: en/aptitude.xml:411
@@ -1277,16 +1276,16 @@ msgid ""
 "of &aptitude;; if you are not sure, you can contact them for further "
 "suggestions."
 msgstr ""
-"Si estas usando un sistema Debían, ejecuta el siguiente comando como &root;: "
-"<userinput>apt-get install aptitude</userinput>.  Si no estas usando un "
-"sistema Debían, puede que tu proveedor de software haya creado un paquete "
-"precompilado de &aptitude;; puedes contactar con ellos para preguntas "
-"posteriores si no estas seguro. "
+"Si esta usando un sistema Debían, ejecute el siguiente comando como &root;: "
+"<userinput>apt-get install aptitude</userinput>.  Si no está usando un "
+"sistema Debían, puede que su proveedor de software haya creado un paquete "
+"precompilado de &aptitude;; puede contactar con ellos para preguntas "
+"posteriores si no esta seguro. "
 
 # type: Content of: <book><preface><section><section><title>
 #: en/aptitude.xml:421
 msgid "Building &aptitude; from source code"
-msgstr "Compilando &aptitude; desde el código fuente. "
+msgstr "Instalando &aptitude; desde el código fuente. "
 
 # type: Content of: <book><preface><section><section><para>
 #: en/aptitude.xml:424
@@ -1295,21 +1294,21 @@ msgid ""
 "useful exercise unless &apt; is already available on your system.  If it is, "
 "you can install &aptitude; from source with the following steps:"
 msgstr ""
-"También puedes construir &aptitude; desde las fuentes; por otro lado, este "
-"no es un ejercicio útil a menos que tengas &apt; ya instalado en tu sistema. "
-"Si lo está, puedes instalar &aptitude; desde las fuentes mediante los "
+"También puede construir &aptitude; desde las fuentes; por otro lado, este no "
+"es un ejercicio útil a menos que tenga &apt; ya instalado en tu sistema. Si "
+"lo está, puedes instalar &aptitude; desde las fuentes mediante los "
 "siguientes pasos:"
 
 # type: Content of: <book><preface><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:433
 msgid "Install the following pieces of software:"
-msgstr "Instala los siguientes programas:"
+msgstr "Instale los siguientes programas:"
 
 # type: Content of: <book><preface><section><section><orderedlist><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:439
 msgid "A C++ compiler, such as <ulink url='http://gcc.gnu.org'>g++</ulink>."
 msgstr ""
-"Un compilador C++, tales como <ulink url='http://gcc.gnu.org'>g++</ulink>."
+"Un compilador C++, tal como <ulink url='http://gcc.gnu.org'>g++</ulink>."
 
 # type: Content of: <book><preface><section><section><orderedlist><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:446
@@ -1317,7 +1316,7 @@ msgid ""
 "The development files for &apt;, typically available in a package with a "
 "name like <systemitem>libapt-pkg-dev</systemitem>."
 msgstr ""
-"Los ficheros de desarrollo  de &apt; los cuales se encuentran por lo general "
+"Los archivos de desarrollo  de &apt; los cuales se encuentran por lo general "
 "en un paquete con un nombre como <systemitem>libapt-pkg-dev</systemitem>."
 
 # type: Content of: <book><preface><section><section><orderedlist><listitem><itemizedlist><listitem><para>
@@ -1349,7 +1348,7 @@ msgid ""
 "your Linux distribution."
 msgstr ""
 "El programa <systemitem>gettext</systemitem>, que debería estar ya incluido "
-"en tu distribución Linux."
+"en su distribución Linux."
 
 # type: Content of: <book><preface><section><section><orderedlist><listitem><itemizedlist><listitem><para>
 #: en/aptitude.xml:482
@@ -1368,10 +1367,10 @@ msgid ""
 "aptitude'></ulink>.  (scroll to the bottom of the page and download the "
 "<quote>.orig.tar.gz</quote> file)"
 msgstr ""
-"Por ultimo pero no por ello menos importante, descarga la versión más "
+"Por ultimo pero no por ello menos importante, descargue la versión más "
 "reciente del código fuente, disponible en <ulink url='http://packages.debian."
-"org/unstable/admin/aptitude'></ulink>.  (deslizate hasta la base de la "
-"página y descarga el fichero <quote>.orig.tar.gz</quote>)"
+"org/unstable/admin/aptitude'></ulink>.  (desplazese hasta la base de la "
+"página y descargue el archivo <quote>.orig.tar.gz</quote>)"
 
 # type: Content of: <book><preface><section><section><para>
 #: en/aptitude.xml:502
@@ -1386,16 +1385,16 @@ msgid ""
 "successfully installed, typing <command>aptitude</command> at a command "
 "prompt should start the program."
 msgstr ""
-"Una vez que todos los componentes requeridos estén disponibles, abre una "
-"terminal y ejecuta el siguiente comando <command>tar zxf aptitude-&VERSION;."
+"Una vez que todos los componentes requeridos estén disponibles, abra una "
+"terminal y ejecute el siguiente comando <command>tar zxf aptitude-&VERSION;."
 "tar.gz</command> para desempaquetar el codigo fuente.  Una vez que el código "
-"fuente se ha desempaquetado, teclea <command>cd aptitude-&VERSION; &amp;"
+"fuente se haya desempaquetado, teclee <command>cd aptitude-&VERSION; &amp;"
 "&amp; ./configure &amp;&amp; make</command> para compilar &aptitude;.  Si "
-"tienes éxito, asegurate de que eres el usuario &root;. (usando <command>su</"
-"command>, por ejemplo), y despues teclea <command>make install</command> "
-"para instalar &aptitude; en tu equipo.  Una vez que hayas instalado "
-"&aptitude; con éxito, teclear <command>aptitude</command> en una terminal "
-"debería cargar el programa. "
+"tiene éxito, asegurese de ser el usuario &root;. (usando <command>su</"
+"command>, por ejemplo), y después teclee <command>make install</command> "
+"para instalar &aptitude; en su equipo.  Una vez que haya instalado "
+"&aptitude; con éxito, introducir <command>aptitude</command> en una terminal "
+"debería ejectuar el programa. "
 
 # type: Content of: <book><preface><section><section><title>
 #: en/aptitude.xml:518
@@ -1405,7 +1404,7 @@ msgstr "Siguiendo y participando en el desarrollo de &aptitude;"
 # type: Content of: <book><preface><section><section><section><title>
 #: en/aptitude.xml:521
 msgid "Getting the &aptitude; development source tree"
-msgstr "Consiguiendo el arból de desarrollo de &aptitude;"
+msgstr "Consiguiendo las fuentes del arból de desarrollo de &aptitude;"
 
 # type: Content of: <book><preface><section><section><section><para>
 #: en/aptitude.xml:523
@@ -1416,12 +1415,12 @@ msgid ""
 "ulink>) and execute the command <command>hg clone http://hg.debian.org/hg/"
 "aptitude/head aptitude</command> to retrieve the most recent source code."
 msgstr ""
-"Si quieres probar el más reciente código fuente de &aptitude;, puedes "
-"descargarte el código fuente sin publicar de &aptitude; usando Mercurial.  "
-"Instala Mercurial (disponible en <ulink url='http://www.selenic.com/"
-"mercurial/'></ulink>) y ejecuta el comando <command>hg clone http://hg."
-"debian.org/hg/aptitude/head aptitude</command> para descargarte el código "
-"fuente mas reciente."
+"Si quiere probar el código fuente más reciente de &aptitude;, puede "
+"descargarse el código fuente sin publicar de &aptitude; usando Mercurial.  "
+"Instale Mercurial (disponible en <ulink url='http://www.selenic.com/"
+"mercurial/'></ulink>) y ejecute el comando <command>hg clone http://hg."
+"debian.org/hg/aptitude/head aptitude</command> para descargarse el código "
+"fuente más reciente."
 
 # type: Content of: <book><preface><section><section><section><warning><para><footnote>
 #: en/aptitude.xml:536
@@ -1434,9 +1433,9 @@ msgid ""
 msgstr ""
 "El repositorio de &aptitude; en Mercurial es un árbol de desarrollo activo; "
 "varía a medida que los bugs son corregidos y nuevas características son "
-"añadidas, y no hay ninguna garantía de que puedas compilarlo, ¡no digamos "
-"arrancarlo! ¡Los informes de bugs son bienvenidos, pero se consciente de que "
-"estas usando el código de desarrollo a tu cuenta y riesgo!<footnote>"
+"añadidas, y no hay ninguna garantía de que pueda compilarlo, ¡no digamos "
+"arrancarlo! ¡Los informes de bugs son bienvenidos, pero sea consciente de "
+"que esta usando el código de desarrollo bajo su responsabilidad!<footnote>"
 
 # type: Content of: <book><preface><section><section><section><warning><para><footnote><para>
 #: en/aptitude.xml:542
@@ -1444,8 +1443,9 @@ msgid ""
 "Of course, all free software is used at your own risk, but the risk involved "
 "in using an active development tree is much higher."
 msgstr ""
-"Por supuesto, todo el software libre se emplea a tu cuenta y riesgo, pero el "
-"riesgo relacionado con usar un árbol de desarrollo activo es mucho mayor."
+"Por supuesto, todo el software libre se emplea bajo la responsabilidad del "
+"usuario,  pero el riesgo relacionado con usar un árbol de desarrollo activo "
+"es mucho mayor."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:545 en/aptitude.xml:2024 en/aptitude.xml:3598
@@ -1471,7 +1471,7 @@ msgstr ""
 "La lista de correo primaria para &aptitude; es <email>aptitude-devel@lists."
 "alioth.debian.org</email>.  Los archivos de esta lista se encuentran en "
 "<ulink url='http://lists.alioth.debian.org/pipermail/aptitude-devel/'/>.  "
-"Para suscribirte, visita la pagina web <ulink url='http://lists.alioth."
+"Para suscribirse, visite la pagina web <ulink url='http://lists.alioth."
 "debian.org/mailman/listinfo/aptitude-devel'/>."
 
 # type: Content of: <book><preface><section><section><section><title>
@@ -1489,12 +1489,12 @@ msgid ""
 "email>.  A brief description of the motivation behind your patch, and an "
 "explanation of how it works, are greatly appreciated."
 msgstr ""
-"Preferentemente, los parches deben ser mandados a lista de correo de "
+"Preferiblemente, los parches han de ser mandados a lista de correo de "
 "&aptitude; <email>aptitude-devel@lists.alioth.debian.org</email>.  Pero si "
-"prefieres mandarlos a través de un email privado, debes hacerlo a "
+"prefiere mandarlos a través de un email privado, debe hacerlo a "
 "<email>aptitude@packages.debian.org</email> o <email>dburrows@debian.org</"
 "email>. Apreciaríamos de manera especial una breve descripción de la "
-"motivación que hay detrás de tu parche, y una explicación de su "
+"motivación que hay detrás de su parche, y una explicación de su "
 "funcionamiento."
 
 # type: Content of: <book><preface><section><section><section><title>
@@ -1513,8 +1513,8 @@ msgid ""
 msgstr ""
 "El árbol de fuentes de &aptitude; es actualizado regularmente con nuevas "
 "características, arreglos de bugs, y bugs nuevos. Una vez que el código "
-"fuente esté disponible en tu ordenador (vea la sección anterior), puedes "
-"<command>cd</command> para acceder a la carpeta y teclear <command>hg pull "
+"fuente esté disponible en su ordenador (vea la sección anterior), puede usar "
+"<command>cd</command> para acceder a la carpeta y teclee <command>hg pull "
 "&amp;&amp; hg update</command> para actualizarlo con cualquier cambio que se "
 "haya podido introducir en el repositorio central."
 
@@ -1526,7 +1526,7 @@ msgid ""
 "url='http://hg.debian.org/hg/aptitude/head?cl=tip;style=rss'/>."
 msgstr ""
 "Para recibir automáticamente notificaciones cuando se realicen cambios en el "
-"código base de &aptitude;, suscribete al RSS feed disponible en <ulink "
+"código base de &aptitude;, suscribase al RSS feed disponible en <ulink "
 "url='http://hg.debian.org/hg/aptitude/head?cl=tip;style=rss'/>."
 
 # type: Content of: <book><preface><section><section><section><title>
@@ -1543,11 +1543,11 @@ msgid ""
 "to generate the files needed to compile &aptitude;, then execute "
 "<command>make</command> and <command>make install</command>."
 msgstr ""
-"Para compilar &aptitude; desde el repositorio Mercurial, debes tener los "
+"Para compilar &aptitude; desde el repositorio Mercurial, debe tener los "
 "programas <systemitem>autoconf</systemitem> y <systemitem>automake</"
-"systemitem> instalados.  Introduce <command>sh ./autogen.sh &amp;&amp; ./"
+"systemitem> instalados.  Introduzca <command>sh ./autogen.sh &amp;&amp; ./"
 "configure</command> para generar los ficheros necesarios para compilar "
-"&aptitude; y ejecuta <command>make</command> y <command>make install</"
+"&aptitude; y ejecute <command>make</command> y <command>make install</"
 "command>."
 
 # type: Content of: <book><chapter><title>
@@ -1597,7 +1597,7 @@ msgid ""
 msgstr ""
 "Esta sección describe como usar la interfaz gráfica de &aptitude;.  Para "
 "información relacionada con el uso de la interfaz de comandos de &aptitude;, "
-"veasé <xref linkend='secUsingCmdline'/>."
+"vea <xref linkend='secUsingCmdline'/>."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:651
@@ -1610,8 +1610,8 @@ msgid ""
 "To run &aptitude;, open your favorite text terminal, and at the command "
 "line, type:"
 msgstr ""
-"Para arrancar &aptitude;, abre tu terminal de texto favorito y, en la linea "
-"de comandos, teclea:"
+"Para arrancar &aptitude;, abra su terminal de texto favorito y, en la linea "
+"de comandos, teclee:"
 
 # type: Content of: <book><chapter><section><section><screen>
 #: en/aptitude.xml:657
@@ -1691,13 +1691,13 @@ msgid ""
 "selected group (<quote>Installed Packages</quote>) is highlighted, and its "
 "description is shown in the lower black space."
 msgstr ""
-"Como puedes ver, la pantalla principal de &aptitude; esta dividida en varias "
+"Como puede ver, la pantalla principal de &aptitude; esta dividida en varias "
 "áreas.  La línea azul en la parte superior de la terminal es la barra de "
-"menú, y las líneas inferiores son mensajes informativos describiendo algunos "
-"comandos importantes.  El espacio negro que sigue es la lista de todos los "
-"paquetes disponibles, en la cual algunos grupos de paquetes estan listados.  "
-"El grupo seleccionado (<quote>Paquetes instalados</quote>) esta resaltado, y "
-"su descripción se muestra en el espacio inferior negro."
+"menú, y la líneas inferior muestra mensajes informativos describiendo "
+"algunos comandos importantes.  El espacio negro que sigue es la lista de "
+"todos los paquetes disponibles, en la cual algunos grupos de paquetes están "
+"listados.  El grupo seleccionado (<quote>Paquetes instalados</quote>) esta "
+"resaltado, y su descripción se muestra en el espacio inferior negro."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:713
@@ -1708,10 +1708,10 @@ msgid ""
 "system supports it.  Pressing <keycombo action='simul'><keycap>Control</"
 "keycap><keycap>t</keycap></keycombo> will open the Actions menu:"
 msgstr ""
-"Como sugiere la línea superior de la pantalla, puedes acceder al menú de "
+"Como sugiere la línea superior de la pantalla, puede acceder al menú de "
 "aptitude presionando <keycombo action='simul'><keycap>Control</"
-"keycap><keycap>t</keycap></keycombo>; también puedes hacer click sobre el "
-"titulo de menú si tu sistema lo permite.  Presionar <keycombo "
+"keycap><keycap>t</keycap></keycombo>; también puede hacer clic sobre el "
+"titulo de menú si el sistema lo permite.  Pulsar <keycombo "
 "action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo> abriría "
 "el menu de Acciones:"
 
@@ -1781,15 +1781,15 @@ msgid ""
 "for instance, the command <quote>Update package list</quote> can be "
 "activated by pressing <keycap>u</keycap>."
 msgstr ""
-"Usa las teclas de dirección y <keycap>Enter</keycap> para seleccionar los "
-"elementos del menú (o si tu sistema lo soporta, haz click sobre ellos con el "
-"ratón; para cerrar el menú sin seleccionar nada, aprieta "
+"Use las teclas de dirección y <keycap>Enter</keycap> para seleccionar los "
+"elementos del menú (o si el sistema lo soporta, haga clic sobre ellos con el "
+"ratón; para cerrar el menú sin seleccionar nada, apriete "
 "<keycombo><keycap>Control</keycap><keycap>t</keycap></keycombo> otra vez.  "
 "Una descripción del elemento seleccionado aparecerá en la base de la "
 "pantalla.  Si un elemento del menú puede ser activado mediante un atajo de "
-"teclado, el atajo aparecerá en el menú: por ejemplo, el comando "
-"<quote>Actualizar la lista de paquetes</quote> puede ser activado "
-"presionando <keycap>u</keycap>."
+"teclado, el atajo aparecerá en el menú: por ejemplo, la orden "
+"<quote>Actualizar la lista de paquetes</quote> puede ser activado pulsando "
+"<keycap>u</keycap>."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:767
@@ -1797,8 +1797,8 @@ msgid ""
 "At any time, you can press <keycap>?</keycap> to display an on-line "
 "reference to the available keyboard shortcuts."
 msgstr ""
-"En cualquier momento, puedes presionar <keycap>?</keycap> para mostrar una "
-"tabla de referencia online con los atajos de teclado disponibles."
+"En cualquier momento, puede pulsar <keycap>?</keycap> para mostrar una tabla "
+"de referencia online con los atajos de teclado disponibles."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:773
@@ -1823,7 +1823,7 @@ msgid ""
 "see more or less groups than appear in this screen shot."
 msgstr ""
 "&aptitude; ocultará automáticamente los grupos de paquetes que estén vacíos, "
-"así que puede que veas más o menos grupos de los que aparecen en esta imagen."
+"así que puede que vea más o menos grupos de los que aparecen en esta imagen."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:826
@@ -1836,10 +1836,10 @@ msgid ""
 msgstr ""
 "En la captura de pantalla superior, el primer grupo (<quote>Paquetes "
 "instalados</quote>) esta resaltado, indicando que está seleccionado en ese "
-"momento.  Puedes navegar a través de la lista con las flechas de dirección; "
-"observa que la descripción en el campo inferior a la lista de paquetes varía "
-"a medida que navegas. Para <quote>expandir</quote> un grupo, presiona "
-"<keycap>Enter</keycap> a la vez que seleccionas el grupo:"
+"momento.  Puede navegar a través de la lista con las flechas de dirección; "
+"observe que la descripción en el campo inferior a la lista de paquetes varía "
+"a medida que navega. Para <quote>expandir</quote> un grupo, presione "
+"<keycap>Enter</keycap> a la vez que selecciona el grupo:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:842
@@ -1901,9 +1901,9 @@ msgid ""
 "quote> section by selecting it and pressing <keycap>Enter</keycap>, we see:"
 msgstr ""
 "Como puede ver, el grupo <quote>Paquetes instalados</quote> se ha expandido "
-"para mostrar su contenido: contiene un número de sub-grupos, definidos de "
+"para mostrar su contenido: contiene un número de subgrupos, definidos de "
 "manera abierta dependiendo del tipo de software que contienen. Si expandimos "
-"la sección <quote>admin</quote> seleccionandoló y presionando <keycap>Enter</"
+"la sección <quote>admin</quote> seleccionandoló y pulsando <keycap>Enter</"
 "keycap>, podemos ver:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
@@ -1974,10 +1974,10 @@ msgid ""
 "and pressing <keycap>[</keycap> would have immediately revealed the packages "
 "in the screenshot below."
 msgstr ""
-"Para ahorrar tiempo, puedes usar la tecla <keycap>[</keycap> para expandir "
+"Para ahorrar tiempo, puede usar la tecla <keycap>[</keycap> para expandir "
 "todos los subgrupos de un grupo a la vez.  Seleccionar <quote>Paquetes "
-"instalados</quote> y presionar <keycap>[</keycap> revelaría inmediatamente "
-"los paquetes de la imagen inferior."
+"instalados</quote> y pulsar <keycap>[</keycap> revelaría inmediatamente los "
+"paquetes de la imagen inferior."
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:936
@@ -2036,7 +2036,7 @@ msgid ""
 "package list a page of information at a time using the <keycap>Page Up</"
 "keycap> and <keycap>Page Down</keycap> keys."
 msgstr ""
-"Además de las flechas de dirección, puedes mover la selección a través de la "
+"Además de las flechas de dirección, puede mover la selección a través de la "
 "lista de paquetes mostrando una página de información cada vez usando las "
 "teclas <keycap>Page Up</keycap> y <keycap>Page Down</keycap>."
 
@@ -2049,7 +2049,7 @@ msgid ""
 msgstr ""
 "Cuando hay mas información en la zona inferior de la pantalla de la que cabe "
 "en el espacio disponibles, las teclas <keycap>a</keycap> y <keycap>z</"
-"keycap> pueden ser usadas para deslizarse a través de la información."
+"keycap> pueden ser usadas para desplazarse a través de la información."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:985
@@ -2062,8 +2062,8 @@ msgid ""
 "To quickly find a package whose name you know, press <keycap>/</keycap> to "
 "open a search dialog:"
 msgstr ""
-"Para encontrar un paquete cuyo nombre conozcas rápidamente, presiona "
-"<keycap>/</keycap> para abrir un cuadro de diálogo de búsqueda:"
+"Para encontrar un paquete cuyo nombre conozca rápidamente, presione <keycap>/"
+"</keycap> para abrir un cuadro de diálogo de búsqueda:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:999
@@ -2126,7 +2126,7 @@ msgid ""
 "linkend='secSearchPatterns'/>, it is possible to find packages based on many "
 "complex criteria."
 msgstr ""
-"Como puedes ver en la imagen superior, una búsqueda de <userinput>froz</"
+"Como puede ver en la imagen superior, una búsqueda de <userinput>froz</"
 "userinput> encuentra el paquete <systemitem>frozen-bubble</systemitem>.  Es "
 "posible encontrar paquetes con criterios complejos usando el poderoso "
 "lenguaje de búsqueda de &aptitude;."
@@ -2138,8 +2138,8 @@ msgid ""
 "keycap>, and you can repeat the last search by pressing <keycap>n</keycap> "
 "after closing the search window."
 msgstr ""
-"Puedes buscar hacia atrás en la lista de paquetes presionando <keycap>\\</"
-"keycap>, y puedes repetir la ultima búsqueda presionando <keycap>n</keycap> "
+"Puede buscar hacia atrás en la lista de paquetes pulsando <keycap>\\</"
+"keycap>, y puede repetir la ultima búsqueda presionando <keycap>n</keycap> "
 "tras cerrar el cuadro de búsqueda."
 
 # type: Content of: <book><chapter><section><section><para>
@@ -2149,7 +2149,7 @@ msgid ""
 "particular criterion.  To do this, press <keycap>l</keycap>:"
 msgstr ""
 "Algunas veces es practico ocultar todos los paquetes exceptuando aquellos "
-"que se corresponden con un criterio en particular.  Para ello, presiona "
+"que se corresponden con un criterio en particular.  Para ello, presione "
 "<keycap>l</keycap>:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
@@ -2215,11 +2215,11 @@ msgid ""
 "quote>:"
 msgstr ""
 "Este dialogo funciona exactamente igual que el dialogo de búsqueda, solo que "
-"en vez de realzar el siguiente paquete que encaje con lo que hallas tecleado "
-"en el cuadro de dialogo, oculta todos los paquetes que no lo hacen.  Por "
-"ejemplo, tecleando <userinput>apti</userinput> y presionando <keycap>Enter</"
-"keycap> ocultaría todos los paquetes excepto aquellos cuyos nombres contengan "
-"<quote>apti</quote>:"
+"en vez de realzar el siguiente paquete que encaje con lo que hallas "
+"introducido en el cuadro de dialogo, oculta todos los paquetes que no lo "
+"hacen.  Por ejemplo, tecleando <userinput>apti</userinput> y presionando "
+"<keycap>Enter</keycap> ocultaría todos los paquetes excepto aquellos cuyos "
+"nombres contengan <quote>apti</quote>:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1103
@@ -2249,6 +2249,29 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.2.14.1\n"
+"--\\ Paquetes instalados                                                          \n"
+"  --\\ admin - Utilidades de administración (instalación de programas, gestión de usuarios, etc)\n"
+"    --\\ principal................................................\n"
+"i     aptitude                                             0.2.14.1-2 0.2.14.1-2\n"
+"i A   synaptic                                             0.51-1     0.51-1\n"
+"  --\\ x11 - El sistema de ventanas X y programas relacionados\n"
+"    --\\ principal......................\n"
+"i     xfree86-driver-synaptics                             0.13.3-1   0.13.3-1\n"
+"--- Paquetes no instalados\n"
+"--- Paquetes virtuales\n"
+"\n"
+"Estos paquetes están instalados en su ordenador\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:1133 en/aptitude.xml:2957
@@ -2262,10 +2285,10 @@ msgid ""
 "&aptitude; to install and remove packages.  In this section you will learn "
 "how to flag packages for installation, deletion, and upgrade."
 msgstr ""
-"Ahora que sabes navegar a través de la lista de paquetes, es hora de que "
-"empieces a usar &aptitude; para instalar y eliminar paquetes.  En esta "
-"sección, aprenderás como marcar los paquetes para su instalación, "
-"eliminación o actualización."
+"Ahora que sabe navegar a través de la lista de paquetes, es hora de que "
+"empiece a usar &aptitude; para instalar y eliminar paquetes.  En esta "
+"sección, aprenderá como marcar los paquetes para su instalación, eliminación "
+"o actualización."
 
 # type: Content of: <book><chapter><section><section><tip><para>
 #: en/aptitude.xml:1144
@@ -2276,11 +2299,11 @@ msgid ""
 "when you try to do something that only &root; can do, and if you want to "
 "continue, you must type &root;'s password."
 msgstr ""
-"Solo se puede cambiar la configuración del sistema como &root;.  Si quieres "
-"experimentar con &aptitude;, puedes arrancarlo de manera segura como "
+"Solo se puede cambiar la configuración del sistema como &root;.  Si quiere "
+"experimentar con &aptitude;, puede arrancarlo de manera segura como "
 "cualquier otro usuario aparte de como &root; sin dañar el sistema de ninguna "
 "manera.  &aptitude; te avisará cuando estés intentando hacer algo que solo "
-"el &root; puede hacer, y si quieres continuar, tendrás que insertar la "
+"el &root; puede hacer, y si quiere continuar, tendrá que introducir la "
 "contraseña de &root;."
 
 # type: Content of: <book><chapter><section><section><para><footnote>
@@ -2335,7 +2358,7 @@ msgstr ""
 "systemitem> ha sido seleccionado y la tecla <keycap>+</keycap>, pulsada.  El "
 "paquete esta ahora resaltado en verde, y la letra <quote>i</quote> ha "
 "aparecido a la izquierda de su nombre para indicar que será instalado; "
-"además, se muestra una estimación del espacio que el paquete usará en el "
+"además, se muestra una estimación del espacio que el paquete usara en el "
 "disco duro."
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
@@ -2366,6 +2389,29 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.2.14.1                  Se usará 2925kB del TamDes: 1375kB\n"
+"  --\\ kde - El sistema de escritorio KDE\n"
+"    --\\ principal\n"
+"p     bibletime-i18n                                        &lt;none&gt;     1.4.1-1\n"
+"p     education-desktop-kde                                 &lt;none&gt;     0.771\n"
+"p     junior-kde                                            &lt;none&gt;     1.4\n"
+"piA   kaffeine                                      +2843kB &lt;none&gt;     0.4.3-1\n"
+"pi    kaffeine-mozilla                              +81.9kB &lt;none&gt;     0.4.3-1\n"
+"p     karamba                                               &lt;none&gt;     0.17-5\n"
+"p     kde-devel                                             &lt;none&gt;     4:3.1.2   \n"
+"p     kde-devel-extras                                      &lt;none&gt;     4:3.1.2\n"
+"El sistema de escritorio K(utilidades para desarrollo de programas)\n"
+"A metapackage containing dependencies for the core development suite of KDE\n"
+"including kdesdk, qt3-designer, and all core KDE -dev packages.\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
 
 # type: Content of: <book><chapter><section><section><tip><para>
 #: en/aptitude.xml:1221
@@ -2374,9 +2420,9 @@ msgid ""
 "one or more packages.  This is very useful if an action has unforeseen "
 "consequences and you want to <quote>take it back</quote>."
 msgstr ""
-"En cualquier momento, puedes usar &undo-undo; para <quote>deshacer</quote> "
+"En cualquier momento, puede usar &undo-undo; para <quote>deshacer</quote> "
 "cualquier cambio realizado a uno o más paquetes.  Esto es de bastante "
-"utilidad en caso de que una acción tenga consecuencias inesperadas y desees "
+"utilidad en caso de que una acción tenga consecuencias inesperadas y desee "
 "<quote>revertir</quote> los paquetes a su estado anterior."
 
 # type: Content of: <book><chapter><section><section><para>
@@ -2389,8 +2435,8 @@ msgid ""
 msgstr ""
 "En adición a las acciones que afectan a paquetes de manera individual, hay "
 "disponible otra acción importante: presionando <keycap>U</keycap> se "
-"actualizara cualquier paquete susceptible de serlo.  Deberías utilizar este "
-"comando de manera regular para mantener tu sistema a la ultima."
+"actualizará cualquier paquete susceptible de serlo.  Debería utilizar esta "
+"orden de manera regular para mantener el sistema a la ultima."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:1237
@@ -2407,9 +2453,9 @@ msgid ""
 "to remove <systemitem>sound-juicer</systemitem>:"
 msgstr ""
 "A veces, cambiar el estado de un paquete puede causar que requisitos entre "
-"dependencias no se puedan cumplir; paquetes con dependencias no resueltas "
-"se denominan <firstterm>rotos</firstterm>.  &aptitude; te avisará cuando "
-"esto ocurra y describirá lo ocurrido.  Por ejemplo, esto es lo que pasa si "
+"dependencias no se puedan cumplir; paquetes con dependencias no resueltas se "
+"denominan <firstterm>rotos</firstterm>.  &aptitude; te avisará cuando esto "
+"ocurra y describirá lo ocurrido.  Por ejemplo, esto es lo que pasa si "
 "intento eliminar <systemitem>sound-juicer</systemitem>:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
@@ -2441,6 +2487,29 @@ msgid ""
 "[1(1)/...] Suggest 2 keeps\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.3.3       #Roto: 1   Se liberará 48.6MB de espacio del TamDesc\n"
+"i A   nautilus                                             2.10.1-4   2.10.1-4\n"
+"i     nautilus-cd-burner                                   2.10.2-1.1 2.10.2-1.1\n"
+"i A   nautilus-data                                        2.10.1-4   2.10.1-4\n"
+"i     netspeed                                             0.12.1-1   0.12.1-1\n"
+"i A   oaf                                                  0.6.10-3   0.6.10-3\n"
+"i     pybliographer                                        1.2.6.2-1  1.2.6.2-1\n"
+"i     rhythmbox                                            0.8.8-13   0.8.8-13\n"
+"i     shermans-aquarium                                    3.0.1-1    3.0.1-1\n"
+"idA   sound-juicer                                 -1733kB 2.10.1-3   2.10.1-3\n"
+"GNOME 2 CD Ripper\n"
+"sound-juicer se eliminará.\n"
+"\n"
+"\n"
+"Los siguientes dependen de sound-juicer y se romperán debido a su eliminación:\n"
+"\n"
+"\n"
+"  * gnome-desktop-environment depende de sound-juicer\n"
+"\n"
+"[1(1)/...] Sugiere 1 instalación\n"
+"e: Examinar  !: Aplicar  .: Siguiente  ,: Anterior"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1285
@@ -2453,14 +2522,14 @@ msgid ""
 "problem.  To quickly find broken packages in the package list, you can press "
 "<keycap>b</keycap> or search for &Sbroken;."
 msgstr ""
-"Como puedes ver, &aptitude; muestra tres indicadores de que algo ha ido mal: "
-"primero, el numero de paquetes rotos se muestra en el área azul superior; "
+"Como puede ver, &aptitude; muestra tres indicadores de que algo ha ido mal: "
+"primero, el número de paquetes rotos se muestra en el área azul superior; "
 "segundo, la mitad inferior de la pantalla cambia para mostrar los paquetes "
 "rotos relacionados con el paquete seleccionado en ese momento; tercero, en "
 "el fondo de la pantalla aparece una barra con una sugerencia de como "
 "solucionar el problema.  Para encontrar con rapidez paquetes rotos en la "
-"lista de paquetes, puedes presionar <keycap>b</keycap> o realizar una "
-"búsqueda de &Sbroken;."
+"lista de paquetes, puede pulsar <keycap>b</keycap> o realizar una búsqueda "
+"de &Sbroken;."
 
 # type: Content of: <book><chapter><section><section><section><note><para>
 #: en/aptitude.xml:1298
@@ -2475,12 +2544,12 @@ msgid ""
 "[1/1]</literal>."
 msgstr ""
 "El texto <literal>[1(1)/...]</literal> indica el progreso del solucionador "
-"de dependencias de &aptitude;.  El primer número es la solución que has "
+"de dependencias de &aptitude;.  El primer número es la solución que ha "
 "seleccionado en ese momento, y el segundo es el numero de soluciones que "
 "&aptitude; ha generado.  La presencia del texto <quote><literal>...</"
-"literal></quote> indica que pueden existir algunas soluciones adicionales más "
-"allá de las generadas; si &aptitude; estuviese seguro de haber generado la "
-"única solución posible, este indicador mostraría <literal>[1/1]</literal>."
+"literal></quote> indica que pueden existir algunas soluciones adicionales "
+"más allá de las generadas; si &aptitude; estuviese seguro de haber generado "
+"la única solución posible, este indicador mostraría <literal>[1/1]</literal>."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1312
@@ -2489,9 +2558,9 @@ msgid ""
 "problem, press <keycap>e</keycap>.  A screen similar to the following will "
 "appear:"
 msgstr ""
-"Para ver más información de como &aptitude; piensa que puedes solucionar "
-"este problema, presiona <keycap>e</keycap>.  Aparecería una pantalla similar "
-"a la siguiente:"
+"Para ver más información de como &aptitude; piensa que puede solucionar este "
+"problema, pulse <keycap>e</keycap>.  Aparecería una pantalla similar a la "
+"siguiente:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1324 en/aptitude.xml:4134
@@ -2522,6 +2591,30 @@ msgid ""
 "[1(1)/...] Suggest 2 keeps\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+"  Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"                Paquetes                          Resolver las dependencias\n"
+"  --\\ Mantener los paquetes siguientes en la versión actual:\n"
+"    gstreamer0.8-cdparanoia                           [0.8.10-1 (unstable, now)]\n"
+"    sound-juicer                                                [2.10.1-2 (now)]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"[1(1)/...] Sugiere 2 mantenidos\n"
+"e: Examinar  !: Aplicar  .: Siguiente  ,: Anterior"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1353
@@ -2533,11 +2626,11 @@ msgid ""
 "the above screen is displayed results in the following solution being "
 "presented:"
 msgstr ""
-"A partir de aquí, puedes ver más soluciones presionando <keycap>.</keycap>, "
-"o volver a las soluciones previamente examinadas presionando <keycap>,</"
+"A partir de aquí, puede ver más soluciones presionando <keycap>.</keycap>, o "
+"volver a las soluciones previamente examinadas presionando <keycap>,</"
 "keycap>.  Para aplicar la solución seleccionada en ese momento y volver a la "
-"lista de paquetes, presiona <keycap>!</keycap>.  Por ejemplo, si presionases "
-"<keycap>.</keycap> mostrandose la pantalla superior,se presentaría la "
+"lista de paquetes, presione <keycap>!</keycap>.  Por ejemplo, pulsase "
+"<keycap>.</keycap> mostrandosé la pantalla superior,se presentaría la "
 "siguiente solución:"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
@@ -2569,6 +2662,30 @@ msgid ""
 "[2(2)/...] Suggest 1 keep,1 downgrade\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+"  Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"                Paquetes                          Resolver dependencias\n"
+"  --\\ Mantener los paquetes siguientes en la versión actual::\n"
+"    sound-juicer                                      [2.10.1-3 (unstable, now)]\n"
+"  --\\ Desactualizar los paquetes siguientes:\n"
+"    gstreamer0.8-cdparanoia          [0.8.11-1 unstable, now -> 0.8.8-3 testing]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"[2(2)/...] Sugiere 1 mantenido,1 desactualización\n"
+"e: Examine  !: Apply  .: Next  ,: Previous"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1399
@@ -2581,14 +2698,14 @@ msgid ""
 "action, we can tell &aptitude; that it should not cancel the removal of "
 "<systemitem>sound-juicer</systemitem> in this way."
 msgstr ""
-"Además de los comandos básicos en la navegación de soluciones, puedes "
+"Además de las ordenes básicas en la navegación de soluciones, puede "
 "presionar <keycap>r</keycap> para <quote>rechazar</quote> las acciones que "
 "desapruebes.  Por ejemplo, la primera solución cancelaría la eliminación de "
 "<systemitem>sound-juicer</systemitem> --¡precisamente la acción que "
-"intentabamos ejecutar! Si presionas <keycap>r</keycap> sobre el espacio "
-"correspondiente a esta acción, podemos asi decirle a &aptitude; que no debería "
-"cancelar la eliminación de <systemitem>sound-juicer</systemitem> de esta "
-"manera."
+"intentába ejecutar! Si pulsa <keycap>r</keycap> sobre el espacio "
+"correspondiente a esta acción, podemos así decirle a &aptitude; que no "
+"debería cancelar la eliminación de <systemitem>sound-juicer</systemitem> de "
+"esta manera."
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1417
@@ -2619,6 +2736,30 @@ msgid ""
 "[1(1)/...] Suggest 2 keeps\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"                Paquetes                          Resolver dependencias\n"
+"  --\\ Mantener los paquetes siguientes en la versión actual:\n"
+"    gstreamer0.8-cdparanoia                           [0.8.11-1 (unstable, now)]\n"
+"R   sound-juicer                                      [2.10.1-3 (unstable, now)]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"GNOME 2 CD Ripper\n"
+"gnome-desktop-environment depende de sound-juicer\n"
+"--\\ Las acciones siguientes resolverán estas dependencias:\n"
+"  -> Eliminar gnome-desktop-environment [1:2.10.2.3 (unstable, testing, now)]\n"
+"R -> Cancelar la eliminación de sound-juicer\n"
+"  -> Desactualizar sound-juicer [2.10.1-3 (unstable, now) -> 0.6.1-2 (testing)]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"[1(1)/...] Sugiere 2 mantenidos\n"
+"e: Examine  !: Apply  .: Next  ,: Previous"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1446
@@ -2630,11 +2771,11 @@ msgid ""
 "viewed) will not include this action, although solutions that were already "
 "generated and contain this action will be available."
 msgstr ""
-"Como puedes ver, el objeto de la lista correspondiente a la acción de "
+"Como puede ver, el objeto de la lista correspondiente a la acción de "
 "mantener la misma versión de <systemitem>sound-juicer</systemitem> se ha "
-"tornado roja y ha sido marcada con una <quote>R</quote>, indicando que ha sido "
-"rechazada.  Las soluciones que pudieses generar en el futuro (esto es, "
-"cualquier solución que no hayas examinado aún) no incluirían esta acción, "
+"tornado roja y ha sido marcada con una <quote>R</quote>, indicando que ha "
+"sido rechazada.  Las soluciones que Ud. pudiese generar en el futuro (esto "
+"es, cualquier solución que no haya examinado aún) no incluirían esta acción, "
 "aunque soluciones previamente generadas y que contengan esta solución "
 "seguirán disponibles."
 
@@ -2647,7 +2788,7 @@ msgid ""
 "at its current version, along with all the ways to resolve this dependency "
 "that &aptitude; knows about."
 msgstr ""
-"En la imagen de pantalla superior, se puede ver una descripción de "
+"En la captura de pantalla superior, se puede ver una descripción de "
 "<systemitem>sound-juicer</systemitem>, el cual se muestra en el centro de la "
 "pantalla; bajo esta descripción se puede ver la dependencia que causó que "
 "<systemitem>sound-juicer</systemitem> se haya mantenido en su versión "
@@ -2700,6 +2841,30 @@ msgid ""
 "[2(2)/...] Suggest 1 removal\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"                Paquetes                          Resolver las dependencias\n"
+"  --\\ Eliminar los paquetes siguientes:\n"
+"    gnome-desktop-environment              [1:2.10.2.3 (unstable, testing, now)]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"[2(2)/...] Sugiere 1 eliminación\n"
+"e: Examinar  !: Aplicar  .: Siguiente  ,: Anterior"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:1513
@@ -2713,9 +2878,9 @@ msgid ""
 "solutions that were previously <quote>skipped</quote>."
 msgstr ""
 "Los rechazos solo se aplican a soluciones generadas en ese momento: esto es, "
-"las soluciones generadas al presionar <keycap>.</keycap> mientras visionas "
-"la última solución generada.  Soluciones generadas anteriormente pueden aún "
-"contener rechazos a ciertas a acciones.  Puedes cancelar un rechazo en "
+"las soluciones generadas al presionar <keycap>.</keycap> mientras visiona la "
+"última solución generada.  Soluciones generadas anteriormente pueden aún "
+"contener rechazos a ciertas a acciones.  Puede cancelar un rechazo en "
 "cualquier momento si se selecciona una vez más la acción rechazada y "
 "presionando <keycap>r</keycap>; esto permitiría que las soluciones "
 "conteniendo la acción rechazada sean generadas otra vez, incluyendo "
@@ -2729,8 +2894,9 @@ msgid ""
 "resolver to choose the action whenever possible<footnote>"
 msgstr ""
 "La contrario a rechazar una acción es aprobarla.  Para aprobar una acción, "
-"simplemente selecciona la acción y presiona <keycap>a</keycap>; lo cual forzaría al "
-"solucionador de problemas a escoger esta acción cuando sea posible<footnote>"
+"simplemente seleccione la acción y presiona <keycap>a</keycap>; lo cual "
+"forzaría al solucionador de problemas a escoger esta acción cuando sea "
+"posible<footnote>"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote><para>
 #: en/aptitude.xml:1530
@@ -2741,7 +2907,7 @@ msgid ""
 "action.  If there are several possible approved actions, all of them will be "
 "candidates to be placed into the solution."
 msgstr ""
-"Aprobar un acción es ligeramente distinto a requerir que todas las "
+"Aprobar una acción es ligeramente distinto a requerir que todas las "
 "soluciones contengan esa acción; lo que significa es que si se da una "
 "elección entre una acción aprobada y una no-aprobada, el solucionador "
 "siempre escogerá la acción aprobada.  Si son aplicables varias acciones "
@@ -2785,6 +2951,30 @@ msgid ""
 "[2(2)/...] Suggest 1 removal\n"
 "e: Examine  !: Apply  .: Next  ,: Previous"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"                Paquetes                          Resolver las dependencias\n"
+"  --\\ Eliminar los paquetes siguientes:\n"
+"    gnome-desktop-environment              [1:2.10.2.3 (unstable, testing, now)]\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"[2(2)/...] Sugiere 1 eliminación\n"
+"e: Examinar  !: Aplicar  .: Siguiente  ,: Anterior"
 
 # type: Content of: <book><chapter><section><section><section><important><para>
 #: en/aptitude.xml:1580
@@ -2796,11 +2986,17 @@ msgid ""
 "better to look at what &aptitude; plans to do <emphasis>before</emphasis> "
 "committing your selections."
 msgstr ""
+"Si no resuelve alguna dependencia rota, &aptitude; automáticamente realizara "
+"la sugerencia actual cuando ejecute las selecciones que haya hecho al "
+"presionar <keycap>g</keycap>. Por otro lado, es difícil resolver "
+"automáticamente los problemas de dependencias,.y puede que no le guste el "
+"resultado final. Por lo tanto, siempre es mejor observar lo que &aptitude; "
+"ha planeado hacer <emphasis>antes</emphasis> de llevar a cabo los cambios."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:1594
 msgid "Updating the package list and installing packages"
-msgstr ""
+msgstr "Actualizando la lista de paquetes e instalando paquetes"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1597
@@ -2808,6 +3004,8 @@ msgid ""
 "At this point, you know enough about &aptitude; to actually make "
 "modifications to your system."
 msgstr ""
+"En este momento, ya sabe lo suficiente acerca de &aptitude; como para llevar "
+"a cabo cambios a el sistema."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1602
@@ -2816,7 +3014,11 @@ msgid ""
 "Debian servers, to keep track of new packages and new versions of packages.  "
 "To do this, press <keycap>u</keycap>.  At any time during the download, you "
 "can press <keycap>q</keycap> to abort it."
-msgstr "r"
+msgstr ""
+"Debería actualizar periódicamente su lista de paquetes disponibles desde los "
+"servidores Debían, para estar al tanto de nuevos paquetes y de nuevas "
+"versiones de paquetes.  Para ello, presione <keycap>u</keycap>. Puede "
+"interrumpir la descarga en cualquier momento presionando <keycap>q</keycap>."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1610
@@ -2827,6 +3029,11 @@ msgid ""
 "installing the <systemitem>kaffeine-mozilla</systemitem> package (from the "
 "previous example), the following screen appears:"
 msgstr ""
+"Una vez que tenga una lista actualizada de los paquetes, puede elegir que "
+"los paquetes sean actualizados, instalados o eliminados, como se ha descrito "
+"en la sección anterior.  Al instalar el paquete <systemitem>kaffeine-"
+"mozilla</systemitem> (del ejemplo anterior), se nos presenta la siguiente "
+"pantalla:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:1625
@@ -2856,6 +3063,28 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.2.14.1                  Se usará 2925kB de espacio TamDesc: 1375kB\n"
+"--\\ Paquetes automáticamente instalados para satisfacer las dependencias               \n"
+"piA kaffeine                                        +2843kB &lt;none&gt;     0.4.3-1\n"
+"--\\ Paquetes a instalar\n"
+"pi  kaffeine-mozilla                                +81.9kB &lt;none&gt;     0.4.3-1\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"Estos paquetes se instalarán porque algún paquete seleccionado para \n"
+"instalar los necesita.\n"
+"\n"
+"Si selecciona un paquete, en este espacio aparecerá una explicación de su estado actual.\n"
+"\n"
+"\n"
+"\n"
+"\n"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:1654
@@ -2866,11 +3095,16 @@ msgid ""
 "either continuing with the installation by pressing <keycap>g</keycap>, or "
 "aborting it by pressing <keycap>q</keycap>."
 msgstr ""
+"Como puede ver, &aptitude; decidío de manera automática instalar "
+"<systemitem>kaffeine</systemitem> en mi sistema porque <systemitem>kaffeine-"
+"mozilla</systemitem> lo necesita.  En este momento, puedo escoger entre "
+"continuar con la instalación, presionando <keycap>g</keycap>, o abortarlo, "
+"presionando <keycap>q</keycap>."
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:1665
 msgid "Using &aptitude; from the command line"
-msgstr ""
+msgstr "Usando &aptitude; desde la línea de comandos"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1668
@@ -2881,12 +3115,19 @@ msgid ""
 "most common &aptitude; command-line actions; for more information, see <link "
 "linkend='secReference'>the &aptitude; command-line reference</link>."
 msgstr ""
+"Además de la interfaz <quote>visual</quote> descrita en la sección anterior, "
+"&aptitude; tambíen puede usarse desde la línea de comandos de la misma "
+"manera que se usaría &apt-get;.  Esta sección cubre las acciones en la línea "
+"de comandos mas comunes; para mas información, vea <link "
+"linkend='secReference'>the &aptitude; command-line reference</link>."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1677
 msgid ""
 "In general, a command-line invocation of &aptitude; will look like this:"
 msgstr ""
+"En general, una entrada de una línea de comando de &aptitude; tendría este "
+"aspecto:"
 
 # type: Content of: <book><chapter><section><cmdsynopsis>
 #: en/aptitude.xml:1682
@@ -2895,6 +3136,9 @@ msgid ""
 "replaceable></arg> <arg rep='repeat'><replaceable>arguments</replaceable></"
 "arg>"
 msgstr ""
+"<command>aptitude</command> <arg choice='plain'><replaceable>action</"
+"replaceable></arg> <arg rep='repeat'><replaceable>arguments</replaceable></"
+"arg>"
 
 # type: Content of: <book><chapter><section><para><footnote>
 #: en/aptitude.xml:1688
@@ -2904,6 +3148,10 @@ msgid ""
 "Typically they will consist of package names and command-line "
 "switches<footnote>"
 msgstr ""
+"<replaceable>action</replaceable> indica a &aptitude; que acción realizar; "
+"los argumentos restantes se emplean de una manera especifica dependiendo de "
+"la opción deseada.  En líneas generales, consistirían de nombres de paquetes "
+"y diferentes. opciones de la línea de comando<footnote>"
 
 # type: Content of: <book><chapter><section><para><footnote><para>
 #: en/aptitude.xml:1691
@@ -2911,21 +3159,23 @@ msgid ""
 "A <quote>switch</quote> is a letter preceded by a hyphen: for instance, "
 "<quote>-a</quote>, <quote>-v</quote>, etc."
 msgstr ""
+"Una <quote>opción</quote> es una letra precedida de un guión: por ejemplo, "
+"<quote>-a</quote>, <quote>-v</quote>, etc."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:1693 en/aptitude.xml:2165
 msgid "</footnote>."
-msgstr ""
+msgstr "</footnote>."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1697
 msgid "The most important actions are:"
-msgstr ""
+msgstr "Las acciones mas importantes son:"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1704
 msgid "<command>aptitude</command> <arg choice='plain'>update</arg>"
-msgstr ""
+msgstr "<command>aptitude</command> <arg choice='plain'>update</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1711
@@ -2933,11 +3183,13 @@ msgid ""
 "This command updates the package lists, as if you had entered the visual "
 "interface and pressed <keycap>u</keycap>."
 msgstr ""
+"Este comando actualiza la lista de paquetes, al igual que si el usuario "
+"hubiese ejecutado la interfaz visual y pulsado <keycap>u</keycap>."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1721
 msgid "<command>aptitude</command> <arg choice='plain'>safe-upgrade</arg>"
-msgstr ""
+msgstr "<command>aptitude</command> <arg choice='plain'>safe-upgrade</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1728
@@ -2945,6 +3197,8 @@ msgid ""
 "This command will upgrade as many packages as it can upgrade without "
 "removing existing packages."
 msgstr ""
+"Este comando actualiza tantos paquetes como sea posible sin eliminar "
+"paquetes existentes en el sistema."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1733
@@ -2954,11 +3208,15 @@ msgid ""
 "<link linkend='fullUpgrade'><literal>full-upgrade</literal></link> command "
 "to upgrade those packages as well."
 msgstr ""
+"Algunas veces es necesario eliminar un paquete para poder actualizar otro; "
+"este comando no es capaz de actualizar paquetes en tales situaciones.  Use "
+"el comando <link linkend='fullUpgrade'><literal>full-upgrade</literal></"
+"link> para actualizar también esos paquetes."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1745
 msgid "<command>aptitude</command> <arg choice='plain'>full-upgrade</arg>"
-msgstr ""
+msgstr "<command>aptitude</command> <arg choice='plain'>full-upgrade</arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1752
@@ -2970,6 +3228,12 @@ msgid ""
 "is possible that it will do undesirable things, and so you should be careful "
 "when using it."
 msgstr ""
+"Al igual que  <link linkend='safeUpgrade'><literal>safe-upgrade</literal></"
+"link>, este comando llevaría a cabo una actualización de paquetes, pero es "
+"mas agresivo a la hora de resolver los problemas de dependencias: instalará "
+"y eliminará paquetes hasta que todas las dependencias estén resueltas.  "
+"Debido a la naturaleza de este comando, es probable que realice acciones no "
+"deseadas, y por lo tanto debería ser cuidadoso a la hora de emplearlo."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><note><para>
 #: en/aptitude.xml:1764
@@ -2977,6 +3241,8 @@ msgid ""
 "For historical reasons, this command was originally named <literal>dist-"
 "upgrade</literal>, and that name is still recognized by &aptitude;."
 msgstr ""
+"Por razones históricas, este comando se llamaba originalmente <literal>dist-"
+"upgrade</literal>, y este nombre es aún reconocido por &aptitude;."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1775
@@ -2986,11 +3252,15 @@ msgid ""
 "choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pkg2</replaceable></arg>"
 msgstr ""
+"<command>aptitude</command> <group> <arg choice='plain'>install</arg> <arg "
+"choice='plain'>remove</arg> <arg choice='plain'>purge</arg> </group> <arg "
+"choice='plain'><replaceable>paq1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>paq2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote>
 #: en/aptitude.xml:1789
 msgid "These commands install, remove, or purge<footnote>"
-msgstr ""
+msgstr "Estos comandos instalan, eliminan, o purgan<footnote>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote><para>
 #: en/aptitude.xml:1790
@@ -2998,6 +3268,8 @@ msgid ""
 "Purging a package removes the package, as well as all its configuration "
 "files."
 msgstr ""
+"Purgar un paquete elimina el paquete, así como también sus ficheros de "
+"configuración."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1792
@@ -3005,6 +3277,8 @@ msgid ""
 "</footnote> the specified packages.  <quote>Installing</quote> a package "
 "which is already installed but can be upgraded will cause it to be upgraded."
 msgstr ""
+"</footnote> los archivos especificados.  <quote>Instalar</quote> un paquete "
+"que ya lo está pero susceptible de ser actualizado hará que se actualice."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1802
@@ -3013,6 +3287,9 @@ msgid ""
 "choice='plain'><replaceable>pattern1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pattern2</replaceable></arg>"
 msgstr ""
+"<command>aptitude</command> <arg choice='plain'>search</arg> <arg "
+"choice='plain'><replaceable>patrón1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>patrón2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote>
 #: en/aptitude.xml:1811
@@ -3023,6 +3300,11 @@ msgid ""
 "replaceable> can be a search pattern as described in <xref "
 "linkend='secSearchPatterns'/>.  <footnote>"
 msgstr ""
+"Este comando busca paquetes cuyos nombres contengan cualquier "
+"<replaceable>patrón</replaceable>, imprimiendo el resultado en la terminal.  "
+"Además de ser simplemente una cadena de texto, cada <replaceable>patrón</"
+"replaceable> puede ser un patrón de búsqueda como se describe en <xref "
+"linkend='secSearchPatterns'/>.  <footnote>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para><footnote><para>
 #: en/aptitude.xml:1820
@@ -3030,6 +3312,8 @@ msgid ""
 "In fact, the same is true of the commands that take packages as arguments, "
 "such as <literal>install</literal> or <literal>show</literal>."
 msgstr ""
+"De hecho, lo mismo sirve para los comandos que toman paquetes como "
+"argumentos, tales como <literal>install</literal> o <literal>show</literal>."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1825
@@ -3039,6 +3323,10 @@ msgid ""
 "<quote><literal>gnome</literal></quote> or <quote><literal>kde</literal></"
 "quote>."
 msgstr ""
+"</footnote> Por ejemplo, <quote><literal>aptitude search gnome kde</"
+"literal></quote> haría un listado de todos los paquetes cuyos nombres "
+"contengan <quote><literal>gnome</literal></quote> o <quote><literal>kde</"
+"literal></quote>."
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><term><cmdsynopsis>
 #: en/aptitude.xml:1837
@@ -3047,12 +3335,16 @@ msgid ""
 "choice='plain'><replaceable>pkg1</replaceable></arg> <arg "
 "rep='repeat'><replaceable>pkg2</replaceable></arg>"
 msgstr ""
+"<command>aptitude</command> <arg choice='plain'>show</arg> <arg "
+"choice='plain'><replaceable>paq1</replaceable></arg> <arg "
+"rep='repeat'><replaceable>paq2</replaceable></arg>"
 
 # type: Content of: <book><chapter><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:1846
 msgid ""
 "Prints information about each <replaceable>pkg</replaceable> to the terminal."
 msgstr ""
+"Imprime información sobre cada <replaceable>paq</replaceable> en la terminal."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1854
@@ -3063,11 +3355,16 @@ msgid ""
 "performs all the actions it would normally perform, but does not actually "
 "download or install/remove any files."
 msgstr ""
+"Todos los comandos que instalan, actualizan o eliminan paquetes aceptan el "
+"parámetro <literal>-s</literal>, que simboliza <quote>simular</quote>.  \n"
+"Cuando se introduce <literal>-s</literal> en la línea de comandos, el "
+"programa realiza todos las acciones que haría normalmente, pero en la "
+"práctica no descarga ni instala o elimina ningun fichero."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1862
 msgid "&aptitude; will sometimes present a prompt like this:"
-msgstr ""
+msgstr "A veces, &aptitude; nos presentará un dialogo como este:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1865
@@ -3081,6 +3378,13 @@ msgid ""
 "Need to get 3200kB of archives. After unpacking 8413kB will be used.\n"
 "<prompt>Do you want to continue? [Y/n/?]</prompt>"
 msgstr ""
+"Se instalarán automáticamente los siguientes paquetes NUEVOS:\n"
+"  space-orbit-common \n"
+"Se instalarán los siguiente paquetes NUEVOS:\n"
+"  space-orbit space-orbit-common \n"
+"0 paquetes actualizados, 2 uevos instalados, 0 para eliminar y 0 sin actualizar.\n"
+"Necesito descargar 3200kB of archives. Después de desempaquetar se usarán 8413kB \n"
+"<prompt>¿Quiere continuar? [Y/n/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1874
@@ -3091,6 +3395,11 @@ msgid ""
 "instance, typing <userinput>s</userinput> will display or hide information "
 "about how much space each package will use:"
 msgstr ""
+"Además de las obvias opciones <quote>Yes</quote> and <quote>No</quote>, hay "
+"disponibles un número de comandos que se pueden usar para cambiar la "
+"información mostrada, o para especificar futuras acciones.  Por ejemplo, "
+"pulsar <userinput>s</userinput>. muestra u oculta información acerca del "
+"espacio que cada paquete usará:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1881
@@ -3108,6 +3417,17 @@ msgid ""
 "Need to get 3200kB of archives. After unpacking 8413kB will be used.\n"
 "<prompt>Do you want to continue? [Y/n/?]</prompt>"
 msgstr ""
+"<prompt>¿Quiere continuar? [Y/n/?]</prompt> <userinput>s</userinput>\n"
+"\n"
+"Se mostrarán los tamaños de los cambios.\n"
+"\n"
+"Se instalarán automáticamente los siguientes paquetes NUEVOS:\n"
+"  space-orbit-common &lt;+8020kB&gt; \n"
+"Se instalarán los siguiente paquetes NUEVOS:\n"
+"  space-orbit &lt;+393kB&gt; space-orbit-common &lt;+8020kB&gt; \n"
+"0 paquetes actualizados, 2 nuevos instalados, 0 para eliminar y 0 sin actualizar.\n"
+"Necesito descargar 3200kB of archives. Después de desempaquetar se usarán 8413kB \n"
+"<prompt>¿Quiere continuar? [Y/n/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1894
@@ -3115,6 +3435,8 @@ msgid ""
 "Similarly, typing <userinput>d</userinput> will display information about "
 "automatically installed or removed packages:"
 msgstr ""
+"De manera similar, pulsar <userinput>d</userinput> mostrará información "
+"acerca de paquetes automáticamente instalados o eliminados:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1898
@@ -3127,6 +3449,12 @@ msgid ""
 "0 packages upgraded, 2 newly installed, 0 to remove and 0 not upgraded.\n"
 "Need to get 3200kB of archives. After unpacking 8413kB will be used."
 msgstr ""
+"Se instalarán automáticamente los siguientes paquetes NUEVOS:\n"
+"  space-orbit-common (D: space-orbit)\n"
+"Se instalarán los siguiente paquetes NUEVOS:\n"
+"  space-orbit space-orbit-common \n"
+"0 paquetes actualizados, 2 uevos instalados, 0 para eliminar y 0 sin actualizar.\n"
+"Necesito descargar 3200kB of archives. Después de desempaquetar se usarán 8413kB "
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1906
@@ -3136,6 +3464,10 @@ msgid ""
 "can see the entire list of possible entries by entering <userinput>?</"
 "userinput> at the prompt."
 msgstr ""
+"Esto muestra que <systemitem>space-orbit-common</systemitem> será instalado "
+"porque <systemitem>space-orbit</systemitem> depende de él.  Puede ver la "
+"lista entera de posibles entradas introduciendo <userinput>?</userinput> en "
+"la pantalla."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1913
@@ -3143,6 +3475,8 @@ msgid ""
 "If your request violates dependencies in a way that cannot be trivially "
 "resolved, &aptitude; will ask you what to do:"
 msgstr ""
+"&aptitude; le preguntará que hacer si su petición rompe dependencias de una "
+"manera que no pueda ser resuelta de manera trivial:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1917
@@ -3164,6 +3498,21 @@ msgid ""
 "\n"
 "<prompt>Accept this solution? [Y/n/q/?]</prompt>"
 msgstr ""
+"Los siguientes paquetes están ROTOS:\n"
+"  libsdl1.2debian\n"
+"Se ELIMINARÁN los siguientes paquetes:\n"
+"  libsdl1.2debian-alsa\n"
+".\n"
+".\n"
+".\n"
+"Las acciones siguientes resolverán estas dependencias:\n"
+"\n"
+"Instalar los paquetes siguientes:\n"
+"libsdl1.2debian-all [1.2.12-1 (unstable)]\n"
+"\n"
+"La puntuación es 41\n"
+"\n"
+"<prompt>¿Acepta esta solución? [Y/n/q/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1934
@@ -3172,6 +3521,9 @@ msgid ""
 "will accept the proposed solution.  Typing <userinput>n</userinput> will "
 "display the <quote>next best</quote> solution:"
 msgstr ""
+"Pulsar <userinput>y</userinput> (o simplemente <keycap>enter</keycap>) "
+"aceptará la solución propuesta.  Pulsar <userinput>n</userinput> mostraría "
+"la <quote>siguiente mejor</quote> solución:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1940
@@ -3187,6 +3539,15 @@ msgid ""
 "\n"
 "<prompt>Accept this solution? [Y/n/q/?]</prompt>"
 msgstr ""
+"<prompt>¿Acepta esta solución? [Y/n/q/?]</prompt> <userinput>n</userinput>\n"
+"Las acciones siguientes resolverán estas dependencias:\n"
+"\n"
+"Instalar los paquetes siguientes:\n"
+"libsdl1.2debian-esd [1.2.12-1 (unstable)]\n"
+"\n"
+"Score is 19\n"
+"\n"
+"<prompt>¿Acepta esta solución? [Y/n/q/?]</prompt>"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1951
@@ -3196,6 +3557,10 @@ msgid ""
 "dependency resolution prompt.  Type <userinput>?</userinput> to see a "
 "complete list."
 msgstr ""
+"Al igual que con la línea de comandos, puede realizar un número de acciones "
+"adicionales, incluyendo alterar manualmente el estado de paquetes desde el "
+"dialogo de resolución de conflictos.  Pulse <userinput>?</userinput> para "
+"ver una lista completa."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1958
@@ -3203,6 +3568,8 @@ msgid ""
 "Typing <userinput>q</userinput> will abort the automatic resolver and allow "
 "you to resolve the dependencies manually:"
 msgstr ""
+"Pulsar <userinput>q</userinput> abortaría el solucionador automático y le "
+"permitiría resolver las dependencias manualmente:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1962
@@ -3220,6 +3587,17 @@ msgid ""
 "                            libsdl1.2debian-pulseaudio (= 1.2.12-1) but it is not installable\n"
 "Resolve these dependencies by hand? [N/+/-/_/:/?]"
 msgstr ""
+"<prompt>¿Acepta esta solución? [Y/n/q/?]</prompt> <userinput>q</userinput>\n"
+"aptitude no pudo encontrar una solución a estas dependencias. Puede solucionar estas dependencias manualmente o pulsar «n» para salir\n"
+"No se satisfacen las dependencias de los siguientes paquetes:\n"
+"  libsdl1.2debian: Depende de: libsdl1.2debian-alsa (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-all (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-esd (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-arts (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-oss (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-nas (= 1.2.12-1) pero no es instalable o\n"
+"                            libsdl1.2debian-pulseaudio (= 1.2.12-1) pero no es instalable\n"
+"¿Desea resolver las dependencias manualmente? [N/+/-/_/:/?]"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1975
@@ -3229,6 +3607,10 @@ msgid ""
 "commands).  Type <userinput>n</userinput> or press <keycap>enter</keycap> to "
 "quit &aptitude;:"
 msgstr ""
+"Puede usar cualquiera de los comandos de manipulación de paquetes para "
+"resolver las dependencias rotas (pulse <userinput>?</userinput> para una "
+"lista completa de los comandos disponibles).  Pulse <userinput>n</userinput> "
+"o <keycap>enter</keycap> para quitar &aptitude;:"
 
 # type: Content of: <book><chapter><section><screen>
 #: en/aptitude.xml:1982
@@ -3237,6 +3619,8 @@ msgid ""
 "Resolve these dependencies by hand? [N/+/-/_/:/?] n\n"
 "Abort."
 msgstr ""
+"¿Desea resolver las dependencias manualmente? [N/+/-/_/:/?] n\n"
+"Cancela."
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:1986
@@ -3244,11 +3628,13 @@ msgid ""
 "For complete documentation of the command-line features of &aptitude;, see "
 "<xref linkend='secReference'/>."
 msgstr ""
+"Para una documentación completa de las funciones de &aptitude; en la línea "
+"de comandos, vea <xref linkend='secReference'/>."
 
 # type: Content of: <book><chapter><title>
 #: en/aptitude.xml:1993
 msgid "&aptitude; reference guide"
-msgstr ""
+msgstr "Guía de referencia de &aptitude;"
 
 # type: Content of: <book><chapter><blockquote><attribution>
 #: en/aptitude.xml:1997
@@ -3256,6 +3642,9 @@ msgid ""
 "<personname> <firstname>Lewis</firstname> <surname>Carrol</surname> </"
 "personname>, <citetitle pubwork='book'>Alice in Wonderland</citetitle>"
 msgstr ""
+"<personname> <firstname>Lewis</firstname> <surname>Carrol</surname> </"
+"personname>, <citetitle pubwork='book'>Alicia en el país de las Maravillas</"
+"citetitle>"
 
 # type: Content of: <book><chapter><blockquote><para>
 #: en/aptitude.xml:2005
@@ -3263,6 +3652,8 @@ msgid ""
 "The White Rabbit put on his spectacles. 'Where shall I begin, please your "
 "Majesty?' he asked."
 msgstr ""
+"El Conejo Blanco se puso las gafas. 'Por favor, ¿por donde podría yo "
+"empezar,, Su Majestad? preguntó."
 
 # type: Content of: <book><chapter><blockquote><para>
 #: en/aptitude.xml:2010
@@ -3270,6 +3661,8 @@ msgid ""
 "'Begin at the beginning,' the King said gravely, 'and go on till you come to "
 "the end: then stop.'"
 msgstr ""
+"'Empieza por el comienzo' dijo el Rey con gravedad, 'y continua hasta que "
+"llegues al final: entonces, para.'"
 
 # type: Content of: <book><chapter><para><footnote>
 #: en/aptitude.xml:2016
@@ -3280,6 +3673,11 @@ msgid ""
 "author describe features which are already present but are difficult to find."
 "<footnote>"
 msgstr ""
+"&aptitude; es un programa extenso con varias características, y algunas "
+"veces es difícil recordar como hacer alguna operación, o incluso si es "
+"posible.  Efectivamente, muchas de las peticiones de implementación de "
+"características que llegan al autor describen características ya presentes, "
+"pero difíciles de encontrar.<footnote>"
 
 # type: Content of: <book><chapter><para><footnote><para>
 #: en/aptitude.xml:2020
@@ -3288,6 +3686,9 @@ msgid ""
 "precipitously following the initial publication of this Guide.  It would be "
 "a happy occurrence if there was a connection between the two events."
 msgstr ""
+"Me complace decir que el número de peticiones de esta índole cayeron "
+"dramáticamente a continuación de la primera publicación de esta guía.  Sería "
+"una agradable coincidencia de haber una conexión entre ambos eventos."
 
 # type: Content of: <book><chapter><para>
 #: en/aptitude.xml:2028
@@ -3297,6 +3698,9 @@ msgid ""
 "to the important features of &aptitude;, see <xref "
 "linkend='chapGettingStarted'/>."
 msgstr ""
+"En un intento de combatir esta oscuridad, esta guía de referencia describe "
+"todas las capacidades y parámetros de configuración de &aptitude;, vea <xref "
+"linkend='chapGettingStarted'/>."
 
 # type: Content of: <book><chapter><note><para>
 #: en/aptitude.xml:2036
@@ -3306,11 +3710,15 @@ msgid ""
 "descriptions of how various settings affect behavior are given in <xref "
 "linkend='secConfig'/>."
 msgstr ""
+"El comportamiento y la apariencia de &aptitude; puede ser configurada de "
+"varias maneras. Este manual describe como el programa funciona con las "
+"opciones predeterminadas; descripciones acerca de varias opciones que "
+"afectan al comportamiento se describen en <xref linkend='secConfig'/>."
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:2045
 msgid "The &aptitude; terminal user interface"
-msgstr ""
+msgstr "La interfaz de usuario de terminal de &aptitude;"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:2048
@@ -3319,11 +3727,14 @@ msgid ""
 "&aptitude; that do not deal with <link "
 "linkend='secManagingPackages'>managing packages</link>."
 msgstr ""
+"Esta sección describe las partes de la interfaz de usuario de &aptitude; en "
+"la terminal que no tratan acerca de <link "
+"linkend='secManagingPackages'>gestionar paquetes</link>."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2054
 msgid "Using the menus"
-msgstr ""
+msgstr "Usando los menús"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2057
@@ -3333,6 +3744,11 @@ msgid ""
 "keycap><keycap>t</keycap></keycombo>; you can then navigate it using the "
 "arrow keys and select a menu item using <keycap>Enter</keycap>."
 msgstr ""
+"La barra de menú en la parte superior de la pantalla contiene los comandos "
+"mas importantes de &aptitude;.  Para activar la barra de menú, pulse "
+"<keycombo><keycap>Control</keycap><keycap>t</keycap></keycombo>; ahora puede "
+"navegar a través de el seleccionando cualquier elemento del menú usando "
+"<keycap>Enter</keycap>."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2065
@@ -3341,6 +3757,10 @@ msgid ""
 "can be used to select the item while the menu is active.  These hotkeys are "
 "displayed in a brighter shade of white than the rest of the menu."
 msgstr ""
+"Algunos elementos del menú son accesibles a través de  <quote>teclas de "
+"acceso directo</quote>: números o letras que se pueden emplear para "
+"seleccionar la entrada mientras el menú esta activo.  Estos atajos son "
+"mostrados en un color mas claro que el del resto del menú."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2072
@@ -3350,6 +3770,10 @@ msgid ""
 "emphasis> active.  These keystrokes are listed on the right-hand side of the "
 "menu."
 msgstr ""
+"Además algunas entradas de menú tienen <quote>atajos</quote>: combinaciones "
+"de teclas que efectúan la misma acción que la entrada de menú mientras "
+"<emphasis>no</emphasis> está activo. Estos atajos están listados en el lado "
+"derecho del menú."
 
 # type: Content of: <book><chapter><section><section><para><menuchoice>
 #: en/aptitude.xml:2080
@@ -3357,6 +3781,7 @@ msgid ""
 "In the remainder of the manual, menu commands will be written like this: "
 "<menuchoice>"
 msgstr ""
+"De aquí en adelante, los comandos del menú se escribirán así: <menuchoice>"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2082
@@ -3367,21 +3792,26 @@ msgid ""
 "replaceable> from the <replaceable>Menu</replaceable> menu, and that "
 "<replaceable>key</replaceable> is the shortcut for this command."
 msgstr ""
+"<guimenu><replaceable>Menú</replaceable></"
+"guimenu><guimenuitem><replaceable>Entrada</replaceable></guimenuitem></"
+"menuchoice>.  Esto indica que puede escoger <replaceable>Entrada</"
+"replaceable> del <replaceable>Menú</replaceable> menú, y que la "
+"<replaceable>tecla/s</replaceable> es el atajo para este comando."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2092
 msgid "Menu commands"
-msgstr ""
+msgstr "Comandos de menú"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2095
 msgid "The Actions menu"
-msgstr ""
+msgstr "El menú Acciones"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2098
 msgid "Commands available in the Actions menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Acciones"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><thead><row><entry>
 #: en/aptitude.xml:2104 en/aptitude.xml:2221 en/aptitude.xml:2252
@@ -3389,7 +3819,7 @@ msgstr ""
 #: en/aptitude.xml:2659 en/aptitude.xml:2761 en/aptitude.xml:3401
 #: en/aptitude.xml:7674
 msgid "Command"
-msgstr ""
+msgstr "Comando"
 
 # type: Content of: <refentry><refsect1><title>
 #: en/aptitude.xml:2105 en/aptitude.xml:2222 en/aptitude.xml:2253
@@ -3400,12 +3830,12 @@ msgstr ""
 #: en/aptitude.xml:8818 en/aptitude.xml:9133 en/aptitude.xml:10218
 #: en/manpage.xml:168 en/manpage.xml:2227 en/manpage.xml:2432
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2111
 msgid "&actions-install;"
-msgstr ""
+msgstr "&actions-install;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2113
@@ -3413,21 +3843,24 @@ msgid ""
 "If an installation preview is not visible, display one; otherwise, perform "
 "an install run as described in <xref linkend='secInstallRun'/>."
 msgstr ""
+"Si no hay disponible una pre-visualización, mostrará una; de otra forma, "
+"efectúa un proceso de instalación tal y como se describe en <xref "
+"linkend='secInstallRun'/>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2120
 msgid "&actions-update;"
-msgstr ""
+msgstr "&actions-update;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2122
 msgid "Bring the package list up-to-date."
-msgstr ""
+msgstr "Actualiza la lista de paquetes"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2127
 msgid "&actions-upgrade;"
-msgstr ""
+msgstr "&actions-upgrade;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2129
@@ -3435,11 +3868,13 @@ msgid ""
 "Flag all upgradable packages, except those which are held or forbidden from "
 "upgrading, for upgrade."
 msgstr ""
+"Marca todos los paquetes actualizables, excepto aquellos que estén "
+"prohibidos actualizarse o bloqueados, para su actualización."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2136
 msgid "&actions-forget;"
-msgstr ""
+msgstr "&actions-forget;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2138
@@ -3447,11 +3882,13 @@ msgid ""
 "Discard all information about what packages are <quote>new</quote> (empty "
 "the <quote>New Packages</quote> tree)."
 msgstr ""
+"Descarta toda la información referente a que paquetes son <quote>nuevos</"
+"quote> (vacía el arbol de <quote>Paquetes nuevos</quote>)"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2144
 msgid "&actions-cancel;"
-msgstr ""
+msgstr "&actions-cancel;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2147
@@ -3460,11 +3897,15 @@ msgid ""
 "equivalent to executing the <link linkend='pkgCmdKeep'>Keep</link> command "
 "on every package in the package database."
 msgstr ""
+"Cancela todas las instalaciones, eliminaciones, actualizaciones y "
+"retenciones.  Es el equivalente a ejecutar el comando <link "
+"linkend='pkgCmdKeep'>Keep</link> sobre cada paquete de la base de datos de "
+"paquetes."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2156
 msgid "&actions-clean;"
-msgstr ""
+msgstr "&actions-clean;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry><footnote>
 #: en/aptitude.xml:2158
@@ -3472,16 +3913,18 @@ msgid ""
 "Delete all the compressed packages that were downloaded by &aptitude; "
 "<footnote id='footnoteAptTools'>"
 msgstr ""
+"Elimina todos los paquetes comprimidos que fueron descargados por &aptitude; "
+"<footnote id='footnoteAptTools'>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry><footnote><para>
 #: en/aptitude.xml:2163
 msgid "Or any other &apt; utility."
-msgstr ""
+msgstr "O por cualquier otra utilidad &apt;."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2170
 msgid "&actions-clean-obs;"
-msgstr ""
+msgstr "&actions-clean-obs;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2172
@@ -3491,53 +3934,63 @@ msgid ""
 "These are presumed to be packages which are obsolete, and can be deleted to "
 "save disk space without requiring an otherwise unnecessary download."
 msgstr ""
+"Elimina cualquier paquete comprimido que haya sido descargado por &aptitude; "
+"<footnoteref linkend='footnoteAptTools'/> y que no estén disponibles. Se "
+"asume que estos paquetes ya están obsoletos, y pueden ser borrados del disco "
+"duro sin precisar de una descarga que sería inútil."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2183
 msgid "&actions-mine;"
-msgstr ""
+msgstr "&actions-mine;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2185
 msgid ""
 "Play a game of Minesweeper, as described in <xref linkend='secMinesweeper'/>."
 msgstr ""
+"Juega al Buscaminas, tal y como se describe en <xref "
+"linkend='secMinesweeper'/>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2191
 msgid "&actions-su;"
-msgstr ""
+msgstr "&actions-su;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2193
 msgid ""
 "Continue working as the &root; user; see <xref linkend='secBecomingRoot'/>."
 msgstr ""
+"Continue trabajando como el usuario &root;, vea <xref "
+"linkend='secBecomingRoot'/>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2199
 msgid "&actions-quit;"
-msgstr ""
+msgstr "&actions-quit;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2201
 msgid "Quit &aptitude;, saving any changes to package states."
 msgstr ""
+"Salir de &aptitude;, guardando cualquier cambio hecho al estado de los "
+"paquetes."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2212
 msgid "The Undo menu"
-msgstr ""
+msgstr "El menú Deshacer"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2215
 msgid "Commands available in the Undo menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Deshacer"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2228
 msgid "&undo-undo;"
-msgstr ""
+msgstr "&undo-undo;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2230
@@ -3546,21 +3999,24 @@ msgid ""
 "time &aptitude; was started, the package list was updated, or an install run "
 "was performed."
 msgstr ""
+"Cancela el efecto del ultimo cambio realizado al estado de un paquete hasta "
+"el punto en que &aptitude; se inició, la lista de paquetes haya sido "
+"actualizada o en que un proceso de instalación haya sido efectuado."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2243
 msgid "The Package menu"
-msgstr ""
+msgstr "El menú Paquete"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2246
 msgid "Commands available in the Package menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Paquete"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2259
 msgid "&package-install;"
-msgstr ""
+msgstr "&package-install;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2262
@@ -3568,11 +4024,13 @@ msgid ""
 "Flag the currently selected package for <link "
 "linkend='pkgCmdInstall'>installation</link>."
 msgstr ""
+"Marca el paquete seleccionado para su <link "
+"linkend='pkgCmdInstall'>instalación</link>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2268
 msgid "&package-remove;"
-msgstr ""
+msgstr "&package-remove;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2271
@@ -3580,11 +4038,13 @@ msgid ""
 "Flag the currently selected package for <link "
 "linkend='pkgCmdRemove'>removal</link>."
 msgstr ""
+"Marca el paquete seleccionado para su <link "
+"linkend='pkgCmdInstall'>eliminación</link>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2277
 msgid "&package-purge;"
-msgstr ""
+msgstr "&package-purge;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2280
@@ -3592,11 +4052,13 @@ msgid ""
 "Flag the currently selected package to be <link "
 "linkend='pkgCmdPurge'>purged</link>."
 msgstr ""
+"Marca el paquete seleccionado para que sea <link "
+"linkend='pkgCmdInstall'>purgado</link>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2286
 msgid "&package-keep;"
-msgstr ""
+msgstr "&package-keep;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2289
@@ -3605,22 +4067,25 @@ msgid ""
 "or removal of the currently selected package, and remove any hold that was "
 "set on the package."
 msgstr ""
+"<link linkend='pkgCmdKeep'>Cancela</link> cualquier instalación, "
+"actualización o eliminación pendiente del paquete seleccionado, y elimina "
+"cualquier retención impuesta al paquete."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2297
 msgid "&package-hold;"
-msgstr ""
+msgstr "&package-hold;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2299
 msgid ""
 "<link linkend='pkgCmdHold'>Hold</link> the currently selected package back."
-msgstr ""
+msgstr "<link linkend='pkgCmdHold'>Retiene</link> el paquete seleccionado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2305
 msgid "&package-markauto;"
-msgstr ""
+msgstr "&package-markauto;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2307
@@ -3629,11 +4094,12 @@ msgid ""
 "quote> package.  For more information on manually and automatically "
 "installed packages, see <xref linkend='secAutoInstall'/>."
 msgstr ""
+"Marca al paquete instalado como <quote>automáticamente instalado</quote>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2316
 msgid "&package-markmanual;"
-msgstr ""
+msgstr "&package-markmanual;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2318
@@ -3642,11 +4108,14 @@ msgid ""
 "package.  For more information on manually and automatically installed "
 "packages, see <xref linkend='secAutoInstall'/>."
 msgstr ""
+"Marca el paquete seleccionado como <quote>manualmenete instalado</quote>.  "
+"Para más información referente a paquetes manual y automáticamente "
+"instalados, vea <xref linkend='secAutoInstall'/>."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2327 en/aptitude.xml:3498
 msgid "&package-forbid;"
-msgstr ""
+msgstr "&package-forbid;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2330
@@ -3656,11 +4125,15 @@ msgid ""
 "available version.  If a version of a package is selected, forbid the "
 "package from being upgraded to that version."
 msgstr ""
+"Si se selecciona un paquete susceptible de ser actualizado,  <link "
+"linkend='pkgCmdForbid'>prohíbe</link> que sea actualizado a la versión "
+"disponible en el servidor.  Si la versión de un paquete es seleccionado,"
+"prohíbe que el paquete sea actualizado a esa versión."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2340
 msgid "&package-information;"
-msgstr ""
+msgstr "&package-information;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2343
@@ -3669,11 +4142,14 @@ msgid ""
 "package, such as the packages it depends upon, the packages which depend "
 "upon it, and its available versions."
 msgstr ""
+"Muestra una pantalla que contiene información referente al paquete "
+"seleccionado tales como de que paquetes depende, así como acerca de qué "
+"paquetes dependen de él, y las diferentes versiones disponibles."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2351
 msgid "&package-cycle-information;"
-msgstr ""
+msgstr "&package-cycle-information;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2354
@@ -3685,11 +4161,17 @@ msgid ""
 "package, or an analysis of which other packages require or suggest the "
 "selected package."
 msgstr ""
+"Cuando se navega por la lista de paquetes, varía la información que puede "
+"ser mostrada en el área de información (la mitad inferior de la pantalla).  "
+"El área de información puede mostrar una larga descripción del paquetes "
+"seleccionado (predeterminado), un sumario de las dependencias relacionadas "
+"con ese paquete, o un análisis de qué otros paquetes requiere o sugiere el "
+"paquete seleccionado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2367
 msgid "&package-changelog;"
-msgstr ""
+msgstr "&package-changelog;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2370
@@ -3698,21 +4180,24 @@ msgid ""
 "changelog of a particular version, select that version and execute this "
 "command."
 msgstr ""
+"Muestra el registro de cambios de Debían del paquete seleccionado.  Para ver "
+"el registro de cambios de una versión en particular, seleccione la versión y "
+"ejecute este comando."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2383
 msgid "The Resolver menu"
-msgstr ""
+msgstr "El menú Solucionador"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2386
 msgid "Commands available in the Resolver menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Solucionador"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2399
 msgid "&resolver-examine;"
-msgstr ""
+msgstr "&resolver-examine;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2402
@@ -3720,52 +4205,54 @@ msgid ""
 "Display a detailed description of the problem resolver's current suggestion "
 "(see <xref linkend='secResolver'/>)."
 msgstr ""
+"Muestra una detallada descripción de la acción sugerida por el solucionador "
+"(vea <xref linkend='secResolver'/>)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2409
 msgid "&resolver-apply;"
-msgstr ""
+msgstr "&resolver-apply;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2412
 msgid ""
 "Carry out the actions that the problem resolver is currently suggesting."
-msgstr ""
+msgstr "Llevar a cabo las acciones sugeridas por el solucionador."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2418
 msgid "&resolver-next;"
-msgstr ""
+msgstr "&resolver-next;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2421
 msgid "Select the problem resolver's next suggestion."
-msgstr ""
+msgstr "Selecciona la siguente sugerencia del solucionador."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2426
 msgid "&resolver-previous;"
-msgstr ""
+msgstr "&resolver-previous;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2429
 msgid "Select the problem resolver's previous suggestion."
-msgstr ""
+msgstr "Selecciona la sugerencia anterior del solucionador."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2434
 msgid "&resolver-first;"
-msgstr ""
+msgstr "&resolver-first;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2437
 msgid "Select the problem resolver's first suggestion."
-msgstr ""
+msgstr "Selecciona la primera sugerencia del solucionador."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2442
 msgid "&resolver-last;"
-msgstr ""
+msgstr "&resolver-last;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2445
@@ -3773,11 +4260,13 @@ msgid ""
 "Select the problem resolver's most recently generated solution (see <xref "
 "linkend='secResolver'/>)."
 msgstr ""
+"Selecciona la solución más recientemente generada por el solucionador  (vea "
+"<xref linkend='secResolver'/>)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2452
 msgid "&resolver-reject;"
-msgstr ""
+msgstr "&resolver-reject;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2455
@@ -3786,11 +4275,14 @@ msgid ""
 "rejected and move to the next action (see <xref linkend='secResolver'/>).  "
 "If the action is currently approved, its approval will be cancelled."
 msgstr ""
+"Cuando examina una solución, conmuta si la acción seleccionada es rechazada "
+"o no, llevandole a la siguiente acción (vea <xref linkend='secResolver'/>).  "
+"Si la acción ha sido ya aprobada, la aprobación será cancelada."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2465
 msgid "&resolver-approve;"
-msgstr ""
+msgstr "&resolver-approve;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2468
@@ -3799,11 +4291,14 @@ msgid ""
 "approved and move to the next action (see <xref linkend='secResolver'/>).  "
 "If the action is currently rejected, its rejection will be cancelled."
 msgstr ""
+"Cuando examina una solución, conmuta si la acción seleccionada es aprobada o "
+"no, y pasar a la siguiente acción (vea <xref linkend='secResolver'/>). Si "
+"la acción ya ha sido rechazada, el rechazo será cancelado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2478
 msgid "&resolver-view-target;"
-msgstr ""
+msgstr "&resolver-view-target;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2481
@@ -3812,11 +4307,14 @@ msgid ""
 "is affected by the currently selected action (see <xref "
 "linkend='secResolver'/>)."
 msgstr ""
+"A la hora de examinar una solución, vea información detallada acerca del "
+"paquete afectado por la acción seleccionada (vea <xref linkend='secResolver'/"
+">)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2489
 msgid "&resolver-reject-break-holds;"
-msgstr ""
+msgstr "&resolver-reject-break-holds;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2492
@@ -3828,21 +4326,27 @@ msgid ""
 "link> is set to <literal>true</literal>, but this menu item allows you to "
 "reject them manually at any time."
 msgstr ""
+"Rechaza (al igual que con &resolver-reject;) todas las acciones que "
+"romperían una retención o que instalarían una versión prohibida.  Estas "
+"acciones son rechazadas de manera predeterminada a menos que configure<link "
+"linkend='configProblemResolver-Allow-Break-Holds'><literal>Aptitude::"
+"ProblemResolver::Allow-Break-Holds</literal></link> como <literal>verdadero</"
+"literal>."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2509
 msgid "The Search menu"
-msgstr ""
+msgstr "El menú Buscar"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2512
 msgid "Commands available in the Search menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Buscar"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2525
 msgid "&search-find;"
-msgstr ""
+msgstr "&search-find;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2528
@@ -3850,11 +4354,13 @@ msgid ""
 "Find the next package in the package list that matches a search pattern (see "
 "<xref linkend='secSearchPatterns'/>)."
 msgstr ""
+"Encuentra el siguiente paquete en la lista de paquetes que corresponde al "
+"patrón de búsqueda (vea <xref linkend='secSearchPatterns'/>)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2535
 msgid "&search-find-back;"
-msgstr ""
+msgstr "&search-find-back;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2538
@@ -3862,21 +4368,23 @@ msgid ""
 "Find the previous package in the package list that matches a search pattern "
 "(see <xref linkend='secSearchPatterns'/>)."
 msgstr ""
+"Encuentra el paquete anterior en la lista de paquetes que corresponde al "
+"patrón de busqueda (vea <xref linkend='secSearchPatterns'/>)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2545
 msgid "&search-refind;"
-msgstr ""
+msgstr "&search-refind;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2548
 msgid "Repeat the last Find command."
-msgstr ""
+msgstr "Repite la última búsqueda."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2553
 msgid "&search-repeat-find-back;"
-msgstr ""
+msgstr "&search-repeat-find-back;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2556
@@ -3885,11 +4393,14 @@ msgid ""
 "Find command was Find Backwards, this will perform a forwards search, and "
 "vice versa."
 msgstr ""
+"Repite la última búsqueda, pero en dirección opuesta.  Si el último comando "
+"de búsqueda empleado ha sido Buscar hacia atrás, este realizara una búsqueda "
+"hacia delante, y viceversa."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2564
 msgid "&search-limit;"
-msgstr ""
+msgstr "&search-limit;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2567
@@ -3897,42 +4408,47 @@ msgid ""
 "Filter the current package list by removing any packages which do not match "
 "a search pattern (see <xref linkend='secSearchPatterns'/>)."
 msgstr ""
+"Filtra la lista de paquetes eliminando cualquier paquete que no se corresponda con "
+"el patrón de búsqueda (vea <xref linkend='secSearchPatterns'/>)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2574
 msgid "&search-unlimit;"
-msgstr ""
+msgstr "&search-unlimit;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2577
 msgid "Un-filter the current package list (all packages will be shown)."
 msgstr ""
+"Elimina el filtro de la lista de paquetes (todos los paquetes son mostrados)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2583
 msgid "&search-find-broken;"
-msgstr ""
+msgstr "&search-find-broken;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2586
 msgid ""
 "Find the next broken package.  This is equivalent to searching for &Sbroken;."
 msgstr ""
+"Encuentra el siguiente paquete roto.  Este es el equivalente a buscar "
+"&Sbroken;."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2597
 msgid "The Options menu"
-msgstr ""
+msgstr "El menú Opciones"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2600
 msgid "Commands available in the Options menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Opciones"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2613
 msgid "&options-preferences;"
-msgstr ""
+msgstr "&options-preferences;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2616
@@ -3943,76 +4459,84 @@ msgid ""
 "keycap> or <keycap>Enter</keycap>.  Configuration options are saved to "
 "<filename>~/.aptitude/config</filename> immediately upon being selected."
 msgstr ""
+"Abre una ventana de dialogo en la cual se pueden modificar los parámetros de "
+"&aptitude;.  Las opciones de configuración se organizan en árbol, similar al "
+"árbol de paquetes; para activar o desactivar una opción, seleccionela y "
+"pulse <keycap>Space</keycap> o <keycap>Enter</keycap>.  Las opciones de "
+"configuración se guardan en <filename>~/.aptitude/config</filename> en el "
+"mismo momento de ser seleccionados."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2630
 msgid "&options-revert;"
-msgstr ""
+msgstr "&options-revert;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2633
 msgid "Reset all options to their default values."
-msgstr ""
+msgstr "Devuelve todas las opciones a sus valores predeterminados."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2643
 msgid "The Views menu"
-msgstr ""
+msgstr "El menú Vistas"
 
 # type: Content of: <book><chapter><section><section><section><note><para>
 #: en/aptitude.xml:2647
 msgid "For an overview of how views work, see <xref linkend='secViews'/>."
 msgstr ""
+"Para una acercamiento del funcionamiento de las vistas, vea <xref "
+"linkend='secViews'/>."
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2653
 msgid "Commands available in the Views menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Vistas"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2666
 msgid "&views-next;"
-msgstr ""
+msgstr "&views-next;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2669
 msgid "Change to the next active view."
-msgstr ""
+msgstr "Pase a la siguiente vista activa."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2674
 msgid "&views-prev;"
-msgstr ""
+msgstr "&views-prev;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2677
 msgid "Change to the previous active view."
-msgstr ""
+msgstr "Pase a la anterior vista activa."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2682
 msgid "&views-close;"
-msgstr ""
+msgstr "&views-close;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2685 en/aptitude.xml:8268
 msgid "Close the current view."
-msgstr ""
+msgstr "Cerrar la vista actual."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2690
 msgid "&views-new;"
-msgstr ""
+msgstr "&views-new;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2693
 msgid "Create a new view of the package list."
-msgstr ""
+msgstr "Crear una nueva vista de paquetes."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2698
 msgid "&views-audit;"
-msgstr ""
+msgstr "&views-audit;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2701
@@ -4020,22 +4544,26 @@ msgid ""
 "Create a view that displays packages which are not installed, and which a "
 "package installed on your system Recommends."
 msgstr ""
+"Crea una vista que muestra paquetes no instalados, y que recomiende "
+"algún paquete instalado en su sistema."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2708
 msgid "&views-flat;"
-msgstr ""
+msgstr "&views-flat;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2711
 msgid ""
 "Create a new view of the package list in which packages are not categorized."
 msgstr ""
+"Crear una nueva vista de paquetes en la cual los paquetes no están "
+"categorizados."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2717
 msgid "&views-debtags;"
-msgstr ""
+msgstr "&views-debtags;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2720
@@ -4043,22 +4571,24 @@ msgid ""
 "Create a new view of the package list in which packages are categorized "
 "according to their debtags entries."
 msgstr ""
+"Crear una nueva vista de paquetes en la cual los paquetes están "
+"categorizados según sus etiquetas debtags."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2727
 msgid "&views-browse;"
-msgstr ""
+msgstr "&views-browse;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #.  TODO: (see <xref linkend='secHier'/>).
 #: en/aptitude.xml:2730
 msgid "View the package list, arranged by category."
-msgstr ""
+msgstr "Ver la lista de paquetes, agrupados por categoría."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2736
 msgid "Additional items"
-msgstr ""
+msgstr "Elementos adicionales"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2739
@@ -4066,71 +4596,75 @@ msgid ""
 "A number of additional menu items appear; these correspond to the currently "
 "active views.  To switch directly to a view, select it from the menu."
 msgstr ""
+"Un número de elementos adicionales del menú pueden aparecer, "
+"correspondientes a la vista activa actual.  Para a cambiar otra vista, "
+"seleccionela desde el menú"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2752
 msgid "The Help menu"
-msgstr ""
+msgstr "El menú Ayuda"
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:2755
 msgid "Commands available in the Help menu"
-msgstr ""
+msgstr "Comandos disponibles en el menú Ayuda"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2768
 msgid "&help-about;"
-msgstr ""
+msgstr "&help-about;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2771
 msgid "Display some copyright information."
-msgstr ""
+msgstr "Muestra información de copyright."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2776
 msgid "&help-help;"
-msgstr ""
+msgstr "&help-help;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2779
 msgid "Display the on-line help page."
-msgstr ""
+msgstr "Muestra la página de ayuda on-line."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2784
 msgid "&help-manual;"
-msgstr ""
+msgstr "&help-manual;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2787
 msgid "Display the User's Manual (this document)."
-msgstr ""
+msgstr "Muestra el Manual de usuario (este documento)."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2792
 msgid "&help-faq;"
-msgstr ""
+msgstr "&help-faq;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2795
 msgid "Display the <link linkend='chapFAQ'>&aptitude; FAQ</link>."
-msgstr ""
+msgstr "Muestra el  <link linkend='chapFAQ'>PUF de &aptitude; </link>."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2801
 msgid "&help-changelog;"
-msgstr ""
+msgstr "&help-changelog;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2804
 msgid "Display a history of the major changes made to &aptitude;."
 msgstr ""
+"Muestra un historial de los cambios más significativos hechos a &aptitude;."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2810
 msgid "&help-license;"
-msgstr ""
+msgstr "&help-license;"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:2813
@@ -4138,11 +4672,13 @@ msgid ""
 "Display the terms under which you may copy, modify, and distribute "
 "&aptitude;."
 msgstr ""
+"Muestra los términos bajo los cuales puedes copiar, modificar y distribuir "
+"&aptitude;."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2825
 msgid "Working with multiple views"
-msgstr ""
+msgstr "Trabajando con varias vistas"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2828
@@ -4152,6 +4688,11 @@ msgid ""
 "something that can appear in the area of the screen below the menu bar.  The "
 "most common view is the package list, but download views are also common."
 msgstr ""
+"&aptitude; le permite trabajar con varias <quote>vistas</quote> a la vez.  "
+"Una <quote>vista</quote> (a veces llamada  <quote>pantalla</quote>) es "
+"simplemente algo que puede aparecer en el área de la pantalla por debajo de "
+"la barra de menú.  La vista más común es la lista de paquetes, aunque vistas "
+"de descargas también son habituales."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2836
@@ -4162,6 +4703,11 @@ msgid ""
 "examine <systemitem>libc6</systemitem>, the screen will look something like "
 "this:"
 msgstr ""
+"Cuando hay varias vistas abiertas a la vez, aparecerá una barra listando "
+"todas las vistas en la parte superior de la pantalla.  Por ejemplo, si "
+"examino <systemitem>apt</systemitem> pulsando <keycap>Enter</keycap>, y "
+"después examino <systemitem>libc6</systemitem>, el resultado sería una "
+"pantalla parecida a esta:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:2851
@@ -4191,6 +4737,28 @@ msgid ""
 "  --\\ Conflicts\n"
 "GNU C Library: Shared libraries and Timezone data"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"         Paquetes                  apt info                  libc6 info\n"
+"aptitude 0.3.1       \n"
+"i A  --\\ libc6                                             2.3.2.ds1- 2.3.2.ds1-\n"
+"  Descripción: Biblioteca de C de GNU: Bibliotecas compatidas\n"
+"    Contiene las bibliotecas estándar que utiliza casi cualquier programa en\n"
+"    el sistema. Esta biblioteca incluye las bibliotecas compartidas de la biblioteca \n"
+"    estándar de C y de la biblioteca de matemáticas, así como muchas otras bibliotecas.\n"
+"  Prioridad: requiere\n"
+"  Sección: base\n"
+"  Desarollador: GNU Libc Maintainers &lt;debian-glibc@lists.debian.org&gt;\n"
+"  Tamaño comprimido: 4901k\n"
+"  Tamaño sin comprimir: 15.9M\n"
+"  Paquete fuente: glibc\n"
+"  --\\ Depende\n"
+"    --- libdb1-compat\n"
+"  --\\ Sugiere\n"
+"    --- locales\n"
+"    --- glibc-doc\n"
+"  --\\ Conflicts\n"
+"Biblioteca de C de GNU: Bibliotecas compatidas"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2879
@@ -4200,6 +4768,10 @@ msgid ""
 "name at the top of the screen; you can also find a list of all active views "
 "in the Views menu."
 msgstr ""
+"Puede cerrar la vista actual usando &views-close;.  Para cambiar a la vista "
+"anterior o a la siguiente, use &views-next; y &views-prev;, o haga clic sobre "
+"el nombre de la vista en la parte superior de la pantalla; también puede "
+"ver una lista de todas las vistas activas en el menú Vistas."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2887
@@ -4208,11 +4780,15 @@ msgid ""
 "package) will create new views automatically; you can also explicitly create "
 "a new view using &views-new; or &views-browse;."
 msgstr ""
+"Como se ha visto con anterioridad, algunas órdenes (como por ejemplo, "
+"visionar información acerca de un paquete) crearán nuevas vistas "
+"automáticamente; también puede crear una nueva vista con usando &views-new; "
+"o &views-browse;."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2895
 msgid "Becoming &root;"
-msgstr ""
+msgstr "Convertirse en &root;"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2898
@@ -4221,6 +4797,9 @@ msgid ""
 "&root;.  If you are not &root; and you try to update the package lists, "
 "&aptitude; will ask if you want to become &root;:"
 msgstr ""
+"Algunas acciones, tales como actualizar la lista de paquetes, tan solo se "
+"pueden llevar a cabo como &root;.  Si no eres &root; e intenta actualizar "
+"la lista de paquetes, se le preguntará si quiere convertirse en &root;:"
 
 # type: Content of: <book><chapter><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:2911
@@ -4250,6 +4829,29 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+" Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.2.14.1    \n"
+"--- Paquetes instalados\n"
+"--- Paquetes no instalados\n"
+"--- Paquetes obsoletos y creados localmente\n"
+"--- Paquetes virtuales\n"
+"--- Tareas\n"
+"\n"
+"  +-------------------------------------------------------------------------+\n"
+"  |La actualización de la lista de paquetes disponibles requiere privilegios |\n"
+"  |de administración, que actualmente no tiene. ¿Desearía cambiar a la |\n"
+"  |cuenta de administrador?                                                     |\n"
+"  | [ Convertirse en administrador] [ No convertirse en administrador ]          |\n"
+"Th+-------------------------------------------------------------------------+\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2940
@@ -4259,6 +4861,10 @@ msgid ""
 "perform the action that required &root; privileges.  You will still be "
 "&root; after the action completes."
 msgstr ""
+"Si selecciona <quote>Convertirse en administrador</quote>, &aptitude; le "
+"preguntará por la contraseña de administrador; una vez que la haya "
+"introducido, &aptitude; realizará la acción que requiere privilegios de "
+"&root;.  Aun será &root; después de que la acción se complete."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2948
@@ -4267,6 +4873,9 @@ msgid ""
 "su;.  Any changes you have made to package states will be preserved (but "
 "will not be saved until you quit &aptitude;)."
 msgstr ""
+"Puede loguearse en la cuenta de &root; en cualquier momento usando la orden "
+"&actions-su;.  Cualquier cambio realizado al estado de los paquetes será "
+"preservado (pero no se guardarán hasta que quites &aptitude;)"
 
 # type: Content of: <book><chapter><section><para>
 #: en/aptitude.xml:2960
@@ -4274,11 +4883,13 @@ msgid ""
 "This section describes how to manipulate the list of packages, how to "
 "install new packages on your system, and how to remove old packages."
 msgstr ""
+"Esta sección describe como manipular la lista de paquetes, como instalar "
+"paquetes nuevos en el sistema, y como eliminar paquetes viejos."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2966
 msgid "Managing the package list"
-msgstr ""
+msgstr "Gestionando la lista de paquetes"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2969
@@ -4286,11 +4897,13 @@ msgid ""
 "To keep the list of packages up-to-date, it is recommended that you "
 "periodically update it.  You can do this using the &actions-update; command."
 msgstr ""
+"Para mantener la lista de paquetes al día, es recomendable actualizarla "
+"periódicamente.  Puede hacer esto usando la orden &actions-update;."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:2976
 msgid "Accessing package information"
-msgstr ""
+msgstr "Accediendo a la información de los paquetes"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:2979
@@ -4300,11 +4913,15 @@ msgid ""
 "additional views providing detailed information about a package are also "
 "available."
 msgstr ""
+"La información relativa a los paquetes se presenta en diferentes áreas en "
+"&aptitude;: la lista de paquetes ofrece una lista preliminar del estado de "
+"cada paquete; también están vistas adicionales proporcionando información "
+"detallada acerca de un paquete."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:2987
 msgid "The package list"
-msgstr ""
+msgstr "La lista de paquetes"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:2990
@@ -4313,12 +4930,15 @@ msgid ""
 "package's state.  For instance, the package <systemitem>webmin</systemitem> "
 "might have the following synopsis:"
 msgstr ""
+"La lista de paquetes muestra una sinopsis <quote>superficial</quote> del "
+"estado de un paquete   Por ejemplo, el paquete <systemitem>webmin</"
+"systemitem> podría mostrar una sinopsis cercana a ésta:"
 
 # type: Content of: <book><chapter><section><section><section><screen>
 #: en/aptitude.xml:2996
 #, no-wrap
 msgid "piAU  webmin                                        +5837kB &lt;none&gt;     1.160-2"
-msgstr ""
+msgstr "piAU  webmin                                        +5837kB &lt;none&gt;     1.160-2"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:2999
@@ -4331,6 +4951,13 @@ msgid ""
 "recent available version are displayed, along with an indication of how much "
 "space will be used by the upgrade."
 msgstr ""
+"Los cuatro caracteres en el lado izquierdo de la sinopsis muestran que el "
+"paquete no está instalado (<quote>p</quote>), que va a ser instalado "
+"(<quote>i</quote>), que ha sido automáticamente seleccionado para su "
+"instalación (<quote>A</quote>), y también que no va firmado (<quote>U</"
+"quote>).  En lado derecho de la sinopsis, la versión actualmente instalada y "
+"la última versión disponible, así como una indicación de cuanto espacio se "
+"usará al actualizar el paquete."
 
 # type: Content of: <book><chapter><section><section><section><tip><para>
 #: en/aptitude.xml:3013
@@ -4338,6 +4965,8 @@ msgid ""
 "You can customize how package synopses are displayed; see <xref "
 "linkend='secDisplayFormat'/> for details."
 msgstr ""
+"Puede configurar como se muestran las sinopsis de los paquetes; vea <xref "
+"linkend='secDisplayFormat'/> para más detalles."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3019
@@ -4351,6 +4980,13 @@ msgid ""
 "character indicates whether the package is trusted (see <xref "
 "linkend='secTrust'/>)."
 msgstr ""
+"Las cuatro marcas (caracteres) en el lado izquierdo de la pantalla ofrecen "
+"la información básica acerca del estado de un paquete.  El primer caracter "
+"es el <emphasis>estado actual</emphasis>.  El segundo caracter simboliza la  "
+"<emphasis>acción</emphasis> que será ejecutada sobre el paquete.  El tercer "
+"caracter indica si el paquete ha sido <emphasis>automáticamente instalado</"
+"emphasis>.(vea <xref linkend='secAutoInstall'/>), y el cuarto caracter "
+"indica si el paquete esta firmado (vea <xref linkend='secTrust'/>)."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3033
@@ -4359,16 +4995,19 @@ msgid ""
 "<xref linkend='figureCurrentFlag'/> and the possible values of the "
 "<quote>action</quote> flag are given in <xref linkend='figureActionFlag'/>."
 msgstr ""
+"La cuatro posibles valores de la marca de <quote>estado actual</quote> se "
+"tratan en <xref linkend='figureCurrentFlag'/>, y los posibles valores de "
+"<quote>acción</quote> se tratan en <xref linkend='figureActionFlag'/>."
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:3040
 msgid "Values of the <quote>current state</quote> flag"
-msgstr ""
+msgstr "Valores de la marca <quote>estado actual</quote>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3047 en/aptitude.xml:3126
 msgid "<computeroutput>i</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>i</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3048 en/aptitude.xml:3057 en/aptitude.xml:3066
@@ -4378,27 +5017,29 @@ msgstr ""
 #: en/aptitude.xml:3158 en/aptitude.xml:3169 en/aptitude.xml:3177
 #: en/aptitude.xml:3185
 msgid "-"
-msgstr ""
+msgstr "-"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3050
 msgid "the package is installed and all its dependencies are satisfied."
-msgstr ""
+msgstr "el paquete está instalado y todas sus dependencias resueltas."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3056
 msgid "<computeroutput>c</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>c</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3059
 msgid "the package was removed, but its configuration files are still present."
 msgstr ""
+"el paquete fue eliminado, pero sus archivos de configuración siguen "
+"presentes."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3065 en/aptitude.xml:3148
 msgid "<computeroutput>p</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>p</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3068
@@ -4406,76 +5047,78 @@ msgid ""
 "the package and all its configuration files were removed, or the package was "
 "never installed."
 msgstr ""
+"el paquete y todos sus archivos de configuración fueron eliminados, o el "
+"paquete nunca fue instalado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3075
 msgid "<computeroutput>v</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>v</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3078
 msgid "the package is virtual."
-msgstr ""
+msgstr "el paquete es virtual"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3083 en/aptitude.xml:3184
 msgid "<computeroutput>B</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>B</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3085
 msgid "the package has broken dependencies."
-msgstr ""
+msgstr "el paquete tiene dependencias rotas."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3089 en/aptitude.xml:3132
 msgid "<computeroutput>u</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>u</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3092
 msgid "the package has been unpacked but not configured."
-msgstr ""
+msgstr "el paquete ha sido desempaquetado, pero no configurado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3098
 msgid "<computeroutput>C</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>C</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3101
 msgid "half-configured: the package's configuration was interrupted."
-msgstr ""
+msgstr "medio-configurado: la configuración del paquete fue interrumpida."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3107
 msgid "<computeroutput>H</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>H</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3110
 msgid "half-installed: the package's installation was interrupted."
-msgstr ""
+msgstr "medio-instalado: la instalación del paquete fue interrumpida."
 
 # type: Content of: <book><chapter><section><section><section><figure><title>
 #: en/aptitude.xml:3120
 msgid "Values of the <quote>action</quote> flag"
-msgstr ""
+msgstr "Valores de la marca de <quote>acción</quote>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3128
 msgid "the package will be installed."
-msgstr ""
+msgstr "el paquete será instalado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3134
 msgid "the package will be upgraded."
-msgstr ""
+msgstr "el paquete será instalado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3138
 msgid "<computeroutput>d</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>d</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3141
@@ -4483,17 +5126,20 @@ msgid ""
 "the package will be deleted: it will be removed, but its configuration files "
 "will remain on the system."
 msgstr ""
+"el paquete será eliminado: será desinstalado, pero sus archivos de "
+"configuración permanecerán en el sistema."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3151
 msgid ""
 "the package will be purged: it and its configuration files will be removed."
 msgstr ""
+"el paquete será purgado; él y sus ficheros de configuración serán eliminados."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3157
 msgid "<computeroutput>h</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>h</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3160
@@ -4501,26 +5147,28 @@ msgid ""
 "the package will be held back: it will be kept at its current version, even "
 "if a newer version becomes available, until the hold is cancelled."
 msgstr ""
+"el paquete será retenido: permaneciendo en su versión actual, aunque haya"
+"incluso una nueva versión disponible, hasta que la retención sea cancelada."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3168
 msgid "<computeroutput>F</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>F</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3171
 msgid "An upgrade of the package has been forbidden."
-msgstr ""
+msgstr "Una actualización del paquete fue prohibida."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3176
 msgid "<computeroutput>r</computeroutput>"
-msgstr ""
+msgstr "<computeroutput>r</computeroutput>"
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3179
 msgid "the package will be reinstalled."
-msgstr ""
+msgstr "el paquete será instalado."
 
 # type: Content of: <book><chapter><section><section><section><figure><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3187
@@ -4529,6 +5177,9 @@ msgid ""
 "satisfied.  &aptitude; will not allow you to install, remove, or upgrade "
 "anything while you have broken packages."
 msgstr ""
+"el paquete está <quote>roto</quote>: algunas de sus dependencias no serán "
+"satisfechas.  &aptitude; no le permitira instalar, eliminar o actualizar "
+"nada mientras tenga paquetes rotos."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3200
@@ -4537,11 +5188,14 @@ msgid ""
 "terminal supports it.  State distinctions are mainly displayed using the "
 "background color:"
 msgstr ""
+"Además, &aptitude; usará colores para indicar el estado de los paquetes si "
+"tu terminal lo soporta.  Las distinciones relativas al estado se muestran "
+"usando el color de fondo:"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3208
 msgid "Black"
-msgstr ""
+msgstr "Negro"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3211
@@ -4550,41 +5204,44 @@ msgid ""
 "no dependency problems.  If the package is installed, its name will be "
 "highlighted."
 msgstr ""
+"El paquete no puede ser actualizado (o no será instalado), y no tiene "
+"problemas de dependencias.  Si se instala el paquete, su nombre aparecerá "
+"resaltado."
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3220
 msgid "Green"
-msgstr ""
+msgstr "Verde"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3223
 msgid "The package is going to be installed."
-msgstr ""
+msgstr "El paquete será instalado."
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3229
 msgid "Blue"
-msgstr ""
+msgstr "Azul"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3232
 msgid "The package is currently installed, and it will be upgraded."
-msgstr ""
+msgstr "El paquete está instalado, y sera actualizado."
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3239
 msgid "Magenta"
-msgstr ""
+msgstr "Magenta"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3242
 msgid "The package is currently installed, but it will be removed."
-msgstr ""
+msgstr "El paquete está instalado, pero será eliminado."
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3249
 msgid "White"
-msgstr ""
+msgstr "Blanco"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3252
@@ -4592,16 +5249,19 @@ msgid ""
 "The package is currently installed, and it is <quote>held</quote> at its "
 "current version: automatic upgrades will ignore it."
 msgstr ""
+"El paquete está instalado, y está <quote>retenido</quote> en su versión "
+"actual: actualizaciones automáticas ignorarán este paquete."
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><term>
 #: en/aptitude.xml:3260
 msgid "Red"
-msgstr ""
+msgstr "Rojo"
 
 # type: Content of: <book><chapter><section><section><section><variablelist><varlistentry><listitem><para>
 #: en/aptitude.xml:3263
 msgid "This package is broken: some of its dependencies will not be satisfied."
 msgstr ""
+"Este paquete esta roto: algunas de sus dependencias no serán resueltas."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3271
@@ -4612,11 +5272,16 @@ msgid ""
 "be displayed here.  To cycle between dependency information and the package "
 "description, press <keycap>i</keycap>."
 msgstr ""
+"Por último, la mitad inferior de la pantalla muestra la descripción "
+"extendida.  &aptitude; intentará detectar si el paquete está envuelto en un "
+"problema de dependencias; de ser así, se mostraría aquí información "
+"referente al problema de dependencias.  Para cambiar de la información de "
+"dependencias a la descripción del paquete, pulsa <keycap>i</keycap>."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:3281
 msgid "Detailed package information"
-msgstr ""
+msgstr "Información detallada del paquete"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3284
@@ -4624,6 +5289,8 @@ msgid ""
 "Pressing <keycap>Enter</keycap> while a package is highlighted will display "
 "the package information screen:"
 msgstr ""
+"Si pulsa <keycap>Enter</keycap> mientras se resalta un paquete muestra la "
+"siguiente pantalla informativa:"
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3295
@@ -4667,6 +5334,44 @@ msgid ""
 "i A 0.5.25\n"
 "\n"
 msgstr ""
+"  Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.2.14.1\n"
+"i A --\\ apt                                                0.5.25     0.5.25\n"
+"  Descripción: Interfaz avanzada para dpkg\n"
+"    Esta es la interfaz de nueva generación de Debían para el gestor de paquetes.\n"
+"    Proporciona la herramienta apt-get y ún metodo dselect que ofrece una manera más\n"
+"    simple y segura de instalar y actualizar paquetes\n"
+"\n"
+"    APT permite hacer ordenación de la instalación, acceder a múltiples fuentes \n"
+"    y también otras funcionalidades únicas. Para más información consulte\n"
+"    la Guía del Usuario en el paquete apt-doc\n"
+"  Esencial: sí\n"
+"  Prioridad: importante\n"
+"  Sección: base\n"
+"  Desarrollador: APT Development Team &lt;deity@lists.debian.org&gt;\n"
+"  Tamaño comprimido: 970k\n"
+"  Tamaño sin comprimir: 2961k\n"
+"  Paquete fuente: apt\n"
+"  --\\ Depende\n"
+"    --- libc6 (>= 2.3.2.ds1-4)\n"
+"    --- libgcc1 (>= 1:3.3.3-1)\n"
+"    --- libstdc++5 (>= 1:3.3.3-1)\n"
+"  --\\ Sugiere\n"
+"    --- aptitude | synaptic | gnome-apt | wajig\n"
+"    --- dpkg-dev\n"
+"    --\\ apt-doc (INSATISFECHO)                                                   \n"
+"p     0.6.25\n"
+"p     0.5.25\n"
+"  --\\ Reemplaza\n"
+"    --- libapt-pkg-doc (&lt; 0.3.7)\n"
+"    --- libapt-pkg-dev (&lt; 0.3.7)\n"
+"  --- Nombres del paquete proporcionado por apt\n"
+"  --- Paquetes que dependen de apt\n"
+"  --\\ Versiones\n"
+"p A 0.6.25\n"
+"i A 0.5.25\n"
+"\n"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3338
@@ -4679,6 +5384,14 @@ msgid ""
 "to install version <systemitem>0.5.25</systemitem> of <systemitem>apt-doc</"
 "systemitem>, you would highlight it and press <keycap>+</keycap>."
 msgstr ""
+"Esta pantalla puede ser navegada de una manera similar a la lista de "
+"paquetes: por ejemplo, en la captura de pantalla superior, expandí la "
+"dependencia de <systemitem>apt-doc</systemitem>, mostrando las versiones "
+"disponibles de  <systemitem>apt-doc</systemitem> que pueden satisfacer la "
+"dependencia.  Estas versiones pueden ser manipuladas de la misma manera que "
+"un paquete: por ejemplo, para instalar la versión <systemitem>0.5.25</"
+"systemitem> de  <systemitem>apt-doc</systemitem>, debería resaltarlo y "
+"pulsar <keycap>+</keycap>."
 
 # type: Content of: <book><chapter><section><section><section><tip><para>
 #: en/aptitude.xml:3352
@@ -4686,6 +5399,9 @@ msgid ""
 "To quickly satisfy a dependency, select the dependency and press <keycap>+</"
 "keycap>; &aptitude; will attempt to automatically satisfy it."
 msgstr ""
+"Para satisfacer rápidamente una dependencia, seleccione la dependencia y "
+"presiona <keycap>+</keycap>; &aptitude; intentara satisfacerlas "
+"automáticamente por usted."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3359
@@ -4694,6 +5410,9 @@ msgid ""
 "that it Provides, the packages which depend upon it, and the available "
 "versions of the package (including any other packages that Provide it)."
 msgstr ""
+"Además de las dependencias de un paquete, también puede ver los nombres de "
+"paquetes que Provee, los paquetes sobre los que Depende, y las versiones "
+"disponibles del paquete (incluyendo cualquier paquete que lo Provea)."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3366
@@ -4706,11 +5425,18 @@ msgid ""
 "<keycap>r</keycap> to view the <quote>reverse dependencies</quote> of a "
 "package (packages which depend upon it)."
 msgstr ""
+"Como es usual, puede cerrar esta pantalla y volver a la vista principal "
+"pulsando <keycap>q</keycap>.  Para su conveniencia, otras pantallas "
+"informativas están disponibles (que solo muestran la información mas usada, "
+"ocultando el resto): pulse <keycap>v</keycap> para ver las versiones de un "
+"paquete, <keycap>d</keycap> para ver las dependencias de un paquete, y "
+"<keycap>r</keycap> para ver las <keycap>dependencias inversas</keycap> de un "
+"paquete (paquetes que dependen de él)."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3380
 msgid "Modifying package states"
-msgstr ""
+msgstr "Modificando el estado del paquete"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3383
@@ -4720,6 +5446,10 @@ msgid ""
 "linkend='secInstallRun'>install run</link>; until you do, all of these "
 "commands can be reversed using &undo-undo;."
 msgstr ""
+"Los siguientes comandos están disponibles para modificar el estado de los "
+"paquetes.  Los comandos se ejecutarán la siguiente vez que realice un <link "
+"linkend='secInstallRun'>install run</link>; hasta entonces, todos estos "
+"comandos pueden ser revertidos con &undo-undo;."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3390
@@ -4729,16 +5459,21 @@ msgid ""
 "packages by selecting the group header (for instance, <quote>Upgradable "
 "Packages</quote>) and issuing the command."
 msgstr ""
+"Para aplicar una orden a un paquete, simplemente seleccione el paquete en la "
+"lista de paquetes, y ejecute la orden.  Estas ordenes pueden también ser "
+"aplicados a grupos de paquetes, seleccionando el encabezamiento del grupo "
+"(por ejemplo, <quote>Paquetes actualizables</quote>), y ejecutando el "
+"comando."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3408
 msgid "Install: &package-install;"
-msgstr ""
+msgstr "Instalar: &package-install;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3411
 msgid "Flag the current package for installation."
-msgstr ""
+msgstr "Marca el paquete para su instalción."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3414
@@ -4747,31 +5482,33 @@ msgid ""
 "installed, it will be upgraded if possible and any sticky upgrade prevention "
 "that is in effect (eg, Hold) will be cancelled."
 msgstr ""
+"Si el paquete no está instalado, será instalado.  Si ya lo está, sera "
+"actualizado, de ser posible, y cualquier retención en efecto será cancelado."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3424
 msgid "Remove: &package-remove;"
-msgstr ""
+msgstr "Eliminar: &package-remove;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3427
 msgid "Flag the currently selected package for removal."
-msgstr ""
+msgstr "Marca el paquete para su eliminación."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3431
 msgid "If the package is installed, it will be removed."
-msgstr ""
+msgstr "Si el paquete está instalado, será eliminado."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3437
 msgid "Purge: &package-purge;"
-msgstr ""
+msgstr "Purgar: &package-purge;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3440
 msgid "Flag the current package to be purged."
-msgstr ""
+msgstr "Marca el paquete para ser purgado"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3443
@@ -4780,16 +5517,19 @@ msgid ""
 "removed, any remaining files (such as configuration files) related to the "
 "package will be removed from the system."
 msgstr ""
+"Si el paquete esta instalado, será eliminado.  Mas aún, aunque se elimine, "
+"cualquier fichero resultante (tales como los archivos de configuración) "
+"relacionados con el paquete serán también eliminados del sistema."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3452
 msgid "Keep: &package-keep;"
-msgstr ""
+msgstr "Mantener: &package-keep;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3456
 msgid "Flag the current package to be kept at its current version."
-msgstr ""
+msgstr "Marca el paquete para que sea preservado en su versión actual."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3461
@@ -4798,16 +5538,19 @@ msgid ""
 "or upgrade -- is cancelled, and any persistent hold that was set on the "
 "package is removed."
 msgstr ""
+"Cualquier acción que se fuese a llevar a cabo sobre el paquete -- "
+"instalación, eliminación o actualización -- es cancelada, y cualquier "
+"retención impuesta sobre el paquete es removida."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3470
 msgid "Hold: &package-hold;"
-msgstr ""
+msgstr "Retener: &package-hold;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3474
 msgid "Set a persistent hold on the package."
-msgstr ""
+msgstr "Imponer una retención al paquete."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para><footnote>
 #: en/aptitude.xml:3478
@@ -4816,6 +5559,9 @@ msgid ""
 "cancelled.  In addition, the package will not be automatically upgraded "
 "<footnote id='footAutoUpgrade'>"
 msgstr ""
+"Al igual que con Mantener, cualquier acción futura que fuese a ejecutarse "
+"sobre el paquete es cancelada.  Además, el paquete no será actualizado "
+"automáticamente <footnote id='footAutoUpgrade'>"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para><footnote><para>
 #: en/aptitude.xml:3483
@@ -4825,6 +5571,10 @@ msgid ""
 "linkend='safeUpgrade'><literal>safe-upgrade</literal></link> command-line "
 "actions."
 msgstr ""
+"Esto es, que no se vera afectado por &actions-upgrade; o por los comandos de "
+"linea de comandos <link linkend='fullUpgrade'><literal>full-upgrade</"
+"literal></link> o <link linkend='safeUpgrade'><literal>safe-upgrade</"
+"literal></link>"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3490
@@ -4832,6 +5582,8 @@ msgid ""
 "</footnote> until the hold is removed.  You may cancel a hold by issuing the "
 "Install command."
 msgstr ""
+"</footnote> hasta que la retención es removida.  Puede cancelar una "
+"retención mediante el comando Instalar."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3502
@@ -4840,6 +5592,9 @@ msgid ""
 "linkend='footAutoUpgrade'/> to the version it would currently be upgraded "
 "to.  If it was going to be upgraded, the upgrade will be cancelled."
 msgstr ""
+"El paquete no será automáticamente actualizado <footnoteref "
+"linkend='footAutoUpgrade'/> a la versión a la que lo iba a ser.  Si iba ser "
+"actualizado, la actualización es cancelada."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3510
@@ -4848,6 +5603,9 @@ msgid ""
 "will not be upgraded to the selected version.  Note that only one version "
 "can be forbidden at once."
 msgstr ""
+"Si ejecuta este comando sobre una versión en particular de un paquete, el "
+"paquete no será actualizado a la versión escogida.  Note que solo una versión "
+"puede estar prohibida al mismo tiempo."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3517
@@ -4856,16 +5614,19 @@ msgid ""
 "<quote>unstable</quote> distribution, so they can avoid known-bad versions "
 "of packages."
 msgstr ""
+"Esta funcionalidad se ha implementado en gran medida para la conveniencia de "
+"la distribución <quote>unstable (sid)</quote>, para que así puedan evitar "
+"versiones de programas ya conocidas como malas."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3528
 msgid "Reinstall: press <keycap>L</keycap>"
-msgstr ""
+msgstr "Reinstalar: press <keycap>L</keycap>"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3534
 msgid "Reinstalls the package."
-msgstr ""
+msgstr "Reinstala el paquete."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry><para>
 #: en/aptitude.xml:3538
@@ -4875,11 +5636,15 @@ msgid ""
 "software layers (<command>dpkg</command> and &apt;) do not provide any way "
 "to find out whether a reinstallation was successful or not)."
 msgstr ""
+"Note que la reinstalación no se guardará cuando salga de &aptitude; o "
+"ejecute un proceso de instalación por razones técnicas.  (basicamente, las "
+"capas de software subyacentes , <command>dpkg</command> y &apt;, no "
+"proporcionan ninguna manera de ver si una reinstalación ha tenido éxito o no."
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3550
 msgid "&package-markauto;, &package-markmanual;"
-msgstr ""
+msgstr "&package-markauto;, &package-markmanual;"
 
 # type: Content of: <book><chapter><section><section><informaltable><tgroup><tbody><row><entry>
 #: en/aptitude.xml:3553
@@ -4888,6 +5653,10 @@ msgid ""
 "automatically installed packages will be removed when no other package "
 "requires them.  For more information, see <xref linkend='secAutoInstall'/>."
 msgstr ""
+"Define si un paquete esta siendo tomado como automáticamente instalado; "
+"los paquetes automáticamente instalados serán eliminados cuando ningún otro "
+"paquete dependa de ellos.  Para más información, vea <xref "
+"linkend='secAutoInstall'/>."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3566
@@ -4899,6 +5668,12 @@ msgid ""
 "which can be upgraded for upgrade, except for packages that are held back or "
 "would be upgraded to a forbidden version."
 msgstr ""
+"Aparte de estas ordenes que afectan al paquete seleccionado,hay dos ordenes "
+"que afectan a un gran número de paquetes en una sola acción "
+"independientemente de lo que haya sido seleccionado.  &actions-forget; "
+"elimina el estado de <quote>nuevo</quote> de todos los paquetes de la lista "
+"de paquetes, y &actions-upgrade; marca todos los paquetes actualizables para "
+"su actualización, excepto aquellos que son retenidos o prohibidos actualizar."
 
 # type: Content of: <book><chapter><section><section><note><para>
 #: en/aptitude.xml:3577
@@ -4907,11 +5682,15 @@ msgid ""
 "package list, or perform an install run.  If you do not wish to save your "
 "changes, you can always abort &aptitude; by pressing <keycap>Ctrl-C</keycap>."
 msgstr ""
+"Todos los cambios efectuados al estado de los paquetes se guardarán cuando "
+"quite &aptitude;, actualice la lista de paquetes o realice un proceso de "
+"instalación.  Si no desea guardar los cambios, siempre puede abortar "
+"&aptitude; pulsando <keycap>Ctrl-C</keycap>."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3587
 msgid "Downloading, installing, and removing packages"
-msgstr ""
+msgstr "Descargando, instalando y eliminando paquetes"
 
 # type: Content of: <book><chapter><section><section><para><footnote>
 #: en/aptitude.xml:3590
@@ -4922,6 +5701,12 @@ msgid ""
 "what you see; once you are, you can <quote>commit</quote> the changes by "
 "actually installing and removing packages.<footnote>"
 msgstr ""
+"Cambiar el estado de los paquetes tal y como se describe en la sección "
+"anterior no afecta de manera directa lo que está instalado en el sistema.  "
+"Por ello, puede ajustar el estado de los paquetes sin afectar al sistema "
+"hasta que esté satisfecho con lo que ve; una vez que lo esté, puede "
+"<quote>confirmar</quote> los cambios de verdad, instalando y eliminando "
+"paquetes.<footnote>"
 
 # type: Content of: <book><chapter><section><section><para><footnote><para>
 #: en/aptitude.xml:3595
@@ -4929,6 +5714,9 @@ msgid ""
 "This is sometimes referred to as an <quote>install run</quote>, even though "
 "you might be upgrading or removing packages in addition to installing them."
 msgstr ""
+"A esto se le denomina a veces como un <quote>proceso de instalación</quote>, "
+"aunque en lo que en realidad esté haciendo sea eliminar o actualizar "
+"paquetes, además de instalarlos."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3602
@@ -4939,6 +5727,11 @@ msgid ""
 "packages (for instance, cancelling unwanted removals) in the same way that "
 "you could in the main list."
 msgstr ""
+"Para confirmar los cambios, usa la orden &actions-install;.  Seleccionar "
+"este comando mostrará una previsualización describiendo los cambios que se "
+"llevarán a cabo.  Esta imagen es una simple lista de paquetes, por lo que "
+"puede manipular los paquetes (por ejemplo, cancelando eliminaciones no "
+"deseadas) de la misma manera en que lo puede hacer en el lista principal."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3611
@@ -4949,6 +5742,10 @@ msgid ""
 "you select <quote>Continue</quote>, the installations and removals will "
 "commence."
 msgstr ""
+"Una vez que haya finalizado, use &views-close; para cancelar la instalación, "
+"o use &actions-install; para proceder con las selecciones.  &aptitude; "
+"descargará en ese momento cualquier paquete necesario, para después "
+"continuar con la instalación."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3620
@@ -4959,11 +5756,17 @@ msgid ""
 "this directory, use &actions-clean;; to delete only files which cannot be "
 "downloaded again (ie, obsolete packages), use &actions-clean-obs;."
 msgstr ""
+"Los paquetes descargados por &aptitude; se guardan en el directorio almacén "
+"(<filename>/var/cache/apt/archives</filename> por defecto).  Normalmente, "
+"los paquetes son guardados ad infinitum.  Para eliminar todos los archivos "
+"de este directorio, use &actions-clean;; para eliminar solo aquellos "
+"paquetes que ya no pueden ser descargados (ie, paquetes obsoletos), use "
+"&actions-clean-obs;."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3631
 msgid "Understanding and managing package trust"
-msgstr ""
+msgstr "LLaves GPG: Entendiendo y gestionando la confianza de los paquetes."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3634
@@ -4982,6 +5785,19 @@ msgid ""
 "the Debian archives and replace the legitimate software with his doctored "
 "version."
 msgstr ""
+"La habilidad de &apt; de acceder a múltiples fuentes de paquetes conduce a una "
+"potencial vulnerabilidad de seguridad.  Supongamos que intenta añadir un "
+"archivo de paquetes por Pepe Hacker Aleatorio a su archivo <filename>sources."
+"list</filename> para poder instalar el paquete <systemitem>gargleblast</systemitem>"
+"de Pepe.  Por otro lado, es posible que -- fuera de su "
+"conocimiento -- el archivo de Pepe  contenga versiones de paquetes como "
+"<systemitem>libc6</systemitem> y <systemitem>ssh</systemitem>...¡versiones "
+"que roban su información privada o que abren puertas traseras en el sistema! "
+"Si estos paquetes tuviesen unos números de versión más elevados que los que "
+"se encuentran el archivo de Debian, &apt; los instalaría sin duda en la "
+"siguiente actualización, permitiendo a Pepe realizar su sucia labor sin ser "
+"detectado.  Pepe podría incluso entrar en los mirror de los archivos de "
+"Debían y reemplazar el software legítimo con su versión medicada."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3653
@@ -4996,6 +5812,16 @@ msgid ""
 "or if you attempt to upgrade a package that was installed from a Debian "
 "source to a version that came from a non-Debian source."
 msgstr ""
+"Afortunadamente, las versiones más recientes de &apt; y de &aptitude;, tales "
+"como la versión documentada en este manual, tienen defensas incorporados "
+"para repeler este tipo de ataques.  &apt; usa unos fuertes mecanismos de "
+"seguridad basados en el conocido software de encriptación <ulink url='http://"
+"www.gnupg.org'>GPG</ulink> para verificar que los paquetes distribuidos por "
+"los mirror de Debían son los mismos que fueron subidos por los "
+"desarrolladores de Debían.  De esta manera, &aptitude; le avisará si "
+"intenta instalar un paquete desde una fuente que no pertenece a Debían, o si "
+"intenta actualizar un paquete de Debían a una versión que viene de una "
+"fuente que no es de Debían."
 
 # type: Content of: <book><chapter><section><section><warning><para>
 #: en/aptitude.xml:3669
@@ -5006,6 +5832,11 @@ msgid ""
 "many ways that a tampered package could theoretically find its way into the "
 "master Debian archive."
 msgstr ""
+"Los mecanismos de seguridad de &apt; proporcionan una garantía casi perfecta "
+"de que los contenidos de su archivo mirror son idénticos o los del "
+"repositorio central de Debían.  Aun así, no son perfectos.  Teóricamente, "
+"hay varias maneras en las que un paquete modificado pudiese ser introducido "
+"en el archivo central de Debían."
 
 # type: Content of: <book><chapter><section><section><warning><para>
 #: en/aptitude.xml:3678
@@ -5014,11 +5845,14 @@ msgid ""
 "an important degree of protection against malicious packages, but it cannot "
 "eliminate all the risks inherent in installing software."
 msgstr ""
+"Asegurando que solo puede instalar desde una fuente de confianza le dará un "
+"alto grado de protección frente a los paquetes maliciosos, pero no puede "
+"eliminar todos los riesgos inherentes a instalar software."
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:3686
 msgid "Understanding trust"
-msgstr ""
+msgstr "Entendiendo la confianza"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote>
 #: en/aptitude.xml:3689
@@ -5030,6 +5864,12 @@ msgid ""
 "intended to place in the archive: ie, that the contents of the archive have "
 "not been tampered with since it was created.<footnote>"
 msgstr ""
+"&apt; permite al administrador de una archivo entregar una <firstterm>firma</firstterm>"
+"al índice del archivo.  Esta firma, que (por razones prácticas) "
+"no puede ser falsificada, indica que los paquetes de archivos listados en el "
+"índice son los mismos que el administrador puso en el archivo en primer "
+"lugar: ie, que los contenidos de un paquete no han sido saboteados desde su "
+"creación.<footnote>"
 
 # type: Content of: <book><chapter><section><section><section><para><footnote><para>
 #: en/aptitude.xml:3696
@@ -5038,6 +5878,9 @@ msgid ""
 "in the archive are secure, or even non-malicious; it merely shows that they "
 "are genuine."
 msgstr ""
+"Como se ha dicho mencionado antes, esto <emphasis>no</emphasis> índica que "
+"los paquetes del archivo sean seguros, o incluso no maliciosos; simplemente "
+"muestra que son genuinos."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3699
@@ -5046,6 +5889,10 @@ msgid ""
 "to the administrator's <firstterm>public key</firstterm>.  The public key of "
 "the Debian archive is distributed with &apt;, typically on your Debian CD."
 msgstr ""
+"</footnote> La firma puede ser validada comprobando que corresponde a la "
+"<firstterm>llave pública</firstterm> del administrador.  La llave publica "
+"del archivo Debían se distribuye con &apt; en los CD's y demás formatos de "
+"instalación de sistemas Debían."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3707
@@ -5057,6 +5904,12 @@ msgid ""
 "warning will be printed and &aptitude; will refuse to trust packages from "
 "that archive."
 msgstr ""
+"Cuando &aptitude; descarga el índice de un archivo, comprobara si el índice "
+"esta apropiadamente firmado.  Si no está firmado, &aptitude; no confiara en "
+"los paquetes provenientes de ese archivo, (más adelante se explicara lo que "
+"esto significa).  Si tiene una firma pero es incorrecta o no puede ser"
+"verificada, verá un aviso, y &aptitude; se negara a confiar en "
+"paquetes procedentes de ese archivo."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3718
@@ -5067,6 +5920,12 @@ msgid ""
 "trusted to an untrusted version, a warning will be displayed and you will "
 "have the opportunity to abort the download:"
 msgstr ""
+"Más adelante, cuando lleve a cabo un <link linkend='secInstallRun'>proceso "
+"de instalación</link>, &aptitude; revisara si los paquetes son de una fuente "
+"de confianza.  Entonces verá un mensaje de aviso si un paquete sin firmar va "
+"a ser instalado, o si un paquete sera actualizado de una versión de "
+"confianza a otra que no lo es, dandole la oportunidad de abortar la "
+"instalación."
 
 # type: Content of: <book><chapter><section><section><section><screenshot><mediaobject><textobject><screen>
 #: en/aptitude.xml:3734
@@ -5097,11 +5956,35 @@ msgid ""
 "                                                                               #\n"
 "                                                                               #"
 msgstr ""
+"  Acciones  Deshacer  Paquete  Encontrar  Opciones  Vistas  Ayuda\n"
+"f10: Menú  ?: Ayuda  q: Salir  u: Actualizar  g: Descarga/Instala/Elimina Paqs\n"
+"aptitude 0.3.0                    Esto usará 831kB de espacio del disco   TamDesc: 30.4MB\n"
+"--\\ Paquetes a actualizar\n"
+"iu U wesnoth                                       -98.3kB 0.8.7-1    0.8.8-1.0w\n"
+"iuAU wesnoth-data                                  +930kB  0.8.7-1    0.8.8-1.0w\n"
+"+------------------------------------------------------------------------------+\n"
+"|AVISO: ¡se instalarán versiones sin firmar de los siguientes paquetes     #|\n"
+"|                                                                             #|\n"
+"|Los paquetes sin firmar pueden comprometer la seguridad del sistema.#|\n"
+"|Sólo debe continuar con la instalación si está completamente seguro de que  #|\n"
+"|es lo que quiere                                                         #|\n"
+"|                                                                             #|\n"
+"|  * wesnoth [version 0.8.8-1.0wesnoth.org]                                   #|\n"
+"|  * wesnoth-data [version 0.8.8-1.0wesnoth.org]                              #|\n"
+"|  * wesnoth-music [version 0.8.8-1.0wesnoth.org]                             #|\n"
+"|   [ Continúa de todas formas ]             [ Aborta la instalación ]          |\n"
+"+------------------------------------------------------------------------------+\n"
+"                                                                               #\n"
+"                                                                               #\n"
+"                                                                               #\n"
+"                                                                               #\n"
+"                                                                               #\n"
+"                                                                               #"
 
 # type: Content of: <book><chapter><section><section><section><title>
 #: en/aptitude.xml:3764
 msgid "Trusting additional keys"
-msgstr ""
+msgstr "Confiando en llaves adicionales"
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3767
@@ -5115,6 +5998,14 @@ msgid ""
 "keys are and how to get them, see the <ulink url='http://www.gnupg.org'>GPG "
 "web page</ulink>."
 msgstr ""
+"Puede encontrar útil que &apt; confié en archivos externos aparte de los "
+"archivos de Debían.  Para cada paquete en el que quiera confiar, tendrá que "
+"adquirir la llave pública que se usa para firmar el índice del archivo de "
+"paquetes.  Esté es por lo general un archivo de texto cuyo nombre finaliza "
+"en <filename>.asc</filename>; puede ser suministrado por el "
+"administrador del sitio web o descargado desde un servidor de llaves "
+"públicas.  Para mas información acerca de llaves públicas y de como "
+"conseguirlas, vea la página <ulink url='http://www.gnupg.org'>GPG </ulink>."
 
 # type: Content of: <book><chapter><section><section><section><para>
 #: en/aptitude.xml:3780
@@ -5127,6 +6018,13 @@ msgid ""
 "any archive that is signed with the key contained in <filename>newkey.asc</"
 "filename>."
 msgstr ""
+"La lista de llaves en las que &apt; confía se guarda en el "
+"<firstterm>fichero del anillo de llaves</firstterm> <filename>/etc/apt/"
+"trusted.gpg</filename>.  Una vez que tenga la llave GPG, puede añadirla a "
+"este archivo ejecutando este comando <command>gpg --no-default-keyring --"
+"keyring /etc/apt/trusted.gpg --import <replaceable>newkey.asc</replaceable></"
+"command>.  &aptitude; confiará entonces de cualquier archivo firmado con la "
+"llave contenida en <filename>newkey.asc</filename>."
 
 # type: Content of: <book><chapter><section><section><section><warning><para>
 #: en/aptitude.xml:3793
@@ -5137,11 +6035,16 @@ msgid ""
 "<emphasis>and</emphasis> that the person who holds the key is trustworthy "
 "and competent."
 msgstr ""
+"Una vez que un fichero de una llave es añadida al anillo de llaves de APT, !"
+"se le otorgara la misma confianza que a los propios mirror de Debian¡ Solo "
+"debería hacer esto si esta muy seguro de que la llave que esta añadiendo es "
+"la correcta <emphasis>y</emphasis> si la persona que posee el anillo es de "
+"toda confianza y competente."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3805
 msgid "Managing automatically installed packages"
-msgstr ""
+msgstr "Gestionando paquetes automáticamente instalados"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3808
@@ -5155,6 +6058,13 @@ msgid ""
 "detect this and automatically remove the <systemitem>libclanlib2</"
 "systemitem> package."
 msgstr ""
+"Para instalar un paquete, es a veces necesario instalar muchos otros (para "
+"satisfacer sus dependencias).  Por ejemplo, si desea instalar el paquete "
+"<systemitem>clanbomber</systemitem>, debe también instalar el paquete "
+"<systemitem>libclanlib2</systemitem>.  Si elimina <systemitem>clanbomber</systemitem>,"
+"probablemente no necesite más <systemitem>libclanlib2</systemitem>;"
+"&aptitude; intentará detectar esto y eliminar el paquete "
+"<systemitem>libclanlib2</systemitem>."
 
 # type: Content of: <book><chapter><section><section><para><footnote>
 #: en/aptitude.xml:3821
@@ -5165,6 +6075,11 @@ msgid ""
 "&aptitude; will monitor them and remove them when they are no longer "
 "depended upon by any manually installed package <footnote>"
 msgstr ""
+"El funcionamiento es como sigue: cuando instala un paquete, &aptitude; "
+"instalará automáticamente cualquier otro paquete del que dependa.  Estos "
+"paquetes son marcados como <quote>instalados automáticamente</quote>; "
+"&aptitude; les seguirá el rastro y eliminará cuando ya no haya un paquete "
+"instalado manualmente que dependa de el <footnote>"
 
 # type: Content of: <book><chapter><section><section><para><footnote><para>
 #: en/aptitude.xml:3829
@@ -5174,6 +6089,11 @@ msgid ""
 "<link linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link> is true, "
 "a Suggests relationship is also enough to keep a package installed."
 msgstr ""
+"Más exactamente: serán removidos cuando nada conduzca a ellos a través de "
+"Depende, Predepende o Recomienda a un paquete instalado manualmente.  Si "
+"<link linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link> es así, "
+"una relación de Sugiere es también suficiente para mantener un paquete "
+"instalado."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3836
@@ -5181,6 +6101,8 @@ msgid ""
 "</footnote> .  They will appear in the preview as <quote>packages being "
 "removed because they are no longer used.</quote>"
 msgstr ""
+"</footnote>.  Aparecerán en la previsualización como <quote>Paquetes que se "
+"eliminarán porque ya no se usan </quote>"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3842
@@ -5192,21 +6114,28 @@ msgid ""
 "keycap>; if the package is already being removed, you can use &package-"
 "install; to cancel the removal and clear the <quote>automatic</quote> flag."
 msgstr ""
+"Al igual que con cualquier proceso automático, hay peligros de que todo se "
+"enloquezca.  Por ejemplo, incluso si un paquete fue automáticamente "
+"instalado, puede ser que tenga una funcionalidad en si misma.  Puede "
+"cancelar la marca de <quote>automático</quote> en cualquier momento pulsando "
+"<keycap>m</keycap>; si el paquete va ser eliminado, puede emplear &package-"
+"install; para cancelar la eliminación y retirar la marca de "
+"<quote>automatico</quote>."
 
 # type: Content of: <book><chapter><section><title>
 #: en/aptitude.xml:3855
 msgid "Resolving package dependencies"
-msgstr ""
+msgstr "Resolviendo dependencias de paquetes"
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3858
 msgid "Dependency resolution in &aptitude;"
-msgstr ""
+msgstr "Resolución de dependencias en &aptitude;"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3861
 msgid "There are two main dependency resolution algorithms in &aptitude;."
-msgstr ""
+msgstr "Hay dos algoritmos principales en la resolución de dependencias de &aptitude;"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3866
@@ -5219,6 +6148,13 @@ msgid ""
 "solve most dependency problems, but it is sometimes unable to find any "
 "solution."
 msgstr ""
+"El primero es un algoritmo que es también empleado en programas tales como "
+"&apt-get; y <command>synaptic</command>; Me referiré a el como <"
+"quote>resolución inmediata</quote>.  Es invocado cuando marca un paquete para "
+"su instalación de forma interactiva, e inmediatamente después uno o más "
+"paquetes son marcados en la linea de comandos.  La resolución inmediata es "
+"rápida y solucionara la mayoría de problemas de dependencias, aunque a veces "
+"no puede encontrar ninguna."
 
 # type: Content of: <book><chapter><section><section><para><footnote>
 #: en/aptitude.xml:3877
@@ -5227,11 +6163,14 @@ msgid ""
 "quote>, is invoked when packages have broken dependencies even after "
 "immediate resolution<footnote>"
 msgstr ""
+"El segundo algoritmo, que llamaré <quote>resolución interactiva</quote>, es "
+"invocado cuando hay paquetes con dependencias rotas incluso tras la "
+"resolución inmediate<footnote>"
 
 # type: Content of: <book><chapter><section><section><para><footnote><para>
 #: en/aptitude.xml:3880
 msgid "Or when immediate resolution is disabled."
-msgstr ""
+msgstr "O cuando la resolución inmediata es desactivada."
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3881
@@ -5240,11 +6179,14 @@ msgid ""
 "solution before applying it, and it allows you to provide feedback to the "
 "resolver, guiding it towards a better solution."
 msgstr ""
+"</footnote>.  Puede resolver más dependencias, le permite previsualizar la "
+"solución antes de aplicarla, y le permitiría también darle respuestas a "
+"solucionador, guiándole a una solución más adecuada."
 
 # type: Content of: <book><chapter><section><section><title>
 #: en/aptitude.xml:3889
 msgid "Immediate dependency resolution"
-msgstr ""
+msgstr "Resolución inmediata de dependencias"
 
 # type: Content of: <book><chapter><section><section><para>
 #: en/aptitude.xml:3892
@@ -5255,6 +6197,11 @@ msgid ""
 "<quote>Depends</quote>, a <quote>Recommends</quote>, or a <quote>Conflicts</"
 "quote>), it performs the following steps:"
 msgstr ""
+"En el momento que elija para instalar o actualizar un paquete, &aptitude; "
+"hará un intento inmediato de resolver cualquier dependencia no satisfecha.  "
+"Por cada dependencia insatisfecha (sea un <quote>Depende</quote>, "
+"<quote>Recomienda</quote>, o con un <quote>Conflicto</quote>), realizará los "
+"siguientes pasos:"
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3903
@@ -5269,6 +6216,13 @@ msgid ""
 "recommendation is installed, the currently installed version recommends a "
 "package of the same name, and that recommendation is currently fulfilled."
 msgstr ""
+"Si la dependencia es una recomendación, &aptitude; intentará ver si es una "
+"recomendación <quote>nueva</quote> o una recomendación <quote>ya satisfecha</"
+"quote>.  &aptitude; considera una recomendación como <quote>nueva</quote> "
+"si el paquete manifestando la recomendación no está instalado, o si la "
+"versión instalada no recomienda un paquete del mismo nombre.  Por otro lado, "
+"una recomendación  está <quote>ya satisfecha</quote> si el paquete ya "
+"instalado recomienda un paquete del mismo nombre, estando ya satisfecho."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3918
@@ -5289,6 +6243,21 @@ msgid ""
 "version.  However, if <literal>libcool1</literal> is installed, then that "
 "recommendation will be considered to be <quote>previously satisfied</quote>."
 msgstr ""
+"Por ejemplo: imagine que la versión <literal>1.0</literal> de <literal>prog</"
+"literal> recomienda la versión <literal>4.0</literal> de <literal>libcool1</"
+"literal>, pero la versión <literal>2.0</literal> de  <literal>prog</literal> "
+"recomienda la versión <literal>5.0</literal> de <literal>libcool1</literal>, "
+"y también recomienda <literal>apache</literal>.  Si escogiese actualizar "
+"<literal>prog</literal> de la versión <literal>1.0</literal> a la versión "
+"<literal>2.0</literal>, la recomendación de  <literal>apache</literal> será "
+"considerada <quote>nueva</quote> porque la versión <literal>1.0</literal> de "
+"<literal>prog</literal> no recomendaba <literal>apache</literal>.  Por otro "
+"lado, la recomendación de <literal>libcool1</literal> <emphasis>no</"
+"emphasis>es <quote>nueva</quote>, porque la versión<literal>1.0</literal> de "
+"<literal>prog</literal> recomienda <literal>libcool1</literal>, aunque "
+"recomiende una versión diferente.  De todas formas, si <literal>libcool1</"
+"literal> si está instalado, entonces la recomendación se tratará como "
+"<quote>ya satisfecha</quote>."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3944
@@ -5301,6 +6270,13 @@ msgid ""
 "<literal>false</literal>, immediate dependency resolution will ignore "
 "<emphasis>all</emphasis> recommendations."
 msgstr ""
+"Si la opción de configuración <link linkend='configAptInstall-"
+"Recommends'><literal>Apt::Install-Recommends</literal></link>es "
+"<literal>true</literal>, &aptitude; siempre intentará satisfacer las "
+"recomendaciones nuevas y ya satisfechas; todas las demás serán ignoradas en "
+"la siguiente resolución.  Si la opción es <literal>false</literal>, la "
+"resolución inmediata de dependencias ignorará <emphasis>todas</emphasis> las "
+"recomendaciones."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3958
@@ -5311,6 +6287,11 @@ msgid ""
 "quote>, &aptitude; will first process <literal>exim</literal>, then "
 "<literal>mail-transport-agent</literal>."
 msgstr ""
+"Si la dependencia se da en varios paquetes combinados con OR, examine cada "
+"una de las alternativas en el orden dado.  Por ejemplo, si un paquete "
+"depende de <quote><literal>exim | mail-transport-agent</literal></quote>, "
+"&aptitude; procesará primero <literal>exim</literal>, y después "
+"<literal>mail-transport-agent</literal>."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para><footnote>
 #: en/aptitude.xml:3970
@@ -5324,6 +6305,13 @@ msgid ""
 "virtual package), and if the dependency is unversioned, attempt to install "
 "the highest-priority package<footnote>"
 msgstr ""
+"Intente resolver cada alternativa dada.  Si la dependencia es un conflicto, "
+"elimine la alternativa actual ya está instalado (y por cada conflicto no de "
+"versiones, elimine también cualquier paquete apunte al conflicto).  También "
+"puede instalar la versión candidata de la alternativa actual si satisface la "
+"dependencia.  Si no, o si no hay otra versión candidata (i.e., porque la "
+"alternativa actual es un paquete virtual), y si la dependencia no tiene "
+"versión, intente instalar el paquete de más alta prioridad <footnote>"
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para><footnote><para>
 #: en/aptitude.xml:3980
@@ -5331,6 +6319,8 @@ msgid ""
 "The package with the highest <command>dpkg</command> priority, not the "
 "package with the highest &apt; pin priority."
 msgstr ""
+"El paquete con la más alta prioridad en <command>dpkg</command>, no el paquete "
+"con la más alta prioridad &apt; pin."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3982
@@ -5338,6 +6328,8 @@ msgid ""
 "</footnote> whose candidate version provides the target of the current "
 "alternative."
 msgstr ""
+"</footnote> cuya versión candidata provea el objetivo de la alternativa "
+"actual."
 
 # type: Content of: <book><chapter><section><section><orderedlist><listitem><para>
 #: en/aptitude.xml:3988
