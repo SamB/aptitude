@@ -517,8 +517,11 @@ namespace imm
     node root;
 
     /** Returns a balanced tree constructed by adding x to n.
+     *
+     *  \param added_anything Set to \b false if x already
+     *  exists in this set.
      */
-    node add(const node &n, const Val &x) const
+    node add(const node &n, const Val &x, bool &added_anything) const
     {
       if(n.empty())
 	return node(x, node(), node());
@@ -528,21 +531,27 @@ namespace imm
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
-			add(n.getLeft(), x),
+			add(n.getLeft(), x, added_anything),
 			n.getRight()).rebalance();
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			add(n.getRight(), x)).rebalance();
+			add(n.getRight(), x, added_anything)).rebalance();
 	  else
-	    return n;
+	    {
+	      added_anything = false;
+	      return n;
+	    }
 	}
     }
 
     /** Returns a balanced tree constructed by adding x to n.  Will
      *  replace existing nodes equivalent to x.
+     *
+     *  \param added_new_entry   Set to \b false if the key already existed
+     *  in this set.
      */
-    node addUpdate(const node &n, const Val &x) const
+    node addUpdate(const node &n, const Val &x, bool &added_new_entry) const
     {
       if(n.empty())
         return node(x, node(), node());
@@ -552,14 +561,17 @@ namespace imm
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
-			addUpdate(n.getLeft(), x),
+			addUpdate(n.getLeft(), x, added_new_entry),
 			n.getRight()).rebalance();
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			addUpdate(n.getRight(), x)).rebalance();
+			addUpdate(n.getRight(), x, added_new_entry)).rebalance();
 	  else
-	    return node(x, n.getLeft(), n.getRight());
+	    {
+	      added_new_entry = false;
+	      return node(x, n.getLeft(), n.getRight());
+	    }
 	}
     }
 
@@ -677,7 +689,7 @@ namespace imm
     }
 
     /** Remove the given value from the given tree. */
-    node remove(const node &n, const Val &x) const
+    node remove(const node &n, const Val &x, bool &removed_anything) const
     {
       if(n.empty())
         return n;
@@ -687,14 +699,17 @@ namespace imm
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
-			remove(n.getLeft(), x),
+			remove(n.getLeft(), x, removed_anything),
 			n.getRight()).rebalance();
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			remove(n.getRight(), x)).rebalance();
+			remove(n.getRight(), x, removed_anything)).rebalance();
 	  else // found an equivalent node:
-	    return splice_trees(n.getLeft(), n.getRight());
+	    {
+	      removed_anything = true;
+	      return splice_trees(n.getLeft(), n.getRight());
+	    }
 	}
     }
 
@@ -731,21 +746,40 @@ namespace imm
      *  tree; instead, it returns a new tree containing the element in
      *  addition to the elements of the old tree.
      */
+    static set add(const set &old, const Val &x, bool &added_anything)
+    {
+      return set(old.add(old.root, x, added_anything), old.value_compare);
+    }
+
     static set add(const set &old, const Val &x)
     {
-      return set(old.add(old.root, x), old.value_compare);
+      bool dummy;
+      return add(old, x, dummy);
     }
 
     /** Like add, but updates existing equivalent elements. */
+    static set addUpdate(const set &old, const Val &x, bool &added_new_entry)
+    {
+      return set(old.addUpdate(old.root, x, added_new_entry), old.value_compare);
+    }
+
     static set addUpdate(const set &old, const Val &x)
     {
-      return set(old.addUpdate(old.root, x), old.value_compare);
+      bool dummy;
+      return addUpdate(old, x, dummy);
     }
 
     /** Remove x from the tree. */
+    static set remove(const set &old, const Val &x, bool &removed_anything)
+    {
+      removed_anything = false;
+      return set(old.remove(old.root, x, removed_anything), old.value_compare);
+    }
+
     static set remove(const set &old, const Val &x)
     {
-      return set(old.remove(old.root, x), old.value_compare);
+      bool dummy;
+      return remove(old, x, dummy);
     }
 
     /** \return \b true if other contains an element equivalent to
@@ -784,22 +818,33 @@ namespace imm
 
     /** Do an "in-place" update of this set, by replacing the root
      *  with a new root.
+     *
+     *  \return \b true if anything was added to the set.
      */
-    void insert(const Val &x)
+    bool insert(const Val &x)
     {
-      root = add(root, x);
+      bool rval = true;
+      root = add(root, x, rval);
+      return rval;
     }
 
     /** Similar. */
-    void insertUpdate(const Val &x)
+    bool insertUpdate(const Val &x)
     {
-      root = addUpdate(root, x);
+      bool rval = true;
+      root = addUpdate(root, x, rval);
+      return rval;
     }
 
-    /** Similar. */
-    void erase(const Val &x)
+    /** Similar.
+     *
+     *  \return \b true if any values were removed from the set.
+     */
+    bool erase(const Val &x)
     {
-      root = remove(root, x);
+      bool rval;
+      root = remove(root, x, rval);
+      return rval;
     }
 
     /** Find a tree node by value.  \return the node, or an invalid
@@ -1079,27 +1124,39 @@ namespace imm
     /** \return a new map that binds k to v, overwriting any existing
      *  binding.
      */
+    static map bind(const map &m, const Key &k, const Val &v, bool &inserted_new_binding)
+    {
+      return map(mapping_type::add(m.contents, binding_type(k, v), inserted_new_binding));
+    }
+
     static map bind(const map &m, const Key &k, const Val &v)
     {
-      return map(mapping_type::add(m.contents, binding_type(k, v)));
+      bool dummy;
+      return bind(m, k, v, dummy);
     }
 
     /** \return a new map based on m in which k is unbound. */
-    static map unbind(const map &m, const Key &k)
+    static map unbind(const map &m, const Key &k, bool &removed_binding)
     {
-      return map(mapping_type::erase(m.contents, binding_type(k, Val())));
+      return map(mapping_type::erase(m.contents, binding_type(k, Val()), removed_binding));
     } 
 
-    /** Add a binding to this map. */
-    void put(const Key &k, const Val &v)
+    static map unbind(const map &m, const Key &k)
     {
-      contents.insertUpdate(binding_type(k, v));
+      bool dummy;
+      return unbind(m, k, dummy);
+    }
+
+    /** Add a binding to this map. */
+    bool put(const Key &k, const Val &v)
+    {
+      return contents.insertUpdate(binding_type(k, v));
     }
 
     /** Delete a binding from this map by key. */
-    void erase(const Key &k)
+    bool erase(const Key &k)
     {
-      contents.erase(binding_type(k, Val()));
+      return contents.erase(binding_type(k, Val()));
     }
 
     /** \return \b true if k is in the domain of this mapping. */
