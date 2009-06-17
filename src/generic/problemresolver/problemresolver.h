@@ -3716,6 +3716,27 @@ private:
 	  apply_promotion(s, qEnt->get_promotion());
 
 	s.promotion_queue_location = promotion_queue_tail;
+
+	boost::unordered_map<choice, promotion> incipient_promotions;
+	maybe<promotion> non_incipient_promotion;
+
+
+
+	promotions.find_highest_incipient_promotions(s.actions,
+						     s.deps_solved_by_choice,
+						     incipient_promotions,
+						     non_incipient_promotion);
+
+	if(non_incipient_promotion.get_has_value())
+	  {
+	    const promotion &p(non_incipient_promotion.get_value());
+	    if(s.step_tier < p.get_tier())
+	      {
+		LOG_ERROR(logger, "Found an unexpected promotion in the action set of step " << s.step_num
+			  << ": " << p);
+		increase_step_tier(s, p);
+	      }
+	  }
       }
     else
       {
