@@ -1715,15 +1715,15 @@ private:
 
 	      typename step::dep_solvers new_solvers(current_solvers);
 
+	      new_solvers.remove_solver(victim_with_dep);
+	      add_to_structural_reasons adder(new_solvers);
+	      reasons.for_each(adder);
+
 	      LOG_TRACE(logger,
 			"Removing the choice " << victim_with_dep
 			<< " from the solver set of " << d
 			<< " in step " << s.step_num
 			<< ", new solvers: " << new_solvers.get_solvers());
-
-	      new_solvers.remove_solver(victim_with_dep);
-	      add_to_structural_reasons adder(new_solvers);
-	      reasons.for_each(adder);
 
 	      // Actually update the solvers of the dep.
 	      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
