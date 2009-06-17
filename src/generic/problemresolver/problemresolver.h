@@ -2757,6 +2757,19 @@ private:
 		    LOG_TRACE(logger, "Ignoring already broken soft dep " << rd);
 		}
 	    }
+
+	  for(typename version::dep_iterator di = new_version.deps_begin();
+	      !di.end(); ++di)
+	    {
+	      dep d(*di);
+	      LOG_TRACE(logger, "Testing dep of " << new_version << ": " << d);
+
+	      if(d.broken_under(test_installation))
+		// Note: no need to test if this was chosen to be
+		// broken, because it can't possibly have been
+		// broken until now.
+		add_unresolved_dep(s, d);
+	    }
 	}
 
 	break;
