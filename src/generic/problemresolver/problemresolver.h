@@ -3015,7 +3015,8 @@ private:
       resolver.generate_single_successor(parent,
 					 output,
 					 solver,
-					 inf.get_tier());
+					 std::max<tier>(inf.get_tier(),
+							parent.step_tier));
 
       return true;
     }
