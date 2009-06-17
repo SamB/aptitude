@@ -44,6 +44,10 @@
 template<typename PackageUniverse, typename ValueType >
 class generic_choice_indexed_map
 {
+public:
+  typedef unsigned int size_type;
+
+private:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
@@ -64,6 +68,9 @@ class generic_choice_indexed_map
 
   // Objects stored for the choice (Break(d), t).
   imm::map<dep, ValueType> break_dep_objects;
+
+  // The total number of keys in this set.
+  size_type curr_size;
 
   class do_dump_entry
   {
@@ -90,8 +97,11 @@ class generic_choice_indexed_map
   };
 public:
   generic_choice_indexed_map()
+    : curr_size()
   {
   }
+
+  size_type size() const { return curr_size; }
 
   void put(const choice &c, ValueType value)
   {
@@ -112,12 +122,14 @@ public:
 	  else
 	    inf.from_dep_source.put(c.get_dep(), value);
 
-	  install_version_objects.put(c.get_ver(), inf);
+	  if(install_version_objects.put(c.get_ver(), inf))
+	    ++curr_size;
 	}
 	break;
 
       case choice::break_soft_dep:
-	break_dep_objects.put(c.get_dep(), value);
+	if(break_dep_objects.put(c.get_dep(), value))
+	  ++curr_size;
 	break;
       }
   }
@@ -206,16 +218,24 @@ public:
 
 
 	  if(!c.get_from_dep_source())
-	    inf.not_from_dep_source = maybe<ValueType>();
+	    {
+	      if(inf.not_from_dep_source.get_has_value())
+		--curr_size;
+	      inf.not_from_dep_source = maybe<ValueType>();
+	    }
 	  else
-	    inf.from_dep_source.erase(c.get_dep());
+	    {
+	      if(inf.from_dep_source.erase(c.get_dep()))
+		--curr_size;
+	    }
 
 	  install_version_objects.put(c.get_ver(), inf);
 	}
 	break;
 
       case choice::break_soft_dep:
-	break_dep_objects.erase(c.get_dep());
+	if(break_dep_objects.erase(c.get_dep()))
+	  --curr_size;
 	break;
       }
   }
