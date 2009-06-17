@@ -53,6 +53,23 @@ UNIVERSE [ \
   DEP a v1 -> < c v2 > \
 ]";
 
+// Has only one solution, and that requires breaking a soft
+// dependency.  Used to check that breaking soft dependencies works
+// and that the resulting score is correct.
+const char *dummy_universe_3 = "\
+UNIVERSE [ \
+  PACKAGE a < v1 v2 v3 > v1 \
+  PACKAGE b < v1 v2 v3 > v1 \
+  PACKAGE c < v1 v2 v3 > v1 \
+\
+  DEP a v1 -> < b v2 > \
+  DEP b v2 -> < c v2 > \
+  SOFTDEP c v2 -> < a v2  a v3 > \
+\
+  DEP a v2 -> < > \
+  DEP a v3 -> < > \
+]";
+
 // Done this way so meaningful line numbers are generated.
 #define assertEqEquivalent(x1, x2) \
   do {									\
@@ -120,6 +137,7 @@ class ResolverTest : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testRejections);
   CPPUNIT_TEST(testSimpleResolution);
+  CPPUNIT_TEST(testSimpleBreakSoftDep);
   CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
@@ -339,7 +357,66 @@ private:
     expected_solution.insert_or_narrow(choice::make_install_version(cv2, 0));
     LOG_TRACE(logger, "Expected solution: " << expected_solution);
 
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    const int step_score = 10;
+    const int unfixed_soft_score = -100;
+    const int full_solution_score = 50000;
+    dummy_resolver r(step_score, -300, unfixed_soft_score,
+		     100000, full_solution_score, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    r.set_version_score(cv2, -1000);
+
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(50, NULL);
+	LOG_TRACE(logger, "Got solution: " << sol << ".");
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Unable to find a solution.");
+	CPPUNIT_FAIL("Unable to find a solution.");
+      }
+    catch(NoMoreTime)
+      {
+	LOG_TRACE(logger, "No more time to find a solution.");
+	CPPUNIT_FAIL("No more time to find a solution.");
+      }
+
+    assertSameEffect(expected_solution, sol.get_choices());
+    CPPUNIT_ASSERT_EQUAL(2 * step_score + full_solution_score - 1000,
+			 sol.get_score());
+  }
+
+  void testSimpleBreakSoftDep()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testSimpleBreakSoftDep"));
+
+    LOG_TRACE(logger, "Entering testSimpleBreakSoftDep");
+
+    // dummy_universe_1 has only one solution: installing bv2 and cv2,
+    // and leaving the only dependency of cv2 broken.
+    dummy_universe_ref u = parseUniverse(dummy_universe_3);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+    version bv2 = b.version_from_name("v2");
+    version cv2 = c.version_from_name("v2");
+    dep cv2d1 = *cv2.deps_begin();
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(bv2, 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(cv2, 0));
+    expected_solution.insert_or_narrow(choice::make_break_soft_dep(cv2d1, 0));
+    LOG_TRACE(logger, "Expected solution: " << expected_solution);
+
+    const int step_score = 10;
+    const int unfixed_soft_score = -100;
+    const int full_solution_score = 50000;
+    dummy_resolver r(step_score, -300, unfixed_soft_score,
+		     100000, full_solution_score, 50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -361,6 +438,8 @@ private:
       }
 
     assertSameEffect(expected_solution, sol.get_choices());
+    CPPUNIT_ASSERT_EQUAL(sol.get_score(),
+			 3 * step_score + unfixed_soft_score + full_solution_score);
   }
 
   void testTiers()
