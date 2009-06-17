@@ -562,6 +562,7 @@ public:
   typedef generic_search_graph<PackageUniverse> search_graph;
   typedef generic_tier_limits<PackageUniverse> tier_limits;
   typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
+  typedef generic_promotion_queue_entry<PackageUniverse> promotion_queue_entry;
 
   typedef typename search_graph::step step;
 
@@ -881,10 +882,16 @@ private:
    */
   promotion_set promotions;
 
-  /** Stores newly generated promotions that haven't been checked
-   *  against the existing set of steps.
+  /** \brief Stores the tail of the queue of tier promotions.
+   *
+   *  Steps hold reference-counted pointers to links in the chain
+   *  corresponding to where the tail was when they were inserted.  If
+   *  there have not been "very many" insertions since a step was
+   *  generated, then instead of checking the global promotion set,
+   *  we'll just apply the individual promotions one at a time.  New
+   *  promotions will be filled in here.
    */
-  std::deque<promotion> pending_promotions;
+  boost::shared_ptr<promotion_queue_entry> promotion_queue_tail;
 
   /** The initial set of broken dependencies.  Kept here for use in
    *  the stupid-elimination algorithm.
@@ -1189,8 +1196,18 @@ private:
     if(p.get_choices().size() == 0)
       LOG_TRACE(logger, "Ignoring the empty promotion " << p);
     else if(promotions.insert(p) != promotions.end())
-      LOG_TRACE(logger, "Added the promotion " << p
-		<< " to the global promotion set.");
+      {
+	LOG_TRACE(logger, "Added the promotion " << p
+		  << " to the global promotion set.");
+
+	promotion_queue_tail->set_promotion(p);
+	eassert(promotion_queue_tail->get_has_contents());
+	promotion_queue_tail = promotion_queue_tail->get_next();
+
+	LOG_TRACE(logger, "The promotion queue now contains "
+		  << promotion_queue_tail->get_index() << " promotions with "
+		  << promotion_queue_tail->get_action_sum() << " total actions.");
+      }
     else
       LOG_TRACE(logger, "Did not add " << p
 		<< " to the global promotion set: it was redundant with an existing promotion.");
@@ -2866,6 +2883,7 @@ private:
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
     output.deps_solved_by_choice = parent.deps_solved_by_choice;
     output.forbidden_versions = parent.forbidden_versions;
+    output.promotion_queue_location = promotion_queue_tail;
 
 
     LOG_TRACE(logger, "Generating a successor to step " << parent.step_num
@@ -3079,6 +3097,7 @@ public:
      pending_future_solutions(step_goodness_compare(graph)),
      closed(),
      promotions(_universe, *this),
+     promotion_queue_tail(new promotion_queue_entry(0, 0)),
      version_tiers(new tier[_universe.get_version_count()])
   {
     LOG_DEBUG(logger, "Creating new problem resolver: step_score = " << _step_score
@@ -3180,7 +3199,7 @@ public:
     finished=false;
     pending.clear();
     pending_future_solutions.clear();
-    pending_promotions.clear();
+    promotion_queue_tail = boost::shared_ptr<promotion_queue_entry>(new promotion_queue_entry(0, 0));
     graph.clear();
     closed.clear();
 
@@ -3559,31 +3578,159 @@ private:
       graph.get_step(*pending_future_solutions.begin()).step_tier < tier_limits::defer_tier;
   }
 
+  // Counts how many action hits existed in a promotion, allowing up
+  // to one mismatch (which it stores).
+  class count_action_hits
+  {
+    unsigned int &action_hits;
+    boost::optional<choice> &mismatch;
+    const step &s;
+
+  public:
+    count_action_hits(unsigned int &_action_hits,
+		      boost::optional<choice> &_mismatch,
+		      const step &_s)
+      : action_hits(_action_hits),
+	mismatch(_mismatch),
+	s(_s)
+    {
+      action_hits = 0;
+      mismatch.reset();
+    }
+
+    bool operator()(const choice &c) const
+    {
+      if(s.actions.has_contained_choice(c))
+	++action_hits;
+      else if(!mismatch)
+	mismatch = c;
+      else
+	return false;
+
+      return true;
+    }
+  };
+
+  /** \brief Apply a single promotion to a single step. */
+  void apply_promotion(step &s, const promotion &p)
+  {
+    if(!(s.step_tier < p.get_tier()))
+      LOG_TRACE(logger, "Not applying " << p
+		<< " to step " << s.step_num << ": the step tier "
+		<< s.step_tier << " is not below the promotion tier.");
+    else
+      {
+	LOG_TRACE(logger, "Testing the promotion " << p
+		  << " against step " << s.step_num);
+
+	unsigned int action_hits;
+	boost::optional<choice> mismatch;
+	if(!p.get_choices().for_each(count_action_hits(action_hits,
+						       mismatch,
+						       s)))
+	  LOG_TRACE(logger, "Too many mismatches against " << p
+		    << ", not applying it.");
+	else
+	  {
+	    const unsigned int p_size(p.get_choices().size());
+	    if(action_hits == p_size)
+	      {
+		LOG_TRACE(logger, "Step " << s.step_num
+			  << " contains " << p << " as an active promotion.");
+		set_step_tier(s.step_num, p.get_tier());
+	      }
+	    else if(action_hits + 1 < p_size)
+	      LOG_TRACE(logger, "Step " << s.step_num
+			<< " does not contain " << p <<".");
+	    else if(!mismatch)
+	      LOG_ERROR(logger, "Internal error: found an incipient promotion with no mismatches!");
+	    else if(!s.deps_solved_by_choice.contains_key(*mismatch))
+	      LOG_TRACE(logger, "Step " << s.step_num
+			<< " almost contains " << p
+			<< " as an incipient promotion, but the choice "
+			<< *mismatch << " is not a solver.");
+	    else
+	      {
+		LOG_TRACE(logger, "Step " << s.step_num
+			  << " contains " << p
+			  << " as an incipient promotion for the choice "
+			  << *mismatch << ".");
+		increase_solver_tier(s, p, *mismatch);
+	      }
+	  }
+      }
+  }
+
+  /** \brief Check for promotions that have been added
+   *  since a step was generated, and apply them.
+   *
+   *  \param step_num  The index of the step to test.
+   */
   void check_for_new_promotions(int step_num)
   {
     step &s = graph.get_step(step_num);
 
-    boost::unordered_map<choice, promotion> incipient_promotions;
-    maybe<promotion> non_incipient_promotion;
+    eassert(promotion_queue_tail.get() != NULL);
+    eassert(s.promotion_queue_location.get() != NULL);
 
+    const promotion_queue_entry &current_tail = *promotion_queue_tail;
+    const promotion_queue_entry &step_location = *s.promotion_queue_location;
 
-    promotions.find_highest_incipient_promotions(s.actions,
-						 s.deps_solved_by_choice,
-						 incipient_promotions,
-						 non_incipient_promotion);
+    LOG_TRACE(logger, "The current promotion tail has index "
+	      << current_tail.get_index() << " and action sum "
+	      << current_tail.get_action_sum() << "; step "
+	      << step_num << " points to a promotion cell with index "
+	      << step_location.get_index() << " and action sum "
+	      << step_location.get_action_sum() << ", for a difference of "
+	      << (current_tail.get_index() - step_location.get_index())
+	      << " steps and "
+	      << (current_tail.get_action_sum() - step_location.get_action_sum())
+	      << " actions.");
 
-    if(non_incipient_promotion.get_has_value())
+    if(promotion_queue_tail != s.promotion_queue_location)
+      eassert(step_location.get_has_contents());
+
+    const unsigned int extra_actions = current_tail.get_action_sum() - step_location.get_action_sum();
+    if(extra_actions <= s.actions.size() + s.deps_solved_by_choice.size())
       {
-	const promotion &p(non_incipient_promotion.get_value());
-	LOG_TRACE(logger, "Found a new promotion in the action set of step "
-		  << step_num << ": " << p);
-	increase_step_tier(s, p);
-      }
+	LOG_TRACE(logger, "Applying each new promotion to step "
+		  << s.step_num << ".");
+	for(const promotion_queue_entry *qEnt = &step_location;
+	    qEnt->get_has_contents(); qEnt = qEnt->get_next().get())
+	  apply_promotion(s, qEnt->get_promotion());
 
-    for(typename boost::unordered_map<choice, promotion>::const_iterator it =
-	  incipient_promotions.begin();
-	it != incipient_promotions.end(); ++it)
-      increase_solver_tier(s, it->second, it->first);
+	s.promotion_queue_location = promotion_queue_tail;
+      }
+    else
+      {
+	boost::unordered_map<choice, promotion> incipient_promotions;
+	maybe<promotion> non_incipient_promotion;
+
+
+	promotions.find_highest_incipient_promotions(s.actions,
+						     s.deps_solved_by_choice,
+						     incipient_promotions,
+						     non_incipient_promotion);
+
+	if(non_incipient_promotion.get_has_value())
+	  {
+	    const promotion &p(non_incipient_promotion.get_value());
+	    LOG_TRACE(logger, "Found a new promotion in the action set of step "
+		      << step_num << ": " << p);
+	    increase_step_tier(s, p);
+	  }
+
+	// Note that some promotions might be generated as a result of
+	// increasing tiers; to be perfectly correct we should account
+	// for those.  On the other hand, this might not be necessary;
+	// any promotions that are generated should by definition
+	// already be included in the step, correct?
+	s.promotion_queue_location = promotion_queue_tail;
+	for(typename boost::unordered_map<choice, promotion>::const_iterator it =
+	      incipient_promotions.begin();
+	    it != incipient_promotions.end(); ++it)
+	  increase_solver_tier(s, it->second, it->first);
+      }
   }
 
   /** \brief Process the given step number and generate its
@@ -3747,6 +3894,7 @@ public:
 	  root.score += weights.full_solution_score;
 
 	root.step_tier = tier_limits::minimum_tier;
+	root.promotion_queue_location = promotion_queue_tail;
 
 	for(typename imm::set<dep>::const_iterator it = initial_broken.begin();
 	    it != initial_broken.end(); ++it)

@@ -35,6 +35,8 @@
 #include <generic/util/immset.h>
 
 #include <boost/functional/hash.hpp>
+#include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
 
 // solver_information and dep_solvers are top-level declarations so
 // they can easily get an operator<< that works.
@@ -343,6 +345,84 @@ std::size_t hash_value(const generic_dep_solvers<PackageUniverse> &dep_solvers)
   return dep_solvers.get_hash_value();
 }
 
+/** \brief One entry in the queue of active promotions.
+ *
+ *  Each entry in the queue contains its index (counting from 0) and
+ *  the sum of the number of actions in all the previous promotions in
+ *  the queue.  All entries but the last contain a promotion and a
+ *  pointer to the next entry.  The nodes in the queue are
+ *  reference-counted via boost::shared_ptr, so they can be cleaned up
+ *  after all steps have advanced past them.
+ */
+template<typename PackageUniverse>
+class generic_promotion_queue_entry
+{
+public:
+  typedef generic_promotion<PackageUniverse> promotion;
+
+private:
+  unsigned int action_sum;
+  unsigned int index;
+  boost::optional<std::pair<promotion, boost::shared_ptr<generic_promotion_queue_entry> > > contents;
+
+public:
+  /** \brief Create a promotion queue entry with no successor link or
+   *  stored promotion.
+   */
+  generic_promotion_queue_entry(unsigned int _action_sum, unsigned int _index)
+    : action_sum(_action_sum), index(_index)
+  {
+  }
+
+  /** \brief Retrieve the sum of the number of actions in all previous
+   *  promotions in the queue.
+   */
+  unsigned int get_action_sum() const { return action_sum; }
+
+  /** \brief Retrieve the index of this entry in the queue. */
+  unsigned int get_index() const { return index; }
+
+  /** \brief Fill in the promotion and successor information.
+   *
+   *  This may be invoked only once on a given promotion queue entry.
+   *  It will automatically generate a successor node when it is
+   *  invoked.
+   *
+   *  \return the new queue entry.
+   */
+  void set_promotion(const promotion &p)
+  {
+    // Check that we don't have any contents yet.
+    eassert(!contents);
+
+    contents = std::make_pair(p, new generic_promotion_queue_entry(action_sum + p.get_choices().size(), index + 1));
+  }
+
+  /** \brief Return \b true if this queue entry has a promotion and a
+   *  successor.
+   */
+  bool get_has_contents() const { return contents; }
+
+  /** \brief Retrieve the promotion associated with this queue entry.
+   */
+  promotion get_promotion() const
+  {
+    return contents->first;
+  }
+
+  /** \brief Retrieve the next link in the queue.
+   *
+   *  If this is the last entry in the queue, returns a NULL pointer.
+   */
+  boost::shared_ptr<generic_promotion_queue_entry> get_next() const
+  {
+    if(contents)
+      return contents->second;
+    else
+      return boost::shared_ptr<generic_promotion_queue_entry>();
+  }
+};
+
 /** \brief Represents the current search graph.
  *
  *  This structure and its operations track all the visited search
@@ -436,6 +516,12 @@ public:
     // This is always -1 to start with, and is updated when the step's
     // successors are generated.
     int first_child;
+
+    /** \brief The tail of the promotion queue at the time that this
+     *  step was created or synchronized with the active promotion
+     *  set.
+     */
+    boost::shared_ptr<generic_promotion_queue_entry<PackageUniverse> > promotion_queue_location;
 
     /** \brief Members used while searching promotions in existing
      *  steps.
