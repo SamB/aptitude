@@ -270,6 +270,27 @@ private:
     }
   };
 
+  // Used to check the install_version_choices map for supermap-ness
+  // when testing set containment, and to check the
+  // not_install_version_choices map for superset-ness.
+  struct choice_is_contained_in
+  {
+    choice_is_contained_in()
+    {
+    }
+
+    bool operator()(const std::pair<package, choice> &p1,
+		    const std::pair<package, choice> &p2) const
+    {
+      return p1.second.contains(p2.second);
+    }
+
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      return c1.contains(c2);
+    }
+  };
+
   generic_choice_set(const imm::map<package, choice> &_install_version_choices,
 		     const imm::set<choice> &_not_install_version_choices)
     : install_version_choices(_install_version_choices),
@@ -356,8 +377,8 @@ public:
   /** \brief If a choice in this set contains c, store it in
    *  out and return true.
    */
-  bool get_contained_choice(const choice &c,
-			    choice &out) const
+  bool get_containing_choice(const choice &c,
+			     choice &out) const
   {
     switch(c.get_type())
       {
@@ -399,7 +420,60 @@ public:
   bool contains(const choice &c) const
   {
     choice dummy;
-    return get_contained_choice(c, dummy);
+    return get_containing_choice(c, dummy);
+  }
+
+  /** \brief If a choice in this set is contained in c, store it in
+   *  out and return true.
+   */
+  bool get_choice_contained_by(const choice &c,
+			       choice &out) const
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	{
+	  typename imm::map<package, choice>::node n =
+	    install_version_choices.lookup(c.get_ver().get_package());
+	  if(!n.isValid())
+	    return false;
+	  else
+	    {
+	      std::pair<package, choice> existing_choice_pair(n.getVal());
+	      choice &existing_choice(existing_choice_pair.second);
+	      if(c.contains(existing_choice))
+		{
+		  out = existing_choice;
+		  return true;
+		}
+	      else
+		return false;
+	    }
+	}
+
+      default:
+	{
+	  typename imm::set<choice>::node
+	    found = not_install_version_choices.find_node(c);
+	  if(found.isValid())
+	    {
+	      out = found.getVal();
+	      return true;
+	    }
+	  else
+	    return false;
+	}
+      }
+  }
+
+  /** \brief Test whether some element of this set is contained by c.
+   *
+   *  Used when testing promotions, for instance.
+   */
+  bool has_contained_choice(const choice &c) const
+  {
+    choice dummy;
+    return get_choice_contained_by(c, dummy);
   }
 
   typedef unsigned int size_type;
@@ -442,6 +516,18 @@ public:
   bool contains(const generic_choice_set &other) const
   {
     const choice_contains f;
+
+    return
+      install_version_choices.is_supermap_of_under(other.install_version_choices, f) &&
+      not_install_version_choices.contains(other.not_install_version_choices, f);
+  }
+
+  /** \brief Check whether each entry in the other set contains an
+   *  entry in this set.
+   */
+  bool subset_is_contained_in(const generic_choice_set &other) const
+  {
+    const choice_is_contained_in f;
 
     return
       install_version_choices.is_supermap_of_under(other.install_version_choices, f) &&

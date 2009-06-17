@@ -1016,7 +1016,7 @@ private:
       else
 	{
 	  choice step_choice;
-	  if(s.actions.get_contained_choice(c, step_choice) &&
+	  if(s.actions.get_choice_contained_by(c, step_choice) &&
 	     step_choice.get_dep() == d)
 	    return visit(s, choice_mapping_action);
 	  else
