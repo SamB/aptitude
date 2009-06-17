@@ -353,7 +353,7 @@ public:
       }
   }
 
-  /** \brief If a choice in this set is contained in c, store it in
+  /** \brief If a choice in this set contains c, store it in
    *  out and return true.
    */
   bool get_contained_choice(const choice &c,
