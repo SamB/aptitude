@@ -203,7 +203,7 @@ namespace imm
       }
 
       const T &operator*() const { return lst->get_head(); }
-      const T *operator->() const { return lst->get_tail().operator->(); }
+      const T *operator->() const { return &lst->get_head(); }
     };
 
     /** \brief Retrieve an iterator pointing to the front of the list.
