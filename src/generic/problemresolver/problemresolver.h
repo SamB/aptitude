@@ -2730,15 +2730,12 @@ private:
 	      !rdi.end(); ++rdi)
 	    {
 	      dep rd(*rdi);
-	      LOG_TRACE(logger, "Testing revdep of " << old_version << ": " << rd);
 
 	      if(rd.broken_under(test_installation))
 		{
 		  if(!(rd.is_soft() &&
 		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
 		    add_unresolved_dep(s, rd);
-		  else
-		    LOG_TRACE(logger, "Ignoring already broken soft dep " << rd);
 		}
 	    }
 
@@ -2746,15 +2743,12 @@ private:
 	      !rdi.end(); ++rdi)
 	    {
 	      dep rd(*rdi);
-	      LOG_TRACE(logger, "Testing revdep of " << new_version << ": " << rd);
 
 	      if(rd.broken_under(test_installation))
 		{
 		  if(!(rd.is_soft() &&
 		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
 		    add_unresolved_dep(s, rd);
-		  else
-		    LOG_TRACE(logger, "Ignoring already broken soft dep " << rd);
 		}
 	    }
 
@@ -2762,7 +2756,6 @@ private:
 	      !di.end(); ++di)
 	    {
 	      dep d(*di);
-	      LOG_TRACE(logger, "Testing dep of " << new_version << ": " << d);
 
 	      if(d.broken_under(test_installation))
 		// Note: no need to test if this was chosen to be
