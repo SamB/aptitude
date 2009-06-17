@@ -2721,17 +2721,24 @@ private:
 	  version new_version = c.get_ver();
 	  version old_version = initial_state.version_of(new_version.get_package());
 
+	  LOG_TRACE(logger, "Finding new unresolved dependencies in step "
+		    << s.step_num << " caused by replacing "
+		    << old_version << " with " << new_version << ".");
+
 	  // Check reverse deps of the old version.
 	  for(typename version::revdep_iterator rdi = old_version.revdeps_begin();
 	      !rdi.end(); ++rdi)
 	    {
 	      dep rd(*rdi);
+	      LOG_TRACE(logger, "Testing revdep of " << old_version << ": " << rd);
 
 	      if(rd.broken_under(test_installation))
 		{
 		  if(!(rd.is_soft() &&
 		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
 		    add_unresolved_dep(s, rd);
+		  else
+		    LOG_TRACE(logger, "Ignoring already broken soft dep " << rd);
 		}
 	    }
 
@@ -2739,12 +2746,15 @@ private:
 	      !rdi.end(); ++rdi)
 	    {
 	      dep rd(*rdi);
+	      LOG_TRACE(logger, "Testing revdep of " << new_version << ": " << rd);
 
 	      if(rd.broken_under(test_installation))
 		{
 		  if(!(rd.is_soft() &&
 		       s.actions.contains(choice::make_break_soft_dep(rd, -1))))
 		    add_unresolved_dep(s, rd);
+		  else
+		    LOG_TRACE(logger, "Ignoring already broken soft dep " << rd);
 		}
 	    }
 	}
