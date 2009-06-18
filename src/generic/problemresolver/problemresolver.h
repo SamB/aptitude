@@ -3828,7 +3828,8 @@ private:
 		// If we enqueued *exactly* one successor, then this
 		// was a forced dependency and we should process that
 		// successor before returning.
-		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child)
+		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child &&
+		   graph.get_step(s.first_child).step_tier < tier_limits::defer_tier)
 		  {
 		    LOG_TRACE(logger, "Following forced dependency resolution from step "
 			      << step_num << " to step " << s.first_child);
