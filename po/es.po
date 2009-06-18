@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2009-04-26 20:39-0700\n"
-"PO-Revision-Date: 2009-02-27 11:27+0100\n"
+"PO-Revision-Date: 2009-06-15 01:22+0200\n"
 "Last-Translator: Javier Fernandez-Sanguino <jfs@debian.org>\n"
 "Language-Team: Debian-l10n-Spanish <debian-l10n-spanish@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -731,10 +731,10 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "No pudo encontrarse un archivo fuente para el paquete \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:205
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to satisfy the build-depends: %s."
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "No se pudieron satisfacer las dependencias de compilación: %s."
+msgstr "No se pudieron satisfacer las dependencias de compilación: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:241
 #, c-format
@@ -1206,7 +1206,7 @@ msgstr ""
 #. can be removed from your translation.
 #: src/cmdline/cmdline_prompt.cc:622
 msgid "Go ahead and ignore the warning|Yes"
-msgstr ""
+msgstr "Seguir e ignorar el aviso|Si"
 
 #. ForTranslators: This string is a confirmation message, which
 #. users (especially CJK users) should be able to input without
@@ -1215,7 +1215,7 @@ msgstr ""
 #. can be removed from your translation.
 #: src/cmdline/cmdline_prompt.cc:628
 msgid "Abort instead of overriding the warning|No"
-msgstr ""
+msgstr "Abortar en lugar de obviar el aviso|No"
 
 #: src/cmdline/cmdline_prompt.cc:639
 #, c-format
@@ -1862,16 +1862,16 @@ msgid "search: You must provide at least one search term\n"
 msgstr "búsqueda: Debe proporcionar al menos una término de búsqueda\n"
 
 #: src/cmdline/cmdline_show_broken.cc:86
-#, fuzzy, c-format
+#, c-format
 #| msgid "but it is not installable"
 msgid "but it is not installable."
-msgstr "pero no es instalable"
+msgstr "pero no es instalable."
 
 #: src/cmdline/cmdline_show_broken.cc:88
-#, fuzzy, c-format
+#, c-format
 #| msgid "but %s is to be installed."
 msgid "but it is not going to be installed."
-msgstr "pero se va a instalar %s."
+msgstr "pero no será instalado."
 
 #: src/cmdline/cmdline_show_broken.cc:119
 #, c-format
@@ -1956,16 +1956,16 @@ msgid " [held]"
 msgstr " [retenido]"
 
 #: src/cmdline/cmdline_show.cc:299
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed"
 msgid "%s%s; will be installed"
-msgstr "%s; se instalará"
+msgstr "%s%s; será instalado"
 
 #: src/cmdline/cmdline_show.cc:301
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s%s; will be installed automatically"
-msgstr "%s; se instalará automáticamente"
+msgstr "%s%s; se instalará automáticamente"
 
 #: src/cmdline/cmdline_show.cc:321
 #, c-format
@@ -2141,7 +2141,7 @@ msgstr "E: La orden «update» no toma argumentos\n"
 
 #: src/cmdline/cmdline_upgrade.cc:56
 msgid "The \"upgrade\" command is now named \"safe-upgrade\"."
-msgstr ""
+msgstr "El comando «upgrade» es ahora conocido como «safe-upgrade»."
 
 #: src/cmdline/cmdline_upgrade.cc:62
 #, c-format
@@ -2357,10 +2357,10 @@ msgid "Unable to find a reason to install %s.\n"
 msgstr "No se pudo encontrar una razón para instalar %s.\n"
 
 #: src/cmdline/cmdline_why.cc:1131
-#, fuzzy, c-format
+#, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
-msgstr "Paquetes que dependen de %s"
+msgstr "Paquetes que dependen de %s:"
 
 #: src/cmdline/cmdline_why.cc:1184 src/cmdline/cmdline_why.cc:1211
 #: src/cmdline/cmdline_why.cc:1270
@@ -2373,13 +2373,13 @@ msgid "Unable to parse some match patterns."
 msgstr "No se pudo interpretar algunos patrón de comparación."
 
 #: src/cmdline/cmdline_why.cc:1243
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "%s: this command requires at least one argument (the package to query)."
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
 msgstr ""
-"%s: esta orden necesita al menos un argumento (el paquete a consultar)."
+"%s: esta orden necesita al menos un argumento (el paquete a consultar).\n"
 
 #: src/cmdline/cmdline_why.h:202
 msgid "Unknown version selection, something is very wrong."
@@ -2483,7 +2483,7 @@ msgstr "[ERROR]"
 
 #: src/download_thread.h:136
 msgid "Attempt to start a download thread twice!"
-msgstr ""
+msgstr "Intento de iniciar una segunda descarga."
 
 #: src/edit_pkg_hier.cc:192
 msgid "No hierarchy information to edit"
@@ -2689,10 +2689,9 @@ msgid ""
 msgstr ""
 
 #: src/generic/apt/aptitude_resolver_universe.cc:871
-#, fuzzy
 #| msgid "Section"
 msgid "Safe actions"
-msgstr "Sección"
+msgstr "Acciones seguras"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:872
 #, fuzzy
@@ -2701,10 +2700,9 @@ msgid "Cancel all user actions"
 msgstr "Cance^lar acciones pendientes"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:873
-#, fuzzy
 #| msgid "'-' to remove packages"
 msgid "Remove packages"
-msgstr "«-» para eliminar"
+msgstr "Eliminar paquetes"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:874
 #, fuzzy
@@ -2714,13 +2712,12 @@ msgstr "no es un paquete real"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:875
 msgid "Install versions from non-default sources"
-msgstr ""
+msgstr "Instalar versiones de fuentes no predeterminadas"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:876
-#, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Remove essential packages"
-msgstr "Eliminar los paquetes siguientes:"
+msgstr "Eliminar paquetes instalados"
 
 #: src/generic/apt/aptitude_resolver_universe.cc:909
 #, c-format
@@ -3011,10 +3008,10 @@ msgid "Unknown dependency type: %s"
 msgstr "Tipo de dependencia desconocida: %s"
 
 #: src/generic/apt/matching/parse.cc:860
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unknown matcher type: \"%s\"."
 msgid "Unknown term type: \"%s\"."
-msgstr "Tipo de patrón desconocido: «%s»"
+msgstr "Tipo de patrón desconocido: «%s»."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -3052,10 +3049,10 @@ msgid "Unexpected empty expression"
 msgstr "Expresión vacía no esperada"
 
 #: src/generic/apt/matching/parse.cc:1391
-#, fuzzy, c-format
+#, c-format
 #| msgid "Badly formed expression"
 msgid "Badly formed expression: expected '|', got '%c'"
-msgstr "Expresión malformada"
+msgstr "Expresión mal formada: esperaba «|», obtuve «%c»"
 
 #: src/generic/apt/matching/parse.cc:1438
 msgid "Unexpected ')'"
@@ -3186,7 +3183,7 @@ msgstr "No se pudo eliminar el directorio «%s»"
 
 #: src/gtk/aptitude.glade:6
 msgid "Aptitude Package Manager"
-msgstr ""
+msgstr "Gestor de Paquetes Aptitude"
 
 #: src/gtk/aptitude.glade:18
 #, fuzzy
@@ -3367,6 +3364,7 @@ msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
+"Ver los errores ocurridos en el sistema apt desde que se inicio el programa."
 
 #: src/gtk/aptitude.glade:311
 msgid "View Apt _Errors"
@@ -3374,7 +3372,7 @@ msgstr ""
 
 #: src/gtk/aptitude.glade:325
 msgid "Find chains of dependencies linking one package to another."
-msgstr ""
+msgstr "Encuentra cadenas de dependencias entre un paquete y otro."
 
 #: src/gtk/aptitude.glade:326
 #, fuzzy
@@ -3412,10 +3410,9 @@ msgid "Dashboard"
 msgstr ""
 
 #: src/gtk/aptitude.glade:422
-#, fuzzy
 #| msgid "List Update"
 msgid "Update"
-msgstr "Actualizando listas"
+msgstr "Actualizar"
 
 #: src/gtk/aptitude.glade:432 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
 #: src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914 src/ui.cc:935
@@ -3433,20 +3430,18 @@ msgid "Resolver"
 msgstr "Solucionador"
 
 #: src/gtk/aptitude.glade:462
-#, fuzzy
 #| msgid "Installed"
 msgid "Install/Remove"
-msgstr "Instalado"
+msgstr "Instalar/Eliminar"
 
 #: src/gtk/aptitude.glade:635 src/gtk/gui.cc:93 src/gtk/gui.cc:1372
 msgid "Remove"
 msgstr "Eliminar"
 
 #: src/gtk/aptitude.glade:648 src/gtk/gui.cc:1377
-#, fuzzy
 #| msgid "^Purge"
 msgid "Purge"
-msgstr "^Purgar"
+msgstr "Purgar"
 
 #: src/gtk/aptitude.glade:661 src/gtk/gui.cc:1382
 msgid "Keep"
@@ -3471,17 +3466,15 @@ msgid "Make this the default for new package lists."
 msgstr "Eliminar el filtro de la lista de paquetes"
 
 #: src/gtk/aptitude.glade:747
-#, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "Apply these settings to all active package lists."
-msgstr "Aplicar un filtro a la lista de paquetes"
+msgstr "Aplicar éstas opciones a todas las listas de paquetes activa."
 
 #: src/gtk/aptitude.glade:811 src/gtk/aptitude.glade:1490
 #: src/gtk/aptitude.glade:1809 src/gtk/aptitude.glade:1945
-#, fuzzy
 #| msgid "Search"
 msgid "Search:"
-msgstr "Buscar"
+msgstr "Buscar:"
 
 #: src/gtk/aptitude.glade:831 src/gtk/aptitude.glade:1510
 #: src/gtk/aptitude.glade:1829 src/gtk/aptitude.glade:1965
@@ -3489,38 +3482,34 @@ msgid "gtk-find"
 msgstr ""
 
 #: src/gtk/aptitude.glade:845
-#, fuzzy
 #| msgid "reinstall"
 msgid "Incremental"
-msgstr "reinstalar"
+msgstr "Incremental"
 
 #: src/gtk/aptitude.glade:862 src/gtk/aptitude.glade:1528
 #: src/gtk/aptitude.glade:1847 src/gtk/aptitude.glade:1983
-#, fuzzy
 #| msgid "Err "
 msgid "Errors"
-msgstr "Err "
+msgstr "Errores"
 
 #: src/gtk/aptitude.glade:879 src/gtk/aptitude.glade:1864
 #: src/gtk/aptitude.glade:2000
 msgid "Show "
-msgstr ""
+msgstr "Mostrar."
 
 #: src/gtk/aptitude.glade:986
 msgid "<span size=\"xx-large\">Versions:</span>"
 msgstr ""
 
 #: src/gtk/aptitude.glade:1046
-#, fuzzy
 #| msgid "Dependencies of %s"
 msgid "Dependencies"
-msgstr "Dependencias de %s"
+msgstr "Dependencias"
 
 #: src/gtk/aptitude.glade:1076
-#, fuzzy
 #| msgid "^Changelog"
 msgid "Changelog"
-msgstr "^Registro de cambios"
+msgstr "Registro de cambios"
 
 #: src/gtk/aptitude.glade:1104
 #, fuzzy
@@ -3537,10 +3526,9 @@ msgid "Popcon"
 msgstr ""
 
 #: src/gtk/aptitude.glade:1135
-#, fuzzy
 #| msgid "Tags"
 msgid "tags"
-msgstr "Marcas"
+msgstr "etiquetas"
 
 #: src/gtk/aptitude.glade:1192
 msgid "Fixing upgrade manually:"
@@ -3548,7 +3536,7 @@ msgstr ""
 
 #: src/gtk/aptitude.glade:1202 src/gtk/dashboardtab.cc:536
 msgid "Calculating upgrade..."
-msgstr ""
+msgstr "Calculando la actualización..."
 
 #: src/gtk/aptitude.glade:1229
 msgid ""
@@ -3560,10 +3548,9 @@ msgid ""
 msgstr ""
 
 #: src/gtk/aptitude.glade:1232
-#, fuzzy
 #| msgid "Unknown action type: %s"
 msgid "Group by action type"
-msgstr "Tipo de acción desconocida: %s"
+msgstr "Agrupar por tipo de acción"
 
 #: src/gtk/aptitude.glade:1245
 msgid ""
@@ -3572,20 +3559,18 @@ msgid ""
 msgstr ""
 
 #: src/gtk/aptitude.glade:1246
-#, fuzzy
 #| msgid "view an explanation of the changes in the solution"
 msgid "Show an explanation of the solution"
-msgstr "ver una explicación de los cambios de la solución"
+msgstr "Ver una explicación de la solución"
 
 #: src/gtk/aptitude.glade:1263
 msgid "<b>View Mode</b>"
 msgstr ""
 
 #: src/gtk/aptitude.glade:1307
-#, fuzzy
 #| msgid "Toggle ^Rejected"
 msgid "Rejected"
-msgstr "Conmutar ^Rechazados"
+msgstr "Rechazado"
 
 #: src/gtk/aptitude.glade:1317
 #, fuzzy
@@ -3595,7 +3580,7 @@ msgstr "Preferencias"
 
 #: src/gtk/aptitude.glade:1331
 msgid "Accepted"
-msgstr ""
+msgstr "Aceptado"
 
 #: src/gtk/aptitude.glade:1347
 msgid "<b>Status of selected action</b>"
@@ -3603,26 +3588,23 @@ msgstr ""
 
 #: src/gtk/aptitude.glade:1364 src/gtk/download.cc:261
 #: src/gtk/entityview.cc:551
-#, fuzzy
 #| msgid "State"
 msgid "Status"
 msgstr "Estado"
 
 #: src/gtk/aptitude.glade:1415
 msgid "<b>Solutions</b>"
-msgstr ""
+msgstr "<b>Soluciones</b>"
 
 #: src/gtk/aptitude.glade:1442
-#, fuzzy
 #| msgid "Select the next solution to the dependency problems."
 msgid "Calculate the next solution that has not yet been generated."
-msgstr "Seleccionar la siguiente solución a los problemas de dependencias."
+msgstr "Calcular la solución siguiente que aún no ha sido generada"
 
 #: src/gtk/aptitude.glade:1443
-#, fuzzy
 #| msgid "^Examine Solution"
 msgid "Find a new solution"
-msgstr "^Examinar solución"
+msgstr "Buscar una solución nueva"
 
 #: src/gtk/aptitude.glade:1457
 #, fuzzy
@@ -3636,28 +3618,27 @@ msgid "gtk-apply"
 msgstr ""
 
 #: src/gtk/aptitude.glade:1607
-#, fuzzy
 #| msgid "Upgrade"
 msgid "Upgrade Summary"
-msgstr "Actualizar"
+msgstr "Actualizar Sumario"
 
 #: src/gtk/aptitude.glade:1636
-#, fuzzy
 #| msgid "Source Package: "
 msgid "Selected Package"
-msgstr "Paquete fuente: "
+msgstr "Paquete seleccionado"
 
 #: src/gtk/aptitude.glade:1667
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
 msgstr ""
+"Etiqueta explicando la actualización.  Éste texto no aparecerá en el "
+"programa en ejecución."
 
 #: src/gtk/aptitude.glade:1682
-#, fuzzy
 #| msgid "Manual"
 msgid "Fix Manually"
-msgstr "Manual"
+msgstr "Arreglar manualmente"
 
 #: src/gtk/aptitude.glade:1691 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
 msgid "Upgrade"
@@ -3677,7 +3658,7 @@ msgstr ""
 
 #: src/gtk/aptitude.glade:2115
 msgid "A terminal running dpkg will appear here."
-msgstr ""
+msgstr "Una terminal ejecutando dpkg se mostrará aquí."
 
 #: src/gtk/aptitude.glade:2127
 msgid ""
@@ -3708,13 +3689,15 @@ msgstr ""
 
 #: src/gtk/changelog.cc:276
 msgid "The changelog is empty."
-msgstr ""
+msgstr "El registro de cambios esta vacío."
 
 #: src/gtk/changelog.cc:278
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
+"No hay entradas nuevas en el registro de cambios, parece que instaló una "
+"versión de este paquete compilado localmente."
 
 #: src/gtk/changelog.cc:280
 msgid ""
@@ -3723,10 +3706,10 @@ msgid ""
 msgstr ""
 
 #: src/gtk/changelog.cc:373
-#, fuzzy, c-format
+#, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
-msgstr "URL a usar para descargar los registros de cambios"
+msgstr "Fallo al descargar el registro de cambios: %s"
 
 #: src/gtk/changelog.cc:479
 #, fuzzy, c-format
@@ -3744,51 +3727,46 @@ msgid ""
 msgstr "Sólo puede ver registros de cambios de paquetes de Debian oficiales."
 
 #: src/gtk/changelog.cc:503
-#, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
-msgstr "Descargando registro de cambios"
+msgstr "Descargando registro de cambios; por favor, espere..."
 
 #: src/gtk/changelog.cc:563
-#, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
 msgstr "Descargando registro de cambios"
 
 #: src/gtk/dashboardtab.cc:210
 msgid "Resolve Upgrade Manually"
-msgstr ""
+msgstr "Resolver actualización manualmente"
 
 #: src/gtk/dashboardtab.cc:306
-#, fuzzy
 #| msgid "URL to use to download changelogs"
 msgid "Preparing to download changelogs"
-msgstr "URL a usar para descargar los registros de cambios"
+msgstr "Preparando para descargar registros de cambios."
 
 #: src/gtk/dashboardtab.cc:396
 msgid "Available upgrades:"
-msgstr ""
+msgstr "Actualizaciones disponibles:"
 
 #: src/gtk/dashboardtab.cc:413
-#, fuzzy, c-format
+#, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
 msgid "%d available upgrade:"
 msgid_plural "%d available upgrades:"
-msgstr[0] "%d actualización"
-msgstr[1] "%d actualizaciones"
+msgstr[0] "%d actualización disponible:"
+msgstr[1] "%d actualizaciones disponibles:"
 
 #: src/gtk/dashboardtab.cc:629
-#, fuzzy
 #| msgid "Not Installed"
 msgid "No upgrades are available."
-msgstr "Sin instalar"
+msgstr "No hay actualizaciones disponibles."
 
 #: src/gtk/dashboardtab.cc:641
-#, fuzzy
 #| msgid "Unable to locate package %s"
 msgid "Unable to calculate an upgrade."
-msgstr "No se pudo localizar el paquete %s"
+msgstr "No se pudo calcular la actualización."
 
 #: src/gtk/dashboardtab.cc:650
 #, c-format
@@ -3818,12 +3796,13 @@ msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
 "solution."
 msgstr ""
+"No se pudo calcular una actualización.  Pulse «%s» para buscar una solución."
 
 #: src/gtk/dashboardtab.cc:704
-#, fuzzy, c-format
+#, c-format
 #| msgid "Internal error: Default column string is unparsable"
 msgid "Internal error encountered while calculating an upgrade: %s"
-msgstr "Error interno: la columna por defecto es ininteligible"
+msgstr "Un error interno ocurrió calculando una actualización: %s"
 
 #: src/gtk/dashboardtab.cc:836
 #, c-format
@@ -3833,54 +3812,47 @@ msgid ""
 msgstr ""
 
 #: src/gtk/dependency_chains_tab.cc:77
-#, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: start"
-msgstr "Gestión de dependencias"
+msgstr "Encontrar cadenas de dependencias: inicio"
 
 #: src/gtk/dependency_chains_tab.cc:79
-#, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: end"
-msgstr "Gestión de dependencias"
+msgstr "Encontrar cadenas de dependencias: final"
 
 #: src/gtk/dependency_chains_tab.cc:81
-#, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: results"
-msgstr "Gestión de dependencias"
+msgstr "Encontrar cadenas de dependencias: resultados"
 
 #: src/gtk/dependency_chains_tab.cc:221
 msgid "Select one or more starting packages and an ending package to search."
 msgstr ""
 
 #: src/gtk/dependency_chains_tab.cc:276
-#, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency chain found."
-msgstr "Gestión de dependencias"
+msgstr "Nó se encontró ninguna cadena de dependencias."
 
 #: src/gtk/download.cc:179
 msgid "Ignored"
-msgstr ""
+msgstr "Ignorado"
 
 #: src/gtk/download.cc:185
-#, fuzzy
 #| msgid "False"
 msgid "Failed"
-msgstr "Falso"
+msgstr "Falló"
 
 #: src/gtk/download.cc:193
-#, fuzzy
 #| msgid "Deleting downloaded files"
 msgid "Already downloaded"
-msgstr "Eliminando ficheros descargados"
+msgstr "Ya ha sido descargado"
 
 #: src/gtk/download.cc:204
-#, fuzzy
 #| msgid "none"
 msgid "Done"
-msgstr "ninguno"
+msgstr "Finalizado"
 
 #: src/gtk/download.cc:248 src/gtk/entityview.cc:397 src/pkg_columnizer.cc:93
 #: src/pkg_view.cc:672
@@ -3890,58 +3862,54 @@ msgstr "Descripción"
 # No me gusta mucho la traducción de 'progreso'
 # en este contexto, pero no se me ocurre una mejor
 #: src/gtk/download.cc:253
-#, fuzzy
 #| msgid "Total Progress: "
 msgid "Progress"
-msgstr "Progreso total: "
+msgstr "Progreso total"
 
 #: src/gtk/download.cc:264
-#, fuzzy
 #| msgid "Description"
 msgid "Short Description"
-msgstr "Descripción"
+msgstr "Descripción corta"
 
 #: src/gtk/download.cc:272
 msgid "URI"
 msgstr ""
 
 #: src/gtk/download.cc:319
-#, fuzzy
 #| msgid "Cleaning while a download is in progress is not allowed"
 msgid "The download is still in progress.  Should it be canceled?"
-msgstr "No está permitido limpiar mientras se esté realizando una descarga"
+msgstr "La descarga aun esta activa.  Debería ser cancelada?"
 
 #: src/gtk/download.cc:395 src/gtk/gui.cc:776
-#, fuzzy
 #| msgid "View next display"
 msgid "View Details"
-msgstr "Ver siguiente pantalla"
+msgstr "Ver detalles"
 
 #: src/gtk/download.cc:439
 msgid "Change media"
-msgstr ""
+msgstr "Cambiar media"
 
 #: src/gtk/download.cc:460
 #, c-format
 msgid "%s: %sB/s"
-msgstr ""
+msgstr "%s: %sB/s"
 
 #: src/gtk/download.cc:480
 #, c-format
 msgid "%s: %lu/%lu, %sB/s"
-msgstr ""
+msgstr "%s: %lu/%lu, %sB/s"
 
 #: src/gtk/download.cc:486
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed"
 msgid "%s: %lu/%lu, stalled"
-msgstr "%s; se instalará"
+msgstr "%s: %lu/%lu, pausado"
 
 #: src/gtk/download.cc:507
-#, fuzzy, c-format
+#, c-format
 #| msgid " [ %i%% ] (%sB/s, %s remaining)"
 msgid "%s: %sB of %sB at %sB/s, %s remaining"
-msgstr " [ %i%% ] (%sB/s, faltan %s)"
+msgstr "%s: %sB de %sB a %sB/s, %s restantes"
 
 #: src/gtk/download.cc:514
 #, fuzzy, c-format
@@ -3951,11 +3919,11 @@ msgstr "pero se va a instalar %s."
 
 #: src/gtk/download.cc:541
 msgid "Completed"
-msgstr ""
+msgstr "Finalizado"
 
 #: src/gtk/download.cc:543
 msgid "Completed with errors"
-msgstr ""
+msgstr "Finalizado con errores"
 
 #: src/gtk/dpkg_terminal.cc:352
 #, fuzzy, c-format
@@ -3969,10 +3937,10 @@ msgid "Internal error: the temporary socket name \"%s\" is too long!"
 msgstr ""
 
 #: src/gtk/dpkg_terminal.cc:429
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to create temporary directory from template \"%s\": %s"
 msgid "%s: Unable to accept a connection: %s"
-msgstr "No se pudo crear el directorio temporal en base a la plantilla «%s»: %s"
+msgstr "%s: No se puedo aceptar una conexión: %s"
 
 #: src/gtk/dpkg_terminal.cc:533
 #, c-format
@@ -3995,14 +3963,13 @@ msgid "[%s] dpkg process complete; there are more packages left to process.\n"
 msgstr ""
 
 #: src/gtk/entityview.cc:381 src/gtk/entityview.cc:575
-#, fuzzy
 #| msgid "ProgName"
 msgid "Name"
-msgstr "NombreProg"
+msgstr "Nombre"
 
 #: src/gtk/entityview.cc:385
 msgid "Visible?"
-msgstr ""
+msgstr "Visible?"
 
 #: src/gtk/entityview.cc:411
 #, fuzzy, c-format
@@ -4018,7 +3985,7 @@ msgstr "Rechazando la eliminación de %s"
 
 #: src/gtk/entityview.cc:552
 msgid "Icons showing the current and future status of this package."
-msgstr ""
+msgstr "Iconos mostrando el estado actual y futuro de este paquete."
 
 #: src/gtk/entityview.cc:564 src/pkg_columnizer.cc:102
 msgid "Auto"
@@ -4031,22 +3998,19 @@ msgid "Whether the package is automatically installed."
 msgstr "«&M» para marcar paquetes como instalados automáticamente"
 
 #: src/gtk/entityview.cc:576
-#, fuzzy
 #| msgid "Cancel any action on the selected package"
 msgid "The name and description of the package."
-msgstr "Cancelar cualquier acción en el paquete seleccionado"
+msgstr "El nombre y la descripción del paquete."
 
 #: src/gtk/entityview.cc:591
-#, fuzzy
 #| msgid "Version: "
 msgid "Version"
-msgstr "Versión: "
+msgstr "Versión"
 
 #: src/gtk/entityview.cc:592
-#, fuzzy
 #| msgid "Check for new versions of packages"
 msgid "The version number of the package."
-msgstr "Buscar nuevas versiones de los paquetes"
+msgstr "El numero de versión del paquete."
 
 #: src/gtk/entityview.cc:607
 msgid "The package archives that contain this version."
@@ -4061,35 +4025,31 @@ msgstr ""
 
 #: src/gtk/filesview.cc:307
 msgid "Files list is only available for installed packages."
-msgstr ""
+msgstr "La lista de archivos está solo disponible para paquetes instalados."
 
 #: src/gtk/gui.cc:78
-#, fuzzy
 #| msgid "not installed"
 msgid "Not installed"
-msgstr "sin instalar"
+msgstr "No instalado"
 
 #: src/gtk/gui.cc:79
 msgid "Virtual"
 msgstr "Virtual"
 
 #: src/gtk/gui.cc:80
-#, fuzzy
 #| msgid "unpacked"
 msgid "Unpacked"
-msgstr "desempaquetado"
+msgstr "Desempaquetado"
 
 #: src/gtk/gui.cc:81
-#, fuzzy
 #| msgid "half-config"
 msgid "Half-configured"
-msgstr "a medio configurar"
+msgstr "Medio configurado"
 
 #: src/gtk/gui.cc:82
-#, fuzzy
 #| msgid "half-install"
 msgid "Half-installed"
-msgstr "a medio instalar"
+msgstr "Medio instalado"
 
 #: src/gtk/gui.cc:83
 #, fuzzy
@@ -4126,36 +4086,32 @@ msgid "Remove and purge configuration/data"
 msgstr ""
 
 #: src/gtk/gui.cc:95
-#, fuzzy
 #| msgid "forbidden upgrade"
 msgid "Hold (don't upgrade)"
-msgstr "actualización prohibida"
+msgstr "Retener (no actualizar)"
 
 #: src/gtk/gui.cc:97
-#, fuzzy
 #| msgid "Related Dependencies"
 msgid "Unsatisfied dependencies"
-msgstr "Dependencias relacionadas"
+msgstr "Dependencias no satisfechas"
 
 #: src/gtk/gui.cc:213
 msgid "Checking for updates"
-msgstr ""
+msgstr "Comprobando actualizaciones"
 
 #: src/gtk/gui.cc:231
 msgid "Insufficient privileges."
-msgstr ""
+msgstr "Privilegios insuficientes."
 
 #: src/gtk/gui.cc:234
-#, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "You must be root to update the package lists."
-msgstr "Aplicar un filtro a la lista de paquetes"
+msgstr "Solo el administrador puede actualizar las listas."
 
 #: src/gtk/gui.cc:242 src/gtk/gui.cc:890
-#, fuzzy
 #| msgid "Downloading..."
 msgid "Download already running."
-msgstr "Descargando..."
+msgstr "Descarga en curso."
 
 #: src/gtk/gui.cc:244 src/gtk/gui.cc:892 src/ui.cc:1462 src/ui.cc:1696
 msgid "A package-list update or install run is already taking place."
@@ -4164,18 +4120,20 @@ msgstr ""
 "instalación."
 
 #: src/gtk/gui.cc:303
-#, fuzzy, c-format
+#, c-format
 #| msgid "List Update"
 msgid "Update %s?"
-msgstr "Actualizando listas"
+msgstr "Actualizar %s?"
 
 #: src/gtk/gui.cc:329
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid ""
 "Replace configuration file\n"
 "'%s'?"
-msgstr "Imposible reemplazar %s con el nuevo fichero de configuración"
+msgstr ""
+"Reemplazar archivo de configuración\n"
+"«%s»?"
 
 #: src/gtk/gui.cc:333
 #, c-format
@@ -4185,11 +4143,15 @@ msgid ""
 "version, choose 'No'. Do you want to replace the current file and install "
 "the new package maintainers version? "
 msgstr ""
+"El archivo de configuración %s ha sido modificado (por Ud. o por un script). "
+"Este paquete contiene una versión actualizada. Si quiere mantener su versión "
+"actual, escoja «No». Desea reemplazar el archivo actual e instalar la versión "
+"nueva del paquete?"
 
 #: src/gtk/gui.cc:361
 #, c-format
 msgid "Comparing %s to %s..."
-msgstr ""
+msgstr "Comparando %s con %s..."
 
 #: src/gtk/gui.cc:682
 msgid ""
@@ -4198,76 +4160,69 @@ msgid ""
 msgstr ""
 
 #: src/gtk/gui.cc:720
-#, fuzzy
 #| msgid "%s changes"
 msgid "Done applying changes!"
-msgstr "%s cambios"
+msgstr "Cambios aplicados"
 
 #: src/gtk/gui.cc:767
-#, fuzzy
 #| msgid "%s changes"
 msgid "Applying changes..."
-msgstr "%s cambios"
+msgstr "Aplicando cambios..."
 
 #: src/gtk/gui.cc:819
-#, fuzzy, c-format
+#, c-format
 #| msgid "s: %F"
 msgid "%s: %s"
-msgstr "s: %F"
+msgstr "%s: %s"
 
 #: src/gtk/gui.cc:822
-#, fuzzy, c-format
+#, c-format
 #| msgid "No broken packages."
 msgid "Error in package %s"
-msgstr "Ningún paquete roto"
+msgstr "Error en el paquete %s"
 
 #: src/gtk/gui.cc:850
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid "Asking whether to replace the configuration file %s"
-msgstr "Imposible reemplazar %s con el nuevo fichero de configuración"
+msgstr "Preguntando si reemplazar el archivo de configuración %s"
 
 #: src/gtk/gui.cc:906 src/ui.cc:1206
 msgid "Downloading packages"
 msgstr "Descargando paquetes"
 
 #: src/gtk/gui.cc:982
-#, fuzzy
 #| msgid "No broken packages."
 msgid "Broken packages"
-msgstr "Ningún paquete roto"
+msgstr "Paquetes rotos"
 
 #: src/gtk/gui.cc:1015
-#, fuzzy
 #| msgid "No broken packages."
 msgid "Show broken packages"
-msgstr "Ningún paquete roto"
+msgstr "Mostrar paquetes rotos"
 
 #: src/gtk/gui.cc:1019
-#, fuzzy
 #| msgid "Resolve Dependencies"
 msgid "Resolve dependencies"
 msgstr "Resolver las dependencias"
 
 #: src/gtk/gui.cc:1047
-#, fuzzy, c-format
+#, c-format
 #| msgid "No packages are broken."
 msgid "%d package is broken"
 msgid_plural "%d packages are broken."
-msgstr[0] "No hay paquetes rotos."
-msgstr[1] "No hay paquetes rotos."
+msgstr[0] "El paquete %d está roto."
+msgstr[1] "Los paquetes %d están rotos."
 
 #: src/gtk/gui.cc:1091
-#, fuzzy
 #| msgid "%s changes"
 msgid "View changes"
-msgstr "%s cambios"
+msgstr "Ver cambios"
 
 #: src/gtk/gui.cc:1095
-#, fuzzy
 #| msgid "%s changes"
 msgid "Apply changes"
-msgstr "%s cambios"
+msgstr "Aplicar cambios"
 
 #. ForTranslators: any numbers in this
 #. string will be displayed in a larger
@@ -4293,10 +4248,10 @@ msgstr[0] "No se pudo eliminar %s"
 msgstr[1] "No se pudo eliminar %s"
 
 #: src/gtk/gui.cc:1190
-#, fuzzy, c-format
+#, c-format
 #| msgid "DownloadSize"
 msgid "Download size: %sB."
-msgstr "TamDescarga"
+msgstr "TamDescarga: %sB."
 
 #: src/gtk/gui.cc:1232
 #, c-format
@@ -4305,19 +4260,17 @@ msgstr ""
 
 #: src/gtk/gui.cc:1293
 msgid "This feature is not implemented, yet."
-msgstr ""
+msgstr "Ésta capacidad no está implementada, por ahora."
 
 #: src/gtk/gui.cc:1299
-#, fuzzy
 #| msgid "not installed"
 msgid "Not implemented"
-msgstr "sin instalar"
+msgstr "No implementado"
 
 #: src/gtk/gui.cc:1351 src/gtk/gui.cc:1370
-#, fuzzy
 #| msgid "Installed"
 msgid "Install/Upgrade"
-msgstr "Instalado"
+msgstr "Instalar/Actualizar"
 
 #: src/gtk/gui.cc:1393
 msgid "Set as automatic"
@@ -4331,7 +4284,7 @@ msgstr "Manual de usuario"
 
 #: src/gtk/gui.cc:1403
 msgid "Toggle automatic status"
-msgstr ""
+msgstr "Conmutar estado automático"
 
 #: src/gtk/gui.cc:1727
 #, c-format
@@ -4339,36 +4292,32 @@ msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
 
 #: src/gtk/info.cc:160 src/gtk/pkgview.cc:169
-#, fuzzy
 #| msgid "Current status: %F."
 msgid "Current status"
-msgstr "Estado actual: %F."
+msgstr "Estado actual"
 
 #: src/gtk/info.cc:162 src/gtk/pkgview.cc:171
 msgid "Selected status"
-msgstr ""
+msgstr "Estado seleccionado"
 
 #: src/gtk/info.cc:495
-#, fuzzy
 #| msgid "Not Installed"
 msgid "Not available"
-msgstr "Sin instalar"
+msgstr "No disponible"
 
 #: src/gtk/info.cc:540
-#, fuzzy
 #| msgid "C^ycle Package Information"
 msgid "Package information: version list"
-msgstr "Rec^orrer información de paquetes"
+msgstr "Información de paquete: lista de versiones"
 
 #: src/gtk/info.cc:550
-#, fuzzy
 #| msgid "Packages being deleted due to broken dependencies"
 msgid "Package information: dependency list"
-msgstr "Paquetes eliminados debido a error de dependencias"
+msgstr "Información de paquete: lista de dependencias"
 
 #: src/gtk/info.cc:592
 msgid "Please wait; reloading cache..."
-msgstr ""
+msgstr "Espere por favor; cargando almacén..."
 
 #: src/gtk/info.cc:737
 #, fuzzy
@@ -4389,20 +4338,19 @@ msgid "Parse error"
 msgstr ""
 
 #: src/gtk/packagestab.cc:203
-#, fuzzy, c-format
+#, c-format
 #| msgid "No packages matched the pattern \"%ls\"."
 msgid "No packages matched \"%s\"."
-msgstr "Ningún paquete concuerda con el patrón \"%ls\"."
+msgstr "Ningún paquete concuerda con el patrón «%s»."
 
 #: src/gtk/packagestab.cc:313
 msgid "Enter a search and click \"Find\" to display packages."
 msgstr ""
 
 #: src/gtk/packagestab.cc:413
-#, fuzzy
 #| msgid "Package: "
 msgid "Packages: "
-msgstr "Paquete: "
+msgstr "Paquetes: "
 
 #: src/gtk/packagestab.cc:490
 #, fuzzy, c-format
@@ -4417,94 +4365,94 @@ msgid "Install %s version %s"
 msgstr "Instalar(%s que provee %s)"
 
 #: src/gtk/packagestab.cc:506
-#, fuzzy, c-format
+#, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrade to %s version %s"
-msgstr " Versión de cwidget: %s\n"
+msgstr "Desactualizar %s desde la versión %s"
 
 #: src/gtk/packagestab.cc:517
-#, fuzzy, c-format
+#, c-format
 #| msgid "Keep the following packages at their current version:"
 msgid "Don't hold %s at its current version."
-msgstr "Mantener los paquetes siguientes en la versión actual:"
+msgstr "No retener %s en su versión actual."
 
 #: src/gtk/packagestab.cc:520 src/gtk/packagestab.cc:540
 #: src/gtk/packagestab.cc:543
-#, fuzzy, c-format
+#, c-format
 #| msgid "Canc^el pending actions"
 msgid "Cancel any actions on %s."
-msgstr "Cance^lar acciones pendientes"
+msgstr "Cancelar cualquier acción sobre %s."
 
 #: src/gtk/packagestab.cc:525
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the purge of %s."
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la purgación de %s."
 
 #: src/gtk/packagestab.cc:527
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s."
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la eliminación de %s."
 
 #: src/gtk/packagestab.cc:532
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the upgrade of %s."
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la actualización de %s."
 
 #: src/gtk/packagestab.cc:534
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s."
-msgstr "Cancelar la instalación de %F"
+msgstr "Cancelar la instalación de %s."
 
 #: src/gtk/packagestab.cc:536
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the downgrade of %s."
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la desactualización de %s."
 
 #: src/gtk/packagestab.cc:538
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the reinstallation of %s."
-msgstr "Cancelar la instalación de %F"
+msgstr "Cancelar la re-instalación de %s."
 
 #: src/gtk/packagestab.cc:579
-#, fuzzy, c-format
+#, c-format
 #| msgid "Remove(%s)"
 msgid "Remove %s"
-msgstr "Eliminar(%s)"
+msgstr "Eliminar %s"
 
 #: src/gtk/packagestab.cc:583
-#, fuzzy, c-format
+#, c-format
 #| msgid "^Purge"
 msgid "Purge %s"
-msgstr "^Purgar"
+msgstr "Purgar %s"
 
 #: src/gtk/packagestab.cc:591
 #, c-format
 msgid "Hold %s at its current version."
-msgstr ""
+msgstr "Retener %s en su versión actual."
 
 #: src/gtk/packagestab.cc:596
-#, fuzzy, c-format
+#, c-format
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "Mark %s as automatically installed."
-msgstr "«&M» para marcar paquetes como instalados automáticamente"
+msgstr "Marca %s como instalado automáticamente."
 
 #: src/gtk/packagestab.cc:601
-#, fuzzy, c-format
+#, c-format
 #| msgid "The package \"%s\" is manually installed.\n"
 msgid "Mark %s as manually installed."
-msgstr "El paquete «%s» se ha instalado manualmente.\n"
+msgstr "Marca %s como instalado manualmente."
 
 #: src/gtk/packagestab.cc:643
-#, fuzzy, c-format
+#, c-format
 #| msgid "\"%s\" is a virtual package provided by:\n"
 msgid "%s is a virtual package provided by:\n"
-msgstr "\"%s\" es un paquete virtual proporcionado por:\n"
+msgstr "%s es un paquete virtual proporcionado por:\n"
 
 #: src/gtk/packagestab.cc:707 src/gtk/previewtab.cc:210
 msgid "(more info...)"
@@ -4517,41 +4465,39 @@ msgid "Source: "
 msgstr "Paquete fuente: "
 
 #: src/gtk/pkgview.cc:224
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s was installed automatically."
-msgstr "%s; se instalará automáticamente"
+msgstr "%s se instaló automáticamente."
 
 #: src/gtk/pkgview.cc:227
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s is being installed automatically."
-msgstr "%s; se instalará automáticamente"
+msgstr "%s se instalará automáticamente."
 
 #: src/gtk/pkgview.cc:235
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s was installed manually."
-msgstr "%s; se instalará automáticamente"
+msgstr "%s; se instaló manualmente."
 
 #: src/gtk/pkgview.cc:238
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s is being installed manually."
-msgstr "%s; se instalará automáticamente"
+msgstr "%s; se esta instalando manualmente."
 
 #: src/gtk/pkgview.cc:399
 msgid "Cache reloading, please wait..."
-msgstr ""
+msgstr "Cargando almacén espere por favor..."
 
 #: src/gtk/pkgview.cc:604
-#, fuzzy
 #| msgid "Search"
 msgid "Searching..."
-msgstr "Buscar"
+msgstr "Buscando..."
 
 #: src/gtk/pkgview.cc:715
-#, fuzzy
 #| msgid "Building view"
 msgid "Finalizing view"
 msgstr "Construyendo la vista"
@@ -4685,16 +4631,15 @@ msgstr ""
 "completar su instalación."
 
 #: src/gtk/previewtab.cc:174
-#, fuzzy
 #| msgid "Preview"
 msgid "Preview: "
-msgstr "Previsualizar"
+msgstr "Previsualizar:"
 
 #: src/gtk/resolver.cc:68
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error while dumping resolver state"
 msgid "Error in dependency resolver: %s"
-msgstr "Error las volcar el estado del solucionador"
+msgstr "Error del solucionador: %s"
 
 #: src/gtk/resolver.cc:71
 #, c-format
@@ -4710,46 +4655,46 @@ msgid "Not Installed"
 msgstr "Sin instalar"
 
 #: src/gtk/resolver.cc:332
-#, fuzzy, c-format
+#, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
-msgstr "Eliminando %s"
+msgstr "Eliminar %s es rechazado."
 
 #: src/gtk/resolver.cc:337
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Canceling the installation of %s is rejected."
-msgstr "Cancelar la instalación de %F"
+msgstr "Cancelar la instalación de %s es rechazado."
 
 #: src/gtk/resolver.cc:347
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Canceling the removal of %s is rejected."
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la eliminación de %s es rechazado."
 
 #: src/gtk/resolver.cc:350
-#, fuzzy, c-format
+#, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
-msgstr "Mantener %F en la versión %s (%s)"
+msgstr "Mantener %s en la versión %s es rechazado."
 
 #: src/gtk/resolver.cc:357
-#, fuzzy, c-format
+#, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Installing %s version %s is rejected."
-msgstr "Instalar(%s que provee %s)"
+msgstr "Instalar %s versión %s es rechazado."
 
 #: src/gtk/resolver.cc:363
-#, fuzzy, c-format
+#, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrading %s to version %s is rejected."
-msgstr " Versión de cwidget: %s\n"
+msgstr "Desactualizar %s a la versión %s es rechazado."
 
 #: src/gtk/resolver.cc:369
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s versions"
 msgid "Upgrading %s to version %s is rejected."
-msgstr "%s versiones"
+msgstr "Actualizar %s a la versión %s es rechazado."
 
 #: src/gtk/resolver.cc:386
 #, c-format
@@ -4806,14 +4751,14 @@ msgstr ""
 #: src/gtk/resolver.cc:851
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Como procesar la acción seleccionada"
+msgstr[1] "Como procesar las acciones seleccionadas"
 
 #: src/gtk/resolver.cc:855
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ignorar soluciones que contengan esta acción."
+msgstr[1] "Ignorar soluciones que contengan estas acciones."
 
 #: src/gtk/resolver.cc:859
 msgid ""
@@ -4831,7 +4776,10 @@ msgid ""
 msgid_plural ""
 "Always prefer these actions over alternatives that have not been accepted."
 msgstr[0] ""
+"Preferir siempre esta acción por encima de alternativas no aceptadas antes."
 msgstr[1] ""
+"Preferir siempre estas acciones por encima de alternativas no aceptadas "
+"antes."
 
 #: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
 #, c-format
@@ -4885,10 +4833,9 @@ msgid "Install the following packages:"
 msgstr "Instalar los paquetes siguientes:"
 
 #: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
-#, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
-msgstr "Eliminar los paquetes siguientes:"
+msgstr "Mantener los siguientes paquetes:"
 
 #: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
 #: src/solution_screen.cc:307
@@ -4901,10 +4848,9 @@ msgid "Downgrade the following packages:"
 msgstr "Desactualizar los paquetes siguientes:"
 
 #: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
-#, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
-msgstr "Dejar las siguientes dependencias sin resolver:%n"
+msgstr "Dejar las siguientes dependencias sin resolver:"
 
 #: src/gtk/resolver.cc:1444
 #, fuzzy, c-format
@@ -4913,28 +4859,28 @@ msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Eliminar %F [%s (%s)]"
 
 #: src/gtk/resolver.cc:1451
-#, fuzzy, c-format
+#, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
-msgstr "Instalar %F [%s (%s)]"
+msgstr "Instalar %s [<big>%s</big>(%s)]"
 
 #: src/gtk/resolver.cc:1459
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
-msgstr "Cancelar la instalación de %F"
+msgstr "Cancelar la instalación de %s"
 
 #: src/gtk/resolver.cc:1462
-#, fuzzy, c-format
+#, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
-msgstr "Cancelar la eliminación de %F"
+msgstr "Cancelar la eliminación de %s"
 
 #: src/gtk/resolver.cc:1465
-#, fuzzy, c-format
+#, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
-msgstr "Mantener %F en la versión %s (%s)"
+msgstr "Mantener %s en la versión <big>%s</big> (%s)"
 
 #: src/gtk/resolver.cc:1472
 #, fuzzy, c-format
@@ -4943,16 +4889,16 @@ msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Actualizar %F [%s (%s) -> %s (%s)]"
 
 #: src/gtk/resolver.cc:1481
-#, fuzzy, c-format
+#, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
-msgstr "Desactualizar %F [%s (%s) -> %s (%s)]"
+msgstr "Desactualizar %s [<big>%s<big> (%s) -> <big>%s<big> (%s)]"
 
 #: src/gtk/resolver.cc:1538
-#, fuzzy, c-format
+#, c-format
 #| msgid "Remove(%s)"
 msgid "<b>Remove</b> %s"
-msgstr "Eliminar(%s)"
+msgstr "<b>Eliminar</b> %s"
 
 #: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
@@ -4985,10 +4931,10 @@ msgid "<b>install</b> %s %s"
 msgstr "Instalar %F [%s (%s)]"
 
 #: src/gtk/resolver.cc:1564
-#, fuzzy, c-format
+#, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
-msgstr " Versión de cwidget: %s\n"
+msgstr "<b>Desactualizar</b> %s a la versión %s"
 
 #: src/gtk/resolver.cc:1564
 #, fuzzy, c-format
@@ -4997,10 +4943,10 @@ msgid "<b>downgrade</b> %s to version %s"
 msgstr " Versión de cwidget: %s\n"
 
 #: src/gtk/resolver.cc:1573
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
-msgstr "%s versiones"
+msgstr ""
 
 #: src/gtk/resolver.cc:1573
 #, fuzzy, c-format
@@ -5011,12 +4957,12 @@ msgstr "%s versiones"
 #: src/gtk/resolver.cc:1586
 #, c-format
 msgid "Leave %s unresolved"
-msgstr ""
+msgstr "Dejar %s sin resolver"
 
 #: src/gtk/resolver.cc:1586
 #, c-format
 msgid "leave %s unresolved"
-msgstr ""
+msgstr "dejar %s sin resolver"
 
 #: src/gtk/resolver.cc:1654
 #, fuzzy, c-format
@@ -5072,32 +5018,29 @@ msgstr[0] "Auditar ^Recomendaciones"
 msgstr[1] "Auditar ^Recomendaciones"
 
 #: src/gtk/resolver.cc:1975
-#, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
-msgstr "No hay más soluciones"
+msgstr "No hay más soluciones."
 
 #: src/gtk/resolver.cc:1982
-#, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency solution was found."
-msgstr "Gestión de dependencias"
+msgstr "No se encontró ninguna solución a las dependencias."
 
 #: src/gtk/resolver.cc:1983
-#, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
-msgstr "No hay más soluciones"
+msgstr "No hay soluciones."
 
 #: src/gtk/resolver.cc:1994
 msgid "To view a solution, select it from the list to the right."
-msgstr ""
+msgstr "Para ver una solución, seleccionela de la lista a la derecha."
 
 #: src/gtk/resolver.cc:1995
-#, fuzzy, c-format
+#, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
-msgstr "No hay más soluciones"
+msgstr "%u soluciones."
 
 #: src/gtk/resolver.cc:2026
 #, c-format
@@ -5105,10 +5048,9 @@ msgid "Solution %s of %s (tier %s)."
 msgstr ""
 
 #: src/gtk/tab.cc:68
-#, fuzzy
 #| msgid "[Downloaded]"
 msgid "Download"
-msgstr "[Descargado]"
+msgstr "Descarga"
 
 #: src/load_config.cc:48
 #, c-format
@@ -5578,11 +5520,13 @@ msgstr "-h              Este texto de ayuda\n"
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
+" --gui          use la interfaz GTK aunque esté desactivada en la "
+"configuración.\n"
 
 #: src/main.cc:182
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
-msgstr ""
+msgstr " --no-gui          No use la interfaz GTK aunque este disponible.\n"
 
 #: src/main.cc:183
 #, c-format
@@ -5745,23 +5689,21 @@ msgstr "no"
 #. the command-line or set in the configuration file.
 #: src/main.cc:332
 msgid "warn"
-msgstr ""
+msgstr "avisar"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
 #: src/main.cc:335
-#, fuzzy
 #| msgid "Err "
 msgid "error"
-msgstr "Err "
+msgstr "error"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
 #: src/main.cc:338
-#, fuzzy
 #| msgid "false"
 msgid "fatal"
-msgstr "falso"
+msgstr "fatal"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
@@ -6959,7 +6901,7 @@ msgstr "Instalando %s %s (%s)"
 #: src/solution_fragment.cc:162
 #, c-format
 msgid "Leave %ls unresolved."
-msgstr ""
+msgstr "Dejar %ls sin resolver."
 
 #: src/solution_fragment.cc:245
 msgid "%BRemove%b the following packages:%n"
