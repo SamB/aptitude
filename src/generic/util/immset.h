@@ -842,7 +842,7 @@ namespace imm
      */
     bool erase(const Val &x)
     {
-      bool rval;
+      bool rval = false;
       root = remove(root, x, rval);
       return rval;
     }
