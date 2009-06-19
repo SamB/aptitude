@@ -118,12 +118,18 @@ public:
 
 
 	  if(!c.get_from_dep_source())
-	    inf.not_from_dep_source = value;
+	    {
+	      if(!inf.not_from_dep_source.get_has_value())
+		++curr_size;
+	      inf.not_from_dep_source = value;
+	    }
 	  else
-	    inf.from_dep_source.put(c.get_dep(), value);
+	    {
+	      if(inf.from_dep_source.put(c.get_dep(), value))
+		++curr_size;
+	    }
 
-	  if(install_version_objects.put(c.get_ver(), inf))
-	    ++curr_size;
+	  install_version_objects.put(c.get_ver(), inf);
 	}
 	break;
 

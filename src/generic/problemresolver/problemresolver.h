@@ -1764,12 +1764,16 @@ private:
 		     const choice &victim,
 		     const choice_set &reason)
   {
+    // Generalize the choice set by removing the solver that's being
+    // struck.
+    choice_set generalized_reason(reason);
+    generalized_reason.remove_overlaps(victim);
     LOG_TRACE(logger, "Striking " << victim
 	      << " from all solver lists in step " << s.step_num
-	      << " with the reason set " << reason);
+	      << " with the reason set " << generalized_reason);
 
 
-    do_strike_choice striker_f(s, reason, graph, *this, logger);
+    do_strike_choice striker_f(s, generalized_reason, graph, *this, logger);
     s.deps_solved_by_choice.for_each_key_contained_in(victim, striker_f);
   }
 
@@ -3764,7 +3768,7 @@ private:
 	step &s = graph.get_step(step_num);
 
 	LOG_INFO(logger, "Examining step " << step_num
-		 << ": " << s.actions << ";T" << s.step_tier
+		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.step_tier
 		 << "S" << s.score);
 
 	if(s.step_tier >= tier_limits::defer_tier)
