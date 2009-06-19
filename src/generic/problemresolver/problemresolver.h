@@ -2976,7 +2976,7 @@ private:
     extend_score_to_new_step(output, c);
 
     LOG_TRACE(logger, "Generated step " << output.step_num
-	      << ": " << output.actions << ";T" << output.step_tier
+	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.step_tier
 	      << "S" << output.score);
 
     if(output.step_tier < tier_limits::defer_tier)
