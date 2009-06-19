@@ -410,9 +410,9 @@ struct generic_compare_choices_by_effects
     using aptitude::util::compare3;
 
     if(c1.get_type() < c2.get_type())
-      return true;
+      return -1;
     else if(c2.get_type() < c1.get_type())
-      return false;
+      return 1;
     else
       switch(c1.get_type())
 	{
@@ -423,7 +423,7 @@ struct generic_compare_choices_by_effects
 	  return compare3(c1.get_dep(), c2.get_dep());
 
 	default:
-	  return false;
+	  return 0;
 	}
   }
 };
