@@ -3768,7 +3768,7 @@ private:
 	step &s = graph.get_step(step_num);
 
 	LOG_INFO(logger, "Examining step " << step_num
-		 << ": " << s.actions << ";T" << s.step_tier
+		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.step_tier
 		 << "S" << s.score);
 
 	if(s.step_tier >= tier_limits::defer_tier)
