@@ -673,45 +673,80 @@ private:
     int score;
     int action_score;
     choice_set actions;
+    std::size_t hash;
+
+    struct combine_hashes
+    {
+      std::size_t &hash;
+
+      combine_hashes(std::size_t &_hash)
+	: hash(_hash)
+      {
+      }
+
+      bool operator()(const choice &c) const
+      {
+	boost::hash_combine(hash, c);
+	return true;
+      }
+    };
+
+    void init_hash()
+    {
+      hash = 0;
+      boost::hash_combine(hash, score);
+      boost::hash_combine(hash, action_score);
+      actions.for_each(combine_hashes(hash));
+    }
 
   public:
     step_contents()
       : score(0), action_score(0), actions()
     {
+      init_hash();
     }
 
     step_contents(int _score, int _action_score,
 		  const choice_set &_actions)
       : score(_score), action_score(_action_score), actions(_actions)
     {
+      init_hash();
     }
 
     step_contents(const step &s)
       : score(s.score), action_score(s.action_score),
 	actions(s.actions)
     {
+      init_hash();
     }
 
-    bool operator<(const step_contents &other) const
+    std::size_t get_hash() const
     {
-      if(score < other.score)
-	return true;
-      else if(other.score < score)
-	return false;
-      else if(action_score < other.action_score)
-	return true;
-      else if(other.action_score < action_score)
-	return false;
+      return hash;
+    }
 
+    bool operator==(const step_contents &other) const
+    {
+      if(score != other.score)
+	return false;
+      else if(action_score != other.action_score)
+	return false;
 
       // Speed hack: order by size first to avoid traversing the whole
       // tree.
-      if(actions.size() < other.actions.size())
-	return true;
-      else if(other.actions.size() < actions.size())
+      if(actions.size() != other.actions.size())
 	return false;
       else
-	return actions < other.actions;
+	return actions == other.actions;
+    }
+  };
+
+  class hash_step_contents
+  {
+  public:
+    std::size_t operator()(const step_contents &contents) const
+    {
+      return contents.get_hash();
     }
   };
 
@@ -875,7 +910,7 @@ private:
    *  step, along with a single copy of the promotion set for all the
    *  clones.
    */
-  std::map<step_contents, int> closed;
+  boost::unordered_map<step_contents, int, hash_step_contents> closed;
 
   /** Stores tier promotions: sets of installations that will force a
    *  solution to a higher tier of the search.
@@ -1095,7 +1130,7 @@ private:
   {
     step &s(graph.get_step(stepNum));
 
-    typename std::map<step_contents, int>::const_iterator found =
+    typename boost::unordered_map<step_contents, int, hash_step_contents>::const_iterator found =
       closed.find(step_contents(s));
     if(found != closed.end() && found->second != stepNum)
       {
