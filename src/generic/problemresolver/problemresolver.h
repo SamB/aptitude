@@ -3838,6 +3838,10 @@ private:
 		    LOG_TRACE(logger, "Following forced dependency resolution from step "
 			      << step_num << " to step " << s.first_child);
 		    step_num = s.first_child;
+		    // We need to remove the child from the pending
+		    // queue, so that it doesn't get processed by the
+		    // main loop.
+		    pending.erase(s.first_child);
 		    done = false;
 		  }
 	      }
