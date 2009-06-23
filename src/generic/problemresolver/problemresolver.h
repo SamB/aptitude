@@ -2248,6 +2248,14 @@ private:
 
 	    return; // If the package is already modified, abort.
 	  }
+	else if(initial_state.version_of(ver.get_package()) == ver)
+	  {
+	    LOG_TRACE(logger, "Not adding " << solver
+		      << ": it is the current version of the package "
+		      << ver.get_package());
+	    // No structural reason -- this is just never a candidate.
+	    return;
+	  }
 	else
 	  {
 	    typename imm::map<version, choice>::node forbidden_found =
