@@ -1924,7 +1924,21 @@ private:
 		others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
 	    }
 
-	  if(c_dep.is_soft())
+	  // Other solvers also include other versions of the source,
+	  // if the dependency isn't a soft dependency.
+	  if(!c_dep.is_soft())
+	    {
+	      const version c_dep_source(c_dep.get_source());
+	      for(typename package::version_iterator vi =
+		    c_dep_source.get_package().versions_begin();
+		  !vi.end(); ++vi)
+		{
+		  version solver(*vi);
+		  if(solver != c_dep_source && solver != c_ver)
+		    others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+		}
+	    }
+	  else
 	    others_approved.push_back(user_approved_or_rejected_broken_deps[c_dep].get_approved());
 
 	  return
