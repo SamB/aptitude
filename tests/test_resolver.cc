@@ -70,6 +70,27 @@ UNIVERSE [ \
   DEP a v3 -> < > \
 ]";
 
+// Used to test mandating a single version.
+//
+// Ideally we would also run that test with a non-soft dependency,
+// rather than "just knowing" that normal deps work if soft deps do.
+const char *dummy_universe_4 = "\
+UNIVERSE [ \
+  PACKAGE a < v1 v2 v3 > v1 \
+  PACKAGE b < v1 v2 v3 > v1 \
+\
+  SOFTDEP a v1 -> < b v2  b v3 > \
+]";
+
+// Used to test breaking and hardening a soft dependency.
+const char *dummy_universe_5 = "\
+UNIVERSE [ \
+  PACKAGE a < v1 > v1 \
+  PACKAGE b < v1 v2 v3 > v1 \
+\
+  SOFTDEP a v1 -> < b v2 > \
+]";
+
 // Done this way so meaningful line numbers are generated.
 #define assertEqEquivalent(x1, x2) \
   do {									\
@@ -136,6 +157,10 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE(ResolverTest);
 
   CPPUNIT_TEST(testRejections);
+  CPPUNIT_TEST(testMandateDepTarget);
+  CPPUNIT_TEST(testMandateDepSource);
+  CPPUNIT_TEST(testHardenDependency);
+  CPPUNIT_TEST(testApproveBreak);
   CPPUNIT_TEST(testSimpleResolution);
   CPPUNIT_TEST(testSimpleBreakSoftDep);
   CPPUNIT_TEST(testTiers);
@@ -335,6 +360,195 @@ private:
       {
 	CPPUNIT_FAIL("Expected at least one solution, got none.");
       }
+  }
+
+  // Check that mandating a version in a dep target forces that
+  // version to be chosen.
+  void testMandateDepTarget()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testMandateDepTarget"));
+
+    LOG_TRACE(logger, "Entering testMandateDepTarget.");
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_4);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+
+    r.mandate_version(b.version_from_name("v3"));
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+	LOG_TRACE(logger, "Got first solution: " << sol);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_ERROR(logger, "Expected exactly one solution, got none.");
+	CPPUNIT_FAIL("Expected exactly one solution, got none.");
+      }
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v3"), 0));
+    assertSameEffect(expected_solution, sol.get_choices());
+
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Success: only one solution was found.");
+	return;
+      }
+
+    LOG_ERROR(logger, "Found an unexpected solution: " << sol);
+    CPPUNIT_FAIL("Expected exactly one solution, got two.");
+  }
+
+  // Check that mandating an alternate version of a dep source forces
+  // that version to be chosen.
+  void testMandateDepSource()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testMandateDepSource"));
+
+    LOG_TRACE(logger, "Entering testMandateDepSource.");
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_4);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+
+    r.mandate_version(a.version_from_name("v3"));
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+	LOG_TRACE(logger, "Got first solution: " << sol);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_ERROR(logger, "Expected exactly one solution, got none.");
+	CPPUNIT_FAIL("Expected exactly one solution, got none.");
+      }
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(a.version_from_name("v3"), 0));
+    assertSameEffect(expected_solution, sol.get_choices());
+
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Success: only one solution was found.");
+	return;
+      }
+
+    LOG_ERROR(logger, "Found an unexpected solution: " << sol);
+    CPPUNIT_FAIL("Expected exactly one solution, got two.");
+  }
+
+  // Check that hardening a soft dependency forces it to be solved.
+  void testHardenDependency()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testHardenDependency"));
+
+    LOG_TRACE(logger, "Entering testHardenDependency.");
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_5);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    dep av1d1(*a.version_from_name("v1").deps_begin());
+
+    r.harden(av1d1);
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+	LOG_TRACE(logger, "Got first solution: " << sol);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_ERROR(logger, "Expected exactly one solution, got none.");
+	CPPUNIT_FAIL("Expected exactly one solution, got none.");
+      }
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+    assertSameEffect(expected_solution, sol.get_choices());
+
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Success: only one solution was found.");
+	return;
+      }
+
+    LOG_ERROR(logger, "Found an unexpected solution: " << sol);
+    CPPUNIT_FAIL("Expected exactly one solution, got two.");
+  }
+
+  // Check that breaking a soft dependency forces it to be left
+  // unsolved.
+  void testApproveBreak()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testApproveBreak"));
+
+    LOG_TRACE(logger, "Entering testApproveBreak.");
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_5);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    dep av1d1(*a.version_from_name("v1").deps_begin());
+
+    r.approve_break(av1d1);
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+	LOG_TRACE(logger, "Got first solution: " << sol);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_ERROR(logger, "Expected exactly one solution, got none.");
+	CPPUNIT_FAIL("Expected exactly one solution, got none.");
+      }
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_break_soft_dep(av1d1, 0));
+    assertSameEffect(expected_solution, sol.get_choices());
+
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Success: only one solution was found.");
+	return;
+      }
+
+    LOG_ERROR(logger, "Found an unexpected solution: " << sol);
+    CPPUNIT_FAIL("Expected exactly one solution, got two.");
   }
 
   void testSimpleResolution()
