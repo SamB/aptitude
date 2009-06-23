@@ -71,15 +71,22 @@ UNIVERSE [ \
 ]";
 
 // Used to test mandating a single version.
-//
-// Ideally we would also run that test with a non-soft dependency,
-// rather than "just knowing" that normal deps work if soft deps do.
 const char *dummy_universe_4 = "\
 UNIVERSE [ \
   PACKAGE a < v1 v2 v3 > v1 \
   PACKAGE b < v1 v2 v3 > v1 \
 \
   SOFTDEP a v1 -> < b v2  b v3 > \
+]";
+
+// Similar -- the non-soft dependency is needed because altering the
+// source is not an option for a soft dependency.
+const char *dummy_universe_4_not_soft = "\
+UNIVERSE [ \
+  PACKAGE a < v1 v2 v3 > v1 \
+  PACKAGE b < v1 v2 v3 > v1 \
+\
+  DEP a v1 -> < b v2  b v3 > \
 ]";
 
 // Used to test breaking and hardening a soft dependency.
@@ -417,7 +424,7 @@ private:
 
     LOG_TRACE(logger, "Entering testMandateDepSource.");
 
-    dummy_universe_ref u = parseUniverse(dummy_universe_4);
+    dummy_universe_ref u = parseUniverse(dummy_universe_4_not_soft);
     dummy_resolver r(10, -300, -100, 100000, 50000, 50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
