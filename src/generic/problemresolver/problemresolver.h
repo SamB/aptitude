@@ -2459,10 +2459,7 @@ private:
 		       choice_set(),
 		       choice_tier_valid,
 		       choice_is_deferred);
-      if(!solvers.set_solver_information(solver, new_solver_inf))
-	LOG_ERROR(logger, "The solver " << solver
-		  << " already existed for the dep "
-		  << d << " in step " << s.step_num);
+      solvers.set_solver_information(solver, new_solver_inf);
     }
 
     // Update the deps-solved-by-choice map (add the dep being
