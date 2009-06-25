@@ -1440,7 +1440,10 @@ private:
 	      broken_soft_deps.find(c.get_dep());
 
 	    if(found == broken_soft_deps.end())
-	      LOG_TRACE(logger, "The choice " << c << " is not in the local indices: " << c.get_dep() << " is not in the list of broken soft deps.");
+	      {
+		LOG_TRACE(logger, "The choice " << c << " is not in the local indices: " << c.get_dep() << " is not in the list of broken soft deps.");
+		--num_mismatches;
+	      }
 	    else
 	      LOG_TRACE(logger, "The choice " << c << " contains the input choice " << *found);
 	  }
