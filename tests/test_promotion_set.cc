@@ -346,11 +346,9 @@ public:
 					  output,
 					  output_non_incipient);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key1);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
+      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
     }
 
     {
@@ -366,11 +364,9 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key1);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
+      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
     }
 
     // Incipient search: (Install(a v1), Install(b v3),
@@ -397,11 +393,9 @@ public:
 					  output,
 					  output_non_incipient);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key2);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
+      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
     }
 
     {
@@ -417,11 +411,9 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key2);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
+      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
     }
 
 
@@ -529,11 +521,9 @@ public:
 					  output,
 					  output_non_incipient);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search5_incipient_key1);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected5, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
+      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
     }
 
     {
@@ -549,11 +539,9 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search5_incipient_key1);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected5, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
+      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
     }
 
     // In this case there is a different expectation: we should find
@@ -588,11 +576,9 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search5_incipient_key2);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(found != output.end());
-      CPPUNIT_ASSERT_EQUAL(expected5_2, found->second);
+      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key2));
+      CPPUNIT_ASSERT_EQUAL(expected5_2, output.begin()->second);
     }
 
     // Check that nothing matches (Install(bv3, cv2)), because it
