@@ -1632,6 +1632,9 @@ public:
 	    it != index_entries->end(); ++it)
 	  {
 	    const promotion &p((*it)->p);
+
+	    LOG_TRACE(logger, "find_highest_incipient_promotion_containing: testing " << p << ".");
+
 	    if(!pred(p))
 	      continue;
 
