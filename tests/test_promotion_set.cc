@@ -243,10 +243,21 @@ class Promotion_SetTest : public CppUnit::TestFixture
     }
   };
 
+  struct pick_all_promotions
+  {
+    bool operator()(const promotion &p) const
+    {
+      return true;
+    }
+  };
+
 public:
   // Test searching for the highest promotion contained in a 
   void testFindHighestPromotion()
   {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.promotion_set.testFindHighestPromotion"));
+    LOG_TRACE(logger, "Entering testFindHighestPromotion.");
+
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
     dummy_promotion_set_callbacks callbacks;
     dummy_promotion_set p(u, callbacks);
@@ -311,6 +322,56 @@ public:
     CPPUNIT_ASSERT(found2 != p.end());
     CPPUNIT_ASSERT_EQUAL(expected1, *found2);
 
+    // Incipient search: (Install(a v1), Install(b v3),
+    //                    Install(c v3)) + {Break(b v2 -> <c v2>)})
+    choice_set search1_incipient;
+    search1_incipient.insert_or_narrow(make_install_version(av1));
+    search1_incipient.insert_or_narrow(make_install_version(bv3));
+    search1_incipient.insert_or_narrow(make_install_version(cv3));
+    choice search1_incipient_key(make_break_soft_dep(bv2d1));
+
+    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain1;
+    output_domain1.put(search1_incipient_key, true);
+
+    {
+      boost::unordered_map<choice, promotion> output;
+      maybe<promotion> output_non_incipient;
+
+      LOG_TRACE(logger, "Testing that " << search1_incipient
+		<< " contains " << expected1
+		<< " as an incipient promotion for the choice "
+		<< search1_incipient_key);
+      p.find_highest_incipient_promotions(search1_incipient,
+					  output_domain1,
+					  output,
+					  output_non_incipient);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search1_incipient_key);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+    }
+
+    {
+      boost::unordered_map<choice, promotion> output;
+
+      LOG_TRACE(logger, "Testing that " << search1_incipient
+		<< " contains " << expected1
+		<< " as an incipient promotion restricted to the choice "
+		<< search1_incipient_key);
+      p.find_highest_incipient_promotions_containing(search1_incipient,
+						     search1_incipient_key,
+						     output_domain1,
+						     pick_all_promotions(),
+						     output);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search1_incipient_key);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+    }
 
 
     // Second search: (a v1, b v1)
