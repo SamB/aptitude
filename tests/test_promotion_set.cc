@@ -324,30 +324,30 @@ public:
 
     // Incipient search: (Install(a v1), Install(b v3),
     //                    Install(c v3)) + {Break(b v2 -> <c v2>)})
-    choice_set search1_incipient;
-    search1_incipient.insert_or_narrow(make_install_version(av1));
-    search1_incipient.insert_or_narrow(make_install_version(bv3));
-    search1_incipient.insert_or_narrow(make_install_version(cv3));
-    choice search1_incipient_key(make_break_soft_dep(bv2d1));
+    choice_set search1_incipient1;
+    search1_incipient1.insert_or_narrow(make_install_version(av1));
+    search1_incipient1.insert_or_narrow(make_install_version(bv3));
+    search1_incipient1.insert_or_narrow(make_install_version(cv3));
+    choice search1_incipient_key1(make_break_soft_dep(bv2d1));
 
-    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain1;
-    output_domain1.put(search1_incipient_key, true);
+    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain1_1;
+    output_domain1_1.put(search1_incipient_key1, true);
 
     {
       boost::unordered_map<choice, promotion> output;
       maybe<promotion> output_non_incipient;
 
-      LOG_TRACE(logger, "Testing that " << search1_incipient
+      LOG_TRACE(logger, "Testing that " << search1_incipient1
 		<< " contains " << expected1
 		<< " as an incipient promotion for the choice "
-		<< search1_incipient_key);
-      p.find_highest_incipient_promotions(search1_incipient,
-					  output_domain1,
+		<< search1_incipient_key1);
+      p.find_highest_incipient_promotions(search1_incipient1,
+					  output_domain1_1,
 					  output,
 					  output_non_incipient);
 
       boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key);
+	found = output.find(search1_incipient_key1);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
       CPPUNIT_ASSERT(found != output.end());
       CPPUNIT_ASSERT_EQUAL(expected1, found->second);
@@ -356,18 +356,69 @@ public:
     {
       boost::unordered_map<choice, promotion> output;
 
-      LOG_TRACE(logger, "Testing that " << search1_incipient
+      LOG_TRACE(logger, "Testing that " << search1_incipient1
 		<< " contains " << expected1
 		<< " as an incipient promotion restricted to the choice "
-		<< search1_incipient_key);
-      p.find_highest_incipient_promotions_containing(search1_incipient,
-						     search1_incipient_key,
-						     output_domain1,
+		<< search1_incipient_key1);
+      p.find_highest_incipient_promotions_containing(search1_incipient1,
+						     search1_incipient_key1,
+						     output_domain1_1,
 						     pick_all_promotions(),
 						     output);
 
       boost::unordered_map<choice, promotion>::const_iterator
-	found = output.find(search1_incipient_key);
+	found = output.find(search1_incipient_key1);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+    }
+
+    // Incipient search: (Install(a v1), Install(b v3),
+    //                    Break(b v2 -> c v2) + {Install(c v3)}
+    choice_set search1_incipient2;
+    search1_incipient2.insert_or_narrow(make_install_version(av1));
+    search1_incipient2.insert_or_narrow(make_install_version(bv3));
+    search1_incipient2.insert_or_narrow(make_break_soft_dep(bv2d1));
+    choice search1_incipient_key2(make_install_version(cv3));
+
+    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain1_2;
+    output_domain1_2.put(search1_incipient_key2, true);
+
+    {
+      boost::unordered_map<choice, promotion> output;
+      maybe<promotion> output_non_incipient;
+
+      LOG_TRACE(logger, "Testing that " << search1_incipient2
+		<< " contains " << expected1
+		<< " as an incipient promotion for the choice "
+		<< search1_incipient_key2);
+      p.find_highest_incipient_promotions(search1_incipient2,
+					  output_domain1_2,
+					  output,
+					  output_non_incipient);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search1_incipient_key2);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, found->second);
+    }
+
+    {
+      boost::unordered_map<choice, promotion> output;
+
+      LOG_TRACE(logger, "Testing that " << search1_incipient2
+		<< " contains " << expected1
+		<< " as an incipient promotion restricted to the choice "
+		<< search1_incipient_key2);
+      p.find_highest_incipient_promotions_containing(search1_incipient2,
+						     search1_incipient_key2,
+						     output_domain1_2,
+						     pick_all_promotions(),
+						     output);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search1_incipient_key2);
       CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
       CPPUNIT_ASSERT(found != output.end());
       CPPUNIT_ASSERT_EQUAL(expected1, found->second);
@@ -457,6 +508,54 @@ public:
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected5, *found);
 
+    // Incipient search: (Install(b v2)) + {Install(a v1 [a v2 -> <>])}
+    choice_set search5_incipient1;
+    search5_incipient1.insert_or_narrow(make_install_version(bv2));
+    choice search5_incipient_key1(make_install_version_from_dep_source(av1, av2d1));
+
+    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain5_1;
+    output_domain5_1.put(search5_incipient_key1, true);
+
+    {
+      boost::unordered_map<choice, promotion> output;
+      maybe<promotion> output_non_incipient;
+
+      LOG_TRACE(logger, "Testing that " << search5_incipient1
+		<< " contains " << expected5
+		<< " as an incipient promotion for the choice "
+		<< search5_incipient_key1);
+      p.find_highest_incipient_promotions(search5_incipient1,
+					  output_domain5_1,
+					  output,
+					  output_non_incipient);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search5_incipient_key1);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, found->second);
+    }
+
+    {
+      boost::unordered_map<choice, promotion> output;
+
+      LOG_TRACE(logger, "Testing that " << search5_incipient1
+		<< " contains " << expected1
+		<< " as an incipient promotion restricted to the choice "
+		<< search5_incipient_key1);
+      p.find_highest_incipient_promotions_containing(search5_incipient1,
+						     search5_incipient_key1,
+						     output_domain5_1,
+						     pick_all_promotions(),
+						     output);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search5_incipient_key1);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, found->second);
+    }
+
     // In this case there is a different expectation: we should find
     // (T75: Install(a v1, b v2)), since the otherwise expected
     // solution doesn't contain the "key" element.
@@ -467,6 +566,34 @@ public:
     found = p.find_highest_promotion_containing(search5, make_install_version(bv2));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected5_2, *found);
+
+    // Incipient search: (Install(a v1)) + {Install(b v2)}
+    choice_set search5_incipient2;
+    search5_incipient2.insert_or_narrow(make_install_version(av1));
+    choice search5_incipient_key2(make_install_version(bv2));
+
+    generic_choice_indexed_map<dummy_universe_ref, bool> output_domain5_2;
+    output_domain5_2.put(search5_incipient_key2, true);
+
+    {
+      boost::unordered_map<choice, promotion> output;
+
+      LOG_TRACE(logger, "Testing that " << search5_incipient2
+		<< " contains " << expected5_2
+		<< " as an incipient promotion restricted to the choice "
+		<< search5_incipient_key2);
+      p.find_highest_incipient_promotions_containing(search5_incipient2,
+						     search5_incipient_key2,
+						     output_domain5_2,
+						     pick_all_promotions(),
+						     output);
+
+      boost::unordered_map<choice, promotion>::const_iterator
+	found = output.find(search5_incipient_key2);
+      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      CPPUNIT_ASSERT(found != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5_2, found->second);
+    }
 
     // Check that nothing matches (Install(bv3, cv2)), because it
     // doesn't have the right from-dep-source information.  Tests that
