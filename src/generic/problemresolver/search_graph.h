@@ -284,16 +284,16 @@ public:
     structural_reasons.push_front(c);
   }
 
-  void set_solver_information(const choice &c, const generic_solver_information<PackageUniverse> &solver)
+  bool set_solver_information(const choice &c, const generic_solver_information<PackageUniverse> &solver)
   {
     hash_dirty = true;
-    solvers.put(c, solver);
+    return solvers.put(c, solver);
   }
 
-  void remove_solver(const choice &c)
+  bool remove_solver(const choice &c)
   {
     hash_dirty = true;
-    solvers.erase(c);
+    return solvers.erase(c);
   }
   // @}
 
