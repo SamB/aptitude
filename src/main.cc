@@ -453,10 +453,10 @@ namespace
     using namespace log4cxx;
 
     LevelPtr trace = Level::getTrace();
-    LevelPtr warn = Level::getWarn();
+    LevelPtr info = Level::getInfo();
 
     Loggers::getAptitudeResolverSearch()->setLevel(trace);
-    Loggers::getAptitudeResolverSearchTiers()->setLevel(warn);
+    Loggers::getAptitudeResolverSearchTiers()->setLevel(info);
   }
 }
 

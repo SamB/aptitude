@@ -1041,7 +1041,7 @@ private:
 	{
 	  if(maximum_tier < r->p.get_tier())
 	    {
-	      LOG_INFO(logger, "find_entry_supersets_op: resetting the hit count for "
+	      LOG_DEBUG(logger, "find_entry_supersets_op: resetting the hit count for "
 		       << r->p << " to 0, but not returning it, because its tier "
 		       << r->p.get_tier() << " is above the maximum tier "
 		       << maximum_tier);
@@ -2139,7 +2139,7 @@ public:
     const const_iterator highest(find_highest_promotion_for(choices));
     if(highest != end() && highest->get_tier() >= p_tier)
       {
-	LOG_TRACE(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
+	LOG_INFO(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
 	return end();
       }
     else
