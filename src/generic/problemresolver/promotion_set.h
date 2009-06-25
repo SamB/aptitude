@@ -1285,7 +1285,7 @@ public:
 					 boost::unordered_map<choice, promotion> &output_incipient,
 					 maybe<promotion> &output_non_incipient) const
   {
-    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ")");
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ", " << output_domain << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
@@ -1604,7 +1604,7 @@ public:
 						    Pred pred,
 						    boost::unordered_map<choice, promotion> &output) const
   {
-    LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ")");
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotions_containing(" << choices << ", " << c << ", " << output_domain << ")");
 
     const std::vector<entry_ref> *index_entries = find_index_list(c);
 
