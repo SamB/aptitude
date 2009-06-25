@@ -1142,6 +1142,166 @@ private:
       return false;
   }
 
+  void sanity_check_not_deferred(const step &s)
+  {
+#ifdef ENABLE_RESOLVER_SANITY_CHECKS
+    if(logger->isErrorEnabled())
+      {
+	if(!s.is_deferred_listener.valid())
+	  {
+	    if(s.step_num != 0)
+	      LOG_ERROR(logger, "Step " << s.step_num << " has no deferral listener.");
+	  }
+	else if(s.is_deferred_listener->get_value())
+	  LOG_ERROR(logger, "Step " << s.step_num << " claims not to be deferred, but it is.");
+
+	for(typename choice_set::const_iterator it = s.actions.begin();
+	    it != s.actions.end(); ++it)
+	  {
+	    if(build_is_deferred_listener(*it)->get_value())
+	      LOG_ERROR(logger, "Step " << s.step_num << " claims not to be deferred, but it contains the deferred choice " << (*it) << ".");
+
+	    // Manually examine the other ways of solving this.
+	    switch(it->get_type())
+	      {
+	      case choice::install_version:
+		if(is_rejected(it->get_ver()))
+		  LOG_ERROR(logger, "Step " << s.step_num << " contains the rejected choice " << (*it));
+
+		if(it->get_has_dep())
+		  {
+		    if(!is_mandatory(it->get_ver()))
+		      {
+			if(it->get_dep().is_soft() &&
+			   is_approved_broken(it->get_dep()))
+			  LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << ", but its dependency " << it->get_dep() << " is approved to be broken.");
+
+			for(typename dep::solver_iterator si = it->get_dep().solvers_begin();
+			    !si.end(); ++si)
+			  {
+			    if(*si != it->get_ver() && is_mandatory(*si))
+			      LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << ", but the alternative " << (*si) << " is approved.");
+			  }
+
+			version source(it->get_dep().get_source());
+			for(typename package::version_iterator vi = source.get_package().versions_begin();
+			    !vi.end(); ++vi)
+			  {
+			    if(*vi != it->get_ver() &&
+			       *vi != source &&
+			       is_mandatory(*vi))
+			      LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << ", but the resolution " << (*vi) << " is approved.");
+			  }
+		      }
+		  }
+		else
+		  LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << " with no declared dependency.");
+		break;
+
+	      case choice::break_soft_dep:
+		if(is_hardened(it->get_dep()))
+		  LOG_ERROR(logger, "Step " << s.step_num << " contains the rejected choice " << (*it));
+
+		if(!is_approved_broken(it->get_dep()))
+		  {
+		    for(typename dep::solver_iterator si = it->get_dep().solvers_begin();
+			!si.end(); ++si)
+		      {
+			if(is_mandatory(*si))
+			  LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << ", but the alternative " << (*si) << " is approved.");
+		      }
+		  }
+		else
+		  LOG_ERROR(logger, "Step " << s.step_num << " contains the choice " << (*it) << " with no declared action.");
+		break;
+	      }
+	  }
+      }
+#endif
+  }
+
+  void sanity_check_promotions(const step &s)
+  {
+#ifdef ENABLE_RESOLVER_SANITY_CHECKS
+    boost::unordered_map<choice, promotion>
+      global_incipient;
+    maybe<promotion>
+      non_incipient;
+    promotions.find_highest_incipient_promotions(s.actions,
+						 s.deps_solved_by_choice,
+						 global_incipient,
+						 non_incipient);
+
+    if(non_incipient.get_has_value() &&
+       s.step_tier < non_incipient.get_value().get_tier())
+      LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
+		<< non_incipient.get_value() << " was not applied.");
+    else
+      {
+	typename promotion_set::const_iterator found_promotion =
+	  promotions.find_highest_promotion_for(s.actions);
+
+	if(found_promotion != promotions.end() &&
+	   s.step_tier < found_promotion->get_tier())
+	  LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
+		    << *found_promotion << " was not applied.");
+      }
+
+    typedef generic_solver_information<PackageUniverse> solver_information;
+    typedef generic_dep_solvers<PackageUniverse> dep_solvers;
+
+
+    for(typename imm::map<dep, dep_solvers>::const_iterator it =
+	  s.unresolved_deps.begin(); it != s.unresolved_deps.end(); ++it)
+      {
+	const dep &d(it->first);
+	imm::map<choice, solver_information, compare_choices_by_effects>
+	  solvers = it->second.get_solvers();
+
+
+	for(typename imm::map<choice, solver_information, compare_choices_by_effects>::const_iterator
+	    it = solvers.begin(); it != solvers.end(); ++it)
+	{
+	  const choice &solver(it->first);
+	  const solver_information &solver_inf(it->second);
+
+	  // Verify that the deps-solved-by-choice list maps to this
+	  // dep.
+	  imm::list<dep> found_solved_deps;
+	  if(!s.deps_solved_by_choice.try_get(solver, found_solved_deps) ||
+	     std::find(found_solved_deps.begin(), found_solved_deps.end(), d) == found_solved_deps.end())
+	    LOG_ERROR(logger, "In step " << s.step_num << ": no backlink from the choice "
+		      << solver << " to the dependency " << d << "; backlinks are " << found_solved_deps << ".");
+
+	  boost::unordered_map<choice, promotion> incipient;
+	  promotions.find_highest_incipient_promotions_containing(s.actions,
+								  solver,
+								  s.deps_solved_by_choice,
+								  discards_blessed(s.is_blessed_solution),
+								  incipient);
+
+	  typename boost::unordered_map<choice, promotion>::const_iterator
+	    found_incipient = incipient.find(solver);
+	  if(found_incipient != incipient.end() &&
+	     solver_inf.get_tier() < found_incipient->second.get_tier())
+	    LOG_ERROR(logger, "In step " << s.step_num
+		      << ": incipient promotion " << found_incipient->second
+		      << " was never applied to " << solver << ".");
+
+	  choice_set test_set(s.actions);
+	  test_set.insert_or_narrow(solver);
+	  typename promotion_set::const_iterator found_promotion =
+	    promotions.find_highest_promotion_for(test_set);
+	  if(found_promotion != promotions.end() &&
+	     solver_inf.get_tier() < found_promotion->get_tier())
+	    LOG_ERROR(logger, "In step " << s.step_num
+		      << ": the incipient promotion " << *found_promotion
+		      << " was not detected as incipient for " << solver);
+	}
+      }
+#endif
+  }
+
   /** \return \b true if the given step is "irrelevant": that is,
    *  either it was already generated and placed in the closed queue,
    *  or it was marked as having a conflict, or it is infinitely
@@ -1163,9 +1323,11 @@ private:
 
     if(s.score < minimum_score)
       {
-	LOG_TRACE(logger, "Step " << s.step_num << "is irrelevant: it has infinite badness " << s.score << "<" << minimum_score);
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it has infinite badness " << s.score << "<" << minimum_score);
 	return true;
       }
+
+    sanity_check_not_deferred(s);
 
     return false;
   }
@@ -2297,7 +2459,10 @@ private:
 		       choice_set(),
 		       choice_tier_valid,
 		       choice_is_deferred);
-      solvers.set_solver_information(solver, new_solver_inf);
+      if(!solvers.set_solver_information(solver, new_solver_inf))
+	LOG_ERROR(logger, "The solver " << solver
+		  << " already existed for the dep "
+		  << d << " in step " << s.step_num);
     }
 
     // Update the deps-solved-by-choice map (add the dep being
@@ -3842,6 +4007,8 @@ private:
 
 	check_for_new_promotions(step_num);
 
+	sanity_check_promotions(s);
+
 	if(is_already_seen(step_num))
 	  {
 	    LOG_DEBUG(logger, "Dropping already visited search node in step " << s.step_num);
@@ -4051,6 +4218,8 @@ public:
 	step &best_future_solution_step = graph.get_step(best_future_solution);
 	if(best_future_solution_step.step_tier < tier_limits::defer_tier)
 	  {
+	    sanity_check_not_deferred(best_future_solution_step);
+
 	    solution rval(best_future_solution_step.actions,
 			  initial_state,
 			  best_future_solution_step.score,

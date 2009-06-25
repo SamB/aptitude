@@ -340,6 +340,14 @@ AC_ARG_ENABLE(docs,
 	fi,
 	DOCDIRS=doc)
 
+AC_ARG_ENABLE(resolver-sanity-checks,
+	AS_HELP_STRING([--enable-resolver-sanity-checks], [enable expensive internal sanity-checks in the dependency resolver]),
+	if test x$enableval=xyes
+	then
+	  [AC_DEFINE(ENABLE_RESOLVER_SANITY_CHECKS,  ,  [Enable expensive internal sanity-checks in the dependency resolver.])]
+	fi
+	)
+
 CXXFLAGS="$CXXFLAGS -Wall $WERROR"
 
 AC_SUBST(SRCDIRS)
