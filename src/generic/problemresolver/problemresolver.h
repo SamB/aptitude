@@ -2110,22 +2110,29 @@ private:
       }
   }
 
-  /** \brief Predicate used to throw away promotions whose tier is too
-   *  high.
+  /** \brief Predicate used to throw away promotions that would
+   *  promote a blessed solution to the already-generated tier (or
+   *  discard it for containing a "conflict").
    */
-  class not_above_tier
+  class discards_blessed
   {
-    const tier &t;
+    // True if the step being processed is blessed.  If not, all
+    // promotions are allowed through; otherwise only promotions below
+    // the already-generated tier are allowed through.
+    bool blessed;
 
   public:
-    not_above_tier(const tier &_t)
-      : t(_t)
+    discards_blessed(bool _blessed)
+      : blessed(_blessed)
     {
     }
 
     bool operator()(const promotion &p) const
     {
-      return !(p.get_tier() >= t);
+      if(blessed)
+	return p.get_tier() < tier_limits::already_generated_tier;
+      else
+	return true;
     }
   };
 
@@ -2143,13 +2150,11 @@ private:
 
     output_domain.put(solver, imm::list<dep>());
 
-    not_above_tier not_above_p(s.is_blessed_solution
-			       ? tier_limits::already_generated_tier
-			       : tier_limits::maximum_tier);
+    discards_blessed discards_blessed_p(s.is_blessed_solution);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
 							    output_domain,
-							    not_above_p,
+							    discards_blessed_p,
 							    triggered_promotions);
 
     // Sanity-check.
@@ -2843,13 +2848,11 @@ private:
   {
     boost::unordered_map<choice, promotion> output;
 
-    not_above_tier not_above_p(s.is_blessed_solution
-			       ? tier_limits::already_generated_tier
-			       : tier_limits::maximum_tier);
+    discards_blessed discards_blessed_p(s.is_blessed_solution);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    c,
 							    s.deps_solved_by_choice,
-							    not_above_p,
+							    discards_blessed_p,
 							    output);
 
     for(typename boost::unordered_map<choice, promotion>::const_iterator it =
