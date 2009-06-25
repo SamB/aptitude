@@ -149,7 +149,7 @@ public:
    *  \return \b true if c was contained in this map, \b false
    *  otherwise.
    */
-  bool try_get(const choice &c, ValueType &output)
+  bool try_get(const choice &c, ValueType &output) const
   {
     switch(c.get_type())
       {
