@@ -367,8 +367,8 @@ public:
 					  output_non_incipient);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key1]);
     }
 
     {
@@ -387,8 +387,8 @@ public:
       LOG_TRACE(logger, "Output: " << output);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key1]);
     }
 
     // Incipient search: (Install(a v1), Install(b v3),
@@ -418,8 +418,8 @@ public:
       LOG_TRACE(logger, "Output: " << output);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key2) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key2]);
     }
 
     {
@@ -438,8 +438,8 @@ public:
       LOG_TRACE(logger, "Output: " << output);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key2) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key2]);
     }
 
 
@@ -550,8 +550,8 @@ public:
       LOG_TRACE(logger, "Output: " << output);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search5_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, output[search5_incipient_key1]);
     }
 
     {
@@ -570,8 +570,8 @@ public:
       LOG_TRACE(logger, "Output: " << output);
 
       CPPUNIT_ASSERT(output.size() >= 1);
-      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
+      CPPUNIT_ASSERT(output.find(search5_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, output[search5_incipient_key1]);
     }
 
     // In this case there is a different expectation: we should find
@@ -610,7 +610,7 @@ public:
 
       CPPUNIT_ASSERT(output.size() >= 1);
       CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected5_2, output.begin()->second);
+      CPPUNIT_ASSERT_EQUAL(expected5_2, output[search5_incipient_key2]);
     }
 
     // Check that nothing matches (Install(bv3, cv2)), because it
