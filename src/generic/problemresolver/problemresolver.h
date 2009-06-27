@@ -1291,7 +1291,7 @@ private:
 	  choice_set test_set(s.actions);
 	  test_set.insert_or_narrow(solver);
 	  typename promotion_set::const_iterator found_promotion =
-	    promotions.find_highest_promotion_for(test_set);
+	    promotions.find_highest_promotion_containing(test_set, solver);
 	  if(found_promotion != promotions.end() &&
 	     solver_inf.get_tier() < found_promotion->get_tier())
 	    LOG_ERROR(logger, "In step " << s.step_num
