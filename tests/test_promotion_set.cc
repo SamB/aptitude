@@ -45,6 +45,26 @@ UNIVERSE [			  \
   const int * const complex_tier_end = complex_tier_array + (sizeof(complex_tier_array) / sizeof(complex_tier_array[0]));
 }
 
+template<typename Key, typename Val>
+std::ostream &operator<<(std::ostream &out, const boost::unordered_map<Key, Val> &m)
+{
+  out << "{";
+  bool first = true;
+  for(typename boost::unordered_map<Key, Val>::const_iterator it =
+	m.begin(); it != m.end(); ++it)
+    {
+      if(first)
+	first = false;
+      else
+	out << ", ";
+
+      out << it->first << " -> " << it->second;
+    }
+  out << "}";
+
+  return out;
+}
+
 class Promotion_SetTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(Promotion_SetTest);
@@ -346,9 +366,9 @@ public:
 					  output,
 					  output_non_incipient);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key1]);
     }
 
     {
@@ -364,9 +384,11 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key1]);
     }
 
     // Incipient search: (Install(a v1), Install(b v3),
@@ -393,9 +415,11 @@ public:
 					  output,
 					  output_non_incipient);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key2) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key2]);
     }
 
     {
@@ -411,9 +435,11 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search1_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected1, output.begin()->second);
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search1_incipient_key2) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected1, output[search1_incipient_key2]);
     }
 
 
@@ -521,9 +547,11 @@ public:
 					  output,
 					  output_non_incipient);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search5_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, output[search5_incipient_key1]);
     }
 
     {
@@ -539,9 +567,11 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
-      CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key1));
-      CPPUNIT_ASSERT_EQUAL(expected5, output.begin()->second);
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
+      CPPUNIT_ASSERT(output.find(search5_incipient_key1) != output.end());
+      CPPUNIT_ASSERT_EQUAL(expected5, output[search5_incipient_key1]);
     }
 
     // In this case there is a different expectation: we should find
@@ -576,9 +606,11 @@ public:
 						     pick_all_promotions(),
 						     output);
 
-      CPPUNIT_ASSERT_EQUAL((unsigned)1, output.size());
+      LOG_TRACE(logger, "Output: " << output);
+
+      CPPUNIT_ASSERT(output.size() >= 1);
       CPPUNIT_ASSERT(output.begin()->first.contains(search5_incipient_key2));
-      CPPUNIT_ASSERT_EQUAL(expected5_2, output.begin()->second);
+      CPPUNIT_ASSERT_EQUAL(expected5_2, output[search5_incipient_key2]);
     }
 
     // Check that nothing matches (Install(bv3, cv2)), because it

@@ -1291,7 +1291,7 @@ private:
 	  choice_set test_set(s.actions);
 	  test_set.insert_or_narrow(solver);
 	  typename promotion_set::const_iterator found_promotion =
-	    promotions.find_highest_promotion_for(test_set);
+	    promotions.find_highest_promotion_containing(test_set, solver);
 	  if(found_promotion != promotions.end() &&
 	     solver_inf.get_tier() < found_promotion->get_tier())
 	    LOG_ERROR(logger, "In step " << s.step_num
@@ -3100,6 +3100,31 @@ private:
 				 const choice &c_original,
 				 const tier &output_tier)
   {
+    // First, verify that there are no un-discharged promotions in the
+    // parent step.  Normally this won't be true, since we check the
+    // parent step right before generating its successors.  However,
+    // sometimes one of the successors will output a promotion.  If
+    // that promotion hits the parent step, then we have a problem:
+    // the child will be generated with the old tier (since the parent
+    // doesn't have the promotion applied yet), but its position in
+    // the queue of pending promotions will be after that promotion
+    // (since it's set when the child is created).
+    //
+    // There are two ways I could have solved this:
+    //
+    //   (1) Set the child's position in the promotion queue to the
+    //       parent's position instead of based on when it was
+    //       created.  (this would be the location of the queue tail
+    //       when the parent started generating children)
+    //   (2) Update the parent between generating successors.
+    //
+    // Both should be fairly cheap, but I went with (2): if there are
+    // no promotions, it's very cheap to find that out, and if there
+    // are promotions, it's cheaper to apply them once in the parent
+    // than applying them to each of the children.
+    check_for_new_promotions(parent.step_num);
+
+
     choice c(c_original);
     c.set_id(parent.actions.size());
 

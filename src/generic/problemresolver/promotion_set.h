@@ -1249,6 +1249,61 @@ public:
     }
   };
 
+  /** \brief A function object that, for each choice it is applied to,
+   *  adds an entry to the given output set for the choice if there is
+   *  a single-element promotion containing that choice.  If an entry
+   *  already exists, it is updated only if the new promotion is to a
+   *  higher tier.
+   */
+  template<typename T>
+  class find_unary_promotions
+  {
+    const generic_promotion_set &promotions;
+
+    boost::unordered_map<choice, promotion> &output;
+
+  public:
+    find_unary_promotions(const generic_promotion_set &_promotions,
+			  boost::unordered_map<choice, promotion> &_output)
+      : promotions(_promotions),
+	output(_output)
+    {
+    }
+
+    bool operator()(const choice &c, const T &t) const
+    {
+      const std::vector<entry_ref> *entries = promotions.find_index_list(c);
+
+      if(entries != NULL)
+	{
+	  for(typename std::vector<entry_ref>::const_iterator
+		it = entries->begin();
+	      it != entries->end(); ++it)
+	    {
+	      const promotion &p((*it)->p);
+
+	      if(p.get_choices().size() == 1)
+		{
+		  choice p_c;
+		  // The single choice in the promotion *must* contain
+		  // c, or else it wouldn't be indexed under c.
+		  eassert(p.get_choices().get_containing_choice(c, p_c));
+
+		  typedef typename boost::unordered_map<choice, promotion>::iterator out_iterator;
+		  std::pair<out_iterator, out_iterator> found =
+		    output.equal_range(p_c);
+
+		  if(found.first == found.second)
+		    output.insert(found.first, std::make_pair(p_c, p));
+		  else if(found.first->second.get_tier() < p.get_tier())
+		    found.first->second = p;
+		}
+	    }
+	}
+
+      return true;
+    }
+  };
 public:
 
   /** \brief Find the highest-tier incipient promotion containing a
@@ -1264,6 +1319,7 @@ public:
    *                  are organized according to which of these choices
    *                  each one contained, and only the highest-tier
    *                  promotion for each choice is returned.
+   *                  output_domain must be disjoint with choices.
    *  \param output_incipient   A map in which to store the results of the search.
    *                  Choices in output_domain that were matched are
    *                  mapped to the highest-tier promotion that they
@@ -1300,6 +1356,10 @@ public:
     // We have to run this even if the increment aborted, since we
     // need to reset all the counters to 0 for the next run.
     choices.for_each(find_result_f);
+
+    // The above code won't find promotions that include only values
+    // in the output domain.  Look for those by hand.
+    output_domain.for_each(find_unary_promotions<T>(*this, output_incipient));
   }
 
 private:
