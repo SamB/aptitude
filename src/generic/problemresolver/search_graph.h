@@ -34,6 +34,8 @@
 #include <generic/util/immlist.h>
 #include <generic/util/immset.h>
 
+#include <boost/flyweight.hpp>
+#include <boost/flyweight/no_tracking.hpp>
 #include <boost/functional/hash.hpp>
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
@@ -567,6 +569,9 @@ public:
     typedef generic_solver_information<PackageUniverse> solver_information;
     typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
+    typedef boost::flyweight<dep_solvers,
+			     boost::flyweights::no_tracking> flyweight_dep_solvers;
+
     /** \brief The actions performed by this step. */
     choice_set actions;
 
@@ -595,7 +600,7 @@ public:
      *	one maps to the reasons that any of its solvers were
      *	dropped.
      */
-    imm::map<dep, dep_solvers> unresolved_deps;
+    imm::map<dep, flyweight_dep_solvers> unresolved_deps;
 
     /** \brief The unresolved dependencies, sorted by the number of
      *  solvers each one has.
@@ -1093,11 +1098,11 @@ private:
       // Check if we have a solver in this step first -- if you think
       // about it, it's more likely that this is true than that we
       // have an action.
-      typename imm::map<dep, typename step::dep_solvers>::node found =
+      typename imm::map<dep, typename step::flyweight_dep_solvers>::node found =
 	s.unresolved_deps.lookup(d);
 
       if(found.isValid() &&
-	 found.getVal().second.get_solvers().domain_contains(c))
+	 found.getVal().second.get().get_solvers().domain_contains(c))
 	return visit(s, choice_mapping_solver);
       else
 	{

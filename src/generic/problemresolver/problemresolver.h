@@ -71,6 +71,7 @@
 #include <generic/util/dense_setset.h>
 #include <generic/util/maybe.h>
 
+#include <boost/flyweight.hpp>
 #include <boost/unordered_set.hpp>
 
 /** \brief Generic problem resolver
@@ -1102,27 +1103,6 @@ private:
   std::map<choice, expression_weak_ref<expression_box<bool> >,
 	   compare_choices_for_deferral> memoized_is_deferred;
 
-  /** \todo This should hold weak references to heap-allocated
-   *  structures so that memoizations wouldn't last longer than needed
-   *  (if every instance of a solver set was changed, that solver set
-   *  would be dropped).
-   */
-  boost::unordered_set<typename step::dep_solvers> memoized_dep_solvers;
-
-  typename step::dep_solvers memoize_dep_solvers(const typename step::dep_solvers &solvers)
-  {
-    // std::set will insert a new element only if it doesn't already
-    // contain an element with the same key, which is exactly what we
-    // want here.
-    std::pair<typename boost::unordered_set<typename step::dep_solvers>::const_iterator, bool>
-      insert_result = memoized_dep_solvers.insert(solvers);
-
-    if(insert_result.second)
-      LOG_TRACE(logger, "Memoized new solver set: " << solvers);
-
-    return *insert_result.first;
-  }
-
   /** \brief If the given step is already "seen", mark it as a clone
    *  and return true (telling our caller to abort).
    */
@@ -1251,7 +1231,7 @@ private:
     typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
 
-    for(typename imm::map<dep, dep_solvers>::const_iterator it =
+    for(typename imm::map<dep, boost::flyweight<dep_solvers> >::const_iterator it =
 	  s.unresolved_deps.begin(); it != s.unresolved_deps.end(); ++it)
       {
 	const dep &d(it->first);
@@ -1787,12 +1767,12 @@ private:
 	  // Need to look up the solvers of the dep in order to know
 	  // the number of solvers that it was entered into the
 	  // by-num-solvers set with.
-	  typename imm::map<dep, typename search_graph::step::dep_solvers>::node
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node
 	    solvers = s.unresolved_deps.lookup(d);
 
 	  if(solvers.isValid())
 	    {
-	      const typename search_graph::step::dep_solvers &
+	      const typename step::dep_solvers &
 		dep_solvers(solvers.getVal().second);
 
 	      const imm::map<choice, typename step::solver_information, compare_choices_by_effects> &solver_map =
@@ -1901,7 +1881,7 @@ private:
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
-	  typename imm::map<dep, typename step::dep_solvers>::node
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node
 	    current_solver_set_found = s.unresolved_deps.lookup(d);
 
 	  if(current_solver_set_found.isValid())
@@ -1923,7 +1903,11 @@ private:
 			<< ", new solvers: " << new_solvers.get_solvers());
 
 	      // Actually update the solvers of the dep.
-	      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
+	      {
+		const typename step::flyweight_dep_solvers
+		  memoized_new_solvers(new_solvers);
+		s.unresolved_deps.put(d, memoized_new_solvers);
+	      }
 
 	      const int new_num_solvers = new_solvers.get_solvers().size();
 
@@ -2224,7 +2208,7 @@ private:
 			     const tier &check_tier = tier_limits::minimum_tier,
 			     bool do_check_tier = false)
   {
-    typename imm::map<dep, typename step::dep_solvers>::node
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node
       found_solvers(s.unresolved_deps.lookup(solver_dep));
 
     if(found_solvers.isValid())
@@ -2255,7 +2239,12 @@ private:
 			     new_tier_valid,
 			     new_tier_is_deferred);
 	    new_dep_solvers.set_solver_information(solver_with_dep, new_solver_inf);
-	    s.unresolved_deps.put(solver_dep, memoize_dep_solvers(new_dep_solvers));
+	    {
+	      typename step::flyweight_dep_solvers
+		memoized_new_dep_solvers(new_dep_solvers);
+
+	      s.unresolved_deps.put(solver_dep, memoized_new_dep_solvers);
+	    }
 	    LOG_TRACE(logger, "Recomputed the tier of "
 		      << solver << " in the solver list of "
 		      << solver_dep << " in step " << s.step_num
@@ -2680,7 +2669,7 @@ private:
 	  const dep &d(*it);
 	  choice solver_with_dep(solver.copy_and_set_dep(d));
 
-	  typename imm::map<dep, typename step::dep_solvers>::node current_solver_set_found =
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node current_solver_set_found =
 	    s.unresolved_deps.lookup(d);
 
 	  if(current_solver_set_found.isValid())
@@ -2717,7 +2706,9 @@ private:
 				old_inf.get_is_deferred_listener());
 		      new_solvers.set_solver_information(solver_with_dep, new_inf);
 
-		      s.unresolved_deps.put(d, resolver.memoize_dep_solvers(new_solvers));
+		      typename step::flyweight_dep_solvers
+			memoized_new_solvers(new_solvers);
+		      s.unresolved_deps.put(d, memoized_new_solvers);
 		      resolver.check_solvers_tier(s, new_solvers);
 
 		      LOG_TRACE(logger, "Increased the tier of "
@@ -2864,7 +2855,7 @@ private:
    */
   void find_promotions_for_dep_solvers(step &s, const dep &d)
   {
-    typename imm::map<dep, typename step::dep_solvers>::node found =
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node found =
       s.unresolved_deps.lookup(d);
 
     if(found.isValid())
@@ -2919,7 +2910,9 @@ private:
       add_solver(s, solvers, d,
 		 choice::make_break_soft_dep(d, -1));
 
-    s.unresolved_deps.put(d, memoize_dep_solvers(solvers));
+    typename step::flyweight_dep_solvers
+      memoized_solvers(solvers);
+    s.unresolved_deps.put(d, memoized_solvers);
     LOG_TRACE(logger, "Marked the dependency " << d
 	      << " as unresolved in step " << s.step_num
 	      << " with solver list " << solvers);
@@ -3296,7 +3289,7 @@ private:
 	return;
       }
 
-    typename imm::map<dep, typename step::dep_solvers>::node bestSolvers =
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node bestSolvers =
       s.unresolved_deps.lookup(best.getVal().second);
 
     if(!bestSolvers.isValid())
@@ -3307,17 +3300,18 @@ private:
 	return;
       }
 
-    if(bestSolvers.getVal().second.get_solvers().empty())
+    const typename step::dep_solvers &bestDepSolvers(bestSolvers.getVal().second);
+    if(bestDepSolvers.get_solvers().empty())
       LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
 
     LOG_TRACE(logger, "Generating successors for step " << step_num
-	      << " for the dependency " << best.getVal().second
+	      << " for the dependency " << bestDepSolvers
 	      << " with " << best.getVal().first << " solvers: "
-	      << bestSolvers.getVal().second.get_solvers());
+	      << bestDepSolvers.get_solvers());
     bool first_successor = false;
     do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
-    bestSolvers.getVal().second.get_solvers().for_each(generate_successor_f);
+    bestDepSolvers.get_solvers().for_each(generate_successor_f);
   }
 
 public:
