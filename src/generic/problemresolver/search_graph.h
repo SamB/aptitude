@@ -223,15 +223,15 @@ template<typename PackageUniverse>
 class generic_dump_solvers
 {
   typedef generic_choice<PackageUniverse> choice;
-  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
+  typedef generic_solver_information<PackageUniverse> solver_information;
 
-  const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &solvers;
+  const std::vector<std::pair<choice, solver_information> > &solvers;
 
   friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dump_solvers &);
   friend class generic_dep_solvers<PackageUniverse>;
 
-  generic_dump_solvers(const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &_solvers)
-  : solvers(_solvers)
+  generic_dump_solvers(const std::vector<std::pair<choice, solver_information> > &_solvers)
+    : solvers(_solvers)
   {
   }
 };
@@ -239,7 +239,22 @@ class generic_dump_solvers
 template<typename PackageUniverse>
 inline std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<PackageUniverse> &dump_solvers)
 {
-  return out << dump_solvers.solvers;
+  typedef generic_choice<PackageUniverse> choice;
+  typedef generic_solver_information<PackageUniverse> solver_information;
+
+  out << "{";
+  for(typename std::vector<std::pair<choice, solver_information> >::const_iterator
+	it = dump_solvers.solvers.begin(); it != dump_solvers.solvers.end(); ++it)
+    {
+      if(it != dump_solvers.solvers.begin())
+	out << ", ";
+
+      out << it->first << " -> " << it->second;
+    }
+
+  out << "}";
+
+  return out;
 }
 
 /** \brief A structure that tracks the state of the solvers of a
@@ -250,10 +265,11 @@ class generic_dep_solvers
 {
 public:
   typedef generic_choice<PackageUniverse> choice;
-  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
+  typedef generic_solver_information<PackageUniverse> solver_information;
 
 private:
-  imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> solvers;
+  typedef std::vector<std::pair<choice, solver_information> > solvers_list;
+  solvers_list solvers;
   imm::list<choice> structural_reasons;
   mutable std::size_t hash_cache;
   mutable bool hash_dirty;
@@ -269,11 +285,55 @@ private:
     {
     }
 
-    bool operator()(const std::pair<choice, generic_solver_information<PackageUniverse> > &p) const
+    bool operator()(const std::pair<choice, solver_information> &p) const
     {
       boost::hash_combine(hash_val, p);
 
       return true;
+    }
+  };
+
+  class compare_by_solver
+  {
+  public:
+    bool operator()(const std::pair<choice, solver_information> &p1,
+		    const std::pair<choice, solver_information> &p2) const
+    {
+      return p1.first < p2.first;
+    }
+
+    bool operator()(const std::pair<choice, solver_information> &p1,
+		    const choice &c2) const
+    {
+      return p1.first < c2;
+    }
+
+    bool operator()(const choice &c1,
+		    const std::pair<choice, solver_information> &p2) const
+    {
+      return c1 < p2.first;
+    }
+
+    bool operator()(const choice &c1,
+		    const choice &c2) const
+    {
+      return c1 < c2;
+    }
+  };
+
+  class find_solver
+  {
+    const choice &solver;
+
+  public:
+    find_solver(const choice &_solver)
+      : solver(_solver)
+    {
+    }
+
+    bool operator()(const std::pair<choice, solver_information> &p) const
+    {
+      return p.first == solver;
     }
   };
 
@@ -282,11 +342,12 @@ public:
   {
   }
 
-  generic_dep_solvers(const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &_solvers,
+  generic_dep_solvers(const std::vector<std::pair<choice, solver_information> > &_solvers,
 		      const imm::list<choice> &_structural_reasons)
     : solvers(_solvers), structural_reasons(_structural_reasons),
       hash_dirty(true)
   {
+    std::sort(solvers.begin(), solvers.end(), compare_by_solver());
   }
 
   std::size_t get_hash_value() const
@@ -294,9 +355,7 @@ public:
     if(hash_dirty)
       {
 	hash_cache = 0;
-	// Correctness of just iterating the solver set relies on the
-	// fact that imm::map places keys in sorted order.
-	solvers.for_each(hash_choices(hash_cache));
+	boost::hash_combine(hash_cache, solvers);
 	// Try to avoid any confusion caused by mixing the structural
 	// reasons with the solvers.
 	boost::hash_combine(hash_cache, 987654321);
@@ -319,16 +378,37 @@ public:
     structural_reasons.push_front(c);
   }
 
-  bool set_solver_information(const choice &c, const generic_solver_information<PackageUniverse> &solver)
+  bool set_solver_information(const choice &c, const solver_information &inf)
   {
     hash_dirty = true;
-    return solvers.put(c, solver);
+    const std::pair<typename solvers_list::iterator, typename solvers_list::iterator>
+      insert_loc = std::equal_range(solvers.begin(), solvers.end(), c, compare_by_solver());
+
+    if(insert_loc.first == insert_loc.second)
+      {
+	solvers.insert(insert_loc.first, std::make_pair(c, inf));
+	return true;
+      }
+    else
+      {
+	insert_loc.first->second = inf;
+	return false;
+      }
   }
 
   bool remove_solver(const choice &c)
   {
     hash_dirty = true;
-    return solvers.erase(c);
+    typename solvers_list::iterator new_end(std::remove_if(solvers.begin(), solvers.end(),
+							   find_solver(c)));
+
+    if(new_end == solvers.end())
+      return false;
+    else
+      {
+	solvers.erase(new_end, solvers.end());
+	return true;
+      }
   }
   // @}
 
@@ -337,21 +417,20 @@ public:
    *  \return a pointer to the solver's information, or \b NULL if it
    *  is not in this set of solvers.
    */
-  const generic_solver_information<PackageUniverse> *
+  const solver_information *
   lookup_solver_information(const choice &solver) const
   {
-    typename imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects>::node
-      found = solvers.lookup(solver);
+    std::pair<typename solvers_list::const_iterator, typename solvers_list::const_iterator>
+      found = std::equal_range(solvers.begin(), solvers.end(), solver, compare_by_solver());
 
-    if(found.isValid())
-      return &found.getVal().second;
-    else
+    if(found.first == found.second)
       return NULL;
+    else
+      return &found.first->second;
   }
 
   /** \brief The type used to represent the number of solvers in this set. */
-  typedef typename imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects>::size_type
-  solvers_size_type;
+  typedef typename solvers_list::size_type solvers_size_type;
 
   /** \brief Retrieve the number of solvers in this set. */
   solvers_size_type get_solvers_size() const
@@ -373,7 +452,14 @@ public:
   template<typename F>
   bool for_each_solver(F f) const
   {
-    return solvers.for_each(f);
+    for(typename solvers_list::const_iterator it = solvers.begin();
+	it != solvers.end(); ++it)
+      {
+	if(!f(*it))
+	  return false;
+      }
+
+    return true;
   }
 
   bool operator==(const generic_dep_solvers &other) const
@@ -1764,7 +1850,7 @@ std::ostream &operator<<(std::ostream &out,
   return out << "("
 	     << solvers.structural_reasons
 	     << ": "
-	     << solvers.solvers
+	     << solvers.dump_solvers()
 	     << ")";
 }
 
