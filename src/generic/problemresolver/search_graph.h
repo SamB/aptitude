@@ -569,8 +569,7 @@ public:
     typedef generic_solver_information<PackageUniverse> solver_information;
     typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
-    typedef boost::flyweight<dep_solvers,
-			     boost::flyweights::no_tracking> flyweight_dep_solvers;
+    typedef boost::flyweight<dep_solvers> flyweight_dep_solvers;
 
     /** \brief The actions performed by this step. */
     choice_set actions;
