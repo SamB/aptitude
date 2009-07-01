@@ -211,6 +211,37 @@ std::size_t hash_value(const generic_solver_information<PackageUniverse> &inf)
   return inf.get_hash_value();
 }
 
+template<typename PackageUniverse> class generic_dep_solvers;
+template<typename PackageUniverse>
+std::ostream &operator<<(std::ostream &out, const generic_dep_solvers<PackageUniverse> &solvers);
+
+template<typename PackageUniverse> class generic_dump_solvers;
+template<typename PackageUniverse>
+std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<PackageUniverse> &solvers);
+
+template<typename PackageUniverse>
+class generic_dump_solvers
+{
+  typedef generic_choice<PackageUniverse> choice;
+  typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
+
+  const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &solvers;
+
+  friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dump_solvers &);
+  friend class generic_dep_solvers<PackageUniverse>;
+
+  generic_dump_solvers(const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &_solvers)
+  : solvers(_solvers)
+  {
+  }
+};
+
+template<typename PackageUniverse>
+inline std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<PackageUniverse> &dump_solvers)
+{
+  return out << dump_solvers.solvers;
+}
+
 /** \brief A structure that tracks the state of the solvers of a
  *  dependency.
  */
@@ -226,6 +257,8 @@ private:
   imm::list<choice> structural_reasons;
   mutable std::size_t hash_cache;
   mutable bool hash_dirty;
+
+  friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dep_solvers &);
 
   class hash_choices
   {
@@ -299,17 +332,53 @@ public:
   }
   // @}
 
+  /** \brief Look up information about the given solver.
+   *
+   *  \return a pointer to the solver's information, or \b NULL if it
+   *  is not in this set of solvers.
+   */
+  const generic_solver_information<PackageUniverse> *
+  lookup_solver_information(const choice &solver) const
+  {
+    typename imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects>::node
+      found = solvers.lookup(solver);
+
+    if(found.isValid())
+      return &found.getVal().second;
+    else
+      return NULL;
+  }
+
+  /** \brief The type used to represent the number of solvers in this set. */
+  typedef typename imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects>::size_type
+  solvers_size_type;
+
+  /** \brief Retrieve the number of solvers in this set. */
+  solvers_size_type get_solvers_size() const
+  {
+    return solvers.size();
+  }
+
+  /** \brief Retrieve a wrapper around the solver set that can only be
+   *  used to write it to a stream.
+   */
+  generic_dump_solvers<PackageUniverse> dump_solvers() const
+  {
+    return generic_dump_solvers<PackageUniverse>(solvers);
+  }
+
+  /** \brief Apply the given function object to each (solver,
+   *  information) pair in this set.
+   */
+  template<typename F>
+  bool for_each_solver(F f) const
+  {
+    return solvers.for_each(f);
+  }
+
   bool operator==(const generic_dep_solvers &other) const
   {
     return solvers == other.solvers && structural_reasons == other.structural_reasons;
-  }
-
-  /** \brief Return the outstanding solvers of this dependency and
-   *  the current state of each one.
-   */
-  const imm::map<choice, generic_solver_information<PackageUniverse>, compare_choices_by_effects> &get_solvers() const
-  {
-    return solvers;
   }
 
   /** \brief Return the reasons that the set of solvers for this
@@ -1101,7 +1170,7 @@ private:
 	s.unresolved_deps.lookup(d);
 
       if(found.isValid() &&
-	 found.getVal().second.get().get_solvers().domain_contains(c))
+	 found.getVal().second.get().lookup_solver_information(c) != NULL)
 	return visit(s, choice_mapping_solver);
       else
 	{
@@ -1693,9 +1762,9 @@ std::ostream &operator<<(std::ostream &out,
 			 const generic_dep_solvers<PackageUniverse> &solvers)
 {
   return out << "("
-	     << solvers.get_structural_reasons()
+	     << solvers.structural_reasons
 	     << ": "
-	     << solvers.get_solvers()
+	     << solvers.solvers
 	     << ")";
 }
 

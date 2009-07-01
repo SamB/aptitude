@@ -1775,12 +1775,11 @@ private:
 	      const typename step::dep_solvers &
 		dep_solvers(solvers.getVal().second);
 
-	      const imm::map<choice, typename step::solver_information, compare_choices_by_effects> &solver_map =
-		dep_solvers.get_solvers();
 	      LOG_TRACE(logger,
 			"Removing the dependency " << d
-			<< " with a solver set of " << solver_map);
-	      int num_solvers = solver_map.size();
+			<< " with a solver set of " << dep_solvers.dump_solvers());
+	      const typename step::dep_solvers::solvers_size_type
+		num_solvers = dep_solvers.get_solvers_size();
 	      s.unresolved_deps_by_num_solvers.erase(std::make_pair(num_solvers, d));
 	    }
 	  else
@@ -1888,7 +1887,8 @@ private:
 	    {
 	      const typename step::dep_solvers &
 		current_solvers(current_solver_set_found.getVal().second);
-	      const int current_num_solvers = current_solvers.get_solvers().size();
+	      const typename step::dep_solvers::solvers_size_type
+		current_num_solvers = current_solvers.get_solvers_size();
 
 	      typename step::dep_solvers new_solvers(current_solvers);
 
@@ -1900,7 +1900,7 @@ private:
 			"Removing the choice " << victim_with_dep
 			<< " from the solver set of " << d
 			<< " in step " << s.step_num
-			<< ", new solvers: " << new_solvers.get_solvers());
+			<< ", new solvers: " << new_solvers.dump_solvers());
 
 	      // Actually update the solvers of the dep.
 	      {
@@ -1909,7 +1909,8 @@ private:
 		s.unresolved_deps.put(d, memoized_new_solvers);
 	      }
 
-	      const int new_num_solvers = new_solvers.get_solvers().size();
+	      const typename step::dep_solvers::solvers_size_type
+		new_num_solvers = new_solvers.get_solvers_size();
 
 	      if(current_num_solvers != new_num_solvers)
 		{
@@ -2214,17 +2215,15 @@ private:
     if(found_solvers.isValid())
       {
 	typename step::dep_solvers new_dep_solvers(found_solvers.getVal().second);
-	const imm::map<choice, typename step::solver_information, compare_choices_by_effects> &
-	  new_solvers(new_dep_solvers.get_solvers());
 
-	typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
-	  found_solver(new_solvers.lookup(solver));
-	if(!found_solver.isValid())
+	const typename step::solver_information *
+	  found_solver = new_dep_solvers.lookup_solver_information(solver);
+	if(found_solver == NULL)
 	  LOG_ERROR(logger, "Internal error: the choice " << solver
 		    << " is listed in the reverse index for step "
 		    << s.step_num << " as a solver for "
 		    << solver_dep << ", but it doesn't appear in that step.");
-	else if(!do_check_tier || found_solver.getVal().second.get_tier() == check_tier)
+	else if(!do_check_tier || found_solver->get_tier() == check_tier)
 	  {
 	    tier new_tier;
 	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
@@ -2505,7 +2504,7 @@ private:
     {
       tier dep_tier;
 
-      p.second.get_solvers().for_each(find_solvers_tier(dep_tier));
+      p.second.for_each_solver(find_solvers_tier(dep_tier));
 
       if(output_tier < dep_tier)
 	output_tier = dep_tier;
@@ -2581,7 +2580,7 @@ private:
     choice_set reasons;
     std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.get_solvers().for_each(build_promotion(t, reasons, valid_conditions));
+    solvers.for_each_solver(build_promotion(t, reasons, valid_conditions));
 
     for(typename imm::list<choice>::const_iterator it =
 	  solvers.get_structural_reasons().begin();
@@ -2680,10 +2679,10 @@ private:
 
 	      // Sanity-check: verify that the solver really
 	      // resides in the solver set of this dependency.
-	      typename imm::map<choice, typename step::solver_information, compare_choices_by_effects>::node
-		solver_found(new_solvers.get_solvers().lookup(solver_with_dep));
+	      const typename step::solver_information *solver_found =
+		new_solvers.lookup_solver_information(solver_with_dep);
 
-	      if(!solver_found.isValid())
+	      if(solver_found == NULL)
 		LOG_ERROR(logger, "Internal error: in step " << s.step_num
 			  << ", the solver " << solver
 			  << " is claimed to be a solver of " << d
@@ -2691,7 +2690,7 @@ private:
 	      else
 		{
 		  const typename step::solver_information &old_inf =
-		    solver_found.getVal().second;
+		    *solver_found;
 
 		  // Don't do anything if the tier won't increase.
 		  // Empirically, the resolver was wasting lots of
@@ -2862,7 +2861,7 @@ private:
       {
 	do_find_promotions_for_solver find_promotions_f(*this, s);
 	const typename step::dep_solvers &dep_solvers(found.getVal().second);
-	dep_solvers.get_solvers().for_each(find_promotions_f);
+	dep_solvers.for_each_solver(find_promotions_f);
       }
   }
 
@@ -2917,7 +2916,7 @@ private:
 	      << " as unresolved in step " << s.step_num
 	      << " with solver list " << solvers);
 
-    const int num_solvers = solvers.get_solvers().size();
+    const int num_solvers = solvers.get_solvers_size();
     s.unresolved_deps_by_num_solvers.insert(std::make_pair(num_solvers, d));
 
     find_promotions_for_dep_solvers(s, d);
@@ -3301,17 +3300,17 @@ private:
       }
 
     const typename step::dep_solvers &bestDepSolvers(bestSolvers.getVal().second);
-    if(bestDepSolvers.get_solvers().empty())
+    if(bestDepSolvers.get_solvers_size() == 0)
       LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
 
     LOG_TRACE(logger, "Generating successors for step " << step_num
 	      << " for the dependency " << bestDepSolvers
 	      << " with " << best.getVal().first << " solvers: "
-	      << bestDepSolvers.get_solvers());
+	      << bestDepSolvers.dump_solvers());
     bool first_successor = false;
     do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
-    bestDepSolvers.get_solvers().for_each(generate_successor_f);
+    bestDepSolvers.for_each_solver(generate_successor_f);
   }
 
 public:
