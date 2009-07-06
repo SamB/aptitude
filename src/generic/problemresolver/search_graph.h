@@ -58,8 +58,10 @@ public:
   typedef generic_tier_limits<PackageUniverse> tier_limits;
 
 private:
+  typedef boost::flyweight<choice_set> choice_set_flyweight;
+
   tier t;
-  choice_set reasons;
+  choice_set_flyweight reasons;
   cwidget::util::ref_ptr<expression<bool> > tier_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
@@ -159,7 +161,7 @@ public:
     boost::hash_combine(rval, tier_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
     boost::hash_combine(rval, t);
-    reasons.for_each(combine_reason_hashes(rval));
+    reasons.get().for_each(combine_reason_hashes(rval));
 
     return rval;
   }
