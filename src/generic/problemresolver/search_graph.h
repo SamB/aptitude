@@ -339,6 +339,7 @@ private:
 
 public:
   generic_dep_solvers()
+    : hash_dirty(true)
   {
   }
 
