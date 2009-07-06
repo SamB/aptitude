@@ -616,7 +616,7 @@ private:
   typedef ExtractPackageId PackageHash;
 
   /** Compares steps according to their "goodness": their tier, then
-   *  thier score, then their contents.
+   *  thier score, then their step number (to disambiguate).
    *
    *  The comparisons are reversed, so better solutions compare
    *  "below" worse ones.
@@ -650,7 +650,7 @@ private:
       else if(step1.score < step2.score)
 	return false;
       else
-	return step2.actions < step1.actions;
+	return step_num1 < step_num2;
     }
   };
 

@@ -65,6 +65,25 @@ std::ostream &operator<<(std::ostream &out, const boost::unordered_map<Key, Val>
   return out;
 }
 
+template<typename Val>
+std::ostream &operator<<(std::ostream &out, const boost::unordered_set<Val> &s)
+{
+  out << "{";
+
+  for(typename boost::unordered_set<Val>::const_iterator it =
+	s.begin(); it != s.end(); ++it)
+    {
+      if(it != s.begin())
+	out << ", ";
+
+      out << *it;
+    }
+
+  out << "}";
+
+  return out;
+}
+
 class Promotion_SetTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(Promotion_SetTest);
@@ -91,9 +110,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
   typedef generic_promotion_set<dummy_universe_ref> dummy_promotion_set;
   typedef dummy_promotion_set::promotion promotion;
 
-  static imm::set<promotion> get_promotions(const dummy_promotion_set &promotions)
+  static boost::unordered_set<promotion> get_promotions(const dummy_promotion_set &promotions)
   {
-    imm::set<promotion> rval;
+    boost::unordered_set<promotion> rval;
     for(dummy_promotion_set::const_iterator it = promotions.begin();
 	it != promotions.end(); ++it)
       rval.insert(*it);
@@ -151,7 +170,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     // Verify that the promotion set has the expected
     // entries at each point in its construction.
-    imm::set<promotion> expected_promotions;
+    boost::unordered_set<promotion> expected_promotions;
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -683,7 +702,7 @@ public:
     // Check that the size and contents (when iterating) of the
     // promotion set are maintained correctly.
     {
-      imm::set<promotion> expected_promotions;
+      boost::unordered_set<promotion> expected_promotions;
       choice_set p1_choices;
       p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
       promotion p1(p1_choices, tier(100));
@@ -802,7 +821,7 @@ public:
     //   (T50: Install(b v3 [b v2 -> <c v2>], cv2)), and
     //   (T30: Install(b v2))
     // should be gone.
-    imm::set<promotion> expected;
+    boost::unordered_set<promotion> expected;
     choice_set p1_choices;
     p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
     promotion p1(p1_choices, tier(100));
