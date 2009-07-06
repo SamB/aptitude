@@ -83,6 +83,8 @@ static bool empty_conflict(const pkgCache::DepIterator &dep,
 
 string aptitude_resolver_version::get_name() const
 {
+  pkgCache::VerIterator ver(get_ver());
+  pkgCache::PkgIterator pkg(get_pkg());
   if(!ver.end())
     {
       // If there are two distinct package files with the same
@@ -423,12 +425,14 @@ void aptitude_resolver_dep::solver_iterator::normalize()
 
 bool aptitude_resolver_dep::solved_by(const aptitude_resolver_version &v) const
 {
+  pkgCache::DepIterator start_iter(cache->GetCache(), const_cast<pkgCache::Dependency *>(start));
+
   // First check for moving the source.
-  if(v.get_pkg() == const_cast<pkgCache::DepIterator &>(start).ParentPkg() && v.get_ver() != const_cast<pkgCache::DepIterator &>(start).ParentVer())
+  if(v.get_pkg() == start_iter.ParentPkg() && v.get_ver() != start_iter.ParentVer())
     return true;
 
   // Now check each of the members of the OR group.
-  pkgCache::DepIterator d = start;
+  pkgCache::DepIterator d = start_iter;
 
   if(!is_conflict(start->Type))
     {
@@ -458,7 +462,7 @@ bool aptitude_resolver_dep::solved_by(const aptitude_resolver_version &v) const
 	    return false;
 	}
     }
-  else if(prv.end())
+  else if(prv == NULL)
     {
       if(d.TargetPkg() != v.get_pkg())
 	return false;
@@ -474,11 +478,14 @@ bool aptitude_resolver_dep::solved_by(const aptitude_resolver_version &v) const
     }
   else
     {
+      pkgCache::PrvIterator prv_iter(cache->GetCache(), const_cast<pkgCache::Provides *>(prv),
+				     (pkgCache::Package *)0);
+
       // Only other versions of the provider can solve this.
-      if(v.get_pkg() != const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg())
+      if(v.get_pkg() != prv_iter.OwnerPkg())
 	return false;
       else
-	return v.get_ver() != const_cast<pkgCache::PrvIterator &>(prv).OwnerVer();
+	return v.get_ver() != prv_iter.OwnerVer();
     }
 }
 
@@ -519,7 +526,7 @@ aptitude_resolver_version aptitude_resolver_dep::solver_iterator::operator*() co
   eassert(!end());
 
   if(!ver_lst.end())
-    return aptitude_resolver_version(ver_lst.ParentPkg(),ver_lst,cache);
+    return aptitude_resolver_version::make_install(ver_lst, cache);
   else // In this case we're trying to remove some package or other.
     {
       if(!is_conflict(dep_lst->Type))
@@ -527,12 +534,12 @@ aptitude_resolver_version aptitude_resolver_dep::solver_iterator::operator*() co
 	  // Assume this because otherwise end() should be true.
 	  eassert(!prv_lst.end());
 
-	  return aptitude_resolver_version(const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg(),const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerVer(),cache);
+	  return aptitude_resolver_version::make_install(const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerVer(), cache);
 	}
       else if(!prv_lst.end())
-	return aptitude_resolver_version(const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg(),ver_lst,cache);
+	return aptitude_resolver_version::make_removal(const_cast<pkgCache::PrvIterator &>(prv_lst).OwnerPkg(), cache);
       else
-	return aptitude_resolver_version(const_cast<pkgCache::DepIterator &>(dep_lst).TargetPkg(),ver_lst,cache);
+	return aptitude_resolver_version::make_removal(const_cast<pkgCache::DepIterator &>(dep_lst).TargetPkg(), cache);
     }
 }
 

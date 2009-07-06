@@ -682,9 +682,9 @@ aptitude_resolver::aptitude_resolver(int step_score,
       version curr;
       if(i->CurrentState != pkgCache::State::NotInstalled &&
 	 i->CurrentState != pkgCache::State::ConfigFiles)
-	curr = version(i, i.CurrentVer(), cache);
+	curr = version::make_install(i.CurrentVer(), cache);
       else
-	curr = version(i, pkgCache::VerIterator(*cache), cache);
+	curr = version::make_removal(i, cache);
 
       if(get_initial_state().version_of(p) != curr)
 	{
@@ -878,14 +878,12 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	      // It's important that we go down this branch at most
 	      // once per package (since we only do it if the source
 	      // *version* is installed).
-	      imm::set<aptitude_universe::version> s;
+	      imm::set<version> s;
 
-	      s.insert(aptitude_universe::version(src.ParentPkg(),
-						  pkgCache::VerIterator(*cache),
-						  cache));
-	      s.insert(aptitude_universe::version(target,
-						  target_ver,
-						  cache));
+	      s.insert(version::make_removal(src.ParentPkg(),
+					     cache));
+	      s.insert(version::make_install(target_ver,
+					     cache));
 
 	      LOG_DEBUG(loggerScores,
 			"** Score: " << std::showpos << undo_full_replacement_score << std::noshowpos
@@ -920,9 +918,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 		    << ", which is replaced by "
 		    << src.ParentPkg().Name() << " " << src.VerStr()
 		    << ", which is already installed.  (" PACKAGE "::ProblemResolver::FullReplacementScore)");
-	  add_version_score(aptitude_universe::version(target,
-						       pkgCache::VerIterator(*cache),
-						       cache),
+	  add_version_score(version::make_removal(target,
+						  cache),
 			    full_replacement_score);
 
 	  // If we are working through a provides, find all versions
@@ -945,9 +942,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 				<< src.ParentPkg().Name() << " "
 				<< src.VerStr()
 				<< ", which is already installed).  (" PACKAGE "::ProblemResolver::FullReplacementScore)");
-		      add_version_score(aptitude_universe::version(target,
-								   target_ver,
-								   cache),
+		      add_version_score(version::make_install(target_ver,
+							      cache),
 					full_replacement_score);
 		    }
 		}
@@ -960,12 +956,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	  {
 	    imm::set<aptitude_universe::version> s;
 
-	    s.insert(aptitude_universe::version(src.ParentPkg(),
-						src,
-						cache));
-	    s.insert(aptitude_universe::version(target,
-						pkgCache::VerIterator(*cache),
-						cache));
+	    s.insert(version::make_install(src, cache));
+	    s.insert(version::make_removal(target, cache));
 
 	    LOG_DEBUG(loggerScores,
 		      "** Score: " << std::showpos << full_replacement_score << std::noshowpos
@@ -989,12 +981,10 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 		    {
 		      imm::set<aptitude_universe::version> s;
 
-		      s.insert(aptitude_universe::version(src.ParentPkg(),
-							  src,
-							  cache));
-		      s.insert(aptitude_universe::version(target,
-							  target_ver,
-							  cache));
+		      s.insert(version::make_install(src,
+						     cache));
+		      s.insert(version::make_install(target_ver,
+						     cache));
 
 		      LOG_DEBUG(loggerScores,
 				"** Score: " << std::showpos << full_replacement_score << std::noshowpos
@@ -1065,12 +1055,10 @@ void aptitude_resolver::add_default_resolution_score(const pkgCache::DepIterator
     {
       // Here MarkInstall would install, so we bias the resolver in
       // favor of using this as a solution.
-      aptitude_resolver_version source_ver(const_cast<pkgCache::DepIterator &>(dep).ParentPkg(),
-					   const_cast<pkgCache::DepIterator &>(dep).ParentVer(),
-					   cache);
-      aptitude_resolver_version target_ver(instVer.ParentPkg(),
-					   instVer,
-					   cache);
+      aptitude_resolver_version source_ver =
+	version::make_install(const_cast<pkgCache::DepIterator &>(dep).ParentVer(), cache);
+      aptitude_resolver_version target_ver =
+	version::make_install(instVer, cache);
 
       // If the source of the dependency is currently (going to be)
       // installed, apply the score only to the target; otherwise,

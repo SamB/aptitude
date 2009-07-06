@@ -63,7 +63,8 @@ namespace
 	pkgCache::VerIterator ver((*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file));
 
 	aptitude_resolver_package resolver_pkg(pkg, *apt_cache_file);
-	aptitude_resolver_version resolver_ver(pkg, ver, *apt_cache_file);
+	aptitude_resolver_version resolver_ver =
+	  aptitude_resolver_version::make_install(ver, *apt_cache_file);
 
 	rval.put(resolver_pkg, resolver_ver);
       }

@@ -47,11 +47,11 @@ class aptitude_resolver_version;
 class aptitude_resolver_package
 {
   pkgDepCache *cache;
-  pkgCache::PkgIterator pkg;
+  const pkgCache::Package *pkg;
 public:
   /** \brief Create an invalid package object. */
   aptitude_resolver_package()
-    :cache(0)
+    : cache(0), pkg(0)
   {
   }
 
@@ -61,12 +61,12 @@ public:
    *  \param _pkg The package to be represented by the new object.
    *  \param _cache The cache with which the new object is to be associated.
    */
-  aptitude_resolver_package(const pkgCache::PkgIterator &_pkg,
+  aptitude_resolver_package(const pkgCache::Package *_pkg,
 			    pkgDepCache *_cache)
     :cache(_cache), pkg(_pkg)
   {
     eassert(cache!=0);
-    eassert(pkg.Cache()!=0);
+    eassert(pkg != 0);
   }
 
   /** \brief Generate a unique ID for this package.
@@ -87,31 +87,34 @@ public:
   /** \return The name of the package. */
   const char *get_name() const
   {
-    return pkg.Name();
+    return get_pkg().Name();
   }
 
   /** \return The underlying APT package wrapped by this object. */
   pkgCache::PkgIterator get_pkg() const
   {
-    return pkg;
+    return pkgCache::PkgIterator(*cache, const_cast<pkgCache::Package *>(pkg));
   }
+
+  // Note that it's not necessary to compare the cache along with the
+  // package: two separate caches won't share the same package.
 
   /** \return \b true if other is the same package as this. */
   bool operator==(const aptitude_resolver_package &other) const
   {
-    return pkg==other.pkg;
+    return pkg == other.pkg;
   }
 
   /** \return \b true if other is not the same package as this. */
   bool operator!=(const aptitude_resolver_package &other) const
   {
-    return pkg!=other.pkg;
+    return pkg != other.pkg;
   }
 
   /** \brief Order packages by their memory location. */
   bool operator<(const aptitude_resolver_package &other) const
   {
-    return ((const pkgCache::Package *) pkg) < ((const pkgCache::Package *) other.pkg);
+    return pkg < other.pkg;
   }
 
   /** \return The to-be-installed version of this package. */
@@ -142,32 +145,51 @@ inline std::size_t hash_value(const aptitude_resolver_package &p)
 class aptitude_resolver_version
 {
   pkgDepCache *cache;
-  pkgCache::PkgIterator pkg;
-  pkgCache::VerIterator ver;
-public:
-  /** \brief Create an invalid version object. */
-  aptitude_resolver_version()
-    :cache(0)
+
+  // True if we store a version below; false if it's a package.
+  bool is_version : 1;
+  // 'Compressed' storage of a pointer to either the package or the
+  // version.  This is an offset into one of the arrays stored by the
+  // cache, either PkgP or VerP; the preceding boolean tells us which.
+  int offset : (8*sizeof(int) - 1);
+
+  aptitude_resolver_version(pkgDepCache *_cache,
+			    bool _is_version,
+			    int _offset)
+    : cache(_cache), is_version(_is_version),
+      offset(_offset)
   {
   }
 
-  /** \brief Create a version wrapper for the given version of the
+public:
+  /** \brief Create an invalid version object. */
+  aptitude_resolver_version()
+    : cache(0), is_version(false), offset(0)
+  {
+  }
+
+  /** \brief Create a version wrapper that represents removing the
    *  given package.
    *
    *  \param _pkg The package of which this is a version.  Must not be
    *  an end iterator.
    *
-   *  \param _ver The version to be wrapped.  If an end iterator, the
-   *  new object will represent the removal of _pkg.
+   *  \param _cache  The cache associated with this object.
    */
-  aptitude_resolver_version(const pkgCache::PkgIterator &_pkg,
-			    const pkgCache::VerIterator &_ver,
-			    pkgDepCache *_cache)
-    :cache(_cache), pkg(_pkg), ver(_ver)
+  static aptitude_resolver_version
+  make_removal(const pkgCache::Package *pkg,
+	       pkgDepCache *cache)
   {
-    eassert(cache!=0);
-    eassert(pkg.Cache()!=0);
-    eassert(ver.Cache()!=0);
+    eassert(pkg != NULL);
+    return aptitude_resolver_version(cache, false, pkg - cache->GetCache().PkgP);
+  }
+
+  static aptitude_resolver_version
+  make_install(const pkgCache::Version *ver,
+	       pkgDepCache *cache)
+  {
+    eassert(ver != NULL);
+    return aptitude_resolver_version(cache, true, ver - cache->GetCache().VerP);
   }
 
   /** \return The APT package of which this is a version.
@@ -176,7 +198,13 @@ public:
    */
   pkgCache::PkgIterator get_pkg() const
   {
-    return pkg;
+    pkgCache &pcache(cache->GetCache());
+
+    if(is_version)
+      return pkgCache::PkgIterator(pcache,
+				   pcache.PkgP + (pcache.VerP[offset].ParentPkg));
+    else
+      return pkgCache::PkgIterator(pcache, pcache.PkgP + offset);
   }
 
   /** \return The APT version wrapped by this object, or an end
@@ -184,7 +212,12 @@ public:
    */
   pkgCache::VerIterator get_ver() const
   {
-    return ver;
+    pkgCache &pcache(cache->GetCache());
+
+    if(!is_version)
+      return pkgCache::VerIterator(pcache, 0);
+    else
+      return pkgCache::VerIterator(pcache, pcache.VerP + offset);
   }
 
   /** \return The APT ID of this version if it is a real version,
@@ -192,8 +225,11 @@ public:
    */
   unsigned int get_id() const
   {
-    if(!ver.end())
-      return ver->ID;
+    pkgCache &pcache(cache->GetCache());
+
+    // Could I just use the array offset instead?  Unsure.
+    if(is_version)
+      return pcache.VerP[offset].ID;
     else
       // non-installed versions are faked.
       //
@@ -201,7 +237,7 @@ public:
       // there's more to copy.  I could also teach the resolver about
       // "null" versions...but that would mean a bunch of pointless
       // special-casing caller-side anyway.
-      return cache->Head().VersionCount+pkg->ID;
+      return cache->Head().VersionCount + pcache.PkgP[offset].ID;
   }
 
   /** \return The version string of this version, mangled if multiple
@@ -216,37 +252,48 @@ public:
    */
   aptitude_resolver_package get_package() const
   {
-    return aptitude_resolver_package(pkg, cache);
+    pkgCache &pcache(cache->GetCache());
+
+
+    if(is_version)
+      return aptitude_resolver_package(pcache.PkgP + (pcache.VerP[offset].ParentPkg), cache);
+    else
+      return aptitude_resolver_package(pcache.PkgP + offset, cache);
   }
 
   std::size_t get_hash_value() const
   {
-    boost::hash<const pkgCache::Version *> hasher;
-    return hasher(ver);
+    std::size_t rval = 0;
+    boost::hash_combine(rval, is_version);
+    boost::hash_combine(rval, offset);
+
+    return rval;
   }
 
   /** \return \b true if this is the same version as other. */
   bool operator==(const aptitude_resolver_version &other) const
   {
-    return pkg == other.pkg && ver == other.ver;
+    return is_version == other.is_version && offset == other.offset;
   }
 
   /** \return \b true if this is not the same version as other. */
   bool operator!=(const aptitude_resolver_version &other) const
   {
-    return pkg != other.pkg || ver != other.ver;
+    return is_version != other.is_version || offset != other.offset;
   }
 
   /** \brief Order versions according to their memory location. */
   bool operator<(const aptitude_resolver_version &other) const
   {
-    if(((const pkgCache::Package *) pkg) < ((const pkgCache::Package *) other.pkg))
+    if(is_version < other.is_version)
       return true;
-    else if(((const pkgCache::Package *) other.pkg) < ((const pkgCache::Package *) pkg))
+    else if(other.is_version < is_version)
       return false;
-    else if(((const pkgCache::Version *) ver) < ((const pkgCache::Version *) other.ver))
+    else if(offset < other.offset)
       return true;
-    else // if(((pkgCache::Version *) other.ver) < ((pkgCache::Version *) ver))
+    else if(other.offset < offset)
+      return false;
+    else
       return false;
   }
 
@@ -271,14 +318,21 @@ inline std::size_t hash_value(const aptitude_resolver_version &v)
 
 inline aptitude_resolver_version aptitude_resolver_package::current_version() const
 {
+  pkgCache::PkgIterator pkg(get_pkg());
+
   // Transmute removed-with-config-files packages into not-installed
   // packages.
   if((*cache)[pkg].Keep() &&
      pkg->CurrentState == pkgCache::State::ConfigFiles)
-    return aptitude_resolver_version(pkg, pkgCache::VerIterator(*cache, 0), cache);
+    return aptitude_resolver_version::make_removal(pkg, cache);
   else
-    return aptitude_resolver_version(pkg, (*cache)[pkg].InstVerIter(*cache),
-				     cache);
+    {
+      pkgCache::VerIterator instver((*cache)[pkg].InstVerIter(*cache));
+      if(instver.end())
+	return aptitude_resolver_version::make_removal(pkg, cache);
+      else
+	return aptitude_resolver_version::make_install(instver, cache);
+    }
 }
 
 /** \brief Translates an apt dependency into the abstract realm.
@@ -305,19 +359,18 @@ inline aptitude_resolver_version aptitude_resolver_package::current_version() co
 class aptitude_resolver_dep
 {
   pkgDepCache *cache;
-  pkgCache::DepIterator start;
-  /** If start is a Conflicts/Breaks and prv is not an end iterator,
-   *  then the object represents "V -> {V'_1 V'_2 ..} where the V'-s
-   *  are versions of prv.OwnerPkg() that do *not* provide
-   *  V.ParentPkg().  Otherwise, if start is a Conflicts/Breaks and
-   *  prv is an end iterator, the object represents the non-virtual
-   *  part of the Conflicts/Breaks; if start is not a
-   *  Conflicts/Breaks, prv is unused.
+  const pkgCache::Dependency *start;
+  /** If start is a Conflicts/Breaks and prv is not NULL, then the
+   *  object represents "V -> {V'_1 V'_2 ..} where the V'-s are
+   *  versions of prv.OwnerPkg() that do *not* provide V.ParentPkg().
+   *  Otherwise, if start is a Conflicts/Breaks and prv is NULL, the
+   *  object represents the non-virtual part of the Conflicts/Breaks;
+   *  if start is not a Conflicts/Breaks, prv is unused.
    *
    *  All that discussion is mainly important when checking if the dep
    *  is broken and/or when finding its solvers.
    */
-  pkgCache::PrvIterator prv;
+  const pkgCache::Provides *prv;
 public:
   /** \brief Generate an invalid dependency object.
    */
@@ -337,20 +390,22 @@ public:
    *
    *  \param _cache The package cache in which this dependency exists.
    */
-  aptitude_resolver_dep(const pkgCache::DepIterator dep,
-			const pkgCache::PrvIterator _prv,
+  aptitude_resolver_dep(const pkgCache::Dependency *dep,
+			const pkgCache::Provides *_prv,
 			pkgDepCache *_cache)
     :cache(_cache), prv(_prv)
   {
     eassert(cache!=0);
-    eassert(const_cast<pkgCache::DepIterator &>(dep).Cache()!=0);
-    eassert(prv.Cache()!=0);
-    eassert(!dep.end());
+    eassert(dep != NULL);
     if(!is_conflict(dep->Type))
       {
-	// Throw away the end, since it's not necessary.
-	pkgCache::DepIterator end;
-	surrounding_or(dep, start, end, &cache->GetCache());
+	// If it's not a conflict, back up to the start of the OR.
+	pkgCache::DepIterator new_start, end;
+	surrounding_or(pkgCache::DepIterator(cache->GetCache(),
+					     const_cast<pkgCache::Dependency *>(dep)),
+		       new_start, end, &cache->GetCache());
+
+	start = new_start;
       }
     else
       // Ignore ORs and just use the selected conflict.
@@ -371,9 +426,9 @@ public:
   std::size_t get_hash_value() const
   {
     std::size_t rval = 0;
-    boost::hash_combine(rval, (const pkgCache::Dependency *)start);
+    boost::hash_combine(rval, start);
     if(is_conflict(start->Type))
-      boost::hash_combine(rval, (const pkgCache::Provides *)prv);
+      boost::hash_combine(rval, prv);
 
     return rval;
   }
@@ -397,13 +452,13 @@ public:
    */
   bool operator<(const aptitude_resolver_dep &other) const
   {
-    if(((const pkgCache::Dependency *) start) < ((const pkgCache::Dependency *) other.start))
+    if(start < other.start)
       return true;
-    else if(((const pkgCache::Dependency *) start) > ((const pkgCache::Dependency *) other.start))
+    else if(start > other.start)
       return false;
     else if(!is_conflict(start->Type))
       return false;
-    else if(((const pkgCache::Provides *) prv) < ((const pkgCache::Provides *) other.prv))
+    else if(prv < other.prv)
       return true;
     else
       return false;
@@ -423,7 +478,7 @@ public:
   /** \return The APT dependency associated with this abstract dependency. */
   pkgCache::DepIterator get_dep() const
   {
-    return start;
+    return pkgCache::DepIterator(cache->GetCache(), const_cast<pkgCache::Dependency *>(start));
   }
 
   /** \return The APT Provides relationship associated with this
@@ -431,7 +486,8 @@ public:
    */
   pkgCache::PrvIterator get_prv() const
   {
-    return prv;
+    return pkgCache::PrvIterator(cache->GetCache(), const_cast<pkgCache::Provides *>(prv),
+				 (pkgCache::Version *)0);
   }
 
   /** \return \b true if the given version will resolve this dependency. */
@@ -440,11 +496,10 @@ public:
   /** \return The source version of this dependency. */
   aptitude_resolver_version get_source() const
   {
-    eassert(!start.end());
-    eassert(!const_cast<pkgCache::DepIterator &>(start).ParentPkg().end());
-    return aptitude_resolver_version(const_cast<pkgCache::DepIterator &>(start).ParentPkg(),
-				     const_cast<pkgCache::DepIterator &>(start).ParentVer(),
-				     cache);
+    pkgCache::DepIterator dep(get_dep());
+    eassert(!dep.ParentPkg().end());
+    return aptitude_resolver_version::make_install(dep.ParentVer(),
+						   cache);
   }
 
   class solver_iterator;
@@ -516,7 +571,10 @@ public:
   /** \return The version at which this iterator currently points. */
   aptitude_resolver_version operator *() const
   {
-    return aptitude_resolver_version(pkg, ver, cache);
+    if(ver.end())
+      return aptitude_resolver_version::make_removal(pkg, cache);
+    else
+      return aptitude_resolver_version::make_install(ver, cache);
   }
 
   /** \brief Advance to the next version in the list.
@@ -544,7 +602,7 @@ public:
 
 inline aptitude_resolver_package::version_iterator aptitude_resolver_package::versions_begin() const
 {
-  return version_iterator(pkg, cache);
+  return version_iterator(pkgCache::PkgIterator(cache->GetCache(), const_cast<pkgCache::Package *>(pkg)), cache);
 }
 
 /** \brief Iterates over the reverse dependencies of a version.
@@ -744,15 +802,15 @@ public:
 
 inline aptitude_resolver_version::revdep_iterator aptitude_resolver_version::revdeps_begin() const
 {
-  return revdep_iterator(ver, cache);
+  return revdep_iterator(get_ver(), cache);
 }
 
 inline aptitude_resolver_version::dep_iterator aptitude_resolver_version::deps_begin() const
 {
-  if(ver.end())
+  if(!is_version)
     return dep_iterator(cache);
   else
-    return dep_iterator(ver, cache);
+    return dep_iterator(get_ver(), cache);
 }
 
 /** \brief Iterates over the targets of a dependency.
@@ -786,19 +844,19 @@ public:
    *  \param _cache The package cache in which this dependency is
    *  located.
    */
-  solver_iterator(const pkgCache::DepIterator &start,
+  solver_iterator(const pkgCache::Dependency *start,
 		  pkgDepCache *_cache)
     :cache(_cache),
-     dep_lst(start),
+     dep_lst(*cache, const_cast<pkgCache::Dependency *>(start)),
      prv_lst(*cache, 0, (pkgCache::Package *) 0),
-     finished(start.end())
+     finished(dep_lst.end())
   {
     if(!dep_lst.end())
       {
 	eassert(!is_conflict(dep_lst->Type));
 
-	ver_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().VersionList();
-	prv_lst=const_cast<pkgCache::DepIterator &>(start).TargetPkg().ProvidesList();
+	ver_lst = dep_lst.TargetPkg().VersionList();
+	prv_lst = dep_lst.TargetPkg().ProvidesList();
       }
 
     normalize();
@@ -814,10 +872,13 @@ public:
    *
    *  \param _cache The package cache in which to work.
    */
-  solver_iterator(const pkgCache::DepIterator &d,
-		  const pkgCache::PrvIterator &p,
+  solver_iterator(const pkgCache::Dependency *d,
+		  const pkgCache::Provides *p,
 		  pkgDepCache *_cache)
-    :cache(_cache), dep_lst(d), prv_lst(p), finished(d.end())
+    :cache(_cache),
+     dep_lst(_cache->GetCache(), const_cast<pkgCache::Dependency *>(d)),
+     prv_lst(_cache->GetCache(), const_cast<pkgCache::Provides *>(p), (pkgCache::Package *)0),
+     finished(dep_lst.end())
   {
     if(!dep_lst.end())
       {
@@ -827,7 +888,7 @@ public:
 	if(prv_lst.end())
 	  ver_lst=const_cast<pkgCache::DepIterator &>(dep_lst).TargetPkg().VersionList();
 	else
-	  ver_lst=const_cast<pkgCache::PrvIterator &>(p).OwnerPkg().VersionList();
+	  ver_lst = prv_lst.OwnerPkg().VersionList();
       }
 
     normalize();
@@ -887,13 +948,14 @@ inline aptitude_resolver_dep::solver_iterator aptitude_resolver_dep::solvers_beg
 template<typename InstallationType>
 bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
 {
+  pkgCache::DepIterator start_iter(cache->GetCache(), const_cast<pkgCache::Dependency *>(start));
   // First, check that the solution actually installs the source.
-  if(const_cast<pkgCache::DepIterator &>(start).ParentVer() != I.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).ParentPkg(), cache)).get_ver())
+  if(start_iter.ParentVer() != I.version_of(aptitude_resolver_package(start_iter.ParentPkg(), cache)).get_ver())
     return false;
 
   if(!is_conflict(start->Type))
     {
-      pkgCache::DepIterator dep=start;
+      pkgCache::DepIterator dep = start_iter;
 
       while(!dep.end())
 	{
@@ -930,30 +992,32 @@ bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
       // single element of the Conflicts/Breaks: either a direct
       // conflict or an indirect conflict (i.e., via a virtual pkg).
 
-      if(prv.end())
+      if(prv == NULL)
 	{
-	  if(const_cast<pkgCache::DepIterator &>(start).TargetPkg() == const_cast<pkgCache::DepIterator &>(start).ParentPkg())
+	  if(start_iter.TargetPkg() == start_iter.ParentPkg())
 	    return false;
 
-	  pkgCache::VerIterator direct_ver=I.version_of(aptitude_resolver_package(const_cast<pkgCache::DepIterator &>(start).TargetPkg(), cache)).get_ver();
+	  pkgCache::VerIterator direct_ver=I.version_of(aptitude_resolver_package(start_iter.TargetPkg(), cache)).get_ver();
 
 	  if(!direct_ver.end() &&
 	     _system->VS->CheckDep(direct_ver.VerStr(),
 				   start->CompareOp,
-				   start.TargetVer()))
+				   start_iter.TargetVer()))
 	    return true;
 	  else
 	    return false;
 	}
       else
 	{
-	  if(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg() == const_cast<pkgCache::DepIterator &>(start).ParentPkg())
+	  pkgCache::PrvIterator prv_iter(cache->GetCache(), const_cast<pkgCache::Provides *>(prv), (pkgCache::Package *)0);
+
+	  if(prv_iter.OwnerPkg() == start_iter.ParentPkg())
 	    return false;
 
-	  if(start.TargetVer())
+	  if(start_iter.TargetVer() != NULL)
 	    return false;
 
-	  return I.version_of(aptitude_resolver_package(const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg(), cache)).get_ver()==const_cast<pkgCache::PrvIterator &>(prv).OwnerVer();
+	  return I.version_of(aptitude_resolver_package(prv_iter.OwnerPkg(), cache)).get_ver() == prv_iter.OwnerVer();
 	}
     }
 }
