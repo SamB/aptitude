@@ -3373,7 +3373,8 @@ public:
       version_tiers[i] = tier_limits::minimum_tier;
 
     // Used for sanity-checking below.
-    choice_set_installation empty_step(choice_set(),
+    choice_set empty_choice_set;
+    choice_set_installation empty_step(empty_choice_set,
 				       initial_state);
 
     // Find all the broken deps.
