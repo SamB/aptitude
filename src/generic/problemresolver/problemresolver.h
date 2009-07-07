@@ -2397,6 +2397,9 @@ private:
     // it is.
     if(solver.get_type() == choice::install_version)
       {
+	eassert(solver.get_has_dep());
+	eassert(solver.get_dep() == d);
+
 	const version ver(solver.get_ver());
 	version selected;
 	if(s.actions.get_version_of(ver.get_package(), selected))
