@@ -501,6 +501,7 @@ class var_e : public expression<T>
 {
   T value;
 
+protected:
   var_e(T _value) : value(_value)
   {
   }
