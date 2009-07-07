@@ -3241,6 +3241,10 @@ private:
 	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.step_tier
 	      << "S" << output.score);
 
+    if(output.step_tier >= tier_limits::defer_tier &&
+       output.step_tier < tier_limits::already_generated_tier)
+      ++num_deferred;
+
     pending.insert(output.step_num);
   }
 
