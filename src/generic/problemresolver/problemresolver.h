@@ -2544,7 +2544,13 @@ private:
     LOG_TRACE(logger, "Recomputing the tier of step " << s.step_num
 	      << " (was " << s.step_tier << ")");
 
-    s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier));
+    tier new_tier(tier_limits::minimum_tier);
+    s.unresolved_deps.for_each(find_largest_dep_tier(new_tier));
+
+    LOG_TRACE(logger, "Recomputed the tier of step " << s.step_num
+	      << " (was " << s.step_tier << ", now " << new_tier << ")");
+
+    set_step_tier(s.step_num, new_tier);
   }
 
   // Build a generalized promotion from the entries of a dep-solvers
