@@ -174,24 +174,18 @@ private:
 
   // Used by operator<< -- could be declared outside this object, but
   // that would pollute the namespace.
-  struct show_choice
+  struct accumulate_choices
   {
-    mutable bool first;
-    std::ostream &out;
+    std::vector<choice> &out;
 
-    show_choice(std::ostream &_out, bool first)
-      : first(true), out(_out)
+    accumulate_choices(std::vector<choice> &_out)
+      : out(_out)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      if(first)
-	first = false;
-      else
-	out << ", ";
-      out << c;
-
+      out.push_back(c);
       return true;
     }
   };
@@ -606,11 +600,125 @@ std::size_t hash_value(const generic_choice_set<PackageUniverse> &p)
 }
 
 template<typename PackageUniverse>
+struct choice_name_lt
+{
+  typedef typename PackageUniverse::version version;
+  typedef typename PackageUniverse::package package;
+  typedef typename PackageUniverse::dep dep;
+  typedef generic_choice<PackageUniverse> choice;
+
+  // The following operators are used to place the solution components
+  // in order by name, to better permit comparison of debugging output
+  // between versions.
+  struct ver_name_lt
+  {
+  public:
+    int cmp(const version &v1, const version &v2) const
+    {
+      // EW: I don't have a formal standard on what get_name()
+      // returns, so force it to be a string here:
+      int pcmp = std::string(v1.get_package().get_name()).compare(v2.get_package().get_name());
+
+      if(pcmp != 0)
+	return pcmp;
+      else
+	return std::string(v1.get_name()).compare(v2.get_name());
+    }
+
+    bool operator()(const version &v1, const version &v2) const
+    {
+      return cmp(v1, v2) < 0;
+    }
+  };
+
+  struct dep_name_lt
+  {
+  public:
+    bool operator()(const dep &d1, const dep &d2) const
+    {
+      ver_name_lt vlt;
+
+      int scmp = vlt.cmp(d1.get_source(), d2.get_source());
+
+      if(scmp != 0)
+	return scmp < 0;
+      else
+	{
+	  typename dep::solver_iterator si1 = d1.solvers_begin();
+	  typename dep::solver_iterator si2 = d2.solvers_begin();
+
+	  while(!si1.end() && !si2.end())
+	    {
+	      scmp = vlt.cmp(*si1, *si2);
+
+	      if(scmp != 0)
+		return scmp < 0;
+
+	      ++si1;
+	      ++si2;
+	    }
+
+	  if(si1.end())
+	    {
+	      if(si2.end())
+		return false;
+	      else
+		return true;
+	    }
+	  else
+	    return false;
+	}
+    }
+  };
+
+  bool operator()(const choice &c1,
+		  const choice &c2) const
+  {
+    if(c1.get_type() < c2.get_type())
+      return true;
+    else if(c2.get_type() < c1.get_type())
+      return false;
+    else
+      switch(c1.get_type())
+	{
+	case choice::install_version:
+	  if(c1.get_from_dep_source() < c2.get_from_dep_source())
+	    return true;
+	  else if(c2.get_from_dep_source() < c1.get_from_dep_source())
+	    return false;
+	  else
+	    return ver_name_lt()(c1.get_ver(), c2.get_ver());
+
+	case choice::break_soft_dep:
+	  return dep_name_lt()(c1.get_dep(), c2.get_dep());
+
+	default:
+	  eassert(!"Unhandled choice type in choice_name_lt.");
+	}
+  }
+};
+
+template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniverse> &choices)
 {
-  out << "{";
-  typename generic_choice_set<PackageUniverse>::show_choice f(out, true);
+  typedef generic_choice<PackageUniverse> choice;
+  typedef generic_choice_set<PackageUniverse> choice_set;
+
+  std::vector<choice> tmp;
+  tmp.reserve(choices.size());
+  typename choice_set::accumulate_choices f(tmp);
   choices.for_each(f);
+
+  std::sort(tmp.begin(), tmp.end(), choice_name_lt<PackageUniverse>());
+
+  out << "{";
+  for(typename std::vector<choice>::const_iterator it = tmp.begin();
+      it != tmp.end(); ++it)
+    {
+      if(it != tmp.begin())
+	out << ", ";
+      out << *it;
+    }
   out << "}";
   return out;
 }
