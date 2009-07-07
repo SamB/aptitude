@@ -409,6 +409,24 @@ private:
     catch(NoMoreSolutions)
       {
 	LOG_TRACE(logger, "Success: only one solution was found.");
+
+	r.mandate_version(b.version_from_name("v2"));
+
+	try
+	  {
+	    sol = r.find_next_solution(1000, NULL);
+	    LOG_TRACE(logger, "Got another solution after a second mandate: " << sol);
+
+	    choice_set expected_solution2;
+	    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+	    assertSameEffect(expected_solution, sol.get_choices());
+	  }
+	catch(NoMoreSolutions)
+	  {
+	    LOG_ERROR(logger, "Mandating a second solution didn't cancel the first mandate.");
+	    CPPUNIT_FAIL("Mandating a second solution didn't cancel the first mandate.");
+	  }
+
 	return;
       }
 
@@ -456,6 +474,25 @@ private:
     catch(NoMoreSolutions)
       {
 	LOG_TRACE(logger, "Success: only one solution was found.");
+
+
+	r.mandate_version(b.version_from_name("v2"));
+
+	try
+	  {
+	    sol = r.find_next_solution(1000, NULL);
+	    LOG_TRACE(logger, "Got another solution after a second mandate: " << sol);
+
+	    choice_set expected_solution2;
+	    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+	    assertSameEffect(expected_solution, sol.get_choices());
+	  }
+	catch(NoMoreSolutions)
+	  {
+	    LOG_ERROR(logger, "Mandating a second solution didn't cancel the first mandate.");
+	    CPPUNIT_FAIL("Mandating a second solution didn't cancel the first mandate.");
+	  }
+
 	return;
       }
 
