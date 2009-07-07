@@ -418,8 +418,8 @@ private:
 	    LOG_TRACE(logger, "Got another solution after a second mandate: " << sol);
 
 	    choice_set expected_solution2;
-	    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
-	    assertSameEffect(expected_solution, sol.get_choices());
+	    expected_solution2.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+	    assertSameEffect(expected_solution2, sol.get_choices());
 	  }
 	catch(NoMoreSolutions)
 	  {
@@ -484,8 +484,8 @@ private:
 	    LOG_TRACE(logger, "Got another solution after a second mandate: " << sol);
 
 	    choice_set expected_solution2;
-	    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
-	    assertSameEffect(expected_solution, sol.get_choices());
+	    expected_solution2.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+	    assertSameEffect(expected_solution2, sol.get_choices());
 	  }
 	catch(NoMoreSolutions)
 	  {
