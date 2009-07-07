@@ -953,15 +953,119 @@ private:
    */
   class approved_or_rejected_info
   {
+    // Like a var_e, but prints a choice when it's dumped.  This is a
+    // trade-off of memory for much better debugging.  Having separate
+    // classes instead of using a Boolean flag should save a little
+    // space at run-time.
+    class approve_ver_e : public var_e<bool>
+    {
+      version v;
+
+      approve_ver_e(bool value, const version &_v)
+	: var_e<bool>(value), v(_v)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const version &v)
+      {
+	return new approve_ver_e(value, v);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "A(" << v << ")";
+      }
+    };
+
+    class reject_ver_e : public var_e<bool>
+    {
+      version v;
+
+      reject_ver_e(bool value, const version &_v)
+	: var_e<bool>(value), v(_v)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const version &v)
+      {
+	return new reject_ver_e(value, v);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "R(" << v << ")";
+      }
+    };
+
+    class approve_break_e : public var_e<bool>
+    {
+      dep d;
+
+      approve_break_e(bool value, const dep &_d)
+	: var_e<bool>(value), d(_d)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const dep &d)
+      {
+	return new approve_break_e(value, d);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "AB(" << d << ")";
+      }
+    };
+
+    class reject_break_e : public var_e<bool>
+    {
+      dep d;
+
+      reject_break_e(bool value, const dep &_d)
+	: var_e<bool>(value), d(_d)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const dep &d)
+      {
+	return new reject_break_e(value, d);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "RB(" << d << ")";
+      }
+    };
+
     // True if the choice is rejected.
-    cwidget::util::ref_ptr<var_e<bool> > rejected; 
+    cwidget::util::ref_ptr<var_e<bool> > rejected;
     // True if the choice is approved.
     cwidget::util::ref_ptr<var_e<bool> > approved;
 
-  public:
     approved_or_rejected_info()
       : rejected(var_e<bool>::create(false)),
 	approved(var_e<bool>::create(false))
+    {
+    }
+
+  public:
+    approved_or_rejected_info(const version &v, bool supportTrace)
+      : rejected(supportTrace ? reject_ver_e::create(false, v) : var_e<bool>::create(false)),
+	approved(supportTrace ? approve_ver_e::create(false, v) : var_e<bool>::create(false))
+    {
+    }
+
+    approved_or_rejected_info(const dep &d, bool supportTrace)
+      : rejected(supportTrace ? reject_break_e::create(false, d) : var_e<bool>::create(false)),
+	approved(supportTrace ? approve_break_e::create(false, d) : var_e<bool>::create(false))
     {
     }
 
@@ -2041,6 +2145,44 @@ private:
       }
   }
 
+  approved_or_rejected_info &get_approved_or_rejected_info(const version &v)
+  {
+    typename std::map<version, approved_or_rejected_info>::iterator found =
+      user_approved_or_rejected_versions.find(v);
+
+    if(found == user_approved_or_rejected_versions.end())
+      found = user_approved_or_rejected_versions.insert(std::make_pair(v, approved_or_rejected_info(v, logger->isTraceEnabled()))).first;
+
+    return found->second;
+  }
+
+  approved_or_rejected_info &get_approved_or_rejected_info(const dep &d)
+  {
+    typename std::map<dep, approved_or_rejected_info>::iterator found =
+      user_approved_or_rejected_broken_deps.find(d);
+
+    if(found == user_approved_or_rejected_broken_deps.end())
+      found = user_approved_or_rejected_broken_deps.insert(std::make_pair(d, approved_or_rejected_info(d, logger->isTraceEnabled()))).first;
+
+    return found->second;
+  }
+
+  approved_or_rejected_info &get_approved_or_rejected_info(const choice &c)
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	return get_approved_or_rejected_info(c.get_ver());
+
+      case choice::break_soft_dep:
+	return get_approved_or_rejected_info(c.get_dep());
+
+      default:
+	// There's nothing that's safe to return in this case.
+	eassert(!"This should never happen.");
+      }
+  }
+
   /** \brief Build an expression that computes whether the given
    *  choice is deferred.
    *
@@ -2062,7 +2204,7 @@ private:
 
 	  const version &c_ver(c.get_ver());
 	  const approved_or_rejected_info &c_info =
-	    user_approved_or_rejected_versions[c_ver];
+	    get_approved_or_rejected_info(c);
 
 	  const cwidget::util::ref_ptr<expression<bool> > &c_rejected(c_info.get_rejected());
 	  const cwidget::util::ref_ptr<expression<bool> > &c_approved(c_info.get_approved());
@@ -2079,7 +2221,7 @@ private:
 	    {
 	      version solver(*si);
 	      if(solver != c_ver)
-		others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+		others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 	    }
 
 	  // Other solvers also include other versions of the source,
@@ -2093,11 +2235,11 @@ private:
 		{
 		  version solver(*vi);
 		  if(solver != c_dep_source && solver != c_ver)
-		    others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+		    others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 		}
 	    }
 	  else
-	    others_approved.push_back(user_approved_or_rejected_broken_deps[c_dep].get_approved());
+	    others_approved.push_back(get_approved_or_rejected_info(c_dep).get_approved());
 
 	  return
 	    or_e::create(c_rejected,
@@ -2111,7 +2253,7 @@ private:
 	{
 	  const dep &c_dep(c.get_dep());
 	  const approved_or_rejected_info &c_info =
-	    user_approved_or_rejected_broken_deps[c_dep];
+	    get_approved_or_rejected_info(c_dep);
 
 
 
@@ -2127,7 +2269,7 @@ private:
 	      !si.end(); ++si)
 	    {
 	      version solver(*si);
-	      others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+	      others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 	    }
 
 	  return
@@ -3601,7 +3743,7 @@ public:
    */
   void reject_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(!inf.get_rejected()->get_value())
       {
@@ -3620,7 +3762,7 @@ public:
    */
   void unreject_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(inf.get_rejected()->get_value())
       {
@@ -3635,7 +3777,7 @@ public:
 
   void mandate_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(!inf.get_approved()->get_value())
       {
@@ -3651,7 +3793,7 @@ public:
 
   void unmandate_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(inf.get_approved()->get_value())
       {
@@ -3702,7 +3844,7 @@ public:
   {
     eassert(d.is_soft());
 
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(!inf.get_rejected()->get_value())
       {
@@ -3719,7 +3861,7 @@ public:
   /** Un-harden (soften?) the given dependency. */
   void unharden(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(inf.get_rejected()->get_value())
       {
@@ -3748,7 +3890,7 @@ public:
   /** Approve the breaking of the given dependency. */
   void approve_break(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(!inf.get_approved()->get_value())
       {
@@ -3765,7 +3907,7 @@ public:
   /** Cancel the required breaking of the given dependency. */
   void unapprove_break(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(inf.get_approved()->get_value())
       {

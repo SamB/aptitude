@@ -1810,10 +1810,16 @@ std::ostream &operator<<(std::ostream &out, const generic_solver_information<Pac
       << ":" << info.get_reasons();
 
   if(info.get_tier_valid().valid())
-    out << "; V: " << info.get_tier_valid().unsafe_get_ref();
+    {
+      out << "; V: ";
+      info.get_tier_valid()->dump(out);
+    }
 
   if(info.get_is_deferred_listener().valid())
-    out << "; L: " << info.get_is_deferred_listener().unsafe_get_ref();
+    {
+      out << "; L: ";
+      info.get_is_deferred_listener()->dump(out);
+    }
 
   out << ")";
 
