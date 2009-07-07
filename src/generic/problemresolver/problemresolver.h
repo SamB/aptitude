@@ -1361,6 +1361,17 @@ private:
 	if(was_in_pending_future_solutions)
 	  ++num_deferred;
       }
+    else if(s.step_tier < tier_limits::defer_tier)
+      {
+	// Clear the "finished" flag if this is now a pending
+	// candidate.
+	if(finished &&
+	   (was_in_pending || was_in_pending_future_solutions))
+	  {
+	    LOG_TRACE(logger, "Step " << s.step_num << " is now a candidate: clearing the \"finished\" flag.");
+	    finished = false;
+	  }
+      }
   }
 
   /** \brief Add a promotion to the global set of promotions.
