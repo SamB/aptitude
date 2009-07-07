@@ -2184,6 +2184,8 @@ private:
   void deferral_retracted(const choice &deferral_choice,
 			  const dep &deferral_dep)
   {
+    LOG_TRACE(logger, "The choice " << deferral_choice << " is no longer deferred; recomputing its tier in all steps.");
+
     invoke_recompute_solver_tier recompute_f(*this, deferral_dep);
     graph.for_each_step_related_to_choice_with_dep(deferral_choice,
 						   deferral_dep,
