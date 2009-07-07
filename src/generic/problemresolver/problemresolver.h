@@ -1304,6 +1304,64 @@ private:
 #endif
   }
 
+#ifdef ENABLE_RESOLVER_SANITY_CHECKS
+  class sanity_check_solver_promotions
+  {
+    const dep &d;
+    const step &s;
+    const generic_problem_resolver &resolver;
+
+  public:
+    sanity_check_solver_promotions(const dep &_d,
+				   const step &_s,
+				   const generic_problem_resolver &_resolver)
+      : d(_d), s(_s), resolver(_resolver)
+    {
+    }
+
+    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
+    {
+      const choice &solver(p.first);
+      const typename step::solver_information &solver_inf(p.second);
+
+      // Verify that the deps-solved-by-choice list maps to this
+      // dep.
+      imm::list<dep> found_solved_deps;
+      if(!s.deps_solved_by_choice.try_get(solver, found_solved_deps) ||
+	 std::find(found_solved_deps.begin(), found_solved_deps.end(), d) == found_solved_deps.end())
+	LOG_ERROR(resolver.logger, "In step " << s.step_num << ": no backlink from the choice "
+		  << solver << " to the dependency " << d << "; backlinks are " << found_solved_deps << ".");
+
+      boost::unordered_map<choice, promotion> incipient;
+      resolver.promotions.find_highest_incipient_promotions_containing(s.actions,
+							      solver,
+							      s.deps_solved_by_choice,
+							      discards_blessed(s.is_blessed_solution),
+							      incipient);
+
+      typename boost::unordered_map<choice, promotion>::const_iterator
+	found_incipient = incipient.find(solver);
+      if(found_incipient != incipient.end() &&
+	 solver_inf.get_tier() < found_incipient->second.get_tier())
+	LOG_ERROR(resolver.logger, "In step " << s.step_num
+		  << ": incipient promotion " << found_incipient->second
+		  << " was never applied to " << solver << ".");
+
+      choice_set test_set(s.actions);
+      test_set.insert_or_narrow(solver);
+      typename promotion_set::const_iterator found_promotion =
+	resolver.promotions.find_highest_promotion_containing(test_set, solver);
+      if(found_promotion != resolver.promotions.end() &&
+	 solver_inf.get_tier() < found_promotion->get_tier())
+	LOG_ERROR(resolver.logger, "In step " << s.step_num
+		  << ": the incipient promotion " << *found_promotion
+		  << " was not detected as incipient for " << solver);
+
+      return true;
+    }
+  };
+#endif
+
   void sanity_check_promotions(const step &s)
   {
 #ifdef ENABLE_RESOLVER_SANITY_CHECKS
@@ -1331,57 +1389,14 @@ private:
 		    << *found_promotion << " was not applied.");
       }
 
-    typedef generic_solver_information<PackageUniverse> solver_information;
     typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
 
-    for(typename imm::map<dep, boost::flyweight<dep_solvers> >::const_iterator it =
+    for(typename imm::map<dep, typename step::flyweight_dep_solvers>::const_iterator it =
 	  s.unresolved_deps.begin(); it != s.unresolved_deps.end(); ++it)
       {
 	const dep &d(it->first);
-	imm::map<choice, solver_information, compare_choices_by_effects>
-	  solvers = it->second.get_solvers();
-
-
-	for(typename imm::map<choice, solver_information, compare_choices_by_effects>::const_iterator
-	    it = solvers.begin(); it != solvers.end(); ++it)
-	{
-	  const choice &solver(it->first);
-	  const solver_information &solver_inf(it->second);
-
-	  // Verify that the deps-solved-by-choice list maps to this
-	  // dep.
-	  imm::list<dep> found_solved_deps;
-	  if(!s.deps_solved_by_choice.try_get(solver, found_solved_deps) ||
-	     std::find(found_solved_deps.begin(), found_solved_deps.end(), d) == found_solved_deps.end())
-	    LOG_ERROR(logger, "In step " << s.step_num << ": no backlink from the choice "
-		      << solver << " to the dependency " << d << "; backlinks are " << found_solved_deps << ".");
-
-	  boost::unordered_map<choice, promotion> incipient;
-	  promotions.find_highest_incipient_promotions_containing(s.actions,
-								  solver,
-								  s.deps_solved_by_choice,
-								  discards_blessed(s.is_blessed_solution),
-								  incipient);
-
-	  typename boost::unordered_map<choice, promotion>::const_iterator
-	    found_incipient = incipient.find(solver);
-	  if(found_incipient != incipient.end() &&
-	     solver_inf.get_tier() < found_incipient->second.get_tier())
-	    LOG_ERROR(logger, "In step " << s.step_num
-		      << ": incipient promotion " << found_incipient->second
-		      << " was never applied to " << solver << ".");
-
-	  choice_set test_set(s.actions);
-	  test_set.insert_or_narrow(solver);
-	  typename promotion_set::const_iterator found_promotion =
-	    promotions.find_highest_promotion_containing(test_set, solver);
-	  if(found_promotion != promotions.end() &&
-	     solver_inf.get_tier() < found_promotion->get_tier())
-	    LOG_ERROR(logger, "In step " << s.step_num
-		      << ": the incipient promotion " << *found_promotion
-		      << " was not detected as incipient for " << solver);
-	}
+	it->second.get().for_each_solver(sanity_check_solver_promotions(d, s, *this));
       }
 #endif
   }
