@@ -427,7 +427,29 @@ private:
 	    CPPUNIT_FAIL("Mandating a second solution didn't cancel the first mandate.");
 	  }
 
-	return;
+	try
+	  {
+	    sol = r.find_next_solution(1000, NULL);
+	    LOG_ERROR(logger, "Got an extra solution: " << sol);
+	    CPPUNIT_FAIL("Too many solutions after a solution was re-enabled because a solver was mandated.");
+	  }
+	catch(NoMoreSolutions)
+	  {
+	    try
+	      {
+		dep av1d1 = *a.version_from_name("v1").deps_begin();
+		r.harden(av1d1);
+		r.unharden(av1d1);
+
+		sol = r.find_next_solution(1000, NULL);
+		LOG_ERROR(logger, "Got an extra solution: " << sol);
+		CPPUNIT_FAIL("Too many solutions after a solution was re-enabled because a solver was mandated, and after breaking the dep was rejected and unrejected.");
+	      }
+	    catch(NoMoreSolutions)
+	      {
+		return;
+	      }
+	  }
       }
 
     LOG_ERROR(logger, "Found an unexpected solution: " << sol);
@@ -493,7 +515,29 @@ private:
 	    CPPUNIT_FAIL("Mandating a second solution didn't cancel the first mandate.");
 	  }
 
-	return;
+	try
+	  {
+	    sol = r.find_next_solution(1000, NULL);
+	    LOG_ERROR(logger, "Got an extra solution: " << sol);
+	    CPPUNIT_FAIL("Too many solutions after a solution was re-enabled because a solver was mandated.");
+	  }
+	catch(NoMoreSolutions)
+	  {
+	    try
+	      {
+		version bv3(b.version_from_name("v3"));
+		r.reject_version(bv3);
+		r.unreject_version(bv3);
+
+		sol = r.find_next_solution(1000, NULL);
+		LOG_ERROR(logger, "Got an extra solution: " << sol);
+		CPPUNIT_FAIL("Too many solutions after a solution was re-enabled because a solver was mandated, and after a version was rejected and unrejected.");
+	      }
+	    catch(NoMoreSolutions)
+	      {
+		return;
+	      }
+	  }
       }
 
     LOG_ERROR(logger, "Found an unexpected solution: " << sol);
