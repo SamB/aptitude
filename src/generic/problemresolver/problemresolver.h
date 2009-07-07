@@ -3241,8 +3241,7 @@ private:
 	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.step_tier
 	      << "S" << output.score);
 
-    if(output.step_tier < tier_limits::defer_tier)
-      pending.insert(output.step_num);
+    pending.insert(output.step_num);
   }
 
   class do_generate_single_successor
