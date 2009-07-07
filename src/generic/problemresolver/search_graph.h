@@ -1193,8 +1193,9 @@ private:
   template<typename F>
   class visit_choice_mapping_steps_solvers_of_dep
   {
-    // The choice to pass to the sub-function.
-    const choice &c;
+    // The choice to pass to the sub-function.  Can't be a reference
+    // since it's different from what the parent passes in.
+    const choice c;
     // The dependency whose solvers are being visited.
     const dep &d;
     const generic_search_graph &graph;
@@ -1213,7 +1214,12 @@ private:
     visit_choice_mapping_steps_solvers_of_dep(const choice &_c,
 					      const dep &_d,
 					      const generic_search_graph &_graph, F _f)
-      : c(_c), d(_d), graph(_graph), f(_f)
+      // Note that it's necessary to modify the dependency stored in
+      // the choice: below, we'll do an exact lookup to try to find
+      // it, and that requires that the dependency is set properly.
+      // Setting it in the constructor avoids setting it every time
+      // the object is applied.
+      : c(_c.copy_and_set_dep(_d)), d(_d), graph(_graph), f(_f)
     {
     }
 
