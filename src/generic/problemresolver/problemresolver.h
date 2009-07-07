@@ -2170,7 +2170,11 @@ private:
 		    int step_num) const
     {
       step &s(resolver.graph.get_step(step_num));
-      resolver.recompute_solver_tier(s, d, c);
+
+      if(how == search_graph::choice_mapping_action)
+	resolver.recompute_step_tier(s);
+      else
+	resolver.recompute_solver_tier(s, d, c);
 
       return true;
     }
