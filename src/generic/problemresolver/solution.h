@@ -502,95 +502,6 @@ public:
     return real_soln->package_modified(pkg);
   }
 
-  // The following operators are used to place the solution components
-  // in order by name, to better permit comparison of debugging output
-  // between versions.
-  struct ver_name_lt
-  {
-  public:
-    int cmp(const version &v1, const version &v2) const
-    {
-      // EW: I don't have a formal standard on what get_name()
-      // returns, so force it to be a string here:
-      int pcmp = std::string(v1.get_package().get_name()).compare(v2.get_package().get_name());
-
-      if(pcmp != 0)
-	return pcmp;
-      else
-	return std::string(v1.get_name()).compare(v2.get_name());
-    }
-
-    bool operator()(const version &v1, const version &v2) const
-    {
-      return cmp(v1, v2) < 0;
-    }
-  };
-
-  struct dep_name_lt
-  {
-  public:
-    bool operator()(const dep &d1, const dep &d2) const
-    {
-      ver_name_lt vlt;
-
-      int scmp = vlt.cmp(d1.get_source(), d2.get_source());
-
-      if(scmp != 0)
-	return scmp < 0;
-      else
-	{
-	  typename dep::solver_iterator si1 = d1.solvers_begin();
-	  typename dep::solver_iterator si2 = d2.solvers_begin();
-
-	  while(!si1.end() && !si2.end())
-	    {
-	      scmp = vlt.cmp(*si1, *si2);
-
-	      if(scmp != 0)
-		return scmp < 0;
-
-	      ++si1;
-	      ++si2;
-	    }
-
-	  if(si1.end())
-	    {
-	      if(si2.end())
-		return false;
-	      else
-		return true;
-	    }
-	  else
-	    return false;
-	}
-    }
-  };
-
-  struct choice_name_lt
-  {
-  public:
-    bool operator()(const choice &c1,
-		    const choice &c2) const
-    {
-      if(c1.get_type() < c2.get_type())
-	return true;
-      else if(c2.get_type() < c1.get_type())
-	return false;
-      else
-	switch(c1.get_type())
-	  {
-	  case choice::install_version:
-	    return ver_name_lt()(c1.get_ver(), c2.get_ver());
-
-	  case choice::break_soft_dep:
-	    return dep_name_lt()(c1.get_dep(), c2.get_dep());
-
-	  default:
-	    eassert(!"Unhandled choice type in choice_name_lt.");
-	  }
-    }
-  };
-
   template<typename T>
   struct accumulate
   {
@@ -629,7 +540,7 @@ public:
   {
     std::vector<choice> choices;
     get_choices().for_each(accumulate<choice>(choices));
-    sort(choices.begin(), choices.end(), choice_name_lt());
+    std::sort(choices.begin(), choices.end(), choice_name_lt<PackageUniverse>());
 
 
     out << "<";

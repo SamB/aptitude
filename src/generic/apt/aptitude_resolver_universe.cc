@@ -786,7 +786,7 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
   for(aptitude_resolver_dep::solver_iterator i=d.solvers_begin(); !i.end(); ++i)
     solvers.push_back(*i);
 
-  generic_solution<aptitude_universe>::ver_name_lt lt;
+  choice_name_lt<aptitude_universe>::ver_name_lt lt;
   sort(solvers.begin(), solvers.end(), lt);
 
   out << d.get_source() << (d.is_soft() ? " -S> {" : " -> {");

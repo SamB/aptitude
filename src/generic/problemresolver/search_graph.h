@@ -200,6 +200,20 @@ class generic_dump_solvers
   friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dump_solvers &);
   friend class generic_dep_solvers<PackageUniverse>;
 
+  class choice_pair_name_lt
+  {
+    choice_name_lt<PackageUniverse> choice_lt;
+  public:
+    typedef generic_choice<PackageUniverse> choice;
+    typedef generic_solver_information<PackageUniverse> solver_information;
+
+    bool operator()(const std::pair<choice, solver_information> &p1,
+		    const std::pair<choice, solver_information> &p2) const
+    {
+      return choice_lt(p1.first, p2.first);
+    }
+ };
+
   generic_dump_solvers(const std::vector<std::pair<choice, solver_information> > &_solvers)
     : solvers(_solvers)
   {
@@ -212,11 +226,15 @@ inline std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<Pa
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_solver_information<PackageUniverse> solver_information;
 
+  std::vector<std::pair<choice, solver_information> > tmp(dump_solvers.solvers);
+  std::sort(tmp.begin(), tmp.end(),
+	    typename generic_dump_solvers<PackageUniverse>::choice_pair_name_lt());
+
   out << "{";
   for(typename std::vector<std::pair<choice, solver_information> >::const_iterator
-	it = dump_solvers.solvers.begin(); it != dump_solvers.solvers.end(); ++it)
+	it = tmp.begin(); it != tmp.end(); ++it)
     {
-      if(it != dump_solvers.solvers.begin())
+      if(it != tmp.begin())
 	out << ", ";
 
       out << it->first << " -> " << it->second;
@@ -1193,8 +1211,9 @@ private:
   template<typename F>
   class visit_choice_mapping_steps_solvers_of_dep
   {
-    // The choice to pass to the sub-function.
-    const choice &c;
+    // The choice to pass to the sub-function.  Can't be a reference
+    // since it's different from what the parent passes in.
+    const choice c;
     // The dependency whose solvers are being visited.
     const dep &d;
     const generic_search_graph &graph;
@@ -1213,7 +1232,12 @@ private:
     visit_choice_mapping_steps_solvers_of_dep(const choice &_c,
 					      const dep &_d,
 					      const generic_search_graph &_graph, F _f)
-      : c(_c), d(_d), graph(_graph), f(_f)
+      // Note that it's necessary to modify the dependency stored in
+      // the choice: below, we'll do an exact lookup to try to find
+      // it, and that requires that the dependency is set properly.
+      // Setting it in the constructor avoids setting it every time
+      // the object is applied.
+      : c(_c.copy_and_set_dep(_d)), d(_d), graph(_graph), f(_f)
     {
     }
 
@@ -1804,10 +1828,16 @@ std::ostream &operator<<(std::ostream &out, const generic_solver_information<Pac
       << ":" << info.get_reasons();
 
   if(info.get_tier_valid().valid())
-    out << "; V: " << info.get_tier_valid().unsafe_get_ref();
+    {
+      out << "; V: ";
+      info.get_tier_valid()->dump(out);
+    }
 
   if(info.get_is_deferred_listener().valid())
-    out << "; L: " << info.get_is_deferred_listener().unsafe_get_ref();
+    {
+      out << "; L: ";
+      info.get_is_deferred_listener()->dump(out);
+    }
 
   out << ")";
 
