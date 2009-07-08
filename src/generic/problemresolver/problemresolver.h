@@ -1146,7 +1146,7 @@ private:
 	  // program for a feature that would never be used)
 	  promotion p(choice_set(), tier_limits::defer_tier,
 		      get_child());
-	  resolver.increase_solver_tier_everywhere(deferred_choice, p);
+	  resolver.increase_solver_tier_everywhere_with_dep(deferred_choice, p);
 	}
     }
   };
@@ -3066,11 +3066,12 @@ private:
     }
   };
 
-  /** \brief Increase the tier of a solver everywhere it appears: that
-   *  is, both in solver lists and in action sets.
+  /** \brief Increase the tier of a solver everywhere it appears with
+   *  the same dependency: that is, both in solver lists and in action
+   *  sets.
    */
-  void increase_solver_tier_everywhere(const choice &solver,
-				       const promotion &p)
+  void increase_solver_tier_everywhere_with_dep(const choice &solver,
+						const promotion &p)
   {
     LOG_TRACE(logger, "Increasing the tier of " << solver
 	      << " according to the promotion " << p
@@ -3078,8 +3079,9 @@ private:
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
-    graph.for_each_step_related_to_choice(solver,
-					  increase_solver_tier_everywhere_f);
+    graph.for_each_step_related_to_choice_with_dep(solver,
+						   solver.get_dep(),
+						   increase_solver_tier_everywhere_f);
   }
 
   class do_find_promotions_for_solver
