@@ -1570,10 +1570,10 @@ private:
     const unsigned int promotion_search_index;
     const unsigned int promotion_size;
     const choice &promotion_c;
-    std::set<int> &active_hits; // Steps that contain the promotion in
-			        // their action set.
-    std::set<int> &incipient_hits; // Steps that contain the promotion
-  				   // as an incipient promotion.
+    boost::unordered_set<int> &active_hits;
+    // Steps that contain the promotion in their action set.
+    boost::unordered_set<int> &incipient_hits;
+    // Steps that contain the promotion as an incipient promotion.
 
     void too_many_choices(int choices) const
     {
@@ -1587,8 +1587,8 @@ private:
 					   unsigned int _promotion_search_index,
 					   unsigned int _promotion_size,
 					   const choice &_promotion_c,
-					   std::set<int> &_active_hits,
-					   std::set<int> &_incipient_hits)
+					   boost::unordered_set<int> &_active_hits,
+					   boost::unordered_set<int> &_incipient_hits)
       : resolver(_resolver),
 	promotion_search_index(_promotion_search_index),
 	promotion_size(_promotion_size),
@@ -1688,8 +1688,8 @@ private:
 
     bool operator()(const choice &c) const
     {
-      std::set<int> active_hits;
-      std::set<int> incipient_hits;
+      boost::unordered_set<int> active_hits;
+      boost::unordered_set<int> incipient_hits;
 
       update_incipient_promotion_information
 	update_f(resolver,
@@ -1701,7 +1701,7 @@ private:
 
       resolver.graph.for_each_step_related_to_choice(c, update_f);
 
-      for(std::set<int>::const_iterator it = active_hits.begin();
+      for(boost::unordered_set<int>::const_iterator it = active_hits.begin();
 	  it != active_hits.end(); ++it)
 	{
 	  int step_num(*it);
@@ -1712,7 +1712,7 @@ private:
 	  callbacks.active(step_num);
 	}
 
-      for(std::set<int>::const_iterator it = incipient_hits.begin();
+      for(boost::unordered_set<int>::const_iterator it = incipient_hits.begin();
 	  it != incipient_hits.end(); ++it)
 	{
 	  int step_num(*it);
