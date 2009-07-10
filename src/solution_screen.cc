@@ -58,6 +58,8 @@ namespace cwidget
   using namespace widgets;
 }
 
+typedef aptitude_solution::choice_name_lt choice_name_lt;
+
 /** Partition the set of all packages into several vectors,
  *  according to the action to be performed on each package.
  *
@@ -247,7 +249,7 @@ cw::subtree_generic *make_solution_tree(const aptitude_solution &sol,
   bin_actions(sol, remove_actions, keep_actions, install_actions,
 	      downgrade_actions, upgrade_actions, unresolved);
 
-  typedef choice_name_lt<aptitude_universe> choice_name_lt;
+  typedef aptitude_solution::choice_name_lt choice_name_lt;
 
   sort(remove_actions.begin(), remove_actions.end(),
        choice_name_lt());

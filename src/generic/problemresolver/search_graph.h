@@ -200,20 +200,6 @@ class generic_dump_solvers
   friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dump_solvers &);
   friend class generic_dep_solvers<PackageUniverse>;
 
-  class choice_pair_name_lt
-  {
-    choice_name_lt<PackageUniverse> choice_lt;
-  public:
-    typedef generic_choice<PackageUniverse> choice;
-    typedef generic_solver_information<PackageUniverse> solver_information;
-
-    bool operator()(const std::pair<choice, solver_information> &p1,
-		    const std::pair<choice, solver_information> &p2) const
-    {
-      return choice_lt(p1.first, p2.first);
-    }
- };
-
   generic_dump_solvers(const std::vector<std::pair<choice, solver_information> > &_solvers)
     : solvers(_solvers)
   {
@@ -226,15 +212,11 @@ inline std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<Pa
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_solver_information<PackageUniverse> solver_information;
 
-  std::vector<std::pair<choice, solver_information> > tmp(dump_solvers.solvers);
-  std::sort(tmp.begin(), tmp.end(),
-	    typename generic_dump_solvers<PackageUniverse>::choice_pair_name_lt());
-
   out << "{";
   for(typename std::vector<std::pair<choice, solver_information> >::const_iterator
-	it = tmp.begin(); it != tmp.end(); ++it)
+	it = dump_solvers.solvers.begin(); it != dump_solvers.solvers.end(); ++it)
     {
-      if(it != tmp.begin())
+      if(it != dump_solvers.solvers.begin())
 	out << ", ";
 
       out << it->first << " -> " << it->second;
