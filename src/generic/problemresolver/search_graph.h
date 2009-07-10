@@ -164,12 +164,44 @@ public:
     return rval;
   }
 
+  /** \brief Compare two solver_information objects.
+   *
+   *  solver_informations are compared according to their fields.
+   *  This comparison is used to memoize solver_information objects;
+   *  the resolver is careful to ensure that solvers which can be
+   *  merged have the same deferred listeners and tier-valid
+   *  expressions.
+   */
+  int compare(const generic_solver_information &other) const
+  {
+    if(tier_valid < other.tier_valid)
+      return -1;
+    else if(other.tier_valid < tier_valid)
+      return -1;
+    else if(is_deferred_listener < other.is_deferred_listener)
+      return -1;
+    else if(other.is_deferred_listener < is_deferred_listener)
+      return 1;
+    else
+      {
+	const int tier_compare =
+	  aptitude::util::compare3<tier>(t, other.t);
+
+	if(tier_compare != 0)
+	  return tier_compare;
+	else
+	  return aptitude::util::compare3<choice_set>(reasons, other.reasons);
+      }
+  }
+
   bool operator==(const generic_solver_information &other) const
   {
-    return tier_valid == other.tier_valid
-      && is_deferred_listener == other.is_deferred_listener
-      && t == other.t
-      && reasons == other.reasons;
+    return compare(other) == 0;
+  }
+
+  bool operator<(const generic_solver_information &other) const
+  {
+    return compare(other) < 0;
   }
 };
 
@@ -796,7 +828,7 @@ public:
     // canonical clone's version will be used -- but since this is
     // only used when adding new promotions and new promotions are
     // added to the canonical clone, the promotions set isn't used).
-    boost::unordered_set<promotion> promotions;
+    std::set<promotion> promotions;
 
     // The same, but in the order that they were added; used to
     // quickly partition the list into "new" and "old" promotions.
@@ -1571,7 +1603,7 @@ public:
 
     // TODO: could do a slow check for redundant promotions here?
 
-    std::pair<typename boost::unordered_set<promotion>::iterator, bool>
+    std::pair<typename std::set<promotion>::iterator, bool>
       insert_info(targetStep.promotions.insert(p));
     if(insert_info.second)
       {

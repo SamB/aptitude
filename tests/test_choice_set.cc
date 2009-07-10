@@ -38,22 +38,6 @@ UNIVERSE [			  \
 ]";
 }
 
-template<typename T>
-std::ostream &operator<<(std::ostream &out, const boost::unordered_set<T> &s)
-{
-  out << "{";
-  for(typename boost::unordered_set<T>::const_iterator it =
-	s.begin(); it != s.end(); ++it)
-    {
-      if(it != s.begin())
-	out << ", ";
-      out << *it;
-    }
-  out << "}";
-
-  return out;
-}
-
 class Choice_Set_Test : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(Choice_Set_Test);
@@ -86,16 +70,16 @@ class Choice_Set_Test : public CppUnit::TestFixture
 
   struct contents_extractor
   {
-    boost::unordered_set<choice> &rval;
+    imm::set<choice> &rval;
 
-    contents_extractor(boost::unordered_set<choice> &_rval)
+    contents_extractor(imm::set<choice> &_rval)
       : rval(_rval)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      CPPUNIT_ASSERT(rval.find(c) == rval.end());
+      CPPUNIT_ASSERT(!rval.contains(c));
 
       rval.insert(c);
 
@@ -137,14 +121,14 @@ class Choice_Set_Test : public CppUnit::TestFixture
       CPPUNIT_ASSERT_EQUAL(expected[i], observed[i]);
   };
 
-  static boost::unordered_set<choice> get_contents(const choice_set &s)
+  static imm::set<choice> get_contents(const choice_set &s)
   {
-    boost::unordered_set<choice> rval;
+    imm::set<choice> rval;
     s.for_each(contents_extractor(rval));
     return rval;
   }
 
-  static choice_set make_choice_set_narrow(const boost::unordered_set<choice> &s)
+  static choice_set make_choice_set_narrow(const imm::set<choice> &s)
   {
     choice_set rval;
     rval.insert_or_narrow(s);
@@ -198,7 +182,7 @@ public:
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
 
     choice_set s;
-    boost::unordered_set<choice> expected;
+    imm::set<choice> expected;
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));

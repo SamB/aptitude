@@ -30,6 +30,7 @@
 
 #include <boost/unordered_map.hpp>
 
+#include <generic/util/compare3.h>
 #include <generic/util/immset.h>
 #include <generic/util/maybe.h>
 
@@ -94,14 +95,22 @@ public:
   const tier &get_tier() const { return promotion_tier; }
   const cwidget::util::ref_ptr<expression<bool> > &get_valid_condition() const { return valid_condition; }
 
-  // Ignores the validity condition, like operator< used to.
-  std::size_t get_hash_value() const
+  int compare(const generic_promotion &other) const
   {
-    std::size_t rval = 0;
-    boost::hash_combine(rval, choices);
-    boost::hash_combine(rval, promotion_tier);
+    using aptitude::util::compare3;
 
-    return rval;
+    const int promotion_cmp =
+      compare3(promotion_tier, other.promotion_tier);
+
+    if(promotion_cmp != 0)
+      return promotion_cmp;
+    else
+      return compare3(choices, other.choices);
+  }
+
+  bool operator<(const generic_promotion &other) const
+  {
+    return compare(other) < 0;
   }
 
   bool operator==(const generic_promotion &other) const
@@ -127,10 +136,21 @@ public:
   }
 };
 
-template<typename PackageUniverse>
-std::size_t hash_value(const generic_promotion<PackageUniverse> &p)
+namespace aptitude
 {
-  return p.get_hash_value();
+  namespace util
+  {
+    template<typename PackageUniverse>
+    class compare3_f<generic_promotion<PackageUniverse> >
+    {
+    public:
+      int operator()(const generic_promotion<PackageUniverse> &p1,
+		     const generic_promotion<PackageUniverse> &p2) const
+      {
+	return p1.compare(p2);
+      }
+    };
+  }
 }
 
 template<typename PackageUniverse>

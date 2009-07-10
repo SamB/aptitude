@@ -21,13 +21,13 @@
 #define CHOICE_SET_H
 
 #include "choice.h"
+#include <generic/util/immset.h>
 
 #include <loggers.h>
 
 #include <iostream>
 
-#include <boost/unordered_map.hpp>
-#include <boost/unordered_set.hpp>
+#include <generic/util/compare3.h>
 
 template<typename PackageUniverse> class generic_choice_set;
 template<typename PackageUniverse>
@@ -79,13 +79,13 @@ public:
   {
     friend class generic_choice_set;
 
-    typename boost::unordered_map<package, choice>::const_iterator install_version_iter;
-    typename boost::unordered_map<package, choice>::const_iterator install_version_end_iter;
-    typename boost::unordered_set<choice>::const_iterator not_install_version_iter;
+    typename imm::map<package, choice>::const_iterator install_version_iter;
+    typename imm::map<package, choice>::const_iterator install_version_end_iter;
+    typename imm::set<choice>::const_iterator not_install_version_iter;
 
-    const_iterator(const typename boost::unordered_map<package, choice>::const_iterator _install_version_iter,
-		   const typename boost::unordered_map<package, choice>::const_iterator _install_version_end_iter,
-		   const typename boost::unordered_set<choice>::const_iterator _not_install_version_iter)
+    const_iterator(const typename imm::map<package, choice>::const_iterator _install_version_iter,
+		   const typename imm::map<package, choice>::const_iterator _install_version_end_iter,
+		   const typename imm::set<choice>::const_iterator _not_install_version_iter)
       : install_version_iter(_install_version_iter),
 	install_version_end_iter(_install_version_end_iter),
 	not_install_version_iter(_not_install_version_iter)
@@ -142,16 +142,13 @@ private:
 
   // Stores the install-this-version choices made in this set,
   // organized by package.  Needed to accelerate the containment test.
-  boost::unordered_map<package, choice> install_version_choices;
+  imm::map<package, choice> install_version_choices;
 
   // Stores the dependencies that are broken by this choice set.  We
   // could just store dependencies instead; I don't know whether that
   // would be more efficient or not.
-  boost::unordered_set<choice> not_install_version_choices;
+  imm::set<choice> not_install_version_choices;
 
-
-  mutable bool hash_cache_dirty;
-  mutable std::size_t hash_cache;
 
   friend std::ostream &operator<< <PackageUniverse>(std::ostream &out, const generic_choice_set<PackageUniverse> &choices);
 
@@ -214,26 +211,20 @@ private:
 	  {
 	    const package p(c.get_ver().get_package());
 
-	    std::pair<typename boost::unordered_map<package, choice>::iterator, typename boost::unordered_map<package, choice>::iterator>
-	      found = parent.install_version_choices.equal_range(p);
+	    typename imm::map<package, choice>::node n =
+	      parent.install_version_choices.lookup(p);
 
-	    if(found.first == found.second)
-	      {
-		parent.install_version_choices.insert(found.first, std::make_pair(p, c));
-		parent.hash_cache_dirty = true;
-	      }
+	    if(!n.isValid())
+	      parent.install_version_choices.put(p, c);
 	    else
 	      {
-		std::pair<const package, choice> &existing_choice_pair(*found.first);
+		std::pair<package, choice> existing_choice_pair(n.getVal());
 		choice &existing_choice(existing_choice_pair.second);
 
 		if(existing_choice.contains(c))
-		  {
-		    // Override the existing choice with the new one,
-		    // which is more specific.
-		    existing_choice = c;
-		    parent.hash_cache_dirty = true;
-		  }
+		  // Override the existing choice with the new one,
+		  // which is more specific.
+		  parent.install_version_choices.put(p, c);
 		else if(c.contains(existing_choice))
 		  ; // c is more general than the existing choice.
 		else
@@ -246,7 +237,6 @@ private:
 
 	default:
 	  parent.not_install_version_choices.insert(c);
-	  parent.hash_cache_dirty = true;
 	  break;
 	}
 
@@ -254,17 +244,62 @@ private:
     }
   };
 
-  generic_choice_set(const boost::unordered_map<package, choice> &_install_version_choices,
-		     const boost::unordered_set<choice> &_not_install_version_choices)
+  // Used to check the install_version_choices map for supermap-ness
+  // when testing set containment, and to check the
+  // not_install_version_choices map for superset-ness.
+  struct choice_contains
+  {
+    choice_contains()
+    {
+    }
+
+    // The order of "contains" is reversed because of how the
+    // predicate is invoked (p1 and c1 are from the set that should be
+    // a subset; see immset.h).  Arguably that was a bad choice on my
+    // part when I was designing the immset code, but I'm pretty much
+    // stuck with it now.
+    bool operator()(const std::pair<package, choice> &p1,
+		    const std::pair<package, choice> &p2) const
+    {
+      return p2.second.contains(p1.second);
+    }
+
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      return c2.contains(c1);
+    }
+  };
+
+  // Used to check the install_version_choices map for supermap-ness
+  // when testing set containment, and to check the
+  // not_install_version_choices map for superset-ness.
+  struct choice_is_contained_in
+  {
+    choice_is_contained_in()
+    {
+    }
+
+    bool operator()(const std::pair<package, choice> &p1,
+		    const std::pair<package, choice> &p2) const
+    {
+      return p1.second.contains(p2.second);
+    }
+
+    bool operator()(const choice &c1, const choice &c2) const
+    {
+      return c1.contains(c2);
+    }
+  };
+
+  generic_choice_set(const imm::map<package, choice> &_install_version_choices,
+		     const imm::set<choice> &_not_install_version_choices)
     : install_version_choices(_install_version_choices),
-      not_install_version_choices(_not_install_version_choices),
-      hash_cache_dirty(true)
+      not_install_version_choices(_not_install_version_choices)
   {
   }
 
 public:
   generic_choice_set()
-    : hash_cache_dirty(true)
   {
   }
 
@@ -285,15 +320,19 @@ public:
   /** \brief Insert every choice in the given set into this set,
    *  overriding more general options with more specific ones.
    */
-  void insert_or_narrow(const boost::unordered_set<choice> &choices)
+  void insert_or_narrow(const imm::set<choice> &choices)
   {
-    for(typename boost::unordered_set<choice>::const_iterator it = choices.begin();
-	it != choices.end(); ++it)
-      insert_or_narrow(*it);
+    choices.for_each(insert_choice_narrow(*this));
   }
 
   /** \brief Insert every choice in the given set into this set,
    *  overriding more general options with more specific ones.
+   *
+   *  \todo We should implement a fast set union operation on imm::set
+   *  (the balanced trees paper has a nice example of how to do this
+   *  IIRC).  In this case we'd need some function object to ensure
+   *  that matching elements in the by-package map are combined
+   *  properly.
    */
   void insert_or_narrow(const generic_choice_set &other)
   {
@@ -327,12 +366,10 @@ public:
       {
       case choice::install_version:
 	install_version_choices.erase(c.get_ver().get_package());
-	hash_cache_dirty = true;
 	break;
 
       default:
 	not_install_version_choices.erase(c);
-	hash_cache_dirty = true;
 	break;
       }
   }
@@ -347,14 +384,14 @@ public:
       {
       case choice::install_version:
 	{
-	  typename boost::unordered_map<package, choice>::const_iterator found =
-	    install_version_choices.find(c.get_ver().get_package());
-	  if(found == install_version_choices.end())
+	  typename imm::map<package, choice>::node n =
+	    install_version_choices.lookup(c.get_ver().get_package());
+	  if(!n.isValid())
 	    return false;
 	  else
 	    {
-	      const std::pair<package, choice> &existing_choice_pair(*found);
-	      const choice &existing_choice(existing_choice_pair.second);
+	      std::pair<package, choice> existing_choice_pair(n.getVal());
+	      choice &existing_choice(existing_choice_pair.second);
 	      if(existing_choice.contains(c))
 		{
 		  out = existing_choice;
@@ -367,11 +404,11 @@ public:
 
       default:
 	{
-	  typename boost::unordered_set<choice>::const_iterator
-	    found = not_install_version_choices.find(c);
-	  if(found != not_install_version_choices.end())
+	  typename imm::set<choice>::node
+	    found = not_install_version_choices.find_node(c);
+	  if(found.isValid())
 	    {
-	      out = *found;
+	      out = found.getVal();
 	      return true;
 	    }
 	  else
@@ -396,14 +433,14 @@ public:
       {
       case choice::install_version:
 	{
-	  typename boost::unordered_map<package, choice>::const_iterator found =
-	    install_version_choices.find(c.get_ver().get_package());
-	  if(found == install_version_choices.end())
+	  typename imm::map<package, choice>::node n =
+	    install_version_choices.lookup(c.get_ver().get_package());
+	  if(!n.isValid())
 	    return false;
 	  else
 	    {
-	      const std::pair<package, choice> &existing_choice_pair(*found);
-	      const choice &existing_choice(existing_choice_pair.second);
+	      std::pair<package, choice> existing_choice_pair(n.getVal());
+	      choice &existing_choice(existing_choice_pair.second);
 	      if(c.contains(existing_choice))
 		{
 		  out = existing_choice;
@@ -416,11 +453,11 @@ public:
 
       default:
 	{
-	  typename boost::unordered_set<choice>::const_iterator
-	    found = not_install_version_choices.find(c);
-	  if(found != not_install_version_choices.end())
+	  typename imm::set<choice>::node
+	    found = not_install_version_choices.find_node(c);
+	  if(found.isValid())
 	    {
-	      out = *found;
+	      out = found.getVal();
 	      return true;
 	    }
 	  else
@@ -445,37 +482,6 @@ public:
     return install_version_choices.size() + not_install_version_choices.size();
   }
 
-  std::size_t get_hash_value() const
-  {
-    if(hash_cache_dirty)
-      {
-	// There's no guarantee that equivalent unordered_set objects
-	// store objects in the same order (as you might guess from the
-	// name) so we do a somewhat expensive operation here: throwing
-	// all the hashes into a temporary vector, sorting it, and taking
-	// the hash of the vector.
-	std::vector<std::size_t> hashes;
-	hashes.reserve(install_version_choices.size() + not_install_version_choices.size());
-
-	for(typename boost::unordered_map<package, choice>::const_iterator it
-	      = install_version_choices.begin();
-	    it != install_version_choices.end(); ++it)
-	  hashes.push_back(hash_value(it->second));
-
-	for(typename boost::unordered_set<choice>::const_iterator it
-	      = not_install_version_choices.begin();
-	    it != not_install_version_choices.end(); ++it)
-	  hashes.push_back(hash_value(*it));
-
-	std::sort(hashes.begin(), hashes.end());
-
-	hash_cache = boost::hash_value(hashes);
-	hash_cache_dirty = false;
-      }
-
-    return hash_cache;
-  }
-
   bool operator==(const generic_choice_set &other) const
   {
     return
@@ -488,33 +494,32 @@ public:
     return !(*this == other);
   }
 
+  int compare(const generic_choice_set &other) const
+  {
+    const int cmp_install_version_choices =
+      aptitude::util::compare3(install_version_choices, other.install_version_choices);
+
+    if(cmp_install_version_choices != 0)
+      return cmp_install_version_choices;
+    else
+      return aptitude::util::compare3(not_install_version_choices, other.not_install_version_choices);
+  }
+
+  bool operator<(const generic_choice_set &other) const
+  {
+    return compare(other) < 0;
+  }
+
   /** \brief Check whether each entry in the other set is contained by
    *  an entry in this set.
    */
   bool contains(const generic_choice_set &other) const
   {
-    for(typename boost::unordered_set<choice>::const_iterator it =
-	  other.not_install_version_choices.begin();
-	it != other.not_install_version_choices.end(); ++it)
-      {
-	if(not_install_version_choices.find(*it) == not_install_version_choices.end())
-	  return false;
-      }
+    const choice_contains f;
 
-    for(typename boost::unordered_map<package, choice>::const_iterator it =
-	  other.install_version_choices.begin();
-	it != other.install_version_choices.end(); ++it)
-      {
-	typename boost::unordered_map<package, choice>::const_iterator found =
-	  install_version_choices.find(it->first);
-
-	if(found == install_version_choices.end())
-	  return false;
-	else if(!found->second.contains(it->second))
-	  return false;
-      }
-
-    return true;
+    return
+      install_version_choices.is_supermap_of_under(other.install_version_choices, f) &&
+      not_install_version_choices.contains(other.not_install_version_choices, f);
   }
 
   /** \brief Check whether each entry in the other set contains an
@@ -522,26 +527,11 @@ public:
    */
   bool subset_is_contained_in(const generic_choice_set &other) const
   {
-    for(typename boost::unordered_set<choice>::const_iterator it =
-	  other.not_install_version_choices.begin();
-	it != other.not_install_version_choices.end(); ++it)
-      {
-	if(not_install_version_choices.find(*it) == not_install_version_choices.end())
-	  return false;
-      }
+    const choice_is_contained_in f;
 
-    for(typename boost::unordered_map<package, choice>::const_iterator it =
-	  other.install_version_choices.begin();
-	it != other.install_version_choices.end(); ++it)
-      {
-	typename boost::unordered_map<package, choice>::const_iterator found =
-	  install_version_choices.find(it->first);
-
-	if(found == install_version_choices.end())
-	  return false;
-	else if(!it->second.contains(found->second))
-	  return false;
-      }
+    return
+      install_version_choices.is_supermap_of_under(other.install_version_choices, f) &&
+      not_install_version_choices.contains(other.not_install_version_choices, f);
   }
 
   /** \brief Apply a function object to each element in this set.
@@ -551,19 +541,10 @@ public:
   template<typename F>
   bool for_each(const F &f) const
   {
-    for(typename boost::unordered_map<package, choice>::const_iterator
-	  it = install_version_choices.begin();
-	it != install_version_choices.end(); ++it)
-      if(!f(it->second))
-	return false;
+    if(!install_version_choices.for_each(for_each_choice_pair<F>(f)))
+      return false;
 
-    for(typename boost::unordered_set<choice>::const_iterator
-	  it = not_install_version_choices.begin();
-	it != not_install_version_choices.end(); ++it)
-      if(!f(*it))
-	return false;
-
-    return true;
+    return not_install_version_choices.for_each(f);
   }
 
   /** \brief Return a new choice set that does not share memory with
@@ -571,8 +552,8 @@ public:
    */
   generic_choice_set clone() const
   {
-    return generic_choice_set(install_version_choices,
-			      not_install_version_choices);
+    return generic_choice_set(install_version_choices.clone(),
+			      not_install_version_choices.clone());
   }
 
   /** \brief Retrieve the version, if any, that was chosen for the
@@ -587,23 +568,17 @@ public:
    */
   bool get_version_of(const package &p, version &out) const
   {
-    typename boost::unordered_map<package, choice>::const_iterator found = install_version_choices.find(p);
+    typename imm::map<package, choice>::node found = install_version_choices.lookup(p);
 
-    if(found != install_version_choices.end())
+    if(found.isValid())
       {
-	out = found->second.get_ver();
+	out = found.getVal().second.get_ver();
 	return true;
       }
     else
       return false;
   }
 };
-
-template<typename PackageUniverse>
-std::size_t hash_value(const generic_choice_set<PackageUniverse> &p)
-{
-  return p.get_hash_value();
-}
 
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniverse> &choices)
