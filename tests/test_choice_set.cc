@@ -86,14 +86,14 @@ class Choice_Set_Test : public CppUnit::TestFixture
 
   struct contents_extractor
   {
-    boost::unordered_set<choice> &rval;
+    boost::unordered_set<boost::flyweight<choice> > &rval;
 
-    contents_extractor(boost::unordered_set<choice> &_rval)
+    contents_extractor(boost::unordered_set<boost::flyweight<choice> > &_rval)
       : rval(_rval)
     {
     }
 
-    bool operator()(const choice &c) const
+    bool operator()(const boost::flyweight<choice> &c) const
     {
       CPPUNIT_ASSERT(rval.find(c) == rval.end());
 
@@ -112,7 +112,7 @@ class Choice_Set_Test : public CppUnit::TestFixture
     {
     }
 
-    bool operator()(const choice &c) const
+    bool operator()(const boost::flyweight<choice> &c) const
     {
       rval.push_back(c);
       return true;
@@ -133,18 +133,18 @@ class Choice_Set_Test : public CppUnit::TestFixture
       }
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), observed.size());
-    for(std::vector<choice>::size_type i = 0; i < expected.size(); ++i)
+    for(std::vector<boost::flyweight<choice> >::size_type i = 0; i < expected.size(); ++i)
       CPPUNIT_ASSERT_EQUAL(expected[i], observed[i]);
   };
 
-  static boost::unordered_set<choice> get_contents(const choice_set &s)
+  static boost::unordered_set<boost::flyweight<choice> > get_contents(const choice_set &s)
   {
-    boost::unordered_set<choice> rval;
+    boost::unordered_set<boost::flyweight<choice> > rval;
     s.for_each(contents_extractor(rval));
     return rval;
   }
 
-  static choice_set make_choice_set_narrow(const boost::unordered_set<choice> &s)
+  static choice_set make_choice_set_narrow(const boost::unordered_set<boost::flyweight<choice> > &s)
   {
     choice_set rval;
     rval.insert_or_narrow(s);
@@ -198,7 +198,7 @@ public:
     dummy_universe_ref u(parseUniverse(dummy_universe_1));
 
     choice_set s;
-    boost::unordered_set<choice> expected;
+    boost::unordered_set<boost::flyweight<choice> > expected;
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
@@ -208,7 +208,7 @@ public:
 
     const choice c1(make_install_version(av2));
     s.insert_or_narrow(c1);
-    expected.insert(c1);
+    expected.insert(boost::flyweight<choice>(c1));
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
@@ -217,8 +217,8 @@ public:
     test_contents_iterator(s);
 
     const choice c2(make_install_version_from_dep_source(av2, av3d1));
-    expected.erase(c1);
-    expected.insert(c2);
+    expected.erase(boost::flyweight<choice>(c1));
+    expected.insert(boost::flyweight<choice>(c2));
     s.insert_or_narrow(c2);
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
@@ -229,7 +229,7 @@ public:
 
     const choice c3(make_break_soft_dep(av2d1));
     s.insert_or_narrow(c3);
-    expected.insert(c3);
+    expected.insert(boost::flyweight<choice>(c3));
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
@@ -238,7 +238,7 @@ public:
 
     const choice c4(make_install_version_from_dep_source(bv1, bv2d1));
     s.insert_or_narrow(c4);
-    expected.insert(c4);
+    expected.insert(boost::flyweight<choice>(c4));
 
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
@@ -258,7 +258,7 @@ public:
 
     const choice c6(make_break_soft_dep(av3d1));
     s.insert_or_narrow(c6);
-    expected.insert(c6);
+    expected.insert(boost::flyweight<choice>(c6));
     CPPUNIT_ASSERT_EQUAL(expected.size(), s.size());
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(s));
     CPPUNIT_ASSERT_EQUAL(expected, get_contents(make_choice_set_narrow(expected)));
