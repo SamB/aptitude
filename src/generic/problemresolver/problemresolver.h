@@ -953,15 +953,119 @@ private:
    */
   class approved_or_rejected_info
   {
+    // Like a var_e, but prints a choice when it's dumped.  This is a
+    // trade-off of memory for much better debugging.  Having separate
+    // classes instead of using a Boolean flag should save a little
+    // space at run-time.
+    class approve_ver_e : public var_e<bool>
+    {
+      version v;
+
+      approve_ver_e(bool value, const version &_v)
+	: var_e<bool>(value), v(_v)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const version &v)
+      {
+	return new approve_ver_e(value, v);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "A(" << v << ")";
+      }
+    };
+
+    class reject_ver_e : public var_e<bool>
+    {
+      version v;
+
+      reject_ver_e(bool value, const version &_v)
+	: var_e<bool>(value), v(_v)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const version &v)
+      {
+	return new reject_ver_e(value, v);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "R(" << v << ")";
+      }
+    };
+
+    class approve_break_e : public var_e<bool>
+    {
+      dep d;
+
+      approve_break_e(bool value, const dep &_d)
+	: var_e<bool>(value), d(_d)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const dep &d)
+      {
+	return new approve_break_e(value, d);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "AB(" << d << ")";
+      }
+    };
+
+    class reject_break_e : public var_e<bool>
+    {
+      dep d;
+
+      reject_break_e(bool value, const dep &_d)
+	: var_e<bool>(value), d(_d)
+      {
+      }
+
+    public:
+      static cwidget::util::ref_ptr<var_e<bool> >
+      create(bool value, const dep &d)
+      {
+	return new reject_break_e(value, d);
+      }
+
+      void dump(std::ostream &out)
+      {
+	out << "RB(" << d << ")";
+      }
+    };
+
     // True if the choice is rejected.
-    cwidget::util::ref_ptr<var_e<bool> > rejected; 
+    cwidget::util::ref_ptr<var_e<bool> > rejected;
     // True if the choice is approved.
     cwidget::util::ref_ptr<var_e<bool> > approved;
 
-  public:
     approved_or_rejected_info()
       : rejected(var_e<bool>::create(false)),
 	approved(var_e<bool>::create(false))
+    {
+    }
+
+  public:
+    approved_or_rejected_info(const version &v, bool supportTrace)
+      : rejected(supportTrace ? reject_ver_e::create(false, v) : var_e<bool>::create(false)),
+	approved(supportTrace ? approve_ver_e::create(false, v) : var_e<bool>::create(false))
+    {
+    }
+
+    approved_or_rejected_info(const dep &d, bool supportTrace)
+      : rejected(supportTrace ? reject_break_e::create(false, d) : var_e<bool>::create(false)),
+	approved(supportTrace ? approve_break_e::create(false, d) : var_e<bool>::create(false))
     {
     }
 
@@ -1042,7 +1146,7 @@ private:
 	  // program for a feature that would never be used)
 	  promotion p(choice_set(), tier_limits::defer_tier,
 		      get_child());
-	  resolver.increase_solver_tier_everywhere(deferred_choice, p);
+	  resolver.increase_solver_tier_everywhere_with_dep(deferred_choice, p);
 	}
     }
   };
@@ -1360,6 +1464,17 @@ private:
 	  ++num_deferred;
 	if(was_in_pending_future_solutions)
 	  ++num_deferred;
+      }
+    else if(s.step_tier < tier_limits::defer_tier)
+      {
+	// Clear the "finished" flag if this is now a pending
+	// candidate.
+	if(finished &&
+	   (was_in_pending || was_in_pending_future_solutions))
+	  {
+	    LOG_TRACE(logger, "Step " << s.step_num << " is now a candidate: clearing the \"finished\" flag.");
+	    finished = false;
+	  }
       }
   }
 
@@ -2030,6 +2145,44 @@ private:
       }
   }
 
+  approved_or_rejected_info &get_approved_or_rejected_info(const version &v)
+  {
+    typename std::map<version, approved_or_rejected_info>::iterator found =
+      user_approved_or_rejected_versions.find(v);
+
+    if(found == user_approved_or_rejected_versions.end())
+      found = user_approved_or_rejected_versions.insert(std::make_pair(v, approved_or_rejected_info(v, logger->isTraceEnabled()))).first;
+
+    return found->second;
+  }
+
+  approved_or_rejected_info &get_approved_or_rejected_info(const dep &d)
+  {
+    typename std::map<dep, approved_or_rejected_info>::iterator found =
+      user_approved_or_rejected_broken_deps.find(d);
+
+    if(found == user_approved_or_rejected_broken_deps.end())
+      found = user_approved_or_rejected_broken_deps.insert(std::make_pair(d, approved_or_rejected_info(d, logger->isTraceEnabled()))).first;
+
+    return found->second;
+  }
+
+  approved_or_rejected_info &get_approved_or_rejected_info(const choice &c)
+  {
+    switch(c.get_type())
+      {
+      case choice::install_version:
+	return get_approved_or_rejected_info(c.get_ver());
+
+      case choice::break_soft_dep:
+	return get_approved_or_rejected_info(c.get_dep());
+
+      default:
+	// There's nothing that's safe to return in this case.
+	eassert(!"This should never happen.");
+      }
+  }
+
   /** \brief Build an expression that computes whether the given
    *  choice is deferred.
    *
@@ -2051,7 +2204,7 @@ private:
 
 	  const version &c_ver(c.get_ver());
 	  const approved_or_rejected_info &c_info =
-	    user_approved_or_rejected_versions[c_ver];
+	    get_approved_or_rejected_info(c);
 
 	  const cwidget::util::ref_ptr<expression<bool> > &c_rejected(c_info.get_rejected());
 	  const cwidget::util::ref_ptr<expression<bool> > &c_approved(c_info.get_approved());
@@ -2068,7 +2221,7 @@ private:
 	    {
 	      version solver(*si);
 	      if(solver != c_ver)
-		others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+		others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 	    }
 
 	  // Other solvers also include other versions of the source,
@@ -2082,11 +2235,11 @@ private:
 		{
 		  version solver(*vi);
 		  if(solver != c_dep_source && solver != c_ver)
-		    others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+		    others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 		}
 	    }
 	  else
-	    others_approved.push_back(user_approved_or_rejected_broken_deps[c_dep].get_approved());
+	    others_approved.push_back(get_approved_or_rejected_info(c_dep).get_approved());
 
 	  return
 	    or_e::create(c_rejected,
@@ -2100,7 +2253,7 @@ private:
 	{
 	  const dep &c_dep(c.get_dep());
 	  const approved_or_rejected_info &c_info =
-	    user_approved_or_rejected_broken_deps[c_dep];
+	    get_approved_or_rejected_info(c_dep);
 
 
 
@@ -2116,7 +2269,7 @@ private:
 	      !si.end(); ++si)
 	    {
 	      version solver(*si);
-	      others_approved.push_back(user_approved_or_rejected_versions[solver].get_approved());
+	      others_approved.push_back(get_approved_or_rejected_info(solver).get_approved());
 	    }
 
 	  return
@@ -2170,7 +2323,11 @@ private:
 		    int step_num) const
     {
       step &s(resolver.graph.get_step(step_num));
-      resolver.recompute_solver_tier(s, d, c);
+
+      if(how == search_graph::choice_mapping_action)
+	resolver.recompute_step_tier(s);
+      else
+	resolver.recompute_solver_tier(s, d, c);
 
       return true;
     }
@@ -2184,6 +2341,8 @@ private:
   void deferral_retracted(const choice &deferral_choice,
 			  const dep &deferral_dep)
   {
+    LOG_TRACE(logger, "The choice " << deferral_choice << " is no longer deferred; recomputing its tier in all steps.");
+
     invoke_recompute_solver_tier recompute_f(*this, deferral_dep);
     graph.for_each_step_related_to_choice_with_dep(deferral_choice,
 						   deferral_dep,
@@ -2380,6 +2539,9 @@ private:
     // it is.
     if(solver.get_type() == choice::install_version)
       {
+	eassert(solver.get_has_dep());
+	eassert(solver.get_dep() == d);
+
 	const version ver(solver.get_ver());
 	version selected;
 	if(s.actions.get_version_of(ver.get_package(), selected))
@@ -2493,10 +2655,11 @@ private:
   class find_largest_dep_tier
   {
     tier &output_tier;
+    generic_problem_resolver &resolver;
 
   public:
-    find_largest_dep_tier(tier &_output_tier)
-      : output_tier(_output_tier)
+    find_largest_dep_tier(tier &_output_tier, generic_problem_resolver &_resolver)
+      : output_tier(_output_tier), resolver(_resolver)
     {
     }
 
@@ -2507,7 +2670,55 @@ private:
       p.second.for_each_solver(find_solvers_tier(dep_tier));
 
       if(output_tier < dep_tier)
-	output_tier = dep_tier;
+	{
+	  LOG_TRACE(resolver.logger, "Updating the tier from "
+		    << output_tier << " to "
+		    << dep_tier << " for the dependency " << p.first);
+	  output_tier = dep_tier;
+	}
+
+      return true;
+    }
+  };
+
+  // Look for deferrals and increase the target tier to the deferral
+  // tier if necessary.
+  class find_deferrals
+  {
+    tier &output_tier;
+    generic_problem_resolver &resolver;
+
+  public:
+    find_deferrals(tier &_output_tier,
+		   generic_problem_resolver &_resolver)
+      : output_tier(_output_tier), resolver(_resolver)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      tier rval(tier_limits::minimum_tier);
+
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  rval = resolver.version_tiers[c.get_ver().get_id()];
+	  break;
+
+	default:
+	  break;
+	}
+
+      if(rval < tier_limits::defer_tier &&
+	 resolver.build_is_deferred_listener(c)->get_value())
+	rval = tier_limits::defer_tier;
+
+      if(output_tier < rval)
+	{
+	  LOG_TRACE(resolver.logger, "Updating the tier from " << output_tier << " to " << rval
+		    << " for the action " << c);
+	  output_tier = rval;
+	}
 
       return true;
     }
@@ -2527,7 +2738,33 @@ private:
     LOG_TRACE(logger, "Recomputing the tier of step " << s.step_num
 	      << " (was " << s.step_tier << ")");
 
-    s.unresolved_deps.for_each(find_largest_dep_tier(s.step_tier));
+    tier new_tier(tier_limits::minimum_tier);
+    s.unresolved_deps.for_each(find_largest_dep_tier(new_tier, *this));
+
+    // In addition to checking solvers, we need to check the action
+    // set.  Look for existing promotions *and* for deferred entries.
+    s.actions.for_each(find_deferrals(new_tier, *this));
+
+    typename promotion_set::const_iterator found_promotion =
+      promotions.find_highest_promotion_for(s.actions);
+
+    if(found_promotion != promotions.end())
+      {
+	const promotion &p(*found_promotion);
+
+	if(new_tier < p.get_tier())
+	  {
+	    LOG_TRACE(logger, "Updating the tier from "
+		      << new_tier << " to " << p.get_tier()
+		      << " for the promotion " << p);
+	    new_tier = p.get_tier();
+	  }
+      }
+
+    LOG_TRACE(logger, "Recomputed the tier of step " << s.step_num
+	      << " (was " << s.step_tier << ", now " << new_tier << ")");
+
+    set_step_tier(s.step_num, new_tier);
   }
 
   // Build a generalized promotion from the entries of a dep-solvers
@@ -2814,11 +3051,12 @@ private:
     }
   };
 
-  /** \brief Increase the tier of a solver everywhere it appears: that
-   *  is, both in solver lists and in action sets.
+  /** \brief Increase the tier of a solver everywhere it appears with
+   *  the same dependency: that is, both in solver lists and in action
+   *  sets.
    */
-  void increase_solver_tier_everywhere(const choice &solver,
-				       const promotion &p)
+  void increase_solver_tier_everywhere_with_dep(const choice &solver,
+						const promotion &p)
   {
     LOG_TRACE(logger, "Increasing the tier of " << solver
 	      << " according to the promotion " << p
@@ -2826,8 +3064,9 @@ private:
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
-    graph.for_each_step_related_to_choice(solver,
-					  increase_solver_tier_everywhere_f);
+    graph.for_each_step_related_to_choice_with_dep(solver,
+						   solver.get_dep(),
+						   increase_solver_tier_everywhere_f);
   }
 
   class do_find_promotions_for_solver
@@ -3218,8 +3457,11 @@ private:
 	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.step_tier
 	      << "S" << output.score);
 
-    if(output.step_tier < tier_limits::defer_tier)
-      pending.insert(output.step_num);
+    if(output.step_tier >= tier_limits::defer_tier &&
+       output.step_tier < tier_limits::already_generated_tier)
+      ++num_deferred;
+
+    pending.insert(output.step_num);
   }
 
   class do_generate_single_successor
@@ -3572,7 +3814,7 @@ public:
    */
   void reject_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(!inf.get_rejected()->get_value())
       {
@@ -3591,7 +3833,7 @@ public:
    */
   void unreject_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(inf.get_rejected()->get_value())
       {
@@ -3606,7 +3848,7 @@ public:
 
   void mandate_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(!inf.get_approved()->get_value())
       {
@@ -3622,7 +3864,7 @@ public:
 
   void unmandate_version(const version &ver, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_versions[ver]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(ver));
 
     if(inf.get_approved()->get_value())
       {
@@ -3673,7 +3915,7 @@ public:
   {
     eassert(d.is_soft());
 
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(!inf.get_rejected()->get_value())
       {
@@ -3690,7 +3932,7 @@ public:
   /** Un-harden (soften?) the given dependency. */
   void unharden(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(inf.get_rejected()->get_value())
       {
@@ -3719,7 +3961,7 @@ public:
   /** Approve the breaking of the given dependency. */
   void approve_break(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(!inf.get_approved()->get_value())
       {
@@ -3736,7 +3978,7 @@ public:
   /** Cancel the required breaking of the given dependency. */
   void unapprove_break(const dep &d, undo_group *undo = NULL)
   {
-    approved_or_rejected_info &inf(user_approved_or_rejected_broken_deps[d]);
+    approved_or_rejected_info &inf(get_approved_or_rejected_info(d));
 
     if(inf.get_approved()->get_value())
       {

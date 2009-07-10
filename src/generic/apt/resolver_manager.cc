@@ -1601,8 +1601,13 @@ void resolver_manager::tweak_score(const pkgCache::PkgIterator &pkg,
   eassert(resolver_exists());
   eassert(resolver->fresh());
 
-  resolver->add_version_score(aptitude_resolver_version(pkg, ver, (*cache_file)),
-			      score);
+  aptitude_resolver_version res_ver;
+  if(ver.end())
+    res_ver = aptitude_resolver_version::make_removal(pkg, *cache_file);
+  else
+    res_ver = aptitude_resolver_version::make_install(ver, *cache_file);
+
+  resolver->add_version_score(res_ver, score);
 }
 
 void resolver_manager::dump(ostream &out)
@@ -1873,10 +1878,9 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
       // Forbid the resolver from removing installed packages.
       if(!p.CurrentVer().end())
 	{
-	  aptitude_resolver_version
-	    remove_p(p,
-		     pkgCache::VerIterator(*cache_file),
-		     *cache_file);
+	  aptitude_resolver_version remove_p =
+	    aptitude_resolver_version::make_removal(p,
+						    *cache_file);
 
 	  LOG_DEBUG(logger,
 		    "setup_safe_resolver: Rejecting the removal of the package " << remove_p.get_package() << ".");
@@ -1925,7 +1929,8 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	      (v_is_a_new_upgrade && no_new_upgrades) ||
 	      v_is_a_non_default_version))
 	    {
-	      aptitude_resolver_version p_v(p, v, *cache_file);
+	      aptitude_resolver_version p_v =
+		aptitude_resolver_version::make_install(v, *cache_file);
 
 	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
 		{

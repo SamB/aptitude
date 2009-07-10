@@ -293,9 +293,9 @@ static void reject_or_mandate_version(const string &s,
 	  continue;
 	}
 
-      aptitude_universe::version ver(pkg,
-				     pkgCache::VerIterator(*apt_cache_file),
-				     *apt_cache_file);
+      aptitude_universe::version ver =
+	aptitude_universe::version::make_removal(pkg,
+						 *apt_cache_file);
       if(stringcasecmp(vername, "UNINST") != 0)
 	{
 	  vector<pkgCache::VerIterator> found;
@@ -310,8 +310,8 @@ static void reject_or_mandate_version(const string &s,
 	      continue;
 	    }
 
-	  ver = aptitude_universe::version(pkg, choose_version(found),
-					   *apt_cache_file);
+	  ver = aptitude_universe::version::make_install(choose_version(found),
+							 *apt_cache_file);
 
 	  eassert(!ver.get_ver().end());
 	  eassert(ver.get_pkg() == ver.get_ver().ParentPkg());

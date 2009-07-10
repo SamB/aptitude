@@ -58,8 +58,10 @@ public:
   typedef generic_tier_limits<PackageUniverse> tier_limits;
 
 private:
+  typedef boost::flyweight<choice_set> choice_set_flyweight;
+
   tier t;
-  choice_set reasons;
+  choice_set_flyweight reasons;
   cwidget::util::ref_ptr<expression<bool> > tier_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
@@ -159,7 +161,7 @@ public:
     boost::hash_combine(rval, tier_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
     boost::hash_combine(rval, t);
-    reasons.for_each(combine_reason_hashes(rval));
+    reasons.get().for_each(combine_reason_hashes(rval));
 
     return rval;
   }
@@ -1223,8 +1225,9 @@ private:
   template<typename F>
   class visit_choice_mapping_steps_solvers_of_dep
   {
-    // The choice to pass to the sub-function.
-    const choice &c;
+    // The choice to pass to the sub-function.  Can't be a reference
+    // since it's different from what the parent passes in.
+    const choice c;
     // The dependency whose solvers are being visited.
     const dep &d;
     const generic_search_graph &graph;
@@ -1243,7 +1246,12 @@ private:
     visit_choice_mapping_steps_solvers_of_dep(const choice &_c,
 					      const dep &_d,
 					      const generic_search_graph &_graph, F _f)
-      : c(_c), d(_d), graph(_graph), f(_f)
+      // Note that it's necessary to modify the dependency stored in
+      // the choice: below, we'll do an exact lookup to try to find
+      // it, and that requires that the dependency is set properly.
+      // Setting it in the constructor avoids setting it every time
+      // the object is applied.
+      : c(_c.copy_and_set_dep(_d)), d(_d), graph(_graph), f(_f)
     {
     }
 
@@ -1834,10 +1842,16 @@ std::ostream &operator<<(std::ostream &out, const generic_solver_information<Pac
       << ":" << info.get_reasons();
 
   if(info.get_tier_valid().valid())
-    out << "; V: " << info.get_tier_valid().unsafe_get_ref();
+    {
+      out << "; V: ";
+      info.get_tier_valid()->dump(out);
+    }
 
   if(info.get_is_deferred_listener().valid())
-    out << "; L: " << info.get_is_deferred_listener().unsafe_get_ref();
+    {
+      out << "; L: ";
+      info.get_is_deferred_listener()->dump(out);
+    }
 
   out << ")";
 
