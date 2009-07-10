@@ -743,7 +743,7 @@ public:
      *	one maps to the reasons that any of its solvers were
      *	dropped.
      */
-    boost::unordered_map<dep, flyweight_dep_solvers> unresolved_deps;
+    imm::map<dep, flyweight_dep_solvers> unresolved_deps;
 
     /** \brief The unresolved dependencies, sorted by the number of
      *  solvers each one has.
@@ -1247,11 +1247,11 @@ private:
       // Check if we have a solver in this step first -- if you think
       // about it, it's more likely that this is true than that we
       // have an action.
-      typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator found =
-	s.unresolved_deps.find(d);
+      typename imm::map<dep, typename step::flyweight_dep_solvers>::node found =
+	s.unresolved_deps.lookup(d);
 
-      if(found != s.unresolved_deps.end() &&
-	 found->second.get().lookup_solver_information(c) != NULL)
+      if(found.isValid() &&
+	 found.getVal().second.get().lookup_solver_information(c) != NULL)
 	return visit(s, choice_mapping_solver);
       else
 	{
