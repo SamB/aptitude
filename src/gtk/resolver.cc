@@ -1342,7 +1342,7 @@ namespace gui
 	      }
 	  }
 
-	typedef choice_name_lt<aptitude_universe> choice_name_lt;
+	typedef generic_solution<aptitude_universe>::choice_name_lt choice_name_lt;
 	sort(remove_packages.begin(), remove_packages.end(), choice_name_lt());
 	sort(keep_packages.begin(), keep_packages.end(), choice_name_lt());
 	sort(install_packages.begin(), install_packages.end(), choice_name_lt());
@@ -1808,7 +1808,7 @@ namespace gui
 	    }
 	}
 
-      typedef choice_name_lt<aptitude_universe> choice_name_lt;
+      typedef generic_solution<aptitude_universe>::choice_name_lt choice_name_lt;
       std::sort(remove.begin(), remove.end(), choice_name_lt());
       std::sort(keep.begin(), keep.end(), choice_name_lt());
       std::sort(install.begin(), install.end(), choice_name_lt());
