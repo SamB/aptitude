@@ -1213,7 +1213,7 @@ private:
   {
     // The choice to pass to the sub-function.  Can't be a reference
     // since it's different from what the parent passes in.
-    const boost::flyweight<choice> c;
+    const choice c;
     // The dependency whose solvers are being visited.
     const dep &d;
     const generic_search_graph &graph;
@@ -1255,9 +1255,9 @@ private:
 	return visit(s, choice_mapping_solver);
       else
 	{
-	  boost::flyweight<choice> step_choice;
+	  choice step_choice;
 	  if(s.actions.get_choice_contained_by(c, step_choice) &&
-	     step_choice.get().get_dep() == d)
+	     step_choice.get_dep() == d)
 	    return visit(s, choice_mapping_action);
 	  else
 	    return true;

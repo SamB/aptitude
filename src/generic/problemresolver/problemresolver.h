@@ -4117,12 +4117,12 @@ private:
   class count_action_hits
   {
     unsigned int &action_hits;
-    boost::optional<boost::flyweight<choice> > &mismatch;
+    boost::optional<choice> &mismatch;
     const step &s;
 
   public:
     count_action_hits(unsigned int &_action_hits,
-		      boost::optional<boost::flyweight<choice> > &_mismatch,
+		      boost::optional<choice> &_mismatch,
 		      const step &_s)
       : action_hits(_action_hits),
 	mismatch(_mismatch),
@@ -4132,7 +4132,7 @@ private:
       mismatch.reset();
     }
 
-    bool operator()(const boost::flyweight<choice> &c) const
+    bool operator()(const choice &c) const
     {
       if(s.actions.has_contained_choice(c))
 	++action_hits;
@@ -4158,7 +4158,7 @@ private:
 		  << " against step " << s.step_num);
 
 	unsigned int action_hits;
-	boost::optional<boost::flyweight<choice> > mismatch;
+	boost::optional<choice> mismatch;
 	if(!p.get_choices().for_each(count_action_hits(action_hits,
 						       mismatch,
 						       s)))

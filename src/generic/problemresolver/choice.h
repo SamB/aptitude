@@ -26,7 +26,6 @@
 
 #include <generic/util/compare3.h>
 
-#include <boost/flyweight.hpp>
 #include <boost/functional/hash.hpp>
 
 /** \brief Represents a decision made by the resolver.
@@ -376,12 +375,6 @@ template<typename PackageUniverse>
 std::size_t hash_value(const generic_choice<PackageUniverse> &c)
 {
   return c.get_hash_value();
-}
-
-template<typename PackageUniverse>
-std::size_t hash_value(const boost::flyweight<generic_choice<PackageUniverse> > &c)
-{
-  return c.get().get_hash_value();
 }
 
 // Overload compare3 on choices.
