@@ -1146,7 +1146,7 @@ private:
 	  // program for a feature that would never be used)
 	  promotion p(choice_set(), tier_limits::defer_tier,
 		      get_child());
-	  resolver.increase_solver_tier_everywhere(deferred_choice, p);
+	  resolver.increase_solver_tier_everywhere_with_dep(deferred_choice, p);
 	}
     }
   };
@@ -2655,10 +2655,11 @@ private:
   class find_largest_dep_tier
   {
     tier &output_tier;
+    generic_problem_resolver &resolver;
 
   public:
-    find_largest_dep_tier(tier &_output_tier)
-      : output_tier(_output_tier)
+    find_largest_dep_tier(tier &_output_tier, generic_problem_resolver &_resolver)
+      : output_tier(_output_tier), resolver(_resolver)
     {
     }
 
@@ -2669,7 +2670,55 @@ private:
       p.second.for_each_solver(find_solvers_tier(dep_tier));
 
       if(output_tier < dep_tier)
-	output_tier = dep_tier;
+	{
+	  LOG_TRACE(resolver.logger, "Updating the tier from "
+		    << output_tier << " to "
+		    << dep_tier << " for the dependency " << p.first);
+	  output_tier = dep_tier;
+	}
+
+      return true;
+    }
+  };
+
+  // Look for deferrals and increase the target tier to the deferral
+  // tier if necessary.
+  class find_deferrals
+  {
+    tier &output_tier;
+    generic_problem_resolver &resolver;
+
+  public:
+    find_deferrals(tier &_output_tier,
+		   generic_problem_resolver &_resolver)
+      : output_tier(_output_tier), resolver(_resolver)
+    {
+    }
+
+    bool operator()(const choice &c) const
+    {
+      tier rval(tier_limits::minimum_tier);
+
+      switch(c.get_type())
+	{
+	case choice::install_version:
+	  rval = resolver.version_tiers[c.get_ver().get_id()];
+	  break;
+
+	default:
+	  break;
+	}
+
+      if(rval < tier_limits::defer_tier &&
+	 resolver.build_is_deferred_listener(c)->get_value())
+	rval = tier_limits::defer_tier;
+
+      if(output_tier < rval)
+	{
+	  LOG_TRACE(resolver.logger, "Updating the tier from " << output_tier << " to " << rval
+		    << " for the action " << c);
+	  output_tier = rval;
+	}
 
       return true;
     }
@@ -2690,7 +2739,27 @@ private:
 	      << " (was " << s.step_tier << ")");
 
     tier new_tier(tier_limits::minimum_tier);
-    s.unresolved_deps.for_each(find_largest_dep_tier(new_tier));
+    s.unresolved_deps.for_each(find_largest_dep_tier(new_tier, *this));
+
+    // In addition to checking solvers, we need to check the action
+    // set.  Look for existing promotions *and* for deferred entries.
+    s.actions.for_each(find_deferrals(new_tier, *this));
+
+    typename promotion_set::const_iterator found_promotion =
+      promotions.find_highest_promotion_for(s.actions);
+
+    if(found_promotion != promotions.end())
+      {
+	const promotion &p(*found_promotion);
+
+	if(new_tier < p.get_tier())
+	  {
+	    LOG_TRACE(logger, "Updating the tier from "
+		      << new_tier << " to " << p.get_tier()
+		      << " for the promotion " << p);
+	    new_tier = p.get_tier();
+	  }
+      }
 
     LOG_TRACE(logger, "Recomputed the tier of step " << s.step_num
 	      << " (was " << s.step_tier << ", now " << new_tier << ")");
@@ -2982,11 +3051,12 @@ private:
     }
   };
 
-  /** \brief Increase the tier of a solver everywhere it appears: that
-   *  is, both in solver lists and in action sets.
+  /** \brief Increase the tier of a solver everywhere it appears with
+   *  the same dependency: that is, both in solver lists and in action
+   *  sets.
    */
-  void increase_solver_tier_everywhere(const choice &solver,
-				       const promotion &p)
+  void increase_solver_tier_everywhere_with_dep(const choice &solver,
+						const promotion &p)
   {
     LOG_TRACE(logger, "Increasing the tier of " << solver
 	      << " according to the promotion " << p
@@ -2994,8 +3064,9 @@ private:
     do_increase_solver_tier_everywhere
       increase_solver_tier_everywhere_f(*this, solver, p);
 
-    graph.for_each_step_related_to_choice(solver,
-					  increase_solver_tier_everywhere_f);
+    graph.for_each_step_related_to_choice_with_dep(solver,
+						   solver.get_dep(),
+						   increase_solver_tier_everywhere_f);
   }
 
   class do_find_promotions_for_solver
