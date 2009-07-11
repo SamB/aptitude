@@ -26,6 +26,7 @@
 
 #include <iostream>
 
+#include <boost/flyweight.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -79,13 +80,13 @@ public:
   {
     friend class generic_choice_set;
 
-    typename boost::unordered_map<package, choice>::const_iterator install_version_iter;
-    typename boost::unordered_map<package, choice>::const_iterator install_version_end_iter;
-    typename boost::unordered_set<choice>::const_iterator not_install_version_iter;
+    typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator install_version_iter;
+    typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator install_version_end_iter;
+    typename boost::unordered_set<boost::flyweight<choice> >::const_iterator not_install_version_iter;
 
-    const_iterator(const typename boost::unordered_map<package, choice>::const_iterator _install_version_iter,
-		   const typename boost::unordered_map<package, choice>::const_iterator _install_version_end_iter,
-		   const typename boost::unordered_set<choice>::const_iterator _not_install_version_iter)
+    const_iterator(const typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator _install_version_iter,
+		   const typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator _install_version_end_iter,
+		   const typename boost::unordered_set<boost::flyweight<choice> >::const_iterator _not_install_version_iter)
       : install_version_iter(_install_version_iter),
 	install_version_end_iter(_install_version_end_iter),
 	not_install_version_iter(_not_install_version_iter)
@@ -104,6 +105,8 @@ public:
       return !((*this) == other);
     }
 
+    // Note: these don't return flyweights because they're
+    // (currently?)  mostly for outside consumption.
     const choice &operator*() const
     {
       if(install_version_iter != install_version_end_iter)
@@ -142,12 +145,12 @@ private:
 
   // Stores the install-this-version choices made in this set,
   // organized by package.  Needed to accelerate the containment test.
-  boost::unordered_map<package, choice> install_version_choices;
+  boost::unordered_map<package, boost::flyweight<choice> > install_version_choices;
 
   // Stores the dependencies that are broken by this choice set.  We
   // could just store dependencies instead; I don't know whether that
   // would be more efficient or not.
-  boost::unordered_set<choice> not_install_version_choices;
+  boost::unordered_set<boost::flyweight<choice> > not_install_version_choices;
 
 
   mutable bool hash_cache_dirty;
@@ -166,7 +169,7 @@ private:
     {
     }
 
-    bool operator()(const std::pair<package, choice> &p) const
+    bool operator()(const std::pair<package, boost::flyweight<choice> > &p) const
     {
       return f(p.second);
     }
@@ -176,14 +179,14 @@ private:
   // that would pollute the namespace.
   struct accumulate_choices
   {
-    std::vector<choice> &out;
+    std::vector<boost::flyweight<choice> > &out;
 
-    accumulate_choices(std::vector<choice> &_out)
+    accumulate_choices(std::vector<boost::flyweight<choice> > &_out)
       : out(_out)
     {
     }
 
-    bool operator()(const choice &c) const
+    bool operator()(const boost::flyweight<choice> &c) const
     {
       out.push_back(c);
       return true;
@@ -199,8 +202,10 @@ private:
     {
     }
 
-    bool operator()(const choice &c) const
+    bool operator()(const boost::flyweight<choice> &c_flyweight) const
     {
+      // Extract the contained choice since we'll be looking at it a lot below.
+      const choice &c(c_flyweight.get());
       switch(c.get_type())
 	{
 	case choice::install_version:
@@ -208,24 +213,24 @@ private:
 	  {
 	    const package p(c.get_ver().get_package());
 
-	    std::pair<typename boost::unordered_map<package, choice>::iterator, typename boost::unordered_map<package, choice>::iterator>
+	    std::pair<typename boost::unordered_map<package, boost::flyweight<choice> >::iterator, typename boost::unordered_map<package, boost::flyweight<choice> >::iterator>
 	      found = parent.install_version_choices.equal_range(p);
 
 	    if(found.first == found.second)
 	      {
-		parent.install_version_choices.insert(found.first, std::make_pair(p, c));
+		parent.install_version_choices.insert(found.first, std::make_pair(p, c_flyweight));
 		parent.hash_cache_dirty = true;
 	      }
 	    else
 	      {
-		std::pair<const package, choice> &existing_choice_pair(*found.first);
-		choice &existing_choice(existing_choice_pair.second);
+		std::pair<const package, boost::flyweight<choice> > &existing_choice_pair(*found.first);
+		boost::flyweight<choice> &existing_choice(existing_choice_pair.second);
 
-		if(existing_choice.contains(c))
+		if(existing_choice.get().contains(c))
 		  {
 		    // Override the existing choice with the new one,
 		    // which is more specific.
-		    existing_choice = c;
+		    existing_choice = c_flyweight;
 		    parent.hash_cache_dirty = true;
 		  }
 		else if(c.contains(existing_choice))
@@ -239,7 +244,7 @@ private:
 	  break;
 
 	default:
-	  parent.not_install_version_choices.insert(c);
+	  parent.not_install_version_choices.insert(c_flyweight);
 	  parent.hash_cache_dirty = true;
 	  break;
 	}
@@ -248,8 +253,8 @@ private:
     }
   };
 
-  generic_choice_set(const boost::unordered_map<package, choice> &_install_version_choices,
-		     const boost::unordered_set<choice> &_not_install_version_choices)
+  generic_choice_set(const boost::unordered_map<package, boost::flyweight<choice> > &_install_version_choices,
+		     const boost::unordered_set<boost::flyweight<choice> > &_not_install_version_choices)
     : install_version_choices(_install_version_choices),
       not_install_version_choices(_not_install_version_choices),
       hash_cache_dirty(true)
@@ -279,9 +284,9 @@ public:
   /** \brief Insert every choice in the given set into this set,
    *  overriding more general options with more specific ones.
    */
-  void insert_or_narrow(const boost::unordered_set<choice> &choices)
+  void insert_or_narrow(const boost::unordered_set<boost::flyweight<choice> > &choices)
   {
-    for(typename boost::unordered_set<choice>::const_iterator it = choices.begin();
+    for(typename boost::unordered_set<boost::flyweight<choice> >::const_iterator it = choices.begin();
 	it != choices.end(); ++it)
       insert_or_narrow(*it);
   }
@@ -304,9 +309,14 @@ public:
    *  set contains a choice that is more specific than c, c will be
    *  discarded in favor of that choice.
    */
-  void insert_or_narrow(const choice &c)
+  void insert_or_narrow(const boost::flyweight<choice> &c)
   {
     insert_choice_narrow(*this)(c);
+  }
+
+  void insert_or_narrow(const choice &c)
+  {
+    insert_or_narrow(boost::flyweight<choice>(c));
   }
 
   /** \brief Remove everything that overlaps the given choice from
@@ -325,7 +335,7 @@ public:
 	break;
 
       default:
-	not_install_version_choices.erase(c);
+	not_install_version_choices.erase(boost::flyweight<choice>(c));
 	hash_cache_dirty = true;
 	break;
       }
@@ -334,22 +344,23 @@ public:
   /** \brief If a choice in this set contains c, store it in
    *  out and return true.
    */
-  bool get_containing_choice(const choice &c,
-			     choice &out) const
+  bool get_containing_choice(const boost::flyweight<choice> &c_flyweight,
+			     boost::flyweight<choice> &out) const
   {
+    const choice &c(c_flyweight);
     switch(c.get_type())
       {
       case choice::install_version:
 	{
-	  typename boost::unordered_map<package, choice>::const_iterator found =
+	  typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator found =
 	    install_version_choices.find(c.get_ver().get_package());
 	  if(found == install_version_choices.end())
 	    return false;
 	  else
 	    {
-	      const std::pair<package, choice> &existing_choice_pair(*found);
-	      const choice &existing_choice(existing_choice_pair.second);
-	      if(existing_choice.contains(c))
+	      const std::pair<package, boost::flyweight<choice> > &existing_choice_pair(*found);
+	      const boost::flyweight<choice> &existing_choice(existing_choice_pair.second);
+	      if(existing_choice.get().contains(c))
 		{
 		  out = existing_choice;
 		  return true;
@@ -361,8 +372,8 @@ public:
 
       default:
 	{
-	  typename boost::unordered_set<choice>::const_iterator
-	    found = not_install_version_choices.find(c);
+	  typename boost::unordered_set<boost::flyweight<choice> >::const_iterator
+	    found = not_install_version_choices.find(c_flyweight);
 	  if(found != not_install_version_choices.end())
 	    {
 	      out = *found;
@@ -374,30 +385,47 @@ public:
       }
   }
 
-  bool contains(const choice &c) const
+  bool get_containing_choice(const choice &c,
+			     choice &out) const
+  {
+    boost::flyweight<choice> tmp;
+    bool rval = get_containing_choice(boost::flyweight<choice>(c), tmp);
+
+    if(rval)
+      out = tmp.get();
+    return rval;
+  }
+
+  bool contains(const boost::flyweight<choice> &c) const
   {
     choice dummy;
     return get_containing_choice(c, dummy);
   }
 
+  bool contains(const choice &c) const
+  {
+    return contains(boost::flyweight<choice>(c));
+  }
+
   /** \brief If a choice in this set is contained in c, store it in
    *  out and return true.
    */
-  bool get_choice_contained_by(const choice &c,
-			       choice &out) const
+  bool get_choice_contained_by(const boost::flyweight<choice> &c_flyweight,
+			       boost::flyweight<choice> &out) const
   {
+    const choice &c(c_flyweight);
     switch(c.get_type())
       {
       case choice::install_version:
 	{
-	  typename boost::unordered_map<package, choice>::const_iterator found =
+	  typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator found =
 	    install_version_choices.find(c.get_ver().get_package());
 	  if(found == install_version_choices.end())
 	    return false;
 	  else
 	    {
-	      const std::pair<package, choice> &existing_choice_pair(*found);
-	      const choice &existing_choice(existing_choice_pair.second);
+	      const std::pair<package, boost::flyweight<choice> > &existing_choice_pair(*found);
+	      const boost::flyweight<choice> &existing_choice(existing_choice_pair.second);
 	      if(c.contains(existing_choice))
 		{
 		  out = existing_choice;
@@ -410,8 +438,8 @@ public:
 
       default:
 	{
-	  typename boost::unordered_set<choice>::const_iterator
-	    found = not_install_version_choices.find(c);
+	  typename boost::unordered_set<boost::flyweight<choice> >::const_iterator
+	    found = not_install_version_choices.find(c_flyweight);
 	  if(found != not_install_version_choices.end())
 	    {
 	      out = *found;
@@ -427,9 +455,9 @@ public:
    *
    *  Used when testing promotions, for instance.
    */
-  bool has_contained_choice(const choice &c) const
+  bool has_contained_choice(const boost::flyweight<choice> &c) const
   {
-    choice dummy;
+    boost::flyweight<choice> dummy;
     return get_choice_contained_by(c, dummy);
   }
 
@@ -451,15 +479,15 @@ public:
 	std::vector<std::size_t> hashes;
 	hashes.reserve(install_version_choices.size() + not_install_version_choices.size());
 
-	for(typename boost::unordered_map<package, choice>::const_iterator it
+	for(typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator it
 	      = install_version_choices.begin();
 	    it != install_version_choices.end(); ++it)
-	  hashes.push_back(hash_value(it->second));
+	  hashes.push_back(hash_value(it->second.get()));
 
-	for(typename boost::unordered_set<choice>::const_iterator it
+	for(typename boost::unordered_set<boost::flyweight<choice> >::const_iterator it
 	      = not_install_version_choices.begin();
 	    it != not_install_version_choices.end(); ++it)
-	  hashes.push_back(hash_value(*it));
+	  hashes.push_back(hash_value(it->get()));
 
 	std::sort(hashes.begin(), hashes.end());
 
@@ -487,7 +515,7 @@ public:
    */
   bool contains(const generic_choice_set &other) const
   {
-    for(typename boost::unordered_set<choice>::const_iterator it =
+    for(typename boost::unordered_set<boost::flyweight<choice> >::const_iterator it =
 	  other.not_install_version_choices.begin();
 	it != other.not_install_version_choices.end(); ++it)
       {
@@ -495,16 +523,16 @@ public:
 	  return false;
       }
 
-    for(typename boost::unordered_map<package, choice>::const_iterator it =
+    for(typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator it =
 	  other.install_version_choices.begin();
 	it != other.install_version_choices.end(); ++it)
       {
-	typename boost::unordered_map<package, choice>::const_iterator found =
+	typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator found =
 	  install_version_choices.find(it->first);
 
 	if(found == install_version_choices.end())
 	  return false;
-	else if(!found->second.contains(it->second))
+	else if(!found->second.get().contains(it->second))
 	  return false;
       }
 
@@ -516,7 +544,7 @@ public:
    */
   bool subset_is_contained_in(const generic_choice_set &other) const
   {
-    for(typename boost::unordered_set<choice>::const_iterator it =
+    for(typename boost::unordered_set<boost::flyweight<choice> >::const_iterator it =
 	  other.not_install_version_choices.begin();
 	it != other.not_install_version_choices.end(); ++it)
       {
@@ -524,11 +552,11 @@ public:
 	  return false;
       }
 
-    for(typename boost::unordered_map<package, choice>::const_iterator it =
+    for(typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator it =
 	  other.install_version_choices.begin();
 	it != other.install_version_choices.end(); ++it)
       {
-	typename boost::unordered_map<package, choice>::const_iterator found =
+	typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator found =
 	  install_version_choices.find(it->first);
 
 	if(found == install_version_choices.end())
@@ -545,13 +573,13 @@ public:
   template<typename F>
   bool for_each(const F &f) const
   {
-    for(typename boost::unordered_map<package, choice>::const_iterator
+    for(typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator
 	  it = install_version_choices.begin();
 	it != install_version_choices.end(); ++it)
       if(!f(it->second))
 	return false;
 
-    for(typename boost::unordered_set<choice>::const_iterator
+    for(typename boost::unordered_set<boost::flyweight<choice> >::const_iterator
 	  it = not_install_version_choices.begin();
 	it != not_install_version_choices.end(); ++it)
       if(!f(*it))
@@ -581,11 +609,11 @@ public:
    */
   bool get_version_of(const package &p, version &out) const
   {
-    typename boost::unordered_map<package, choice>::const_iterator found = install_version_choices.find(p);
+    typename boost::unordered_map<package, boost::flyweight<choice> >::const_iterator found = install_version_choices.find(p);
 
     if(found != install_version_choices.end())
       {
-	out = found->second.get_ver();
+	out = found->second.get().get_ver();
 	return true;
       }
     else
@@ -704,7 +732,7 @@ std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniv
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
 
-  std::vector<choice> tmp;
+  std::vector<boost::flyweight<choice> > tmp;
   tmp.reserve(choices.size());
   typename choice_set::accumulate_choices f(tmp);
   choices.for_each(f);
@@ -712,7 +740,7 @@ std::ostream &operator<<(std::ostream &out, const generic_choice_set<PackageUniv
   std::sort(tmp.begin(), tmp.end(), choice_name_lt<PackageUniverse>());
 
   out << "{";
-  for(typename std::vector<choice>::const_iterator it = tmp.begin();
+  for(typename std::vector<boost::flyweight<choice> >::const_iterator it = tmp.begin();
       it != tmp.end(); ++it)
     {
       if(it != tmp.begin())
