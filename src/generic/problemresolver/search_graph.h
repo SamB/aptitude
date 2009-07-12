@@ -35,7 +35,7 @@
 #include <generic/util/immset.h>
 
 #include <boost/flyweight.hpp>
-#include <boost/flyweight/no_tracking.hpp>
+#include <boost/flyweight/hashed_factory.hpp>
 #include <boost/functional/hash.hpp>
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
@@ -58,13 +58,6 @@ public:
   typedef generic_tier_limits<PackageUniverse> tier_limits;
 
 private:
-  typedef boost::flyweight<choice_set> choice_set_flyweight;
-
-  tier t;
-  choice_set_flyweight reasons;
-  cwidget::util::ref_ptr<expression<bool> > tier_valid;
-  cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
-
   class combine_reason_hashes
   {
     std::size_t &target;
@@ -81,6 +74,64 @@ private:
       return true;
     }
   };
+
+  class choice_set_with_hash
+  {
+    choice_set choices;
+    std::size_t hash;
+
+    static std::size_t get_choice_set_hash(const choice_set &choices)
+    {
+      std::size_t rval = 0;
+      choices.for_each(combine_reason_hashes(rval));
+
+      return rval;
+    }
+
+  public:
+    choice_set_with_hash(const choice_set &_choices)
+      : choices(_choices), hash(get_choice_set_hash(choices))
+    {
+    }
+
+    bool operator==(const choice_set_with_hash &other) const
+    {
+      return hash == other.hash && choices == other.choices;
+    }
+
+    const choice_set &get_choices() const { return choices; }
+    std::size_t get_hash() const { return hash; }
+  };
+
+  class hash_choice_set_with_hash
+  {
+  public:
+    std::size_t operator()(const choice_set_with_hash &c) const
+    {
+      return c.get_hash();
+    }
+  };
+
+  struct foo
+  {
+    template<typename X>
+    struct apply
+    {
+      typedef std::allocator<X> type;
+    };
+  };
+
+  // Contrary to the Boost documentation, there are no default
+  // arguments to hashed_factory, so I have to write out the default
+  // values of the second two arguments.
+  typedef boost::flyweight<choice_set_with_hash,
+			   boost::flyweights::hashed_factory<hash_choice_set_with_hash> >
+  choice_set_flyweight;
+
+  tier t;
+  choice_set_flyweight reasons;
+  cwidget::util::ref_ptr<expression<bool> > tier_valid;
+  cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
 public:
   generic_solver_information()
@@ -123,7 +174,7 @@ public:
   /** \brief Retrieve the reason that this solver has the tier
    *  that it does.
    */
-  const choice_set &get_reasons() const { return reasons; }
+  const choice_set &get_reasons() const { return reasons.get().get_choices(); }
 
   /** \brief Retrieve an expression that returns whether the
    *  tier is valid (if true, the tier is always valid).
@@ -161,7 +212,7 @@ public:
     boost::hash_combine(rval, tier_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
     boost::hash_combine(rval, t);
-    reasons.get().for_each(combine_reason_hashes(rval));
+    boost::hash_combine(rval, reasons.get().get_hash());
 
     return rval;
   }
@@ -192,7 +243,7 @@ public:
 	if(tier_compare != 0)
 	  return tier_compare;
 	else
-	  return aptitude::util::compare3<choice_set>(reasons, other.reasons);
+	  return aptitude::util::compare3<choice_set>(reasons.get().get_choices(), other.reasons.get().get_choices());
       }
   }
 
@@ -1269,7 +1320,7 @@ private:
 	return visit(s, choice_mapping_solver);
       else
 	{
-	  choice step_choice;
+	  choice step_choice(choice::make_install_version(version(), -1));
 	  if(s.actions.get_choice_contained_by(c, step_choice) &&
 	     step_choice.get_dep() == d)
 	    return visit(s, choice_mapping_action);
