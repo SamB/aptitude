@@ -616,7 +616,7 @@ private:
   typedef ExtractPackageId PackageHash;
 
   /** Compares steps according to their "goodness": their tier, then
-   *  thier score, then their step number (to disambiguate).
+   *  thier score, then their contents.
    *
    *  The comparisons are reversed, so better solutions compare
    *  "below" worse ones.
@@ -650,7 +650,7 @@ private:
       else if(step1.score < step2.score)
 	return false;
       else
-	return step_num1 < step_num2;
+	return step2.actions < step1.actions;
     }
   };
 
@@ -1304,64 +1304,6 @@ private:
 #endif
   }
 
-#ifdef ENABLE_RESOLVER_SANITY_CHECKS
-  class sanity_check_solver_promotions
-  {
-    const dep &d;
-    const step &s;
-    const generic_problem_resolver &resolver;
-
-  public:
-    sanity_check_solver_promotions(const dep &_d,
-				   const step &_s,
-				   const generic_problem_resolver &_resolver)
-      : d(_d), s(_s), resolver(_resolver)
-    {
-    }
-
-    bool operator()(const std::pair<choice, typename step::solver_information> &p) const
-    {
-      const choice &solver(p.first);
-      const typename step::solver_information &solver_inf(p.second);
-
-      // Verify that the deps-solved-by-choice list maps to this
-      // dep.
-      imm::list<dep> found_solved_deps;
-      if(!s.deps_solved_by_choice.try_get(solver, found_solved_deps) ||
-	 std::find(found_solved_deps.begin(), found_solved_deps.end(), d) == found_solved_deps.end())
-	LOG_ERROR(resolver.logger, "In step " << s.step_num << ": no backlink from the choice "
-		  << solver << " to the dependency " << d << "; backlinks are " << found_solved_deps << ".");
-
-      boost::unordered_map<choice, promotion> incipient;
-      resolver.promotions.find_highest_incipient_promotions_containing(s.actions,
-							      solver,
-							      s.deps_solved_by_choice,
-							      discards_blessed(s.is_blessed_solution),
-							      incipient);
-
-      typename boost::unordered_map<choice, promotion>::const_iterator
-	found_incipient = incipient.find(solver);
-      if(found_incipient != incipient.end() &&
-	 solver_inf.get_tier() < found_incipient->second.get_tier())
-	LOG_ERROR(resolver.logger, "In step " << s.step_num
-		  << ": incipient promotion " << found_incipient->second
-		  << " was never applied to " << solver << ".");
-
-      choice_set test_set(s.actions);
-      test_set.insert_or_narrow(solver);
-      typename promotion_set::const_iterator found_promotion =
-	resolver.promotions.find_highest_promotion_containing(test_set, solver);
-      if(found_promotion != resolver.promotions.end() &&
-	 solver_inf.get_tier() < found_promotion->get_tier())
-	LOG_ERROR(resolver.logger, "In step " << s.step_num
-		  << ": the incipient promotion " << *found_promotion
-		  << " was not detected as incipient for " << solver);
-
-      return true;
-    }
-  };
-#endif
-
   void sanity_check_promotions(const step &s)
   {
 #ifdef ENABLE_RESOLVER_SANITY_CHECKS
@@ -1389,14 +1331,57 @@ private:
 		    << *found_promotion << " was not applied.");
       }
 
+    typedef generic_solver_information<PackageUniverse> solver_information;
     typedef generic_dep_solvers<PackageUniverse> dep_solvers;
 
 
-    for(typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator it =
+    for(typename imm::map<dep, boost::flyweight<dep_solvers> >::const_iterator it =
 	  s.unresolved_deps.begin(); it != s.unresolved_deps.end(); ++it)
       {
 	const dep &d(it->first);
-	it->second.get().for_each_solver(sanity_check_solver_promotions(d, s, *this));
+	imm::map<choice, solver_information, compare_choices_by_effects>
+	  solvers = it->second.get_solvers();
+
+
+	for(typename imm::map<choice, solver_information, compare_choices_by_effects>::const_iterator
+	    it = solvers.begin(); it != solvers.end(); ++it)
+	{
+	  const choice &solver(it->first);
+	  const solver_information &solver_inf(it->second);
+
+	  // Verify that the deps-solved-by-choice list maps to this
+	  // dep.
+	  imm::list<dep> found_solved_deps;
+	  if(!s.deps_solved_by_choice.try_get(solver, found_solved_deps) ||
+	     std::find(found_solved_deps.begin(), found_solved_deps.end(), d) == found_solved_deps.end())
+	    LOG_ERROR(logger, "In step " << s.step_num << ": no backlink from the choice "
+		      << solver << " to the dependency " << d << "; backlinks are " << found_solved_deps << ".");
+
+	  boost::unordered_map<choice, promotion> incipient;
+	  promotions.find_highest_incipient_promotions_containing(s.actions,
+								  solver,
+								  s.deps_solved_by_choice,
+								  discards_blessed(s.is_blessed_solution),
+								  incipient);
+
+	  typename boost::unordered_map<choice, promotion>::const_iterator
+	    found_incipient = incipient.find(solver);
+	  if(found_incipient != incipient.end() &&
+	     solver_inf.get_tier() < found_incipient->second.get_tier())
+	    LOG_ERROR(logger, "In step " << s.step_num
+		      << ": incipient promotion " << found_incipient->second
+		      << " was never applied to " << solver << ".");
+
+	  choice_set test_set(s.actions);
+	  test_set.insert_or_narrow(solver);
+	  typename promotion_set::const_iterator found_promotion =
+	    promotions.find_highest_promotion_containing(test_set, solver);
+	  if(found_promotion != promotions.end() &&
+	     solver_inf.get_tier() < found_promotion->get_tier())
+	    LOG_ERROR(logger, "In step " << s.step_num
+		      << ": the incipient promotion " << *found_promotion
+		      << " was not detected as incipient for " << solver);
+	}
       }
 #endif
   }
@@ -1570,10 +1555,10 @@ private:
     const unsigned int promotion_search_index;
     const unsigned int promotion_size;
     const choice &promotion_c;
-    boost::unordered_set<int> &active_hits;
-    // Steps that contain the promotion in their action set.
-    boost::unordered_set<int> &incipient_hits;
-    // Steps that contain the promotion as an incipient promotion.
+    std::set<int> &active_hits; // Steps that contain the promotion in
+			        // their action set.
+    std::set<int> &incipient_hits; // Steps that contain the promotion
+  				   // as an incipient promotion.
 
     void too_many_choices(int choices) const
     {
@@ -1587,8 +1572,8 @@ private:
 					   unsigned int _promotion_search_index,
 					   unsigned int _promotion_size,
 					   const choice &_promotion_c,
-					   boost::unordered_set<int> &_active_hits,
-					   boost::unordered_set<int> &_incipient_hits)
+					   std::set<int> &_active_hits,
+					   std::set<int> &_incipient_hits)
       : resolver(_resolver),
 	promotion_search_index(_promotion_search_index),
 	promotion_size(_promotion_size),
@@ -1688,8 +1673,8 @@ private:
 
     bool operator()(const choice &c) const
     {
-      boost::unordered_set<int> active_hits;
-      boost::unordered_set<int> incipient_hits;
+      std::set<int> active_hits;
+      std::set<int> incipient_hits;
 
       update_incipient_promotion_information
 	update_f(resolver,
@@ -1701,7 +1686,7 @@ private:
 
       resolver.graph.for_each_step_related_to_choice(c, update_f);
 
-      for(boost::unordered_set<int>::const_iterator it = active_hits.begin();
+      for(std::set<int>::const_iterator it = active_hits.begin();
 	  it != active_hits.end(); ++it)
 	{
 	  int step_num(*it);
@@ -1712,7 +1697,7 @@ private:
 	  callbacks.active(step_num);
 	}
 
-      for(boost::unordered_set<int>::const_iterator it = incipient_hits.begin();
+      for(std::set<int>::const_iterator it = incipient_hits.begin();
 	  it != incipient_hits.end(); ++it)
 	{
 	  int step_num(*it);
@@ -1897,27 +1882,26 @@ private:
 	  // Need to look up the solvers of the dep in order to know
 	  // the number of solvers that it was entered into the
 	  // by-num-solvers set with.
-	  typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::iterator
-	    solvers = s.unresolved_deps.find(d);
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node
+	    solvers = s.unresolved_deps.lookup(d);
 
-	  if(solvers != s.unresolved_deps.end())
+	  if(solvers.isValid())
 	    {
-	      // Hold a handle to the solver, to avoid any nasty
-	      // surprises.
-	      const typename step::flyweight_dep_solvers
-		dep_solvers(solvers->second);
+	      const typename step::dep_solvers &
+		dep_solvers(solvers.getVal().second);
 
 	      LOG_TRACE(logger,
 			"Removing the dependency " << d
-			<< " with a solver set of " << dep_solvers.get().dump_solvers());
+			<< " with a solver set of " << dep_solvers.dump_solvers());
 	      const typename step::dep_solvers::solvers_size_type
-		num_solvers = dep_solvers.get().get_solvers_size();
+		num_solvers = dep_solvers.get_solvers_size();
 	      s.unresolved_deps_by_num_solvers.erase(std::make_pair(num_solvers, d));
-	      s.unresolved_deps.erase(solvers);
 	    }
 	  else
 	    LOG_TRACE(logger, "The dependency " << d
 		      << " has no solver set, assuming it was already solved.");
+
+	  s.unresolved_deps.erase(d);
 	}
 
       s.deps_solved_by_choice.erase(c);
@@ -2011,15 +1995,15 @@ private:
 
 	  // Find the current number of solvers so we can yank the
 	  // dependency out of the unresolved-by-num-solvers set.
-	  typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::iterator
-	    current_solver_set_found = s.unresolved_deps.find(d);
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node
+	    current_solver_set_found = s.unresolved_deps.lookup(d);
 
-	  if(current_solver_set_found != s.unresolved_deps.end())
+	  if(current_solver_set_found.isValid())
 	    {
-	      const typename step::flyweight_dep_solvers
-		current_solvers(current_solver_set_found->second);
+	      const typename step::dep_solvers &
+		current_solvers(current_solver_set_found.getVal().second);
 	      const typename step::dep_solvers::solvers_size_type
-		current_num_solvers = current_solvers.get().get_solvers_size();
+		current_num_solvers = current_solvers.get_solvers_size();
 
 	      typename step::dep_solvers new_solvers(current_solvers);
 
@@ -2037,7 +2021,7 @@ private:
 	      {
 		const typename step::flyweight_dep_solvers
 		  memoized_new_solvers(new_solvers);
-		current_solver_set_found->second = memoized_new_solvers;
+		s.unresolved_deps.put(d, memoized_new_solvers);
 	      }
 
 	      const typename step::dep_solvers::solvers_size_type
@@ -2384,12 +2368,12 @@ private:
 			     const tier &check_tier = tier_limits::minimum_tier,
 			     bool do_check_tier = false)
   {
-    typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::iterator
-      found_solvers(s.unresolved_deps.find(solver_dep));
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node
+      found_solvers(s.unresolved_deps.lookup(solver_dep));
 
-    if(found_solvers != s.unresolved_deps.end())
+    if(found_solvers.isValid())
       {
-	typename step::dep_solvers new_dep_solvers(found_solvers->second);
+	typename step::dep_solvers new_dep_solvers(found_solvers.getVal().second);
 
 	const typename step::solver_information *
 	  found_solver = new_dep_solvers.lookup_solver_information(solver);
@@ -2417,7 +2401,7 @@ private:
 	      typename step::flyweight_dep_solvers
 		memoized_new_dep_solvers(new_dep_solvers);
 
-	      found_solvers->second = memoized_new_dep_solvers;
+	      s.unresolved_deps.put(solver_dep, memoized_new_dep_solvers);
 	    }
 	    LOG_TRACE(logger, "Recomputed the tier of "
 		      << solver << " in the solver list of "
@@ -2755,21 +2739,7 @@ private:
 	      << " (was " << s.step_tier << ")");
 
     tier new_tier(tier_limits::minimum_tier);
-    // Check whether any dependency will force this to a higher tier.
-    for(typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator it =
-	  s.unresolved_deps.begin(); it != s.unresolved_deps.end();
-	++it)
-      {
-	tier dep_tier;
-	it->second.get().for_each_solver(find_solvers_tier(dep_tier));
-	if(new_tier < dep_tier)
-	  {
-	    LOG_TRACE(logger, "Updating the tier from "
-		      << new_tier << " to "
-		      << dep_tier << " for the dependency " << it->first);
-	    new_tier = dep_tier;
-	  }
-      }
+    s.unresolved_deps.for_each(find_largest_dep_tier(new_tier, *this));
 
     // In addition to checking solvers, we need to check the action
     // set.  Look for existing promotions *and* for deferred entries.
@@ -2935,12 +2905,12 @@ private:
 	  const dep &d(*it);
 	  choice solver_with_dep(solver.copy_and_set_dep(d));
 
-	  typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::iterator current_solver_set_found =
-	    s.unresolved_deps.find(d);
+	  typename imm::map<dep, typename step::flyweight_dep_solvers>::node current_solver_set_found =
+	    s.unresolved_deps.lookup(d);
 
-	  if(current_solver_set_found != s.unresolved_deps.end())
+	  if(current_solver_set_found.isValid())
 	    {
-	      const typename step::flyweight_dep_solvers current_solvers(current_solver_set_found->second);
+	      const typename step::dep_solvers &current_solvers(current_solver_set_found.getVal().second);
 
 	      typename step::dep_solvers new_solvers(current_solvers);
 
@@ -2974,7 +2944,7 @@ private:
 
 		      typename step::flyweight_dep_solvers
 			memoized_new_solvers(new_solvers);
-		      current_solver_set_found->second = memoized_new_solvers;
+		      s.unresolved_deps.put(d, memoized_new_solvers);
 		      resolver.check_solvers_tier(s, new_solvers);
 
 		      LOG_TRACE(logger, "Increased the tier of "
@@ -3123,14 +3093,14 @@ private:
    */
   void find_promotions_for_dep_solvers(step &s, const dep &d)
   {
-    typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator found =
-      s.unresolved_deps.find(d);
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node found =
+      s.unresolved_deps.lookup(d);
 
-    if(found != s.unresolved_deps.end())
+    if(found.isValid())
       {
 	do_find_promotions_for_solver find_promotions_f(*this, s);
-	const typename step::flyweight_dep_solvers dep_solvers(found->second);
-	dep_solvers.get().for_each_solver(find_promotions_f);
+	const typename step::dep_solvers &dep_solvers(found.getVal().second);
+	dep_solvers.for_each_solver(find_promotions_f);
       }
   }
 
@@ -3141,7 +3111,7 @@ private:
    */
   void add_unresolved_dep(step &s, const dep &d)
   {
-    if(s.unresolved_deps.find(d) != s.unresolved_deps.end())
+    if(s.unresolved_deps.domain_contains(d))
       {
 	LOG_TRACE(logger, "The dependency " << d << " is already unresolved in step "
 		  << s.step_num << ", not adding it again.");
@@ -3180,7 +3150,7 @@ private:
 
     typename step::flyweight_dep_solvers
       memoized_solvers(solvers);
-    s.unresolved_deps.insert(std::make_pair(d, memoized_solvers));
+    s.unresolved_deps.put(d, memoized_solvers);
     LOG_TRACE(logger, "Marked the dependency " << d
 	      << " as unresolved in step " << s.step_num
 	      << " with solver list " << solvers);
@@ -3560,10 +3530,10 @@ private:
 	return;
       }
 
-    typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator bestSolvers =
-      s.unresolved_deps.find(best.getVal().second);
+    typename imm::map<dep, typename step::flyweight_dep_solvers>::node bestSolvers =
+      s.unresolved_deps.lookup(best.getVal().second);
 
-    if(bestSolvers == s.unresolved_deps.end())
+    if(!bestSolvers.isValid())
       {
 	LOG_ERROR(logger, "Internal error: step " << step_num
 		  << " contains the dependency " << best.getVal().second
@@ -3571,18 +3541,18 @@ private:
 	return;
       }
 
-    const typename step::flyweight_dep_solvers bestDepSolvers(bestSolvers->second);
-    if(bestDepSolvers.get().get_solvers_size() == 0)
+    const typename step::dep_solvers &bestDepSolvers(bestSolvers.getVal().second);
+    if(bestDepSolvers.get_solvers_size() == 0)
       LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
 
     LOG_TRACE(logger, "Generating successors for step " << step_num
 	      << " for the dependency " << bestDepSolvers
 	      << " with " << best.getVal().first << " solvers: "
-	      << bestDepSolvers.get().dump_solvers());
+	      << bestDepSolvers.dump_solvers());
     bool first_successor = false;
     do_generate_single_successor generate_successor_f(s.step_num, *this,
 						      first_successor);
-    bestDepSolvers.get().for_each_solver(generate_successor_f);
+    bestDepSolvers.for_each_solver(generate_successor_f);
   }
 
 public:
@@ -4117,12 +4087,12 @@ private:
   class count_action_hits
   {
     unsigned int &action_hits;
-    boost::optional<boost::flyweight<choice> > &mismatch;
+    boost::optional<choice> &mismatch;
     const step &s;
 
   public:
     count_action_hits(unsigned int &_action_hits,
-		      boost::optional<boost::flyweight<choice> > &_mismatch,
+		      boost::optional<choice> &_mismatch,
 		      const step &_s)
       : action_hits(_action_hits),
 	mismatch(_mismatch),
@@ -4132,7 +4102,7 @@ private:
       mismatch.reset();
     }
 
-    bool operator()(const boost::flyweight<choice> &c) const
+    bool operator()(const choice &c) const
     {
       if(s.actions.has_contained_choice(c))
 	++action_hits;
@@ -4158,7 +4128,7 @@ private:
 		  << " against step " << s.step_num);
 
 	unsigned int action_hits;
-	boost::optional<boost::flyweight<choice> > mismatch;
+	boost::optional<choice> mismatch;
 	if(!p.get_choices().for_each(count_action_hits(action_hits,
 						       mismatch,
 						       s)))

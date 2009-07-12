@@ -35,7 +35,7 @@
 #include <generic/util/immset.h>
 
 #include <boost/flyweight.hpp>
-#include <boost/flyweight/no_tracking.hpp>
+#include <boost/flyweight/hashed_factory.hpp>
 #include <boost/functional/hash.hpp>
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
@@ -58,13 +58,6 @@ public:
   typedef generic_tier_limits<PackageUniverse> tier_limits;
 
 private:
-  typedef boost::flyweight<choice_set> choice_set_flyweight;
-
-  tier t;
-  choice_set_flyweight reasons;
-  cwidget::util::ref_ptr<expression<bool> > tier_valid;
-  cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
-
   class combine_reason_hashes
   {
     std::size_t &target;
@@ -81,6 +74,64 @@ private:
       return true;
     }
   };
+
+  class choice_set_with_hash
+  {
+    choice_set choices;
+    std::size_t hash;
+
+    static std::size_t get_choice_set_hash(const choice_set &choices)
+    {
+      std::size_t rval = 0;
+      choices.for_each(combine_reason_hashes(rval));
+
+      return rval;
+    }
+
+  public:
+    choice_set_with_hash(const choice_set &_choices)
+      : choices(_choices), hash(get_choice_set_hash(choices))
+    {
+    }
+
+    bool operator==(const choice_set_with_hash &other) const
+    {
+      return hash == other.hash && choices == other.choices;
+    }
+
+    const choice_set &get_choices() const { return choices; }
+    std::size_t get_hash() const { return hash; }
+  };
+
+  class hash_choice_set_with_hash
+  {
+  public:
+    std::size_t operator()(const choice_set_with_hash &c) const
+    {
+      return c.get_hash();
+    }
+  };
+
+  struct foo
+  {
+    template<typename X>
+    struct apply
+    {
+      typedef std::allocator<X> type;
+    };
+  };
+
+  // Contrary to the Boost documentation, there are no default
+  // arguments to hashed_factory, so I have to write out the default
+  // values of the second two arguments.
+  typedef boost::flyweight<choice_set_with_hash,
+			   boost::flyweights::hashed_factory<hash_choice_set_with_hash> >
+  choice_set_flyweight;
+
+  tier t;
+  choice_set_flyweight reasons;
+  cwidget::util::ref_ptr<expression<bool> > tier_valid;
+  cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
 public:
   generic_solver_information()
@@ -123,7 +174,7 @@ public:
   /** \brief Retrieve the reason that this solver has the tier
    *  that it does.
    */
-  const choice_set &get_reasons() const { return reasons; }
+  const choice_set &get_reasons() const { return reasons.get().get_choices(); }
 
   /** \brief Retrieve an expression that returns whether the
    *  tier is valid (if true, the tier is always valid).
@@ -161,17 +212,49 @@ public:
     boost::hash_combine(rval, tier_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
     boost::hash_combine(rval, t);
-    reasons.get().for_each(combine_reason_hashes(rval));
+    boost::hash_combine(rval, reasons.get().get_hash());
 
     return rval;
   }
 
+  /** \brief Compare two solver_information objects.
+   *
+   *  solver_informations are compared according to their fields.
+   *  This comparison is used to memoize solver_information objects;
+   *  the resolver is careful to ensure that solvers which can be
+   *  merged have the same deferred listeners and tier-valid
+   *  expressions.
+   */
+  int compare(const generic_solver_information &other) const
+  {
+    if(tier_valid < other.tier_valid)
+      return -1;
+    else if(other.tier_valid < tier_valid)
+      return -1;
+    else if(is_deferred_listener < other.is_deferred_listener)
+      return -1;
+    else if(other.is_deferred_listener < is_deferred_listener)
+      return 1;
+    else
+      {
+	const int tier_compare =
+	  aptitude::util::compare3<tier>(t, other.t);
+
+	if(tier_compare != 0)
+	  return tier_compare;
+	else
+	  return aptitude::util::compare3<choice_set>(reasons.get().get_choices(), other.reasons.get().get_choices());
+      }
+  }
+
   bool operator==(const generic_solver_information &other) const
   {
-    return tier_valid == other.tier_valid
-      && is_deferred_listener == other.is_deferred_listener
-      && t == other.t
-      && reasons == other.reasons;
+    return compare(other) == 0;
+  }
+
+  bool operator<(const generic_solver_information &other) const
+  {
+    return compare(other) < 0;
   }
 };
 
@@ -200,20 +283,6 @@ class generic_dump_solvers
   friend std::ostream &operator<<<PackageUniverse>(std::ostream &out, const generic_dump_solvers &);
   friend class generic_dep_solvers<PackageUniverse>;
 
-  class choice_pair_name_lt
-  {
-    choice_name_lt<PackageUniverse> choice_lt;
-  public:
-    typedef generic_choice<PackageUniverse> choice;
-    typedef generic_solver_information<PackageUniverse> solver_information;
-
-    bool operator()(const std::pair<choice, solver_information> &p1,
-		    const std::pair<choice, solver_information> &p2) const
-    {
-      return choice_lt(p1.first, p2.first);
-    }
- };
-
   generic_dump_solvers(const std::vector<std::pair<choice, solver_information> > &_solvers)
     : solvers(_solvers)
   {
@@ -226,15 +295,11 @@ inline std::ostream &operator<<(std::ostream &out, const generic_dump_solvers<Pa
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_solver_information<PackageUniverse> solver_information;
 
-  std::vector<std::pair<choice, solver_information> > tmp(dump_solvers.solvers);
-  std::sort(tmp.begin(), tmp.end(),
-	    typename generic_dump_solvers<PackageUniverse>::choice_pair_name_lt());
-
   out << "{";
   for(typename std::vector<std::pair<choice, solver_information> >::const_iterator
-	it = tmp.begin(); it != tmp.end(); ++it)
+	it = dump_solvers.solvers.begin(); it != dump_solvers.solvers.end(); ++it)
     {
-      if(it != tmp.begin())
+      if(it != dump_solvers.solvers.begin())
 	out << ", ";
 
       out << it->first << " -> " << it->second;
@@ -743,7 +808,7 @@ public:
      *	one maps to the reasons that any of its solvers were
      *	dropped.
      */
-    boost::unordered_map<dep, flyweight_dep_solvers> unresolved_deps;
+    imm::map<dep, flyweight_dep_solvers> unresolved_deps;
 
     /** \brief The unresolved dependencies, sorted by the number of
      *  solvers each one has.
@@ -816,7 +881,7 @@ public:
     // canonical clone's version will be used -- but since this is
     // only used when adding new promotions and new promotions are
     // added to the canonical clone, the promotions set isn't used).
-    boost::unordered_set<promotion> promotions;
+    std::set<promotion> promotions;
 
     // The same, but in the order that they were added; used to
     // quickly partition the list into "new" and "old" promotions.
@@ -1213,7 +1278,7 @@ private:
   {
     // The choice to pass to the sub-function.  Can't be a reference
     // since it's different from what the parent passes in.
-    const boost::flyweight<choice> c;
+    const choice c;
     // The dependency whose solvers are being visited.
     const dep &d;
     const generic_search_graph &graph;
@@ -1247,17 +1312,17 @@ private:
       // Check if we have a solver in this step first -- if you think
       // about it, it's more likely that this is true than that we
       // have an action.
-      typename boost::unordered_map<dep, typename step::flyweight_dep_solvers>::const_iterator found =
-	s.unresolved_deps.find(d);
+      typename imm::map<dep, typename step::flyweight_dep_solvers>::node found =
+	s.unresolved_deps.lookup(d);
 
-      if(found != s.unresolved_deps.end() &&
-	 found->second.get().lookup_solver_information(c) != NULL)
+      if(found.isValid() &&
+	 found.getVal().second.get().lookup_solver_information(c) != NULL)
 	return visit(s, choice_mapping_solver);
       else
 	{
-	  boost::flyweight<choice> step_choice;
+	  choice step_choice(choice::make_install_version(version(), -1));
 	  if(s.actions.get_choice_contained_by(c, step_choice) &&
-	     step_choice.get().get_dep() == d)
+	     step_choice.get_dep() == d)
 	    return visit(s, choice_mapping_action);
 	  else
 	    return true;
@@ -1597,7 +1662,7 @@ public:
 
     // TODO: could do a slow check for redundant promotions here?
 
-    std::pair<typename boost::unordered_set<promotion>::iterator, bool>
+    std::pair<typename std::set<promotion>::iterator, bool>
       insert_info(targetStep.promotions.insert(p));
     if(insert_info.second)
       {
