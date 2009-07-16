@@ -2767,24 +2767,16 @@ private:
     set_step_tier(s.step_num, new_tier);
   }
 
-  // Build a generalized promotion from the entries of a dep-solvers
-  // set.
-  class build_promotion
+  // Calculate the tier of a dep-solvers set.
+  class calculate_tier
   {
     tier &output_tier;
-    choice_set &output_reasons;
-    std::vector<cwidget::util::ref_ptr<expression<bool> > > & output_valid_conditions;
 
   public:
-    build_promotion(tier &_output_tier, choice_set &_output_reasons,
-		    std::vector<cwidget::util::ref_ptr<expression<bool> > > &_output_valid_conditions)
-      : output_tier(_output_tier),
-	output_reasons(_output_reasons),
-	output_valid_conditions(_output_valid_conditions)
+    calculate_tier(tier &_output_tier)
+      : output_tier(_output_tier)
     {
       output_tier = tier_limits::maximum_tier;
-      output_reasons = choice_set();
-      output_valid_conditions.clear();
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
@@ -2793,6 +2785,29 @@ private:
 	// Maybe we have a new, lower tier.
 	output_tier = entry.second.get_tier();
 
+      return true;
+    }
+  };
+
+  // Build a generalized promotion from the entries of a dep-solvers
+  // set.
+  class build_promotion
+  {
+    choice_set &output_reasons;
+    std::vector<cwidget::util::ref_ptr<expression<bool> > > & output_valid_conditions;
+
+  public:
+    build_promotion(choice_set &_output_reasons,
+		    std::vector<cwidget::util::ref_ptr<expression<bool> > > &_output_valid_conditions)
+      : output_reasons(_output_reasons),
+	output_valid_conditions(_output_valid_conditions)
+    {
+      output_reasons = choice_set();
+      output_valid_conditions.clear();
+    }
+
+    bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
+    {
       // Correctness here depends on the fact that the reason set is
       // pre-generalized (the solver itself is already removed).
       output_reasons.insert_or_narrow(entry.second.get_reasons());
@@ -2817,7 +2832,15 @@ private:
     choice_set reasons;
     std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.for_each_solver(build_promotion(t, reasons, valid_conditions));
+    solvers.for_each_solver(calculate_tier(t));
+
+    // If no promotion would be emitted and the step tier wouldn't be
+    // changed, don't do anything.
+    if(get_current_search_tier() >= t &&
+       s.step_tier >= t)
+      return;
+
+    solvers.for_each_solver(build_promotion(reasons, valid_conditions));
 
     for(typename imm::list<choice>::const_iterator it =
 	  solvers.get_structural_reasons().begin();
