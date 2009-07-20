@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.2-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-04-26 20:39-0700\n"
+"POT-Creation-Date: 2009-07-20 12:25-0700\n"
 "PO-Revision-Date: 2009-01-21 10:01+0100\n"
 "Last-Translator: Morten Bo Johansen <mbj@spamcop.net>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -660,8 +660,8 @@ msgstr "Kritisk fejl i afh�ngighedsudreder"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Udreder afh�ngigheder"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1221
-#: src/gtk/resolver.cc:1389 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1277
+#: src/gtk/resolver.cc:1445 src/solution_dialog.cc:140
 #: src/solution_screen.cc:568
 msgid "Internal error: unexpected null solution."
 msgstr "Intern fejl: L�sning returnerede uventet nul."
@@ -1742,7 +1742,7 @@ msgstr ""
 "afh�ngighedsudreder for disse."
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
-#: src/gtk/resolver.cc:1974 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:2041 src/solution_dialog.cc:127
 #: src/solution_screen.cc:545
 msgid "Resolving dependencies..."
 msgstr "Udreder afh�ngigheder ..."
@@ -1850,7 +1850,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "F�lgende pakker har uopfyldte afh�ngigheder:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1124 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<NUL>"
 
@@ -1986,8 +1986,8 @@ msgstr "Automatisk installeret"
 msgid "no"
 msgstr "nej"
 
-#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:722
-#: src/gtk/previewtab.cc:225
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:725
+#: src/gtk/previewtab.cc:230
 msgid "Version: "
 msgstr "Version: "
 
@@ -2066,12 +2066,12 @@ msgid "Obsoletes"
 msgstr "For�lder"
 
 #: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:200
+#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Giver"
 
 #: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:702
-#: src/gtk/packagestab.cc:730 src/gtk/previewtab.cc:233
+#: src/gtk/packagestab.cc:733 src/gtk/previewtab.cc:238
 #: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Beskrivelse: "
@@ -2225,8 +2225,7 @@ msgstr "Aktuel"
 msgid "Candidate"
 msgstr "Kandidat"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/aptitude.glade:622 src/gtk/gui.cc:89
-#: src/gtk/gui.cc:1365
+#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:89 src/gtk/gui.cc:1365
 msgid "Install"
 msgstr "Install�r"
 
@@ -2367,7 +2366,7 @@ msgstr "UOPFYLDT"
 msgid "UNAVAILABLE"
 msgstr "UTILG�NGELIG"
 
-#: src/desc_render.cc:133 src/gtk/aptitude.glade:1144
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1054
 msgid "Tags"
 msgstr "M�rkater"
 
@@ -2639,54 +2638,54 @@ msgid ""
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:827
+#: src/generic/apt/aptitude_resolver_universe.cc:834
 #, c-format
 msgid ""
 "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:871
+#: src/generic/apt/aptitude_resolver_universe.cc:878
 #, fuzzy
 #| msgid "Section"
 msgid "Safe actions"
 msgstr "Afsnit"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:872
+#: src/generic/apt/aptitude_resolver_universe.cc:879
 #, fuzzy
 #| msgid "Canc^el pending actions"
 msgid "Cancel all user actions"
 msgstr "A^nnull�r afventende handlinger"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:873
+#: src/generic/apt/aptitude_resolver_universe.cc:880
 #, fuzzy
 #| msgid "'-' to remove packages"
 msgid "Remove packages"
 msgstr "'-' for at afinstallere pakker"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:874
+#: src/generic/apt/aptitude_resolver_universe.cc:881
 #, fuzzy
 #| msgid "not a real package"
 msgid "Modify held packages"
 msgstr "ikke en rigtig pakke"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:875
+#: src/generic/apt/aptitude_resolver_universe.cc:882
 msgid "Install versions from non-default sources"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:876
+#: src/generic/apt/aptitude_resolver_universe.cc:883
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Remove essential packages"
 msgstr "Afinstall�r de f�lgende pakker:"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:909
+#: src/generic/apt/aptitude_resolver_universe.cc:916
 #, c-format
 msgid ""
 "The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
 "Tier entry."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:913
+#: src/generic/apt/aptitude_resolver_universe.cc:920
 #, c-format
 msgid ""
 "The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
@@ -3145,99 +3144,45 @@ msgstr ""
 msgid "_File"
 msgstr "Falsk"
 
-#: src/gtk/aptitude.glade:26 src/ui.cc:2220
+#: src/gtk/aptitude.glade:27 src/ui.cc:2220
 msgid "Perform all pending installs and removals"
 msgstr "Udf�r alle afventende installeringer og afinstalleringer"
 
-#: src/gtk/aptitude.glade:27
-#, fuzzy
-#| msgid "^Install/remove packages"
-msgid "_Install/Remove Packages"
-msgstr "^Install�r/afinstall�r pakker"
-
-#: src/gtk/aptitude.glade:42 src/ui.cc:2223
+#: src/gtk/aptitude.glade:37 src/ui.cc:2223
 msgid "Check for new versions of packages"
 msgstr "Se efter nye versioner af pakker"
 
-#: src/gtk/aptitude.glade:43
-#, fuzzy
-#| msgid "^Update package list"
-msgid "_Update Package List"
-msgstr "Opdat�r pakkeliste"
-
-#: src/gtk/aptitude.glade:63 src/ui.cc:2228
+#: src/gtk/aptitude.glade:52 src/ui.cc:2228
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "Mark�r alle ikke-tilbageholdte pakker til opgradering"
 
-#: src/gtk/aptitude.glade:64
-#, fuzzy
-#| msgid "Mark Up^gradable"
-msgid "Mark Up_gradable"
-msgstr "Mark�r op^grad�rbare"
-
-#: src/gtk/aptitude.glade:79 src/ui.cc:2233
+#: src/gtk/aptitude.glade:62 src/ui.cc:2233
 msgid "Forget which packages are \"new\""
 msgstr "Glem hvilke pakker der er \"nye\""
 
-#: src/gtk/aptitude.glade:80
-#, fuzzy
-#| msgid "^Forget new packages"
-msgid "_Forget New Packages"
-msgstr "^Ryd liste over nye pakker"
-
-#: src/gtk/aptitude.glade:94 src/ui.cc:2237
+#: src/gtk/aptitude.glade:71 src/ui.cc:2237
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "Annull�r alle afventende installeringer, afinstalleringer, "
 "tilbageholdelser og opgraderinger."
 
-#: src/gtk/aptitude.glade:95
-#, fuzzy
-#| msgid "Canc^el pending actions"
-msgid "Canc_el Pending Actions"
-msgstr "A^nnull�r afventende handlinger"
-
-#: src/gtk/aptitude.glade:109 src/ui.cc:2241
+#: src/gtk/aptitude.glade:80 src/ui.cc:2241
 msgid "Delete package files which were previously downloaded"
 msgstr "Slet tidligere hentede pakkefiler"
 
-#: src/gtk/aptitude.glade:110
-#, fuzzy
-#| msgid "^Clean package cache"
-msgid "C_lean Package Cache"
-msgstr "^T�m pakkecache"
-
-#: src/gtk/aptitude.glade:124 src/ui.cc:2245
+#: src/gtk/aptitude.glade:89 src/ui.cc:2245
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Slet pakkefiler som ikke l�ngere kan hentes"
 
-#: src/gtk/aptitude.glade:125
-#, fuzzy
-#| msgid "Clean ^obsolete files"
-msgid "Clean _Obsolete Files"
-msgstr "Slet f^or�ldede filer"
-
-#: src/gtk/aptitude.glade:144 src/ui.cc:2252
+#: src/gtk/aptitude.glade:103 src/ui.cc:2252
 msgid "Reload the package cache"
 msgstr "Genindl�s pakkecachen"
 
-#: src/gtk/aptitude.glade:145
-#, fuzzy
-#| msgid "^Reload package cache"
-msgid "_Reload Package Cache"
-msgstr "^Genindl�s pakkecache"
-
-#: src/gtk/aptitude.glade:159 src/ui.cc:1701 src/ui.cc:2257
+#: src/gtk/aptitude.glade:112 src/ui.cc:1701 src/ui.cc:2257
 msgid "Waste time trying to find mines"
 msgstr "Spild tid mens du pr�ver at finde miner"
 
-#: src/gtk/aptitude.glade:160
-#, fuzzy
-#| msgid "^Play Minesweeper"
-msgid "_Play Minesweeper"
-msgstr "^Spil minestryger"
-
-#: src/gtk/aptitude.glade:179 src/ui.cc:2262
+#: src/gtk/aptitude.glade:126 src/ui.cc:2262
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3245,261 +3190,200 @@ msgstr ""
 "K�r \"su\" for at blive root. Dette vil genstarte programmet, men dine "
 "indstillinger vil blive bevaret"
 
-#: src/gtk/aptitude.glade:180
-#, fuzzy
-#| msgid "Become root"
-msgid "_Become Root"
-msgstr "Bliv root"
-
-#: src/gtk/aptitude.glade:194 src/ui.cc:2265
+#: src/gtk/aptitude.glade:135 src/ui.cc:2265
 msgid "Exit the program"
 msgstr "Afslut programmet"
 
-#: src/gtk/aptitude.glade:195
-#, fuzzy
-#| msgid "^Quit"
-msgid "_Quit"
-msgstr "^Afslut"
-
-#: src/gtk/aptitude.glade:212
+#: src/gtk/aptitude.glade:147
 msgid "E_dit"
 msgstr ""
 
-#: src/gtk/aptitude.glade:220 src/ui.cc:2272
+#: src/gtk/aptitude.glade:156 src/ui.cc:2272
 msgid "Undo the last package operation or group of operations"
 msgstr "Fortryd den sidste pakkehandling eller gruppe af handlinger"
 
-#: src/gtk/aptitude.glade:221
-msgid "gtk-undo"
-msgstr ""
-
-#: src/gtk/aptitude.glade:234
-msgid "gtk-cut"
-msgstr ""
-
-#: src/gtk/aptitude.glade:242
-msgid "gtk-copy"
-msgstr ""
-
-#: src/gtk/aptitude.glade:250
-msgid "gtk-paste"
-msgstr ""
-
-#: src/gtk/aptitude.glade:258
-#, fuzzy
-#| msgid "delete"
-msgid "gtk-delete"
-msgstr "slet"
-
-#: src/gtk/aptitude.glade:270
+#: src/gtk/aptitude.glade:205
 #, fuzzy
 #| msgid "Package"
 msgid "_Package"
 msgstr "Pakke"
 
-#: src/gtk/aptitude.glade:282
+#: src/gtk/aptitude.glade:217
 #, fuzzy
 #| msgid "Views"
 msgid "_View"
 msgstr "Oversigter"
 
-#: src/gtk/aptitude.glade:290
+#: src/gtk/aptitude.glade:226
 msgid "Change which columns are visible in the currently active view."
 msgstr ""
 
-#: src/gtk/aptitude.glade:291
-msgid "_Edit Columns..."
-msgstr ""
-
-#: src/gtk/aptitude.glade:310
+#: src/gtk/aptitude.glade:240
 msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
 
-#: src/gtk/aptitude.glade:311
-msgid "View Apt _Errors"
-msgstr ""
-
-#: src/gtk/aptitude.glade:325
+#: src/gtk/aptitude.glade:249
 msgid "Find chains of dependencies linking one package to another."
 msgstr ""
 
-#: src/gtk/aptitude.glade:326
-#, fuzzy
-#| msgid "Dependency handling"
-msgid "Find _Dependency Chains"
-msgstr "H�ndtering af afh�ngigheder"
-
-#: src/gtk/aptitude.glade:345
-msgid "gtk-go-back"
-msgstr ""
-
-#: src/gtk/aptitude.glade:355
-msgid "gtk-go-forward"
-msgstr ""
-
-#: src/gtk/aptitude.glade:365 src/gtk/aptitude.glade:765
-#, fuzzy
-#| msgid "delete"
-msgid "gtk-close"
-msgstr "slet"
-
-#: src/gtk/aptitude.glade:379
+#: src/gtk/aptitude.glade:296
 #, fuzzy
 #| msgid "Help"
 msgid "_Help"
 msgstr "Hj�lp"
 
-#: src/gtk/aptitude.glade:387
-msgid "gtk-about"
-msgstr ""
-
-#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1554
+#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:751 src/gtk/gui.cc:1554
 #: src/gtk/gui.cc:1748
 msgid "Dashboard"
 msgstr ""
 
-#: src/gtk/aptitude.glade:422
+#: src/gtk/aptitude.glade:344
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
 msgstr "Opdatering af pakkeliste"
 
-#: src/gtk/aptitude.glade:432 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
+#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
 #: src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914 src/ui.cc:935
 #: src/ui.cc:937
 msgid "Packages"
 msgstr "Pakker"
 
-#: src/gtk/aptitude.glade:442 src/gtk/gui.cc:977 src/gtk/previewtab.cc:116
+#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:977 src/gtk/previewtab.cc:118
 #: src/ui.cc:1336
 msgid "Preview"
 msgstr "Forh�ndsvisning"
 
-#: src/gtk/aptitude.glade:452 src/gtk/gui.cc:972 src/ui.cc:2653
+#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:972 src/ui.cc:2653
 msgid "Resolver"
 msgstr "Afh�ngighedsudreder"
 
-#: src/gtk/aptitude.glade:462
+#: src/gtk/aptitude.glade:388
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Remove"
 msgstr "Installeret"
 
-#: src/gtk/aptitude.glade:635 src/gtk/gui.cc:93 src/gtk/gui.cc:1372
-msgid "Remove"
-msgstr "Afinstall�r"
-
-#: src/gtk/aptitude.glade:648 src/gtk/gui.cc:1377
-#, fuzzy
-#| msgid "^Purge"
-msgid "Purge"
-msgstr "^Udrens"
-
-#: src/gtk/aptitude.glade:661 src/gtk/gui.cc:1382
-msgid "Keep"
-msgstr "Behold"
-
-#: src/gtk/aptitude.glade:674 src/gtk/gui.cc:1387
-msgid "Hold"
-msgstr "Tilbagehold"
-
-#: src/gtk/aptitude.glade:687
+#: src/gtk/aptitude.glade:590
 msgid "Edit Columns..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:700
+#: src/gtk/aptitude.glade:603
 msgid "Dummy label (will be replaced at runtime)."
 msgstr ""
 
-#: src/gtk/aptitude.glade:731
+#: src/gtk/aptitude.glade:631
 #, fuzzy
 #| msgid "Remove the filter from the package list"
 msgid "Make this the default for new package lists."
 msgstr "Fjern filteret fra pakkelisten"
 
-#: src/gtk/aptitude.glade:747
+#: src/gtk/aptitude.glade:646
 #, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "Apply these settings to all active package lists."
 msgstr "Anvend et filter p� pakkelisten"
 
-#: src/gtk/aptitude.glade:811 src/gtk/aptitude.glade:1490
-#: src/gtk/aptitude.glade:1809 src/gtk/aptitude.glade:1945
+#: src/gtk/aptitude.glade:664
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-close"
+msgstr "slet"
+
+#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1425
+#: src/gtk/aptitude.glade:1754 src/gtk/aptitude.glade:1892
 #, fuzzy
 #| msgid "Search"
 msgid "Search:"
 msgstr "S�g"
 
-#: src/gtk/aptitude.glade:831 src/gtk/aptitude.glade:1510
-#: src/gtk/aptitude.glade:1829 src/gtk/aptitude.glade:1965
+#: src/gtk/aptitude.glade:737 src/gtk/aptitude.glade:1443
+#: src/gtk/aptitude.glade:1772 src/gtk/aptitude.glade:1910
 msgid "gtk-find"
 msgstr ""
 
-#: src/gtk/aptitude.glade:845
+#: src/gtk/aptitude.glade:750
 #, fuzzy
 #| msgid "reinstall"
 msgid "Incremental"
 msgstr "geninstall�r"
 
-#: src/gtk/aptitude.glade:862 src/gtk/aptitude.glade:1528
-#: src/gtk/aptitude.glade:1847 src/gtk/aptitude.glade:1983
+#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1464
+#: src/gtk/aptitude.glade:1793 src/gtk/aptitude.glade:1931
 #, fuzzy
 #| msgid "Err "
 msgid "Errors"
 msgstr "Fejl "
 
-#: src/gtk/aptitude.glade:879 src/gtk/aptitude.glade:1864
-#: src/gtk/aptitude.glade:2000
+#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1810
+#: src/gtk/aptitude.glade:1948
 msgid "Show "
 msgstr ""
 
-#: src/gtk/aptitude.glade:986
+#: src/gtk/aptitude.glade:895
 msgid "<span size=\"xx-large\">Versions:</span>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1046
+#: src/gtk/aptitude.glade:956
 #, fuzzy
 #| msgid "Dependencies of %s"
 msgid "Dependencies"
 msgstr "Afh�ngigheder for %s"
 
-#: src/gtk/aptitude.glade:1076
+#: src/gtk/aptitude.glade:986
 #, fuzzy
 #| msgid "^Changelog"
 msgid "Changelog"
 msgstr "�ndrings^log"
 
-#: src/gtk/aptitude.glade:1104
+#: src/gtk/aptitude.glade:1014
 #, fuzzy
 #| msgid "False"
 msgid "Files"
 msgstr "Falsk"
 
-#: src/gtk/aptitude.glade:1115
+#: src/gtk/aptitude.glade:1025
 msgid "popcon"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1124
+#: src/gtk/aptitude.glade:1034
 msgid "Popcon"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1135
+#: src/gtk/aptitude.glade:1045
 #, fuzzy
 #| msgid "Tags"
 msgid "tags"
 msgstr "M�rkater"
 
-#: src/gtk/aptitude.glade:1192
+#: src/gtk/aptitude.glade:1106
 msgid "Fixing upgrade manually:"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1202 src/gtk/dashboardtab.cc:536
+#: src/gtk/aptitude.glade:1116 src/gtk/dashboardtab.cc:537
 msgid "Calculating upgrade..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1229
+#: src/gtk/aptitude.glade:1164
+msgid "<b>Solutions</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1182 src/gtk/download.cc:261
+#: src/gtk/entityview.cc:551
+#, fuzzy
+#| msgid "State"
+msgid "Status"
+msgstr "Status"
+
+#: src/gtk/aptitude.glade:1216
+#, fuzzy
+#| msgid "Unknown action type: %s"
+msgid "Group by action type"
+msgstr "Ukendt handlingstype: %s"
+
+#: src/gtk/aptitude.glade:1220
 msgid ""
 "Arrange the actions of the current solution so that actions that are of the "
 "same type are placed together (for instance, all the actions that remove "
@@ -3508,149 +3392,132 @@ msgid ""
 "This is the default view mode."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1232
-#, fuzzy
-#| msgid "Unknown action type: %s"
-msgid "Group by action type"
-msgstr "Ukendt handlingstype: %s"
+#: src/gtk/aptitude.glade:1234
+msgid "Group by dependency"
+msgstr ""
 
-#: src/gtk/aptitude.glade:1245
+#: src/gtk/aptitude.glade:1238
 msgid ""
 "Show the order in which the actions in the current solution were performed "
 "and the dependency that triggered each action."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1246
-msgid "Show an explanation of the solution"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1263
+#: src/gtk/aptitude.glade:1255
 msgid "<b>View Mode</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1307
+#: src/gtk/aptitude.glade:1297
 #, fuzzy
 #| msgid "Toggle ^Rejected"
 msgid "Rejected"
 msgstr "Skift af^vist"
 
-#: src/gtk/aptitude.glade:1317
+#: src/gtk/aptitude.glade:1312
 #, fuzzy
 #| msgid "Preferences"
 msgid "No preference"
 msgstr "Indstillinger"
 
-#: src/gtk/aptitude.glade:1331
+#: src/gtk/aptitude.glade:1328
 msgid "Accepted"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1347
+#: src/gtk/aptitude.glade:1348
 msgid "<b>Status of selected action</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1364 src/gtk/download.cc:261
-#: src/gtk/entityview.cc:551
+#: src/gtk/aptitude.glade:1369
 #, fuzzy
-#| msgid "State"
-msgid "Status"
-msgstr "Status"
+#| msgid "^Examine Solution"
+msgid "Find a new solution"
+msgstr "^Gennemg� l�sning"
 
-#: src/gtk/aptitude.glade:1415
-msgid "<b>Solutions</b>"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1442
+#: src/gtk/aptitude.glade:1373
 #, fuzzy
 #| msgid "Select the next solution to the dependency problems."
 msgid "Calculate the next solution that has not yet been generated."
 msgstr ""
 "V�lg den n�ste l�sning p� problemerne med pakkeafh�ngigheder."
 
-#: src/gtk/aptitude.glade:1443
-#, fuzzy
-#| msgid "^Examine Solution"
-msgid "Find a new solution"
-msgstr "^Gennemg� l�sning"
+#: src/gtk/aptitude.glade:1383
+msgid "gtk-apply"
+msgstr ""
 
-#: src/gtk/aptitude.glade:1457
+#: src/gtk/aptitude.glade:1388
 #, fuzzy
 #| msgid "Perform the actions contained in the currently selected solution."
 msgid ""
 "Perform the actions in the currently selected solution and close this tab."
 msgstr "Udf�r handlingerne i den aktuelt valgte l�sning."
 
-#: src/gtk/aptitude.glade:1458
-msgid "gtk-apply"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1607
+#: src/gtk/aptitude.glade:1543
 #, fuzzy
 #| msgid "Upgrade"
 msgid "Upgrade Summary"
 msgstr "Opgrad�r"
 
-#: src/gtk/aptitude.glade:1636
+#: src/gtk/aptitude.glade:1572
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Selected Package"
 msgstr "Kildepakke: "
 
-#: src/gtk/aptitude.glade:1667
+#: src/gtk/aptitude.glade:1607
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1682
+#: src/gtk/aptitude.glade:1619
 #, fuzzy
 #| msgid "Manual"
 msgid "Fix Manually"
 msgstr "Manuel"
 
-#: src/gtk/aptitude.glade:1691 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
+#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
 msgid "Upgrade"
 msgstr "Opgrad�r"
 
-#: src/gtk/aptitude.glade:1718
+#: src/gtk/aptitude.glade:1663
 msgid "<b>Available Upgrades:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1911
+#: src/gtk/aptitude.glade:1858
 msgid "<b>Start at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2047
+#: src/gtk/aptitude.glade:1996
 msgid "<b>End at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2115
+#: src/gtk/aptitude.glade:2064
 msgid "A terminal running dpkg will appear here."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2127
+#: src/gtk/aptitude.glade:2076
 msgid ""
 "Placeholder label for the explanation that two conffiles are being "
 "compared.\n"
 "This text should not appear in the program."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2153
+#: src/gtk/aptitude.glade:2105
 msgid "View the differences\t"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2179
+#: src/gtk/aptitude.glade:2131
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2191
+#: src/gtk/aptitude.glade:2143
 #, fuzzy
 #| msgid "yes"
 msgid "gtk-yes"
 msgstr "ja"
 
-#: src/gtk/aptitude.glade:2201
+#: src/gtk/aptitude.glade:2157
 msgid "gtk-no"
 msgstr ""
 
@@ -3703,21 +3570,21 @@ msgstr "Henter �ndringslog"
 msgid "Downloading changelogs"
 msgstr "Henter �ndringslog"
 
-#: src/gtk/dashboardtab.cc:210
+#: src/gtk/dashboardtab.cc:211
 msgid "Resolve Upgrade Manually"
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:306
+#: src/gtk/dashboardtab.cc:307
 #, fuzzy
 #| msgid "URL to use to download changelogs"
 msgid "Preparing to download changelogs"
 msgstr "URL som �ndringslogs skal hentes fra"
 
-#: src/gtk/dashboardtab.cc:396
+#: src/gtk/dashboardtab.cc:397
 msgid "Available upgrades:"
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:413
+#: src/gtk/dashboardtab.cc:414
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -3726,19 +3593,19 @@ msgid_plural "%d available upgrades:"
 msgstr[0] "%d til opgradering"
 msgstr[1] "%d til opgradering"
 
-#: src/gtk/dashboardtab.cc:629
+#: src/gtk/dashboardtab.cc:630
 #, fuzzy
 #| msgid "Not Installed"
 msgid "No upgrades are available."
 msgstr "Ikke installeret"
 
-#: src/gtk/dashboardtab.cc:641
+#: src/gtk/dashboardtab.cc:642
 #, fuzzy
 #| msgid "Unable to locate package %s"
 msgid "Unable to calculate an upgrade."
 msgstr "Kunne ikke finde pakke %s"
 
-#: src/gtk/dashboardtab.cc:650
+#: src/gtk/dashboardtab.cc:651
 #, c-format
 msgid ""
 "Press \"%s\" to install <span size='large'>%d</span> upgrade out of <span "
@@ -3749,7 +3616,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/dashboardtab.cc:662
+#: src/gtk/dashboardtab.cc:663
 #, c-format
 msgid ""
 "Press \"%s\" to manually attempt to install the remaining <span size='large'>"
@@ -3760,49 +3627,49 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/dashboardtab.cc:687
+#: src/gtk/dashboardtab.cc:688
 #, c-format
 msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
 "solution."
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:704
+#: src/gtk/dashboardtab.cc:705
 #, fuzzy, c-format
 #| msgid "Internal error: Default column string is unparsable"
 msgid "Internal error encountered while calculating an upgrade: %s"
 msgstr "Intern fejl: Standard kolonnestreng kan ikke fortolkes"
 
-#: src/gtk/dashboardtab.cc:836
+#: src/gtk/dashboardtab.cc:838
 #, c-format
 msgid ""
 "The package %s has no candidate version and will not be upgraded; unable to "
 "show its changelog."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:77
+#: src/gtk/dependency_chains_tab.cc:78
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: start"
 msgstr "H�ndtering af afh�ngigheder"
 
-#: src/gtk/dependency_chains_tab.cc:79
+#: src/gtk/dependency_chains_tab.cc:82
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: end"
 msgstr "H�ndtering af afh�ngigheder"
 
-#: src/gtk/dependency_chains_tab.cc:81
+#: src/gtk/dependency_chains_tab.cc:86
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: results"
 msgstr "H�ndtering af afh�ngigheder"
 
-#: src/gtk/dependency_chains_tab.cc:221
+#: src/gtk/dependency_chains_tab.cc:226
 msgid "Select one or more starting packages and an ending package to search."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:276
+#: src/gtk/dependency_chains_tab.cc:281
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency chain found."
@@ -4067,6 +3934,10 @@ msgstr "Geninstall�r"
 msgid "Downgrade"
 msgstr "Nedgrad�r"
 
+#: src/gtk/gui.cc:93 src/gtk/gui.cc:1372
+msgid "Remove"
+msgstr "Afinstall�r"
+
 #: src/gtk/gui.cc:94
 msgid "Remove and purge configuration/data"
 msgstr ""
@@ -4263,6 +4134,20 @@ msgstr "ikke installeret"
 msgid "Install/Upgrade"
 msgstr "Installeret"
 
+#: src/gtk/gui.cc:1377
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Udrens"
+
+#: src/gtk/gui.cc:1382
+msgid "Keep"
+msgstr "Behold"
+
+#: src/gtk/gui.cc:1387
+msgid "Hold"
+msgstr "Tilbagehold"
+
 #: src/gtk/gui.cc:1393
 msgid "Set as automatic"
 msgstr ""
@@ -4328,133 +4213,133 @@ msgstr "nej"
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: src/gtk/packagestab.cc:60
+#: src/gtk/packagestab.cc:61
 msgid "Parse error"
 msgstr ""
 
-#: src/gtk/packagestab.cc:203
+#: src/gtk/packagestab.cc:204
 #, fuzzy, c-format
 #| msgid "No packages matched the pattern \"%ls\"."
 msgid "No packages matched \"%s\"."
 msgstr "Ingen pakker passer med m�nstret \"%ls\"."
 
-#: src/gtk/packagestab.cc:313
+#: src/gtk/packagestab.cc:314
 msgid "Enter a search and click \"Find\" to display packages."
 msgstr ""
 
-#: src/gtk/packagestab.cc:413
+#: src/gtk/packagestab.cc:416
 #, fuzzy
 #| msgid "Package: "
 msgid "Packages: "
 msgstr "Pakke: "
 
-#: src/gtk/packagestab.cc:490
+#: src/gtk/packagestab.cc:493
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrade to %s version %s"
 msgstr "%s Versioner"
 
-#: src/gtk/packagestab.cc:498
+#: src/gtk/packagestab.cc:501
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Install %s version %s"
 msgstr "Install�r(%s giver %s)"
 
-#: src/gtk/packagestab.cc:506
+#: src/gtk/packagestab.cc:509
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrade to %s version %s"
 msgstr "  cwidget version: %s\n"
 
-#: src/gtk/packagestab.cc:517
+#: src/gtk/packagestab.cc:520
 #, fuzzy, c-format
 #| msgid "Keep the following packages at their current version:"
 msgid "Don't hold %s at its current version."
 msgstr "Behold de f�lgende pakker i deres nuv�rende version:"
 
-#: src/gtk/packagestab.cc:520 src/gtk/packagestab.cc:540
-#: src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:523 src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:546
 #, fuzzy, c-format
 #| msgid "Canc^el pending actions"
 msgid "Cancel any actions on %s."
 msgstr "A^nnull�r afventende handlinger"
 
-#: src/gtk/packagestab.cc:525
+#: src/gtk/packagestab.cc:528
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the purge of %s."
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/packagestab.cc:527
+#: src/gtk/packagestab.cc:530
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s."
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/packagestab.cc:532
+#: src/gtk/packagestab.cc:535
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the upgrade of %s."
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/packagestab.cc:534
+#: src/gtk/packagestab.cc:537
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s."
 msgstr "Forkast installeringen af %F"
 
-#: src/gtk/packagestab.cc:536
+#: src/gtk/packagestab.cc:539
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the downgrade of %s."
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/packagestab.cc:538
+#: src/gtk/packagestab.cc:541
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the reinstallation of %s."
 msgstr "Forkast installeringen af %F"
 
-#: src/gtk/packagestab.cc:579
+#: src/gtk/packagestab.cc:582
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "Remove %s"
 msgstr "Afinstall�r(%s)"
 
-#: src/gtk/packagestab.cc:583
+#: src/gtk/packagestab.cc:586
 #, fuzzy, c-format
 #| msgid "^Purge"
 msgid "Purge %s"
 msgstr "^Udrens"
 
-#: src/gtk/packagestab.cc:591
+#: src/gtk/packagestab.cc:594
 #, c-format
 msgid "Hold %s at its current version."
 msgstr ""
 
-#: src/gtk/packagestab.cc:596
+#: src/gtk/packagestab.cc:599
 #, fuzzy, c-format
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "Mark %s as automatically installed."
 msgstr "'&M' for at markere pakker som automatisk installerede"
 
-#: src/gtk/packagestab.cc:601
+#: src/gtk/packagestab.cc:604
 #, fuzzy, c-format
 #| msgid "The package \"%s\" is manually installed.\n"
 msgid "Mark %s as manually installed."
 msgstr "Pakken \"%s\" er manuelt installeret.\n"
 
-#: src/gtk/packagestab.cc:643
+#: src/gtk/packagestab.cc:646
 #, fuzzy, c-format
 #| msgid "\"%s\" is a virtual package provided by:\n"
 msgid "%s is a virtual package provided by:\n"
 msgstr "\"%s\" er en virtuel pakke som gives af:\n"
 
-#: src/gtk/packagestab.cc:707 src/gtk/previewtab.cc:210
+#: src/gtk/packagestab.cc:710 src/gtk/previewtab.cc:215
 msgid "(more info...)"
 msgstr ""
 
-#: src/gtk/packagestab.cc:736
+#: src/gtk/packagestab.cc:739
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Source: "
@@ -4484,28 +4369,28 @@ msgstr "%s; vil blive installeret automatisk"
 msgid "%s is being installed manually."
 msgstr "%s; vil blive installeret automatisk"
 
-#: src/gtk/pkgview.cc:399
+#: src/gtk/pkgview.cc:401
 msgid "Cache reloading, please wait..."
 msgstr ""
 
-#: src/gtk/pkgview.cc:604
+#: src/gtk/pkgview.cc:607
 #, fuzzy
 #| msgid "Search"
 msgid "Searching..."
 msgstr "S�g"
 
-#: src/gtk/pkgview.cc:715
+#: src/gtk/pkgview.cc:718
 #, fuzzy
 #| msgid "Building view"
 msgid "Finalizing view"
 msgstr "Danner oversigt"
 
-#: src/gtk/pkgview.cc:715 src/pkg_tree.cc:204 src/pkg_tree.cc:215
+#: src/gtk/pkgview.cc:718 src/pkg_tree.cc:204 src/pkg_tree.cc:215
 #: src/pkg_tree.cc:226 src/pkg_tree.cc:238
 msgid "Building view"
 msgstr "Danner oversigt"
 
-#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:637
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4521,7 +4406,7 @@ msgstr ""
 " Tilstedev�relsen af dette tr� betyder sandsynligvis at noget ikke er i "
 "orden, enten p� dit system eller i Debian-arkivet."
 
-#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:638
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4533,7 +4418,7 @@ msgstr ""
 "at opfylde afh�ngigheder. Afinstalleringen vil medf�re at ingen "
 "installeret pakke herefter vil have en 'vigtig' afh�ngighed af dem.\n"
 
-#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:639
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4543,7 +4428,7 @@ msgstr ""
 " Disse pakker kunne opgraderes, men bliver tilbageholdt i deres aktuelle "
 "tilstand for at undg� at bryde afh�ngigheder."
 
-#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:640
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4553,7 +4438,7 @@ msgstr ""
 " Disse pakker bliver installeret, fordi en anden pakke som du har valgt at "
 "installere afh�nger af dem."
 
-#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:641
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4564,7 +4449,7 @@ msgstr ""
 "afh�ngigheder ikke l�ngere er opfyldt, eller fordi en anden pakke "
 "konflikter med dem."
 
-#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:642
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4574,7 +4459,7 @@ msgstr ""
 "Versioner af disse pakker som er �ldre end de aktuelt installerede, vil "
 "blive installeret"
 
-#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:643
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4584,7 +4469,7 @@ msgstr ""
 " Disse pakker kunne opgraderes, men du har �nsket at de tilbageholdes i "
 "deres nuv�rende version."
 
-#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:644
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4592,7 +4477,7 @@ msgstr ""
 "Pakker som vil blive geninstalleret\n"
 " Disse pakker vil blive geninstalleret."
 
-#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:645
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:645
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4601,7 +4486,7 @@ msgstr ""
 "Pakker som vil blive installeret\n"
 " Disse pakker er blevet manuelt udvalgt til installering p� systemet. "
 
-#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:646
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:646
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4609,7 +4494,7 @@ msgstr ""
 "Pakker som vil blive afinstalleret\n"
 " Disse pakker er manuelt udvalgt afinstallerering."
 
-#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:647
+#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:647
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4617,7 +4502,7 @@ msgstr ""
 "Packages som vil blive opgraderet\n"
 " Disse pakker vil blive opgraderet til en nyere version."
 
-#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:648
+#: src/gtk/previewtab.cc:108 src/pkg_grouppolicy.cc:648
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4627,7 +4512,7 @@ msgstr ""
 " Disse pakker er ikke fuldt installeret og konfigureret. Der vil blive gjort "
 "et fors�g p� at fuldf�re installeringen af dem."
 
-#: src/gtk/previewtab.cc:174
+#: src/gtk/previewtab.cc:179
 #, fuzzy
 #| msgid "Preview"
 msgid "Preview: "
@@ -4648,117 +4533,123 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/gtk/resolver.cc:201 src/solution_fragment.cc:275
+#: src/gtk/resolver.cc:207
+#, fuzzy
+#| msgid "Package"
+msgid "Virtual package"
+msgstr "Pakke"
+
+#: src/gtk/resolver.cc:241 src/solution_fragment.cc:275
 msgid "Not Installed"
 msgstr "Ikke installeret"
 
-#: src/gtk/resolver.cc:332
+#: src/gtk/resolver.cc:372
 #, fuzzy, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
 msgstr "Afinstallerer %s"
 
-#: src/gtk/resolver.cc:337
+#: src/gtk/resolver.cc:377
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Canceling the installation of %s is rejected."
 msgstr "Forkast installeringen af %F"
 
-#: src/gtk/resolver.cc:347
+#: src/gtk/resolver.cc:387
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Canceling the removal of %s is rejected."
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/resolver.cc:350
+#: src/gtk/resolver.cc:390
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
 msgstr "Behold %F i version %s (%s)"
 
-#: src/gtk/resolver.cc:357
+#: src/gtk/resolver.cc:397
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Installing %s version %s is rejected."
 msgstr "Install�r(%s giver %s)"
 
-#: src/gtk/resolver.cc:363
+#: src/gtk/resolver.cc:403
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrading %s to version %s is rejected."
 msgstr "  cwidget version: %s\n"
 
-#: src/gtk/resolver.cc:369
+#: src/gtk/resolver.cc:409
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrading %s to version %s is rejected."
 msgstr "%s Versioner"
 
-#: src/gtk/resolver.cc:386
+#: src/gtk/resolver.cc:426
 #, c-format
 msgid "Removing %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:391
+#: src/gtk/resolver.cc:431
 #, c-format
 msgid ""
 "Canceling the installation of %s is preferred over all un-accepted "
 "alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:401
+#: src/gtk/resolver.cc:441
 #, c-format
 msgid ""
 "Canceling the removal of %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:404
+#: src/gtk/resolver.cc:444
 #, c-format
 msgid ""
 "Keeping %s at version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:411
+#: src/gtk/resolver.cc:451
 #, c-format
 msgid ""
 "Installing %s version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:417
+#: src/gtk/resolver.cc:457
 #, c-format
 msgid ""
 "Downgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:423
+#: src/gtk/resolver.cc:463
 #, c-format
 msgid ""
 "Upgrading %s to version %s is preferred over all un-accpted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:441
+#: src/gtk/resolver.cc:481
 #, c-format
 msgid "Leaving %ls unresolved is rejected."
 msgstr ""
 
-#: src/gtk/resolver.cc:447
+#: src/gtk/resolver.cc:487
 #, c-format
 msgid "Leaving %ls unresolved is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:851
+#: src/gtk/resolver.cc:905
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:855
+#: src/gtk/resolver.cc:909
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:859
+#: src/gtk/resolver.cc:913
 msgid ""
 "Allow solutions containing this action, but do not prefer them to other "
 "solutions."
@@ -4768,7 +4659,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:863
+#: src/gtk/resolver.cc:917
 msgid ""
 "Always prefer this action over alternatives that have not been accepted."
 msgid_plural ""
@@ -4776,192 +4667,204 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1226 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s afh�nger af %s"
 
-#: src/gtk/resolver.cc:1175 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1229 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s forh�ndsafh�nger af %s"
 
-#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1232 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s foresl�r %s"
 
-#: src/gtk/resolver.cc:1181 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1235 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s anbefaler %s"
 
-#: src/gtk/resolver.cc:1184 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1238 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s konflikter med %s"
 
-#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:123
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s �del�gger %s"
 
-#: src/gtk/resolver.cc:1190 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s erstatter %s"
 
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s g�r %s for�ldet"
 
-#: src/gtk/resolver.cc:1303 src/gtk/resolver.cc:1757
+#: src/gtk/resolver.cc:1359 src/gtk/resolver.cc:1824
 #: src/solution_screen.cc:271
 msgid "Remove the following packages:"
 msgstr "Afinstall�r de f�lgende pakker:"
 
-#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1769
+#: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1836
 #: src/solution_screen.cc:295
 msgid "Install the following packages:"
 msgstr "Install�r de f�lgende pakker:"
 
-#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
+#: src/gtk/resolver.cc:1386 src/gtk/resolver.cc:1848
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "Afinstall�r de f�lgende pakker:"
 
-#: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
+#: src/gtk/resolver.cc:1399 src/gtk/resolver.cc:1860
 #: src/solution_screen.cc:307
 msgid "Upgrade the following packages:"
 msgstr "Opgrad�r de f�lgende pakker:"
 
-#: src/gtk/resolver.cc:1356 src/gtk/resolver.cc:1806
+#: src/gtk/resolver.cc:1412 src/gtk/resolver.cc:1873
 #: src/solution_screen.cc:319
 msgid "Downgrade the following packages:"
 msgstr "Nedgrad�r de f�lgende pakker:"
 
-#: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
+#: src/gtk/resolver.cc:1425 src/gtk/resolver.cc:1886
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "Efterlad de f�lgende afh�ngigheder uafklaret:%n"
 
-#: src/gtk/resolver.cc:1444
+#: src/gtk/resolver.cc:1502
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Afinstall�r %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1451
+#: src/gtk/resolver.cc:1509
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "Install�r %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1459
+#: src/gtk/resolver.cc:1517
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "Forkast installeringen af %F"
 
-#: src/gtk/resolver.cc:1462
+#: src/gtk/resolver.cc:1520
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "Forkast afinstalleringen af %F"
 
-#: src/gtk/resolver.cc:1465
+#: src/gtk/resolver.cc:1523
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "Behold %F i version %s (%s)"
 
-#: src/gtk/resolver.cc:1472
+#: src/gtk/resolver.cc:1530
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Opgrad�r %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1481
+#: src/gtk/resolver.cc:1539
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Nedgrad�r %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>Remove</b> %s"
 msgstr "Afinstall�r(%s)"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>remove</b> %s"
 msgstr "Afinstall�r(%s)"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "Behold %F i version %s (%s)"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "Behold %F i version %s (%s)"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "<b>Cancel</b> the installation of %s"
+msgstr "Forkast installeringen af %F"
+
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "<b>cancel</b> the installation of %s"
+msgstr "Forkast installeringen af %F"
+
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "Install�r %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "Install�r %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "  cwidget version: %s\n"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "  cwidget version: %s\n"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s Versioner"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s Versioner"
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1654
+#: src/gtk/resolver.cc:1721
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4970,7 +4873,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d til installering"
 msgstr[1] "%d til installering"
 
-#: src/gtk/resolver.cc:1659
+#: src/gtk/resolver.cc:1726
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4979,7 +4882,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d til afinstallering"
 msgstr[1] "%d til afinstallering"
 
-#: src/gtk/resolver.cc:1665
+#: src/gtk/resolver.cc:1732
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4988,7 +4891,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d beholdes"
 msgstr[1] "%d beholdes"
 
-#: src/gtk/resolver.cc:1671
+#: src/gtk/resolver.cc:1738
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4997,7 +4900,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d til opgradering"
 msgstr[1] "%d til opgradering"
 
-#: src/gtk/resolver.cc:1677
+#: src/gtk/resolver.cc:1744
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -5006,7 +4909,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d nedgraderinger"
 msgstr[1] "%d nedgraderinger"
 
-#: src/gtk/resolver.cc:1683
+#: src/gtk/resolver.cc:1750
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -5014,35 +4917,35 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "Se ^anbefalinger"
 msgstr[1] "Se ^anbefalinger"
 
-#: src/gtk/resolver.cc:1975
+#: src/gtk/resolver.cc:2042
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "Ikke flere l�sninger."
 
-#: src/gtk/resolver.cc:1982
+#: src/gtk/resolver.cc:2049
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency solution was found."
 msgstr "H�ndtering af afh�ngigheder"
 
-#: src/gtk/resolver.cc:1983
+#: src/gtk/resolver.cc:2050
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "Ikke flere l�sninger."
 
-#: src/gtk/resolver.cc:1994
+#: src/gtk/resolver.cc:2061
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:1995
+#: src/gtk/resolver.cc:2062
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "Ikke flere l�sninger."
 
-#: src/gtk/resolver.cc:2026
+#: src/gtk/resolver.cc:2093
 #, c-format
 msgid "Solution %s of %s (tier %s)."
 msgstr ""
@@ -7868,6 +7771,71 @@ msgstr "Henter �ndringslog"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Hent �ndringslog"
+
+#, fuzzy
+#~| msgid "^Install/remove packages"
+#~ msgid "_Install/Remove Packages"
+#~ msgstr "^Install�r/afinstall�r pakker"
+
+#, fuzzy
+#~| msgid "^Update package list"
+#~ msgid "_Update Package List"
+#~ msgstr "Opdat�r pakkeliste"
+
+#, fuzzy
+#~| msgid "Mark Up^gradable"
+#~ msgid "Mark Up_gradable"
+#~ msgstr "Mark�r op^grad�rbare"
+
+#, fuzzy
+#~| msgid "^Forget new packages"
+#~ msgid "_Forget New Packages"
+#~ msgstr "^Ryd liste over nye pakker"
+
+#, fuzzy
+#~| msgid "Canc^el pending actions"
+#~ msgid "Canc_el Pending Actions"
+#~ msgstr "A^nnull�r afventende handlinger"
+
+#, fuzzy
+#~| msgid "^Clean package cache"
+#~ msgid "C_lean Package Cache"
+#~ msgstr "^T�m pakkecache"
+
+#, fuzzy
+#~| msgid "Clean ^obsolete files"
+#~ msgid "Clean _Obsolete Files"
+#~ msgstr "Slet f^or�ldede filer"
+
+#, fuzzy
+#~| msgid "^Reload package cache"
+#~ msgid "_Reload Package Cache"
+#~ msgstr "^Genindl�s pakkecache"
+
+#, fuzzy
+#~| msgid "^Play Minesweeper"
+#~ msgid "_Play Minesweeper"
+#~ msgstr "^Spil minestryger"
+
+#, fuzzy
+#~| msgid "Become root"
+#~ msgid "_Become Root"
+#~ msgstr "Bliv root"
+
+#, fuzzy
+#~| msgid "^Quit"
+#~ msgid "_Quit"
+#~ msgstr "^Afslut"
+
+#, fuzzy
+#~| msgid "delete"
+#~ msgid "gtk-delete"
+#~ msgstr "slet"
+
+#, fuzzy
+#~| msgid "Dependency handling"
+#~ msgid "Find _Dependency Chains"
+#~ msgstr "H�ndtering af afh�ngigheder"
 
 #~ msgid "(for %s)"
 #~ msgid_plural "(for %s)"
