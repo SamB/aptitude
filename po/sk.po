@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-04-26 20:39-0700\n"
+"POT-Creation-Date: 2009-07-20 12:25-0700\n"
 "PO-Revision-Date: 2008-11-25 15:45+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -629,8 +629,8 @@ msgstr "Závažná chyba pri riešení závislostí"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Riešenie závislostí"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1221
-#: src/gtk/resolver.cc:1389 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1277
+#: src/gtk/resolver.cc:1445 src/solution_dialog.cc:140
 #: src/solution_screen.cc:568
 msgid "Internal error: unexpected null solution."
 msgstr "Interná chyba: neočakávané prázdne riešenie."
@@ -1697,7 +1697,7 @@ msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr "Chcem vyriešiť konflikty, ale riešenie konfliktov nebolo vytvorené."
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
-#: src/gtk/resolver.cc:1974 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:2041 src/solution_dialog.cc:127
 #: src/solution_screen.cc:545
 msgid "Resolving dependencies..."
 msgstr "Riešenie závislostí..."
@@ -1802,7 +1802,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Nasledujúce balíky majú nesplnené závislosti:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1124 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -1938,8 +1938,8 @@ msgstr "Automaticky nainštalovaný"
 msgid "no"
 msgstr "nie"
 
-#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:722
-#: src/gtk/previewtab.cc:225
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:725
+#: src/gtk/previewtab.cc:230
 msgid "Version: "
 msgstr "Verzia: "
 
@@ -2018,12 +2018,12 @@ msgid "Obsoletes"
 msgstr "Zastaráva"
 
 #: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:200
+#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Poskytuje"
 
 #: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:702
-#: src/gtk/packagestab.cc:730 src/gtk/previewtab.cc:233
+#: src/gtk/packagestab.cc:733 src/gtk/previewtab.cc:238
 #: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Popis: "
@@ -2181,8 +2181,7 @@ msgstr "Aktuálne"
 msgid "Candidate"
 msgstr "Kandidát"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/aptitude.glade:622 src/gtk/gui.cc:89
-#: src/gtk/gui.cc:1365
+#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:89 src/gtk/gui.cc:1365
 msgid "Install"
 msgstr "Inštalovať"
 
@@ -2323,7 +2322,7 @@ msgstr "NESPLNENÝ"
 msgid "UNAVAILABLE"
 msgstr "NEDOSTUPNÝ"
 
-#: src/desc_render.cc:133 src/gtk/aptitude.glade:1144
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1054
 msgid "Tags"
 msgstr "Značky"
 
@@ -2597,54 +2596,54 @@ msgid ""
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:827
+#: src/generic/apt/aptitude_resolver_universe.cc:834
 #, c-format
 msgid ""
 "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:871
+#: src/generic/apt/aptitude_resolver_universe.cc:878
 #, fuzzy
 #| msgid "Section"
 msgid "Safe actions"
 msgstr "Sekcia"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:872
+#: src/generic/apt/aptitude_resolver_universe.cc:879
 #, fuzzy
 #| msgid "Canc^el pending actions"
 msgid "Cancel all user actions"
 msgstr "Zrušiť čakajúce operácie"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:873
+#: src/generic/apt/aptitude_resolver_universe.cc:880
 #, fuzzy
 #| msgid "'-' to remove packages"
 msgid "Remove packages"
 msgstr "„-“ na odstránenie balíkov"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:874
+#: src/generic/apt/aptitude_resolver_universe.cc:881
 #, fuzzy
 #| msgid "not a real package"
 msgid "Modify held packages"
 msgstr "nie je skutočný balík"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:875
+#: src/generic/apt/aptitude_resolver_universe.cc:882
 msgid "Install versions from non-default sources"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:876
+#: src/generic/apt/aptitude_resolver_universe.cc:883
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Remove essential packages"
 msgstr "Odstrániť nasledujúce balíky:"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:909
+#: src/generic/apt/aptitude_resolver_universe.cc:916
 #, c-format
 msgid ""
 "The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
 "Tier entry."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:913
+#: src/generic/apt/aptitude_resolver_universe.cc:920
 #, c-format
 msgid ""
 "The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
@@ -3096,94 +3095,44 @@ msgstr ""
 msgid "_File"
 msgstr "_Súbor"
 
-#: src/gtk/aptitude.glade:26 src/ui.cc:2220
+#: src/gtk/aptitude.glade:27 src/ui.cc:2220
 msgid "Perform all pending installs and removals"
 msgstr "Vykoná všetky nevykonané inštalácie a odstraňovania"
 
-#: src/gtk/aptitude.glade:27
-#, fuzzy
-#| msgid "_Install/remove packages"
-msgid "_Install/Remove Packages"
-msgstr "_Inštalovať/odstrániť balíky"
-
-#: src/gtk/aptitude.glade:42 src/ui.cc:2223
+#: src/gtk/aptitude.glade:37 src/ui.cc:2223
 msgid "Check for new versions of packages"
 msgstr "Zistí, či nie sú k dispozícii novšie verzie balíkov"
 
-#: src/gtk/aptitude.glade:43
-#, fuzzy
-#| msgid "_Update package list"
-msgid "_Update Package List"
-msgstr "_Aktualizovať zoznam balíkov"
-
-#: src/gtk/aptitude.glade:63 src/ui.cc:2228
+#: src/gtk/aptitude.glade:52 src/ui.cc:2228
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "Označí všetky aktualizovateľné balíky, ktoré nie sú ponechané"
 
-#: src/gtk/aptitude.glade:64
-msgid "Mark Up_gradable"
-msgstr "Označiť A_ktualizovateľné"
-
-#: src/gtk/aptitude.glade:79 src/ui.cc:2233
+#: src/gtk/aptitude.glade:62 src/ui.cc:2233
 msgid "Forget which packages are \"new\""
 msgstr "Zabudne, ktoré balíky sú „nové“"
 
-#: src/gtk/aptitude.glade:80
-#, fuzzy
-#| msgid "_Forget new packages"
-msgid "_Forget New Packages"
-msgstr "_Zabudnúť nové balíky"
-
-#: src/gtk/aptitude.glade:94 src/ui.cc:2237
+#: src/gtk/aptitude.glade:71 src/ui.cc:2237
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "Zruší všetky čakajúce inštalácie, odstránenia, ponechania a aktualizácie."
 
-#: src/gtk/aptitude.glade:95
-#, fuzzy
-#| msgid "Canc_el pending actions"
-msgid "Canc_el Pending Actions"
-msgstr "_Zrušiť čakajúce operácie"
-
-#: src/gtk/aptitude.glade:109 src/ui.cc:2241
+#: src/gtk/aptitude.glade:80 src/ui.cc:2241
 msgid "Delete package files which were previously downloaded"
 msgstr "Odstráni stiahnuté súbory (balíky) z /var/cache/apt"
 
-#: src/gtk/aptitude.glade:110
-#, fuzzy
-#| msgid "_Clean package cache"
-msgid "C_lean Package Cache"
-msgstr "Vyčistiť _cache s balíkmi"
-
-#: src/gtk/aptitude.glade:124 src/ui.cc:2245
+#: src/gtk/aptitude.glade:89 src/ui.cc:2245
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Odstráni súbory, ktoré sa už nedajú stiahnuť"
 
-#: src/gtk/aptitude.glade:125
-#, fuzzy
-#| msgid "Clean _obsolete files"
-msgid "Clean _Obsolete Files"
-msgstr "Vyčistiť staré súb_ory"
-
-#: src/gtk/aptitude.glade:144 src/ui.cc:2252
+#: src/gtk/aptitude.glade:103 src/ui.cc:2252
 msgid "Reload the package cache"
 msgstr "Znovu načítať obsah cache"
 
-#: src/gtk/aptitude.glade:145
-#, fuzzy
-#| msgid "_Reload package cache"
-msgid "_Reload Package Cache"
-msgstr "_Znovu načítať cache"
-
-#: src/gtk/aptitude.glade:159 src/ui.cc:1701 src/ui.cc:2257
+#: src/gtk/aptitude.glade:112 src/ui.cc:1701 src/ui.cc:2257
 msgid "Waste time trying to find mines"
 msgstr "Využiť čas hľadaním mín."
 
-#: src/gtk/aptitude.glade:160
-msgid "_Play Minesweeper"
-msgstr "Zahrať si mínové _pole"
-
-#: src/gtk/aptitude.glade:179 src/ui.cc:2262
+#: src/gtk/aptitude.glade:126 src/ui.cc:2262
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3191,237 +3140,178 @@ msgstr ""
 "Na používateľa root sa môžete prepnúť spustením „su“; týmto reštartujete "
 "program, ale vaše nastavenia sa zachovajú"
 
-#: src/gtk/aptitude.glade:180
-#, fuzzy
-#| msgid "_Become root"
-msgid "_Become Root"
-msgstr "_Stať sa rootom"
-
-#: src/gtk/aptitude.glade:194 src/ui.cc:2265
+#: src/gtk/aptitude.glade:135 src/ui.cc:2265
 msgid "Exit the program"
 msgstr "Ukončí program"
 
-#: src/gtk/aptitude.glade:195
-msgid "_Quit"
-msgstr "_Ukončiť"
-
-#: src/gtk/aptitude.glade:212
+#: src/gtk/aptitude.glade:147
 msgid "E_dit"
 msgstr "_Upraviť"
 
-#: src/gtk/aptitude.glade:220 src/ui.cc:2272
+#: src/gtk/aptitude.glade:156 src/ui.cc:2272
 msgid "Undo the last package operation or group of operations"
 msgstr "Vráti späť poslednú operáciu alebo skupinu operácií s balíkmi"
 
-#: src/gtk/aptitude.glade:221
-#, fuzzy
-#| msgid "gtk-find"
-msgid "gtk-undo"
-msgstr "gtk-find"
-
-#: src/gtk/aptitude.glade:234
-msgid "gtk-cut"
-msgstr "gtk-cut"
-
-#: src/gtk/aptitude.glade:242
-msgid "gtk-copy"
-msgstr "gtk-copy"
-
-#: src/gtk/aptitude.glade:250
-msgid "gtk-paste"
-msgstr "gtk-paste"
-
-#: src/gtk/aptitude.glade:258
-msgid "gtk-delete"
-msgstr "gtk-delete"
-
-#: src/gtk/aptitude.glade:270
+#: src/gtk/aptitude.glade:205
 msgid "_Package"
 msgstr "_Balík"
 
-#: src/gtk/aptitude.glade:282
+#: src/gtk/aptitude.glade:217
 #, fuzzy
 #| msgid "_Views"
 msgid "_View"
 msgstr "_Pohľady"
 
-#: src/gtk/aptitude.glade:290
+#: src/gtk/aptitude.glade:226
 msgid "Change which columns are visible in the currently active view."
 msgstr ""
 
-#: src/gtk/aptitude.glade:291
-msgid "_Edit Columns..."
-msgstr ""
-
-#: src/gtk/aptitude.glade:310
+#: src/gtk/aptitude.glade:240
 msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr "Zobraziť chyby, ktoré sa vystytli v systéme apt od spustenia programu."
 
-#: src/gtk/aptitude.glade:311
-#, fuzzy
-#| msgid "View apt _errors"
-msgid "View Apt _Errors"
-msgstr "Zobraziť _chyby apt"
-
-#: src/gtk/aptitude.glade:325
+#: src/gtk/aptitude.glade:249
 msgid "Find chains of dependencies linking one package to another."
 msgstr "Nájsť reťazce závislostí spájajúcich balíky."
 
-#: src/gtk/aptitude.glade:326
-msgid "Find _Dependency Chains"
-msgstr "Správa _závislostí"
-
-#: src/gtk/aptitude.glade:345
-msgid "gtk-go-back"
-msgstr "gtk-go-back"
-
-#: src/gtk/aptitude.glade:355
-msgid "gtk-go-forward"
-msgstr "gtk-go-forward"
-
-#: src/gtk/aptitude.glade:365 src/gtk/aptitude.glade:765
-#, fuzzy
-#| msgid "gtk-copy"
-msgid "gtk-close"
-msgstr "gtk-copy"
-
-#: src/gtk/aptitude.glade:379
+#: src/gtk/aptitude.glade:296
 msgid "_Help"
 msgstr "_Pomoc"
 
-#: src/gtk/aptitude.glade:387
-msgid "gtk-about"
-msgstr "gtk-about"
-
-#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1554
+#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:751 src/gtk/gui.cc:1554
 #: src/gtk/gui.cc:1748
 msgid "Dashboard"
 msgstr "Palubná doska"
 
-#: src/gtk/aptitude.glade:422
+#: src/gtk/aptitude.glade:344
 msgid "Update"
 msgstr "_Aktualizovať zoznam"
 
-#: src/gtk/aptitude.glade:432 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
+#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
 #: src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914 src/ui.cc:935
 #: src/ui.cc:937
 msgid "Packages"
 msgstr "Balíky"
 
-#: src/gtk/aptitude.glade:442 src/gtk/gui.cc:977 src/gtk/previewtab.cc:116
+#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:977 src/gtk/previewtab.cc:118
 #: src/ui.cc:1336
 msgid "Preview"
 msgstr "Náhľad"
 
-#: src/gtk/aptitude.glade:452 src/gtk/gui.cc:972 src/ui.cc:2653
+#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:972 src/ui.cc:2653
 msgid "Resolver"
 msgstr "Odstraňovač"
 
-#: src/gtk/aptitude.glade:462
+#: src/gtk/aptitude.glade:388
 msgid "Install/Remove"
 msgstr "Nainštalovať/odstrániť"
 
-#: src/gtk/aptitude.glade:635 src/gtk/gui.cc:93 src/gtk/gui.cc:1372
-msgid "Remove"
-msgstr "Odstrániť"
-
-#: src/gtk/aptitude.glade:648 src/gtk/gui.cc:1377
-msgid "Purge"
-msgstr "Vyčistiť"
-
-#: src/gtk/aptitude.glade:661 src/gtk/gui.cc:1382
-msgid "Keep"
-msgstr "Zachovať"
-
-#: src/gtk/aptitude.glade:674 src/gtk/gui.cc:1387
-msgid "Hold"
-msgstr "Ponechať"
-
-#: src/gtk/aptitude.glade:687
+#: src/gtk/aptitude.glade:590
 msgid "Edit Columns..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:700
+#: src/gtk/aptitude.glade:603
 msgid "Dummy label (will be replaced at runtime)."
 msgstr ""
 
-#: src/gtk/aptitude.glade:731
+#: src/gtk/aptitude.glade:631
 #, fuzzy
 #| msgid "Remove the filter from the package list"
 msgid "Make this the default for new package lists."
 msgstr "Odstráni filter aplikovaný na zoznam balíkov"
 
-#: src/gtk/aptitude.glade:747
+#: src/gtk/aptitude.glade:646
 #, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "Apply these settings to all active package lists."
 msgstr "Na zoznam balíkov aplikuje výberový filter"
 
-#: src/gtk/aptitude.glade:811 src/gtk/aptitude.glade:1490
-#: src/gtk/aptitude.glade:1809 src/gtk/aptitude.glade:1945
+#: src/gtk/aptitude.glade:664
+#, fuzzy
+#| msgid "gtk-copy"
+msgid "gtk-close"
+msgstr "gtk-copy"
+
+#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1425
+#: src/gtk/aptitude.glade:1754 src/gtk/aptitude.glade:1892
 msgid "Search:"
 msgstr "Hľadať:"
 
-#: src/gtk/aptitude.glade:831 src/gtk/aptitude.glade:1510
-#: src/gtk/aptitude.glade:1829 src/gtk/aptitude.glade:1965
+#: src/gtk/aptitude.glade:737 src/gtk/aptitude.glade:1443
+#: src/gtk/aptitude.glade:1772 src/gtk/aptitude.glade:1910
 msgid "gtk-find"
 msgstr "gtk-find"
 
-#: src/gtk/aptitude.glade:845
+#: src/gtk/aptitude.glade:750
 #, fuzzy
 #| msgid "reinstall"
 msgid "Incremental"
 msgstr "reinštalovať"
 
-#: src/gtk/aptitude.glade:862 src/gtk/aptitude.glade:1528
-#: src/gtk/aptitude.glade:1847 src/gtk/aptitude.glade:1983
+#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1464
+#: src/gtk/aptitude.glade:1793 src/gtk/aptitude.glade:1931
 msgid "Errors"
 msgstr "chyby"
 
-#: src/gtk/aptitude.glade:879 src/gtk/aptitude.glade:1864
-#: src/gtk/aptitude.glade:2000
+#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1810
+#: src/gtk/aptitude.glade:1948
 msgid "Show "
 msgstr ""
 
-#: src/gtk/aptitude.glade:986
+#: src/gtk/aptitude.glade:895
 msgid "<span size=\"xx-large\">Versions:</span>"
 msgstr "<span size=\"xx-large\">Verzie:</span>"
 
-#: src/gtk/aptitude.glade:1046
+#: src/gtk/aptitude.glade:956
 msgid "Dependencies"
 msgstr "Závislosti"
 
-#: src/gtk/aptitude.glade:1076
+#: src/gtk/aptitude.glade:986
 msgid "Changelog"
 msgstr "Záznam zmien"
 
-#: src/gtk/aptitude.glade:1104
+#: src/gtk/aptitude.glade:1014
 msgid "Files"
 msgstr "Súbory"
 
-#: src/gtk/aptitude.glade:1115
+#: src/gtk/aptitude.glade:1025
 msgid "popcon"
 msgstr "súťaž popularity"
 
-#: src/gtk/aptitude.glade:1124
+#: src/gtk/aptitude.glade:1034
 msgid "Popcon"
 msgstr "Súťaž popularity"
 
-#: src/gtk/aptitude.glade:1135
+#: src/gtk/aptitude.glade:1045
 msgid "tags"
 msgstr "značky"
 
-#: src/gtk/aptitude.glade:1192
+#: src/gtk/aptitude.glade:1106
 msgid "Fixing upgrade manually:"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1202 src/gtk/dashboardtab.cc:536
+#: src/gtk/aptitude.glade:1116 src/gtk/dashboardtab.cc:537
 msgid "Calculating upgrade..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1229
+#: src/gtk/aptitude.glade:1164
+msgid "<b>Solutions</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1182 src/gtk/download.cc:261
+#: src/gtk/entityview.cc:551
+msgid "Status"
+msgstr "stav"
+
+#: src/gtk/aptitude.glade:1216
+#, fuzzy
+#| msgid "Unknown action type: %s"
+msgid "Group by action type"
+msgstr "Neznáma operácia: %s"
+
+#: src/gtk/aptitude.glade:1220
 msgid ""
 "Arrange the actions of the current solution so that actions that are of the "
 "same type are placed together (for instance, all the actions that remove "
@@ -3430,144 +3320,127 @@ msgid ""
 "This is the default view mode."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1232
-#, fuzzy
-#| msgid "Unknown action type: %s"
-msgid "Group by action type"
-msgstr "Neznáma operácia: %s"
+#: src/gtk/aptitude.glade:1234
+msgid "Group by dependency"
+msgstr ""
 
-#: src/gtk/aptitude.glade:1245
+#: src/gtk/aptitude.glade:1238
 msgid ""
 "Show the order in which the actions in the current solution were performed "
 "and the dependency that triggered each action."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1246
-#, fuzzy
-#| msgid "view an explanation of the changes in the solution"
-msgid "Show an explanation of the solution"
-msgstr "zobraziť vysvetlenie zmien v riešení"
-
-#: src/gtk/aptitude.glade:1263
+#: src/gtk/aptitude.glade:1255
 msgid "<b>View Mode</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1307
+#: src/gtk/aptitude.glade:1297
 #, fuzzy
 #| msgid "Toggle ^Rejected"
 msgid "Rejected"
 msgstr "Prepnúť ^Zamietnuté"
 
-#: src/gtk/aptitude.glade:1317
+#: src/gtk/aptitude.glade:1312
 #, fuzzy
 #| msgid "Preferences"
 msgid "No preference"
 msgstr "Nastavenia"
 
-#: src/gtk/aptitude.glade:1331
+#: src/gtk/aptitude.glade:1328
 msgid "Accepted"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1347
+#: src/gtk/aptitude.glade:1348
 msgid "<b>Status of selected action</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1364 src/gtk/download.cc:261
-#: src/gtk/entityview.cc:551
-msgid "Status"
-msgstr "stav"
-
-#: src/gtk/aptitude.glade:1415
-msgid "<b>Solutions</b>"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1442
-#, fuzzy
-#| msgid "Select the next solution to the dependency problems."
-msgid "Calculate the next solution that has not yet been generated."
-msgstr "Zvolí ďalšie riešenie problémov so závislosťami."
-
-#: src/gtk/aptitude.glade:1443
+#: src/gtk/aptitude.glade:1369
 #, fuzzy
 #| msgid "^Examine Solution"
 msgid "Find a new solution"
 msgstr "^Vyskúšať Riešenie"
 
-#: src/gtk/aptitude.glade:1457
+#: src/gtk/aptitude.glade:1373
+#, fuzzy
+#| msgid "Select the next solution to the dependency problems."
+msgid "Calculate the next solution that has not yet been generated."
+msgstr "Zvolí ďalšie riešenie problémov so závislosťami."
+
+#: src/gtk/aptitude.glade:1383
+msgid "gtk-apply"
+msgstr "gtk-apply"
+
+#: src/gtk/aptitude.glade:1388
 #, fuzzy
 #| msgid "Perform the actions contained in the currently selected solution."
 msgid ""
 "Perform the actions in the currently selected solution and close this tab."
 msgstr "Vykoná operácie, ktoré sú zahrnuté v aktuálne zvolenom riešení."
 
-#: src/gtk/aptitude.glade:1458
-msgid "gtk-apply"
-msgstr "gtk-apply"
-
-#: src/gtk/aptitude.glade:1607
+#: src/gtk/aptitude.glade:1543
 msgid "Upgrade Summary"
 msgstr "Zhrnutie aktualizácie"
 
-#: src/gtk/aptitude.glade:1636
+#: src/gtk/aptitude.glade:1572
 msgid "Selected Package"
 msgstr "Vybraný balík:"
 
-#: src/gtk/aptitude.glade:1667
+#: src/gtk/aptitude.glade:1607
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1682
+#: src/gtk/aptitude.glade:1619
 #, fuzzy
 #| msgid "Manual"
 msgid "Fix Manually"
 msgstr "Manuálne"
 
-#: src/gtk/aptitude.glade:1691 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
+#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
 msgid "Upgrade"
 msgstr "Aktualizovať"
 
-#: src/gtk/aptitude.glade:1718
+#: src/gtk/aptitude.glade:1663
 msgid "<b>Available Upgrades:</b>"
 msgstr "<b>Dostupné aktualizácie:</b>"
 
-#: src/gtk/aptitude.glade:1911
+#: src/gtk/aptitude.glade:1858
 msgid "<b>Start at these packages:</b>"
 msgstr "<b>Začať u týchto balíkov:</b>"
 
-#: src/gtk/aptitude.glade:2047
+#: src/gtk/aptitude.glade:1996
 msgid "<b>End at these packages:</b>"
 msgstr "<b>Skončiť u týchto balíkov:</b>"
 
-#: src/gtk/aptitude.glade:2115
+#: src/gtk/aptitude.glade:2064
 msgid "A terminal running dpkg will appear here."
 msgstr "Tu sa objaví terminál, na ktorom beží dpkg."
 
-#: src/gtk/aptitude.glade:2127
+#: src/gtk/aptitude.glade:2076
 msgid ""
 "Placeholder label for the explanation that two conffiles are being "
 "compared.\n"
 "This text should not appear in the program."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2153
+#: src/gtk/aptitude.glade:2105
 msgid "View the differences\t"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2179
+#: src/gtk/aptitude.glade:2131
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2191
+#: src/gtk/aptitude.glade:2143
 #, fuzzy
 #| msgid "gtk-copy"
 msgid "gtk-yes"
 msgstr "gtk-copy"
 
-#: src/gtk/aptitude.glade:2201
+#: src/gtk/aptitude.glade:2157
 #, fuzzy
 #| msgid "gtk-copy"
 msgid "gtk-no"
@@ -3622,19 +3495,19 @@ msgstr "Sťahuje sa záznam zmien (changelog), čakajte prosím..."
 msgid "Downloading changelogs"
 msgstr "Sťahujú sa záznamy zmien"
 
-#: src/gtk/dashboardtab.cc:210
+#: src/gtk/dashboardtab.cc:211
 msgid "Resolve Upgrade Manually"
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:306
+#: src/gtk/dashboardtab.cc:307
 msgid "Preparing to download changelogs"
 msgstr "Pripravuje sa sťahovanie záznamov zmien"
 
-#: src/gtk/dashboardtab.cc:396
+#: src/gtk/dashboardtab.cc:397
 msgid "Available upgrades:"
 msgstr "Dostupné aktualizácie:"
 
-#: src/gtk/dashboardtab.cc:413
+#: src/gtk/dashboardtab.cc:414
 #, c-format
 msgid "%d available upgrade:"
 msgid_plural "%d available upgrades:"
@@ -3642,19 +3515,19 @@ msgstr[0] "Dostupná %d aktualizácia:"
 msgstr[1] "Dostupné %d aktualizácie:"
 msgstr[2] "Dostupných %d aktualizácií:"
 
-#: src/gtk/dashboardtab.cc:629
+#: src/gtk/dashboardtab.cc:630
 #, fuzzy
 #| msgid "Not available"
 msgid "No upgrades are available."
 msgstr "Nedostupný"
 
-#: src/gtk/dashboardtab.cc:641
+#: src/gtk/dashboardtab.cc:642
 #, fuzzy
 #| msgid "Unable to locate package %s"
 msgid "Unable to calculate an upgrade."
 msgstr "Nedá sa nájsť balík %s"
 
-#: src/gtk/dashboardtab.cc:650
+#: src/gtk/dashboardtab.cc:651
 #, c-format
 msgid ""
 "Press \"%s\" to install <span size='large'>%d</span> upgrade out of <span "
@@ -3666,7 +3539,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/dashboardtab.cc:662
+#: src/gtk/dashboardtab.cc:663
 #, c-format
 msgid ""
 "Press \"%s\" to manually attempt to install the remaining <span size='large'>"
@@ -3678,51 +3551,51 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/dashboardtab.cc:687
+#: src/gtk/dashboardtab.cc:688
 #, c-format
 msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
 "solution."
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:704
+#: src/gtk/dashboardtab.cc:705
 #, fuzzy, c-format
 #| msgid "Internal error: Default column string is unparsable"
 msgid "Internal error encountered while calculating an upgrade: %s"
 msgstr "Vnútorná chyba: Štandardný reťazec stĺpca sa nedá spracovať"
 
-#: src/gtk/dashboardtab.cc:836
+#: src/gtk/dashboardtab.cc:838
 #, c-format
 msgid ""
 "The package %s has no candidate version and will not be upgraded; unable to "
 "show its changelog."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:77
+#: src/gtk/dependency_chains_tab.cc:78
 #, fuzzy
 #| msgid "Find _Dependency Chains"
 msgid "Find dependency chains: start"
 msgstr "Správa _závislostí"
 
-#: src/gtk/dependency_chains_tab.cc:79
+#: src/gtk/dependency_chains_tab.cc:82
 #, fuzzy
 #| msgid "Find _Dependency Chains"
 msgid "Find dependency chains: end"
 msgstr "Správa _závislostí"
 
-#: src/gtk/dependency_chains_tab.cc:81
+#: src/gtk/dependency_chains_tab.cc:86
 #, fuzzy
 #| msgid "Find _Dependency Chains"
 msgid "Find dependency chains: results"
 msgstr "Správa _závislostí"
 
-#: src/gtk/dependency_chains_tab.cc:221
+#: src/gtk/dependency_chains_tab.cc:226
 msgid "Select one or more starting packages and an ending package to search."
 msgstr ""
 "Vyberte jeden alebo viac balíkov od ktorého začne a balík pri ktorom skončí "
 "hľadanie."
 
-#: src/gtk/dependency_chains_tab.cc:276
+#: src/gtk/dependency_chains_tab.cc:281
 msgid "No dependency chain found."
 msgstr "Nebol nájdený žiadny reťazec závislostí."
 
@@ -3951,6 +3824,10 @@ msgstr "Reinštalovať"
 msgid "Downgrade"
 msgstr "Degradovať"
 
+#: src/gtk/gui.cc:93 src/gtk/gui.cc:1372
+msgid "Remove"
+msgstr "Odstrániť"
+
 #: src/gtk/gui.cc:94
 msgid "Remove and purge configuration/data"
 msgstr "Odstrániť a vyčistiť konfiguráciu/dáta"
@@ -4127,6 +4004,18 @@ msgstr "Hotovo"
 msgid "Install/Upgrade"
 msgstr "Nainštalovaný"
 
+#: src/gtk/gui.cc:1377
+msgid "Purge"
+msgstr "Vyčistiť"
+
+#: src/gtk/gui.cc:1382
+msgid "Keep"
+msgstr "Zachovať"
+
+#: src/gtk/gui.cc:1387
+msgid "Hold"
+msgstr "Ponechať"
+
 #: src/gtk/gui.cc:1393
 msgid "Set as automatic"
 msgstr ""
@@ -4188,116 +4077,116 @@ msgstr "info"
 msgid "Unknown"
 msgstr "Neznáma"
 
-#: src/gtk/packagestab.cc:60
+#: src/gtk/packagestab.cc:61
 msgid "Parse error"
 msgstr ""
 
-#: src/gtk/packagestab.cc:203
+#: src/gtk/packagestab.cc:204
 #, c-format
 msgid "No packages matched \"%s\"."
 msgstr "Žiadne balíky nevyhovujú vzoru „%s“."
 
-#: src/gtk/packagestab.cc:313
+#: src/gtk/packagestab.cc:314
 msgid "Enter a search and click \"Find\" to display packages."
 msgstr "Zadajte vyhľadávací reťazec a kliknite „Nájsť“, zobrazia sa balíky."
 
-#: src/gtk/packagestab.cc:413
+#: src/gtk/packagestab.cc:416
 msgid "Packages: "
 msgstr "Balíky: "
 
-#: src/gtk/packagestab.cc:490
+#: src/gtk/packagestab.cc:493
 #, c-format
 msgid "Upgrade to %s version %s"
 msgstr "Aktualizovať na %s verzie %s"
 
-#: src/gtk/packagestab.cc:498
+#: src/gtk/packagestab.cc:501
 #, c-format
 msgid "Install %s version %s"
 msgstr "Nainštalovať %s verzie %s"
 
-#: src/gtk/packagestab.cc:506
+#: src/gtk/packagestab.cc:509
 #, c-format
 msgid "Downgrade to %s version %s"
 msgstr "Znížiť %s na verziu %s"
 
-#: src/gtk/packagestab.cc:517
+#: src/gtk/packagestab.cc:520
 #, c-format
 msgid "Don't hold %s at its current version."
 msgstr "Neponechávať %s na jeho aktuálnej verzii."
 
-#: src/gtk/packagestab.cc:520 src/gtk/packagestab.cc:540
-#: src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:523 src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:546
 #, c-format
 msgid "Cancel any actions on %s."
 msgstr "Zrušiť všetky operácie na %s."
 
-#: src/gtk/packagestab.cc:525
+#: src/gtk/packagestab.cc:528
 #, c-format
 msgid "Cancel the purge of %s."
 msgstr "Zrušiť vyčistenie %s."
 
-#: src/gtk/packagestab.cc:527
+#: src/gtk/packagestab.cc:530
 #, c-format
 msgid "Cancel the removal of %s."
 msgstr "Zrušiť odstránenie %s."
 
-#: src/gtk/packagestab.cc:532
+#: src/gtk/packagestab.cc:535
 #, c-format
 msgid "Cancel the upgrade of %s."
 msgstr "Zrušiť aktualizáciu %s."
 
-#: src/gtk/packagestab.cc:534
+#: src/gtk/packagestab.cc:537
 #, c-format
 msgid "Cancel the installation of %s."
 msgstr "Zrušiť inštaláciu %s."
 
-#: src/gtk/packagestab.cc:536
+#: src/gtk/packagestab.cc:539
 #, c-format
 msgid "Cancel the downgrade of %s."
 msgstr "Zrušiť zníženie verzie %s."
 
-#: src/gtk/packagestab.cc:538
+#: src/gtk/packagestab.cc:541
 #, c-format
 msgid "Cancel the reinstallation of %s."
 msgstr "Zrušiť reinštaláciu %s."
 
-#: src/gtk/packagestab.cc:579
+#: src/gtk/packagestab.cc:582
 #, c-format
 msgid "Remove %s"
 msgstr "Odstrániť %s"
 
-#: src/gtk/packagestab.cc:583
+#: src/gtk/packagestab.cc:586
 #, c-format
 msgid "Purge %s"
 msgstr "Vyčistiť %s"
 
-#: src/gtk/packagestab.cc:591
+#: src/gtk/packagestab.cc:594
 #, c-format
 msgid "Hold %s at its current version."
 msgstr "Podržať %s v jeho aktuálnej verzii."
 
-#: src/gtk/packagestab.cc:596
+#: src/gtk/packagestab.cc:599
 #, fuzzy, c-format
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "Mark %s as automatically installed."
 msgstr "„&M“ na označenie balíkov ako automatiky inštalovaných"
 
-#: src/gtk/packagestab.cc:601
+#: src/gtk/packagestab.cc:604
 #, fuzzy, c-format
 #| msgid "The package \"%s\" is manually installed.\n"
 msgid "Mark %s as manually installed."
 msgstr "Balík „%s“ je nainštalovaný manuálne.\n"
 
-#: src/gtk/packagestab.cc:643
+#: src/gtk/packagestab.cc:646
 #, c-format
 msgid "%s is a virtual package provided by:\n"
 msgstr "%s je virtuálny balík; poskytuje ho:\n"
 
-#: src/gtk/packagestab.cc:707 src/gtk/previewtab.cc:210
+#: src/gtk/packagestab.cc:710 src/gtk/previewtab.cc:215
 msgid "(more info...)"
 msgstr "(podrobnosti...)"
 
-#: src/gtk/packagestab.cc:736
+#: src/gtk/packagestab.cc:739
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Source: "
@@ -4327,26 +4216,26 @@ msgstr "%s; sa automaticky nainštaluje"
 msgid "%s is being installed manually."
 msgstr "%s; sa automaticky nainštaluje"
 
-#: src/gtk/pkgview.cc:399
+#: src/gtk/pkgview.cc:401
 msgid "Cache reloading, please wait..."
 msgstr "Obnovuje sa vyrovnávacia pamäť, čakajte prosím..."
 
-#: src/gtk/pkgview.cc:604
+#: src/gtk/pkgview.cc:607
 #, fuzzy
 #| msgid "Search"
 msgid "Searching..."
 msgstr "Hľadať"
 
-#: src/gtk/pkgview.cc:715
+#: src/gtk/pkgview.cc:718
 msgid "Finalizing view"
 msgstr "Zostavuje sa pohľad"
 
-#: src/gtk/pkgview.cc:715 src/pkg_tree.cc:204 src/pkg_tree.cc:215
+#: src/gtk/pkgview.cc:718 src/pkg_tree.cc:204 src/pkg_tree.cc:215
 #: src/pkg_tree.cc:226 src/pkg_tree.cc:238
 msgid "Building view"
 msgstr "Zostavuje sa pohľad"
 
-#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:637
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4361,7 +4250,7 @@ msgstr ""
 " Prítomnosť tohto stromu naznačuje, že je niečo divné vo vašom systéme alebo "
 "v archíve Debianu."
 
-#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:638
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4372,7 +4261,7 @@ msgstr ""
 " Tieto balíky sú označené na odstránenie, pretože boli nainštalované "
 "automaticky kvôli závislostiam, ktoré už nie sú potrebné.\n"
 
-#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:639
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4382,7 +4271,7 @@ msgstr ""
 " Tieto balíky môžu byť aktualizované na novšiu verziu, ale sú ponechané vo "
 "svojej pôvodnej verzií, aby sa neporušili závislosti."
 
-#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:640
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4392,7 +4281,7 @@ msgstr ""
 " Tieto balíky budú automaticky nainštalované, pretože sú vyžadované inými "
 "balíkmi, ktoré ste vybrali na inštaláciu."
 
-#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:641
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4402,7 +4291,7 @@ msgstr ""
 " Tieto balíky budú odstránené, pretože jedna alebo viac ich závislostí už "
 "nie je splnená, alebo pretože je s nimi iný balík v konflikte."
 
-#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:642
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4411,7 +4300,7 @@ msgstr ""
 "Balíky na degradáciu\n"
 " Tieto balíky budú nahradené svojou staršou verziou."
 
-#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:643
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4421,7 +4310,7 @@ msgstr ""
 " Tieto balíky môžu byť aktualizované na novšiu verziu, ale vy ste požiadali "
 "o ich ponechanie v pôvodnej verzii."
 
-#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:644
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4429,7 +4318,7 @@ msgstr ""
 "Balíky k reinštalácií\n"
 " Tieto balíky budú preinštalované."
 
-#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:645
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:645
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4438,7 +4327,7 @@ msgstr ""
 "Balíky na inštaláciu\n"
 " Tieto balíky ste vybrali na inštaláciu na svoj počítač."
 
-#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:646
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:646
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4446,7 +4335,7 @@ msgstr ""
 "Balíky na odstránenie\n"
 " Tieto balíky ste vybrali na odstránenie zo systému."
 
-#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:647
+#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:647
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4454,7 +4343,7 @@ msgstr ""
 "Balíky na aktualizáciu\n"
 " Tieto balíky budú aktualizované na novšiu verziu."
 
-#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:648
+#: src/gtk/previewtab.cc:108 src/pkg_grouppolicy.cc:648
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4464,7 +4353,7 @@ msgstr ""
 " Tieto balíky nie sú plne nainštalované a nakonfigurované; vykoná sa pokus o "
 "dokončenie inštalácie."
 
-#: src/gtk/previewtab.cc:174
+#: src/gtk/previewtab.cc:179
 msgid "Preview: "
 msgstr "Náhľad:"
 
@@ -4486,119 +4375,125 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/gtk/resolver.cc:201 src/solution_fragment.cc:275
+#: src/gtk/resolver.cc:207
+#, fuzzy
+#| msgid "Package"
+msgid "Virtual package"
+msgstr "Balík"
+
+#: src/gtk/resolver.cc:241 src/solution_fragment.cc:275
 msgid "Not Installed"
 msgstr "Nenainštalovaný"
 
-#: src/gtk/resolver.cc:332
+#: src/gtk/resolver.cc:372
 #, fuzzy, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
 msgstr "Odstraňuje sa %s"
 
-#: src/gtk/resolver.cc:337
+#: src/gtk/resolver.cc:377
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %s."
 msgid "Canceling the installation of %s is rejected."
 msgstr "Zrušiť inštaláciu %s."
 
-#: src/gtk/resolver.cc:347
+#: src/gtk/resolver.cc:387
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %s."
 msgid "Canceling the removal of %s is rejected."
 msgstr "Zrušiť odstránenie %s."
 
-#: src/gtk/resolver.cc:350
+#: src/gtk/resolver.cc:390
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
 msgstr "Ponechať %F vo verzii %s (%s)"
 
-#: src/gtk/resolver.cc:357
+#: src/gtk/resolver.cc:397
 #, fuzzy, c-format
 #| msgid "Install %s version %s"
 msgid "Installing %s version %s is rejected."
 msgstr "Nainštalovať %s verzie %s"
 
-#: src/gtk/resolver.cc:363
+#: src/gtk/resolver.cc:403
 #, fuzzy, c-format
 #| msgid "Downgrade to %s version %s"
 msgid "Downgrading %s to version %s is rejected."
 msgstr "Znížiť %s na verziu %s"
 
-#: src/gtk/resolver.cc:369
+#: src/gtk/resolver.cc:409
 #, fuzzy, c-format
 #| msgid "Upgrade to %s version %s"
 msgid "Upgrading %s to version %s is rejected."
 msgstr "Aktualizovať na %s verzie %s"
 
-#: src/gtk/resolver.cc:386
+#: src/gtk/resolver.cc:426
 #, c-format
 msgid "Removing %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:391
+#: src/gtk/resolver.cc:431
 #, c-format
 msgid ""
 "Canceling the installation of %s is preferred over all un-accepted "
 "alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:401
+#: src/gtk/resolver.cc:441
 #, c-format
 msgid ""
 "Canceling the removal of %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:404
+#: src/gtk/resolver.cc:444
 #, c-format
 msgid ""
 "Keeping %s at version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:411
+#: src/gtk/resolver.cc:451
 #, c-format
 msgid ""
 "Installing %s version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:417
+#: src/gtk/resolver.cc:457
 #, c-format
 msgid ""
 "Downgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:423
+#: src/gtk/resolver.cc:463
 #, c-format
 msgid ""
 "Upgrading %s to version %s is preferred over all un-accpted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:441
+#: src/gtk/resolver.cc:481
 #, c-format
 msgid "Leaving %ls unresolved is rejected."
 msgstr ""
 
-#: src/gtk/resolver.cc:447
+#: src/gtk/resolver.cc:487
 #, c-format
 msgid "Leaving %ls unresolved is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:851
+#: src/gtk/resolver.cc:905
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/resolver.cc:855
+#: src/gtk/resolver.cc:909
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/resolver.cc:859
+#: src/gtk/resolver.cc:913
 msgid ""
 "Allow solutions containing this action, but do not prefer them to other "
 "solutions."
@@ -4609,7 +4504,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/resolver.cc:863
+#: src/gtk/resolver.cc:917
 msgid ""
 "Always prefer this action over alternatives that have not been accepted."
 msgid_plural ""
@@ -4618,188 +4513,200 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1226 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s závisí na %s"
 
-#: src/gtk/resolver.cc:1175 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1229 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s pred-závisí na %s"
 
-#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1232 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s navrhuje %s"
 
-#: src/gtk/resolver.cc:1181 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1235 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s doporučuje %s"
 
-#: src/gtk/resolver.cc:1184 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1238 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s koliduje s %s"
 
-#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:123
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s kazí %s"
 
-#: src/gtk/resolver.cc:1190 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s nahrádza %s"
 
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s zastaráva %s"
 
-#: src/gtk/resolver.cc:1303 src/gtk/resolver.cc:1757
+#: src/gtk/resolver.cc:1359 src/gtk/resolver.cc:1824
 #: src/solution_screen.cc:271
 msgid "Remove the following packages:"
 msgstr "Odstrániť nasledujúce balíky:"
 
-#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1769
+#: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1836
 #: src/solution_screen.cc:295
 msgid "Install the following packages:"
 msgstr "Nainštalovať nasledujúce balíky:"
 
-#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
+#: src/gtk/resolver.cc:1386 src/gtk/resolver.cc:1848
 msgid "Keep the following packages:"
 msgstr "Ponechať nasledujúce balíky:"
 
-#: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
+#: src/gtk/resolver.cc:1399 src/gtk/resolver.cc:1860
 #: src/solution_screen.cc:307
 msgid "Upgrade the following packages:"
 msgstr "Aktualizovať nasledujúce balíky:"
 
-#: src/gtk/resolver.cc:1356 src/gtk/resolver.cc:1806
+#: src/gtk/resolver.cc:1412 src/gtk/resolver.cc:1873
 #: src/solution_screen.cc:319
 msgid "Downgrade the following packages:"
 msgstr "Znížiť verzie nasledujúcich balíkov:"
 
-#: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
+#: src/gtk/resolver.cc:1425 src/gtk/resolver.cc:1886
 msgid "Leave the following dependencies unresolved:"
 msgstr "Ponechať nasledujúce závislosti nevyriešené:"
 
-#: src/gtk/resolver.cc:1444
+#: src/gtk/resolver.cc:1502
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Odstránenie %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1451
+#: src/gtk/resolver.cc:1509
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "Inštalácia %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1459
+#: src/gtk/resolver.cc:1517
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %s."
 msgid "Cancel the installation of %s"
 msgstr "Zrušiť inštaláciu %s."
 
-#: src/gtk/resolver.cc:1462
+#: src/gtk/resolver.cc:1520
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %s."
 msgid "Cancel the removal of %s"
 msgstr "Zrušiť odstránenie %s."
 
-#: src/gtk/resolver.cc:1465
+#: src/gtk/resolver.cc:1523
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "Ponechať %F vo verzii %s (%s)"
 
-#: src/gtk/resolver.cc:1472
+#: src/gtk/resolver.cc:1530
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Aktualizovať %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1481
+#: src/gtk/resolver.cc:1539
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Znížiť verziu %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove %s"
 msgid "<b>Remove</b> %s"
 msgstr "Odstrániť %s"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove %s"
 msgid "<b>remove</b> %s"
 msgstr "Odstrániť %s"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "Ponechať %F vo verzii %s (%s)"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "Ponechať %F vo verzii %s (%s)"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %s."
+msgid "<b>Cancel</b> the installation of %s"
+msgstr "Zrušiť inštaláciu %s."
+
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %s."
+msgid "<b>cancel</b> the installation of %s"
+msgstr "Zrušiť inštaláciu %s."
+
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "Inštalácia %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "Inštalácia %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "Downgrade to %s version %s"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "Znížiť %s na verziu %s"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "Downgrade to %s version %s"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "Znížiť %s na verziu %s"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "Upgrade to %s version %s"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "Aktualizovať na %s verzie %s"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "Upgrade to %s version %s"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "Aktualizovať na %s verzie %s"
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1654
+#: src/gtk/resolver.cc:1721
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4809,7 +4716,7 @@ msgstr[0] "%d inštalovaný"
 msgstr[1] "%d inštalované"
 msgstr[2] "%d inštalovaných"
 
-#: src/gtk/resolver.cc:1659
+#: src/gtk/resolver.cc:1726
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4819,7 +4726,7 @@ msgstr[0] "%d odstránenie"
 msgstr[1] "%d odstránenia"
 msgstr[2] "%d odstránení"
 
-#: src/gtk/resolver.cc:1665
+#: src/gtk/resolver.cc:1732
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4829,7 +4736,7 @@ msgstr[0] "%d ponechanie"
 msgstr[1] "%d ponechania"
 msgstr[2] "%d ponechaní"
 
-#: src/gtk/resolver.cc:1671
+#: src/gtk/resolver.cc:1738
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4839,7 +4746,7 @@ msgstr[0] "%d aktualizácia"
 msgstr[1] "%d aktualizácie"
 msgstr[2] "%d aktualizácií"
 
-#: src/gtk/resolver.cc:1677
+#: src/gtk/resolver.cc:1744
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -4849,7 +4756,7 @@ msgstr[0] "%d degradovaný"
 msgstr[1] "%d degradované"
 msgstr[2] "%d degradovaných"
 
-#: src/gtk/resolver.cc:1683
+#: src/gtk/resolver.cc:1750
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -4858,31 +4765,31 @@ msgstr[0] "Audit ^Odporúčaní"
 msgstr[1] "Audit ^Odporúčaní"
 msgstr[2] "Audit ^Odporúčaní"
 
-#: src/gtk/resolver.cc:1975
+#: src/gtk/resolver.cc:2042
 msgid "No solutions yet."
 msgstr "Zatiaľ žiadne riešenia."
 
-#: src/gtk/resolver.cc:1982
+#: src/gtk/resolver.cc:2049
 #, fuzzy
 #| msgid "No dependency chain found."
 msgid "No dependency solution was found."
 msgstr "Nebol nájdený žiadny reťazec závislostí."
 
-#: src/gtk/resolver.cc:1983
+#: src/gtk/resolver.cc:2050
 msgid "No solutions."
 msgstr "Žiadne riešenia."
 
-#: src/gtk/resolver.cc:1994
+#: src/gtk/resolver.cc:2061
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:1995
+#: src/gtk/resolver.cc:2062
 #, fuzzy, c-format
 #| msgid "No solutions."
 msgid "%u solutions."
 msgstr "Žiadne riešenia."
 
-#: src/gtk/resolver.cc:2026
+#: src/gtk/resolver.cc:2093
 #, fuzzy, c-format
 #| msgid "Solution %d of %d (score: %d)"
 msgid "Solution %s of %s (tier %s)."
@@ -7671,6 +7578,94 @@ msgstr "Sťahuje sa záznam zmien (changelog)"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Stiahnuť Changelog"
+
+#, fuzzy
+#~| msgid "_Install/remove packages"
+#~ msgid "_Install/Remove Packages"
+#~ msgstr "_Inštalovať/odstrániť balíky"
+
+#, fuzzy
+#~| msgid "_Update package list"
+#~ msgid "_Update Package List"
+#~ msgstr "_Aktualizovať zoznam balíkov"
+
+#~ msgid "Mark Up_gradable"
+#~ msgstr "Označiť A_ktualizovateľné"
+
+#, fuzzy
+#~| msgid "_Forget new packages"
+#~ msgid "_Forget New Packages"
+#~ msgstr "_Zabudnúť nové balíky"
+
+#, fuzzy
+#~| msgid "Canc_el pending actions"
+#~ msgid "Canc_el Pending Actions"
+#~ msgstr "_Zrušiť čakajúce operácie"
+
+#, fuzzy
+#~| msgid "_Clean package cache"
+#~ msgid "C_lean Package Cache"
+#~ msgstr "Vyčistiť _cache s balíkmi"
+
+#, fuzzy
+#~| msgid "Clean _obsolete files"
+#~ msgid "Clean _Obsolete Files"
+#~ msgstr "Vyčistiť staré súb_ory"
+
+#, fuzzy
+#~| msgid "_Reload package cache"
+#~ msgid "_Reload Package Cache"
+#~ msgstr "_Znovu načítať cache"
+
+#~ msgid "_Play Minesweeper"
+#~ msgstr "Zahrať si mínové _pole"
+
+#, fuzzy
+#~| msgid "_Become root"
+#~ msgid "_Become Root"
+#~ msgstr "_Stať sa rootom"
+
+#~ msgid "_Quit"
+#~ msgstr "_Ukončiť"
+
+#, fuzzy
+#~| msgid "gtk-find"
+#~ msgid "gtk-undo"
+#~ msgstr "gtk-find"
+
+#~ msgid "gtk-cut"
+#~ msgstr "gtk-cut"
+
+#~ msgid "gtk-copy"
+#~ msgstr "gtk-copy"
+
+#~ msgid "gtk-paste"
+#~ msgstr "gtk-paste"
+
+#~ msgid "gtk-delete"
+#~ msgstr "gtk-delete"
+
+#, fuzzy
+#~| msgid "View apt _errors"
+#~ msgid "View Apt _Errors"
+#~ msgstr "Zobraziť _chyby apt"
+
+#~ msgid "Find _Dependency Chains"
+#~ msgstr "Správa _závislostí"
+
+#~ msgid "gtk-go-back"
+#~ msgstr "gtk-go-back"
+
+#~ msgid "gtk-go-forward"
+#~ msgstr "gtk-go-forward"
+
+#~ msgid "gtk-about"
+#~ msgstr "gtk-about"
+
+#, fuzzy
+#~| msgid "view an explanation of the changes in the solution"
+#~ msgid "Show an explanation of the solution"
+#~ msgstr "zobraziť vysvetlenie zmien v riešení"
 
 #~ msgid "(for %s)"
 #~ msgid_plural "(for %s)"

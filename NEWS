@@ -1,3 +1,29 @@
+[7/20/2009]
+Version 0.5.3                               "The Aardvark Contingency"
+
+This version of aptitude now requires GTK+ 2.16 or greater and GTK--
+2.16 or greater.
+
+- Crashes and serious errors:
+
+  + [gtk] Don't crash when displaying a solution that cancels the
+          installation of a package. (Closes: #525898)
+
+- Internal changes:
+
+  + [all] Rewrote the resolver code to trade memory for time.  Large
+          dependency problems should be processed in about 20% of the
+          time that previous versions took.
+
+- Cosmetic and UI bugs:
+
+  + [gtk] Some redesigns to the GTK+ UI (Thanks to Arthur Liu).
+
+  + [gtk] Display package short descriptions in the resolver tab.
+
+  + [gtk] Display the search progress bar behind the text of the
+          search term (requires GTK+ 2.16 or greater).
+
 [4/26/2009]
 Version 0.5.2.1                             "Albatross!"
 

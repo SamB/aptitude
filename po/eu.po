@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-04-26 20:39-0700\n"
+"POT-Creation-Date: 2009-07-20 12:25-0700\n"
 "PO-Revision-Date: 2008-05-05 22:00+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -651,8 +651,8 @@ msgstr "Errore konponezina atzitzean"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Mendekotasunak ebaztea"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1221
-#: src/gtk/resolver.cc:1389 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1277
+#: src/gtk/resolver.cc:1445 src/solution_dialog.cc:140
 #: src/solution_screen.cc:568
 msgid "Internal error: unexpected null solution."
 msgstr "Barne-errorea: ustegabeko 'null' emaitza."
@@ -1725,7 +1725,7 @@ msgstr ""
 "sortu."
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
-#: src/gtk/resolver.cc:1974 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:2041 src/solution_dialog.cc:127
 #: src/solution_screen.cc:545
 msgid "Resolving dependencies..."
 msgstr "Mendekotasunak ebazten..."
@@ -1832,7 +1832,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Ondorengo paketeetan bete gabeko mendekotasunak daude:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1124 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -1968,8 +1968,8 @@ msgstr "Automatikoki instalatuta"
 msgid "no"
 msgstr "ez"
 
-#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:722
-#: src/gtk/previewtab.cc:225
+#: src/cmdline/cmdline_show.cc:391 src/gtk/packagestab.cc:725
+#: src/gtk/previewtab.cc:230
 msgid "Version: "
 msgstr "Bertsioa: "
 
@@ -2048,12 +2048,12 @@ msgid "Obsoletes"
 msgstr "Zaharkitzea:"
 
 #: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:200
+#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Hornitzen du:"
 
 #: src/cmdline/cmdline_show.cc:441 src/gtk/info.cc:702
-#: src/gtk/packagestab.cc:730 src/gtk/previewtab.cc:233
+#: src/gtk/packagestab.cc:733 src/gtk/previewtab.cc:238
 #: src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Azalpena: "
@@ -2208,8 +2208,7 @@ msgstr "Unekoa"
 msgid "Candidate"
 msgstr "Hautagarria"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/aptitude.glade:622 src/gtk/gui.cc:89
-#: src/gtk/gui.cc:1365
+#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:89 src/gtk/gui.cc:1365
 msgid "Install"
 msgstr "Instalatu"
 
@@ -2349,7 +2348,7 @@ msgstr "BETEGABEA"
 msgid "UNAVAILABLE"
 msgstr "EZ ERABILGARRIA"
 
-#: src/desc_render.cc:133 src/gtk/aptitude.glade:1144
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1054
 msgid "Tags"
 msgstr "Etiketak"
 
@@ -2625,54 +2624,54 @@ msgid ""
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:827
+#: src/generic/apt/aptitude_resolver_universe.cc:834
 #, c-format
 msgid ""
 "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:871
+#: src/generic/apt/aptitude_resolver_universe.cc:878
 #, fuzzy
 #| msgid "Section"
 msgid "Safe actions"
 msgstr "Sekzioa"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:872
+#: src/generic/apt/aptitude_resolver_universe.cc:879
 #, fuzzy
 #| msgid "Canc^el pending actions"
 msgid "Cancel all user actions"
 msgstr "Egiteko dauden ekintzak utzi"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:873
+#: src/generic/apt/aptitude_resolver_universe.cc:880
 #, fuzzy
 #| msgid "'-' to remove packages"
 msgid "Remove packages"
 msgstr "'-' paketeak kentzeko"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:874
+#: src/generic/apt/aptitude_resolver_universe.cc:881
 #, fuzzy
 #| msgid "not a real package"
 msgid "Modify held packages"
 msgstr "ez da benetako paketea"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:875
+#: src/generic/apt/aptitude_resolver_universe.cc:882
 msgid "Install versions from non-default sources"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:876
+#: src/generic/apt/aptitude_resolver_universe.cc:883
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Remove essential packages"
 msgstr "Kendu hurrengo paketeak:"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:909
+#: src/generic/apt/aptitude_resolver_universe.cc:916
 #, c-format
 msgid ""
 "The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
 "Tier entry."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:913
+#: src/generic/apt/aptitude_resolver_universe.cc:920
 #, c-format
 msgid ""
 "The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
@@ -3138,99 +3137,45 @@ msgstr ""
 msgid "_File"
 msgstr "Faltsua"
 
-#: src/gtk/aptitude.glade:26 src/ui.cc:2220
+#: src/gtk/aptitude.glade:27 src/ui.cc:2220
 msgid "Perform all pending installs and removals"
 msgstr "Instalatzeko/kentzeko dauden pakete guztiak instalatu/kendu"
 
-#: src/gtk/aptitude.glade:27
-#, fuzzy
-#| msgid "^Install/remove packages"
-msgid "_Install/Remove Packages"
-msgstr "^Instalatu/kendu paketeak"
-
-#: src/gtk/aptitude.glade:42 src/ui.cc:2223
+#: src/gtk/aptitude.glade:37 src/ui.cc:2223
 msgid "Check for new versions of packages"
 msgstr "Paketeen bertsio berririk dagoen begiratu"
 
-#: src/gtk/aptitude.glade:43
-#, fuzzy
-#| msgid "^Update package list"
-msgid "_Update Package List"
-msgstr "^Eguneratu pakete-zerrenda"
-
-#: src/gtk/aptitude.glade:63 src/ui.cc:2228
+#: src/gtk/aptitude.glade:52 src/ui.cc:2228
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "Bertsio-berritu daitezkeen paketeak, atxikita ez daudenak, markatu"
 
-#: src/gtk/aptitude.glade:64
-#, fuzzy
-#| msgid "Mark Up^gradable"
-msgid "Mark Up_gradable"
-msgstr "Markatu ^Berritu daitekeena"
-
-#: src/gtk/aptitude.glade:79 src/ui.cc:2233
+#: src/gtk/aptitude.glade:62 src/ui.cc:2233
 msgid "Forget which packages are \"new\""
 msgstr "Ahaztu zein diren pakete \"berriak\""
 
-#: src/gtk/aptitude.glade:80
-#, fuzzy
-#| msgid "^Forget new packages"
-msgid "_Forget New Packages"
-msgstr "^Ahaztu pakete berriak"
-
-#: src/gtk/aptitude.glade:94 src/ui.cc:2237
+#: src/gtk/aptitude.glade:71 src/ui.cc:2237
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "Instalatzeko, kentzeko, hizozteko edo bertsio berritzeko  dauden pakete "
 "guztiak utzi."
 
-#: src/gtk/aptitude.glade:95
-#, fuzzy
-#| msgid "Canc^el pending actions"
-msgid "Canc_el Pending Actions"
-msgstr "Egiteko dauden ekintzak utzi"
-
-#: src/gtk/aptitude.glade:109 src/ui.cc:2241
+#: src/gtk/aptitude.glade:80 src/ui.cc:2241
 msgid "Delete package files which were previously downloaded"
 msgstr "Lehen deskargatutako pakete-fitxategiak ezabatu"
 
-#: src/gtk/aptitude.glade:110
-#, fuzzy
-#| msgid "^Clean package cache"
-msgid "C_lean Package Cache"
-msgstr "^Garbitu paketeen cachea"
-
-#: src/gtk/aptitude.glade:124 src/ui.cc:2245
+#: src/gtk/aptitude.glade:89 src/ui.cc:2245
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Jada deskargatu ezin diren pakete-fitxategiak ezabatu"
 
-#: src/gtk/aptitude.glade:125
-#, fuzzy
-#| msgid "Clean ^obsolete files"
-msgid "Clean _Obsolete Files"
-msgstr "Garbitu fitxategi ^zaharkituak"
-
-#: src/gtk/aptitude.glade:144 src/ui.cc:2252
+#: src/gtk/aptitude.glade:103 src/ui.cc:2252
 msgid "Reload the package cache"
 msgstr "Paketeen cachea birkargatu."
 
-#: src/gtk/aptitude.glade:145
-#, fuzzy
-#| msgid "^Reload package cache"
-msgid "_Reload Package Cache"
-msgstr "^Birkargatu pakete-cachea"
-
-#: src/gtk/aptitude.glade:159 src/ui.cc:1701 src/ui.cc:2257
+#: src/gtk/aptitude.glade:112 src/ui.cc:1701 src/ui.cc:2257
 msgid "Waste time trying to find mines"
 msgstr "Denbora pasa mina bila"
 
-#: src/gtk/aptitude.glade:160
-#, fuzzy
-#| msgid "^Play Minesweeper"
-msgid "_Play Minesweeper"
-msgstr "^Jokatu mina-aurkitzailean"
-
-#: src/gtk/aptitude.glade:179 src/ui.cc:2262
+#: src/gtk/aptitude.glade:126 src/ui.cc:2262
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3238,261 +3183,200 @@ msgstr ""
 "Root bihurtzeko, exekutatu 'su'. Horrela programa berrabiaraziko da, baina "
 "zure ezarpenak mantenduta."
 
-#: src/gtk/aptitude.glade:180
-#, fuzzy
-#| msgid "Become root"
-msgid "_Become Root"
-msgstr "Root bihurtu"
-
-#: src/gtk/aptitude.glade:194 src/ui.cc:2265
+#: src/gtk/aptitude.glade:135 src/ui.cc:2265
 msgid "Exit the program"
 msgstr "Irten programatik"
 
-#: src/gtk/aptitude.glade:195
-#, fuzzy
-#| msgid "^Quit"
-msgid "_Quit"
-msgstr "^Irten"
-
-#: src/gtk/aptitude.glade:212
+#: src/gtk/aptitude.glade:147
 msgid "E_dit"
 msgstr ""
 
-#: src/gtk/aptitude.glade:220 src/ui.cc:2272
+#: src/gtk/aptitude.glade:156 src/ui.cc:2272
 msgid "Undo the last package operation or group of operations"
 msgstr "Azken pakete-eragiketa edo eragiketa-multzoa desegin"
 
-#: src/gtk/aptitude.glade:221
-msgid "gtk-undo"
-msgstr ""
-
-#: src/gtk/aptitude.glade:234
-msgid "gtk-cut"
-msgstr ""
-
-#: src/gtk/aptitude.glade:242
-msgid "gtk-copy"
-msgstr ""
-
-#: src/gtk/aptitude.glade:250
-msgid "gtk-paste"
-msgstr ""
-
-#: src/gtk/aptitude.glade:258
-#, fuzzy
-#| msgid "delete"
-msgid "gtk-delete"
-msgstr "ezabatu"
-
-#: src/gtk/aptitude.glade:270
+#: src/gtk/aptitude.glade:205
 #, fuzzy
 #| msgid "Package"
 msgid "_Package"
 msgstr "Paketea"
 
-#: src/gtk/aptitude.glade:282
+#: src/gtk/aptitude.glade:217
 #, fuzzy
 #| msgid "Views"
 msgid "_View"
 msgstr "Ikuspegiak"
 
-#: src/gtk/aptitude.glade:290
+#: src/gtk/aptitude.glade:226
 msgid "Change which columns are visible in the currently active view."
 msgstr ""
 
-#: src/gtk/aptitude.glade:291
-msgid "_Edit Columns..."
-msgstr ""
-
-#: src/gtk/aptitude.glade:310
+#: src/gtk/aptitude.glade:240
 msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
 
-#: src/gtk/aptitude.glade:311
-msgid "View Apt _Errors"
-msgstr ""
-
-#: src/gtk/aptitude.glade:325
+#: src/gtk/aptitude.glade:249
 msgid "Find chains of dependencies linking one package to another."
 msgstr ""
 
-#: src/gtk/aptitude.glade:326
-#, fuzzy
-#| msgid "Dependency handling"
-msgid "Find _Dependency Chains"
-msgstr "Mendekotasun kudeaketa"
-
-#: src/gtk/aptitude.glade:345
-msgid "gtk-go-back"
-msgstr ""
-
-#: src/gtk/aptitude.glade:355
-msgid "gtk-go-forward"
-msgstr ""
-
-#: src/gtk/aptitude.glade:365 src/gtk/aptitude.glade:765
-#, fuzzy
-#| msgid "delete"
-msgid "gtk-close"
-msgstr "ezabatu"
-
-#: src/gtk/aptitude.glade:379
+#: src/gtk/aptitude.glade:296
 #, fuzzy
 #| msgid "Help"
 msgid "_Help"
 msgstr "Laguntza"
 
-#: src/gtk/aptitude.glade:387
-msgid "gtk-about"
-msgstr ""
-
-#: src/gtk/aptitude.glade:407 src/gtk/dashboardtab.cc:750 src/gtk/gui.cc:1554
+#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:751 src/gtk/gui.cc:1554
 #: src/gtk/gui.cc:1748
 msgid "Dashboard"
 msgstr ""
 
-#: src/gtk/aptitude.glade:422
+#: src/gtk/aptitude.glade:344
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
 msgstr "Zerrendaren eguneraketa"
 
-#: src/gtk/aptitude.glade:432 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
+#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
 #: src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914 src/ui.cc:935
 #: src/ui.cc:937
 msgid "Packages"
 msgstr "Paketeak"
 
-#: src/gtk/aptitude.glade:442 src/gtk/gui.cc:977 src/gtk/previewtab.cc:116
+#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:977 src/gtk/previewtab.cc:118
 #: src/ui.cc:1336
 msgid "Preview"
 msgstr "Aurrebista"
 
-#: src/gtk/aptitude.glade:452 src/gtk/gui.cc:972 src/ui.cc:2653
+#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:972 src/ui.cc:2653
 msgid "Resolver"
 msgstr "Ebatzi"
 
-#: src/gtk/aptitude.glade:462
+#: src/gtk/aptitude.glade:388
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Remove"
 msgstr "Instalatuta"
 
-#: src/gtk/aptitude.glade:635 src/gtk/gui.cc:93 src/gtk/gui.cc:1372
-msgid "Remove"
-msgstr "Kendu"
-
-#: src/gtk/aptitude.glade:648 src/gtk/gui.cc:1377
-#, fuzzy
-#| msgid "^Purge"
-msgid "Purge"
-msgstr "^Purgatu"
-
-#: src/gtk/aptitude.glade:661 src/gtk/gui.cc:1382
-msgid "Keep"
-msgstr "Mantendu"
-
-#: src/gtk/aptitude.glade:674 src/gtk/gui.cc:1387
-msgid "Hold"
-msgstr "Heldu"
-
-#: src/gtk/aptitude.glade:687
+#: src/gtk/aptitude.glade:590
 msgid "Edit Columns..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:700
+#: src/gtk/aptitude.glade:603
 msgid "Dummy label (will be replaced at runtime)."
 msgstr ""
 
-#: src/gtk/aptitude.glade:731
+#: src/gtk/aptitude.glade:631
 #, fuzzy
 #| msgid "Remove the filter from the package list"
 msgid "Make this the default for new package lists."
 msgstr "Kendu iragazkia pakete-zerrendari"
 
-#: src/gtk/aptitude.glade:747
+#: src/gtk/aptitude.glade:646
 #, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "Apply these settings to all active package lists."
 msgstr "Ezarri iragazkia pakete-zerrendari"
 
-#: src/gtk/aptitude.glade:811 src/gtk/aptitude.glade:1490
-#: src/gtk/aptitude.glade:1809 src/gtk/aptitude.glade:1945
+#: src/gtk/aptitude.glade:664
+#, fuzzy
+#| msgid "delete"
+msgid "gtk-close"
+msgstr "ezabatu"
+
+#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1425
+#: src/gtk/aptitude.glade:1754 src/gtk/aptitude.glade:1892
 #, fuzzy
 #| msgid "Search"
 msgid "Search:"
 msgstr "Bilatu"
 
-#: src/gtk/aptitude.glade:831 src/gtk/aptitude.glade:1510
-#: src/gtk/aptitude.glade:1829 src/gtk/aptitude.glade:1965
+#: src/gtk/aptitude.glade:737 src/gtk/aptitude.glade:1443
+#: src/gtk/aptitude.glade:1772 src/gtk/aptitude.glade:1910
 msgid "gtk-find"
 msgstr ""
 
-#: src/gtk/aptitude.glade:845
+#: src/gtk/aptitude.glade:750
 #, fuzzy
 #| msgid "reinstall"
 msgid "Incremental"
 msgstr "berrinstalatu"
 
-#: src/gtk/aptitude.glade:862 src/gtk/aptitude.glade:1528
-#: src/gtk/aptitude.glade:1847 src/gtk/aptitude.glade:1983
+#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1464
+#: src/gtk/aptitude.glade:1793 src/gtk/aptitude.glade:1931
 #, fuzzy
 #| msgid "Err "
 msgid "Errors"
 msgstr "Err "
 
-#: src/gtk/aptitude.glade:879 src/gtk/aptitude.glade:1864
-#: src/gtk/aptitude.glade:2000
+#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1810
+#: src/gtk/aptitude.glade:1948
 msgid "Show "
 msgstr ""
 
-#: src/gtk/aptitude.glade:986
+#: src/gtk/aptitude.glade:895
 msgid "<span size=\"xx-large\">Versions:</span>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1046
+#: src/gtk/aptitude.glade:956
 #, fuzzy
 #| msgid "Dependencies of %s"
 msgid "Dependencies"
 msgstr "%s - mendekotasunak"
 
-#: src/gtk/aptitude.glade:1076
+#: src/gtk/aptitude.glade:986
 #, fuzzy
 #| msgid "^Changelog"
 msgid "Changelog"
 msgstr "^Aldaketa-egunkaria"
 
-#: src/gtk/aptitude.glade:1104
+#: src/gtk/aptitude.glade:1014
 #, fuzzy
 #| msgid "False"
 msgid "Files"
 msgstr "Faltsua"
 
-#: src/gtk/aptitude.glade:1115
+#: src/gtk/aptitude.glade:1025
 msgid "popcon"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1124
+#: src/gtk/aptitude.glade:1034
 msgid "Popcon"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1135
+#: src/gtk/aptitude.glade:1045
 #, fuzzy
 #| msgid "Tags"
 msgid "tags"
 msgstr "Etiketak"
 
-#: src/gtk/aptitude.glade:1192
+#: src/gtk/aptitude.glade:1106
 msgid "Fixing upgrade manually:"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1202 src/gtk/dashboardtab.cc:536
+#: src/gtk/aptitude.glade:1116 src/gtk/dashboardtab.cc:537
 msgid "Calculating upgrade..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1229
+#: src/gtk/aptitude.glade:1164
+msgid "<b>Solutions</b>"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1182 src/gtk/download.cc:261
+#: src/gtk/entityview.cc:551
+#, fuzzy
+#| msgid "State"
+msgid "Status"
+msgstr "Egoera"
+
+#: src/gtk/aptitude.glade:1216
+#, fuzzy
+#| msgid "Unknown action type: %s"
+msgid "Group by action type"
+msgstr "Ekintza mota ezezaguna: %s"
+
+#: src/gtk/aptitude.glade:1220
 msgid ""
 "Arrange the actions of the current solution so that actions that are of the "
 "same type are placed together (for instance, all the actions that remove "
@@ -3501,148 +3385,131 @@ msgid ""
 "This is the default view mode."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1232
-#, fuzzy
-#| msgid "Unknown action type: %s"
-msgid "Group by action type"
-msgstr "Ekintza mota ezezaguna: %s"
+#: src/gtk/aptitude.glade:1234
+msgid "Group by dependency"
+msgstr ""
 
-#: src/gtk/aptitude.glade:1245
+#: src/gtk/aptitude.glade:1238
 msgid ""
 "Show the order in which the actions in the current solution were performed "
 "and the dependency that triggered each action."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1246
-msgid "Show an explanation of the solution"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1263
+#: src/gtk/aptitude.glade:1255
 msgid "<b>View Mode</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1307
+#: src/gtk/aptitude.glade:1297
 #, fuzzy
 #| msgid "Toggle ^Rejected"
 msgid "Rejected"
 msgstr "Txandakatu ^baztertutakoa"
 
-#: src/gtk/aptitude.glade:1317
+#: src/gtk/aptitude.glade:1312
 #, fuzzy
 #| msgid "Preferences"
 msgid "No preference"
 msgstr "Hobespenak"
 
-#: src/gtk/aptitude.glade:1331
+#: src/gtk/aptitude.glade:1328
 msgid "Accepted"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1347
+#: src/gtk/aptitude.glade:1348
 msgid "<b>Status of selected action</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1364 src/gtk/download.cc:261
-#: src/gtk/entityview.cc:551
-#, fuzzy
-#| msgid "State"
-msgid "Status"
-msgstr "Egoera"
-
-#: src/gtk/aptitude.glade:1415
-msgid "<b>Solutions</b>"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1442
-#, fuzzy
-#| msgid "Select the next solution to the dependency problems."
-msgid "Calculate the next solution that has not yet been generated."
-msgstr "Hautatu hurrengo irtenbidea (mendekotasun arazoarena)."
-
-#: src/gtk/aptitude.glade:1443
+#: src/gtk/aptitude.glade:1369
 #, fuzzy
 #| msgid "^Examine Solution"
 msgid "Find a new solution"
 msgstr "^Aztertu irtenbidea"
 
-#: src/gtk/aptitude.glade:1457
+#: src/gtk/aptitude.glade:1373
+#, fuzzy
+#| msgid "Select the next solution to the dependency problems."
+msgid "Calculate the next solution that has not yet been generated."
+msgstr "Hautatu hurrengo irtenbidea (mendekotasun arazoarena)."
+
+#: src/gtk/aptitude.glade:1383
+msgid "gtk-apply"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1388
 #, fuzzy
 #| msgid "Perform the actions contained in the currently selected solution."
 msgid ""
 "Perform the actions in the currently selected solution and close this tab."
 msgstr "Landu ekintzak (irtenbidearen uneko hautapenean daudenak)."
 
-#: src/gtk/aptitude.glade:1458
-msgid "gtk-apply"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1607
+#: src/gtk/aptitude.glade:1543
 #, fuzzy
 #| msgid "Upgrade"
 msgid "Upgrade Summary"
 msgstr "Bertsio-berritu"
 
-#: src/gtk/aptitude.glade:1636
+#: src/gtk/aptitude.glade:1572
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Selected Package"
 msgstr "Iturburu-paketea: "
 
-#: src/gtk/aptitude.glade:1667
+#: src/gtk/aptitude.glade:1607
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1682
+#: src/gtk/aptitude.glade:1619
 #, fuzzy
 #| msgid "Manual"
 msgid "Fix Manually"
 msgstr "Eskuliburua"
 
-#: src/gtk/aptitude.glade:1691 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
+#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
 msgid "Upgrade"
 msgstr "Bertsio-berritu"
 
-#: src/gtk/aptitude.glade:1718
+#: src/gtk/aptitude.glade:1663
 msgid "<b>Available Upgrades:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1911
+#: src/gtk/aptitude.glade:1858
 msgid "<b>Start at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2047
+#: src/gtk/aptitude.glade:1996
 msgid "<b>End at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2115
+#: src/gtk/aptitude.glade:2064
 msgid "A terminal running dpkg will appear here."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2127
+#: src/gtk/aptitude.glade:2076
 msgid ""
 "Placeholder label for the explanation that two conffiles are being "
 "compared.\n"
 "This text should not appear in the program."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2153
+#: src/gtk/aptitude.glade:2105
 msgid "View the differences\t"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2179
+#: src/gtk/aptitude.glade:2131
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2191
+#: src/gtk/aptitude.glade:2143
 #, fuzzy
 #| msgid "yes"
 msgid "gtk-yes"
 msgstr "bai"
 
-#: src/gtk/aptitude.glade:2201
+#: src/gtk/aptitude.glade:2157
 msgid "gtk-no"
 msgstr ""
 
@@ -3697,21 +3564,21 @@ msgstr "Aldaketen egunkaria deskargatzen"
 msgid "Downloading changelogs"
 msgstr "Aldaketen egunkaria deskargatzen"
 
-#: src/gtk/dashboardtab.cc:210
+#: src/gtk/dashboardtab.cc:211
 msgid "Resolve Upgrade Manually"
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:306
+#: src/gtk/dashboardtab.cc:307
 #, fuzzy
 #| msgid "URL to use to download changelogs"
 msgid "Preparing to download changelogs"
 msgstr "Aldaketen egunkariak deskargatzeko erabiliko den URLa"
 
-#: src/gtk/dashboardtab.cc:396
+#: src/gtk/dashboardtab.cc:397
 msgid "Available upgrades:"
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:413
+#: src/gtk/dashboardtab.cc:414
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -3720,19 +3587,19 @@ msgid_plural "%d available upgrades:"
 msgstr[0] "%d eguneratu"
 msgstr[1] "%d eguneratu"
 
-#: src/gtk/dashboardtab.cc:629
+#: src/gtk/dashboardtab.cc:630
 #, fuzzy
 #| msgid "Not Installed"
 msgid "No upgrades are available."
 msgstr "Ez dago instalatuta"
 
-#: src/gtk/dashboardtab.cc:641
+#: src/gtk/dashboardtab.cc:642
 #, fuzzy
 #| msgid "Unable to locate package %s"
 msgid "Unable to calculate an upgrade."
 msgstr "Ezin da %s paketea aurkitu"
 
-#: src/gtk/dashboardtab.cc:650
+#: src/gtk/dashboardtab.cc:651
 #, c-format
 msgid ""
 "Press \"%s\" to install <span size='large'>%d</span> upgrade out of <span "
@@ -3743,7 +3610,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/dashboardtab.cc:662
+#: src/gtk/dashboardtab.cc:663
 #, c-format
 msgid ""
 "Press \"%s\" to manually attempt to install the remaining <span size='large'>"
@@ -3754,49 +3621,49 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/dashboardtab.cc:687
+#: src/gtk/dashboardtab.cc:688
 #, c-format
 msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
 "solution."
 msgstr ""
 
-#: src/gtk/dashboardtab.cc:704
+#: src/gtk/dashboardtab.cc:705
 #, fuzzy, c-format
 #| msgid "Internal error: Default column string is unparsable"
 msgid "Internal error encountered while calculating an upgrade: %s"
 msgstr "Barne-errorea: zutabe-kate lehenetsia ez da analizagarria"
 
-#: src/gtk/dashboardtab.cc:836
+#: src/gtk/dashboardtab.cc:838
 #, c-format
 msgid ""
 "The package %s has no candidate version and will not be upgraded; unable to "
 "show its changelog."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:77
+#: src/gtk/dependency_chains_tab.cc:78
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: start"
 msgstr "Mendekotasun kudeaketa"
 
-#: src/gtk/dependency_chains_tab.cc:79
+#: src/gtk/dependency_chains_tab.cc:82
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: end"
 msgstr "Mendekotasun kudeaketa"
 
-#: src/gtk/dependency_chains_tab.cc:81
+#: src/gtk/dependency_chains_tab.cc:86
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "Find dependency chains: results"
 msgstr "Mendekotasun kudeaketa"
 
-#: src/gtk/dependency_chains_tab.cc:221
+#: src/gtk/dependency_chains_tab.cc:226
 msgid "Select one or more starting packages and an ending package to search."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:276
+#: src/gtk/dependency_chains_tab.cc:281
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency chain found."
@@ -4061,6 +3928,10 @@ msgstr "Berrinstalatu"
 msgid "Downgrade"
 msgstr "Itzuli aurreko bertsiora"
 
+#: src/gtk/gui.cc:93 src/gtk/gui.cc:1372
+msgid "Remove"
+msgstr "Kendu"
+
 #: src/gtk/gui.cc:94
 msgid "Remove and purge configuration/data"
 msgstr ""
@@ -4258,6 +4129,20 @@ msgstr "ez dago instalatuta"
 msgid "Install/Upgrade"
 msgstr "Instalatuta"
 
+#: src/gtk/gui.cc:1377
+#, fuzzy
+#| msgid "^Purge"
+msgid "Purge"
+msgstr "^Purgatu"
+
+#: src/gtk/gui.cc:1382
+msgid "Keep"
+msgstr "Mantendu"
+
+#: src/gtk/gui.cc:1387
+msgid "Hold"
+msgstr "Heldu"
+
 #: src/gtk/gui.cc:1393
 msgid "Set as automatic"
 msgstr ""
@@ -4323,133 +4208,133 @@ msgstr "ez"
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/gtk/packagestab.cc:60
+#: src/gtk/packagestab.cc:61
 msgid "Parse error"
 msgstr ""
 
-#: src/gtk/packagestab.cc:203
+#: src/gtk/packagestab.cc:204
 #, fuzzy, c-format
 #| msgid "No packages matched the pattern \"%ls\"."
 msgid "No packages matched \"%s\"."
 msgstr "Ez dago \"%ls\" patroia betetzen duen paketerik."
 
-#: src/gtk/packagestab.cc:313
+#: src/gtk/packagestab.cc:314
 msgid "Enter a search and click \"Find\" to display packages."
 msgstr ""
 
-#: src/gtk/packagestab.cc:413
+#: src/gtk/packagestab.cc:416
 #, fuzzy
 #| msgid "Package: "
 msgid "Packages: "
 msgstr "Paketea: "
 
-#: src/gtk/packagestab.cc:490
+#: src/gtk/packagestab.cc:493
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrade to %s version %s"
 msgstr "%s - bertsioak"
 
-#: src/gtk/packagestab.cc:498
+#: src/gtk/packagestab.cc:501
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Install %s version %s"
 msgstr "Instalatu: (%s-ek  %s hornitzen du)"
 
-#: src/gtk/packagestab.cc:506
+#: src/gtk/packagestab.cc:509
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrade to %s version %s"
 msgstr "  cwidget bertsioa: %s\n"
 
-#: src/gtk/packagestab.cc:517
+#: src/gtk/packagestab.cc:520
 #, fuzzy, c-format
 #| msgid "Keep the following packages at their current version:"
 msgid "Don't hold %s at its current version."
 msgstr "Mantendu hurrengo paketeak dauden bezala:"
 
-#: src/gtk/packagestab.cc:520 src/gtk/packagestab.cc:540
-#: src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:523 src/gtk/packagestab.cc:543
+#: src/gtk/packagestab.cc:546
 #, fuzzy, c-format
 #| msgid "Canc^el pending actions"
 msgid "Cancel any actions on %s."
 msgstr "Egiteko dauden ekintzak utzi"
 
-#: src/gtk/packagestab.cc:525
+#: src/gtk/packagestab.cc:528
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the purge of %s."
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/packagestab.cc:527
+#: src/gtk/packagestab.cc:530
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s."
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/packagestab.cc:532
+#: src/gtk/packagestab.cc:535
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the upgrade of %s."
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/packagestab.cc:534
+#: src/gtk/packagestab.cc:537
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s."
 msgstr "Bertan behera utzi %F(r)en instalazioa"
 
-#: src/gtk/packagestab.cc:536
+#: src/gtk/packagestab.cc:539
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the downgrade of %s."
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/packagestab.cc:538
+#: src/gtk/packagestab.cc:541
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the reinstallation of %s."
 msgstr "Bertan behera utzi %F(r)en instalazioa"
 
-#: src/gtk/packagestab.cc:579
+#: src/gtk/packagestab.cc:582
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "Remove %s"
 msgstr "Kendu(%s)"
 
-#: src/gtk/packagestab.cc:583
+#: src/gtk/packagestab.cc:586
 #, fuzzy, c-format
 #| msgid "^Purge"
 msgid "Purge %s"
 msgstr "^Purgatu"
 
-#: src/gtk/packagestab.cc:591
+#: src/gtk/packagestab.cc:594
 #, c-format
 msgid "Hold %s at its current version."
 msgstr ""
 
-#: src/gtk/packagestab.cc:596
+#: src/gtk/packagestab.cc:599
 #, fuzzy, c-format
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "Mark %s as automatically installed."
 msgstr "'&M' markatu automatikoki instalatu izan diren paketeak"
 
-#: src/gtk/packagestab.cc:601
+#: src/gtk/packagestab.cc:604
 #, fuzzy, c-format
 #| msgid "The package \"%s\" is manually installed.\n"
 msgid "Mark %s as manually installed."
 msgstr "\"%s\" paketea eskuz instalaturik dago.\n"
 
-#: src/gtk/packagestab.cc:643
+#: src/gtk/packagestab.cc:646
 #, fuzzy, c-format
 #| msgid "\"%s\" is a virtual package provided by:\n"
 msgid "%s is a virtual package provided by:\n"
 msgstr "\"%s\" pakete birtual bat da, honek hornitua:\n"
 
-#: src/gtk/packagestab.cc:707 src/gtk/previewtab.cc:210
+#: src/gtk/packagestab.cc:710 src/gtk/previewtab.cc:215
 msgid "(more info...)"
 msgstr ""
 
-#: src/gtk/packagestab.cc:736
+#: src/gtk/packagestab.cc:739
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Source: "
@@ -4479,28 +4364,28 @@ msgstr "%s; automatikoki instalatu egingo da"
 msgid "%s is being installed manually."
 msgstr "%s; automatikoki instalatu egingo da"
 
-#: src/gtk/pkgview.cc:399
+#: src/gtk/pkgview.cc:401
 msgid "Cache reloading, please wait..."
 msgstr ""
 
-#: src/gtk/pkgview.cc:604
+#: src/gtk/pkgview.cc:607
 #, fuzzy
 #| msgid "Search"
 msgid "Searching..."
 msgstr "Bilatu"
 
-#: src/gtk/pkgview.cc:715
+#: src/gtk/pkgview.cc:718
 #, fuzzy
 #| msgid "Building view"
 msgid "Finalizing view"
 msgstr "Ikuspegi-eraikitzea"
 
-#: src/gtk/pkgview.cc:715 src/pkg_tree.cc:204 src/pkg_tree.cc:215
+#: src/gtk/pkgview.cc:718 src/pkg_tree.cc:204 src/pkg_tree.cc:215
 #: src/pkg_tree.cc:226 src/pkg_tree.cc:238
 msgid "Building view"
 msgstr "Ikuspegi-eraikitzea"
 
-#: src/gtk/previewtab.cc:96 src/pkg_grouppolicy.cc:637
+#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:637
 msgid ""
 "Packages with unsatisfied dependencies\n"
 " The dependency requirements of these packages will be unmet after the "
@@ -4516,7 +4401,7 @@ msgstr ""
 " Zuhaitz hau agertzeak seguru asko esan nahi izango du, zerbait hautsita "
 "dagoela zure sisteman edo Debian artxiboan."
 
-#: src/gtk/previewtab.cc:97 src/pkg_grouppolicy.cc:638
+#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:638
 msgid ""
 "Packages being removed because they are no longer used\n"
 " These packages are being deleted because they were automatically installed "
@@ -4529,7 +4414,7 @@ msgstr ""
 "instalatutako pakete bat ere geratuko horien mendekotasun "
 "'garrantzitsua'duenik.\n"
 
-#: src/gtk/previewtab.cc:98 src/pkg_grouppolicy.cc:639
+#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:639
 msgid ""
 "Packages being automatically held in their current state\n"
 " These packages could be upgraded, but they have been kept in their current "
@@ -4539,7 +4424,7 @@ msgstr ""
 " Pakete hauek bertsio-berritu litezke, baina uneko egoeran mantenduko dira, "
 "mendekotasunik ez hausteko."
 
-#: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:640
+#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:640
 msgid ""
 "Packages being automatically installed to satisfy dependencies\n"
 " These packages are being installed because they are required by another "
@@ -4549,7 +4434,7 @@ msgstr ""
 " Instalatzeko aukeratu duzun beste pakete batek behar dituelako instalatuko "
 "dira pakete hauek."
 
-#: src/gtk/previewtab.cc:100 src/pkg_grouppolicy.cc:641
+#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:641
 msgid ""
 "Packages being deleted due to unsatisfied dependencies\n"
 " These packages are being deleted because one or more of their dependencies "
@@ -4559,7 +4444,7 @@ msgstr ""
 " Euren mendekotasun bat edo gehiago jada erabilgarri ez dagoelako, edo beste "
 "pakete batekin gatazka dutelako ezabatuko dira pakete hauek."
 
-#: src/gtk/previewtab.cc:101 src/pkg_grouppolicy.cc:642
+#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:642
 msgid ""
 "Packages to be downgraded\n"
 " An older version of these packages than is currently installed will be "
@@ -4569,7 +4454,7 @@ msgstr ""
 " Une honetan instalatutakoa baino bertsio zaharrago batera itzuliko dira "
 "pakete hauek."
 
-#: src/gtk/previewtab.cc:102 src/pkg_grouppolicy.cc:643
+#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:643
 msgid ""
 "Packages being held back\n"
 " These packages could be upgraded, but you have asked for them to be held at "
@@ -4579,7 +4464,7 @@ msgstr ""
 " Pakete hauek bertsio-berritu daitezke, baina uneko bertsioan mantentzea "
 "eskatu duzu."
 
-#: src/gtk/previewtab.cc:103 src/pkg_grouppolicy.cc:644
+#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:644
 msgid ""
 "Packages to be reinstalled\n"
 " These packages will be reinstalled."
@@ -4587,7 +4472,7 @@ msgstr ""
 "Berrinstalatzeko paketeak\n"
 " Pakete hauek berriro instalatuko dira."
 
-#: src/gtk/previewtab.cc:104 src/pkg_grouppolicy.cc:645
+#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:645
 msgid ""
 "Packages to be installed\n"
 " These packages have been manually selected for installation on your "
@@ -4596,7 +4481,7 @@ msgstr ""
 "Instalatzeko paketeak\n"
 " Pakete hauek eskuz hautatu dituzu, ordenagailuan instalatzeko."
 
-#: src/gtk/previewtab.cc:105 src/pkg_grouppolicy.cc:646
+#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:646
 msgid ""
 "Packages to be removed\n"
 " These packages have been manually selected for removal."
@@ -4604,7 +4489,7 @@ msgstr ""
 "Kentzeko paketeak\n"
 " Pakete hauek eskuz hautatu dituzu kentzeko."
 
-#: src/gtk/previewtab.cc:106 src/pkg_grouppolicy.cc:647
+#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:647
 msgid ""
 "Packages to be upgraded\n"
 " These packages will be upgraded to a newer version."
@@ -4612,7 +4497,7 @@ msgstr ""
 "Bertsio-berritzeko paketeak\n"
 " Pakete hauek bertsio-berritu egingo dira."
 
-#: src/gtk/previewtab.cc:107 src/pkg_grouppolicy.cc:648
+#: src/gtk/previewtab.cc:108 src/pkg_grouppolicy.cc:648
 msgid ""
 "Packages that are partially installed\n"
 " These packages are not fully installed and configured; an attempt will be "
@@ -4622,7 +4507,7 @@ msgstr ""
 " Pakete hauek ez daude guztiz instalatu eta konfiguraturik, instalazio hau "
 "burutzeko saiakera bat egingo da orain."
 
-#: src/gtk/previewtab.cc:174
+#: src/gtk/previewtab.cc:179
 #, fuzzy
 #| msgid "Preview"
 msgid "Preview: "
@@ -4643,117 +4528,123 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/gtk/resolver.cc:201 src/solution_fragment.cc:275
+#: src/gtk/resolver.cc:207
+#, fuzzy
+#| msgid "Package"
+msgid "Virtual package"
+msgstr "Paketea"
+
+#: src/gtk/resolver.cc:241 src/solution_fragment.cc:275
 msgid "Not Installed"
 msgstr "Ez dago instalatuta"
 
-#: src/gtk/resolver.cc:332
+#: src/gtk/resolver.cc:372
 #, fuzzy, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
 msgstr "%s kentzen"
 
-#: src/gtk/resolver.cc:337
+#: src/gtk/resolver.cc:377
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Canceling the installation of %s is rejected."
 msgstr "Bertan behera utzi %F(r)en instalazioa"
 
-#: src/gtk/resolver.cc:347
+#: src/gtk/resolver.cc:387
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Canceling the removal of %s is rejected."
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/resolver.cc:350
+#: src/gtk/resolver.cc:390
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
 msgstr "Mantendu %F %s bertsioan (%s)"
 
-#: src/gtk/resolver.cc:357
+#: src/gtk/resolver.cc:397
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Installing %s version %s is rejected."
 msgstr "Instalatu: (%s-ek  %s hornitzen du)"
 
-#: src/gtk/resolver.cc:363
+#: src/gtk/resolver.cc:403
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrading %s to version %s is rejected."
 msgstr "  cwidget bertsioa: %s\n"
 
-#: src/gtk/resolver.cc:369
+#: src/gtk/resolver.cc:409
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrading %s to version %s is rejected."
 msgstr "%s - bertsioak"
 
-#: src/gtk/resolver.cc:386
+#: src/gtk/resolver.cc:426
 #, c-format
 msgid "Removing %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:391
+#: src/gtk/resolver.cc:431
 #, c-format
 msgid ""
 "Canceling the installation of %s is preferred over all un-accepted "
 "alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:401
+#: src/gtk/resolver.cc:441
 #, c-format
 msgid ""
 "Canceling the removal of %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:404
+#: src/gtk/resolver.cc:444
 #, c-format
 msgid ""
 "Keeping %s at version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:411
+#: src/gtk/resolver.cc:451
 #, c-format
 msgid ""
 "Installing %s version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:417
+#: src/gtk/resolver.cc:457
 #, c-format
 msgid ""
 "Downgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:423
+#: src/gtk/resolver.cc:463
 #, c-format
 msgid ""
 "Upgrading %s to version %s is preferred over all un-accpted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:441
+#: src/gtk/resolver.cc:481
 #, c-format
 msgid "Leaving %ls unresolved is rejected."
 msgstr ""
 
-#: src/gtk/resolver.cc:447
+#: src/gtk/resolver.cc:487
 #, c-format
 msgid "Leaving %ls unresolved is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:851
+#: src/gtk/resolver.cc:905
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:855
+#: src/gtk/resolver.cc:909
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:859
+#: src/gtk/resolver.cc:913
 msgid ""
 "Allow solutions containing this action, but do not prefer them to other "
 "solutions."
@@ -4763,7 +4654,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:863
+#: src/gtk/resolver.cc:917
 msgid ""
 "Always prefer this action over alternatives that have not been accepted."
 msgid_plural ""
@@ -4771,192 +4662,204 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1172 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1226 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s-ek %s-ren mendekotasuna du."
 
-#: src/gtk/resolver.cc:1175 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1229 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s-ek %s-ren aurre-mendekotasuna du."
 
-#: src/gtk/resolver.cc:1178 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1232 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s-ek %s iradokitzen du"
 
-#: src/gtk/resolver.cc:1181 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1235 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s-ek %s gomendatzen du"
 
-#: src/gtk/resolver.cc:1184 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1238 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s-ek %s-rekin elkar-jotzen du"
 
-#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:123
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s-ek %s hausten du"
 
-#: src/gtk/resolver.cc:1190 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s-ek %s ordezkatzen du"
 
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s-ek %s zaharkiturik uzten du"
 
-#: src/gtk/resolver.cc:1303 src/gtk/resolver.cc:1757
+#: src/gtk/resolver.cc:1359 src/gtk/resolver.cc:1824
 #: src/solution_screen.cc:271
 msgid "Remove the following packages:"
 msgstr "Kendu hurrengo paketeak:"
 
-#: src/gtk/resolver.cc:1317 src/gtk/resolver.cc:1769
+#: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1836
 #: src/solution_screen.cc:295
 msgid "Install the following packages:"
 msgstr "Instalatu hurrengo bertsio-beritzeak:"
 
-#: src/gtk/resolver.cc:1330 src/gtk/resolver.cc:1781
+#: src/gtk/resolver.cc:1386 src/gtk/resolver.cc:1848
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "Kendu hurrengo paketeak:"
 
-#: src/gtk/resolver.cc:1343 src/gtk/resolver.cc:1793
+#: src/gtk/resolver.cc:1399 src/gtk/resolver.cc:1860
 #: src/solution_screen.cc:307
 msgid "Upgrade the following packages:"
 msgstr "Bertsio-berritu hurrengo paketeak:"
 
-#: src/gtk/resolver.cc:1356 src/gtk/resolver.cc:1806
+#: src/gtk/resolver.cc:1412 src/gtk/resolver.cc:1873
 #: src/solution_screen.cc:319
 msgid "Downgrade the following packages:"
 msgstr "Bertsioa atzeratu hurrengo paketeetan:"
 
-#: src/gtk/resolver.cc:1369 src/gtk/resolver.cc:1819
+#: src/gtk/resolver.cc:1425 src/gtk/resolver.cc:1886
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "Utzi honako mendekotasunak ebatzi gabe:%n"
 
-#: src/gtk/resolver.cc:1444
+#: src/gtk/resolver.cc:1502
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Kendu %F  [%s (%s)]"
 
-#: src/gtk/resolver.cc:1451
+#: src/gtk/resolver.cc:1509
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "Instalatu %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1459
+#: src/gtk/resolver.cc:1517
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "Bertan behera utzi %F(r)en instalazioa"
 
-#: src/gtk/resolver.cc:1462
+#: src/gtk/resolver.cc:1520
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "Bertanb behera utzi %F kentzea"
 
-#: src/gtk/resolver.cc:1465
+#: src/gtk/resolver.cc:1523
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "Mantendu %F %s bertsioan (%s)"
 
-#: src/gtk/resolver.cc:1472
+#: src/gtk/resolver.cc:1530
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Eguneratu %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1481
+#: src/gtk/resolver.cc:1539
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Bertsio-zahartu %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>Remove</b> %s"
 msgstr "Kendu(%s)"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1598
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>remove</b> %s"
 msgstr "Kendu(%s)"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "Mantendu %F %s bertsioan (%s)"
 
-#: src/gtk/resolver.cc:1546
+#: src/gtk/resolver.cc:1607
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "Mantendu %F %s bertsioan (%s)"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "<b>Cancel</b> the installation of %s"
+msgstr "Bertan behera utzi %F(r)en instalazioa"
+
+#: src/gtk/resolver.cc:1615
+#, fuzzy, c-format
+#| msgid "Cancel the installation of %F"
+msgid "<b>cancel</b> the installation of %s"
+msgstr "Bertan behera utzi %F(r)en instalazioa"
+
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "Instalatu %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1555
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "Instalatu %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "  cwidget bertsioa: %s\n"
 
-#: src/gtk/resolver.cc:1564
+#: src/gtk/resolver.cc:1631
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "  cwidget bertsioa: %s\n"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s - bertsioak"
 
-#: src/gtk/resolver.cc:1573
+#: src/gtk/resolver.cc:1640
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s - bertsioak"
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1586
+#: src/gtk/resolver.cc:1653
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1654
+#: src/gtk/resolver.cc:1721
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4965,7 +4868,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d instalatu"
 msgstr[1] "%d instalatu"
 
-#: src/gtk/resolver.cc:1659
+#: src/gtk/resolver.cc:1726
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4974,7 +4877,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d kendu"
 msgstr[1] "%d kendu"
 
-#: src/gtk/resolver.cc:1665
+#: src/gtk/resolver.cc:1732
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4983,7 +4886,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d mantendu"
 msgstr[1] "%d mantendu"
 
-#: src/gtk/resolver.cc:1671
+#: src/gtk/resolver.cc:1738
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4992,7 +4895,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d eguneratu"
 msgstr[1] "%d eguneratu"
 
-#: src/gtk/resolver.cc:1677
+#: src/gtk/resolver.cc:1744
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -5001,7 +4904,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d aurreko bertsiora itzuli"
 msgstr[1] "%d aurreko bertsiora itzuli"
 
-#: src/gtk/resolver.cc:1683
+#: src/gtk/resolver.cc:1750
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -5009,35 +4912,35 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "^Gomendioak Auditatu:"
 msgstr[1] "^Gomendioak Auditatu:"
 
-#: src/gtk/resolver.cc:1975
+#: src/gtk/resolver.cc:2042
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "Ez dago irtenbide gehiagorik."
 
-#: src/gtk/resolver.cc:1982
+#: src/gtk/resolver.cc:2049
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency solution was found."
 msgstr "Mendekotasun kudeaketa"
 
-#: src/gtk/resolver.cc:1983
+#: src/gtk/resolver.cc:2050
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "Ez dago irtenbide gehiagorik."
 
-#: src/gtk/resolver.cc:1994
+#: src/gtk/resolver.cc:2061
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:1995
+#: src/gtk/resolver.cc:2062
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "Ez dago irtenbide gehiagorik."
 
-#: src/gtk/resolver.cc:2026
+#: src/gtk/resolver.cc:2093
 #, c-format
 msgid "Solution %s of %s (tier %s)."
 msgstr ""
@@ -7868,6 +7771,71 @@ msgstr "Aldaketen egunkaria deskargatzen"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Deskargatu erregistro aldaketak"
+
+#, fuzzy
+#~| msgid "^Install/remove packages"
+#~ msgid "_Install/Remove Packages"
+#~ msgstr "^Instalatu/kendu paketeak"
+
+#, fuzzy
+#~| msgid "^Update package list"
+#~ msgid "_Update Package List"
+#~ msgstr "^Eguneratu pakete-zerrenda"
+
+#, fuzzy
+#~| msgid "Mark Up^gradable"
+#~ msgid "Mark Up_gradable"
+#~ msgstr "Markatu ^Berritu daitekeena"
+
+#, fuzzy
+#~| msgid "^Forget new packages"
+#~ msgid "_Forget New Packages"
+#~ msgstr "^Ahaztu pakete berriak"
+
+#, fuzzy
+#~| msgid "Canc^el pending actions"
+#~ msgid "Canc_el Pending Actions"
+#~ msgstr "Egiteko dauden ekintzak utzi"
+
+#, fuzzy
+#~| msgid "^Clean package cache"
+#~ msgid "C_lean Package Cache"
+#~ msgstr "^Garbitu paketeen cachea"
+
+#, fuzzy
+#~| msgid "Clean ^obsolete files"
+#~ msgid "Clean _Obsolete Files"
+#~ msgstr "Garbitu fitxategi ^zaharkituak"
+
+#, fuzzy
+#~| msgid "^Reload package cache"
+#~ msgid "_Reload Package Cache"
+#~ msgstr "^Birkargatu pakete-cachea"
+
+#, fuzzy
+#~| msgid "^Play Minesweeper"
+#~ msgid "_Play Minesweeper"
+#~ msgstr "^Jokatu mina-aurkitzailean"
+
+#, fuzzy
+#~| msgid "Become root"
+#~ msgid "_Become Root"
+#~ msgstr "Root bihurtu"
+
+#, fuzzy
+#~| msgid "^Quit"
+#~ msgid "_Quit"
+#~ msgstr "^Irten"
+
+#, fuzzy
+#~| msgid "delete"
+#~ msgid "gtk-delete"
+#~ msgstr "ezabatu"
+
+#, fuzzy
+#~| msgid "Dependency handling"
+#~ msgid "Find _Dependency Chains"
+#~ msgstr "Mendekotasun kudeaketa"
 
 #~ msgid "(for %s)"
 #~ msgid_plural "(for %s)"
