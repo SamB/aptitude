@@ -1,6 +1,6 @@
 // pkg_grouppolicy.cc
 //
-//  Copyright 1999-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2005, 2007-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1252,6 +1252,7 @@ public:
 			   const vector<match_entry> &_subgroups)
         :pkg_grouppolicy(_sig, _desc_sig),
 	 chain(_chain), passthrough_policy(NULL),
+	 search_info(matching::search_cache::create()),
 	 subgroups(_subgroups)
   {
   }
