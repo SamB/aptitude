@@ -80,7 +80,7 @@ namespace aptitude
 	    while(matches_found < 30 && matches[matches_found].rm_so >= 0)
 	      ++matches_found;
 
-	    return match::make_regexp(p, matches, matches + matches_found);
+	    return match::make_regexp(p, s, matches, matches + matches_found);
 	  }
 	else
 	  return NULL;
@@ -166,6 +166,88 @@ namespace aptitude
 		   const ref_ptr<pattern> &pattern,
 		   bool debug);
       };
+    }
+
+    std::string structural_match::get_group(unsigned int group_num) const
+    {
+      if(group_num >= num_groups)
+	throw MatchingException("Can't retrieve match information: the group number is out of bounds.");
+
+      for(std::vector<cwidget::util::ref_ptr<structural_match> >::const_iterator
+	    it = sub_matches.begin(); it != sub_matches.end(); ++it)
+	{
+	  if(group_num < (*it)->get_num_groups())
+	    return (*it)->get_group(group_num);
+	  else
+	    group_num -= (*it)->get_num_groups();
+	}
+
+      for(std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > >::const_iterator
+	    it = atomic_matches.begin(); it != atomic_matches.end(); ++it)
+	{
+	  if(group_num < it->second->get_num_groups())
+	    return it->second->get_group(group_num);
+	  else
+	    group_num -= it->second->get_num_groups();
+	}
+
+      throw MatchingException("Internal error: inconsistent group count.");
+    }
+
+    unsigned int match::get_num_groups() const
+    {
+      switch(tp)
+	{
+	case atomic:
+	  // TODO: do something special based on the type, like we
+	  // used to before the recent changes.
+	  return 0;
+
+	case regexp:
+	  return regexp_matches.size();
+
+	case with_sub_match:
+	  return sub_match->get_num_groups();
+
+	case dependency:
+	  // TODO: represent the dependency here somehow.
+	  return 0;
+
+	case provides:
+	  // TODO: represent the provides here somehow.
+	  return 0;
+
+	default:
+	  throw MatchingException("Internal error: bad match type.");
+	}
+    }
+
+    std::string match::get_group(unsigned int group_num) const
+    {
+      switch(tp)
+	{
+	case atomic:
+	case dependency:
+	case provides:
+	  throw MatchingException("Can't retrieve match information: the group number is out of bounds.");
+
+	case regexp:
+	  if(group_num >= regexp_matches.size())
+	    throw MatchingException("Can't retrieve match information: the group number is out of bounds.");
+	  else
+	    {
+	      const regexp_match &m(regexp_matches[group_num]);
+	      const int start(m.get_start());
+	      const int end(m.get_end());
+	      return std::string(match_string, start, end - start);
+	    }
+
+	case with_sub_match:
+	  return sub_match->get_group(group_num);
+
+	default:
+	  throw MatchingException("Internal error: bad match type.");
+	}
     }
 
     // We could try a fancy scheme where arbitrary values are attached

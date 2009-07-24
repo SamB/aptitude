@@ -113,176 +113,7 @@ namespace aptitude
       }
     };
 
-    class match;
-
-    /** \brief A match for a node that is "atomic" at the level of
-     *  matches against a particular pool of possibilities.
-     *
-     *  Representing matches is tricky because we have to handle
-     *  version information in a sensible way.  Each pattern could
-     *  match multiple versions, and this information has to be
-     *  represented for the user of the match to make sense of it
-     *  since, e.g., every version can have a different Maintainer
-     *  field.
-     *
-     *  We can divide term types into two categories: some terms
-     *  return true by testing a condition against the packages in the
-     *  incoming version pool, while other terms simply delegate to
-     *  their sub-parts.  We call the second category \e structural
-     *  terms.  Note that terms such as ?depends, which \e ignore the
-     *  incoming pool and begin a new match against a new pool, are in
-     *  the second category, not the first category.  The structural
-     *  terms are:
-     *
-     *   - ?and
-     *   - ?or
-     *   - ?not
-     *   - ?any
-     *   - ?all
-     *   - ?for
-     *   - ?widen
-     *   - ?narrow
-     *
-     *  To represent a match, we use a heterogeneous tree.  The inner
-     *  nodes represent the structural matchers that are encountered
-     *  at the root of the tree, and the leaves represent the
-     *  structually-atomic matchers (again, these may be matchers with
-     *  sub-expressions, but their sub-expression represents a
-     *  completely new search).
-     *
-     *  Structural matches either represent an internal node (i.e., a
-     *  match using one of the above patterns) or an atomic node (a
-     *  match to one of the other patterns).
-     */
-    class structural_match : public util::refcounted_base_threadsafe
-    {
-    public:
-      /** \brief The type of this structural match node. */
-      enum type
-	{
-	  /** \brief Am internal match node; it has a number
-	   *  of sub-matches (get_sub_matches()).
-	   */
-	  internal,
-	  /** \brief An atomic match node; it has an attached list of
-	   *  pairs containing a matchable object and a match object
-	   *  describing how it was matched.
-	   */
-	  atomic
-	};
-
-    private:
-      type tp;
-
-      // The corresponding pattern node.
-      cwidget::util::ref_ptr<pattern> p;
-
-      // The list of structural sub-matches, if any.  Each corresponds
-      // to a different sub-pattern (e.g., the list of immediate
-      // children of a ?and node).
-      std::vector<cwidget::util::ref_ptr<structural_match> > sub_matches;
-
-      // The atomic match values, if any.  Each corresponds to how a
-      // single matchable object satisfied the search.
-      std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > > atomic_matches;
-
-      template<typename StructuralMatchIter,
-	       typename AtomicMatchIter>
-      structural_match(type _tp,
-		       const cwidget::util::ref_ptr<pattern> &_p,
-		       StructuralMatchIter _sub_matches_begin,
-		       StructuralMatchIter _sub_matches_end,
-		       AtomicMatchIter _atomic_matches_begin,
-		       AtomicMatchIter _atomic_matches_end)
-	: tp(_tp), p(_p),
-	  sub_matches(_sub_matches_begin, _sub_matches_end),
-	  atomic_matches(_atomic_matches_begin, _atomic_matches_end)
-      {
-      }
-
-    public:
-      /** \brief Create a new inner structural match node.
-       *
-       *  \typeparam StructuralMatchIter An input iterator returning
-       *                                 values of type
-       *                                 cwidget::util::ref_ptr<structural_match>.
-       *
-       *  \param pattern   The corresponding match pattern.
-       *
-       *  \param sub_matches_begin   The beginning of the range
-       *                             of sub-nodes.
-       *
-       *  \param sub_matches_end     The end of the range of
-       *                             sub-nodes.
-       */
-      template<typename StructuralMatchIter>
-      static cwidget::util::ref_ptr<structural_match> make_branch(const cwidget::util::ref_ptr<pattern> &pattern,
-						   StructuralMatchIter sub_matches_begin,
-						   StructuralMatchIter sub_matches_end)
-      {
-	return new structural_match(internal,
-				    pattern,
-				    sub_matches_begin,
-				    sub_matches_end,
-				    (std::pair<matchable, cwidget::util::ref_ptr<match> > *)0,
-				    (std::pair<matchable, cwidget::util::ref_ptr<match> > *)0);
-      }
-
-      /** \brief Create a new leaf structural match node.
-       *
-       *  \typeparam AtomicMatchIter An input iterator returning
-       *                             values of type
-       *                             std::pair<matchable, cwidget::util::ref_ptr<match> >.
-       *
-       *  \param pattern   The corresponding match pattern.
-       *
-       *  \param atomic_matches_begin   The beginning of the
-       *                                range of atomic matches.
-       *  \param atomic_matches_end     The end of the range
-       *                                of atomic matches.
-       */
-      template<typename AtomicMatchIter>
-      static cwidget::util::ref_ptr<structural_match> make_leaf(const cwidget::util::ref_ptr<pattern> &pattern,
-								AtomicMatchIter atomic_matches_begin,
-								AtomicMatchIter atomic_matches_end)
-      {
-	return new structural_match(atomic,
-				    pattern,
-				    (cwidget::util::ref_ptr<structural_match> *)0,
-				    (cwidget::util::ref_ptr<structural_match> *)0,
-				    atomic_matches_begin,
-				    atomic_matches_end);
-      }
-
-      /** \brief Get the type of this node. */
-      type get_type() const { return tp; }
-
-      /** \brief Get the corresponding pattern node. */
-      const cwidget::util::ref_ptr<pattern> &get_pattern() const
-      {
-	return p;
-      }
-
-      /** \brief Get the list of sub-matches, if this is an internal
-       *  match.
-       */
-      const std::vector<cwidget::util::ref_ptr<structural_match> > &get_sub_matches() const
-      {
-	eassert(tp == internal);
-
-	return sub_matches;
-      }
-
-      /** \brief Get the atomic matches contained in this node, if
-       *  this is an atomic match node.
-       */
-      const std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > > &get_atomic_matches() const
-      {
-	eassert(tp == atomic);
-
-	return atomic_matches;
-      }
-    };
+    class structural_match;
 
     /** \brief Represents information about how a package was matched.
      *
@@ -386,6 +217,9 @@ namespace aptitude
       // The Provides that was followed, if any.
       pkgCache::PrvIterator prv;
 
+      // The string that the regexp matched, if any.
+      std::string match_string;
+
       // The string regions matched by the regular expression, if any.
       std::vector<regexp_match> regexp_matches;
 
@@ -399,10 +233,12 @@ namespace aptitude
 	    const cwidget::util::ref_ptr<structural_match> &_sub_match,
 	    const pkgCache::DepIterator &_dep,
 	    const pkgCache::PrvIterator &_prv,
+	    const std::string &_match_string,
 	    RegexpMatchIter regexp_matches_begin,
 	    RegexpMatchIter regexp_matches_end)
 	: tp(_tp), p(_p),
 	  dep(_dep), prv(_prv),
+	  match_string(_match_string),
 	  regexp_matches(regexp_matches_begin,
 			 regexp_matches_end),
 	  sub_match(_sub_match)
@@ -420,6 +256,7 @@ namespace aptitude
 			 cwidget::util::ref_ptr<structural_match>(),
 			 pkgCache::DepIterator(),
 			 pkgCache::PrvIterator(),
+			 std::string(),
 			 (regexp_match *)0, (regexp_match *)0);
       }
 
@@ -435,6 +272,7 @@ namespace aptitude
        */
       template<typename RegexpMatchIter>
       static cwidget::util::ref_ptr<match> make_regexp(const cwidget::util::ref_ptr<pattern> &p,
+						       const std::string &match_string,
 						       RegexpMatchIter regexp_matches_begin,
 						       RegexpMatchIter regexp_matches_end)
       {
@@ -442,6 +280,7 @@ namespace aptitude
 			 cwidget::util::ref_ptr<structural_match>(),
 			 pkgCache::DepIterator(),
 			 pkgCache::PrvIterator(),
+			 match_string,
 			 regexp_matches_begin, regexp_matches_end);
       }
 
@@ -456,6 +295,7 @@ namespace aptitude
 	return new match(with_sub_match, p, m,
 			 pkgCache::DepIterator(),
 			 pkgCache::PrvIterator(),
+			 std::string(),
 			 (regexp_match *)0, (regexp_match *)0);
       }
 
@@ -473,6 +313,7 @@ namespace aptitude
 			 m,
 			 dep,
 			 pkgCache::PrvIterator(),
+			 std::string(),
 			 (regexp_match *)0, (regexp_match *)0);
       }
 
@@ -491,6 +332,7 @@ namespace aptitude
 			 m,
 			 pkgCache::DepIterator(),
 			 prv,
+			 std::string(),
 			 (regexp_match *)0, (regexp_match *)0);
       }
 
@@ -505,6 +347,17 @@ namespace aptitude
       {
 	return p;
       }
+
+      /** \brief Retrieve the number of string groups in this match.
+       */
+      unsigned int get_num_groups() const;
+
+      /** \brief Retrieve a single string group.
+       *
+       *  \param group_num The group number to retrieve; must be
+       *  positive and less than this->get_num_groups().
+       */
+      std::string get_group(unsigned int group_num) const;
 
       /** \brief For dependency and provides matches, return the
        *  object describing the sub-match.
@@ -544,6 +397,195 @@ namespace aptitude
 	eassert(tp == provides);
 
 	return prv;
+      }
+    };
+
+    /** \brief A match for a node that is "atomic" at the level of
+     *  matches against a particular pool of possibilities.
+     *
+     *  Representing matches is tricky because we have to handle
+     *  version information in a sensible way.  Each pattern could
+     *  match multiple versions, and this information has to be
+     *  represented for the user of the match to make sense of it
+     *  since, e.g., every version can have a different Maintainer
+     *  field.
+     *
+     *  We can divide term types into two categories: some terms
+     *  return true by testing a condition against the packages in the
+     *  incoming version pool, while other terms simply delegate to
+     *  their sub-parts.  We call the second category \e structural
+     *  terms.  Note that terms such as ?depends, which \e ignore the
+     *  incoming pool and begin a new match against a new pool, are in
+     *  the second category, not the first category.  The structural
+     *  terms are:
+     *
+     *   - ?and
+     *   - ?or
+     *   - ?not
+     *   - ?any
+     *   - ?all
+     *   - ?for
+     *   - ?widen
+     *   - ?narrow
+     *
+     *  To represent a match, we use a heterogeneous tree.  The inner
+     *  nodes represent the structural matchers that are encountered
+     *  at the root of the tree, and the leaves represent the
+     *  structually-atomic matchers (again, these may be matchers with
+     *  sub-expressions, but their sub-expression represents a
+     *  completely new search).
+     *
+     *  Structural matches either represent an internal node (i.e., a
+     *  match using one of the above patterns) or an atomic node (a
+     *  match to one of the other patterns).
+     */
+    class structural_match : public util::refcounted_base_threadsafe
+    {
+    public:
+      /** \brief The type of this structural match node. */
+      enum type
+	{
+	  /** \brief Am internal match node; it has a number
+	   *  of sub-matches (get_sub_matches()).
+	   */
+	  internal,
+	  /** \brief An atomic match node; it has an attached list of
+	   *  pairs containing a matchable object and a match object
+	   *  describing how it was matched.
+	   */
+	  atomic
+	};
+
+    private:
+      type tp;
+
+      // The corresponding pattern node.
+      cwidget::util::ref_ptr<pattern> p;
+
+      // The list of structural sub-matches, if any.  Each corresponds
+      // to a different sub-pattern (e.g., the list of immediate
+      // children of a ?and node).
+      std::vector<cwidget::util::ref_ptr<structural_match> > sub_matches;
+
+      // The atomic match values, if any.  Each corresponds to how a
+      // single matchable object satisfied the search.
+      std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > > atomic_matches;
+
+      unsigned int num_groups;
+
+      template<typename StructuralMatchIter,
+	       typename AtomicMatchIter>
+      structural_match(type _tp,
+		       const cwidget::util::ref_ptr<pattern> &_p,
+		       StructuralMatchIter _sub_matches_begin,
+		       StructuralMatchIter _sub_matches_end,
+		       AtomicMatchIter _atomic_matches_begin,
+		       AtomicMatchIter _atomic_matches_end)
+	: tp(_tp), p(_p),
+	  sub_matches(_sub_matches_begin, _sub_matches_end),
+	  atomic_matches(_atomic_matches_begin, _atomic_matches_end),
+	  num_groups(0)
+      {
+	for(std::vector<cwidget::util::ref_ptr<structural_match> >::const_iterator
+	      it = sub_matches.begin(); it != sub_matches.end(); ++it)
+	  num_groups += (*it)->get_num_groups();
+
+	for(std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > >::const_iterator
+	      it = atomic_matches.begin(); it != atomic_matches.end(); ++it)
+	  num_groups += it->second->get_num_groups();
+      }
+
+    public:
+      /** \brief Create a new inner structural match node.
+       *
+       *  \typeparam StructuralMatchIter An input iterator returning
+       *                                 values of type
+       *                                 cwidget::util::ref_ptr<structural_match>.
+       *
+       *  \param pattern   The corresponding match pattern.
+       *
+       *  \param sub_matches_begin   The beginning of the range
+       *                             of sub-nodes.
+       *
+       *  \param sub_matches_end     The end of the range of
+       *                             sub-nodes.
+       */
+      template<typename StructuralMatchIter>
+      static cwidget::util::ref_ptr<structural_match> make_branch(const cwidget::util::ref_ptr<pattern> &pattern,
+						   StructuralMatchIter sub_matches_begin,
+						   StructuralMatchIter sub_matches_end)
+      {
+	return new structural_match(internal,
+				    pattern,
+				    sub_matches_begin,
+				    sub_matches_end,
+				    (std::pair<matchable, cwidget::util::ref_ptr<match> > *)0,
+				    (std::pair<matchable, cwidget::util::ref_ptr<match> > *)0);
+      }
+
+      /** \brief Create a new leaf structural match node.
+       *
+       *  \typeparam AtomicMatchIter An input iterator returning
+       *                             values of type
+       *                             std::pair<matchable, cwidget::util::ref_ptr<match> >.
+       *
+       *  \param pattern   The corresponding match pattern.
+       *
+       *  \param atomic_matches_begin   The beginning of the
+       *                                range of atomic matches.
+       *  \param atomic_matches_end     The end of the range
+       *                                of atomic matches.
+       */
+      template<typename AtomicMatchIter>
+      static cwidget::util::ref_ptr<structural_match> make_leaf(const cwidget::util::ref_ptr<pattern> &pattern,
+								AtomicMatchIter atomic_matches_begin,
+								AtomicMatchIter atomic_matches_end)
+      {
+	return new structural_match(atomic,
+				    pattern,
+				    (cwidget::util::ref_ptr<structural_match> *)0,
+				    (cwidget::util::ref_ptr<structural_match> *)0,
+				    atomic_matches_begin,
+				    atomic_matches_end);
+      }
+
+      /** \brief Get the type of this node. */
+      type get_type() const { return tp; }
+
+      /** \brief Get the number of string matches in this node. */
+      unsigned int get_num_groups() const { return num_groups; }
+
+      /** \brief Retrieve a single group from this node.
+       *
+       *  \param group_num The group number; must be positive and less
+       *  than this->get_num_groups().
+       */
+      std::string get_group(unsigned int group_num) const;
+
+      /** \brief Get the corresponding pattern node. */
+      const cwidget::util::ref_ptr<pattern> &get_pattern() const
+      {
+	return p;
+      }
+
+      /** \brief Get the list of sub-matches, if this is an internal
+       *  match.
+       */
+      const std::vector<cwidget::util::ref_ptr<structural_match> > &get_sub_matches() const
+      {
+	eassert(tp == internal);
+
+	return sub_matches;
+      }
+
+      /** \brief Get the atomic matches contained in this node, if
+       *  this is an atomic match node.
+       */
+      const std::vector<std::pair<matchable, cwidget::util::ref_ptr<match> > > &get_atomic_matches() const
+      {
+	eassert(tp == atomic);
+
+	return atomic_matches;
       }
     };
 
