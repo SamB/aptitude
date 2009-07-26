@@ -12,12 +12,21 @@
 
 echo "Verifying that the configure check tests the correct set of header files."
 
+RESULT=0
+
 BOOST_PATTERN='boost/[a-zA-Z0-9_./-]*\.hpp'
 
 # Check that the source code and the configure check look for the same
 # Boost headers.
 SRC_OCCURRENCES=$((find src \( -name \*.cc -or -name \*.h \) -print0; find tests \( -name \*.cc -or -name \*.h \) -print0) \
                   | xargs -0 grep -h --only-matching "$BOOST_PATTERN" | sort -u)
+
+if ! grep -h --only-matching "$BOOST_PATTERN" configure.ac | sort -c
+then
+  echo "The list of Boost headers in configure.ac is not sorted."
+  RESULT=2
+fi
+
 CONFIGURE_OCCURRENCES=$(grep -h --only-matching "$BOOST_PATTERN" configure.ac | sort -u)
 
 if ! cmp <(echo "$SRC_OCCURRENCES") <(echo "$CONFIGURE_OCCURRENCES")
@@ -39,7 +48,7 @@ then
     echo "*** BOOST CONFIGURE CHECK MISMATCH."
     echo "*** Please update the configure script to match the source code."
 
-    exit 1
+    RESULT=1
 fi
 
-exit 0
+exit $RESULT
