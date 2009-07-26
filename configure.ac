@@ -57,6 +57,7 @@ dnl write "dnl" at the end: the "dnl" deletes the newline, and without
 dnl it you'll get an error when you run the configure script.
 AC_CHECK_HEADERS( dnl
 boost/flyweight.hpp dnl
+boost/flyweight/hashed_factory.hpp dnl
 boost/functional/hash.hpp dnl
 boost/optional.hpp dnl
 boost/shared_ptr.hpp dnl
