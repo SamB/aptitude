@@ -42,4 +42,5 @@ cppunit_test_SOURCES = \
 	test_wtree.cc
 
 boost_test_SOURCES = \
-	boost_test_main.cc
+	boost_test_main.cc \
+	test_sqlite.cc

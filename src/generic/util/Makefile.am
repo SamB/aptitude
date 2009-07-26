@@ -18,6 +18,8 @@ libgeneric_util_a_SOURCES = \
 	refcounted_wrapper.h \
 	safe_slot.h \
 	setset.h \
+	sqlite.cc \
+	sqlite.h \
 	temp.cc \
 	temp.h \
 	undo.cc \
