@@ -1220,16 +1220,14 @@ private:
 
 		--val;
 
-		// TODO: extend the match structure so we can have
-		// working group information.
-		if(val >= 0 /*res->num_groups()*/)
+		if(val >= res->get_num_groups())
 		  {
 		    string group_values;
-		    for(unsigned int i = 0; i < 0 /*res->num_groups()*/; ++i)
+		    for(unsigned int i = 0; i < res->get_num_groups(); ++i)
 		      {
 			if(i > 0)
 			  group_values += ",";
-			group_values += "" /*res->group(i)*/;
+			group_values += res->get_group(i);
 		      }
 
 		    wchar_t buf[1024];
@@ -1239,7 +1237,7 @@ private:
 		    return buf;
 		  }
 
-		rval += cw::util::transcode(""/*res->group(val)*/);
+		rval += cw::util::transcode(res->get_group(val));
 	      }
 	  }
       }
