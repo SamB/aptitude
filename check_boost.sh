@@ -12,7 +12,7 @@
 
 echo "Verifying that the configure check tests the correct set of header files."
 
-BOOST_PATTERN='boost/[a-zA-Z0-9_.-]*\.hpp'
+BOOST_PATTERN='boost/[a-zA-Z0-9_./-]*\.hpp'
 
 # Check that the source code and the configure check look for the same
 # Boost headers.
