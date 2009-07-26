@@ -66,6 +66,8 @@ boost/unordered_set.hpp dnl
 		  ,
 		  [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
 
+PKG_CHECK_MODULES(SQLITE3, sqlite3)
+
 HAVE_GTK=1
 AC_ARG_ENABLE(gtk,
 	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),
@@ -108,8 +110,8 @@ then
   AC_DEFINE([HAVE_GTK], [], [Define if the GTK+ frontend is included in the build.])
 fi
 
-CXXFLAGS="$CXXFLAGS $LOG4CXX_CFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS"
-LIBS="$LIBS $LOG4CXX_LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS"
+CXXFLAGS="$CXXFLAGS $LOG4CXX_CFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS $SQLITE3_CFLAGS"
+LIBS="$LIBS $LOG4CXX_LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS $SQLITE3_LIBS"
 
 if test x$HAVE_GTK = x1
 then
