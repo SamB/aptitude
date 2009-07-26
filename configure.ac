@@ -61,6 +61,7 @@ boost/flyweight.hpp dnl
 boost/functional/hash.hpp dnl
 boost/optional.hpp dnl
 boost/shared_ptr.hpp dnl
+boost/test/unit_test.hpp dnl
 boost/unordered_map.hpp dnl
 boost/unordered_set.hpp dnl
                   ,

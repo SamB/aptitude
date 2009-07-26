@@ -1,18 +1,19 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
+CPPFLAGS += -DBOOST_TEST_DYN_LINK
 LDADD = $(top_builddir)/src/loggers.o			       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
-$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit
+$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit -lboost_unit_test_framework-mt
 
-check_PROGRAMS = test
+check_PROGRAMS = cppunit_test boost_test
 
 noinst_PROGRAMS = interactive_set_test
 
-TESTS = test
+TESTS = cppunit_test boost_test
 
 EXTRADIST = resolver_inputs
 
@@ -24,8 +25,8 @@ test_promotion_set.o test_resolver_hints.o: $(top_srcdir)/src/generic/problemres
 # Note: test_apt_universe is not built by default because it takes way
 # too long.  Of course, ideally this would be done in a less ad-hoc
 # way...
-test_SOURCES = \
-	main.cc \
+cppunit_test_SOURCES = \
+	cppunit_test_main.cc \
 	test_choice.cc \
 	test_choice_set.cc \
 	test_config_pusher.cc \
@@ -39,3 +40,6 @@ test_SOURCES = \
 	test_tags.cc \
 	test_temp.cc \
 	test_wtree.cc
+
+boost_test_SOURCES = \
+	boost_test_main.cc
