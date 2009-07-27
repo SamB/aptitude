@@ -104,6 +104,8 @@ namespace aptitude
 
     void db::cache_statement(const statement_cache_entry &entry)
     {
+      cwidget::threads::mutex::lock l(statement_cache_mutex);
+
       statement_cache_mru &mru(get_cache_mru());
       mru.push_back(entry);
 
@@ -116,7 +118,9 @@ namespace aptitude
     {
       // Careful here: the database might have been deleted while the
       // proxy is active.  WE RELY ON THE FACT THAT DELETING THE
-      // DATABASE NULLS OUT THE STATEMENT HANDLE.
+      // DATABASE NULLS OUT THE STATEMENT HANDLE.  If you delete the
+      // database from a separate thread while statement proxies are
+      // still active ... then sorry, but you're screwed.
       if(entry.stmt->handle == NULL)
 	return; // The database is dead; nothing to do.
       else
@@ -125,6 +129,8 @@ namespace aptitude
 
     db::statement_proxy db::get_cached_statement(const std::string &sql)
     {
+      cwidget::threads::mutex::lock l(statement_cache_mutex);
+
       // Check whether the statement exists in the cache.
       statement_cache_hash_index &index(get_cache_hash_index());
 

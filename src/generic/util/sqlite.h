@@ -20,6 +20,7 @@
 #ifndef SQLITE_H
 #define SQLITE_H
 
+#include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/exception.h>
 
 #include <sqlite3.h>
@@ -121,6 +122,8 @@ namespace aptitude
 
       statement_cache_container statement_cache;
       unsigned int statement_cache_limit;
+      // Synchronizes access to the statement cache.
+      cwidget::threads::mutex statement_cache_mutex;
 
       statement_cache_hash_index &get_cache_hash_index()
       {
