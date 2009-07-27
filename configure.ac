@@ -59,6 +59,10 @@ AC_CHECK_HEADERS( dnl
 boost/flyweight/hashed_factory.hpp dnl
 boost/flyweight.hpp dnl
 boost/functional/hash.hpp dnl
+boost/multi_index_container.hpp dnl
+boost/multi_index/hashed_index.hpp dnl
+boost/multi_index/member.hpp dnl
+boost/multi_index/sequenced_index.hpp dnl
 boost/optional.hpp dnl
 boost/shared_ptr.hpp dnl
 boost/test/unit_test.hpp dnl
