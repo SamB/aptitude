@@ -100,7 +100,8 @@ namespace aptitude
 
     statement::statement(db &_parent, sqlite3_stmt *_handle)
       : parent(_parent),
-	handle(_handle)
+	handle(_handle),
+	has_data(false)
     {
       parent.active_statements.insert(this);
     }
@@ -169,6 +170,67 @@ namespace aptitude
       else
 	return boost::shared_ptr<statement>(new statement(parent, handle));
     }
+
+    void statement::reset()
+    {
+      sqlite3_reset(handle);
+      has_data = false;
+    }
+
+    bool statement::step()
+    {
+      int result = sqlite3_step(handle);
+      if(result == SQLITE_ROW)
+	{
+	  has_data = true;
+	  return true;
+	}
+      else if(result == SQLITE_DONE)
+	{
+	  has_data = false;
+	  return false;
+	}
+      else
+	throw exception(parent.get_error());
+    }
+
+    const void *statement::get_blob(int column, int &bytes)
+    {
+      require_data();
+      const void *rval = sqlite3_column_blob(handle, column);
+      bytes = sqlite3_column_bytes(handle, column);
+
+      return rval;
+    }
+
+    double statement::get_double(int column)
+    {
+      require_data();
+      return sqlite3_column_double(handle, column);
+    }
+
+    int statement::get_int(int column)
+    {
+      require_data();
+      return sqlite3_column_int(handle, column);
+    }
+
+    sqlite3_int64 statement::get_int64(int column)
+    {
+      require_data();
+      return sqlite3_column_int64(handle, column);
+    }
+
+    std::string statement::get_string(int column)
+    {
+      require_data();
+
+      const unsigned char * const rval = sqlite3_column_text(handle, column);
+      const int bytes = sqlite3_column_bytes(handle, column);
+
+      return std::string(rval, rval + bytes);
+    }
+
 
 
     blob::blob(db &_parent, sqlite3_blob *_handle)

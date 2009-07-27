@@ -122,15 +122,37 @@ namespace aptitude
       std::string get_error();
     };
 
-    /** \brief Wraps a prepared sqlite3 statement. */
+    /** \brief Wraps a prepared sqlite3 statement.
+     *
+     *  This class is explicitly *not* thread-safe.  You should place
+     *  locks around it if it's going to be accessed from multiple
+     *  threads.
+     */
     class statement
     {
       db &parent;
       sqlite3_stmt *handle;
+      /** \brief Set to \b true when results are available.
+       *
+       *  Used to sanity-check that the database is being used
+       *  correctly (according to the rules laid down in the docs).
+       *  Maybe sqlite does this already, but since it's not
+       *  documented I don't want to rely on it.
+       */
+      bool has_data;
 
       friend class db;
 
       statement(db &_parent, sqlite3_stmt *_handle);
+
+      /** \brief Throw an exception if there isn't result data ready
+       *  to be read.
+       */
+      void require_data()
+      {
+	if(!has_data)
+	  throw exception("No data to retrieve.");
+      }
 
     public:
       ~statement();
@@ -146,6 +168,73 @@ namespace aptitude
       static boost::shared_ptr<statement>
       prepare(db &parent,
 	      const char *sql);
+
+      /** \brief Return to the beginning of the statement's result set
+       *  and discard parameter bindings.
+       */
+      void reset();
+
+      /** \brief Step to the next result row of the statement.
+       *
+       *  Mirroring the underlying sqlite behavior, there is no
+       *  "result" object -- meaning that if multiple threads might
+       *  retrieve results from the same statement, they need to lock
+       *  each other out.
+       *
+       *  \return \b true if a new row of results was retrieved, \b
+       *  false otherwise.
+       */
+      bool step();
+
+      /** \brief Execute a statement and discard its results.
+       *
+       *  This is equivalent to invoking step() until it returns \b
+       *  false.  Useful for, e.g., side-effecting statements.
+       */
+      void exec()
+      {
+	while(step())
+	  ; // Do nothing.
+      }
+
+
+      /** \brief Retrieve the value stored in a column as a BLOB.
+       *
+       *  The data block might be invalidated by any other method
+       *  invoked on this statement.
+       *
+       *  \param column  The zero-based index of the column that is to be
+       *                 retrieved.
+       *  \param bytes   A location in which to store the size of the
+       *                 result in bytes.
+       *  \return A pointer to the block of data stored in the
+       *  given column.
+       */
+      const void *get_blob(int column, int &bytes);
+
+      /** \brief Retrieve the value stored in a column as a double.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      double get_double(int column);
+
+      /** \brief Retrieve the value stored in a column as an integer.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      int get_int(int column);
+
+      /** \brief Retrieve the value stored in a column as a 64-bit integer.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      sqlite3_int64 get_int64(int column);
+
+      /** \brief Retrieve the value stored in a column as a string. */
+      std::string get_string(int column);
     };
 
     class blob
