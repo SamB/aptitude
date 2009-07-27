@@ -36,14 +36,16 @@ namespace aptitude
     class exception : public cwidget::util::Exception
     {
       std::string msg;
+      int error_code;
 
     public:
-      exception(const std::string &_msg)
-	: msg(_msg)
+      exception(const std::string &_msg, int _error_code)
+	: msg(_msg), error_code(_error_code)
       {
       }
 
       std::string errmsg() const { return msg; }
+      int get_error_code() const { return error_code; }
     };
 
     class blob;
@@ -151,7 +153,7 @@ namespace aptitude
       void require_data()
       {
 	if(!has_data)
-	  throw exception("No data to retrieve.");
+	  throw exception("No data to retrieve.", SQLITE_MISUSE);
       }
 
     public:

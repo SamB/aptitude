@@ -51,7 +51,7 @@ namespace aptitude
 	  // close the object after retrieving the message.
 	  if(handle != NULL)
 	    sqlite3_close(handle);
-	  throw exception(msg);
+	  throw exception(msg, result);
 	}
     }
 
@@ -136,7 +136,7 @@ namespace aptitude
 	  if(handle != NULL)
 	    sqlite3_finalize(handle);
 
-	  throw exception(parent.get_error());
+	  throw exception(parent.get_error(), result);
 	}
       else
 	return boost::shared_ptr<statement>(new statement(parent, handle));
@@ -165,7 +165,7 @@ namespace aptitude
 	  if(handle != NULL)
 	    sqlite3_finalize(handle);
 
-	  throw exception(parent.get_error());
+	  throw exception(parent.get_error(), result);
 	}
       else
 	return boost::shared_ptr<statement>(new statement(parent, handle));
@@ -191,7 +191,7 @@ namespace aptitude
 	  return false;
 	}
       else
-	throw exception(parent.get_error());
+	throw exception(parent.get_error(), result);
     }
 
     const void *statement::get_blob(int column, int &bytes)
