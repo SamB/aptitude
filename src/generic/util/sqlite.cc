@@ -24,6 +24,11 @@ namespace aptitude
 {
   namespace sqlite
   {
+    /** \brief The default maximum size of a database's statement
+     *  cache.
+     */
+    const unsigned int default_statement_cache_limit = 100;
+
     db::lock::lock(db &parent)
       : handle(parent.handle)
     {
@@ -38,6 +43,7 @@ namespace aptitude
     db::db(const std::string &filename,
 	   int flags,
 	   const char *vfs)
+      : statement_cache_limit(default_statement_cache_limit)
     {
       const int result =
 	sqlite3_open_v2(filename.c_str(), &handle,
@@ -94,6 +100,59 @@ namespace aptitude
       std::string rval(sqlite3_errmsg(handle));
 
       return rval;
+    }
+
+    void db::cache_statement(const statement_cache_entry &entry)
+    {
+      statement_cache_mru &mru(get_cache_mru());
+      mru.push_back(entry);
+
+      // Drop old entries from the cache if it's too large.
+      while(mru.size() > statement_cache_limit)
+	mru.pop_front();
+    }
+
+    db::statement_proxy_impl::~statement_proxy_impl()
+    {
+      // Careful here: the database might have been deleted while the
+      // proxy is active.  WE RELY ON THE FACT THAT DELETING THE
+      // DATABASE NULLS OUT THE STATEMENT HANDLE.
+      if(entry.stmt->handle == NULL)
+	return; // The database is dead; nothing to do.
+      else
+	entry.stmt->parent.cache_statement(entry);
+    }
+
+    db::statement_proxy db::get_cached_statement(const std::string &sql)
+    {
+      // Check whether the statement exists in the cache.
+      statement_cache_hash_index &index(get_cache_hash_index());
+
+      statement_cache_hash_index::const_iterator found =
+	index.find(sql);
+
+      if(found != index.end())
+	{
+	  // Extract the element from the set and return it.
+	  statement_cache_entry entry(*found);
+	  entry.stmt->reset();
+
+	  index.erase(sql);
+
+	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
+	  return statement_proxy(rval);
+	}
+      else
+	{
+	  // Prepare a new SQL statement and return a proxy to it.  It
+	  // won't be added to the cache until the caller is done with
+	  // it.
+	  boost::shared_ptr<statement> stmt(statement::prepare(*this, sql));
+
+	  statement_cache_entry entry(sql, stmt);
+	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
+	  return statement_proxy(rval);
+	}
     }
 
 

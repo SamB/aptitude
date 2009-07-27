@@ -167,3 +167,48 @@ BOOST_FIXTURE_TEST_CASE(testGetString, test_db_fixture)
   BOOST_CHECK_THROW(stmt->get_string(0),
 		    exception);
 }
+
+BOOST_FIXTURE_TEST_CASE(testGetCachedStatement, memory_db_fixture)
+{
+  tmpdb->set_statement_cache_limit(2);
+  db::statement_proxy p1(tmpdb->get_cached_statement("create table foo(bar int)"));
+  db::statement_proxy p2(tmpdb->get_cached_statement("create table foo(bar int)"));
+  p2.reset();
+  p1.reset();
+
+  db::statement_proxy p3(tmpdb->get_cached_statement("create table foo(bar int)"));
+  db::statement_proxy p4(tmpdb->get_cached_statement("create table bar(foo int)"));
+
+  // Test that statements are being reused.
+  statement * const stmt1(&*p4);
+
+  p3.reset();
+  p4.reset();
+
+  db::statement_proxy p5(tmpdb->get_cached_statement("create table bar(foo int)"));
+
+  statement * const stmt2(&*p5);
+
+  BOOST_CHECK_EQUAL(stmt1, stmt2);
+
+  // Use the statements for some trivial operations.
+  db::statement_proxy p6(tmpdb->get_cached_statement("create table foo(bar int)"));
+  p6->exec();
+
+  db::statement_proxy p7(tmpdb->get_cached_statement("insert into foo (bar) values (5)"));
+  db::statement_proxy p8(tmpdb->get_cached_statement("select bar from foo"));
+
+  p7->exec();
+
+  BOOST_REQUIRE(p8->step());
+  BOOST_CHECK_EQUAL(p8->get_int(0), 5);
+  BOOST_CHECK(!p8->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(getCachedStatementFail, memory_db_fixture)
+{
+  BOOST_REQUIRE_THROW(statement::prepare(*tmpdb, "select * from bar"),
+		      exception);
+  db::statement_proxy p1(tmpdb->get_cached_statement("create table foo(bar int)"));
+  db::statement_proxy p2(tmpdb->get_cached_statement("create table foo(bar int)"));
+}

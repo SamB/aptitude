@@ -24,6 +24,10 @@
 
 #include <sqlite3.h>
 
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -76,6 +80,83 @@ namespace aptitude
       // Similarly, a set of active blob objects.
       boost::unordered_set<blob *> active_blobs;
 
+
+
+      // Used to cache statements for reuse.  Each statement in this
+      // set is currently *unused*; when a statement is requested, the
+      // requester effectively "checks out" a copy, removing it from
+      // the set.  The statement is accessed through a smart pointer
+      // wrapper that places it back in the set once it's no longer
+      // used.  This is necessary because it's not safe to reuse
+      // SQLite statements.
+      struct statement_cache_entry
+      {
+	std::string sql;
+	boost::shared_ptr<statement> stmt;
+
+	statement_cache_entry(const std::string &_sql,
+			      const boost::shared_ptr<statement> &_stmt)
+	  : sql(_sql), stmt(_stmt)
+	{
+	}
+      };
+
+      typedef boost::multi_index_container<
+	statement_cache_entry,
+	boost::multi_index::indexed_by<
+	  boost::multi_index::hashed_non_unique<
+	    boost::multi_index::member<
+	      statement_cache_entry,
+	      std::string,
+	      &statement_cache_entry::sql> >,
+	  boost::multi_index::sequenced<>
+	  >
+	>  statement_cache_container;
+
+      static const int statement_cache_hash_index_N = 0;
+      static const int statement_cache_mru_N = 1;
+
+      typedef statement_cache_container::nth_index<statement_cache_hash_index_N>::type statement_cache_hash_index;
+      typedef statement_cache_container::nth_index<statement_cache_mru_N>::type statement_cache_mru;
+
+      statement_cache_container statement_cache;
+      unsigned int statement_cache_limit;
+
+      statement_cache_hash_index &get_cache_hash_index()
+      {
+	return statement_cache.get<statement_cache_hash_index_N>();
+      }
+
+      statement_cache_mru &get_cache_mru()
+      {
+	return statement_cache.get<statement_cache_mru_N>();
+      }
+
+      void cache_statement(const statement_cache_entry &entry);
+
+
+      /** \brief An intermediate data item used to track the use of
+       *  a statement that was checked out from the cache.
+       *
+       *  When a statement_proxy is destroyed, it places its enclosed
+       *  statement back into the database's statement cache.
+       */
+      class statement_proxy_impl
+      {
+	statement_cache_entry entry;
+
+      public:
+	statement_proxy_impl(const statement_cache_entry &_entry)
+	  : entry(_entry)
+	{
+	}
+
+	const boost::shared_ptr<statement> &get_statement() const { return entry.stmt; }
+	const statement_cache_entry &get_entry() const { return entry; }
+
+	~statement_proxy_impl();
+      };
+
       db(const std::string &filename, int flags, const char *vfs);
     public:
       /** \brief Used to make the wrapper routines atomic.
@@ -114,6 +195,15 @@ namespace aptitude
       /** \brief Close the encapsulated database. */
       ~db();
 
+      /** \brief Change the maximum number of statements to cache.
+       *
+       *  If it is not set, the maximum number defaults to 100.
+       */
+      void set_statement_cache_limit(unsigned int new_limit)
+      {
+	statement_cache_limit = new_limit;
+      }
+
       /** \brief Retrieve the last error that was generated on this
        *  database.
        *
@@ -122,6 +212,49 @@ namespace aptitude
        *  another thread.
        */
       std::string get_error();
+
+      /** \brief Represents a statement retrieved from the
+       *  cache.
+       *
+       *  statement_proxy objects act as strong references to the
+       *  particular statement that was retrieved.  When all the
+       *  references to a statement expire, it is returned to the
+       *  cache as the most recently used entry.
+       *
+       *  Because statements are not thread-safe, statement proxies
+       *  should not be passed between threads (more specifically,
+       *  they should not be dereferenced from multiple threads at
+       *  once).  Instead, each thread should invoke
+       *  get_cached_statement() separately.
+       */
+      class statement_proxy
+      {
+	boost::shared_ptr<statement_proxy_impl> impl;
+
+	friend class db;
+
+	statement_proxy(const boost::shared_ptr<statement_proxy_impl> &_impl)
+	  : impl(_impl)
+	{
+	}
+
+      public:
+	statement &operator*() const { return *impl->get_statement(); }
+	statement *operator->() const { return impl->get_statement().get(); }
+
+	/** \brief Discard the reference to the implementation. */
+	void reset() { impl.reset(); }
+	/** \brief Test whether we have a valid pointer to the implementation. */
+	bool valid() const { return impl.get() != NULL; }
+      };
+
+      /** \brief Retrieve a statement from this database's statement
+       *  cache.
+       *
+       *  If the statement is not in the cache, it will be compiled
+       *  and added.
+       */
+      statement_proxy get_cached_statement(const std::string &sql);
     };
 
     /** \brief Wraps a prepared sqlite3 statement.
@@ -144,6 +277,7 @@ namespace aptitude
       bool has_data;
 
       friend class db;
+      friend class db::statement_proxy_impl;
 
       statement(db &_parent, sqlite3_stmt *_handle);
 
