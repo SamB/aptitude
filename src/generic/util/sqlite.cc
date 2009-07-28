@@ -24,6 +24,11 @@ namespace aptitude
 {
   namespace sqlite
   {
+    /** \brief The default maximum size of a database's statement
+     *  cache.
+     */
+    const unsigned int default_statement_cache_limit = 100;
+
     db::lock::lock(db &parent)
       : handle(parent.handle)
     {
@@ -38,6 +43,7 @@ namespace aptitude
     db::db(const std::string &filename,
 	   int flags,
 	   const char *vfs)
+      : statement_cache_limit(default_statement_cache_limit)
     {
       const int result =
 	sqlite3_open_v2(filename.c_str(), &handle,
@@ -51,7 +57,7 @@ namespace aptitude
 	  // close the object after retrieving the message.
 	  if(handle != NULL)
 	    sqlite3_close(handle);
-	  throw exception(msg);
+	  throw exception(msg, result);
 	}
     }
 
@@ -67,10 +73,14 @@ namespace aptitude
 	}
 
       // Close all active statements on the database.
-      for(sqlite3_stmt *stmt = sqlite3_next_stmt(handle, NULL);
-	  stmt != NULL; stmt = sqlite3_next_stmt(handle, stmt))
+      while(1)
 	{
-	  sqlite3_finalize(stmt);
+	  sqlite3_stmt *stmt(sqlite3_next_stmt(handle, NULL));
+
+	  if(stmt == NULL)
+	    break;
+	  else
+	    sqlite3_finalize(stmt);
 	}
 
       // Close all active blobs on the database.
@@ -96,11 +106,71 @@ namespace aptitude
       return rval;
     }
 
+    void db::cache_statement(const statement_cache_entry &entry)
+    {
+      cwidget::threads::mutex::lock l(statement_cache_mutex);
+
+      statement_cache_mru &mru(get_cache_mru());
+      mru.push_back(entry);
+
+      // Drop old entries from the cache if it's too large.
+      while(mru.size() > statement_cache_limit)
+	mru.pop_front();
+    }
+
+    db::statement_proxy_impl::~statement_proxy_impl()
+    {
+      // Careful here: the database might have been deleted while the
+      // proxy is active.  WE RELY ON THE FACT THAT DELETING THE
+      // DATABASE NULLS OUT THE STATEMENT HANDLE.  If you delete the
+      // database from a separate thread while statement proxies are
+      // still active ... then sorry, but you're screwed.
+      if(entry.stmt->handle == NULL)
+	return; // The database is dead; nothing to do.
+      else
+	entry.stmt->parent.cache_statement(entry);
+    }
+
+    db::statement_proxy db::get_cached_statement(const std::string &sql)
+    {
+      cwidget::threads::mutex::lock l(statement_cache_mutex);
+
+      // Check whether the statement exists in the cache.
+      statement_cache_hash_index &index(get_cache_hash_index());
+
+      statement_cache_hash_index::const_iterator found =
+	index.find(sql);
+
+      if(found != index.end())
+	{
+	  // Extract the element from the set and return it.
+	  statement_cache_entry entry(*found);
+	  entry.stmt->reset();
+
+	  index.erase(sql);
+
+	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
+	  return statement_proxy(rval);
+	}
+      else
+	{
+	  // Prepare a new SQL statement and return a proxy to it.  It
+	  // won't be added to the cache until the caller is done with
+	  // it.
+	  boost::shared_ptr<statement> stmt(statement::prepare(*this, sql));
+
+	  statement_cache_entry entry(sql, stmt);
+	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
+	  return statement_proxy(rval);
+	}
+    }
+
 
 
     statement::statement(db &_parent, sqlite3_stmt *_handle)
       : parent(_parent),
-	handle(_handle)
+	handle(_handle),
+	has_data(false)
     {
       parent.active_statements.insert(this);
     }
@@ -135,7 +205,7 @@ namespace aptitude
 	  if(handle != NULL)
 	    sqlite3_finalize(handle);
 
-	  throw exception(parent.get_error());
+	  throw exception(parent.get_error(), result);
 	}
       else
 	return boost::shared_ptr<statement>(new statement(parent, handle));
@@ -164,12 +234,139 @@ namespace aptitude
 	  if(handle != NULL)
 	    sqlite3_finalize(handle);
 
-	  throw exception(parent.get_error());
+	  throw exception(parent.get_error(), result);
 	}
       else
 	return boost::shared_ptr<statement>(new statement(parent, handle));
     }
 
+    void statement::reset()
+    {
+      sqlite3_reset(handle);
+      has_data = false;
+    }
+
+    bool statement::step()
+    {
+      int result = sqlite3_step(handle);
+      if(result == SQLITE_ROW)
+	{
+	  has_data = true;
+	  return true;
+	}
+      else if(result == SQLITE_DONE)
+	{
+	  has_data = false;
+	  return false;
+	}
+      else
+	throw exception(parent.get_error(), result);
+    }
+
+    int statement::get_column_type(int column)
+    {
+      return sqlite3_column_type(handle, column);
+    }
+
+    const void *statement::get_blob(int column, int &bytes)
+    {
+      require_data();
+      const void *rval = sqlite3_column_blob(handle, column);
+      bytes = sqlite3_column_bytes(handle, column);
+
+      return rval;
+    }
+
+    double statement::get_double(int column)
+    {
+      require_data();
+      return sqlite3_column_double(handle, column);
+    }
+
+    int statement::get_int(int column)
+    {
+      require_data();
+      return sqlite3_column_int(handle, column);
+    }
+
+    sqlite3_int64 statement::get_int64(int column)
+    {
+      require_data();
+      return sqlite3_column_int64(handle, column);
+    }
+
+    std::string statement::get_string(int column)
+    {
+      require_data();
+
+      const unsigned char * const rval = sqlite3_column_text(handle, column);
+      const int bytes = sqlite3_column_bytes(handle, column);
+
+      return std::string(rval, rval + bytes);
+    }
+
+    void statement::bind_blob(int parameter_idx, const void *blob, int size, void (*destructor)(void *))
+    {
+      const int result = sqlite3_bind_blob(handle, parameter_idx, blob, size, destructor);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_double(int parameter_idx, double value)
+    {
+      const int result = sqlite3_bind_double(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_int(int parameter_idx, int value)
+    {
+      const int result = sqlite3_bind_int(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_int64(int parameter_idx, sqlite3_int64 value)
+    {
+      const int result = sqlite3_bind_int64(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_null(int parameter_idx)
+    {
+      const int result = sqlite3_bind_null(handle, parameter_idx);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_string(int parameter_idx, const std::string &value)
+    {
+      const int result = sqlite3_bind_text(handle, parameter_idx, value.c_str(), value.size(), SQLITE_TRANSIENT);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_zeroblob(int parameter_idx, int size)
+    {
+      const int result = sqlite3_bind_zeroblob(handle, parameter_idx, size);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
 
     blob::blob(db &_parent, sqlite3_blob *_handle)
       : parent(_parent),

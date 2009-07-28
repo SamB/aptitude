@@ -20,10 +20,15 @@
 #ifndef SQLITE_H
 #define SQLITE_H
 
+#include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/exception.h>
 
 #include <sqlite3.h>
 
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -36,14 +41,16 @@ namespace aptitude
     class exception : public cwidget::util::Exception
     {
       std::string msg;
+      int error_code;
 
     public:
-      exception(const std::string &_msg)
-	: msg(_msg)
+      exception(const std::string &_msg, int _error_code)
+	: msg(_msg), error_code(_error_code)
       {
       }
 
       std::string errmsg() const { return msg; }
+      int get_error_code() const { return error_code; }
     };
 
     class blob;
@@ -73,6 +80,85 @@ namespace aptitude
 
       // Similarly, a set of active blob objects.
       boost::unordered_set<blob *> active_blobs;
+
+
+
+      // Used to cache statements for reuse.  Each statement in this
+      // set is currently *unused*; when a statement is requested, the
+      // requester effectively "checks out" a copy, removing it from
+      // the set.  The statement is accessed through a smart pointer
+      // wrapper that places it back in the set once it's no longer
+      // used.  This is necessary because it's not safe to reuse
+      // SQLite statements.
+      struct statement_cache_entry
+      {
+	std::string sql;
+	boost::shared_ptr<statement> stmt;
+
+	statement_cache_entry(const std::string &_sql,
+			      const boost::shared_ptr<statement> &_stmt)
+	  : sql(_sql), stmt(_stmt)
+	{
+	}
+      };
+
+      typedef boost::multi_index_container<
+	statement_cache_entry,
+	boost::multi_index::indexed_by<
+	  boost::multi_index::hashed_non_unique<
+	    boost::multi_index::member<
+	      statement_cache_entry,
+	      std::string,
+	      &statement_cache_entry::sql> >,
+	  boost::multi_index::sequenced<>
+	  >
+	>  statement_cache_container;
+
+      static const int statement_cache_hash_index_N = 0;
+      static const int statement_cache_mru_N = 1;
+
+      typedef statement_cache_container::nth_index<statement_cache_hash_index_N>::type statement_cache_hash_index;
+      typedef statement_cache_container::nth_index<statement_cache_mru_N>::type statement_cache_mru;
+
+      statement_cache_container statement_cache;
+      unsigned int statement_cache_limit;
+      // Synchronizes access to the statement cache.
+      cwidget::threads::mutex statement_cache_mutex;
+
+      statement_cache_hash_index &get_cache_hash_index()
+      {
+	return statement_cache.get<statement_cache_hash_index_N>();
+      }
+
+      statement_cache_mru &get_cache_mru()
+      {
+	return statement_cache.get<statement_cache_mru_N>();
+      }
+
+      void cache_statement(const statement_cache_entry &entry);
+
+
+      /** \brief An intermediate data item used to track the use of
+       *  a statement that was checked out from the cache.
+       *
+       *  When a statement_proxy is destroyed, it places its enclosed
+       *  statement back into the database's statement cache.
+       */
+      class statement_proxy_impl
+      {
+	statement_cache_entry entry;
+
+      public:
+	statement_proxy_impl(const statement_cache_entry &_entry)
+	  : entry(_entry)
+	{
+	}
+
+	const boost::shared_ptr<statement> &get_statement() const { return entry.stmt; }
+	const statement_cache_entry &get_entry() const { return entry; }
+
+	~statement_proxy_impl();
+      };
 
       db(const std::string &filename, int flags, const char *vfs);
     public:
@@ -112,6 +198,15 @@ namespace aptitude
       /** \brief Close the encapsulated database. */
       ~db();
 
+      /** \brief Change the maximum number of statements to cache.
+       *
+       *  If it is not set, the maximum number defaults to 100.
+       */
+      void set_statement_cache_limit(unsigned int new_limit)
+      {
+	statement_cache_limit = new_limit;
+      }
+
       /** \brief Retrieve the last error that was generated on this
        *  database.
        *
@@ -120,17 +215,83 @@ namespace aptitude
        *  another thread.
        */
       std::string get_error();
+
+      /** \brief Represents a statement retrieved from the
+       *  cache.
+       *
+       *  statement_proxy objects act as strong references to the
+       *  particular statement that was retrieved.  When all the
+       *  references to a statement expire, it is returned to the
+       *  cache as the most recently used entry.
+       *
+       *  Because statements are not thread-safe, statement proxies
+       *  should not be passed between threads (more specifically,
+       *  they should not be dereferenced from multiple threads at
+       *  once).  Instead, each thread should invoke
+       *  get_cached_statement() separately.
+       */
+      class statement_proxy
+      {
+	boost::shared_ptr<statement_proxy_impl> impl;
+
+	friend class db;
+
+	statement_proxy(const boost::shared_ptr<statement_proxy_impl> &_impl)
+	  : impl(_impl)
+	{
+	}
+
+      public:
+	statement &operator*() const { return *impl->get_statement(); }
+	statement *operator->() const { return impl->get_statement().get(); }
+
+	/** \brief Discard the reference to the implementation. */
+	void reset() { impl.reset(); }
+	/** \brief Test whether we have a valid pointer to the implementation. */
+	bool valid() const { return impl.get() != NULL; }
+      };
+
+      /** \brief Retrieve a statement from this database's statement
+       *  cache.
+       *
+       *  If the statement is not in the cache, it will be compiled
+       *  and added.
+       */
+      statement_proxy get_cached_statement(const std::string &sql);
     };
 
-    /** \brief Wraps a prepared sqlite3 statement. */
+    /** \brief Wraps a prepared sqlite3 statement.
+     *
+     *  This class is explicitly *not* thread-safe.  You should place
+     *  locks around it if it's going to be accessed from multiple
+     *  threads.
+     */
     class statement
     {
       db &parent;
       sqlite3_stmt *handle;
+      /** \brief Set to \b true when results are available.
+       *
+       *  Used to sanity-check that the database is being used
+       *  correctly (according to the rules laid down in the docs).
+       *  Maybe sqlite does this already, but since it's not
+       *  documented I don't want to rely on it.
+       */
+      bool has_data;
 
       friend class db;
+      friend class db::statement_proxy_impl;
 
       statement(db &_parent, sqlite3_stmt *_handle);
+
+      /** \brief Throw an exception if there isn't result data ready
+       *  to be read.
+       */
+      void require_data()
+      {
+	if(!has_data)
+	  throw exception("No data to retrieve.", SQLITE_MISUSE);
+      }
 
     public:
       ~statement();
@@ -146,6 +307,149 @@ namespace aptitude
       static boost::shared_ptr<statement>
       prepare(db &parent,
 	      const char *sql);
+
+      /** \brief Return to the beginning of the statement's result set
+       *  and discard parameter bindings.
+       */
+      void reset();
+
+      /** \brief Parameter binding.
+       *
+       *  Note that parameter indices are one-based, while column
+       *  indices are zero-based.  This is to minimize the abstraction
+       *  distance from sqlite, which uses the same convention.
+       */
+      // @{
+
+      /** \brief Bind a region of memory to a parameter as a BLOB.
+       *
+       *  \param parameter_idx   The one-based index of the parameter
+       *  to set.
+       *  \param blob A pointer to the memory region to input to the
+       *  statement.
+       *  \param size  The size of the memory that is to be stored.
+       *  \param destructor   A method to be invoked on the BLOB when
+       *  sqlite is done with it, or SQLITE_TRANSIENT if sqlite should
+       *  make a temporary copy.
+       */
+      void bind_blob(int parameter_idx, const void *blob, int size, void (*destructor)(void *) = SQLITE_TRANSIENT);
+
+      /** \brief Bind a double to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_double(int parameter_idx, double value);
+
+      /** \brief Bind an integer to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_int(int parameter_idx, int value);
+
+
+      /** \brief Bind a 64-bit integer to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_int64(int parameter_idx, sqlite3_int64 value);
+
+      /** \brief Bind NULL to a parameter.
+       *
+       *  \param parameter_idx   The one-based index of the parameter to set.
+       */
+      void bind_null(int parameter_idx);
+
+      /** \brief Bind a string to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       *
+       *  Makes a temporary copy of the string.
+       */
+      void bind_string(int parameter_idx, const std::string &value);
+
+      /** \brief Bind a BLOB containing all zeroes to a parameter.
+       *
+       *  Typically used to initialize a BLOB that will be written
+       *  incrementally (since incremental writes can't expand a BLOB,
+       *  the initial size must be exactly the size that's needed).
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param size  The size in bytes of the zero-filled BLOB to insert.
+       */
+      void bind_zeroblob(int parameter_idx, int size);
+
+      // @}
+
+      /** \brief Step to the next result row of the statement.
+       *
+       *  Mirroring the underlying sqlite behavior, there is no
+       *  "result" object -- meaning that if multiple threads might
+       *  retrieve results from the same statement, they need to lock
+       *  each other out.
+       *
+       *  \return \b true if a new row of results was retrieved, \b
+       *  false otherwise.
+       */
+      bool step();
+
+      /** \brief Execute a statement and discard its results.
+       *
+       *  This is equivalent to invoking step() until it returns \b
+       *  false.  Useful for, e.g., side-effecting statements.
+       */
+      void exec()
+      {
+	while(step())
+	  ; // Do nothing.
+      }
+
+
+      /** \brief Retrieve the value stored in a column as a BLOB.
+       *
+       *  The data block might be invalidated by any other method
+       *  invoked on this statement.
+       *
+       *  \param column  The zero-based index of the column that is to be
+       *                 retrieved.
+       *  \param bytes   A location in which to store the size of the
+       *                 result in bytes.
+       *  \return A pointer to the block of data stored in the
+       *  given column.
+       */
+      const void *get_blob(int column, int &bytes);
+
+      /** \brief Retrieve the value stored in a column as a double.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      double get_double(int column);
+
+      /** \brief Retrieve the value stored in a column as an integer.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      int get_int(int column);
+
+      /** \brief Retrieve the value stored in a column as a 64-bit integer.
+       *
+       *  \param column The zero-based index of the column that is to be
+       *                retrieved.
+       */
+      sqlite3_int64 get_int64(int column);
+
+      /** \brief Retrieve the value stored in a column as a string. */
+      std::string get_string(int column);
+
+      /** \brief Retrieve the data type stored in the given column of
+       *  the current row.
+       */
+      int get_column_type(int column);
     };
 
     class blob
