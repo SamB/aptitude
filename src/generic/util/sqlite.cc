@@ -151,8 +151,7 @@ namespace aptitude
 
 	  index.erase(sql);
 
-	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
-	  return statement_proxy(rval);
+	  return statement_proxy(boost::make_shared<statement_proxy_impl>(entry));
 	}
       else
 	{
@@ -162,8 +161,7 @@ namespace aptitude
 	  boost::shared_ptr<statement> stmt(statement::prepare(*this, sql));
 
 	  statement_cache_entry entry(sql, stmt);
-	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
-	  return statement_proxy(rval);
+	  return statement_proxy(boost::make_shared<statement_proxy_impl>(entry));
 	}
     }
 
@@ -210,7 +208,7 @@ namespace aptitude
 	  throw exception(parent.get_error(), result);
 	}
       else
-	return boost::shared_ptr<statement>(new statement(parent, handle));
+	return boost::make_shared<statement>(boost::ref(parent), handle);
     }
 
     boost::shared_ptr<statement>
@@ -239,7 +237,7 @@ namespace aptitude
 	  throw exception(parent.get_error(), result);
 	}
       else
-	return boost::shared_ptr<statement>(new statement(parent, handle));
+	return boost::make_shared<statement>(boost::ref(parent), handle);
     }
 
     void statement::reset()

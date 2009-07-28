@@ -284,6 +284,8 @@ namespace aptitude
       friend class db::statement_proxy_impl;
 
       statement(db &_parent, sqlite3_stmt *_handle);
+      template<typename A, typename B, typename C>
+      friend boost::shared_ptr<A> boost::make_shared(const B &, const C &);
 
       /** \brief Throw an exception if there isn't result data ready
        *  to be read.
