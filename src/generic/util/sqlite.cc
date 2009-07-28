@@ -20,6 +20,8 @@
 
 #include "sqlite.h"
 
+#include <boost/make_shared.hpp>
+
 namespace aptitude
 {
   namespace sqlite
@@ -373,6 +375,38 @@ namespace aptitude
 	handle(_handle)
     {
       parent.active_blobs.insert(this);
+    }
+
+    boost::shared_ptr<blob>
+    blob::open(db &parent,
+	       const std::string &databaseName,
+	       const std::string &table,
+	       const std::string &column,
+	       sqlite3_int64 row,
+	       bool readWrite)
+    {
+      sqlite3_blob *handle = NULL;
+
+      const int result = sqlite3_blob_open(parent.handle,
+					   databaseName.c_str(),
+					   table.c_str(),
+					   column.c_str(),
+					   row,
+					   readWrite ? 1 : 0,
+					   &handle);
+
+      if(result != SQLITE_OK)
+	{
+	  std::string msg(parent.get_error());
+
+	  // Paranoia: handle should always be NULL, but free it if it
+	  // isn't.
+	  if(handle != NULL)
+	    sqlite3_blob_close(handle);
+	  throw exception(msg, result);
+	}
+      else
+	return boost::make_shared<blob>(boost::ref(parent), handle);
     }
 
     blob::~blob()
