@@ -73,10 +73,14 @@ namespace aptitude
 	}
 
       // Close all active statements on the database.
-      for(sqlite3_stmt *stmt = sqlite3_next_stmt(handle, NULL);
-	  stmt != NULL; stmt = sqlite3_next_stmt(handle, stmt))
+      while(1)
 	{
-	  sqlite3_finalize(stmt);
+	  sqlite3_stmt *stmt(sqlite3_next_stmt(handle, NULL));
+
+	  if(stmt == NULL)
+	    break;
+	  else
+	    sqlite3_finalize(stmt);
 	}
 
       // Close all active blobs on the database.
