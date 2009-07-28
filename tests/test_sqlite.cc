@@ -212,3 +212,170 @@ BOOST_FIXTURE_TEST_CASE(getCachedStatementFail, memory_db_fixture)
   db::statement_proxy p1(tmpdb->get_cached_statement("create table foo(bar int)"));
   db::statement_proxy p2(tmpdb->get_cached_statement("create table foo(bar int)"));
 }
+
+struct parameter_binding_test : public test_db_fixture
+{
+  boost::shared_ptr<statement> get_C_statement;
+  boost::shared_ptr<statement> put_statement;
+  static const int test_A = 10;
+
+  parameter_binding_test()
+  {
+    get_C_statement = statement::prepare(*tmpdb, "select C from test where A = ?");
+    put_statement = statement::prepare(*tmpdb, "insert into test (A, B, C) values (?, NULL, ?)");
+  }
+};
+
+BOOST_FIXTURE_TEST_CASE(testBindBlob, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const char data[8] = { 0x54, 0x10, 0x20, 0x67,
+			 0xd9, 0x45, 0xbd, 0x1a };
+  BOOST_CHECK_THROW(put_statement->bind_blob(3, data, sizeof(data)),
+		    exception);
+  put_statement->bind_blob(2, data, sizeof(data));
+  put_statement->exec();
+
+  // Test that the data is still there.
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
+
+  int blob_bytes;
+  const void *blob(get_C_statement->get_blob(0, blob_bytes));
+  BOOST_CHECK_EQUAL(blob_bytes, sizeof(data));
+  BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
+				reinterpret_cast<const char *>(blob) + blob_bytes,
+				data, data + sizeof(data));
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindDouble, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const double data = 9876543.123;
+
+  BOOST_CHECK_THROW(put_statement->bind_double(3, data),
+		    exception);
+  put_statement->bind_double(2, data);
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_FLOAT);
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_double(0), data);
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindInt, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const int data = 0x948291ff;
+
+  BOOST_CHECK_THROW(put_statement->bind_int(3, data),
+		    exception);
+  put_statement->bind_int(2, data);
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_int(0), data);
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindInt64, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const sqlite_int64 data = 0x948291ff01234567LL;
+
+  BOOST_CHECK_THROW(put_statement->bind_int64(3, data),
+		    exception);
+  put_statement->bind_int64(2, data);
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_int64(0), data);
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindNull, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  BOOST_CHECK_THROW(put_statement->bind_null(3),
+		    exception);
+  put_statement->bind_null(2);
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_NULL);
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindString, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const std::string data("abracadabra");
+
+  BOOST_CHECK_THROW(put_statement->bind_string(3, data),
+		    exception);
+  put_statement->bind_string(2, data);
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_TEXT);
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_string(0), data);
+
+  BOOST_CHECK(!get_C_statement->step());
+}
+
+BOOST_FIXTURE_TEST_CASE(testBindZeroBlob, parameter_binding_test)
+{
+  put_statement->bind_int(1, test_A);
+
+  const char testBlobData[7] = { 0, 0, 0, 0, 0, 0, 0 };
+
+  BOOST_CHECK_THROW(put_statement->bind_zeroblob(3, sizeof(testBlobData)),
+		    exception);
+  put_statement->bind_zeroblob(2, sizeof(testBlobData));
+  put_statement->exec();
+
+  get_C_statement->bind_int(1, test_A);
+  BOOST_REQUIRE(get_C_statement->step());
+
+  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
+
+  int blob_bytes;
+  const void *blob(get_C_statement->get_blob(0, blob_bytes));
+  BOOST_CHECK_EQUAL(blob_bytes, sizeof(testBlobData));
+  BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
+				reinterpret_cast<const char *>(blob) + blob_bytes,
+				testBlobData, testBlobData + sizeof(testBlobData));
+
+  BOOST_CHECK(!get_C_statement->step());
+}

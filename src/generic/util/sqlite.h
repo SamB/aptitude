@@ -313,6 +313,77 @@ namespace aptitude
        */
       void reset();
 
+      /** \brief Parameter binding.
+       *
+       *  Note that parameter indices are one-based, while column
+       *  indices are zero-based.  This is to minimize the abstraction
+       *  distance from sqlite, which uses the same convention.
+       */
+      // @{
+
+      /** \brief Bind a region of memory to a parameter as a BLOB.
+       *
+       *  \param parameter_idx   The one-based index of the parameter
+       *  to set.
+       *  \param blob A pointer to the memory region to input to the
+       *  statement.
+       *  \param size  The size of the memory that is to be stored.
+       *  \param destructor   A method to be invoked on the BLOB when
+       *  sqlite is done with it, or SQLITE_TRANSIENT if sqlite should
+       *  make a temporary copy.
+       */
+      void bind_blob(int parameter_idx, const void *blob, int size, void (*destructor)(void *) = SQLITE_TRANSIENT);
+
+      /** \brief Bind a double to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_double(int parameter_idx, double value);
+
+      /** \brief Bind an integer to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_int(int parameter_idx, int value);
+
+
+      /** \brief Bind a 64-bit integer to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       */
+      void bind_int64(int parameter_idx, sqlite3_int64 value);
+
+      /** \brief Bind NULL to a parameter.
+       *
+       *  \param parameter_idx   The one-based index of the parameter to set.
+       */
+      void bind_null(int parameter_idx);
+
+      /** \brief Bind a string to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       *
+       *  Makes a temporary copy of the string.
+       */
+      void bind_string(int parameter_idx, const std::string &value);
+
+      /** \brief Bind a BLOB containing all zeroes to a parameter.
+       *
+       *  Typically used to initialize a BLOB that will be written
+       *  incrementally (since incremental writes can't expand a BLOB,
+       *  the initial size must be exactly the size that's needed).
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param size  The size in bytes of the zero-filled BLOB to insert.
+       */
+      void bind_zeroblob(int parameter_idx, int size);
+
+      // @}
+
       /** \brief Step to the next result row of the statement.
        *
        *  Mirroring the underlying sqlite behavior, there is no

@@ -305,7 +305,68 @@ namespace aptitude
       return std::string(rval, rval + bytes);
     }
 
+    void statement::bind_blob(int parameter_idx, const void *blob, int size, void (*destructor)(void *))
+    {
+      const int result = sqlite3_bind_blob(handle, parameter_idx, blob, size, destructor);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
 
+    void statement::bind_double(int parameter_idx, double value)
+    {
+      const int result = sqlite3_bind_double(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_int(int parameter_idx, int value)
+    {
+      const int result = sqlite3_bind_int(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_int64(int parameter_idx, sqlite3_int64 value)
+    {
+      const int result = sqlite3_bind_int64(handle, parameter_idx, value);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_null(int parameter_idx)
+    {
+      const int result = sqlite3_bind_null(handle, parameter_idx);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_string(int parameter_idx, const std::string &value)
+    {
+      const int result = sqlite3_bind_text(handle, parameter_idx, value.c_str(), value.size(), SQLITE_TRANSIENT);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_zeroblob(int parameter_idx, int size)
+    {
+      const int result = sqlite3_bind_zeroblob(handle, parameter_idx, size);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
 
     blob::blob(db &_parent, sqlite3_blob *_handle)
       : parent(_parent),
