@@ -263,6 +263,11 @@ namespace aptitude
 	throw exception(parent.get_error(), result);
     }
 
+    int statement::get_column_type(int column)
+    {
+      return sqlite3_column_type(handle, column);
+    }
+
     const void *statement::get_blob(int column, int &bytes)
     {
       require_data();

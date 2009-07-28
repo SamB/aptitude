@@ -374,6 +374,11 @@ namespace aptitude
 
       /** \brief Retrieve the value stored in a column as a string. */
       std::string get_string(int column);
+
+      /** \brief Retrieve the data type stored in the given column of
+       *  the current row.
+       */
+      int get_column_type(int column);
     };
 
     class blob
