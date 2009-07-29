@@ -93,7 +93,10 @@ public:
   /** \return The underlying APT package wrapped by this object. */
   pkgCache::PkgIterator get_pkg() const
   {
-    return pkgCache::PkgIterator(*cache, const_cast<pkgCache::Package *>(pkg));
+    if(cache == NULL)
+      return pkgCache::PkgIterator();
+    else
+      return pkgCache::PkgIterator(*cache, const_cast<pkgCache::Package *>(pkg));
   }
 
   // Note that it's not necessary to compare the cache along with the
@@ -198,13 +201,18 @@ public:
    */
   pkgCache::PkgIterator get_pkg() const
   {
-    pkgCache &pcache(cache->GetCache());
-
-    if(is_version)
-      return pkgCache::PkgIterator(pcache,
-				   pcache.PkgP + (pcache.VerP[offset].ParentPkg));
+    if(cache == NULL)
+      return pkgCache::PkgIterator();
     else
-      return pkgCache::PkgIterator(pcache, pcache.PkgP + offset);
+      {
+	pkgCache &pcache(cache->GetCache());
+
+	if(is_version)
+	  return pkgCache::PkgIterator(pcache,
+				       pcache.PkgP + (pcache.VerP[offset].ParentPkg));
+	else
+	  return pkgCache::PkgIterator(pcache, pcache.PkgP + offset);
+      }
   }
 
   /** \return The APT version wrapped by this object, or an end
@@ -212,12 +220,17 @@ public:
    */
   pkgCache::VerIterator get_ver() const
   {
-    pkgCache &pcache(cache->GetCache());
-
-    if(!is_version)
-      return pkgCache::VerIterator(pcache, 0);
+    if(cache == NULL)
+      return pkgCache::VerIterator();
     else
-      return pkgCache::VerIterator(pcache, pcache.VerP + offset);
+      {
+	pkgCache &pcache(cache->GetCache());
+
+	if(!is_version)
+	  return pkgCache::VerIterator(pcache, 0);
+	else
+	  return pkgCache::VerIterator(pcache, pcache.VerP + offset);
+      }
   }
 
   /** \return The APT ID of this version if it is a real version,
@@ -478,7 +491,10 @@ public:
   /** \return The APT dependency associated with this abstract dependency. */
   pkgCache::DepIterator get_dep() const
   {
-    return pkgCache::DepIterator(cache->GetCache(), const_cast<pkgCache::Dependency *>(start));
+    if(cache == NULL)
+      return pkgCache::DepIterator();
+    else
+      return pkgCache::DepIterator(cache->GetCache(), const_cast<pkgCache::Dependency *>(start));
   }
 
   /** \return The APT Provides relationship associated with this
@@ -486,8 +502,11 @@ public:
    */
   pkgCache::PrvIterator get_prv() const
   {
-    return pkgCache::PrvIterator(cache->GetCache(), const_cast<pkgCache::Provides *>(prv),
-				 (pkgCache::Version *)0);
+    if(cache == NULL)
+      return pkgCache::PrvIterator();
+    else
+      return pkgCache::PrvIterator(cache->GetCache(), const_cast<pkgCache::Provides *>(prv),
+				   (pkgCache::Version *)0);
   }
 
   /** \return \b true if the given version will resolve this dependency. */
