@@ -2608,6 +2608,9 @@ public:
 };
 typedef cw::util::ref_ptr<help_bar> help_bar_ref;
 
+/** \brief A list of global connections that must be disconnected when the UI exits. */
+std::deque<sigc::connection> global_connections;
+
 void ui_init()
 {
   cw::toplevel::init();
@@ -2615,9 +2618,9 @@ void ui_init()
 
   // The basic behavior of the package state signal is to update the
   // display.
-  package_states_changed.connect(sigc::ptr_fun(cw::toplevel::update));
+  global_connections.push_back(package_states_changed.connect(sigc::ptr_fun(cw::toplevel::update)));
 
-  consume_errors.connect(sigc::ptr_fun(check_apt_errors));
+  global_connections.push_back(consume_errors.connect(sigc::ptr_fun(check_apt_errors)));
 
   if(aptcfg->Exists(PACKAGE "::Theme"))
     load_options(PACKAGE "::Themes::"+string(aptcfg->Find(PACKAGE "::Theme"))+"::"+PACKAGE "::UI", true);
@@ -2633,17 +2636,17 @@ void ui_init()
   aptcfg->connect(string(PACKAGE "::UI::Package-Display-Format"),
 		  sigc::ptr_fun(do_setup_columns));
 
-  cache_closed.connect(sigc::ptr_fun(do_show_reload_message));
-  cache_reloaded.connect(sigc::ptr_fun(do_hide_reload_message));
-  cache_reloaded.connect(sigc::ptr_fun(do_connect_resolver_callback));
+  global_connections.push_back(cache_closed.connect(sigc::ptr_fun(do_show_reload_message)));
+  global_connections.push_back(cache_reloaded.connect(sigc::ptr_fun(do_hide_reload_message)));
+  global_connections.push_back(cache_reloaded.connect(sigc::ptr_fun(do_connect_resolver_callback)));
   if(apt_cache_file)
     {
       do_connect_resolver_callback();
       start_solution_calculation();
     }
-  cache_reload_failed.connect(sigc::ptr_fun(do_hide_reload_message));
+  global_connections.push_back(cache_reload_failed.connect(sigc::ptr_fun(do_hide_reload_message)));
 
-  cache_reloaded.connect(sigc::ptr_fun(do_connect_read_only_callbacks));
+  global_connections.push_back(cache_reloaded.connect(sigc::ptr_fun(do_connect_read_only_callbacks)));
   if(apt_cache_file)
     do_connect_read_only_callbacks();
 
@@ -2784,8 +2787,25 @@ void ui_init()
   maybe_show_old_tmpdir_message();
 }
 
+struct clear_global_connections_on_exit
+{
+  clear_global_connections_on_exit()
+  {
+  }
+
+  ~clear_global_connections_on_exit()
+  {
+    for(std::deque<sigc::connection>::iterator it = global_connections.begin();
+	it != global_connections.end(); ++it)
+      it->disconnect();
+    global_connections.clear();
+  }
+};
+
 void ui_main()
 {
+  clear_global_connections_on_exit clearer;
+
   cw::toplevel::mainloop();
 
   if(apt_cache_file &&
