@@ -429,3 +429,63 @@ BOOST_FIXTURE_TEST_CASE(testOpenBlob, test_blob_fixture)
 			       100),
 		    exception);
 }
+
+BOOST_FIXTURE_TEST_CASE(testBlobSize, test_blob_fixture)
+{
+  boost::shared_ptr<blob> b = blob::open(*tmpdb,
+					 "main",
+					 "test",
+					 "C",
+					 blob_rowid);
+
+  BOOST_CHECK_EQUAL(b->size(), 2);
+}
+
+BOOST_FIXTURE_TEST_CASE(testBlobRead, test_blob_fixture)
+{
+  boost::shared_ptr<blob> b = blob::open(*tmpdb,
+					 "main",
+					 "test",
+					 "C",
+					 blob_rowid);
+
+  char contents[3];
+  const char expected[] = { 0x54, 0x12 };
+  b->read(0, contents, 2);
+  BOOST_CHECK_EQUAL_COLLECTIONS(contents, contents + 2,
+				expected, expected + 2);
+  b->read(0, contents, 2);
+  BOOST_CHECK_EQUAL_COLLECTIONS(contents, contents + 2,
+				expected, expected + 2);
+
+  BOOST_CHECK_THROW(b->read(0, contents, 3), exception);
+}
+
+BOOST_FIXTURE_TEST_CASE(testBlobWrite, test_blob_fixture)
+{
+  const char data[2] = { 0x54, 0x11 };
+  {
+    boost::shared_ptr<blob> b = blob::open(*tmpdb,
+					   "main",
+					   "test",
+					   "C",
+					   blob_rowid);
+
+    b->write(1, data + 1, 1);
+    BOOST_CHECK_THROW(b->write(1, data, 2), exception);
+  }
+
+  boost::shared_ptr<statement> stmt =
+    statement::prepare(*tmpdb, "select C from test where rowid = ?");
+  stmt->bind_int64(1, blob_rowid);
+  BOOST_REQUIRE(stmt->step());
+
+  int len = -1;
+  const void *val = stmt->get_blob(0, len);
+  BOOST_CHECK_EQUAL(len, sizeof(data));
+  BOOST_CHECK_EQUAL_COLLECTIONS(data, data + sizeof(data),
+				reinterpret_cast<const char *>(val),
+				reinterpret_cast<const char *>(val) + len);
+
+  BOOST_CHECK(!stmt->step());
+}

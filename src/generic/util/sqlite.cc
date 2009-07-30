@@ -413,5 +413,30 @@ namespace aptitude
 	sqlite3_blob_close(handle);
       parent.active_blobs.erase(this);
     }
+
+    int blob::size()
+    {
+      return sqlite3_blob_bytes(handle);
+    }
+
+    void blob::read(int offset, void *out, int length)
+    {
+      const int result = sqlite3_blob_read(handle, out, length, offset);
+      if(result != SQLITE_OK)
+	{
+	  std::string msg(parent.get_error());
+	  throw exception(msg, result);
+	}
+    }
+
+    void blob::write(int offset, const void *out, int length)
+    {
+      const int result = sqlite3_blob_write(handle, out, length, offset);
+      if(result != SQLITE_OK)
+	{
+	  std::string msg(parent.get_error());
+	  throw exception(msg, result);
+	}
+    }
   }
 }

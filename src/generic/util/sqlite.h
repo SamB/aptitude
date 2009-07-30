@@ -490,6 +490,36 @@ namespace aptitude
 	   sqlite3_int64 row,
 	   bool readWrite = true);
 
+      /** \brief Retrieve the size of the BLOB in bytes. */
+      int size();
+
+      /** \brief Read some data from the BLOB.
+       *
+       *  \param offset   The byte offset at which to start reading.
+       *  \param out      The memory location at which to begin storing
+       *                  the data that was read.
+       *  \param length   The number of bytes of data to read.
+       *
+       *  If there are fewer than "length" bytes following "offset" in
+       *  the BLOB, this operation throws an exception.  If the BLOB's
+       *  row has been modified, this operation throws an exception
+       *  with the error code SQLITE_ABORT.
+       */
+      void read(int offset, void *out, int length);
+
+      /** \brief Write some data into the BLOB.
+       *
+       *  \param offset The byte offset at which to start writing.
+       *  \param in     The data to write into the BLOB.
+       *  \param length The number of bytes of data to write.
+       *
+       *  If there are fewer than "length" bytes following "offset" in
+       *  the BLOB, this operation throws an exception.  If the BLOB's
+       *  row has been modified, this operation throws an exception
+       *  with the error code SQLITE_ABORT.
+       */
+      void write(int offset, const void *in, int length);
+
       ~blob();
     };
   }
