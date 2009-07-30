@@ -379,3 +379,53 @@ BOOST_FIXTURE_TEST_CASE(testBindZeroBlob, parameter_binding_test)
 
   BOOST_CHECK(!get_C_statement->step());
 }
+
+struct test_blob_fixture : public test_db_fixture
+{
+  sqlite_int64 blob_rowid;
+
+  test_blob_fixture()
+  {
+    boost::shared_ptr<statement> s(statement::prepare(*tmpdb, "select ROWID from test where A = 52"));
+
+    BOOST_REQUIRE(s->step());
+    blob_rowid = s->get_int64(0);
+    BOOST_CHECK(!s->step());
+  }
+};
+
+BOOST_FIXTURE_TEST_CASE(testOpenBlob, test_blob_fixture)
+{
+  blob::open(*tmpdb,
+	     "main",
+	     "test",
+	     "C",
+	     blob_rowid);
+
+  BOOST_CHECK_THROW(blob::open(*tmpdb,
+			       "nosuchdb",
+			       "test",
+			       "C",
+			       blob_rowid),
+		    exception);
+  BOOST_CHECK_THROW(blob::open(*tmpdb,
+			       "main",
+			       "nosuchtable",
+			       "C",
+			       blob_rowid),
+		    exception);
+  BOOST_CHECK_THROW(blob::open(*tmpdb,
+			       "main",
+			       "test",
+			       "NOSUCHCOLUMN",
+			       blob_rowid),
+		    exception);
+  // This rowid is guaranteed not to map to anything because the rowid
+  // is always equal to the primary key.
+  BOOST_CHECK_THROW(blob::open(*tmpdb,
+			       "main",
+			       "test",
+			       "C",
+			       100),
+		    exception);
+}

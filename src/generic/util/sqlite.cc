@@ -20,6 +20,8 @@
 
 #include "sqlite.h"
 
+#include <boost/make_shared.hpp>
+
 namespace aptitude
 {
   namespace sqlite
@@ -149,8 +151,7 @@ namespace aptitude
 
 	  index.erase(sql);
 
-	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
-	  return statement_proxy(rval);
+	  return statement_proxy(boost::make_shared<statement_proxy_impl>(entry));
 	}
       else
 	{
@@ -160,8 +161,7 @@ namespace aptitude
 	  boost::shared_ptr<statement> stmt(statement::prepare(*this, sql));
 
 	  statement_cache_entry entry(sql, stmt);
-	  boost::shared_ptr<statement_proxy_impl> rval(new statement_proxy_impl(entry));
-	  return statement_proxy(rval);
+	  return statement_proxy(boost::make_shared<statement_proxy_impl>(entry));
 	}
     }
 
@@ -208,7 +208,7 @@ namespace aptitude
 	  throw exception(parent.get_error(), result);
 	}
       else
-	return boost::shared_ptr<statement>(new statement(parent, handle));
+	return boost::make_shared<statement>(boost::ref(parent), handle);
     }
 
     boost::shared_ptr<statement>
@@ -237,7 +237,7 @@ namespace aptitude
 	  throw exception(parent.get_error(), result);
 	}
       else
-	return boost::shared_ptr<statement>(new statement(parent, handle));
+	return boost::make_shared<statement>(boost::ref(parent), handle);
     }
 
     void statement::reset()
@@ -373,6 +373,38 @@ namespace aptitude
 	handle(_handle)
     {
       parent.active_blobs.insert(this);
+    }
+
+    boost::shared_ptr<blob>
+    blob::open(db &parent,
+	       const std::string &databaseName,
+	       const std::string &table,
+	       const std::string &column,
+	       sqlite3_int64 row,
+	       bool readWrite)
+    {
+      sqlite3_blob *handle = NULL;
+
+      const int result = sqlite3_blob_open(parent.handle,
+					   databaseName.c_str(),
+					   table.c_str(),
+					   column.c_str(),
+					   row,
+					   readWrite ? 1 : 0,
+					   &handle);
+
+      if(result != SQLITE_OK)
+	{
+	  std::string msg(parent.get_error());
+
+	  // Paranoia: handle should always be NULL, but free it if it
+	  // isn't.
+	  if(handle != NULL)
+	    sqlite3_blob_close(handle);
+	  throw exception(msg, result);
+	}
+      else
+	return boost::make_shared<blob>(boost::ref(parent), handle);
     }
 
     blob::~blob()

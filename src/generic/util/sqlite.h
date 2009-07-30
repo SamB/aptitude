@@ -25,6 +25,7 @@
 
 #include <sqlite3.h>
 
+#include <boost/make_shared.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
@@ -283,6 +284,8 @@ namespace aptitude
       friend class db::statement_proxy_impl;
 
       statement(db &_parent, sqlite3_stmt *_handle);
+      template<typename A, typename B, typename C>
+      friend boost::shared_ptr<A> boost::make_shared(const B &, const C &);
 
       /** \brief Throw an exception if there isn't result data ready
        *  to be read.
@@ -452,6 +455,9 @@ namespace aptitude
       int get_column_type(int column);
     };
 
+    /** \brief Represents a BLOB that has been opened for incremental
+     *  I/O.
+     */
     class blob
     {
       db &parent;
@@ -460,8 +466,30 @@ namespace aptitude
       friend class db;
 
       blob(db &_parent, sqlite3_blob *_handle);
+      template<typename A, typename B, typename C>
+      friend boost::shared_ptr<A> boost::make_shared(const B &, const C &);
 
     public:
+      /** \brief Open an existing BLOB.
+       *
+       *  \param parent       The database object containing the BLOB.
+       *  \param databaseName The name of the database to open (normally
+       *                      "main", unless ATTACH has been used).
+       *  \param table        The table containing the BLOB.
+       *  \param column       The column name containing the BLOB.
+       *  \param row          The ROWID of the row containing the BLOB.
+       *  \param readWrite    If \b false, the BLOB will be opened
+       *                      read-only; otherwise it will be opened
+       *                      read-write.
+       */
+      static boost::shared_ptr<blob>
+      open(db &parent,
+	   const std::string &databaseName,
+	   const std::string &table,
+	   const std::string &column,
+	   sqlite3_int64 row,
+	   bool readWrite = true);
+
       ~blob();
     };
   }

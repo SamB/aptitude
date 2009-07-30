@@ -72,6 +72,7 @@
 #include <generic/util/maybe.h>
 
 #include <boost/flyweight.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/unordered_set.hpp>
 
 /** \brief Generic problem resolver
@@ -3726,7 +3727,7 @@ public:
     finished=false;
     pending.clear();
     pending_future_solutions.clear();
-    promotion_queue_tail = boost::shared_ptr<promotion_queue_entry>(new promotion_queue_entry(0, 0));
+    promotion_queue_tail = boost::make_shared<promotion_queue_entry>(0, 0);
     graph.clear();
     closed.clear();
 
