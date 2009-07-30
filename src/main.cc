@@ -472,6 +472,24 @@ public:
   bool requiresLayout() const { return false; }
 };
 
+// Ensure that the cache is always closed when main() exits.  Without
+// this, there might be dangling flyweights hanging around, and those
+// can trigger aborts when the static flyweight pool is destroyed.
+//
+// TBH, I think it might be worth writing our own flyweight stand-in
+// to avoid this particular bit of stupid.
+struct close_cache_on_exit
+{
+  close_cache_on_exit()
+  {
+  }
+
+  ~close_cache_on_exit()
+  {
+    apt_close_cache();
+  }
+};
+
 int main(int argc, char *argv[])
 {
   srandom(time(0));
@@ -494,6 +512,8 @@ int main(int argc, char *argv[])
   // before I set up the apt configuration structures.
   const char * const rootdir = getenv("APT_ROOT_DIR");
   apt_preinit(rootdir);
+
+  close_cache_on_exit close_on_exit;
 
   char *status_fname=NULL;
   // The filename to read status information from.
@@ -1109,8 +1129,12 @@ int main(int argc, char *argv[])
           std::string backtrace = e.get_backtrace();
           if(!backtrace.empty())
             fprintf(stderr, _("Backtrace:\n%s\n"), backtrace.c_str());
+
           return -1;
         }
+
+      // The cache is closed when the close_on_exit object declared
+      // above is destroyed.
 
       return 0;
     }
