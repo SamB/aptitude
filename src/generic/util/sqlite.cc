@@ -165,6 +165,34 @@ namespace aptitude
 	}
     }
 
+    namespace
+    {
+      struct free_on_destroy
+      {
+	char * &arr;
+
+	free_on_destroy(char * &_arr) : arr(_arr) { }
+	~free_on_destroy() { if(arr != NULL) sqlite3_free(arr); }
+      };
+    }
+
+    void db::exec(const std::string &sql,
+		  int (*callback)(void *, int, char **, char **),
+		  void *data)
+    {
+      char *msg = NULL;
+      free_on_destroy msg_free(msg);
+      int result = sqlite3_exec(handle, sql.c_str(),
+				callback, data, &msg);
+
+      std::string errmsg("internal error: no sqlite error");
+      if(msg != NULL)
+	errmsg = msg;
+
+      if(result != SQLITE_OK || msg != NULL)
+	throw exception(errmsg, result);
+    }
+
 
 
     statement::statement(db &_parent, sqlite3_stmt *_handle)
