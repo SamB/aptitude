@@ -33,6 +33,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.apt.globals");
   }
 
+  LoggerPtr Loggers::getAptitudeDownloadCache()
+  {
+    return Logger::getLogger("aptitude.downloadCache");
+  }
+
   LoggerPtr Loggers::getAptitudeDpkgStatusPipe()
   {
     return Logger::getLogger("aptitude.dpkg.statusPipe");

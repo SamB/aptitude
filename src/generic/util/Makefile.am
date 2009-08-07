@@ -9,6 +9,8 @@ libgeneric_util_a_SOURCES = \
 	compare3.h \
 	dense_setset.h \
 	dirent_safe.h \
+	file_cache.cc \
+	file_cache.h \
 	immlist.h \
 	immset.h \
 	maybe.h \
