@@ -108,6 +108,11 @@ namespace aptitude
       return rval;
     }
 
+    sqlite3_int64 db::get_last_insert_rowid()
+    {
+      return sqlite3_last_insert_rowid(handle);
+    }
+
     void db::cache_statement(const statement_cache_entry &entry)
     {
       cwidget::threads::mutex::lock l(statement_cache_mutex);

@@ -217,6 +217,14 @@ namespace aptitude
        */
       std::string get_error();
 
+      /** \brief Get the last inserted row ID.
+       *
+       *  This can be modified by operations on this object from other
+       *  threads -- read the documentation of
+       *  sqlite3_last_insert_rowid for caveats.
+       */
+      sqlite3_int64 get_last_insert_rowid();
+
       /** \brief Represents a statement retrieved from the
        *  cache.
        *
