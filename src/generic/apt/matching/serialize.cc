@@ -147,6 +147,10 @@ namespace aptitude
 	  case pkgCache::Dep::Obsoletes:
 	    out << "obsoletes";
 	    break;
+
+	  case pkgCache::Dep::Enhances:
+	    out << "enhances";
+	    break;
 	  }
       }
 
