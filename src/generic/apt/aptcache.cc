@@ -2317,21 +2317,54 @@ pkgDepCache::InRootSetFunc *aptitudeDepCache::GetRootSetFunc()
     }
 }
 
-bool aptitudeDepCache::AutoInstOk(const PkgIterator &pkg,
-				  const VerIterator &ver,
-				  const DepIterator &dep)
+bool aptitudeDepCache::IsInstallOk(const pkgCache::PkgIterator &pkg,
+				   bool AutoInst,
+				   unsigned long Depth,
+				   bool FromUser)
+{
+  pkgCache::VerIterator candver((*this)[pkg].CandidateVerIter(*this));
+  const aptitude_state &estate = get_ext_state(pkg);
+
+  if(candver.end())
+    {
+      LOG_WARN(Loggers::getAptitudeAptCache(), "The package " << pkg.Name() << " has no candidate version, unsure whether it should be installed.");
+      return true;
+    }
+
+  if(estate.selection_state == pkgCache::State::Hold &&
+     candver != pkg.CurrentVer())
+    {
+      LOG_INFO(Loggers::getAptitudeAptCache(), "Refusing to install version "
+	       << candver.VerStr() << " of the held package "
+	       << pkg.Name());
+      return false;
+    }
+
+  if(estate.forbidver == candver.VerStr())
+    {
+      LOG_INFO(Loggers::getAptitudeAptCache(),
+	       "Refusing to install the forbidden version "
+	       << candver.VerStr() << " of the package " << pkg.Name());
+      return false;
+    }
+
+  return true;
+}
+
+bool aptitudeDepCache::IsDeleteOk(const pkgCache::PkgIterator &pkg,
+				  bool Purge,
+				  unsigned long Depth,
+				  bool FromUser)
 {
   const aptitude_state &estate = get_ext_state(pkg);
 
-  // Don't break holds.
-  if(estate.selection_state == pkgCache::State::Hold &&
-     ver != pkg.CurrentVer())
-    return false;
+  if(estate.selection_state == pkgCache::State::Hold)
+    {
+      LOG_INFO(Loggers::getAptitudeAptCache(),
+	       "Refusing to remove the held package "
+	       << pkg.Name());
+      return false;
+    }
 
-  // Don't install forbidden versions.
-  if(!ver.end() && estate.forbidver == ver.VerStr())
-    return false;
-
-  // Everything else is A-OK.
   return true;
 }

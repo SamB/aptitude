@@ -548,15 +548,15 @@ public:
 
   // @}
 
-  /** \brief If my AutoInstOk patch is included, this is used to
-   *  control how MarkInstall recurs.
-   *
-   *  Held packages are never modified and forbidden versions aren't
-   *  installed.
-   */
-  bool AutoInstOk(const PkgIterator &pkg,
-		  const VerIterator &ver,
-		  const DepIterator &dep);
+  bool IsInstallOk(const pkgCache::PkgIterator &pkg,
+		   bool AutoInst,
+		   unsigned long Depth,
+		   bool FromUser);
+
+  bool IsDeleteOk(const pkgCache::PkgIterator &pkg,
+		  bool Purge,
+		  unsigned long Depth,
+		  bool FromUser);
 
   virtual ~aptitudeDepCache();
 };
