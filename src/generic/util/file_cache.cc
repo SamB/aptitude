@@ -97,40 +97,40 @@ namespace aptitude
 	  // only really care that something halfway sensible happens
 	  // in that case.
 	  std::string schema = "                                        \
-begin transaction							\
-create table format ( version integer )					\
+begin transaction;							\
+create table format ( version integer );				\
 									\
-create table globals ( TotalBlobSize integer not null )			\
+create table globals ( TotalBlobSize integer not null );		\
 									\
 create table cache ( CacheId integer primary key,			\
                      BlobSize integer not null,				\
                      BlobId integer not null,				\
-                     Key text not null )				\
+                     Key text not null );				\
 									\
 create table blobs ( BlobId integer primary key,			\
-                     Data blob not null )				\
+                     Data blob not null );				\
 									\
-create index cache_by_blob_id on cache (BlobId)				\
-create unique index cache_by_key on cache (Key)				\
+create index cache_by_blob_id on cache (BlobId);			\
+create unique index cache_by_key on cache (Key);			\
 									\
 									\
 create trigger i_cache_blob_size					\
 before insert on cache							\
 for each row begin							\
-    update globals set TotalBlobSize = TotalBlobSize + NEW.BlobSize	\
-end									\
+    update globals set TotalBlobSize = TotalBlobSize + NEW.BlobSize;	\
+end;									\
 									\
-create table u_cache_blob_size						\
+create trigger u_cache_blob_size					\
 before insert on cache							\
 for each row begin							\
-    update globals set TotalBlobSize = TotalBlobSize + NEW.BlobSize - OLD.BlobSize \
-end									\
+    update globals set TotalBlobSize = TotalBlobSize + NEW.BlobSize - OLD.BlobSize; \
+end;									\
 									\
-create table d_cache_blob_size						\
+create trigger d_cache_blob_size					\
 before insert on cache							\
 for each row begin							\
-    update globals set TotalBlobSize = TotalBlobSize - OLD.BlobSize	\
-end									\
+    update globals set TotalBlobSize = TotalBlobSize - OLD.BlobSize;	\
+end;									\
 									\
 									\
 									\
@@ -139,14 +139,14 @@ before insert on cache							\
 for each row begin							\
     select raise(rollback, 'Insert on table \"cache\" violates foreign key constraint \"fki_cache_blob_id\"') \
     where (select 1 from blobs where blobs.BlobId = NEW.BlobId) is NULL; \
-end									\
+end;									\
 									\
 create trigger fku_cache_blob_id					\
 before update of BlobId on cache					\
 for each row begin							\
     select raise(rollback, 'Insert on table \"cache\" violates foreign key constraint \"fki_cache_blob_id\"') \
     where (select 1 from blobs where blobs.BlobId = NEW.BlobId) is NULL; \
-end									\
+end;									\
 									\
 create trigger fkd_cache_blob_id					\
 before delete on cache							\
@@ -154,10 +154,10 @@ for each row begin							\
     delete from blobs							\
        where blobs.BlobId = OLD.BlobId					\
         and (select 1 from cache where cache.BlobId = OLD.BlobId) is NULL; \
-end									\
+end;									\
 									\
 									\
-insert into globals(TotalBlobSize) values(0)				\
+insert into globals(TotalBlobSize) values(0);				\
 ";
 
 	  store->exec(schema);
