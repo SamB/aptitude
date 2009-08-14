@@ -118,7 +118,7 @@ public:
 #define CHECK_CACHED_VALUE(cache, key, collection)			\
   do {									\
     temp::name ___cached_name(cache->getItem(key));			\
-    BOOST_CHECK(___cached_name.valid());				\
+    BOOST_CHECK_MESSAGE(___cached_name.valid(), "The key " << key << " does not exist in the cache."); \
     if(___cached_name.valid())						\
       CHECK_FILE_CONTENTS(___cached_name.get_name(), collection);	\
   } while(0)
