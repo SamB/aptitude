@@ -162,15 +162,30 @@ insert into globals(TotalBlobSize) values(0);				\
 
 	  store->exec(schema);
 
-	  boost::shared_ptr<statement> set_version_statement =
-	    statement::prepare(*store, "insert into format(version) values(?)");
+	  try
+	    {
+	      boost::shared_ptr<statement> set_version_statement =
+		statement::prepare(*store, "insert into format(version) values(?)");
 
-	  set_version_statement->bind_int(1, current_version_number);
-	  set_version_statement->exec();
+	      set_version_statement->bind_int(1, current_version_number);
+	      set_version_statement->exec();
 
-	  statement::prepare(*store, "commit")->exec();
+	      statement::prepare(*store, "commit")->exec();
 
-	  sanity_check_database();
+	      sanity_check_database();
+	    }
+	  catch(...)
+	    {
+	      try
+		{
+		  store->exec("rollback");
+		}
+	      catch(...)
+		{
+		}
+
+	      throw;
+	    }
 	}
 
 	void sanity_check_database()
