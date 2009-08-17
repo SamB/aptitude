@@ -172,6 +172,22 @@ void setupFileCacheTest(const temp::dir &td,
   infile3.close();
 
 
+  {
+    // Sanity-check the raw iterator class.
+    std::ifstream
+      testFile1(testInfo.infilename1.get_name().c_str()),
+      testFile2(testInfo.infilename2.get_name().c_str()),
+      testFile3(testInfo.infilename3.get_name().c_str());
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(raw_istream_iterator(testFile1), raw_istream_iterator(),
+				    testInfo.infileData1.begin(), testInfo.infileData1.end());
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(raw_istream_iterator(testFile2), raw_istream_iterator(),
+				    testInfo.infileData2.begin(), testInfo.infileData2.end());
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(raw_istream_iterator(testFile3), raw_istream_iterator(),
+				    testInfo.infileData3.begin(), testInfo.infileData3.end());
+  }
+
+
   testInfo.key1 = "key1";
   testInfo.key2 = "key2";
   testInfo.key3 = "key3";
