@@ -540,7 +540,7 @@ insert into globals(TotalBlobSize) values(0);				\
 			// like it would cause a lot of trouble.
 			sqlite::db::statement_proxy update_last_use_statement =
 			  store->get_cached_statement("update cache set CacheId = (select max(CacheId) from cache) + 1 where CacheId = ?");
-			update_last_use_statement->bind_int64(0, oldCacheId);
+			update_last_use_statement->bind_int64(1, oldCacheId);
 			update_last_use_statement->exec();
 		      }
 
