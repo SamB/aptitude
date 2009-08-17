@@ -68,7 +68,10 @@ public:
       finished(!in->good())
   {
     if(!finished)
-      in->get(c);
+      {
+	in->get(c);
+	finished = in->eof();
+      }
   }
 
   raw_istream_iterator()
@@ -99,7 +102,7 @@ public:
     if(in->good())
       {
 	in->get(c);
-	finished = false;
+	finished = in->eof();
       }
     else
       finished = true;
