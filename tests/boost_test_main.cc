@@ -32,5 +32,5 @@ int main(int argc, char **argv)
     log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
   log4cxx::BasicConfigurator::configure();
 
-  boost::unit_test::unit_test_main(init_unit_test, argc, argv);
+  return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }
