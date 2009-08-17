@@ -394,7 +394,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		    // incrementally.
 		    {
 		      sqlite::db::statement_proxy insert_blob_statement =
-			store->get_cached_statement("insert into blob (Data) values (zeroblob(?))");
+			store->get_cached_statement("insert into blobs (Data) values (zeroblob(?))");
 		      insert_blob_statement->bind_int64(1, buf.st_size);
 		      insert_blob_statement->exec();
 		    }
