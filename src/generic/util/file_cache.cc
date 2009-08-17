@@ -402,7 +402,7 @@ insert into globals(TotalBlobSize) values(0);				\
 			// table.
 			{
 			  sqlite::db::statement_proxy insert_cache_statement =
-			    store->get_cached_statement("insert or rollback into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
+			    store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
 			  insert_cache_statement->bind_int64(1, inserted_blob_row);
 			  insert_cache_statement->bind_int64(2, buf.st_size);
 			  insert_cache_statement->bind_string(3, key);
