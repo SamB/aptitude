@@ -448,6 +448,8 @@ insert into globals(TotalBlobSize) values(0);				\
 
 
 		  store->exec("commit");
+		  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+			    boost::format("Cached \"%s\" as \"%s\"") % path % key);
 		}
 	      catch(...)
 		{
