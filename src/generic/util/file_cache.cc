@@ -389,7 +389,8 @@ insert into globals(TotalBlobSize) values(0);				\
 			  store->get_last_insert_rowid();
 
 			// Delete any existing entries for the same
-			// key.  This hopefully
+			// key.  This hopefully avoids any trouble due
+			// to duplicate keys.
 			{
 			  sqlite::db::statement_proxy delete_key_statement =
 			    store->get_cached_statement("delete from cache where Key = ?");
