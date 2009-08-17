@@ -333,6 +333,8 @@ insert into globals(TotalBlobSize) values(0);				\
 		    store->get_cached_statement("select TotalBlobSize from globals");
 		  if(!get_total_size_statement->step())
 		    throw FileCacheException("Can't read the total size of all the files in the database.");
+		  get_total_size_statement->exec();
+
 		  sqlite3_int64 total_size = get_total_size_statement->get_int64(0);
 
 		  if(total_size + buf.st_size > max_size)
@@ -353,6 +355,8 @@ insert into globals(TotalBlobSize) values(0);				\
 			    last_cache_id_dropped = read_entries_statement->get_int64(0);
 			    amount_dropped += read_entries_statement->get_int64(1);
 			  }
+
+			read_entries_statement->exec();
 
 			if(first)
 			  throw FileCacheException("Internal error: no cached files, but the total size is nonzero.");
@@ -506,6 +510,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		    {
 		      sqlite3_int64 oldCacheId = find_cache_entry_statement->get_int64(0);
 		      sqlite3_int64 blobId = find_cache_entry_statement->get_int64(1);
+		      find_cache_entry_statement->exec();
 
 		      // 1.a.ii.A: update the last use field.
 		      {
