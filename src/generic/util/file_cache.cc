@@ -333,9 +333,9 @@ insert into globals(TotalBlobSize) values(0);				\
 		    store->get_cached_statement("select TotalBlobSize from globals");
 		  if(!get_total_size_statement->step())
 		    throw FileCacheException("Can't read the total size of all the files in the database.");
-		  get_total_size_statement->exec();
 
 		  sqlite3_int64 total_size = get_total_size_statement->get_int64(0);
+		  get_total_size_statement->exec();
 
 		  if(total_size + buf.st_size > max_size)
 		    {
