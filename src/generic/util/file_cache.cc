@@ -379,88 +379,88 @@ insert into globals(TotalBlobSize) values(0);				\
 			delete_old_statement->bind_int64(1, last_cache_id_dropped);
 			delete_old_statement->exec();
 		      }
-
-		      // Step 3.c)
-		      {
-			LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-				  boost::format("Inserting \"%s\" into the blobs table.") % path);
-
-			// The blob has to be inserted before the
-			// cache entry, so the foreign key constraints
-			// are maintained.
-
-			// Insert a zeroblob first, so we can write it
-			// incrementally.
-			{
-			  sqlite::db::statement_proxy insert_blob_statement =
-			    store->get_cached_statement("insert into blob (Data) values (zeroblob(?))");
-			  insert_blob_statement->bind_int64(1, buf.st_size);
-			  insert_blob_statement->exec();
-			}
-
-			sqlite3_int64 inserted_blob_row =
-			  store->get_last_insert_rowid();
-
-			// Delete any existing entries for the same
-			// key.  This hopefully avoids any trouble due
-			// to duplicate keys.
-			{
-			  sqlite::db::statement_proxy delete_key_statement =
-			    store->get_cached_statement("delete from cache where Key = ?");
-			  delete_key_statement->bind_string(1, key);
-			  delete_key_statement->exec();
-			}
-
-			// Insert the corresponding entry in the cache
-			// table.
-			{
-			  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-				    boost::format("Inserting \"%s\" into the cache table.") % key);
-
-			  sqlite::db::statement_proxy insert_cache_statement =
-			    store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
-			  insert_cache_statement->bind_int64(1, inserted_blob_row);
-			  insert_cache_statement->bind_int64(2, buf.st_size);
-			  insert_cache_statement->bind_string(3, key);
-			  insert_cache_statement->exec();
-			}
-
-			boost::shared_ptr<blob> blob_data =
-			  sqlite::blob::open(*store,
-					     "main",
-					     "blobs",
-					     "Data",
-					     inserted_blob_row);
-
-			int amount_to_write(buf.st_size);
-			int blob_offset = 0;
-			static const int block_size = 16384;
-			// This can safely be static, since we acquire
-			// a mutex before we enter this routine.
-			static char buf[block_size];
-			while(amount_to_write > 0)
-			  {
-			    int curr_amt;
-			    if(amount_to_write < block_size)
-			      curr_amt = static_cast<int>(amount_to_write);
-			    else
-			      curr_amt = block_size;
-
-			    int amt_read = read(fd.Fd(), buf, curr_amt);
-			    if(amt_read == 0)
-			      throw FileCacheException((boost::format("Unexpected end of file while reading %s into the cache.") % path).str());
-			    else if(amt_read < 0)
-			      {
-				std::string errmsg(cw::util::sstrerror(errno));
-				throw FileCacheException((boost::format("Error while reading %s into the cache: %s.") % path % errmsg).str());
-			      }
-
-			    blob_data->write(blob_offset, buf, curr_amt);
-			    blob_offset += amt_read;
-			    amount_to_write -= amt_read;
-			  }
-		      }
 		    }
+
+		  // Step 3.c)
+		  {
+		    LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+			      boost::format("Inserting \"%s\" into the blobs table.") % path);
+
+		    // The blob has to be inserted before the
+		    // cache entry, so the foreign key constraints
+		    // are maintained.
+
+		    // Insert a zeroblob first, so we can write it
+		    // incrementally.
+		    {
+		      sqlite::db::statement_proxy insert_blob_statement =
+			store->get_cached_statement("insert into blob (Data) values (zeroblob(?))");
+		      insert_blob_statement->bind_int64(1, buf.st_size);
+		      insert_blob_statement->exec();
+		    }
+
+		    sqlite3_int64 inserted_blob_row =
+		      store->get_last_insert_rowid();
+
+		    // Delete any existing entries for the same
+		    // key.  This hopefully avoids any trouble due
+		    // to duplicate keys.
+		    {
+		      sqlite::db::statement_proxy delete_key_statement =
+			store->get_cached_statement("delete from cache where Key = ?");
+		      delete_key_statement->bind_string(1, key);
+		      delete_key_statement->exec();
+		    }
+
+		    // Insert the corresponding entry in the cache
+		    // table.
+		    {
+		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				boost::format("Inserting \"%s\" into the cache table.") % key);
+
+		      sqlite::db::statement_proxy insert_cache_statement =
+			store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
+		      insert_cache_statement->bind_int64(1, inserted_blob_row);
+		      insert_cache_statement->bind_int64(2, buf.st_size);
+		      insert_cache_statement->bind_string(3, key);
+		      insert_cache_statement->exec();
+		    }
+
+		    boost::shared_ptr<blob> blob_data =
+		      sqlite::blob::open(*store,
+					 "main",
+					 "blobs",
+					 "Data",
+					 inserted_blob_row);
+
+		    int amount_to_write(buf.st_size);
+		    int blob_offset = 0;
+		    static const int block_size = 16384;
+		    // This can safely be static, since we acquire
+		    // a mutex before we enter this routine.
+		    static char buf[block_size];
+		    while(amount_to_write > 0)
+		      {
+			int curr_amt;
+			if(amount_to_write < block_size)
+			  curr_amt = static_cast<int>(amount_to_write);
+			else
+			  curr_amt = block_size;
+
+			int amt_read = read(fd.Fd(), buf, curr_amt);
+			if(amt_read == 0)
+			  throw FileCacheException((boost::format("Unexpected end of file while reading %s into the cache.") % path).str());
+			else if(amt_read < 0)
+			  {
+			    std::string errmsg(cw::util::sstrerror(errno));
+			    throw FileCacheException((boost::format("Error while reading %s into the cache: %s.") % path % errmsg).str());
+			  }
+
+			blob_data->write(blob_offset, buf, curr_amt);
+			blob_offset += amt_read;
+			amount_to_write -= amt_read;
+		      }
+		  }
 
 
 		  store->exec("commit");
