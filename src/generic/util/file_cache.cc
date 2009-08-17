@@ -279,8 +279,8 @@ insert into globals(TotalBlobSize) values(0);				\
 	{
 	  cw::threads::mutex::lock l(store_mutex);
 
-	  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-		    "Caching " << path << " as " << key);
+	  LOG_INFO(Loggers::getAptitudeDownloadCache(),
+		   "Caching " << path << " as " << key);
 
 	  try
 	    {
@@ -339,9 +339,14 @@ insert into globals(TotalBlobSize) values(0);				\
 
 		  if(total_size + buf.st_size > max_size)
 		    {
+		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				boost::format("The new cache size %ld exceeds the maximum size %ld; dropping old entries.")
+				% (total_size + buf.st_size) % max_size);
+
 		      bool first = true;
 		      sqlite3_int64 last_cache_id_dropped = -1;
 		      sqlite3_int64 amount_dropped = 0;
+		      int num_dropped = 0;
 
 		      // Step 3.a)
 		      {
@@ -354,6 +359,7 @@ insert into globals(TotalBlobSize) values(0);				\
 			    first = false;
 			    last_cache_id_dropped = read_entries_statement->get_int64(0);
 			    amount_dropped += read_entries_statement->get_int64(1);
+			    ++num_dropped;
 			  }
 
 			read_entries_statement->exec();
@@ -361,6 +367,10 @@ insert into globals(TotalBlobSize) values(0);				\
 			if(first)
 			  throw FileCacheException("Internal error: no cached files, but the total size is nonzero.");
 		      }
+
+		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				boost::format("Deleting %d entries from the cache for a total of %ld bytes saved")
+				% num_dropped % amount_dropped);
 
 		      // Step 3.b)
 		      {
@@ -372,6 +382,9 @@ insert into globals(TotalBlobSize) values(0);				\
 
 		      // Step 3.c)
 		      {
+			LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				  boost::format("Inserting \"%s\" into the blobs table.") % path);
+
 			// The blob has to be inserted before the
 			// cache entry, so the foreign key constraints
 			// are maintained.
@@ -401,6 +414,9 @@ insert into globals(TotalBlobSize) values(0);				\
 			// Insert the corresponding entry in the cache
 			// table.
 			{
+			  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				    boost::format("Inserting \"%s\" into the cache table.") % key);
+
 			  sqlite::db::statement_proxy insert_cache_statement =
 			    store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
 			  insert_cache_statement->bind_int64(1, inserted_blob_row);
@@ -448,8 +464,8 @@ insert into globals(TotalBlobSize) values(0);				\
 
 
 		  store->exec("commit");
-		  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-			    boost::format("Cached \"%s\" as \"%s\"") % path % key);
+		  LOG_INFO(Loggers::getAptitudeDownloadCache(),
+			   boost::format("Cached \"%s\" as \"%s\"") % path % key);
 		}
 	      catch(...)
 		{
