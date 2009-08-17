@@ -121,13 +121,13 @@ for each row begin							\
 end;									\
 									\
 create trigger u_cache_blob_size					\
-before insert on cache							\
+before update on cache							\
 for each row begin							\
     update globals set TotalBlobSize = TotalBlobSize + NEW.BlobSize - OLD.BlobSize; \
 end;									\
 									\
 create trigger d_cache_blob_size					\
-before insert on cache							\
+before delete on cache							\
 for each row begin							\
     update globals set TotalBlobSize = TotalBlobSize - OLD.BlobSize;	\
 end;									\
