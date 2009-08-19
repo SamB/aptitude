@@ -232,3 +232,26 @@ BOOST_AUTO_TEST_CASE(fileCacheStoreDisk)
   fileCacheTestInfo testInfo;
   setupFileCacheTest(td, cache, testInfo);
 }
+
+BOOST_AUTO_TEST_CASE(fileCacheStoreMemory)
+{
+  temp::dir td("testFileCache");
+  temp::name tn(td, "testFileCache");
+
+  boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 1000, 0));
+
+  fileCacheTestInfo testInfo;
+  setupFileCacheTest(td, cache, testInfo);
+}
+
+BOOST_AUTO_TEST_CASE(fileCacheStoreDiskAndMemory)
+{
+  temp::dir td("testFileCache");
+  temp::name tn(td, "testFileCache");
+
+  boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 333, 667));
+  BOOST_CHECK(exists(tn.get_name()));
+
+  fileCacheTestInfo testInfo;
+  setupFileCacheTest(td, cache, testInfo);
+}
