@@ -1,3 +1,5 @@
+#include <boost/function.hpp>
+#include <boost/lambda/bind.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <generic/util/file_cache.h>
@@ -254,4 +256,83 @@ BOOST_AUTO_TEST_CASE(fileCacheStoreDiskAndMemory)
 
   fileCacheTestInfo testInfo;
   setupFileCacheTest(td, cache, testInfo);
+}
+
+
+void runDropLeastRecentlyUsedTest(const temp::dir &td,
+				  const boost::function<boost::shared_ptr<file_cache> ()> &cache_k)
+{
+  // Check that we can control which of the three entries is dropped
+  // when we add a fourth entry.
+
+
+  // Drop key3.
+  {
+    boost::shared_ptr<file_cache> cache(cache_k());
+
+    fileCacheTestInfo testInfo;
+    setupFileCacheTest(td, cache, testInfo);
+
+    CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1);
+    CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2);
+    CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3);
+
+    cache->putItem("key4", testInfo.infilename1.get_name());
+
+
+    CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1);
+    CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2);
+    CHECK_CACHED_VALUE(cache, "key4", testInfo.infileData1);
+    BOOST_CHECK(!cache->getItem(testInfo.key3).valid());
+  }
+
+
+  // Drop key2.
+  {
+    boost::shared_ptr<file_cache> cache(cache_k());
+
+    fileCacheTestInfo testInfo;
+    setupFileCacheTest(td, cache, testInfo);
+
+    CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1);
+    CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3);
+    CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2);
+
+    cache->putItem("key4", testInfo.infilename1.get_name());
+
+
+    CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1);
+    CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3);
+    CHECK_CACHED_VALUE(cache, "key4", testInfo.infileData1);
+    BOOST_CHECK(!cache->getItem(testInfo.key2).valid());
+  }
+
+
+  // Drop key1.
+  {
+    boost::shared_ptr<file_cache> cache(cache_k());
+
+    fileCacheTestInfo testInfo;
+    setupFileCacheTest(td, cache, testInfo);
+
+    CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3);
+    CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2);
+    CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1);
+
+    cache->putItem("key4", testInfo.infilename1.get_name());
+
+
+    CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2);
+    CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3);
+    CHECK_CACHED_VALUE(cache, "key4", testInfo.infileData1);
+    BOOST_CHECK(!cache->getItem(testInfo.key1).valid());
+  }
+}
+
+BOOST_AUTO_TEST_CASE(fileCacheDropLeastRecentlyUsedDisk)
+{
+  temp::dir td("testFileCache");
+  temp::name tn(td, "testFileCache");
+
+  runDropLeastRecentlyUsedTest(td, boost::lambda::bind(&file_cache::create, tn.get_name(), 0, 1000));
 }
