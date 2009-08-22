@@ -35,6 +35,7 @@
 #include <cwidget/generic/util/eassert.h>
 #include <cwidget/generic/util/transcode.h>
 
+#include <generic/util/file_cache.h>
 #include <generic/util/util.h>
 
 #include <generic/util/undo.h>
@@ -74,6 +75,8 @@ resolver_manager *resman = NULL;
 
 string *pendingerr=NULL;
 bool erroriswarning=false;
+
+boost::shared_ptr<aptitude::util::file_cache> download_cache;
 
 // Set to "true" if we have a version of the apt library with
 // support for overriding configuration settings via RootDir.
@@ -123,6 +126,8 @@ bool get_apt_knows_about_rootdir()
 
 void apt_preinit(const char *rootdir)
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
   const char * const aptitudeIgnoreRecommendsImportant = PACKAGE "::Ignore-Recommends-Important";
@@ -237,6 +242,28 @@ void apt_preinit(const char *rootdir)
   apt_dumpcfg(PACKAGE);
 
   apt_undos=new undo_list;
+
+  // Open the download cache.  By default, it goes in
+  // ~/.aptitude/cache; it has 512Kb of in-memory cache and 10MB of
+  // on-disk cache.
+  std::string download_cache_file_name = string(HOME) + "/.aptitude/cache";
+  const int download_cache_memory_size =
+    aptcfg->FindI(PACKAGE "::UI::DownloadCache::MemorySize", 512 * 1024);
+  const int download_cache_disk_size   =
+    aptcfg->FindI(PACKAGE "::UI::DownloadCache::DiskSize", 10 * 1024 * 1024);
+  try
+    {
+      download_cache = aptitude::util::file_cache::create(download_cache_file_name,
+							  download_cache_memory_size,
+							  download_cache_disk_size);
+    }
+  catch(cwidget::util::Exception &ex)
+    {
+      LOG_WARN(logger,
+	       "Can't open the file cache \""
+	       << download_cache_file_name
+	       << "\": " << ex.errmsg());
+    }
 }
 
 void apt_dumpcfg(const char *root)

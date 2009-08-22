@@ -26,6 +26,8 @@
 
 #include <string.h>
 
+#include <boost/shared_ptr.hpp>
+
 #include <utility>
 
 /** \brief Central repository for apt structures
@@ -39,6 +41,13 @@
  *  \file apt.h
  */
 
+namespace aptitude
+{
+  namespace util
+  {
+    class file_cache;
+  }
+}
 class OpProgress;
 class pkgRecords;
 class pkgSourceList;
@@ -131,6 +140,11 @@ extern sigc::signal0<void> cache_reload_failed;
  *  errors might need to be removed while a routine is executing.
  */
 extern sigc::signal0<void> consume_errors;
+
+/** \brief Used to cache downloaded data, to avoid multiple
+ *  downloads of items such as changelogs and screenshots.
+ */
+extern boost::shared_ptr<aptitude::util::file_cache> download_cache;
 
 void apt_dumpcfg(const char *root);
 // Dumps a subtree of the configuration to ~/.aptitude/config
