@@ -300,10 +300,7 @@ namespace gui
         warning_tag->property_foreground() = "#FF0000";
         warning_tag->property_foreground_set() = true;
         return textBuffer->insert_with_tag(where,
-					   "Can't parse changelog, did you install the libparse-debianchangelog-perl package ?", warning_tag);
-        // \todo Offer to install libparse-debianchangelog-perl if we
-        // can't parse the changelog because it's missing.
-        // Maybe we could add an action button that does that ?
+					   "Can't parse changelog.", warning_tag);
       }
   }
 
