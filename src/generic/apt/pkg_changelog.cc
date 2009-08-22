@@ -33,6 +33,7 @@
 #include <signal.h>
 #include <sys/stat.h>
 
+#include <generic/util/file_cache.h>
 #include <generic/util/util.h>
 
 #include <apt-pkg/error.h>
@@ -186,7 +187,10 @@ private:
 		      desc.URI.c_str(),
 		      ErrorText.c_str());
       else
-	ent.get_callbacks().get_success()(ent.get_tempname());
+	{
+	  download_cache->putItem(desc.URI, ent.get_tempname().get_name());
+	  ent.get_callbacks().get_success()(ent.get_tempname());
+	}
     }
   };
 
@@ -303,14 +307,23 @@ public:
 
 	changelog_uris.push_back(uri);
 
-	new AcqForEntry(fetcher,
-			changelog_uris,
-			"",
-			0,
-			title,
-			title,
-			it->get_tempname().get_name().c_str(),
-			*it);
+
+
+	// Check the file cache to see if the HTTP URI is cached (we
+	// don't cache local files).
+	temp::name cached_result = download_cache->getItem(uri);
+	if(cached_result.valid())
+	  it->get_callbacks().get_success()(cached_result);
+	else
+	  // If not, start fetching it.
+	  new AcqForEntry(fetcher,
+			  changelog_uris,
+			  "",
+			  0,
+			  title,
+			  title,
+			  it->get_tempname().get_name().c_str(),
+			  *it);
       }
 
     return true;
@@ -346,6 +359,8 @@ public:
 		    {
 		      const entry &ent(item->get_entry());
 
+		      download_cache->putItem(item->get_real_uri(),
+					      ent.get_tempname().get_name());
 		      ent.get_callbacks().get_success()(ent.get_tempname());
 		    }
 		}
@@ -366,7 +381,6 @@ void changelog_cache::register_changelog(const temp::name &n,
 					 const std::string &package,
 					 const std::string &version)
 {
-  cache[std::make_pair(package, version)] = n;
   pending_downloads[std::make_pair(package, version)].get_success()(n);
   pending_downloads.erase(std::make_pair(package, version));
 }
@@ -435,31 +449,23 @@ download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pk
 	}
       else
 	{
-	  const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
-	    found = cache.find(std::make_pair(srcpkg, sourcever));
+	  download_signals &signals(pending_downloads[std::make_pair(srcpkg, sourcever)]);
+	  signals.get_success().connect(callbacks.get_success());
+	  signals.get_failure().connect(callbacks.get_failure());
 
-	  if(found != cache.end())
-	    callbacks.get_success()(found->second);
-	  else
-	    {
-	      download_signals &signals(pending_downloads[std::make_pair(srcpkg, sourcever)]);
-	      signals.get_success().connect(callbacks.get_success());
-	      signals.get_failure().connect(callbacks.get_failure());
+	  const sigc::slot1<void, temp::name> register_slot =
+	    sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
+		       srcpkg,
+		       sourcever);
+	  const sigc::slot1<void, std::string> failure_slot =
+	    sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
+		       srcpkg, sourcever);
 
-	      const sigc::slot1<void, temp::name> register_slot =
-		sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
-			   srcpkg,
-			   sourcever);
-	      const sigc::slot1<void, std::string> failure_slot =
-		sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
-			   srcpkg, sourcever);
+	  changelog_cache::download_callbacks
+	    callbacks(register_slot, failure_slot);
 
-	      changelog_cache::download_callbacks
-		callbacks(register_slot, failure_slot);
-
-	      entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(),
-								  tempname, callbacks));
-	    }
+	  entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(),
+							      tempname, callbacks));
 	}
     }
 
@@ -509,30 +515,22 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
     }
   else
     {
-      const std::map<std::pair<std::string, std::string>, temp::name>::const_iterator
-	found = cache.find(std::make_pair(srcpkg, ver));
+      download_signals &signals(pending_downloads[std::make_pair(srcpkg, ver)]);
+      signals.get_success().connect(success);
+      signals.get_failure().connect(failure);
 
-      if(found != cache.end())
-	success(found->second);
-      else
-	{
-	  download_signals &signals(pending_downloads[std::make_pair(srcpkg, ver)]);
-	  signals.get_success().connect(success);
-	  signals.get_failure().connect(failure);
+      sigc::slot1<void, temp::name>
+	register_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
+				       srcpkg,
+				       ver));
+      const sigc::slot1<void, std::string>
+	fail_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
+				   srcpkg, ver));
 
-	  sigc::slot1<void, temp::name>
-	    register_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
-					   srcpkg,
-					   ver));
-	  const sigc::slot1<void, std::string>
-	    fail_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::changelog_failed),
-				       srcpkg, ver));
+      changelog_cache::download_callbacks
+	callbacks(register_and_return, fail_and_return);
 
-	  changelog_cache::download_callbacks
-	    callbacks(register_and_return, fail_and_return);
-
-	  entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, callbacks));
-	}
+      entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, callbacks));
     }
 
   return new download_changelog_manager(entries.begin(), entries.end());

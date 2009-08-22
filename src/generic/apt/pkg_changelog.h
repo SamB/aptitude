@@ -1,6 +1,6 @@
 // pkg_changelog.h    -*-c++-*-
 //
-//  Copyright 2000, 2005, 2008 Daniel Burrows
+//  Copyright 2000, 2005, 2008-2009 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,11 +43,22 @@ namespace aptitude
 {
   namespace apt
   {
-    /** \brief A cache storing changelogs that have been downloaded
-     *  from the Debian servers.
+    /** \brief Manager for ongoing changelog downloads, responsible
+     *  for merging simultaneous downloads of the same changelog.
      *
-     *  This should only be accessed from the foreground
-     *  thread.
+     *  This class was originally responsible for caching downloaded
+     *  changelogs.  However, that responsibility has been handed off
+     *  to the file_cache class, which maintains a persistent global
+     *  cache of downloaded files.  This class's name is now a
+     *  misnomer (see the note below for how it should change in the
+     *  future).
+     *
+     *  \note This should be refactored to produce a generic merging
+     *  download queue.  Queue items would be identified by a list of
+     *  URIs that they want to fetch.
+     *
+     *  Instances of changelog_cache should only be accessed from the
+     *  foreground thread.
      */
     class changelog_cache
     {
@@ -102,10 +113,6 @@ namespace aptitude
       };
 
     private:
-      // Maps (source-package, version) to the corresponding
-      // changelog.
-      std::map<std::pair<std::string, std::string>, temp::name> cache;
-
       // Maps each in-progress download to its completion signal.
       //
       // Used to avoid spawning extra downloads when we can piggyback
@@ -124,12 +131,6 @@ namespace aptitude
 
     public:
       changelog_cache();
-
-      /** \brief Retrieve the name corresponding to the given
-       *  package/version pair from the cache, or an invalid name if
-       *  the changelog isn't cached.
-       */
-      temp::name get_from_cache(const std::string &package, const std::string &name);
 
       /** Generate a download process object that retrieves changelogs
        *  for the given package versions from the cache or the
