@@ -91,6 +91,13 @@ void apt_init(OpProgress *progess_bar,
 /** Close the cache file and destroy the associated data structures. */
 void apt_close_cache();
 
+/** \brief Close and destroy all global data structures.
+ *
+ *  In addition to closing the apt cache, this closes the download
+ *  cache.
+ */
+void apt_shutdown();
+
 /** \return \b true if the version of the apt library against
  *  which we are running supports the RootDir convention.
  *

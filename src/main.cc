@@ -477,7 +477,10 @@ public:
 // can trigger aborts when the static flyweight pool is destroyed.
 //
 // TBH, I think it might be worth writing our own flyweight stand-in
-// to avoid this particular bit of stupid.
+// to avoid this particular bit of stupid.  On the other hand, it
+// might be better to fully shut down the cache all the time, to
+// better detect leaks and so on?  I'm undecided -- and it shouldn't
+// take too long to clear out the cache.
 struct close_cache_on_exit
 {
   close_cache_on_exit()
@@ -486,7 +489,7 @@ struct close_cache_on_exit
 
   ~close_cache_on_exit()
   {
-    apt_close_cache();
+    apt_shutdown();
   }
 };
 

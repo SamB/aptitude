@@ -538,6 +538,38 @@ void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
   apt_load_cache(progress_bar, do_initselections, status_fname);
 }
 
+void apt_shutdown()
+{
+  apt_close_cache();
+
+  delete aptcfg;
+  aptcfg = NULL;
+
+  delete theme_config;
+  theme_config = NULL;
+
+  delete user_config;
+  user_config = NULL;
+
+  delete apt_undos;
+  apt_undos = NULL;
+
+  delete user_pkg_hier;
+  user_pkg_hier = NULL;
+
+  delete pendingerr;
+  pendingerr = NULL;
+
+
+  download_cache.reset();
+
+  cache_closed.clear();
+  cache_reloaded.clear();
+  cache_reload_failed.clear();
+  hier_reloaded.clear();
+  consume_errors.clear();
+}
+
 pkg_hier *get_user_pkg_hier()
 {
   if(!user_pkg_hier)
