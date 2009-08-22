@@ -61,6 +61,16 @@ boost/flyweight.hpp dnl
 boost/format.hpp dnl
 boost/functional/hash.hpp dnl
 boost/function.hpp dnl
+boost/iostreams/copy.hpp dnl
+boost/iostreams/device/file.hpp dnl
+boost/iostreams/filter/gzip.hpp dnl
+boost/iostreams/filtering_stream.hpp dnl
+boost/iostreams/invert.hpp dnl
+boost/iostreams/operations.hpp dnl
+boost/iostreams/read.hpp dnl
+boost/iostreams/seek.hpp dnl
+boost/iostreams/stream.hpp dnl
+boost/iostreams/write.hpp dnl
 boost/lambda/bind.hpp dnl
 boost/make_shared.hpp dnl
 boost/multi_index_container.hpp dnl
@@ -75,6 +85,9 @@ boost/unordered_set.hpp dnl
                   ,
 		  ,
 		  [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
+
+AX_BOOST_BASE()
+AX_BOOST_IOSTREAMS
 
 PKG_CHECK_MODULES(SQLITE3, sqlite3)
 
@@ -121,7 +134,9 @@ then
 fi
 
 CXXFLAGS="$CXXFLAGS $LOG4CXX_CFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS $SQLITE3_CFLAGS"
-LIBS="$LIBS $LOG4CXX_LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS $SQLITE3_LIBS"
+LIBS="$LIBS $LOG4CXX_LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS $SQLITE3_LIBS $BOOST_IOSTREAMS_LIB"
+CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
+LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
 
 if test x$HAVE_GTK = x1
 then

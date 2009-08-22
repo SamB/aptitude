@@ -29,6 +29,16 @@
 #include <cwidget/generic/util/ssprintf.h>
 
 #include <boost/format.hpp>
+#include <boost/iostreams/copy.hpp>
+#include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/invert.hpp>
+#include <boost/iostreams/operations.hpp>
+#include <boost/iostreams/read.hpp>
+#include <boost/iostreams/seek.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/iostreams/write.hpp>
 #include <boost/make_shared.hpp>
 
 #include <loggers.h>
@@ -39,6 +49,7 @@
 
 using namespace aptitude::sqlite;
 namespace cw = cwidget;
+namespace io = boost::iostreams;
 
 namespace aptitude
 {
@@ -277,16 +288,46 @@ insert into globals(TotalBlobSize) values(0);				\
 	void putItem(const std::string &key,
 		     const std::string &path)
 	{
-	  cw::threads::mutex::lock l(store_mutex);
-
-	  LOG_INFO(Loggers::getAptitudeDownloadCache(),
-		   "Caching " << path << " as " << key);
-
+	  // NOTE: We wait until we've finished compressing the input
+	  // file to take the store mutex.
 	  try
 	    {
+	      // Before anything else, we need to compress the input
+	      // file to a temporary location.  Without this step,
+	      // there's no way to know the size of the compressed
+	      // data, but we need that size in order to insert it
+	      // into the cache database.
+	      temp::dir td("aptitudeCache");
+	      temp::name tn(td, "compressed");
+
+	      const std::string compressed_path(tn.get_name());
+
+	      // The size of the input file -- used only for logging
+	      // so we can see how well it was compressed.
+	      std::streamsize input_size = -1;
+
+	      // Compress the input file.
+	      //
+	      // TODO: make the compression level an option.  Maybe
+	      // also support other algorithms, although that needs a
+	      // schema change (an extra column in the blobs table
+	      // giving the compressor that was used).
+	      {
+		io::filtering_ostream compressed_out(io::zlib_compressor(9) | io::file_sink(compressed_path));
+
+		input_size = io::copy(io::file(path), compressed_out);
+	      }
+
+	      if(input_size < 0)
+		throw FileCacheException((boost::format("Unable to compress \"%s\" to \"%s\".")
+					  % path % compressed_path).str());
+
+	      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+			"Compressed \"" << path << "\" to \"" << compressed_path << "\"");
+
 	      // Here's the plan:
 	      //
-	      // 1) Open the file and get its size with fstat().
+	      // 1) Open the compressed file and get its size.
 	      // 2) If the file is too large to ever cache, return
 	      //    immediately (don't cache it).
 	      // 3) In an sqlite transaction:
@@ -299,30 +340,52 @@ insert into globals(TotalBlobSize) values(0);				\
 
 
 	      // Step 1)
+	      //
+	      // Using Unix I/O instead of Boost IOStreams or
+	      // std::ifstream because my attempts to use the latter
+	      // two failed utterly: it seems to be impossible to
+	      // determine a file's size using a high-level interface.
 	      FileFd fd;
-	      if(!fd.Open(path, FileFd::ReadOnly))
+	      if(!fd.Open(compressed_path, FileFd::ReadOnly))
 		{
-		  std::string msg = cw::util::sstrerror(errno);
+		  const int err = errno;
 		  throw FileCacheException((boost::format("Can't open \"%s\" to store it in the cache: %s")
-					    % path % msg).str());
+					    % compressed_path % cw::util::sstrerror(err)).str());
 		}
 
 	      struct stat buf;
 	      if(fstat(fd.Fd(), &buf) != 0)
 		{
-		  std::string msg = cw::util::sstrerror(errno);
-		  throw FileCacheException((boost::format("Can't determine the size of \"%s\" to store it in the cache: %s")
-					    % path % msg).str());
+		  const int err = errno;
+		  throw FileCacheException((boost::format("Can't determine the size of \"%s\" to store it in the cache: %s.")
+					    % compressed_path % cw::util::sstrerror(err)).str());
 		}
 
+	      off_t compressed_size = buf.st_size;
+
+	      if(compressed_size == 0 && input_size > 0)
+		throw FileCacheException("Sanity-check failed: a non-empty file was compressed to zero bytes!.");
+
 	      // Step 2)
-	      if(buf.st_size > max_size)
+	      if(compressed_size > max_size)
 		{
 		  LOG_INFO(Loggers::getAptitudeDownloadCache(),
-			   "Refusing to cache \"" << path << "\" as \"" << key
-			   << "\": its size " << buf.st_size << " is greater than the cache size limit " << max_size);
+			   "Refusing to cache \"" << compressed_path << "\" as \"" << key
+			   << "\": its size " << compressed_size
+			   << " is greater than the cache size limit " << max_size);
 		  return;
 		}
+
+	      cw::threads::mutex::lock l(store_mutex);
+
+	      LOG_INFO(Loggers::getAptitudeDownloadCache(),
+		       "Caching " << compressed_path << " as " << key
+		       << " (size: " << input_size << " -> "
+		       << compressed_size << " ["
+		       << (compressed_size == 0
+			   ? (input_size == 0 ? boost::format("100%%") : boost::format("VANISHED?"))
+			   : (boost::format("%.2f%%") % (((double)(100 * compressed_size)) / input_size)))
+		       << "])");
 
 	      store->exec("begin transaction");
 
@@ -337,11 +400,11 @@ insert into globals(TotalBlobSize) values(0);				\
 		  sqlite3_int64 total_size = get_total_size_statement->get_int64(0);
 		  get_total_size_statement->exec();
 
-		  if(total_size + buf.st_size > max_size)
+		  if(total_size + compressed_size > max_size)
 		    {
 		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
 				boost::format("The new cache size %ld exceeds the maximum size %ld; dropping old entries.")
-				% (total_size + buf.st_size) % max_size);
+				% (total_size + compressed_size) % max_size);
 
 		      bool first = true;
 		      sqlite3_int64 last_cache_id_dropped = -1;
@@ -353,7 +416,7 @@ insert into globals(TotalBlobSize) values(0);				\
 			sqlite::db::statement_proxy read_entries_statement =
 			  store->get_cached_statement("select CacheId, BlobSize from cache order by CacheId");
 
-			while(total_size + buf.st_size - amount_dropped > max_size &&
+			while(total_size + compressed_size - amount_dropped > max_size &&
 			      read_entries_statement->step())
 			  {
 			    first = false;
@@ -384,7 +447,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		  // Step 3.c)
 		  {
 		    LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-			      boost::format("Inserting \"%s\" into the blobs table.") % path);
+			      boost::format("Inserting \"%s\" into the blobs table.") % compressed_path);
 
 		    // The blob has to be inserted before the
 		    // cache entry, so the foreign key constraints
@@ -395,7 +458,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		    {
 		      sqlite::db::statement_proxy insert_blob_statement =
 			store->get_cached_statement("insert into blobs (Data) values (zeroblob(?))");
-		      insert_blob_statement->bind_int64(1, buf.st_size);
+		      insert_blob_statement->bind_int64(1, compressed_size);
 		      insert_blob_statement->exec();
 		    }
 
@@ -421,7 +484,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		      sqlite::db::statement_proxy insert_cache_statement =
 			store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
 		      insert_cache_statement->bind_int64(1, inserted_blob_row);
-		      insert_cache_statement->bind_int64(2, buf.st_size);
+		      insert_cache_statement->bind_int64(2, compressed_size);
 		      insert_cache_statement->bind_string(3, key);
 		      insert_cache_statement->exec();
 		    }
@@ -433,12 +496,10 @@ insert into globals(TotalBlobSize) values(0);				\
 					 "Data",
 					 inserted_blob_row);
 
-		    int amount_to_write(buf.st_size);
+		    int amount_to_write(compressed_size);
 		    int blob_offset = 0;
 		    static const int block_size = 16384;
-		    // This can safely be static, since we acquire
-		    // a mutex before we enter this routine.
-		    static char buf[block_size];
+		    char buf[block_size];
 		    while(amount_to_write > 0)
 		      {
 			int curr_amt;
@@ -449,11 +510,11 @@ insert into globals(TotalBlobSize) values(0);				\
 
 			int amt_read = read(fd.Fd(), buf, curr_amt);
 			if(amt_read == 0)
-			  throw FileCacheException((boost::format("Unexpected end of file while reading %s into the cache.") % path).str());
+			  throw FileCacheException((boost::format("Unexpected end of file while reading %s into the cache.") % compressed_path).str());
 			else if(amt_read < 0)
 			  {
 			    std::string errmsg(cw::util::sstrerror(errno));
-			    throw FileCacheException((boost::format("Error while reading %s into the cache: %s.") % path % errmsg).str());
+			    throw FileCacheException((boost::format("Error while reading %s into the cache: %s.") % compressed_path % errmsg).str());
 			  }
 
 			blob_data->write(blob_offset, buf, curr_amt);
@@ -493,11 +554,20 @@ insert into globals(TotalBlobSize) values(0);				\
 		       boost::format("Can't cache \"%s\" as \"%s\": %s")
 		       % path % key % ex.errmsg());
 	    }
+	  catch(std::exception &ex)
+	    {
+	      LOG_WARN(Loggers::getAptitudeDownloadCache(),
+		       boost::format("Can't cache \"%s\" as \"%s\": %s")
+		       % path % key % ex.what());
+	    }
 	}
 
 	temp::name getItem(const std::string &key)
 	{
 	  cw::threads::mutex::lock l(store_mutex);
+
+	  LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+		    boost::format("Looking up \"%s\" in the cache.") % key);
 
 	  // Here's the plan.
 	  //
@@ -522,6 +592,9 @@ insert into globals(TotalBlobSize) values(0);				\
 		  if(!find_cache_entry_statement->step())
 		    // 1.a.i: no matching entry
 		    {
+		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				boost::format("No entry for \"%s\" found in the cache.") % key);
+
 		      store->exec("rollback");
 		      return temp::name();
 		    }
@@ -549,8 +622,14 @@ insert into globals(TotalBlobSize) values(0);				\
 		      temp::dir d("aptitudeCacheExtract");
 		      temp::name rval(d, "extracted");
 
+		      int extracted_size = -1;
 		      {
-			FileFd outfile(rval.get_name(), FileFd::WriteEmpty, 0644);
+			// Decompress the data as it's written to the
+			// output file.
+			io::filtering_ostream outfile(io::zlib_decompressor() | io::file_sink(rval.get_name()));
+			if(!outfile.good())
+			  throw FileCacheException(((boost::format("Can't open \"%s\" for writing"))
+						    % rval.get_name()).str());
 
 			boost::shared_ptr<sqlite::blob> blob_data =
 			  sqlite::blob::open(*store,
@@ -561,12 +640,13 @@ insert into globals(TotalBlobSize) values(0);				\
 					     false);
 
 			static const int block_size = 16384;
-			// Note: this is safe because we hold a mutex
-			// for the duration of this method.
-			static char buf[block_size];
+			char buf[block_size];
 
 			int amount_to_read = blob_data->size();
 			int blob_offset = 0;
+
+			LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+				  boost::format("Extracting %d bytes to \"%s\".") % amount_to_read % rval.get_name());
 
 			// Copy the blob into the temporary file.
 			while(amount_to_read > 0)
@@ -579,26 +659,18 @@ insert into globals(TotalBlobSize) values(0);				\
 			      curr_amt = block_size;
 
 			    blob_data->read(blob_offset, buf, curr_amt);
-			    int amt_written = write(outfile.Fd(), buf, curr_amt);
+			    std::streamsize amt_written = io::write(outfile, buf, curr_amt);
 
-			    if(amt_written < 0)
-			      {
-				std::string errmsg(cw::util::sstrerror(errno));
-				throw FileCacheException((boost::format("Can't open \"%s\" for writing: %s")
-							  % rval.get_name() % errmsg).str());
-			      }
-			    else if(amt_written == 0)
-			      {
-				throw FileCacheException((boost::format("Unable to write to \"%s\".")
-							  % rval.get_name()).str());
-			      }
-			    else
-			      {
-				blob_offset += amt_written;
-				amount_to_read -= amt_written;
-			      }
+			    blob_offset += amt_written;
+			    amount_to_read -= amt_written;
 			  }
+
+			extracted_size = blob_data->size();
 		      }
+
+		      LOG_INFO(Loggers::getAptitudeDownloadCache(),
+			       boost::format("Extracted %d bytes corresponding to \"%s\" to \"%s\".")
+			       % extracted_size % key % rval.get_name());
 
 		      store->exec("commit");
 		      return rval;
@@ -629,6 +701,13 @@ insert into globals(TotalBlobSize) values(0);				\
 	      LOG_WARN(Loggers::getAptitudeDownloadCache(),
 		       boost::format("Can't get the cache entry for \"%s\": %s")
 		       % key % ex.errmsg());
+	      return temp::name();
+	    }
+	  catch(std::exception &ex)
+	    {
+	      LOG_WARN(Loggers::getAptitudeDownloadCache(),
+		       boost::format("Can't get the cache entry for \"%s\": %s")
+		       % key % ex.what());
 	      return temp::name();
 	    }
 	}
