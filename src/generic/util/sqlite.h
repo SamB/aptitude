@@ -293,6 +293,59 @@ namespace aptitude
      */
     class statement
     {
+    public:
+      /** \brief RAII class that controls access to the results of a
+       *  statement.
+       *
+       *  This is essentially "the right to invoke sqlite3_step".
+       *  Using RAII ensures that statements are never left in an
+       *  "executing" state.  The caller is still responsible for
+       *  ensuring that sqlite3_step is not invoked on two statements
+       *  at once (sqlite doesn't like that).
+       */
+      class execution
+      {
+	statement &parent;
+	bool stepped;
+
+      public:
+	execution(statement &_parent)
+	  : parent(_parent), stepped(false)
+	{
+	}
+
+	~execution()
+	{
+	  if(stepped)
+	    {
+	      try
+		{
+		  parent.reset();
+		}
+	      catch(...)
+		{
+		}
+	    }
+	}
+
+	/** \brief Step to the next result row of the statement.
+	 *
+	 *  Mirroring the underlying sqlite behavior, there is no
+	 *  "result" object -- meaning that if multiple threads might
+	 *  retrieve results from the same statement, they need to lock
+	 *  each other out.
+	 *
+	 *  \return \b true if a new row of results was retrieved, \b
+	 *  false otherwise.
+	 */
+	bool step()
+	{
+	  stepped = true;
+	  return parent.step();
+	}
+      };
+
+    private:
       db &parent;
       sqlite3_stmt *handle;
       /** \brief Set to \b true when results are available.
@@ -319,6 +372,18 @@ namespace aptitude
 	if(!has_data)
 	  throw exception("No data to retrieve.", SQLITE_MISUSE);
       }
+
+      /** \brief Step to the next result row of the statement.
+       *
+       *  Mirroring the underlying sqlite behavior, there is no
+       *  "result" object -- meaning that if multiple threads might
+       *  retrieve results from the same statement, they need to lock
+       *  each other out.
+       *
+       *  \return \b true if a new row of results was retrieved, \b
+       *  false otherwise.
+       */
+      bool step();
 
     public:
       ~statement();
@@ -410,18 +475,6 @@ namespace aptitude
       void bind_zeroblob(int parameter_idx, int size);
 
       // @}
-
-      /** \brief Step to the next result row of the statement.
-       *
-       *  Mirroring the underlying sqlite behavior, there is no
-       *  "result" object -- meaning that if multiple threads might
-       *  retrieve results from the same statement, they need to lock
-       *  each other out.
-       *
-       *  \return \b true if a new row of results was retrieved, \b
-       *  false otherwise.
-       */
-      bool step();
 
       /** \brief Execute a statement and discard its results.
        *

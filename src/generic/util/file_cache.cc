@@ -181,7 +181,7 @@ insert into globals(TotalBlobSize) values(0);				\
 	      set_version_statement->bind_int(1, current_version_number);
 	      set_version_statement->exec();
 
-	      statement::prepare(*store, "commit")->exec();
+	      store->exec("commit");
 
 	      sanity_check_database();
 	    }
@@ -207,32 +207,44 @@ insert into globals(TotalBlobSize) values(0);				\
 
 	      try
 		{
-		  // Currently just checks the version -- but we could also
-		  // check the format and so on here.
+		  // Currently just checks the version -- but we could
+		  // also check the format and so on here.
 		  boost::shared_ptr<statement> get_version_statement =
 		    statement::prepare(*store, "select version from format");
-		  if(!get_version_statement->step())
-		    throw FileCacheException("Can't read the cache version number.");
-		  else if(get_version_statement->get_int(0) != current_version_number)
-		    // TODO: probably it's better to just blow away
-		    // the cache in this case.  For a simple download
-		    // cache, it's not worth the effort to upgrade
-		    // database formats -- better to just throw away
-		    // the data.
-		    throw FileCacheException("Unsupported version number.");
-
+		  {
+		    statement::execution get_version_execution(*get_version_statement);
+		    if(!get_version_execution.step())
+		      throw FileCacheException("Can't read the cache version number.");
+		    else if(get_version_statement->get_int(0) != current_version_number)
+		      // TODO: probably it's better to just blow away
+		      // the cache in this case.  For a simple
+		      // download cache, it's not worth the effort to
+		      // upgrade database formats -- better to just
+		      // throw away the data.
+		      throw FileCacheException("Unsupported version number.");
+		  }
 
 		  boost::shared_ptr<statement> get_total_size_statement =
 		    statement::prepare(*store, "select TotalBlobSize from globals");
-		  if(!get_total_size_statement->step())
-		    throw FileCacheException("Can't read the total size of all the files in the database.");
-		  sqlite3_int64 total_size = get_total_size_statement->get_int64(0);
+		  sqlite3_int64 total_size = -1;
+
+		  {
+		    statement::execution get_total_size_execution(*get_total_size_statement);
+		    if(!get_total_size_execution.step())
+		      throw FileCacheException("Can't read the total size of all the files in the database.");
+		    total_size = get_total_size_statement->get_int64(0);
+		  }
 
 		  boost::shared_ptr<statement> compute_total_size_statement =
 		    statement::prepare(*store, "select sum(BlobSize) from cache");
-		  if(!compute_total_size_statement->step())
-		    throw FileCacheException("Can't compute the total size of all the files in the database.");
-		  sqlite3_int64 computed_total_size = compute_total_size_statement->get_int64(0);
+		  sqlite3_int64 computed_total_size = -1;
+
+		  {
+		    statement::execution compute_total_size_execution(*compute_total_size_statement);
+		    if(!compute_total_size_execution.step())
+		      throw FileCacheException("Can't compute the total size of all the files in the database.");
+		    computed_total_size = compute_total_size_statement->get_int64(0);
+		  }
 
 		  if(computed_total_size != total_size)
 		    {
@@ -279,7 +291,13 @@ insert into globals(TotalBlobSize) values(0);				\
 	  // Set up the database.  First, check the format:
 	  sqlite::db::statement_proxy check_for_format_statement =
 	    store->get_cached_statement("select 1 from sqlite_master where name = 'format'");
-	  if(!check_for_format_statement->step())
+	  bool has_format = false;
+	  {
+	    statement::execution check_for_format_execution(*check_for_format_statement);
+	    has_format = check_for_format_execution.step();
+	  }
+
+	  if(!has_format)
 	    create_new_database();
 	  else
 	    sanity_check_database();
@@ -394,11 +412,15 @@ insert into globals(TotalBlobSize) values(0);				\
 		{
 		  sqlite::db::statement_proxy get_total_size_statement =
 		    store->get_cached_statement("select TotalBlobSize from globals");
-		  if(!get_total_size_statement->step())
-		    throw FileCacheException("Can't read the total size of all the files in the database.");
 
-		  sqlite3_int64 total_size = get_total_size_statement->get_int64(0);
-		  get_total_size_statement->exec();
+		  sqlite3_int64 total_size = -1;
+		  {
+		    statement::execution get_total_size_execution(*get_total_size_statement);
+		    if(!get_total_size_execution.step())
+		      throw FileCacheException("Can't read the total size of all the files in the database.");
+
+		    total_size = get_total_size_statement->get_int64(0);
+		  }
 
 		  if(total_size + compressed_size > max_size)
 		    {
@@ -412,20 +434,19 @@ insert into globals(TotalBlobSize) values(0);				\
 		      int num_dropped = 0;
 
 		      // Step 3.a)
+		      db::statement_proxy read_entries_statement =
+			store->get_cached_statement("select CacheId, BlobSize from cache order by CacheId");
 		      {
-			sqlite::db::statement_proxy read_entries_statement =
-			  store->get_cached_statement("select CacheId, BlobSize from cache order by CacheId");
+			statement::execution read_entries_execution(*read_entries_statement);
 
 			while(total_size + compressed_size - amount_dropped > max_size &&
-			      read_entries_statement->step())
+			      read_entries_execution.step())
 			  {
 			    first = false;
 			    last_cache_id_dropped = read_entries_statement->get_int64(0);
 			    amount_dropped += read_entries_statement->get_int64(1);
 			    ++num_dropped;
 			  }
-
-			read_entries_statement->exec();
 
 			if(first)
 			  throw FileCacheException("Internal error: no cached files, but the total size is nonzero.");
@@ -587,94 +608,101 @@ insert into globals(TotalBlobSize) values(0);				\
 		{
 		  sqlite::db::statement_proxy find_cache_entry_statement =
 		    store->get_cached_statement("select CacheId, BlobId from cache where Key = ?");
+
+		  bool found = false;
+		  sqlite3_int64 oldCacheId = -1;
+		  sqlite3_int64 blobId = -1;
 		  find_cache_entry_statement->bind_string(1, key);
+		  {
+		    statement::execution find_cache_entry_execution(*find_cache_entry_statement);
+		    found = find_cache_entry_execution.step();
 
-		  if(!find_cache_entry_statement->step())
-		    // 1.a.i: no matching entry
-		    {
-		      LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-				boost::format("No entry for \"%s\" found in the cache.") % key);
-
-		      store->exec("rollback");
-		      return temp::name();
-		    }
-		  else
-		    {
-		      sqlite3_int64 oldCacheId = find_cache_entry_statement->get_int64(0);
-		      sqlite3_int64 blobId = find_cache_entry_statement->get_int64(1);
-		      find_cache_entry_statement->exec();
-
-		      // 1.a.ii.A: update the last use field.
+		    if(found)
 		      {
-			// WARNING: this might fail if the largest
-			// cache ID has been used.  That should never
-			// happen in aptitude (you'd need 10^18 get or
-			// put calls), and trying to avoid it seems
-			// like it would cause a lot of trouble.
-			sqlite::db::statement_proxy update_last_use_statement =
-			  store->get_cached_statement("update cache set CacheId = (select max(CacheId) from cache) + 1 where CacheId = ?");
-			update_last_use_statement->bind_int64(1, oldCacheId);
-			update_last_use_statement->exec();
+			oldCacheId = find_cache_entry_statement->get_int64(0);
+			blobId     = find_cache_entry_statement->get_int64(1);
 		      }
-
-		      // TODO: I should consolidate the temporary
-		      // directories aptitude creates.
-		      temp::dir d("aptitudeCacheExtract");
-		      temp::name rval(d, "extracted");
-
-		      int extracted_size = -1;
+		    else
+		      // 1.a.i: no matching entry
 		      {
-			// Decompress the data as it's written to the
-			// output file.
-			io::filtering_ostream outfile(io::zlib_decompressor() | io::file_sink(rval.get_name()));
-			if(!outfile.good())
-			  throw FileCacheException(((boost::format("Can't open \"%s\" for writing"))
-						    % rval.get_name()).str());
-
-			boost::shared_ptr<sqlite::blob> blob_data =
-			  sqlite::blob::open(*store,
-					     "main",
-					     "blobs",
-					     "Data",
-					     blobId,
-					     false);
-
-			static const int block_size = 16384;
-			char buf[block_size];
-
-			int amount_to_read = blob_data->size();
-			int blob_offset = 0;
-
 			LOG_TRACE(Loggers::getAptitudeDownloadCache(),
-				  boost::format("Extracting %d bytes to \"%s\".") % amount_to_read % rval.get_name());
+				  boost::format("No entry for \"%s\" found in the cache.") % key);
 
-			// Copy the blob into the temporary file.
-			while(amount_to_read > 0)
-			  {
-			    int curr_amt;
+			store->exec("rollback");
+			return temp::name();
+		      }
+		  }
 
-			    if(amount_to_read < block_size)
-			      curr_amt = amount_to_read;
-			    else
-			      curr_amt = block_size;
+		  // 1.a.ii.A: update the last use field.
+		  {
+		    // WARNING: this might fail if the largest
+		    // cache ID has been used.  That should never
+		    // happen in aptitude (you'd need 10^18 get or
+		    // put calls), and trying to avoid it seems
+		    // like it would cause a lot of trouble.
+		    sqlite::db::statement_proxy update_last_use_statement =
+		      store->get_cached_statement("update cache set CacheId = (select max(CacheId) from cache) + 1 where CacheId = ?");
+		    update_last_use_statement->bind_int64(1, oldCacheId);
+		    update_last_use_statement->exec();
+		  }
 
-			    blob_data->read(blob_offset, buf, curr_amt);
-			    std::streamsize amt_written = io::write(outfile, buf, curr_amt);
+		  // TODO: I should consolidate the temporary
+		  // directories aptitude creates.
+		  temp::dir d("aptitudeCacheExtract");
+		  temp::name rval(d, "extracted");
 
-			    blob_offset += amt_written;
-			    amount_to_read -= amt_written;
-			  }
+		  int extracted_size = -1;
+		  {
+		    // Decompress the data as it's written to the
+		    // output file.
+		    io::filtering_ostream outfile(io::zlib_decompressor() | io::file_sink(rval.get_name()));
+		    if(!outfile.good())
+		      throw FileCacheException(((boost::format("Can't open \"%s\" for writing"))
+						% rval.get_name()).str());
 
-			extracted_size = blob_data->size();
+		    boost::shared_ptr<sqlite::blob> blob_data =
+		      sqlite::blob::open(*store,
+					 "main",
+					 "blobs",
+					 "Data",
+					 blobId,
+					 false);
+
+		    static const int block_size = 16384;
+		    char buf[block_size];
+
+		    int amount_to_read = blob_data->size();
+		    int blob_offset = 0;
+
+		    LOG_TRACE(Loggers::getAptitudeDownloadCache(),
+			      boost::format("Extracting %d bytes to \"%s\".") % amount_to_read % rval.get_name());
+
+		    // Copy the blob into the temporary file.
+		    while(amount_to_read > 0)
+		      {
+			int curr_amt;
+
+			if(amount_to_read < block_size)
+			  curr_amt = amount_to_read;
+			else
+			  curr_amt = block_size;
+
+			blob_data->read(blob_offset, buf, curr_amt);
+			std::streamsize amt_written = io::write(outfile, buf, curr_amt);
+
+			blob_offset += amt_written;
+			amount_to_read -= amt_written;
 		      }
 
-		      LOG_INFO(Loggers::getAptitudeDownloadCache(),
-			       boost::format("Extracted %d bytes corresponding to \"%s\" to \"%s\".")
-			       % extracted_size % key % rval.get_name());
+		    extracted_size = blob_data->size();
+		  }
 
-		      store->exec("commit");
-		      return rval;
-		    }
+		  LOG_INFO(Loggers::getAptitudeDownloadCache(),
+			   boost::format("Extracted %d bytes corresponding to \"%s\" to \"%s\".")
+			   % extracted_size % key % rval.get_name());
+
+		  store->exec("commit");
+		  return rval;
 		}
 	      catch(...)
 		{

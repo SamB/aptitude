@@ -72,36 +72,38 @@ BOOST_FIXTURE_TEST_CASE(testGetBlob, test_db_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select A, B, C from test where A = 52");
 
-  BOOST_REQUIRE(stmt->step());
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
 
-  int len = -1;
-  const void *val;
+    int len = -1;
+    const void *val;
 
-  val = stmt->get_blob(0, len);
-  const char * const fiftytwo = "52";
-  BOOST_CHECK_EQUAL(len, strlen(fiftytwo));
-  BOOST_CHECK_EQUAL_COLLECTIONS(fiftytwo, fiftytwo + strlen(fiftytwo),
-				reinterpret_cast<const char *>(val),
-				reinterpret_cast<const char *>(val) + len);
+    val = stmt->get_blob(0, len);
+    const char * const fiftytwo = "52";
+    BOOST_CHECK_EQUAL(len, strlen(fiftytwo));
+    BOOST_CHECK_EQUAL_COLLECTIONS(fiftytwo, fiftytwo + strlen(fiftytwo),
+				  reinterpret_cast<const char *>(val),
+				  reinterpret_cast<const char *>(val) + len);
 
-  val = stmt->get_blob(1, len);
-  const char * const contusion = "contusion";
-  BOOST_CHECK_EQUAL(len, strlen(contusion));
-  BOOST_CHECK_EQUAL_COLLECTIONS(contusion, contusion + strlen(contusion),
-				reinterpret_cast<const char *>(val),
-				reinterpret_cast<const char *>(val) + len);
+    val = stmt->get_blob(1, len);
+    const char * const contusion = "contusion";
+    BOOST_CHECK_EQUAL(len, strlen(contusion));
+    BOOST_CHECK_EQUAL_COLLECTIONS(contusion, contusion + strlen(contusion),
+				  reinterpret_cast<const char *>(val),
+				  reinterpret_cast<const char *>(val) + len);
 
-  val = stmt->get_blob(2, len);
-  const char arr[2] = { 0x54, 0x12 };
-  BOOST_CHECK_EQUAL(len, sizeof(arr));
-  BOOST_CHECK_EQUAL_COLLECTIONS(arr, arr + sizeof(arr),
-				reinterpret_cast<const char *>(val),
-				reinterpret_cast<const char *>(val) + len);
+    val = stmt->get_blob(2, len);
+    const char arr[2] = { 0x54, 0x12 };
+    BOOST_CHECK_EQUAL(len, sizeof(arr));
+    BOOST_CHECK_EQUAL_COLLECTIONS(arr, arr + sizeof(arr),
+				  reinterpret_cast<const char *>(val),
+				  reinterpret_cast<const char *>(val) + len);
 
-
-  BOOST_CHECK(!stmt->step());
-  BOOST_CHECK_THROW(stmt->get_blob(2, len),
-		    exception);
+    BOOST_CHECK(!ex.step());
+    BOOST_CHECK_THROW(stmt->get_blob(2, len),
+		      exception);
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetDouble, test_db_fixture)
@@ -109,13 +111,16 @@ BOOST_FIXTURE_TEST_CASE(testGetDouble, test_db_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select C from test where A = 51");
 
-  BOOST_REQUIRE(stmt->step());
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(stmt->get_double(0), -5);
+    BOOST_CHECK_EQUAL(stmt->get_double(0), -5);
 
-  BOOST_CHECK(!stmt->step());
-  BOOST_CHECK_THROW(stmt->get_double(0),
-		    exception);
+    BOOST_CHECK(!ex.step());
+    BOOST_CHECK_THROW(stmt->get_double(0),
+		      exception);
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetInt, test_db_fixture)
@@ -123,17 +128,20 @@ BOOST_FIXTURE_TEST_CASE(testGetInt, test_db_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select A from test where A <> 51 order by A");
 
-  BOOST_REQUIRE(stmt->step());
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(stmt->get_int(0), 50);
+    BOOST_CHECK_EQUAL(stmt->get_int(0), 50);
 
-  BOOST_REQUIRE(stmt->step());
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(stmt->get_int(0), 52);
+    BOOST_CHECK_EQUAL(stmt->get_int(0), 52);
 
-  BOOST_CHECK(!stmt->step());
-  BOOST_CHECK_THROW(stmt->get_int(0),
-		    exception);
+    BOOST_CHECK(!ex.step());
+    BOOST_CHECK_THROW(stmt->get_int(0),
+		      exception);
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetInt64, test_db_fixture)
@@ -141,15 +149,18 @@ BOOST_FIXTURE_TEST_CASE(testGetInt64, test_db_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select A from test where A <> 51 order by A");
 
-  BOOST_REQUIRE(stmt->step());
-  BOOST_CHECK_EQUAL(stmt->get_int64(0), 50);
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
+    BOOST_CHECK_EQUAL(stmt->get_int64(0), 50);
 
-  BOOST_REQUIRE(stmt->step());
-  BOOST_CHECK_EQUAL(stmt->get_int64(0), 52);
+    BOOST_REQUIRE(ex.step());
+    BOOST_CHECK_EQUAL(stmt->get_int64(0), 52);
 
-  BOOST_CHECK(!stmt->step());
-  BOOST_CHECK_THROW(stmt->get_int64(0),
-		    exception);
+    BOOST_CHECK(!ex.step());
+    BOOST_CHECK_THROW(stmt->get_int64(0),
+		      exception);
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetString, test_db_fixture)
@@ -157,15 +168,18 @@ BOOST_FIXTURE_TEST_CASE(testGetString, test_db_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select B from test where C = -5 order by A");
 
-  BOOST_REQUIRE(stmt->step());
-  BOOST_CHECK_EQUAL(stmt->get_string(0), "aardvark");
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
+    BOOST_CHECK_EQUAL(stmt->get_string(0), "aardvark");
 
-  BOOST_REQUIRE(stmt->step());
-  BOOST_CHECK_EQUAL(stmt->get_string(0), "balderdash");
+    BOOST_REQUIRE(ex.step());
+    BOOST_CHECK_EQUAL(stmt->get_string(0), "balderdash");
 
-  BOOST_CHECK(!stmt->step());
-  BOOST_CHECK_THROW(stmt->get_string(0),
-		    exception);
+    BOOST_CHECK(!ex.step());
+    BOOST_CHECK_THROW(stmt->get_string(0),
+		      exception);
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetCachedStatement, memory_db_fixture)
@@ -200,9 +214,12 @@ BOOST_FIXTURE_TEST_CASE(testGetCachedStatement, memory_db_fixture)
 
   p7->exec();
 
-  BOOST_REQUIRE(p8->step());
-  BOOST_CHECK_EQUAL(p8->get_int(0), 5);
-  BOOST_CHECK(!p8->step());
+  {
+    statement::execution ex(*p8);
+    BOOST_REQUIRE(ex.step());
+    BOOST_CHECK_EQUAL(p8->get_int(0), 5);
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(getCachedStatementFail, memory_db_fixture)
@@ -239,18 +256,21 @@ BOOST_FIXTURE_TEST_CASE(testBindBlob, parameter_binding_test)
 
   // Test that the data is still there.
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
 
-  int blob_bytes;
-  const void *blob(get_C_statement->get_blob(0, blob_bytes));
-  BOOST_CHECK_EQUAL(blob_bytes, sizeof(data));
-  BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
-				reinterpret_cast<const char *>(blob) + blob_bytes,
-				data, data + sizeof(data));
+    int blob_bytes;
+    const void *blob(get_C_statement->get_blob(0, blob_bytes));
+    BOOST_CHECK_EQUAL(blob_bytes, sizeof(data));
+    BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
+				  reinterpret_cast<const char *>(blob) + blob_bytes,
+				  data, data + sizeof(data));
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindDouble, parameter_binding_test)
@@ -265,13 +285,16 @@ BOOST_FIXTURE_TEST_CASE(testBindDouble, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_FLOAT);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_FLOAT);
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_double(0), data);
+    BOOST_CHECK_EQUAL(get_C_statement->get_double(0), data);
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindInt, parameter_binding_test)
@@ -286,13 +309,16 @@ BOOST_FIXTURE_TEST_CASE(testBindInt, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_int(0), data);
+    BOOST_CHECK_EQUAL(get_C_statement->get_int(0), data);
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindInt64, parameter_binding_test)
@@ -307,13 +333,16 @@ BOOST_FIXTURE_TEST_CASE(testBindInt64, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_INTEGER);
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_int64(0), data);
+    BOOST_CHECK_EQUAL(get_C_statement->get_int64(0), data);
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindNull, parameter_binding_test)
@@ -326,11 +355,14 @@ BOOST_FIXTURE_TEST_CASE(testBindNull, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_NULL);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_NULL);
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindString, parameter_binding_test)
@@ -345,13 +377,16 @@ BOOST_FIXTURE_TEST_CASE(testBindString, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_TEXT);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_TEXT);
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_string(0), data);
+    BOOST_CHECK_EQUAL(get_C_statement->get_string(0), data);
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 BOOST_FIXTURE_TEST_CASE(testBindZeroBlob, parameter_binding_test)
@@ -366,18 +401,21 @@ BOOST_FIXTURE_TEST_CASE(testBindZeroBlob, parameter_binding_test)
   put_statement->exec();
 
   get_C_statement->bind_int(1, test_A);
-  BOOST_REQUIRE(get_C_statement->step());
+  {
+    statement::execution ex(*get_C_statement);
+    BOOST_REQUIRE(ex.step());
 
-  BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
+    BOOST_CHECK_EQUAL(get_C_statement->get_column_type(0), SQLITE_BLOB);
 
-  int blob_bytes;
-  const void *blob(get_C_statement->get_blob(0, blob_bytes));
-  BOOST_CHECK_EQUAL(blob_bytes, sizeof(testBlobData));
-  BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
-				reinterpret_cast<const char *>(blob) + blob_bytes,
-				testBlobData, testBlobData + sizeof(testBlobData));
+    int blob_bytes;
+    const void *blob(get_C_statement->get_blob(0, blob_bytes));
+    BOOST_CHECK_EQUAL(blob_bytes, sizeof(testBlobData));
+    BOOST_CHECK_EQUAL_COLLECTIONS(reinterpret_cast<const char *>(blob),
+				  reinterpret_cast<const char *>(blob) + blob_bytes,
+				  testBlobData, testBlobData + sizeof(testBlobData));
 
-  BOOST_CHECK(!get_C_statement->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
 
 struct test_blob_fixture : public test_db_fixture
@@ -388,9 +426,12 @@ struct test_blob_fixture : public test_db_fixture
   {
     boost::shared_ptr<statement> s(statement::prepare(*tmpdb, "select ROWID from test where A = 52"));
 
-    BOOST_REQUIRE(s->step());
-    blob_rowid = s->get_int64(0);
-    BOOST_CHECK(!s->step());
+    {
+      statement::execution ex(*s);
+      BOOST_REQUIRE(ex.step());
+      blob_rowid = s->get_int64(0);
+      BOOST_CHECK(!ex.step());
+    }
   }
 };
 
@@ -478,14 +519,17 @@ BOOST_FIXTURE_TEST_CASE(testBlobWrite, test_blob_fixture)
   boost::shared_ptr<statement> stmt =
     statement::prepare(*tmpdb, "select C from test where rowid = ?");
   stmt->bind_int64(1, blob_rowid);
-  BOOST_REQUIRE(stmt->step());
+  {
+    statement::execution ex(*stmt);
+    BOOST_REQUIRE(ex.step());
 
-  int len = -1;
-  const void *val = stmt->get_blob(0, len);
-  BOOST_CHECK_EQUAL(len, sizeof(data));
-  BOOST_CHECK_EQUAL_COLLECTIONS(data, data + sizeof(data),
-				reinterpret_cast<const char *>(val),
-				reinterpret_cast<const char *>(val) + len);
+    int len = -1;
+    const void *val = stmt->get_blob(0, len);
+    BOOST_CHECK_EQUAL(len, sizeof(data));
+    BOOST_CHECK_EQUAL_COLLECTIONS(data, data + sizeof(data),
+				  reinterpret_cast<const char *>(val),
+				  reinterpret_cast<const char *>(val) + len);
 
-  BOOST_CHECK(!stmt->step());
+    BOOST_CHECK(!ex.step());
+  }
 }
