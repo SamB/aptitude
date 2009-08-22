@@ -60,6 +60,8 @@ boost/flyweight/hashed_factory.hpp dnl
 boost/flyweight.hpp dnl
 boost/format.hpp dnl
 boost/functional/hash.hpp dnl
+boost/function.hpp dnl
+boost/lambda/bind.hpp dnl
 boost/make_shared.hpp dnl
 boost/multi_index_container.hpp dnl
 boost/multi_index/hashed_index.hpp dnl
