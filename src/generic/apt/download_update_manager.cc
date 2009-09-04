@@ -1,6 +1,6 @@
 // download_update_manager.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -282,7 +282,7 @@ void download_update_manager::finish(pkgAcquire::RunResult res,
       return;
     }
 
-  bool transientNetworkFailure = true;
+  bool transientNetworkFailure = false;
   result rval = success;
 
   // We need to claim that the download failed if any source failed,
@@ -310,9 +310,12 @@ void download_update_manager::finish(pkgAcquire::RunResult res,
     }
 
   // Clean old stuff out
+  std::string listsdir = aptcfg->FindDir("Dir::State::lists");
   if(rval == success && !transientNetworkFailure &&
-     (fetcher->Clean(aptcfg->FindDir("Dir::State::lists")) == false ||
-      fetcher->Clean(aptcfg->FindDir("Dir::State::lists")+"partial/") == false))
+     aptcfg->FindB("APT::Get::List-Cleanup", true) == true &&
+     aptcfg->FindB("APT::List-Cleanup", true) == true &&
+     (fetcher->Clean(listsdir) == false ||
+      fetcher->Clean(listsdir + "partial/") == false))
     {
       _error->Error(_("Couldn't clean out list directories"));
       k(failure);
