@@ -311,6 +311,18 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	       pkg.Name(),
 	       ver.VerStr());
       break;
+    case cmdline_upgrade:
+      if(pkg_state.Status == 1)
+	to_install.insert(pkg);
+      else if(pkg_state.Status > 1)
+	{
+	  if(verbose > 0)
+	    printf(_("%s is not currently installed, so it will not be upgraded.\n"), pkg.Name());
+	}
+      else if(verbose > 0)
+	printf(_("%s is already installed at the latest version, so it will not be upgraded."), pkg.Name());
+      break;
+
     case cmdline_reinstall:
       if(pkg.CurrentVer().end())
 	printf(_("%s is not currently installed, so it will not be reinstalled.\n"), pkg.Name());
@@ -365,6 +377,11 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 				      action == cmdline_reinstall, NULL);
       if(action == cmdline_installauto)
 	(*apt_cache_file)->mark_auto_installed(pkg, true, NULL);
+      break;
+    case cmdline_upgrade:
+      if(pkg_state.Status == 1)
+	(*apt_cache_file)->mark_install(pkg, allow_auto && aptcfg->FindB(PACKAGE "::Auto-Install", true),
+					false, NULL);
       break;
     case cmdline_remove:
       (*apt_cache_file)->mark_delete(pkg, false, false, NULL);

@@ -72,7 +72,6 @@
 	<arg choice='plain'>forget-new</arg>
 	<arg choice='plain'>keep-all</arg>
 	<arg choice='plain'>update</arg>
-	<arg choice='plain'>safe-upgrade</arg>
       </group>
     </cmdsynopsis>
 
@@ -82,8 +81,20 @@
       <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
 
       <group choice='req'>
-	<arg choice='plain'>changelog</arg>
 	<arg choice='plain'>full-upgrade</arg>
+	<arg choice='plain'>safe-upgrade</arg>
+      </group>
+
+      <arg choice='opt' rep='repeat'><replaceable>packages</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
+	<arg choice='plain'>changelog</arg>
 	<arg choice='plain'>download</arg>
 	<arg choice='plain'>forbid-version</arg>
 	<arg choice='plain'>hold</arg>
@@ -478,6 +489,32 @@
 	  </para>
 
 	  <para>
+	    If no <replaceable>package</replaceable>s are listed on
+	    the command line, &aptitude; will attempt to upgrade every
+	    package that can be upgraded.  Otherwise, &aptitude; will
+	    attempt to upgrade only the packages which it is
+	    instructed to upgrade.  The
+	    <replaceable>package</replaceable>s can be extended with
+	    suffixes in the same manner as arguments to
+	    <literal>aptitude install</literal>, so you can also give
+	    additional instructions to &aptitude; here; for instance,
+	    <literal>aptitude safe-upgrade bash dash-</literal> will
+	    attempt to upgrade the <systemitem>bash</systemitem>
+	    package and remove the <systemitem>dash</systemitem>
+	    package.
+	  </para>
+
+	  <note>
+	    <para>
+	      The way <literal>safe-upgrade</literal> treats its extra
+	      arguments is in contrast to <link
+	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
+	      which will always upgrade every package, treating its
+	      command-line arguments as additional actions to perform.
+	    </para>
+	  </note>
+
+	  <para>
 	      It is sometimes necessary to remove one package in order
 	      to upgrade another; this command is not able to upgrade
 	      packages in such situations.  Use the <link
@@ -500,6 +537,18 @@
 	    However, it is capable of upgrading packages that <link
 	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 	    cannot upgrade.
+	  </para>
+
+	  <para>
+	    Additional <replaceable>package</replaceable>s listed on
+	    the command line are treated as extra actions to be taken
+	    above and beyond simply upgrading all packages.  These
+	    arguments are treated in the same manner as arguments to
+	    <link linkend='cmdlineInstall'><literal>aptitude
+	    install</literal></link>; for instance, <literal>aptitude
+	    dist-upgrade gimp-</literal> will upgrade all packages
+	    that can be upgraded, except for
+	    <systemitem>gimp</systemitem>, which will be removed.
 	  </para>
 
 	  <note>

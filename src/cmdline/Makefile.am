@@ -42,8 +42,6 @@ libcmdline_a_SOURCES=\
 	cmdline_spinner.h \
 	cmdline_update.cc \
 	cmdline_update.h \
-	cmdline_upgrade.cc \
-	cmdline_upgrade.h \
 	cmdline_user_tag.cc \
 	cmdline_user_tag.h \
 	cmdline_util.cc \

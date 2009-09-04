@@ -59,7 +59,6 @@
 #include <cmdline/cmdline_search.h>
 #include <cmdline/cmdline_show.h>
 #include <cmdline/cmdline_update.h>
-#include <cmdline/cmdline_upgrade.h>
 #include <cmdline/cmdline_user_tag.h>
 #include <cmdline/cmdline_why.h>
 
@@ -542,10 +541,12 @@ int main(int argc, char *argv[])
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
   bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
-  bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
+
+  resolver_mode_tp resolver_mode = resolver_mode_default;
+  if(aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false))
+    resolver_mode = resolver_mode_safe;
+
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
-  bool safe_resolver_option = false;
-  bool full_resolver_option = false;
 
   // This tracks whether we got a --*-new-installs command-line
   // argument, so we can present a useful warning message to the user
@@ -740,12 +741,10 @@ int main(int argc, char *argv[])
 	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_SAFE_RESOLVER:
-	      always_use_safe_resolver = true;
-	      safe_resolver_option = true;
+	      resolver_mode = resolver_mode_safe;
 	      break;
 	    case OPTION_FULL_RESOLVER:
-	      always_use_safe_resolver = false;
-	      full_resolver_option = true;
+	      resolver_mode = resolver_mode_full;
 	      break;
 	    case OPTION_VISUAL_PREVIEW:
 	      visual_preview=true;
@@ -965,6 +964,8 @@ int main(int argc, char *argv[])
 		   (!strcasecmp(argv[optind], "reinstall")) ||
 		   (!strcasecmp(argv[optind], "dist-upgrade")) ||
 		   (!strcasecmp(argv[optind], "full-upgrade")) ||
+		   (!strcasecmp(argv[optind], "safe-upgrade")) ||
+		   (!strcasecmp(argv[optind], "upgrade")) ||
 		   (!strcasecmp(argv[optind], "remove")) ||
 		   (!strcasecmp(argv[optind], "purge")) ||
 		   (!strcasecmp(argv[optind], "hold")) ||
@@ -983,31 +984,10 @@ int main(int argc, char *argv[])
 				       fix_broken, showvers, showdeps,
 				       showsize, showwhy,
 				       visual_preview, always_prompt,
-				       always_use_safe_resolver, safe_resolver_show_resolver_actions,
+				       resolver_mode, safe_resolver_show_resolver_actions,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
 				       user_tags,
 				       arch_only, queue_only, verbose);
-	    }
-	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
-		  !strcasecmp(argv[optind], "upgrade"))
-	    {
-	      if(full_resolver_option || safe_resolver_option)
-		{
-		  fprintf(stderr, _("The options --safe-resolver and --full-resolver are not meaningful\nfor %s, which always uses the safe resolver.\n"),
-			  argv[optind]);
-		  return -1;
-		}
-
-	      return cmdline_upgrade(argc-optind, argv+optind,
-				     status_fname, simulate,
-				     safe_upgrade_no_new_installs,
-				     safe_upgrade_show_resolver_actions,
-				     assume_yes, download_only,
-				     showvers, showdeps,
-				     showsize, showwhy,
-				     user_tags,
-				     visual_preview, always_prompt,
-				     arch_only, queue_only, verbose);
 	    }
 	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
 		  !strcasecmp(argv[optind], "remove-user-tag"))
