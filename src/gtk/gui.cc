@@ -137,6 +137,14 @@ namespace gui
     }
   }
 
+  std::string entity_state_info::get_description_i18n() const
+  {
+    if(description.empty())
+      return "";
+    else
+      return _(description.c_str());
+  }
+
   void post_event(const safe_slot0<void> &event)
   {
     background_events.put(event);

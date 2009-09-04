@@ -158,9 +158,9 @@ namespace gui
 	row[columns->StatusDescriptionMarkup] =
 	  ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
 		   Glib::Markup::escape_text(_("Current status")).c_str(),
-		   Glib::Markup::escape_text(_(current_state.get_description().c_str())).c_str(),
+		   Glib::Markup::escape_text(current_state.get_description_i18n()).c_str(),
 		   Glib::Markup::escape_text(_("Selected status")).c_str(),
-		   Glib::Markup::escape_text(_(row_info.first.get_description().c_str())).c_str());
+		   Glib::Markup::escape_text(row_info.first.get_description_i18n()).c_str());
 
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());

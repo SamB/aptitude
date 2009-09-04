@@ -336,7 +336,9 @@ namespace gui
     }
 
     const std::string &get_flag() const { return flag; }
-    const std::string &get_description() const { return description; }
+    /** \brief Retrieve the translated description of this state.
+     */
+    std::string get_description_i18n() const;
     const Gtk::StockID &get_icon() const { return icon; }
   };
 
