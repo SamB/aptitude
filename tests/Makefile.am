@@ -7,7 +7,7 @@ $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
-$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit -lboost_unit_test_framework-mt
+$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit -lboost_unit_test_framework
 
 check_PROGRAMS = cppunit_test boost_test
 
