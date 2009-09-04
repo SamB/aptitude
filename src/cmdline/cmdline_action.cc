@@ -298,13 +298,15 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
   if(action==cmdline_install || action == cmdline_installauto)
     ver=cmdline_find_ver(pkg, source, sourcestr);
 
+  pkgDepCache::StateCache &pkg_state((*apt_cache_file)[pkg]);
+
   switch(action)
     {
     case cmdline_installauto:
     case cmdline_install:
       if(pkg.CurrentVer()!=ver || pkg->CurrentState!=pkgCache::State::Installed)
 	to_install.insert(pkg);
-      else if((*apt_cache_file)[pkg].Keep() && verbose>0)
+      else if(pkg_state.Keep() && verbose>0)
 	printf(_("%s is already installed at the requested version (%s)\n"),
 	       pkg.Name(),
 	       ver.VerStr());
@@ -317,13 +319,13 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
     case cmdline_remove:
       if(!pkg.CurrentVer().end())
 	to_remove.insert(pkg);
-      else if((*apt_cache_file)[pkg].Keep() && verbose>0)
+      else if(pkg_state.Keep() && verbose>0)
 	printf(_("Package %s is not installed, so it will not be removed\n"), pkg.Name());
       break;
     case cmdline_purge:
       if(!pkg.CurrentVer().end() || pkg->CurrentState!=pkgCache::State::ConfigFiles)
 	to_purge.insert(pkg);
-      else if((*apt_cache_file)[pkg].Keep() && verbose>0)
+      else if(pkg_state.Keep() && verbose>0)
 	printf(_("Package %s is not installed, so it will not be removed\n"), pkg.Name());
       break;
     case cmdline_hold:
@@ -343,7 +345,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	{
 	  if(pkg.CurrentVer().end())
 	    printf(_("Package %s is not installed, cannot forbid an upgrade\n"), pkg.Name());
-	  else if(!(*apt_cache_file)[pkg].Upgradable())
+	  else if(!pkg_state.Upgradable())
 	    printf(_("Package %s is not upgradable, cannot forbid an upgrade\n"), pkg.Name());
 	}
     default:
@@ -377,7 +379,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       (*apt_cache_file)->mark_keep(pkg, false, false, NULL);
       break;
     case cmdline_unhold:
-      if((*apt_cache_file)[pkg].Keep())
+      if(pkg_state.Keep())
 	(*apt_cache_file)->mark_keep(pkg, false, false, NULL);
       break;
     case cmdline_markauto:
@@ -392,7 +394,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       else
 	{
 	  pkgCache::VerIterator curver=pkg.CurrentVer();
-	  pkgCache::VerIterator candver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
+	  pkgCache::VerIterator candver = pkg_state.CandidateVerIter(*apt_cache_file);
 	  if(!curver.end() && !candver.end() && curver!=candver)
 	    (*apt_cache_file)->forbid_upgrade(pkg, candver.VerStr(), NULL);
 	}
