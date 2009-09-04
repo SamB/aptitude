@@ -95,6 +95,7 @@ namespace gui
   const entity_state_info hold_columns("h", N_("Hold (don't upgrade)"), Gtk::Stock::MEDIA_PAUSE);
   const entity_state_info forbid_columns("F", N_("Forbidden version"), Gtk::Stock::STOP);
   const entity_state_info broken_columns("B", N_("Unsatisfied dependencies"), Gtk::Stock::DIALOG_ERROR);
+  const entity_state_info no_action_columns("", "", Gtk::StockID());
 
 
   const char *lightred_background_color = "#FFCCCC";

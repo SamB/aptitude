@@ -115,7 +115,7 @@ namespace gui
 	  return upgrade_columns;
       }
     else
-      return entity_state_info();
+      return no_action_columns;
   }
 
   string PkgEntity::selected_package_state_color()
