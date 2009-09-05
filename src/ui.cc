@@ -1701,7 +1701,7 @@ static void do_sweep()
   add_main_widget(cmine::create(), _("Minesweeper"), _("Waste time trying to find mines"), _("Minesweeper"));
 }
 
-static void do_clean()
+static void really_do_clean()
 {
   if(active_download)
     // Erk!  That's weird!
@@ -1723,6 +1723,22 @@ static void do_clean()
       msg->destroy();
 
       show_message(_("Downloaded package files have been deleted"));
+    }
+}
+
+void do_clean()
+{
+  if(getuid()==0 || !aptcfg->FindB(PACKAGE "::Warn-Not-Root", true))
+    really_do_clean();
+  else
+    {
+	  popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Cleaning the package cache requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+						      "--clean-on-startup")),
+				       W_("Become root"),
+				       cw::util::arg(sigc::ptr_fun(&really_do_update_lists)),
+				       W_("Don't become root"),
+				       cw::get_style("Error")));
     }
 }
 

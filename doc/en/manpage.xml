@@ -167,6 +167,7 @@
       <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
       <group choice='opt'><arg choice='plain'>-u</arg> <arg
       choice='plain'>-i</arg></group>
+      <group choice='opt'><arg choice='plain'>--clean-on-startup</arg></group>
     </cmdsynopsis>
 
     <cmdsynopsis>
@@ -2057,14 +2058,32 @@ The following packages will be REMOVED:
 
     <variablelist>
       <varlistentry>
+	<term><literal>--clean-on-startup</literal></term>
+
+	<listitem>
+	  <para>
+	    Cleans the package cache when the program starts
+	    (equivalent to starting the program and immediately
+	    selecting
+	    <menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean
+	    package cache</guimenuitem></menuchoice>).  You cannot use
+	    this option and <quote><literal>-i</literal></quote> or
+	    <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-i</literal></term>
 
 	<listitem>
 	  <para>
 	    Displays a download preview when the program starts
 	    (equivalent to starting the program and immediately
-	    pressing <quote><keycap>g</keycap></quote>).  You
-	    cannot use this option and <quote><literal>-u</literal></quote> at the same time.
+	    pressing <quote><keycap>g</keycap></quote>).  You cannot
+	    use this option and <quote><literal>-u</literal></quote>
+	    or <quote><literal>--clean-on-startup</literal></quote> at
+	    the same time.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2085,8 +2104,11 @@ The following packages will be REMOVED:
 
 	<listitem>
 	  <para>
-	    Begins updating the package lists as soon as the
-	    program starts.  You cannot use this option and <literal>-i</literal> at the same time.
+	    Begins updating the package lists as soon as the program
+	    starts.  You cannot use this option and
+	    <quote><literal>-i</literal></quote> or
+	    <quote><literal>--clean-on-startup</literal></quote> at
+	    the same time.
 	  </para>
 	</listitem>
       </varlistentry>
