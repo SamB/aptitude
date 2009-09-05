@@ -487,7 +487,7 @@ static void do_su_to_root(string args)
       if(protocol == "su")
 	{
 	  std::ostringstream cmdbuf;
-	  cmdbuf << argv0 << " -S "
+	  cmdbuf << argv0 << "--no-gui -S "
 		 << statusname.get_name() << " "
 		 << args;
 	  execl(root_program.c_str(), root_program.c_str(), "-c", cmdbuf.str().c_str(), NULL);
@@ -498,7 +498,7 @@ static void do_su_to_root(string args)
 	{
 	  std::vector<std::string> cmdlist;
 	  // Split whitespace in the input command.
-	  std::string command = root_program + " " + argv0 + " -S " + statusname.get_name() + " " + args;
+	  std::string command = root_program + " " + argv0 + " --no-gui -S " + statusname.get_name() + " " + args;
 	  std::string::const_iterator it = command.begin();
 	  while(it != command.end() && isspace(*it))
 	    ++it;
