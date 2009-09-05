@@ -136,9 +136,9 @@ namespace
 					  pattern::make_broken_type(pkgCache::Dep::Depends)),
 			pattern::make_archive("stable")) },
 
-    { "?any-version(~Tasdf)", "?any-version(?true ?term(\"asdf\"))",
+    { "?any-version(~Tasdf)", "?any-version(?true ?name(\"asdf\"))",
       pattern::make_any_version(pattern::make_and(pattern::make_true(),
-						  pattern::make_term("asdf"))) },
+						  pattern::make_name("asdf"))) },
 
     { "?any-version(~i)", "?any-version(?installed)",
       pattern::make_any_version(pattern::make_installed()) },
@@ -149,13 +149,13 @@ namespace
     { "?archive(^asdf.*asdf$)", "?archive(\"^asdf.*asdf$\")",
       pattern::make_archive("^asdf.*asdf$") },
 
-    { "?automatic test", "?automatic ?term(\"test\")",
+    { "?automatic test", "?automatic ?name(\"test\")",
       pattern::make_and(pattern::make_automatic(),
-			pattern::make_term("test")) },
+			pattern::make_name("test")) },
 
-    { "~M test", "?automatic ?term(\"test\")",
+    { "~M test", "?automatic ?name(\"test\")",
       pattern::make_and(pattern::make_automatic(),
-			pattern::make_term("test")) },
+			pattern::make_name("test")) },
 
     { "?for x: ?depends(?for y: ?bind(y, ?source-package(argle~~)))",
       "?for x: ?depends(?for y: ?bind(y, ?source-package(\"argle~\")))",
@@ -181,9 +181,9 @@ namespace
 
     { "?broken", "?broken", pattern::make_broken() },
 
-    { "~basdf", "?broken ?term(\"asdf\")",
+    { "~basdf", "?broken ?name(\"asdf\")",
       pattern::make_and(pattern::make_broken(),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
     { "?broken-depends", "?broken-depends",
       pattern::make_broken_type(pkgCache::Dep::Depends) },
@@ -424,28 +424,28 @@ namespace
 
     // No test for ?for; it was tested above.
 
-    { "?garbage asdf", "?garbage ?term(\"asdf\")",
+    { "?garbage asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
-    { "~g asdf", "?garbage ?term(\"asdf\")",
+    { "~g asdf", "?garbage ?name(\"asdf\")",
       pattern::make_and(pattern::make_garbage(),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
-    { "?installed asdf", "?installed ?term(\"asdf\")",
+    { "?installed asdf", "?installed ?name(\"asdf\")",
       pattern::make_and(pattern::make_installed(),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
-    { "~i asdf", "?installed ?term(\"asdf\")",
+    { "~i asdf", "?installed ?name(\"asdf\")",
       pattern::make_and(pattern::make_installed(),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
     { "?maintainer(dburrows@debian.org)", "?maintainer(\"dburrows@debian.org\")",
       pattern::make_maintainer("dburrows@debian.org") },
 
-    { "~m\tdburrows@debian.org asdf", "?maintainer(\"dburrows@debian.org\") ?term(\"asdf\")",
+    { "~m\tdburrows@debian.org asdf", "?maintainer(\"dburrows@debian.org\") ?name(\"asdf\")",
       pattern::make_and(pattern::make_maintainer("dburrows@debian.org"),
-			pattern::make_term("asdf")) },
+			pattern::make_name("asdf")) },
 
     { "?narrow(?broken, ?version(5\\.43\\.2))",
       "?narrow(?broken, ?version(\"5\\\\.43\\\\.2\"))",
@@ -463,13 +463,13 @@ namespace
     { "~nelsi~ nore", "?name(\"elsi nore\")",
       pattern::make_name("elsi nore") },
 
-    { "?new FOO", "?new ?term(\"FOO\")",
+    { "?new FOO", "?new ?name(\"FOO\")",
       pattern::make_and(pattern::make_new(),
-			pattern::make_term("FOO")) },
+			pattern::make_name("FOO")) },
 
-    { "~N FOO", "?new ?term(\"FOO\")",
+    { "~N FOO", "?new ?name(\"FOO\")",
       pattern::make_and(pattern::make_new(),
-			pattern::make_term("FOO")) },
+			pattern::make_name("FOO")) },
 
     { "?obsolete", "?obsolete", pattern::make_obsolete() },
 

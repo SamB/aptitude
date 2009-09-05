@@ -4797,16 +4797,9 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<para>
 	  Text with no leading <quote>?</quote> also forms a search
 	  pattern: &aptitude; will treat each word (or quoted string)
-	  as the argument to a &Sterm; pattern, which performs a
-	  full-text search against the package
-	  database.<footnote><para>Previous versions of &aptitude;
-	  would instead treat text with no leading <quote>?</quote> as
-	  a &Sname; pattern.</para></footnote> For instance, the
-	  search pattern <quote><literal>algebra</literal></quote>
-	  will match any package that contains the keyword
-	  <literal>algebra</literal>, producing the same effect as the
-	  search pattern
-	  <quote><literal>&Sterm;(algebra)</literal></quote>.
+	  as the argument to a &Sname; pattern, which searches for a
+	  package whose name matches the text when the text is
+	  interpreted as a regular expression.
 	</para>
       </note>
 
@@ -4818,7 +4811,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  future releases; scripts that invoke
 	  <literal>aptitude</literal> should explicitly name the
 	  search strategy they want to use.  That is, scripts should
-	  search for <quote><literal>&Sterm;(coq)</literal></quote>
+	  search for <quote><literal>&Sname;(coq)</literal></quote>
 	  rather than <quote><literal>coq</literal></quote>).
 	</para>
       </warning>
