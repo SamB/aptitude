@@ -165,9 +165,12 @@
     <cmdsynopsis>
       <command>aptitude</command>
       <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
-      <group choice='opt'><arg choice='plain'>-u</arg> <arg
-      choice='plain'>-i</arg></group>
-      <group choice='opt'><arg choice='plain'>--clean-on-startup</arg></group>
+      <group choice='opt'>
+	<arg choice='plain'>--autoclean-on-startup</arg>
+	<arg choice='plain'>--clean-on-startup</arg>
+	<arg choice='plain'>-i</arg>
+	<arg choice='plain'>-u</arg>
+      </group>
     </cmdsynopsis>
 
     <cmdsynopsis>
@@ -2058,6 +2061,24 @@ The following packages will be REMOVED:
 
     <variablelist>
       <varlistentry>
+	<term><literal>--autoclean-on-startup</literal></term>
+
+	<listitem>
+	  <para>
+	    Deletes old downloaded files when the program starts
+	    (equivalent to starting the program and immediately
+	    selecting
+	    <menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean
+	    obsolete files</guimenuitem></menuchoice>).  You cannot
+	    use this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>-i</literal></quote>, or
+	    <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>--clean-on-startup</literal></term>
 
 	<listitem>
@@ -2067,7 +2088,9 @@ The following packages will be REMOVED:
 	    selecting
 	    <menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean
 	    package cache</guimenuitem></menuchoice>).  You cannot use
-	    this option and <quote><literal>-i</literal></quote> or
+	    this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>-i</literal></quote>, or
 	    <quote><literal>-u</literal></quote> at the same time.
 	  </para>
 	</listitem>
@@ -2081,9 +2104,10 @@ The following packages will be REMOVED:
 	    Displays a download preview when the program starts
 	    (equivalent to starting the program and immediately
 	    pressing <quote><keycap>g</keycap></quote>).  You cannot
-	    use this option and <quote><literal>-u</literal></quote>
-	    or <quote><literal>--clean-on-startup</literal></quote> at
-	    the same time.
+	    use this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>--clean-on-startup</literal></quote>, or
+	    <quote><literal>-u</literal></quote> at the same time.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2106,9 +2130,9 @@ The following packages will be REMOVED:
 	  <para>
 	    Begins updating the package lists as soon as the program
 	    starts.  You cannot use this option and
-	    <quote><literal>-i</literal></quote> or
-	    <quote><literal>--clean-on-startup</literal></quote> at
-	    the same time.
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>--clean-on-startup</literal></quote>, or
+	    <quote><literal>-i</literal></quote> at the same time.
 	  </para>
 	</listitem>
       </varlistentry>

@@ -235,6 +235,7 @@ enum {
   OPTION_LOG_CONFIG_FILE,
   OPTION_LOG_RESOLVER,
   OPTION_SHOW_SUMMARY,
+  OPTION_AUTOCLEAN_ON_STARTUP,
   OPTION_CLEAN_ON_STARTUP
 };
 int getopt_result;
@@ -285,6 +286,7 @@ option opts[]={
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
   {"log-resolver", 0, &getopt_result, OPTION_LOG_RESOLVER},
   {"show-summary", 2, &getopt_result, OPTION_SHOW_SUMMARY},
+  {"autoclean-on-startup", 0, &getopt_result, OPTION_AUTOCLEAN_ON_STARTUP},
   {"clean-on-startup", 0, &getopt_result, OPTION_CLEAN_ON_STARTUP},
   {0,0,0,0}
 };
@@ -538,6 +540,7 @@ int main(int argc, char *argv[])
   bool arch_only = aptcfg->FindB("Apt::Get::Arch-Only", false);
 
   bool update_only=false, install_only=false, queue_only=false;
+  bool autoclean_only = false;
   bool clean_only = false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
@@ -834,6 +837,10 @@ int main(int argc, char *argv[])
 		show_why_summary_mode = optarg;
 	      break;
 
+	    case OPTION_AUTOCLEAN_ON_STARTUP:
+	      autoclean_only = true;
+	      break;
+
 	    case OPTION_CLEAN_ON_STARTUP:
 	      clean_only = true;
 	      break;
@@ -911,19 +918,21 @@ int main(int argc, char *argv[])
       ++num_startup_actions;
     if(install_only)
       ++num_startup_actions;
+    if(autoclean_only)
+      ++num_startup_actions;
     if(clean_only)
       ++num_startup_actions;
 
     if(num_startup_actions > 1)
       {
 	fprintf(stderr, "%s",
-		_("Only one of -u, -i, and --clean-on-startup may be specified\n"));
+		_("Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be specified\n"));
 	usage();
 	exit(1);
       }
   }
 
-  if((update_only || install_only || clean_only) && optind!=argc)
+  if((update_only || install_only || autoclean_only || clean_only) && optind != argc)
     {
       fprintf(stderr, "%s\n",
 	      _("-u, -i, and --clean-on-startup may not be specified in command-line mode (eg, with 'install')"));
@@ -944,7 +953,7 @@ int main(int argc, char *argv[])
 	  signal(SIGWINCH, update_screen_width);
 	  update_screen_width();
 
-	  if(update_only || install_only || clean_only)
+	  if(update_only || install_only || autoclean_only || clean_only)
 	    {
 	      fprintf(stderr, "%s\n",
 		      _("-u, -i, and --clean-on-startup may not be specified with a command"));
@@ -1118,6 +1127,8 @@ int main(int argc, char *argv[])
             do_update_lists();
           else if(install_only)
             do_package_run_or_show_preview();
+	  else if(autoclean_only)
+	    do_autoclean();
 	  else if(clean_only)
 	    do_clean();
 

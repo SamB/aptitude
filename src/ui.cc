@@ -1775,7 +1775,7 @@ static bool do_autoclean_enabled()
   return apt_cache_file != NULL;
 }
 
-static void do_autoclean()
+static void really_do_autoclean()
 {
   if(apt_cache_file == NULL)
     _error->Error(_("The apt cache file is not available; cannot auto-clean."));
@@ -1806,6 +1806,22 @@ static void do_autoclean()
 
       show_message(ssprintf(_("Obsolete downloaded package files have been deleted, freeing %sB of disk space."),
 			    SizeToStr(cleaned_size).c_str()));
+    }
+}
+
+void do_autoclean()
+{
+  if(getuid()==0 || !aptcfg->FindB(PACKAGE "::Warn-Not-Root", true))
+    really_do_autoclean();
+  else
+    {
+	  popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Deleting obsolete files requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+						      "--autoclean-on-startup")),
+				       W_("Become root"),
+				       cw::util::arg(sigc::ptr_fun(&really_do_update_lists)),
+				       W_("Don't become root"),
+				       cw::get_style("Error")));
     }
 }
 
