@@ -10289,10 +10289,22 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>Aptitude::Auto-Install</literal></seg>
 	      <seg><literal>true</literal></seg>
 	      <seg>
-		If this option is <literal>true</literal>,
-		&aptitude; will automatically attempt to fulfill
-		the dependencies of a package when you select it
-		for installation.
+		If this option is <literal>true</literal>, &aptitude;
+		will automatically attempt to fulfill the dependencies
+		of a package when you mark a package to be installed
+		or upgraded.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configAuto-Install-Remove-Ok'>
+	      <seg><literal>Aptitude::Auto-Install-Remove-Ok</literal></seg>
+	      <seg><literal>false</literal></seg>
+	      <seg>
+		If this option is <literal>true</literal>, &aptitude;
+		will automatically remove conflicting packages when
+		you mark a package to be installed or upgraded.
+		Normally these conflicts are flagged and you must
+		handle them manually.
 	      </seg>
 	    </seglistitem>
 

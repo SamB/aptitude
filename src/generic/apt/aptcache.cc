@@ -2356,15 +2356,20 @@ bool aptitudeDepCache::IsDeleteOk(const pkgCache::PkgIterator &pkg,
 				  unsigned long Depth,
 				  bool FromUser)
 {
-  const aptitude_state &estate = get_ext_state(pkg);
-
-  if(estate.selection_state == pkgCache::State::Hold)
+  if(!aptcfg->FindB(PACKAGE "::Auto-Install-Remove-Ok", false))
+    return false;
+  else
     {
-      LOG_INFO(Loggers::getAptitudeAptCache(),
-	       "Refusing to remove the held package "
-	       << pkg.Name());
-      return false;
-    }
+      const aptitude_state &estate = get_ext_state(pkg);
 
-  return true;
+      if(estate.selection_state == pkgCache::State::Hold)
+	{
+	  LOG_INFO(Loggers::getAptitudeAptCache(),
+		   "Refusing to remove the held package "
+		   << pkg.Name());
+	  return false;
+	}
+
+      return true;
+    }
 }
