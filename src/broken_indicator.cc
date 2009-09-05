@@ -320,6 +320,10 @@ public:
     for(choice_set::const_iterator i = sol.get_choices().begin();
 	i != sol.get_choices().end(); ++i)
       {
+	// Ignore broken recommendations for now.
+	if(i->get_type() != choice::install_version)
+	  continue;
+
 	pkgCache::PkgIterator pkg = i->get_ver().get_pkg();
 	pkgCache::VerIterator curver=pkg.CurrentVer();
 	pkgCache::VerIterator instver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
