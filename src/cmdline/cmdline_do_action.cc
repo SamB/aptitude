@@ -95,7 +95,11 @@ int cmdline_do_action(int argc, char *argv[],
 	  !strcasecmp(argv[0], "upgrade"))
     {
       default_action = cmdline_upgrade;
-      upgrade_mode = safe_upgrade;
+      // If safe-upgrade is the only argument, we treat this as a full
+      // upgrade; otherwise we treat it as an install-type action that
+      // applies only to the packages listed on the command-line.
+      if(argc == 1)
+	upgrade_mode = safe_upgrade;
       if(resolver_mode == resolver_mode_default)
 	resolver_mode = resolver_mode_safe;
     }
@@ -164,14 +168,14 @@ int cmdline_do_action(int argc, char *argv[],
 
   pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
 
-  if(upgrade_mode == full_upgrade)
+  if(upgrade_mode == full_upgrade || upgrade_mode == safe_upgrade)
     {
       bool ignore_removed = (upgrade_mode == safe_upgrade);
 
       (*apt_cache_file)->get_upgradable(ignore_removed, to_install);
 
       bool use_autoinst = (resolver_mode != resolver_mode_safe);
-      (*apt_cache_file)->mark_all_upgradable(use_autoinst, false, NULL);
+      (*apt_cache_file)->mark_all_upgradable(use_autoinst, ignore_removed, NULL);
     }
   /*else if(argc==1 && default_action==cmdline_install)
     {

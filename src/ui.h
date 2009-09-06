@@ -371,6 +371,12 @@ void install_or_remove_packages();
 void do_update_lists();
 // Updates the package lists.
 
+/** \brief Delete obsolete downloaded files. */
+void do_autoclean();
+
+/** \brief Clean the package cache. */
+void do_clean();
+
 void do_forget_new();
 // Forgets which packages are "new".
 

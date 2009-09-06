@@ -110,6 +110,7 @@ void bin_actions(const aptitude_solution &sol,
 	    default:
 	      abort();
 	    }
+	  break;
 
 	case choice::break_soft_dep:
 	  unresolved_actions.push_back(*it);
