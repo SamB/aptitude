@@ -97,6 +97,15 @@ namespace aptitude
       sqlite3_close(handle);
     }
 
+    void db::set_busy_timeout(int timeout)
+    {
+      lock l(*this);
+
+      int result = sqlite3_busy_timeout(handle, timeout);
+      if(result != SQLITE_OK)
+	throw exception(get_error(), result);
+    }
+
     std::string db::get_error()
     {
       lock l(*this);

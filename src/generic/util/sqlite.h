@@ -208,6 +208,17 @@ namespace aptitude
 	statement_cache_limit = new_limit;
       }
 
+      /** \brief Set the timeout used when database contention occurs.
+       *
+       *  Normally, the database throws an exception with the error
+       *  code SQLITE_BUSY.  If a timeout is set, it will wait for at
+       *  least the given amount of time before throwing an exception.
+       *
+       *  \param  timeout   The number of milliseconds to wait,
+       *                    or 0 to throw an error immediately.
+       */
+      void set_busy_timeout(int timeout);
+
       /** \brief Retrieve the last error that was generated on this
        *  database.
        *
