@@ -10210,6 +10210,35 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	    <segtitle>Default</segtitle>
 	    <segtitle>Description</segtitle>
 
+	    <seglistitem id='configApt-AutoRemove-RecommendsImportant'>
+	      <seg><literal>Apt::AutoRemove::RecommendsImportant</literal></seg>
+	      <seg><literal>true</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>, then
+		&aptitude; will not consider packages to be unused
+		(and thus will not automatically remove them) as long
+		as any installed package recommends them, even if
+		<literal><link
+		linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal>
+		is <literal>false</literal>.  For more information,
+		see <xref linkend='secAutoInstall'/>.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configApt-AutoRemove-SuggestsImportant'>
+	      <seg><literal>Apt::AutoRemove::SuggestsImportant</literal></seg>
+	      <seg><literal>false</literal></seg>
+
+	      <seg>
+		If this option is <literal>true</literal>, then
+		&aptitude; will not consider packages to be unused
+		(and thus will not automatically remove them) as long
+		as any installed package suggests them.  For more
+		information, see <xref linkend='secAutoInstall'/>.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configAptInstall-Recommends'>
 	      <seg><literal>Apt::Install-Recommends</literal></seg>
 	      <seg><literal>true</literal></seg>
@@ -10803,14 +10832,13 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>false</literal></seg>
 
 	      <seg>
-		If this option is <literal>true</literal>, then
-		&aptitude; will not consider packages to be unused
-		(and thus will not automatically remove them) as long
-		as any installed package recommends them, even if
+		This is an obsolete option; use <literal><link
+		linkend='configApt-AutoRemove-RecommendsImportant'>Apt::AutoRemove::Recommends-Important</link></literal>
+		instead.  Setting this option to
+		<literal>true</literal> has the same effect as setting
 		<literal><link
-		linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal>
-		is <literal>false</literal>.  For more information,
-		see <xref linkend='secAutoInstall'/>.
+		linkend='configApt-AutoRemove-RecommendsImportant'>Apt::AutoRemove::Recommends-Important</link></literal>
+		to <literal>true</literal>.
 	      </seg>
 	    </seglistitem>
 
@@ -10820,11 +10848,13 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>false</literal></seg>
 
 	      <seg>
-		If this option is <literal>true</literal>, then
-		&aptitude; will not consider packages to be unused
-		(and thus will not automatically remove them) as long
-		as any installed package suggests them.  For more
-		information, see <xref linkend='secAutoInstall'/>.
+		This is an obsolete option; use <literal><link
+		linkend='configApt-AutoRemove-SuggestsImportant'>Apt::AutoRemove::Suggests-Important</link></literal>
+		instead.  Setting this option to
+		<literal>true</literal> has the same effect as setting
+		<literal><link
+		linkend='configApt-AutoRemove-SuggestsImportant'>Apt::AutoRemove::Suggests-Important</link></literal>
+		to <literal>true</literal>.
 	      </seg>
 	    </seglistitem>
 
@@ -11595,11 +11625,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	      <seg>
 		This is an obsolete option; use <literal><link
-		linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link></literal>
+		linkend='configApt-AutoRemove-SuggestsImportant'>Apt::AutoRemove::Suggests-Important</link></literal>
 		instead.  Setting this option to
 		<literal>true</literal> has the same effect as setting
 		<literal><link
-		linkend='configKeep-Suggests'>Aptitude::Keep-Suggests</link></literal>
+		linkend='configApt-AutoRemove-SuggestsImportant'>Apt::AutoRemove::Suggests-Important</link></literal>
 		to <literal>true</literal>.
 	      </seg>
 	    </seglistitem>

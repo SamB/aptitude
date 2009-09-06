@@ -670,7 +670,7 @@ int main(int argc, char *argv[])
 	  break;
 	case 'R':
 	  aptcfg->SetNoUser("Apt::Install-Recommends", "false");
-	  aptcfg->SetNoUser(PACKAGE "::Keep-Recommends", "true");
+	  aptcfg->SetNoUser("Apt::AutoRemove::RecommendsImportant", "true");
 	  break;
 	case 't':
 	  aptcfg->SetNoUser("APT::Default-Release", optarg);
