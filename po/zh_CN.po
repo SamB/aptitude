@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-07-20 12:25-0700\n"
+"POT-Creation-Date: 2009-09-08 20:38-0700\n"
 "PO-Revision-Date: 2008-09-02 21:41+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -592,39 +592,39 @@ msgstr "[%d(%d)/...] 正在解决依赖关系"
 
 #: src/broken_indicator.cc:313 src/gtk/resolver.cc:1277
 #: src/gtk/resolver.cc:1445 src/solution_dialog.cc:140
-#: src/solution_screen.cc:568
+#: src/solution_screen.cc:569
 msgid "Internal error: unexpected null solution."
 msgstr "内部错误：意料之外的空解决方案。"
 
-#: src/broken_indicator.cc:367
+#: src/broken_indicator.cc:371
 msgid "Suggest keeping all packages at their current version."
 msgstr "建议保持所有软件包于其当前版本。"
 
-#: src/broken_indicator.cc:375
+#: src/broken_indicator.cc:379
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
 msgstr[0] "安装 %d 个包"
 
-#: src/broken_indicator.cc:385
+#: src/broken_indicator.cc:389
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
 msgstr[0] "删除 %d 个包"
 
-#: src/broken_indicator.cc:395
+#: src/broken_indicator.cc:399
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
 msgstr[0] "保持 %d 个包"
 
-#: src/broken_indicator.cc:405
+#: src/broken_indicator.cc:409
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
 msgstr[0] "升级 %d 个包"
 
-#: src/broken_indicator.cc:415
+#: src/broken_indicator.cc:419
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
@@ -633,7 +633,7 @@ msgstr[0] "降级 %d 个包"
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
 #.
-#: src/broken_indicator.cc:426
+#: src/broken_indicator.cc:430
 #, c-format
 msgid "Suggest %F"
 msgstr "建议 %F"
@@ -693,49 +693,62 @@ msgid ""
 "      virtual package \"%s\"\n"
 msgstr "注意：选择“%s”而不是虚拟软件包“%s”\n"
 
-#: src/cmdline/cmdline_action.cc:308
+#: src/cmdline/cmdline_action.cc:310
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s 的 (%s) 版本已经按要求安装了\n"
 
-#: src/cmdline/cmdline_action.cc:314
+#: src/cmdline/cmdline_action.cc:320
+#, fuzzy, c-format
+#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
+msgid "%s is not currently installed, so it will not be upgraded.\n"
+msgstr "%s 目前未被安装，所以它不会被重新安装。\n"
+
+#: src/cmdline/cmdline_action.cc:323
+#, fuzzy, c-format
+#| msgid "%s is already installed at the requested version (%s)\n"
+msgid ""
+"%s is already installed at the latest version, so it will not be upgraded."
+msgstr "%s 的 (%s) 版本已经按要求安装了\n"
+
+#: src/cmdline/cmdline_action.cc:328
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "%s 目前未被安装，所以它不会被重新安装。\n"
 
-#: src/cmdline/cmdline_action.cc:321 src/cmdline/cmdline_action.cc:327
+#: src/cmdline/cmdline_action.cc:335 src/cmdline/cmdline_action.cc:341
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "软件包 %s 并未安装，所以不删除\n"
 
-#: src/cmdline/cmdline_action.cc:345
+#: src/cmdline/cmdline_action.cc:359
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "软件包 %s 并未安装，不能禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:347
+#: src/cmdline/cmdline_action.cc:361
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "软件包 %s 是不可升级的，不能设为禁止升级\n"
 
-#: src/cmdline/cmdline_action.cc:441
+#: src/cmdline/cmdline_action.cc:460
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "注意：选择软件集“%s：%s”安装\n"
 
-#: src/cmdline/cmdline_action.cc:475
+#: src/cmdline/cmdline_action.cc:494
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr "您只能在“install”或“forbid-version”命令中指定一个软件包的版本。\n"
 
-#: src/cmdline/cmdline_action.cc:484
+#: src/cmdline/cmdline_action.cc:503
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "在“安装”命令中您只能指定一个软件包的存档\n"
 
-#: src/cmdline/cmdline_action.cc:521
+#: src/cmdline/cmdline_action.cc:540
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -744,7 +757,7 @@ msgstr ""
 "无法找到软件包“%s”，同时有超过40个软件包名称\n"
 "中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:524
+#: src/cmdline/cmdline_action.cc:543
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -753,12 +766,12 @@ msgstr ""
 "无法找到软件包“%s”。然而下列软件包名称中\n"
 "包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:546
+#: src/cmdline/cmdline_action.cc:565
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "无法找到任何名称或者描述中匹配“%s”的软件包\n"
 
-#: src/cmdline/cmdline_action.cc:548
+#: src/cmdline/cmdline_action.cc:567
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -767,7 +780,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”，同时有超过40个软件包\n"
 "其描述中包含“%s”。\n"
 
-#: src/cmdline/cmdline_action.cc:551
+#: src/cmdline/cmdline_action.cc:570
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -776,7 +789,7 @@ msgstr ""
 "无法找到任何软件包匹配“%s”。然而下列软件包的描述中\n"
 "包含“%s”：\n"
 
-#: src/cmdline/cmdline_action.cc:690
+#: src/cmdline/cmdline_action.cc:709
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "非法的动作字符“%c”\n"
@@ -825,23 +838,23 @@ msgstr "将释放 %sB 磁盘空间\n"
 msgid "Freed %sB of disk space\n"
 msgstr "已释放 %sB 磁盘空间\n"
 
-#: src/cmdline/cmdline_do_action.cc:92
+#: src/cmdline/cmdline_do_action.cc:128
 #, c-format
 msgid "Invalid operation %s"
 msgstr "无效的操作 %s"
 
-#: src/cmdline/cmdline_do_action.cc:168
+#: src/cmdline/cmdline_do_action.cc:200
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "在参数“keep-all”之后有意料之外的模式"
 
-#: src/cmdline/cmdline_do_action.cc:275
+#: src/cmdline/cmdline_do_action.cc:307
 #, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr "无法安全解决依赖关系，请尝试使用 --full-resolver 来运行。\n"
 
-#: src/cmdline/cmdline_do_action.cc:313 src/cmdline/cmdline_simulate.cc:35
-#: src/cmdline/cmdline_upgrade.cc:181 src/main.cc:1037
+#: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
+#: src/main.cc:1068
 #, c-format
 msgid "Abort.\n"
 msgstr "放弃。\n"
@@ -1441,7 +1454,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:94 src/cmdline/cmdline_resolver.cc:727
-#: src/generic/apt/apt.cc:284
+#: src/generic/apt/apt.cc:311
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "无法打开 %s 以写入"
@@ -1620,7 +1633,7 @@ msgstr "我想解决依赖关系，但没有创建依赖关系解决器"
 
 #: src/cmdline/cmdline_resolver.cc:581 src/cmdline/cmdline_resolver.cc:874
 #: src/gtk/resolver.cc:2041 src/solution_dialog.cc:127
-#: src/solution_screen.cc:545
+#: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "依赖关系分析中..."
 
@@ -1980,15 +1993,6 @@ msgstr "删除过期的已下载文件\n"
 msgid "E: The update command takes no arguments\n"
 msgstr "E: update 命令不接受任何参数\n"
 
-#: src/cmdline/cmdline_upgrade.cc:56
-msgid "The \"upgrade\" command is now named \"safe-upgrade\"."
-msgstr ""
-
-#: src/cmdline/cmdline_upgrade.cc:62
-#, c-format
-msgid "E: The %s command takes no arguments\n"
-msgstr "E: %s 命令不接受任何参数\n"
-
 #: src/cmdline/cmdline_user_tag.cc:54
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
@@ -2089,7 +2093,7 @@ msgstr "当前"
 msgid "Candidate"
 msgstr "候选"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:89 src/gtk/gui.cc:1365
+#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:89 src/gtk/gui.cc:1374
 msgid "Install"
 msgstr "安装"
 
@@ -2437,21 +2441,21 @@ msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:183
+#: src/generic/apt/apt.cc:188
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.zh_CN"
 
-#: src/generic/apt/apt.cc:256
+#: src/generic/apt/apt.cc:283
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s 可读但不可写；无法写入配置文件。"
 
-#: src/generic/apt/apt.cc:301
+#: src/generic/apt/apt.cc:328
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/generic/apt/apt.cc:452
+#: src/generic/apt/apt.cc:479
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -2598,49 +2602,49 @@ msgstr "fork() 失败：%s"
 msgid "waitpid() failed: %s"
 msgstr "waitpid() 失败：%s"
 
-#: src/generic/apt/download_update_manager.cc:317
+#: src/generic/apt/download_update_manager.cc:320
 msgid "Couldn't clean out list directories"
 msgstr "无法清空列表目录"
 
-#: src/generic/apt/download_update_manager.cc:330
+#: src/generic/apt/download_update_manager.cc:333
 msgid "Couldn't rebuild package cache"
 msgstr "无法重建软件包缓存"
 
-#: src/generic/apt/download_update_manager.cc:346
+#: src/generic/apt/download_update_manager.cc:349
 msgid "The debtags command must not be an empty string."
 msgstr "debtags 命令不能是空字符串。"
 
-#: src/generic/apt/download_update_manager.cc:350
+#: src/generic/apt/download_update_manager.cc:353
 msgid "The debtags command must be an absolute path."
 msgstr "debtags 命令必须是绝对路径。"
 
-#: src/generic/apt/download_update_manager.cc:363
+#: src/generic/apt/download_update_manager.cc:366
 #, c-format
 msgid "The debtags command (%s) cannot be executed: %s"
 msgstr "debtags 命令(%s)无法执行：%s"
 
-#: src/generic/apt/download_update_manager.cc:368
+#: src/generic/apt/download_update_manager.cc:371
 msgid "Updating debtags database..."
 msgstr "正在更新 debtags 数据库..."
 
-#: src/generic/apt/download_update_manager.cc:385
+#: src/generic/apt/download_update_manager.cc:388
 msgid "(core dumped)"
 msgstr "(已生成 core 文件)"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:388
+#: src/generic/apt/download_update_manager.cc:391
 #, c-format
 msgid "The debtags update process (%s update %s) was killed by signal %d%s."
 msgstr "debtags 更新进程(%s update %s)被信号 %d%s 杀掉。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:396
+#: src/generic/apt/download_update_manager.cc:399
 #, c-format
 msgid "The debtags update process (%s update %s) exited abnormally (code %d)."
 msgstr "debtags 更新进程(%s update %s)非正常退出(代码 %d)。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:403
+#: src/generic/apt/download_update_manager.cc:406
 #, c-format
 msgid ""
 "The debtags update process (%s update %s) exited in an unexpected way "
@@ -2648,7 +2652,7 @@ msgid ""
 msgstr "debtags 更新进程(%s update %s)出乎预料地退出(状态 %d)。"
 
 #. ForTranslators: "%s update %s" gets replaced by a command line, do not translate it!
-#: src/generic/apt/download_update_manager.cc:409
+#: src/generic/apt/download_update_manager.cc:412
 #, c-format
 msgid ""
 "Updating the debtags database (%s update %s) failed (perhaps debtags is not "
@@ -2839,21 +2843,21 @@ msgstr "“提供”类型不可能损坏"
 msgid "Unknown pattern type: %c"
 msgstr "未知的模式类型：%c"
 
-#: src/generic/apt/matching/parse.cc:1334
+#: src/generic/apt/matching/parse.cc:1331
 msgid "Can't search for \"\""
 msgstr "无法搜索“”"
 
-#: src/generic/apt/matching/parse.cc:1362
+#: src/generic/apt/matching/parse.cc:1359
 msgid "Unexpected empty expression"
 msgstr "意外的空表达式"
 
-#: src/generic/apt/matching/parse.cc:1391
+#: src/generic/apt/matching/parse.cc:1388
 #, fuzzy, c-format
 #| msgid "Badly formed expression"
 msgid "Badly formed expression: expected '|', got '%c'"
 msgstr "错误格式的表达式"
 
-#: src/generic/apt/matching/parse.cc:1438
+#: src/generic/apt/matching/parse.cc:1435
 msgid "Unexpected ')'"
 msgstr "意外的“)”"
 
@@ -2880,7 +2884,7 @@ msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr "软件包索引文件被损坏。软件包 %s 无 Filename：域。"
 
-#: src/generic/apt/pkg_changelog.cc:215 src/view_changelog.cc:270
+#: src/generic/apt/pkg_changelog.cc:219 src/view_changelog.cc:270
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "%s 的变更日志"
@@ -2986,49 +2990,115 @@ msgstr ""
 msgid "_File"
 msgstr "假"
 
-#: src/gtk/aptitude.glade:27 src/ui.cc:2220
+#: src/gtk/aptitude.glade:25
+#, fuzzy
+#| msgid "^Install/remove packages"
+msgid "_Install/Remove Packages"
+msgstr "安装/卸载软件包(^I)"
+
+#: src/gtk/aptitude.glade:27 src/ui.cc:2252
 msgid "Perform all pending installs and removals"
 msgstr "执行所有等待执行的安装和卸载任务"
 
-#: src/gtk/aptitude.glade:37 src/ui.cc:2223
+#: src/gtk/aptitude.glade:35
+#, fuzzy
+#| msgid "^Update package list"
+msgid "_Update Package List"
+msgstr "更新软件包列表(^U)"
+
+#: src/gtk/aptitude.glade:37 src/ui.cc:2255
 msgid "Check for new versions of packages"
 msgstr "正在检查新版本的软件包"
 
-#: src/gtk/aptitude.glade:52 src/ui.cc:2228
+#: src/gtk/aptitude.glade:50
+#, fuzzy
+#| msgid "Mark Up^gradable"
+msgid "Mark Up_gradable"
+msgstr "标记可升级的(^g)"
+
+#: src/gtk/aptitude.glade:52 src/ui.cc:2260
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "为所有未被保持现状的软件包加上升级标记"
 
-#: src/gtk/aptitude.glade:62 src/ui.cc:2233
+#: src/gtk/aptitude.glade:60
+#, fuzzy
+#| msgid "^Forget new packages"
+msgid "_Forget New Packages"
+msgstr "忘记新软件包(^F)"
+
+#: src/gtk/aptitude.glade:62 src/ui.cc:2265
 msgid "Forget which packages are \"new\""
 msgstr "忘记哪些软件包是“新”的"
 
-#: src/gtk/aptitude.glade:71 src/ui.cc:2237
+#: src/gtk/aptitude.glade:69
+#, fuzzy
+#| msgid "Canc^el pending actions"
+msgid "Canc_el Pending Actions"
+msgstr "取消待执行的动作(^E)"
+
+#: src/gtk/aptitude.glade:71 src/ui.cc:2269
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr "执行所有等待执行的安装、卸载、保持和升级任务"
 
-#: src/gtk/aptitude.glade:80 src/ui.cc:2241
+#: src/gtk/aptitude.glade:78
+#, fuzzy
+#| msgid "^Clean package cache"
+msgid "C_lean Package Cache"
+msgstr "清除软件包缓存(^C)"
+
+#: src/gtk/aptitude.glade:80 src/ui.cc:2273
 msgid "Delete package files which were previously downloaded"
 msgstr "删除以前下载的软件包文件"
 
-#: src/gtk/aptitude.glade:89 src/ui.cc:2245
+#: src/gtk/aptitude.glade:87
+#, fuzzy
+#| msgid "Clean ^obsolete files"
+msgid "Clean _Obsolete Files"
+msgstr "关闭过期文件(^O)"
+
+#: src/gtk/aptitude.glade:89 src/ui.cc:2277
 msgid "Delete package files which can no longer be downloaded"
 msgstr "删除无法再下载的软件包文件"
 
-#: src/gtk/aptitude.glade:103 src/ui.cc:2252
+#: src/gtk/aptitude.glade:101
+#, fuzzy
+#| msgid "^Reload package cache"
+msgid "_Reload Package Cache"
+msgstr "重新载入软件包缓存(^R)"
+
+#: src/gtk/aptitude.glade:103 src/ui.cc:2284
 msgid "Reload the package cache"
 msgstr "重新载入软件包缓存"
 
-#: src/gtk/aptitude.glade:112 src/ui.cc:1701 src/ui.cc:2257
+#: src/gtk/aptitude.glade:110
+#, fuzzy
+#| msgid "^Play Minesweeper"
+msgid "_Play Minesweeper"
+msgstr "玩扫雷游戏(^P)"
+
+#: src/gtk/aptitude.glade:112 src/ui.cc:1701 src/ui.cc:2289
 msgid "Waste time trying to find mines"
 msgstr "通过扫雷来消磨时间"
 
-#: src/gtk/aptitude.glade:126 src/ui.cc:2262
+#: src/gtk/aptitude.glade:124
+#, fuzzy
+#| msgid "Become root"
+msgid "_Become Root"
+msgstr "变成 root"
+
+#: src/gtk/aptitude.glade:126 src/ui.cc:2294
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
 msgstr "运行“su”成为 root。这将重新启动程序，但是您的设置将会被保存下来。"
 
-#: src/gtk/aptitude.glade:135 src/ui.cc:2265
+#: src/gtk/aptitude.glade:133
+#, fuzzy
+#| msgid "^Quit"
+msgid "_Quit"
+msgstr "退出(^Q)"
+
+#: src/gtk/aptitude.glade:135 src/ui.cc:2297
 msgid "Exit the program"
 msgstr "退出此程序"
 
@@ -3036,7 +3106,7 @@ msgstr "退出此程序"
 msgid "E_dit"
 msgstr ""
 
-#: src/gtk/aptitude.glade:156 src/ui.cc:2272
+#: src/gtk/aptitude.glade:156 src/ui.cc:2304
 msgid "Undo the last package operation or group of operations"
 msgstr "撤销最近一次或者一组软件包操作"
 
@@ -3052,8 +3122,16 @@ msgstr "软件包"
 msgid "_View"
 msgstr "视图"
 
+#: src/gtk/aptitude.glade:224
+msgid "_Edit Columns..."
+msgstr ""
+
 #: src/gtk/aptitude.glade:226
 msgid "Change which columns are visible in the currently active view."
+msgstr ""
+
+#: src/gtk/aptitude.glade:238
+msgid "View Apt _Errors"
 msgstr ""
 
 #: src/gtk/aptitude.glade:240
@@ -3061,6 +3139,12 @@ msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
+
+#: src/gtk/aptitude.glade:247
+#, fuzzy
+#| msgid "Dependency handling"
+msgid "Find _Dependency Chains"
+msgstr "处理依赖关系"
 
 #: src/gtk/aptitude.glade:249
 msgid "Find chains of dependencies linking one package to another."
@@ -3072,8 +3156,8 @@ msgstr ""
 msgid "_Help"
 msgstr "帮助"
 
-#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:751 src/gtk/gui.cc:1554
-#: src/gtk/gui.cc:1748
+#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:751 src/gtk/gui.cc:1563
+#: src/gtk/gui.cc:1757
 msgid "Dashboard"
 msgstr ""
 
@@ -3083,18 +3167,18 @@ msgstr ""
 msgid "Update"
 msgstr "列表更新"
 
-#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1266 src/ui.cc:837 src/ui.cc:839
+#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1275 src/ui.cc:837 src/ui.cc:839
 #: src/ui.cc:884 src/ui.cc:886 src/ui.cc:912 src/ui.cc:914 src/ui.cc:935
 #: src/ui.cc:937
 msgid "Packages"
 msgstr "软件包"
 
-#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:977 src/gtk/previewtab.cc:118
+#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:986 src/gtk/previewtab.cc:118
 #: src/ui.cc:1336
 msgid "Preview"
 msgstr "预览"
 
-#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:972 src/ui.cc:2653
+#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:981 src/ui.cc:2688
 msgid "Resolver"
 msgstr "解决手段"
 
@@ -3311,7 +3395,7 @@ msgstr ""
 msgid "Fix Manually"
 msgstr "手册"
 
-#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:91 src/gtk/gui.cc:1356
+#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:91 src/gtk/gui.cc:1365
 msgid "Upgrade"
 msgstr "升级"
 
@@ -3374,13 +3458,13 @@ msgid ""
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:373
+#: src/gtk/changelog.cc:370
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "用于下载变更日志的 URL"
 
-#: src/gtk/changelog.cc:479
+#: src/gtk/changelog.cc:476
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3388,20 +3472,20 @@ msgid ""
 "is unknown."
 msgstr "您只能查看官方 Debian 软件包的变更日志。"
 
-#: src/gtk/changelog.cc:483
+#: src/gtk/changelog.cc:480
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "您只能查看官方 Debian 软件包的变更日志。"
 
-#: src/gtk/changelog.cc:503
+#: src/gtk/changelog.cc:500
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "正在下载变更日志"
 
-#: src/gtk/changelog.cc:563
+#: src/gtk/changelog.cc:560
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -3558,7 +3642,7 @@ msgstr ""
 msgid "The download is still in progress.  Should it be canceled?"
 msgstr "在下载进行过程中不允许执行清除"
 
-#: src/gtk/download.cc:395 src/gtk/gui.cc:776
+#: src/gtk/download.cc:395 src/gtk/gui.cc:785
 #, fuzzy
 #| msgid "View next display"
 msgid "View Details"
@@ -3764,11 +3848,11 @@ msgstr "已安装"
 msgid "Reinstall"
 msgstr "重新安装"
 
-#: src/gtk/gui.cc:92 src/gtk/gui.cc:1362
+#: src/gtk/gui.cc:92 src/gtk/gui.cc:1371
 msgid "Downgrade"
 msgstr "降级"
 
-#: src/gtk/gui.cc:93 src/gtk/gui.cc:1372
+#: src/gtk/gui.cc:93 src/gtk/gui.cc:1381
 msgid "Remove"
 msgstr "删除"
 
@@ -3788,37 +3872,37 @@ msgstr "被禁止的升级"
 msgid "Unsatisfied dependencies"
 msgstr "相关依赖关系"
 
-#: src/gtk/gui.cc:213
+#: src/gtk/gui.cc:222
 msgid "Checking for updates"
 msgstr ""
 
-#: src/gtk/gui.cc:231
+#: src/gtk/gui.cc:240
 msgid "Insufficient privileges."
 msgstr ""
 
-#: src/gtk/gui.cc:234
+#: src/gtk/gui.cc:243
 #, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "You must be root to update the package lists."
 msgstr "使用过滤器过滤软件包列表"
 
-#: src/gtk/gui.cc:242 src/gtk/gui.cc:890
+#: src/gtk/gui.cc:251 src/gtk/gui.cc:899
 #, fuzzy
 #| msgid "Downloading... "
 msgid "Download already running."
 msgstr "正在下载... "
 
-#: src/gtk/gui.cc:244 src/gtk/gui.cc:892 src/ui.cc:1462 src/ui.cc:1696
+#: src/gtk/gui.cc:253 src/gtk/gui.cc:901 src/ui.cc:1462 src/ui.cc:1696
 msgid "A package-list update or install run is already taking place."
 msgstr "已经开始了一个软件包列表更新或者安装的动作。"
 
-#: src/gtk/gui.cc:303
+#: src/gtk/gui.cc:312
 #, fuzzy, c-format
 #| msgid "List Update"
 msgid "Update %s?"
 msgstr "列表更新"
 
-#: src/gtk/gui.cc:329
+#: src/gtk/gui.cc:338
 #, fuzzy, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid ""
@@ -3826,7 +3910,7 @@ msgid ""
 "'%s'?"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/gtk/gui.cc:333
+#: src/gtk/gui.cc:342
 #, c-format
 msgid ""
 "The configuration file %s was modified (by you or by a script). An updated "
@@ -3835,83 +3919,83 @@ msgid ""
 "the new package maintainers version? "
 msgstr ""
 
-#: src/gtk/gui.cc:361
+#: src/gtk/gui.cc:370
 #, c-format
 msgid "Comparing %s to %s..."
 msgstr ""
 
-#: src/gtk/gui.cc:682
+#: src/gtk/gui.cc:691
 msgid ""
 "Interrupting this process could leave your system in an inconsistent state.  "
 "Are you sure you want to stop applying your changes?"
 msgstr ""
 
-#: src/gtk/gui.cc:720
+#: src/gtk/gui.cc:729
 #, fuzzy
 #| msgid "%s changes"
 msgid "Done applying changes!"
 msgstr "%s 个包已改变"
 
-#: src/gtk/gui.cc:767
+#: src/gtk/gui.cc:776
 #, fuzzy
 #| msgid "%s changes"
 msgid "Applying changes..."
 msgstr "%s 个包已改变"
 
-#: src/gtk/gui.cc:819
+#: src/gtk/gui.cc:828
 #, fuzzy, c-format
 #| msgid "s: %F"
 msgid "%s: %s"
 msgstr "s: %F"
 
-#: src/gtk/gui.cc:822
+#: src/gtk/gui.cc:831
 #, fuzzy, c-format
 #| msgid "No broken packages."
 msgid "Error in package %s"
 msgstr "无破损的软件包。"
 
-#: src/gtk/gui.cc:850
+#: src/gtk/gui.cc:859
 #, fuzzy, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid "Asking whether to replace the configuration file %s"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/gtk/gui.cc:906 src/ui.cc:1206
+#: src/gtk/gui.cc:915 src/ui.cc:1206
 msgid "Downloading packages"
 msgstr "正在下载软件包"
 
-#: src/gtk/gui.cc:982
+#: src/gtk/gui.cc:991
 #, fuzzy
 #| msgid "No broken packages."
 msgid "Broken packages"
 msgstr "无破损的软件包。"
 
-#: src/gtk/gui.cc:1015
+#: src/gtk/gui.cc:1024
 #, fuzzy
 #| msgid "No broken packages."
 msgid "Show broken packages"
 msgstr "无破损的软件包。"
 
-#: src/gtk/gui.cc:1019
+#: src/gtk/gui.cc:1028
 #, fuzzy
 #| msgid "Resolve Dependencies"
 msgid "Resolve dependencies"
 msgstr "解决依赖关系"
 
-#: src/gtk/gui.cc:1047
+#: src/gtk/gui.cc:1056
 #, fuzzy, c-format
 #| msgid "No packages are broken."
 msgid "%d package is broken"
 msgid_plural "%d packages are broken."
 msgstr[0] "没有破损的软件包。"
 
-#: src/gtk/gui.cc:1091
+#: src/gtk/gui.cc:1100
 #, fuzzy
 #| msgid "%s changes"
 msgid "View changes"
 msgstr "%s 个包已改变"
 
-#: src/gtk/gui.cc:1095
+#: src/gtk/gui.cc:1104
 #, fuzzy
 #| msgid "%s changes"
 msgid "Apply changes"
@@ -3920,7 +4004,7 @@ msgstr "%s 个包已改变"
 #. ForTranslators: any numbers in this
 #. string will be displayed in a larger
 #. font.
-#: src/gtk/gui.cc:1136
+#: src/gtk/gui.cc:1145
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -3931,69 +4015,69 @@ msgstr[0] "安装 %d 个包"
 #. ForTranslators: any numbers in this
 #. string will be displayed in a larger
 #. font.
-#: src/gtk/gui.cc:1151
+#: src/gtk/gui.cc:1160
 #, fuzzy, c-format
 #| msgid "failed to remove %s"
 msgid "%d package to remove"
 msgid_plural "%d packages to remove"
 msgstr[0] "无法删除 %s"
 
-#: src/gtk/gui.cc:1190
+#: src/gtk/gui.cc:1199
 #, fuzzy, c-format
 #| msgid "DownloadSize"
 msgid "Download size: %sB."
 msgstr "下载文件大小"
 
-#: src/gtk/gui.cc:1232
+#: src/gtk/gui.cc:1241
 #, c-format
 msgid "Tags of %s:\n"
 msgstr ""
 
-#: src/gtk/gui.cc:1293
+#: src/gtk/gui.cc:1302
 msgid "This feature is not implemented, yet."
 msgstr ""
 
-#: src/gtk/gui.cc:1299
+#: src/gtk/gui.cc:1308
 #, fuzzy
 #| msgid "not installed"
 msgid "Not implemented"
 msgstr "未安装"
 
-#: src/gtk/gui.cc:1351 src/gtk/gui.cc:1370
+#: src/gtk/gui.cc:1360 src/gtk/gui.cc:1379
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Upgrade"
 msgstr "已安装"
 
-#: src/gtk/gui.cc:1377
+#: src/gtk/gui.cc:1386
 #, fuzzy
 #| msgid "^Purge"
 msgid "Purge"
 msgstr "清除(^P)"
 
-#: src/gtk/gui.cc:1382
+#: src/gtk/gui.cc:1391
 msgid "Keep"
 msgstr "保持"
 
-#: src/gtk/gui.cc:1387
+#: src/gtk/gui.cc:1396
 msgid "Hold"
 msgstr "保持"
 
-#: src/gtk/gui.cc:1393
+#: src/gtk/gui.cc:1402
 msgid "Set as automatic"
 msgstr ""
 
-#: src/gtk/gui.cc:1398
+#: src/gtk/gui.cc:1407
 #, fuzzy
 #| msgid "User's Manual"
 msgid "Set as manual"
 msgstr "用户手册"
 
-#: src/gtk/gui.cc:1403
+#: src/gtk/gui.cc:1412
 msgid "Toggle automatic status"
 msgstr ""
 
-#: src/gtk/gui.cc:1727
+#: src/gtk/gui.cc:1736
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
@@ -4527,12 +4611,12 @@ msgid "%s obsoletes %s"
 msgstr "%s 过期 %s"
 
 #: src/gtk/resolver.cc:1359 src/gtk/resolver.cc:1824
-#: src/solution_screen.cc:271
+#: src/solution_screen.cc:272
 msgid "Remove the following packages:"
 msgstr "删除下列软件包："
 
 #: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1836
-#: src/solution_screen.cc:295
+#: src/solution_screen.cc:296
 msgid "Install the following packages:"
 msgstr "安装下列软件包："
 
@@ -4543,12 +4627,12 @@ msgid "Keep the following packages:"
 msgstr "删除下列软件包："
 
 #: src/gtk/resolver.cc:1399 src/gtk/resolver.cc:1860
-#: src/solution_screen.cc:307
+#: src/solution_screen.cc:308
 msgid "Upgrade the following packages:"
 msgstr "升级下列软件包："
 
 #: src/gtk/resolver.cc:1412 src/gtk/resolver.cc:1873
-#: src/solution_screen.cc:319
+#: src/solution_screen.cc:320
 msgid "Downgrade the following packages:"
 msgstr "降级下列软件包："
 
@@ -4979,61 +5063,61 @@ msgstr "排序策略描述中不匹配的“(”"
 msgid "Invalid sorting policy type '%s'"
 msgstr "无效的排序策略类型“%s”"
 
-#: src/main.cc:103
+#: src/main.cc:102
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "无法对“%ls”之后的多字节字符串进行解码"
 
-#: src/main.cc:112
+#: src/main.cc:111
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "无法对“%s”之后的宽字符串进行解码"
 
-#: src/main.cc:120
+#: src/main.cc:119
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s 编译于 %s %s\n"
 
-#: src/main.cc:123
+#: src/main.cc:122
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "编译器：g++ %s\n"
 
-#: src/main.cc:125
+#: src/main.cc:124
 msgid "Compiled against:\n"
 msgstr "所用编译器：\n"
 
-#: src/main.cc:126
+#: src/main.cc:125
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "apt 版本 %d.%d.%d\n"
 
-#: src/main.cc:129
+#: src/main.cc:128
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  NCurses 版本：未知\n"
 
-#: src/main.cc:131
+#: src/main.cc:130
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  NCurses 版本：%s\n"
 
-#: src/main.cc:133
+#: src/main.cc:132
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  libsigc++ 版本：%s\n"
 
-#: src/main.cc:135
+#: src/main.cc:134
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Ept 支持已开启。\n"
 
-#: src/main.cc:137
+#: src/main.cc:136
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Ept 支持已禁用\n"
 
-#: src/main.cc:140
+#: src/main.cc:139
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -5041,32 +5125,32 @@ msgstr ""
 "\n"
 "当前库版本：\n"
 
-#: src/main.cc:141
+#: src/main.cc:140
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  NCurses 版本：%s\n"
 
-#: src/main.cc:142
+#: src/main.cc:141
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  cwidget 版本：%s\n"
 
-#: src/main.cc:143
+#: src/main.cc:142
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Apt 版本：%s\n"
 
-#: src/main.cc:149
+#: src/main.cc:148
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "用法： aptitude [-S 文件名] [-u|-i]"
 
-#: src/main.cc:151
+#: src/main.cc:150
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [选项] <动作> ..."
 
-#: src/main.cc:153
+#: src/main.cc:152
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -5075,108 +5159,108 @@ msgstr ""
 "  动作 (如果未指定，aptitude 将进入交互模式)：\n"
 "\n"
 
-#: src/main.cc:154
+#: src/main.cc:153
 #, c-format
 msgid " install      - Install/upgrade packages\n"
 msgstr " install      - 安装/升级软件包\n"
 
-#: src/main.cc:155
+#: src/main.cc:154
 #, c-format
 msgid " remove       - Remove packages\n"
 msgstr " remove       - 卸载软件包\n"
 
-#: src/main.cc:156
+#: src/main.cc:155
 #, c-format
 msgid " purge        - Remove packages and their configuration files\n"
 msgstr " purge        - 卸载软件包并删除其配置文件\n"
 
-#: src/main.cc:157
+#: src/main.cc:156
 #, c-format
 msgid " hold         - Place packages on hold\n"
 msgstr " hold         - 将软件包置于保持状态\n"
 
-#: src/main.cc:158
+#: src/main.cc:157
 #, c-format
 msgid " unhold       - Cancel a hold command for a package\n"
 msgstr " unhold       - 取消对一个软件包的保持命令\n"
 
-#: src/main.cc:159
+#: src/main.cc:158
 #, c-format
 msgid " markauto     - Mark packages as having been automatically installed\n"
 msgstr " markauto     - 将软件包标记为自动安装\n"
 
-#: src/main.cc:160
+#: src/main.cc:159
 #, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgstr " unmarkauto   - 将软件包标记为手动安装\n"
 
-#: src/main.cc:161
+#: src/main.cc:160
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr " forbid-version - 禁止 aptitude 升级到某一特定版本的软件包。\n"
 
-#: src/main.cc:162
+#: src/main.cc:161
 #, c-format
 msgid " update       - Download lists of new/upgradable packages\n"
 msgstr " update       - 下载新/可升级软件包列表\n"
 
-#: src/main.cc:163
+#: src/main.cc:162
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade\n"
 msgstr " safe-upgrade - 执行一次安全的升级\n"
 
-#: src/main.cc:164
+#: src/main.cc:163
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages\n"
 msgstr " full-upgrade - 执行升级，可能会安装和卸载软件包\n"
 
-#: src/main.cc:165
+#: src/main.cc:164
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\"\n"
 msgstr " forget-new   - 忘记哪些软件包是“新”的\n"
 
-#: src/main.cc:166
+#: src/main.cc:165
 #, c-format
 msgid " search       - Search for a package by name and/or expression\n"
 msgstr " search       - 按名称 和/或 表达式搜索软件包\n"
 
-#: src/main.cc:167
+#: src/main.cc:166
 #, c-format
 msgid " show         - Display detailed information about a package\n"
 msgstr " show       - 显示一个软件包的详细信息\n"
 
-#: src/main.cc:168
+#: src/main.cc:167
 #, c-format
 msgid " clean        - Erase downloaded package files\n"
 msgstr " clean        - 删除已下载的软件包文件\n"
 
-#: src/main.cc:169
+#: src/main.cc:168
 #, c-format
 msgid " autoclean    - Erase old downloaded package files\n"
 msgstr " autoclean    - 删除旧的已下载软件包文件\n"
 
-#: src/main.cc:170
+#: src/main.cc:169
 #, c-format
 msgid " changelog    - View a package's changelog\n"
 msgstr " changelog    - 查看一个软件包的变更日志\n"
 
-#: src/main.cc:171
+#: src/main.cc:170
 #, c-format
 msgid " download     - Download the .deb file for a package\n"
 msgstr " download     - 下载软件包的 .deb 文件\n"
 
-#: src/main.cc:172
+#: src/main.cc:171
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package\n"
 msgstr " reinstall    - 下载并(可能)重新安装一个现在已经安装了的软件包\n"
 
-#: src/main.cc:173
+#: src/main.cc:172
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5186,7 +5270,7 @@ msgstr ""
 " 为什么       - 显示需要另一软件包的手动安装的软件包，或者\n"
 "                为什么一个或多个软件包需要给定的软件包\n"
 
-#: src/main.cc:175
+#: src/main.cc:174
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -5197,114 +5281,114 @@ msgstr ""
 " 为什么不     - 显示导致与给定软件包包冲突的手动安装的包，或者为什么\n"
 "                如果安装一个或多个软件包会导致与给定软件包冲突\n"
 
-#: src/main.cc:179
+#: src/main.cc:178
 #, c-format
 msgid "  Options:\n"
 msgstr "  选项：\n"
 
-#: src/main.cc:180
+#: src/main.cc:179
 #, c-format
 msgid " -h             This help text\n"
 msgstr " -h             此帮助文本\n"
 
-#: src/main.cc:181
+#: src/main.cc:180
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:182
+#: src/main.cc:181
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:183
+#: src/main.cc:182
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             模拟动作，但是并不真正执行。\n"
 
-#: src/main.cc:184
+#: src/main.cc:183
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             仅仅下载软件包，不安装或者卸载任何东西。\n"
 
-#: src/main.cc:185
+#: src/main.cc:184
 #, c-format
 msgid " -P             Always prompt for confirmation or actions\n"
 msgstr " -P             总是提示确认执行动作\n"
 
-#: src/main.cc:186
+#: src/main.cc:185
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'\n"
 msgstr " -y             假设对简单的 是/否 问题回答“是”\n"
 
-#: src/main.cc:187
+#: src/main.cc:186
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual\n"
 msgstr " -F 格式        指定显示搜索结果的格式；参见手册\n"
 
-#: src/main.cc:188
+#: src/main.cc:187
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the manual\n"
 msgstr " -O 次序        指定如何排列显示搜索结果；参见手册\n"
 
-#: src/main.cc:189
+#: src/main.cc:188
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results\n"
 msgstr " -w 宽度        指定显示搜索结果的格式宽度\n"
 
-#: src/main.cc:190
+#: src/main.cc:189
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             积极地尝试修复损坏的软件包。\n"
 
-#: src/main.cc:191
+#: src/main.cc:190
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             显示就要安装的软件包版本。\n"
 
-#: src/main.cc:192
+#: src/main.cc:191
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             显示自动改变的软件包的依赖关系\n"
 
-#: src/main.cc:193
+#: src/main.cc:192
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    显示每个软件包的安装尺寸的变化。\n"
 
-#: src/main.cc:194
+#: src/main.cc:193
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple times)\n"
 msgstr " -v             显示附加信息。(可能会提供多次) \n"
 
-#: src/main.cc:195
+#: src/main.cc:194
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed\n"
 msgstr " -t [release]   设置将要安装的软件包的发布版本\n"
 
-#: src/main.cc:196
+#: src/main.cc:195
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr " -q            在命令行状态下，不显示增量进度指示器\n"
 
-#: src/main.cc:198
+#: src/main.cc:197
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgstr " -o key=val     直接设置名为“key”的配置选项\n"
 
-#: src/main.cc:199
+#: src/main.cc:198
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -5313,29 +5397,34 @@ msgstr ""
 " --with(out)-recommends\t指定是否将推荐(建议)处理为\n"
 "              强依赖关系。\n"
 
-#: src/main.cc:201
+#: src/main.cc:200
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S fname       从文件名中读取aptitude的扩展状态信息。\n"
 
-#: src/main.cc:202
+#: src/main.cc:201
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             开始运行时下载新的软件包列表。\n"
+
+#: src/main.cc:202 src/main.cc:204
+#, c-format
+msgid "                  (terminal interface only)"
+msgstr ""
 
 #: src/main.cc:203
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             开始运行时执行安装。\n"
 
-#: src/main.cc:205
+#: src/main.cc:206
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  这个 aptitude 没有超级牛力。\n"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:323
+#: src/main.cc:328
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5343,13 +5432,13 @@ msgstr "真"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:326
+#: src/main.cc:331
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:329
+#: src/main.cc:334
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5357,13 +5446,13 @@ msgstr "否"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:332
+#: src/main.cc:337
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:335
+#: src/main.cc:340
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5371,7 +5460,7 @@ msgstr "错误 "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:338
+#: src/main.cc:343
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5379,76 +5468,76 @@ msgstr "假"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:341
+#: src/main.cc:346
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:411
+#: src/main.cc:416
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:424
+#: src/main.cc:429
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "无效的操作 %s"
 
-#: src/main.cc:620
+#: src/main.cc:652
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "在 -q= 之后需要一个数字\n"
 
-#: src/main.cc:629
+#: src/main.cc:661
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "在 -q= 之后需要一个数字，但却得到 %s\n"
 
-#: src/main.cc:653
+#: src/main.cc:685
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o 要求参数格式为 key=val，却接受到 %s\n"
 
-#: src/main.cc:753
+#: src/main.cc:783
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "标签名“%s”后没有逗号。\n"
 
-#: src/main.cc:812 src/main.cc:821
+#: src/main.cc:850 src/main.cc:859
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "“诡异”：收到未知的选项代码\n"
 
-#: src/main.cc:827
+#: src/main.cc:865
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:829
+#: src/main.cc:867
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "软件包"
 
-#: src/main.cc:831
+#: src/main.cc:869
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:833
+#: src/main.cc:871
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "全部包"
 
-#: src/main.cc:835
+#: src/main.cc:873
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:841
+#: src/main.cc:879
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5456,39 +5545,40 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:880
-msgid "Only one of -u and -i may be specified\n"
+#: src/main.cc:929
+#, fuzzy
+#| msgid "Only one of -u and -i may be specified\n"
+msgid ""
+"Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be "
+"specified\n"
 msgstr "选项 -u 和 -i 只能指定一个\n"
 
-#: src/main.cc:888
+#: src/main.cc:938
+#, fuzzy
+#| msgid ""
+#| "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgid ""
-"-u and -i may not be specified in command-line mode (eg, with 'install')"
+"-u, -i, and --clean-on-startup may not be specified in command-line mode "
+"(eg, with 'install')"
 msgstr "选项 -u 和 -i 不能在命令行模式中指定 (例如，和“install”一起)"
 
-#: src/main.cc:909
-msgid "-u and -i may not be specified with a command"
+#: src/main.cc:959
+#, fuzzy
+#| msgid "-u and -i may not be specified with a command"
+msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "选项 -u 和 -i 不能在和一个命令一起指定 "
 
-#: src/main.cc:973
-#, c-format
-msgid ""
-"The options --safe-resolver and --full-resolver are not meaningful\n"
-"for %s, which always uses the safe resolver.\n"
-msgstr ""
-"选项 --safe-resolver 和 --full-resolver 对 %s 没有意义，它总是使用安全解析"
-"器。\n"
-
-#: src/main.cc:1030
+#: src/main.cc:1061
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "未知的命令“%s”\n"
 
-#: src/main.cc:1042 src/main.cc:1107
+#: src/main.cc:1073 src/main.cc:1141
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "未知的例外：%s\n"
 
-#: src/main.cc:1046 src/main.cc:1111
+#: src/main.cc:1077 src/main.cc:1145
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -5713,7 +5803,7 @@ msgstr "mine-help.txt 的编码|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2652
+#: src/pkg_columnizer.cc:88 src/ui.cc:2687
 msgid "Package"
 msgstr "软件包"
 
@@ -6077,16 +6167,16 @@ msgstr "格式字符串里有错误的号码：%ls"
 msgid "Match indices must be 1 or greater, not \"%s\""
 msgstr "匹配索引必须大于等于 1，而不是“%s”"
 
-#: src/pkg_grouppolicy.cc:1236
+#: src/pkg_grouppolicy.cc:1234
 #, c-format
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "匹配索引 %ls 太大了；可用的组为 (%s)"
 
-#: src/pkg_grouppolicy.cc:1513
+#: src/pkg_grouppolicy.cc:1512
 msgid "TAGLESS PACKAGES"
 msgstr "没有标签的软件包"
 
-#: src/pkg_grouppolicy.cc:1514
+#: src/pkg_grouppolicy.cc:1513
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
@@ -6096,7 +6186,7 @@ msgstr ""
 "这些软件包还没有在 debtags 中文类，或者 debtags 数据库不存在(安装 debtags 也"
 "许能修正这个问题)。"
 
-#: src/pkg_grouppolicy.cc:1548
+#: src/pkg_grouppolicy.cc:1547
 msgid "MISSING TAG"
 msgstr "标签缺失"
 
@@ -6471,7 +6561,7 @@ msgid ""
 "broken if it is %s."
 msgstr "下列软件包依赖于版本 %B%s%b 的 %B%s%b ，并且将会破损如果它是 %s。"
 
-#: src/solution_dialog.cc:97 src/solution_screen.cc:504
+#: src/solution_dialog.cc:97 src/solution_screen.cc:505
 msgid "The package cache is not available."
 msgstr "软件包 cache 不可用。"
 
@@ -6479,7 +6569,7 @@ msgstr "软件包 cache 不可用。"
 msgid "No packages are broken."
 msgstr "没有破损的软件包。"
 
-#: src/solution_dialog.cc:114 src/solution_screen.cc:527
+#: src/solution_dialog.cc:114 src/solution_screen.cc:528
 msgid "No resolution found."
 msgstr "未发现任何解决方案。"
 
@@ -6590,23 +6680,23 @@ msgstr "降级 %F [%s (%s) -> %s (%s)]"
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
 msgstr "-> 不处理“%s 推荐 %s”中的依赖关系。"
 
-#: src/solution_screen.cc:163
+#: src/solution_screen.cc:164
 msgid "The following actions will resolve this dependency:"
 msgstr "下列动作将解决这一依赖关系："
 
-#: src/solution_screen.cc:283
+#: src/solution_screen.cc:284
 msgid "Keep the following packages at their current version:"
 msgstr "保持下列软件包于其当前版本："
 
-#: src/solution_screen.cc:331
+#: src/solution_screen.cc:332
 msgid "Leave the following recommendations unresolved:"
 msgstr " 不解决下列推荐的软件包："
 
-#: src/solution_screen.cc:511
+#: src/solution_screen.cc:512
 msgid "No broken packages."
 msgstr "无破损的软件包。"
 
-#: src/solution_screen.cc:541
+#: src/solution_screen.cc:542
 #, c-format
 msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgstr "打开：%d；关闭；%d；defer: %d; 冲突；%d"
@@ -6698,7 +6788,7 @@ msgstr "真的要退出 Aptitude 吗？"
 msgid "Preferences"
 msgstr "首选项"
 
-#: src/ui.cc:697 src/ui.cc:2418
+#: src/ui.cc:697 src/ui.cc:2450
 msgid "Change the behavior of aptitude"
 msgstr "修改 aptitude 的行为"
 
@@ -6737,7 +6827,7 @@ msgstr ""
 msgid "License"
 msgstr "许可证"
 
-#: src/ui.cc:1029 src/ui.cc:2510
+#: src/ui.cc:1029 src/ui.cc:2542
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr "查看您可以在何种条款下拷贝和分发 aptitude"
 
@@ -6757,7 +6847,7 @@ msgstr "在线帮助"
 msgid "View a brief introduction to aptitude"
 msgstr "观看 aptitude 的简要介绍"
 
-#: src/ui.cc:1058 src/ui.cc:2657
+#: src/ui.cc:1058 src/ui.cc:2692
 msgid "Help"
 msgstr "帮助"
 
@@ -6786,7 +6876,7 @@ msgstr "手册"
 msgid "FAQ"
 msgstr "常见问题回答"
 
-#: src/ui.cc:1088 src/ui.cc:2502
+#: src/ui.cc:1088 src/ui.cc:2534
 msgid "View a list of frequently asked questions"
 msgstr "查看常见问题列表"
 
@@ -6885,11 +6975,11 @@ msgid ""
 msgstr ""
 "安装/删除软件包需要管理员权限，而您现在没有这种权限。您想要进入 root 帐号吗？"
 
-#: src/ui.cc:1455 src/ui.cc:1689
+#: src/ui.cc:1455 src/ui.cc:1689 src/ui.cc:1738 src/ui.cc:1821
 msgid "Become root"
 msgstr "变成 root"
 
-#: src/ui.cc:1457 src/ui.cc:1691
+#: src/ui.cc:1457 src/ui.cc:1691 src/ui.cc:1740 src/ui.cc:1823
 msgid "Don't become root"
 msgstr "不变成 root"
 
@@ -6906,7 +6996,7 @@ msgstr ""
 "没有任何软件包将被安装，删除或者升级。某些软件包可以升级，但是您没有选择将它"
 "们升级。输入“U”以准备升级。"
 
-#: src/ui.cc:1642 src/ui.cc:1771
+#: src/ui.cc:1642 src/ui.cc:1787
 msgid "Deleting obsolete downloaded files"
 msgstr "删除过期的下载文件"
 
@@ -6929,7 +7019,7 @@ msgid ""
 msgstr ""
 "更新软件包列表需要管理员权限，而您现在没有这种权限。您想要进入 root 帐号吗？"
 
-#: src/ui.cc:1708 src/ui.cc:1768
+#: src/ui.cc:1708 src/ui.cc:1784
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "在下载进行过程中不允许执行清除"
 
@@ -6941,186 +7031,208 @@ msgstr "删除下载的文件"
 msgid "Downloaded package files have been deleted"
 msgstr "下载的文件已经被删除"
 
-#: src/ui.cc:1765
+#: src/ui.cc:1735
+#, fuzzy
+#| msgid ""
+#| "Updating the package lists requires administrative privileges, which you "
+#| "currently do not have.  Would you like to change to the root account?"
+msgid ""
+"Cleaning the package cache requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"更新软件包列表需要管理员权限，而您现在没有这种权限。您想要进入 root 帐号吗？"
+
+#: src/ui.cc:1781
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr "软件包 cache 不可用：无法 auto-clean 。"
 
-#: src/ui.cc:1791
+#: src/ui.cc:1807
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
 "space."
 msgstr "过期的下载文件已经被删除，正在释放 %sB 的磁盘空间。"
 
-#: src/ui.cc:1888
+#: src/ui.cc:1818
+#, fuzzy
+#| msgid ""
+#| "Updating the package lists requires administrative privileges, which you "
+#| "currently do not have.  Would you like to change to the root account?"
+msgid ""
+"Deleting obsolete files requires administrative privileges, which you "
+"currently do not have.  Would you like to change to the root account?"
+msgstr ""
+"更新软件包列表需要管理员权限，而您现在没有这种权限。您想要进入 root 帐号吗？"
+
+#: src/ui.cc:1920
 msgid "No more solutions."
 msgstr "没有更多的解决方案了。"
 
-#: src/ui.cc:2094
+#: src/ui.cc:2126
 msgid "Unable to find a solution to apply."
 msgstr "未能找到解决方案以实施。"
 
-#: src/ui.cc:2100
+#: src/ui.cc:2132
 msgid "Ran out of time while trying to find a solution."
 msgstr "寻求解决方案时耗尽了时限。"
 
-#: src/ui.cc:2160 src/ui.cc:2162
+#: src/ui.cc:2192 src/ui.cc:2194
 msgid "Resolve Dependencies"
 msgstr "解决依赖关系"
 
-#: src/ui.cc:2161
+#: src/ui.cc:2193
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "为未满足的依赖关系寻找解决方案"
 
-#: src/ui.cc:2173
+#: src/ui.cc:2205
 #, c-format
 msgid "Unable to open %ls"
 msgstr "无法打开 %ls"
 
-#: src/ui.cc:2179
+#: src/ui.cc:2211
 msgid "Error while dumping resolver state"
 msgstr "存储依赖关系解决状态时出错"
 
-#: src/ui.cc:2189
+#: src/ui.cc:2221
 msgid "File to which the resolver state should be dumped:"
 msgstr "存储依赖关系解决状态的文件："
 
-#: src/ui.cc:2219
+#: src/ui.cc:2251
 msgid "^Install/remove packages"
 msgstr "安装/卸载软件包(^I)"
 
-#: src/ui.cc:2222
+#: src/ui.cc:2254
 msgid "^Update package list"
 msgstr "更新软件包列表(^U)"
 
-#: src/ui.cc:2227
+#: src/ui.cc:2259
 msgid "Mark Up^gradable"
 msgstr "标记可升级的(^g)"
 
-#: src/ui.cc:2232
+#: src/ui.cc:2264
 msgid "^Forget new packages"
 msgstr "忘记新软件包(^F)"
 
-#: src/ui.cc:2236
+#: src/ui.cc:2268
 msgid "Canc^el pending actions"
 msgstr "取消待执行的动作(^E)"
 
-#: src/ui.cc:2240
+#: src/ui.cc:2272
 msgid "^Clean package cache"
 msgstr "清除软件包缓存(^C)"
 
-#: src/ui.cc:2244
+#: src/ui.cc:2276
 msgid "Clean ^obsolete files"
 msgstr "关闭过期文件(^O)"
 
-#: src/ui.cc:2251
+#: src/ui.cc:2283
 msgid "^Reload package cache"
 msgstr "重新载入软件包缓存(^R)"
 
-#: src/ui.cc:2256
+#: src/ui.cc:2288
 msgid "^Play Minesweeper"
 msgstr "玩扫雷游戏(^P)"
 
-#: src/ui.cc:2261
+#: src/ui.cc:2293
 msgid "^Become root"
 msgstr "变成 root (^B)"
 
-#: src/ui.cc:2264
+#: src/ui.cc:2296
 msgid "^Quit"
 msgstr "退出(^Q)"
 
-#: src/ui.cc:2271 src/ui.cc:2651
+#: src/ui.cc:2303 src/ui.cc:2686
 msgid "Undo"
 msgstr "撤消"
 
-#: src/ui.cc:2280
+#: src/ui.cc:2312
 msgid "^Install"
 msgstr "安装(^I)"
 
-#: src/ui.cc:2281
+#: src/ui.cc:2313
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "标记当前选择的软件包以安装或者升级"
 
-#: src/ui.cc:2284
+#: src/ui.cc:2316
 msgid "^Remove"
 msgstr "删除(^R)"
 
-#: src/ui.cc:2285
+#: src/ui.cc:2317
 msgid "Flag the currently selected package for removal"
 msgstr "标记当前选择的软件包以删除"
 
-#: src/ui.cc:2288
+#: src/ui.cc:2320
 msgid "^Purge"
 msgstr "清除(^P)"
 
-#: src/ui.cc:2289
+#: src/ui.cc:2321
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr "标记当前选择的软件包和它的配置文件以删除"
 
-#: src/ui.cc:2292
+#: src/ui.cc:2324
 msgid "^Keep"
 msgstr "保持(^K)"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2325
 msgid "Cancel any action on the selected package"
 msgstr "取消选定软件包上的任何动作"
 
-#: src/ui.cc:2296
+#: src/ui.cc:2328
 msgid "^Hold"
 msgstr "保持(^H)"
 
-#: src/ui.cc:2297
+#: src/ui.cc:2329
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
 msgstr "取消选定软件包上的任何动作，并且保护它免于以后被升级"
 
-#: src/ui.cc:2300
+#: src/ui.cc:2332
 msgid "Mark ^Auto"
 msgstr "标记为自动安装(^A)"
 
-#: src/ui.cc:2301
+#: src/ui.cc:2333
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
 msgstr ""
 "将所选定的软件包标记为自动安装；如果没有其它软件包依赖于它，它将会被自动删除"
 
-#: src/ui.cc:2304
+#: src/ui.cc:2336
 msgid "Mark ^Manual"
 msgstr "标记为手动安装(^M)"
 
-#: src/ui.cc:2305
+#: src/ui.cc:2337
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
 msgstr ""
 "将所选定的软件包标记为手动安装；除非您手动删除该软件包，否则它将不会被删除"
 
-#: src/ui.cc:2308
+#: src/ui.cc:2340
 msgid "^Forbid Version"
 msgstr "禁止版本(^F)"
 
-#: src/ui.cc:2309
+#: src/ui.cc:2341
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
 msgstr "禁止安装选定软件包的候选版本；该软件包的新版本将可以正常安装"
 
-#: src/ui.cc:2313
+#: src/ui.cc:2345
 msgid "I^nformation"
 msgstr "信息(^N)"
 
-#: src/ui.cc:2314
+#: src/ui.cc:2346
 msgid "Display more information about the selected package"
 msgstr "显示关于选定软件包上的更多信息"
 
-#: src/ui.cc:2317
+#: src/ui.cc:2349
 msgid "C^ycle Package Information"
 msgstr "循环软件包信息"
 
-#: src/ui.cc:2318
+#: src/ui.cc:2350
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
@@ -7129,324 +7241,324 @@ msgstr ""
 "在软件包信息区域模式中循环：它可以显示软件包的长篇说明，依赖状态的概要，或者"
 "分析为什么该软件包是必须的。"
 
-#: src/ui.cc:2321
+#: src/ui.cc:2353
 msgid "^Changelog"
 msgstr "变更日志(^C)"
 
-#: src/ui.cc:2322
+#: src/ui.cc:2354
 msgid "Display the Debian changelog of the selected package"
 msgstr "显示选定软件包上的变更日志"
 
-#: src/ui.cc:2329
+#: src/ui.cc:2361
 msgid "^Examine Solution"
 msgstr "检查解决方案(^E)"
 
-#: src/ui.cc:2330
+#: src/ui.cc:2362
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "检查当前选择的处理依赖问题的解决方案"
 
-#: src/ui.cc:2333
+#: src/ui.cc:2365
 msgid "Apply ^Solution"
 msgstr "应用解决方案(^S)"
 
-#: src/ui.cc:2334
+#: src/ui.cc:2366
 msgid "Perform the actions contained in the currently selected solution."
 msgstr "确认当前选择的解决方案中包含的动作。"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2369
 msgid "^Next Solution"
 msgstr "下一个解决方案(^N)"
 
-#: src/ui.cc:2338
+#: src/ui.cc:2370
 msgid "Select the next solution to the dependency problems."
 msgstr "选择解决此依赖问题的下一个方案。"
 
-#: src/ui.cc:2341
+#: src/ui.cc:2373
 msgid "^Previous Solution"
 msgstr "前一个解决方案(^P)"
 
-#: src/ui.cc:2342
+#: src/ui.cc:2374
 msgid "Select the previous solution to the dependency problems."
 msgstr "选择解决此依赖问题的前一个方案。"
 
-#: src/ui.cc:2345
+#: src/ui.cc:2377
 msgid "^First Solution"
 msgstr "第一个解决方案(^F)"
 
-#: src/ui.cc:2346
+#: src/ui.cc:2378
 msgid "Select the first solution to the dependency problems."
 msgstr "选择解决此依赖问题的第一个方案。"
 
-#: src/ui.cc:2349
+#: src/ui.cc:2381
 msgid "^Last Solution"
 msgstr "最后一个解决方案(^L)"
 
-#: src/ui.cc:2350
+#: src/ui.cc:2382
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
 msgstr "选择当前已经生成的解决此依赖问题的最后一个方案。"
 
-#: src/ui.cc:2356
+#: src/ui.cc:2388
 msgid "Toggle ^Rejected"
 msgstr "放弃(^R)"
 
-#: src/ui.cc:2357
+#: src/ui.cc:2389
 msgid "Toggle whether the currently selected action is rejected."
 msgstr "切换是否放弃当前选择的动作。"
 
-#: src/ui.cc:2361
+#: src/ui.cc:2393
 msgid "Toggle ^Approved"
 msgstr "确认(^A)"
 
-#: src/ui.cc:2362
+#: src/ui.cc:2394
 msgid "Toggle whether the currently selected action is approved."
 msgstr "切换当前选择的动作是否被允许。"
 
-#: src/ui.cc:2366
+#: src/ui.cc:2398
 msgid "^View Target"
 msgstr "查看目标(^V)"
 
-#: src/ui.cc:2367
+#: src/ui.cc:2399
 msgid "View the package which will be affected by the selected action"
 msgstr "查看会被所选的动作影响的软件包"
 
-#: src/ui.cc:2373
+#: src/ui.cc:2405
 msgid "Reject Breaking ^Holds"
 msgstr "拒绝破坏 ^Holds"
 
-#: src/ui.cc:2375
+#: src/ui.cc:2407
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
 msgstr "拒绝所有会改变保持软件包或安装禁止版本的动作。"
 
-#: src/ui.cc:2383
+#: src/ui.cc:2415
 msgid "^Find"
 msgstr "查找(^F)"
 
-#: src/ui.cc:2384
+#: src/ui.cc:2416
 msgid "Search forwards"
 msgstr "向前搜索"
 
-#: src/ui.cc:2387
+#: src/ui.cc:2419
 msgid "^Find Backwards"
 msgstr "向后查找(^F)"
 
-#: src/ui.cc:2388
+#: src/ui.cc:2420
 msgid "Search backwards"
 msgstr "向后搜索"
 
-#: src/ui.cc:2391
+#: src/ui.cc:2423
 msgid "Find ^Again"
 msgstr "继续查找(^A)"
 
-#: src/ui.cc:2392
+#: src/ui.cc:2424
 msgid "Repeat the last search"
 msgstr "重复上一次查找"
 
-#: src/ui.cc:2395
+#: src/ui.cc:2427
 msgid "Find Again ^Backwards"
 msgstr "向后继续查找(^B)"
 
-#: src/ui.cc:2396
+#: src/ui.cc:2428
 msgid "Repeat the last search in the opposite direction"
 msgstr "反向重复上一次查找"
 
-#: src/ui.cc:2400
+#: src/ui.cc:2432
 msgid "^Limit Display"
 msgstr "限制显示(^L)"
 
-#: src/ui.cc:2401
+#: src/ui.cc:2433
 msgid "Apply a filter to the package list"
 msgstr "使用过滤器过滤软件包列表"
 
-#: src/ui.cc:2404
+#: src/ui.cc:2436
 msgid "^Un-Limit Display"
 msgstr "取消显示限制(^U)"
 
-#: src/ui.cc:2405
+#: src/ui.cc:2437
 msgid "Remove the filter from the package list"
 msgstr "取消软件包列表中过滤器的效果"
 
-#: src/ui.cc:2409
+#: src/ui.cc:2441
 msgid "Find ^Broken"
 msgstr "搜寻损坏(^F)"
 
-#: src/ui.cc:2410
+#: src/ui.cc:2442
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "下列软件包存在未满足的依赖关系："
 
-#: src/ui.cc:2417
+#: src/ui.cc:2449
 msgid "^Preferences"
 msgstr "首选项(^P)"
 
-#: src/ui.cc:2422
+#: src/ui.cc:2454
 msgid "^UI options"
 msgstr "用户界面选项(^U)"
 
-#: src/ui.cc:2423
+#: src/ui.cc:2455
 msgid "Change the settings which affect the user interface"
 msgstr "修改影响用户界面的设置"
 
-#: src/ui.cc:2426
+#: src/ui.cc:2458
 msgid "^Dependency handling"
 msgstr "处理依赖关系(^D)"
 
-#: src/ui.cc:2427
+#: src/ui.cc:2459
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr "改变影响处理依赖关系的设置"
 
-#: src/ui.cc:2430
+#: src/ui.cc:2462
 msgid "^Miscellaneous"
 msgstr "杂项(^M)"
 
-#: src/ui.cc:2431
+#: src/ui.cc:2463
 msgid "Change miscellaneous program settings"
 msgstr "改变程序的杂项设置"
 
-#: src/ui.cc:2437
+#: src/ui.cc:2469
 msgid "^Revert options"
 msgstr "还原选项(^R)"
 
-#: src/ui.cc:2438
+#: src/ui.cc:2470
 msgid "Reset all settings to the system defaults"
 msgstr "把所有项目重设为它们的默认值"
 
-#: src/ui.cc:2449
+#: src/ui.cc:2481
 msgid "^Next"
 msgstr "下一个(^N)"
 
-#: src/ui.cc:2450
+#: src/ui.cc:2482
 msgid "View next display"
 msgstr "查看下一个画面"
 
-#: src/ui.cc:2453
+#: src/ui.cc:2485
 msgid "^Prev"
 msgstr "上一个(^P)"
 
-#: src/ui.cc:2454
+#: src/ui.cc:2486
 msgid "View previous display"
 msgstr "查看上一画面"
 
-#: src/ui.cc:2457
+#: src/ui.cc:2489
 msgid "^Close"
 msgstr "关闭(^C)"
 
-#: src/ui.cc:2458
+#: src/ui.cc:2490
 msgid "Close this display"
 msgstr "关闭此画面"
 
-#: src/ui.cc:2463
+#: src/ui.cc:2495
 msgid "New Package ^View"
 msgstr "新建软件包视图(^V)"
 
-#: src/ui.cc:2464
+#: src/ui.cc:2496
 msgid "Create a new default package view"
 msgstr "创建新的默认软件包视图"
 
-#: src/ui.cc:2467
+#: src/ui.cc:2499
 msgid "Audit ^Recommendations"
 msgstr "检查推荐结果(^R)"
 
-#: src/ui.cc:2468
+#: src/ui.cc:2500
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
 msgstr "查看推荐您安装，但是现在尚未安装的软件包。"
 
-#: src/ui.cc:2471
+#: src/ui.cc:2503
 msgid "New ^Flat Package List"
 msgstr "新建平面软件包列表(^F)"
 
-#: src/ui.cc:2472
+#: src/ui.cc:2504
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "在一个未分类的列表中查看系统中的所有的软件包"
 
-#: src/ui.cc:2475
+#: src/ui.cc:2507
 msgid "New ^Debtags Browser"
 msgstr "新建 Debtags 浏览器(^D)"
 
-#: src/ui.cc:2477
+#: src/ui.cc:2509
 msgid "Browse packages using Debtags data"
 msgstr "用 Debtags 的信息来浏览软件包"
 
-#: src/ui.cc:2480
+#: src/ui.cc:2512
 msgid "New Categorical ^Browser"
 msgstr "新建分类浏览器(^B)"
 
-#: src/ui.cc:2482
+#: src/ui.cc:2514
 msgid "Browse packages by category"
 msgstr "分类浏览软件包"
 
-#: src/ui.cc:2490
+#: src/ui.cc:2522
 msgid "^About"
 msgstr "关于(^A)"
 
-#: src/ui.cc:2491
+#: src/ui.cc:2523
 msgid "View information about this program"
 msgstr "查看关于此程序的信息"
 
-#: src/ui.cc:2494
+#: src/ui.cc:2526
 msgid "^Help"
 msgstr "帮助(^H)"
 
-#: src/ui.cc:2495
+#: src/ui.cc:2527
 msgid "View the on-line help"
 msgstr "查看在线帮助"
 
-#: src/ui.cc:2497
+#: src/ui.cc:2529
 msgid "User's ^Manual"
 msgstr "用户手册(^M)"
 
-#: src/ui.cc:2498
+#: src/ui.cc:2530
 msgid "View the detailed program manual"
 msgstr "查看详细的程序使用手册"
 
-#: src/ui.cc:2501
+#: src/ui.cc:2533
 msgid "^FAQ"
 msgstr "常见问题回答(^F)"
 
-#: src/ui.cc:2505
+#: src/ui.cc:2537
 msgid "^News"
 msgstr "新闻(^N)"
 
-#: src/ui.cc:2506
+#: src/ui.cc:2538
 msgid "View the important changes made in each version of "
 msgstr "查看其每一版本中所做的重大修改："
 
-#: src/ui.cc:2509
+#: src/ui.cc:2541
 msgid "^License"
 msgstr "许可证(^L)"
 
-#: src/ui.cc:2650
+#: src/ui.cc:2685
 msgid "Actions"
 msgstr "动作"
 
-#: src/ui.cc:2654
+#: src/ui.cc:2689
 msgid "Search"
 msgstr "搜索"
 
-#: src/ui.cc:2655
+#: src/ui.cc:2690
 msgid "Options"
 msgstr "选项"
 
-#: src/ui.cc:2656
+#: src/ui.cc:2691
 msgid "Views"
 msgstr "视图"
 
-#: src/ui.cc:2722
+#: src/ui.cc:2757
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
 "Pkgs"
 msgstr "%ls：菜单  %ls：帮助  %ls：退出  %ls：更新  %ls：下载/安装/删除软件包"
 
-#: src/ui.cc:3064
+#: src/ui.cc:3116
 msgid "yes_key"
 msgstr "y"
 
-#: src/ui.cc:3065
+#: src/ui.cc:3117
 msgid "no_key"
 msgstr "n"
 
@@ -7471,70 +7583,20 @@ msgstr "正在下载变更日志"
 msgid "Download Changelog"
 msgstr "下载变更日志"
 
-#, fuzzy
-#~| msgid "^Install/remove packages"
-#~ msgid "_Install/Remove Packages"
-#~ msgstr "安装/卸载软件包(^I)"
+#~ msgid "E: The %s command takes no arguments\n"
+#~ msgstr "E: %s 命令不接受任何参数\n"
 
-#, fuzzy
-#~| msgid "^Update package list"
-#~ msgid "_Update Package List"
-#~ msgstr "更新软件包列表(^U)"
-
-#, fuzzy
-#~| msgid "Mark Up^gradable"
-#~ msgid "Mark Up_gradable"
-#~ msgstr "标记可升级的(^g)"
-
-#, fuzzy
-#~| msgid "^Forget new packages"
-#~ msgid "_Forget New Packages"
-#~ msgstr "忘记新软件包(^F)"
-
-#, fuzzy
-#~| msgid "Canc^el pending actions"
-#~ msgid "Canc_el Pending Actions"
-#~ msgstr "取消待执行的动作(^E)"
-
-#, fuzzy
-#~| msgid "^Clean package cache"
-#~ msgid "C_lean Package Cache"
-#~ msgstr "清除软件包缓存(^C)"
-
-#, fuzzy
-#~| msgid "Clean ^obsolete files"
-#~ msgid "Clean _Obsolete Files"
-#~ msgstr "关闭过期文件(^O)"
-
-#, fuzzy
-#~| msgid "^Reload package cache"
-#~ msgid "_Reload Package Cache"
-#~ msgstr "重新载入软件包缓存(^R)"
-
-#, fuzzy
-#~| msgid "^Play Minesweeper"
-#~ msgid "_Play Minesweeper"
-#~ msgstr "玩扫雷游戏(^P)"
-
-#, fuzzy
-#~| msgid "Become root"
-#~ msgid "_Become Root"
-#~ msgstr "变成 root"
-
-#, fuzzy
-#~| msgid "^Quit"
-#~ msgid "_Quit"
-#~ msgstr "退出(^Q)"
+#~ msgid ""
+#~ "The options --safe-resolver and --full-resolver are not meaningful\n"
+#~ "for %s, which always uses the safe resolver.\n"
+#~ msgstr ""
+#~ "选项 --safe-resolver 和 --full-resolver 对 %s 没有意义，它总是使用安全解析"
+#~ "器。\n"
 
 #, fuzzy
 #~| msgid "delete"
 #~ msgid "gtk-delete"
 #~ msgstr "删除"
-
-#, fuzzy
-#~| msgid "Dependency handling"
-#~ msgid "Find _Dependency Chains"
-#~ msgstr "处理依赖关系"
 
 #, fuzzy
 #~| msgid "view an explanation of the changes in the solution"
