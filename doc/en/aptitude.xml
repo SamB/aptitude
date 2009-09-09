@@ -10239,6 +10239,34 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configApt-Get-ListCleanup'>
+	      <seg><literal>Apt::Get::List-Cleanup</literal></seg>
+	      <seg><literal>true</literal></seg>
+
+	      <seg>
+		A synonym for <literal><link
+		linkend='configApt-ListCleanup'>Apt::List-Cleanup</link></literal>.
+		If either of these options is set to
+		<literal>false</literal>, &aptitude; will not delete
+		old package list files after downloading a new set of
+		package lists.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem id='configApt-ListCleanup'>
+	      <seg><literal>Apt::List-Cleanup</literal></seg>
+	      <seg><literal>true</literal></seg>
+
+	      <seg>
+		A synonym for <literal><link
+		linkend='configApt-Get-ListCleanup'>Apt::Get::List-Cleanup</link></literal>.
+		If either of these options is set to
+		<literal>false</literal>, &aptitude; will not delete
+		old package list files after downloading a new set of
+		package lists.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configAptInstall-Recommends'>
 	      <seg><literal>Apt::Install-Recommends</literal></seg>
 	      <seg><literal>true</literal></seg>
