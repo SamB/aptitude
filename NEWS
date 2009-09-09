@@ -1,3 +1,115 @@
+[9/8/2009]
+Version 0.5.9rc1                            "The only way to win
+                                             is not to play."
+
+First release candidate for 0.6.0.  Due to the length of time it's
+taken me to prepare this and to the new Debian release cycle, I'm
+releasing 0.6.0 before the GTK+ interface is really complete; it's
+still in an experimental state.  However, several of the other changes
+in this release should really be rolled into the mainline before the
+Debian release (particularly the improvements and optimizations to the
+dependency solver).
+
+This version disables the full-text Xapian search by default, although
+it can still be accessed via ?term().
+
+Version 0.5.9rc1
+
+- New features:
+
+  + [all] Internal file cache for auxiliary downloads, based on the
+          binary file engine SQLite and the Boost zlib wrapper.  This
+          will substantially speed up the GTK+ interface's startup
+          time when it's just downloading the same thirty changelogs
+          it was showing before, and will be even more helpful once
+          aptitude can show screenshots.  Hopefully it will also
+          reduce the load on the Debian network infrastructure.
+
+  + [all] aptitude now uses the new hooks in apt to prevent the greedy
+          resolver from removing packages or breaking holds.
+
+          (Closes: #177374, #205049, #374353, #376802, #406506,
+                   #430816, #434731, #442420, #452589)
+
+  + [all] aptitude now uses dpkg-parsechangelog to parse changelogs
+          instead of parsechangelog, courtesy of Frank Lichtenheld's
+          patch in 2007.  This means that it no longer requires
+          libparse-debianchangelog-perl to show changelogs.
+
+  + [all] "aptitude update" now honors the configuration options
+          APT::Get::List-Cleanup and APT::List-Cleanup.
+	  (Closes: #448958)
+
+  + [cmdline] "aptitude safe-upgrade" now supports listing extra
+              actions on the command-line, just like "install",
+              "remove", etc.  If any actions are listed, then only the
+              given actions are performed (the blanket upgrade is
+              skipped).  Packages with no qualifications give a list
+              of the packages that should be upgraded; if they aren't
+              installed or aren't upgradable, they're ignored.
+
+  + [curses] The commands to clean the package cache and to delete
+             obsolete files now support automatically becoming
+             root. (Closes: #492832)
+
+- Crashes and serious errors:
+
+  + [all] Fix some crashes that occurred when viewing dependency solutions.
+
+  + [all] Make "aptitude update" correctly clean up the list
+          download directories.  (Closes: #507603)
+
+  + [all] Disable Xapian full-text search by default; it's still
+          available via the ?term pattern.  Feedback on this "feature"
+          was uniformly negative; it seems to be flaky and not very
+          useful.  Maybe it would be useful with more work, but it
+          won't be ready for Squeeze.  (Closes: #527540, #538198,
+          #514625)
+
+  + [cmdline] Fix a bug that caused lots of extra "unresolved
+              recommendations" to be displayed in dependency
+              solutions.
+
+  + [curses] Fix a crash on exit that was caused by having dangling
+             boost::flyweight objects when the global destructor was
+             invoked (arguably this is a bug in Boost; we might want
+             to consider moving away from flyweights for this reason).
+
+  + [curses] The auto-su-to-root code now passes --no-gui, so it
+             should actually work again (rather than popping up a
+             graphical UI).
+
+- Cosmetic and UI bugs:
+
+  + [all] Fix some corner cases in the serialization of search
+          patterns, such as the new "enhances" dependency type.
+
+  + [curses] Hopefully fix pattern-based grouping in the curses UI.
+
+  + [curses] Add descriptions of the new ftp sections to the default
+             sections file (thanks to Miroslav Kure).
+
+  + [gtk] Make more of the UI translatable (thanks to Miroslav Kure).
+
+  + [gtk] Don't attempt to translate the empty string when displaying
+          the state of a package that's unchanged.
+
+- Documentation:
+
+  + [doc] Document that full-upgrade and safe-upgrade take extra
+          actions on the command-line. (Closes: #268696)
+
+  + [doc] Document that the "standard" apt options should be used
+          instead of Keep-Suggests and Keep-Recommends.
+          (Closes: #540230)
+
+- Translation updates:
+
+  + Czech (Closes: #545144)
+  + French
+  + Spanish
+
+
 [7/21/2009]
 Version 0.5.3.1                             "Sky without end"
 
