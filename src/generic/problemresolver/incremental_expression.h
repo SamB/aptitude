@@ -658,7 +658,11 @@ template<typename T>
 std::ostream &operator<<(std::ostream &out,
 			 const cwidget::util::ref_ptr<expression<T> > &o)
 {
-  o->dump(out);
+  if(o.valid())
+    o->dump(out);
+  else
+    out << "(null)";
+
   return out;
 }
 
