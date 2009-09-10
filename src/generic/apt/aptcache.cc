@@ -2322,6 +2322,11 @@ bool aptitudeDepCache::IsInstallOk(const pkgCache::PkgIterator &pkg,
 				   unsigned long Depth,
 				   bool FromUser)
 {
+  if(Depth == 0)
+    // This is a straight-up MarkInstall() call, not a dependency
+    // resolution; allow it.
+    return true;
+
   pkgCache::VerIterator candver((*this)[pkg].CandidateVerIter(*this));
   const aptitude_state &estate = get_ext_state(pkg);
 
@@ -2356,6 +2361,11 @@ bool aptitudeDepCache::IsDeleteOk(const pkgCache::PkgIterator &pkg,
 				  unsigned long Depth,
 				  bool FromUser)
 {
+  if(Depth == 0)
+    // This is a straight-up MarkDelete() call, not a dependency
+    // resolution; allow it.
+    return true;
+
   if(!aptcfg->FindB(PACKAGE "::Auto-Install-Remove-Ok", false))
     return false;
   else
