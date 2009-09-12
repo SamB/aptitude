@@ -1323,10 +1323,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 	{
 	  std::string s = parse_substr(start, end, terminators, true);
 
-	  if(partial && start == end)
-	    return pattern::make_term_prefix(s);
-	  else
-	    return pattern::make_term(s);
+	  return pattern::make_name(s);
 	}
     }
 

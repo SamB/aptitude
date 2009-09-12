@@ -34,6 +34,26 @@ namespace
   }
 }
 
+/** \brief Used to track whether an upgrade is being performed, and if
+ *  so, what sort of upgrade is being performed.
+ */
+enum upgrade_mode_tp
+  {
+    /** \brief Indicates that no upgrade is being performed. */
+    no_upgrade,
+    /** \brief Indicates that a full-upgrade is being performed: all
+     *  packages will be marked for upgrade by default, and the
+     *  resolver will consider "unsafe" actions.
+     */
+    full_upgrade,
+    /** \brief Indicates that a safe-upgrade is being performed: all
+     *  packages will be marked for upgrade by default, and the
+     *  resolver will not consider "unsafe" actions; automatic
+     *  installation of dependencies is also disabled.
+     */
+    safe_upgrade
+  };
+
 // TODO: add an option to obey sticky states even if it wasn't
 //      explicitly requested.
 //
@@ -45,7 +65,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool showvers, bool showdeps,
 		      bool showsize, bool showwhy,
 		      bool visual_preview, bool always_prompt,
-		      bool safe_resolver, bool safe_resolver_show_actions,
+		      resolver_mode_tp resolver_mode, bool safe_resolver_show_actions,
 		      bool no_new_installs, bool no_new_upgrades,
 		      const std::vector<aptitude::cmdline::tag_application> &user_tags,
 		      bool arch_only,
@@ -54,9 +74,11 @@ int cmdline_do_action(int argc, char *argv[],
   _error->DumpErrors();
 
   cmdline_pkgaction_type default_action=cmdline_install;
-  bool dist_upgrade=false;
 
-  // Parse the action.
+  upgrade_mode_tp upgrade_mode = no_upgrade;
+
+  // Parse the action.  This sets the upgrade mode and (if it was not
+  // overridden by the user) the resolver mode.
   if(!strcasecmp(argv[0], "install"))
     default_action=cmdline_install;
   else if(!strcasecmp(argv[0], "reinstall"))
@@ -64,8 +86,22 @@ int cmdline_do_action(int argc, char *argv[],
   else if(!strcasecmp(argv[0], "full-upgrade") ||
 	  !strcasecmp(argv[0], "dist-upgrade"))
     {
-      default_action=cmdline_install;
-      dist_upgrade=true;
+      default_action = cmdline_install;
+      upgrade_mode = full_upgrade;
+      if(resolver_mode == resolver_mode_default)
+	resolver_mode = resolver_mode_full;
+    }
+  else if(!strcasecmp(argv[0], "safe-upgrade") ||
+	  !strcasecmp(argv[0], "upgrade"))
+    {
+      default_action = cmdline_upgrade;
+      // If safe-upgrade is the only argument, we treat this as a full
+      // upgrade; otherwise we treat it as an install-type action that
+      // applies only to the packages listed on the command-line.
+      if(argc == 1)
+	upgrade_mode = safe_upgrade;
+      if(resolver_mode == resolver_mode_default)
+	resolver_mode = resolver_mode_safe;
     }
   else if(!strcasecmp(argv[0], "remove"))
     default_action=cmdline_remove;
@@ -94,6 +130,9 @@ int cmdline_do_action(int argc, char *argv[],
       return -1;
     }
 
+  if(resolver_mode == resolver_mode_default)
+    resolver_mode = resolver_mode_full;
+
   OpTextProgress progress(aptcfg->FindI("Quiet", 0));
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
@@ -104,7 +143,7 @@ int cmdline_do_action(int argc, char *argv[],
   // This way, "aptitude install" will just perform any pending
   // installations.
   apt_init(&progress, (argc==1 && default_action==cmdline_install &&
-		       !dist_upgrade), status_fname);
+		       upgrade_mode == no_upgrade), status_fname);
 
   if(_error->PendingError())
     {
@@ -129,21 +168,14 @@ int cmdline_do_action(int argc, char *argv[],
 
   pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
 
-  if(dist_upgrade)
+  if(upgrade_mode == full_upgrade || upgrade_mode == safe_upgrade)
     {
-      // Build to_install to avoid a big printout
-      for(pkgCache::PkgIterator i=(*apt_cache_file)->PkgBegin(); !i.end(); ++i)
-	{
-	  pkgDepCache::StateCache &state=(*apt_cache_file)[i];
+      bool ignore_removed = (upgrade_mode == safe_upgrade);
 
-	  if(!i.CurrentVer().end() &&
-	     state.Upgradable() && !(*apt_cache_file)->is_held(i))
-	    to_upgrade.insert(i);
+      (*apt_cache_file)->get_upgradable(ignore_removed, to_install);
 
-	}
-
-      bool use_autoinst = !safe_resolver;
-      (*apt_cache_file)->mark_all_upgradable(use_autoinst, false, NULL);
+      bool use_autoinst = (resolver_mode != resolver_mode_safe);
+      (*apt_cache_file)->mark_all_upgradable(use_autoinst, ignore_removed, NULL);
     }
   /*else if(argc==1 && default_action==cmdline_install)
     {
@@ -244,7 +276,7 @@ int cmdline_do_action(int argc, char *argv[],
       // Note that we skip auto-install if the safe resolver is turned
       // on, on the grounds that auto-install will remove packages for
       // Conflicts too.
-      const bool do_autoinstall = !safe_resolver && aptcfg->FindB(PACKAGE "::Auto-Install", true);
+      const bool do_autoinstall = (resolver_mode != resolver_mode_safe) && aptcfg->FindB(PACKAGE "::Auto-Install", true);
       const int num_passes = do_autoinstall ? 2 : 1;
       std::set<pkgCache::PkgIterator> seen_virtual_packages;
       for(int pass = 0; pass < num_passes; ++pass)
@@ -268,7 +300,7 @@ int cmdline_do_action(int argc, char *argv[],
     }
   }
 
-  if(safe_resolver)
+  if(resolver_mode == resolver_mode_safe)
     {
       if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades, safe_resolver_show_actions))
 	{
@@ -283,7 +315,8 @@ int cmdline_do_action(int argc, char *argv[],
       return 0;
     }
   else if(simulate)
-    return cmdline_simulate(dist_upgrade, to_install, to_hold, to_remove, to_purge,
+    return cmdline_simulate(upgrade_mode != no_upgrade,
+			    to_install, to_hold, to_remove, to_purge,
 			    showvers, showdeps,
 			    showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
@@ -303,7 +336,7 @@ int cmdline_do_action(int argc, char *argv[],
     }
   else
     {
-      if(!cmdline_do_prompt(dist_upgrade,
+      if(!cmdline_do_prompt(upgrade_mode != no_upgrade,
 			    to_install, to_hold, to_remove, to_purge,
 			    showvers, showdeps, showsize, showwhy,
 			    always_prompt, verbose, assume_yes,

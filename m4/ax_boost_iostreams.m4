@@ -74,7 +74,8 @@ AC_DEFUN([AX_BOOST_IOSTREAMS],
             if test "x$ax_boost_user_iostreams_lib" = "x"; then
 				for ax_lib in $BN-mt $BN-$CC-mt $BN-$CC-mt-s \
                               lib$BN-mt lib$BN-$CC-mt lib$BN-$CC-mt-s \
-                              $BN-mgw-mt $BN-mgw-mt-s ; do
+                              $BN-mgw-mt $BN-mgw-mt-s \
+			      $BN $BN-$CC $BN-$CC-s lib$BN lib$BN-$CC lib$BN-$CC-s ; do
 				    AC_CHECK_LIB($ax_lib, main, [BOOST_IOSTREAMS_LIB="-l$ax_lib" AC_SUBST(BOOST_IOSTREAMS_LIB) link_iostreams="yes" break],
                                  [link_iostreams="no"])
   				done

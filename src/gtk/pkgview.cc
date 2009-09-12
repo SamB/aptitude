@@ -115,7 +115,7 @@ namespace gui
 	  return upgrade_columns;
       }
     else
-      return entity_state_info();
+      return no_action_columns;
   }
 
   string PkgEntity::selected_package_state_color()
@@ -167,9 +167,9 @@ namespace gui
     row[cols->StatusDescriptionMarkup] =
       ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
 	       Glib::Markup::escape_text(_("Current status")).c_str(),
-	       Glib::Markup::escape_text(_(current_state.get_description().c_str())).c_str(),
+	       Glib::Markup::escape_text(current_state.get_description_i18n()).c_str(),
 	       Glib::Markup::escape_text(_("Selected status")).c_str(),
-	       Glib::Markup::escape_text(_(selected_state.get_description().c_str())).c_str());
+	       Glib::Markup::escape_text(selected_state.get_description_i18n()).c_str());
 
     Glib::ustring safe_name = Glib::Markup::escape_text(pkg.Name());
     if(ver.end())

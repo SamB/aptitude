@@ -297,6 +297,10 @@ insert into globals(TotalBlobSize) values(0);				\
 	    has_format = check_for_format_execution.step();
 	  }
 
+	  // If we collide with an ongoing insert, allow it a half
+	  // second to clear out.
+	  store->set_busy_timeout(500);
+
 	  if(!has_format)
 	    create_new_database();
 	  else

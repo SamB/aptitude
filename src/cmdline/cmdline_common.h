@@ -29,7 +29,7 @@ enum cmdline_pkgaction_type
   {cmdline_install, cmdline_installauto, cmdline_remove,
    cmdline_purge, cmdline_hold, cmdline_unhold, cmdline_markauto,
    cmdline_unmarkauto, cmdline_forbid_version, cmdline_reinstall,
-   cmdline_keep, cmdline_build_depends};
+   cmdline_keep, cmdline_build_depends, cmdline_upgrade};
 
 enum cmdline_version_source {cmdline_version_cand,
 			     /** \brief The current version, if any;

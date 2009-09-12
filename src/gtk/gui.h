@@ -322,12 +322,9 @@ namespace gui
     std::string description;
     Gtk::StockID icon;
 
+    // Hidden.
+    entity_state_info();
   public:
-    entity_state_info()
-      : flag(), description(), icon()
-    {
-    }
-
     entity_state_info(const std::string &_flag,
 		      const std::string &_description,
 		      const Gtk::StockID &_icon)
@@ -336,7 +333,9 @@ namespace gui
     }
 
     const std::string &get_flag() const { return flag; }
-    const std::string &get_description() const { return description; }
+    /** \brief Retrieve the translated description of this state.
+     */
+    std::string get_description_i18n() const;
     const Gtk::StockID &get_icon() const { return icon; }
   };
 
@@ -360,6 +359,7 @@ namespace gui
   extern const entity_state_info hold_columns;
   extern const entity_state_info forbid_columns;
   extern const entity_state_info broken_columns;
+  extern const entity_state_info no_action_columns;
 
   extern const char *lightred_background_color;
   extern const char *lightgreen_background_color;

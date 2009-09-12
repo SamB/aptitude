@@ -59,7 +59,6 @@
 #include <cmdline/cmdline_search.h>
 #include <cmdline/cmdline_show.h>
 #include <cmdline/cmdline_update.h>
-#include <cmdline/cmdline_upgrade.h>
 #include <cmdline/cmdline_user_tag.h>
 #include <cmdline/cmdline_why.h>
 
@@ -200,7 +199,9 @@ static void usage()
            "                strong dependencies\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
   printf(_(" -u             Download new package lists on startup.\n"));
+  printf(_("                  (terminal interface only)"));
   printf(_(" -i             Perform an install run on startup.\n"));
+  printf(_("                  (terminal interface only)"));
   printf("\n");
   printf(_("                  This aptitude does not have Super Cow Powers.\n"));
 }
@@ -233,7 +234,9 @@ enum {
   OPTION_LOG_FILE,
   OPTION_LOG_CONFIG_FILE,
   OPTION_LOG_RESOLVER,
-  OPTION_SHOW_SUMMARY
+  OPTION_SHOW_SUMMARY,
+  OPTION_AUTOCLEAN_ON_STARTUP,
+  OPTION_CLEAN_ON_STARTUP
 };
 int getopt_result;
 
@@ -283,6 +286,8 @@ option opts[]={
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
   {"log-resolver", 0, &getopt_result, OPTION_LOG_RESOLVER},
   {"show-summary", 2, &getopt_result, OPTION_SHOW_SUMMARY},
+  {"autoclean-on-startup", 0, &getopt_result, OPTION_AUTOCLEAN_ON_STARTUP},
+  {"clean-on-startup", 0, &getopt_result, OPTION_CLEAN_ON_STARTUP},
   {0,0,0,0}
 };
 
@@ -535,6 +540,8 @@ int main(int argc, char *argv[])
   bool arch_only = aptcfg->FindB("Apt::Get::Arch-Only", false);
 
   bool update_only=false, install_only=false, queue_only=false;
+  bool autoclean_only = false;
+  bool clean_only = false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
   bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
@@ -542,10 +549,12 @@ int main(int argc, char *argv[])
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
   bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
-  bool always_use_safe_resolver = aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false);
+
+  resolver_mode_tp resolver_mode = resolver_mode_default;
+  if(aptcfg->FindB(PACKAGE "::Always-Use-Safe-Resolver", false))
+    resolver_mode = resolver_mode_safe;
+
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
-  bool safe_resolver_option = false;
-  bool full_resolver_option = false;
 
   // This tracks whether we got a --*-new-installs command-line
   // argument, so we can present a useful warning message to the user
@@ -661,7 +670,7 @@ int main(int argc, char *argv[])
 	  break;
 	case 'R':
 	  aptcfg->SetNoUser("Apt::Install-Recommends", "false");
-	  aptcfg->SetNoUser(PACKAGE "::Keep-Recommends", "true");
+	  aptcfg->SetNoUser("Apt::AutoRemove::RecommendsImportant", "true");
 	  break;
 	case 't':
 	  aptcfg->SetNoUser("APT::Default-Release", optarg);
@@ -740,12 +749,10 @@ int main(int argc, char *argv[])
 	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_SAFE_RESOLVER:
-	      always_use_safe_resolver = true;
-	      safe_resolver_option = true;
+	      resolver_mode = resolver_mode_safe;
 	      break;
 	    case OPTION_FULL_RESOLVER:
-	      always_use_safe_resolver = false;
-	      full_resolver_option = true;
+	      resolver_mode = resolver_mode_full;
 	      break;
 	    case OPTION_VISUAL_PREVIEW:
 	      visual_preview=true;
@@ -830,6 +837,14 @@ int main(int argc, char *argv[])
 		show_why_summary_mode = optarg;
 	      break;
 
+	    case OPTION_AUTOCLEAN_ON_STARTUP:
+	      autoclean_only = true;
+	      break;
+
+	    case OPTION_CLEAN_ON_STARTUP:
+	      clean_only = true;
+	      break;
+
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -897,18 +912,30 @@ int main(int argc, char *argv[])
     aptcfg->SetNoUser(PACKAGE "::Simulate", true);
 
   // Sanity-check
-  if(update_only && install_only)
-    {
-      fprintf(stderr, "%s",
-	      _("Only one of -u and -i may be specified\n"));
-      usage();
-      exit(1);
-    }
+  {
+    int num_startup_actions = 0;
+    if(update_only)
+      ++num_startup_actions;
+    if(install_only)
+      ++num_startup_actions;
+    if(autoclean_only)
+      ++num_startup_actions;
+    if(clean_only)
+      ++num_startup_actions;
 
-  if((update_only || install_only) && optind!=argc)
+    if(num_startup_actions > 1)
+      {
+	fprintf(stderr, "%s",
+		_("Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be specified\n"));
+	usage();
+	exit(1);
+      }
+  }
+
+  if((update_only || install_only || autoclean_only || clean_only) && optind != argc)
     {
       fprintf(stderr, "%s\n",
-	      _("-u and -i may not be specified in command-line mode (eg, with 'install')"));
+	      _("-u, -i, and --clean-on-startup may not be specified in command-line mode (eg, with 'install')"));
       usage();
       exit(1);
     }
@@ -926,10 +953,10 @@ int main(int argc, char *argv[])
 	  signal(SIGWINCH, update_screen_width);
 	  update_screen_width();
 
-	  if(update_only || install_only)
+	  if(update_only || install_only || autoclean_only || clean_only)
 	    {
 	      fprintf(stderr, "%s\n",
-		      _("-u and -i may not be specified with a command"));
+		      _("-u, -i, and --clean-on-startup may not be specified with a command"));
 	      usage();
 	      exit(1);
 	    }
@@ -965,6 +992,8 @@ int main(int argc, char *argv[])
 		   (!strcasecmp(argv[optind], "reinstall")) ||
 		   (!strcasecmp(argv[optind], "dist-upgrade")) ||
 		   (!strcasecmp(argv[optind], "full-upgrade")) ||
+		   (!strcasecmp(argv[optind], "safe-upgrade")) ||
+		   (!strcasecmp(argv[optind], "upgrade")) ||
 		   (!strcasecmp(argv[optind], "remove")) ||
 		   (!strcasecmp(argv[optind], "purge")) ||
 		   (!strcasecmp(argv[optind], "hold")) ||
@@ -983,31 +1012,10 @@ int main(int argc, char *argv[])
 				       fix_broken, showvers, showdeps,
 				       showsize, showwhy,
 				       visual_preview, always_prompt,
-				       always_use_safe_resolver, safe_resolver_show_resolver_actions,
+				       resolver_mode, safe_resolver_show_resolver_actions,
 				       safe_resolver_no_new_installs, safe_resolver_no_new_upgrades,
 				       user_tags,
 				       arch_only, queue_only, verbose);
-	    }
-	  else if(!strcasecmp(argv[optind], "safe-upgrade") ||
-		  !strcasecmp(argv[optind], "upgrade"))
-	    {
-	      if(full_resolver_option || safe_resolver_option)
-		{
-		  fprintf(stderr, _("The options --safe-resolver and --full-resolver are not meaningful\nfor %s, which always uses the safe resolver.\n"),
-			  argv[optind]);
-		  return -1;
-		}
-
-	      return cmdline_upgrade(argc-optind, argv+optind,
-				     status_fname, simulate,
-				     safe_upgrade_no_new_installs,
-				     safe_upgrade_show_resolver_actions,
-				     assume_yes, download_only,
-				     showvers, showdeps,
-				     showsize, showwhy,
-				     user_tags,
-				     visual_preview, always_prompt,
-				     arch_only, queue_only, verbose);
 	    }
 	  else if(!strcasecmp(argv[optind], "add-user-tag") ||
 		  !strcasecmp(argv[optind], "remove-user-tag"))
@@ -1119,7 +1127,10 @@ int main(int argc, char *argv[])
             do_update_lists();
           else if(install_only)
             do_package_run_or_show_preview();
-          //install_or_remove_packages();
+	  else if(autoclean_only)
+	    do_autoclean();
+	  else if(clean_only)
+	    do_clean();
 
           ui_main();
         }

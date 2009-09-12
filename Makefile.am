@@ -27,6 +27,8 @@ pkgdata_DATA = $(TLHELPTXTS) COPYING NEWS FAQ \
 	function_groups function_pkgs aptitude-defaults section-descriptions \
 	$(TLDEFAULTS)
 
+dist_check_SCRIPTS = check_boost.sh
+
 TESTS = check_boost.sh
 
 install-data-local:

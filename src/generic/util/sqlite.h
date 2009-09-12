@@ -208,6 +208,17 @@ namespace aptitude
 	statement_cache_limit = new_limit;
       }
 
+      /** \brief Set the timeout used when database contention occurs.
+       *
+       *  Normally, the database throws an exception with the error
+       *  code SQLITE_BUSY.  If a timeout is set, it will wait for at
+       *  least the given amount of time before throwing an exception.
+       *
+       *  \param  timeout   The number of milliseconds to wait,
+       *                    or 0 to throw an error immediately.
+       */
+      void set_busy_timeout(int timeout);
+
       /** \brief Retrieve the last error that was generated on this
        *  database.
        *
@@ -462,6 +473,17 @@ namespace aptitude
        *  Makes a temporary copy of the string.
        */
       void bind_string(int parameter_idx, const std::string &value);
+
+      /** \brief Bind a null-terminated string to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       *  \param dx     How to handle memory management of the string (the
+       *                default, SQLITE_TRANSIENT, says to make a private
+       *                copy; see also SQLITE_STATIC to not manage the buffer
+       *                at all).
+       */
+      void bind_string(int parameter_idx, const char *value, void (*dx)(void *) = SQLITE_TRANSIENT);
 
       /** \brief Bind a BLOB containing all zeroes to a parameter.
        *

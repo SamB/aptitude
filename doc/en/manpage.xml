@@ -72,7 +72,6 @@
 	<arg choice='plain'>forget-new</arg>
 	<arg choice='plain'>keep-all</arg>
 	<arg choice='plain'>update</arg>
-	<arg choice='plain'>safe-upgrade</arg>
       </group>
     </cmdsynopsis>
 
@@ -82,8 +81,20 @@
       <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
 
       <group choice='req'>
-	<arg choice='plain'>changelog</arg>
 	<arg choice='plain'>full-upgrade</arg>
+	<arg choice='plain'>safe-upgrade</arg>
+      </group>
+
+      <arg choice='opt' rep='repeat'><replaceable>packages</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>aptitude</command>
+
+      <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
+
+      <group choice='req'>
+	<arg choice='plain'>changelog</arg>
 	<arg choice='plain'>download</arg>
 	<arg choice='plain'>forbid-version</arg>
 	<arg choice='plain'>hold</arg>
@@ -154,8 +165,12 @@
     <cmdsynopsis>
       <command>aptitude</command>
       <arg choice='opt'>-S <replaceable>fname</replaceable></arg>
-      <group choice='opt'><arg choice='plain'>-u</arg> <arg
-      choice='plain'>-i</arg></group>
+      <group choice='opt'>
+	<arg choice='plain'>--autoclean-on-startup</arg>
+	<arg choice='plain'>--clean-on-startup</arg>
+	<arg choice='plain'>-i</arg>
+	<arg choice='plain'>-u</arg>
+      </group>
     </cmdsynopsis>
 
     <cmdsynopsis>
@@ -478,6 +493,32 @@
 	  </para>
 
 	  <para>
+	    If no <replaceable>package</replaceable>s are listed on
+	    the command line, &aptitude; will attempt to upgrade every
+	    package that can be upgraded.  Otherwise, &aptitude; will
+	    attempt to upgrade only the packages which it is
+	    instructed to upgrade.  The
+	    <replaceable>package</replaceable>s can be extended with
+	    suffixes in the same manner as arguments to
+	    <literal>aptitude install</literal>, so you can also give
+	    additional instructions to &aptitude; here; for instance,
+	    <literal>aptitude safe-upgrade bash dash-</literal> will
+	    attempt to upgrade the <systemitem>bash</systemitem>
+	    package and remove the <systemitem>dash</systemitem>
+	    package.
+	  </para>
+
+	  <note>
+	    <para>
+	      The way <literal>safe-upgrade</literal> treats its extra
+	      arguments is in contrast to <link
+	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
+	      which will always upgrade every package, treating its
+	      command-line arguments as additional actions to perform.
+	    </para>
+	  </note>
+
+	  <para>
 	      It is sometimes necessary to remove one package in order
 	      to upgrade another; this command is not able to upgrade
 	      packages in such situations.  Use the <link
@@ -500,6 +541,18 @@
 	    However, it is capable of upgrading packages that <link
 	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
 	    cannot upgrade.
+	  </para>
+
+	  <para>
+	    Additional <replaceable>package</replaceable>s listed on
+	    the command line are treated as extra actions to be taken
+	    above and beyond simply upgrading all packages.  These
+	    arguments are treated in the same manner as arguments to
+	    <link linkend='cmdlineInstall'><literal>aptitude
+	    install</literal></link>; for instance, <literal>aptitude
+	    dist-upgrade gimp-</literal> will upgrade all packages
+	    that can be upgraded, except for
+	    <systemitem>gimp</systemitem>, which will be removed.
 	  </para>
 
 	  <note>
@@ -1512,7 +1565,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  </para>
 
 	  <para>
-	    This corresponds to the pair of configuration options <literal><link linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal> and <literal><link linkend='configKeep-Recommends'>Aptitude::Keep-Recommends</link></literal>.
+	    This corresponds to the pair of configuration options <literal><link linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal> and <literal><link linkend='configApt-AutoRemove-RecommendsImportant'>Apt::AutoRemove::InstallRecommends</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2008,14 +2061,53 @@ The following packages will be REMOVED:
 
     <variablelist>
       <varlistentry>
+	<term><literal>--autoclean-on-startup</literal></term>
+
+	<listitem>
+	  <para>
+	    Deletes old downloaded files when the program starts
+	    (equivalent to starting the program and immediately
+	    selecting
+	    <menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean
+	    obsolete files</guimenuitem></menuchoice>).  You cannot
+	    use this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>-i</literal></quote>, or
+	    <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
+	<term><literal>--clean-on-startup</literal></term>
+
+	<listitem>
+	  <para>
+	    Cleans the package cache when the program starts
+	    (equivalent to starting the program and immediately
+	    selecting
+	    <menuchoice><guimenu>Actions</guimenu><guimenuitem>Clean
+	    package cache</guimenuitem></menuchoice>).  You cannot use
+	    this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>-i</literal></quote>, or
+	    <quote><literal>-u</literal></quote> at the same time.
+	  </para>
+	</listitem>
+      </varlistentry>
+
+      <varlistentry>
 	<term><literal>-i</literal></term>
 
 	<listitem>
 	  <para>
 	    Displays a download preview when the program starts
 	    (equivalent to starting the program and immediately
-	    pressing <quote><keycap>g</keycap></quote>).  You
-	    cannot use this option and <quote><literal>-u</literal></quote> at the same time.
+	    pressing <quote><keycap>g</keycap></quote>).  You cannot
+	    use this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>--clean-on-startup</literal></quote>, or
+	    <quote><literal>-u</literal></quote> at the same time.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2036,8 +2128,11 @@ The following packages will be REMOVED:
 
 	<listitem>
 	  <para>
-	    Begins updating the package lists as soon as the
-	    program starts.  You cannot use this option and <literal>-i</literal> at the same time.
+	    Begins updating the package lists as soon as the program
+	    starts.  You cannot use this option and
+	    <quote><literal>--autoclean-on-startup</literal></quote>,
+	    <quote><literal>--clean-on-startup</literal></quote>, or
+	    <quote><literal>-i</literal></quote> at the same time.
 	  </para>
 	</listitem>
       </varlistentry>

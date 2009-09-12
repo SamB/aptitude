@@ -22,7 +22,7 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_package_run">
-                        <property name="label">_Install/Remove Packages</property>
+                        <property name="label" translatable="yes">_Install/Remove Packages</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Perform all pending installs and removals</property>
                         <property name="use_underline">True</property>
@@ -32,7 +32,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_update_lists">
-                        <property name="label">_Update Package List</property>
+                        <property name="label" translatable="yes">_Update Package List</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Check for new versions of packages</property>
                         <property name="use_underline">True</property>
@@ -47,7 +47,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_mark_upgradable">
-                        <property name="label">Mark Up_gradable</property>
+                        <property name="label" translatable="yes">Mark Up_gradable</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Mark all upgradable packages which are not held for upgrade</property>
                         <property name="use_underline">True</property>
@@ -57,7 +57,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_forget_new">
-                        <property name="label">_Forget New Packages</property>
+                        <property name="label" translatable="yes">_Forget New Packages</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Forget which packages are "new"</property>
                         <property name="use_underline">True</property>
@@ -66,7 +66,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_keep_all">
-                        <property name="label">Canc_el Pending Actions</property>
+                        <property name="label" translatable="yes">Canc_el Pending Actions</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Cancel all pending installations, removals, holds, and upgrades.</property>
                         <property name="use_underline">True</property>
@@ -75,7 +75,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_clean">
-                        <property name="label">C_lean Package Cache</property>
+                        <property name="label" translatable="yes">C_lean Package Cache</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Delete package files which were previously downloaded</property>
                         <property name="use_underline">True</property>
@@ -84,7 +84,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_autoclean">
-                        <property name="label">Clean _Obsolete Files</property>
+                        <property name="label" translatable="yes">Clean _Obsolete Files</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Delete package files which can no longer be downloaded</property>
                         <property name="use_underline">True</property>
@@ -98,7 +98,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_reload_cache">
-                        <property name="label">_Reload Package Cache</property>
+                        <property name="label" translatable="yes">_Reload Package Cache</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Reload the package cache</property>
                         <property name="use_underline">True</property>
@@ -107,7 +107,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_sweep">
-                        <property name="label">_Play Minesweeper</property>
+                        <property name="label" translatable="yes">_Play Minesweeper</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Waste time trying to find mines</property>
                         <property name="use_underline">True</property>
@@ -121,7 +121,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_su_to_root">
-                        <property name="label">_Become Root</property>
+                        <property name="label" translatable="yes">_Become Root</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Run 'su' to become root; this will restart the program, but your settings will be preserved</property>
                         <property name="use_underline">True</property>
@@ -130,7 +130,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_do_quit">
-                        <property name="label">_Quit</property>
+                        <property name="label" translatable="yes">_Quit</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Exit the program</property>
                         <property name="use_underline">True</property>
@@ -221,7 +221,7 @@
                     <property name="visible">True</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_view_edit_columns">
-                        <property name="label">_Edit Columns...</property>
+                        <property name="label" translatable="yes">_Edit Columns...</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Change which columns are visible in the currently active view.</property>
                         <property name="use_underline">True</property>
@@ -235,7 +235,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_view_apt_errors">
-                        <property name="label">View Apt _Errors</property>
+                        <property name="label" translatable="yes">View Apt _Errors</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">View errors that have occurred in the apt system since the program was started.</property>
                         <property name="use_underline">True</property>
@@ -244,7 +244,7 @@
                     </child>
                     <child>
                       <widget class="GtkImageMenuItem" id="menu_item_find_dependency_paths">
-                        <property name="label">Find _Dependency Chains</property>
+                        <property name="label" translatable="yes">Find _Dependency Chains</property>
                         <property name="visible">True</property>
                         <property name="tooltip" translatable="yes">Find chains of dependencies linking one package to another.</property>
                         <property name="use_underline">True</property>

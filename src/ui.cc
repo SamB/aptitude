@@ -487,7 +487,7 @@ static void do_su_to_root(string args)
       if(protocol == "su")
 	{
 	  std::ostringstream cmdbuf;
-	  cmdbuf << argv0 << " -S "
+	  cmdbuf << argv0 << "--no-gui -S "
 		 << statusname.get_name() << " "
 		 << args;
 	  execl(root_program.c_str(), root_program.c_str(), "-c", cmdbuf.str().c_str(), NULL);
@@ -498,7 +498,7 @@ static void do_su_to_root(string args)
 	{
 	  std::vector<std::string> cmdlist;
 	  // Split whitespace in the input command.
-	  std::string command = root_program + " " + argv0 + " -S " + statusname.get_name() + " " + args;
+	  std::string command = root_program + " " + argv0 + " --no-gui -S " + statusname.get_name() + " " + args;
 	  std::string::const_iterator it = command.begin();
 	  while(it != command.end() && isspace(*it))
 	    ++it;
@@ -1701,7 +1701,7 @@ static void do_sweep()
   add_main_widget(cmine::create(), _("Minesweeper"), _("Waste time trying to find mines"), _("Minesweeper"));
 }
 
-static void do_clean()
+static void really_do_clean()
 {
   if(active_download)
     // Erk!  That's weird!
@@ -1723,6 +1723,22 @@ static void do_clean()
       msg->destroy();
 
       show_message(_("Downloaded package files have been deleted"));
+    }
+}
+
+void do_clean()
+{
+  if(getuid()==0 || !aptcfg->FindB(PACKAGE "::Warn-Not-Root", true))
+    really_do_clean();
+  else
+    {
+	  popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Cleaning the package cache requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+						      "--clean-on-startup")),
+				       W_("Become root"),
+				       cw::util::arg(sigc::ptr_fun(&really_do_update_lists)),
+				       W_("Don't become root"),
+				       cw::get_style("Error")));
     }
 }
 
@@ -1759,7 +1775,7 @@ static bool do_autoclean_enabled()
   return apt_cache_file != NULL;
 }
 
-static void do_autoclean()
+static void really_do_autoclean()
 {
   if(apt_cache_file == NULL)
     _error->Error(_("The apt cache file is not available; cannot auto-clean."));
@@ -1790,6 +1806,22 @@ static void do_autoclean()
 
       show_message(ssprintf(_("Obsolete downloaded package files have been deleted, freeing %sB of disk space."),
 			    SizeToStr(cleaned_size).c_str()));
+    }
+}
+
+void do_autoclean()
+{
+  if(getuid()==0 || !aptcfg->FindB(PACKAGE "::Warn-Not-Root", true))
+    really_do_autoclean();
+  else
+    {
+	  popup_widget(cw::dialogs::yesno(wrapbox(cw::text_fragment(_("Deleting obsolete files requires administrative privileges, which you currently do not have.  Would you like to change to the root account?"))),
+				       cw::util::arg(sigc::bind(sigc::ptr_fun(&do_su_to_root),
+						      "--autoclean-on-startup")),
+				       W_("Become root"),
+				       cw::util::arg(sigc::ptr_fun(&really_do_update_lists)),
+				       W_("Don't become root"),
+				       cw::get_style("Error")));
     }
 }
 

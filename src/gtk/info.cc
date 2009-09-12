@@ -91,7 +91,7 @@ namespace gui
       std::pair<const entity_state_info, std::string> action_row_info()
       {
         if(ver.end())
-          return std::make_pair(entity_state_info(), "white");
+          return std::make_pair(no_action_columns, "white");
 
         pkgCache::PkgIterator pkg = ver.ParentPkg();
         aptitudeDepCache::StateCache &state = (*apt_cache_file)[pkg];
@@ -113,14 +113,14 @@ namespace gui
             if(candver==ver)
               return std::make_pair(install_columns, "green");
             else
-              return std::make_pair(entity_state_info(), "white");
+              return std::make_pair(no_action_columns, "white");
           }
         else if(state.iFlags & pkgDepCache::ReInstall)
           {
             if(ver.ParentPkg().CurrentVer() == ver)
               return std::make_pair(install_columns, "yellow green");
             else
-              return std::make_pair(entity_state_info(),"white");
+              return std::make_pair(no_action_columns,"white");
           }
         else if(state.Upgrade())
           {
@@ -129,10 +129,10 @@ namespace gui
             else if(candver == ver)
               return std::make_pair(install_columns, "green yellow");
             else
-              return std::make_pair(entity_state_info(), "white");
+              return std::make_pair(no_action_columns, "white");
           }
         else
-          return std::make_pair(entity_state_info(), "white");
+          return std::make_pair(no_action_columns, "white");
       }
 
     public:
@@ -158,9 +158,9 @@ namespace gui
 	row[columns->StatusDescriptionMarkup] =
 	  ssprintf("<b>%s:</b> %s\n<b>%s:</b> %s",
 		   Glib::Markup::escape_text(_("Current status")).c_str(),
-		   Glib::Markup::escape_text(_(current_state.get_description().c_str())).c_str(),
+		   Glib::Markup::escape_text(current_state.get_description_i18n()).c_str(),
 		   Glib::Markup::escape_text(_("Selected status")).c_str(),
-		   Glib::Markup::escape_text(_(row_info.first.get_description().c_str())).c_str());
+		   Glib::Markup::escape_text(row_info.first.get_description_i18n()).c_str());
 
 	row[columns->NameMarkup] = Glib::Markup::escape_text(ver.ParentPkg().Name());
 	row[columns->VersionMarkup] = Glib::Markup::escape_text(ver.VerStr());

@@ -22,6 +22,8 @@
 
 #include <boost/make_shared.hpp>
 
+#include <string.h>
+
 namespace aptitude
 {
   namespace sqlite
@@ -95,6 +97,15 @@ namespace aptitude
 	}
 
       sqlite3_close(handle);
+    }
+
+    void db::set_busy_timeout(int timeout)
+    {
+      lock l(*this);
+
+      int result = sqlite3_busy_timeout(handle, timeout);
+      if(result != SQLITE_OK)
+	throw exception(get_error(), result);
     }
 
     std::string db::get_error()
@@ -386,6 +397,15 @@ namespace aptitude
     void statement::bind_string(int parameter_idx, const std::string &value)
     {
       const int result = sqlite3_bind_text(handle, parameter_idx, value.c_str(), value.size(), SQLITE_TRANSIENT);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_string(int parameter_idx, const char *value, void (*dx)(void *))
+    {
+      const int result = sqlite3_bind_text(handle, parameter_idx, value, strlen(value), dx);
       if(result != SQLITE_OK)
 	{
 	  throw exception(parent.get_error(), result);
