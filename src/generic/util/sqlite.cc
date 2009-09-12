@@ -22,6 +22,8 @@
 
 #include <boost/make_shared.hpp>
 
+#include <string.h>
+
 namespace aptitude
 {
   namespace sqlite
@@ -395,6 +397,15 @@ namespace aptitude
     void statement::bind_string(int parameter_idx, const std::string &value)
     {
       const int result = sqlite3_bind_text(handle, parameter_idx, value.c_str(), value.size(), SQLITE_TRANSIENT);
+      if(result != SQLITE_OK)
+	{
+	  throw exception(parent.get_error(), result);
+	}
+    }
+
+    void statement::bind_string(int parameter_idx, const char *value, void (*dx)(void *))
+    {
+      const int result = sqlite3_bind_text(handle, parameter_idx, value, strlen(value), dx);
       if(result != SQLITE_OK)
 	{
 	  throw exception(parent.get_error(), result);

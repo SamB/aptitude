@@ -474,6 +474,17 @@ namespace aptitude
        */
       void bind_string(int parameter_idx, const std::string &value);
 
+      /** \brief Bind a null-terminated string to a parameter.
+       *
+       *  \param parameter_idx  The one-based index of the parameter to set.
+       *  \param value  The value to bind to this parameter.
+       *  \param dx     How to handle memory management of the string (the
+       *                default, SQLITE_TRANSIENT, says to make a private
+       *                copy; see also SQLITE_STATIC to not manage the buffer
+       *                at all).
+       */
+      void bind_string(int parameter_idx, const char *value, void (*dx)(void *) = SQLITE_TRANSIENT);
+
       /** \brief Bind a BLOB containing all zeroes to a parameter.
        *
        *  Typically used to initialize a BLOB that will be written
