@@ -310,14 +310,14 @@ namespace aptitude
 	  version_fragment = "--all";
 	else
 	  {
-	    version_fragment = "-f";
+	    version_fragment = "-f ";
 	    // Note that escaping the version is *critical*, because
 	    // it is untrusted data.
 	    version_fragment += backslash_escape_nonalnum(from);
 	  }
 
 	std::string cmd =
-	  cw::util::ssprintf("/usr/bin/dpkg-parsechangelog --format rfc822 %s -l%s > %s 2> /dev/null",
+	  cw::util::ssprintf("/usr/bin/parsechangelog --format rfc822 %s -l %s > %s 2> /dev/null",
 			     version_fragment.c_str(),
 			     changelog.get_name().c_str(),
 			     rval.get_name().c_str());
