@@ -177,7 +177,9 @@ static void usage()
   printf("\n");
   printf(_("  Options:\n"));
   printf(_(" -h             This help text\n"));
+#ifdef HAVE_GTK
   printf(_(" --gui          Use the GTK GUI even if disabled in the configuration.\n"));
+#endif
   printf(_(" --no-gui       Do not use the GTK GUI even if available.\n"));
   printf(_(" -s             Simulate actions, but do not actually perform them.\n"));
   printf(_(" -d             Only download packages, do not install or remove anything.\n"));
@@ -279,8 +281,8 @@ option opts[]={
   {"not-arch-only", 0, &getopt_result, OPTION_NOT_ARCH_ONLY},
 #ifdef HAVE_GTK
   {"gui", 0, &getopt_result, OPTION_GUI},
-  {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
 #endif
+  {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
   {"log-level", 1, &getopt_result, OPTION_LOG_LEVEL},
   {"log-file", 1, &getopt_result, OPTION_LOG_FILE},
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
