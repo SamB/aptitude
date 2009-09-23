@@ -502,6 +502,27 @@ struct close_cache_on_exit
 
 int main(int argc, char *argv[])
 {
+  // Block signals that we want to sigwait() on by default and put the
+  // signal mask into a known state.  This ensures that unless threads
+  // deliberately ask for a signal, they don't get it, meaning that
+  // sigwait() should work as expected.  (the alternative, blocking
+  // all signals, is troublesome: we would have to ensure that fatal
+  // signals and other things that shouldn't be blocked get removed)
+  //
+  // In particular, as of this writing, log4cxx doesn't ensure that
+  // its threads block signals, so cwidget won't be able to sigwait()
+  // on SIGWINCH.  (cwidget is guilty of the same thing, but that
+  // doesn't cause problems for aptitude)
+  {
+    sigset_t mask;
+
+    sigemptyset(&mask);
+
+    sigaddset(&mask, SIGWINCH);
+
+    sigprocmask(SIG_SETMASK, &mask, NULL);
+  }
+
   srandom(time(0));
 
   using namespace log4cxx;
