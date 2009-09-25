@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-24 19:40-0700\n"
+"POT-Creation-Date: 2009-09-24 19:59-0700\n"
 "PO-Revision-Date: 2008-05-05 22:00+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -1040,95 +1040,65 @@ msgstr "Ezin izan da iturburu-zerrenda irakurri"
 msgid "Config files"
 msgstr "Konfigurazio fitxategiak"
 
-#: src/cmdline/cmdline_prompt.cc:426 src/cmdline/cmdline_show_broken.cc:73
-#, c-format
-msgid "but %s is to be installed."
-msgstr "baina %s instalatu egingo da."
-
-#: src/cmdline/cmdline_prompt.cc:429 src/cmdline/cmdline_show_broken.cc:76
-#, c-format
-msgid "but %s is installed and it is kept back."
-msgstr "baina %s instalatuta dago, eta mantendu egin da."
-
-#: src/cmdline/cmdline_prompt.cc:432 src/cmdline/cmdline_show_broken.cc:79
-#, c-format
-msgid "but %s is installed."
-msgstr "baina %s instalatuta dago."
-
-#: src/cmdline/cmdline_prompt.cc:436
-#, c-format
-msgid "but it is not installable"
-msgstr "baina ez da instalagarria"
-
-#: src/cmdline/cmdline_prompt.cc:440 src/cmdline/cmdline_show_broken.cc:93
-#, c-format
-msgid " which is a virtual package."
-msgstr " ; paketea birtuala da"
-
-#: src/cmdline/cmdline_prompt.cc:443 src/cmdline/cmdline_show_broken.cc:96
-#, c-format
-msgid " or"
-msgstr " edo"
-
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:373
 msgid "The following packages are BROKEN:"
 msgstr "Ondorengo paketeak HAUTSITA daude:"
 
-#: src/cmdline/cmdline_prompt.cc:458
+#: src/cmdline/cmdline_prompt.cc:374
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Ondorengo paketeak erabili gabe daude, eta KENDU egingo dira:"
 
-#: src/cmdline/cmdline_prompt.cc:459
+#: src/cmdline/cmdline_prompt.cc:375
 msgid "The following packages have been automatically kept back:"
 msgstr "Ondorengo paketeak automatikoki mantendu dira:"
 
-#: src/cmdline/cmdline_prompt.cc:460
+#: src/cmdline/cmdline_prompt.cc:376
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Ondorengo pakete BERRIAK automatikoki instalatuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:461
+#: src/cmdline/cmdline_prompt.cc:377
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Ondorengo paketeak automatikoki KENDUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:462
+#: src/cmdline/cmdline_prompt.cc:378
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Ondorengo paketeak AURREKO BERTSIORA itzuliko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:463
+#: src/cmdline/cmdline_prompt.cc:379
 msgid "The following packages have been kept back:"
 msgstr "Ondorengo paketeak mantendu egin dira:"
 
-#: src/cmdline/cmdline_prompt.cc:464
+#: src/cmdline/cmdline_prompt.cc:380
 msgid "The following packages will be REINSTALLED:"
 msgstr "Ondorengo paketeak BERRINSTALATUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:465
+#: src/cmdline/cmdline_prompt.cc:381
 msgid "The following NEW packages will be installed:"
 msgstr "Ondorengo pakete BERRIAK instalatuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:466
+#: src/cmdline/cmdline_prompt.cc:382
 msgid "The following packages will be REMOVED:"
 msgstr "Ondorengo paketeak KENDUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:383
 msgid "The following packages will be upgraded:"
 msgstr "Ondorengo paketeak BERTSIO-BERRITUKO dira:"
 
-#: src/cmdline/cmdline_prompt.cc:468
+#: src/cmdline/cmdline_prompt.cc:384
 msgid "The following partially installed packages will be configured:"
 msgstr "Ondorengo erdi instalaturiko paketeak konfiguratuko dira:"
 
-#: src/cmdline/cmdline_prompt.cc:523 src/ui.cc:1510
+#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1510
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Ondorengo FUNTSEZKO paketeak KENDU egingo dira!\n"
 
-#: src/cmdline/cmdline_prompt.cc:532 src/ui.cc:1525
+#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1525
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Ondorengo FUNTSEZKO paketeak HAUTSI egingo dira ekintza honekin:\n"
 
-#: src/cmdline/cmdline_prompt.cc:542 src/ui.cc:1538
+#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1538
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1137,16 +1107,16 @@ msgstr ""
 "KONTUZ: ekintza hau egitean, beharbada sistema hondatu egingo da!\n"
 "         Ez baldin badakizu ZEHAZKI zer egiten ari zaren, EZ jarraitu!\n"
 
-#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_prompt.cc:460
 msgid "I am aware that this is a very bad idea"
 msgstr "Badakit oso ideia txarra dela"
 
-#: src/cmdline/cmdline_prompt.cc:548 src/ui.cc:1539
+#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1539
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Jarraitzeko, idatzi esaldi hau: \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:590
+#: src/cmdline/cmdline_prompt.cc:506
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1163,7 +1133,7 @@ msgstr ""
 "Instalazioarekin jarraitu zertan ari zaren ziur bazaude bakarrik.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:602
+#: src/cmdline/cmdline_prompt.cc:518
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1172,7 +1142,7 @@ msgstr ""
 "*** ABISUA ***   Fidagarritasun-bortxaketei ez ikusi egiten. Zergatia:\n"
 "                  %s::CmdLine::Ignore-Trust-Violations 'egia' baita!\n"
 
-#: src/cmdline/cmdline_prompt.cc:611
+#: src/cmdline/cmdline_prompt.cc:527
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1185,7 +1155,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:538
 msgid "Go ahead and ignore the warning|Yes"
 msgstr ""
 
@@ -1194,102 +1164,102 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:628
+#: src/cmdline/cmdline_prompt.cc:544
 msgid "Abort instead of overriding the warning|No"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:639
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Ez ikusi egin abisuari eta jarraitu hala ere?\n"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:556
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Jarraitzeko, sartu \"%s\"; bertan behera uzteko sartu \"%s\":"
 
-#: src/cmdline/cmdline_prompt.cc:657
+#: src/cmdline/cmdline_prompt.cc:573
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Sarrera ezezaguna. Sartu \"%s\" edo \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:772
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Ondorengo paketeak GOMENDATUTAKOAK dira, baina EZ dira instalatuko:\n"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Ondorengo paketeak IRADOKITAKOAK dira, baina EZ dira instalatuko: \n"
 
-#: src/cmdline/cmdline_prompt.cc:783
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Ez da paketerik instalatuko, bertsio-berrituko edo kenduko.\n"
 
-#: src/cmdline/cmdline_prompt.cc:785
+#: src/cmdline/cmdline_prompt.cc:701
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pakete bertsio-berrituta, %lu berriki instalatuta, "
 
-#: src/cmdline/cmdline_prompt.cc:789
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu berrinstalatuta, "
 
-#: src/cmdline/cmdline_prompt.cc:791
+#: src/cmdline/cmdline_prompt.cc:707
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu aurreko bertsiora itzulita, "
 
-#: src/cmdline/cmdline_prompt.cc:793
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu kentzeko, eta %lu bertsio-berritu gabe.\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:716
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Artxiboetako %sB/%sB eskuratu behar dira. "
 
-#: src/cmdline/cmdline_prompt.cc:803
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Artxiboetako %sB eskuratu behar dira. "
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:726
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Deskonprimitu ondoren, %sB erabiliko dira.\n"
 
-#: src/cmdline/cmdline_prompt.cc:813
+#: src/cmdline/cmdline_prompt.cc:729
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Deskonprimitu ondoren, %sB libratuko dira.\n"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:750
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Ez dago paketerik erakusteko -- sartu paketearen izena 'i'-ren azpiko "
 "lerroan.\n"
 
-#: src/cmdline/cmdline_prompt.cc:840
+#: src/cmdline/cmdline_prompt.cc:756
 msgid "Press Return to continue."
 msgstr "Jarraitzeko, sakatu 'Sartu' tekla."
 
-#: src/cmdline/cmdline_prompt.cc:851
+#: src/cmdline/cmdline_prompt.cc:767
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr ""
 "Ez da paketerik aurkitu -- sartu paketeen izenak 'c'-ren azpiko lerroan.\n"
 
-#: src/cmdline/cmdline_prompt.cc:855
+#: src/cmdline/cmdline_prompt.cc:771
 msgid "Press Return to continue"
 msgstr "Jarraitzeko , sakatu 'Sartu' tekla"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:781
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1298,30 +1268,30 @@ msgstr ""
 "Ez da paketerik aurkitu -- bilaketa erro bat edo gehigo idatzi justifikatu "
 "beharreko paketeaz jarraiturik.\n"
 
-#: src/cmdline/cmdline_prompt.cc:890
+#: src/cmdline/cmdline_prompt.cc:806
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:892
+#: src/cmdline/cmdline_prompt.cc:808
 msgid "continue with the installation"
 msgstr "jarraitu instalazioarekin"
 
-#: src/cmdline/cmdline_prompt.cc:894
+#: src/cmdline/cmdline_prompt.cc:810
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:812
 msgid "abort and quit"
 msgstr "bertan behera utzi eta irten"
 
-#: src/cmdline/cmdline_prompt.cc:898
+#: src/cmdline/cmdline_prompt.cc:814
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:900
+#: src/cmdline/cmdline_prompt.cc:816
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1329,12 +1299,12 @@ msgstr ""
 "erakutsi pakete baten edo gehiagoren informazioa, paketeen izenak 'i'-ren "
 "ondoren egon behar dute"
 
-#: src/cmdline/cmdline_prompt.cc:902
+#: src/cmdline/cmdline_prompt.cc:818
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:904
+#: src/cmdline/cmdline_prompt.cc:820
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1342,39 +1312,39 @@ msgstr ""
 "erakutsi pakete baten edo gehiagoren Debian-eko aldaketen egunkaria, "
 "paketeen izenak 'c'-ren ondoren egon behar dute"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:822
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:908
+#: src/cmdline/cmdline_prompt.cc:824
 msgid "toggle the display of dependency information"
 msgstr "erakutsi/ezkutatu mendekotasun-informazioa"
 
-#: src/cmdline/cmdline_prompt.cc:910
+#: src/cmdline/cmdline_prompt.cc:826
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:912
+#: src/cmdline/cmdline_prompt.cc:828
 msgid "toggle the display of changes in package sizes"
 msgstr "erakutsi/ezkutatu pakete tamainen aldaketak"
 
-#: src/cmdline/cmdline_prompt.cc:914
+#: src/cmdline/cmdline_prompt.cc:830
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:916
+#: src/cmdline/cmdline_prompt.cc:832
 msgid "toggle the display of version numbers"
 msgstr "erakutsi/ezkutatu bertsioa"
 
-#: src/cmdline/cmdline_prompt.cc:918
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:920
+#: src/cmdline/cmdline_prompt.cc:836
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1382,27 +1352,27 @@ msgstr ""
 "pakete soil bat instalatzeko arrazoia bilatzen saiatu, edo argitu zergatik "
 "pakete bat instalatzeak zergatik eramaten duen beste bat instalatzea."
 
-#: src/cmdline/cmdline_prompt.cc:923
+#: src/cmdline/cmdline_prompt.cc:839
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:925
+#: src/cmdline/cmdline_prompt.cc:841
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "exekutatu mendekotasun konpontzaile automatikoa apurtutako mendekotasunak "
 "konpontzeko"
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:843
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:929
+#: src/cmdline/cmdline_prompt.cc:845
 msgid "enter the full visual interface"
 msgstr "sartu interfaze bisual osoan"
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:848
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1413,51 +1383,51 @@ msgstr ""
 "ekintza-karaktere bat, eta jarraian pakete izen edo -eredu bat edo gehiago. "
 "Ekintza pakete guztiei aplikatuko zaie. Ekintza erabilgarriak:"
 
-#: src/cmdline/cmdline_prompt.cc:939 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:208
 msgid "'+' to install packages"
 msgstr "'+' paketeak instalatzeko"
 
-#: src/cmdline/cmdline_prompt.cc:942 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' paketeak instalatzeko eta jarri bandera pakete hauek automatikoki "
 "instalatu direla adierazteko"
 
-#: src/cmdline/cmdline_prompt.cc:944 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:212
 msgid "'-' to remove packages"
 msgstr "'-' paketeak kentzeko"
 
-#: src/cmdline/cmdline_prompt.cc:946 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:214
 msgid "'_' to purge packages"
 msgstr "'_' paketeak purgatzeko"
 
-#: src/cmdline/cmdline_prompt.cc:948 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:216
 msgid "'=' to place packages on hold"
 msgstr "'=' paketeak atxikitzeko"
 
-#: src/cmdline/cmdline_prompt.cc:950 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:218
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' paketeak beraien uneko egoeran mantentzeko, atxikitu gabe"
 
-#: src/cmdline/cmdline_prompt.cc:952 src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:220
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' markatu automatikoki instalatu izan diren paketeak"
 
-#: src/cmdline/cmdline_prompt.cc:954 src/cmdline/cmdline_resolver.cc:222
+#: src/cmdline/cmdline_prompt.cc:870 src/cmdline/cmdline_resolver.cc:222
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' markatu eskuz instalaturik izan diren paketeak"
 
-#: src/cmdline/cmdline_prompt.cc:956
+#: src/cmdline/cmdline_prompt.cc:872
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "'&BD' pakete baten eraikitzeko mendekotasunak instalatzeko."
 
-#: src/cmdline/cmdline_prompt.cc:960
+#: src/cmdline/cmdline_prompt.cc:876
 msgid "Commands:"
 msgstr "Komandoak:"
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:985
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1465,20 +1435,20 @@ msgstr ""
 "Aptitudek huts egin mendekotasuna hauei konponbide bat bilatzean.  Eskuz "
 "konpondu ditzakezu edo 'n' sakatu ateratzeko."
 
-#: src/cmdline/cmdline_prompt.cc:1087
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Jarraitu nahi duzu? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1088
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Dependentzi hauek eskuz konpondu? [E/+/-/_:/?) "
 
-#: src/cmdline/cmdline_prompt.cc:1106
+#: src/cmdline/cmdline_prompt.cc:1022
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Erantzun baliogabea. Sartu baliozko komando bat, edo '?' laguntza ikusteko.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1112
+#: src/cmdline/cmdline_prompt.cc:1028
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1486,7 +1456,7 @@ msgstr ""
 "Sar pakete kudeaketa komando bat (adibidez '+ paketea' pakete bat "
 "instalatzeko), 'R' mendekotasuna osatze automatikoa saiatzeko edo 'N' uzteko."
 
-#: src/cmdline/cmdline_prompt.cc:1143
+#: src/cmdline/cmdline_prompt.cc:1059
 #, c-format
 msgid ""
 "\n"
@@ -1497,7 +1467,7 @@ msgstr ""
 "Mendekotasun-informazioa erakutsiko da.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1145
+#: src/cmdline/cmdline_prompt.cc:1061
 #, c-format
 msgid ""
 "\n"
@@ -1508,7 +1478,7 @@ msgstr ""
 "Mendekotasun-informazioa ez da erakutsiko.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1151
+#: src/cmdline/cmdline_prompt.cc:1067
 #, c-format
 msgid ""
 "\n"
@@ -1519,7 +1489,7 @@ msgstr ""
 "Bertsioak erakutsiko dira.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1153
+#: src/cmdline/cmdline_prompt.cc:1069
 #, c-format
 msgid ""
 "\n"
@@ -1530,7 +1500,7 @@ msgstr ""
 "Bertsiorik ez da erakutsiko.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1158
+#: src/cmdline/cmdline_prompt.cc:1074
 #, c-format
 msgid ""
 "\n"
@@ -1541,7 +1511,7 @@ msgstr ""
 "Tamaina aldaketak erakutsiko dira.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1076
 #, c-format
 msgid ""
 "\n"
@@ -1827,19 +1797,44 @@ msgstr "%s(r)en iconv-ek huts egin du.\n"
 msgid "search: You must provide at least one search term\n"
 msgstr "bilatu: bilaketa-termino bat eman behar duzu gutxienez\n"
 
-#: src/cmdline/cmdline_show_broken.cc:86
+#: src/cmdline/cmdline_show_broken.cc:72
+#, c-format
+msgid "but %s is to be installed."
+msgstr "baina %s instalatu egingo da."
+
+#: src/cmdline/cmdline_show_broken.cc:75
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "baina %s instalatuta dago, eta mantendu egin da."
+
+#: src/cmdline/cmdline_show_broken.cc:78
+#, c-format
+msgid "but %s is installed."
+msgstr "baina %s instalatuta dago."
+
+#: src/cmdline/cmdline_show_broken.cc:85
 #, fuzzy, c-format
 #| msgid "but it is not installable"
 msgid "but it is not installable."
 msgstr "baina ez da instalagarria"
 
-#: src/cmdline/cmdline_show_broken.cc:88
+#: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
 #| msgid "but %s is to be installed."
 msgid "but it is not going to be installed."
 msgstr "baina %s instalatu egingo da."
 
-#: src/cmdline/cmdline_show_broken.cc:119
+#: src/cmdline/cmdline_show_broken.cc:92
+#, c-format
+msgid " which is a virtual package."
+msgstr " ; paketea birtuala da"
+
+#: src/cmdline/cmdline_show_broken.cc:95
+#, c-format
+msgid " or"
+msgstr " edo"
+
+#: src/cmdline/cmdline_show_broken.cc:118
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Ondorengo paketeetan bete gabeko mendekotasunak daude:\n"
@@ -7947,6 +7942,9 @@ msgstr "Aldaketen egunkaria deskargatzen"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Deskargatu erregistro aldaketak"
+
+#~ msgid "but it is not installable"
+#~ msgstr "baina ez da instalagarria"
 
 #~ msgid "E: The %s command takes no arguments\n"
 #~ msgstr "E: %s komandoak ez du argumenturik hartzen\n"

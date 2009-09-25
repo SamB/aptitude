@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-24 19:40-0700\n"
+"POT-Creation-Date: 2009-09-24 19:59-0700\n"
 "PO-Revision-Date: 2008-10-26 21:02+0100\n"
 "Last-Translator: Asho Yeh <ashoyeh@gmail.com>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -957,95 +957,65 @@ msgstr "無法讀取套件來源列表"
 msgid "Config files"
 msgstr "設定檔"
 
-#: src/cmdline/cmdline_prompt.cc:426 src/cmdline/cmdline_show_broken.cc:73
-#, c-format
-msgid "but %s is to be installed."
-msgstr "但 %s 將會安裝。"
-
-#: src/cmdline/cmdline_prompt.cc:429 src/cmdline/cmdline_show_broken.cc:76
-#, c-format
-msgid "but %s is installed and it is kept back."
-msgstr "但 %s 已安裝且保持現有版本。"
-
-#: src/cmdline/cmdline_prompt.cc:432 src/cmdline/cmdline_show_broken.cc:79
-#, c-format
-msgid "but %s is installed."
-msgstr "但 %s 已安裝"
-
-#: src/cmdline/cmdline_prompt.cc:436
-#, c-format
-msgid "but it is not installable"
-msgstr "但這無法安裝"
-
-#: src/cmdline/cmdline_prompt.cc:440 src/cmdline/cmdline_show_broken.cc:93
-#, c-format
-msgid " which is a virtual package."
-msgstr " 這是虛擬套件"
-
-#: src/cmdline/cmdline_prompt.cc:443 src/cmdline/cmdline_show_broken.cc:96
-#, c-format
-msgid " or"
-msgstr " 或"
-
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:373
 msgid "The following packages are BROKEN:"
 msgstr "以下的套件狀態為毀斷"
 
-#: src/cmdline/cmdline_prompt.cc:458
+#: src/cmdline/cmdline_prompt.cc:374
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "以下未使用的套件將會移除:"
 
-#: src/cmdline/cmdline_prompt.cc:459
+#: src/cmdline/cmdline_prompt.cc:375
 msgid "The following packages have been automatically kept back:"
 msgstr "以下套件已經設為自動保持現狀:"
 
-#: src/cmdline/cmdline_prompt.cc:460
+#: src/cmdline/cmdline_prompt.cc:376
 msgid "The following NEW packages will be automatically installed:"
 msgstr "以下新套件將會自動安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:461
+#: src/cmdline/cmdline_prompt.cc:377
 msgid "The following packages will be automatically REMOVED:"
 msgstr "以下套件將會自動移除:"
 
-#: src/cmdline/cmdline_prompt.cc:462
+#: src/cmdline/cmdline_prompt.cc:378
 msgid "The following packages will be DOWNGRADED:"
 msgstr "以下套件將會自動降級:"
 
-#: src/cmdline/cmdline_prompt.cc:463
+#: src/cmdline/cmdline_prompt.cc:379
 msgid "The following packages have been kept back:"
 msgstr "以下套件已經設為保持現狀:"
 
-#: src/cmdline/cmdline_prompt.cc:464
+#: src/cmdline/cmdline_prompt.cc:380
 msgid "The following packages will be REINSTALLED:"
 msgstr "以下套件將重新安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:465
+#: src/cmdline/cmdline_prompt.cc:381
 msgid "The following NEW packages will be installed:"
 msgstr "以下新套件將會安裝:"
 
-#: src/cmdline/cmdline_prompt.cc:466
+#: src/cmdline/cmdline_prompt.cc:382
 msgid "The following packages will be REMOVED:"
 msgstr "以下新套件將會移除:"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:383
 msgid "The following packages will be upgraded:"
 msgstr "以下套件將會升級:"
 
-#: src/cmdline/cmdline_prompt.cc:468
+#: src/cmdline/cmdline_prompt.cc:384
 msgid "The following partially installed packages will be configured:"
 msgstr "以下部份套件將會被設定："
 
-#: src/cmdline/cmdline_prompt.cc:523 src/ui.cc:1510
+#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1510
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "以下基本套件將會移除！\n"
 
-#: src/cmdline/cmdline_prompt.cc:532 src/ui.cc:1525
+#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1525
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "以下基本套件將會因此動作而毀斷！\n"
 
-#: src/cmdline/cmdline_prompt.cc:542 src/ui.cc:1538
+#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1538
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1054,16 +1024,16 @@ msgstr ""
 "警告: 執行以下動作可能會造成您的系統毀壞！\n"
 "             不要持續進行，無非您很清楚自己在做什麼！\n"
 
-#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_prompt.cc:460
 msgid "I am aware that this is a very bad idea"
 msgstr "I am aware that this is a very bad idea"
 
-#: src/cmdline/cmdline_prompt.cc:548 src/ui.cc:1539
+#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1539
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "要繼續，請輸入以下聲明  \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:590
+#: src/cmdline/cmdline_prompt.cc:506
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1079,7 +1049,7 @@ msgstr ""
 "只有在您確定您真的要這麼做時，您才可以進行安裝作業。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:602
+#: src/cmdline/cmdline_prompt.cc:518
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1088,7 +1058,7 @@ msgstr ""
 "*** 警告 ***  忽略這些信任違背，因為\n"
 "                 %s::CmdLine::Ignore-Trust-Violations 的值為“真”！\n"
 
-#: src/cmdline/cmdline_prompt.cc:611
+#: src/cmdline/cmdline_prompt.cc:527
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1101,7 +1071,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:538
 msgid "Go ahead and ignore the warning|Yes"
 msgstr ""
 
@@ -1110,202 +1080,202 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:628
+#: src/cmdline/cmdline_prompt.cc:544
 msgid "Abort instead of overriding the warning|No"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:639
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "您是否要忽略這個警告，不管如何繼續進行？\n"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:556
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "要繼續，請輸入 \"%s\"；若要放棄，請輸入 \"%s\"："
 
-#: src/cmdline/cmdline_prompt.cc:657
+#: src/cmdline/cmdline_prompt.cc:573
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "輸入的文字無法辨識。 請輸入 \"%s\" 或 \"%s\"。\n"
 
-#: src/cmdline/cmdline_prompt.cc:772
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "以下套件受到推薦但是將不會安裝:\n"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "以下套件受到建議但是將不會安裝:\n"
 
-#: src/cmdline/cmdline_prompt.cc:783
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "沒有套件將會被安裝、升級或移除。\n"
 
-#: src/cmdline/cmdline_prompt.cc:785
+#: src/cmdline/cmdline_prompt.cc:701
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu 個套件升級, %lu 個新安裝, "
 
-#: src/cmdline/cmdline_prompt.cc:789
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu 個重新安裝, "
 
-#: src/cmdline/cmdline_prompt.cc:791
+#: src/cmdline/cmdline_prompt.cc:707
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu 個降級, "
 
-#: src/cmdline/cmdline_prompt.cc:793
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu 個將移除且 %lu 個不會升級.\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:716
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "需要下載 %sB/%sB 的歸檔檔案. "
 
-#: src/cmdline/cmdline_prompt.cc:803
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "需要下載 %sB 的歸檔檔案. "
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:726
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "解裝後將用去 %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:813
+#: src/cmdline/cmdline_prompt.cc:729
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "解裝後將釋出 %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:750
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "無顯示套件 -- 請在 'i' 之後輸入套件名稱。\n"
 
-#: src/cmdline/cmdline_prompt.cc:840
+#: src/cmdline/cmdline_prompt.cc:756
 msgid "Press Return to continue."
 msgstr "按 Return 繼續。"
 
-#: src/cmdline/cmdline_prompt.cc:851
+#: src/cmdline/cmdline_prompt.cc:767
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "未找到套件 -- 請在 'c' 之後輸入套件名稱。\n"
 
-#: src/cmdline/cmdline_prompt.cc:855
+#: src/cmdline/cmdline_prompt.cc:771
 msgid "Press Return to continue"
 msgstr "按 Return 繼續。"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:781
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr "未發現套件 -- 請輸入0個或多個搜尋內容再接著輸入要搜尋的套件名稱。\n"
 
-#: src/cmdline/cmdline_prompt.cc:890
+#: src/cmdline/cmdline_prompt.cc:806
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:892
+#: src/cmdline/cmdline_prompt.cc:808
 msgid "continue with the installation"
 msgstr "繼續安裝"
 
-#: src/cmdline/cmdline_prompt.cc:894
+#: src/cmdline/cmdline_prompt.cc:810
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:812
 msgid "abort and quit"
 msgstr "放棄並退出"
 
-#: src/cmdline/cmdline_prompt.cc:898
+#: src/cmdline/cmdline_prompt.cc:814
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:900
+#: src/cmdline/cmdline_prompt.cc:816
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "顯示一個或者多個套件的訊息；套件的名字將在字元“i”之後。"
 
-#: src/cmdline/cmdline_prompt.cc:902
+#: src/cmdline/cmdline_prompt.cc:818
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:904
+#: src/cmdline/cmdline_prompt.cc:820
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
 msgstr "顯示一個或者多個套件的變更記錄；套件的名字將在字元“c”之後。"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:822
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:908
+#: src/cmdline/cmdline_prompt.cc:824
 msgid "toggle the display of dependency information"
 msgstr "切換是否顯示相依賴關系訊息"
 
-#: src/cmdline/cmdline_prompt.cc:910
+#: src/cmdline/cmdline_prompt.cc:826
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:912
+#: src/cmdline/cmdline_prompt.cc:828
 msgid "toggle the display of changes in package sizes"
 msgstr "切換是否顯示套件的大小"
 
-#: src/cmdline/cmdline_prompt.cc:914
+#: src/cmdline/cmdline_prompt.cc:830
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:916
+#: src/cmdline/cmdline_prompt.cc:832
 msgid "toggle the display of version numbers"
 msgstr "切換是否顯示版本號"
 
-#: src/cmdline/cmdline_prompt.cc:918
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:920
+#: src/cmdline/cmdline_prompt.cc:836
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr "嘗試解釋安裝套件的原因，或解釋安裝一個套件時會導致安裝另一個套件。"
 
-#: src/cmdline/cmdline_prompt.cc:923
+#: src/cmdline/cmdline_prompt.cc:839
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:925
+#: src/cmdline/cmdline_prompt.cc:841
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr "執行自動相依解決器來修正已損毀的相依性。"
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:843
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:929
+#: src/cmdline/cmdline_prompt.cc:845
 msgid "enter the full visual interface"
 msgstr "進入全屏視覺化介面"
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:848
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1315,49 +1285,49 @@ msgstr ""
 "您也可以對將要實施的動作進行修改。方法是，輸入一個動作字元後輸入一個或者多個"
 "套件的名稱(或者模式)。該動作將被實施到您所選擇的全部套件。下列動作可供選擇："
 
-#: src/cmdline/cmdline_prompt.cc:939 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:208
 msgid "'+' to install packages"
 msgstr "按'+'鍵來安裝套件"
 
-#: src/cmdline/cmdline_prompt.cc:942 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr "按'+M'安裝套件並且立即將它們標記為已安裝狀態"
 
-#: src/cmdline/cmdline_prompt.cc:944 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:212
 msgid "'-' to remove packages"
 msgstr "按'-'移除套件"
 
-#: src/cmdline/cmdline_prompt.cc:946 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:214
 msgid "'_' to purge packages"
 msgstr "按'_'清除套件"
 
-#: src/cmdline/cmdline_prompt.cc:948 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:216
 msgid "'=' to place packages on hold"
 msgstr "“=”將套件置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:950 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:218
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "按':'將維持套件當前狀態但是並不將其置於保持狀態"
 
-#: src/cmdline/cmdline_prompt.cc:952 src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:220
 msgid "'&M' to mark packages as automatically installed"
 msgstr "按'&M'將套件標記為自動安裝"
 
-#: src/cmdline/cmdline_prompt.cc:954 src/cmdline/cmdline_resolver.cc:222
+#: src/cmdline/cmdline_prompt.cc:870 src/cmdline/cmdline_resolver.cc:222
 msgid "'&m' to mark packages as manually installed"
 msgstr "按'm'將套件標記為手動安裝"
 
-#: src/cmdline/cmdline_prompt.cc:956
+#: src/cmdline/cmdline_prompt.cc:872
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "'&BD' 安裝套件的編譯相依套件。"
 
-#: src/cmdline/cmdline_prompt.cc:960
+#: src/cmdline/cmdline_prompt.cc:876
 msgid "Commands:"
 msgstr "命令："
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:985
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1365,19 +1335,19 @@ msgstr ""
 "aptitude 無法找到解決這些相依問題的方法。  你可手動解決這些問題或輸入'n'來離"
 "開。"
 
-#: src/cmdline/cmdline_prompt.cc:1087
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "您想繼續嗎? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1088
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "要手動解決這些相依性嗎？ [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1106
+#: src/cmdline/cmdline_prompt.cc:1022
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "錯誤回應。請輸入一個正確的指令或 '?' 以取得協助。\n"
 
-#: src/cmdline/cmdline_prompt.cc:1112
+#: src/cmdline/cmdline_prompt.cc:1028
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1385,7 +1355,7 @@ msgstr ""
 "輸入一個套件管理指令(如'+package'來安裝套件)，'R'是嘗試自動解決相依問題"
 "或'N'是放棄。"
 
-#: src/cmdline/cmdline_prompt.cc:1143
+#: src/cmdline/cmdline_prompt.cc:1059
 #, c-format
 msgid ""
 "\n"
@@ -1396,7 +1366,7 @@ msgstr ""
 "相依性資訊將會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1145
+#: src/cmdline/cmdline_prompt.cc:1061
 #, c-format
 msgid ""
 "\n"
@@ -1407,7 +1377,7 @@ msgstr ""
 "相依性資訊將不會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1151
+#: src/cmdline/cmdline_prompt.cc:1067
 #, c-format
 msgid ""
 "\n"
@@ -1418,7 +1388,7 @@ msgstr ""
 "版本將會顯示。\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1153
+#: src/cmdline/cmdline_prompt.cc:1069
 #, c-format
 msgid ""
 "\n"
@@ -1429,7 +1399,7 @@ msgstr ""
 "版本將不會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1158
+#: src/cmdline/cmdline_prompt.cc:1074
 #, c-format
 msgid ""
 "\n"
@@ -1440,7 +1410,7 @@ msgstr ""
 "變動大小將會顯示\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1076
 #, c-format
 msgid ""
 "\n"
@@ -1709,19 +1679,44 @@ msgstr "用 iconv 轉換 %s 失敗。\n"
 msgid "search: You must provide at least one search term\n"
 msgstr "搜尋: 您至少要提供一個搜尋字串\n"
 
-#: src/cmdline/cmdline_show_broken.cc:86
+#: src/cmdline/cmdline_show_broken.cc:72
+#, c-format
+msgid "but %s is to be installed."
+msgstr "但 %s 將會安裝。"
+
+#: src/cmdline/cmdline_show_broken.cc:75
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "但 %s 已安裝且保持現有版本。"
+
+#: src/cmdline/cmdline_show_broken.cc:78
+#, c-format
+msgid "but %s is installed."
+msgstr "但 %s 已安裝"
+
+#: src/cmdline/cmdline_show_broken.cc:85
 #, fuzzy, c-format
 #| msgid "but it is not installable"
 msgid "but it is not installable."
 msgstr "但這無法安裝"
 
-#: src/cmdline/cmdline_show_broken.cc:88
+#: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
 #| msgid "but %s is to be installed."
 msgid "but it is not going to be installed."
 msgstr "但 %s 將會安裝。"
 
-#: src/cmdline/cmdline_show_broken.cc:119
+#: src/cmdline/cmdline_show_broken.cc:92
+#, c-format
+msgid " which is a virtual package."
+msgstr " 這是虛擬套件"
+
+#: src/cmdline/cmdline_show_broken.cc:95
+#, c-format
+msgid " or"
+msgstr " 或"
+
+#: src/cmdline/cmdline_show_broken.cc:118
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "以下套件含有相依性:\n"
@@ -7625,6 +7620,9 @@ msgstr "正在下載更改紀錄"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "下載更動記錄"
+
+#~ msgid "but it is not installable"
+#~ msgstr "但這無法安裝"
 
 #~ msgid "E: The %s command takes no arguments\n"
 #~ msgstr "E: %s  指令不接受任何參數\n"

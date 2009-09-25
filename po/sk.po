@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-24 19:40-0700\n"
+"POT-Creation-Date: 2009-09-24 19:59-0700\n"
 "PO-Revision-Date: 2009-07-21 13:49+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -1018,95 +1018,65 @@ msgstr "Nedá sa načítať zoznam zdrojov"
 msgid "Config files"
 msgstr "Konfiguračné súbory"
 
-#: src/cmdline/cmdline_prompt.cc:426 src/cmdline/cmdline_show_broken.cc:73
-#, c-format
-msgid "but %s is to be installed."
-msgstr "ale %s sa bude inštalovať."
-
-#: src/cmdline/cmdline_prompt.cc:429 src/cmdline/cmdline_show_broken.cc:76
-#, c-format
-msgid "but %s is installed and it is kept back."
-msgstr "ale %s je nainštalovaný a je ponechaný v aktuálnom stave."
-
-#: src/cmdline/cmdline_prompt.cc:432 src/cmdline/cmdline_show_broken.cc:79
-#, c-format
-msgid "but %s is installed."
-msgstr "ale %s nie je inštalovaný."
-
-#: src/cmdline/cmdline_prompt.cc:436
-#, c-format
-msgid "but it is not installable"
-msgstr "ale nedá sa nainštalovať"
-
-#: src/cmdline/cmdline_prompt.cc:440 src/cmdline/cmdline_show_broken.cc:93
-#, c-format
-msgid " which is a virtual package."
-msgstr " čo je virtuálny balík."
-
-#: src/cmdline/cmdline_prompt.cc:443 src/cmdline/cmdline_show_broken.cc:96
-#, c-format
-msgid " or"
-msgstr " alebo"
-
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:373
 msgid "The following packages are BROKEN:"
 msgstr "Nasledujúce balíky sú POŠKODENÉ:"
 
-#: src/cmdline/cmdline_prompt.cc:458
+#: src/cmdline/cmdline_prompt.cc:374
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Nasledujúce balíky sa nepoužívajú, takže sa ODSTRÁNIA:"
 
-#: src/cmdline/cmdline_prompt.cc:459
+#: src/cmdline/cmdline_prompt.cc:375
 msgid "The following packages have been automatically kept back:"
 msgstr "Nasledujúce balíky sa automaticky ponechajú v aktuálnom stave:"
 
-#: src/cmdline/cmdline_prompt.cc:460
+#: src/cmdline/cmdline_prompt.cc:376
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Nasledujúce NOVÉ balíky sa nainštalujú automaticky:"
 
-#: src/cmdline/cmdline_prompt.cc:461
+#: src/cmdline/cmdline_prompt.cc:377
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Nasledujúce balíky sa automaticky ODSTRÁNIA:"
 
-#: src/cmdline/cmdline_prompt.cc:462
+#: src/cmdline/cmdline_prompt.cc:378
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Nasledujúce balíky sa DEGRADUJÚ:"
 
-#: src/cmdline/cmdline_prompt.cc:463
+#: src/cmdline/cmdline_prompt.cc:379
 msgid "The following packages have been kept back:"
 msgstr "Nasledujúce balíky sú ponechané v aktuálnom stave:"
 
-#: src/cmdline/cmdline_prompt.cc:464
+#: src/cmdline/cmdline_prompt.cc:380
 msgid "The following packages will be REINSTALLED:"
 msgstr "Nasledujúce balíky sa PREINŠTALUJÚ:"
 
-#: src/cmdline/cmdline_prompt.cc:465
+#: src/cmdline/cmdline_prompt.cc:381
 msgid "The following NEW packages will be installed:"
 msgstr "Nasledujúce NOVÉ balíky sa nainštalujú:"
 
-#: src/cmdline/cmdline_prompt.cc:466
+#: src/cmdline/cmdline_prompt.cc:382
 msgid "The following packages will be REMOVED:"
 msgstr "Nasledujúce balíky sa ODSTRÁNIA:"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:383
 msgid "The following packages will be upgraded:"
 msgstr "Nasledujúce balíky sa aktualizujú:"
 
-#: src/cmdline/cmdline_prompt.cc:468
+#: src/cmdline/cmdline_prompt.cc:384
 msgid "The following partially installed packages will be configured:"
 msgstr "Nasledujúce čiastočne nainštalované balíky sa nakonfigurujú:"
 
-#: src/cmdline/cmdline_prompt.cc:523 src/ui.cc:1510
+#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1510
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Nasledujúce NUTNÉ balíky sa ODSTRÁNIA!\n"
 
-#: src/cmdline/cmdline_prompt.cc:532 src/ui.cc:1525
+#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1525
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "Nasledujúce NUTNÉ balíky sa touto operáciou POŠKODIA:\n"
 
-#: src/cmdline/cmdline_prompt.cc:542 src/ui.cc:1538
+#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1538
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1115,16 +1085,16 @@ msgstr ""
 "UPOZORNENIE: Vykonaním tejto operácie pravdepodobne poškodíte systém!\n"
 "             Ak PRESNE neviete, čo robíte, NEPOKRAČUJTE!\n"
 
-#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_prompt.cc:460
 msgid "I am aware that this is a very bad idea"
 msgstr "Som si vedomý, že je to zlý nápad"
 
-#: src/cmdline/cmdline_prompt.cc:548 src/ui.cc:1539
+#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1539
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Ak chcete pokračovať, napíšte „%s“:\n"
 
-#: src/cmdline/cmdline_prompt.cc:590
+#: src/cmdline/cmdline_prompt.cc:506
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1141,7 +1111,7 @@ msgstr ""
 "istý tým, čo chcete urobiť.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:602
+#: src/cmdline/cmdline_prompt.cc:518
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1150,7 +1120,7 @@ msgstr ""
 "*** UPOZORNENIE ***   Ignorujú sa uvedené pravidlá dôvery, pretože\n"
 "                      %s::CmdLine::Ignore-Trust-Violations je „zapnuté“!\n"
 
-#: src/cmdline/cmdline_prompt.cc:611
+#: src/cmdline/cmdline_prompt.cc:527
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1163,7 +1133,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:538
 msgid "Go ahead and ignore the warning|Yes"
 msgstr "ano"
 
@@ -1172,99 +1142,99 @@ msgstr "ano"
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:628
+#: src/cmdline/cmdline_prompt.cc:544
 msgid "Abort instead of overriding the warning|No"
 msgstr "nie"
 
-#: src/cmdline/cmdline_prompt.cc:639
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Chcete ignorovať toto upozornenie a napriek tomu pokračovať?\n"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:556
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "Ak chcete pokračovať, napíšte „%s“; ak ukončiť, zadajte „%s“: "
 
-#: src/cmdline/cmdline_prompt.cc:657
+#: src/cmdline/cmdline_prompt.cc:573
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Nerozpoznaný vstup. Zadajte buď  „%s“ alebo „%s“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:772
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Nasledujúce balíky sú ODPORÚČANÉ, ale NEBUDÚ sa inštalovať:\n"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Nasledujúce balíky sú NAVRHOVANÉ, ale NEBUDÚ sa inštalovať:\n"
 
-#: src/cmdline/cmdline_prompt.cc:783
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Žiadne balíky sa nebudú inštalovať, aktualizovať alebo odstraňovať.\n"
 
-#: src/cmdline/cmdline_prompt.cc:785
+#: src/cmdline/cmdline_prompt.cc:701
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu balíkov aktualizovaných, %lu nových nainštalovaných, "
 
-#: src/cmdline/cmdline_prompt.cc:789
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu preinštalovaných, "
 
-#: src/cmdline/cmdline_prompt.cc:791
+#: src/cmdline/cmdline_prompt.cc:707
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu degradovaných, "
 
-#: src/cmdline/cmdline_prompt.cc:793
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu na odstránenie a %lu neaktualizovaných.\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:716
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Treba stiahnuť %sB/%sB archívov. "
 
-#: src/cmdline/cmdline_prompt.cc:803
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Treba stiahnuť %sB archívov. "
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:726
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Po rozbalení sa použije %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:813
+#: src/cmdline/cmdline_prompt.cc:729
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Po rozbalení sa uvoľní %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:750
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Nie je čo zobraziť -- zadajte názvy balíkov na riadok za „i“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:840
+#: src/cmdline/cmdline_prompt.cc:756
 msgid "Press Return to continue."
 msgstr "Pokračovanie stlačením klávesu Enter."
 
-#: src/cmdline/cmdline_prompt.cc:851
+#: src/cmdline/cmdline_prompt.cc:767
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Nenašli sa žiadne balíky -- zadajte názvy balíkov na riadok za „c“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:855
+#: src/cmdline/cmdline_prompt.cc:771
 msgid "Press Return to continue"
 msgstr "Pokračovanie stlačením klávesu Enter"
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:781
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1273,30 +1243,30 @@ msgstr ""
 "Neboli nájdené žiadne balíky -- zadajte nula alebo viac koreňov vyhľadávania "
 "a následne názov balíka, ktorý sa má posúdiť.\n"
 
-#: src/cmdline/cmdline_prompt.cc:890
+#: src/cmdline/cmdline_prompt.cc:806
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:892
+#: src/cmdline/cmdline_prompt.cc:808
 msgid "continue with the installation"
 msgstr "pokračovať v inštalovaní"
 
-#: src/cmdline/cmdline_prompt.cc:894
+#: src/cmdline/cmdline_prompt.cc:810
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:812
 msgid "abort and quit"
 msgstr "prerušiť a skončiť"
 
-#: src/cmdline/cmdline_prompt.cc:898
+#: src/cmdline/cmdline_prompt.cc:814
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:900
+#: src/cmdline/cmdline_prompt.cc:816
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1304,12 +1274,12 @@ msgstr ""
 "zobraziť informácie o jednom alebo viacerých balíkoch; názvy balíkov by mali "
 "nasledovať za „i“"
 
-#: src/cmdline/cmdline_prompt.cc:902
+#: src/cmdline/cmdline_prompt.cc:818
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:904
+#: src/cmdline/cmdline_prompt.cc:820
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1317,39 +1287,39 @@ msgstr ""
 "zobraziť Debian záznamy zmien jedného alebo viacerých balíkov; názvy balíkov "
 "by mali nasledovať za „c“"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:822
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:908
+#: src/cmdline/cmdline_prompt.cc:824
 msgid "toggle the display of dependency information"
 msgstr "prepnúť zobrazenie informácií o závislostiach"
 
-#: src/cmdline/cmdline_prompt.cc:910
+#: src/cmdline/cmdline_prompt.cc:826
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:912
+#: src/cmdline/cmdline_prompt.cc:828
 msgid "toggle the display of changes in package sizes"
 msgstr "prepnúť zobrazenie zmien vo veľkostiach balíčkov"
 
-#: src/cmdline/cmdline_prompt.cc:914
+#: src/cmdline/cmdline_prompt.cc:830
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:916
+#: src/cmdline/cmdline_prompt.cc:832
 msgid "toggle the display of version numbers"
 msgstr "prepnúť zobrazenie čísel verzií"
 
-#: src/cmdline/cmdline_prompt.cc:918
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:920
+#: src/cmdline/cmdline_prompt.cc:836
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1357,26 +1327,26 @@ msgstr ""
 "pokus o nájdenie dôvodu na inštaláciu jednotlivého balíka alebo vysvetlenie, "
 "prečo by inštalovanie jedného balíka malo viesť k inštalácii iného balíka."
 
-#: src/cmdline/cmdline_prompt.cc:923
+#: src/cmdline/cmdline_prompt.cc:839
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:925
+#: src/cmdline/cmdline_prompt.cc:841
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "spustiť automatické riešenie závislostí na vyriešenie pokazených závislostí."
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:843
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:929
+#: src/cmdline/cmdline_prompt.cc:845
 msgid "enter the full visual interface"
 msgstr "prejsť na vizuálne rozhranie"
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:848
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1388,53 +1358,53 @@ msgstr ""
 "balíkov (alebo vzorov). Operácia sa vykoná na všetkých balíkoch, ktoré "
 "zadáte. Dostupné sú nasledujúce operácie:"
 
-#: src/cmdline/cmdline_prompt.cc:939 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:208
 msgid "'+' to install packages"
 msgstr "„+“ na inštaláciu balíkov"
 
-#: src/cmdline/cmdline_prompt.cc:942 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "„+M“ na inštaláciu balíkov a ich okamžité označenie ako automaticky "
 "inštalované"
 
-#: src/cmdline/cmdline_prompt.cc:944 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:212
 msgid "'-' to remove packages"
 msgstr "„-“ na odstránenie balíkov"
 
-#: src/cmdline/cmdline_prompt.cc:946 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:214
 msgid "'_' to purge packages"
 msgstr "„_“ na zabudnutie balíkov"
 
-#: src/cmdline/cmdline_prompt.cc:948 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:216
 msgid "'=' to place packages on hold"
 msgstr "„=“ na ponechanie balíkov v aktuálnej verzii"
 
-#: src/cmdline/cmdline_prompt.cc:950 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:218
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "„:“ na uchovanie balíkov v ich aktuálnom stave bez zmeny ich stavu na "
 "Ponechať"
 
-#: src/cmdline/cmdline_prompt.cc:952 src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:220
 msgid "'&M' to mark packages as automatically installed"
 msgstr "„&M“ na označenie balíkov ako automaticky nainštalovaných"
 
-#: src/cmdline/cmdline_prompt.cc:954 src/cmdline/cmdline_resolver.cc:222
+#: src/cmdline/cmdline_prompt.cc:870 src/cmdline/cmdline_resolver.cc:222
 msgid "'&m' to mark packages as manually installed"
 msgstr "„&m“ na označenie balíkov ako manuálne nainštalovaných"
 
-#: src/cmdline/cmdline_prompt.cc:956
+#: src/cmdline/cmdline_prompt.cc:872
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "„&BD“ nainštaluje závislosti pre zostavenie balíka."
 
-#: src/cmdline/cmdline_prompt.cc:960
+#: src/cmdline/cmdline_prompt.cc:876
 msgid "Commands:"
 msgstr "Príkazy:"
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:985
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1442,20 +1412,20 @@ msgstr ""
 "aptitude sa nepodarilo nájsť riešenie týchto závislostí. Môžete ich sami "
 "vyriešiť ručne alebo ukončiť napísaním „n“."
 
-#: src/cmdline/cmdline_prompt.cc:1087
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Chcete pokračovať? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1088
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Riešiť tieto poškodené závislosti ručne? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1106
+#: src/cmdline/cmdline_prompt.cc:1022
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Chybná odpoveď. Zadajte platný príkaz alebo zobrazte pomocníka zadaním „?“.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1112
+#: src/cmdline/cmdline_prompt.cc:1028
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1463,7 +1433,7 @@ msgstr ""
 "Zadajte príkaz správy balíkov (ako „+ balík“ na inštaláciu balíka), „R“ pre "
 "pokus o automatické riešenie závislostí alebo „N“ pre prerušenie."
 
-#: src/cmdline/cmdline_prompt.cc:1143
+#: src/cmdline/cmdline_prompt.cc:1059
 #, c-format
 msgid ""
 "\n"
@@ -1474,7 +1444,7 @@ msgstr ""
 "Zobrazia sa informácie o závislostiach.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1145
+#: src/cmdline/cmdline_prompt.cc:1061
 #, c-format
 msgid ""
 "\n"
@@ -1485,7 +1455,7 @@ msgstr ""
 "Informácie o závislostiach sa nezobrazia.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1151
+#: src/cmdline/cmdline_prompt.cc:1067
 #, c-format
 msgid ""
 "\n"
@@ -1496,7 +1466,7 @@ msgstr ""
 "Verzie sa zobrazia.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1153
+#: src/cmdline/cmdline_prompt.cc:1069
 #, c-format
 msgid ""
 "\n"
@@ -1507,7 +1477,7 @@ msgstr ""
 "Verzie sa nezobrazia.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1158
+#: src/cmdline/cmdline_prompt.cc:1074
 #, c-format
 msgid ""
 "\n"
@@ -1518,7 +1488,7 @@ msgstr ""
 "Zobrazia sa zmeny veľkostí.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1076
 #, c-format
 msgid ""
 "\n"
@@ -1796,17 +1766,42 @@ msgstr "iconv %s zlyhal.\n"
 msgid "search: You must provide at least one search term\n"
 msgstr "search: Musíte zadať aspoň jeden hľadaný výraz\n"
 
-#: src/cmdline/cmdline_show_broken.cc:86
+#: src/cmdline/cmdline_show_broken.cc:72
+#, c-format
+msgid "but %s is to be installed."
+msgstr "ale %s sa bude inštalovať."
+
+#: src/cmdline/cmdline_show_broken.cc:75
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "ale %s je nainštalovaný a je ponechaný v aktuálnom stave."
+
+#: src/cmdline/cmdline_show_broken.cc:78
+#, c-format
+msgid "but %s is installed."
+msgstr "ale %s nie je inštalovaný."
+
+#: src/cmdline/cmdline_show_broken.cc:85
 #, c-format
 msgid "but it is not installable."
 msgstr "ale nedá sa nainštalovať."
 
-#: src/cmdline/cmdline_show_broken.cc:88
+#: src/cmdline/cmdline_show_broken.cc:87
 #, c-format
 msgid "but it is not going to be installed."
 msgstr "ale nebude sa inštalovať."
 
-#: src/cmdline/cmdline_show_broken.cc:119
+#: src/cmdline/cmdline_show_broken.cc:92
+#, c-format
+msgid " which is a virtual package."
+msgstr " čo je virtuálny balík."
+
+#: src/cmdline/cmdline_show_broken.cc:95
+#, c-format
+msgid " or"
+msgstr " alebo"
+
+#: src/cmdline/cmdline_show_broken.cc:118
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "Nasledujúce balíky majú nesplnené závislosti:\n"
@@ -7651,6 +7646,9 @@ msgstr "Sťahuje sa záznam zmien (changelog)"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Stiahnuť Changelog"
+
+#~ msgid "but it is not installable"
+#~ msgstr "ale nedá sa nainštalovať"
 
 #~ msgid "The \"upgrade\" command is now named \"safe-upgrade\"."
 #~ msgstr "Príkaz „upgrade“ je teraz pomenovaný „safe-upgrade“."

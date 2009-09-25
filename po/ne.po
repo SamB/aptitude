@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ne\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-24 19:40-0700\n"
+"POT-Creation-Date: 2009-09-24 19:59-0700\n"
 "PO-Revision-Date: 2007-08-05 17:09+0545\n"
 "Last-Translator: Nabin Gautam <nabin@mpp.org.np>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -921,95 +921,65 @@ msgstr "स्रोतहरुको सूचि पढ्न सकिदै
 msgid "Config files"
 msgstr "कनफिगरेसन-फाइलहरू"
 
-#: src/cmdline/cmdline_prompt.cc:426 src/cmdline/cmdline_show_broken.cc:73
-#, c-format
-msgid "but %s is to be installed."
-msgstr "तर  %s स्थापना हुनुपर्छ ।"
-
-#: src/cmdline/cmdline_prompt.cc:429 src/cmdline/cmdline_show_broken.cc:76
-#, c-format
-msgid "but %s is installed and it is kept back."
-msgstr "%s स्थापना भयो तर यो पछाडि राखियो ।"
-
-#: src/cmdline/cmdline_prompt.cc:432 src/cmdline/cmdline_show_broken.cc:79
-#, c-format
-msgid "but %s is installed."
-msgstr "तर %s स्थापना भयो ।"
-
-#: src/cmdline/cmdline_prompt.cc:436
-#, c-format
-msgid "but it is not installable"
-msgstr "तर यो स्थापना योग्य छैन"
-
-#: src/cmdline/cmdline_prompt.cc:440 src/cmdline/cmdline_show_broken.cc:93
-#, c-format
-msgid " which is a virtual package."
-msgstr "कुन अवास्तविक प्याकेज हो ।"
-
-#: src/cmdline/cmdline_prompt.cc:443 src/cmdline/cmdline_show_broken.cc:96
-#, c-format
-msgid " or"
-msgstr " वा"
-
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:373
 msgid "The following packages are BROKEN:"
 msgstr "निम्न प्याकेजहरू विच्छेदन भयो:"
 
-#: src/cmdline/cmdline_prompt.cc:458
+#: src/cmdline/cmdline_prompt.cc:374
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "निम्न प्याकेजहरू प्रयोग नभएकोले हटाइनेछ: "
 
-#: src/cmdline/cmdline_prompt.cc:459
+#: src/cmdline/cmdline_prompt.cc:375
 msgid "The following packages have been automatically kept back:"
 msgstr "निम्न प्याकेजहरू स्वत: पछाडि राखियो:"
 
-#: src/cmdline/cmdline_prompt.cc:460
+#: src/cmdline/cmdline_prompt.cc:376
 msgid "The following NEW packages will be automatically installed:"
 msgstr "निम्न नयाँ प्याकेजहरू स्वत: स्थापना हुनेछ:"
 
-#: src/cmdline/cmdline_prompt.cc:461
+#: src/cmdline/cmdline_prompt.cc:377
 msgid "The following packages will be automatically REMOVED:"
 msgstr "निम्न प्याकेजहरू स्वत: हट्नेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:462
+#: src/cmdline/cmdline_prompt.cc:378
 msgid "The following packages will be DOWNGRADED:"
 msgstr "निम्न प्याकेजहरू स्तरकम हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:463
+#: src/cmdline/cmdline_prompt.cc:379
 msgid "The following packages have been kept back:"
 msgstr "निम्न प्याकेजहरू पछाडि राखियो:"
 
-#: src/cmdline/cmdline_prompt.cc:464
+#: src/cmdline/cmdline_prompt.cc:380
 msgid "The following packages will be REINSTALLED:"
 msgstr "निम्न प्याकेजहरू पुन:स्थापित हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:465
+#: src/cmdline/cmdline_prompt.cc:381
 msgid "The following NEW packages will be installed:"
 msgstr "निम्न नयाँ प्याकेजहरू स्थापित हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:466
+#: src/cmdline/cmdline_prompt.cc:382
 msgid "The following packages will be REMOVED:"
 msgstr "निम्न प्याकेजहरू हटाइनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:467
+#: src/cmdline/cmdline_prompt.cc:383
 msgid "The following packages will be upgraded:"
 msgstr "निम्न प्याकेजहरू स्तरवृद्धि हुनेछन्:"
 
-#: src/cmdline/cmdline_prompt.cc:468
+#: src/cmdline/cmdline_prompt.cc:384
 msgid "The following partially installed packages will be configured:"
 msgstr "निम्न आंशिक स्थपना गरिएका प्याकेज कन्फिगर गरिने छन् ।"
 
-#: src/cmdline/cmdline_prompt.cc:523 src/ui.cc:1510
+#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1510
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "निम्न आवश्यक प्याकेजहरू हटाइनेछन्!\n"
 
-#: src/cmdline/cmdline_prompt.cc:532 src/ui.cc:1525
+#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1525
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "निम्न आवश्यक प्याकेजहरू यो कार्य द्वारा विच्छेदन हुनेछन्:\n"
 
-#: src/cmdline/cmdline_prompt.cc:542 src/ui.cc:1538
+#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1538
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1018,16 +988,16 @@ msgstr ""
 "चेतावनी: यो कार्य सम्पादन गर्नाले सम्भवत: तपाईँको प्रणाली विच्छेदन गर्नेछ!\n"
 "        तपाईँ के गर्दै हुनुहुन्छ यथार्थ नभएसम्म निरन्तरता नदिनुहोस्!\n"
 
-#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_prompt.cc:460
 msgid "I am aware that this is a very bad idea"
 msgstr "यो धेरै खराब विचारमा म सावधान छु "
 
-#: src/cmdline/cmdline_prompt.cc:548 src/ui.cc:1539
+#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1539
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "निरन्तरता दिन, वाक्यांश टाइप गर्नुहोस् \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:590
+#: src/cmdline/cmdline_prompt.cc:506
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1044,7 +1014,7 @@ msgstr ""
 ", तपाईँ स्थापना संगै प्रक्रिया गर्नुहोस् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:602
+#: src/cmdline/cmdline_prompt.cc:518
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1053,7 +1023,7 @@ msgstr ""
 "*** चेतावनी ***   यी विश्वासहरू उलङ्गन गर्न उपेक्षा गरिदैछ किनभने\n"
 "                  %s::CmdLine::विश्वास उलङ्गन गर्न उपेक्षा गर्नु 'ट्रु' हो!\n"
 
-#: src/cmdline/cmdline_prompt.cc:611
+#: src/cmdline/cmdline_prompt.cc:527
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1066,7 +1036,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:622
+#: src/cmdline/cmdline_prompt.cc:538
 msgid "Go ahead and ignore the warning|Yes"
 msgstr ""
 
@@ -1075,99 +1045,99 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:628
+#: src/cmdline/cmdline_prompt.cc:544
 msgid "Abort instead of overriding the warning|No"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:639
+#: src/cmdline/cmdline_prompt.cc:555
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "के तपाईँ यो चेतावनीलाई उपेक्षा गर्नुहुन्छ र जे भए पनि प्रक्रिया गर्नुहुन्छ?\n"
 
-#: src/cmdline/cmdline_prompt.cc:640
+#: src/cmdline/cmdline_prompt.cc:556
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "निरन्तर गर्न, \"%s\" प्रविष्ट गर्नुहोस्; परित्याग गर्न, \"%s\" प्रविष्ट गर्नुहोस्:"
 
-#: src/cmdline/cmdline_prompt.cc:657
+#: src/cmdline/cmdline_prompt.cc:573
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "नचिनेको आगत ।  या \"%s\" वा \"%s\" प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:772
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "निम्न प्याकेजहरू सिफारिस गरिएका छन् तर स्थापना हुनेछैन:\n"
 
-#: src/cmdline/cmdline_prompt.cc:778
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "निम्न प्याकेजहरूलाई सुझाब गरिएका छन् तर स्थापना हुनेछैन:\n"
 
-#: src/cmdline/cmdline_prompt.cc:783
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "कुनै प्याकेजहरू स्थापना हुने छैन, स्तरवृद्धि भयो, वा हटाइयो ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:785
+#: src/cmdline/cmdline_prompt.cc:701
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu प्याकेजहरू स्तरवृद्धि गरियो, %lu नयाँ स्थापना गरियो,"
 
-#: src/cmdline/cmdline_prompt.cc:789
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu पुन: स्थापना गरियो,"
 
-#: src/cmdline/cmdline_prompt.cc:791
+#: src/cmdline/cmdline_prompt.cc:707
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu स्तरकम गरियो, "
 
-#: src/cmdline/cmdline_prompt.cc:793
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu हटाउन र %lu स्तरवृद्धि गरिएन ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:800
+#: src/cmdline/cmdline_prompt.cc:716
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "संग्रहहरुको %sB/%sB प्राप्त गर्न आवश्यक छ । "
 
-#: src/cmdline/cmdline_prompt.cc:803
+#: src/cmdline/cmdline_prompt.cc:719
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "संग्रहहरुको %sB प्राप्त गर्न आवश्यक छ । "
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:726
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "प्याक गरेपछि %sB प्रयोग हुनेछन् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:813
+#: src/cmdline/cmdline_prompt.cc:729
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "प्याक गरेपछि %sB खाली हुनेछन् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:750
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "देखाउन कुनै प्याकेजहरू छैन -- 'i' पछि रेखामा प्याकेज नाम प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:840
+#: src/cmdline/cmdline_prompt.cc:756
 msgid "Press Return to continue."
 msgstr "निरन्तरता दिन 'फर्कनुहोस्' थिच्नुहोस् ।"
 
-#: src/cmdline/cmdline_prompt.cc:851
+#: src/cmdline/cmdline_prompt.cc:767
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "कुनै प्याकेजहरू फेला परेन -- 'c' पछि रेखामा प्याकेज नाम प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:855
+#: src/cmdline/cmdline_prompt.cc:771
 msgid "Press Return to continue"
 msgstr "निरन्तरता दिन 'फर्कनुहोस्' थिच्नुहोस् "
 
-#: src/cmdline/cmdline_prompt.cc:865
+#: src/cmdline/cmdline_prompt.cc:781
 #, fuzzy, c-format
 #| msgid ""
 #| "No packages found -- enter zero or more roots of the search followed by "
@@ -1179,41 +1149,41 @@ msgstr ""
 "प्याकेज फेला परेन -- समर्थन गर्न प्याकेजद्वारा अनुगमन गरिएका खोजीको शून्य वा अरू मुल "
 "प्रविष्ट गर्नुहोस् ।"
 
-#: src/cmdline/cmdline_prompt.cc:890
+#: src/cmdline/cmdline_prompt.cc:806
 #, c-format
 msgid "y: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:892
+#: src/cmdline/cmdline_prompt.cc:808
 msgid "continue with the installation"
 msgstr "स्थापना सँग निरन्तरता दिनुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:894
+#: src/cmdline/cmdline_prompt.cc:810
 #, c-format
 msgid "n: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:896
+#: src/cmdline/cmdline_prompt.cc:812
 msgid "abort and quit"
 msgstr "परित्याग गर्नुहोस् र बन्द गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:898
+#: src/cmdline/cmdline_prompt.cc:814
 #, c-format
 msgid "i: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:900
+#: src/cmdline/cmdline_prompt.cc:816
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "एउटा वा धेरै प्याकेजहरू बारे सूचना देखाउनुहोस्; प्याकेज नामहरुले 'i' लाई पछ्याउँदछ"
 
-#: src/cmdline/cmdline_prompt.cc:902
+#: src/cmdline/cmdline_prompt.cc:818
 #, c-format
 msgid "c: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:904
+#: src/cmdline/cmdline_prompt.cc:820
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1221,39 +1191,39 @@ msgstr ""
 "एउटा वा धेरै प्याकेजहरुको डेवियन परिवर्तन लगहरू देखाउनुहोस्; प्याकेज नामहरुले 'c' लाई "
 "पछ्याउँदछ"
 
-#: src/cmdline/cmdline_prompt.cc:906
+#: src/cmdline/cmdline_prompt.cc:822
 #, c-format
 msgid "d: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:908
+#: src/cmdline/cmdline_prompt.cc:824
 msgid "toggle the display of dependency information"
 msgstr "निर्भरता सूचनाको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:910
+#: src/cmdline/cmdline_prompt.cc:826
 #, c-format
 msgid "s: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:912
+#: src/cmdline/cmdline_prompt.cc:828
 msgid "toggle the display of changes in package sizes"
 msgstr "प्याकेज साइजहरुमा परिवर्तनको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:914
+#: src/cmdline/cmdline_prompt.cc:830
 #, c-format
 msgid "v: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:916
+#: src/cmdline/cmdline_prompt.cc:832
 msgid "toggle the display of version numbers"
 msgstr "संस्करण नम्बरहरुको प्रदर्शन टगल गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:918
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "w: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:920
+#: src/cmdline/cmdline_prompt.cc:836
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1261,25 +1231,25 @@ msgstr ""
 "एकल प्याकेज स्थापनाको कारण फेला पार्ने प्रयास गर्नुहोस्, वा किन एक प्याकेज स्थापनाले अन्य "
 "प्याकेज स्थापनामा नेतृत्व गर्नुपर्दछ ब्याख्या गर्नुहोस् ।"
 
-#: src/cmdline/cmdline_prompt.cc:923
+#: src/cmdline/cmdline_prompt.cc:839
 #, c-format
 msgid "r: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:925
+#: src/cmdline/cmdline_prompt.cc:841
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:927
+#: src/cmdline/cmdline_prompt.cc:843
 #, c-format
 msgid "e: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:929
+#: src/cmdline/cmdline_prompt.cc:845
 msgid "enter the full visual interface"
 msgstr "पुरा दृश्यात्मक इन्टरफेस प्रविष्ट गर्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:932
+#: src/cmdline/cmdline_prompt.cc:848
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1290,74 +1260,74 @@ msgstr ""
 "एउटा वा धेरै प्याकेज नामहरु (वा बान्कीहरू) ले पछ्याएको एउटा कार्य क्यारेक्टर टाइप गर्नुहोस् "
 "। यो कार्यले तपाईँले सूचि गर्नु भएको सबै प्याकेजहरुलाई लागू गर्नेछ । निम्न कार्यहरू उपलब्ध छन्:"
 
-#: src/cmdline/cmdline_prompt.cc:939 src/cmdline/cmdline_resolver.cc:208
+#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:208
 msgid "'+' to install packages"
 msgstr "'+' प्याकेजहरू स्थापना गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:942 src/cmdline/cmdline_resolver.cc:210
+#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:210
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' प्याकेजहरू स्थापना गर्न र तत्काल तिनीहरुलाई स्वत: स्थापित भएको रुपमा झुण्डयाउने गर्दछ"
 
-#: src/cmdline/cmdline_prompt.cc:944 src/cmdline/cmdline_resolver.cc:212
+#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:212
 msgid "'-' to remove packages"
 msgstr "'-' प्याकेजहरू हटाउन"
 
-#: src/cmdline/cmdline_prompt.cc:946 src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:214
 msgid "'_' to purge packages"
 msgstr "'-' प्याकेजहरू निर्मल गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:948 src/cmdline/cmdline_resolver.cc:216
+#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:216
 msgid "'=' to place packages on hold"
 msgstr "'=' समाउनेमा प्याकेजहरू राख्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:950 src/cmdline/cmdline_resolver.cc:218
+#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:218
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' समाउनेमा प्याकेजहरुलाई स्थान्तरण नगरी हालको अवास्था राख्नुहोस्"
 
-#: src/cmdline/cmdline_prompt.cc:952 src/cmdline/cmdline_resolver.cc:220
+#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:220
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' प्याकेजहरू म्यानुल्ली स्थापना भएकोमा चिनो गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:954 src/cmdline/cmdline_resolver.cc:222
+#: src/cmdline/cmdline_prompt.cc:870 src/cmdline/cmdline_resolver.cc:222
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&M' प्याकेजहरू म्यानुल्ली स्थापना भएकोमा चिनो गर्न"
 
-#: src/cmdline/cmdline_prompt.cc:956
+#: src/cmdline/cmdline_prompt.cc:872
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:960
+#: src/cmdline/cmdline_prompt.cc:876
 msgid "Commands:"
 msgstr "आदेशहरू:"
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:985
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1087
+#: src/cmdline/cmdline_prompt.cc:1003
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "के तपाईँ निरन्तर गर्न चाहनुहुन्छ ? [Y/n/?]"
 
-#: src/cmdline/cmdline_prompt.cc:1088
+#: src/cmdline/cmdline_prompt.cc:1004
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1106
+#: src/cmdline/cmdline_prompt.cc:1022
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "अवैध प्रतिक्रिया ।  कृपया मद्दतको लागि वैध आदेश वा '?' प्रविष्ट गर्नुहोस् ।\n"
 
-#: src/cmdline/cmdline_prompt.cc:1112
+#: src/cmdline/cmdline_prompt.cc:1028
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1143
+#: src/cmdline/cmdline_prompt.cc:1059
 #, c-format
 msgid ""
 "\n"
@@ -1368,7 +1338,7 @@ msgstr ""
 "निर्भरता सूचना देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1145
+#: src/cmdline/cmdline_prompt.cc:1061
 #, c-format
 msgid ""
 "\n"
@@ -1379,7 +1349,7 @@ msgstr ""
 "निर्भरता सूचना देखिने छैन ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1151
+#: src/cmdline/cmdline_prompt.cc:1067
 #, c-format
 msgid ""
 "\n"
@@ -1390,7 +1360,7 @@ msgstr ""
 "संस्करणहरू देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1153
+#: src/cmdline/cmdline_prompt.cc:1069
 #, c-format
 msgid ""
 "\n"
@@ -1401,7 +1371,7 @@ msgstr ""
 "संस्करणहरू देखिने छैन ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1158
+#: src/cmdline/cmdline_prompt.cc:1074
 #, c-format
 msgid ""
 "\n"
@@ -1412,7 +1382,7 @@ msgstr ""
 "साइज परिवर्तनहरू देखिने छन् ।\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1160
+#: src/cmdline/cmdline_prompt.cc:1076
 #, c-format
 msgid ""
 "\n"
@@ -1697,19 +1667,44 @@ msgstr "%s को iconv असफल भयो ।\n"
 msgid "search: You must provide at least one search term\n"
 msgstr "खोज्नुहोस्: तपाईँले कम्तिमा एउटा खोज शब्द उपलब्ध गर्नुहोस्\n"
 
-#: src/cmdline/cmdline_show_broken.cc:86
+#: src/cmdline/cmdline_show_broken.cc:72
+#, c-format
+msgid "but %s is to be installed."
+msgstr "तर  %s स्थापना हुनुपर्छ ।"
+
+#: src/cmdline/cmdline_show_broken.cc:75
+#, c-format
+msgid "but %s is installed and it is kept back."
+msgstr "%s स्थापना भयो तर यो पछाडि राखियो ।"
+
+#: src/cmdline/cmdline_show_broken.cc:78
+#, c-format
+msgid "but %s is installed."
+msgstr "तर %s स्थापना भयो ।"
+
+#: src/cmdline/cmdline_show_broken.cc:85
 #, fuzzy, c-format
 #| msgid "but it is not installable"
 msgid "but it is not installable."
 msgstr "तर यो स्थापना योग्य छैन"
 
-#: src/cmdline/cmdline_show_broken.cc:88
+#: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
 #| msgid "but %s is to be installed."
 msgid "but it is not going to be installed."
 msgstr "तर  %s स्थापना हुनुपर्छ ।"
 
-#: src/cmdline/cmdline_show_broken.cc:119
+#: src/cmdline/cmdline_show_broken.cc:92
+#, c-format
+msgid " which is a virtual package."
+msgstr "कुन अवास्तविक प्याकेज हो ।"
+
+#: src/cmdline/cmdline_show_broken.cc:95
+#, c-format
+msgid " or"
+msgstr " वा"
+
+#: src/cmdline/cmdline_show_broken.cc:118
 #, c-format
 msgid "The following packages have unmet dependencies:\n"
 msgstr "निम्न प्याकेजहरु संग अनुपयोक्त निर्भरताहरू छन्:\n"
@@ -7749,6 +7744,9 @@ msgstr "परिवर्तनलग डाउनलोड गर्दै"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "परिवर्तनलग डाउनलोड गर्नुहोस्"
+
+#~ msgid "but it is not installable"
+#~ msgstr "तर यो स्थापना योग्य छैन"
 
 #~ msgid "E: The %s command takes no arguments\n"
 #~ msgstr "E: यो %s आदेशले तर्क लिँदैन\n"
