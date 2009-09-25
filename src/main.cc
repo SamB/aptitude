@@ -161,6 +161,7 @@ static void usage()
   printf(_(" update       - Download lists of new/upgradable packages\n"));
   printf(_(" safe-upgrade - Perform a safe upgrade\n"));
   printf(_(" full-upgrade - Perform an upgrade, possibly installing and removing packages\n"));
+  printf(_(" build-dep    - Install the build-dependencies of packages\n"));
   printf(_(" forget-new   - Forget what packages are \"new\"\n"));
   printf(_(" search       - Search for a package by name and/or expression\n"));
   printf(_(" show         - Display detailed information about a package\n"));
