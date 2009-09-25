@@ -147,6 +147,15 @@ pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
 	      return ver;
 	  }
 
+      for(pkgCache::VerIterator ver = pkg.VersionList(); !ver.end(); ++ver)
+	for(pkgCache::VerFileIterator verfile = ver.FileList();
+	    !verfile.end(); ++verfile)
+	  {
+	    pkgCache::PkgFileIterator pkgfile = verfile.File();
+	    if(pkgfile.Codename() && sourcestr == pkgfile.Codename())
+	      return ver;
+	  }
+
       printf(_("Unable to find an archive \"%s\" for the package \"%s\"\n"),
 	     sourcestr.c_str(),
 	     pkg.Name());
