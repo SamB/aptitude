@@ -685,11 +685,14 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    the package by appending
 	    <literal>=<replaceable>version</replaceable></literal> to
 	    the package name; you can display the version from a
-	    particular archive by appending
-	    <literal>/<replaceable>archive</replaceable></literal> to
-	    the package name.  If either of these is present, then
-	    only the version you request will be displayed, regardless
-	    of the verbosity level.
+	    particular archive or release by appending
+	    <literal>/<replaceable>archive</replaceable></literal> or
+	    <literal>/<replaceable>release</replaceable></literal> to
+	    the package name: for instance,
+	    <literal>/unstable</literal> or <literal>/sid</literal>.
+	    If either of these is present, then only the version you
+	    request will be displayed, regardless of the verbosity
+	    level.
 	  </para>
 
 	  <para>
@@ -873,10 +876,14 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    By default, the changelog for the version which would be
 	    installed with <quote><literal>aptitude
 	    install</literal></quote> is downloaded.  You can select a
-	    particular version of a package by appending <literal>=<replaceable>version</replaceable></literal> to
+	    particular version of a package by appending
+	    <literal>=<replaceable>version</replaceable></literal> to
 	    the package name; you can select the version from a
-	    particular archive by appending <literal>/<replaceable>archive</replaceable></literal> to
-	    the package name.
+	    particular archive or release by appending
+	    <literal>/<replaceable>archive</replaceable></literal> or
+	    <literal>/<replaceable>release</replaceable></literal> to
+	    the package name (for instance,
+	    <literal>/unstable</literal> or <literal>/sid</literal>).
 	  </para>
 	</listitem>
       </varlistentry>
@@ -901,10 +908,14 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    By default, the version which would be installed with
 	    <quote><literal>aptitude install</literal></quote> is
 	    downloaded.  You can select a particular version of a
-	    package by appending <literal>=<replaceable>version</replaceable></literal> to
+	    package by appending
+	    <literal>=<replaceable>version</replaceable></literal> to
 	    the package name; you can select the version from a
-	    particular archive by appending <literal>/<replaceable>archive</replaceable></literal> to
-	    the package name.
+	    particular archive or release by appending
+	    <literal>/<replaceable>archive</replaceable></literal> or
+	    <literal>/<replaceable>release</replaceable></literal> to
+	    the package name (for instance:
+	    <literal>/unstable</literal> or <literal>/sid</literal>).
 	  </para>
 	</listitem>
       </varlistentry>
