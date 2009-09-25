@@ -15,8 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-/** Shows broken dependencies for a single package */
-static void show_broken_deps(pkgCache::PkgIterator pkg)
+void show_broken_deps(pkgCache::PkgIterator pkg)
 {
   unsigned int indent=strlen(pkg.Name())+3;
   bool is_first_dep=true;
