@@ -68,8 +68,8 @@ namespace
 	bool is_conflict = (it->Type == pkgSrcRecords::Parser::BuildConflictIndep ||
 			    it->Type == pkgSrcRecords::Parser::BuildConflict);
 
-	if(!arch_only && (it->Type == pkgSrcRecords::Parser::BuildDependIndep ||
-			  it->Type == pkgSrcRecords::Parser::BuildConflictIndep))
+	if(arch_only && (it->Type == pkgSrcRecords::Parser::BuildDependIndep ||
+			 it->Type == pkgSrcRecords::Parser::BuildConflictIndep))
 	  continue;
 
 	BuildDepList::const_iterator or_group_start = it;
