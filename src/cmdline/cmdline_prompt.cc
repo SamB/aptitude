@@ -433,7 +433,7 @@ static void show_broken_deps(pkgCache::PkgIterator pkg)
 			       target.CurrentVer().VerStr());
 		    }
 		  else
-		    printf(_("but it is not installable"));
+		    printf(_("but it is not going to be installed."));
 		}
 	      else
 		// FIXME: do something sensible here!
