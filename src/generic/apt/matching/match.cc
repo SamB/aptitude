@@ -35,6 +35,8 @@
 
 #include <algorithm>
 
+#include <boost/scoped_ptr.hpp>
+
 #include "serialize.h"
 
 using cwidget::util::transcode;
@@ -144,14 +146,14 @@ namespace aptitude
 	 *  matched by this pattern.
 	 */
 	bool maybe_contains_package(const pkgCache::PkgIterator &pkg,
-				    const ept::textsearch::TextSearch &db) const
+				    const boost::scoped_ptr<ept::textsearch::TextSearch> &db) const
 	{
-	  if(!matched_packages_valid)
+	  if(!matched_packages_valid || !db)
 	    return true;
 	  else
 	    return std::binary_search(matched_packages.begin(),
 				      matched_packages.end(),
-				      db.docidByName(pkg.Name()));
+				      db->docidByName(pkg.Name()));
 	}
 
 	xapian_info()
@@ -271,7 +273,9 @@ namespace aptitude
 	}
       };
 
-      ept::textsearch::TextSearch db;
+      // Either a pointer to the TextSearch object, or NULL if it
+      // couldn't be initialized.
+      boost::scoped_ptr<ept::textsearch::TextSearch> db;
 
       // Maps "top-level" patterns to their Xapian information (that
       // is, the corresponding query and/or query results).  Term hit
@@ -290,9 +294,17 @@ namespace aptitude
     public:
       implementation()
       {
+	try
+	  {
+	    db.reset(new ept::textsearch::TextSearch);
+	  }
+	catch(...)
+	  {
+	    db.reset();
+	  }
       }
 
-      const ept::textsearch::TextSearch &get_db() const
+      const boost::scoped_ptr<ept::textsearch::TextSearch> &get_db() const
       {
 	return db;
       }
@@ -331,8 +343,8 @@ namespace aptitude
 	if(debug)
 	  std::cout << "Searching for " << prefix << " as a term pefix." << std::endl;
 
-	Xapian::docid pkg_docid(db.docidByName(pkg.Name()));
-	const Xapian::Database xapian_db(db.db());
+	Xapian::docid pkg_docid(db->docidByName(pkg.Name()));
+	const Xapian::Database xapian_db(db->db());
 
 
 	const std::map<std::string, std::vector<Xapian::docid> >::iterator
@@ -398,7 +410,7 @@ namespace aptitude
 			const std::string &term,
 			bool debug)
       {
-	Xapian::docid pkg_docid(db.docidByName(pkg.Name()));
+	Xapian::docid pkg_docid(db->docidByName(pkg.Name()));
 
 	const std::map<std::string, std::vector<Xapian::docid> >::iterator
 	  found = matched_terms.find(term);
@@ -425,7 +437,7 @@ namespace aptitude
 	      {
 		const std::string &currTerm(**termIt);
 
-		Xapian::Database xapian_db(db.db());
+		Xapian::Database xapian_db(db->db());
 
 		Xapian::PostingIterator
 		  postingsBegin = xapian_db.postlist_begin(currTerm),
@@ -461,8 +473,10 @@ namespace aptitude
 	  {
 	    std::map<ref_ptr<pattern>, xapian_info>::iterator inserted =
 	      toplevel_xapian_info.insert(std::make_pair(toplevel, xapian_info())).first;
+
 	    xapian_info &rval(inserted->second);
-	    rval.setup(db.db(), toplevel, debug);
+	    if(db.get() != NULL)
+	      rval.setup(db->db(), toplevel, debug);
 
 	    return rval;
 	  }
