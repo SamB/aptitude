@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ne\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-08 20:38-0700\n"
+"POT-Creation-Date: 2009-09-24 19:40-0700\n"
 "PO-Revision-Date: 2007-08-05 17:09+0545\n"
 "Last-Translator: Nabin Gautam <nabin@mpp.org.np>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -812,7 +812,7 @@ msgid ""
 msgstr "निर्भरताहरू हल गर्न असक्षम भयो ।"
 
 #: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1068
+#: src/main.cc:1092
 #, c-format
 msgid "Abort.\n"
 msgstr "परित्याग गर्नुहोस् ।\n"
@@ -2002,60 +2002,60 @@ msgstr "%s को लागि कुनै उमेद्वार संस�
 msgid "No current or candidate version found for %s\n"
 msgstr "%s का लागि कुनै चालू अथवा प्रतिनिधि संस्करण फेला परेन\n"
 
-#: src/cmdline/cmdline_util.cc:150
+#: src/cmdline/cmdline_util.cc:159
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "प्याकेज \"%s\" को लागि एउटा संग्रह \"%s\" फेला पार्न असक्षम भयो\n"
 
-#: src/cmdline/cmdline_util.cc:160
+#: src/cmdline/cmdline_util.cc:169
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "प्याकेज \"%s\" को लागि एउटा संस्करण \"%s\" फेला पार्न असक्षम भयो\n"
 
-#: src/cmdline/cmdline_util.cc:166
+#: src/cmdline/cmdline_util.cc:175
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr "आन्तरिक त्रुटि: अवैध मान %i cmdline_find_ver मा पास भयो!\n"
 
-#: src/cmdline/cmdline_util.cc:196
+#: src/cmdline/cmdline_util.cc:205
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "तपाईँ प्याकेजको लागि एउटा संग्रह र एउटा संस्करण दुवै निर्दिष्ट गर्न सक्नुहुन्न\n"
 
-#: src/cmdline/cmdline_util.cc:294
+#: src/cmdline/cmdline_util.cc:303
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:308
+#: src/cmdline/cmdline_util.cc:317
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:322
+#: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:333
+#: src/cmdline/cmdline_util.cc:342
 #, c-format
 msgid "Current status: %F."
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:344
+#: src/cmdline/cmdline_util.cc:353
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:356
+#: src/cmdline/cmdline_util.cc:365
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
@@ -3469,13 +3469,13 @@ msgid ""
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:370
+#: src/gtk/changelog.cc:373
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "परिवर्तन लगहरू डाउनलोड गर्न URL प्रयोग गर्नुहोस्"
 
-#: src/gtk/changelog.cc:476
+#: src/gtk/changelog.cc:479
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3483,20 +3483,20 @@ msgid ""
 "is unknown."
 msgstr "तपाईँले आधिकारिक डेविएन प्याकेजहरुको परिवर्तनलग मात्र हर्न सक्नुहुन्छ ।"
 
-#: src/gtk/changelog.cc:480
+#: src/gtk/changelog.cc:483
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "तपाईँले आधिकारिक डेविएन प्याकेजहरुको परिवर्तनलग मात्र हर्न सक्नुहुन्छ ।"
 
-#: src/gtk/changelog.cc:500
+#: src/gtk/changelog.cc:503
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "परिवर्तनलग डाउनलोड गर्दै"
 
-#: src/gtk/changelog.cc:560
+#: src/gtk/changelog.cc:563
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -5208,38 +5208,46 @@ msgstr ""
 "\n"
 
 #: src/main.cc:153
-#, c-format
-msgid " install      - Install/upgrade packages\n"
+#, fuzzy, c-format
+#| msgid " install      - Install/upgrade packages\n"
+msgid " install      - Install/upgrade packages.\n"
 msgstr "स्थापना गर्नुहोस्        - प्याकेजहरू स्थापना/अद्यावधिक गर्नुहोस्\n"
 
 #: src/main.cc:154
-#, c-format
-msgid " remove       - Remove packages\n"
+#, fuzzy, c-format
+#| msgid " remove       - Remove packages\n"
+msgid " remove       - Remove packages.\n"
 msgstr "हटाउनुहोस्        प्याकेजहरू हटाउनुहोस्\n"
 
 #: src/main.cc:155
-#, c-format
-msgid " purge        - Remove packages and their configuration files\n"
+#, fuzzy, c-format
+#| msgid " purge        - Remove packages and their configuration files\n"
+msgid " purge        - Remove packages and their configuration files.\n"
 msgstr "निर्मल गर्नुहोस्          - प्याकेजहरू र तिनीहरुको कनफिगरेसन हटाउनुहोस्\n"
 
 #: src/main.cc:156
-#, c-format
-msgid " hold         - Place packages on hold\n"
+#, fuzzy, c-format
+#| msgid " hold         - Place packages on hold\n"
+msgid " hold         - Place packages on hold.\n"
 msgstr "समाउनुहोस्        समाउनेमा प्याकेजहरू सार्नुहोस्\n"
 
 #: src/main.cc:157
-#, c-format
-msgid " unhold       - Cancel a hold command for a package\n"
+#, fuzzy, c-format
+#| msgid " unhold       - Cancel a hold command for a package\n"
+msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr " unhold       - एउटा प्याकेजको लागि समातिएका आदेश रद्द गर्नुहोस्\n"
 
 #: src/main.cc:158
-#, c-format
-msgid " markauto     - Mark packages as having been automatically installed\n"
+#, fuzzy, c-format
+#| msgid ""
+#| " markauto     - Mark packages as having been automatically installed\n"
+msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr " markauto     - मार्क गरिएका प्याकेजहरू स्वत: स्थापना भयो\n"
 
 #: src/main.cc:159
-#, c-format
-msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, fuzzy, c-format
+#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr " unmarkauto   - मार्क गरिएका प्याकेजहरू म्यानुल्ली स्थापना भयो\n"
 
 #: src/main.cc:160
@@ -5250,68 +5258,88 @@ msgid ""
 msgstr "forbid-संस्करण - निर्दिष्ट प्याकेज संस्करणमा स्तरवृद्धिबाट Forbid झुकाब ।\n"
 
 #: src/main.cc:161
-#, c-format
-msgid " update       - Download lists of new/upgradable packages\n"
+#, fuzzy, c-format
+#| msgid " update       - Download lists of new/upgradable packages\n"
+msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr "अद्यावधिक गर्नुहोस्       नयाँ/स्तरवृद्धि गर्न सकिने प्याकेजहरू डाउनलोड गर्नुहोस्\n"
 
 #: src/main.cc:162
-#, c-format
-msgid " safe-upgrade - Perform a safe upgrade\n"
+#, fuzzy, c-format
+#| msgid " safe-upgrade - Perform a safe upgrade\n"
+msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr "सुरक्षित स्तरबृद्धि - सुरक्षित स्तरबृद्धि सम्पादन गर्नुहोस्\n"
 
 #: src/main.cc:163
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| " full-upgrade - Perform an upgrade, possibly installing and removing "
+#| "packages\n"
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
-"packages\n"
+"packages.\n"
 msgstr ""
 "पूरा स्तरबृद्धि - सम्भावित प्याकेज स्थापना गर्दा र हटाउँदा स्तरबृद्धि सम्पादन गर्नुहोस्\n"
 
 #: src/main.cc:164
 #, c-format
-msgid " forget-new   - Forget what packages are \"new\"\n"
-msgstr "नयाँ-बिर्सनुहोस्   - बिर्सने प्याकेज \"new\"\n"
+msgid " build-dep    - Install the build-dependencies of packages.\n"
+msgstr ""
 
 #: src/main.cc:165
-#, c-format
-msgid " search       - Search for a package by name and/or expression\n"
-msgstr "खोजी गर्नुहोस्      नाम र/वा अभिव्यक्ति द्वारा प्याकेजको खोजी गर्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " forget-new   - Forget what packages are \"new\"\n"
+msgid " forget-new   - Forget what packages are \"new\".\n"
+msgstr "नयाँ-बिर्सनुहोस्   - बिर्सने प्याकेज \"new\"\n"
 
 #: src/main.cc:166
-#, c-format
-msgid " show         - Display detailed information about a package\n"
-msgstr "देखाउनुहोस्            - एउटा प्याकेजको बारेमा विस्तृत जानकारी प्रदर्शन गर्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " search       - Search for a package by name and/or expression\n"
+msgid " search       - Search for a package by name and/or expression.\n"
+msgstr "खोजी गर्नुहोस्      नाम र/वा अभिव्यक्ति द्वारा प्याकेजको खोजी गर्नुहोस्\n"
 
 #: src/main.cc:167
-#, c-format
-msgid " clean        - Erase downloaded package files\n"
-msgstr " सफा गर्नुहोस्       - डाउनलोड गरिएको प्याकेज फाइलहरू मेट्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " show         - Display detailed information about a package\n"
+msgid " show         - Display detailed information about a package.\n"
+msgstr "देखाउनुहोस्            - एउटा प्याकेजको बारेमा विस्तृत जानकारी प्रदर्शन गर्नुहोस्\n"
 
 #: src/main.cc:168
-#, c-format
-msgid " autoclean    - Erase old downloaded package files\n"
-msgstr "स्वत सफा गर्नुहोस्   - पुरानो डाउनलोड गरिएका प्याकेज फाइलहरू मेट्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " clean        - Erase downloaded package files\n"
+msgid " clean        - Erase downloaded package files.\n"
+msgstr " सफा गर्नुहोस्       - डाउनलोड गरिएको प्याकेज फाइलहरू मेट्नुहोस्\n"
 
 #: src/main.cc:169
-#, c-format
-msgid " changelog    - View a package's changelog\n"
-msgstr " लग परिवर्तन गर्नुहोस्    - प्याकेजको लग परिवर्तन हेर्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " autoclean    - Erase old downloaded package files\n"
+msgid " autoclean    - Erase old downloaded package files.\n"
+msgstr "स्वत सफा गर्नुहोस्   - पुरानो डाउनलोड गरिएका प्याकेज फाइलहरू मेट्नुहोस्\n"
 
 #: src/main.cc:170
-#, c-format
-msgid " download     - Download the .deb file for a package\n"
-msgstr "डाउनलोड गर्नुहोस्    - एउटा प्याकेजको लागि deb फाइल डाउनलोड गर्नुहोस्\n"
+#, fuzzy, c-format
+#| msgid " changelog    - View a package's changelog\n"
+msgid " changelog    - View a package's changelog.\n"
+msgstr " लग परिवर्तन गर्नुहोस्    - प्याकेजको लग परिवर्तन हेर्नुहोस्\n"
 
 #: src/main.cc:171
-#, c-format
+#, fuzzy, c-format
+#| msgid " download     - Download the .deb file for a package\n"
+msgid " download     - Download the .deb file for a package.\n"
+msgstr "डाउनलोड गर्नुहोस्    - एउटा प्याकेजको लागि deb फाइल डाउनलोड गर्नुहोस्\n"
+
+#: src/main.cc:172
+#, fuzzy, c-format
+#| msgid ""
+#| " reinstall    - Download and (possibly) reinstall a currently installed "
+#| "package\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
-"package\n"
+"package.\n"
 msgstr ""
 "पुन:स्थापना गर्नुहोस्   - हालै स्थापना गरिएको एउटा प्याकेज डाउनलोड र (सम्भवत:) पुन:"
 "स्थापना गर्नुहोस्\n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5319,42 +5347,43 @@ msgid ""
 "                why one or more packages would require the given package\n"
 msgstr ""
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 "                with the given package, or why one or more packages would\n"
-"                lead to a conflict with the given package if installed\n"
+"                lead to a conflict with the given package if installed.\n"
 msgstr ""
 
-#: src/main.cc:178
+#: src/main.cc:179
 #, c-format
 msgid "  Options:\n"
 msgstr "  विकल्पहरू:\n"
 
-#: src/main.cc:179
-#, c-format
-msgid " -h             This help text\n"
+#: src/main.cc:180
+#, fuzzy, c-format
+#| msgid " -h             This help text\n"
+msgid " -h             This help text.\n"
 msgstr " -h             यो मद्दत पाठ\n"
 
-#: src/main.cc:180
+#: src/main.cc:182
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:181
+#: src/main.cc:184
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:182
+#: src/main.cc:185
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             कार्यहरू नक्कल गर्नुहोस्, तर तिनीहरुले साँच्चैकै सम्पादन गर्दैन ।\n"
 
-#: src/main.cc:183
+#: src/main.cc:186
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -5362,125 +5391,148 @@ msgstr ""
 " -d             प्याकेजहरू मात्र डाउनलोड गर्नुहोस्, केही पनि स्थापना गर्ने वा हटाउने "
 "कार्य नगर्नुहोस् ।\n"
 
-#: src/main.cc:184
-#, c-format
-msgid " -P             Always prompt for confirmation or actions\n"
+#: src/main.cc:187
+#, fuzzy, c-format
+#| msgid " -P             Always prompt for confirmation or actions\n"
+msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr " -P             यकिन वा कार्यहरुको लागि सधै प्रोम्प्ट गर्नुहोस्\n"
 
-#: src/main.cc:185
-#, c-format
+#: src/main.cc:188
+#, fuzzy, c-format
+#| msgid ""
+#| " -y             Assume that the answer to simple yes/no questions is "
+#| "'yes'\n"
 msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+" -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr " -y             मान्नुहोस् कि साधारण हो/होइन प्रश्नको उत्तर 'हो' हो\n"
 
-#: src/main.cc:186
-#, c-format
+#: src/main.cc:189
+#, fuzzy, c-format
+#| msgid ""
+#| " -F format      Specify a format for displaying search results; see the "
+#| "manual\n"
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
-"manual\n"
+"manual.\n"
 msgstr ""
 " -F ढाँचा         खोजी नतिजाहरू प्रदर्शन गर्नको लागि एउटा ढाँचा निर्दिष्ट गर्नुहोस्; "
 "म्यानुल हेर्नुहोस्\n"
 
-#: src/main.cc:187
-#, c-format
+#: src/main.cc:190
+#, fuzzy, c-format
+#| msgid ""
+#| " -O order       Specify how search results should be sorted; see the "
+#| "manual\n"
 msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+" -O order       Specify how search results should be sorted; see the "
+"manual.\n"
 msgstr ""
 " -O आदेश        कसरी खोजी नतिजाहरू क्रमबद्ध गर्ने निर्दिष्ट गर्नुहोस्, म्यानुल हेर्नुहोस्\n"
 
-#: src/main.cc:188
-#, c-format
+#: src/main.cc:191
+#, fuzzy, c-format
+#| msgid ""
+#| " -w width       Specify the display width for formatting search results\n"
 msgid ""
-" -w width       Specify the display width for formatting search results\n"
+" -w width       Specify the display width for formatting search results.\n"
 msgstr ""
 " -w चौडा         खोजी नतिजाहरू ढाँचाका लागि प्रदर्शन चौडाई निर्दिष्ट गर्नुहोस्\n"
 
-#: src/main.cc:189
+#: src/main.cc:192
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             आक्रमक ढंगले बिग्रेका प्याकेजहरू निश्चित गर्ने प्रयास गर्नुहोस् ।\n"
 
-#: src/main.cc:190
+#: src/main.cc:193
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             प्याकेजहरुको कुन संस्करणहरू स्थापना गर्ने देखाउनुहोस् ।\n"
 
-#: src/main.cc:191
+#: src/main.cc:194
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D              स्वत: परिवर्तन भएका प्याकेजहरुको निर्भरता देखाउनुहोस् ।\n"
 
-#: src/main.cc:192
+#: src/main.cc:195
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t     प्रत्येक प्याकेजको स्थापित साइजमा परिवर्तन देखाउनुहोस् ।\n"
 
-#: src/main.cc:193
-#, c-format
+#: src/main.cc:196
+#, fuzzy, c-format
+#| msgid ""
+#| " -v             Display extra information. (may be supplied multiple "
+#| "times)\n"
 msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+" -v             Display extra information. (may be supplied multiple "
+"times).\n"
 msgstr " -v             अन्य सूचना प्रदर्शन गर्नुहोस् । (बहुँविद समयमा आपूर्ति हुन सक्छ)\n"
 
-#: src/main.cc:194
-#, c-format
+#: src/main.cc:197
+#, fuzzy, c-format
+#| msgid ""
+#| " -t [release]   Set the release from which packages should be installed\n"
 msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+" -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [release]   स्थापना हुन लागेको प्याकेजहरू बाट विमोचन सेट गर्नुहोस्\n"
 
-#: src/main.cc:195
+#: src/main.cc:198
 #, fuzzy, c-format
 #| msgid ""
 #| " -q             In command-line mode, suppress the incremental progress "
 #| "indicators.\n"
 msgid ""
-" -q             In command-line mode, suppress the incremental progress\n"
+" -q             In command-line mode, suppress the incremental progress.\n"
 "                indicators.\n"
 msgstr " -q             आदेश-रेखा मोडमा, बढोत्तरीत प्रगति सूचकहरू रोक्नुहोस् ।\n"
 
-#: src/main.cc:197
-#, c-format
-msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#: src/main.cc:200
+#, fuzzy, c-format
+#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr " -o key=val     'कुञ्जी' नामकरण गरिएको कनफिगरेसन विकल्प सिधै सेट गर्नुहोस्\n"
 
-#: src/main.cc:198
-#, c-format
+#: src/main.cc:201
+#, fuzzy, c-format
+#| msgid ""
+#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
+#| "                strong dependencies\n"
 msgid ""
-" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-"                strong dependencies\n"
+" --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
+"                strong dependencies.\n"
 msgstr ""
 " --बिना -सिफारिस\t बलियो निर्भरता                     को रुपमा सिफारिसहरू\n"
 " पेश गर्ने नगर्ने निर्दिष्ट गर्नुहोस्\n"
 
-#: src/main.cc:200
+#: src/main.cc:203
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr "-s fname : fname बाट झुकाव विस्तारित वस्तुस्थिति सूचना पढ्नुहोस् ।\n"
 
-#: src/main.cc:201
+#: src/main.cc:204
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             सुरुवातमा नयाँ प्याकेज सूचिहरू डाउनलोड गर्नुहोस् ।\n"
 
-#: src/main.cc:202 src/main.cc:204
+#: src/main.cc:205 src/main.cc:207
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:203
+#: src/main.cc:206
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             सुरुवातमा एउटा स्थापना सञ्चालन सम्पादन गर्नुहोस् ।\n"
 
-#: src/main.cc:206
+#: src/main.cc:209
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  यो झुकाब संग सुपर काऊ शक्ति छैन ।\n"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:328
+#: src/main.cc:331
 #, fuzzy
 #| msgid "replaces"
 msgid "trace"
@@ -5488,13 +5540,13 @@ msgstr "बदल्छ"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:331
+#: src/main.cc:334
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:334
+#: src/main.cc:337
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5502,13 +5554,13 @@ msgstr "होइन"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:337
+#: src/main.cc:340
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:340
+#: src/main.cc:343
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5516,84 +5568,84 @@ msgstr "Err "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:343
+#: src/main.cc:346
 #, fuzzy
 msgid "fatal"
 msgstr "बन्द गर्नुहोस्"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:346
+#: src/main.cc:349
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:416
+#: src/main.cc:419
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:429
+#: src/main.cc:432
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "अवैध सञ्चालन %s"
 
-#: src/main.cc:652
+#: src/main.cc:676
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "-q= पछि अपेक्षित एउटा नम्बर\n"
 
-#: src/main.cc:661
+#: src/main.cc:685
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "-q= पछि अपेक्षित एउटा नम्बर, %s प्राप्त गर्यो\n"
 
-#: src/main.cc:685
+#: src/main.cc:709
 #, fuzzy, c-format
 #| msgid "-o requires an argument of the form key=value, got %s"
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o लाई कुञ्जी=मानको रुपमा एउटा तर्कको आवश्यकता छ, %s प्राप्त गर्यो"
 
-#: src/main.cc:783
+#: src/main.cc:807
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:850 src/main.cc:859
+#: src/main.cc:874 src/main.cc:883
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "WEIRDNESS: अज्ञात विकल्प कोड प्राप्त भयो\n"
 
-#: src/main.cc:865
+#: src/main.cc:889
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:867
+#: src/main.cc:891
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "प्याकेज "
 
-#: src/main.cc:869
+#: src/main.cc:893
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:871
+#: src/main.cc:895
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "सबै प्याकेजहरू"
 
-#: src/main.cc:873
+#: src/main.cc:897
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:879
+#: src/main.cc:903
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5601,7 +5653,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:929
+#: src/main.cc:953
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -5609,7 +5661,7 @@ msgid ""
 "specified\n"
 msgstr "-u र -i को एउटा मात्रै निर्दिष्ट हुनेछ\n"
 
-#: src/main.cc:938
+#: src/main.cc:962
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -5618,23 +5670,23 @@ msgid ""
 "(eg, with 'install')"
 msgstr "आदेश-रेखा मोडमा -u र -i निर्दिष्ट हुने छैन (जस्तै, 'install' संगै)"
 
-#: src/main.cc:959
+#: src/main.cc:983
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "-u र -i आदेश संग निर्दिष्ट हुने छैन"
 
-#: src/main.cc:1061
+#: src/main.cc:1085
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "अज्ञात आदेश \"%s\"\n"
 
-#: src/main.cc:1073 src/main.cc:1141
+#: src/main.cc:1097 src/main.cc:1165
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "छोडिएको अपवाद: %s\n"
 
-#: src/main.cc:1077 src/main.cc:1145
+#: src/main.cc:1101 src/main.cc:1169
 #, fuzzy, c-format
 #| msgid ""
 #| "Backtrace:\n"

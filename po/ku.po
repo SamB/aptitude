@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-08 20:38-0700\n"
+"POT-Creation-Date: 2009-09-24 19:40-0700\n"
 "PO-Revision-Date: 2008-09-01 16:03+0200\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
 "Language-Team: Kurdish <ubuntu-l10n-kur@lists.ubuntu.com>\n"
@@ -769,7 +769,7 @@ msgid ""
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1068
+#: src/main.cc:1092
 #, c-format
 msgid "Abort.\n"
 msgstr "Dev jê berde.\n"
@@ -1898,60 +1898,60 @@ msgstr ""
 msgid "No current or candidate version found for %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:150
+#: src/cmdline/cmdline_util.cc:159
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:160
+#: src/cmdline/cmdline_util.cc:169
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:166
+#: src/cmdline/cmdline_util.cc:175
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:196
+#: src/cmdline/cmdline_util.cc:205
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:294
+#: src/cmdline/cmdline_util.cc:303
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:308
+#: src/cmdline/cmdline_util.cc:317
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:322
+#: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:333
+#: src/cmdline/cmdline_util.cc:342
 #, c-format
 msgid "Current status: %F."
 msgstr "Rewşa niha: %F"
 
-#: src/cmdline/cmdline_util.cc:344
+#: src/cmdline/cmdline_util.cc:353
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:356
+#: src/cmdline/cmdline_util.cc:365
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
@@ -3300,30 +3300,30 @@ msgid ""
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:370
+#: src/gtk/changelog.cc:373
 #, fuzzy, c-format
 #| msgid "Downloading "
 msgid "Failed to download the changelog: %s"
 msgstr "Tê daxistin "
 
-#: src/gtk/changelog.cc:476
+#: src/gtk/changelog.cc:479
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; the origin of %s "
 "is unknown."
 msgstr ""
 
-#: src/gtk/changelog.cc:480
+#: src/gtk/changelog.cc:483
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr ""
 
-#: src/gtk/changelog.cc:500
+#: src/gtk/changelog.cc:503
 msgid "Downloading changelog; please wait..."
 msgstr ""
 
-#: src/gtk/changelog.cc:560
+#: src/gtk/changelog.cc:563
 #, fuzzy
 #| msgid "Downloading "
 msgid "Downloading changelogs"
@@ -4922,38 +4922,40 @@ msgstr ""
 
 #: src/main.cc:153
 #, c-format
-msgid " install      - Install/upgrade packages\n"
+msgid " install      - Install/upgrade packages.\n"
 msgstr ""
 
 #: src/main.cc:154
-#, c-format
-msgid " remove       - Remove packages\n"
-msgstr ""
+#, fuzzy, c-format
+#| msgid "No broken packages."
+msgid " remove       - Remove packages.\n"
+msgstr "Pakêtên şikestî tune."
 
 #: src/main.cc:155
 #, c-format
-msgid " purge        - Remove packages and their configuration files\n"
+msgid " purge        - Remove packages and their configuration files.\n"
 msgstr ""
 
 #: src/main.cc:156
 #, c-format
-msgid " hold         - Place packages on hold\n"
+msgid " hold         - Place packages on hold.\n"
 msgstr ""
 
 #: src/main.cc:157
 #, c-format
-msgid " unhold       - Cancel a hold command for a package\n"
+msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr ""
 
 #: src/main.cc:158
-#, c-format
-msgid " markauto     - Mark packages as having been automatically installed\n"
-msgstr ""
+#, fuzzy, c-format
+#| msgid "Automatically Installed"
+msgid " markauto     - Mark packages as having been automatically installed.\n"
+msgstr "Bixweber hatiye sazkirin"
 
 #: src/main.cc:159
-#, c-format
-msgid " unmarkauto   - Mark packages as having been manually installed\n"
-msgstr ""
+#, fuzzy, c-format
+msgid " unmarkauto   - Mark packages as having been manually installed.\n"
+msgstr "Ev paketên NÛ dê werin sazkirin:"
 
 #: src/main.cc:160
 #, c-format
@@ -4964,64 +4966,69 @@ msgstr ""
 
 #: src/main.cc:161
 #, c-format
-msgid " update       - Download lists of new/upgradable packages\n"
+msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr ""
 
 #: src/main.cc:162
 #, c-format
-msgid " safe-upgrade - Perform a safe upgrade\n"
+msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr ""
 
 #: src/main.cc:163
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
-"packages\n"
+"packages.\n"
 msgstr ""
 
 #: src/main.cc:164
 #, c-format
-msgid " forget-new   - Forget what packages are \"new\"\n"
+msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
 #: src/main.cc:165
 #, c-format
-msgid " search       - Search for a package by name and/or expression\n"
+msgid " forget-new   - Forget what packages are \"new\".\n"
 msgstr ""
 
 #: src/main.cc:166
 #, c-format
-msgid " show         - Display detailed information about a package\n"
+msgid " search       - Search for a package by name and/or expression.\n"
 msgstr ""
 
 #: src/main.cc:167
 #, c-format
-msgid " clean        - Erase downloaded package files\n"
+msgid " show         - Display detailed information about a package.\n"
 msgstr ""
 
 #: src/main.cc:168
 #, c-format
-msgid " autoclean    - Erase old downloaded package files\n"
+msgid " clean        - Erase downloaded package files.\n"
 msgstr ""
 
 #: src/main.cc:169
 #, c-format
-msgid " changelog    - View a package's changelog\n"
+msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr ""
 
 #: src/main.cc:170
 #, c-format
-msgid " download     - Download the .deb file for a package\n"
+msgid " changelog    - View a package's changelog.\n"
 msgstr ""
 
 #: src/main.cc:171
 #, c-format
-msgid ""
-" reinstall    - Download and (possibly) reinstall a currently installed "
-"package\n"
+msgid " download     - Download the .deb file for a package.\n"
 msgstr ""
 
 #: src/main.cc:172
+#, c-format
+msgid ""
+" reinstall    - Download and (possibly) reinstall a currently installed "
+"package.\n"
+msgstr ""
+
+#: src/main.cc:173
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5029,157 +5036,159 @@ msgid ""
 "                why one or more packages would require the given package\n"
 msgstr ""
 
-#: src/main.cc:174
+#: src/main.cc:175
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 "                with the given package, or why one or more packages would\n"
-"                lead to a conflict with the given package if installed\n"
-msgstr ""
-
-#: src/main.cc:178
-#, c-format
-msgid "  Options:\n"
+"                lead to a conflict with the given package if installed.\n"
 msgstr ""
 
 #: src/main.cc:179
 #, c-format
-msgid " -h             This help text\n"
+msgid "  Options:\n"
 msgstr ""
 
 #: src/main.cc:180
+#, c-format
+msgid " -h             This help text.\n"
+msgstr ""
+
+#: src/main.cc:182
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:181
+#: src/main.cc:184
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:182
-#, c-format
-msgid " -s             Simulate actions, but do not actually perform them.\n"
-msgstr ""
-
-#: src/main.cc:183
-#, c-format
-msgid ""
-" -d             Only download packages, do not install or remove anything.\n"
-msgstr ""
-
-#: src/main.cc:184
-#, c-format
-msgid " -P             Always prompt for confirmation or actions\n"
-msgstr ""
-
 #: src/main.cc:185
 #, c-format
-msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 
 #: src/main.cc:186
 #, c-format
 msgid ""
-" -F format      Specify a format for displaying search results; see the "
-"manual\n"
+" -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 
 #: src/main.cc:187
 #, c-format
-msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr ""
 
 #: src/main.cc:188
 #, c-format
 msgid ""
-" -w width       Specify the display width for formatting search results\n"
+" -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr ""
 
 #: src/main.cc:189
 #, c-format
-msgid " -f             Aggressively try to fix broken packages.\n"
+msgid ""
+" -F format      Specify a format for displaying search results; see the "
+"manual.\n"
 msgstr ""
 
 #: src/main.cc:190
 #, c-format
-msgid " -V             Show which versions of packages are to be installed.\n"
+msgid ""
+" -O order       Specify how search results should be sorted; see the "
+"manual.\n"
 msgstr ""
 
 #: src/main.cc:191
 #, c-format
 msgid ""
-" -D             Show the dependencies of automatically changed packages.\n"
+" -w width       Specify the display width for formatting search results.\n"
 msgstr ""
 
 #: src/main.cc:192
 #, c-format
-msgid " -Z             Show the change in installed size of each package.\n"
+msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 
 #: src/main.cc:193
 #, c-format
-msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr ""
 
 #: src/main.cc:194
 #, c-format
 msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+" -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 
 #: src/main.cc:195
 #, c-format
+msgid " -Z             Show the change in installed size of each package.\n"
+msgstr ""
+
+#: src/main.cc:196
+#, c-format
 msgid ""
-" -q             In command-line mode, suppress the incremental progress\n"
-"                indicators.\n"
+" -v             Display extra information. (may be supplied multiple "
+"times).\n"
 msgstr ""
 
 #: src/main.cc:197
 #, c-format
-msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgid ""
+" -t [release]   Set the release from which packages should be installed.\n"
 msgstr ""
 
 #: src/main.cc:198
 #, c-format
 msgid ""
-" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-"                strong dependencies\n"
+" -q             In command-line mode, suppress the incremental progress.\n"
+"                indicators.\n"
 msgstr ""
 
 #: src/main.cc:200
 #, c-format
-msgid " -S fname       Read the aptitude extended status info from fname.\n"
+msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr ""
 
 #: src/main.cc:201
 #, c-format
-msgid " -u             Download new package lists on startup.\n"
-msgstr ""
-
-#: src/main.cc:202 src/main.cc:204
-#, c-format
-msgid "                  (terminal interface only)"
+msgid ""
+" --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
+"                strong dependencies.\n"
 msgstr ""
 
 #: src/main.cc:203
 #, c-format
-msgid " -i             Perform an install run on startup.\n"
+msgid " -S fname       Read the aptitude extended status info from fname.\n"
+msgstr ""
+
+#: src/main.cc:204
+#, c-format
+msgid " -u             Download new package lists on startup.\n"
+msgstr ""
+
+#: src/main.cc:205 src/main.cc:207
+#, c-format
+msgid "                  (terminal interface only)"
 msgstr ""
 
 #: src/main.cc:206
+#, c-format
+msgid " -i             Perform an install run on startup.\n"
+msgstr ""
+
+#: src/main.cc:209
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:328
+#: src/main.cc:331
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5187,13 +5196,13 @@ msgstr "rast"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:331
+#: src/main.cc:334
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:334
+#: src/main.cc:337
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5201,19 +5210,19 @@ msgstr "na"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:337
+#: src/main.cc:340
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:340
+#: src/main.cc:343
 msgid "error"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:343
+#: src/main.cc:346
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5221,75 +5230,75 @@ msgstr "şaş"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:346
+#: src/main.cc:349
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:416
+#: src/main.cc:419
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:429
+#: src/main.cc:432
 #, c-format
 msgid "Invalid logger name \"%s\"."
 msgstr ""
 
-#: src/main.cc:652
+#: src/main.cc:676
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr ""
 
-#: src/main.cc:661
+#: src/main.cc:685
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr ""
 
-#: src/main.cc:685
+#: src/main.cc:709
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr ""
 
-#: src/main.cc:783
+#: src/main.cc:807
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:850 src/main.cc:859
+#: src/main.cc:874 src/main.cc:883
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr ""
 
-#: src/main.cc:865
+#: src/main.cc:889
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:867
+#: src/main.cc:891
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Pakêt"
 
-#: src/main.cc:869
+#: src/main.cc:893
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:871
+#: src/main.cc:895
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Hemû Pakêt"
 
-#: src/main.cc:873
+#: src/main.cc:897
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:879
+#: src/main.cc:903
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5297,33 +5306,33 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:929
+#: src/main.cc:953
 msgid ""
 "Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be "
 "specified\n"
 msgstr ""
 
-#: src/main.cc:938
+#: src/main.cc:962
 msgid ""
 "-u, -i, and --clean-on-startup may not be specified in command-line mode "
 "(eg, with 'install')"
 msgstr ""
 
-#: src/main.cc:959
+#: src/main.cc:983
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr ""
 
-#: src/main.cc:1061
+#: src/main.cc:1085
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr ""
 
-#: src/main.cc:1073 src/main.cc:1141
+#: src/main.cc:1097 src/main.cc:1165
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:1077 src/main.cc:1145
+#: src/main.cc:1101 src/main.cc:1169
 #, c-format
 msgid ""
 "Backtrace:\n"

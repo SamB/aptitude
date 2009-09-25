@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-09-08 20:38-0700\n"
+"POT-Creation-Date: 2009-09-24 19:40-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -911,7 +911,7 @@ msgstr ""
 "chọn « --full-resolver » (bộ tháo gỡ đầy đủ).\n"
 
 #: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1068
+#: src/main.cc:1092
 #, c-format
 msgid "Abort.\n"
 msgstr "Hủy bỏ.\n"
@@ -2117,58 +2117,58 @@ msgstr "Không tìm thấy phiên bản ứng cử cho %s\n"
 msgid "No current or candidate version found for %s\n"
 msgstr "Không tìm thấy phiên bản ứng cử hoặc hiện thời cho %s\n"
 
-#: src/cmdline/cmdline_util.cc:150
+#: src/cmdline/cmdline_util.cc:159
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "Không tìm thấy kho « %s » cho gói « %s »\n"
 
-#: src/cmdline/cmdline_util.cc:160
+#: src/cmdline/cmdline_util.cc:169
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "Không tìm thấy phiên bản « %s » cho gói « %s »\n"
 
-#: src/cmdline/cmdline_util.cc:166
+#: src/cmdline/cmdline_util.cc:175
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr ""
 "Gặp lỗi nội bộ : giá trị không hợp lệ %i đưọc gởi qua cho « cmdline_find_ver "
 "» (dòng lệnh tìm phiên bản).\n"
 
-#: src/cmdline/cmdline_util.cc:196
+#: src/cmdline/cmdline_util.cc:205
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "Không thể ghi rõ cả kho lẫn phiên bản đều cho gói.\n"
 
-#: src/cmdline/cmdline_util.cc:294
+#: src/cmdline/cmdline_util.cc:303
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] "%d gói bị ngắt [%+d]"
 
-#: src/cmdline/cmdline_util.cc:308
+#: src/cmdline/cmdline_util.cc:317
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] "%d gói cập nhật [%+d]"
 
-#: src/cmdline/cmdline_util.cc:322
+#: src/cmdline/cmdline_util.cc:331
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] "%d gói mới [%+d]"
 
-#: src/cmdline/cmdline_util.cc:333
+#: src/cmdline/cmdline_util.cc:342
 #, c-format
 msgid "Current status: %F."
 msgstr "Trạng thái hiện thời: %F."
 
-#: src/cmdline/cmdline_util.cc:344
+#: src/cmdline/cmdline_util.cc:353
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] "Có %d gói mới trở thành quá cũ :"
 
-#: src/cmdline/cmdline_util.cc:356
+#: src/cmdline/cmdline_util.cc:365
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
@@ -3591,13 +3591,13 @@ msgid ""
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:370
+#: src/gtk/changelog.cc:373
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "Địa chỉ URL cần dùng để tải về các bản ghi thay đổi (ChangeLog)"
 
-#: src/gtk/changelog.cc:476
+#: src/gtk/changelog.cc:479
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3605,20 +3605,20 @@ msgid ""
 "is unknown."
 msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính thức."
 
-#: src/gtk/changelog.cc:480
+#: src/gtk/changelog.cc:483
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính thức."
 
-#: src/gtk/changelog.cc:500
+#: src/gtk/changelog.cc:503
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "Đang tải về Bản ghi đổi"
 
-#: src/gtk/changelog.cc:560
+#: src/gtk/changelog.cc:563
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -5309,38 +5309,46 @@ msgstr ""
 "\n"
 
 #: src/main.cc:153
-#, c-format
-msgid " install      - Install/upgrade packages\n"
+#, fuzzy, c-format
+#| msgid " install      - Install/upgrade packages\n"
+msgid " install      - Install/upgrade packages.\n"
 msgstr " install      _cài đặt_ / nâng cấp gói\n"
 
 #: src/main.cc:154
-#, c-format
-msgid " remove       - Remove packages\n"
+#, fuzzy, c-format
+#| msgid " remove       - Remove packages\n"
+msgid " remove       - Remove packages.\n"
 msgstr " remove       _Gỡ bỏ_ gói\n"
 
 #: src/main.cc:155
-#, c-format
-msgid " purge        - Remove packages and their configuration files\n"
+#, fuzzy, c-format
+#| msgid " purge        - Remove packages and their configuration files\n"
+msgid " purge        - Remove packages and their configuration files.\n"
 msgstr " purge        Gỡ bỏ gói và các tập tin cấu hình (_tẩy_)\n"
 
 #: src/main.cc:156
-#, c-format
-msgid " hold         - Place packages on hold\n"
+#, fuzzy, c-format
+#| msgid " hold         - Place packages on hold\n"
+msgid " hold         - Place packages on hold.\n"
 msgstr " hold         _Giữ lại_ gói\n"
 
 #: src/main.cc:157
-#, c-format
-msgid " unhold       - Cancel a hold command for a package\n"
+#, fuzzy, c-format
+#| msgid " unhold       - Cancel a hold command for a package\n"
+msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr " unhold       Thôi lệnh « giữ lại » cho gói đó\n"
 
 #: src/main.cc:158
-#, c-format
-msgid " markauto     - Mark packages as having been automatically installed\n"
+#, fuzzy, c-format
+#| msgid ""
+#| " markauto     - Mark packages as having been automatically installed\n"
+msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr " markauto     _Đánh dấu_ gói như là được cài đặt _tự động_\n"
 
 #: src/main.cc:159
-#, c-format
-msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, fuzzy, c-format
+#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr " unmarkauto   Đánh dấu gói như là được cài đặt bằng tay\n"
 
 #: src/main.cc:160
@@ -5353,66 +5361,87 @@ msgstr ""
 "rõ.\n"
 
 #: src/main.cc:161
-#, c-format
-msgid " update       - Download lists of new/upgradable packages\n"
+#, fuzzy, c-format
+#| msgid " update       - Download lists of new/upgradable packages\n"
+msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr " update       Tải về các danh sách gói mới / có thê _cập nhật_\n"
 
 #: src/main.cc:162
-#, c-format
-msgid " safe-upgrade - Perform a safe upgrade\n"
+#, fuzzy, c-format
+#| msgid " safe-upgrade - Perform a safe upgrade\n"
+msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr " safe-upgrade \tNâng cấp an toàn\n"
 
 #: src/main.cc:163
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| " full-upgrade - Perform an upgrade, possibly installing and removing "
+#| "packages\n"
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
-"packages\n"
+"packages.\n"
 msgstr " full-upgrade\t\tNâng cấp, có thể cài đặt và gỡ bỏ gói\n"
 
 #: src/main.cc:164
-#, c-format
-msgid " forget-new   - Forget what packages are \"new\"\n"
-msgstr " forget-new   \t_Quên_ gói nào là _« mới »_\n"
+#, fuzzy, c-format
+#| msgid "'&BD' to install the build-dependencies of a package."
+msgid " build-dep    - Install the build-dependencies of packages.\n"
+msgstr "« &BD » để cài đặt các quan hệ phụ thuộc khi xây dựng gói."
 
 #: src/main.cc:165
-#, c-format
-msgid " search       - Search for a package by name and/or expression\n"
-msgstr " search       _Tìm kiếm_ gói theo tên và/hay biểu thức\n"
+#, fuzzy, c-format
+#| msgid " forget-new   - Forget what packages are \"new\"\n"
+msgid " forget-new   - Forget what packages are \"new\".\n"
+msgstr " forget-new   \t_Quên_ gói nào là _« mới »_\n"
 
 #: src/main.cc:166
-#, c-format
-msgid " show         - Display detailed information about a package\n"
-msgstr " show         _Hiển thị_ thông tin chi tiết về gói\n"
+#, fuzzy, c-format
+#| msgid " search       - Search for a package by name and/or expression\n"
+msgid " search       - Search for a package by name and/or expression.\n"
+msgstr " search       _Tìm kiếm_ gói theo tên và/hay biểu thức\n"
 
 #: src/main.cc:167
-#, c-format
-msgid " clean        - Erase downloaded package files\n"
-msgstr " clean        _Xóa_ các tập tin gói đã tải về\n"
+#, fuzzy, c-format
+#| msgid " show         - Display detailed information about a package\n"
+msgid " show         - Display detailed information about a package.\n"
+msgstr " show         _Hiển thị_ thông tin chi tiết về gói\n"
 
 #: src/main.cc:168
-#, c-format
-msgid " autoclean    - Erase old downloaded package files\n"
-msgstr " autoclean    _Xóa_ các tập tin gói cũ đã tải về (_tự động_)\n"
+#, fuzzy, c-format
+#| msgid " clean        - Erase downloaded package files\n"
+msgid " clean        - Erase downloaded package files.\n"
+msgstr " clean        _Xóa_ các tập tin gói đã tải về\n"
 
 #: src/main.cc:169
-#, c-format
-msgid " changelog    - View a package's changelog\n"
-msgstr " changelog    Xem _bản ghi thay đổi_ của gói\n"
+#, fuzzy, c-format
+#| msgid " autoclean    - Erase old downloaded package files\n"
+msgid " autoclean    - Erase old downloaded package files.\n"
+msgstr " autoclean    _Xóa_ các tập tin gói cũ đã tải về (_tự động_)\n"
 
 #: src/main.cc:170
-#, c-format
-msgid " download     - Download the .deb file for a package\n"
-msgstr " download     _Tải về_ tập tin kiểu .deb cho gói\n"
+#, fuzzy, c-format
+#| msgid " changelog    - View a package's changelog\n"
+msgid " changelog    - View a package's changelog.\n"
+msgstr " changelog    Xem _bản ghi thay đổi_ của gói\n"
 
 #: src/main.cc:171
-#, c-format
+#, fuzzy, c-format
+#| msgid " download     - Download the .deb file for a package\n"
+msgid " download     - Download the .deb file for a package.\n"
+msgstr " download     _Tải về_ tập tin kiểu .deb cho gói\n"
+
+#: src/main.cc:172
+#, fuzzy, c-format
+#| msgid ""
+#| " reinstall    - Download and (possibly) reinstall a currently installed "
+#| "package\n"
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
-"package\n"
+"package.\n"
 msgstr ""
 " reinstall    Tải về và (có thể) _cài đặt lại_ gói được cài đặt hiện thời\n"
 
-#: src/main.cc:172
+#: src/main.cc:173
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5422,97 +5451,117 @@ msgstr ""
 " why\t\tHiển thị các gói đã cài đặt bằng tay mà cần thiết một gói nào đó,\n"
 "\t\thoặc lý do một hay nhiều gói có thể cần thiết gói đã cho.\n"
 
-#: src/main.cc:174
-#, c-format
+#: src/main.cc:175
+#, fuzzy, c-format
+#| msgid ""
+#| " why-not      - Show the manually installed packages that lead to a "
+#| "conflict\n"
+#| "                with the given package, or why one or more packages "
+#| "would\n"
+#| "                lead to a conflict with the given package if installed\n"
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 "                with the given package, or why one or more packages would\n"
-"                lead to a conflict with the given package if installed\n"
+"                lead to a conflict with the given package if installed.\n"
 msgstr ""
 " why-not\t\tHiển thị các gói đã cài đặt bằng tay mà đưa tới\n"
 "\t\t\ttrường hợp xung đột với gói đã cho, hoặc lý do\n"
 "\t\t\tmột hay nhiều gói (nếu được cài đặt) sẽ đưa tới\n"
 "\t\t\ttrường hợp này.\n"
 
-#: src/main.cc:178
+#: src/main.cc:179
 #, c-format
 msgid "  Options:\n"
 msgstr "  Tùy chọn:\n"
 
-#: src/main.cc:179
-#, c-format
-msgid " -h             This help text\n"
+#: src/main.cc:180
+#, fuzzy, c-format
+#| msgid " -h             This help text\n"
+msgid " -h             This help text.\n"
 msgstr " -h             _Trợ giúp_ này\n"
 
-#: src/main.cc:180
+#: src/main.cc:182
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:181
+#: src/main.cc:184
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:182
+#: src/main.cc:185
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             _Mô phỏng_ hành động còn không thật thực hiện\n"
 
-#: src/main.cc:183
+#: src/main.cc:186
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             Chỉ _tải về_ gói, không cài đặt hoặc gỡ bỏ gì.\n"
 
-#: src/main.cc:184
-#, c-format
-msgid " -P             Always prompt for confirmation or actions\n"
+#: src/main.cc:187
+#, fuzzy, c-format
+#| msgid " -P             Always prompt for confirmation or actions\n"
+msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr " -P             Luôn luôn _nhắc_ với sự xác nhận hoặc hành động\n"
 
-#: src/main.cc:185
-#, c-format
+#: src/main.cc:188
+#, fuzzy, c-format
+#| msgid ""
+#| " -y             Assume that the answer to simple yes/no questions is "
+#| "'yes'\n"
 msgid ""
-" -y             Assume that the answer to simple yes/no questions is 'yes'\n"
+" -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr ""
 " -y             Giả sử trả lời cho câu hỏi kiểu « có/không » đơn giản là _Có_ "
 "(yes)\n"
 
-#: src/main.cc:186
-#, c-format
+#: src/main.cc:189
+#, fuzzy, c-format
+#| msgid ""
+#| " -F format      Specify a format for displaying search results; see the "
+#| "manual\n"
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
-"manual\n"
+"manual.\n"
 msgstr ""
 " -F format      Ghi rõ _định dạng_ hiển thị kết quả tìm kiếm; xem sổ tay\n"
 
-#: src/main.cc:187
-#, c-format
+#: src/main.cc:190
+#, fuzzy, c-format
+#| msgid ""
+#| " -O order       Specify how search results should be sorted; see the "
+#| "manual\n"
 msgid ""
-" -O order       Specify how search results should be sorted; see the manual\n"
+" -O order       Specify how search results should be sorted; see the "
+"manual.\n"
 msgstr ""
 " -O order       Ghi rõ cách sắp xếp kết quả tìm kiếm; xem sổ tay (_thứ "
 "tự_).\n"
 
-#: src/main.cc:188
-#, c-format
+#: src/main.cc:191
+#, fuzzy, c-format
+#| msgid ""
+#| " -w width       Specify the display width for formatting search results\n"
 msgid ""
-" -w width       Specify the display width for formatting search results\n"
+" -w width       Specify the display width for formatting search results.\n"
 msgstr " -w width       Ghi rõ _độ rộng_ hiển thị kết quả tìm kiếm\n"
 
-#: src/main.cc:189
+#: src/main.cc:192
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Cố gắng _sửa chữa_ các gói bị hỏng một cách năng nổ.\n"
 
-#: src/main.cc:190
+#: src/main.cc:193
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Hiển thị _phiên bản_ nào của gói sẽ được cài đặt.\n"
 
-#: src/main.cc:191
+#: src/main.cc:194
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
@@ -5520,70 +5569,83 @@ msgstr ""
 " -D             Hiển thị điều kiện _phụ thuộc_ của các gói đã thay đổi tự "
 "động.\n"
 
-#: src/main.cc:192
+#: src/main.cc:195
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Hiển thị hiệu số kích cỡ đã cài đặt của mỗi gói.\n"
 
-#: src/main.cc:193
-#, c-format
+#: src/main.cc:196
+#, fuzzy, c-format
+#| msgid ""
+#| " -v             Display extra information. (may be supplied multiple "
+#| "times)\n"
 msgid ""
-" -v             Display extra information. (may be supplied multiple times)\n"
+" -v             Display extra information. (may be supplied multiple "
+"times).\n"
 msgstr ""
 " -v        Hiển thị thông tin thêm (có lẽ cung cấp nhiều lần [_chi tiết_])\n"
 
-#: src/main.cc:194
-#, c-format
+#: src/main.cc:197
+#, fuzzy, c-format
+#| msgid ""
+#| " -t [release]   Set the release from which packages should be installed\n"
 msgid ""
-" -t [release]   Set the release from which packages should be installed\n"
+" -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [bản]   \tĐặt bản phát hành từ đó cần cài đặt gói\n"
 
-#: src/main.cc:195
-#, c-format
+#: src/main.cc:198
+#, fuzzy, c-format
+#| msgid ""
+#| " -q             In command-line mode, suppress the incremental progress\n"
+#| "                indicators.\n"
 msgid ""
-" -q             In command-line mode, suppress the incremental progress\n"
+" -q             In command-line mode, suppress the incremental progress.\n"
 "                indicators.\n"
 msgstr "  -q\t\tTrong chế độ dòng lệnh, thu hồi các cái chỉ tiến hành dần.\n"
 
-#: src/main.cc:197
-#, c-format
-msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#: src/main.cc:200
+#, fuzzy, c-format
+#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr ""
 " -o key=giá_trị      Đặt trực tiếp _tùy chọn_ cấu hình có tên « key » (phím/"
 "khoá)\n"
 
-#: src/main.cc:198
-#, c-format
+#: src/main.cc:201
+#, fuzzy, c-format
+#| msgid ""
+#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
+#| "                strong dependencies\n"
 msgid ""
-" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-"                strong dependencies\n"
+" --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
+"                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tGhi rõ có nên xử lý gói đã khuyến khích (recommend) "
 "như là quan hệ phụ thuộc mạnh hay không (_[không] khuyến khích_).\n"
 
-#: src/main.cc:200
+#: src/main.cc:203
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S tên_tập_tin: Đọc thông tin _trạng thái_ kéo dài aptitude từ tập tin "
 "này.\n"
 
-#: src/main.cc:201
+#: src/main.cc:204
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Tải về các danh sách gói mới khi khởi chạy.\n"
 
-#: src/main.cc:202 src/main.cc:204
+#: src/main.cc:205 src/main.cc:207
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:203
+#: src/main.cc:206
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Chạy lệnh _cài đặt_ (install) khi khởi chạy.\n"
 
-#: src/main.cc:206
+#: src/main.cc:209
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
@@ -5592,7 +5654,7 @@ msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:328
+#: src/main.cc:331
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5600,13 +5662,13 @@ msgstr "đúng"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:331
+#: src/main.cc:334
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:334
+#: src/main.cc:337
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5614,13 +5676,13 @@ msgstr "không"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:337
+#: src/main.cc:340
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:340
+#: src/main.cc:343
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5628,7 +5690,7 @@ msgstr "Lỗi "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:343
+#: src/main.cc:346
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5636,76 +5698,76 @@ msgstr "sai"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:346
+#: src/main.cc:349
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:416
+#: src/main.cc:419
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:429
+#: src/main.cc:432
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "Thao tác không hợp lệ %s"
 
-#: src/main.cc:652
+#: src/main.cc:676
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Đợi một số nằm sau « -q= »\n"
 
-#: src/main.cc:661
+#: src/main.cc:685
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Đợi một số nằm sau « -q= », còn nhận %s\n"
 
-#: src/main.cc:685
+#: src/main.cc:709
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "Tùy chọn « -o » cần thiết đối số dạng « key=giá_trị », còn nhân %s\n"
 
-#: src/main.cc:783
+#: src/main.cc:807
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Không có dấu phẩy đi theo tên thẻ « %s ».\n"
 
-#: src/main.cc:850 src/main.cc:859
+#: src/main.cc:874 src/main.cc:883
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "LẠ: nhận mã tùy chọn không rõ\n"
 
-#: src/main.cc:865
+#: src/main.cc:889
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:867
+#: src/main.cc:891
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Gói"
 
-#: src/main.cc:869
+#: src/main.cc:893
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:871
+#: src/main.cc:895
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Mọi gói"
 
-#: src/main.cc:873
+#: src/main.cc:897
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:879
+#: src/main.cc:903
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5713,7 +5775,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:929
+#: src/main.cc:953
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -5721,7 +5783,7 @@ msgid ""
 "specified\n"
 msgstr "Có thể ghi rõ chỉ một của hai tùy chọn « -u »  và « -i »\n"
 
-#: src/main.cc:938
+#: src/main.cc:962
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -5732,23 +5794,23 @@ msgstr ""
 "Không thể ghi rõ tùy chọn « -u » hay « -i » trong chế độ dòng lệnh (v.d. với "
 "lệnh 'install' (cài) đặt)."
 
-#: src/main.cc:959
+#: src/main.cc:983
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "Không thể ghi rõ tùy chọn « -u » hay « -i » với lệnh nào"
 
-#: src/main.cc:1061
+#: src/main.cc:1085
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Không rõ lệnh « %s »\n"
 
-#: src/main.cc:1073 src/main.cc:1141
+#: src/main.cc:1097 src/main.cc:1165
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Ngoại lệ chưa bắt: %s\n"
 
-#: src/main.cc:1077 src/main.cc:1145
+#: src/main.cc:1101 src/main.cc:1169
 #, c-format
 msgid ""
 "Backtrace:\n"
