@@ -2950,6 +2950,15 @@ Th+-------------------------------------------------------------------------+
 	  states will be preserved (but will not be saved until you
 	  quit &aptitude;).
 	</para>
+
+	<para>
+	  By default, aptitude will use the command
+	  <systemitem>su</systemitem> to gain root privileges.  If you
+	  would like it to use some other command (such as
+	  <systemitem>sudo</systemitem>), set the configuration option
+	  <link
+	  linkend='configGet-Root-Command'><literal>Aptitude::Get-Root-Command</literal></link>.
+	</para>
       </section>
     </section>
 
