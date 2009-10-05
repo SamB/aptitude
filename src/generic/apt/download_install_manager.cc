@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005-2008 Daniel Burrows
+//   Copyright (C) 2005-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -166,8 +166,6 @@ pkgPackageManager::OrderResult download_install_manager::run_dpkg(int status_fd)
       _error->DumpErrors();
       cerr << _("A package failed to install.  Trying to recover:") << endl;
       system("DPKG_NO_TSTP=1 dpkg --configure -a");
-      _error->Discard();
-      
       break;
     case pkgPackageManager::Completed:
       break;
@@ -190,8 +188,6 @@ void download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult d
   switch(dpkg_result)
     {
     case pkgPackageManager::Failed:
-      _error->Discard();
-
       rval = failure;
       break;
     case pkgPackageManager::Completed:
