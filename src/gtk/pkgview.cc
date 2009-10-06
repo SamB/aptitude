@@ -325,7 +325,7 @@ namespace gui
         (*apt_cache_file)->mark_keep(pkg, false, false, undo);
         break;
       case Hold:
-        (*apt_cache_file)->mark_delete(pkg, false, true, undo);
+        (*apt_cache_file)->mark_keep(pkg, false, true, undo);
         break;
       case MakeAutomatic:
 	(*apt_cache_file)->mark_auto_installed(pkg, true, undo);
