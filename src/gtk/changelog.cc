@@ -32,7 +32,10 @@
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/version.h>
 
+#include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/ssprintf.h>
+
+#include <loggers.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/changelog_parse.h>
@@ -373,38 +376,145 @@ namespace gui
 				       ssprintf(_("Failed to download the changelog: %s"), error.c_str()));
     }
 
-    /** \brief Parses a single changelog in the background, then
-     *  invokes the given slot in the foreground, passing it the
-     *  parsed log.
-     */
-    class parse_changelog_thread
+    class parse_changelog_job
     {
-      // Remember that this is passed to the thread bootstrap by
-      // copy-construction, so everything here has to be safe to copy
-      // (it is).
+      // Remember that this is passed by copy-construction, so
+      // everything here has to be safe to copy (it is).
 
-      // The filename of the changelog.
       temp::name name;
-      // The slot to invoke.
       safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot;
-      // The earliest version that is to be included.
       const std::string from;
 
     public:
-      parse_changelog_thread(const temp::name &_name,
-			     const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &_slot,
-			     const std::string &_from)
+      parse_changelog_job(const temp::name &_name,
+			  const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &_slot,
+			  const std::string &_from)
 	: name(_name), slot(_slot), from(_from)
       {
       }
 
+      /** \brief Return the temporary file name of the changelog. */
+      const temp::name &get_name() const { return name; }
+      /** \brief Return the slot that should be invoked when the changelog is parsed. */
+      const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &get_slot() const { return slot; }
+      /** \brief Return the earliest version that should be included in the parse. */
+      const std::string &get_from() const { return from; }
+    };
+
+    /** \brief Parses a queue of changelogs in the background.
+     *
+     *  The purpose of the queue is to ensure that aptitude only
+     *  parses one changelog at a time and doesn't waste a ton of time
+     *  starting new changelog parse threads and spawning copies of
+     *  parsechangelog.
+     *
+     *  This is a self-terminating singleton thread.
+     */
+    class parse_changelog_thread
+    {
+      static std::deque<parse_changelog_job> jobs;
+      // The active thread, or NULL if there isn't one.  As it exits,
+      // the active thread will destroy this and NULL it out while
+      // holding the state mutex.
+      static cw::threads::thread *active_thread;
+
+      // This mutex protects all accesses to "jobs" and
+      // "active_thread".
+      static cw::threads::mutex state_mutex;
+
+    public:
+      parse_changelog_thread()
+      {
+      }
+
+      static void add_job(const parse_changelog_job &job)
+      {
+	using aptitude::Loggers;
+
+	cw::threads::mutex::lock l(state_mutex);
+
+	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		  "Adding a changelog parse job to the queue (name="
+		  << job.get_name().get_name() << ", from=" << job.get_from() << ")");
+
+	jobs.push_back(job);
+	// Start the parse thread if it's not running.
+	if(active_thread == NULL)
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background changelog parse thread.");
+	    active_thread = new cw::threads::thread(parse_changelog_thread());
+	  }
+      }
+
       void operator()() const
       {
-	cw::util::ref_ptr<aptitude::apt::changelog> parsed =
-	  aptitude::apt::parse_changelog(name, from);
-	post_event(safe_bind(slot, parsed));
+	using aptitude::Loggers;
+
+	try
+	  {
+	    cw::threads::mutex::lock l(state_mutex);
+
+	    while(!jobs.empty())
+	      {
+		parse_changelog_job next(jobs.front());
+		jobs.pop_front();
+
+		// Unlock the state mutex for the actual parsing:
+		l.release();
+
+		try
+		  {
+		    cw::util::ref_ptr<aptitude::apt::changelog> parsed =
+		      aptitude::apt::parse_changelog(next.get_name(), next.get_from());
+		    post_event(safe_bind(next.get_slot(), parsed));
+		  }
+		catch(const std::exception &ex)
+		  {
+		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got std::exception: " << ex.what());
+		  }
+		catch(const cw::util::Exception &ex)
+		  {
+		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got cwidget::util::Exception: " << ex.errmsg());
+		  }
+		catch(...)
+		  {
+		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got an unknown exception.");
+		  }
+
+		l.acquire();
+	      }
+
+	    delete active_thread;
+	    active_thread = NULL;
+	    return; // Unless there's an unlikely error, we exit here;
+		    // otherwise we try some last-chance error
+		    // handling below.
+	  }
+	catch(const std::exception &ex)
+	  {
+	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with std::exception: " << ex.what());
+	  }
+	catch(const cw::util::Exception &ex)
+	  {
+	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with cwidget::util::Exception: " << ex.errmsg());
+	  }
+	catch(...)
+	  {
+	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with an unknown exception.");
+	  }
+
+	// Do what we can to recover, although there might be jobs
+	// that can't be processed!
+	{
+	  cw::threads::mutex::lock l(state_mutex);
+	  delete active_thread;
+	  active_thread = NULL;
+	}
       }
     };
+    std::deque<parse_changelog_job> parse_changelog_thread::jobs;
+    cw::threads::thread *parse_changelog_thread::active_thread = NULL;
+    cw::threads::mutex parse_changelog_thread::state_mutex;
 
     // Helper function to post the "changelog download complete" event
     // to the main thread.
@@ -412,9 +522,7 @@ namespace gui
 				      safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot,
 				      std::string from)
     {
-      // Use the fact that cwidget thread objects can be destroyed
-      // without shutting the thread down.
-      cw::threads::thread(parse_changelog_thread(name, slot, from));
+      parse_changelog_thread::add_job(parse_changelog_job(name, slot, from));
     }
 
     void do_changelog_download_error_trampoline(const std::string &error,

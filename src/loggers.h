@@ -89,6 +89,9 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeGtkDashboardUpgradeResolver();
 
+    /** \brief The logger for GUI changelog handling. */
+    static log4cxx::LoggerPtr getAptitudeGtkChangelog();
+
     /** \brief The logger for the GUI package view (PkgView).
      *
      *  Name: aptitude.gtk.pkgview
