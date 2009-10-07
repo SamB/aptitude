@@ -289,10 +289,12 @@ namespace gui
 	Gtk::TreeModel::iterator iter = store->append();
 	Gtk::TreeModel::Row row = *iter;
 	using cwidget::util::ssprintf;
-	row[cols.File] =
-	  ssprintf(_("This file list pertains to the currently installed version \"%s\", not the selected version \"%s\"."),
-		   ver.ParentPkg().CurrentVer().VerStr(),
-		   ver.VerStr());
+
+	if(!ver.ParentPkg().CurrentVer().end())
+	  row[cols.File] =
+	    ssprintf(_("This file list pertains to the currently installed version \"%s\", not the selected version \"%s\"."),
+		     ver.ParentPkg().CurrentVer().VerStr(),
+		     ver.VerStr());
       }
 
     Glib::ustring fileslistname = Glib::ustring("/var/lib/dpkg/info/")
