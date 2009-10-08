@@ -78,6 +78,7 @@ boost/multi_index/hashed_index.hpp dnl
 boost/multi_index/member.hpp dnl
 boost/multi_index/sequenced_index.hpp dnl
 boost/optional.hpp dnl
+boost/scoped_ptr.hpp dnl
 boost/shared_ptr.hpp dnl
 boost/test/unit_test.hpp dnl
 boost/unordered_map.hpp dnl
