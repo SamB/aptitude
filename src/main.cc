@@ -40,6 +40,10 @@
 
 #include <generic/problemresolver/exceptions.h>
 
+#ifdef HAVE_GTK
+#include <gtkmm.h>
+#endif
+
 #include <cwidget/config/keybindings.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/toplevel.h>
@@ -134,6 +138,14 @@ static void show_version()
   printf(_("  Ept support enabled.\n"));
 #else
   printf(_("  Ept support disabled.\n"));
+#endif
+#ifdef HAVE_GTK
+  printf(_("  Gtk+ version %d.%d.%d\n"),
+	 GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
+  printf(_("  Gtk-- version %d.%d.%d\n"),
+	 GTKMM_MAJOR_VERSION, GTKMM_MINOR_VERSION, GTKMM_MICRO_VERSION);
+#else
+  printf(_("  Gtk+ support disabled.\n"));
 #endif
 
   printf("%s", _("\nCurrent library versions:\n"));
