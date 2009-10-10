@@ -95,7 +95,7 @@ PKG_CHECK_MODULES(SQLITE3, sqlite3)
 HAVE_GTK=1
 AC_ARG_ENABLE(gtk,
 	AS_HELP_STRING(--disable-gtk, [don't compile the GTK+/gtkmm frontend even if the appropriate libraries are available]),
-	[if test x$withval = xyes
+	[if test x$enableval = xyes
 	 then
 	     HAVE_GTK=1
 	 else
