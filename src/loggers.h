@@ -61,6 +61,11 @@ namespace aptitude
     static log4cxx::LoggerPtr getAptitudeAptCache();
 
     /** \brief The logger for events having to do with aptitude's
+     *  backend changelog download code.
+     */
+    static log4cxx::LoggerPtr getAptitudeChangelog();
+
+    /** \brief The logger for events having to do with aptitude's
      *  caching of downloaded data (other than package lists and
      *  .debs).
      */

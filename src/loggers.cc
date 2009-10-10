@@ -33,6 +33,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.apt.globals");
   }
 
+  LoggerPtr Loggers::getAptitudeChangelog()
+  {
+    return Logger::getLogger("aptitude.changelog");
+  }
+
   LoggerPtr Loggers::getAptitudeDownloadCache()
   {
     return Logger::getLogger("aptitude.downloadCache");

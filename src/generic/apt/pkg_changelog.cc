@@ -43,7 +43,11 @@
 
 #include <sigc++/bind.h>
 
+#include <cwidget/generic/util/ssprintf.h>
+
 #include <boost/make_shared.hpp>
+
+#include <loggers.h>
 
 using namespace std;
 namespace cw = cwidget;
@@ -144,6 +148,22 @@ private:
     pkgAcquire::ItemDesc desc;
 
     int Retries;
+
+    static std::string showURIs(const std::vector<std::string> &URIs)
+    {
+      std::string rval;
+      for(std::vector<std::string>::const_iterator it = URIs.begin();
+	  it != URIs.end(); ++it)
+	{
+	  if(!rval.empty())
+	    rval += ", ";
+
+	  rval += *it;
+	}
+
+      return rval;
+    }
+
   public:
     AcqForEntry(pkgAcquire *Owner,
 		// Must contain at least one entry.
@@ -159,6 +179,10 @@ private:
       uris(URIs),
       current_uri(uris.begin())
     {
+      LOG_TRACE(Loggers::getAptitudeChangelog(),
+		"Setting up a download of the changelog for " << _ent.get_name() << " from "
+		<< showURIs(URIs) << "; MD5=" << MD5 << "; filename=" << filename);
+
       Retries = _config->FindI("Acquire::Retries", 0);
 
       desc.URI = URIs.front();
@@ -175,6 +199,10 @@ private:
 
     void Failed(string Message, pkgAcquire::MethodConfig *Cnf)
     {
+      LOG_WARN(Loggers::getAptitudeChangelog(),
+	       "Failed to download the changelog for " << ent.get_name()
+	       << ": " << Message);
+
       // We do what pkgAcqFile would do, except that we only give up
       // for good if we've run out of URIs.
 
@@ -186,6 +214,11 @@ private:
 	  StringToBool(LookupTag(Message,"Transient-Failure"),false) == true)
 	{
 	  Retries--;
+
+	  LOG_TRACE(Loggers::getAptitudeChangelog(),
+		    "Trying again to download the changelog for " << ent.get_name()
+		    << " from " << desc.URI << ", " << Retries << " attempts remaining.");
+
 	  QueueURI(desc);
 	  return;
 	}
@@ -197,10 +230,16 @@ private:
 	    {
 	      Retries = _config->FindI("Acquire::Retries",0);
 	      desc.URI = *current_uri;
+	      LOG_TRACE(Loggers::getAptitudeChangelog(),
+			"Falling back to download the changelog for " << ent.get_name()
+			<< " from " << desc.URI);
 	      QueueURI(desc);
 	      return;
 	    }
 	}
+
+      LOG_TRACE(Loggers::getAptitudeChangelog(),
+		"Failed to download the changelog for " << ent.get_name());
 
       Item::Failed(Message, Cnf);
       ent.get_callbacks().get_failure().get_slot()(ErrorText);
@@ -214,12 +253,22 @@ private:
       pkgAcqFile::Done(Message, Size, CalcHash, Cnf);
 
       if(Status != pkgAcquire::Item::StatDone)
-	_error->Error("Failed to fetch the description of %s from the URI %s: %s",
-		      ent.get_srcpkg().c_str(),
-		      desc.URI.c_str(),
-		      ErrorText.c_str());
+	{
+	  _error->Error("Failed to fetch the description of %s from the URI %s: %s",
+			ent.get_srcpkg().c_str(),
+			desc.URI.c_str(),
+			ErrorText.c_str());
+
+	  LOG_ERROR(Loggers::getAptitudeChangelog(),
+		    "Failed to download the changelog for " << ent.get_name()
+		    << ": " << Message << "[" << ErrorText << "]");
+	}
       else
 	{
+	  LOG_INFO(Loggers::getAptitudeChangelog(),
+		   "Successfully downloaded the changelog for " << ent.get_name()
+		   << ": " << Message);
+
 	  download_cache->putItem(desc.URI, ent.get_tempname().get_name());
 	  ent.get_callbacks().get_success().get_slot()(ent.get_tempname());
 	}
@@ -240,6 +289,8 @@ private:
 
     void operator()() const
     {
+      log4cxx::LoggerPtr logger(Loggers::getAptitudeChangelog());
+
       boost::shared_ptr<std::vector<processed_entry> >
 	processed_entries(boost::make_shared<std::vector<processed_entry> >());
 
@@ -294,12 +345,22 @@ private:
 			changelog_file += "/changelog.Debian";
 
 			if(stat(changelog_file.c_str(), &buf) == 0)
-			  changelog_uris.push_back("file://" + changelog_file);
+			  {
+			    LOG_TRACE(logger,
+				      "The changelog for " << name << " " << ver
+				      << " exists on the system as " << changelog_file);
+			    changelog_uris.push_back("file://" + changelog_file);
+			  }
 
 			changelog_file += ".gz";
 
 			if(stat(changelog_file.c_str(), &buf) == 0)
-			  changelog_uris.push_back("gzip://" + changelog_file);
+			  {
+			    LOG_TRACE(logger,
+				      "The changelog for " << name << " " << ver
+				      << " exists on the system as " << changelog_file);
+			    changelog_uris.push_back("gzip://" + changelog_file);
+			  }
 
 			// Beware the races here -- ideally we should
 			// parse the returned changelog and check that
@@ -347,11 +408,19 @@ private:
 	  // don't cache local files).
 	  temp::name cached_result = download_cache->getItem(uri);
 	  if(cached_result.valid())
-	    it->get_callbacks().get_success().get_slot()(cached_result);
+	    {
+	      LOG_INFO(logger, "Fetched the changelog of " << name << " " << ver
+		       << " from the download cache.");
+	      it->get_callbacks().get_success().get_slot()(cached_result);
+	    }
 	  else
-	    processed_entries->push_back(processed_entry(*it, changelog_uris));
+	    {
+	      LOG_TRACE(logger, "Will download the changelog of " << name << " " << ver);
+	      processed_entries->push_back(processed_entry(*it, changelog_uris));
+	    }
 	}
 
+      LOG_TRACE(logger, "Starting to download changelogs.");
       k.get_slot()(boost::shared_ptr<download_changelog_manager>(new download_changelog_manager(processed_entries)));
     }
   };
@@ -381,6 +450,8 @@ public:
 	       pkgAcquireStatus &acqlog,
 	       download_signal_log *signallog)
   {
+    LOG_INFO(Loggers::getAptitudeChangelog(), "Beginning to download changelogs.");
+
     log = signallog;
 
     fetcher = new pkgAcquire(&acqlog);
@@ -388,6 +459,9 @@ public:
     for(std::vector<processed_entry>::const_iterator it = entries->begin();
 	it != entries->end(); ++it)
       {
+	LOG_TRACE(Loggers::getAptitudeChangelog(),
+		  "Adding the changelog of " << it->get_entry().get_name() << " to the queue.");
+
 	const std::string title(ssprintf(_("Changelog of %s"), it->get_entry().get_name().c_str()));
 	new AcqForEntry(fetcher,
 			it->get_changelog_uris(),
@@ -402,10 +476,26 @@ public:
     return true;
   }
 
+private:
+  static std::string resultText(pkgAcquire::RunResult result)
+  {
+    switch(result)
+      {
+      case pkgAcquire::Continue: return "continue";
+      case pkgAcquire::Failed: return "failed";
+      case pkgAcquire::Cancelled: return "cancelled";
+      default: return cw::util::ssprintf("result%d", result);
+      }
+  }
+
+public:
   void finish(pkgAcquire::RunResult res,
 	      OpProgress *progress,
 	      const sigc::slot1<void, result> &k)
   {
+    LOG_INFO(Loggers::getAptitudeChangelog(),
+	     "Done downloading changelogs: " << resultText(res) << ".");
+
     if(fetcher != NULL)
       {
 	result rval = success;
@@ -421,10 +511,15 @@ public:
 		{
 		  if(item->Status != pkgAcquire::Item::StatDone)
 		    {
-		      _error->Error("Failed to fetch the description of %s from the URI %s: %s",
+		      _error->Error("Failed to fetch the changelog of %s from the URI %s: %s",
 				    item->get_entry().get_srcpkg().c_str(),
 				    item->get_real_uri().c_str(),
 				    item->ErrorText.c_str());
+
+		      LOG_ERROR(Loggers::getAptitudeChangelog(),
+				"Failed to fetch the changelog of "
+				<< item->get_entry().get_srcpkg()
+				<< ": " << item->ErrorText);
 
 		      rval = failure;
 		    }
@@ -432,11 +527,17 @@ public:
 		    {
 		      const entry &ent(item->get_entry());
 
+		      LOG_TRACE(Loggers::getAptitudeChangelog(),
+				"Succeeded in fetching the changelog of " << item->get_entry().get_srcpkg());
+
 		      download_cache->putItem(item->get_real_uri(),
 					      ent.get_tempname().get_name());
 		      ent.get_callbacks().get_success().get_slot()(ent.get_tempname());
 		    }
 		}
+	      else
+		LOG_WARN(Loggers::getAptitudeChangelog(),
+			 "Wrong object type in the changelog download queue.");
 	    }
 
 	k(rval);
@@ -444,6 +545,9 @@ public:
       }
     else
       {
+	LOG_WARN(Loggers::getAptitudeChangelog(),
+		 "No fetcher object was created; assuming the changelog download failed.");
+
 	k(failure);
 	return;
       }
@@ -454,6 +558,9 @@ void changelog_cache::register_changelog(const temp::name &n,
 					 const std::string &package,
 					 const std::string &version)
 {
+  LOG_TRACE(Loggers::getAptitudeChangelog(),
+	    "Sending success to all listeners on the changelog of " << package << " " << version);
+
   pending_downloads[std::make_pair(package, version)].get_success()(n);
   pending_downloads.erase(std::make_pair(package, version));
 }
@@ -462,6 +569,11 @@ void changelog_cache::changelog_failed(const std::string &errmsg,
 				       const std::string &package,
 				       const std::string &version)
 {
+  LOG_WARN(Loggers::getAptitudeChangelog(),
+	   "Sending failure with the message \""
+	   << errmsg << "\" to all listeners on the changelog of "
+	   << package << " " << version);
+
   const std::pair<std::string, std::string> key(package, version);
 
   sigc::slot<void, std::string> failure_slot =
@@ -475,6 +587,8 @@ void changelog_cache::changelog_failed(const std::string &errmsg,
 void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &versions,
 				     const safe_slot1<void, boost::shared_ptr<download_manager> > &k)
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeChangelog());
+
   std::vector<download_changelog_manager::entry> entries;
 
   for(std::vector<std::pair<pkgCache::VerIterator, download_callbacks> >::const_iterator
@@ -486,7 +600,11 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
 	continue;
 
       if(ver.FileList().end())
-	continue;
+	{
+	  LOG_TRACE(logger, "Skipping " << ver.ParentPkg().Name() << " " << ver.VerStr()
+		    << ": it isn't available from any archive.");
+	  continue;
+	}
 
       // Look up the source package.
       pkgRecords::Parser &rec =
@@ -496,6 +614,10 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
 
       const string sourcever =
 	rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+      LOG_TRACE(logger, "For " << ver.ParentPkg().Name()
+		<< " " << ver.VerStr() << ", downloading the changelog of the source package "
+		<< srcpkg << " " << sourcever);
 
       temp::dir tempdir;
       temp::name tempname;
@@ -508,6 +630,7 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
       catch(temp::TemporaryCreationFailure e)
 	{
 	  _error->Error("%s", e.errmsg().c_str());
+	  LOG_ERROR(logger, "Can't create a temporary file: " << e.errmsg());
 	  continue;
 	}
 
@@ -525,11 +648,14 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
 
       if(pending_found != pending_downloads.end())
 	{
+	  LOG_TRACE(logger, "Found an existing download of " << srcpkg << " " << sourcever);
 	  pending_found->second.get_success().connect(callbacks.get_success().get_slot());
 	  pending_found->second.get_failure().connect(callbacks.get_failure().get_slot());
 	}
       else
 	{
+	  LOG_TRACE(logger, "Creating a new download of " << srcpkg << " " << sourcever);
+
 	  download_signals &signals(pending_downloads[std::make_pair(srcpkg, sourcever)]);
 	  signals.get_success().connect(callbacks.get_success().get_slot());
 	  signals.get_failure().connect(callbacks.get_failure().get_slot());
@@ -579,6 +705,12 @@ changelog_cache::get_changelog_from_source(const string &srcpkg,
 					   const safe_slot1<void, temp::name> &success,
 					   const safe_slot1<void, std::string> &failure)
 {
+  log4cxx::LoggerPtr logger(Loggers::getAptitudeChangelog());
+
+  LOG_TRACE(logger, "Setting up a download of the changelog for the source package "
+	    << srcpkg << " " << ver << " in section "
+	    << section << " (display name " << name << ")");
+
   temp::dir tempdir;
   temp::name tempname;
 
@@ -590,6 +722,7 @@ changelog_cache::get_changelog_from_source(const string &srcpkg,
   catch(temp::TemporaryCreationFailure e)
     {
       _error->Error("%s", e.errmsg().c_str());
+      LOG_ERROR(logger, "Can't create a temporary file: " << e.errmsg());
       return boost::shared_ptr<download_changelog_manager>();
     }
 
@@ -600,11 +733,14 @@ changelog_cache::get_changelog_from_source(const string &srcpkg,
 
   if(pending_found != pending_downloads.end())
     {
+      LOG_TRACE(logger, "Found an existing download of " << srcpkg << " " << ver);
       pending_found->second.get_success().connect(success.get_slot());
       pending_found->second.get_failure().connect(failure.get_slot());
     }
   else
     {
+      LOG_TRACE(logger, "Creating a new download of " << srcpkg << " " << ver);
+
       download_signals &signals(pending_downloads[std::make_pair(srcpkg, ver)]);
       signals.get_success().connect(success.get_slot());
       signals.get_failure().connect(failure.get_slot());
