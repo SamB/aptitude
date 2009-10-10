@@ -43,7 +43,10 @@
 
 #include <sigc++/bind.h>
 
+#include <boost/make_shared.hpp>
+
 using namespace std;
+namespace cw = cwidget;
 
 namespace aptitude
 {
@@ -90,9 +93,38 @@ public:
   };
 
 private:
-  std::vector<entry> entries;
+  // An entry that's ready for induction into the download queue.
+  class processed_entry
+  {
+    // The original input entry.
+    entry ent;
+
+    std::vector<std::string> changelog_uris;
+
+  public:
+    processed_entry(const entry &_entry,
+		    const std::vector<std::string> &_changelog_uris)
+      : ent(_entry),
+	changelog_uris(_changelog_uris)
+    {
+    }
+
+    const entry &get_entry() const { return ent; }
+    const std::vector<std::string> &get_changelog_uris() const
+    {
+      return changelog_uris;
+    }
+  };
+
+  boost::shared_ptr<std::vector<processed_entry> > entries;
 
   download_signal_log *log;
+
+  download_changelog_manager(const boost::shared_ptr<std::vector<processed_entry> > &_entries)
+    : entries(_entries),
+      log(NULL)
+  {
+  }
 
   /** \brief An acquire item that fetches a file for a changelog entry,
    *  invoking the entry's callback when it's finished.
@@ -171,7 +203,7 @@ private:
 	}
 
       Item::Failed(Message, Cnf);
-      ent.get_callbacks().get_failure()(ErrorText);
+      ent.get_callbacks().get_failure().get_slot()(ErrorText);
     }
 
     void Done(std::string Message,
@@ -189,16 +221,160 @@ private:
       else
 	{
 	  download_cache->putItem(desc.URI, ent.get_tempname().get_name());
-	  ent.get_callbacks().get_success()(ent.get_tempname());
+	  ent.get_callbacks().get_success().get_slot()(ent.get_tempname());
 	}
     }
   };
 
-public:
-  template<typename Iter>
-  download_changelog_manager(Iter begin, Iter end)
-    : entries(begin, end), log(NULL)
+  class create_background_thread
   {
+    boost::shared_ptr<std::vector<entry> > entries;
+    safe_slot1<void, boost::shared_ptr<download_manager> > k;
+
+  public:
+    create_background_thread(const boost::shared_ptr<std::vector<entry> > &_entries,
+			     const safe_slot1<void, boost::shared_ptr<download_manager> > &_k)
+        : entries(_entries)
+    {
+    }
+
+    void operator()() const
+    {
+      boost::shared_ptr<std::vector<processed_entry> >
+	processed_entries(boost::make_shared<std::vector<processed_entry> >());
+
+      for(std::vector<entry>::const_iterator it = entries->begin();
+	  it != entries->end(); ++it)
+	{
+	  const string srcpkg(it->get_srcpkg());
+	  const string ver(it->get_ver());
+	  const string section(it->get_section());
+	  const string name(it->get_name());
+	  const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
+
+	  // Try to find a changelog that's already on the system,
+	  // first.  Check each binary package in the source package;
+	  // for any package that's unpacked, check that the version on
+	  // the system corresponds to the requested source version, and
+	  // if it passes look for a changelog.
+	  pkgSrcRecords source_records(*apt_source_list);
+	  source_records.Restart();
+	  pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
+
+	  std::vector<std::string> changelog_uris;
+
+	  if(source_rec != NULL)
+	    for(const char **binaryIt = source_rec->Binaries();
+		binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
+	      {
+		pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
+		if(!pkg.end() &&
+		   !pkg.CurrentVer().end() &&
+		   !pkg.CurrentVer().FileList().end() &&
+		   pkg->CurrentState != pkgCache::State::NotInstalled &&
+		   pkg->CurrentState != pkgCache::State::ConfigFiles)
+		  {
+		    pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
+		    std::string rec_sourcepkg = rec.SourcePkg();
+		    if(rec_sourcepkg.empty())
+		      rec_sourcepkg = pkg.Name();
+		    std::string rec_sourcever = rec.SourceVer();
+		    if(rec_sourcever.empty())
+		      rec_sourcever = pkg.CurrentVer().VerStr();
+
+		    if(rec_sourcepkg == srcpkg &&
+		       rec_sourcever == ver)
+		      {
+			// Everything passed.  Now test to see whether
+			// the changelog exists by trying to stat it.
+			struct stat buf;
+
+			std::string changelog_file = "/usr/share/doc/";
+			changelog_file += pkg.Name();
+			changelog_file += "/changelog.Debian";
+
+			if(stat(changelog_file.c_str(), &buf) == 0)
+			  changelog_uris.push_back("file://" + changelog_file);
+
+			changelog_file += ".gz";
+
+			if(stat(changelog_file.c_str(), &buf) == 0)
+			  changelog_uris.push_back("gzip://" + changelog_file);
+
+			// Beware the races here -- ideally we should
+			// parse the returned changelog and check that
+			// the first version it contains is what we
+			// expect.  This should be reliable in *most*
+			// cases, though.
+		      }
+		  }
+	      }
+
+	  string realsection;
+
+	  if(section.find('/') != section.npos)
+	    realsection.assign(section, 0, section.find('/'));
+	  else
+	    realsection.assign("main");
+
+	  string prefix;
+
+	  if(srcpkg.size() > 3 &&
+	     srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
+	    prefix = std::string("lib") + srcpkg[3];
+	  else
+	    prefix = srcpkg[0];
+
+	  string realver;
+
+	  if(ver.find(':') != ver.npos)
+	    realver.assign(ver, ver.find(':')+1, ver.npos);
+	  else
+	    realver = ver;
+
+	  string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
+				realsection.c_str(),
+				prefix.c_str(),
+				srcpkg.c_str(),
+				srcpkg.c_str(),
+				realver.c_str());
+
+	  changelog_uris.push_back(uri);
+
+
+
+	  // Check the file cache to see if the HTTP URI is cached (we
+	  // don't cache local files).
+	  temp::name cached_result = download_cache->getItem(uri);
+	  if(cached_result.valid())
+	    it->get_callbacks().get_success().get_slot()(cached_result);
+	  else
+	    processed_entries->push_back(processed_entry(*it, changelog_uris));
+	}
+
+      k.get_slot()(boost::shared_ptr<download_changelog_manager>(new download_changelog_manager(processed_entries)));
+    }
+  };
+
+public:
+  static void create(std::vector<entry>::const_iterator begin, std::vector<entry>::const_iterator end,
+		     const safe_slot1<void, boost::shared_ptr<download_manager> > &k)
+  {
+    create_background_thread bootstrap(boost::make_shared<std::vector<entry> >(begin, end), k);
+    cw::threads::thread t(bootstrap);
+    // NB: When this object leaves scope, the thread will be detached
+    // into the background.
+  }
+
+  static boost::shared_ptr<download_manager>
+  create_blocking(std::vector<entry>::const_iterator begin, std::vector<entry>::const_iterator end)
+  {
+    cw::threads::box<boost::shared_ptr<download_manager> > rval;
+    sigc::slot1<void, boost::shared_ptr<download_manager> >
+      put_rval_slot(sigc::mem_fun(rval, &cw::threads::box<boost::shared_ptr<download_manager> >::put));
+    create(begin, end, make_safe_slot(put_rval_slot));
+
+    return rval.take();
   }
 
   bool prepare(OpProgress &progress,
@@ -209,121 +385,18 @@ public:
 
     fetcher = new pkgAcquire(&acqlog);
 
-    for(std::vector<entry>::const_iterator it = entries.begin();
-	it != entries.end(); ++it)
+    for(std::vector<processed_entry>::const_iterator it = entries->begin();
+	it != entries->end(); ++it)
       {
-	const string srcpkg(it->get_srcpkg());
-	const string ver(it->get_ver());
-	const string section(it->get_section());
-	const string name(it->get_name());
-	const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
-
-	// Try to find a changelog that's already on the system,
-	// first.  Check each binary package in the source package;
-	// for any package that's unpacked, check that the version on
-	// the system corresponds to the requested source version, and
-	// if it passes look for a changelog.
-	pkgSrcRecords source_records(*apt_source_list);
-	source_records.Restart();
-	pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
-
-	std::vector<std::string> changelog_uris;
-
-	if(source_rec != NULL)
-	  for(const char **binaryIt = source_rec->Binaries();
-	      binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
-	    {
-	      pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
-	      if(!pkg.end() &&
-		 !pkg.CurrentVer().end() &&
-		 !pkg.CurrentVer().FileList().end() &&
-		 pkg->CurrentState != pkgCache::State::NotInstalled &&
-		 pkg->CurrentState != pkgCache::State::ConfigFiles)
-		{
-		  pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
-		  std::string rec_sourcepkg = rec.SourcePkg();
-		  if(rec_sourcepkg.empty())
-		    rec_sourcepkg = pkg.Name();
-		  std::string rec_sourcever = rec.SourceVer();
-		  if(rec_sourcever.empty())
-		    rec_sourcever = pkg.CurrentVer().VerStr();
-
-		  if(rec_sourcepkg == srcpkg &&
-		     rec_sourcever == ver)
-		    {
-		      // Everything passed.  Now test to see whether
-		      // the changelog exists by trying to stat it.
-		      struct stat buf;
-
-		      std::string changelog_file = "/usr/share/doc/";
-		      changelog_file += pkg.Name();
-		      changelog_file += "/changelog.Debian";
-
-		      if(stat(changelog_file.c_str(), &buf) == 0)
-			changelog_uris.push_back("file://" + changelog_file);
-
-		      changelog_file += ".gz";
-
-		      if(stat(changelog_file.c_str(), &buf) == 0)
-			changelog_uris.push_back("gzip://" + changelog_file);
-
-		      // Beware the races here -- ideally we should
-		      // parse the returned changelog and check that
-		      // the first version it contains is what we
-		      // expect.  This should be reliable in *most*
-		      // cases, though.
-		    }
-		}
-	    }
-
-	string realsection;
-
-	if(section.find('/') != section.npos)
-	  realsection.assign(section, 0, section.find('/'));
-	else
-	  realsection.assign("main");
-
-	string prefix;
-
-	if(srcpkg.size() > 3 &&
-	   srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
-	  prefix = std::string("lib") + srcpkg[3];
-	else
-	  prefix = srcpkg[0];
-
-	string realver;
-
-	if(ver.find(':') != ver.npos)
-	  realver.assign(ver, ver.find(':')+1, ver.npos);
-	else
-	  realver = ver;
-
-	string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
-			      realsection.c_str(),
-			      prefix.c_str(),
-			      srcpkg.c_str(),
-			      srcpkg.c_str(),
-			      realver.c_str());
-
-	changelog_uris.push_back(uri);
-
-
-
-	// Check the file cache to see if the HTTP URI is cached (we
-	// don't cache local files).
-	temp::name cached_result = download_cache->getItem(uri);
-	if(cached_result.valid())
-	  it->get_callbacks().get_success()(cached_result);
-	else
-	  // If not, start fetching it.
-	  new AcqForEntry(fetcher,
-			  changelog_uris,
-			  "",
-			  0,
-			  title,
-			  title,
-			  it->get_tempname().get_name().c_str(),
-			  *it);
+	const std::string title(ssprintf(_("Changelog of %s"), it->get_entry().get_name().c_str()));
+	new AcqForEntry(fetcher,
+			it->get_changelog_uris(),
+			"",
+			0,
+			title,
+			title,
+			it->get_entry().get_tempname().get_name().c_str(),
+			it->get_entry());
       }
 
     return true;
@@ -361,7 +434,7 @@ public:
 
 		      download_cache->putItem(item->get_real_uri(),
 					      ent.get_tempname().get_name());
-		      ent.get_callbacks().get_success()(ent.get_tempname());
+		      ent.get_callbacks().get_success().get_slot()(ent.get_tempname());
 		    }
 		}
 	    }
@@ -399,7 +472,8 @@ void changelog_cache::changelog_failed(const std::string &errmsg,
   failure_slot(errmsg);
 }
 
-download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &versions)
+void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &versions,
+				     const safe_slot1<void, boost::shared_ptr<download_manager> > &k)
 {
   std::vector<download_changelog_manager::entry> entries;
 
@@ -439,19 +513,26 @@ download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pk
 
       const download_callbacks &callbacks(it->second);
 
+      // NOTE: this is safe because finish() is invoked in the main
+      // thread and so is get_changelogs() (by assumption); the
+      // pending download signals can't be invoked between when we
+      // look them up and when we insert our callbacks into them.
+      // Similarly, it's OK to copy the slots into the signal lists
+      // directly: they're main-thread slots and the callbacks are
+      // invoked in the main thread.
       const std::map<std::pair<std::string, std::string>, download_signals>::iterator
 	pending_found = pending_downloads.find(std::make_pair(srcpkg, sourcever));
 
       if(pending_found != pending_downloads.end())
 	{
-	  pending_found->second.get_success().connect(callbacks.get_success());
-	  pending_found->second.get_failure().connect(callbacks.get_failure());
+	  pending_found->second.get_success().connect(callbacks.get_success().get_slot());
+	  pending_found->second.get_failure().connect(callbacks.get_failure().get_slot());
 	}
       else
 	{
 	  download_signals &signals(pending_downloads[std::make_pair(srcpkg, sourcever)]);
-	  signals.get_success().connect(callbacks.get_success());
-	  signals.get_failure().connect(callbacks.get_failure());
+	  signals.get_success().connect(callbacks.get_success().get_slot());
+	  signals.get_failure().connect(callbacks.get_failure().get_slot());
 
 	  const sigc::slot1<void, temp::name> register_slot =
 	    sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
@@ -462,32 +543,41 @@ download_manager *changelog_cache::get_changelogs(const std::vector<std::pair<pk
 		       srcpkg, sourcever);
 
 	  changelog_cache::download_callbacks
-	    callbacks(register_slot, failure_slot);
+	    callbacks(make_safe_slot(register_slot),
+		      make_safe_slot(failure_slot));
 
 	  entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(),
 							      tempname, callbacks));
 	}
     }
 
-  return new download_changelog_manager(entries.begin(), entries.end());
+  download_changelog_manager::create(entries.begin(), entries.end(), k);
 }
 
-download_manager *changelog_cache::get_changelog(const pkgCache::VerIterator &ver,
-						 const sigc::slot<void, temp::name> &success,
-						 const sigc::slot<void, std::string> &failure)
+boost::shared_ptr<download_manager>
+changelog_cache::get_changelog(const pkgCache::VerIterator &ver,
+			       const safe_slot1<void, temp::name> &success,
+			       const safe_slot1<void, std::string> &failure)
 {
   std::vector<std::pair<pkgCache::VerIterator, download_callbacks> > versions;
   versions.push_back(std::make_pair(ver, download_callbacks(success, failure)));
 
-  return get_changelogs(versions);
+  cw::threads::box<boost::shared_ptr<download_manager> > rval;
+  sigc::slot1<void, boost::shared_ptr<download_manager> >
+    put_rval_slot(sigc::mem_fun(rval, &cw::threads::box<boost::shared_ptr<download_manager> >::put));
+
+  get_changelogs(versions,
+		 make_safe_slot(put_rval_slot));
+  return rval.take();
 }
 
-download_manager *changelog_cache::get_changelog_from_source(const string &srcpkg,
-							     const string &ver,
-							     const string &section,
-							     const string &name,
-							     const sigc::slot<void, temp::name> &success,
-							     const sigc::slot<void, std::string> &failure)
+boost::shared_ptr<download_manager>
+changelog_cache::get_changelog_from_source(const string &srcpkg,
+					   const string &ver,
+					   const string &section,
+					   const string &name,
+					   const safe_slot1<void, temp::name> &success,
+					   const safe_slot1<void, std::string> &failure)
 {
   temp::dir tempdir;
   temp::name tempname;
@@ -500,7 +590,7 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
   catch(temp::TemporaryCreationFailure e)
     {
       _error->Error("%s", e.errmsg().c_str());
-      return false;
+      return boost::shared_ptr<download_changelog_manager>();
     }
 
   const std::map<std::pair<std::string, std::string>, download_signals>::iterator
@@ -510,14 +600,14 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
 
   if(pending_found != pending_downloads.end())
     {
-      pending_found->second.get_success().connect(success);
-      pending_found->second.get_failure().connect(failure);
+      pending_found->second.get_success().connect(success.get_slot());
+      pending_found->second.get_failure().connect(failure.get_slot());
     }
   else
     {
       download_signals &signals(pending_downloads[std::make_pair(srcpkg, ver)]);
-      signals.get_success().connect(success);
-      signals.get_failure().connect(failure);
+      signals.get_success().connect(success.get_slot());
+      signals.get_failure().connect(failure.get_slot());
 
       sigc::slot1<void, temp::name>
 	register_and_return(sigc::bind(sigc::mem_fun(*this, &changelog_cache::register_changelog),
@@ -528,12 +618,13 @@ download_manager *changelog_cache::get_changelog_from_source(const string &srcpk
 				   srcpkg, ver));
 
       changelog_cache::download_callbacks
-	callbacks(register_and_return, fail_and_return);
+	callbacks(make_safe_slot(register_and_return),
+		  make_safe_slot(fail_and_return));
 
       entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, callbacks));
     }
 
-  return new download_changelog_manager(entries.begin(), entries.end());
+  return download_changelog_manager::create_blocking(entries.begin(), entries.end());
 }
 
     changelog_cache global_changelog_cache;

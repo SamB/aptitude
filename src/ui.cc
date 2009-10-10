@@ -26,6 +26,10 @@
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/configuration.h>
@@ -1197,7 +1201,8 @@ namespace
 
 void install_or_remove_packages()
 {
-  download_install_manager *m = new download_install_manager(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
+  boost::shared_ptr<download_install_manager> m =
+    boost::make_shared<download_install_manager>(false, sigc::ptr_fun(&run_dpkg_with_cwidget_suspended));
 
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
@@ -1637,8 +1642,13 @@ void do_package_run()
     }
 }
 
-static void lists_autoclean_msg(download_update_manager *m)
+static void lists_autoclean_msg(boost::weak_ptr<download_update_manager> m_weak)
 {
+  boost::shared_ptr<download_update_manager> m(m_weak);
+
+  if(m.get() == NULL)
+    return;
+
   cw::widget_ref msg = cw::center::create(cw::frame::create(cw::label::create(_("Deleting obsolete downloaded files"))));
   m->post_autoclean_hook.connect(sigc::mem_fun(msg.unsafe_get_ref(),
 					       &cw::widget::destroy));
@@ -1649,9 +1659,9 @@ static void lists_autoclean_msg(download_update_manager *m)
 
 void really_do_update_lists()
 {
-  download_update_manager *m = new download_update_manager;
+  boost::shared_ptr<download_update_manager> m = boost::make_shared<download_update_manager>();
   m->pre_autoclean_hook.connect(sigc::bind(sigc::ptr_fun(lists_autoclean_msg),
-					   m));
+					   boost::weak_ptr<download_update_manager>(m)));
   m->post_forget_new_hook.connect(package_states_changed.make_slot());
 
   std::pair<download_signal_log *, download_list_ref>

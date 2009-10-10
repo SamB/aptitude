@@ -1,6 +1,6 @@
 // download_thread                              -*-c++-*-
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -30,6 +30,8 @@
 #include <generic/util/safe_slot.h>
 
 #include <sigc++/slot.h>
+
+#include <boost/shared_ptr.hpp>
 
 /** \file download_thread.h
  */
@@ -101,7 +103,7 @@ class download_thread
    *  should join() this thread before deleting it.  (it is also OK
    *  to join() the thread first thing in the object's destructor)
    */
-  download_manager *m;
+  boost::shared_ptr<download_manager> m;
 
   /** The continuation of this download, invoked in the main thread
    *  with this thread and the result of the run as parameters.  The
@@ -115,7 +117,7 @@ class download_thread
   download_thread(const download_thread &other);
   download_thread &operator=(const download_thread &other);
 public:
-  download_thread(download_manager *manager,
+  download_thread(const boost::shared_ptr<download_manager> &manager,
 		  post_thunk_func _post_thunk,
 		  const safe_slot2<void, download_thread *, pkgAcquire::RunResult> &_continuation)
     : cancelled(false), post_thunk(_post_thunk),

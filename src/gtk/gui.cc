@@ -50,6 +50,8 @@
 
 #include <sigc++/signal.h>
 
+#include <boost/make_shared.hpp>
+
 #include <cwidget/generic/threads/event_queue.h>
 #include <cwidget/generic/util/ssprintf.h>
 #include <cwidget/generic/util/transcode.h>
@@ -166,7 +168,7 @@ namespace gui
 					&guiOpProgress::destroy));
   }
 
-  void start_download(download_manager *manager,
+  void start_download(const boost::shared_ptr<download_manager> &manager,
 		      const std::string &title,
 		      Gtk::Widget *image,
 		      download_progress_mode progress_mode,
@@ -214,11 +216,11 @@ namespace gui
   // \todo make this use the threaded download system.
   void really_do_update_lists()
   {
-    std::auto_ptr<download_update_manager> m(new download_update_manager);
+    boost::shared_ptr<download_update_manager> m(boost::make_shared<download_update_manager>());
 
     active_download = true;
 
-    start_download(m.release(),
+    start_download(m,
 		   _("Checking for updates"),
 		   new Gtk::Image(Gtk::Stock::REFRESH,
 				  Gtk::ICON_SIZE_LARGE_TOOLBAR),
@@ -907,9 +909,9 @@ namespace gui
 
       active_download = true;
 
-      download_install_manager *m =
-	new download_install_manager(false,
-				     sigc::ptr_fun(&gui_run_dpkg));
+      boost::shared_ptr<download_install_manager> m =
+	boost::make_shared<download_install_manager>(false,
+						     sigc::ptr_fun(&gui_run_dpkg));
 
       start_download(m,
 		     _("Downloading packages"),

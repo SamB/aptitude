@@ -36,6 +36,8 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 
+#include <boost/shared_ptr.hpp>
+
 /** \brief  Glue code to go between the UI and the download manager/thread stuff
  * 
  *  \file ui_download_manager.h
@@ -123,7 +125,7 @@ class ui_download_manager : public sigc::trackable
     }
   };
 
-  download_manager *manager;
+  boost::shared_ptr<download_manager> manager;
 
   aborter abort_state;
 
@@ -214,7 +216,7 @@ public:
    *                             foreground thread.
    */
   template<typename T>
-  ui_download_manager(download_manager *_manager,
+  ui_download_manager(const boost::shared_ptr<download_manager> &_manager,
 		      download_signal_log *_log,
 		      const cwidget::util::ref_ptr<T> &_download_status,
 		      const make_refcounted_progress_slot &_make_progress_bar,

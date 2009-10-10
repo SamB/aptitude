@@ -31,6 +31,8 @@
 
 #include <sigc++/slot.h>
 
+#include <boost/shared_ptr.hpp>
+
 #include <apt-pkg/pkgcache.h>
 
 #include <generic/util/safe_slot.h>
@@ -265,7 +267,7 @@ namespace gui
    *                                download and post-download
    *                                actions complete.
    */
-  void start_download(download_manager *manager,
+  void start_download(const boost::shared_ptr<download_manager> &manager,
 		      const std::string &title,
 		      Gtk::Widget *image,
 		      download_progress_mode download_progress,

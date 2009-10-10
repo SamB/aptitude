@@ -52,26 +52,20 @@ temp::name changelog_by_version(const std::string &pkg,
   temp::name rval;
   download_manager::result res = download_manager::failure;
 
-  download_manager *m =
+  boost::shared_ptr<download_manager> m =
     global_changelog_cache.get_changelog_from_source(pkg, ver, "", pkg,
 						     sigc::bind(sigc::ptr_fun(&set_name), &rval),
 						     sigc::slot<void, std::string>());
-  if(m != NULL)
-    {
-      res = cmdline_do_download(m, 0);
-      delete m;
-    }
+  if(m.get() != NULL)
+    res = cmdline_do_download(m.get(), 0);
 
   if(res != download_manager::success || !rval.valid())
     {
       m = global_changelog_cache.get_changelog_from_source(pkg, ver, "contrib/foo", pkg,
 							   sigc::bind(sigc::ptr_fun(set_name), &rval),
 							   sigc::slot<void, std::string>());
-      if(m != NULL)
-	{
-	  res = cmdline_do_download(m, 0);
-	  delete m;
-	}
+      if(m.get() != NULL)
+	res = cmdline_do_download(m.get(), 0);
     }
 
   if(res != download_manager::success || !rval.valid())
@@ -79,11 +73,8 @@ temp::name changelog_by_version(const std::string &pkg,
       m = global_changelog_cache.get_changelog_from_source(pkg, ver, "non-free/foo", pkg,
 							   sigc::bind(sigc::ptr_fun(set_name), &rval),
 							   sigc::slot<void, std::string>());
-      if(m != NULL)
-	{
-	  res = cmdline_do_download(m, 0);
-	  delete m;
-	}
+      if(m.get() != NULL)
+	res = cmdline_do_download(m.get(), 0);
     }
 
   if(res != download_manager::success)
@@ -169,7 +160,7 @@ void do_cmdline_changelog(const vector<string> &packages)
 
 	  // Use the source package if one was found; otherwise try to
 	  // use an explicit version.
-	  download_manager *m = NULL;
+	  boost::shared_ptr<download_manager> m;
 	  if(p.valid())
 	    {
 	      m = global_changelog_cache.get_changelog_from_source(p.get_package(),
@@ -192,11 +183,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 		}
 	    }
 
-	  if(m != NULL)
-	    {
-	      cmdline_do_download(m, 0);
-	      delete m;
-	    }
+	  if(m.get() != NULL)
+	    cmdline_do_download(m.get(), 0);
 	}
       else
 	{
@@ -205,7 +193,7 @@ void do_cmdline_changelog(const vector<string> &packages)
 						   source,
 						   sourcestr);
 
-	  download_manager *m = NULL;
+	  boost::shared_ptr<download_manager> m;
 
 	  if(p.valid())
 	    {
@@ -244,12 +232,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 		}
 	    }
 
-	  if(!filename.valid() && m != NULL)
-	    {
-	      cmdline_do_download(m, 0);
-
-	      delete m;
-	    }
+	  if(!filename.valid() && m.get() != NULL)
+	    cmdline_do_download(m.get(), 0);
 	}
 
       if(!filename.valid())

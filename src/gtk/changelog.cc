@@ -648,12 +648,21 @@ namespace gui
 		       changelog_download_error_safe_slot);
 
 	  const changelog_cache::download_callbacks
-	    callbacks(finish_changelog_download_trampoline,
-		      changelog_download_error_trampoline);
+	    callbacks(make_safe_slot(finish_changelog_download_trampoline),
+		      make_safe_slot(changelog_download_error_trampoline));
 
 	  output_jobs.push_back(std::make_pair(ver, callbacks));
 	}
     }
+  }
+
+  void fetch_and_show_changelogs_start_download(boost::shared_ptr<download_manager> manager)
+  {
+    start_download(manager,
+		   _("Downloading changelogs"),
+		   NULL,
+		   download_progress_item_count,
+		   pMainWindow->get_notifyview());
   }
 
   void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
@@ -665,13 +674,12 @@ namespace gui
       // If the job can be downloaded, insert it into the queue.
       process_changelog_job(*it, jobs);
 
-    std::auto_ptr<download_manager> manager(global_changelog_cache.get_changelogs(jobs));
+    // After the changelog download is prepared, invoke the above
+    // routine to start it.
+    sigc::slot<void, boost::shared_ptr<download_manager> > k =
+      sigc::ptr_fun(&fetch_and_show_changelogs_start_download);
 
-    start_download(manager.release(),
-		   _("Downloading changelogs"),
-		   NULL,
-		   download_progress_item_count,
-		   pMainWindow->get_notifyview());
+    global_changelog_cache.get_changelogs(jobs, make_safe_slot(k));
   }
 
   void fetch_and_show_changelog(const pkgCache::VerIterator &ver,

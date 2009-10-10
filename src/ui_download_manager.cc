@@ -1,6 +1,6 @@
 // ui_download_manager.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -40,8 +40,6 @@ namespace cwidget
 ui_download_manager::~ui_download_manager()
 {
   log->Complete();
-
-  delete manager;
 
   download_stops();
 

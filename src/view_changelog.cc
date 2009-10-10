@@ -1,6 +1,6 @@
 // view_changelog.cc
 //
-//   Copyright (C) 2004-2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -376,13 +376,13 @@ void view_changelog(pkgCache::VerIterator ver)
   // alert the main thread.  Errors are ignored (although I expect
   // that they should show up in the apt error stack).
   using aptitude::apt::global_changelog_cache;
-  download_manager *manager =
+  boost::shared_ptr<download_manager> manager =
     global_changelog_cache.get_changelog(ver,
 					 sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
 						    pkgname, current_source_ver),
 					 sigc::slot<void, std::string>());
 
-  if(manager != NULL)
+  if(manager.get() != NULL)
     {
       std::pair<download_signal_log *, download_list_ref>
 	download_log_pair = gen_download_progress(true, false,

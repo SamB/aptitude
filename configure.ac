@@ -83,6 +83,7 @@ boost/shared_ptr.hpp dnl
 boost/test/unit_test.hpp dnl
 boost/unordered_map.hpp dnl
 boost/unordered_set.hpp dnl
+boost/weak_ptr.hpp dnl
                   ,
 		  ,
 		  [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
