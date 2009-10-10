@@ -1,3 +1,78 @@
+[10/8/2009]
+Version 0.5.9rc3                            "The stars, like little
+                                             starry things..."
+
+- New features:
+
+  + [cmdline] Package versions can be chosen by codename as well as by
+              archive. (Closes: #547707)
+
+  + [all] Not exactly a new feature, but reverted from
+          dpkg-parsechangelog to parsechangelog: both of them require
+          extra dependencies, and parsechangelog is faster. (Closes:
+          #546280)
+
+- Crashes and serious errors:
+
+  + [all] Don't crash if the Xapian database fails to load.  (Closes:
+          #512998)
+
+  + [all] Recognize --no-gui even in non-GUI builds, so switching to
+          root can just always pass it. (Closes: #546406)
+
+  + [all] Don't discard errors after dpkg fails. (Closes: #548879,
+          #548889)
+
+  + [gtk] Don't crash when displaying the file list of a package
+          that's not installed.
+
+- Cosmetic and UI bugs:
+
+  + [curses] Block SIGWINCH by default so that cwidget can sigwait()
+             on it. (Closes: #547212)
+
+  + [cmdline] Mention build-dep in "aptitude help". (Closes: #547151)
+
+  + [cmdline] Consistently use a full-stop at the end of "--help"
+              lines.
+
+  + [cmdline] Fix an incorrect message that stated that a package was
+              not installable, rather than that it was not going to be
+              installed.
+
+  + [cmdline] Make --arch-only do what it should instead of the
+              opposite. (Closes: #547266)
+
+  + [gtk] Make the "hold" command hold packages instead of deleting
+          them. (Closes: #549897)
+
+  + [gtk] Use a single thread for all changelog downloads, to avoid
+          spawning as many instances of parsechangelog as there are
+          changelogs.
+
+          I really should move the extraction of changelogs from the
+          cache to a background thread as well; it takes ages to
+          extract every last changelog if there are a lot, and I
+          should be able to start parsing them as soon as the first
+          one is extracted.
+
+- Documentation:
+
+  + [doc] Mention Get-Root-Command in the section on "becoming
+          root". (Closes: #548657)
+
+  + [doc] Correct the default value of Get-Root-Command to match the
+          code. (Closes: #550057)
+
+- Translation updates:
+
+  + Danish (Closes: #546497)
+  + French
+  + Portuguese (Closes: #522445)
+  + Russian (Closes: #535806)
+  + Spanish
+
+
 [9/9/2009]
 Version 0.5.9rc2                            "Over five served."
 
