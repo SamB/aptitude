@@ -291,137 +291,155 @@ private:
     {
       log4cxx::LoggerPtr logger(Loggers::getAptitudeChangelog());
 
-      boost::shared_ptr<std::vector<processed_entry> >
-	processed_entries(boost::make_shared<std::vector<processed_entry> >());
-
-      for(std::vector<entry>::const_iterator it = entries->begin();
-	  it != entries->end(); ++it)
+      try
 	{
-	  const string srcpkg(it->get_srcpkg());
-	  const string ver(it->get_ver());
-	  const string section(it->get_section());
-	  const string name(it->get_name());
-	  const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
+	  boost::shared_ptr<std::vector<processed_entry> >
+	    processed_entries(boost::make_shared<std::vector<processed_entry> >());
 
-	  // Try to find a changelog that's already on the system,
-	  // first.  Check each binary package in the source package;
-	  // for any package that's unpacked, check that the version on
-	  // the system corresponds to the requested source version, and
-	  // if it passes look for a changelog.
-	  pkgSrcRecords source_records(*apt_source_list);
-	  source_records.Restart();
-	  pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
+	  for(std::vector<entry>::const_iterator it = entries->begin();
+	      it != entries->end(); ++it)
+	    {
+	      const string srcpkg(it->get_srcpkg());
+	      const string ver(it->get_ver());
+	      const string section(it->get_section());
+	      const string name(it->get_name());
+	      const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
 
-	  std::vector<std::string> changelog_uris;
+	      // Try to find a changelog that's already on the system,
+	      // first.  Check each binary package in the source package;
+	      // for any package that's unpacked, check that the version on
+	      // the system corresponds to the requested source version, and
+	      // if it passes look for a changelog.
+	      pkgSrcRecords source_records(*apt_source_list);
+	      source_records.Restart();
+	      pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
 
-	  if(source_rec != NULL)
-	    for(const char **binaryIt = source_rec->Binaries();
-		binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
-	      {
-		pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
-		if(!pkg.end() &&
-		   !pkg.CurrentVer().end() &&
-		   !pkg.CurrentVer().FileList().end() &&
-		   pkg->CurrentState != pkgCache::State::NotInstalled &&
-		   pkg->CurrentState != pkgCache::State::ConfigFiles)
+	      std::vector<std::string> changelog_uris;
+
+	      if(source_rec != NULL)
+		for(const char **binaryIt = source_rec->Binaries();
+		    binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
 		  {
-		    pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
-		    std::string rec_sourcepkg = rec.SourcePkg();
-		    if(rec_sourcepkg.empty())
-		      rec_sourcepkg = pkg.Name();
-		    std::string rec_sourcever = rec.SourceVer();
-		    if(rec_sourcever.empty())
-		      rec_sourcever = pkg.CurrentVer().VerStr();
-
-		    if(rec_sourcepkg == srcpkg &&
-		       rec_sourcever == ver)
+		    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
+		    if(!pkg.end() &&
+		       !pkg.CurrentVer().end() &&
+		       !pkg.CurrentVer().FileList().end() &&
+		       pkg->CurrentState != pkgCache::State::NotInstalled &&
+		       pkg->CurrentState != pkgCache::State::ConfigFiles)
 		      {
-			// Everything passed.  Now test to see whether
-			// the changelog exists by trying to stat it.
-			struct stat buf;
+			pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
+			std::string rec_sourcepkg = rec.SourcePkg();
+			if(rec_sourcepkg.empty())
+			  rec_sourcepkg = pkg.Name();
+			std::string rec_sourcever = rec.SourceVer();
+			if(rec_sourcever.empty())
+			  rec_sourcever = pkg.CurrentVer().VerStr();
 
-			std::string changelog_file = "/usr/share/doc/";
-			changelog_file += pkg.Name();
-			changelog_file += "/changelog.Debian";
-
-			if(stat(changelog_file.c_str(), &buf) == 0)
+			if(rec_sourcepkg == srcpkg &&
+			   rec_sourcever == ver)
 			  {
-			    LOG_TRACE(logger,
-				      "The changelog for " << name << " " << ver
-				      << " exists on the system as " << changelog_file);
-			    changelog_uris.push_back("file://" + changelog_file);
+			    // Everything passed.  Now test to see whether
+			    // the changelog exists by trying to stat it.
+			    struct stat buf;
+
+			    std::string changelog_file = "/usr/share/doc/";
+			    changelog_file += pkg.Name();
+			    changelog_file += "/changelog.Debian";
+
+			    if(stat(changelog_file.c_str(), &buf) == 0)
+			      {
+				LOG_TRACE(logger,
+					  "The changelog for " << name << " " << ver
+					  << " exists on the system as " << changelog_file);
+				changelog_uris.push_back("file://" + changelog_file);
+			      }
+
+			    changelog_file += ".gz";
+
+			    if(stat(changelog_file.c_str(), &buf) == 0)
+			      {
+				LOG_TRACE(logger,
+					  "The changelog for " << name << " " << ver
+					  << " exists on the system as " << changelog_file);
+				changelog_uris.push_back("gzip://" + changelog_file);
+			      }
+
+			    // Beware the races here -- ideally we should
+			    // parse the returned changelog and check that
+			    // the first version it contains is what we
+			    // expect.  This should be reliable in *most*
+			    // cases, though.
 			  }
-
-			changelog_file += ".gz";
-
-			if(stat(changelog_file.c_str(), &buf) == 0)
-			  {
-			    LOG_TRACE(logger,
-				      "The changelog for " << name << " " << ver
-				      << " exists on the system as " << changelog_file);
-			    changelog_uris.push_back("gzip://" + changelog_file);
-			  }
-
-			// Beware the races here -- ideally we should
-			// parse the returned changelog and check that
-			// the first version it contains is what we
-			// expect.  This should be reliable in *most*
-			// cases, though.
 		      }
 		  }
-	      }
 
-	  string realsection;
+	      string realsection;
 
-	  if(section.find('/') != section.npos)
-	    realsection.assign(section, 0, section.find('/'));
-	  else
-	    realsection.assign("main");
+	      if(section.find('/') != section.npos)
+		realsection.assign(section, 0, section.find('/'));
+	      else
+		realsection.assign("main");
 
-	  string prefix;
+	      string prefix;
 
-	  if(srcpkg.size() > 3 &&
-	     srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
-	    prefix = std::string("lib") + srcpkg[3];
-	  else
-	    prefix = srcpkg[0];
+	      if(srcpkg.size() > 3 &&
+		 srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
+		prefix = std::string("lib") + srcpkg[3];
+	      else
+		prefix = srcpkg[0];
 
-	  string realver;
+	      string realver;
 
-	  if(ver.find(':') != ver.npos)
-	    realver.assign(ver, ver.find(':')+1, ver.npos);
-	  else
-	    realver = ver;
+	      if(ver.find(':') != ver.npos)
+		realver.assign(ver, ver.find(':')+1, ver.npos);
+	      else
+		realver = ver;
 
-	  string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
-				realsection.c_str(),
-				prefix.c_str(),
-				srcpkg.c_str(),
-				srcpkg.c_str(),
-				realver.c_str());
+	      string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
+				    realsection.c_str(),
+				    prefix.c_str(),
+				    srcpkg.c_str(),
+				    srcpkg.c_str(),
+				    realver.c_str());
 
-	  changelog_uris.push_back(uri);
-
+	      changelog_uris.push_back(uri);
 
 
-	  // Check the file cache to see if the HTTP URI is cached (we
-	  // don't cache local files).
-	  temp::name cached_result = download_cache->getItem(uri);
-	  if(cached_result.valid())
-	    {
-	      LOG_INFO(logger, "Fetched the changelog of " << name << " " << ver
-		       << " from the download cache.");
-	      it->get_callbacks().get_success().get_slot()(cached_result);
+
+	      // Check the file cache to see if the HTTP URI is cached (we
+	      // don't cache local files).
+	      temp::name cached_result = download_cache->getItem(uri);
+	      if(cached_result.valid())
+		{
+		  LOG_INFO(logger, "Fetched the changelog of " << name << " " << ver
+			   << " from the download cache.");
+		  it->get_callbacks().get_success().get_slot()(cached_result);
+		}
+	      else
+		{
+		  LOG_TRACE(logger, "Will download the changelog of " << name << " " << ver);
+		  processed_entries->push_back(processed_entry(*it, changelog_uris));
+		}
 	    }
-	  else
-	    {
-	      LOG_TRACE(logger, "Will download the changelog of " << name << " " << ver);
-	      processed_entries->push_back(processed_entry(*it, changelog_uris));
-	    }
+
+	  LOG_TRACE(logger, "Starting to download changelogs.");
+	  k.get_slot()(boost::shared_ptr<download_changelog_manager>(new download_changelog_manager(processed_entries)));
 	}
-
-      LOG_TRACE(logger, "Starting to download changelogs.");
-      k.get_slot()(boost::shared_ptr<download_changelog_manager>(new download_changelog_manager(processed_entries)));
+      catch(cw::util::Exception &ex)
+	{
+	  LOG_FATAL(logger, "Failed to download changelogs: " << ex.errmsg());
+	  k.get_slot()(boost::shared_ptr<download_changelog_manager>());
+	}
+      catch(std::exception &ex)
+	{
+	  LOG_FATAL(logger, "Failed to download changelogs: " << ex.what());
+	  k.get_slot()(boost::shared_ptr<download_changelog_manager>());
+	}
+      catch(...)
+	{
+	  LOG_FATAL(logger, "Failed to download changelogs: unexpected exception type");
+	  k.get_slot()(boost::shared_ptr<download_changelog_manager>());
+	}
     }
   };
 
