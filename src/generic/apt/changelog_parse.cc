@@ -298,42 +298,8 @@ namespace aptitude
 	}
     }
 
-    namespace
+    cw::util::ref_ptr<changelog> parse_digested_changelog(const temp::name &digested)
     {
-      temp::name digest_changelog(const temp::name &changelog,
-				  const std::string &from)
-      {
-	temp::name rval(changelog.get_parent(), "parsedchangelog");
-
-	std::string version_fragment;
-	if(from.empty())
-	  version_fragment = "--all";
-	else
-	  {
-	    version_fragment = "-f ";
-	    // Note that escaping the version is *critical*, because
-	    // it is untrusted data.
-	    version_fragment += backslash_escape_nonalnum(from);
-	  }
-
-	std::string cmd =
-	  cw::util::ssprintf("/usr/bin/parsechangelog --format rfc822 %s -l %s > %s 2> /dev/null",
-			     version_fragment.c_str(),
-			     changelog.get_name().c_str(),
-			     rval.get_name().c_str());
-
-	if(system(cmd.c_str()) == 0)
-	  return rval;
-	else
-	  return temp::name();
-      }
-    }
-
-    cw::util::ref_ptr<changelog> parse_changelog(const temp::name &file,
-						 const std::string &from)
-    {
-      temp::name digested = digest_changelog(file, from);
-
       if(!digested.valid())
 	return NULL;
       else
@@ -345,6 +311,41 @@ namespace aptitude
 	  else
 	    return changelog::create(digestedfd);
 	}
+    }
+
+    temp::name digest_changelog(const temp::name &changelog,
+				const std::string &from)
+    {
+      temp::name rval(changelog.get_parent(), "parsedchangelog");
+
+      std::string version_fragment;
+      if(from.empty())
+	version_fragment = "--all";
+      else
+	{
+	  version_fragment = "-f ";
+	  // Note that escaping the version is *critical*, because
+	  // it is untrusted data.
+	  version_fragment += backslash_escape_nonalnum(from);
+	}
+
+      std::string cmd =
+	cw::util::ssprintf("/usr/bin/parsechangelog --format rfc822 %s -l %s > %s 2> /dev/null",
+			   version_fragment.c_str(),
+			   changelog.get_name().c_str(),
+			   rval.get_name().c_str());
+
+      if(system(cmd.c_str()) == 0)
+	return rval;
+      else
+	return temp::name();
+    }
+
+    cw::util::ref_ptr<changelog> parse_changelog(const temp::name &file,
+						 const std::string &from)
+    {
+      temp::name digested = digest_changelog(file, from);
+      return parse_digested_changelog(digested);
     }
   }
 }

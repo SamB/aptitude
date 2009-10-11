@@ -221,6 +221,17 @@ namespace aptitude
       const_iterator end() const { return entries.end(); }
     };
 
+    /** \brief Given a Debian changelog, parse it and generate a new
+     *  file containing the changelog in an RFC822-style format.
+     */
+    temp::name digest_changelog(const temp::name &changelog,
+				const std::string &from);
+
+    /** \brief Given a digested changelog as produced by
+     *  digest_changelog, parse it into a changelog structure.
+     */
+    cwidget::util::ref_ptr<changelog> parse_digested_changelog(const temp::name &digested);
+
     /** Parse the contents of the given file as a Debian changelog.
      *  for some reason the file cannot be parsed, returns \b NULL.
      *
