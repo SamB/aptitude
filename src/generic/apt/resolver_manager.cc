@@ -711,7 +711,11 @@ void resolver_manager::kill_background_thread()
 
       // Reset the associated data structures.
       control_lock.acquire();
-      pending_jobs = std::priority_queue<job_request, std::vector<job_request>, job_request_compare>();
+      while(!pending_jobs.empty())
+	{
+	  delete pending_jobs.top().k;
+	  pending_jobs.pop();
+	}
       background_thread_killed = false;
       background_thread_suspend_count = 0;
       background_thread_in_resolver = false;
