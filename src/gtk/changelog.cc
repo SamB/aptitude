@@ -505,7 +505,10 @@ namespace gui
 		    else
 		      digested = aptitude::apt::digest_changelog(next.get_name(), next.get_from());
 
-		    if(digested.valid())
+		    // Note that we don't re-cache the digested
+		    // changelog if it was retrieved from the cache
+		    // earlier (i.e., if next.get_digested() is true).
+		    if(digested.valid() && !next.get_digested())
 		      {
 			LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
 				  "Caching digested changelog as " << changelog_uri);
