@@ -60,41 +60,6 @@ namespace gui
 {
   namespace
   {
-    /** \brief Return the fake URI that the changelog is cached under,
-     *  or an empty string if there isn't any cached value for it.
-     */
-    static std::string make_parsed_changelog_uri(const changelog_download_job &job)
-    {
-      const pkgCache::VerIterator &ver(job.get_ver());
-
-      if(ver.end())
-	{
-	  LOG_ERROR(aptitude::Loggers::getAptitudeGtkChangelog(),
-		    "Invalid version passed to make_parsed_changelog_uri().");
-	  return "";
-	}
-
-      if(job.get_only_new())
-	{
-	  pkgCache::VerIterator currver(ver.ParentPkg().CurrentVer());
-	  if(currver.end())
-	    {
-	      LOG_WARN(aptitude::Loggers::getAptitudeGtkChangelog(),
-		       "No cache information for the parse of an only-new changelog when there is no current version.");
-	      return "";
-	    }
-	  else
-	    return cw::util::ssprintf("delta-changelog://%s/%s/%s",
-				      ver.ParentPkg().Name(),
-				      currver.VerStr(),
-				      ver.VerStr());
-	}
-      else
-	return cw::util::ssprintf("changelog://%s/%s",
-				  ver.ParentPkg().Name(),
-				  ver.VerStr());
-    }
-
     void view_bug(const std::string &bug_number)
     {
       std::string URL = cw::util::ssprintf("http://bugs.debian.org/%s", bug_number.c_str());
@@ -619,6 +584,55 @@ namespace gui
       post_event(safe_bind(slot, error));
     }
 
+    /** \brief The job structure after the frontend routine has
+     *  processed it and before it's passed through
+     *  process_changelog_job.
+     *
+     *  All references to structures in the apt cache are stripped
+     *  out, so that it's safe to use this even after a cache reload.
+     *  That avoids a world of hurt around trying to manage the job
+     *  queue and ensure that it's entirely cleaned out when the cache
+     *  is closed.
+     */
+    class preprocessed_changelog_job
+    {
+      Glib::RefPtr<Gtk::TextBuffer::Mark> begin;
+      Glib::RefPtr<Gtk::TextBuffer> text_buffer;
+
+      bool only_new;
+
+      std::string binary_package_name;
+
+      boost::shared_ptr<changelog_info> target_info;
+      boost::shared_ptr<changelog_info> current_info;
+
+      std::set<std::string> origins;
+
+    public:
+      explicit preprocessed_changelog_job(const changelog_download_job &job)
+	: begin(job.get_begin()),
+	  text_buffer(job.get_text_buffer()),
+	  only_new(job.get_only_new()),
+	  binary_package_name(job.get_ver().ParentPkg().Name()),
+	  target_info(changelog_info::create(job.get_ver())),
+	  current_info(changelog_info::create(job.get_ver().ParentPkg().CurrentVer()))
+      {
+	for(pkgCache::VerFileIterator vf = job.get_ver().FileList();
+	    !vf.end(); ++vf)
+	  {
+	    if(!vf.File().end() && vf.File().Origin() != NULL)
+	      origins.insert(vf.File().Origin());
+	  }
+      }
+      const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_begin() const { return begin; }
+      const Glib::RefPtr<Gtk::TextBuffer> get_text_buffer() const { return text_buffer; }
+      bool get_only_new() const { return only_new; }
+      const std::string &get_binary_package_name() const { return binary_package_name; }
+      const boost::shared_ptr<changelog_info> &get_target_info() const { return target_info; }
+      const boost::shared_ptr<changelog_info> &get_current_info() const { return current_info; }
+      const std::set<std::string> &get_origins() const { return origins; }
+    };
+
     /** \brief Try to generate a changelog-download object for the
      *  given job and add it to a queue of output jobs to process.
      *
@@ -633,30 +647,16 @@ namespace gui
      *
      *  This function must be invoked in the main thread.
      */
-    void process_changelog_job(const changelog_download_job &entry,
+    void process_changelog_job(const preprocessed_changelog_job &entry,
 			       const temp::name &digested_file,
 			       std::vector<std::pair<boost::shared_ptr<changelog_info>, changelog_cache::download_callbacks> > &output_jobs)
     {
       Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry.get_text_buffer();
-      pkgCache::VerIterator ver = entry.get_ver();
 
-      bool in_debian = false;
-
-      string pkgname = ver.ParentPkg().Name();
-
-      pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-
-      boost::shared_ptr<changelog_info> target_info(changelog_info::create(ver));
-      boost::shared_ptr<changelog_info> current_info(changelog_info::create(curver));
-
-      // TODO: add a configurable association between origins and changelog URLs.
-      std::set<std::string> origins;
-      for(pkgCache::VerFileIterator vf=ver.FileList();
-	  !vf.end() && !in_debian; ++vf)
-	{
-	  if(!vf.File().end() && vf.File().Origin() != NULL)
-	    origins.insert(vf.File().Origin());
-	}
+      const std::string &binary_package_name(entry.get_binary_package_name());
+      const boost::shared_ptr<changelog_info> &target_info(entry.get_target_info());
+      const boost::shared_ptr<changelog_info> &current_info(entry.get_current_info());
+      const std::set<std::string> &origins(entry.get_origins());
 
       if(origins.find("Debian") == origins.end())
 	{
@@ -680,11 +680,11 @@ namespace gui
 	  if(origins_str.empty())
 	    textBuffer->insert(begin_iter,
 			       ssprintf(_("You can only view changelogs of official Debian packages; the origin of %s is unknown."),
-					pkgname.c_str()));
+					binary_package_name.c_str()));
 	  else
 	    textBuffer->insert(begin_iter,
 			       ssprintf(_("You can only view changelogs of official Debian packages; %s is from %s."),
-					pkgname.c_str(), origins_str.c_str()));
+					binary_package_name.c_str(), origins_str.c_str()));
 	}
       else
 	{
@@ -778,7 +778,7 @@ namespace gui
 	      parse_changelog_thread::add_job(parse_job);
 	    }
 	  else
-	    output_jobs.push_back(std::make_pair(changelog_info::create(ver), callbacks));
+	    output_jobs.push_back(std::make_pair(target_info, callbacks));
 	}
     }
   }
@@ -814,16 +814,16 @@ namespace gui
    *                    pre-digested file is invalid, the changelog
    *                    will be downloaded and digested.
    */
-  void get_and_show_changelogs(boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > > changelogs)
+  void get_and_show_changelogs(boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > > changelogs)
   {
     std::vector<std::pair<boost::shared_ptr<changelog_info>, changelog_cache::download_callbacks> > jobs;
 
-    for(std::vector<std::pair<temp::name, changelog_download_job> >::const_iterator
+    for(std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > >::const_iterator
 	  it = changelogs->begin(); it != changelogs->end(); ++it)
       // For each input job, process_changelog_job will either
       // immediately pass a predigested file to the parse thread, or
       // queue up a new download entry (if possible, anyway).
-      process_changelog_job(it->second, it->first, jobs);
+      process_changelog_job(*it->second, it->first, jobs);
 
     // Now prepare and start the actual download:
     sigc::slot<void, boost::shared_ptr<download_manager> > k =
@@ -843,15 +843,15 @@ namespace gui
 
   class check_cache_for_parsed_changelogs_job
   {
-    boost::shared_ptr<std::vector<changelog_download_job> > requests;
+    boost::shared_ptr<std::vector<boost::shared_ptr<preprocessed_changelog_job> > > requests;
 
   public:
-    check_cache_for_parsed_changelogs_job(const boost::shared_ptr<std::vector<changelog_download_job> > &_requests)
+    check_cache_for_parsed_changelogs_job(const boost::shared_ptr<std::vector<boost::shared_ptr<preprocessed_changelog_job> > > &_requests)
       : requests(_requests)
     {
     }
 
-    const std::vector<changelog_download_job> &get_requests() const { return *requests; }
+    const std::vector<boost::shared_ptr<preprocessed_changelog_job> > &get_requests() const { return *requests; }
   };
 
   /** \brief A singleton thread that preprocesses changelog jobs by
@@ -917,28 +917,43 @@ namespace gui
 	      // Used to queue up the work for the main thread (the
 	      // jobs to process and any pre-digested files that
 	      // were found).
-	      boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > >
-		jobs_with_predigested_files = boost::make_shared<std::vector<std::pair<temp::name, changelog_download_job> > >();
+	      boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >
+		jobs_with_predigested_files = boost::make_shared<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >();
 
-	      for(std::vector<changelog_download_job>::const_iterator it = next.get_requests().begin();
+	      for(std::vector<boost::shared_ptr<preprocessed_changelog_job> >::const_iterator it = next.get_requests().begin();
 		  it != next.get_requests().end(); ++it)
 		{
+		  const preprocessed_changelog_job &job(**it);
+
 		  temp::name predigested_file;
 
 		  try
 		    {
-		      std::string uri(make_parsed_changelog_uri(*it));
+		      std::string uri;
+		      if(!job.get_only_new())
+			uri = ssprintf("changelog://%s/%s",
+				       job.get_target_info()->get_source_package().c_str(),
+				       job.get_target_info()->get_source_version().c_str());
+		      else
+			uri = ssprintf("delta-changelog://%s/%s/%s",
+				       job.get_target_info()->get_source_package().c_str(),
+				       job.get_current_info()->get_source_version().c_str(),
+				       job.get_target_info()->get_source_version().c_str());
 
-		      if(!uri.empty())
-			{
+
 		      LOG_TRACE(logger,
 				"Changelog preparation thread: checking for the changelog of "
-				<< it->get_ver().ParentPkg().Name()
-				<< " " << it->get_ver().VerStr()
+				<< job.get_target_info()->get_source_package()
+				<< " " << job.get_target_info()->get_source_version()
 				<< " under the cache URI "
 				<< uri);
-			  predigested_file = download_cache->getItem(uri);
-			}
+
+		      predigested_file = download_cache->getItem(uri);
+		      if(predigested_file.valid())
+			LOG_TRACE(logger, "Changelog preparation thread: found a predigested changelog for "
+				  << job.get_target_info()->get_source_package()
+				  << " " << job.get_target_info()->get_source_version()
+				  << " in the file " << predigested_file.get_name());
 		    }
 		  catch(const std::exception &ex)
 		    {
@@ -957,7 +972,7 @@ namespace gui
 		  jobs_with_predigested_files->push_back(std::make_pair(predigested_file, *it));
 		}
 
-	      sigc::slot<void, boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > > >
+	      sigc::slot<void, boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > > >
 		get_and_show_changelogs_slot = sigc::ptr_fun(&get_and_show_changelogs);
 
 	      post_event(safe_bind(make_safe_slot(get_and_show_changelogs_slot),
@@ -1033,10 +1048,17 @@ namespace gui
 
   void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
   {
-    boost::shared_ptr<std::vector<changelog_download_job> > requests_copy =
-      boost::make_shared<std::vector<changelog_download_job> >(changelogs);
-    check_cache_for_parsed_changelogs_job job(requests_copy);
+    // Preprocess and strip out references to the apt cache:
+    boost::shared_ptr<std::vector<boost::shared_ptr<preprocessed_changelog_job> > > preprocessed =
+      boost::make_shared<std::vector<boost::shared_ptr<preprocessed_changelog_job> > >();
 
+    preprocessed->reserve(changelogs.size());
+
+    for(std::vector<changelog_download_job>::const_iterator it = changelogs.begin();
+	it != changelogs.end(); ++it)
+      preprocessed->push_back(boost::make_shared<preprocessed_changelog_job>(*it));
+
+    check_cache_for_parsed_changelogs_job job(preprocessed);
     check_cache_for_parsed_changelogs_thread::add_job(job);
   }
 
