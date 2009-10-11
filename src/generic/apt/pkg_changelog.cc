@@ -283,7 +283,7 @@ private:
   public:
     create_background_thread(const boost::shared_ptr<std::vector<entry> > &_entries,
 			     const safe_slot1<void, boost::shared_ptr<download_manager> > &_k)
-        : entries(_entries)
+      : entries(_entries), k(_k)
     {
     }
 
