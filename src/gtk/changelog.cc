@@ -665,6 +665,17 @@ namespace gui
 		   pMainWindow->get_notifyview());
   }
 
+  // Intermediate callback to take the manager produced below and pass
+  // it to the above routine, in the main thread, with the usual
+  // ten-foot pole.
+  void fetch_and_show_changelogs_start_download_trampoline(boost::shared_ptr<download_manager> manager)
+  {
+    sigc::slot<void, boost::shared_ptr<download_manager> > k =
+      sigc::ptr_fun(&fetch_and_show_changelogs_start_download);
+
+    post_event(safe_bind(make_safe_slot(k), manager));
+  }
+
   void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
   {
     std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > jobs;
@@ -677,7 +688,7 @@ namespace gui
     // After the changelog download is prepared, invoke the above
     // routine to start it.
     sigc::slot<void, boost::shared_ptr<download_manager> > k =
-      sigc::ptr_fun(&fetch_and_show_changelogs_start_download);
+      sigc::ptr_fun(&fetch_and_show_changelogs_start_download_trampoline);
 
     global_changelog_cache.get_changelogs(jobs, make_safe_slot(k));
   }
