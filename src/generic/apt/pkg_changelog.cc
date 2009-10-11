@@ -56,6 +56,51 @@ namespace aptitude
 {
   namespace apt
   {
+    boost::shared_ptr<changelog_info>
+    changelog_info::create(const std::string &source_package,
+			   const std::string &source_version,
+			   const std::string &section,
+			   const std::string &display_name)
+    {
+      return boost::make_shared<changelog_info>(source_package,
+						source_version,
+						section,
+						display_name);
+    }
+
+    boost::shared_ptr<changelog_info>
+    changelog_info::create(const pkgCache::VerIterator &ver)
+    {
+      if(ver.end())
+	return boost::shared_ptr<changelog_info>();
+
+      if(ver.FileList().end())
+	{
+	  LOG_TRACE(Loggers::getAptitudeChangelog(),
+		    "No changelog information for " << ver.ParentPkg().Name()
+		    << ": it isn't available from any archive.");
+	  return boost::shared_ptr<changelog_info>();
+	}
+
+      pkgRecords::Parser &rec =
+	apt_package_records->Lookup(ver.FileList());
+      string source_package =
+	rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
+
+      const string source_version =
+	rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
+
+      LOG_TRACE(Loggers::getAptitudeChangelog(),
+		"For " << ver.ParentPkg().Name()
+		<< " " << ver.VerStr() << ", getting the changelog of the source package "
+		<< source_package << " " << source_version);
+
+      return boost::make_shared<changelog_info>(source_package,
+						source_version,
+						ver.Section(),
+						ver.ParentPkg().Name());
+    }
+
     changelog_cache::changelog_cache()
     {
     }
@@ -65,33 +110,21 @@ class download_changelog_manager : public download_manager
 public:
   class entry
   {
-    string srcpkg;
-    string ver;
-    string section;
-    string name;
+    boost::shared_ptr<changelog_info> info;
     changelog_cache::download_callbacks callbacks;
     temp::name tempname;
 
   public:
-    entry(const string &_srcpkg,
-	  const string &_ver,
-	  const string &_section,
-	  const string &_name,
+    entry(const boost::shared_ptr<changelog_info> &_info,
 	  const temp::name &_tempname,
 	  const changelog_cache::download_callbacks &_callbacks)
-      : srcpkg(_srcpkg),
-	ver(_ver),
-	section(_section),
-	name(_name),
+      : info(_info),
 	callbacks(_callbacks),
 	tempname(_tempname)
     {
     }
 
-    const string &get_srcpkg() const { return srcpkg; }
-    const string &get_ver() const { return ver; }
-    const string &get_section() const { return section; }
-    const string &get_name() const { return name; }
+    const boost::shared_ptr<changelog_info> &get_info() const { return info; }
     const changelog_cache::download_callbacks &get_callbacks() const { return callbacks; }
     const temp::name &get_tempname() const { return tempname; }
   };
@@ -180,7 +213,7 @@ private:
       current_uri(uris.begin())
     {
       LOG_TRACE(Loggers::getAptitudeChangelog(),
-		"Setting up a download of the changelog for " << _ent.get_name() << " from "
+		"Setting up a download of the changelog for " << _ent.get_info()->get_display_name() << " from "
 		<< showURIs(URIs) << "; MD5=" << MD5 << "; filename=" << filename);
 
       Retries = _config->FindI("Acquire::Retries", 0);
@@ -200,7 +233,7 @@ private:
     void Failed(string Message, pkgAcquire::MethodConfig *Cnf)
     {
       LOG_WARN(Loggers::getAptitudeChangelog(),
-	       "Failed to download the changelog for " << ent.get_name()
+	       "Failed to download the changelog for " << ent.get_info()->get_display_name()
 	       << ": " << Message);
 
       // We do what pkgAcqFile would do, except that we only give up
@@ -216,7 +249,7 @@ private:
 	  Retries--;
 
 	  LOG_TRACE(Loggers::getAptitudeChangelog(),
-		    "Trying again to download the changelog for " << ent.get_name()
+		    "Trying again to download the changelog for " << ent.get_info()->get_display_name()
 		    << " from " << desc.URI << ", " << Retries << " attempts remaining.");
 
 	  QueueURI(desc);
@@ -231,7 +264,7 @@ private:
 	      Retries = _config->FindI("Acquire::Retries",0);
 	      desc.URI = *current_uri;
 	      LOG_TRACE(Loggers::getAptitudeChangelog(),
-			"Falling back to download the changelog for " << ent.get_name()
+			"Falling back to download the changelog for " << ent.get_info()->get_display_name()
 			<< " from " << desc.URI);
 	      QueueURI(desc);
 	      return;
@@ -239,7 +272,7 @@ private:
 	}
 
       LOG_TRACE(Loggers::getAptitudeChangelog(),
-		"Failed to download the changelog for " << ent.get_name());
+		"Failed to download the changelog for " << ent.get_info()->get_display_name());
 
       Item::Failed(Message, Cnf);
       ent.get_callbacks().get_failure().get_slot()(ErrorText);
@@ -255,18 +288,18 @@ private:
       if(Status != pkgAcquire::Item::StatDone)
 	{
 	  _error->Error("Failed to fetch the description of %s from the URI %s: %s",
-			ent.get_srcpkg().c_str(),
+			ent.get_info()->get_source_package().c_str(),
 			desc.URI.c_str(),
 			ErrorText.c_str());
 
 	  LOG_ERROR(Loggers::getAptitudeChangelog(),
-		    "Failed to download the changelog for " << ent.get_name()
+		    "Failed to download the changelog for " << ent.get_info()->get_display_name()
 		    << ": " << Message << "[" << ErrorText << "]");
 	}
       else
 	{
 	  LOG_INFO(Loggers::getAptitudeChangelog(),
-		   "Successfully downloaded the changelog for " << ent.get_name()
+		   "Successfully downloaded the changelog for " << ent.get_info()->get_display_name()
 		   << ": " << Message);
 
 	  download_cache->putItem(desc.URI, ent.get_tempname().get_name());
@@ -299,10 +332,10 @@ private:
 	  for(std::vector<entry>::const_iterator it = entries->begin();
 	      it != entries->end(); ++it)
 	    {
-	      const string srcpkg(it->get_srcpkg());
-	      const string ver(it->get_ver());
-	      const string section(it->get_section());
-	      const string name(it->get_name());
+	      const string source_package(it->get_info()->get_source_package());
+	      const string source_version(it->get_info()->get_source_version());
+	      const string section(it->get_info()->get_section());
+	      const string name(it->get_info()->get_display_name());
 	      const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
 
 	      // Try to find a changelog that's already on the system,
@@ -312,7 +345,7 @@ private:
 	      // if it passes look for a changelog.
 	      pkgSrcRecords source_records(*apt_source_list);
 	      source_records.Restart();
-	      pkgSrcRecords::Parser *source_rec = source_records.Find(srcpkg.c_str());
+	      pkgSrcRecords::Parser *source_rec = source_records.Find(source_package.c_str());
 
 	      std::vector<std::string> changelog_uris;
 
@@ -335,8 +368,8 @@ private:
 			if(rec_sourcever.empty())
 			  rec_sourcever = pkg.CurrentVer().VerStr();
 
-			if(rec_sourcepkg == srcpkg &&
-			   rec_sourcever == ver)
+			if(rec_sourcepkg == source_package &&
+			   rec_sourcever == source_version)
 			  {
 			    // Everything passed.  Now test to see whether
 			    // the changelog exists by trying to stat it.
@@ -349,7 +382,7 @@ private:
 			    if(stat(changelog_file.c_str(), &buf) == 0)
 			      {
 				LOG_TRACE(logger,
-					  "The changelog for " << name << " " << ver
+					  "The changelog for " << source_package << " " << source_version
 					  << " exists on the system as " << changelog_file);
 				changelog_uris.push_back("file://" + changelog_file);
 			      }
@@ -359,7 +392,7 @@ private:
 			    if(stat(changelog_file.c_str(), &buf) == 0)
 			      {
 				LOG_TRACE(logger,
-					  "The changelog for " << name << " " << ver
+					  "The changelog for " << source_package << " " << source_version
 					  << " exists on the system as " << changelog_file);
 				changelog_uris.push_back("gzip://" + changelog_file);
 			      }
@@ -382,24 +415,24 @@ private:
 
 	      string prefix;
 
-	      if(srcpkg.size() > 3 &&
-		 srcpkg[0] == 'l' && srcpkg[1] == 'i' && srcpkg[2] == 'b')
-		prefix = std::string("lib") + srcpkg[3];
+	      if(source_package.size() > 3 &&
+		 source_package[0] == 'l' && source_package[1] == 'i' && source_package[2] == 'b')
+		prefix = std::string("lib") + source_package[3];
 	      else
-		prefix = srcpkg[0];
+		prefix = source_package[0];
 
 	      string realver;
 
-	      if(ver.find(':') != ver.npos)
-		realver.assign(ver, ver.find(':')+1, ver.npos);
+	      if(source_version.find(':') != source_version.npos)
+		realver.assign(source_version, source_version.find(':') + 1, source_version.npos);
 	      else
-		realver = ver;
+		realver = source_version;
 
 	      string uri = ssprintf("http://packages.debian.org/changelogs/pool/%s/%s/%s/%s_%s/changelog",
 				    realsection.c_str(),
 				    prefix.c_str(),
-				    srcpkg.c_str(),
-				    srcpkg.c_str(),
+				    source_package.c_str(),
+				    source_package.c_str(),
 				    realver.c_str());
 
 	      changelog_uris.push_back(uri);
@@ -411,13 +444,13 @@ private:
 	      temp::name cached_result = download_cache->getItem(uri);
 	      if(cached_result.valid())
 		{
-		  LOG_INFO(logger, "Fetched the changelog of " << name << " " << ver
+		  LOG_INFO(logger, "Fetched the changelog of " << source_package << " " << source_version
 			   << " from the download cache.");
 		  it->get_callbacks().get_success().get_slot()(cached_result);
 		}
 	      else
 		{
-		  LOG_TRACE(logger, "Will download the changelog of " << name << " " << ver);
+		  LOG_TRACE(logger, "Will download the changelog of " << source_package << " " << source_version);
 		  processed_entries->push_back(processed_entry(*it, changelog_uris));
 		}
 	    }
@@ -478,9 +511,9 @@ public:
 	it != entries->end(); ++it)
       {
 	LOG_TRACE(Loggers::getAptitudeChangelog(),
-		  "Adding the changelog of " << it->get_entry().get_name() << " to the queue.");
+		  "Adding the changelog of " << it->get_entry().get_info()->get_display_name() << " to the queue.");
 
-	const std::string title(ssprintf(_("Changelog of %s"), it->get_entry().get_name().c_str()));
+	const std::string title(ssprintf(_("Changelog of %s"), it->get_entry().get_info()->get_display_name().c_str()));
 	new AcqForEntry(fetcher,
 			it->get_changelog_uris(),
 			"",
@@ -530,13 +563,13 @@ public:
 		  if(item->Status != pkgAcquire::Item::StatDone)
 		    {
 		      _error->Error("Failed to fetch the changelog of %s from the URI %s: %s",
-				    item->get_entry().get_srcpkg().c_str(),
+				    item->get_entry().get_info()->get_source_package().c_str(),
 				    item->get_real_uri().c_str(),
 				    item->ErrorText.c_str());
 
 		      LOG_ERROR(Loggers::getAptitudeChangelog(),
 				"Failed to fetch the changelog of "
-				<< item->get_entry().get_srcpkg()
+				<< item->get_entry().get_info()->get_source_package()
 				<< ": " << item->ErrorText);
 
 		      rval = failure;
@@ -546,7 +579,7 @@ public:
 		      const entry &ent(item->get_entry());
 
 		      LOG_TRACE(Loggers::getAptitudeChangelog(),
-				"Succeeded in fetching the changelog of " << item->get_entry().get_srcpkg());
+				"Succeeded in fetching the changelog of " << item->get_entry().get_info()->get_source_package());
 
 		      download_cache->putItem(item->get_real_uri(),
 					      ent.get_tempname().get_name());
@@ -602,40 +635,26 @@ void changelog_cache::changelog_failed(const std::string &errmsg,
   failure_slot(errmsg);
 }
 
-void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &versions,
+void changelog_cache::get_changelogs(const std::vector<std::pair<boost::shared_ptr<changelog_info>, changelog_cache::download_callbacks> > &versions,
 				     const safe_slot1<void, boost::shared_ptr<download_manager> > &k)
 {
   log4cxx::LoggerPtr logger(Loggers::getAptitudeChangelog());
 
   std::vector<download_changelog_manager::entry> entries;
 
-  for(std::vector<std::pair<pkgCache::VerIterator, download_callbacks> >::const_iterator
+  for(std::vector<std::pair<boost::shared_ptr<changelog_info>, download_callbacks> >::const_iterator
 	it = versions.begin(); it != versions.end(); ++it)
     {
-      pkgCache::VerIterator ver(it->first);
+      const boost::shared_ptr<changelog_info> &info(it->first);
 
-      if(ver.end())
-	continue;
-
-      if(ver.FileList().end())
+      if(!info)
 	{
-	  LOG_TRACE(logger, "Skipping " << ver.ParentPkg().Name() << " " << ver.VerStr()
-		    << ": it isn't available from any archive.");
+	  it->second.get_failure().get_slot()(_("No changelog found."));
 	  continue;
 	}
 
-      // Look up the source package.
-      pkgRecords::Parser &rec =
-	apt_package_records->Lookup(ver.FileList());
-      string srcpkg =
-	rec.SourcePkg().empty() ? ver.ParentPkg().Name() : rec.SourcePkg();
-
-      const string sourcever =
-	rec.SourceVer().empty() ? ver.VerStr() : rec.SourceVer();
-
-      LOG_TRACE(logger, "For " << ver.ParentPkg().Name()
-		<< " " << ver.VerStr() << ", downloading the changelog of the source package "
-		<< srcpkg << " " << sourcever);
+      const std::string &srcpkg(info->get_source_package());
+      const std::string &sourcever(info->get_source_version());
 
       temp::dir tempdir;
       temp::name tempname;
@@ -649,6 +668,7 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
 	{
 	  _error->Error("%s", e.errmsg().c_str());
 	  LOG_ERROR(logger, "Can't create a temporary file: " << e.errmsg());
+	  it->second.get_failure().get_slot()(cw::util::ssprintf(_("Can't create a temporary file: %s"), e.errmsg().c_str()));
 	  continue;
 	}
 
@@ -690,8 +710,7 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<pkgCache::VerIt
 	    callbacks(make_safe_slot(register_slot),
 		      make_safe_slot(failure_slot));
 
-	  entries.push_back(download_changelog_manager::entry(srcpkg, sourcever, ver.Section(), ver.ParentPkg().Name(),
-							      tempname, callbacks));
+	  entries.push_back(download_changelog_manager::entry(info, tempname, callbacks));
 	}
     }
 
@@ -703,14 +722,15 @@ changelog_cache::get_changelog(const pkgCache::VerIterator &ver,
 			       const safe_slot1<void, temp::name> &success,
 			       const safe_slot1<void, std::string> &failure)
 {
-  std::vector<std::pair<pkgCache::VerIterator, download_callbacks> > versions;
-  versions.push_back(std::make_pair(ver, download_callbacks(success, failure)));
+  std::vector<std::pair<boost::shared_ptr<changelog_info>, download_callbacks> > changelogs;
+  changelogs.push_back(std::make_pair(changelog_info::create(ver),
+				      download_callbacks(success, failure)));
 
   cw::threads::box<boost::shared_ptr<download_manager> > rval;
   sigc::slot1<void, boost::shared_ptr<download_manager> >
     put_rval_slot(sigc::mem_fun(rval, &cw::threads::box<boost::shared_ptr<download_manager> >::put));
 
-  get_changelogs(versions,
+  get_changelogs(changelogs,
 		 make_safe_slot(put_rval_slot));
   return rval.take();
 }
@@ -775,7 +795,8 @@ changelog_cache::get_changelog_from_source(const string &srcpkg,
 	callbacks(make_safe_slot(register_and_return),
 		  make_safe_slot(fail_and_return));
 
-      entries.push_back(download_changelog_manager::entry(srcpkg, ver, section, name, tempname, callbacks));
+      entries.push_back(download_changelog_manager::entry(changelog_info::create(srcpkg, ver, section, name),
+							  tempname, callbacks));
     }
 
   return download_changelog_manager::create_blocking(entries.begin(), entries.end());

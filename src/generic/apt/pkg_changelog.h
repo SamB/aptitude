@@ -46,6 +46,63 @@ namespace aptitude
 {
   namespace apt
   {
+    /** \brief Carries information about which changelog is to be
+     *  downloaded.
+     */
+    class changelog_info
+    {
+      const std::string source_package;
+      const std::string source_version;
+      const std::string section;
+      const std::string display_name;
+
+    public:
+      /** \brief This constructor is public for make_shared; it should
+       *  never be invoked directly.  Use the static create() methods
+       *  instead.
+       */
+      changelog_info(const std::string &_source_package,
+		     const std::string &_source_version,
+		     const std::string &_section,
+		     const std::string &_display_name)
+	: source_package(_source_package),
+	  source_version(_source_version),
+	  section(_section),
+	  display_name(_display_name)
+      {
+      }
+
+      static boost::shared_ptr<changelog_info>
+      create(const std::string &source_package,
+	     const std::string &source_version,
+	     const std::string &section,
+	     const std::string &display_name);
+
+      /** \brief Create a changelog_info structure that describes the
+       *  changelog of the given package version.
+       *
+       *  \return the new object, or an invalid pointer if the
+       *  changelog can't be downloaded.
+       */
+      static boost::shared_ptr<changelog_info>
+      create(const pkgCache::VerIterator &ver);
+
+      /** \brief Retrieve the name of the changelog's source package. */
+      const std::string &get_source_package() const { return source_package; }
+      /** \brief Retrieve the name of the changelog's source version. */
+      const std::string &get_source_version() const { return source_version; }
+      /** \brief Retrieve the section that the package is in. */
+      const std::string &get_section() const { return section; }
+      /** \brief Retrieve the display name of the changelog's package.
+       *
+       *  This is the name that should be displayed to the user when,
+       *  for instance, the changelog is being downloaded.  The name
+       *  of the binary package that was selected is a good choice
+       *  here.
+       */
+      const std::string &get_display_name() const { return display_name; }
+    };
+
     /** \brief Manager for ongoing changelog downloads, responsible
      *  for merging simultaneous downloads of the same changelog.
      *
@@ -170,7 +227,7 @@ namespace aptitude
        *        it a lot easier to ensure that the manager is deleted
        *        when it should be.
        */
-      void get_changelogs(const std::vector<std::pair<pkgCache::VerIterator, download_callbacks> > &versions,
+      void get_changelogs(const std::vector<std::pair<boost::shared_ptr<changelog_info>, download_callbacks> > &versions,
 			  const safe_slot1<void, boost::shared_ptr<download_manager> > &k);
 
       /** \brief Blocking call to get a download process object for a

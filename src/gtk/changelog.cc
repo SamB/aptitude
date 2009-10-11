@@ -42,11 +42,16 @@
 #include <generic/apt/download_manager.h>
 #include <generic/apt/pkg_changelog.h>
 
+#include <generic/util/file_cache.h>
+
 #include <gtk/hyperlink.h>
 #include <gtk/gui.h>
 #include <gtk/progress.h>
 
+#include <boost/make_shared.hpp>
+
 using aptitude::apt::changelog_cache;
+using aptitude::apt::changelog_info;
 using aptitude::apt::global_changelog_cache;
 
 namespace cw = cwidget;
@@ -55,6 +60,41 @@ namespace gui
 {
   namespace
   {
+    /** \brief Return the fake URI that the changelog is cached under,
+     *  or an empty string if there isn't any cached value for it.
+     */
+    static std::string make_parsed_changelog_uri(const changelog_download_job &job)
+    {
+      const pkgCache::VerIterator &ver(job.get_ver());
+
+      if(ver.end())
+	{
+	  LOG_ERROR(aptitude::Loggers::getAptitudeGtkChangelog(),
+		    "Invalid version passed to make_parsed_changelog_uri().");
+	  return "";
+	}
+
+      if(job.get_only_new())
+	{
+	  pkgCache::VerIterator currver(ver.ParentPkg().CurrentVer());
+	  if(currver.end())
+	    {
+	      LOG_WARN(aptitude::Loggers::getAptitudeGtkChangelog(),
+		       "No cache information for the parse of an only-new changelog when there is no current version.");
+	      return "";
+	    }
+	  else
+	    return cw::util::ssprintf("delta-changelog://%s/%s/%s",
+				      ver.ParentPkg().Name(),
+				      currver.VerStr(),
+				      ver.VerStr());
+	}
+      else
+	return cw::util::ssprintf("changelog://%s/%s",
+				  ver.ParentPkg().Name(),
+				  ver.VerStr());
+    }
+
     void view_bug(const std::string &bug_number)
     {
       std::string URL = cw::util::ssprintf("http://bugs.debian.org/%s", bug_number.c_str());
@@ -384,12 +424,20 @@ namespace gui
       temp::name name;
       safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot;
       const std::string from;
+      const std::string to;
+      const std::string source_package;
+      bool digested;
 
     public:
       parse_changelog_job(const temp::name &_name,
 			  const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &_slot,
-			  const std::string &_from)
-	: name(_name), slot(_slot), from(_from)
+			  const std::string &_from,
+			  const std::string &_to,
+			  const std::string &_source_package,
+			  bool _digested)
+	: name(_name), slot(_slot), from(_from),
+	  to(_to), source_package(_source_package),
+	  digested(_digested)
       {
       }
 
@@ -399,6 +447,17 @@ namespace gui
       const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &get_slot() const { return slot; }
       /** \brief Return the earliest version that should be included in the parse. */
       const std::string &get_from() const { return from; }
+      /** \brief Return the version whose changelog is being parsed. */
+      const std::string &get_to() const { return to; }
+      /** \brief Return the source package whose changelog is being parsed. */
+      const std::string &get_source_package() const { return source_package; }
+      /** \brief Return \b true if the input file has already been
+       *  passed through digest_changelog().
+       *
+       *  This is true, for instance, when retrieving a digested
+       *  changelog from the cache.
+       */
+      bool get_digested() const { return digested; }
     };
 
     /** \brief Parses a queue of changelogs in the background.
@@ -464,8 +523,32 @@ namespace gui
 
 		try
 		  {
+		    std::string changelog_uri;
+		    if(next.get_from().empty())
+		      changelog_uri = ssprintf("changelog://%s/%s",
+					       next.get_source_package().c_str(),
+					       next.get_to().c_str());
+		    else
+		      changelog_uri = ssprintf("delta-changelog://%s/%s/%s",
+					       next.get_source_package().c_str(),
+					       next.get_from().c_str(),
+					       next.get_to().c_str());
+
+		    temp::name digested;
+		    if(next.get_digested())
+		      digested = next.get_name();
+		    else
+		      digested = aptitude::apt::digest_changelog(next.get_name(), next.get_from());
+
+		    if(digested.valid())
+		      {
+			LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+				  "Caching digested changelog as " << changelog_uri);
+			download_cache->putItem(changelog_uri, digested.get_name());
+		      }
+
 		    cw::util::ref_ptr<aptitude::apt::changelog> parsed =
-		      aptitude::apt::parse_changelog(next.get_name(), next.get_from());
+		      aptitude::apt::parse_digested_changelog(digested);
 		    post_event(safe_bind(next.get_slot(), parsed));
 		  }
 		catch(const std::exception &ex)
@@ -518,11 +601,16 @@ namespace gui
 
     // Helper function to post the "changelog download complete" event
     // to the main thread.
-    void do_view_changelog_trampoline(temp::name name,
-				      safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot,
-				      std::string from)
+    void parse_and_view_changelog_trampoline(temp::name name,
+					     safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot,
+					     std::string from,
+					     std::string to,
+					     std::string source_package)
     {
-      parse_changelog_thread::add_job(parse_changelog_job(name, slot, from));
+      parse_changelog_thread::add_job(parse_changelog_job(name, slot,
+							  from, to,
+							  source_package,
+							  false));
     }
 
     void do_changelog_download_error_trampoline(const std::string &error,
@@ -531,8 +619,23 @@ namespace gui
       post_event(safe_bind(slot, error));
     }
 
+    /** \brief Try to generate a changelog-download object for the
+     *  given job and add it to a queue of output jobs to process.
+     *
+     *  \param entry         The download job to process.
+     *
+     *  \param digested_file The pre-digested changelog, if one is
+     *                       available.
+     *
+     *  \param output_jobs   The queue of output download jobs; if it's
+     *                       possible and necessary to do so, a new
+     *                       job will be pushed onto this queue.
+     *
+     *  This function must be invoked in the main thread.
+     */
     void process_changelog_job(const changelog_download_job &entry,
-			       std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > &output_jobs)
+			       const temp::name &digested_file,
+			       std::vector<std::pair<boost::shared_ptr<changelog_info>, changelog_cache::download_callbacks> > &output_jobs)
     {
       Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry.get_text_buffer();
       pkgCache::VerIterator ver = entry.get_ver();
@@ -542,17 +645,9 @@ namespace gui
       string pkgname = ver.ParentPkg().Name();
 
       pkgCache::VerIterator curver = ver.ParentPkg().CurrentVer();
-      std::string current_source_ver;
-      if(!curver.end())
-	{
-	  pkgRecords::Parser &current_source_rec =
-	    apt_package_records->Lookup(curver.FileList());
 
-	  current_source_ver =
-	    current_source_rec.SourceVer().empty()
-	    ? (curver.VerStr() == NULL ? "" : curver.VerStr())
-	    : current_source_rec.SourceVer();
-	}
+      boost::shared_ptr<changelog_info> target_info(changelog_info::create(ver));
+      boost::shared_ptr<changelog_info> current_info(changelog_info::create(curver));
 
       // TODO: add a configurable association between origins and changelog URLs.
       std::set<std::string> origins;
@@ -622,7 +717,10 @@ namespace gui
 	  // main thread.
 	  const bool only_new = entry.get_only_new();
 	  finish_changelog_download_info
-	    download_info(begin, end, textBuffer, current_source_ver, only_new);
+	    download_info(begin, end, textBuffer,
+			  only_new ? current_info->get_source_version() : "",
+			  only_new);
+
 
 	  const sigc::slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_slot =
 	    sigc::bind(sigc::ptr_fun(&finish_changelog_download),
@@ -631,10 +729,12 @@ namespace gui
 	  const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_safe_slot =
 	    make_safe_slot(finish_changelog_download_slot);
 
-	  const sigc::slot1<void, temp::name> finish_changelog_download_trampoline =
-	    sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
+	  const sigc::slot1<void, temp::name> parse_and_view_changelog_download_trampoline =
+	    sigc::bind(sigc::ptr_fun(&parse_and_view_changelog_trampoline),
 		       finish_changelog_download_safe_slot,
-		       only_new ? current_source_ver : "");
+		       only_new ? current_info->get_source_version() : "",
+		       target_info->get_source_version(),
+		       target_info->get_source_package());
 
 	  const sigc::slot1<void, std::string> changelog_download_error_slot =
 	    sigc::bind(sigc::ptr_fun(&changelog_download_error),
@@ -648,15 +748,42 @@ namespace gui
 		       changelog_download_error_safe_slot);
 
 	  const changelog_cache::download_callbacks
-	    callbacks(make_safe_slot(finish_changelog_download_trampoline),
+	    callbacks(make_safe_slot(parse_and_view_changelog_download_trampoline),
 		      make_safe_slot(changelog_download_error_trampoline));
 
-	  output_jobs.push_back(std::make_pair(ver, callbacks));
+
+	  // The normal flow here is that the download invoked
+	  // parse_and_view_changelog_download_trampoline, which tells
+	  // the parse thread to parse the changelog and invoke
+	  // finish_changelog_download_slot in the main thread when
+	  // it's done.
+
+	  // However, if we have a pre-digested changelog, we can call
+	  // out to the parse thread directly, bypassing the download
+	  // process.
+	  if(digested_file.valid())
+	    {
+	      LOG_TRACE(aptitude::Loggers::getAptitudeGtkChangelog(),
+			"Using a predigested file to display the changelog of "
+			<< target_info->get_source_package() << " "
+			<< target_info->get_source_version());
+
+	      parse_changelog_job parse_job(digested_file,
+					    finish_changelog_download_safe_slot,
+					    only_new ? current_info->get_source_version() : "",
+					    target_info->get_source_version(),
+					    target_info->get_source_package(),
+					    true);
+
+	      parse_changelog_thread::add_job(parse_job);
+	    }
+	  else
+	    output_jobs.push_back(std::make_pair(changelog_info::create(ver), callbacks));
 	}
     }
   }
 
-  void fetch_and_show_changelogs_start_download(boost::shared_ptr<download_manager> manager)
+  void get_and_show_changelogs_start_download(boost::shared_ptr<download_manager> manager)
   {
     start_download(manager,
 		   _("Downloading changelogs"),
@@ -668,30 +795,253 @@ namespace gui
   // Intermediate callback to take the manager produced below and pass
   // it to the above routine, in the main thread, with the usual
   // ten-foot pole.
-  void fetch_and_show_changelogs_start_download_trampoline(boost::shared_ptr<download_manager> manager)
+  void get_and_show_changelogs_start_download_trampoline(boost::shared_ptr<download_manager> manager)
   {
     sigc::slot<void, boost::shared_ptr<download_manager> > k =
-      sigc::ptr_fun(&fetch_and_show_changelogs_start_download);
+      sigc::ptr_fun(&get_and_show_changelogs_start_download);
 
     post_event(safe_bind(make_safe_slot(k), manager));
   }
 
-  void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
+  /** \param Start the process of actually downloading, parsing, and
+   *  displaying changelogs.
+   *
+   *  This function must be invoked in the main thread.
+   *
+   *  \param changelogs A list of what needs to be done.  Each entry
+   *                    in this list combines the pre-digested
+   *                    changelog file with the job to run; if the
+   *                    pre-digested file is invalid, the changelog
+   *                    will be downloaded and digested.
+   */
+  void get_and_show_changelogs(boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > > changelogs)
   {
-    std::vector<std::pair<pkgCache::VerIterator, changelog_cache::download_callbacks> > jobs;
+    std::vector<std::pair<boost::shared_ptr<changelog_info>, changelog_cache::download_callbacks> > jobs;
 
-    for(std::vector<changelog_download_job>::const_iterator it = changelogs.begin();
-	it != changelogs.end(); ++it)
-      // If the job can be downloaded, insert it into the queue.
-      process_changelog_job(*it, jobs);
+    for(std::vector<std::pair<temp::name, changelog_download_job> >::const_iterator
+	  it = changelogs->begin(); it != changelogs->end(); ++it)
+      // For each input job, process_changelog_job will either
+      // immediately pass a predigested file to the parse thread, or
+      // queue up a new download entry (if possible, anyway).
+      process_changelog_job(it->second, it->first, jobs);
 
-    // After the changelog download is prepared, invoke the above
-    // routine to start it.
+    // Now prepare and start the actual download:
     sigc::slot<void, boost::shared_ptr<download_manager> > k =
-      sigc::ptr_fun(&fetch_and_show_changelogs_start_download_trampoline);
+      sigc::ptr_fun(&get_and_show_changelogs_start_download_trampoline);
 
     global_changelog_cache.get_changelogs(jobs, make_safe_slot(k));
   }
+
+
+
+  // The following code powers the thread that checks for parsed
+  // (pre-digested) changelogs in the cache, handing each one that it
+  // finds off to the "display parsed changelog" code.  Each request
+  // contains a list of download jobs, and the ones whose parses are
+  // not found in the cache are passed off to be downloaded and/or
+  // parsed.
+
+  class check_cache_for_parsed_changelogs_job
+  {
+    boost::shared_ptr<std::vector<changelog_download_job> > requests;
+
+  public:
+    check_cache_for_parsed_changelogs_job(const boost::shared_ptr<std::vector<changelog_download_job> > &_requests)
+      : requests(_requests)
+    {
+    }
+
+    const std::vector<changelog_download_job> &get_requests() const { return *requests; }
+  };
+
+  /** \brief A singleton thread that preprocesses changelog jobs by
+   *  checking for parsed changelogs in the cache.
+   *
+   *  \todo I believe it should be possible to write a skeleton "queue
+   *  processing thread" class that would subsume this and
+   *  parse_changelog_thread.  That would also make it reasonable to
+   *  add special features (like spawning up to N of a given thread).
+   */
+  class check_cache_for_parsed_changelogs_thread
+  {
+    // Each job is a vector of changelog downloads.
+    static std::deque<check_cache_for_parsed_changelogs_job> jobs;
+
+    // The active thread, or NULL if there isn't one.  As it exits,
+    // the active thread will destroy this and NULL it out while
+    // holding the state mutex.
+    static cw::threads::thread *active_thread;
+
+    // This mutex protects all accesses to "jobs" and "active_thread".
+    static cw::threads::mutex state_mutex;
+
+  public:
+    check_cache_for_parsed_changelogs_thread()
+    {
+    }
+
+    static void add_job(check_cache_for_parsed_changelogs_job &job)
+    {
+      using aptitude::Loggers;
+
+      cw::threads::mutex::lock l(state_mutex);
+
+      LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		"Adding a find-parsed-changelog job to the queue.");
+
+      jobs.push_back(job);
+      // Start the parse thread if it's not running.
+      if(active_thread == NULL)
+	{
+	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background find-parsed-changelogs thread.");
+	  active_thread = new cw::threads::thread(check_cache_for_parsed_changelogs_thread());
+	}
+    }
+
+    void operator()() const
+    {
+      log4cxx::LoggerPtr logger(aptitude::Loggers::getAptitudeGtkChangelog());
+
+      try
+	{
+	  cw::threads::mutex::lock l(state_mutex);
+
+	  while(!jobs.empty())
+	    {
+	      check_cache_for_parsed_changelogs_job next(jobs.front());
+	      jobs.pop_front();
+
+	      // Unlock the state mutex for the actual work:
+	      l.release();
+
+	      // Used to queue up the work for the main thread (the
+	      // jobs to process and any pre-digested files that
+	      // were found).
+	      boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > >
+		jobs_with_predigested_files = boost::make_shared<std::vector<std::pair<temp::name, changelog_download_job> > >();
+
+	      for(std::vector<changelog_download_job>::const_iterator it = next.get_requests().begin();
+		  it != next.get_requests().end(); ++it)
+		{
+		  temp::name predigested_file;
+
+		  try
+		    {
+		      std::string uri(make_parsed_changelog_uri(*it));
+
+		      if(!uri.empty())
+			{
+		      LOG_TRACE(logger,
+				"Changelog preparation thread: checking for the changelog of "
+				<< it->get_ver().ParentPkg().Name()
+				<< " " << it->get_ver().VerStr()
+				<< " under the cache URI "
+				<< uri);
+			  predigested_file = download_cache->getItem(uri);
+			}
+		    }
+		  catch(const std::exception &ex)
+		    {
+		      LOG_WARN(logger, "Changelog preparation thread: got std::exception: " << ex.what());
+		    }
+		  catch(const cw::util::Exception &ex)
+		    {
+		      LOG_WARN(logger, "Changelog preparation thread: got cwidget::util::Exception: " << ex.errmsg());
+		    }
+		  catch(...)
+		    {
+		      LOG_WARN(logger, "Changelog preparation thread: got an unknown exception.");
+		    }
+
+
+		  jobs_with_predigested_files->push_back(std::make_pair(predigested_file, *it));
+		}
+
+	      sigc::slot<void, boost::shared_ptr<std::vector<std::pair<temp::name, changelog_download_job> > > >
+		get_and_show_changelogs_slot = sigc::ptr_fun(&get_and_show_changelogs);
+
+	      post_event(safe_bind(make_safe_slot(get_and_show_changelogs_slot),
+				   jobs_with_predigested_files));
+
+	      l.acquire();
+	    }
+
+	  delete active_thread;
+	  active_thread = NULL;
+	  return; // Unless there's an unlikely error, we exit here;
+	  // otherwise we try some last-chance error
+	  // handling below.
+	}
+	catch(const std::exception &ex)
+	  {
+	    LOG_WARN(logger, "Changelog preparation thread aborting with std::exception: " << ex.what());
+	  }
+	catch(const cw::util::Exception &ex)
+	  {
+	    LOG_WARN(logger, "Changelog preparation thread aborting with cwidget::util::Exception: " << ex.errmsg());
+	  }
+	catch(...)
+	  {
+	    LOG_WARN(logger, "Changelog preparation thread aborting with an unknown exception.");
+	  }
+
+	// Do what we can to recover, although there might be jobs
+	// that can't be processed!
+	{
+	  cw::threads::mutex::lock l(state_mutex);
+	  delete active_thread;
+	  active_thread = NULL;
+	}
+    }
+  };
+  std::deque<check_cache_for_parsed_changelogs_job> check_cache_for_parsed_changelogs_thread::jobs;
+  cw::threads::thread *check_cache_for_parsed_changelogs_thread::active_thread;
+  cw::threads::mutex check_cache_for_parsed_changelogs_thread::state_mutex;
+
+
+
+
+  // The top-level entry point for changelog fetching.
+  //
+  // The overall changelog fetch process has three steps:
+  //
+  // 1. First, we check whether each changelog exists as a parsed
+  //    entry in the cache.  The URI used is one of:
+  //
+  //        changelog://PACKAGE/NEW_VERSION
+  //        delta-changelog://PACKAGE/CURRENT_VERSION/NEW_VERSION
+  //
+  //    In the second case, only "new" entries are present.  The
+  //    source package name is always used.
+  //
+  // 2. Second, we check whether the remaining changelogs exist on
+  //    disk or in the file cache.
+  //
+  // 3. Finally, any changelogs not resolved by steps 1 and 2 are
+  //    retrieved over the network.
+  //
+  // Step 1 is implemented in this file; 2 and 3 are implemented in
+  // src/generic/pkg_changelog.{cc,h}.  (TODO: the code in this file
+  // should probably be generalized for use with, e.g., the curses
+  // frontend)
+  //
+  // Changelogs retrieved in steps 2 and 3 are parsed, then cached for
+  // later use in step 1.  To conserve time, aptitude looks in the
+  // file cache for the parsed changelog once more before proceeding
+  // to parse it (the parse process is quite slow, hence all this
+  // caching).
+
+  void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs)
+  {
+    boost::shared_ptr<std::vector<changelog_download_job> > requests_copy =
+      boost::make_shared<std::vector<changelog_download_job> >(changelogs);
+    check_cache_for_parsed_changelogs_job job(requests_copy);
+
+    check_cache_for_parsed_changelogs_thread::add_job(job);
+  }
+
+
+
 
   void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
 				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
