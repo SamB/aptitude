@@ -22,6 +22,8 @@ libgtk_a_SOURCES=\
 	download.h \
 	dpkg_terminal.cc \
 	dpkg_terminal.h \
+	entitysummary.cc \
+	entitysummary.h \
 	entityview.cc \
 	entityview.h \
 	errortab.cc \
