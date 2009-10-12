@@ -21,6 +21,7 @@
 #include "dashboardtab.h"
 
 #include "changelog.h"
+#include "entitysummary.h"
 #include "hyperlink.h"
 #include "info.h"
 #include "packagestab.h" // For PackageSearchEntry.
@@ -813,18 +814,17 @@ namespace gui
     Gtk::TreeModel::Path path;
     Gtk::TreeViewColumn * focus_column;
     upgrades_pkg_view->get_treeview()->get_cursor(path, focus_column);
-    // It's important that we create a new buffer in each case,
-    // because it prevents any stale downloads from corrupting the
-    // changelog display.  \todo if the user clicks on several
-    // packages while downloads are in process, we'll render some
-    // extra changelogs and throw the renders away; ideally, we
-    // would just disconnect the rendering job completely, but that
-    // will require some changes to how changelogs are downloaded.
     if (upgrades_pkg_view->get_treeview()->get_selection()->is_selected(path))
       {
 	Gtk::TreeModel::iterator iter = upgrades_pkg_view->get_model()->get_iter(path);
 	using cwidget::util::ref_ptr;
 	ref_ptr<Entity> ent = (*iter)[upgrades_pkg_view->get_columns()->EntObject];
+
+	show_entity_summary(ent, upgrades_changelog_view);
+
+
+
+	// Try to scroll to its changelog in the big list.
 	ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
 
 	if(!pkg_ent.valid())
@@ -835,18 +835,8 @@ namespace gui
 
 	pkgCache::PkgIterator pkg = pkg_ent->get_pkg();
 	pkgCache::VerIterator candver = (*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);
-	const Glib::RefPtr<Gtk::TextBuffer> buffer =
-	  Gtk::TextBuffer::create();
 
-	upgrades_changelog_view->set_buffer(buffer);
 
-	if(candver.end())
-	  buffer->set_text(ssprintf(_("The package %s has no candidate version and will not be upgraded; unable to show its changelog."),
-				    pkg.Name()));
-	else
-	  fetch_and_show_changelog(candver, buffer, buffer->end());
-
-	// Try to scroll to its changelog in the big list.
 	std::map<pkgCache::VerIterator, Glib::RefPtr<Gtk::TextBuffer::Mark> >::const_iterator
 	  found(changelog_locations.find(candver));
 	if(found != changelog_locations.end())
