@@ -440,15 +440,27 @@ namespace gui
       // The active thread, or NULL if there isn't one.  As it exits,
       // the active thread will destroy this and NULL it out while
       // holding the state mutex.
-      static cw::threads::thread *active_thread;
+      static boost::shared_ptr<cw::threads::thread> active_thread;
 
-      // This mutex protects all accesses to "jobs" and
+      // Set to true when the thread should suspend itself.
+      static bool suspended;
+
+      // This mutex protects all accesses to "jobs", "suspended and
       // "active_thread".
       static cw::threads::mutex state_mutex;
+
+      // Set to true when the global signal handlers are connected up.
+      static bool signals_connected;
 
     public:
       parse_changelog_thread()
       {
+	if(!signals_connected)
+	  {
+	    cache_closed.connect(sigc::ptr_fun(&parse_changelog_thread::stop));
+	    cache_reloaded.connect(sigc::ptr_fun(&parse_changelog_thread::maybe_start));
+	    signals_connected = true;
+	  }
       }
 
       static void add_job(const parse_changelog_job &job)
@@ -463,10 +475,51 @@ namespace gui
 
 	jobs.push_back(job);
 	// Start the parse thread if it's not running.
-	if(active_thread == NULL)
+	if(!suspended && active_thread == NULL)
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background changelog parse thread.");
-	    active_thread = new cw::threads::thread(parse_changelog_thread());
+	    active_thread = boost::make_shared<cw::threads::thread>(parse_changelog_thread());
+	  }
+      }
+
+      static void stop()
+      {
+	using aptitude::Loggers;
+
+	cw::threads::mutex::lock l(state_mutex);
+
+	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		  "Pausing the changelog parse thread.");
+
+	suspended = true;
+	// Copy this since it'll be zeroed out when the thread exits,
+	// which can happen as soon as the lock below is released.
+	boost::shared_ptr<cw::threads::thread> active_thread_copy(active_thread);
+
+	l.release();
+
+	active_thread_copy->join();
+      }
+
+      static void maybe_start()
+      {
+	using aptitude::Loggers;
+
+	cw::threads::mutex::lock l(state_mutex);
+
+	suspended = false;
+
+	if(active_thread != NULL)
+	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		    "Not starting the background changelog parse thread: it's already running.");
+	else if(jobs.empty())
+	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		    "Not starting the background changelog parse thread: it has no jobs.");
+	else
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		      "Starting the background changelog parse thread.");
+	    active_thread = boost::make_shared<cw::threads::thread>(parse_changelog_thread());
 	  }
       }
 
@@ -535,8 +588,7 @@ namespace gui
 		l.acquire();
 	      }
 
-	    delete active_thread;
-	    active_thread = NULL;
+	    active_thread.reset();
 	    return; // Unless there's an unlikely error, we exit here;
 		    // otherwise we try some last-chance error
 		    // handling below.
@@ -558,14 +610,15 @@ namespace gui
 	// that can't be processed!
 	{
 	  cw::threads::mutex::lock l(state_mutex);
-	  delete active_thread;
-	  active_thread = NULL;
+	  active_thread.reset();
 	}
       }
     };
     std::deque<parse_changelog_job> parse_changelog_thread::jobs;
-    cw::threads::thread *parse_changelog_thread::active_thread = NULL;
+    boost::shared_ptr<cw::threads::thread> parse_changelog_thread::active_thread;
+    bool parse_changelog_thread::suspended = false;
     cw::threads::mutex parse_changelog_thread::state_mutex;
+    bool parse_changelog_thread::signals_connected = false;
 
     // Helper function to post the "changelog download complete" event
     // to the main thread.
@@ -873,14 +926,26 @@ namespace gui
     // The active thread, or NULL if there isn't one.  As it exits,
     // the active thread will destroy this and NULL it out while
     // holding the state mutex.
-    static cw::threads::thread *active_thread;
+    static boost::shared_ptr<cw::threads::thread> active_thread;
+
+    // Set to true when the thread should suspend itself.
+    static bool suspended;
 
     // This mutex protects all accesses to "jobs" and "active_thread".
     static cw::threads::mutex state_mutex;
 
+    // Set to true when the global signal handlers are connected up.
+    static bool signals_connected;
+
   public:
     check_cache_for_parsed_changelogs_thread()
     {
+      if(!signals_connected)
+	{
+	  cache_closed.connect(sigc::ptr_fun(&check_cache_for_parsed_changelogs_thread::stop));
+	  cache_reloaded.connect(sigc::ptr_fun(&check_cache_for_parsed_changelogs_thread::maybe_start));
+	  signals_connected = true;
+	}
     }
 
     static void add_job(check_cache_for_parsed_changelogs_job &job)
@@ -897,7 +962,48 @@ namespace gui
       if(active_thread == NULL)
 	{
 	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background find-parsed-changelogs thread.");
-	  active_thread = new cw::threads::thread(check_cache_for_parsed_changelogs_thread());
+	  active_thread = boost::make_shared<cw::threads::thread>(check_cache_for_parsed_changelogs_thread());
+	}
+    }
+
+    static void stop()
+    {
+      using aptitude::Loggers;
+
+      cw::threads::mutex::lock l(state_mutex);
+
+      LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		"Pausing the find-parsed-changelogs thread.");
+
+      suspended = true;
+      // Copy this since it'll be zeroed out when the thread exits,
+      // which can happen as soon as the lock below is released.
+      boost::shared_ptr<cw::threads::thread> active_thread_copy(active_thread);
+
+      l.release();
+
+      active_thread_copy->join();
+    }
+
+    static void maybe_start()
+    {
+      using aptitude::Loggers;
+
+      cw::threads::mutex::lock l(state_mutex);
+
+      suspended = false;
+
+      if(active_thread != NULL)
+	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		  "Not starting the background find-parsed-changelogs thread: it's already running.");
+      else if(jobs.empty())
+	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		  "Not starting the background find-parsed-changelogs thread: it has no jobs.");
+      else
+	{
+	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+		    "Starting the background find-parsed-changelogs thread.");
+	  active_thread = boost::make_shared<cw::threads::thread>(check_cache_for_parsed_changelogs_thread());
 	}
     }
 
@@ -984,8 +1090,7 @@ namespace gui
 	      l.acquire();
 	    }
 
-	  delete active_thread;
-	  active_thread = NULL;
+	  active_thread.reset();
 	  return; // Unless there's an unlikely error, we exit here;
 	  // otherwise we try some last-chance error
 	  // handling below.
@@ -1007,14 +1112,15 @@ namespace gui
 	// that can't be processed!
 	{
 	  cw::threads::mutex::lock l(state_mutex);
-	  delete active_thread;
-	  active_thread = NULL;
+	  active_thread.reset();
 	}
     }
   };
   std::deque<check_cache_for_parsed_changelogs_job> check_cache_for_parsed_changelogs_thread::jobs;
-  cw::threads::thread *check_cache_for_parsed_changelogs_thread::active_thread;
+  boost::shared_ptr<cw::threads::thread> check_cache_for_parsed_changelogs_thread::active_thread;
+  bool check_cache_for_parsed_changelogs_thread::suspended = false;
   cw::threads::mutex check_cache_for_parsed_changelogs_thread::state_mutex;
+  bool check_cache_for_parsed_changelogs_thread::signals_connected = false;
 
 
 
