@@ -498,7 +498,8 @@ namespace gui
 
 	l.release();
 
-	active_thread_copy->join();
+	if(active_thread_copy.get() != NULL)
+	  active_thread_copy->join();
       }
 
       static void maybe_start()
@@ -982,7 +983,8 @@ namespace gui
 
       l.release();
 
-      active_thread_copy->join();
+      if(active_thread_copy.get() != NULL)
+	active_thread_copy->join();
     }
 
     static void maybe_start()
