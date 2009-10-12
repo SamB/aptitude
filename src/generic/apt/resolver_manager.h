@@ -28,6 +28,8 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <boost/shared_ptr.hpp>
+
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 
@@ -80,6 +82,11 @@ class undo_list;
 class resolver_manager : public sigc::trackable
 {
 public:
+  /** \brief The type of a function that invokes a slot.  Used to
+   *  safely invoke continuations in the main thread.
+   */
+  typedef void (*post_thunk_f)(const sigc::slot<void> &);
+
   /** This class represents the continuation of get_solution() in a
    *  background thread.  See get_background_solution() for details.
    */
@@ -104,7 +111,7 @@ public:
     virtual void interrupted() = 0;
 
     /** Invoked when a fatal exception was thrown. */
-    virtual void aborted(const cwidget::util::Exception &e) = 0;
+    virtual void aborted(const std::string &errmsg) = 0;
   };
 
   /** A snapshot of the state of the resolver. */
@@ -169,10 +176,18 @@ private:
     int max_steps;
 
     /** The continuation of this computation. */
-    background_continuation *k;
+    boost::shared_ptr<background_continuation> k;
 
-    job_request(int _sol_num, int _max_steps, background_continuation *_k)
-      :sol_num(_sol_num), max_steps(_max_steps), k(_k)
+    /** \brief The trampoline function used to invoke the
+     *  continuation's methods.
+     */
+    post_thunk_f post_thunk;
+
+    job_request(int _sol_num, int _max_steps,
+		const boost::shared_ptr<background_continuation> &_k,
+		post_thunk_f _post_thunk)
+      : sol_num(_sol_num), max_steps(_max_steps), k(_k),
+	post_thunk(_post_thunk)
     {
     }
   };
@@ -537,14 +552,23 @@ public:
    *  safe for this method to manipulate the resolver (for instance,
    *  to enqueue a new computation).
    *
-   *  k is owned by this object and will be deleted at its discretion.
+   *  \param post_thunk A callback that is invoked in the background
+   *  thread; it should arrange to safely invoke its argument.  This
+   *  means either invoking it in the main thread or guaranteeing that
+   *  no other thread modifies the resolver while the thunk executes,
+   *  or that the thunk does not modify the resolver.  The second
+   *  option includes taking actions that trigger a resolver
+   *  modification, such as closing the cache, and is only used by the
+   *  command line (which blocks the main thread while the resolver
+   *  runs).
    *
    *  \throw ResolverManagerThreadClashException if a background
    *         resolver already exists.
    */
   void get_solution_background(unsigned int solution_num,
 			       int max_steps,
-			       background_continuation *k);
+			       const boost::shared_ptr<background_continuation> &k,
+			       post_thunk_f post_thunk);
 
   /** Like get_solution_background, but blocks until the background
    *  solver has \i either found a solution or examined at least
@@ -556,13 +580,24 @@ public:
    *
    *  \param block_count the number of steps to wait before returning
    *
+   *  \param post_thunk A callback that is invoked in the background
+   *  thread; it should arrange to safely invoke its argument.  This
+   *  means either invoking it in the main thread or guaranteeing that
+   *  no other thread modifies the resolver while the thunk executes,
+   *  or that the thunk does not modify the resolver.  The second
+   *  option includes taking actions that trigger a resolver
+   *  modification, such as closing the cache, and is only used by the
+   *  command line (which blocks the main thread while the resolver
+   *  runs).
+   *
    *  \return \b true if the search terminated in block_count steps or
    *  less
    */
   bool get_solution_background_blocking(unsigned int solution_num,
 					int max_steps,
 					int block_count,
-					background_continuation *k);
+					const boost::shared_ptr<background_continuation> &k,
+					post_thunk_f post_thunk);
 
   /** If \b true, all solutions have been generated.  This is equivalent
    *  to the solutions_exhausted member of the state snapshot.
@@ -714,13 +749,20 @@ public:
    *  \param k           The continuation of the dependency resolver.
    *                     It will be invoked (either in the foreground or
    *                     in the background thread) when a solution is found.
-   *                     Ownership of this pointer is transfered to the
-   *                     resolver manager, which will delete it immediately
-   *                     if the thread isn't started, or after a solution is
-   *                     found otherwise.
+   *
+   *  \param post_thunk A callback that is invoked in the background
+   *  thread; it should arrange to safely invoke its argument.  This
+   *  means either invoking it in the main thread or guaranteeing that
+   *  no other thread modifies the resolver while the thunk executes,
+   *  or that the thunk does not modify the resolver.  The second
+   *  option includes taking actions that trigger a resolver
+   *  modification, such as closing the cache, and is only used by the
+   *  command line (which blocks the main thread while the resolver
+   *  runs).
    */
   void maybe_start_solution_calculation(bool blocking,
-					background_continuation *k);
+					const boost::shared_ptr<background_continuation> &k,
+					post_thunk_f post_thunk);
 
   /** Tweak the resolver score of a particular package/version.  This
    *  requires that resolver_exists() and that the resolver is "fresh"
@@ -803,12 +845,23 @@ public:
    *  \param k                 A continuation to invoke when the resolver
    *                           is finished.
    *
+   *  \param post_thunk A callback that is invoked in the background
+   *  thread; it should arrange to safely invoke its argument.  This
+   *  means either invoking it in the main thread or guaranteeing that
+   *  no other thread modifies the resolver while the thunk executes,
+   *  or that the thunk does not modify the resolver.  The second
+   *  option includes taking actions that trigger a resolver
+   *  modification, such as closing the cache, and is only used by the
+   *  command line (which blocks the main thread while the resolver
+   *  runs).
+   *
    *  This routine will wipe out the state of the resolver and start
    *  from scratch; no other code should adjust the resolver's state
    *  until the safe resolution completes.
    */
   void safe_resolve_deps_background(bool no_new_installs, bool no_new_upgrades,
-				    background_continuation *k);
+				    const boost::shared_ptr<background_continuation> &k,
+				    post_thunk_f post_thunk);
 
   // @}
 };

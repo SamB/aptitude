@@ -30,6 +30,9 @@
 #include <aptitude.h>
 #include <solution_fragment.h>
 
+#include <boost/make_shared.hpp>
+#include <boost/ref.hpp>
+
 #include <generic/apt/aptcache.h>
 #include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/apt/config_signal.h>
@@ -376,6 +379,13 @@ static void reject_or_mandate_version(const string &s,
     }
 }
 
+// The command-line blocks until the continuation hits, so we can just
+// run continuations in the background thread.
+void cmdline_resolver_trampoline(const sigc::slot<void> &f)
+{
+  f();
+}
+
 // TODO: make this generic?
 class cmdline_resolver_continuation : public resolver_manager::background_continuation
 {
@@ -471,9 +481,9 @@ public:
     abort();
   }
 
-  void aborted(const cwidget::util::Exception &e)
+  void aborted(const std::string &errmsg)
   {
-    retbox.put(resolver_result::Aborted(e.errmsg()));
+    retbox.put(resolver_result::Aborted(errmsg));
   }
 };
 
@@ -584,7 +594,8 @@ aptitude_solution calculate_current_solution(bool suppress_message)
 
   resman->get_solution_background(resman->generated_solution_count(),
 				  step_limit,
-				  new cmdline_resolver_continuation(retbox));
+				  boost::make_shared<cmdline_resolver_continuation>(boost::ref(retbox)),
+				  cmdline_resolver_trampoline);
 
   return wait_for_solution(retbox, spin);
 }
@@ -866,7 +877,8 @@ namespace aptitude
 	  cwidget::threads::box<cmdline_resolver_continuation::resolver_result> retbox;
 
 	  resman->safe_resolve_deps_background(no_new_installs, no_new_upgrades,
-					       new cmdline_resolver_continuation(retbox));
+					       boost::make_shared<cmdline_resolver_continuation>(boost::ref(retbox)),
+					       cmdline_resolver_trampoline);
 
 	  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
 	  // TODO: maybe we should say "calculating upgrade" if we're

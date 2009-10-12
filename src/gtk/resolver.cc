@@ -30,6 +30,8 @@
 
 #include <apt-pkg/error.h>
 
+#include <boost/make_shared.hpp>
+
 #include <loggers.h>
 #include <solution_fragment.h> // For archives_text.
 #include <solution_item.h> // For action_type.
@@ -124,14 +126,14 @@ namespace gui
 	post_event(make_safe_slot(state_changed));
       }
 
-      void aborted(const cwidget::util::Exception &e)
+      void aborted(const std::string &errmsg)
       {
 	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
-	LOG_TRACE(logger, "Resolver tab: aborted by exception: " << e.errmsg());
+	LOG_TRACE(logger, "Resolver tab: aborted by exception: " << errmsg);
 
 	sigc::slot0<void> do_error_slot =
 	  sigc::bind(sigc::ptr_fun(&gui_resolver_continuation::do_error),
-		     e.errmsg(), sigc::ref(*manager));
+		     errmsg, sigc::ref(*manager));
 	post_event(make_safe_slot(do_error_slot));
       }
     };
@@ -142,7 +144,10 @@ namespace gui
     {
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		"Restarting the resolver thread if necessary.");
-      resolver->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resolver));
+      boost::shared_ptr<gui_resolver_continuation> k =
+	boost::make_shared<gui_resolver_continuation>(resolver);
+      resolver->maybe_start_solution_calculation(blocking, k,
+						 resolver_trampoline);
     }
 
     // Start computing the first solution if it's not computed yet.
@@ -158,7 +163,11 @@ namespace gui
 	  // generated).
 	  LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		    "Making sure the first solution is computed.");
-	  resolver->maybe_start_solution_calculation(blocking, new gui_resolver_continuation(resolver));
+	  boost::shared_ptr<gui_resolver_continuation> k =
+	    boost::make_shared<gui_resolver_continuation>(resolver);
+	  resolver->maybe_start_solution_calculation(blocking,
+						     k,
+						     resolver_trampoline);
 	}
     }
 
@@ -2201,7 +2210,11 @@ namespace gui
 						  false));
 
 	get_widget()->set_sensitive(true);
-	manager->maybe_start_solution_calculation(true, new gui_resolver_continuation(manager));
+
+	boost::shared_ptr<gui_resolver_continuation> k =
+	  boost::make_shared<gui_resolver_continuation>(manager);
+	manager->maybe_start_solution_calculation(true, k, resolver_trampoline);
+
 	resolver_fixing_upgrade_label->show();
 	resolver_fixing_upgrade_progress_bar->hide();
       }
@@ -2221,5 +2234,10 @@ namespace gui
   void ResolverTab::pulse_fix_upgrade_resolver_progress()
   {
     resolver_fixing_upgrade_progress_bar->pulse();
+  }
+
+  void resolver_trampoline(const sigc::slot<void> &f)
+  {
+    post_event(make_safe_slot(f));
   }
 }

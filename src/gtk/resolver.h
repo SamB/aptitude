@@ -403,6 +403,14 @@ namespace gui
    *  the main thread whenever new resolver solutions are available.
    */
   void init_resolver();
+
+  /** \brief A trampoline function appropriate for use with the
+   *  resolver code.
+   *
+   *  This actually just wraps a safe slot around the given slot, then
+   *  posts it to the main thread.
+   */
+  void resolver_trampoline(const sigc::slot<void> &f);
 }
 
 #endif /* RESOLVER_H_ */

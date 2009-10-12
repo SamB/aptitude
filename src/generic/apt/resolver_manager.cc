@@ -26,6 +26,8 @@
 #include "config_signal.h"
 #include "dump_packages.h"
 
+#include <boost/make_shared.hpp>
+
 #include <loggers.h>
 
 #include <generic/problemresolver/problemresolver.h>
@@ -35,6 +37,7 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
+#include <sigc++/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include <fstream>
@@ -503,6 +506,30 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
     }
 }
 
+namespace
+{
+  // NOP function, used to keep a continuation alive by binding a
+  // shared pointer to it as a parameter.
+  void keepalive_slot(const sigc::slot<void> &f,
+		      const boost::shared_ptr<resolver_manager::background_continuation> &)
+  {
+    f();
+  }
+
+  sigc::slot<void> make_keepalive_slot(const sigc::slot<void> &f,
+				       const boost::shared_ptr<resolver_manager::background_continuation> &k)
+  {
+    return sigc::bind(sigc::ptr_fun(keepalive_slot), f, k);
+  }
+
+  // Trampoline used to invoke continuations directly in the
+  // background thread (where it's OK to do so).
+  void inline_continuation_trampoline(const sigc::slot<void> &f)
+  {
+    f();
+  }
+}
+
 // This assumes that background_resolver_active is empty when it
 // starts (see restart_background_resolver)
 //
@@ -590,7 +617,13 @@ void resolver_manager::background_thread_execution()
 	  background_resolver_cond.wake_all();
 	  l.release();
 
-	  job.k->success(*sol);
+	  // A slot that invokes job.k->success(*sol):
+	  sigc::slot<void> success_slot =
+	    sigc::bind(sigc::mem_fun(*job.k,
+				     &background_continuation::success),
+		       *sol);
+	  // Wrap a keepalive slot around that so job.k lives.
+	  job.post_thunk(make_keepalive_slot(success_slot, job.k));
 	}
       catch(InterruptedException)
 	{
@@ -609,8 +642,6 @@ void resolver_manager::background_thread_execution()
 	  background_resolver_cond.wake_all();
 	  pending_jobs.push(job);
 
-	  // HACK: protect job.k from deletion.
-	  job.k = NULL;
 	  l.release();
 	}
       catch(NoMoreSolutions)
@@ -626,7 +657,10 @@ void resolver_manager::background_thread_execution()
 	  background_resolver_cond.wake_all();
 	  l.release();
 
-	  job.k->no_more_solutions();
+	  sigc::slot<void> no_more_solutions_slot =
+	    sigc::mem_fun(*job.k,
+			  &background_continuation::no_more_solutions);
+	  job.post_thunk(make_keepalive_slot(no_more_solutions_slot, job.k));
 	}
       catch(NoMoreTime)
 	{
@@ -641,7 +675,10 @@ void resolver_manager::background_thread_execution()
 	  background_resolver_cond.wake_all();
 	  l.release();
 
-	  job.k->no_more_time();
+	  sigc::slot<void> no_more_time_slot =
+	    sigc::mem_fun(*job.k,
+			  &background_continuation::no_more_time);
+	  job.post_thunk(make_keepalive_slot(no_more_time_slot, job.k));
 	}
       catch(cwidget::util::Exception &e)
 	{
@@ -651,11 +688,15 @@ void resolver_manager::background_thread_execution()
 
 	  dump_visited_packages(visited_packages,
 				job.sol_num);
-	  job.k->aborted(e);
+
+	  sigc::slot<void> aborted_slot =
+	    sigc::bind(sigc::mem_fun(*job.k,
+				     &background_continuation::aborted),
+		       e.errmsg());
+	  job.post_thunk(make_keepalive_slot(aborted_slot, job.k));
 	}
 
       l.acquire();
-      delete job.k;
 
       background_thread_in_resolver = false;
       background_resolver_cond.wake_all();
@@ -711,11 +752,7 @@ void resolver_manager::kill_background_thread()
 
       // Reset the associated data structures.
       control_lock.acquire();
-      while(!pending_jobs.empty())
-	{
-	  delete pending_jobs.top().k;
-	  pending_jobs.pop();
-	}
+      pending_jobs = std::priority_queue<job_request, std::vector<job_request>, job_request_compare>();
       background_thread_killed = false;
       background_thread_suspend_count = 0;
       background_thread_in_resolver = false;
@@ -824,11 +861,7 @@ void resolver_manager::discard_resolver()
   {
     cwidget::threads::mutex::lock l2(background_control_mutex);
     resolver_null = true;
-    while(!pending_jobs.empty())
-      {
-	delete pending_jobs.top().k;
-	pending_jobs.pop();
-      }
+    pending_jobs = std::priority_queue<job_request, std::vector<job_request>, job_request_compare>();
     background_control_cond.wake_all();
   }
 }
@@ -1166,12 +1199,12 @@ public:
     abort();
   }
 
-  void aborted(const cwidget::util::Exception &e)
+  void aborted(const std::string &errmsg)
   {
     cwidget::threads::mutex::lock l(m);
 
     sol = NULL;
-    abort_msg = e.errmsg();
+    abort_msg = errmsg;
     c.wake_all();
   }
 };
@@ -1216,7 +1249,13 @@ const aptitude_resolver::solution &resolver_manager::get_solution(unsigned int s
   cwidget::threads::mutex m;
   cwidget::threads::condition c;
 
-  get_solution_background(solution_num, max_steps, new solution_return_continuation(sol, abort_msg, oot, oos, m, c));
+  {
+    boost::shared_ptr<background_continuation> k;
+    k.reset(new solution_return_continuation(sol, abort_msg,
+					     oot, oos, m, c));
+    get_solution_background(solution_num, max_steps, k,
+			    &inline_continuation_trampoline);
+  }
   l.release();
 
   cwidget::threads::mutex::lock cond_l(m);
@@ -1251,7 +1290,8 @@ bool resolver_manager::get_is_keep_all_solution(unsigned int solution_num,
 
 void resolver_manager::get_solution_background(unsigned int solution_num,
 					       int max_steps,
-					       background_continuation *k)
+					       const boost::shared_ptr<background_continuation> &k,
+					       post_thunk_f post_thunk)
 {
   cwidget::threads::mutex::lock l(mutex);
 
@@ -1274,14 +1314,14 @@ void resolver_manager::get_solution_background(unsigned int solution_num,
 
 
   cwidget::threads::mutex::lock control_lock(background_control_mutex);
-  pending_jobs.push(job_request(solution_num, max_steps, k));
+  pending_jobs.push(job_request(solution_num, max_steps, k, post_thunk));
   background_control_cond.wake_all();
 }
 
 class blocking_continuation : public resolver_manager::background_continuation
 {
   /** The real continuation */
-  resolver_manager::background_continuation *k;
+  boost::shared_ptr<resolver_manager::background_continuation> k;
 
   /** The solution for which we are searching. */
   unsigned int solution_num;
@@ -1296,49 +1336,65 @@ class blocking_continuation : public resolver_manager::background_continuation
 
   /** The manager associated with this continuation. */
   resolver_manager &m;
+
+  /** \brief How to invoke thunks safely. */
+  resolver_manager::post_thunk_f post_thunk;
+
 public:
-  blocking_continuation(background_continuation *_k,
+  blocking_continuation(const boost::shared_ptr<background_continuation> &_k,
 			unsigned int _solution_num,
 			cwidget::threads::box<bool> &_result_box,
 			int _remaining_steps,
-			resolver_manager &_m)
+			resolver_manager &_m,
+			resolver_manager::post_thunk_f _post_thunk)
     : k(_k), solution_num(_solution_num), result_box(_result_box),
-      remaining_steps(_remaining_steps), m(_m)
+      remaining_steps(_remaining_steps), m(_m),
+      post_thunk(_post_thunk)
   {
-  }
-
-  ~blocking_continuation()
-  {
-    delete k;
   }
 
   void success(const generic_solution<aptitude_universe> &sol)
   {
-    k->success(sol);
+    sigc::slot<void> success_slot =
+      sigc::bind(sigc::mem_fun(*k,
+			       &background_continuation::success),
+		 sol);
+
+    post_thunk(make_keepalive_slot(success_slot, k));
     result_box.put(true);
   }
 
   void no_more_solutions()
   {
-    k->no_more_solutions();
+    sigc::slot<void> no_more_solutions_slot =
+      sigc::mem_fun(*k, &background_continuation::no_more_solutions);
+
+    post_thunk(make_keepalive_slot(no_more_solutions_slot, k));
     result_box.put(true);
   }
 
   void no_more_time()
   {
-    m.get_solution_background(solution_num, remaining_steps, k);
-    k = NULL;
+    m.get_solution_background(solution_num, remaining_steps, k, post_thunk);
+    k.reset();
     result_box.put(false);
   }
 
   void interrupted()
   {
+    // Give up and run in the background.
+    m.get_solution_background(solution_num, remaining_steps, k, post_thunk);
+    k.reset();
     result_box.put(false);
   }
 
-  void aborted(const cwidget::util::Exception &e)
+  void aborted(const std::string &errmsg)
   {
-    k->aborted(e);
+    sigc::slot<void> aborted_slot =
+      sigc::bind(sigc::mem_fun(*k, &background_continuation::aborted),
+		 errmsg);
+
+    post_thunk(make_keepalive_slot(aborted_slot, k));
     result_box.put(true);
   }
 };
@@ -1346,11 +1402,12 @@ public:
 bool resolver_manager::get_solution_background_blocking(unsigned int solution_num,
 							int max_steps,
 							int block_steps,
-							background_continuation *k)
+							const boost::shared_ptr<background_continuation> &k,
+							post_thunk_f post_thunk)
 {
   if(block_steps == 0)
     {
-      get_solution_background(solution_num, max_steps, k);
+      get_solution_background(solution_num, max_steps, k, post_thunk);
       return false;
     }
 
@@ -1363,9 +1420,15 @@ bool resolver_manager::get_solution_background_blocking(unsigned int solution_nu
 
   cwidget::threads::box<bool> rbox;
 
-  get_solution_background(solution_num, block_steps,
-			  new blocking_continuation(k, solution_num, rbox,
-						    remaining, *this));
+  {
+    boost::shared_ptr<blocking_continuation> blocking_k;
+    blocking_k.reset(new blocking_continuation(k, solution_num, rbox,
+					       remaining, *this,
+					       post_thunk));
+    get_solution_background(solution_num, block_steps,
+			    blocking_k,
+			    &inline_continuation_trampoline);
+  }
 
   return rbox.take();
 }
@@ -1638,7 +1701,8 @@ void resolver_manager::dump(ostream &out)
 }
 
 void resolver_manager::maybe_start_solution_calculation(bool blocking,
-							background_continuation *k)
+							const boost::shared_ptr<background_continuation> &k,
+							post_thunk_f post_thunk)
 {
   state st = state_snapshot();
 
@@ -1657,40 +1721,41 @@ void resolver_manager::maybe_start_solution_calculation(bool blocking,
       if(limit > 0)
 	{
 	  if(blocking)
-	    get_solution_background_blocking(selected, limit, wait_steps, k);
+	    get_solution_background_blocking(selected, limit, wait_steps, k, post_thunk);
 	  else
-	    get_solution_background(selected, limit, k);
+	    get_solution_background(selected, limit, k, post_thunk);
 	}
-      else
-	delete k;
     }
-  else
-    delete k;
 }
 
 // Safe resolver logic:
 
 class resolver_manager::safe_resolver_continuation : public resolver_manager::background_continuation
 {
-  background_continuation *real_continuation;
+  boost::shared_ptr<background_continuation> real_continuation;
   resolver_manager *manager;
   // Used to update the statistics in the manager.
   generic_solution<aptitude_universe> last_sol;
+  post_thunk_f post_thunk;
 
-  safe_resolver_continuation(background_continuation *_real_continuation,
+  safe_resolver_continuation(const boost::shared_ptr<background_continuation> &_real_continuation,
 			     resolver_manager *_manager,
-			     const generic_solution<aptitude_universe> &_last_sol)
+			     const generic_solution<aptitude_universe> &_last_sol,
+			     post_thunk_f _post_thunk)
     : real_continuation(_real_continuation),
       manager(_manager),
-      last_sol(_last_sol)
+      last_sol(_last_sol),
+      post_thunk(_post_thunk)
   {
   }
 
 public:
-  safe_resolver_continuation(background_continuation *_real_continuation,
-			     resolver_manager *_manager)
+  safe_resolver_continuation(const boost::shared_ptr<background_continuation> &_real_continuation,
+			     resolver_manager *_manager,
+			     post_thunk_f _post_thunk)
     : real_continuation(_real_continuation),
-      manager(_manager)
+      manager(_manager),
+      post_thunk(_post_thunk)
   {
   }
 
@@ -1750,34 +1815,26 @@ public:
 	      }
 	  }
 
-	// This is like select_next_solution(), but doesn't invoke
-	// the state_changed signal (because that signal is normally
-	// only emitted from the foreground thread).
+
+	// NULL out the sub-continuation so that we don't accidentally
+	// trigger it twice.
+	boost::shared_ptr<background_continuation> k = real_continuation;
+	real_continuation.reset();
+
+
+	boost::shared_ptr<safe_resolver_continuation> safe_resolver_k;
+	safe_resolver_k.reset(new safe_resolver_continuation(k, manager, sol, post_thunk));
+
+	// Hold the global lock on the solution so that we can
+	// guarantee that we're calculating the next solution.
+	// (otherwise there's a potential race between
+	// generated_solutions_count() and get_solution_background())
 	cwidget::threads::mutex::lock l(manager->mutex);
-	cwidget::threads::mutex::lock sol_l(manager->solutions_mutex);
 
-	// NULL out the sub-continuation so that we don't delete it
-	// when we're deleted.
-	background_continuation *k = real_continuation;
-	real_continuation = NULL;
-
-	// TODO: duplication of information!  These config values
-	// should be moved into a central function that everyone else
-	// can call.
 	const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
 
-	// Kick off a new job in the resolver manager.
-	//
-	// TODO: we have to do it by hand because all the routines
-	// that encapsulate starting a new job are meant to be called
-	// from a foreground thread, so they lock the solutions mutex
-	// and deadlock -- maybe there should be some (internal?)
-	// routine that's safe to call from the background thread?  Or
-	// maybe that should be a recursive mutex?
-	manager->selected_solution = manager->solutions.size();
-	manager->pending_jobs.push(resolver_manager::job_request(manager->selected_solution,
-								 limit,
-								 new safe_resolver_continuation(k, manager, sol)));
+	manager->get_solution_background(manager->generated_solution_count(),
+					 limit, safe_resolver_k, post_thunk);
       }
     else
       {
@@ -1786,7 +1843,9 @@ public:
 	LOG_FATAL(logger,
 		  "safe_resolve_deps: Internal error: the resolver unexpectedly produced the same result twice: " << last_sol << " = " << sol);
 
-	if(real_continuation != NULL)
+	// Note: no need to use post_thunk, since we've already passed
+	// through it to get here.
+	if(real_continuation.get() != NULL)
 	  real_continuation->success(sol);
 	else
 	  LOG_WARN(logger, "safe_resolve_deps: should send the end solution to the real continuation, but it's NULL.");
@@ -1801,7 +1860,7 @@ public:
       {
 	LOG_TRACE(logger, "safe_resolve_deps: no more solutions; returning the last seen solution.");
 
-	if(real_continuation != NULL)
+	if(real_continuation.get() != NULL)
 	  real_continuation->success(last_sol);
 	else
 	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
@@ -1810,7 +1869,7 @@ public:
       {
 	LOG_TRACE(logger, "safe_resolve_deps: unable to find any solutions.");
 
-	if(real_continuation != NULL)
+	if(real_continuation.get() != NULL)
 	  real_continuation->no_more_solutions();
 	else
 	  LOG_WARN(logger, "safe_resolve_deps: should report that there are no solutions, but the continuation is NULL.");
@@ -1825,7 +1884,7 @@ public:
       {
 	LOG_TRACE(logger, "safe_resolve_deps: ran out of time searching for a solution; returning the last one that was computed.");
 
-	if(real_continuation != NULL)
+	if(real_continuation.get() != NULL)
 	  real_continuation->success(last_sol);
 	else
 	  LOG_WARN(logger, "safe_resolve_deps: should return the last seen solution, but the continuation is NULL.");
@@ -1834,7 +1893,7 @@ public:
       {
 	LOG_TRACE(logger, "safe_resolve_deps: ran out of time before finding any solutions.");
 
-	if(real_continuation != NULL)
+	if(real_continuation.get() != NULL)
 	  real_continuation->no_more_time();
 	else
 	  LOG_WARN(logger, "safe_resolve_deps: should report that we ran out of time, but the continuation is NULL.");
@@ -1850,16 +1909,16 @@ public:
     LOG_WARN(logger, "safe_resolve_deps: someone interrupted the solution search!");
   }
 
-  void aborted(const cwidget::util::Exception &e)
+  void aborted(const std::string &errmsg)
   {
     log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     // Should we try to return the current solution if there is one?
-    LOG_FATAL(logger, "safe_resolve_deps: aborted by exception: " << e.errmsg());
-    if(real_continuation != NULL)
-      real_continuation->aborted(e);
+    LOG_FATAL(logger, "safe_resolve_deps: aborted by exception: " << errmsg);
+    if(real_continuation.get() != NULL)
+      real_continuation->aborted(errmsg);
     else
-      LOG_WARN(logger, "safe_resolve_deps: should report that we were interrupted by an exception, but the continuation is NULL.  Exception: " << e.errmsg());
+      LOG_WARN(logger, "safe_resolve_deps: should report that we were interrupted by an exception, but the continuation is NULL.  Exception: " << errmsg);
   }
 };
 
@@ -1953,9 +2012,11 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 }
 
 void resolver_manager::safe_resolve_deps_background(bool no_new_installs, bool no_new_upgrades,
-						    background_continuation *k)
+						    const boost::shared_ptr<background_continuation> &k,
+						    post_thunk_f post_thunk)
 {
   setup_safe_resolver(no_new_installs, no_new_upgrades);
-  maybe_start_solution_calculation(true, new safe_resolver_continuation(k, this));
+  maybe_start_solution_calculation(true, boost::make_shared<safe_resolver_continuation>(k, this, post_thunk),
+				   post_thunk);
 }
 

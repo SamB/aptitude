@@ -1981,11 +1981,16 @@ public:
   {
   }
 
-  void aborted(const cw::util::Exception &e)
+  void aborted(const std::string &errmsg)
   {
-    cw::toplevel::post_event(new solution_search_aborted_event(manager, e.errmsg()));
+    cw::toplevel::post_event(new solution_search_aborted_event(manager, errmsg));
   }
 };
+
+void cwidget_resolver_trampoline(const sigc::slot<void> &f)
+{
+  f();
+}
 
 // If the current solution pointer is past the end of the solution
 // list, queue up a calculation for it in the background thread.  If
@@ -1995,7 +2000,9 @@ public:
 // BACKGROUND THREAD THIS WILL DEADLOCK IF BLOCKING IS TRUE! (see above for such a case)
 static void start_solution_calculation(bool blocking)
 {
-  resman->maybe_start_solution_calculation(blocking, new interactive_continuation(resman));
+  resman->maybe_start_solution_calculation(blocking,
+					   boost::make_shared<interactive_continuation>(resman),
+					   &cwidget_resolver_trampoline);
 }
 
 static void do_connect_resolver_callback()

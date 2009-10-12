@@ -33,6 +33,9 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <boost/make_shared.hpp>
+#include <boost/ref.hpp>
+
 #include <generic/apt/apt.h>
 #include <generic/apt/apt_undo_group.h>
 #include <generic/apt/matching/pattern.h>
@@ -450,19 +453,22 @@ namespace gui
 
     void no_more_time()
     {
-      resolver.maybe_start_solution_calculation(false, new upgrade_continuation(success_slot,
-										no_more_solutions_slot,
-										aborted_slot,
-										resolver));
+      boost::shared_ptr<upgrade_continuation> k =
+	boost::make_shared<upgrade_continuation>(success_slot,
+						 no_more_solutions_slot,
+						 aborted_slot,
+						 boost::ref(resolver));
+
+      resolver.maybe_start_solution_calculation(false, k, &resolver_trampoline);
     }
 
     void interrupted()
     {
     }
 
-    void aborted(const cwidget::util::Exception &e)
+    void aborted(const std::string &errmsg)
     {
-      post_event(safe_bind(aborted_slot, e.errmsg()));
+      post_event(safe_bind(aborted_slot, errmsg));
     }
   };
 
@@ -523,13 +529,13 @@ namespace gui
 	  sigc::slot<void, std::string> aborted_slot =
 	    sigc::mem_fun(*background_upgrade_redirect, &redirect_from_background::aborted);
 
-	  upgrade_continuation *k =
-	    new upgrade_continuation(make_safe_slot(success_slot),
-				     make_safe_slot(no_more_solutions_slot),
-				     make_safe_slot(aborted_slot),
-				     *upgrade_resolver);
+	  boost::shared_ptr<upgrade_continuation> k =
+	    boost::make_shared<upgrade_continuation>(make_safe_slot(success_slot),
+						     make_safe_slot(no_more_solutions_slot),
+						     make_safe_slot(aborted_slot),
+						     boost::ref(*upgrade_resolver));
 
-	  upgrade_resolver->safe_resolve_deps_background(false, true, k);
+	  upgrade_resolver->safe_resolve_deps_background(false, true, k, &resolver_trampoline);
 	}
 
 	LOG_TRACE(logger, "Setting up the progress bar.");
