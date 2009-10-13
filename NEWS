@@ -25,6 +25,11 @@ Version 0.5.9rc4                            "Trust me, you don't want
           with the foreground thread to eliminate at least one
           deadlock.
 
+- Cosmetic and UI bugs:
+
+  + [curses] Don't print a spurious warning if we get --no-gui when
+             the GTK+ frontend was compiled out. (Closes: #550727)
+
 - Build system fixes:
 
   + [gtk] Make "./configure --enable-gtk" enable GTK+ instead of
