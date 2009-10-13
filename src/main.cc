@@ -854,7 +854,10 @@ int main(int argc, char *argv[])
 	    case OPTION_NO_GUI:
 	      gui = false;
 	      break;
-
+#else
+	    case OPTION_NO_GUI:
+	      // Recognize it as a NOP.
+	      break;
 #endif
 	    case OPTION_LOG_LEVEL:
 	      apply_logging_level(optarg);
