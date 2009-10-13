@@ -28,10 +28,10 @@ inline void setlocale(int, const char *)
 }
 #endif
 
+# include <string.h>
 
 #if ENABLE_NLS
 # include <libintl.h>
-# include <string.h>
 # include <cwidget/generic/util/transcode.h>
 # define _(Text) gettext (Text)
 # define W_(Text) cwidget::util::transcode (gettext (Text) )
