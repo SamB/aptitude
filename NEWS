@@ -1,3 +1,35 @@
+[10/12/2009]
+Version 0.5.9rc4                            "Trust me, you don't want
+                                             to know about the spork."
+
+- New features:
+
+  + [all] The test to see whether a changelog is in aptitude's
+          download cache now takes place in a background thread.
+
+  + [gtk] When generating the upgrade summary, aptitude caches a
+          parsed version of the portion of each changelog that's
+          displayed.  This makes the changelogs show up much faster
+          and with a lot less system load.
+
+  + [gtk] The second tab in the upgrade view now displays information
+          about the currently selected package, rather than its full
+          changelog.
+
+  + [gtk] "aptitude --version" prints the versions of GTK+ and GTK--
+          that it was compiled against.
+
+- Crashes and serious errors:
+
+  + [all] Fix how the background dependency solver thread communicates
+          with the foreground thread to eliminate at least one
+          deadlock.
+
+- Build system fixes:
+
+  + [gtk] Make "./configure --enable-gtk" enable GTK+ instead of
+          disabling it.
+
 [10/8/2009]
 Version 0.5.9rc3                            "The stars, like little
                                              starry things..."
