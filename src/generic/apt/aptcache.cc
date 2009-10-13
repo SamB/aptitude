@@ -494,6 +494,7 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
 	  Prog.OverallProgress(amt, file_size, 1, _("Reading extended state information"));
 	}
       Prog.OverallProgress(file_size, file_size, 1, _("Reading extended state information"));
+      Prog.Done();
     }
 
   int num=0;
