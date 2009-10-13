@@ -200,6 +200,9 @@ void download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult d
 
   fetcher->Shutdown();
 
+  // Get the archives again.  This was necessary for multi-CD
+  // installs, according to my comments in an old commit log in the
+  // Subversion repository.
   if(!pm->GetArchives(fetcher, &src_list, apt_package_records))
     rval = failure;
   else if(!apt_cache_file->GainLock())
