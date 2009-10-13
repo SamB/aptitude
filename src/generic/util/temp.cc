@@ -1,6 +1,6 @@
 // temp.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,7 @@
 #include <aptitude.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <apt-pkg/error.h>
 
