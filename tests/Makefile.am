@@ -15,7 +15,7 @@ noinst_PROGRAMS = interactive_set_test
 
 TESTS = cppunit_test boost_test
 
-EXTRADIST = resolver_inputs
+EXTRADIST = resolver_inputs file_caches
 
 interactive_set_test_SOURCES = interactive_set_test.cc
 

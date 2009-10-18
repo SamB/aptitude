@@ -17,8 +17,12 @@ bool init_unit_test()
   return true;
 }
 
+char *argv0 = NULL;
+
 int main(int argc, char **argv)
 {
+  argv0 = argv[0];
+
   bool debug = false;
   for(int i = 1; i < argc; ++i)
     {

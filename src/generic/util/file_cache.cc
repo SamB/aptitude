@@ -57,6 +57,42 @@ namespace aptitude
   {
     namespace
     {
+      // Upgrade routines.  Each routine moves from one database
+      // version to the next version, and combining all these routines
+      // should produce a database of the most recent version.  (this
+      // is checked by a unit test) Failure is indicated by throwing
+      // an exception.
+      namespace upgrade
+      {
+	// Version 3 added the ModificationTime column to the cache,
+	// which is the time of the item's last modification in
+	// seconds-since-the-epoch.
+	void version_2_to_version_3(const boost::shared_ptr<db> &store)
+	{
+	  LOG_INFO(Loggers::getAptitudeDownloadCache(),
+		   "Upgrading the cache from version 2 to version 3.");
+
+	  const char *sql = "                                           \
+savepoint upgrade23;							\
+									\
+select raise ( rollback, 'Wrong version for this upgrade path.' )	\
+from format								\
+where version <> 2;							\
+									\
+alter table cache							\
+add column ModificationTime  numeric   default 0  not null		\
+									\
+update format								\
+set version = 3								\
+									\
+release upgrade23;							\
+";
+
+	  store->exec(sql);
+	}
+      }
+
+
       /** \brief An SQLite-backed cache.
        *
        *  The cache schema is defined below as a gigantic string constant.
@@ -96,7 +132,7 @@ namespace aptitude
 	// (e.g., sqlite3_last_insert_rowid()) are not threadsafe.
 	cw::threads::mutex store_mutex;
 
-	static const int current_version_number = 2;
+	static const int current_version_number = 3;
 
 	void create_new_database()
 	{
@@ -114,6 +150,7 @@ create table format ( version integer );				\
 create table globals ( TotalBlobSize integer not null );		\
 									\
 create table cache ( CacheId integer primary key,			\
+                     ModificationTime datetime not null,                \
                      BlobSize integer not null,				\
                      BlobId integer not null,				\
                      Key text not null );				\
@@ -207,21 +244,42 @@ insert into globals(TotalBlobSize) values(0);				\
 
 	      try
 		{
-		  // Currently just checks the version -- but we could
-		  // also check the format and so on here.
+		  // Check the version number, transparently upgrading
+		  // the database if we know how to.
 		  boost::shared_ptr<statement> get_version_statement =
 		    statement::prepare(*store, "select version from format");
 		  {
 		    statement::execution get_version_execution(*get_version_statement);
 		    if(!get_version_execution.step())
 		      throw FileCacheException("Can't read the cache version number.");
-		    else if(get_version_statement->get_int(0) != current_version_number)
-		      // TODO: probably it's better to just blow away
-		      // the cache in this case.  For a simple
-		      // download cache, it's not worth the effort to
-		      // upgrade database formats -- better to just
-		      // throw away the data.
-		      throw FileCacheException("Unsupported version number.");
+		    else
+		      {
+			int database_version = get_version_statement->get_int(0);
+
+			// Run the upgrade scripts, if any.
+			switch(database_version)
+			  {
+			  case 2:
+			    upgrade::version_2_to_version_3(store);
+			    // Fallthrough.
+			  case 3:
+			    break;
+
+			  }
+		      }
+		  }
+
+		  // Check the version number again.
+		  {
+		    statement::execution get_version_execution(*get_version_statement);
+		    if(!get_version_execution.step())
+		      throw FileCacheException("Can't read the cache version number.");
+		    else
+		      {
+			int database_version = get_version_statement->get_int(0);
+			if(database_version != current_version_number)
+			  throw FileCacheException("Unsupported version number.");
+		      }
 		  }
 
 		  boost::shared_ptr<statement> get_total_size_statement =
@@ -308,7 +366,8 @@ insert into globals(TotalBlobSize) values(0);				\
 	}
 
 	void putItem(const std::string &key,
-		     const std::string &path)
+		     const std::string &path,
+		     time_t mtime)
 	{
 	  // NOTE: We wait until we've finished compressing the input
 	  // file to take the store mutex.
@@ -507,10 +566,11 @@ insert into globals(TotalBlobSize) values(0);				\
 				boost::format("Inserting \"%s\" into the cache table.") % key);
 
 		      sqlite::db::statement_proxy insert_cache_statement =
-			store->get_cached_statement("insert into cache (BlobId, BlobSize, Key) values (?, ?, ?)");
+			store->get_cached_statement("insert into cache (BlobId, BlobSize, Key, ModificationTime) values (?, ?, ?, ?)");
 		      insert_cache_statement->bind_int64(1, inserted_blob_row);
 		      insert_cache_statement->bind_int64(2, compressed_size);
 		      insert_cache_statement->bind_string(3, key);
+		      insert_cache_statement->bind_int64(4, mtime);
 		      insert_cache_statement->exec();
 		    }
 
@@ -587,7 +647,7 @@ insert into globals(TotalBlobSize) values(0);				\
 	    }
 	}
 
-	temp::name getItem(const std::string &key)
+	temp::name getItem(const std::string &key, time_t &mtime)
 	{
 	  cw::threads::mutex::lock l(store_mutex);
 
@@ -611,7 +671,7 @@ insert into globals(TotalBlobSize) values(0);				\
 	      try
 		{
 		  sqlite::db::statement_proxy find_cache_entry_statement =
-		    store->get_cached_statement("select CacheId, BlobId from cache where Key = ?");
+		    store->get_cached_statement("select CacheId, BlobId, ModificationTime from cache where Key = ?");
 
 		  bool found = false;
 		  sqlite3_int64 oldCacheId = -1;
@@ -625,6 +685,7 @@ insert into globals(TotalBlobSize) values(0);				\
 		      {
 			oldCacheId = find_cache_entry_statement->get_int64(0);
 			blobId     = find_cache_entry_statement->get_int64(1);
+			mtime      = find_cache_entry_statement->get_int64(2);
 		      }
 		    else
 		      // 1.a.i: no matching entry
@@ -767,19 +828,20 @@ insert into globals(TotalBlobSize) values(0);				\
 	}
 
 
-	void putItem(const std::string &key, const std::string &path)
+	void putItem(const std::string &key, const std::string &path,
+		     time_t mtime)
 	{
 	  for(std::vector<boost::shared_ptr<file_cache> >::const_iterator
 		it = caches.begin(); it != caches.end(); ++it)
-	    (*it)->putItem(key, path);
+	    (*it)->putItem(key, path, mtime);
 	}
 
-	temp::name getItem(const std::string &key)
+	temp::name getItem(const std::string &key, time_t &mtime)
 	{
 	  for(std::vector<boost::shared_ptr<file_cache> >::const_iterator
 		it = caches.begin(); it != caches.end(); ++it)
 	    {
-	      temp::name found = (*it)->getItem(key);
+	      temp::name found = (*it)->getItem(key, mtime);
 	      if(found.valid())
 		return found;
 	    }

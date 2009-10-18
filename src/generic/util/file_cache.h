@@ -21,6 +21,8 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <time.h>
+
 #include "temp.h"
 
 namespace aptitude
@@ -60,22 +62,52 @@ namespace aptitude
        *               caller is responsible for ensuring that the file
        *               won't be deleted or altered while putItem() is
        *               running.
-       *
-       *  putItem might spawn a background thread to do its work; if
-       *  so, the file_cache destructor will wait for all outstanding
-       *  threads to finish writing to the cache.
+       *  \param mtime The last modified time of the item to insert.
        */
       virtual void putItem(const std::string &key,
-			   const std::string &path) = 0;
+			   const std::string &path,
+			   time_t mtime) = 0;
+
+      /** \brief Store a file in the cache.
+       *
+       *  \param key   The key under which the file is to be stored.
+       *  \param fd    The name of a file to store in the cache; the
+       *               caller is responsible for ensuring that the file
+       *               won't be deleted or altered while putItem() is
+       *               running.
+       *
+       *  The item is stored with a last modified time of 0.
+       */
+      virtual void putItem(const std::string &key,
+			   const std::string &path)
+      {
+	putItem(key, path, 0);
+      }
 
       /** \brief Retrieve a file from the cache.
        *
        *  As a side effect, marks the file as recently visited, so it
        *  will be less likely to be removed from the cache.
        *
-       *  \param key  The key under which the file was stored.
+       *  \param key   The key under which the file was stored.
+       *  \param mtime Set to the most recent date and time at which
+       *               the given key was modified.
        */
-      virtual temp::name getItem(const std::string &key) = 0;
+      virtual temp::name getItem(const std::string &key,
+				 time_t &mtime) = 0;
+
+      /** \brief Retrieve a file from the cache.
+       *
+       *  As a side effect, marks the file as recently visited, so it
+       *  will be less likely to be removed from the cache.
+       *
+       *  \param key   The key under which the file was stored.
+       */
+      temp::name getItem(const std::string &key)
+      {
+	time_t mtime;
+	return getItem(key, mtime);
+      }
 
       /** \brief Open or create a new file cache with the given
        *  parameters.
