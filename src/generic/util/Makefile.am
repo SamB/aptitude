@@ -13,6 +13,7 @@ libgeneric_util_a_SOURCES = \
 	file_cache.h \
 	immlist.h \
 	immset.h \
+	job_queue_thread.h \
 	maybe.h \
 	mut_fun.h \
 	refcounted_base.cc \
