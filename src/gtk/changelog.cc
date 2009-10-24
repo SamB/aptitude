@@ -43,6 +43,7 @@
 #include <generic/apt/pkg_changelog.h>
 
 #include <generic/util/file_cache.h>
+#include <generic/util/job_queue_thread.h>
 
 #include <gtk/hyperlink.h>
 #include <gtk/gui.h>
@@ -425,6 +426,17 @@ namespace gui
       bool get_digested() const { return digested; }
     };
 
+    std::ostream &operator<<(std::ostream &out, const boost::shared_ptr<parse_changelog_job> &job)
+    {
+      return out
+	<< "(name=" << job->get_name().get_name()
+	<< ", from=" << job->get_from()
+	<< ", to=" << job->get_to()
+	<< ", source_package=" << job->get_source_package()
+	<< ", digested=" << (job->get_digested() ? "true" : "false")
+	<< ")";
+    }
+
     /** \brief Parses a queue of changelogs in the background.
      *
      *  The purpose of the queue is to ensure that aptitude only
@@ -434,191 +446,63 @@ namespace gui
      *
      *  This is a self-terminating singleton thread.
      */
-    class parse_changelog_thread
+    class parse_changelog_thread : public aptitude::util::job_queue_thread<parse_changelog_thread,
+									   boost::shared_ptr<parse_changelog_job> >
     {
-      static std::deque<parse_changelog_job> jobs;
-      // The active thread, or NULL if there isn't one.  As it exits,
-      // the active thread will destroy this and NULL it out while
-      // holding the state mutex.
-      static boost::shared_ptr<cw::threads::thread> active_thread;
-
-      // Set to true when the thread should suspend itself.
-      static bool suspended;
-
-      // This mutex protects all accesses to "jobs", "suspended and
-      // "active_thread".
-      static cw::threads::mutex state_mutex;
-
       // Set to true when the global signal handlers are connected up.
       static bool signals_connected;
 
     public:
+      // Tell the job_queue_thread what our log category is.
+      static log4cxx::LoggerPtr get_log_category()
+      {
+	return aptitude::Loggers::getAptitudeGtkChangelogParse();
+      }
+
       parse_changelog_thread()
       {
 	if(!signals_connected)
 	  {
 	    cache_closed.connect(sigc::ptr_fun(&parse_changelog_thread::stop));
-	    cache_reloaded.connect(sigc::ptr_fun(&parse_changelog_thread::maybe_start));
+	    cache_reloaded.connect(sigc::ptr_fun(&parse_changelog_thread::start));
 	    signals_connected = true;
 	  }
       }
 
-      static void add_job(const parse_changelog_job &job)
+      void process_job(const boost::shared_ptr<parse_changelog_job> &job)
       {
-	using aptitude::Loggers;
-
-	cw::threads::mutex::lock l(state_mutex);
-
-	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		  "Adding a changelog parse job to the queue (name="
-		  << job.get_name().get_name() << ", from=" << job.get_from() << ")");
-
-	jobs.push_back(job);
-	// Start the parse thread if it's not running.
-	if(!suspended && active_thread == NULL)
-	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background changelog parse thread.");
-	    active_thread = boost::make_shared<cw::threads::thread>(parse_changelog_thread());
-	  }
-      }
-
-      static void stop()
-      {
-	using aptitude::Loggers;
-
-	cw::threads::mutex::lock l(state_mutex);
-
-	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		  "Pausing the changelog parse thread.");
-
-	suspended = true;
-	// Copy this since it'll be zeroed out when the thread exits,
-	// which can happen as soon as the lock below is released.
-	boost::shared_ptr<cw::threads::thread> active_thread_copy(active_thread);
-
-	l.release();
-
-	if(active_thread_copy.get() != NULL)
-	  active_thread_copy->join();
-      }
-
-      static void maybe_start()
-      {
-	using aptitude::Loggers;
-
-	cw::threads::mutex::lock l(state_mutex);
-
-	suspended = false;
-
-	if(active_thread != NULL)
-	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		    "Not starting the background changelog parse thread: it's already running.");
-	else if(jobs.empty())
-	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		    "Not starting the background changelog parse thread: it has no jobs.");
+	std::string changelog_uri;
+	if(job->get_from().empty())
+	  changelog_uri = ssprintf("changelog://%s/%s",
+				   job->get_source_package().c_str(),
+				   job->get_to().c_str());
 	else
+	  changelog_uri = ssprintf("delta-changelog://%s/%s/%s",
+				   job->get_source_package().c_str(),
+				   job->get_from().c_str(),
+				   job->get_to().c_str());
+
+	temp::name digested;
+	if(job->get_digested())
+	  digested = job->get_name();
+	else
+	  digested = aptitude::apt::digest_changelog(job->get_name(), job->get_from());
+
+	// Note that we don't re-cache the digested
+	// changelog if it was retrieved from the cache
+	// earlier (i.e., if job->get_digested() is true).
+	if(digested.valid() && !job->get_digested())
 	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		      "Starting the background changelog parse thread.");
-	    active_thread = boost::make_shared<cw::threads::thread>(parse_changelog_thread());
-	  }
-      }
-
-      void operator()() const
-      {
-	using aptitude::Loggers;
-
-	try
-	  {
-	    cw::threads::mutex::lock l(state_mutex);
-
-	    while(!jobs.empty())
-	      {
-		parse_changelog_job next(jobs.front());
-		jobs.pop_front();
-
-		// Unlock the state mutex for the actual parsing:
-		l.release();
-
-		try
-		  {
-		    std::string changelog_uri;
-		    if(next.get_from().empty())
-		      changelog_uri = ssprintf("changelog://%s/%s",
-					       next.get_source_package().c_str(),
-					       next.get_to().c_str());
-		    else
-		      changelog_uri = ssprintf("delta-changelog://%s/%s/%s",
-					       next.get_source_package().c_str(),
-					       next.get_from().c_str(),
-					       next.get_to().c_str());
-
-		    temp::name digested;
-		    if(next.get_digested())
-		      digested = next.get_name();
-		    else
-		      digested = aptitude::apt::digest_changelog(next.get_name(), next.get_from());
-
-		    // Note that we don't re-cache the digested
-		    // changelog if it was retrieved from the cache
-		    // earlier (i.e., if next.get_digested() is true).
-		    if(digested.valid() && !next.get_digested())
-		      {
-			LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-				  "Caching digested changelog as " << changelog_uri);
-			download_cache->putItem(changelog_uri, digested.get_name());
-		      }
-
-		    cw::util::ref_ptr<aptitude::apt::changelog> parsed =
-		      aptitude::apt::parse_digested_changelog(digested);
-		    post_event(safe_bind(next.get_slot(), parsed));
-		  }
-		catch(const std::exception &ex)
-		  {
-		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got std::exception: " << ex.what());
-		  }
-		catch(const cw::util::Exception &ex)
-		  {
-		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got cwidget::util::Exception: " << ex.errmsg());
-		  }
-		catch(...)
-		  {
-		    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread: got an unknown exception.");
-		  }
-
-		l.acquire();
-	      }
-
-	    active_thread.reset();
-	    return; // Unless there's an unlikely error, we exit here;
-		    // otherwise we try some last-chance error
-		    // handling below.
-	  }
-	catch(const std::exception &ex)
-	  {
-	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with std::exception: " << ex.what());
-	  }
-	catch(const cw::util::Exception &ex)
-	  {
-	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with cwidget::util::Exception: " << ex.errmsg());
-	  }
-	catch(...)
-	  {
-	    LOG_WARN(Loggers::getAptitudeGtkChangelog(), "Changelog thread aborting with an unknown exception.");
+	    LOG_TRACE(get_log_category(),
+		      "Caching digested changelog as " << changelog_uri);
+	    download_cache->putItem(changelog_uri, digested.get_name());
 	  }
 
-	// Do what we can to recover, although there might be jobs
-	// that can't be processed!
-	{
-	  cw::threads::mutex::lock l(state_mutex);
-	  active_thread.reset();
-	}
+	cw::util::ref_ptr<aptitude::apt::changelog> parsed =
+	  aptitude::apt::parse_digested_changelog(digested);
+	post_event(safe_bind(job->get_slot(), parsed));
       }
     };
-    std::deque<parse_changelog_job> parse_changelog_thread::jobs;
-    boost::shared_ptr<cw::threads::thread> parse_changelog_thread::active_thread;
-    bool parse_changelog_thread::suspended = false;
-    cw::threads::mutex parse_changelog_thread::state_mutex;
     bool parse_changelog_thread::signals_connected = false;
 
     // Helper function to post the "changelog download complete" event
@@ -629,10 +513,12 @@ namespace gui
 					     std::string to,
 					     std::string source_package)
     {
-      parse_changelog_thread::add_job(parse_changelog_job(name, slot,
-							  from, to,
-							  source_package,
-							  false));
+      boost::shared_ptr<parse_changelog_job> job =
+	boost::make_shared<parse_changelog_job>(name, slot,
+						from, to,
+						source_package,
+						false);
+      parse_changelog_thread::add_job(job);
     }
 
     void do_changelog_download_error_trampoline(const std::string &error,
@@ -825,12 +711,14 @@ namespace gui
 			<< target_info->get_source_package() << " "
 			<< target_info->get_source_version());
 
-	      parse_changelog_job parse_job(digested_file,
-					    finish_changelog_download_safe_slot,
-					    only_new ? current_info->get_source_version() : "",
-					    target_info->get_source_version(),
-					    target_info->get_source_package(),
-					    true);
+	      using boost::make_shared;
+	      boost::shared_ptr<parse_changelog_job> parse_job =
+		make_shared<parse_changelog_job>(digested_file,
+						 finish_changelog_download_safe_slot,
+						 only_new ? current_info->get_source_version() : "",
+						 target_info->get_source_version(),
+						 target_info->get_source_package(),
+						 true);
 
 	      parse_changelog_thread::add_job(parse_job);
 	    }

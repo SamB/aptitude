@@ -63,6 +63,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.gtk.changelog");
   }
 
+  LoggerPtr Loggers::getAptitudeGtkChangelogParse()
+  {
+    return Logger::getLogger("aptitude.gtk.changelog.parse");
+  }
+
   LoggerPtr Loggers::getAptitudeGtkDashboardUpgradeResolver()
   {
     return Logger::getLogger("aptitude.gtk.dashboard.upgrade.resolver");
