@@ -100,6 +100,12 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeGtkChangelog();
 
+    /** \brief The logger for the GUI changelog cache thread.
+     *
+     *  Name: aptitude.gtk.changelog.cache
+     */
+    static log4cxx::LoggerPtr getAptitudeGtkChangelogCache();
+
     /** \brief The logger for the GUI changelog parse thread.
      *
      *  Name: aptitude.gtk.changelog.parse

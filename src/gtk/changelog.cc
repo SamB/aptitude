@@ -799,217 +799,107 @@ namespace gui
     const std::vector<boost::shared_ptr<preprocessed_changelog_job> > &get_requests() const { return *requests; }
   };
 
-  /** \brief A singleton thread that preprocesses changelog jobs by
-   *  checking for parsed changelogs in the cache.
-   *
-   *  \todo I believe it should be possible to write a skeleton "queue
-   *  processing thread" class that would subsume this and
-   *  parse_changelog_thread.  That would also make it reasonable to
-   *  add special features (like spawning up to N of a given thread).
+  // TODO: show the individual requests.
+  std::ostream &operator<<(std::ostream &out,
+			   const check_cache_for_parsed_changelogs_job &job)
+  {
+    return out << "(" << job.get_requests().size() << " requests)";
+  }
+
+  /** \brief A thread that preprocesses changelog jobs by checking for
+   *  parsed changelogs in the cache.
    */
   class check_cache_for_parsed_changelogs_thread
+    : public aptitude::util::job_queue_thread<check_cache_for_parsed_changelogs_thread,
+					      check_cache_for_parsed_changelogs_job>
   {
-    // Each job is a vector of changelog downloads.
-    static std::deque<check_cache_for_parsed_changelogs_job> jobs;
-
-    // The active thread, or NULL if there isn't one.  As it exits,
-    // the active thread will destroy this and NULL it out while
-    // holding the state mutex.
-    static boost::shared_ptr<cw::threads::thread> active_thread;
-
-    // Set to true when the thread should suspend itself.
-    static bool suspended;
-
-    // This mutex protects all accesses to "jobs" and "active_thread".
-    static cw::threads::mutex state_mutex;
-
     // Set to true when the global signal handlers are connected up.
     static bool signals_connected;
-
   public:
+    static log4cxx::LoggerPtr get_log_category()
+    {
+      return aptitude::Loggers::getAptitudeGtkChangelogCache();
+    }
+
     check_cache_for_parsed_changelogs_thread()
     {
       if(!signals_connected)
 	{
 	  cache_closed.connect(sigc::ptr_fun(&check_cache_for_parsed_changelogs_thread::stop));
-	  cache_reloaded.connect(sigc::ptr_fun(&check_cache_for_parsed_changelogs_thread::maybe_start));
+	  cache_reloaded.connect(sigc::ptr_fun(&check_cache_for_parsed_changelogs_thread::start));
 	  signals_connected = true;
 	}
     }
 
-    static void add_job(check_cache_for_parsed_changelogs_job &job)
+    void process_job(const check_cache_for_parsed_changelogs_job &job)
     {
-      using aptitude::Loggers;
+      log4cxx::LoggerPtr logger(get_log_category());
 
-      cw::threads::mutex::lock l(state_mutex);
+      // Used to queue up the work for the main thread (the
+      // jobs to process and any pre-digested files that
+      // were found).
+      boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >
+	jobs_with_predigested_files = boost::make_shared<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >();
 
-      LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		"Adding a find-parsed-changelog job to the queue.");
-
-      jobs.push_back(job);
-      // Start the parse thread if it's not running.
-      if(active_thread == NULL)
+      for(std::vector<boost::shared_ptr<preprocessed_changelog_job> >::const_iterator it = job.get_requests().begin();
+	  it != job.get_requests().end(); ++it)
 	{
-	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(), "Starting a new background find-parsed-changelogs thread.");
-	  active_thread = boost::make_shared<cw::threads::thread>(check_cache_for_parsed_changelogs_thread());
-	}
-    }
+	  const preprocessed_changelog_job &job(**it);
 
-    static void stop()
-    {
-      using aptitude::Loggers;
+	  temp::name predigested_file;
 
-      cw::threads::mutex::lock l(state_mutex);
-
-      LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		"Pausing the find-parsed-changelogs thread.");
-
-      suspended = true;
-      // Copy this since it'll be zeroed out when the thread exits,
-      // which can happen as soon as the lock below is released.
-      boost::shared_ptr<cw::threads::thread> active_thread_copy(active_thread);
-
-      l.release();
-
-      if(active_thread_copy.get() != NULL)
-	active_thread_copy->join();
-    }
-
-    static void maybe_start()
-    {
-      using aptitude::Loggers;
-
-      cw::threads::mutex::lock l(state_mutex);
-
-      suspended = false;
-
-      if(active_thread != NULL)
-	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		  "Not starting the background find-parsed-changelogs thread: it's already running.");
-      else if(jobs.empty())
-	LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		  "Not starting the background find-parsed-changelogs thread: it has no jobs.");
-      else
-	{
-	  LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
-		    "Starting the background find-parsed-changelogs thread.");
-	  active_thread = boost::make_shared<cw::threads::thread>(check_cache_for_parsed_changelogs_thread());
-	}
-    }
-
-    void operator()() const
-    {
-      log4cxx::LoggerPtr logger(aptitude::Loggers::getAptitudeGtkChangelog());
-
-      try
-	{
-	  cw::threads::mutex::lock l(state_mutex);
-
-	  while(!jobs.empty())
+	  try
 	    {
-	      check_cache_for_parsed_changelogs_job next(jobs.front());
-	      jobs.pop_front();
-
-	      // Unlock the state mutex for the actual work:
-	      l.release();
-
-	      // Used to queue up the work for the main thread (the
-	      // jobs to process and any pre-digested files that
-	      // were found).
-	      boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >
-		jobs_with_predigested_files = boost::make_shared<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > >();
-
-	      for(std::vector<boost::shared_ptr<preprocessed_changelog_job> >::const_iterator it = next.get_requests().begin();
-		  it != next.get_requests().end(); ++it)
-		{
-		  const preprocessed_changelog_job &job(**it);
-
-		  temp::name predigested_file;
-
-		  try
-		    {
-		      std::string uri;
-		      if(!job.get_only_new())
-			uri = ssprintf("changelog://%s/%s",
-				       job.get_target_info()->get_source_package().c_str(),
-				       job.get_target_info()->get_source_version().c_str());
-		      else
-			uri = ssprintf("delta-changelog://%s/%s/%s",
-				       job.get_target_info()->get_source_package().c_str(),
-				       job.get_current_info()->get_source_version().c_str(),
-				       job.get_target_info()->get_source_version().c_str());
+	      std::string uri;
+	      if(!job.get_only_new())
+		uri = ssprintf("changelog://%s/%s",
+			       job.get_target_info()->get_source_package().c_str(),
+			       job.get_target_info()->get_source_version().c_str());
+	      else
+		uri = ssprintf("delta-changelog://%s/%s/%s",
+			       job.get_target_info()->get_source_package().c_str(),
+			       job.get_current_info()->get_source_version().c_str(),
+			       job.get_target_info()->get_source_version().c_str());
 
 
-		      LOG_TRACE(logger,
-				"Changelog preparation thread: checking for the changelog of "
-				<< job.get_target_info()->get_source_package()
-				<< " " << job.get_target_info()->get_source_version()
-				<< " under the cache URI "
-				<< uri);
+	      LOG_TRACE(logger,
+			"Changelog preparation thread: checking for the changelog of "
+			<< job.get_target_info()->get_source_package()
+			<< " " << job.get_target_info()->get_source_version()
+			<< " under the cache URI "
+			<< uri);
 
-		      predigested_file = download_cache->getItem(uri);
-		      if(predigested_file.valid())
-			LOG_TRACE(logger, "Changelog preparation thread: found a predigested changelog for "
-				  << job.get_target_info()->get_source_package()
-				  << " " << job.get_target_info()->get_source_version()
-				  << " in the file " << predigested_file.get_name());
-		    }
-		  catch(const std::exception &ex)
-		    {
-		      LOG_WARN(logger, "Changelog preparation thread: got std::exception: " << ex.what());
-		    }
-		  catch(const cw::util::Exception &ex)
-		    {
-		      LOG_WARN(logger, "Changelog preparation thread: got cwidget::util::Exception: " << ex.errmsg());
-		    }
-		  catch(...)
-		    {
-		      LOG_WARN(logger, "Changelog preparation thread: got an unknown exception.");
-		    }
-
-
-		  jobs_with_predigested_files->push_back(std::make_pair(predigested_file, *it));
-		}
-
-	      sigc::slot<void, boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > > >
-		get_and_show_changelogs_slot = sigc::ptr_fun(&get_and_show_changelogs);
-
-	      post_event(safe_bind(make_safe_slot(get_and_show_changelogs_slot),
-				   jobs_with_predigested_files));
-
-	      l.acquire();
+	      predigested_file = download_cache->getItem(uri);
+	      if(predigested_file.valid())
+		LOG_TRACE(logger, "Changelog preparation thread: found a predigested changelog for "
+			  << job.get_target_info()->get_source_package()
+			  << " " << job.get_target_info()->get_source_version()
+			  << " in the file " << predigested_file.get_name());
+	    }
+	  catch(const std::exception &ex)
+	    {
+	      LOG_WARN(logger, "Changelog preparation thread: got std::exception: " << ex.what());
+	    }
+	  catch(const cw::util::Exception &ex)
+	    {
+	      LOG_WARN(logger, "Changelog preparation thread: got cwidget::util::Exception: " << ex.errmsg());
+	    }
+	  catch(...)
+	    {
+	      LOG_WARN(logger, "Changelog preparation thread: got an unknown exception.");
 	    }
 
-	  active_thread.reset();
-	  return; // Unless there's an unlikely error, we exit here;
-	  // otherwise we try some last-chance error
-	  // handling below.
-	}
-	catch(const std::exception &ex)
-	  {
-	    LOG_WARN(logger, "Changelog preparation thread aborting with std::exception: " << ex.what());
-	  }
-	catch(const cw::util::Exception &ex)
-	  {
-	    LOG_WARN(logger, "Changelog preparation thread aborting with cwidget::util::Exception: " << ex.errmsg());
-	  }
-	catch(...)
-	  {
-	    LOG_WARN(logger, "Changelog preparation thread aborting with an unknown exception.");
-	  }
 
-	// Do what we can to recover, although there might be jobs
-	// that can't be processed!
-	{
-	  cw::threads::mutex::lock l(state_mutex);
-	  active_thread.reset();
+	  jobs_with_predigested_files->push_back(std::make_pair(predigested_file, *it));
 	}
+
+      sigc::slot<void, boost::shared_ptr<std::vector<std::pair<temp::name, boost::shared_ptr<preprocessed_changelog_job> > > > >
+	get_and_show_changelogs_slot = sigc::ptr_fun(&get_and_show_changelogs);
+
+      post_event(safe_bind(make_safe_slot(get_and_show_changelogs_slot),
+			   jobs_with_predigested_files));
     }
   };
-  std::deque<check_cache_for_parsed_changelogs_job> check_cache_for_parsed_changelogs_thread::jobs;
-  boost::shared_ptr<cw::threads::thread> check_cache_for_parsed_changelogs_thread::active_thread;
-  bool check_cache_for_parsed_changelogs_thread::suspended = false;
-  cw::threads::mutex check_cache_for_parsed_changelogs_thread::state_mutex;
   bool check_cache_for_parsed_changelogs_thread::signals_connected = false;
 
 
