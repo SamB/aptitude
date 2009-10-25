@@ -105,11 +105,12 @@ release upgrade23;							\
 
       /** \brief An SQLite-backed cache.
        *
-       *  The cache schema is defined below as a gigantic string constant.
-       *  The reason for splitting blobs out from the main table is
-       *  primarily that the incremental blob-reading functions cause
-       *  trouble if someone else updates the row containing the blob;
-       *  the blob table above will be immutable until it's removed.
+       *  The cache schema is defined below as a gigantic string
+       *  constant.  The reason for splitting blobs out from the main
+       *  table is primarily that the incremental blob-reading
+       *  functions cause trouble if someone else updates the row
+       *  containing the blob; each row in the blob table above will
+       *  be immutable until it's removed.
        *
        *  Note that referential integrity is maintained on delete by
        *  removing the corresponding entry in the other table; this
