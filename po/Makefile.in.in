@@ -104,7 +104,12 @@ stamp-po: $(srcdir)/$(DOMAIN).pot
 	}
 
 remake-potfiles:
-	(cd $(top_srcdir) && find src -name \*.cc -or -name \*.h -or -name \*.glade | sort -u) > POTFILES.in
+	(cd $(top_srcdir) && find src -name \*.cc -or -name \*.h -or -name \*.glade | sort -u) > POTFILES.in.in
+	if [ -f POTFILES.ignore ]; then \
+	  bash -c 'comm -23 POTFILES.in.in <(egrep -v "^#|^$$" POTFILES.ignore | sort -u) > POTFILES.in'; \
+	else \
+	  cp POTFILES.in.in POTFILES.in; \
+	fi
 
 POTFILES.in: remake-potfiles
 
@@ -310,6 +315,7 @@ maintainer-clean: distclean
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 dist distdir:
 	$(MAKE) update-po
+	$(MAKE) remake-potfiles
 	@$(MAKE) dist2
 # This is a separate target because 'update-po' must be executed before.
 dist2: stamp-po $(DISTFILES)
