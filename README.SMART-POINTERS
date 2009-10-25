@@ -1,6 +1,16 @@
   Smart pointers in aptitude
 
 
+  IMPORTANT NOTE:
+
+  All (or most of) the smart pointers documented here are deprecated
+in favor of boost::shared_ptr, which is simpler, more flexible, and
+probably more efficient (although I haven't checked that).  New code
+should use shared_ptr and/or scoped_ptr.
+
+
+
+
 
   aptitude uses smart pointers in a number of ways internally.  These
 techniques generally simplify the code and make it easy to program

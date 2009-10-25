@@ -1,10 +1,12 @@
   The basic threading philosophy followed in aptitude can be
 summarized thus: "if you aren't sure it's safe, do it in the main
-thread".  The mechanism for doing so is cwidget::toplevel::post_event
-(cwidget/toplevel.h), which places a callback object into the global
-event queue and wakes the main thread (if necessary).  You can also
-take a global lock to get the same effect...but it's really
-recommended that you use the event queue.
+thread; if it's going to take a long time, try to make it safe to run
+in the background".  The mechanism for doing so is
+interface-dependent: for the curses frontend, it's
+cwidget::toplevel::post_event (cwidget/toplevel.h), and for the GTK+
+frontend, it's gui::post_event.  Both of these functions place a
+callback object into the global event queue and wake up the main
+thread (if necessary).
 
   The actual threading constructs used are the pthread wrappers in
 cwidget/generic/threads.h (and also cwidget/generic/event_queue.h).
@@ -18,22 +20,30 @@ that's invoked when the background process is finished; it's expected
 that this object will probably post some sort of event to the main
 thread.
 
+  Several of aptitude's background threads exist to serialize work
+that's too time-consuming to perform in the main thread.  The template
+job_event_queue (in src/generic/util/job_event_queue.h) provides a
+generic implementation of this behavior via the Curiously Recurring
+Template Pattern.
+
+
   Things that you might thank are threadsafe but aren't include:
 
   * sigc++ objects.  Not only do you have to watch out for manual
     additions and deletions to connection lists during invocation, you
     also have to watch out for automatic invalidation of slots at any
     time.  Best practice here is to confine sigc++ access to the main
-    thread.
+    thread, or to use safe_slot (but read the caveats in its header).
 
-  * Smart pointers.  Most smart pointers that aptitude uses are NOT
-    threadsafe.  This means that *EVEN READ-ONLY ACCESS* from another
-    thread will cause horrible ghastly problems that you don't even
-    want to think about.  At the moment it's almost never necessary to
-    pass these between threads, so it's not a big deal; the exception
-    is the problem resolver's solution objects (and the shared trees
-    contained inside them), which are dealt with by doing a deep copy
-    of the object. (see resolver_manager::do_get_solution)
+  * Smart pointers other than boost::shared_ptr.  Most smart pointers
+    that aptitude uses are NOT threadsafe.  This means that *EVEN
+    READ-ONLY ACCESS* from another thread will cause horrible ghastly
+    problems that you don't even want to think about.  At the moment
+    it's almost never necessary to pass these between threads, so it's
+    not a big deal; the exception is the problem resolver's solution
+    objects (and the shared trees contained inside them), which are
+    dealt with by doing a deep copy of the object. (see
+    resolver_manager::do_get_solution)
 
     The reason this is the case is basically that the pthread
     abstraction doesn't give you a fast lock for low-contention
@@ -65,3 +75,7 @@ Existing background threads:
     will also stop the resolver whenever its state needs to be
     modified (for instance, if the rejected set is changed).  The
     interface for this is in src/generic/resolver_manager.cc.
+
+  * From the GTK+ interface, changelog parsing and checking for
+    changelogs in the download cache both happen in a background
+    thread.
