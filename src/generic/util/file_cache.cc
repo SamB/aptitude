@@ -112,13 +112,14 @@ release upgrade23;							\
        *  containing the blob; each row in the blob table above will
        *  be immutable until it's removed.
        *
-       *  Note that referential integrity is maintained on delete by
-       *  removing the corresponding entry in the other table; this
-       *  makes it easier to remove entries from the cache.
+       *  Note that referential integrity is only checked on changes
+       *  to the main cache table.  If an entry in the main cache
+       *  table is deleted, we zap the corresponding blob entry
+       *  automatically.
        *
-       *  The "format" table is for future use (to support upgrades to
-       *  the cache format); it contains a single row, which currently
-       *  contains the integer "1" in the "version" field.
+       *  The "format" table supports upgrades to the cache format; it
+       *  contains a single row, which contains a single column
+       *  holding the current version of the database schema.
        */
       class file_cache_sqlite : public file_cache
       {
