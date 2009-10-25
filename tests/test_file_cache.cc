@@ -428,7 +428,16 @@ extern char *argv0;
 
 void testCacheUpgradeFrom(int version)
 {
-  std::string inputFilename = (boost::format("%s/file_caches/ver%d_cache.db") % dirname(argv0) % version).str();
+  std::string argv0_dirname;
+
+  // dirname modifies its argument, so we need to work on a copy.
+  {
+    char *argv0_copy = strdup(argv0);
+    argv0_dirname = dirname(argv0_copy);
+    free(argv0_copy);
+  }
+
+  std::string inputFilename = (boost::format("%s/file_caches/ver%d_cache.db") % argv0_dirname % version).str();
 
   // Make a temporary copy, since the upgrade is in-place (don't want
   // to modify the test data!).
