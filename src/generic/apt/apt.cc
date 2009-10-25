@@ -242,28 +242,6 @@ void apt_preinit(const char *rootdir)
   apt_dumpcfg(PACKAGE);
 
   apt_undos=new undo_list;
-
-  // Open the download cache.  By default, it goes in
-  // ~/.aptitude/cache; it has 512Kb of in-memory cache and 10MB of
-  // on-disk cache.
-  std::string download_cache_file_name = string(HOME) + "/.aptitude/cache";
-  const int download_cache_memory_size =
-    aptcfg->FindI(PACKAGE "::UI::DownloadCache::MemorySize", 512 * 1024);
-  const int download_cache_disk_size   =
-    aptcfg->FindI(PACKAGE "::UI::DownloadCache::DiskSize", 10 * 1024 * 1024);
-  try
-    {
-      download_cache = aptitude::util::file_cache::create(download_cache_file_name,
-							  download_cache_memory_size,
-							  download_cache_disk_size);
-    }
-  catch(cwidget::util::Exception &ex)
-    {
-      LOG_WARN(logger,
-	       "Can't open the file cache \""
-	       << download_cache_file_name
-	       << "\": " << ex.errmsg());
-    }
 }
 
 void apt_dumpcfg(const char *root)
@@ -524,6 +502,33 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 
   LOG_TRACE(logger, "Initializing global dependency resolver manager.");
   resman = new resolver_manager(new_file, imm::map<aptitude_resolver_package, aptitude_resolver_version>());
+
+  LOG_TRACE(logger, "Initializing the download cache.");
+  // Open the download cache.  By default, it goes in
+  // ~/.aptitude/cache; it has 512Kb of in-memory cache and 10MB of
+  // on-disk cache.
+  const char *HOME = getenv("HOME");
+  if(HOME != NULL)
+    {
+      std::string download_cache_file_name = string(HOME) + "/.aptitude/cache";
+      const int download_cache_memory_size =
+	aptcfg->FindI(PACKAGE "::UI::DownloadCache::MemorySize", 512 * 1024);
+      const int download_cache_disk_size   =
+	aptcfg->FindI(PACKAGE "::UI::DownloadCache::DiskSize", 10 * 1024 * 1024);
+      try
+	{
+	  download_cache = aptitude::util::file_cache::create(download_cache_file_name,
+							      download_cache_memory_size,
+							      download_cache_disk_size);
+	}
+      catch(cwidget::util::Exception &ex)
+	{
+	  LOG_WARN(logger,
+		   "Can't open the file cache \""
+		   << download_cache_file_name
+		   << "\": " << ex.errmsg());
+	}
+    }
 
   LOG_DEBUG(logger, "Emitting cache_reloaded().");
   cache_reloaded();
