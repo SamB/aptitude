@@ -72,18 +72,28 @@ namespace aptitude
 	  LOG_INFO(Loggers::getAptitudeDownloadCache(),
 		   "Upgrading the cache from version 2 to version 3.");
 
-	  const char *sql = "                                           \
-savepoint upgrade23;							\
-									\
-select raise ( rollback, 'Wrong version for this upgrade path.' )	\
-from format								\
-where version <> 2;							\
-									\
+	  store->exec("savepoint upgrade23");
+
+	  boost::shared_ptr<statement> get_version_statement =
+	    statement::prepare(*store, "select version from format");
+	  {
+	    statement::execution get_version_execution(*get_version_statement);
+	    if(!get_version_execution.step())
+	      throw FileCacheException("Can't read the cache version number.");
+	    else
+	      {
+		int database_version = get_version_statement->get_int(0);
+		if(database_version != 2)
+		  throw FileCacheException("Wrong database version number for this upgrade.");
+	      }
+	  }
+
+	  const char * const sql = "                                    \
 alter table cache							\
-add column ModificationTime  numeric   default 0  not null		\
+add column ModificationTime  numeric   default 0  not null;		\
 									\
 update format								\
-set version = 3								\
+set version = 3;							\
 									\
 release upgrade23;							\
 ";
