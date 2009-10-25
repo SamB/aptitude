@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2006-10-22 16:18+0300\n"
 "Last-Translator: Ossama M. Khayat <okhayat@yahoo.com>\n"
 "Language-Team: Arabic <support@arabeyes.org>\n"
@@ -1380,7 +1380,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "تعذر فتح %s للتسجيل"
@@ -2184,12 +2184,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "عملية غير صالحة %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "غير مستوفى"
@@ -2415,17 +2409,17 @@ msgstr "قد ترغب بتحديث لوائح الحزم لتصحيح هذه ا�
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s قابل للقراءة فقط وليس للكتابة; تعذرت كتابة ملف التهيئة"
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "تعذر استبدال %s بملف التهيئة الجديد"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 #, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
@@ -2926,18 +2920,18 @@ msgstr "تعذر فتح /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "قراءة أوصاف المهمة"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "تعذر إنشاء دليل مؤقت من القالب \"%s\": %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, fuzzy, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "تعذرت إزالة الدليل \"%s\""
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "خطأ مجهول"
 
@@ -3426,29 +3420,29 @@ msgstr "نعم"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "عنوان URL لاستخدامه عند تنزيل سجلّات التغيير"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3456,20 +3450,20 @@ msgid ""
 "is unknown."
 msgstr "يمكنك عرض سجلات تغيير حزم دبيان الرسميّة فقط."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "يمكنك عرض سجلات تغيير حزم دبيان الرسميّة فقط."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "تنزيل سجل التغيير"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7684,6 +7678,11 @@ msgstr "تنزيل سجل التغيير"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "تنزيل سجل التغيير"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "عملية غير صالحة %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "إلا أنّها غير قابلة للتثبيت"

@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2009-06-15 01:22+0200\n"
 "Last-Translator: Javier Fernandez-Sanguino <jfs@debian.org>\n"
 "Language-Team: Debian-l10n-Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -1561,7 +1561,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "No se pudo abrir %s para escribir en él"
@@ -2374,12 +2374,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "Operación %s inválida"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "INSATISFECHO"
@@ -2616,19 +2610,19 @@ msgstr ""
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.es"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "Se puede leer %s, pero no escribirlo. No se pudo escribir el fichero de "
 "configuración"
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Imposible reemplazar %s con el nuevo fichero de configuración"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3143,18 +3137,18 @@ msgstr "Incapaz de abrir /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "Leyendo las descripciones de las tareas"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "No se pudo crear el directorio temporal en base a la plantilla «%s»: %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "No se pudo eliminar el directorio temporal «%s»"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Error desconocido"
 
@@ -3620,11 +3614,11 @@ msgstr "sí"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr "El registro de cambios esta vacío."
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
@@ -3632,18 +3626,18 @@ msgstr ""
 "No hay entradas nuevas en el registro de cambios, parece que instaló una "
 "versión de este paquete compilado localmente."
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, c-format
 msgid "Failed to download the changelog: %s"
 msgstr "Fallo al descargar el registro de cambios: %s"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3651,18 +3645,18 @@ msgid ""
 "is unknown."
 msgstr "Sólo puede ver registros de cambios de paquetes de Debian oficiales."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "Sólo puede ver registros de cambios de paquetes de Debian oficiales."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 msgid "Downloading changelog; please wait..."
 msgstr "Descargando registro de cambios; por favor, espere..."
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 msgid "Downloading changelogs"
 msgstr "Descargando registro de cambios"
 
@@ -7868,6 +7862,11 @@ msgstr "Descargando registro de cambios"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Descargar el registro de cambios"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Operación %s inválida"
 
 #~ msgid "but it is not installable"
 #~ msgstr "pero no es instalable"

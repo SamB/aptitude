@@ -43,7 +43,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.10\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2009-02-23 15:46+0100\n"
 "Last-Translator: Danilo Piazzalunga <danilopiazza@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -1557,7 +1557,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Impossibile aprire %s in scrittura"
@@ -2372,12 +2372,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "Operazione «%s» non ammessa"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "NON SODDISFATTA"
@@ -2611,19 +2605,19 @@ msgstr "Aggiornare l'elenco dei pacchetti per correggere questi file mancanti."
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.it"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s è accessibile solo in lettura; impossibile scrivere il file di "
 "configurazione."
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Impossibile sostituire %s con il nuovo file di configurazione"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3152,18 +3146,18 @@ msgstr "Impossibile aprire /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "Lettura delle descrizioni dei task"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Impossibile creare la directory temporanea dal modello «%s»: %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "Impossibile eliminare la directory temporanea «%s»"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Errore sconosciuto"
 
@@ -3661,29 +3655,29 @@ msgstr "sì"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "URL da usare per scaricare i changelog"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3691,20 +3685,20 @@ msgid ""
 "is unknown."
 msgstr "È possibile vedere i changelog solo dei pacchetti Debian ufficiali."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "È possibile vedere i changelog solo dei pacchetti Debian ufficiali."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "Scaricamento del changelog"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -8033,6 +8027,11 @@ msgstr "Scaricamento del changelog"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Scarica il changelog"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Operazione «%s» non ammessa"
 
 #~ msgid "but it is not installable"
 #~ msgstr "ma non è installabile"

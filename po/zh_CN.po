@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2008-09-02 21:41+0800\n"
 "Last-Translator: Deng Xiyue <manphiz-guest@users.alioth.debian.org>\n"
 "Language-Team: Debian Chinese [GB] <debian-chinese-gb@lists.debian.org>\n"
@@ -1424,7 +1424,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "无法打开 %s 以写入"
@@ -2212,12 +2212,6 @@ msgstr "%s：这个命令要求至少一个参数(要查询的软件包)。"
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "无效的操作 %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "未满足的"
@@ -2439,17 +2433,17 @@ msgstr "您可能需要更新软件包列表来解决缺少这些文件的问题
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.zh_CN"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s 可读但不可写；无法写入配置文件。"
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "无法用新的配置文件代替 %s"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -2952,18 +2946,18 @@ msgstr "无法打开 /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "正在读取软件集说明档"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "无法为模板“%s”创建临时文件夹：%s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "无法删除临时目录“%s”"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "未知错误"
 
@@ -3454,29 +3448,29 @@ msgstr "是"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "用于下载变更日志的 URL"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3484,20 +3478,20 @@ msgid ""
 "is unknown."
 msgstr "您只能查看官方 Debian 软件包的变更日志。"
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "您只能查看官方 Debian 软件包的变更日志。"
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "正在下载变更日志"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7667,6 +7661,11 @@ msgstr "正在下载变更日志"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "下载变更日志"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "无效的操作 %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "但是它不是可安装的"

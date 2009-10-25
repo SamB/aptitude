@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -1504,7 +1504,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Không thể mở %s để ghi"
@@ -2314,12 +2314,6 @@ msgstr "%s: lệnh này cần thiết ít nhất một đối số (gói cần t
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "Thao tác không hợp lệ %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "CHƯA ỔN"
@@ -2551,19 +2545,19 @@ msgstr ""
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.vi"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s có khả năng đọc nhưng không có khả năng ghi nên không thể ghi tập tin cấu "
 "hình."
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Không thể thay thế %s bằng tập tin cấu hình mới"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3082,18 +3076,18 @@ msgstr "Không thể mở tập tin « /usr/share/tasksel/debian-tasks.desc »"
 msgid "Reading task descriptions"
 msgstr "Đang đọc các mô tả tác vụ"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Không thể tạo thư mục tạm từ mẫu « %s »: %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "Không thể xoá thư mục tạm thời « %s »"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Lỗi không rõ"
 
@@ -3587,29 +3581,29 @@ msgstr "có"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "Địa chỉ URL cần dùng để tải về các bản ghi thay đổi (ChangeLog)"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3617,20 +3611,20 @@ msgid ""
 "is unknown."
 msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính thức."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính thức."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "Đang tải về Bản ghi đổi"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7905,6 +7899,11 @@ msgstr "Đang tải về Bản ghi đổi"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Tải về Bản ghi đổi"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Thao tác không hợp lệ %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "nhưng mà nó không có khả năng cài đặt"

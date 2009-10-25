@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_hu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2006-10-12 20:44+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <debian-l10n-hungarian@lists.debian.org>\n"
@@ -1393,7 +1393,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nem lehet a(z) %s-t írásra megnyitni"
@@ -2195,12 +2195,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "Érvénytelen művelet: %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "TELJESÍTETLEN"
@@ -2430,17 +2424,17 @@ msgstr ""
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "A(z) %s olvasható, de nem írható; nem sikerült a beállítófájlba írni."
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nem sikerült a(z) %s-t az új beállítófájllal helyettesíteni"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 #, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
@@ -2948,18 +2942,18 @@ msgstr "Nem sikerült megnyitni a /usr/share/tasksel/debian-tasks.desc fájlt"
 msgid "Reading task descriptions"
 msgstr "Metacsomag leírások beolvasása"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Az átmeneti könyvtár létrehozása meghiúsult e sablonból: \"%s\": %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, fuzzy, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "Nem sikerült törölni a \"%s\" könyvtárat"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
 
@@ -3448,29 +3442,29 @@ msgstr "igen"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "URL a módosításnaplók letöltéséhez"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3478,20 +3472,20 @@ msgid ""
 "is unknown."
 msgstr "Csak a hivatalos Debian csomagok munkanaplói olvashatók."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "Csak a hivatalos Debian csomagok munkanaplói olvashatók."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "Munkanapló letöltése"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7773,6 +7767,11 @@ msgstr "Munkanapló letöltése"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Munkanapló letöltése"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Érvénytelen művelet: %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "de nem telepíthető"

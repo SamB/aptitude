@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2007-06-14 03:27+0530\n"
 "Last-Translator: Tshewang Norbu <bumthap2006@hotmail.com>\n"
 "Language-Team: Dzongkha <pgeyleg@dit.gov.bt>\n"
@@ -1395,7 +1395,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "འབྲི་ནིའི་དོན་ལུ་ %s་དེ་ཁ་ཕྱེ་མ་ཚུགས།"
@@ -2214,12 +2214,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "ནུས་མེད་བཀོལ་སྤྱོད་ %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "ངལ་རངས་མ་བྱུང་།"
@@ -2450,17 +2444,17 @@ msgstr ""
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%sདེ་ལྷག་བཏུབ་ དེ་འབདཝ་ད་ འབྲི་མི་བཏུབ། རིམ་སྒྲིག་ཡིག་སྣོད་འབྲི་མ་ཚུགས།"
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "%sདེ་རིམ་སྒྲིག་གི་ཡིག་སྣོད་གསརཔ་གྱིས་ཚབ་བཙུགས་མ་ཚུགས།"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 #, fuzzy
 #| msgid ""
 #| "Could not lock the cache file.  Opening in read-only mode; any changes "
@@ -2973,18 +2967,18 @@ msgstr " /ཡུ་ཨེསི་ཨཱར་/རུབ་སྤྱོད་ན
 msgid "Reading task descriptions"
 msgstr "ལས་ཀའི་འགྲེལ་བཤད་ལྷག་དོ།"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "\"%s\": %s ནང་ལས་གནས་སྐབས་ཀྱི་སྣོད་འཛིན་གསར་བསྐྲུན་འབད་མི་ཚུགས་པས།"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, fuzzy, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "སྣོད་ཐོ་  \"%s\" དེ་རྩ་བསྐྲད་གཏང་མ་ཚུགས།"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "འཛོལ་བ་མ་ཤེསཔ།"
 
@@ -3477,29 +3471,29 @@ msgstr "ཨིན།"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "བསྒྱུར་བཅོས་ལོགསི་ ཚུ་ཕབ་ལེན་འབད་ནིའི་དོན་ལུ་ལག་ལེན་འཐབ་་ནི་གི་ཡུ་ཨཱར་ཨེལ།"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3507,20 +3501,20 @@ msgid ""
 "is unknown."
 msgstr "ཁྱོད་ཀྱིས་གཞུང་འབྲེལ་གྱི་ཌེ་བི་ཡཱན་ཐུམ་སྒྲིལ་ཚུ་གི་བསྒྱུར་བཅོས་དྲན་དེབ་རྐྱངམ་ཅིག་སྟོན་ཚུགས།"
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "ཁྱོད་ཀྱིས་གཞུང་འབྲེལ་གྱི་ཌེ་བི་ཡཱན་ཐུམ་སྒྲིལ་ཚུ་གི་བསྒྱུར་བཅོས་དྲན་དེབ་རྐྱངམ་ཅིག་སྟོན་ཚུགས།"
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་ལེན་འབད་དོ།"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7827,6 +7821,11 @@ msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "བསྒྱུར་བཅོས་དྲན་དེབ་ཕབ་ལེན་འབད།"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "ནུས་མེད་བཀོལ་སྤྱོད་ %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "དེ་འབདཝ་ད་ འདི་གཞི་བཙུགས་འབད་བཏུབ་མི་མེན་པས།"

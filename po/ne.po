@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_ne\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2007-08-05 17:09+0545\n"
 "Last-Translator: Nabin Gautam <nabin@mpp.org.np>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -1394,7 +1394,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "लेख्नको लागि %s खोल्न असक्षम भयो"
@@ -2211,12 +2211,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
-#: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
-msgid "Invalid command-line option '%s'"
-msgstr "अवैध सञ्चालन %s"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "UNSATISFIED"
@@ -2445,17 +2439,17 @@ msgstr "तपाईँ यी हराइरहेका फाइलहरु
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s पढ्नयोग्य छ तर लेख्न योग्य छैन;कनफिगरेसन फाइल लेख्न असक्षम भयो ।"
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "नयाँ कनफिगरेसन फाइल संग %s बदल्न असक्षम भयो"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 #, fuzzy
 #| msgid ""
 #| "Could not lock the cache file.  Opening in read-only mode; any changes "
@@ -2963,18 +2957,18 @@ msgstr "/usr/share/tasksel/debian-tasks.desc खोल्न असक्षम 
 msgid "Reading task descriptions"
 msgstr "कार्य विवरणहरू पढिदैछ"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "\"%s\" टेम्प्लेटबाट अस्थायी डाइरेक्ट्री सिर्जना गर्न असफल भयो: %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, fuzzy, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "डाइरेक्टरी \"%s\" हटाउन असक्षम"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "अज्ञात त्रुटि"
 
@@ -3465,29 +3459,29 @@ msgstr "हो"
 msgid "gtk-no"
 msgstr ""
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr ""
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
 msgstr ""
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
 msgstr ""
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog: %s"
 msgstr "परिवर्तन लगहरू डाउनलोड गर्न URL प्रयोग गर्नुहोस्"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
@@ -3495,20 +3489,20 @@ msgid ""
 "is unknown."
 msgstr "तपाईँले आधिकारिक डेविएन प्याकेजहरुको परिवर्तनलग मात्र हर्न सक्नुहुन्छ ।"
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, fuzzy, c-format
 #| msgid "You can only view changelogs of official Debian packages."
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr "तपाईँले आधिकारिक डेविएन प्याकेजहरुको परिवर्तनलग मात्र हर्न सक्नुहुन्छ ।"
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelog; please wait..."
 msgstr "परिवर्तनलग डाउनलोड गर्दै"
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 #, fuzzy
 #| msgid "Downloading Changelog"
 msgid "Downloading changelogs"
@@ -7771,6 +7765,11 @@ msgstr "परिवर्तनलग डाउनलोड गर्दै"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "परिवर्तनलग डाउनलोड गर्नुहोस्"
+
+#, fuzzy
+#~| msgid "Invalid operation %s"
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "अवैध सञ्चालन %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "तर यो स्थापना योग्य छैन"

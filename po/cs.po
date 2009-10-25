@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2009-09-05 10:59+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -1485,7 +1485,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nemohu otevřít %s pro zápis"
@@ -2279,11 +2279,6 @@ msgstr "%s: tento příkaz vyžaduje nejméně jeden argument (zkoumaný balík)
 msgid "Unknown version selection, something is very wrong."
 msgstr "Výběr neznámé verze, něco je velmi špadně."
 
-#: src/cmdline_parse.cc:22
-#, c-format
-msgid "Invalid command-line option '%s'"
-msgstr "Neplatná volba „%s“"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "NESPLNĚNO"
@@ -2509,17 +2504,17 @@ msgstr "Pro opravení chybějících souborů zkuste aktualizovat seznamy balík
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.cs"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s se dá číst, ale ne zapisovat; nemohu zapsat konfigurační soubor."
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nemohu nahradit %s novým konfiguračním souborem"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3019,18 +3014,18 @@ msgstr "Nemohu otevřít /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "Načítám popisy úloh"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Nemohu vytvořit dočasný adresář dle šablony „%s“: %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "Nemohu smazat dočasný adresář „%s“"
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Neznámá chyba"
 
@@ -3456,11 +3451,11 @@ msgstr "gtk-yes"
 msgid "gtk-no"
 msgstr "gtk-no"
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr "Seznam změn je prázdný."
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
@@ -3468,7 +3463,7 @@ msgstr ""
 "Žádné nové změny; zdá se, že jste nainstalovali lokálně vytvořenou verzi "
 "balíku."
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
@@ -3476,12 +3471,12 @@ msgstr ""
 "Žádné nové změny; to je nejspíš kvůli tomu, že správce nahrál pouze binární "
 "verzi balíku."
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, c-format
 msgid "Failed to download the changelog: %s"
 msgstr "Nepodařilo se stáhnout seznam změn: %s"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; the origin of %s "
@@ -3490,7 +3485,7 @@ msgstr ""
 "Seznamy změn můžete prohlížet pouze u oficiálních debianích balíků; původ %s "
 "je neznámý."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
@@ -3498,11 +3493,11 @@ msgstr ""
 "Seznamy změn můžete prohlížet pouze u oficiálních debianích balíků; %s "
 "pochází z %s."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 msgid "Downloading changelog; please wait..."
 msgstr "Stahují se změny; čekejte prosím..."
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 msgid "Downloading changelogs"
 msgstr "Stahují se změny"
 
@@ -7616,6 +7611,9 @@ msgstr "Stahuji Changelog"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Stáhnout Changelog"
+
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Neplatná volba „%s“"
 
 #~ msgid ""
 #~ "The package %s has no candidate version and will not be upgraded; unable "

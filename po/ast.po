@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-12 19:38-0700\n"
+"POT-Creation-Date: 2009-10-25 11:13-0700\n"
 "PO-Revision-Date: 2009-04-26 17:44+0100\n"
 "Last-Translator: Marcos Alvarez Costales <marcos.alvarez.costales@gmail."
 "com>\n"
@@ -1507,7 +1507,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:311
+#: src/generic/apt/apt.cc:289
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Nun puede abrise %s pa escribir"
@@ -2314,11 +2314,6 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr "Seleición de versión desconocida, dalgo ta permal."
 
-#: src/cmdline_parse.cc:22
-#, c-format
-msgid "Invalid command-line option '%s'"
-msgstr "Opción de llinia de comandu '%s' nun válida"
-
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
 msgstr "NON SATISFECHO"
@@ -2549,19 +2544,19 @@ msgstr ""
 msgid "Localized defaults|"
 msgstr "aptitude-defaults.ast"
 
-#: src/generic/apt/apt.cc:283
+#: src/generic/apt/apt.cc:261
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "%s ye lleíble pero non escribíble; nun puede escribise ficheru de "
 "configuración."
 
-#: src/generic/apt/apt.cc:328
+#: src/generic/apt/apt.cc:306
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Nun puede trocase %s col nuevu ficheru de configuración"
 
-#: src/generic/apt/apt.cc:479
+#: src/generic/apt/apt.cc:457
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -3076,18 +3071,18 @@ msgstr "Nun puede abrise /usr/share/tasksel/debian-tasks.desc"
 msgid "Reading task descriptions"
 msgstr "Lleendo descripciones de les tarees"
 
-#: src/generic/util/temp.cc:65 src/generic/util/temp.cc:136
-#: src/generic/util/temp.cc:150
+#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
+#: src/generic/util/temp.cc:151
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Nun puede criase direutoriu temporal den la plantilla \"%s\": %s"
 
-#: src/generic/util/temp.cc:99
+#: src/generic/util/temp.cc:100
 #, c-format
 msgid "Unable to delete temporary directory \"%s\""
 msgstr "Nun puede esborrase direutoriu temporal \"%s\""
 
-#: src/generic/util/temp.cc:145
+#: src/generic/util/temp.cc:146
 msgid "Unknown error"
 msgstr "Fallu desconocíu"
 
@@ -3522,11 +3517,11 @@ msgstr "gtk-yes"
 msgid "gtk-no"
 msgstr "gtk-non"
 
-#: src/gtk/changelog.cc:284
+#: src/gtk/changelog.cc:285
 msgid "The changelog is empty."
 msgstr "El rexistru de cambios ta vacíu."
 
-#: src/gtk/changelog.cc:286
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
@@ -3534,7 +3529,7 @@ msgstr ""
 "Ensín nueves entraes nel rexistru de cambios; esto suel ser debío a "
 "qu'instalaste una versión compilada llocalmente d'esti paquete."
 
-#: src/gtk/changelog.cc:288
+#: src/gtk/changelog.cc:289
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
@@ -3542,12 +3537,12 @@ msgstr ""
 "Ensín entraes nueves nel rexistru de cambios; esto suel ser debío a un "
 "binariu únicu xubíu a esti paquete."
 
-#: src/gtk/changelog.cc:381
+#: src/gtk/changelog.cc:382
 #, c-format
 msgid "Failed to download the changelog: %s"
 msgstr "Falló al descargar el cambéu de rexistru: %s"
 
-#: src/gtk/changelog.cc:739
+#: src/gtk/changelog.cc:625
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; the origin of %s "
@@ -3556,7 +3551,7 @@ msgstr ""
 "Namái puedes ver rexistros de cambéu de paquetes oficiales de Debian; el "
 "orixe de %s ye desconocíu."
 
-#: src/gtk/changelog.cc:743
+#: src/gtk/changelog.cc:629
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
@@ -3564,11 +3559,11 @@ msgstr ""
 "Namás puedes ver rexistros de cambéu de paquetes oficiales de Debian; %s ye "
 "de %s."
 
-#: src/gtk/changelog.cc:763
+#: src/gtk/changelog.cc:649
 msgid "Downloading changelog; please wait..."
 msgstr "Baxando Rexistru de cambeos; espere..."
 
-#: src/gtk/changelog.cc:846
+#: src/gtk/changelog.cc:734
 msgid "Downloading changelogs"
 msgstr "Baxando Rexistru de Cambeos"
 
@@ -7725,6 +7720,9 @@ msgstr "Baxando Rexistru de cambeos"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Baxar Rexistru de cambeos"
+
+#~ msgid "Invalid command-line option '%s'"
+#~ msgstr "Opción de llinia de comandu '%s' nun válida"
 
 #~ msgid ""
 #~ "The package %s has no candidate version and will not be upgraded; unable "
