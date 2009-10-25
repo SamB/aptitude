@@ -72,18 +72,28 @@ namespace aptitude
 	  LOG_INFO(Loggers::getAptitudeDownloadCache(),
 		   "Upgrading the cache from version 2 to version 3.");
 
-	  const char *sql = "                                           \
-savepoint upgrade23;							\
-									\
-select raise ( rollback, 'Wrong version for this upgrade path.' )	\
-from format								\
-where version <> 2;							\
-									\
+	  store->exec("savepoint upgrade23");
+
+	  boost::shared_ptr<statement> get_version_statement =
+	    statement::prepare(*store, "select version from format");
+	  {
+	    statement::execution get_version_execution(*get_version_statement);
+	    if(!get_version_execution.step())
+	      throw FileCacheException("Can't read the cache version number.");
+	    else
+	      {
+		int database_version = get_version_statement->get_int(0);
+		if(database_version != 2)
+		  throw FileCacheException("Wrong database version number for this upgrade.");
+	      }
+	  }
+
+	  const char * const sql = "                                    \
 alter table cache							\
-add column ModificationTime  numeric   default 0  not null		\
+add column ModificationTime  numeric   default 0  not null;		\
 									\
 update format								\
-set version = 3								\
+set version = 3;							\
 									\
 release upgrade23;							\
 ";
@@ -95,19 +105,21 @@ release upgrade23;							\
 
       /** \brief An SQLite-backed cache.
        *
-       *  The cache schema is defined below as a gigantic string constant.
-       *  The reason for splitting blobs out from the main table is
-       *  primarily that the incremental blob-reading functions cause
-       *  trouble if someone else updates the row containing the blob;
-       *  the blob table above will be immutable until it's removed.
+       *  The cache schema is defined below as a gigantic string
+       *  constant.  The reason for splitting blobs out from the main
+       *  table is primarily that the incremental blob-reading
+       *  functions cause trouble if someone else updates the row
+       *  containing the blob; each row in the blob table above will
+       *  be immutable until it's removed.
        *
-       *  Note that referential integrity is maintained on delete by
-       *  removing the corresponding entry in the other table; this
-       *  makes it easier to remove entries from the cache.
+       *  Note that referential integrity is only checked on changes
+       *  to the main cache table.  If an entry in the main cache
+       *  table is deleted, we zap the corresponding blob entry
+       *  automatically.
        *
-       *  The "format" table is for future use (to support upgrades to
-       *  the cache format); it contains a single row, which currently
-       *  contains the integer "1" in the "version" field.
+       *  The "format" table supports upgrades to the cache format; it
+       *  contains a single row, which contains a single column
+       *  holding the current version of the database schema.
        */
       class file_cache_sqlite : public file_cache
       {
