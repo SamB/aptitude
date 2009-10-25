@@ -421,7 +421,7 @@ Changes: \n\
 // The versions to test upgrades from.  Version 1 was an unreleased
 // cache format and didn't provide an upgrade path, so it isn't
 // included in the test.
-const int min_database_test_upgrade_version = 3;
+const int min_database_test_upgrade_version = 2;
 const int max_database_test_upgrade_version = 3;
 
 extern char *argv0;
