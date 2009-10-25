@@ -21,6 +21,12 @@ Version 0.6.0                               "Stick a fork in it,
   + [all] Add some missing #includes that showed up when NLS wasn't
           enabled.
 
+- Build system fixes:
+
+  + [all] Don't include files in POTFILES.in that aren't distributed.
+          Hopefully this will prevent the unnecessary junk that was
+          getting into the Debian diff.
+
 [10/12/2009]
 Version 0.5.9rc4                            "Trust me, you don't want
                                              to know about the spork."
