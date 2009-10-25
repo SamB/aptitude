@@ -1,3 +1,26 @@
+[10/25/2009]
+Version 0.6.0                               "Stick a fork in it,
+					     it's done."
+- Internal changes:
+
+  + [all] The file cache now supports storing the last modification
+          time of cached files.  Currently this isn't used (changelogs
+          are assumed to be up-to-date anyway), but future code will
+          need this.
+
+  + [gtk] Factored out the common parts of the background threads that
+          handle changelog downloading into a generic utility class.
+
+- Minor bugs:
+
+  + [all] Load the download cache in apt_init() instead of
+          apt_preinit().  Avoids complaints from log4cxx if there are
+          errors, and also ensures that we have a download cache even
+          if the apt cache was closed and reopened.
+
+  + [all] Add some missing #includes that showed up when NLS wasn't
+          enabled.
+
 [10/12/2009]
 Version 0.5.9rc4                            "Trust me, you don't want
                                              to know about the spork."
