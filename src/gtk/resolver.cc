@@ -467,7 +467,7 @@ namespace gui
 		    break;
 
 		  case action_upgrade:
-		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is preferred over all un-accpted alternatives."),
+		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is preferred over all un-accepted alternatives."),
 					    pkg.Name(),
 					    ver.VerStr());
 		    break;
