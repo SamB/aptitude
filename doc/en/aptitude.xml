@@ -11500,19 +11500,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-WaitSteps'>
-	      <seg><literal>Aptitude::ProblemResolver::WaitSteps</literal></seg>
-	      <seg><literal>50</literal></seg>
-	      <seg>
-		The number of resolver steps to perform in the
-		foreground before moving the resolution to the
-		background thread.  &aptitude; will be unresponsive
-		while this computation takes place; decreasing this
-		value will make the program more responsive, but may
-		cause the progress indicator to appear unnecessarily.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configPurge-Unused'>
 	      <seg><literal>Aptitude::Purge-Unused</literal></seg>
 	      <seg><literal>false</literal></seg>

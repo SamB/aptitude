@@ -1399,40 +1399,6 @@ public:
   }
 };
 
-bool resolver_manager::get_solution_background_blocking(unsigned int solution_num,
-							int max_steps,
-							int block_steps,
-							const boost::shared_ptr<background_continuation> &k,
-							post_thunk_f post_thunk)
-{
-  if(block_steps == 0)
-    {
-      get_solution_background(solution_num, max_steps, k, post_thunk);
-      return false;
-    }
-
-  int remaining;
-
-  if(block_steps < max_steps)
-    remaining = max_steps - block_steps;
-  else
-    remaining = 0;
-
-  cwidget::threads::box<bool> rbox;
-
-  {
-    boost::shared_ptr<blocking_continuation> blocking_k;
-    blocking_k.reset(new blocking_continuation(k, solution_num, rbox,
-					       remaining, *this,
-					       post_thunk));
-    get_solution_background(solution_num, block_steps,
-			    blocking_k,
-			    &inline_continuation_trampoline);
-  }
-
-  return rbox.take();
-}
-
 template<typename T>
 void resolver_manager::resolver_manipulation(const T &t,
 					     void (generic_problem_resolver<aptitude_universe>::*action)(const T &, undo_group *),
@@ -1700,8 +1666,7 @@ void resolver_manager::dump(ostream &out)
   out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::Resolver::StepLimit", 5000) << " ANY )" << std::endl;
 }
 
-void resolver_manager::maybe_start_solution_calculation(bool blocking,
-							const boost::shared_ptr<background_continuation> &k,
+void resolver_manager::maybe_start_solution_calculation(const boost::shared_ptr<background_continuation> &k,
 							post_thunk_f post_thunk)
 {
   state st = state_snapshot();
@@ -1716,15 +1681,9 @@ void resolver_manager::maybe_start_solution_calculation(bool blocking,
       // TODO: duplication of information!  These config values should
       // be moved into a central function that everyone else can call.
       const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
-      const int wait_steps = aptcfg->FindI(PACKAGE "::ProblemResolver::WaitSteps", 50);
 
       if(limit > 0)
-	{
-	  if(blocking)
-	    get_solution_background_blocking(selected, limit, wait_steps, k, post_thunk);
-	  else
-	    get_solution_background(selected, limit, k, post_thunk);
-	}
+	get_solution_background(selected, limit, k, post_thunk);
     }
 }
 
@@ -2016,7 +1975,7 @@ void resolver_manager::safe_resolve_deps_background(bool no_new_installs, bool n
 						    post_thunk_f post_thunk)
 {
   setup_safe_resolver(no_new_installs, no_new_upgrades);
-  maybe_start_solution_calculation(true, boost::make_shared<safe_resolver_continuation>(k, this, post_thunk),
+  maybe_start_solution_calculation(boost::make_shared<safe_resolver_continuation>(k, this, post_thunk),
 				   post_thunk);
 }
 

@@ -460,7 +460,7 @@ namespace gui
 						 aborted_slot,
 						 boost::ref(resolver));
 
-      resolver.maybe_start_solution_calculation(false, k, &resolver_trampoline);
+      resolver.maybe_start_solution_calculation(k, &resolver_trampoline);
     }
 
     void interrupted()

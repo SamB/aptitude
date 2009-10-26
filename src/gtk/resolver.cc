@@ -53,8 +53,7 @@ namespace gui
     typedef generic_choice<aptitude_universe> choice;
     typedef generic_choice_set<aptitude_universe> choice_set;
 
-    void do_start_solution_calculation(bool blocking,
-				       resolver_manager *resolver);
+    void do_start_solution_calculation(resolver_manager *resolver);
 
     class gui_resolver_continuation : public resolver_manager::background_continuation
     {
@@ -112,7 +111,7 @@ namespace gui
 
 	LOG_TRACE(logger, "Resolver tab: ran out of time, restarting the calculation.");
 
-	do_start_solution_calculation(false, manager);
+	do_start_solution_calculation(manager);
       }
 
       void interrupted()
@@ -140,18 +139,17 @@ namespace gui
 
     // Used by the upgrade resolver to automatically push itself to
     // the next solution.
-    void do_start_solution_calculation(bool blocking, resolver_manager *resolver)
+    void do_start_solution_calculation(resolver_manager *resolver)
     {
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		"Restarting the resolver thread if necessary.");
       boost::shared_ptr<gui_resolver_continuation> k =
 	boost::make_shared<gui_resolver_continuation>(resolver);
-      resolver->maybe_start_solution_calculation(blocking, k,
-						 resolver_trampoline);
+      resolver->maybe_start_solution_calculation(k, resolver_trampoline);
     }
 
     // Start computing the first solution if it's not computed yet.
-    void do_start_first_solution_calculation(bool blocking, resolver_manager *resolver)
+    void do_start_first_solution_calculation(resolver_manager *resolver)
     {
       if(resolver->generated_solution_count() == 0)
 	{
@@ -165,8 +163,7 @@ namespace gui
 		    "Making sure the first solution is computed.");
 	  boost::shared_ptr<gui_resolver_continuation> k =
 	    boost::make_shared<gui_resolver_continuation>(resolver);
-	  resolver->maybe_start_solution_calculation(blocking,
-						     k,
+	  resolver->maybe_start_solution_calculation(k,
 						     resolver_trampoline);
 	}
     }
@@ -179,9 +176,9 @@ namespace gui
     {
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		"Connecting the callback to compute the first solution when the resolver state changes.");
-      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), true, resman));
+      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), resman));
       // We may have missed a signal before making the connection:
-      do_start_first_solution_calculation(false, resman);
+      do_start_first_solution_calculation(resman);
     }
 
     std::string render_choice_description_markup(const choice &c)
@@ -2152,7 +2149,7 @@ namespace gui
 		  << state.generated_solutions);
 	get_resolver()->discard_error_information();
 	get_resolver()->select_solution(state.generated_solutions);
-	do_start_solution_calculation(true, get_resolver());
+	do_start_solution_calculation(get_resolver());
       }
   }
 
@@ -2203,7 +2200,7 @@ namespace gui
     if(manager != NULL)
       {
 	// \todo Is there a better place to put this?
-	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true, manager));
+	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), manager));
 	manager->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						  false));
 
@@ -2211,7 +2208,7 @@ namespace gui
 
 	boost::shared_ptr<gui_resolver_continuation> k =
 	  boost::make_shared<gui_resolver_continuation>(manager);
-	manager->maybe_start_solution_calculation(true, k, resolver_trampoline);
+	manager->maybe_start_solution_calculation(k, resolver_trampoline);
 
 	resolver_fixing_upgrade_label->show();
 	resolver_fixing_upgrade_progress_bar->hide();

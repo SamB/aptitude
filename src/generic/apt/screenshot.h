@@ -23,6 +23,34 @@ namespace aptitude
 {
   class download_manager;
 
+  /** \brief The type of screenshot to download. */
+  enum screenshot_type
+    {
+      /** \brief Download a small thumbnail image. */
+      screenshot_thumbnail,
+      /** \brief Download a full-size screenshot. */
+      screenshot_full
+    };
+
+  /** \brief Handle to a screenshot download request; can be used to
+   *  cancel the request after it has been enqueued.
+   */
+  class download_request
+  {
+  public:
+    virtual ~download_request();
+
+    /** \brief Cancel this download request.
+     *
+     *  This is safe to call from any thread.  There is no guarantee
+     *  that the download won't complete anyway, but if it hasn't
+     *  completed by the next call to Pulse() (once a second or so),
+     *  it will be canceled.  Even if it does complete, the callbacks
+     *  won't be invoked.
+     */
+    virtual void cancel() = 0;
+  };
+
   /** \brief  Create a download manager that will fetch a screenshot
    *          for the given package.
    *
@@ -37,14 +65,20 @@ namespace aptitude
    *                       fails to be downloaded.  Invoked from the
    *                       thread that calls run().
    *
+   *  \param type          Which screenshot to download.
+   *
    *  This function will search the global download cache, if one is
    *  initialized, for an existing screenshot.  It can be invoked from
    *  a background thread, as long as the download cache isn't
    *  destroyed while it's running (i.e., whatever calls it should
    *  hook into cache_closing and wait for get_screenshot() to
-   *  return).
+   *  return before it allows cache_closing to return).
+   *
+   *  \return a handle that can be used to cancel the download.
    */
-  download_manager *get_screenshot(const std::string &name,
-				   const safe_slot1<void, temp::name> &success_slot,
-				   const safe_slot0<void> &failure_slot);
+  boost::shared_ptr<download_request>
+  get_screenshot(const std::string &name,
+		 const safe_slot1<void, temp::name> &success_slot,
+		 const safe_slot1<void, std::string> &failure_slot,
+		 screenshot_type type);
 }
