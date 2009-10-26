@@ -387,25 +387,24 @@ namespace gui
 					      pkg.Name());
 		    else
 		      {
-			aptitude_resolver_package
-			  resolver_pkg(c.get_ver().get_package());
-			aptitude_resolver_version
-			  resolver_pkg_current_ver(resolver_pkg.current_version());
+			aptitude_resolver_version previous_resolver_version =
+			  c.get_ver().get_package().current_version();
+			pkgCache::VerIterator prev_ver = previous_resolver_version.get_ver();
 
-			if(resolver_pkg_current_ver.get_ver().end())
+			if(prev_ver.end())
 			  icon_tooltip = ssprintf(_("Canceling the removal of %s is rejected."),
 						  pkg.Name());
 			else
 			  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
 						  pkg.Name(),
-						  pkg.CurrentVer().VerStr());
+						  ver.VerStr());
 		      }
 		    break;
 
 		  case action_install:
 		    icon_tooltip = ssprintf(_("Installing %s version %s is rejected."),
 					    pkg.Name(),
-					    pkg.CurrentVer().VerStr());
+					    ver.VerStr());
 		    break;
 
 		  case action_downgrade:
@@ -441,25 +440,24 @@ namespace gui
 					      pkg.Name());
 		    else
 		      {
-			aptitude_resolver_package
-			  resolver_pkg(c.get_ver().get_package());
-			aptitude_resolver_version
-			  resolver_pkg_current_ver(resolver_pkg.current_version());
+			aptitude_resolver_version previous_resolver_version =
+			  c.get_ver().get_package().current_version();
+			pkgCache::VerIterator prev_ver = previous_resolver_version.get_ver();
 
-			if(resolver_pkg_current_ver.get_ver().end())
+			if(prev_ver.end())
 			  icon_tooltip = ssprintf(_("Canceling the removal of %s is preferred over all un-accepted alternatives."),
 						  pkg.Name());
 			else
 			  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
 						  pkg.Name(),
-						  pkg.CurrentVer().VerStr());
+						  ver.VerStr());
 		      }
 		    break;
 
 		  case action_install:
 		    icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
 					    pkg.Name(),
-					    pkg.CurrentVer().VerStr());
+					    ver.VerStr());
 		    break;
 
 		  case action_downgrade:
