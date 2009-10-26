@@ -459,7 +459,7 @@ namespace gui
 		  case action_install:
 		    icon_tooltip = ssprintf(_("Installing %s version %s is preferred over all un-accepted alternatives."),
 					    pkg.Name(),
-					    pkg.CurrentVer().VerStr());
+					    ver.VerStr());
 		    break;
 
 		  case action_downgrade:
