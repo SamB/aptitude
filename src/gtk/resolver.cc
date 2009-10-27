@@ -981,10 +981,9 @@ namespace gui
     reject_button->set_sensitive(sensitive);
   }
 
-  void ResolverTab::do_reject_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_reject_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
 
     if(maybe_c.extract(c))
@@ -1004,26 +1003,35 @@ namespace gui
 
   namespace
   {
-    struct collect_iterators
+    struct collect_choices
     {
-      std::vector<Gtk::TreeModel::iterator> &target;
+    public:
+      typedef generic_choice<aptitude_universe> choice;
 
-      collect_iterators(std::vector<Gtk::TreeModel::iterator> &_target)
-	: target(_target)
+    private:
+      std::vector<maybe<choice> > &target;
+      cwidget::util::ref_ptr<ResolverView> solution_view;
+
+    public:
+      collect_choices(std::vector<maybe<choice> > &_target,
+		      const cwidget::util::ref_ptr<ResolverView> &_solution_view)
+	: target(_target),
+	  solution_view(_solution_view)
       {
       }
 
       void visit(const Gtk::TreeModel::iterator &iter) const
       {
-	target.push_back(iter);
+	const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
+
+	target.push_back(maybe_c);
       }
     };
   }
 
-  void ResolverTab::do_no_preference_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_no_preference_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
     if(maybe_c.extract(c))
       {
@@ -1042,10 +1050,9 @@ namespace gui
       }
   }
 
-  void ResolverTab::do_accept_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_accept_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
     if(maybe_c.extract(c))
       {
@@ -1087,14 +1094,15 @@ namespace gui
     Glib::RefPtr<Gtk::TreeSelection> selection =
       solution_view->get_treeview()->get_selection();
 
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_reject_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_reject_choice(*it);
   }
 
   void ResolverTab::no_preference_button_toggled()
@@ -1120,14 +1128,16 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "no_preference_button_toggled: clearing reject/accept states of the selected choices.");
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_no_preference_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_no_preference_choice(*it);
   }
 
   void ResolverTab::accept_button_toggled()
@@ -1153,14 +1163,15 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "accept_button_toggled: accepting the selected choices.");
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_accept_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_accept_choice(*it);
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
