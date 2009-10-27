@@ -1076,7 +1076,7 @@ resolver_manager::state resolver_manager::state_snapshot()
       rval.closed_size    = c.closed;
       rval.deferred_size  = c.deferred;
       rval.conflicts_size = c.conflicts;
-      rval.solutions_exhausted = (rval.open_size == 0 && c.finished);
+      rval.solutions_exhausted = c.finished;
     }
   else
     {
