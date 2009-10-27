@@ -2210,8 +2210,7 @@ namespace gui
     resolver = manager;
     if(manager != NULL)
       {
-	// \todo Is there a better place to put this?
-	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), manager));
+	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), manager));
 	manager->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						  false));
 
