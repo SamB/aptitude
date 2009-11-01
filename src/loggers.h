@@ -71,6 +71,16 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeDownloadCache();
 
+    /** \brief The logger for events having to do with aptitude's
+     *  background download queue.
+     */
+    static log4cxx::LoggerPtr getAptitudeDownloadQueue();
+
+    /** \brief The logger for events having to do with how aptitude's
+     *  background download queue checks the download cache.
+     */
+    static log4cxx::LoggerPtr getAptitudeDownloadQueueCache();
+
     /** \brief The logger for events having to do with the dpkg
      *  status pipe.
      */

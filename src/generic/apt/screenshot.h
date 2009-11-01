@@ -32,25 +32,6 @@ namespace aptitude
       screenshot_full
     };
 
-  /** \brief Handle to a screenshot download request; can be used to
-   *  cancel the request after it has been enqueued.
-   */
-  class download_request
-  {
-  public:
-    virtual ~download_request();
-
-    /** \brief Cancel this download request.
-     *
-     *  This is safe to call from any thread.  There is no guarantee
-     *  that the download won't complete anyway, but if it hasn't
-     *  completed by the next call to Pulse() (once a second or so),
-     *  it will be canceled.  Even if it does complete, the callbacks
-     *  won't be invoked.
-     */
-    virtual void cancel() = 0;
-  };
-
   /** \brief  Create a download manager that will fetch a screenshot
    *          for the given package.
    *
