@@ -37,6 +37,8 @@ libgeneric_apt_a_SOURCES = \
 	download_manager.h  \
 	download_install_manager.cc \
 	download_install_manager.h  \
+	download_queue.cc   \
+	download_queue.h    \
 	download_update_manager.cc  \
 	download_update_manager.h   \
 	download_signal_log.cc \

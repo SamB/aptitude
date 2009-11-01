@@ -354,9 +354,9 @@ namespace gui
 
     // Helpers, applied to each element in the selection to implement
     // the various action buttons.
-    void do_reject_iterator(const Gtk::TreeModel::iterator &iter);
-    void do_no_preference_iterator(const Gtk::TreeModel::iterator &iter);
-    void do_accept_iterator(const Gtk::TreeModel::iterator &iter);
+    void do_reject_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c);
+    void do_no_preference_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c);
+    void do_accept_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c);
 
     void reject_button_toggled();
     void no_preference_button_toggled();

@@ -491,7 +491,7 @@ static void do_su_to_root(string args)
       if(protocol == "su")
 	{
 	  std::ostringstream cmdbuf;
-	  cmdbuf << argv0 << "--no-gui -S "
+	  cmdbuf << argv0 << " --no-gui -S "
 		 << statusname.get_name() << " "
 		 << args;
 	  execl(root_program.c_str(), root_program.c_str(), "-c", cmdbuf.str().c_str(), NULL);
@@ -1887,7 +1887,7 @@ static void do_reload_cache()
 }
 #endif
 
-static void start_solution_calculation(bool blocking = true);
+static void start_solution_calculation();
 
 class interactive_continuation : public resolver_manager::background_continuation
 {
@@ -1974,7 +1974,7 @@ public:
 
   void no_more_time()
   {
-    start_solution_calculation(false);
+    start_solution_calculation();
   }
 
   void interrupted()
@@ -1993,21 +1993,16 @@ void cwidget_resolver_trampoline(const sigc::slot<void> &f)
 }
 
 // If the current solution pointer is past the end of the solution
-// list, queue up a calculation for it in the background thread.  If
-// "blocking" is true, then the calling thread will wait for the
-// background resolver thread to finish its calculation before
-// returning from this function.  IF THE CALLING THREAD IS THE
-// BACKGROUND THREAD THIS WILL DEADLOCK IF BLOCKING IS TRUE! (see above for such a case)
-static void start_solution_calculation(bool blocking)
+// list, queue up a calculation for it in the background thread.
+static void start_solution_calculation()
 {
-  resman->maybe_start_solution_calculation(blocking,
-					   boost::make_shared<interactive_continuation>(resman),
+  resman->maybe_start_solution_calculation(boost::make_shared<interactive_continuation>(resman),
 					   &cwidget_resolver_trampoline);
 }
 
 static void do_connect_resolver_callback()
 {
-  resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&start_solution_calculation), true));
+  resman->state_changed.connect(sigc::ptr_fun(&start_solution_calculation));
   // We may have missed a signal before making the connection:
   start_solution_calculation();
   resman->state_changed.connect(sigc::ptr_fun(&cw::toplevel::update));

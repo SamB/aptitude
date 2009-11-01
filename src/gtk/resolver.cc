@@ -53,8 +53,7 @@ namespace gui
     typedef generic_choice<aptitude_universe> choice;
     typedef generic_choice_set<aptitude_universe> choice_set;
 
-    void do_start_solution_calculation(bool blocking,
-				       resolver_manager *resolver);
+    void do_start_solution_calculation(resolver_manager *resolver);
 
     class gui_resolver_continuation : public resolver_manager::background_continuation
     {
@@ -112,7 +111,7 @@ namespace gui
 
 	LOG_TRACE(logger, "Resolver tab: ran out of time, restarting the calculation.");
 
-	do_start_solution_calculation(false, manager);
+	do_start_solution_calculation(manager);
       }
 
       void interrupted()
@@ -140,18 +139,17 @@ namespace gui
 
     // Used by the upgrade resolver to automatically push itself to
     // the next solution.
-    void do_start_solution_calculation(bool blocking, resolver_manager *resolver)
+    void do_start_solution_calculation(resolver_manager *resolver)
     {
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		"Restarting the resolver thread if necessary.");
       boost::shared_ptr<gui_resolver_continuation> k =
 	boost::make_shared<gui_resolver_continuation>(resolver);
-      resolver->maybe_start_solution_calculation(blocking, k,
-						 resolver_trampoline);
+      resolver->maybe_start_solution_calculation(k, resolver_trampoline);
     }
 
     // Start computing the first solution if it's not computed yet.
-    void do_start_first_solution_calculation(bool blocking, resolver_manager *resolver)
+    void do_start_first_solution_calculation(resolver_manager *resolver)
     {
       if(resolver->generated_solution_count() == 0)
 	{
@@ -165,8 +163,7 @@ namespace gui
 		    "Making sure the first solution is computed.");
 	  boost::shared_ptr<gui_resolver_continuation> k =
 	    boost::make_shared<gui_resolver_continuation>(resolver);
-	  resolver->maybe_start_solution_calculation(blocking,
-						     k,
+	  resolver->maybe_start_solution_calculation(k,
 						     resolver_trampoline);
 	}
     }
@@ -179,9 +176,9 @@ namespace gui
     {
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),
 		"Connecting the callback to compute the first solution when the resolver state changes.");
-      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), true, resman));
+      resman->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), resman));
       // We may have missed a signal before making the connection:
-      do_start_first_solution_calculation(false, resman);
+      do_start_first_solution_calculation(resman);
     }
 
     std::string render_choice_description_markup(const choice &c)
@@ -387,18 +384,17 @@ namespace gui
 					      pkg.Name());
 		    else
 		      {
-			aptitude_resolver_package
-			  resolver_pkg(c.get_ver().get_package());
-			aptitude_resolver_version
-			  resolver_pkg_current_ver(resolver_pkg.current_version());
+			aptitude_resolver_version previous_resolver_version =
+			  c.get_ver().get_package().current_version();
+			pkgCache::VerIterator prev_ver = previous_resolver_version.get_ver();
 
-			if(resolver_pkg_current_ver.get_ver().end())
+			if(prev_ver.end())
 			  icon_tooltip = ssprintf(_("Canceling the removal of %s is rejected."),
 						  pkg.Name());
 			else
 			  icon_tooltip = ssprintf(_("Keeping %s at version %s is rejected."),
 						  pkg.Name(),
-						  pkg.CurrentVer().VerStr());
+						  ver.VerStr());
 		      }
 		    break;
 
@@ -441,18 +437,17 @@ namespace gui
 					      pkg.Name());
 		    else
 		      {
-			aptitude_resolver_package
-			  resolver_pkg(c.get_ver().get_package());
-			aptitude_resolver_version
-			  resolver_pkg_current_ver(resolver_pkg.current_version());
+			aptitude_resolver_version previous_resolver_version =
+			  c.get_ver().get_package().current_version();
+			pkgCache::VerIterator prev_ver = previous_resolver_version.get_ver();
 
-			if(resolver_pkg_current_ver.get_ver().end())
+			if(prev_ver.end())
 			  icon_tooltip = ssprintf(_("Canceling the removal of %s is preferred over all un-accepted alternatives."),
 						  pkg.Name());
 			else
 			  icon_tooltip = ssprintf(_("Keeping %s at version %s is preferred over all un-accepted alternatives."),
 						  pkg.Name(),
-						  pkg.CurrentVer().VerStr());
+						  ver.VerStr());
 		      }
 		    break;
 
@@ -469,7 +464,7 @@ namespace gui
 		    break;
 
 		  case action_upgrade:
-		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is preferred over all un-accpted alternatives."),
+		    icon_tooltip = ssprintf(_("Upgrading %s to version %s is preferred over all un-accepted alternatives."),
 					    pkg.Name(),
 					    ver.VerStr());
 		    break;
@@ -986,10 +981,9 @@ namespace gui
     reject_button->set_sensitive(sensitive);
   }
 
-  void ResolverTab::do_reject_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_reject_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
 
     if(maybe_c.extract(c))
@@ -1009,26 +1003,35 @@ namespace gui
 
   namespace
   {
-    struct collect_iterators
+    struct collect_choices
     {
-      std::vector<Gtk::TreeModel::iterator> &target;
+    public:
+      typedef generic_choice<aptitude_universe> choice;
 
-      collect_iterators(std::vector<Gtk::TreeModel::iterator> &_target)
-	: target(_target)
+    private:
+      std::vector<maybe<choice> > &target;
+      cwidget::util::ref_ptr<ResolverView> solution_view;
+
+    public:
+      collect_choices(std::vector<maybe<choice> > &_target,
+		      const cwidget::util::ref_ptr<ResolverView> &_solution_view)
+	: target(_target),
+	  solution_view(_solution_view)
       {
       }
 
       void visit(const Gtk::TreeModel::iterator &iter) const
       {
-	target.push_back(iter);
+	const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
+
+	target.push_back(maybe_c);
       }
     };
   }
 
-  void ResolverTab::do_no_preference_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_no_preference_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
     if(maybe_c.extract(c))
       {
@@ -1047,10 +1050,9 @@ namespace gui
       }
   }
 
-  void ResolverTab::do_accept_iterator(const Gtk::TreeModel::iterator &iter)
+  void ResolverTab::do_accept_choice(const maybe<generic_choice<aptitude_universe> > &maybe_c)
   {
     typedef generic_choice<aptitude_universe> choice;
-    const maybe<choice> &maybe_c((*iter)[solution_view->get_columns().Choice]);
     choice c;
     if(maybe_c.extract(c))
       {
@@ -1092,14 +1094,15 @@ namespace gui
     Glib::RefPtr<Gtk::TreeSelection> selection =
       solution_view->get_treeview()->get_selection();
 
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_reject_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_reject_choice(*it);
   }
 
   void ResolverTab::no_preference_button_toggled()
@@ -1125,14 +1128,16 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "no_preference_button_toggled: clearing reject/accept states of the selected choices.");
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_no_preference_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_no_preference_choice(*it);
   }
 
   void ResolverTab::accept_button_toggled()
@@ -1158,14 +1163,15 @@ namespace gui
       solution_view->get_treeview()->get_selection();
 
     LOG_DEBUG(logger, "accept_button_toggled: accepting the selected choices.");
-    std::vector<Gtk::TreeModel::iterator> selected_iters;
-    collect_iterators collector(selected_iters);
+    typedef generic_choice<aptitude_universe> choice;
+    std::vector<maybe<choice> > selected_choices;
+    collect_choices collector(selected_choices, solution_view);
     selection->selected_foreach_iter(sigc::mem_fun(collector,
-						   &collect_iterators::visit));
-    for(std::vector<Gtk::TreeModel::iterator>::const_iterator it =
-	  selected_iters.begin();
-	it != selected_iters.end(); ++it)
-      do_accept_iterator(*it);
+						   &collect_choices::visit));
+    for(std::vector<maybe<choice> >::const_iterator it =
+	  selected_choices.begin();
+	it != selected_choices.end(); ++it)
+      do_accept_choice(*it);
   }
 
   string ResolverTab::archives_text(const pkgCache::VerIterator &ver)
@@ -2154,7 +2160,7 @@ namespace gui
 		  << state.generated_solutions);
 	get_resolver()->discard_error_information();
 	get_resolver()->select_solution(state.generated_solutions);
-	do_start_solution_calculation(true, get_resolver());
+	do_start_solution_calculation(get_resolver());
       }
   }
 
@@ -2204,8 +2210,7 @@ namespace gui
     resolver = manager;
     if(manager != NULL)
       {
-	// \todo Is there a better place to put this?
-	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_solution_calculation), true, manager));
+	manager->state_changed.connect(sigc::bind(sigc::ptr_fun(&do_start_first_solution_calculation), manager));
 	manager->state_changed.connect(sigc::bind(sigc::mem_fun(*this, &ResolverTab::update),
 						  false));
 
@@ -2213,7 +2218,7 @@ namespace gui
 
 	boost::shared_ptr<gui_resolver_continuation> k =
 	  boost::make_shared<gui_resolver_continuation>(manager);
-	manager->maybe_start_solution_calculation(true, k, resolver_trampoline);
+	manager->maybe_start_solution_calculation(k, resolver_trampoline);
 
 	resolver_fixing_upgrade_label->show();
 	resolver_fixing_upgrade_progress_bar->hide();

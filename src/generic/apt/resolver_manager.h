@@ -423,9 +423,8 @@ private:
 			     int solution_number);
 
   /** Low-level code to get a solution; it does not take the global
-   *  lock, does not stop a background thread, and may run either in
-   *  the foreground or in the background.  It is called by
-   *  background_thread_execution and get_solution.
+   *  lock, does not stop a background thread, and must run in the
+   *  background.  It is called by background_thread_execution.
    */
   const generic_solution<aptitude_universe> *
   do_get_solution(int max_steps, unsigned int solution_number,
@@ -569,35 +568,6 @@ public:
 			       int max_steps,
 			       const boost::shared_ptr<background_continuation> &k,
 			       post_thunk_f post_thunk);
-
-  /** Like get_solution_background, but blocks until the background
-   *  solver has \i either found a solution or examined at least
-   *  block_count solutions.
-   *
-   *  \param solution_num the solution to retrieve
-   *
-   *  \param max_steps the number of steps to allow the computation
-   *
-   *  \param block_count the number of steps to wait before returning
-   *
-   *  \param post_thunk A callback that is invoked in the background
-   *  thread; it should arrange to safely invoke its argument.  This
-   *  means either invoking it in the main thread or guaranteeing that
-   *  no other thread modifies the resolver while the thunk executes,
-   *  or that the thunk does not modify the resolver.  The second
-   *  option includes taking actions that trigger a resolver
-   *  modification, such as closing the cache, and is only used by the
-   *  command line (which blocks the main thread while the resolver
-   *  runs).
-   *
-   *  \return \b true if the search terminated in block_count steps or
-   *  less
-   */
-  bool get_solution_background_blocking(unsigned int solution_num,
-					int max_steps,
-					int block_count,
-					const boost::shared_ptr<background_continuation> &k,
-					post_thunk_f post_thunk);
 
   /** If \b true, all solutions have been generated.  This is equivalent
    *  to the solutions_exhausted member of the state snapshot.
@@ -743,12 +713,9 @@ public:
    *    4. The background thread is not already active.
    *    5. The background thread didn't abort with an error.
    *
-   *  \param blocking    If \b true, the resolver will attempt to block
-   *                     and return immediately if a solution can be found
-   *                     in "a few" steps.
    *  \param k           The continuation of the dependency resolver.
-   *                     It will be invoked (either in the foreground or
-   *                     in the background thread) when a solution is found.
+   *                     It will be invoked in the background thread
+   *                     when a solution is found.
    *
    *  \param post_thunk A callback that is invoked in the background
    *  thread; it should arrange to safely invoke its argument.  This
@@ -760,8 +727,7 @@ public:
    *  command line (which blocks the main thread while the resolver
    *  runs).
    */
-  void maybe_start_solution_calculation(bool blocking,
-					const boost::shared_ptr<background_continuation> &k,
+  void maybe_start_solution_calculation(const boost::shared_ptr<background_continuation> &k,
 					post_thunk_f post_thunk);
 
   /** Tweak the resolver score of a particular package/version.  This

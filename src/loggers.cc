@@ -43,6 +43,16 @@ namespace aptitude
     return Logger::getLogger("aptitude.downloadCache");
   }
 
+  LoggerPtr Loggers::getAptitudeDownloadQueue()
+  {
+    return Logger::getLogger("aptitude.downloadQueue");
+  }
+
+  LoggerPtr Loggers::getAptitudeDownloadQueueCache()
+  {
+    return Logger::getLogger("aptitude.downloadQueue.cache");
+  }
+
   LoggerPtr Loggers::getAptitudeDpkgStatusPipe()
   {
     return Logger::getLogger("aptitude.dpkg.statusPipe");

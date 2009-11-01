@@ -127,16 +127,50 @@ namespace gui
     // from the sigc++ code, it looks like they get passed by value, not
     // by reference.  Once the slot is safely stuck into the list,
     // everything should be OK.
-    cwidget::threads::event_queue<safe_slot0<void> > background_events;
+
+    cwidget::threads::mutex background_events_mutex;
+    // Set to "true" if the background events function is currently
+    // executing a thunk, in which case we don't need to invoke the
+    // dispatcher.  This avoids trouble caused by the thunk invoking
+    // post_event() and filling up the queue, so it deadlocks itself.
+    bool run_background_events_active = false;
+    bool background_events_dispatcher_signalled = false;
+    std::deque<safe_slot0<void> > background_events;
     Glib::Dispatcher background_events_dispatcher;
+
+    // Used to ensure that run_background_events_active is true only
+    // while the inner portion of the "while" loop below is running.
+    class set_bool_in_scope
+    {
+      bool &target;
+
+    public:
+      set_bool_in_scope(bool &_target)
+	: target(_target)
+      {
+	target = true;
+      }
+
+      ~set_bool_in_scope()
+      {
+	target = false;
+      }
+    };
 
     void run_background_events()
     {
-      safe_slot0<void> f;
-      while(background_events.try_get(f))
+      cwidget::threads::mutex::lock l(background_events_mutex);
+      while(!background_events.empty())
 	{
+	  set_bool_in_scope setter(run_background_events_active);
+	  safe_slot0<void> f = background_events.front();
+	  background_events.pop_front();
+
+	  l.release();
 	  f.get_slot()();
+	  l.acquire();
 	}
+      background_events_dispatcher_signalled = false;
     }
   }
 
@@ -150,8 +184,14 @@ namespace gui
 
   void post_event(const safe_slot0<void> &event)
   {
-    background_events.put(event);
-    background_events_dispatcher();
+    // Ensure that the dispatcher is only invoked once.
+    cwidget::threads::mutex::lock l(background_events_mutex);
+    background_events.push_back(event);
+    if(!run_background_events_active && !background_events_dispatcher_signalled)
+      {
+	background_events_dispatcher();
+	background_events_dispatcher_signalled = true;
+      }
   }
 
   void gtk_update()
