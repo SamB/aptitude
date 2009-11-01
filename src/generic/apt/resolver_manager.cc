@@ -1338,7 +1338,7 @@ class blocking_continuation : public resolver_manager::background_continuation
   resolver_manager &m;
 
   /** \brief How to invoke thunks safely. */
-  resolver_manager::post_thunk_f post_thunk;
+  post_thunk_f post_thunk;
 
 public:
   blocking_continuation(const boost::shared_ptr<background_continuation> &_k,
@@ -1346,7 +1346,7 @@ public:
 			cwidget::threads::box<bool> &_result_box,
 			int _remaining_steps,
 			resolver_manager &_m,
-			resolver_manager::post_thunk_f _post_thunk)
+			post_thunk_f _post_thunk)
     : k(_k), solution_num(_solution_num), result_box(_result_box),
       remaining_steps(_remaining_steps), m(_m),
       post_thunk(_post_thunk)

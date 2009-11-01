@@ -22,6 +22,8 @@
 #ifndef RESOLVER_MANAGER_H
 #define RESOLVER_MANAGER_H
 
+#include "post_thunk.h"
+
 #include <cwidget/generic/threads/threads.h>
 
 #include <cwidget/generic/util/exception.h>
@@ -82,11 +84,6 @@ class undo_list;
 class resolver_manager : public sigc::trackable
 {
 public:
-  /** \brief The type of a function that invokes a slot.  Used to
-   *  safely invoke continuations in the main thread.
-   */
-  typedef void (*post_thunk_f)(const sigc::slot<void> &);
-
   /** This class represents the continuation of get_solution() in a
    *  background thread.  See get_background_solution() for details.
    */
