@@ -28,6 +28,7 @@
 
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/acquire-item.h>
+#include <apt-pkg/acquire-worker.h>
 #include <apt-pkg/strutl.h>
 
 #include <boost/enable_shared_from_this.hpp>
@@ -107,6 +108,16 @@ namespace aptitude
 	for(std::list<boost::shared_ptr<download_callbacks> >::const_iterator
 	      it = listeners.begin(); it != listeners.end(); ++it)
 	  (*it)->failure(msg);
+      }
+
+      /** \brief Invoke the partial download callback on each listener. */
+      void invoke_partial_download(const temp::name &filename,
+				   unsigned long currentSize,
+				   unsigned long totalSize) const
+      {
+	for(std::list<boost::shared_ptr<download_callbacks> >::const_iterator
+	      it = listeners.begin(); it != listeners.end(); ++it)
+	  (*it)->partial_download(filename, currentSize, totalSize);
       }
     };
 
@@ -430,6 +441,22 @@ namespace aptitude
 	      (*it)->do_cancel();
 	    }
 	  cancel_requests.clear();
+
+	  for(pkgAcquire::Worker *w = Owner->WorkersBegin();
+	      w != NULL; w = Owner->WorkerStep(w))
+	    {
+	      const std::string &uri = w->CurrentItem->URI;
+	      boost::unordered_map<std::string, boost::shared_ptr<active_download_info> >::iterator
+		found = active_downloads.find(uri);
+
+	      if(found != active_downloads.end())
+		{
+		  const download_job &job = *found->second->get_job();
+		  job.invoke_partial_download(job.get_filename(),
+					      w->CurrentSize,
+					      w->TotalSize);
+		}
+	    }
 
 	  return true;
 	}
