@@ -60,6 +60,8 @@ namespace aptitude
      *                   being written to.
      *  \param currentSize  The current size of the file.
      *  \param totalSize    The total size of the file.
+     *
+     *  The default implementation does nothing.
      */
     virtual void partial_download(const temp::name &filename,
 				  unsigned long currentSize,
