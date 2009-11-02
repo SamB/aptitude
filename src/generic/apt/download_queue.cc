@@ -477,6 +477,24 @@ namespace aptitude
        */
       class download_callback : public pkgAcquireStatus
       {
+	// Invoked when the cached item for a job is confirmed to be
+	// up-to-date.
+	void IMSHit(pkgAcquire::ItemDesc &item)
+	{
+	  // apt doesn't invoke any methods on the item itself in this
+	  // case, so we have to signal the hit manually.
+	  cw::threads::mutex::lock l(state_mutex);
+
+	  boost::unordered_map<std::string, boost::shared_ptr<active_download_info> >::iterator
+	    found = active_downloads.find(item.URI);
+	  if(found != active_downloads.end())
+	    {
+	      temp::name cached_filename =
+		found->second->get_job()->get_cached_filename();
+	      found->second->get_job()->invoke_success(cached_filename);
+	    }
+	}
+
 	bool Pulse(pkgAcquire *Owner)
 	{
 	  cw::threads::mutex::lock l(state_mutex);
