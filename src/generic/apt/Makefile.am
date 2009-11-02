@@ -60,6 +60,8 @@ libgeneric_apt_a_SOURCES = \
         resolver_manager.cc \
         resolver_manager.h  \
         rev_dep_iterator.h  \
+	screenshot.cc       \
+	screenshot.h        \
         tags.cc             \
         tags.h              \
         tasks.cc            \

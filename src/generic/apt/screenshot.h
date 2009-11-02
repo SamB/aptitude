@@ -17,11 +17,16 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+#include <boost/shared_ptr.hpp>
+
 #include <generic/util/safe_slot.h>
+
+#include "post_thunk.h"
 
 namespace aptitude
 {
-  class download_manager;
+  class download_callbacks;
+  class download_request;
 
   /** \brief The type of screenshot to download. */
   enum screenshot_type
@@ -32,19 +37,17 @@ namespace aptitude
       screenshot_full
     };
 
-  /** \brief  Create a download manager that will fetch a screenshot
-   *          for the given package.
+  /** \brief  Add a download to the global queue that will fetch a
+   *          screenshot for the given package.
    *
    *  \param package       The name of the package whose screenshot should
    *                       be downloaded.
    *
-   *  \param success_slot  A callback to invoke when the screenshot is
-   *                       downloaded.  Invoked from the thread that
-   *                       calls run().
+   *  \param callbacks     A callback object invoked for events relating
+   *                       to the download.
    *
-   *  \param failure_slot  A callback to invoke when the screenshot
-   *                       fails to be downloaded.  Invoked from the
-   *                       thread that calls run().
+   *  \param post_thunk    A function used to invoke callbacks in the
+   *                       main thread.
    *
    *  \param type          Which screenshot to download.
    *
@@ -59,7 +62,7 @@ namespace aptitude
    */
   boost::shared_ptr<download_request>
   get_screenshot(const std::string &name,
-		 const safe_slot1<void, temp::name> &success_slot,
-		 const safe_slot1<void, std::string> &failure_slot,
+		 const boost::shared_ptr<download_callbacks> &callbacks,
+		 post_thunk_f post_thunk,
 		 screenshot_type type);
 }
