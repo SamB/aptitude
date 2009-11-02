@@ -399,11 +399,13 @@ namespace aptitude
 		      const std::string &_short_description,
 		      const temp::name &_filename,
 		      const boost::shared_ptr<download_callbacks> &_callbacks,
+		      post_thunk_f _post_thunk,
 		      const boost::shared_ptr<download_request_impl> &_request)
 	  : uri(_uri),
 	    short_description(_short_description),
 	    filename(_filename),
 	    callbacks(_callbacks),
+	    post_thunk(_post_thunk),
 	    last_modified_time(0),
 	    request(_request)
 	{
@@ -645,7 +647,8 @@ namespace aptitude
       static boost::shared_ptr<download_request>
       start_download_job(const std::string &uri,
 			 const std::string &short_description,
-			 const boost::shared_ptr<download_callbacks> &callbacks)
+			 const boost::shared_ptr<download_callbacks> &callbacks,
+			 post_thunk_f post_thunk)
       {
 	cw::threads::mutex::lock l(state_mutex);
 
@@ -657,6 +660,7 @@ namespace aptitude
 					    temp::name(temp::dir("aptitudeDownload"),
 						       "aptitudeDownload"),
 					    callbacks,
+					    post_thunk,
 					    rval);
 
 	cache_lookup_thread::add_job(start);
