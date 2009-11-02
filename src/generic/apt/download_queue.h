@@ -21,6 +21,8 @@
 #ifndef DOWNLOAD_QUEUE_H
 #define DOWNLOAD_QUEUE_H
 
+#include <boost/shared_ptr.hpp>
+
 #include <generic/util/temp.h>
 
 #include <sigc++/slot.h>
@@ -94,6 +96,23 @@ namespace aptitude
      */
     virtual void cancel() = 0;
   };
+
+  /** \brief Add a new download to the background thread's queue.
+   *
+   *  \param uri          The URI to download.
+   *
+   *  \param callbacks    A callback object used to respond to events
+   *                      on the download.
+   *
+   *  \param post_thunk   A function used to pass download events to
+   *                      the main thread.
+   *
+   *  \return a handle that can be used to cancel the download.
+   */
+  boost::shared_ptr<download_request>
+  queue_download(const std::string &uri,
+		 const boost::shared_ptr<download_callbacks> &callbacks,
+		 post_thunk_f post_thunk);
 }
 
 #endif // DOWNLOAD_QUEUE_H

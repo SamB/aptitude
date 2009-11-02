@@ -792,4 +792,14 @@ namespace aptitude
       canceled = true;
     }
   }
+
+  boost::shared_ptr<download_request>
+  queue_download(const std::string &uri,
+		 const std::string &short_description,
+		 const boost::shared_ptr<download_callbacks> &callbacks,
+		 post_thunk_f post_thunk)
+  {
+    return download_thread::start_download_job(uri, short_description,
+					       callbacks, post_thunk);
+  }
 }
