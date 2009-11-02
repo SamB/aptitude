@@ -101,6 +101,9 @@ namespace aptitude
    *
    *  \param uri          The URI to download.
    *
+   *  \param short_description  A brief description of this item;
+   *                            used to generate log messages.
+   *
    *  \param callbacks    A callback object used to respond to events
    *                      on the download.
    *
@@ -111,6 +114,7 @@ namespace aptitude
    */
   boost::shared_ptr<download_request>
   queue_download(const std::string &uri,
+		 const std::string &short_description,
 		 const boost::shared_ptr<download_callbacks> &callbacks,
 		 post_thunk_f post_thunk);
 }
