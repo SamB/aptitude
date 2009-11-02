@@ -25,6 +25,8 @@
 
 #include <sigc++/slot.h>
 
+#include "post_thunk.h"
+
 namespace aptitude
 {
   /** \brief The callbacks that should be invoked in response to

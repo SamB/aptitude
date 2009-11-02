@@ -39,6 +39,8 @@
 
 #include <list>
 
+#include <sigc++/bind.h>
+
 namespace cw = cwidget;
 
 namespace aptitude
@@ -58,15 +60,16 @@ namespace aptitude
       std::string short_description;
       temp::name filename;
 
+      typedef std::pair<boost::shared_ptr<download_callbacks>, post_thunk_f> listener;
       // The registered listeners on this job.  When one is canceled,
       // it's pulled out of this list.  This is threadsafe: remember
       // that the actual cancel process takes place in the download
       // thread, as do the processes of adding a new listener and
       // invoking all the listeners.
-      std::list<boost::shared_ptr<download_callbacks> > listeners;
+      std::list<listener> listeners;
 
     public:
-      typedef std::list<boost::shared_ptr<download_callbacks> >::iterator listener_connection;
+      typedef std::list<listener>::iterator listener_connection;
 
       download_job(const std::string &_uri,
 		   const std::string &_short_description,
@@ -84,9 +87,10 @@ namespace aptitude
       /** \brief Return \b true if there are no listeners on this job. */
       bool listeners_empty() const { return listeners.empty(); }
 
-      listener_connection add_listener(const boost::shared_ptr<download_callbacks> &listener)
+      listener_connection add_listener(const boost::shared_ptr<download_callbacks> &callbacks,
+				       post_thunk_f post_thunk)
       {
-	return listeners.insert(listeners.end(), listener);
+	return listeners.insert(listeners.end(), listener(callbacks, post_thunk));
       }
 
       void remove_listener(listener_connection conn)
@@ -97,17 +101,29 @@ namespace aptitude
       /** \brief Invoke the success callback on each listener. */
       void invoke_success(const temp::name &filename) const
       {
-	for(std::list<boost::shared_ptr<download_callbacks> >::const_iterator
+	for(std::list<listener>::const_iterator
 	      it = listeners.begin(); it != listeners.end(); ++it)
-	  (*it)->success(filename);
+	  {
+	    sigc::slot<void> success_slot =
+	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::success),
+			 filename);
+
+	    it->second(success_slot);
+	  }
       }
 
       /** \brief Invoke the failure callback on each listener. */
       void invoke_failure(const std::string &msg) const
       {
-	for(std::list<boost::shared_ptr<download_callbacks> >::const_iterator
+	for(std::list<listener>::const_iterator
 	      it = listeners.begin(); it != listeners.end(); ++it)
-	  (*it)->failure(msg);
+	  {
+	    sigc::slot<void> failure_slot =
+	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::failure),
+			 msg);
+
+	    it->second(failure_slot);
+	  }
       }
 
       /** \brief Invoke the partial download callback on each listener. */
@@ -115,9 +131,15 @@ namespace aptitude
 				   unsigned long currentSize,
 				   unsigned long totalSize) const
       {
-	for(std::list<boost::shared_ptr<download_callbacks> >::const_iterator
+	for(std::list<listener>::const_iterator
 	      it = listeners.begin(); it != listeners.end(); ++it)
-	  (*it)->partial_download(filename, currentSize, totalSize);
+	  {
+	    sigc::slot<void> partial_download_slot =
+	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::partial_download),
+			 filename, currentSize, totalSize);
+
+	    it->second(partial_download_slot);
+	  }
       }
     };
 
@@ -313,6 +335,7 @@ namespace aptitude
 	temp::name filename;
 
 	boost::shared_ptr<download_callbacks> callbacks;
+	post_thunk_f post_thunk;
 
 	// When the file was last modified, or 0 to not set the last
 	// modified time in the HTTP header.  This member is initially
@@ -344,6 +367,7 @@ namespace aptitude
 	const std::string &get_short_description() const { return short_description; }
 	const temp::name &get_filename() const { return filename; }
 	const boost::shared_ptr<download_callbacks> &get_callbacks() const { return callbacks; }
+	post_thunk_f get_post_thunk() const { return post_thunk; }
 	const boost::shared_ptr<download_request_impl> &get_request() const { return request; }
 
 	void update_from_cache(const temp::name &new_filename,
@@ -431,7 +455,8 @@ namespace aptitude
 	      active_downloads[req.get_uri()] = download;
 
 	      req.get_request()->bind(job,
-				      job->add_listener(req.get_callbacks()));
+				      job->add_listener(req.get_callbacks(),
+							req.get_post_thunk()));
 	    }
 	  start_requests.clear();
 
