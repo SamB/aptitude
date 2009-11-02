@@ -80,6 +80,10 @@ namespace aptitude
 
   /** \brief Handle to a screenshot download request; can be used to
    *  cancel the request after it has been enqueued.
+   *
+   *  download_request objects are guaranteed to not store strong
+   *  references (via shared_ptr, RefPtr, ref_ptr, etc) to any
+   *  objects.
    */
   class download_request
   {
