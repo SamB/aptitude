@@ -53,8 +53,12 @@ namespace aptitude
     /** \brief The callback invoked when the download fails.
      *
      *  \param msg  A message describing what happened.
+     *
+     *  The default implementation does nothing.
      */
-    virtual void failure(const std::string &msg) = 0;
+    virtual void failure(const std::string &msg)
+    {
+    }
 
     /** \brief Invoked when the item is partly downloaded.
      *
