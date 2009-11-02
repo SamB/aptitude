@@ -59,6 +59,9 @@ namespace aptitude
       std::string uri;
       std::string short_description;
       temp::name filename;
+      temp::name cached_filename;
+      // The last-modified-time of the cached value.
+      time_t last_modified_time;
 
       typedef std::pair<boost::shared_ptr<download_callbacks>, post_thunk_f> listener;
       // The registered listeners on this job.  When one is canceled,
@@ -73,16 +76,22 @@ namespace aptitude
 
       download_job(const std::string &_uri,
 		   const std::string &_short_description,
-		   const temp::name &_filename)
+		   const temp::name &_filename,
+		   const temp::name &_cached_filename,
+		   time_t _last_modified_time)
 	: uri(_uri),
 	  short_description(_short_description),
-	  filename(_filename)
+	  filename(_filename),
+	  cached_filename(_cached_filename),
+	  last_modified_time(_last_modified_time)
       {
       }
 
       const std::string &get_uri() const { return uri; }
       const std::string &get_short_description() const { return short_description; }
       const temp::name &get_filename() const { return filename; }
+      const temp::name &get_cached_filename() const { return cached_filename; }
+      time_t get_last_modified_time() const { return last_modified_time; }
 
       /** \brief Return \b true if there are no listeners on this job. */
       bool listeners_empty() const { return listeners.empty(); }
@@ -152,6 +161,30 @@ namespace aptitude
     {
       boost::shared_ptr<download_job> job;
 
+      // Deal with failure situations.  Necessary since we want to
+      // fall back to cached values if they're available.
+      void handle_failure(const std::string &msg)
+      {
+	if(job->get_cached_filename().valid())
+	  {
+	    LOG_INFO(Loggers::getAptitudeDownloadQueue(),
+		     "Failed to download " << job->get_short_description()
+		     << " from the URI " << job->get_uri()
+		     << " (" << msg << "), falling back to cached values.");
+
+	    job->invoke_success(job->get_cached_filename());
+	  }
+	else
+	  {
+	    LOG_WARN(Loggers::getAptitudeDownloadQueue(),
+		     "Failed to download " << job->get_short_description()
+		     << " from the URI " << job->get_uri()
+		     << ": " << msg);
+
+	    job->invoke_failure(msg);
+	  }
+      }
+
     public:
       AcqQueuedFile(pkgAcquire *Owner,
 		    const boost::shared_ptr<download_job> &_job)
@@ -177,11 +210,8 @@ namespace aptitude
 
       void Failed(std::string Message, pkgAcquire::MethodConfig *Cnf)
       {
-	LOG_WARN(Loggers::getAptitudeDownloadQueue(),
-		 "Failed to download " << job->get_short_description());
-
 	pkgAcqFile::Failed(Message, Cnf);
-	job->invoke_failure(ErrorText);
+	handle_failure(ErrorText);
       }
 
       void Done(std::string Message,
@@ -221,6 +251,14 @@ namespace aptitude
 	    download_cache->putItem(job->get_uri(), job->get_filename().get_name(), lastModifiedTime);
 	    job->invoke_success(job->get_filename());
 	  }
+      }
+
+      std::string Custom600Headers()
+      {
+	if(job->get_last_modified_time() == 0)
+	  return "";
+	else
+	  return "Last-Modified: " + TimeRFC1123(job->get_last_modified_time());
       }
     };
 
@@ -333,14 +371,22 @@ namespace aptitude
 	std::string uri;
 	std::string short_description;
 	temp::name filename;
+	// A location where the last cached data is stored, or an
+	// invalid pointer if there isn't cached data.  (note: it's
+	// tempting to only store the last modification time here so
+	// as to avoid extracting files unnecessarily -- but if the
+	// file expires from the cache between when we check for it
+	// the first time and when we check again, you could have
+	// trouble)
+	temp::name cached_filename;
 
 	boost::shared_ptr<download_callbacks> callbacks;
 	post_thunk_f post_thunk;
 
-	// When the file was last modified, or 0 to not set the last
-	// modified time in the HTTP header.  This member is initially
-	// 0 and is updated if the file is found in the download
-	// cache.
+	// When the cached file was last modified, or 0 to not set the
+	// last modified time in the HTTP header.  This member is
+	// initially 0 and is updated if the file is found in the
+	// download cache.
 	time_t last_modified_time;
 
 	/** \brief A blank request that should be bound to the new
@@ -366,6 +412,8 @@ namespace aptitude
 	const std::string &get_uri() const { return uri; }
 	const std::string &get_short_description() const { return short_description; }
 	const temp::name &get_filename() const { return filename; }
+	const temp::name &get_cached_filename() const { return cached_filename; }
+	time_t get_last_modified_time() const { return last_modified_time; }
 	const boost::shared_ptr<download_callbacks> &get_callbacks() const { return callbacks; }
 	post_thunk_f get_post_thunk() const { return post_thunk; }
 	const boost::shared_ptr<download_request_impl> &get_request() const { return request; }
@@ -373,7 +421,7 @@ namespace aptitude
 	void update_from_cache(const temp::name &new_filename,
 			       time_t new_last_modified_time)
 	{
-	  filename = new_filename;
+	  cached_filename = new_filename;
 	  last_modified_time = new_last_modified_time;
 	}
       };
@@ -442,7 +490,9 @@ namespace aptitude
 	      boost::shared_ptr<download_job> job =
 		boost::make_shared<download_job>(req.get_uri(),
 						 req.get_short_description(),
-						 req.get_filename());
+						 req.get_filename(),
+						 req.get_cached_filename(),
+						 req.get_last_modified_time());
 
 	      // The next couple lines are only safe because we're
 	      // holding a lock (otherwise someone could sneak in and
@@ -656,7 +706,9 @@ namespace aptitude
 		boost::shared_ptr<download_job> job =
 		  boost::make_shared<download_job>(request.get_uri(),
 						   request.get_short_description(),
-						   request.get_filename());
+						   request.get_filename(),
+						   request.get_cached_filename(),
+						   request.get_last_modified_time());
 
 		new AcqQueuedFile(&downloader, job);
 	      }
