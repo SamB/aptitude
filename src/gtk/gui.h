@@ -82,6 +82,11 @@ namespace gui
   /** \brief Dispatch the given thunk to the main loop. */
   void post_event(const safe_slot0<void> &thunk);
 
+  /** \brief Wrap the given thunk in a safe_slot and post it to the
+   *  main loop.
+   */
+  void post_thunk(const sigc::slot<void> &thunk);
+
   void gtk_update();
 
   /** \brief Display a "Not implemented, yet." message. */

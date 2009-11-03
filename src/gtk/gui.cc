@@ -194,6 +194,11 @@ namespace gui
       }
   }
 
+  void post_thunk(const sigc::slot<void> &thunk)
+  {
+    post_event(make_safe_slot(thunk));
+  }
+
   void gtk_update()
   {
     while (Gtk::Main::events_pending())

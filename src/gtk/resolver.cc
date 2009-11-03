@@ -145,7 +145,7 @@ namespace gui
 		"Restarting the resolver thread if necessary.");
       boost::shared_ptr<gui_resolver_continuation> k =
 	boost::make_shared<gui_resolver_continuation>(resolver);
-      resolver->maybe_start_solution_calculation(k, resolver_trampoline);
+      resolver->maybe_start_solution_calculation(k, post_thunk);
     }
 
     // Start computing the first solution if it's not computed yet.
@@ -164,7 +164,7 @@ namespace gui
 	  boost::shared_ptr<gui_resolver_continuation> k =
 	    boost::make_shared<gui_resolver_continuation>(resolver);
 	  resolver->maybe_start_solution_calculation(k,
-						     resolver_trampoline);
+						     post_thunk);
 	}
     }
 
@@ -2218,7 +2218,7 @@ namespace gui
 
 	boost::shared_ptr<gui_resolver_continuation> k =
 	  boost::make_shared<gui_resolver_continuation>(manager);
-	manager->maybe_start_solution_calculation(k, resolver_trampoline);
+	manager->maybe_start_solution_calculation(k, post_thunk);
 
 	resolver_fixing_upgrade_label->show();
 	resolver_fixing_upgrade_progress_bar->hide();
@@ -2239,10 +2239,5 @@ namespace gui
   void ResolverTab::pulse_fix_upgrade_resolver_progress()
   {
     resolver_fixing_upgrade_progress_bar->pulse();
-  }
-
-  void resolver_trampoline(const sigc::slot<void> &f)
-  {
-    post_event(make_safe_slot(f));
   }
 }

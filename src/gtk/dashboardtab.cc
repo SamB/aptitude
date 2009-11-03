@@ -460,7 +460,7 @@ namespace gui
 						 aborted_slot,
 						 boost::ref(resolver));
 
-      resolver.maybe_start_solution_calculation(k, &resolver_trampoline);
+      resolver.maybe_start_solution_calculation(k, &post_thunk);
     }
 
     void interrupted()
@@ -536,7 +536,7 @@ namespace gui
 						     make_safe_slot(aborted_slot),
 						     boost::ref(*upgrade_resolver));
 
-	  upgrade_resolver->safe_resolve_deps_background(false, true, k, &resolver_trampoline);
+	  upgrade_resolver->safe_resolve_deps_background(false, true, k, &post_thunk);
 	}
 
 	LOG_TRACE(logger, "Setting up the progress bar.");
