@@ -793,6 +793,10 @@ namespace aptitude
     }
   }
 
+  download_request::~download_request()
+  {
+  }
+
   boost::shared_ptr<download_request>
   queue_download(const std::string &uri,
 		 const std::string &short_description,
