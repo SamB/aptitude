@@ -593,6 +593,9 @@ namespace gui
       }
     };
 
+    screenshot_cache::cache_map screenshot_cache::cache;
+    int screenshot_cache::cache_size = 0;
+
     void screenshot_cache_entry::cancel()
     {
       if(request.get() != NULL)
