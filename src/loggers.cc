@@ -98,6 +98,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.gtk.resolver");
   }
 
+  LoggerPtr Loggers::getAptitudeGtkScreenshot()
+  {
+    return Logger::getLogger("aptitude.gtk.screenshot");
+  }
+
   LoggerPtr Loggers::getAptitudeGtkTabs()
   {
     return Logger::getLogger("aptitude.gtk.tabs");

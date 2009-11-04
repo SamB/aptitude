@@ -134,6 +134,13 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeGtkResolver();
 
+    /** \brief The logger for events related to loading screenshots in
+     *  the GUI.
+     *
+     *  Name: aptitude.gtk.screenshot
+     */
+    static log4cxx::LoggerPtr getAptitudeGtkScreenshot();
+
     /** \brief The logger for events related to GUI tabs.
      *
      *  Name: aptitude.gtk.tabs
