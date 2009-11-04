@@ -639,5 +639,11 @@ namespace gui
 	  post_event(make_safe_slot(failed_slot));
 	}
     }
+  } // End anonymous namespace
+
+  boost::shared_ptr<cached_screenshot> get_screenshot(const std::string &package_name,
+						      aptitude::screenshot_type type)
+  {
+    return screenshot_cache::find(package_name, type);
   }
 }
