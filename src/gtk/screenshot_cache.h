@@ -58,9 +58,7 @@ namespace gui
     {
     }
 
-    virtual ~cached_screenshot()
-    {
-    }
+    virtual ~cached_screenshot();
 
     /** \brief Get the signal invoked when a screenshot can't be
      *  acquired.

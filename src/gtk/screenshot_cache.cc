@@ -641,6 +641,10 @@ namespace gui
     }
   } // End anonymous namespace
 
+  cached_screenshot::~cached_screenshot()
+  {
+  }
+
   boost::shared_ptr<cached_screenshot> get_screenshot(const std::string &package_name,
 						      aptitude::screenshot_type type)
   {
