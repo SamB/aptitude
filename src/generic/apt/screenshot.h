@@ -17,6 +17,9 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+#ifndef SCREENSHOT_H
+#define SCREENSHOT_H
+
 #include <boost/shared_ptr.hpp>
 
 #include <generic/util/safe_slot.h>
@@ -66,3 +69,5 @@ namespace aptitude
 		 post_thunk_f post_thunk,
 		 screenshot_type type);
 }
+
+#endif // SCREENSHOT_H
