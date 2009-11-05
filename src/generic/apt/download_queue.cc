@@ -189,8 +189,8 @@ namespace aptitude
       AcqQueuedFile(pkgAcquire *Owner,
 		    const boost::shared_ptr<download_job> &_job)
 	: pkgAcqFile(Owner, _job->get_uri(), "", 0,
-		     "", job->get_short_description(), "",
-		     job->get_filename().get_name()),
+		     "", _job->get_short_description(), "",
+		     _job->get_filename().get_name()),
 	  job(_job)
       {
 	LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
