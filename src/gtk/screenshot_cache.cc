@@ -320,6 +320,10 @@ namespace gui
       // download_callbacks implementation:
       void success(const temp::name &filename)
       {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "The screenshot " << key << " was successfully downloaded to "
+		  << filename.get_name());
+
 	request.reset();
 
 	if(num_bytes_read == 0)
@@ -379,6 +383,12 @@ namespace gui
 			    long currentSize,
 			    long totalSize)
       {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "Partial download of " << key
+		  << " to " << filename.get_name()
+		  << ": " << currentSize << " of "
+		  << totalSize << " bytes.");
+
 	int incrementalLoadLimit =
 	  aptcfg->FindI(PACKAGE "::Screenshot::Incremental-Load-Limit",
 			16384);
