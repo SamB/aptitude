@@ -380,8 +380,8 @@ namespace gui
       }
 
       void partial_download(const temp::name &filename,
-			    long currentSize,
-			    long totalSize)
+			    unsigned long currentSize,
+			    unsigned long totalSize)
       {
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Partial download of " << key
@@ -393,8 +393,9 @@ namespace gui
 	  aptcfg->FindI(PACKAGE "::Screenshot::Incremental-Load-Limit",
 			16384);
 
-	if(currentSize >= incrementalLoadLimit &&
-	   currentSize > num_bytes_read)
+	if(incrementalLoadLimit < 0 ||
+	   (currentSize >= (unsigned int)incrementalLoadLimit &&
+	    currentSize > num_bytes_read))
 	  {
 	    if(loader == NULL)
 	      {
