@@ -508,29 +508,7 @@ namespace aptitude
 	    {
 	      const start_request &req(**it);
 
-	      boost::shared_ptr<download_job> job =
-		boost::make_shared<download_job>(req.get_uri(),
-						 req.get_short_description(),
-						 req.get_filename(),
-						 req.get_cached_filename(),
-						 req.get_last_modified_time());
-
-	      LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
-			"Creating a new download item for " << req.get_uri());
-
-	      // The next couple lines are only safe because we're
-	      // holding a lock (otherwise someone could sneak in and
-	      // delete the item in between them).
-	      AcqQueuedFile *item = new AcqQueuedFile(Owner, job);
-
-	      boost::shared_ptr<active_download_info> download =
-		boost::make_shared<active_download_info>(job, sigc::mem_fun(*item, &AcqQueuedFile::destroy));
-
-	      active_downloads[req.get_uri()] = download;
-
-	      req.get_request()->bind(job,
-				      job->add_listener(req.get_callbacks(),
-							req.get_post_thunk()));
+	      process_start_request(req, *Owner);
 	    }
 	  start_requests.clear();
 
@@ -652,6 +630,43 @@ namespace aptitude
 	ensure_background_thread();
       }
 
+      /** \brief Actually process a start request and add it to the
+       *  Acquire queue.
+       *
+       *  This creates a new download item, sets up the appropriate
+       *  callbacks, and inserts the item into the set of active
+       *  downloads.
+       */
+      static void process_start_request(const start_request &req,
+					pkgAcquire &acquireQueue)
+      {
+	cw::threads::mutex::lock l(state_mutex);
+
+	LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		  "Creating a new download item for " << req.get_uri());
+
+	boost::shared_ptr<download_job> job =
+	  boost::make_shared<download_job>(req.get_uri(),
+					   req.get_short_description(),
+					   req.get_filename(),
+					   req.get_cached_filename(),
+					   req.get_last_modified_time());
+
+	// The next couple lines are only safe because we're
+	// holding a lock (otherwise someone could sneak in and
+	// delete the item in between them).
+	AcqQueuedFile *item = new AcqQueuedFile(&acquireQueue, job);
+
+	boost::shared_ptr<active_download_info> download =
+	  boost::make_shared<active_download_info>(job, sigc::mem_fun(*item, &AcqQueuedFile::destroy));
+
+	active_downloads[req.get_uri()] = download;
+
+	req.get_request()->bind(job,
+				job->add_listener(req.get_callbacks(),
+						  req.get_post_thunk()));
+      }
+
     public:
       download_thread()
       {
@@ -734,19 +749,7 @@ namespace aptitude
 	      {
 		const start_request &request = **it;
 
-		LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
-			  "Adding " << request.get_short_description()
-			  << " (" << request.get_uri() << ")"
-			  << " to the queue.");
-
-		boost::shared_ptr<download_job> job =
-		  boost::make_shared<download_job>(request.get_uri(),
-						   request.get_short_description(),
-						   request.get_filename(),
-						   request.get_cached_filename(),
-						   request.get_last_modified_time());
-
-		new AcqQueuedFile(&downloader, job);
+		process_start_request(request, downloader);
 	      }
 
 	    start_requests.clear();
