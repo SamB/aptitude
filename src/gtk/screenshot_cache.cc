@@ -265,7 +265,20 @@ namespace gui
 
 	// The PixbufLoader complain loudly if we don't do this:
 	if(loader)
-	  loader->close();
+	  {
+	    try
+	      {
+		loader->close();
+	      }
+	    catch(Glib::Exception &ex)
+	      {
+		// The loader likes to throw exceptions when it gets
+		// closed on a partial file.
+		LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+			  "~screenshot_cache_entry(): ignoring an error from Gdk::PixbufLoader::close(): "
+			  << ex.what());
+	      }
+	  }
       }
 
       const std::string &get_package_name() const { return package_name; }
@@ -311,7 +324,20 @@ namespace gui
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
 	if(loader)
-	  loader->close();
+	  {
+	    try
+	      {
+		loader->close();
+	      }
+	    catch(Glib::Exception &ex)
+	      {
+		// Ignore errors, since we aren't using the loader's
+		// image anyway.
+		LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+			  "Ignoring an error that occurred while closing the old pixbuf loader: "
+			  << ex.what());
+	      }
+	  }
 	loader.reset();
 	num_bytes_read = 0;
 	image = new_image;
@@ -342,7 +368,21 @@ namespace gui
 		      << " from position " << num_bytes_read);
 
 	    if(incremental_load(filename, -1))
-	      loader->close();
+	      {
+		try
+		  {
+		    loader->close();
+		  }
+		catch(Glib::Exception &ex)
+		  {
+		    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+			     "Incremental load of " << show()
+			     << " from the file " << filename.get_name()
+			     << " failed, falling back to loading the whole file: "
+			     << ex.what());
+		    load_screenshot_thread::add_job(load_screenshot_job(filename, shared_from_this()));
+		  }
+	      }
 	    else
 	      {
 		LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
