@@ -756,6 +756,8 @@ namespace aptitude
       }
     };
 
+    bool download_thread::cache_lookup_thread::signals_connected = false;
+
     cw::threads::mutex download_thread::state_mutex((cw::threads::mutex::attr(PTHREAD_MUTEX_RECURSIVE)));
 
     std::deque<boost::shared_ptr<download_thread::start_request> > download_thread::start_requests;
