@@ -323,6 +323,10 @@ namespace gui
        */
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		  "Replacing " << show()
+		  << " with a newly loaded image.");
+
 	if(loader)
 	  {
 	    try
