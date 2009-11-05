@@ -615,8 +615,8 @@ namespace gui
 	    LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
 		     entry->show() << " was canceled, dropping it from the cache.");
 	    update_entry_size(*entry, 0);
+	    by_screenshot.erase(found);
 	  }
-	by_screenshot.erase(found);
       }
     };
 
