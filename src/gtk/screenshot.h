@@ -46,6 +46,9 @@ namespace gui
     sigc::connection screenshot_ready_connection;
 
     boost::shared_ptr<cached_screenshot> screenshot;
+    // Set to true when the download succeeds; used to decide whether
+    // cancel_download() should blank the image.
+    bool download_complete;
 
     std::string describe() const;
 
@@ -68,9 +71,6 @@ namespace gui
 
     void success();
 
-  protected:
-    bool on_visibility_notify_event(GdkEventVisibility *event);
-
   public:
     /** \brief Create a screenshot image widget.
      *
@@ -81,14 +81,16 @@ namespace gui
     screenshot_image(const std::string &_package_name,
 		     aptitude::screenshot_type _type);
 
-    /** \brief Invoke when the visibility of this image might
-     *  have changed.
-     *
-     *  For instance, this might be invoked by a parent that scrolls
-     *  the image widget, if the widget won't otherwise get visibility
-     *  change events, map events, etc.
+    /** \brief Invoke to start a download, even if the widget is not
+     *	visible.
      */
-    void visibility_changed();
+    void start_download();
+
+    /** \brief Invoke to cancel any pending download.
+     *
+     *  If the screenshot was already downloaded, this has no effect.
+     */
+    void cancel_download();
   };
 }
 

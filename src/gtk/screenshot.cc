@@ -54,7 +54,7 @@ namespace gui
 
   void screenshot_image::disconnect()
   {
-    if(screenshot.get() != NULL)
+    if(screenshot.get() != NULL && !download_complete)
       {
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
 		  "screenshot_image: disconnecting " << describe());
@@ -86,6 +86,7 @@ namespace gui
 	      "screenshot_image: registering success for " << describe());
 
     set(screenshot->get_screenshot());
+    download_complete = true;
   }
 
   void screenshot_image::connect()
@@ -97,7 +98,6 @@ namespace gui
 
 	screenshot = get_screenshot(package_name, type);
 
-	// If the screenshot can't be downloaded, abort.
 	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::hide(sigc::mem_fun(*this, &screenshot_image::disconnect)));
 	screenshot_prepared_connection = screenshot->get_signal_prepared().connect(sigc::mem_fun(*this, &screenshot_image::prepared));
 	screenshot_updated_connection = screenshot->get_signal_updated().connect(sigc::mem_fun(*this, &Gtk::Widget::queue_draw_area));
@@ -107,75 +107,24 @@ namespace gui
       }
   }
 
-  void screenshot_image::visibility_changed()
-  {
-    if(!get_visible())
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Hiding " << describe()
-		  << ": it is not visible.");
-	disconnect();
-      }
-    else if(!get_window())
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Hiding " << describe()
-		  << ": it has no GDK window.");
-	disconnect();
-      }
-    else if(!get_window()->is_viewable())
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Hiding " << describe()
-		  << ": it is not viewable.");
-	disconnect();
-      }
-    else if(get_window()->get_visible_region().empty())
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Hiding " << describe() << ": it is completely obscured.");
-
-	disconnect();
-      }
-    else
-      {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Showing " << describe() << ": it is visible.");
-	connect();
-      }
-  }
-
-  bool screenshot_image::on_visibility_notify_event(GdkEventVisibility *event)
-  {
-    visibility_changed();
-    switch(event->state)
-      {
-      case GDK_VISIBILITY_FULLY_OBSCURED:
-	disconnect();
-	break;
-
-      default:
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Loading " << describe() << ": it is no longer completely obscured.");
-	connect();
-	break;
-      }
-
-    return true;
-  }
-
   screenshot_image::screenshot_image(const std::string &_package_name,
 				     aptitude::screenshot_type _type)
     : package_name(_package_name),
-      type(_type)
+      type(_type),
+      download_complete(false)
   {
-    sigc::slot<void> visibility_changed_slot(sigc::mem_fun(*this, &screenshot_image::visibility_changed));
-    property_visible().signal_changed().connect(visibility_changed_slot);
-    signal_map().connect(visibility_changed_slot);
-    signal_unmap().connect(visibility_changed_slot);
-    signal_realize().connect(visibility_changed_slot);
-    signal_unrealize().connect(visibility_changed_slot);
-    signal_expose_event().connect(sigc::bind_return(sigc::hide(visibility_changed_slot), true));
-    signal_no_expose_event().connect(sigc::bind_return(sigc::hide(visibility_changed_slot), true));
+    sigc::slot<void> connect_slot(sigc::mem_fun(*this, &screenshot_image::connect));
+    signal_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
+    signal_no_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
+  }
+
+  void screenshot_image::start_download()
+  {
+    connect();
+  }
+
+  void screenshot_image::cancel_download()
+  {
+    disconnect();
   }
 }
