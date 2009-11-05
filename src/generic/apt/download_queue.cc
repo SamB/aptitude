@@ -515,6 +515,9 @@ namespace aptitude
 						 req.get_cached_filename(),
 						 req.get_last_modified_time());
 
+	      LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+			"Creating a new download item for " << req.get_uri());
+
 	      // The next couple lines are only safe because we're
 	      // holding a lock (otherwise someone could sneak in and
 	      // delete the item in between them).
@@ -551,6 +554,13 @@ namespace aptitude
 	      if(found != active_downloads.end())
 		{
 		  const download_job &job = *found->second->get_job();
+
+		  LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+			    "Noting a partial download of "
+			    << found->first << " to " << job.get_filename().get_name()
+			    << " (" << w->CurrentSize << " of "
+			    << w->TotalSize << " bytes)");
+
 		  job.invoke_partial_download(job.get_filename(),
 					      w->CurrentSize,
 					      w->TotalSize);
