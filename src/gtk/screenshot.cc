@@ -89,6 +89,14 @@ namespace gui
     download_complete = true;
   }
 
+  void screenshot_image::updated(int x, int y, int width, int height)
+  {
+    LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+	      "screenshot_image: update for (" << x << ", " << y << ", " << width << ", " << height << ")");
+
+    queue_draw_area(x, y, width, height);
+  }
+
   void screenshot_image::connect()
   {
     if(screenshot.get() == NULL)
@@ -100,7 +108,7 @@ namespace gui
 
 	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::hide(sigc::mem_fun(*this, &screenshot_image::disconnect)));
 	screenshot_prepared_connection = screenshot->get_signal_prepared().connect(sigc::mem_fun(*this, &screenshot_image::prepared));
-	screenshot_updated_connection = screenshot->get_signal_updated().connect(sigc::mem_fun(*this, &Gtk::Widget::queue_draw_area));
+	screenshot_updated_connection = screenshot->get_signal_updated().connect(sigc::mem_fun(*this, &screenshot_image::updated));
 	screenshot_ready_connection = screenshot->get_signal_ready().connect(sigc::mem_fun(*this, &screenshot_image::success));
 
 	show();

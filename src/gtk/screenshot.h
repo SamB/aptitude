@@ -71,6 +71,9 @@ namespace gui
 
     void success();
 
+    /** \brief Invoked when part of the screenshot has been loaded. */
+    void updated(int x, int y, int width, int height);
+
   public:
     /** \brief Create a screenshot image widget.
      *
