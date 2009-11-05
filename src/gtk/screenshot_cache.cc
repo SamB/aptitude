@@ -167,7 +167,7 @@ namespace gui
 	// handling.
 	FileFd fd(fdnum);
 
-	off64_t where = lseek64(fdnum, SEEK_SET, num_bytes_read);
+	off64_t where = lseek64(fdnum, num_bytes_read, SEEK_SET);
 	if(where == (off64_t)-1)
 	  {
 	    int errnum = errno;
