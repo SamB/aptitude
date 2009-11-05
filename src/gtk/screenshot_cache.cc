@@ -188,6 +188,9 @@ namespace gui
 
 	while( (amt_read = read(fdnum, buf, blockSize)) > 0)
 	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		      "Loaded " << amt_read << " bytes of "
+		      << key << " from " << name.get_name());
 	    loader->write(buf, amt_read);
 
 	    num_bytes_read += amt_read;
