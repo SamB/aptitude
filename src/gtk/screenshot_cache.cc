@@ -90,7 +90,7 @@ namespace gui
     public:
       static log4cxx::LoggerPtr get_log_category()
       {
-	return Loggers::getAptitudeGtkScreenshot();
+	return Loggers::getAptitudeGtkScreenshotCache();
       }
 
       void process_job(const load_screenshot_job &job);
@@ -153,7 +153,7 @@ namespace gui
 	if(fdnum < 0)
 	  {
 	    int errnum = errno;
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: open() failed:"
@@ -171,7 +171,7 @@ namespace gui
 	if(where == (off64_t)-1)
 	  {
 	    int errnum = errno;
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: lseek64() failed: "
@@ -196,7 +196,7 @@ namespace gui
 	if(amt_read < 0)
 	  {
 	    int errnum = errno;
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: read() failed: "
@@ -206,7 +206,7 @@ namespace gui
 	  }
 	else if(endpos >= 0 && num_bytes_read < endpos)
 	  {
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: unexpected EOF after "
@@ -267,7 +267,7 @@ namespace gui
 	      {
 		// The loader likes to throw exceptions when it gets
 		// closed on a partial file.
-		LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 			  "~screenshot_cache_entry(): ignoring an error from Gdk::PixbufLoader::close(): "
 			  << ex.what());
 	      }
@@ -290,7 +290,7 @@ namespace gui
        */
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Replacing " << key
 		  << " with a newly loaded image.");
 
@@ -304,7 +304,7 @@ namespace gui
 	      {
 		// Ignore errors, since we aren't using the loader's
 		// image anyway.
-		LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 			  "Ignoring an error that occurred while closing the old pixbuf loader: "
 			  << ex.what());
 	      }
@@ -324,7 +324,7 @@ namespace gui
 
 	if(num_bytes_read == 0)
 	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Loading " << key
 		      << " from the file " << filename.get_name()
 		      << " in the background thread.");
@@ -333,7 +333,7 @@ namespace gui
 	  }
 	else
 	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Loading " << key
 		      << " from the file " << filename.get_name()
 		      << " from position " << num_bytes_read);
@@ -346,7 +346,7 @@ namespace gui
 		  }
 		catch(Glib::Exception &ex)
 		  {
-		    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+		    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 			     "Incremental load of " << key
 			     << " from the file " << filename.get_name()
 			     << " failed, falling back to loading the whole file: "
@@ -356,7 +356,7 @@ namespace gui
 	      }
 	    else
 	      {
-		LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+		LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 			 "Incremental load of " << key
 			 << " from the file " << filename.get_name()
 			 << " failed, falling back to loading the whole file.");
@@ -368,7 +368,7 @@ namespace gui
 
       void failure(const std::string &msg)
       {
-	LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		 "Failed to acquire " << key
 		 << ": " << msg);
 	get_signal_failed()(msg);
@@ -483,7 +483,7 @@ namespace gui
 
 	    if(ordered.size() == 0)
 	      {
-		LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+		LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 			 "Sanity-check failed: there are no cached screenshots, but the cache size is too large ("
 			 << cache_size << ")!");
 		break;
@@ -493,7 +493,7 @@ namespace gui
 		boost::shared_ptr<screenshot_cache_entry> victim =
 		  ordered.front();
 
-		LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
+		LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 			 "Dropping " << victim->get_key()
 			 << " from the cache to free up "
 			 << victim->get_size() << " bytes.");
@@ -512,7 +512,7 @@ namespace gui
 				    int new_size)
       {
 	const int new_cache_size = cache_size - entry.get_size() + new_size;
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Updating the size of " << entry.get_key()
 		  << " from " << entry.get_size() << " to "
 		  << new_size << ", cache size changes from "
@@ -546,12 +546,12 @@ namespace gui
 	    if(found != by_screenshot.end())
 	      {
 		if(*found != entry)
-		  LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		  LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 			    "Failed to download " << entry->get_key()
 			    << ", but not dropping it from the cache: it was already replaced.");
 		else
 		  {
-		    LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
+		    LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 			     "Failed to download " << entry->get_key()
 			     << ", dropping it from the cache.");
 
@@ -565,7 +565,7 @@ namespace gui
 
       static void add_entry(const boost::shared_ptr<screenshot_cache_entry> &entry)
       {
-	LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
+	LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 		 "Adding " << entry->get_key() << " to the cache ("
 		 << entry->get_size() <<" bytes).");
 
@@ -577,7 +577,7 @@ namespace gui
 	if(found != by_screenshot.end())
 	  {
 	    // Should never happen!
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Dropping " << (*found)->get_key()
 		     << " from the cache to make room for the new entry.");
 	    update_entry_size(**found, 0);
@@ -596,7 +596,7 @@ namespace gui
 	boost::shared_ptr<screenshot_cache_entry> rval =
 	  boost::make_shared<screenshot_cache_entry>(key);
 
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Looking for " << rval->get_key()
 		  << " in the screenshot cache.");
 
@@ -605,13 +605,13 @@ namespace gui
 	by_screenshot_index::iterator found = by_screenshot.find(rval);
 	if(found != by_screenshot.end())
 	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Returning an existing screenshot cache entry for " << rval->get_key());
 	    return *found;
 	  }
 	else
 	  {
-	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Creating a new screenshot cache entry for " << rval->get_key());
 
 	    add_entry(rval);
@@ -636,7 +636,7 @@ namespace gui
 	by_screenshot_index::iterator found = by_screenshot.find(entry);
 	if(found != by_screenshot.end())
 	  {
-	    LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
+	    LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 		     entry->get_key() << " was canceled, dropping it from the cache.");
 	    update_entry_size(*entry, 0);
 	    by_screenshot.erase(found);
@@ -672,7 +672,7 @@ namespace gui
 
     void load_screenshot_thread::process_job(const load_screenshot_job &job)
     {
-      LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
+      LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 	       "Loading " << job.get_cache_entry()->get_key()
 	       << " from " << job.get_filename().get_name());
 

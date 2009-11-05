@@ -56,7 +56,7 @@ namespace gui
   {
     if(screenshot.get() != NULL && !download_complete)
       {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 		  "screenshot_image: disconnecting " << describe());
 
 	screenshot_prepared_connection.disconnect();
@@ -76,13 +76,13 @@ namespace gui
   {
     set(screenshot->get_screenshot());
 
-    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+    LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 	      "screenshot_image: pixbuf prepared for " << describe());
   }
 
   void screenshot_image::success()
   {
-    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+    LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 	      "screenshot_image: registering success for " << describe());
 
     set(screenshot->get_screenshot());
@@ -93,7 +93,7 @@ namespace gui
   {
     if(screenshot.get() == NULL)
       {
-	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 		  "screenshot_image: requesting " << describe());
 
 	screenshot = get_screenshot(aptitude::screenshot_key(type, package_name));
