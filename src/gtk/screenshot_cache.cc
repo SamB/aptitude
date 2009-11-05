@@ -228,7 +228,7 @@ namespace gui
 
     public:
       screenshot_cache_entry(const screenshot_key &_key)
-	: loader(Gdk::PixbufLoader::create()),
+	: loader(),
 	  num_bytes_read(0),
 	  image(),
 	  size(0),
