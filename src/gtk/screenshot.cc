@@ -96,7 +96,7 @@ namespace gui
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
 		  "screenshot_image: requesting " << describe());
 
-	screenshot = get_screenshot(package_name, type);
+	screenshot = get_screenshot(aptitude::screenshot_key(type, package_name));
 
 	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::hide(sigc::mem_fun(*this, &screenshot_image::disconnect)));
 	screenshot_prepared_connection = screenshot->get_signal_prepared().connect(sigc::mem_fun(*this, &screenshot_image::prepared));

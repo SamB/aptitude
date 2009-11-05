@@ -243,7 +243,8 @@ namespace aptitude
 
 	    LOG_INFO(Loggers::getAptitudeDownloadQueue(),
 		     "Successfully downloaded " << job->get_short_description()
-		     << " (last modified time = "
+		     << " (size = "
+		     << Size << ", last modified time = "
 		     << lastModifiedTime << " ["
 		     << lastModifiedTimeStr << "]) : "
 		     << LookupTag(Message, "Message"));

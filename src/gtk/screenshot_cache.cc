@@ -134,13 +134,9 @@ namespace gui
       int size;
 
 
-      // Information used to generate this entry's key:
-      //
-      // The name of the package that this is a screenshot for.
-      std::string package_name;
+      // The key of this entry.
+      screenshot_key key;
 
-      // The screenshot type.
-      screenshot_type type;
 
       /** \brief Incrementally load a portion of the file.
        *
@@ -158,7 +154,7 @@ namespace gui
 	  {
 	    int errnum = errno;
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		     "Loading " << show()
+		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: open() failed:"
 		     << cw::util::sstrerror(errnum));
@@ -176,7 +172,7 @@ namespace gui
 	  {
 	    int errnum = errno;
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		     "Loading " << show()
+		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: lseek64() failed: "
 		     << cw::util::sstrerror(errnum));
@@ -201,7 +197,7 @@ namespace gui
 	  {
 	    int errnum = errno;
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		     "Loading " << show()
+		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: read() failed: "
 		     << cw::util::sstrerror(errnum));
@@ -211,7 +207,7 @@ namespace gui
 	else if(endpos >= 0 && num_bytes_read < endpos)
 	  {
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		     "Loading " << show()
+		     "Loading " << key
 		     << " from the file " << name.get_name()
 		     << " failed: unexpected EOF after "
 		     << num_bytes_read << " bytes.");
@@ -228,14 +224,12 @@ namespace gui
       }
 
     public:
-      screenshot_cache_entry(const std::string &_package_name,
-			     screenshot_type _type)
+      screenshot_cache_entry(const screenshot_key &_key)
 	: loader(Gdk::PixbufLoader::create()),
 	  num_bytes_read(0),
 	  image(),
 	  size(0),
-	  package_name(_package_name),
-	  type(_type)
+	  key(_key)
       {
       }
 
@@ -249,10 +243,9 @@ namespace gui
       {
 	// This doesn't create a reference loop because the request
 	// object holds only weak references.
-	request = aptitude::get_screenshot(package_name,
+	request = aptitude::get_screenshot(key,
 					   shared_from_this(),
-					   post_thunk,
-					   type);
+					   post_thunk);
       }
 
       ~screenshot_cache_entry()
@@ -281,38 +274,12 @@ namespace gui
 	  }
       }
 
-      const std::string &get_package_name() const { return package_name; }
-      screenshot_type get_type() const { return type; }
+      const screenshot_key &get_key() const { return key; }
       int get_size() const { return size; }
       Glib::RefPtr<Gdk::Pixbuf> get_image() const { return image; }
       void set_size(int new_size)
       {
 	size = new_size;
-      }
-
-
-      /** \brief Retrieve a string that can be used in log messages to
-       *  describe this entry.
-       */
-      std::string show() const
-      {
-	std::string typestr;
-	switch(type)
-	  {
-	  case screenshot_thumbnail:
-	    typestr = "thumbnail";
-	    break;
-
-	  case screenshot_full:
-	    typestr = "full-size";
-	    break;
-
-	  default:
-	    typestr = "BADTYPE";
-	    break;
-	  }
-
-	return "the " + typestr + " screenshot of " + package_name;
       }
 
       // cached_screenshot implementation:
@@ -324,7 +291,7 @@ namespace gui
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Replacing " << show()
+		  "Replacing " << key
 		  << " with a newly loaded image.");
 
 	if(loader)
@@ -358,7 +325,7 @@ namespace gui
 	if(num_bytes_read == 0)
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		      "Loading " << show()
+		      "Loading " << key
 		      << " from the file " << filename.get_name()
 		      << " in the background thread.");
 
@@ -367,7 +334,7 @@ namespace gui
 	else
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		      "Loading " << show()
+		      "Loading " << key
 		      << " from the file " << filename.get_name()
 		      << " from position " << num_bytes_read);
 
@@ -380,7 +347,7 @@ namespace gui
 		catch(Glib::Exception &ex)
 		  {
 		    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-			     "Incremental load of " << show()
+			     "Incremental load of " << key
 			     << " from the file " << filename.get_name()
 			     << " failed, falling back to loading the whole file: "
 			     << ex.what());
@@ -390,7 +357,7 @@ namespace gui
 	    else
 	      {
 		LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-			 "Incremental load of " << show()
+			 "Incremental load of " << key
 			 << " from the file " << filename.get_name()
 			 << " failed, falling back to loading the whole file.");
 
@@ -402,7 +369,7 @@ namespace gui
       void failure(const std::string &msg)
       {
 	LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		 "Failed to acquire " << show()
+		 "Failed to acquire " << key
 		 << ": " << msg);
 	get_signal_failed()(msg);
 	request.reset();
@@ -457,12 +424,7 @@ namespace gui
       public:
 	size_t operator()(const boost::shared_ptr<screenshot_cache_entry> &entry) const
 	{
-	  size_t seed = 0;
-
-	  boost::hash_combine(seed, entry->get_package_name());
-	  boost::hash_combine(seed, entry->get_type());
-
-	  return seed;
+	  return boost::hash<screenshot_key>()(entry->get_key());
 	}
       };
 
@@ -472,9 +434,7 @@ namespace gui
 	bool operator()(const boost::shared_ptr<screenshot_cache_entry> &entry1,
 			const boost::shared_ptr<screenshot_cache_entry> &entry2) const
 	{
-	  return
-	    entry1->get_type() == entry2->get_type() &&
-	    entry1->get_package_name() == entry2->get_package_name();
+	  return entry1->get_key() == entry2->get_key();
 	}
       };
 
@@ -534,7 +494,7 @@ namespace gui
 		  ordered.front();
 
 		LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
-			 "Dropping " << victim->show()
+			 "Dropping " << victim->get_key()
 			 << " from the cache to free up "
 			 << victim->get_size() << " bytes.");
 
@@ -553,7 +513,7 @@ namespace gui
       {
 	const int new_cache_size = cache_size - entry.get_size() + new_size;
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Updating the size of " << entry.show()
+		  "Updating the size of " << entry.get_key()
 		  << " from " << entry.get_size() << " to "
 		  << new_size << ", cache size changes from "
 		  << cache_size << " to " << new_cache_size);
@@ -587,12 +547,12 @@ namespace gui
 	      {
 		if(*found != entry)
 		  LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-			    "Failed to download " << entry->show()
+			    "Failed to download " << entry->get_key()
 			    << ", but not dropping it from the cache: it was already replaced.");
 		else
 		  {
 		    LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
-			     "Failed to download " << entry->show()
+			     "Failed to download " << entry->get_key()
 			     << ", dropping it from the cache.");
 
 		    // Forget about its size if it had a size.
@@ -606,7 +566,7 @@ namespace gui
       static void add_entry(const boost::shared_ptr<screenshot_cache_entry> &entry)
       {
 	LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
-		 "Adding " << entry->show() << " to the cache ("
+		 "Adding " << entry->get_key() << " to the cache ("
 		 << entry->get_size() <<" bytes).");
 
 	// If it exists already, we need to evict the existing
@@ -618,7 +578,7 @@ namespace gui
 	  {
 	    // Should never happen!
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshot(),
-		     "Dropping " << (*found)->show()
+		     "Dropping " << (*found)->get_key()
 		     << " from the cache to make room for the new entry.");
 	    update_entry_size(**found, 0);
 	    by_screenshot.replace(found, entry);
@@ -631,14 +591,13 @@ namespace gui
 
     public:
       static boost::shared_ptr<screenshot_cache_entry>
-      find(const std::string &package_name,
-	   screenshot_type type)
+      find(const screenshot_key &key)
       {
 	boost::shared_ptr<screenshot_cache_entry> rval =
-	  boost::make_shared<screenshot_cache_entry>(package_name, type);
+	  boost::make_shared<screenshot_cache_entry>(key);
 
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		  "Looking for " << rval->show()
+		  "Looking for " << rval->get_key()
 		  << " in the screenshot cache.");
 
 	by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
@@ -647,13 +606,13 @@ namespace gui
 	if(found != by_screenshot.end())
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		      "Returning an existing screenshot cache entry for " << rval->show());
+		      "Returning an existing screenshot cache entry for " << rval->get_key());
 	    return *found;
 	  }
 	else
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
-		      "Creating a new screenshot cache entry for " << rval->show());
+		      "Creating a new screenshot cache entry for " << rval->get_key());
 
 	    add_entry(rval);
 
@@ -678,7 +637,7 @@ namespace gui
 	if(found != by_screenshot.end())
 	  {
 	    LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
-		     entry->show() << " was canceled, dropping it from the cache.");
+		     entry->get_key() << " was canceled, dropping it from the cache.");
 	    update_entry_size(*entry, 0);
 	    by_screenshot.erase(found);
 	  }
@@ -708,13 +667,13 @@ namespace gui
     std::ostream &operator<<(std::ostream &out, const load_screenshot_job &job)
     {
       return out << "loadScreenshot(" << job.get_filename().get_name()
-		 << ", " << job.get_cache_entry()->show() << ")";
+		 << ", " << job.get_cache_entry()->get_key() << ")";
     }
 
     void load_screenshot_thread::process_job(const load_screenshot_job &job)
     {
       LOG_INFO(Loggers::getAptitudeGtkScreenshot(),
-	       "Loading " << job.get_cache_entry()->show()
+	       "Loading " << job.get_cache_entry()->get_key()
 	       << " from " << job.get_filename().get_name());
 
       try
@@ -740,9 +699,8 @@ namespace gui
   {
   }
 
-  boost::shared_ptr<cached_screenshot> get_screenshot(const std::string &package_name,
-						      aptitude::screenshot_type type)
+  boost::shared_ptr<cached_screenshot> get_screenshot(const screenshot_key &key)
   {
-    return screenshot_cache::find(package_name, type);
+    return screenshot_cache::find(key);
   }
 }

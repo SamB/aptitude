@@ -100,9 +100,8 @@ namespace gui
     virtual void cancel() = 0;
   };
 
-  /** \brief Retrieve the screenshot for the named package. */
-  boost::shared_ptr<cached_screenshot> get_screenshot(const std::string &package_name,
-						      aptitude::screenshot_type type);
+  /** \brief Retrieve the given screenshot. */
+  boost::shared_ptr<cached_screenshot> get_screenshot(const aptitude::screenshot_key &key);
 }
 
 #endif // GTK_SCREENSHOT_CACHE_H

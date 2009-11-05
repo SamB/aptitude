@@ -27,32 +27,53 @@
 namespace aptitude
 {
   boost::shared_ptr<download_request>
-  get_screenshot(const std::string &name,
+  get_screenshot(const screenshot_key &key,
 		 const boost::shared_ptr<download_callbacks> &callbacks,
-		 post_thunk_f post_thunk,
-		 screenshot_type type)
+		 post_thunk_f post_thunk)
   {
     std::string uri, short_description;
-    switch(type)
+    switch(key.get_type())
       {
       case screenshot_thumbnail:
       default: // If we get a bad value, just fall back to thumbnail
 	       // mode.
 	uri = (boost::format("http://screenshots.debian.net/thumbnail/%s")
-	       % name).str();
+	       % key.get_package_name()).str();
 	short_description = (boost::format("Thumbnail screenshot of %s")
-			     % name).str();
+			     % key.get_package_name()).str();
 	break;
 
       case screenshot_full:
-	uri = (boost::format("http://screenshots.debian.net/package/%s")
-	       % name).str();
+	uri = (boost::format("http://screenshots.debian.net/screenshot/%s")
+	       % key.get_package_name()).str();
 	short_description = (boost::format("Screenshot of %s")
-			     % name).str();
+			     % key.get_package_name()).str();
 	break;
       }
 
     return queue_download(uri, short_description,
 			  callbacks, post_thunk);
+  }
+
+  std::ostream &operator<<(std::ostream &out, const screenshot_key &key)
+  {
+    std::string typestr;
+    switch(key.get_type())
+      {
+      case screenshot_thumbnail:
+	typestr = "thumbnail";
+	break;
+
+      case screenshot_full:
+	typestr = "full-size";
+	break;
+
+      default:
+	typestr = "BADTYPE";
+	break;
+      }
+
+    return out << "(package_name = " << key.get_package_name()
+	       << ", type = " << typestr << ")";
   }
 }
