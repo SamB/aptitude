@@ -347,6 +347,10 @@ namespace gui
 		try
 		  {
 		    loader->close();
+
+		    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+			      "Done incrementally loading " << key
+			      << " from the file " << filename.get_name());
 		  }
 		catch(Glib::Exception &ex)
 		  {
