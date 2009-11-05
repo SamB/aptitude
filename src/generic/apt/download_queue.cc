@@ -540,6 +540,9 @@ namespace aptitude
 	  for(pkgAcquire::Worker *w = Owner->WorkersBegin();
 	      w != NULL; w = Owner->WorkerStep(w))
 	    {
+	      if(w->CurrentItem == NULL)
+		continue;
+
 	      const std::string &uri = w->CurrentItem->URI;
 	      boost::unordered_map<std::string, boost::shared_ptr<active_download_info> >::iterator
 		found = active_downloads.find(uri);
