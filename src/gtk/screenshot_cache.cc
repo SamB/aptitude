@@ -637,16 +637,37 @@ namespace gui
 	boost::shared_ptr<screenshot_cache_entry> rval =
 	  boost::make_shared<screenshot_cache_entry>(package_name, type);
 
-	boost::weak_ptr<screenshot_cache_entry> rvalWeak(rval);
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		  "Looking for " << rval->show()
+		  << " in the screenshot cache.");
 
-	rval->get_signal_failed().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::download_failed),
-						     rvalWeak));
-	rval->get_signal_prepared().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::screenshot_size_computed),
-						       rvalWeak));
+	by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
 
-	rval->go();
+	by_screenshot_index::iterator found = by_screenshot.find(rval);
+	if(found != by_screenshot.end())
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		      "Returning an existing screenshot cache entry for " << rval->show());
+	    return *found;
+	  }
+	else
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshot(),
+		      "Creating a new screenshot cache entry for " << rval->show());
 
-	return rval;
+	    add_entry(rval);
+
+	    boost::weak_ptr<screenshot_cache_entry> rvalWeak(rval);
+
+	    rval->get_signal_failed().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::download_failed),
+							 rvalWeak));
+	    rval->get_signal_prepared().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::screenshot_size_computed),
+							   rvalWeak));
+
+	    rval->go();
+
+	    return rval;
+	  }
       }
 
       static void canceled(const boost::shared_ptr<screenshot_cache_entry> &entry)
