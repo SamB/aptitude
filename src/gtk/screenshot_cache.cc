@@ -237,6 +237,16 @@ namespace gui
 	  package_name(_package_name),
 	  type(_type)
       {
+      }
+
+      /** \brief Actually start the download.
+       *
+       *  This must be invoked immediately after the constructor.  It
+       *  can't be in the constructor because shared_from_this() isn't
+       *  allowed to run until the shared_ptr has been created.
+       */
+      void go()
+      {
 	// This doesn't create a reference loop because the request
 	// object holds only weak references.
 	request = aptitude::get_screenshot(package_name,
@@ -589,6 +599,8 @@ namespace gui
 						     rvalWeak));
 	rval->get_signal_prepared().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::screenshot_size_computed),
 						       rvalWeak));
+
+	rval->go();
 
 	return rval;
       }
