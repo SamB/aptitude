@@ -404,7 +404,7 @@ namespace gui
 	   (currentSize >= (unsigned int)incrementalLoadLimit &&
 	    currentSize > num_bytes_read))
 	  {
-	    if(loader == NULL)
+	    if(!loader)
 	      {
 		loader = Gdk::PixbufLoader::create();
 
