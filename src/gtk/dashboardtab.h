@@ -140,7 +140,7 @@ namespace gui
     // exist is so that we can easily disconnect all those slots at
     // once (by deleting it) and avoid "stale" events from a previous
     // resolver run.
-    class redirect_from_background
+    class redirect_from_background : public sigc::trackable
     {
       DashboardTab &parent;
     public:
