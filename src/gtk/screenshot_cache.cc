@@ -412,6 +412,13 @@ namespace gui
 	    // try to load the whole thing when it's done?
 	    incremental_load(filename, currentSize);
 	  }
+	else
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		      "Bypassing incremental load: the current size "
+		      << currentSize << " does not exceed the incremental load limit "
+		      << incrementalLoadLimit);
+	  }
       }
     };
 
