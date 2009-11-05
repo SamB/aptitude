@@ -245,6 +245,19 @@ namespace gui
 					   type);
       }
 
+      ~screenshot_cache_entry()
+      {
+	// Clear the signals in case the PixbufLoader emits something.
+	get_signal_failed().clear();
+	get_signal_prepared().clear();
+	get_signal_updated().clear();
+	get_signal_ready().clear();
+
+	// The PixbufLoader complain loudly if we don't do this:
+	if(loader)
+	  loader->close();
+      }
+
       const std::string &get_package_name() const { return package_name; }
       screenshot_type get_type() const { return type; }
       int get_size() const { return size; }
@@ -287,6 +300,8 @@ namespace gui
        */
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
+	if(loader)
+	  loader->close();
 	loader.reset();
 	num_bytes_read = 0;
 	image = new_image;
