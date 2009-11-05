@@ -41,6 +41,7 @@
 #include <gtk/gui.h>
 #include <gtk/entityview.h>
 #include <gtk/packageinformation.h>
+#include <gtk/screenshot.h>
 
 namespace gui
 {
@@ -686,6 +687,22 @@ namespace gui
         nameTag);
 
     textBuffer->insert(textBuffer->end(), "\n");
+
+    if(!package_name.empty())
+      {
+	/*Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> screenshotAnchor =
+	  textBuffer->create_child_anchor(textBuffer->end());
+	  textBuffer->insert(textBuffer->end(), "\n");*/
+
+	screenshot_image *image = new screenshot_image(package_name,
+						       aptitude::screenshot_full);
+	//image->show();
+	//textview->add_child_at_anchor(*image, screenshotAnchor);
+
+	image->show();
+	notebook->insert_page(*image, notebook->get_n_pages());
+      }
+
     textBuffer->insert(textBuffer->end(), info.ShortDescription());
     textBuffer->insert(textBuffer->end(), "\n");
 

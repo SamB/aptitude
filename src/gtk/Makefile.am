@@ -50,6 +50,8 @@ libgtk_a_SOURCES=\
 	progress.h \
 	resolver.cc \
 	resolver.h \
+	screenshot.cc \
+	screenshot.h \
 	screenshot_cache.cc \
 	screenshot_cache.h \
 	tab.cc \
