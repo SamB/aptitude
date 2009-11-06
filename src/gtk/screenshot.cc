@@ -146,7 +146,6 @@ namespace gui
   {
     image.show();
     add(image);
-    show();
   }
 
   void active_screenshot_image::on_realize()
