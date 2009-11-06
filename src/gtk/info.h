@@ -44,6 +44,7 @@ namespace gui
       cwidget::util::ref_ptr<EntityView> pVersionsView;
       cwidget::util::ref_ptr<EntityView> pDependsView;
       Gtk::Notebook * notebook;
+      Gtk::ScrolledWindow *screenshot_scrolledwindow;
 
       bool changelog_loaded;
 

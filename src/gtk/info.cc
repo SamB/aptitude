@@ -530,6 +530,10 @@ namespace gui
     get_xml()->get_widget("main_info_textview", textview);
 
     get_xml()->get_widget("main_info_notebook", notebook);
+
+    get_xml()->get_widget("info_screenshot_scrolledwindow",
+			  screenshot_scrolledwindow);
+
     notebook->signal_switch_page().connect(sigc::hide<0>(sigc::mem_fun(*this, &InfoTab::notebook_switch_handler)));
 
     cache_closed.connect(sigc::mem_fun(*this, &InfoTab::do_cache_closed));
@@ -688,19 +692,11 @@ namespace gui
 
     textBuffer->insert(textBuffer->end(), "\n");
 
+    Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> screenshotAnchor;
     if(!package_name.empty())
       {
-	/*Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> screenshotAnchor =
-	  textBuffer->create_child_anchor(textBuffer->end());
-	  textBuffer->insert(textBuffer->end(), "\n");*/
-
-	screenshot_image *image = new screenshot_image(package_name,
-						       aptitude::screenshot_full);
-	//image->show();
-	//textview->add_child_at_anchor(*image, screenshotAnchor);
-
-	image->show();
-	notebook->insert_page(*image, notebook->get_n_pages());
+	screenshotAnchor = textBuffer->create_child_anchor(textBuffer->end());
+	textBuffer->insert(textBuffer->end(), "\n");
       }
 
     textBuffer->insert(textBuffer->end(), info.ShortDescription());
@@ -721,6 +717,33 @@ namespace gui
     textBuffer->insert(textBuffer->end(), info.LongDescription());
 
     textview->set_buffer(textBuffer);
+
+    if(!package_name.empty())
+      {
+	active_screenshot_image *thumbnail =
+	  manage(new active_screenshot_image(package_name, aptitude::screenshot_thumbnail));
+
+	textview->add_child_at_anchor(*thumbnail, screenshotAnchor);
+	thumbnail->show();
+
+	thumbnail->enable_clickable();
+	int screenshot_page = notebook->page_num(*screenshot_scrolledwindow);
+	thumbnail->clicked.connect(sigc::bind(sigc::mem_fun(*notebook, &Gtk::Notebook::set_current_page),
+					      screenshot_page));
+
+	screenshot_image *screenshot = manage(new screenshot_image(package_name, aptitude::screenshot_full));
+	screenshot->show();
+
+	if(screenshot_scrolledwindow->get_child() != NULL)
+	  screenshot_scrolledwindow->remove();
+	screenshot_scrolledwindow->add(*screenshot);
+      }
+    else
+      {
+	if(screenshot_scrolledwindow->get_child() != NULL)
+	  screenshot_scrolledwindow->remove();
+	screenshot_scrolledwindow->add(*new Gtk::Label("No package, no screenshot."));
+      }
 
     pVersionsView->set_model(make_version_list(pVersionsView->get_columns(), pkg));
     {

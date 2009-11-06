@@ -1059,6 +1059,31 @@
                 <property name="type">tab</property>
               </packing>
             </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="info_screenshot_scrolledwindow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">5</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Screenshot</property>
+              </widget>
+              <packing>
+                <property name="position">5</property>
+                <property name="tab_fill">False</property>
+                <property name="type">tab</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="resize">True</property>
