@@ -23,6 +23,7 @@
 
 // GTK+ classes and functions relating to screenshots.
 
+#include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 
 #include <boost/shared_ptr.hpp>
@@ -94,6 +95,40 @@ namespace gui
      *  If the screenshot was already downloaded, this has no effect.
      */
     void cancel_download();
+  };
+
+  /** \brief A screenshot_image object that can react to events.
+   */
+  class active_screenshot_image : public Gtk::EventBox
+  {
+    screenshot_image image;
+
+    bool clickable : 1;
+
+  protected:
+    // Sets up the mouse cursor on the new window, if this is
+    // clickable.
+    void on_realize();
+
+    // If this is clickable, dispatches mouse clicks.
+    bool on_button_press_event(GdkEventButton *event);
+
+  public:
+    /** \brief Create a new active_screenshot_image.
+     *
+     *  By default, none of the class features are enabled; they must
+     *  be enabled individually (see below).
+     */
+    active_screenshot_image(const std::string &package,
+			    aptitude::screenshot_type type);
+
+    /** \brief Make this screenshot clickable. */
+    void enable_clickable();
+
+    /** \brief Emitted when the screenshot is clicked,
+     *  if this is a clickable image.
+     */
+    sigc::signal<void> clicked;
   };
 }
 

@@ -22,6 +22,8 @@
 
 #include <loggers.h>
 
+#include <gdkmm/cursor.h>
+
 #include <gtk/screenshot_cache.h>
 
 using aptitude::Loggers;
@@ -134,5 +136,45 @@ namespace gui
   void screenshot_image::cancel_download()
   {
     disconnect();
+  }
+
+
+
+  active_screenshot_image::active_screenshot_image(const std::string &package,
+						   aptitude::screenshot_type type)
+    : image(package, type)
+  {
+    image.show();
+    add(image);
+    show();
+  }
+
+  void active_screenshot_image::on_realize()
+  {
+    Gtk::EventBox::on_realize();
+
+    // Check that the window really exists, just out of paranoia:
+    if(clickable && is_realized() && get_window())
+      get_window()->set_cursor(Gdk::Cursor(Gdk::HAND1));
+  }
+
+  bool active_screenshot_image::on_button_press_event(GdkEventButton *event)
+  {
+    switch(event->type)
+      {
+      case GDK_BUTTON_PRESS:
+	if(clickable)
+	  clicked();
+	return true;
+      default:
+	return Gtk::EventBox::on_button_press_event(event);
+      }
+  }
+
+  void active_screenshot_image::enable_clickable()
+  {
+    clickable = true;
+    if(is_realized() && get_window())
+      get_window()->set_cursor(Gdk::Cursor(Gdk::HAND1));
   }
 }
