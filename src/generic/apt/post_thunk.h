@@ -20,11 +20,34 @@
 #ifndef POST_THUNK_H
 #define POST_THUNK_H
 
+#include <sigc++/bind.h>
 #include <sigc++/slot.h>
+
+#include <boost/shared_ptr.hpp>
 
 /** \brief The type of a function that invokes a slot.  Used to safely
  *  invoke continuations from background processes in the main thread.
  */
 typedef void (*post_thunk_f)(const sigc::slot<void> &);
+
+// These are usually useful with thunk posting but arguably belong elsewhere:
+
+/** \brief Invoke f.
+ *
+ *  The parameter can be bound to ensure that it doesn't get deleted.
+ */
+template<typename T>
+inline void keepalive(const sigc::slot<void> &f,
+		      const boost::shared_ptr<T> &)
+{
+  f();
+}
+
+template<typename T>
+sigc::slot<void> make_keepalive_slot(const sigc::slot<void> &f,
+				     const boost::shared_ptr<T> &k)
+{
+  return sigc::bind(sigc::ptr_fun(keepalive<T>), f, k);
+}
 
 #endif

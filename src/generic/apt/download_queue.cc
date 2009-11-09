@@ -117,7 +117,12 @@ namespace aptitude
 	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::success),
 			 filename);
 
-	    it->second(success_slot);
+	    // Note that we use a keepalive slot to ensure that the
+	    // callback object doesn't get deleted before the thunk
+	    // fires off!  We need to do this because the last
+	    // reference to the callback could be dropped from any
+	    // thread.
+	    it->second(make_keepalive_slot(success_slot, it->first));
 	  }
       }
 
@@ -131,7 +136,12 @@ namespace aptitude
 	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::failure),
 			 msg);
 
-	    it->second(failure_slot);
+	    // Note that we use a keepalive slot to ensure that the
+	    // callback object doesn't get deleted before the thunk
+	    // fires off!  We need to do this because the last
+	    // reference to the callback could be dropped from any
+	    // thread.
+	    it->second(make_keepalive_slot(failure_slot, it->first));
 	  }
       }
 
@@ -147,7 +157,12 @@ namespace aptitude
 	      sigc::bind(sigc::mem_fun(*it->first, &download_callbacks::partial_download),
 			 filename, currentSize, totalSize);
 
-	    it->second(partial_download_slot);
+	    // Note that we use a keepalive slot to ensure that the
+	    // callback object doesn't get deleted before the thunk
+	    // fires off!  We need to do this because the last
+	    // reference to the callback could be dropped from any
+	    // thread.
+	    it->second(make_keepalive_slot(partial_download_slot, it->first));
 	  }
       }
     };

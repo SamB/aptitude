@@ -508,20 +508,6 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
 
 namespace
 {
-  // NOP function, used to keep a continuation alive by binding a
-  // shared pointer to it as a parameter.
-  void keepalive_slot(const sigc::slot<void> &f,
-		      const boost::shared_ptr<resolver_manager::background_continuation> &)
-  {
-    f();
-  }
-
-  sigc::slot<void> make_keepalive_slot(const sigc::slot<void> &f,
-				       const boost::shared_ptr<resolver_manager::background_continuation> &k)
-  {
-    return sigc::bind(sigc::ptr_fun(keepalive_slot), f, k);
-  }
-
   // Trampoline used to invoke continuations directly in the
   // background thread (where it's OK to do so).
   void inline_continuation_trampoline(const sigc::slot<void> &f)
