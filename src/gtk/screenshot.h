@@ -90,6 +90,13 @@ namespace gui
     /** \brief Invoked when part of the screenshot has been loaded. */
     void updated(int x, int y, int width, int height);
 
+    /** \brief Discard any partially downloaded screenshot.
+     *
+     *  If we should display the missing-image icon, this displays it
+     *  and sets the tooltip text to image_missing_error_message.
+     */
+    void update_image_for_failed_download();
+
   protected:
 
     // Sets up the mouse cursor on the new window, if this is

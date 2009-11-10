@@ -77,16 +77,7 @@ namespace gui
 	screenshot->cancel();
 	screenshot.reset();
 
-	// Discard any partial screenshot.
-	if(show_missing_image_icon)
-	  {
-	    Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
-			       Gtk::ICON_SIZE_DIALOG,
-			       image);
-	    set_tooltip_text(image_missing_error_message);
-	  }
-	else
-	  image.clear();
+	update_image_for_failed_download();
       }
   }
 
@@ -113,6 +104,19 @@ namespace gui
 	      "screenshot_image: update for (" << x << ", " << y << ", " << width << ", " << height << ")");
 
     queue_draw_area(x, y, width, height);
+  }
+
+  void screenshot_image::update_image_for_failed_download()
+  {
+    if(image_missing && show_missing_image_icon)
+      {
+	Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
+			   Gtk::ICON_SIZE_DIALOG,
+			   image);
+	set_tooltip_text(image_missing_error_message);
+      }
+    else
+      image.clear();
   }
 
   void screenshot_image::connect()
@@ -159,17 +163,7 @@ namespace gui
     show_missing_image_icon = new_value;
 
     if(screenshot.get() == NULL)
-      {
-	if(image_missing && show_missing_image_icon)
-	  {
-	    Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
-			       Gtk::ICON_SIZE_DIALOG,
-			       image);
-	    set_tooltip_text(image_missing_error_message);
-	  }
-	else
-	  image.clear();
-      }
+      update_image_for_failed_download();
   }
 
   void screenshot_image::start_download()
