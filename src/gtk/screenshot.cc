@@ -136,7 +136,6 @@ namespace gui
 	Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
 			   Gtk::ICON_SIZE_DIALOG,
 			   image);
-	image.show();
 	set_tooltip_text(image_missing_error_message);
       }
   }
