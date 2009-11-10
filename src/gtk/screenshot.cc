@@ -171,7 +171,8 @@ namespace gui
       type(_type),
       download_complete(false),
       show_missing_image_icon(false),
-      image_missing(false)
+      image_missing(false),
+      clickable(false)
   {
     image.show();
   }
