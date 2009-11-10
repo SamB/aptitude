@@ -23,6 +23,7 @@
 #include <loggers.h>
 
 #include <gdkmm/cursor.h>
+#include <gtkmm/stock.h>
 
 #include <gtk/screenshot_cache.h>
 
@@ -54,6 +55,13 @@ namespace gui
     return "the " + typestr + " screenshot of " + package_name;
   }
 
+  void screenshot_image::failed(const std::string &msg)
+  {
+    disconnect();
+    image_missing = true;
+    image_missing_error_message = msg;
+  }
+
   void screenshot_image::disconnect()
   {
     if(screenshot.get() != NULL && !download_complete)
@@ -70,13 +78,21 @@ namespace gui
 	screenshot.reset();
 
 	// Discard any partial screenshot.
-	clear();
+	if(show_missing_image_icon)
+	  {
+	    Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
+			       Gtk::ICON_SIZE_DIALOG,
+			       image);
+	    set_tooltip_text(image_missing_error_message);
+	  }
+	else
+	  image.clear();
       }
   }
 
   void screenshot_image::prepared()
   {
-    set(screenshot->get_screenshot());
+    image.set(screenshot->get_screenshot());
 
     LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 	      "screenshot_image: pixbuf prepared for " << describe());
@@ -87,7 +103,7 @@ namespace gui
     LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 	      "screenshot_image: registering success for " << describe());
 
-    set(screenshot->get_screenshot());
+    image.set(screenshot->get_screenshot());
     download_complete = true;
   }
 
@@ -106,6 +122,12 @@ namespace gui
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
 		  "screenshot_image: requesting " << describe());
 
+	// Clear the missing-image flag and drop any associated
+	// tooltip.  The image itself will be cleared below.
+	image_missing = false;
+	image_missing_error_message.clear();
+	set_has_tooltip(false);
+
 	screenshot = get_screenshot(aptitude::screenshot_key(type, package_name));
 
 	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::hide(sigc::mem_fun(*this, &screenshot_image::disconnect)));
@@ -121,11 +143,33 @@ namespace gui
 				     aptitude::screenshot_type _type)
     : package_name(_package_name),
       type(_type),
-      download_complete(false)
+      download_complete(false),
+      show_missing_image_icon(false),
+      image_missing(false)
   {
+    image.show();
+
     sigc::slot<void> connect_slot(sigc::mem_fun(*this, &screenshot_image::connect));
     signal_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
     signal_no_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
+  }
+
+  void screenshot_image::set_show_missing_image_icon(bool new_value)
+  {
+    show_missing_image_icon = new_value;
+
+    if(screenshot.get() == NULL)
+      {
+	if(image_missing && show_missing_image_icon)
+	  {
+	    Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
+			       Gtk::ICON_SIZE_DIALOG,
+			       image);
+	    set_tooltip_text(image_missing_error_message);
+	  }
+	else
+	  image.clear();
+      }
   }
 
   void screenshot_image::start_download()
@@ -140,15 +184,7 @@ namespace gui
 
 
 
-  active_screenshot_image::active_screenshot_image(const std::string &package,
-						   aptitude::screenshot_type type)
-    : image(package, type)
-  {
-    image.show();
-    add(image);
-  }
-
-  void active_screenshot_image::on_realize()
+  void screenshot_image::on_realize()
   {
     Gtk::EventBox::on_realize();
 
@@ -157,7 +193,7 @@ namespace gui
       get_window()->set_cursor(Gdk::Cursor(Gdk::HAND1));
   }
 
-  bool active_screenshot_image::on_button_press_event(GdkEventButton *event)
+  bool screenshot_image::on_button_press_event(GdkEventButton *event)
   {
     switch(event->type)
       {
@@ -170,7 +206,7 @@ namespace gui
       }
   }
 
-  void active_screenshot_image::enable_clickable()
+  void screenshot_image::enable_clickable()
   {
     clickable = true;
     if(is_realized() && get_window())

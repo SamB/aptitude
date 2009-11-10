@@ -34,8 +34,10 @@ namespace gui
 {
   class cached_screenshot;
 
-  class screenshot_image : public Gtk::Image
+  class screenshot_image : public Gtk::EventBox
   {
+    Gtk::Image image;
+
     // These are used to generate a new screenshot object when the
     // image is exposed.
     std::string package_name;
@@ -49,7 +51,17 @@ namespace gui
     boost::shared_ptr<cached_screenshot> screenshot;
     // Set to true when the download succeeds; used to decide whether
     // cancel_download() should blank the image.
-    bool download_complete;
+    bool download_complete : 1;
+    bool show_missing_image_icon : 1;
+    // Remembers whether we would show a missing image icon.  Set to
+    // true when a download fails, cleared when a download starts.
+    bool image_missing : 1;
+
+    bool clickable : 1;
+
+    // If image_missing is true, stores the error message associated
+    // with not being able to download a screenshot.
+    std::string image_missing_error_message;
 
     std::string describe() const;
 
@@ -63,6 +75,9 @@ namespace gui
      */
     void connect();
 
+    /** \brief Invoked when the screenshot download fails. */
+    void failed(const std::string &msg);
+
     /** \brief Invoked when the screenshot object's pixbuf is created.
      */
     void prepared();
@@ -75,6 +90,15 @@ namespace gui
     /** \brief Invoked when part of the screenshot has been loaded. */
     void updated(int x, int y, int width, int height);
 
+  protected:
+
+    // Sets up the mouse cursor on the new window, if this is
+    // clickable.
+    void on_realize();
+
+    // If this is clickable, dispatches mouse clicks.
+    bool on_button_press_event(GdkEventButton *event);
+
   public:
     /** \brief Create a screenshot image widget.
      *
@@ -84,6 +108,12 @@ namespace gui
      */
     screenshot_image(const std::string &_package_name,
 		     aptitude::screenshot_type _type);
+
+    /** \brief Enable or disable showing the missing image icon. */
+    void set_show_missing_image_icon(bool new_value);
+
+    /** \brief Make this screenshot clickable. */
+    void enable_clickable();
 
     /** \brief Invoke to start a download, even if the widget is not
      *	visible.
@@ -95,35 +125,6 @@ namespace gui
      *  If the screenshot was already downloaded, this has no effect.
      */
     void cancel_download();
-  };
-
-  /** \brief A screenshot_image object that can react to events.
-   */
-  class active_screenshot_image : public Gtk::EventBox
-  {
-    screenshot_image image;
-
-    bool clickable : 1;
-
-  protected:
-    // Sets up the mouse cursor on the new window, if this is
-    // clickable.
-    void on_realize();
-
-    // If this is clickable, dispatches mouse clicks.
-    bool on_button_press_event(GdkEventButton *event);
-
-  public:
-    /** \brief Create a new active_screenshot_image.
-     *
-     *  By default, none of the class features are enabled; they must
-     *  be enabled individually (see below).
-     */
-    active_screenshot_image(const std::string &package,
-			    aptitude::screenshot_type type);
-
-    /** \brief Make this screenshot clickable. */
-    void enable_clickable();
 
     /** \brief Emitted when the screenshot is clicked,
      *  if this is a clickable image.

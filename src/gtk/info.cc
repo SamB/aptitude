@@ -720,8 +720,8 @@ namespace gui
 
     if(!package_name.empty())
       {
-	active_screenshot_image *thumbnail =
-	  manage(new active_screenshot_image(package_name, aptitude::screenshot_thumbnail));
+	screenshot_image *thumbnail =
+	  manage(new screenshot_image(package_name, aptitude::screenshot_thumbnail));
 
 	textview->add_child_at_anchor(*thumbnail, screenshotAnchor);
 	thumbnail->show();
@@ -732,6 +732,7 @@ namespace gui
 					      screenshot_page));
 
 	screenshot_image *screenshot = manage(new screenshot_image(package_name, aptitude::screenshot_full));
+	screenshot->set_show_missing_image_icon(true);
 	screenshot->show();
 
 	if(screenshot_scrolledwindow->get_child() != NULL)
