@@ -174,6 +174,7 @@ namespace gui
       clickable(false)
   {
     image.show();
+    add(image);
   }
 
   void screenshot_image::set_show_missing_image_icon(bool new_value)
