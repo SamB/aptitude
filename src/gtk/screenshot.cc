@@ -57,9 +57,15 @@ namespace gui
 
   void screenshot_image::failed(const std::string &msg)
   {
-    disconnect();
+    LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+	      "screenshot_image: failed to download "
+	      << aptitude::screenshot_key(type, package_name)
+	      << ": " << msg);
+
     image_missing = true;
     image_missing_error_message = msg;
+
+    disconnect();
   }
 
   void screenshot_image::disconnect()
@@ -76,9 +82,9 @@ namespace gui
 
 	screenshot->cancel();
 	screenshot.reset();
-
-	update_image_for_failed_download();
       }
+
+    update_image_for_failed_download();
   }
 
   void screenshot_image::prepared()
@@ -108,15 +114,31 @@ namespace gui
 
   void screenshot_image::update_image_for_failed_download()
   {
-    if(image_missing && show_missing_image_icon)
+    image.clear();
+
+    if(!image_missing)
+      LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+		"screenshot_image: not displaying the missing-image icon for "
+		<< aptitude::screenshot_key(type, package_name)
+		<< ": the image is not missing.");
+    else if(!show_missing_image_icon)
+      LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+		"screenshot_image: not displaying the missing-image icon for "
+		<< aptitude::screenshot_key(type, package_name)
+		<< ": it is missing, but the missing image icon is disabled.");
+    else
       {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+		  "Displaying the missing-image icon for "
+		  << aptitude::screenshot_key(type, package_name)
+		  << ": " << image_missing_error_message);
+
 	Gtk::Stock::lookup(Gtk::Stock::MISSING_IMAGE,
 			   Gtk::ICON_SIZE_DIALOG,
 			   image);
+	image.show();
 	set_tooltip_text(image_missing_error_message);
       }
-    else
-      image.clear();
   }
 
   void screenshot_image::connect()
@@ -134,7 +156,7 @@ namespace gui
 
 	screenshot = get_screenshot(aptitude::screenshot_key(type, package_name));
 
-	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::hide(sigc::mem_fun(*this, &screenshot_image::disconnect)));
+	screenshot_failed_connection = screenshot->get_signal_failed().connect(sigc::mem_fun(*this, &screenshot_image::failed));
 	screenshot_prepared_connection = screenshot->get_signal_prepared().connect(sigc::mem_fun(*this, &screenshot_image::prepared));
 	screenshot_updated_connection = screenshot->get_signal_updated().connect(sigc::mem_fun(*this, &screenshot_image::updated));
 	screenshot_ready_connection = screenshot->get_signal_ready().connect(sigc::mem_fun(*this, &screenshot_image::success));
@@ -152,10 +174,6 @@ namespace gui
       image_missing(false)
   {
     image.show();
-
-    sigc::slot<void> connect_slot(sigc::mem_fun(*this, &screenshot_image::connect));
-    signal_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
-    signal_no_expose_event().connect(sigc::bind_return(sigc::hide(connect_slot), true));
   }
 
   void screenshot_image::set_show_missing_image_icon(bool new_value)
@@ -177,6 +195,25 @@ namespace gui
   }
 
 
+
+  bool screenshot_image::on_expose_event(GdkEventExpose *event)
+  {
+    // Note that we only try to start a download if we didn't fail the
+    // last time.
+    if(!image_missing)
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+		  "Starting to download " << aptitude::screenshot_key(type, package_name)
+		  << " in response to an expose event.");
+	connect();
+      }
+    else
+      LOG_TRACE(Loggers::getAptitudeGtkScreenshotImage(),
+		"Not downloading " << aptitude::screenshot_key(type, package_name)
+		<< ": the last download failed with this message: " << image_missing_error_message);
+
+    return Gtk::EventBox::on_expose_event(event);
+  }
 
   void screenshot_image::on_realize()
   {

@@ -98,6 +98,9 @@ namespace gui
     void update_image_for_failed_download();
 
   protected:
+    // Starts downloading a new screenshot if the last download didn't
+    // fail.
+    bool on_expose_event(GdkEventExpose *event);
 
     // Sets up the mouse cursor on the new window, if this is
     // clickable.
