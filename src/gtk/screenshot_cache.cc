@@ -226,6 +226,13 @@ namespace gui
       void area_prepared()
       {
 	image = loader->get_pixbuf();
+
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "Got the size of the screenshot "
+		  << key << ": "
+		  << image->get_width() << "x" << image->get_height());
+
+	get_signal_prepared()();
       }
 
     public:
@@ -411,8 +418,6 @@ namespace gui
 		loader = Gdk::PixbufLoader::create();
 
 		loader->signal_area_prepared().connect(sigc::mem_fun(*this, &screenshot_cache_entry::area_prepared));
-
-		loader->signal_area_prepared().connect(get_signal_prepared().make_slot());
 		loader->signal_area_updated().connect(get_signal_updated().make_slot());
 		loader->signal_closed().connect(get_signal_ready().make_slot());
 	      }
