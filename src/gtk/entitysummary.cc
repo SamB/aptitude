@@ -32,6 +32,7 @@
 #include <gtk/info.h>
 #include <gtk/packageinformation.h>
 #include <gtk/pkgview.h>
+#include <gtk/screenshot.h>
 
 namespace cw = cwidget;
 
@@ -253,6 +254,9 @@ namespace gui
     Glib::RefPtr<Gtk::TextBuffer> textBuffer = Gtk::TextBuffer::create();
 
     cw::util::ref_ptr<PkgEntity> pkg_ent = ent.dyn_downcast<PkgEntity>();
+    // Set to where the screenshot should be inserted, if one should
+    // be inserted.
+    Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> screenshotAnchor;
     pkgCache::PkgIterator pkg;
     pkgCache::VerIterator ver;
 
@@ -341,6 +345,9 @@ namespace gui
         textBuffer->insert(textBuffer->end(), info.ShortDescription());
         textBuffer->insert(textBuffer->end(), "\n");
 
+
+	screenshotAnchor = textBuffer->create_child_anchor(textBuffer->end());
+
 	// TODO: insert a horizontal rule here (how?)
 
 	textBuffer->insert(textBuffer->end(), "\n");
@@ -399,6 +406,15 @@ namespace gui
 
 	// Note the use of sigc::ref / ent.weak_ref() to ensure this
 	// connection is removed when the buttons are destroyed.
+      }
+
+    if(!pkg.end() && screenshotAnchor)
+      {
+	screenshot_image *thumbnail =
+	  manage(new screenshot_image(pkg.Name(), aptitude::screenshot_thumbnail));
+
+	textView->add_child_at_anchor(*thumbnail, screenshotAnchor);
+	thumbnail->show();
       }
   }
 }
