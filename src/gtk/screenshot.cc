@@ -148,7 +148,7 @@ namespace gui
 		  "screenshot_image: requesting " << describe());
 
 	// Clear the missing-image flag and drop any associated
-	// tooltip.  The image itself will be cleared below.
+	// tooltip.
 	image_missing = false;
 	image_missing_error_message.clear();
 	set_has_tooltip(false);
@@ -159,6 +159,14 @@ namespace gui
 	screenshot_prepared_connection = screenshot->get_signal_prepared().connect(sigc::mem_fun(*this, &screenshot_image::prepared));
 	screenshot_updated_connection = screenshot->get_signal_updated().connect(sigc::mem_fun(*this, &screenshot_image::updated));
 	screenshot_ready_connection = screenshot->get_signal_ready().connect(sigc::mem_fun(*this, &screenshot_image::success));
+
+	// If the screenshot is already loaded, we reuse it; otherwise
+	// we wait for a signal informing us that it's ready.
+	Glib::RefPtr<Gdk::Pixbuf> current_screenshot = screenshot->get_screenshot();
+	if(current_screenshot)
+	  image.set(current_screenshot);
+	else
+	  image.clear();
 
 	show();
       }
