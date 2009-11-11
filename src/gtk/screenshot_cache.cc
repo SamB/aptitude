@@ -736,6 +736,11 @@ namespace gui
 		// replicated twice.
 		cache.get<ordered_tag>().push_back(rval_from_weak_cache);
 		update_cache_size(cache_size + rval_from_weak_cache->get_size());
+
+		add_entry(rval_from_weak_cache);
+		// No need to attach signals -- they're already
+		// attached.
+		return rval_from_weak_cache;
 	      }
 
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
