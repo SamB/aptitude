@@ -533,7 +533,17 @@ namespace gui
       {
 	Glib::RefPtr<Gdk::Pixbuf> screenshot(entry.get_image());
 
-	return screenshot->get_rowstride() * screenshot->get_height();
+	const int rval = screenshot->get_rowstride() * screenshot->get_height();
+
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "The screenshot " << entry.get_key()
+		  << " has dimensions " << screenshot->get_width()
+		  << "x" << screenshot->get_height()
+		  << " and rowstride " << screenshot->get_rowstride()
+		  << ", for a byte size of "
+		  << rval);
+
+	return rval;
       }
 
       static void update_cache_size(int new_cache_size)
