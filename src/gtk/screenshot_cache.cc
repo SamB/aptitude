@@ -491,7 +491,11 @@ namespace gui
 	  weak_cache.find(key);
 
 	if(found == weak_cache.end())
-	  return boost::shared_ptr<screenshot_cache_entry>();
+	  {
+	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		      "No entry for " << key << " in the weak screenshot cache.");
+	    return boost::shared_ptr<screenshot_cache_entry>();
+	  }
 	else
 	  {
 	    boost::shared_ptr<screenshot_cache_entry> rval(found->second);
