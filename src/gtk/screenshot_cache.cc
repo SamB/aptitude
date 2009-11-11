@@ -676,10 +676,10 @@ namespace gui
 	weak_cache_map::iterator found_weak = weak_cache.find(entry->get_key());
 	if(found_weak != weak_cache.end())
 	  {
-	    // Also should never happen.
-	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
-		     "Dropping the weak entry for " << entry->get_key()
-		     << " from the cache to make room for the new entry.");
+	    // This happens when we resurrect a weak entry.
+	    LOG_DEBUG(Loggers::getAptitudeGtkScreenshotCache(),
+		      "Dropping the weak entry for " << entry->get_key()
+		      << " from the cache to make room for the new entry.");
 	    weak_cache.erase(found_weak);
 	  }
 
