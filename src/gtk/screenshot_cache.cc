@@ -677,7 +677,7 @@ namespace gui
 	  {
 	    // Also should never happen.
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
-		     "Dropping the weak entry for " << (*found)->get_key()
+		     "Dropping the weak entry for " << entry->get_key()
 		     << " from the cache to make room for the new entry.");
 	    weak_cache.erase(found_weak);
 	  }
