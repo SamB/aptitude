@@ -689,7 +689,18 @@ namespace gui
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Returning an existing screenshot cache entry for " << rval->get_key());
-	    return *found;
+
+	    // Save a strong pointer, for paranoia's sake.
+	    boost::shared_ptr<screenshot_cache_entry> rval(*found);
+
+	    // Move the screenshot to the end of the
+	    // least-recently-used list.
+	    ordered_index &ordered(cache.get<ordered_tag>());
+	    ordered_index::iterator found_ordered = cache.project<ordered_tag>(found);
+
+	    ordered.relocate(ordered.end(), found_ordered);
+
+	    return rval;
 	  }
 	else
 	  {
