@@ -23,6 +23,7 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/weak_ptr.hpp>
@@ -461,6 +462,60 @@ namespace gui
       static cache_map cache;
       static int cache_size; // Last computed size of the cache.
 
+
+      // Store references to stuff that's been ejected from the cache,
+      // to avoid wasting memory by loading it again.
+      typedef std::pair<screenshot_key, boost::weak_ptr<screenshot_cache_entry> > weak_screenshot_pair;
+      typedef multi_index_container<
+	weak_screenshot_pair,
+	indexed_by<
+	  hashed_unique<tag<by_screenshot_tag>,
+			member<weak_screenshot_pair,
+			       screenshot_key,
+			       &weak_screenshot_pair::first> > >
+	> weak_cache_map;
+
+      static weak_cache_map weak_cache;
+
+      /** \brief Retrieve the given screenshot from the weak cache, or
+       *  an invalid pointer if it expired or isn't present.
+       */
+      static boost::shared_ptr<screenshot_cache_entry> get_from_weak_cache(const screenshot_key &key)
+      {
+	weak_cache_map::iterator found =
+	  weak_cache.find(key);
+
+	if(found == weak_cache.end())
+	  return boost::shared_ptr<screenshot_cache_entry>();
+	else
+	  {
+	    boost::shared_ptr<screenshot_cache_entry> rval(found->second);
+
+	    if(rval.get() == NULL)
+	      {
+		LOG_DEBUG(Loggers::getAptitudeGtkScreenshotCache(),
+			  "Dropping " << key
+			  << " from the weak screenshot cache: it expired.");
+		weak_cache.erase(found);
+	      }
+
+	    return rval;
+	  }
+      }
+
+      /** \brief Insert an entry into the weak screenshot cache.
+       *
+       *  Existing entries are silently overwritten.
+       */
+      static void add_to_weak_cache(const boost::shared_ptr<screenshot_cache_entry> &entry)
+      {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "Adding " << entry->get_key()
+		  << " to the weak cache.");
+
+	weak_cache.insert(std::make_pair(entry->get_key(), entry));
+      }
+
       static int get_max_cache_size()
       {
 	// How much memory to tie up in loaded screenshots; defaults
@@ -510,6 +565,7 @@ namespace gui
 		// we just call set_size() directly.
 		cache_size -= victim->get_size();
 		victim->set_size(0);
+		add_to_weak_cache(victim);
 	      }
 	  }
       }
@@ -526,6 +582,15 @@ namespace gui
 		  << cache_size << " to " << new_cache_size);
 
 	entry.set_size(new_size);
+
+	// Only update the cache size if the entry is still in it.
+	by_screenshot_index &by_screenshot = cache.get<by_screenshot_tag>();
+	by_screenshot_index::const_iterator found =
+	  by_screenshot.find(entry);
+	if(found != end && *found != entry)
+	  LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		    "Not updating the cache due to the change in the size of "
+<< entry->get_key() << ": it was already replaced.");
 	update_cache_size(new_cache_size);
       }
 
@@ -588,11 +653,21 @@ namespace gui
 		     "Dropping " << (*found)->get_key()
 		     << " from the cache to make room for the new entry.");
 	    update_entry_size(**found, 0);
-	    by_screenshot.replace(found, entry);
+	    by_screenshot.erase(found);
 	  }
-	else
-	  cache.get<ordered_tag>().push_back(entry);
 
+	// Drop any existing weak cache entry.
+	weak_cache_map::iterator found_weak = weak_cache.find(entry->get_key());
+	if(found_weak != weak_cache.end())
+	  {
+	    // Also should never happen.
+	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
+		     "Dropping the weak entry for " << (*found)->get_key()
+		     << " from the cache to make room for the new entry.");
+	    weak_cache.erase(found_weak);
+	  }
+
+	cache.get<ordered_tag>().push_back(entry);
 	update_cache_size(cache_size + entry->get_size());
       }
 
@@ -618,6 +693,21 @@ namespace gui
 	  }
 	else
 	  {
+	    // Check the weak cache.
+	    boost::shared_ptr<screenshot_cache_entry>
+	      rval_from_weak_cache = get_from_weak_cache(key);
+	    if(rval_from_weak_cache.get() != NULL)
+	      {
+		LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+			  "Returning an existing weak screenshot cache entry for " << rval->get_key());
+
+		// Strengthen the cache entry.  TODO: should be a
+		// low-level cache management routine instead of being
+		// replicated twice.
+		cache.get<ordered_tag>().push_back(rval_from_weak_cache);
+		update_cache_size(cache_size + rval_from_weak_cache->get_size());
+	      }
+
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		      "Creating a new screenshot cache entry for " << rval->get_key());
 
@@ -653,6 +743,8 @@ namespace gui
 
     screenshot_cache::cache_map screenshot_cache::cache;
     int screenshot_cache::cache_size = 0;
+
+    screenshot_cache::weak_cache_map screenshot_cache::weak_cache;
 
     void screenshot_cache_entry::cancel()
     {
