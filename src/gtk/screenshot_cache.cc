@@ -580,10 +580,7 @@ namespace gui
 			 << victim->get_size() << " bytes.");
 
 		ordered.pop_front();
-		// Note that update_entry_size could recur, so instead
-		// we just call set_size() directly.
 		cache_size -= victim->get_size();
-		victim->set_size(0);
 		add_to_weak_cache(victim);
 	      }
 	  }
