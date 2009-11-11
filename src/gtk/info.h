@@ -60,7 +60,7 @@ namespace gui
       void do_cache_reloaded();
 
       void notebook_switch_handler(guint page_num);
- 
+
 
       void show_selected_version(const Gtk::TreeModel::iterator &iter);
       void selected_version_changed();
