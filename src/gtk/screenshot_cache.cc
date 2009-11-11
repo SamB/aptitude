@@ -23,6 +23,7 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/mem_fun.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/weak_ptr.hpp>
 
@@ -444,32 +445,13 @@ namespace gui
       class ordered_tag;
       class by_screenshot_tag;
 
-      class hash_cache_entry
-      {
-      public:
-	size_t operator()(const boost::shared_ptr<screenshot_cache_entry> &entry) const
-	{
-	  return boost::hash<screenshot_key>()(entry->get_key());
-	}
-      };
-
-      class cache_entry_equal
-      {
-      public:
-	bool operator()(const boost::shared_ptr<screenshot_cache_entry> &entry1,
-			const boost::shared_ptr<screenshot_cache_entry> &entry2) const
-	{
-	  return entry1->get_key() == entry2->get_key();
-	}
-      };
-
       typedef multi_index_container<
 	boost::shared_ptr<screenshot_cache_entry>,
 	indexed_by<
 	  hashed_unique<tag<by_screenshot_tag>,
-			identity<boost::shared_ptr<screenshot_cache_entry> >,
-			hash_cache_entry,
-			cache_entry_equal>,
+			const_mem_fun<screenshot_cache_entry,
+				      const screenshot_key &,
+				      &screenshot_cache_entry::get_key> >,
 	  sequenced<tag<ordered_tag> > >
 	> cache_map;
 
@@ -567,7 +549,7 @@ namespace gui
 	    // other entry from the cache.
 	    by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
 
-	    by_screenshot_index::iterator found = by_screenshot.find(entry);
+	    by_screenshot_index::iterator found = by_screenshot.find(entry->get_key());
 	    if(found != by_screenshot.end())
 	      {
 		if(*found != entry)
@@ -598,7 +580,7 @@ namespace gui
 	// element.
 	by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
 
-	by_screenshot_index::iterator found = by_screenshot.find(entry);
+	by_screenshot_index::iterator found = by_screenshot.find(entry->get_key());
 	if(found != by_screenshot.end())
 	  {
 	    // Should never happen!
@@ -627,7 +609,7 @@ namespace gui
 
 	by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
 
-	by_screenshot_index::iterator found = by_screenshot.find(rval);
+	by_screenshot_index::iterator found = by_screenshot.find(key);
 	if(found != by_screenshot.end())
 	  {
 	    LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
@@ -658,7 +640,7 @@ namespace gui
       {
 	by_screenshot_index &by_screenshot(cache.get<by_screenshot_tag>());
 
-	by_screenshot_index::iterator found = by_screenshot.find(entry);
+	by_screenshot_index::iterator found = by_screenshot.find(entry->get_key());
 	if(found != by_screenshot.end())
 	  {
 	    LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
