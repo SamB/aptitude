@@ -571,23 +571,23 @@ namespace gui
       }
 
       // Update the cache's stored knowledge of the entry's size.
-      static void update_entry_size(screenshot_cache_entry &entry,
+      static void update_entry_size(const boost::shared_ptr<screenshot_cache_entry> &entry,
 				    int new_size)
       {
-	const int new_cache_size = cache_size - entry.get_size() + new_size;
+	const int new_cache_size = cache_size - entry->get_size() + new_size;
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
-		  "Updating the size of " << entry.get_key()
-		  << " from " << entry.get_size() << " to "
+		  "Updating the size of " << entry->get_key()
+		  << " from " << entry->get_size() << " to "
 		  << new_size << ", cache size changes from "
 		  << cache_size << " to " << new_cache_size);
 
-	entry.set_size(new_size);
+	entry->set_size(new_size);
 
 	// Only update the cache size if the entry is still in it.
 	by_screenshot_index &by_screenshot = cache.get<by_screenshot_tag>();
 	by_screenshot_index::const_iterator found =
-	  by_screenshot.find(entry);
-	if(found != end && *found != entry)
+	  by_screenshot.find(entry->get_key());
+	if(found != by_screenshot.end() && *found != entry)
 	  LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		    "Not updating the cache due to the change in the size of "
 << entry->get_key() << ": it was already replaced.");
@@ -599,7 +599,7 @@ namespace gui
 	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak);
 
 	if(entry.get() != NULL)
-	  update_entry_size(*entry, get_entry_size(*entry));
+	  update_entry_size(entry, get_entry_size(*entry));
       }
 
       static void download_failed(const std::string &msg,
@@ -628,7 +628,7 @@ namespace gui
 			     << ", dropping it from the cache.");
 
 		    // Forget about its size if it had a size.
-		    update_entry_size(*entry, 0);
+		    update_entry_size(entry, 0);
 		    by_screenshot.erase(found);
 		  }
 	      }
@@ -652,7 +652,7 @@ namespace gui
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Dropping " << (*found)->get_key()
 		     << " from the cache to make room for the new entry.");
-	    update_entry_size(**found, 0);
+	    update_entry_size(*found, 0);
 	    by_screenshot.erase(found);
 	  }
 
@@ -735,7 +735,7 @@ namespace gui
 	  {
 	    LOG_INFO(Loggers::getAptitudeGtkScreenshotCache(),
 		     entry->get_key() << " was canceled, dropping it from the cache.");
-	    update_entry_size(*entry, 0);
+	    update_entry_size(entry, 0);
 	    by_screenshot.erase(found);
 	  }
       }
