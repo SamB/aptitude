@@ -735,6 +735,10 @@ namespace gui
 							 rvalWeak));
 	    rval->get_signal_prepared().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::screenshot_size_computed),
 							   rvalWeak));
+	    // Sometimes screenshots become ready immediately without
+	    // first being prepared; handle that case here:
+	    rval->get_signal_ready().connect(sigc::bind(sigc::ptr_fun(&screenshot_cache::screenshot_size_computed),
+							rvalWeak));
 
 	    rval->go();
 
