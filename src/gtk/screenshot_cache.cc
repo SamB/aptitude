@@ -262,6 +262,9 @@ namespace gui
 
       ~screenshot_cache_entry()
       {
+	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
+		  "Destroying a screenshot cache entry for " << key);
+
 	// Clear the signals in case the PixbufLoader emits something.
 	get_signal_failed().clear();
 	get_signal_prepared().clear();
