@@ -786,7 +786,13 @@ namespace aptitude
 	  {
 	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
 		      "Waiting for the background download thread to terminate.");
-	    instancet->join();
+	    // Take a strong copy in case the instance thread is
+	    // destroyed while we're working on it.
+	    boost::shared_ptr<cw::threads::thread> instancet_copy(instancet);
+
+	    l.release();
+	    instancet_copy->join();
+	    l.acquire();
 
 	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
 		      "The background thread has exited.");
