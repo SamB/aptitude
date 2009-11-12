@@ -94,7 +94,7 @@ void apt_close_cache();
 /** \brief Close and destroy all global data structures.
  *
  *  In addition to closing the apt cache, this closes the download
- *  cache.
+ *  cache and the download queue.
  */
 void apt_shutdown();
 

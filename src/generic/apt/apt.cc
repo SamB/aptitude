@@ -26,6 +26,7 @@
 
 #include "aptitude_resolver_universe.h"
 #include "config_signal.h"
+#include "download_queue.h"
 #include "pkg_hier.h"
 #include "resolver_manager.h"
 #include "rev_dep_iterator.h"
@@ -545,6 +546,9 @@ void apt_reload_cache(OpProgress *progress_bar, bool do_initselections,
 
 void apt_shutdown()
 {
+  aptitude::shutdown_download_queue();
+
+
   apt_close_cache();
 
   delete aptcfg;

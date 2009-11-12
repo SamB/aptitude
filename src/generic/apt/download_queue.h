@@ -121,6 +121,19 @@ namespace aptitude
 		 const std::string &short_description,
 		 const boost::shared_ptr<download_callbacks> &callbacks,
 		 post_thunk_f post_thunk);
+
+  /** \brief Shut down the background thread and clear its data
+   *  structures; used to abort all processing when the program is
+   *  terminating.
+   *
+   *  We need to do this because otherwise, the objects in the queue
+   *  might be destroyed when global destructors are called, and some
+   *  of them access things (like log4cxx) that are destroyed at the
+   *  same time, causing crashes and other bad behavior.
+   *
+   *  This function blocks until the queue is fully shut down.
+   */
+  void shutdown_download_queue();
 }
 
 #endif // DOWNLOAD_QUEUE_H

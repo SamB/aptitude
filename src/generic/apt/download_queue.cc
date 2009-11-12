@@ -517,6 +517,13 @@ namespace aptitude
 	{
 	  cw::threads::mutex::lock l(state_mutex);
 
+	  if(shutdown_queue)
+	    {
+	      LOG_INFO(Loggers::getAptitudeDownloadQueue(),
+		       "The download queue is shutting down: stopping the background download.");
+	      return false;
+	    }
+
 	  for(std::deque<boost::shared_ptr<start_request> >::const_iterator it =
 		start_requests.begin();
 	      it != start_requests.end(); ++it)
@@ -596,6 +603,21 @@ namespace aptitude
       // while the cache is closed, for instance.
       static boost::shared_ptr<download_thread> instance;
 
+      // Similarly, if the instance is still running, this is a thread
+      // object for the thread it's running in.  Users of this member
+      // should make a strong copy while holding the state lock, since
+      // the background thread clears it upon exit.
+      static boost::shared_ptr<cw::threads::thread> instancet;
+
+      // Set to true to cancel any pending downloads in preparation
+      // for shutting down the program.
+      //
+      // This doesn't attempt to leave things in any sort of "nice"
+      // state; it just asks the Acquire process to stop, nukes
+      // everything in all the queues, and refuses to start a new
+      // queue runner.
+      static bool shutdown_queue;
+
       /** \brief Used to invoke the download queue's run() from the
        *  background thread.
        *
@@ -627,7 +649,7 @@ namespace aptitude
 	if(instance.get() == NULL)
 	  {
 	    instance = boost::make_shared<download_thread>();
-	    cw::threads::thread(bootstrap(instance));
+	    instancet = boost::make_shared<cw::threads::thread>(bootstrap(instance));
 	  }
       }
 
@@ -699,6 +721,15 @@ namespace aptitude
 	boost::shared_ptr<download_request_impl> rval =
 	  boost::make_shared<download_request_impl>();
 
+	if(shutdown_queue)
+	  {
+	    LOG_WARN(Loggers::getAptitudeDownloadQueue(),
+		     "Not starting a job to download " << uri << ": the queue is shut down.");
+	    // Note that a newly instantiated request object is safe
+	    // to return: canceling it will just be a NOP.
+	    return rval;
+	  }
+
 	boost::shared_ptr<start_request> start =
 	  boost::make_shared<start_request>(uri, short_description,
 					    temp::name(temp::dir("aptitudeDownload"),
@@ -720,9 +751,61 @@ namespace aptitude
       static void cancel_job(const boost::shared_ptr<download_request_impl> &req)
       {
 	cw::threads::mutex::lock l(state_mutex);
+
+	if(shutdown_queue)
+	  {
+	    LOG_WARN(Loggers::getAptitudeDownloadQueue(),
+		     "Not canceling a job: the queue is shut down.");
+	    return;
+	  }
+
 	cancel_requests.push_back(req);
 
 	ensure_background_thread();
+      }
+
+      /** \brief Shut down the background thread and clear its data
+       *  structures; used to abort all processing when the program is
+       *  terminating.
+       *
+       *  We need to do this because otherwise, the objects in the
+       *  queue might be destroyed when global destructors are called,
+       *  and some of them access things (like log4cxx) that are
+       *  destroyed at the same time.
+       */
+      static void shutdown()
+      {
+	cw::threads::mutex::lock l(state_mutex);
+
+	LOG_INFO(Loggers::getAptitudeDownloadQueue(),
+		 "Shutting down the download queue.");
+
+	shutdown_queue = true;
+
+	if(instance.get() != NULL)
+	  {
+	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		      "Waiting for the background download thread to terminate.");
+	    instancet->join();
+
+	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		      "The background thread has exited.");
+	  }
+
+	LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		  "Clearing the start request list.");
+	start_requests.clear();
+
+	LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		  "Clearing the cancel request list.");
+	cancel_requests.clear();
+
+	LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		  "Clearing the active download map.");
+	active_downloads.clear();
+
+	LOG_INFO(Loggers::getAptitudeDownloadQueue(),
+		 "The download queue is now shut down.");
       }
 
       /** \brief Stop any download for the given URI.
@@ -733,6 +816,14 @@ namespace aptitude
       static void remove_job_by_uri(const std::string &uri)
       {
 	cw::threads::mutex::lock l(state_mutex);
+
+	if(shutdown_queue)
+	  {
+	    LOG_WARN(Loggers::getAptitudeDownloadQueue(),
+		     "Not removing the job that downloads " << uri
+		     << ": the queue is shut down.");
+	    return;
+	  }
 
 	boost::unordered_map<std::string, boost::shared_ptr<active_download_info> >::iterator
 	  found = active_downloads.find(uri);
@@ -750,7 +841,7 @@ namespace aptitude
 
 	LOG_TRACE(Loggers::getAptitudeDownloadQueue(), "Background download queue starting.");
 
-	while(!start_requests.empty())
+	while(!start_requests.empty() && !shutdown_queue)
 	  {
 	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
 		      "Setting up the download process for the background download queue.");
@@ -785,6 +876,7 @@ namespace aptitude
 	cancel_requests.clear();
 
 	instance.reset();
+	instancet.reset();
       }
     };
 
@@ -798,7 +890,10 @@ namespace aptitude
 
     boost::unordered_map<std::string, boost::shared_ptr<active_download_info> > download_thread::active_downloads;
 
+    bool download_thread::shutdown_queue = false;
+
     boost::shared_ptr<download_thread> download_thread::instance;
+    boost::shared_ptr<cw::threads::thread> download_thread::instancet;
 
 
     void download_request_impl::cancel()
@@ -839,5 +934,10 @@ namespace aptitude
   {
     return download_thread::start_download_job(uri, short_description,
 					       callbacks, post_thunk);
+  }
+
+  void shutdown_download_queue()
+  {
+    download_thread::shutdown();
   }
 }
