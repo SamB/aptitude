@@ -268,7 +268,7 @@ namespace gui
 	get_signal_updated().clear();
 	get_signal_ready().clear();
 
-	// The PixbufLoader complain loudly if we don't do this:
+	// The PixbufLoader complains loudly if we don't do this:
 	if(loader)
 	  {
 	    try
