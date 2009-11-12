@@ -811,7 +811,7 @@ namespace aptitude
       /** \brief Stop any download for the given URI.
        *
        *  Use by do_cancel() to remove jobs with no listeners from the
-       *  download queue.
+       *  download queue.  Must run in the background thread.
        */
       static void remove_job_by_uri(const std::string &uri)
       {
