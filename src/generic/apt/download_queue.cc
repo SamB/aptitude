@@ -107,6 +107,12 @@ namespace aptitude
 	listeners.erase(conn);
       }
 
+      /** \brief Removes this job from the queue's dictionary of
+       *  active jobs and drops all listeners.  Must be invoked from
+       *  the background download thread.
+       */
+      void mark_finished();
+
       /** \brief Invoke the success callback on each listener. */
       void invoke_success(const temp::name &filename) const
       {
@@ -226,7 +232,25 @@ namespace aptitude
       void Failed(std::string Message, pkgAcquire::MethodConfig *Cnf)
       {
 	pkgAcqFile::Failed(Message, Cnf);
+
+	if(job.get() == NULL)
+	  {
+	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		      "Not signaling failure on "
+		      << DescURI()
+		      << ": its job has already been cleared.");
+	    return;
+	  }
+
 	handle_failure(ErrorText);
+
+	// We have to be careful here because mark_finished() might
+	// destroy this object.  Because of that, we can't access
+	// "this" after invoking it, so if we want to reset the job
+	// pointer, we need to work on a copy.
+	boost::shared_ptr<download_job> job_copy(job);
+	job.reset();
+	job_copy->mark_finished();
       }
 
       void Done(std::string Message,
@@ -235,6 +259,15 @@ namespace aptitude
 		pkgAcquire::MethodConfig *Cnf)
       {
 	pkgAcqFile::Done(Message, Size, CalcHash, Cnf);
+
+	if(job.get() == NULL)
+	  {
+	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		      "Not handling completion on "
+		      << DescURI()
+		      << ": its job has already been cleared.");
+	    return;
+	  }
 
 	if(Status != pkgAcquire::Item::StatDone)
 	  {
@@ -267,11 +300,19 @@ namespace aptitude
 	    download_cache->putItem(job->get_uri(), job->get_filename().get_name(), lastModifiedTime);
 	    job->invoke_success(job->get_filename());
 	  }
+
+	// We have to be careful here because mark_finished() might
+	// destroy this object.  Because of that, we can't access
+	// "this" after invoking it, so if we want to reset the job
+	// pointer, we need to work on a copy.
+	boost::shared_ptr<download_job> job_copy(job);
+	job.reset();
+	job_copy->mark_finished();
       }
 
       std::string Custom600Headers()
       {
-	if(job->get_last_modified_time() == 0)
+	if(job.get() == NULL || job->get_last_modified_time() == 0)
 	  return "";
 	else
 	  return "Last-Modified: " + TimeRFC1123(job->get_last_modified_time());
@@ -786,7 +827,13 @@ namespace aptitude
 	  {
 	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
 		      "Waiting for the background download thread to terminate.");
-	    instancet->join();
+	    // Take a strong copy in case the instance thread is
+	    // destroyed while we're working on it.
+	    boost::shared_ptr<cw::threads::thread> instancet_copy(instancet);
+
+	    l.release();
+	    instancet_copy->join();
+	    l.acquire();
 
 	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
 		      "The background thread has exited.");
@@ -894,6 +941,16 @@ namespace aptitude
 
     boost::shared_ptr<download_thread> download_thread::instance;
     boost::shared_ptr<cw::threads::thread> download_thread::instancet;
+
+
+    void download_job::mark_finished()
+    {
+      // Note that remove_job_by_uri() could trigger destroying this
+      // object, so we need to ensure that it's the last thing we
+      // invoke.
+      listeners.clear();
+      download_thread::remove_job_by_uri(uri);
+    }
 
 
     void download_request_impl::cancel()

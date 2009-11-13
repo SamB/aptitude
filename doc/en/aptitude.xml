@@ -10655,6 +10655,30 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+	    <seglistitem id='configScreenshotIncrementalLoadLimit'>
+	      <seg><literal>Aptitude::Screenshot::IncrementalLoadLimit</literal></seg>
+	      <seg><literal>16384</literal></seg>
+
+	      <seg>
+		The minimum size in bytes at which aptitude will begin
+		to display screenshots incrementally.  Below this
+		size, screenshots will not appear until they are fully
+		downloaded.
+	      </seg>
+	    </seglistitem>
+
+	    <seglistitem>
+	      <seg><literal>Aptitude::Screenshot::Cache-Max</literal></seg>
+	      <seg><literal>4194304</literal></seg>
+
+	      <seg>
+		The maximum number of bytes of screenshot data that
+		aptitude will store in memory for screenshots that are
+		not currently being displayed.  The default is four
+		megabytes.
+	      </seg>
+	    </seglistitem>
+
 	    <seglistitem id='configCmdLine-Simulate'>
 	      <seg><literal>Aptitude::CmdLine::Simulate</literal></seg>
 	      <seg><literal>false</literal></seg>

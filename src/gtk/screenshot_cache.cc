@@ -532,7 +532,7 @@ namespace gui
       {
 	// How much memory to tie up in loaded screenshots; defaults
 	// to 4MB.
-	return aptcfg->FindI(PACKAGE "::Screenshot::Max-Memory-Usage",
+	return aptcfg->FindI(PACKAGE "::Screenshot::Cache-Max",
 			     1024 * 1024 * 4);
       }
 
