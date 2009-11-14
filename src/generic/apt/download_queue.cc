@@ -218,6 +218,18 @@ namespace aptitude
 		  "Setting up a download of " << job->get_short_description());
       }
 
+      ~AcqQueuedFile()
+      {
+	if(job.get() != NULL)
+	  {
+	    LOG_WARN(Loggers::getAptitudeDownloadQueue(),
+		     "Download of " << job->get_short_description()
+		     << " is being prematurely destroyed.");
+	    job->invoke_failure("Download queue destroyed.");
+	    job.reset();
+	  }
+      }
+
       const download_job &get_job() const { return *job; }
 
       /** \brief Delete this object.
@@ -906,6 +918,9 @@ namespace aptitude
 	      }
 
 	    start_requests.clear();
+
+	    LOG_TRACE(Loggers::getAptitudeDownloadQueue(),
+		      "Running the current download queue.");
 
 	    l.release();
 
