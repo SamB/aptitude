@@ -729,7 +729,8 @@ namespace gui
 	    if(rval_from_weak_cache.get() != NULL)
 	      {
 		LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
-			  "Returning an existing weak screenshot cache entry for " << rval->get_key());
+			  "Returning an existing weak screenshot cache entry for " << rval->get_key()
+			  << " (" << rval->get_size() << " bytes)");
 
 		// Strengthen the cache entry.  TODO: should be a
 		// low-level cache management routine instead of being
