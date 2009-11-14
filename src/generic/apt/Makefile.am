@@ -57,6 +57,7 @@ libgeneric_apt_a_SOURCES = \
         pkg_changelog.h     \
         pkg_hier.cc         \
         pkg_hier.h          \
+        post_thunk.h        \
         resolver_manager.cc \
         resolver_manager.h  \
         rev_dep_iterator.h  \
