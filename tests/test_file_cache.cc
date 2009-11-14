@@ -437,7 +437,8 @@ void testCacheUpgradeFrom(int version)
     free(argv0_copy);
   }
 
-  std::string inputFilename = (boost::format("%s/file_caches/ver%d_cache.db") % argv0_dirname % version).str();
+  const std::string srcdir = SRCDIR;
+  std::string inputFilename = (boost::format(std::string("%s/") + srcdir + "/file_caches/ver%d_cache.db") % argv0_dirname % version).str();
 
   // Make a temporary copy, since the upgrade is in-place (don't want
   // to modify the test data!).
