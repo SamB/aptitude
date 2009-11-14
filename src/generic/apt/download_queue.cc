@@ -967,7 +967,7 @@ namespace aptitude
 	return;
 
 
-      boost::shared_ptr<download_job> job(parent);
+      boost::shared_ptr<download_job> job(parent.lock());
       if(job.get() != NULL)
 	{
 	  job->remove_listener(connection);

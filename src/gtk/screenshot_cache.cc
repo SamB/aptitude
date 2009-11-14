@@ -501,7 +501,7 @@ namespace gui
 	  }
 	else
 	  {
-	    boost::shared_ptr<screenshot_cache_entry> rval(found->second);
+	    boost::shared_ptr<screenshot_cache_entry> rval(found->second.lock());
 
 	    if(rval.get() == NULL)
 	      {
@@ -615,7 +615,7 @@ namespace gui
 
       static void screenshot_size_computed(const boost::weak_ptr<screenshot_cache_entry> &entryWeak)
       {
-	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak);
+	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak.lock());
 
 	if(entry.get() != NULL)
 	  update_entry_size(entry, get_entry_size(*entry));
@@ -624,7 +624,7 @@ namespace gui
       static void download_failed(const std::string &msg,
 				  const boost::weak_ptr<screenshot_cache_entry> &entryWeak)
       {
-	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak);
+	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak.lock());
 
 	if(entry.get() != NULL)
 	  {
