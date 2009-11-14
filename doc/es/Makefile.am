@@ -1,8 +1,6 @@
 # automake doesn't play nicely with DocBook :(
 
-# no full manual yet
-SUBDIRS=
-#SUBDIRS=images
+SUBDIRS=images
 
 LANGCODE=es
 MANPAGE=aptitude.$(LANGCODE).8
@@ -17,7 +15,7 @@ docdir=$(datadir)/doc/$(PACKAGE)
 localemandir=$(mandir)/$(LANGCODE)
 htmldir=$(docdir)/html/$(LANGCODE)
 
-IMAGES = $(wildcard images/*.png)
+IMAGES = $(wildcard $(srcdir)/images/*.png)
 
 all-local: doc-stamp
 
@@ -32,7 +30,7 @@ install-data-hook:
 	$(INSTALL_DATA) $(MANPAGE) $(DESTDIR)$(localemandir)/man8/aptitude.8
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/images
 	$(INSTALL_DATA) output-html/*.html output-html/*.css $(DESTDIR)$(htmldir)
-# $(INSTALL_DATA) output-html/images/* $(htmldir)/images
+	$(INSTALL_DATA) output-html/images/* $(htmldir)/images
 
 	$(INSTALL_DATA) README.$(LANGCODE) $(DESTDIR)$(pkgdatadir)/README.$(LANGCODE)
 
@@ -65,9 +63,10 @@ doc-html-stamp: $(XMLSOURCES) $(srcdir)/../aptitude-html.xsl $(IMAGES)
 
 	xsltproc -o output-html/ $(srcdir)/../aptitude-html.xsl aptitude.xml
 
-#	mkdir output-html/images/
-#	ln -f $(srcdir)/images/*.png output-html/images/
-#	for x in caution important note tip warning; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.png output-html/images/; done
-#	for x in home next prev up; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.gif output-html/images/; done
+	mkdir output-html/images/
+	ln -f $(srcdir)/images/*.png output-html/images/
+	set -e; for x in $(srcdir)/images/*.svg; do rsvg-convert -f png -o output-html/images/$$(basename $${x%.svg}.png) $$x; done
+	for x in caution important note tip warning; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.png output-html/images/; done
+	for x in home next prev up; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.gif output-html/images/; done
 
 	touch doc-html-stamp
