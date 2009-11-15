@@ -243,6 +243,9 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverTiers();
 
+    /** \brief The logger for messages related to temporary files. */
+    static log4cxx::LoggerPtr getAptitudeTemp();
+
     /** \brief The logger for the "why" command.
      *
      *  Name: aptitude.why
