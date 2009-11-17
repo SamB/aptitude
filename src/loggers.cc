@@ -183,6 +183,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.tiers");
   }
 
+  LoggerPtr Loggers::getAptitudeTemp()
+  {
+    return Logger::getLogger("aptitude.temp");
+  }
+
   LoggerPtr Loggers::getAptitudeWhy()
   {
     return Logger::getLogger("aptitude.why");

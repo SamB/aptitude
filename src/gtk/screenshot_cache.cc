@@ -151,6 +151,10 @@ namespace gui
       bool incremental_load(const temp::name &name,
 			    int endpos)
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
 	int fdnum = open(name.get_name().c_str(), O_RDONLY);
 	if(fdnum < 0)
 	  {
@@ -225,6 +229,10 @@ namespace gui
 
       void area_prepared()
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
 	image = loader->get_pixbuf();
 
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
@@ -305,6 +313,11 @@ namespace gui
        */
       void image_loaded(const Glib::RefPtr<Gdk::Pixbuf> &new_image)
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
+
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Replacing " << key
 		  << " with a newly loaded image.");
@@ -335,6 +348,11 @@ namespace gui
       // download_callbacks implementation:
       void success(const temp::name &filename)
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
+
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "The screenshot " << key << " was successfully downloaded to "
 		  << filename.get_name());
@@ -391,6 +409,11 @@ namespace gui
 
       void failure(const std::string &msg)
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
+
 	LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		 "Failed to acquire " << key
 		 << ": " << msg);
@@ -402,6 +425,11 @@ namespace gui
 			    unsigned long currentSize,
 			    unsigned long totalSize)
       {
+	// Take a strong reference to "this" in case a callback drops
+	// a reference.
+	boost::shared_ptr<screenshot_cache_entry> strong_this(shared_from_this());
+
+
 	LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
 		  "Partial download of " << key
 		  << " to " << filename.get_name()
@@ -501,7 +529,7 @@ namespace gui
 	  }
 	else
 	  {
-	    boost::shared_ptr<screenshot_cache_entry> rval(found->second);
+	    boost::shared_ptr<screenshot_cache_entry> rval(found->second.lock());
 
 	    if(rval.get() == NULL)
 	      {
@@ -615,7 +643,7 @@ namespace gui
 
       static void screenshot_size_computed(const boost::weak_ptr<screenshot_cache_entry> &entryWeak)
       {
-	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak);
+	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak.lock());
 
 	if(entry.get() != NULL)
 	  update_entry_size(entry, get_entry_size(*entry));
@@ -624,7 +652,7 @@ namespace gui
       static void download_failed(const std::string &msg,
 				  const boost::weak_ptr<screenshot_cache_entry> &entryWeak)
       {
-	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak);
+	boost::shared_ptr<screenshot_cache_entry> entry(entryWeak.lock());
 
 	if(entry.get() != NULL)
 	  {
@@ -729,7 +757,8 @@ namespace gui
 	    if(rval_from_weak_cache.get() != NULL)
 	      {
 		LOG_TRACE(Loggers::getAptitudeGtkScreenshotCache(),
-			  "Returning an existing weak screenshot cache entry for " << rval->get_key());
+			  "Returning an existing weak screenshot cache entry for " << rval->get_key()
+			  << " (" << rval->get_size() << " bytes)");
 
 		// Strengthen the cache entry.  TODO: should be a
 		// low-level cache management routine instead of being

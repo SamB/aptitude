@@ -22,11 +22,16 @@
 #include "util.h"
 
 #include <aptitude.h>
+#include <loggers.h>
 
 #include <stdlib.h>
 #include <string.h>
 
 #include <apt-pkg/error.h>
+
+#include <boost/format.hpp>
+
+using aptitude::Loggers;
 
 namespace temp
 {
@@ -97,7 +102,12 @@ namespace temp
     else
       {
 	if(rmdir(dirname.c_str()) != 0)
-	  _error->Errno("rmdir", _("Unable to delete temporary directory \"%s\""), dirname.c_str());
+	  {
+	    int errnum = errno;
+	    LOG_WARN(Loggers::getAptitudeTemp(),
+		     boost::format(_("rmdir: Unable to delete temporary directory \"%s\": %s"))
+		     % dirname % sstrerror(errnum));
+	  }
       }
   }
 
