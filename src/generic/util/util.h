@@ -83,6 +83,11 @@ std::string sstrerror(int errnum);
  */
 std::string get_homedir();
 
+/** \return the name of the current user as given in the password
+ *  database.
+ */
+std::string get_username();
+
 namespace aptitude
 {
   namespace util

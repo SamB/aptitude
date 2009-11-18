@@ -279,6 +279,55 @@ string get_homedir()
 #endif
 }
 
+string get_username()
+{
+  passwd pwbuf;
+  passwd *useless;
+  uid_t myuid = getuid();
+
+#ifdef _SC_GETPW_R_SIZE_MAX
+  long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+  char *buf = new char[bufsize];
+
+  if(getpwuid_r(myuid, &pwbuf, buf, bufsize, &useless) != 0)
+    {
+      delete[] buf;
+      return "";
+    }
+  else
+    {
+      string rval = pwbuf.pw_name;
+      delete[] buf;
+      return rval;
+    }
+#else
+  long bufsize = 512;
+  bool done = false;
+
+  // The 512 * 512 is an arbitrary cutoff to avoid allocating
+  // unbounded amounts of memory when the system doesn't support a way
+  // to directly determine the largest possible password structure.
+  while(bufsize < 512 * 512)
+    {
+      char *buf = new char[bufsize];
+
+      if(getpwuid_r(myuid, &pwbuf, buf, bufsize, &useless) == 0)
+	{
+	  string rval = pwbuf.pw_name;
+	  delete[] buf;
+	  return rval;
+	}
+      else
+	{
+	  delete[] buf;
+	  bufsize *= 2;
+	}
+    }
+
+  return "";
+#endif
+}
+
 namespace aptitude
 {
   namespace util

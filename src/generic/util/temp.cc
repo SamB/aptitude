@@ -82,7 +82,15 @@ namespace temp
     if(tmpdir == NULL)
       tmpdir = "/tmp";
 
-    prefix = std::string(tmpdir) + "/" + prefix.c_str();
+    // User name and process information is encoded into the temporary
+    // directory's name as a convenience for users, so they can
+    // identify which aptitude created a given directory.  It's not
+    // for security; that comes from mkdtemp().
+    prefix = ( boost::format("%s/%s-%s.%d:")
+	       % std::string(tmpdir)
+	       % prefix.c_str()
+	       % get_username()
+	       % getpid() ).str();
 
 
     size_t bufsize = prefix.size() + 6 + 1;
