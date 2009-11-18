@@ -594,7 +594,6 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 			  int verbose)
 {
   const int quiet = aptcfg->FindI("Quiet", 0);
-  bool all_empty=true;
 
   pkgvector lists[num_pkg_action_states];
   pkgvector recommended, suggested;
@@ -670,8 +669,6 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
     {
       if(!lists[i].empty())
 	{
-	  all_empty=false;
-
 	  printf("%s\n", _(cmdline_action_descriptions[i]));
 	  cmdline_show_instinfo(lists[i],
 				verbose,
@@ -695,7 +692,8 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
       cmdline_show_instinfo(suggested, verbose, showvers, showdeps, showsize, false, showwhy);
     }
 
-  if(all_empty)
+  if((*apt_cache_file)->DelCount() == 0 &&
+     (*apt_cache_file)->InstCount() == 0)
     printf(_("No packages will be installed, upgraded, or removed.\n"));
 
   printf(_("%lu packages upgraded, %lu newly installed, "),
