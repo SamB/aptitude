@@ -1030,7 +1030,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 					screen_width,
 					cwidget::style());
 		      delete f;
-		      
+
 		      valid_response = false;
 		    }
 		  else
