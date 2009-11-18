@@ -523,15 +523,19 @@ namespace aptitude
 	    if(is_provides())
 	      {
 		pkgCache::VerIterator provider_current = get_provides().OwnerPkg().CurrentVer();
-		for(pkgCache::PrvIterator prv = provider_current.ProvidesList();
-		    !satisfied_by_current && !prv.end(); ++prv)
+
+		if(!provider_current.end())
 		  {
-		    if(dep.TargetVer() == NULL ||
-		       (prv.ProvideVersion() != NULL &&
-			_system->VS->CheckDep(prv.ProvideVersion(),
-					      dep->CompareOp,
-					      dep.TargetVer())))
-		      satisfied_by_current = true;
+		    for(pkgCache::PrvIterator prv = provider_current.ProvidesList();
+		    !satisfied_by_current && !prv.end(); ++prv)
+		      {
+			if(dep.TargetVer() == NULL ||
+			   (prv.ProvideVersion() != NULL &&
+			    _system->VS->CheckDep(prv.ProvideVersion(),
+						  dep->CompareOp,
+						  dep.TargetVer())))
+			  satisfied_by_current = true;
+		      }
 		  }
 	      }
 	    else
@@ -539,11 +543,14 @@ namespace aptitude
 		if((*apt_cache_file)[dep.TargetPkg()].Status != 2)
 		  {
 		    pkgCache::VerIterator current = dep.TargetPkg().CurrentVer();
-		    if(dep.TargetVer() == NULL ||
-		       _system->VS->CheckDep(current.VerStr(),
-					     dep->CompareOp,
-					     dep.TargetVer()))
-		      satisfied_by_current = true;
+		    if(!current.end())
+		      {
+			if(dep.TargetVer() == NULL ||
+			   _system->VS->CheckDep(current.VerStr(),
+						 dep->CompareOp,
+						 dep.TargetVer()))
+			  satisfied_by_current = true;
+		      }
 		  }
 	      }
 
