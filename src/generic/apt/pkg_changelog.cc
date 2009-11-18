@@ -46,6 +46,7 @@
 #include <cwidget/generic/util/ssprintf.h>
 
 #include <boost/make_shared.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include <loggers.h>
 
@@ -56,6 +57,34 @@ namespace aptitude
 {
   namespace apt
   {
+    namespace
+    {
+      // Hack to attempt to suppress an unnecessary apt error in the case
+      // that there aren't any source records.
+      bool source_lines_exist()
+      {
+	for (pkgSourceList::const_iterator sourceListIt =
+	       apt_source_list->begin();
+	     sourceListIt != apt_source_list->end();
+	     ++sourceListIt)
+	  {
+	    // Partly cribbed from srcrecords.cc in apt.
+	    std::vector<pkgIndexFile *> *indexes = (*sourceListIt)->GetIndexFiles();
+	    for (std::vector<pkgIndexFile *>::const_iterator indexesIt =
+		   indexes->begin(); indexesIt != indexes->end(); ++indexesIt)
+	      {
+		boost::scoped_ptr<pkgSrcRecords::Parser>
+		  parser((*indexesIt)->CreateSrcParser());
+
+		if(parser.get() != NULL)
+		  return true;
+	      }
+	  }
+
+	return false;
+      }
+    }
+
     boost::shared_ptr<changelog_info>
     changelog_info::create(const std::string &source_package,
 			   const std::string &source_version,
@@ -338,73 +367,77 @@ private:
 	      const string name(it->get_info()->get_display_name());
 	      const string title = ssprintf(_("ChangeLog of %s"), name.c_str());
 
-	      // Try to find a changelog that's already on the system,
-	      // first.  Check each binary package in the source package;
-	      // for any package that's unpacked, check that the version on
-	      // the system corresponds to the requested source version, and
-	      // if it passes look for a changelog.
-	      pkgSrcRecords source_records(*apt_source_list);
-	      source_records.Restart();
-	      pkgSrcRecords::Parser *source_rec = source_records.Find(source_package.c_str());
-
 	      std::vector<std::string> changelog_uris;
 
-	      if(source_rec != NULL)
-		for(const char **binaryIt = source_rec->Binaries();
-		    binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
-		  {
-		    pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
-		    if(!pkg.end() &&
-		       !pkg.CurrentVer().end() &&
-		       !pkg.CurrentVer().FileList().end() &&
-		       pkg->CurrentState != pkgCache::State::NotInstalled &&
-		       pkg->CurrentState != pkgCache::State::ConfigFiles)
+	      if(source_lines_exist())
+		{
+		  // Try to find a changelog that's already on the
+		  // system, first.  Check each binary package in the
+		  // source package; for any package that's unpacked,
+		  // check that the version on the system corresponds
+		  // to the requested source version, and if it passes
+		  // look for a changelog.
+		  pkgSrcRecords source_records(*apt_source_list);
+		  source_records.Restart();
+		  pkgSrcRecords::Parser *source_rec = source_records.Find(source_package.c_str());
+
+		  if(source_rec != NULL)
+		    for(const char **binaryIt = source_rec->Binaries();
+			binaryIt != NULL && *binaryIt != NULL; ++binaryIt)
 		      {
-			pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
-			std::string rec_sourcepkg = rec.SourcePkg();
-			if(rec_sourcepkg.empty())
-			  rec_sourcepkg = pkg.Name();
-			std::string rec_sourcever = rec.SourceVer();
-			if(rec_sourcever.empty())
-			  rec_sourcever = pkg.CurrentVer().VerStr();
-
-			if(rec_sourcepkg == source_package &&
-			   rec_sourcever == source_version)
+			pkgCache::PkgIterator pkg = (*apt_cache_file)->FindPkg(*binaryIt);
+			if(!pkg.end() &&
+			   !pkg.CurrentVer().end() &&
+			   !pkg.CurrentVer().FileList().end() &&
+			   pkg->CurrentState != pkgCache::State::NotInstalled &&
+			   pkg->CurrentState != pkgCache::State::ConfigFiles)
 			  {
-			    // Everything passed.  Now test to see whether
-			    // the changelog exists by trying to stat it.
-			    struct stat buf;
+			    pkgRecords::Parser &rec(apt_package_records->Lookup(pkg.CurrentVer().FileList()));
+			    std::string rec_sourcepkg = rec.SourcePkg();
+			    if(rec_sourcepkg.empty())
+			      rec_sourcepkg = pkg.Name();
+			    std::string rec_sourcever = rec.SourceVer();
+			    if(rec_sourcever.empty())
+			      rec_sourcever = pkg.CurrentVer().VerStr();
 
-			    std::string changelog_file = "/usr/share/doc/";
-			    changelog_file += pkg.Name();
-			    changelog_file += "/changelog.Debian";
-
-			    if(stat(changelog_file.c_str(), &buf) == 0)
+			    if(rec_sourcepkg == source_package &&
+			       rec_sourcever == source_version)
 			      {
-				LOG_TRACE(logger,
-					  "The changelog for " << source_package << " " << source_version
-					  << " exists on the system as " << changelog_file);
-				changelog_uris.push_back("file://" + changelog_file);
+				// Everything passed.  Now test to see whether
+				// the changelog exists by trying to stat it.
+				struct stat buf;
+
+				std::string changelog_file = "/usr/share/doc/";
+				changelog_file += pkg.Name();
+				changelog_file += "/changelog.Debian";
+
+				if(stat(changelog_file.c_str(), &buf) == 0)
+				  {
+				    LOG_TRACE(logger,
+					      "The changelog for " << source_package << " " << source_version
+					      << " exists on the system as " << changelog_file);
+				    changelog_uris.push_back("file://" + changelog_file);
+				  }
+
+				changelog_file += ".gz";
+
+				if(stat(changelog_file.c_str(), &buf) == 0)
+				  {
+				    LOG_TRACE(logger,
+					      "The changelog for " << source_package << " " << source_version
+					      << " exists on the system as " << changelog_file);
+				    changelog_uris.push_back("gzip://" + changelog_file);
+				  }
+
+				// Beware the races here -- ideally we should
+				// parse the returned changelog and check that
+				// the first version it contains is what we
+				// expect.  This should be reliable in *most*
+				// cases, though.
 			      }
-
-			    changelog_file += ".gz";
-
-			    if(stat(changelog_file.c_str(), &buf) == 0)
-			      {
-				LOG_TRACE(logger,
-					  "The changelog for " << source_package << " " << source_version
-					  << " exists on the system as " << changelog_file);
-				changelog_uris.push_back("gzip://" + changelog_file);
-			      }
-
-			    // Beware the races here -- ideally we should
-			    // parse the returned changelog and check that
-			    // the first version it contains is what we
-			    // expect.  This should be reliable in *most*
-			    // cases, though.
 			  }
 		      }
-		  }
+		}
 
 	      string realsection;
 
