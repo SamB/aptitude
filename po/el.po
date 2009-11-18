@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-10-25 11:13-0700\n"
+"POT-Creation-Date: 2009-11-18 11:49-0800\n"
 "PO-Revision-Date: 2008-09-11 15:53+0200\n"
 "Last-Translator: quad-nrg.net <yodesy@quad-nrg.net>\n"
 "Language-Team: Greek <debian-l10n-greek@lists.debian.org>\n"
@@ -660,8 +660,8 @@ msgstr "Μοιραίο σφάλμα στον επιλυτή"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Ανάλυση των εξαρτήσεων"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1286
-#: src/gtk/resolver.cc:1454 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1292
+#: src/gtk/resolver.cc:1460 src/solution_dialog.cc:140
 #: src/solution_screen.cc:569
 msgid "Internal error: unexpected null solution."
 msgstr "Εσωτερικό σφάλμα: απρόσμενη κενή λύση"
@@ -940,7 +940,7 @@ msgstr ""
 "Αδύνατη η ασφαλής επίλυση των εξαρτήσεων, προσπάθεια με --full-resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1107
+#: src/main.cc:1111
 #, c-format
 msgid "Abort.\n"
 msgstr "Εγκατάλειψη.\n"
@@ -1101,18 +1101,18 @@ msgstr "Τα ακόλουθα πακέτα θα αναβαθμιστούν:"
 msgid "The following partially installed packages will be configured:"
 msgstr "Θα γίνει ρύθμιση των ακόλουθων μερικά εγκατεστημένων πακέτων:"
 
-#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1515
+#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1514
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Τα ακόλουθα ΑΠΑΡΑΙΤΗΤΑ πακέτα θα ΑΦΑΙΡΕΘΟΥΝ!\n"
 
-#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1530
+#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1529
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
 "Τα ακόλουθα ΑΠΑΡΑΙΤΗΤΑ πακέτα θα γίνουν ΕΛΑΤΩΜΑΤΙΚΑ από αυτή την ενέργεια:\n"
 
-#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1543
+#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1542
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1125,7 +1125,7 @@ msgstr ""
 msgid "I am aware that this is a very bad idea"
 msgstr "Ναι γνωρίζω ότι είναι μια πολύ κακή ιδέα"
 
-#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1544
+#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1543
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "Για να συνεχίσετε, πληκτρολογήστε την φράση \"%s\":\n"
@@ -1202,82 +1202,82 @@ msgstr "Για να συνεχίσετε, δώστε \"%s\", για να εγκ�
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Μη αναγνωρίσιμη είσοδος. Δώστε είτε \"%s\" ή \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:685
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Τα ακόλουθα πακέτα είναι ΠΡΟΤΕΙΝΟΜΕΝΑ αλλά ΔΕΝ θα εγκατασταθούν:\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:691
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Τα ακόλουθα πακέτα είναι ΠΡΟΤΕΙΝΟΜΕΝΑ αλλά ΔΕΝ θα εγκατασταθούν:\n"
 
-#: src/cmdline/cmdline_prompt.cc:699
+#: src/cmdline/cmdline_prompt.cc:697
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Δεν θα εγκατασταθούν, αναβαθμιστούν ή αφαιρεθούν πακέτα.\n"
 
-#: src/cmdline/cmdline_prompt.cc:701
+#: src/cmdline/cmdline_prompt.cc:699
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu πακέτα αναβαθμίζονται, %lu νεο-εγκατεστημένα, "
 
-#: src/cmdline/cmdline_prompt.cc:705
+#: src/cmdline/cmdline_prompt.cc:703
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu επενεγκατεστημένα, "
 
-#: src/cmdline/cmdline_prompt.cc:707
+#: src/cmdline/cmdline_prompt.cc:705
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu υποβαθμισμένα, "
 
-#: src/cmdline/cmdline_prompt.cc:709
+#: src/cmdline/cmdline_prompt.cc:707
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu για αφαίρεση και %lu δεν αναβαθμίστηκαν.\n"
 
-#: src/cmdline/cmdline_prompt.cc:716
+#: src/cmdline/cmdline_prompt.cc:714
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Χρειάζεται να κατεβούν %sB/%sB αρχείων. "
 
-#: src/cmdline/cmdline_prompt.cc:719
+#: src/cmdline/cmdline_prompt.cc:717
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Χρειάζεται να κατεβούν %sB αρχείων. "
 
-#: src/cmdline/cmdline_prompt.cc:726
+#: src/cmdline/cmdline_prompt.cc:724
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Μετά την αποσυμπίεση θα χρησιμοποιηθούν %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:729
+#: src/cmdline/cmdline_prompt.cc:727
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Μετά την αποσυμπίεση θα ελευθερωθούν %sB.\n"
 
-#: src/cmdline/cmdline_prompt.cc:750
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr ""
 "Δεν υπάρχουν πακέτα για εμφάνιση -- δώστε τα ονόματα των πακέτων μετά το "
 "'i'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:756
+#: src/cmdline/cmdline_prompt.cc:754
 msgid "Press Return to continue."
 msgstr "Πατήστε Return για συνέχεια"
 
-#: src/cmdline/cmdline_prompt.cc:767
+#: src/cmdline/cmdline_prompt.cc:765
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Δεν βρέθηκαν πακέτα -- γράψτε τα ονόματα των πακέτων μετά το 'c'.\n"
 
-#: src/cmdline/cmdline_prompt.cc:771
+#: src/cmdline/cmdline_prompt.cc:769
 msgid "Press Return to continue"
 msgstr "Πατήστε Return για συνέχεια "
 
-#: src/cmdline/cmdline_prompt.cc:781
+#: src/cmdline/cmdline_prompt.cc:779
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1286,30 +1286,30 @@ msgstr ""
 "Δεν βρέθηκαν πακέτα -- εισάγετε μηδενική ή περισσότερες ρίζες της αναζήτησης "
 "ακολουθούμενες από το πακέτο προς επιβεβαίωση.\n"
 
-#: src/cmdline/cmdline_prompt.cc:806
+#: src/cmdline/cmdline_prompt.cc:804
 #, c-format
 msgid "y: %F"
 msgstr "ν: %F"
 
-#: src/cmdline/cmdline_prompt.cc:808
+#: src/cmdline/cmdline_prompt.cc:806
 msgid "continue with the installation"
 msgstr "συνεχίστε με την εγκατάσταση"
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:808
 #, c-format
 msgid "n: %F"
 msgstr "ο: %F"
 
-#: src/cmdline/cmdline_prompt.cc:812
+#: src/cmdline/cmdline_prompt.cc:810
 msgid "abort and quit"
 msgstr "εγκατάλειψη και έξοδος από το πρόγραμμα"
 
-#: src/cmdline/cmdline_prompt.cc:814
+#: src/cmdline/cmdline_prompt.cc:812
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:816
+#: src/cmdline/cmdline_prompt.cc:814
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
@@ -1317,12 +1317,12 @@ msgstr ""
 "εμφάνιση πληροφορίας για ένα ή περισσότερα πακέτα; τα ονόματα των πακέτων "
 "πρέπει να ακολουθούν το 'i'"
 
-#: src/cmdline/cmdline_prompt.cc:818
+#: src/cmdline/cmdline_prompt.cc:816
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:820
+#: src/cmdline/cmdline_prompt.cc:818
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1330,39 +1330,39 @@ msgstr ""
 "εμφάνιση των αρχείων αλλαγών του Debian για ένα ή περισσότερα πακέτα; τα "
 "ονόματα των πακέτων θα πρέπει να ακολουθούν το 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:822
+#: src/cmdline/cmdline_prompt.cc:820
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:824
+#: src/cmdline/cmdline_prompt.cc:822
 msgid "toggle the display of dependency information"
 msgstr "εναλλαγή επιλογής εμφάνισης της πληροφορίας εξαρτήσεων"
 
-#: src/cmdline/cmdline_prompt.cc:826
+#: src/cmdline/cmdline_prompt.cc:824
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:828
+#: src/cmdline/cmdline_prompt.cc:826
 msgid "toggle the display of changes in package sizes"
 msgstr "εναλλαγή επιλογής εμφάνισης των αλλαγών στο μέγεθος των πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:830
+#: src/cmdline/cmdline_prompt.cc:828
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:830
 msgid "toggle the display of version numbers"
 msgstr "εναλλαγή επιλογής εμφάνισης των αριθμών έκδοσης"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:832
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:836
+#: src/cmdline/cmdline_prompt.cc:834
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1371,27 +1371,27 @@ msgstr ""
 "εξηγήστε γιατί η εγκατάσταση ενός πακέτου θα οδηγούσε στην εγκατάσταση ενός "
 "άλλου."
 
-#: src/cmdline/cmdline_prompt.cc:839
+#: src/cmdline/cmdline_prompt.cc:837
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:841
+#: src/cmdline/cmdline_prompt.cc:839
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "εκτελέστε τον αυτόματο επιλυτή εξαρτήσεων για να διορθώσετε τις "
 "προβληματικές εξαρτήσεις."
 
-#: src/cmdline/cmdline_prompt.cc:843
+#: src/cmdline/cmdline_prompt.cc:841
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:845
+#: src/cmdline/cmdline_prompt.cc:843
 msgid "enter the full visual interface"
 msgstr "είσοδος στην πλήρη οπτική διεπαφή"
 
-#: src/cmdline/cmdline_prompt.cc:848
+#: src/cmdline/cmdline_prompt.cc:846
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1404,53 +1404,53 @@ msgstr ""
 "Η ενέργεια αυτή θα εφαρμοστεί σε όλα τα πακέτα που έχετε βάλει στη λίστα. Οι "
 "ακόλουθες ενέργειες είναι διαθέσιμες:"
 
-#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:853 src/cmdline/cmdline_resolver.cc:211
 msgid "'+' to install packages"
 msgstr "'+' για εγκατάσταση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:856 src/cmdline/cmdline_resolver.cc:213
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' για εγκατάσταση πακέτων και την άμεση σήμανσή τους σαν αυτόματα "
 "εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:215
 msgid "'-' to remove packages"
 msgstr "'-' αφαίρεση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:217
 msgid "'_' to purge packages"
 msgstr "'_' για πλήρη αφαίρεση πακέτων"
 
-#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:219
 msgid "'=' to place packages on hold"
 msgstr "'=' διατήρηση των πακέτων σε αναμονή"
 
-#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:221
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "';' διατήρηση των πακέτων στην τωρινή τους κατάσταση χωρίς την τοποθέτησή "
 "τους σε αναμονή"
 
-#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:223
+#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:223
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' επισήμανση πακέτων σαν αυτόματα εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:870 src/cmdline/cmdline_resolver.cc:225
+#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:225
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' επισήμανση πακέτων σαν χειροκίνητα εγκατεστημμένων"
 
-#: src/cmdline/cmdline_prompt.cc:872
+#: src/cmdline/cmdline_prompt.cc:870
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "'&BD' για να εγκαταστήσετε τις build-εξαρτήσεις ενός πακέτου."
 
-#: src/cmdline/cmdline_prompt.cc:876
+#: src/cmdline/cmdline_prompt.cc:874
 msgid "Commands:"
 msgstr "Επιβάλλει:"
 
-#: src/cmdline/cmdline_prompt.cc:985
+#: src/cmdline/cmdline_prompt.cc:987
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1459,20 +1459,20 @@ msgstr ""
 "επιλύσετε οι ίδιοι με το χέρι ή να πληκτρολογήσετε 'n' για να κλείσετε την "
 "εφαρμογή."
 
-#: src/cmdline/cmdline_prompt.cc:1003
+#: src/cmdline/cmdline_prompt.cc:1005
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Θέλετε να συνεχίσετε ; [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1004
+#: src/cmdline/cmdline_prompt.cc:1006
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Να επιλυθούν οι εξαρτήσεις αυτές με το χέρι; [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1022
+#: src/cmdline/cmdline_prompt.cc:1024
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr ""
 "Ακυρη απάντηση.  Παρακαλώ εισάγετε μια έγκυρη εντολή ή '?' για βοήθεια.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1028
+#: src/cmdline/cmdline_prompt.cc:1030
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1481,7 +1481,7 @@ msgstr ""
 "εγκαταστήσετε ένα πακέτο), 'R' για να προσπαθήσετε αυτόματη επίλυση των "
 "εξαρτήσεων ή 'Ν' για τερματισμό."
 
-#: src/cmdline/cmdline_prompt.cc:1059
+#: src/cmdline/cmdline_prompt.cc:1061
 #, c-format
 msgid ""
 "\n"
@@ -1492,7 +1492,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες εξαρτήσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1061
+#: src/cmdline/cmdline_prompt.cc:1063
 #, c-format
 msgid ""
 "\n"
@@ -1503,7 +1503,7 @@ msgstr ""
 "Δεν θα εμφανιστούν πληροφορίες εξαρτήσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1067
+#: src/cmdline/cmdline_prompt.cc:1069
 #, c-format
 msgid ""
 "\n"
@@ -1514,7 +1514,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες εκδόσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:1071
 #, c-format
 msgid ""
 "\n"
@@ -1525,7 +1525,7 @@ msgstr ""
 "Δεν θα εμφανιστούν πληροφορίες εκδόσεων.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1074
+#: src/cmdline/cmdline_prompt.cc:1076
 #, c-format
 msgid ""
 "\n"
@@ -1536,7 +1536,7 @@ msgstr ""
 "Θα εμφανιστούν πληροφορίες αλλαγής μεγεθών.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1076
+#: src/cmdline/cmdline_prompt.cc:1078
 #, c-format
 msgid ""
 "\n"
@@ -1548,7 +1548,7 @@ msgstr ""
 "\n"
 
 #: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
-#: src/generic/apt/apt.cc:289
+#: src/generic/apt/apt.cc:290
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Αδύνατο το άνοιγμα του %s για εγγραφή"
@@ -1741,7 +1741,7 @@ msgstr ""
 "εξαρτήσεων."
 
 #: src/cmdline/cmdline_resolver.cc:591 src/cmdline/cmdline_resolver.cc:886
-#: src/gtk/resolver.cc:2050 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:2056 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "Επίλυση εξαρτήσεων..."
@@ -1873,7 +1873,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Τα ακόλουθα πακέτα έχουν ανεπίλυτες εξαρτήσεις:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1187 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:60
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -2009,7 +2009,7 @@ msgstr "Αυτόματη εγκατάσταση"
 msgid "no"
 msgstr "όχι"
 
-#: src/cmdline/cmdline_show.cc:391 src/gtk/entitysummary.cc:352
+#: src/cmdline/cmdline_show.cc:391 src/gtk/entitysummary.cc:359
 #: src/gtk/previewtab.cc:230
 msgid "Version: "
 msgstr "Εκδοση: "
@@ -2089,12 +2089,12 @@ msgid "Obsoletes"
 msgstr "Αχρηστεύει"
 
 #: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1505 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Παρέχει"
 
-#: src/cmdline/cmdline_show.cc:441 src/gtk/entitysummary.cc:360
-#: src/gtk/info.cc:702 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
+#: src/cmdline/cmdline_show.cc:441 src/gtk/entitysummary.cc:367
+#: src/gtk/info.cc:715 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Περιγραφή: "
 
@@ -2238,7 +2238,7 @@ msgstr "Τρέχον"
 msgid "Candidate"
 msgstr "Υποψήφιο"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1376
+#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 msgid "Install"
 msgstr "Εγκατάσταση"
 
@@ -2299,60 +2299,60 @@ msgstr "    ++   --> παράλειψη, δεν είναι συναφής σύμ
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> παράλειψη, η γονική δεν είναι η επιλεγμένη έκδοση\n"
 
-#: src/cmdline/cmdline_why.cc:553
+#: src/cmdline/cmdline_why.cc:560
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> παράλειψη, η εξάρτηση ικανοποιείται από την τρέχουσα έκδοση\n"
 
-#: src/cmdline/cmdline_why.cc:586
+#: src/cmdline/cmdline_why.cc:593
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> ENQUEUING\n"
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:600
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> παράλειψη,ο έλεγχος έκδοσης απέτυχε\n"
 
-#: src/cmdline/cmdline_why.cc:611
+#: src/cmdline/cmdline_why.cc:618
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> ENQUEUING %s Δίνει %s\n"
 
-#: src/cmdline/cmdline_why.cc:745
+#: src/cmdline/cmdline_why.cc:752
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Έναρξη αναζήτησης με τις παραμέτρους %ls\n"
 
-#: src/cmdline/cmdline_why.cc:963
+#: src/cmdline/cmdline_why.cc:970
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Παράλειψη αυτής της λύσης, την έχω ήδη δει.\n"
 
-#: src/cmdline/cmdline_why.cc:1090
+#: src/cmdline/cmdline_why.cc:1097
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Δεν μπορώ να βρω έναν λόγο για την αφαίρεση του %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1092
+#: src/cmdline/cmdline_why.cc:1099
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Δεν μπορώ να βρω έναν λόγο για την εγκατάσταση του %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1131
+#: src/cmdline/cmdline_why.cc:1138
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "Πακέτα που εξαρτώνται από το %s"
 
-#: src/cmdline/cmdline_why.cc:1184 src/cmdline/cmdline_why.cc:1211
-#: src/cmdline/cmdline_why.cc:1270
+#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
+#: src/cmdline/cmdline_why.cc:1277
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Δεν υπάρχει πακέτο με το όνομα \"%s\"."
 
-#: src/cmdline/cmdline_why.cc:1215
+#: src/cmdline/cmdline_why.cc:1222
 msgid "Unable to parse some match patterns."
 msgstr "Αδύνατο το parse μερικών σχημάτων ταιριάσματος."
 
-#: src/cmdline/cmdline_why.cc:1243
+#: src/cmdline/cmdline_why.cc:1250
 #, fuzzy, c-format
 #| msgid ""
 #| "%s: this command requires at least one argument (the package to query)."
@@ -2594,23 +2594,23 @@ msgstr ""
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:188
+#: src/generic/apt/apt.cc:189
 msgid "Localized defaults|"
 msgstr "Localized defaults|"
 
-#: src/generic/apt/apt.cc:261
+#: src/generic/apt/apt.cc:262
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr ""
 "το %s είναι αναγνώσιμο αλλά όχι εγγράψιμο. Αδυναμία εγγραφής του αρχείου "
 "ρύθμισης."
 
-#: src/generic/apt/apt.cc:306
+#: src/generic/apt/apt.cc:307
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "Αδύνατη η αντικατάσταση του %s με νέο αρχείο ρυθμίσεων"
 
-#: src/generic/apt/apt.cc:457
+#: src/generic/apt/apt.cc:458
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
 "tool is already installing packages.  Opening in read-only mode; any changes "
@@ -2653,54 +2653,54 @@ msgid ""
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:834
+#: src/generic/apt/aptitude_resolver_universe.cc:832
 #, c-format
 msgid ""
 "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:878
+#: src/generic/apt/aptitude_resolver_universe.cc:876
 #, fuzzy
 #| msgid "Section"
 msgid "Safe actions"
 msgstr "Τομέας"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:879
+#: src/generic/apt/aptitude_resolver_universe.cc:877
 #, fuzzy
 #| msgid "Canc^el pending actions"
 msgid "Cancel all user actions"
 msgstr "Ακύ^ρωση των εκκρεμών ενεργειών"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:880
+#: src/generic/apt/aptitude_resolver_universe.cc:878
 #, fuzzy
 #| msgid "'-' to remove packages"
 msgid "Remove packages"
 msgstr "'-' αφαίρεση πακέτων"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:881
+#: src/generic/apt/aptitude_resolver_universe.cc:879
 #, fuzzy
 #| msgid "not a real package"
 msgid "Modify held packages"
 msgstr "όχι πραγματικό πακέτο"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:882
+#: src/generic/apt/aptitude_resolver_universe.cc:880
 msgid "Install versions from non-default sources"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:883
+#: src/generic/apt/aptitude_resolver_universe.cc:881
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Remove essential packages"
 msgstr "Αφαίρεσε τα ακόλουθα πακέτα:"
 
-#: src/generic/apt/aptitude_resolver_universe.cc:916
+#: src/generic/apt/aptitude_resolver_universe.cc:914
 #, c-format
 msgid ""
 "The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
 "Tier entry."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:920
+#: src/generic/apt/aptitude_resolver_universe.cc:918
 #, c-format
 msgid ""
 "The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
@@ -3057,24 +3057,24 @@ msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr "Οι κατάλογοι των πακέτων είναι κατεστραμένοι. Το: %s δεν υπάρχει"
 
-#: src/generic/apt/pkg_changelog.cc:339 src/view_changelog.cc:270
+#: src/generic/apt/pkg_changelog.cc:368 src/view_changelog.cc:270
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "Αρχείο Αλλαγής του %s"
 
-#: src/generic/apt/pkg_changelog.cc:516
+#: src/generic/apt/pkg_changelog.cc:549
 #, fuzzy, c-format
 #| msgid "ChangeLog of %s"
 msgid "Changelog of %s"
 msgstr "Αρχείο Αλλαγής του %s"
 
-#: src/generic/apt/pkg_changelog.cc:652
+#: src/generic/apt/pkg_changelog.cc:685
 #, fuzzy
 #| msgid "No resolution found."
 msgid "No changelog found."
 msgstr "Δεν βρέθηκε λύση."
 
-#: src/generic/apt/pkg_changelog.cc:671
+#: src/generic/apt/pkg_changelog.cc:702
 #, fuzzy, c-format
 #| msgid "Cannot open package hierarchy file %s"
 msgid "Can't create a temporary file: %s"
@@ -3132,42 +3132,42 @@ msgstr "Αδύνατο το άνοιγμα του /usr/share/tasksel/debian-task
 msgid "Reading task descriptions"
 msgstr "Ανάγνωση περιγραφών"
 
-#: src/generic/util/temp.cc:66 src/generic/util/temp.cc:137
-#: src/generic/util/temp.cc:151
+#: src/generic/util/temp.cc:107 src/generic/util/temp.cc:178
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Αδυναμία δημιοουργίας προσωρινού καταλόγου από το πρότυπο \"%s\": %s"
 
-#: src/generic/util/temp.cc:100
-#, c-format
-msgid "Unable to delete temporary directory \"%s\""
-msgstr "Αδύνατη η διαγραφή του προσωρινού καταλόγου \"%s\""
+#: src/generic/util/temp.cc:255 src/generic/util/temp.cc:272
+#, fuzzy, c-format
+#| msgid "Unable to create temporary directory from template \"%s\": %s"
+msgid "Unable to create temporary filename from template \"%s\": %s"
+msgstr "Αδυναμία δημιοουργίας προσωρινού καταλόγου από το πρότυπο \"%s\": %s"
 
-#: src/generic/util/temp.cc:146
+#: src/generic/util/temp.cc:264
 msgid "Unknown error"
 msgstr "Αγνωστο σφάλμα"
 
-#: src/generic/util/util.cc:291
+#: src/generic/util/util.cc:340
 #, c-format
 msgid "Unable to stat \"%s\""
 msgstr "Αδύνατη η απόδοση κατάστασης του \"%s\""
 
-#: src/generic/util/util.cc:297
+#: src/generic/util/util.cc:346
 #, c-format
 msgid "Unable to remove \"%s\""
 msgstr "Αδύνατη η αφαίρεση του \"%s\""
 
-#: src/generic/util/util.cc:307
+#: src/generic/util/util.cc:356
 #, c-format
 msgid "Unable to list files in \"%s\""
 msgstr "Αδύνατη η λίστα των αρχείων στο \"%s\""
 
-#: src/generic/util/util.cc:324
+#: src/generic/util/util.cc:373
 #, c-format
 msgid "Failure closing directory \"%s\""
 msgstr "Αποτυχία στο κλείσιμο του καταλόγου \"%s\""
 
-#: src/generic/util/util.cc:330
+#: src/generic/util/util.cc:379
 #, c-format
 msgid "Unable to remove directory \"%s\""
 msgstr "Αδύνατη η διαγραφή του καταλόγου \"%s\""
@@ -3182,107 +3182,47 @@ msgstr ""
 msgid "_File"
 msgstr "Ψευδές"
 
-#: src/gtk/aptitude.glade:25
-#, fuzzy
-#| msgid "^Install/remove packages"
-msgid "_Install/Remove Packages"
-msgstr "^Εγκατάσταση/Αφαίρεση πακέτων"
-
-#: src/gtk/aptitude.glade:27 src/ui.cc:2269
+#: src/gtk/aptitude.glade:27 src/ui.cc:2263
 msgid "Perform all pending installs and removals"
 msgstr "Ολοκλήρωση όλων των εκκρεμών εγκαταστάσεων/αφαιρέσεων"
 
-#: src/gtk/aptitude.glade:35
-#, fuzzy
-#| msgid "^Update package list"
-msgid "_Update Package List"
-msgstr "^Ενημέρωση της λίστας πακέτων"
-
-#: src/gtk/aptitude.glade:37 src/ui.cc:2272
+#: src/gtk/aptitude.glade:37 src/ui.cc:2266
 msgid "Check for new versions of packages"
 msgstr "Έλεγχος για νέες εκδόσεις πακέτων"
 
-#: src/gtk/aptitude.glade:50
-#, fuzzy
-#| msgid "Mark Up^gradable"
-msgid "Mark Up_gradable"
-msgstr "Σημείωση Ανα^βαθμίσιμων"
-
-#: src/gtk/aptitude.glade:52 src/ui.cc:2277
+#: src/gtk/aptitude.glade:52 src/ui.cc:2271
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr ""
 "Σημείωση όλων των αναβαθμιζομένων πακέτων που δεν κρατούνται πλέον για "
 "αναβάθμιση"
 
-#: src/gtk/aptitude.glade:60
-#, fuzzy
-#| msgid "^Forget new packages"
-msgid "_Forget New Packages"
-msgstr "Ξέχασε τα νέα πακέτα"
-
-#: src/gtk/aptitude.glade:62 src/ui.cc:2282
+#: src/gtk/aptitude.glade:62 src/ui.cc:2276
 msgid "Forget which packages are \"new\""
 msgstr "Ξέχασε τα πακέτα που είναι \"νέα\""
 
-#: src/gtk/aptitude.glade:69
-#, fuzzy
-#| msgid "Canc^el pending actions"
-msgid "Canc_el Pending Actions"
-msgstr "Ακύ^ρωση των εκκρεμών ενεργειών"
-
-#: src/gtk/aptitude.glade:71 src/ui.cc:2286
+#: src/gtk/aptitude.glade:71 src/ui.cc:2280
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "Ακύρωση όλων των εκκρεμών εγκαταστάσεων, αφαιρέσεων, σε αναμονή και "
 "αναβαθμίσεων."
 
-#: src/gtk/aptitude.glade:78
-#, fuzzy
-#| msgid "^Clean package cache"
-msgid "C_lean Package Cache"
-msgstr "Εκκαθάριση του cache των πακέτων"
-
-#: src/gtk/aptitude.glade:80 src/ui.cc:2290
+#: src/gtk/aptitude.glade:80 src/ui.cc:2284
 msgid "Delete package files which were previously downloaded"
 msgstr "Διαγραφή των αρχείων πακέτου που έχουν μεταφορτωθεί προηγουμένως"
 
-#: src/gtk/aptitude.glade:87
-#, fuzzy
-#| msgid "Clean ^obsolete files"
-msgid "Clean _Obsolete Files"
-msgstr "Εκκαθάριση ^περιττών αρχείων"
-
-#: src/gtk/aptitude.glade:89 src/ui.cc:2294
+#: src/gtk/aptitude.glade:89 src/ui.cc:2288
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Διαγραφή των αρχείων πακέτων που δεν μπορούν πλέον να μεταφορτωθούν"
 
-#: src/gtk/aptitude.glade:101
-#, fuzzy
-#| msgid "^Reload package cache"
-msgid "_Reload Package Cache"
-msgstr "Επαναφόρτωση του cache πακέτων"
-
-#: src/gtk/aptitude.glade:103 src/ui.cc:2301
+#: src/gtk/aptitude.glade:103 src/ui.cc:2295
 msgid "Reload the package cache"
 msgstr "Επαναφόρτωση του cache των πακέτων"
 
-#: src/gtk/aptitude.glade:110
-#, fuzzy
-#| msgid "^Play Minesweeper"
-msgid "_Play Minesweeper"
-msgstr "Παίξε Ναρκαλιευτή"
-
-#: src/gtk/aptitude.glade:112 src/ui.cc:1711 src/ui.cc:2306
+#: src/gtk/aptitude.glade:112 src/ui.cc:1710 src/ui.cc:2300
 msgid "Waste time trying to find mines"
 msgstr "Σκοτώστε την ώρα σας βρίσκοντας νάρκες"
 
-#: src/gtk/aptitude.glade:124
-#, fuzzy
-#| msgid "Become root"
-msgid "_Become Root"
-msgstr "Μετατροπή σε root"
-
-#: src/gtk/aptitude.glade:126 src/ui.cc:2311
+#: src/gtk/aptitude.glade:126 src/ui.cc:2305
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3290,13 +3230,7 @@ msgstr ""
 "Εκτελέστε την εντολή 'su' για να γίνετε ο χρήστης root.  Αυτή θα "
 "επανεκτελέσει το πρόγραμμα, αλλά οι ρυθμίσεις θα διατηρηθούν"
 
-#: src/gtk/aptitude.glade:133
-#, fuzzy
-#| msgid "^Quit"
-msgid "_Quit"
-msgstr "Έξοδος"
-
-#: src/gtk/aptitude.glade:135 src/ui.cc:2314
+#: src/gtk/aptitude.glade:135 src/ui.cc:2308
 msgid "Exit the program"
 msgstr "Έξοδος από το πρόγραμμα"
 
@@ -3304,7 +3238,7 @@ msgstr "Έξοδος από το πρόγραμμα"
 msgid "E_dit"
 msgstr ""
 
-#: src/gtk/aptitude.glade:156 src/ui.cc:2321
+#: src/gtk/aptitude.glade:156 src/ui.cc:2315
 msgid "Undo the last package operation or group of operations"
 msgstr "Επαναφορά της τελευταίας εργασίας ή ομάδας εργασιών σε πακέτο."
 
@@ -3320,16 +3254,8 @@ msgstr "Πακέτο"
 msgid "_View"
 msgstr "Οθόνες"
 
-#: src/gtk/aptitude.glade:224
-msgid "_Edit Columns..."
-msgstr ""
-
 #: src/gtk/aptitude.glade:226
 msgid "Change which columns are visible in the currently active view."
-msgstr ""
-
-#: src/gtk/aptitude.glade:238
-msgid "View Apt _Errors"
 msgstr ""
 
 #: src/gtk/aptitude.glade:240
@@ -3337,12 +3263,6 @@ msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
-
-#: src/gtk/aptitude.glade:247
-#, fuzzy
-#| msgid "Dependency handling"
-msgid "Find _Dependency Chains"
-msgstr "Διαχείριση εξαρτήσεων"
 
 #: src/gtk/aptitude.glade:249
 msgid "Find chains of dependencies linking one package to another."
@@ -3354,8 +3274,8 @@ msgstr ""
 msgid "_Help"
 msgstr "Βοήθεια"
 
-#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:758 src/gtk/gui.cc:1565
-#: src/gtk/gui.cc:1759
+#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:758 src/gtk/gui.cc:1610
+#: src/gtk/gui.cc:1804
 msgid "Dashboard"
 msgstr ""
 
@@ -3365,18 +3285,18 @@ msgstr ""
 msgid "Update"
 msgstr "Αναβάθμιση λίστας"
 
-#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1277 src/ui.cc:841 src/ui.cc:843
-#: src/ui.cc:888 src/ui.cc:890 src/ui.cc:916 src/ui.cc:918 src/ui.cc:939
-#: src/ui.cc:941
+#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1322 src/ui.cc:840 src/ui.cc:842
+#: src/ui.cc:887 src/ui.cc:889 src/ui.cc:915 src/ui.cc:917 src/ui.cc:938
+#: src/ui.cc:940
 msgid "Packages"
 msgstr "Πακέτα"
 
-#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:988 src/gtk/previewtab.cc:118
-#: src/ui.cc:1341
+#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:1033 src/gtk/previewtab.cc:118
+#: src/ui.cc:1340
 msgid "Preview"
 msgstr "Προεπισκόπηση"
 
-#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:983 src/ui.cc:2705
+#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:1028 src/ui.cc:2699
 msgid "Resolver"
 msgstr "Resolver"
 
@@ -3406,23 +3326,12 @@ msgstr "Αφαίρεση του φίλτρου από τον κατάλογο τ
 msgid "Apply these settings to all active package lists."
 msgstr "Εφαρμογή φίλτρου στον κατάλογο των πακέτων"
 
-#: src/gtk/aptitude.glade:664
-#, fuzzy
-#| msgid "delete"
-msgid "gtk-close"
-msgstr "διαγραφή"
-
-#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1425
-#: src/gtk/aptitude.glade:1754 src/gtk/aptitude.glade:1892
+#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1450
+#: src/gtk/aptitude.glade:1779 src/gtk/aptitude.glade:1917
 #, fuzzy
 #| msgid "Search"
 msgid "Search:"
 msgstr "Αναζήτηση"
-
-#: src/gtk/aptitude.glade:737 src/gtk/aptitude.glade:1443
-#: src/gtk/aptitude.glade:1772 src/gtk/aptitude.glade:1910
-msgid "gtk-find"
-msgstr ""
 
 #: src/gtk/aptitude.glade:750
 #, fuzzy
@@ -3430,15 +3339,15 @@ msgstr ""
 msgid "Incremental"
 msgstr "επανεγκατάσταση"
 
-#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1464
-#: src/gtk/aptitude.glade:1793 src/gtk/aptitude.glade:1931
+#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1489
+#: src/gtk/aptitude.glade:1818 src/gtk/aptitude.glade:1956
 #, fuzzy
 #| msgid "Err "
 msgid "Errors"
 msgstr "Σφάλμα "
 
-#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1810
-#: src/gtk/aptitude.glade:1948
+#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1835
+#: src/gtk/aptitude.glade:1973
 msgid "Show "
 msgstr ""
 
@@ -3478,32 +3387,36 @@ msgstr ""
 msgid "tags"
 msgstr "Ετικέτες"
 
-#: src/gtk/aptitude.glade:1106
+#: src/gtk/aptitude.glade:1079
+msgid "Screenshot"
+msgstr ""
+
+#: src/gtk/aptitude.glade:1131
 msgid "Fixing upgrade manually:"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1116 src/gtk/dashboardtab.cc:544
+#: src/gtk/aptitude.glade:1141 src/gtk/dashboardtab.cc:544
 msgid "Calculating upgrade..."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1164
+#: src/gtk/aptitude.glade:1189
 msgid "<b>Solutions</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1182 src/gtk/download.cc:261
+#: src/gtk/aptitude.glade:1207 src/gtk/download.cc:261
 #: src/gtk/entityview.cc:551
 #, fuzzy
 #| msgid "State"
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: src/gtk/aptitude.glade:1216
+#: src/gtk/aptitude.glade:1241
 #, fuzzy
 #| msgid "Unknown action type: %s"
 msgid "Group by action type"
 msgstr "Άγνωστος τύπος εργασίας: %s"
 
-#: src/gtk/aptitude.glade:1220
+#: src/gtk/aptitude.glade:1245
 msgid ""
 "Arrange the actions of the current solution so that actions that are of the "
 "same type are placed together (for instance, all the actions that remove "
@@ -3512,57 +3425,53 @@ msgid ""
 "This is the default view mode."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1234
+#: src/gtk/aptitude.glade:1259
 msgid "Group by dependency"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1238
+#: src/gtk/aptitude.glade:1263
 msgid ""
 "Show the order in which the actions in the current solution were performed "
 "and the dependency that triggered each action."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1255
+#: src/gtk/aptitude.glade:1280
 msgid "<b>View Mode</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1297
+#: src/gtk/aptitude.glade:1322
 #, fuzzy
 #| msgid "Toggle ^Rejected"
 msgid "Rejected"
 msgstr "Αλλαγή επιλογής ^Απορριφθέντων"
 
-#: src/gtk/aptitude.glade:1312
+#: src/gtk/aptitude.glade:1337
 #, fuzzy
 #| msgid "Preferences"
 msgid "No preference"
 msgstr "Προτιμήσεις"
 
-#: src/gtk/aptitude.glade:1328
+#: src/gtk/aptitude.glade:1353
 msgid "Accepted"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1348
+#: src/gtk/aptitude.glade:1373
 msgid "<b>Status of selected action</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1369
+#: src/gtk/aptitude.glade:1394
 #, fuzzy
 #| msgid "^Examine Solution"
 msgid "Find a new solution"
 msgstr "^Εξέταση της λύσης"
 
-#: src/gtk/aptitude.glade:1373
+#: src/gtk/aptitude.glade:1398
 #, fuzzy
 #| msgid "Select the next solution to the dependency problems."
 msgid "Calculate the next solution that has not yet been generated."
 msgstr "Επέλεξε την επόμενη λύση στα προβλήματα εξαρτήσεων."
 
-#: src/gtk/aptitude.glade:1383
-msgid "gtk-apply"
-msgstr ""
-
-#: src/gtk/aptitude.glade:1388
+#: src/gtk/aptitude.glade:1413
 #, fuzzy
 #| msgid "Perform the actions contained in the currently selected solution."
 msgid ""
@@ -3570,75 +3479,65 @@ msgid ""
 msgstr ""
 "Εφαρμογή των ενεργειών που περιέχονται στην λύση που έχει τώρα επιλεχθεί."
 
-#: src/gtk/aptitude.glade:1543
+#: src/gtk/aptitude.glade:1568
 #, fuzzy
 #| msgid "Upgrade"
 msgid "Upgrade Summary"
 msgstr "Αναβάθμιση"
 
-#: src/gtk/aptitude.glade:1572
+#: src/gtk/aptitude.glade:1597
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Selected Package"
 msgstr "Πηγαίο Πακέτο: "
 
-#: src/gtk/aptitude.glade:1607
+#: src/gtk/aptitude.glade:1632
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
 msgstr ""
 
-#: src/gtk/aptitude.glade:1619
+#: src/gtk/aptitude.glade:1644
 #, fuzzy
 #| msgid "Manual"
 msgid "Fix Manually"
 msgstr "Εγχειρίδιο"
 
-#: src/gtk/aptitude.glade:1632 src/gtk/gui.cc:93 src/gtk/gui.cc:1367
+#: src/gtk/aptitude.glade:1657 src/gtk/gui.cc:93 src/gtk/gui.cc:1412
 msgid "Upgrade"
 msgstr "Αναβάθμιση"
 
-#: src/gtk/aptitude.glade:1663
+#: src/gtk/aptitude.glade:1688
 msgid "<b>Available Upgrades:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1858
+#: src/gtk/aptitude.glade:1883
 msgid "<b>Start at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1996
+#: src/gtk/aptitude.glade:2021
 msgid "<b>End at these packages:</b>"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2064
+#: src/gtk/aptitude.glade:2089
 msgid "A terminal running dpkg will appear here."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2076
+#: src/gtk/aptitude.glade:2101
 msgid ""
 "Placeholder label for the explanation that two conffiles are being "
 "compared.\n"
 "This text should not appear in the program."
 msgstr ""
 
-#: src/gtk/aptitude.glade:2105
+#: src/gtk/aptitude.glade:2130
 msgid "View the differences\t"
 msgstr ""
 
-#: src/gtk/aptitude.glade:2131
+#: src/gtk/aptitude.glade:2156
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
-msgstr ""
-
-#: src/gtk/aptitude.glade:2143
-#, fuzzy
-#| msgid "yes"
-msgid "gtk-yes"
-msgstr "ναι"
-
-#: src/gtk/aptitude.glade:2157
-msgid "gtk-no"
 msgstr ""
 
 #: src/gtk/changelog.cc:285
@@ -3838,7 +3737,7 @@ msgstr ""
 msgid "The download is still in progress.  Should it be canceled?"
 msgstr "Δεν επιτρέπεται εκκαθάριση κατά τη διάρκεια της μεταφόρτωσης"
 
-#: src/gtk/download.cc:395 src/gtk/gui.cc:787
+#: src/gtk/download.cc:395 src/gtk/gui.cc:832
 #, fuzzy
 #| msgid "View next display"
 msgid "View Details"
@@ -3921,112 +3820,112 @@ msgstr ""
 msgid "[%s] dpkg process complete; there are more packages left to process.\n"
 msgstr ""
 
-#: src/gtk/entitysummary.cc:114
+#: src/gtk/entitysummary.cc:115
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrade to %s version %s"
 msgstr "Εκδόσεις του %s"
 
-#: src/gtk/entitysummary.cc:122
+#: src/gtk/entitysummary.cc:123
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Install %s version %s"
 msgstr "Εγκατάσταση(%s παρέχει %s)"
 
-#: src/gtk/entitysummary.cc:130
+#: src/gtk/entitysummary.cc:131
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrade to %s version %s"
 msgstr "  έκδοση cwidget: %s\n"
 
-#: src/gtk/entitysummary.cc:141
+#: src/gtk/entitysummary.cc:142
 #, fuzzy, c-format
 #| msgid "Keep the following packages at their current version:"
 msgid "Don't hold %s at its current version."
 msgstr "Διατήρησε τα ακόλουθα πακέτα στην τωρινή τους έκδοση:"
 
-#: src/gtk/entitysummary.cc:144 src/gtk/entitysummary.cc:164
-#: src/gtk/entitysummary.cc:167
+#: src/gtk/entitysummary.cc:145 src/gtk/entitysummary.cc:165
+#: src/gtk/entitysummary.cc:168
 #, fuzzy, c-format
 #| msgid "Canc^el pending actions"
 msgid "Cancel any actions on %s."
 msgstr "Ακύ^ρωση των εκκρεμών ενεργειών"
 
-#: src/gtk/entitysummary.cc:149
+#: src/gtk/entitysummary.cc:150
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the purge of %s."
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/entitysummary.cc:151
+#: src/gtk/entitysummary.cc:152
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s."
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/entitysummary.cc:156
+#: src/gtk/entitysummary.cc:157
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the upgrade of %s."
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/entitysummary.cc:158
+#: src/gtk/entitysummary.cc:159
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s."
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/entitysummary.cc:160
+#: src/gtk/entitysummary.cc:161
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the downgrade of %s."
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/entitysummary.cc:162
+#: src/gtk/entitysummary.cc:163
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the reinstallation of %s."
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/entitysummary.cc:205
+#: src/gtk/entitysummary.cc:206
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "Remove %s"
 msgstr "Αφαίρεση(%s)"
 
-#: src/gtk/entitysummary.cc:209
+#: src/gtk/entitysummary.cc:210
 #, fuzzy, c-format
 #| msgid "^Purge"
 msgid "Purge %s"
 msgstr "^Διαγραφή"
 
-#: src/gtk/entitysummary.cc:217
+#: src/gtk/entitysummary.cc:218
 #, c-format
 msgid "Hold %s at its current version."
 msgstr ""
 
-#: src/gtk/entitysummary.cc:222
+#: src/gtk/entitysummary.cc:223
 #, fuzzy, c-format
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "Mark %s as automatically installed."
 msgstr "'&M' επισήμανση πακέτων σαν αυτόματα εγκατεστημμένων"
 
-#: src/gtk/entitysummary.cc:227
+#: src/gtk/entitysummary.cc:228
 #, fuzzy, c-format
 msgid "Mark %s as manually installed."
 msgstr "'&m' επισήμανση πακέτων σαν χειροκίνητα εγκατεστημμένων"
 
-#: src/gtk/entitysummary.cc:273
+#: src/gtk/entitysummary.cc:277
 #, fuzzy, c-format
 #| msgid "\"%s\" is a virtual package provided by:\n"
 msgid "%s is a virtual package provided by:\n"
 msgstr "\"%s\" είναι ένα εικονικό πακέτο που παρέχεται από το:\n"
 
-#: src/gtk/entitysummary.cc:337 src/gtk/previewtab.cc:215
+#: src/gtk/entitysummary.cc:341 src/gtk/previewtab.cc:215
 msgid "(more info...)"
 msgstr ""
 
-#: src/gtk/entitysummary.cc:366
+#: src/gtk/entitysummary.cc:373
 #, fuzzy
 #| msgid "Source Package: "
 msgid "Source: "
@@ -4155,11 +4054,11 @@ msgstr "Εγκατεστημένο"
 msgid "Reinstall"
 msgstr "Επανεγκατάσταση"
 
-#: src/gtk/gui.cc:94 src/gtk/gui.cc:1373
+#: src/gtk/gui.cc:94 src/gtk/gui.cc:1418
 msgid "Downgrade"
 msgstr "Υποβάθμιση έκδοσης"
 
-#: src/gtk/gui.cc:95 src/gtk/gui.cc:1383
+#: src/gtk/gui.cc:95 src/gtk/gui.cc:1428
 msgid "Remove"
 msgstr "Αφαίρεση"
 
@@ -4179,36 +4078,36 @@ msgstr "απαγορευμένη αναβάθμιση"
 msgid "Unsatisfied dependencies"
 msgstr "Σχετικές εξαρτήσεις"
 
-#: src/gtk/gui.cc:224
+#: src/gtk/gui.cc:269
 msgid "Checking for updates"
 msgstr ""
 
-#: src/gtk/gui.cc:242
+#: src/gtk/gui.cc:287
 msgid "Insufficient privileges."
 msgstr ""
 
-#: src/gtk/gui.cc:245
+#: src/gtk/gui.cc:290
 #, fuzzy
 #| msgid "Apply a filter to the package list"
 msgid "You must be root to update the package lists."
 msgstr "Εφαρμογή φίλτρου στον κατάλογο των πακέτων"
 
-#: src/gtk/gui.cc:253 src/gtk/gui.cc:901
+#: src/gtk/gui.cc:298 src/gtk/gui.cc:946
 #, fuzzy
 msgid "Download already running."
 msgstr "Μεταφόρτωση... "
 
-#: src/gtk/gui.cc:255 src/gtk/gui.cc:903 src/ui.cc:1467 src/ui.cc:1706
+#: src/gtk/gui.cc:300 src/gtk/gui.cc:948 src/ui.cc:1466 src/ui.cc:1705
 msgid "A package-list update or install run is already taking place."
 msgstr "Ήδη βρίσκεται σε εξέλιξη μια διαδικασία αναβάθμισης ή εγκατάστασης."
 
-#: src/gtk/gui.cc:314
+#: src/gtk/gui.cc:359
 #, fuzzy, c-format
 #| msgid "List Update"
 msgid "Update %s?"
 msgstr "Αναβάθμιση λίστας"
 
-#: src/gtk/gui.cc:340
+#: src/gtk/gui.cc:385
 #, fuzzy, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid ""
@@ -4216,7 +4115,7 @@ msgid ""
 "'%s'?"
 msgstr "Αδύνατη η αντικατάσταση του %s με νέο αρχείο ρυθμίσεων"
 
-#: src/gtk/gui.cc:344
+#: src/gtk/gui.cc:389
 #, c-format
 msgid ""
 "The configuration file %s was modified (by you or by a script). An updated "
@@ -4225,70 +4124,70 @@ msgid ""
 "the new package maintainers version? "
 msgstr ""
 
-#: src/gtk/gui.cc:372
+#: src/gtk/gui.cc:417
 #, c-format
 msgid "Comparing %s to %s..."
 msgstr ""
 
-#: src/gtk/gui.cc:693
+#: src/gtk/gui.cc:738
 msgid ""
 "Interrupting this process could leave your system in an inconsistent state.  "
 "Are you sure you want to stop applying your changes?"
 msgstr ""
 
-#: src/gtk/gui.cc:731
+#: src/gtk/gui.cc:776
 #, fuzzy
 #| msgid "%s changes"
 msgid "Done applying changes!"
 msgstr "%s αλλαγές"
 
-#: src/gtk/gui.cc:778
+#: src/gtk/gui.cc:823
 #, fuzzy
 #| msgid "%s changes"
 msgid "Applying changes..."
 msgstr "%s αλλαγές"
 
-#: src/gtk/gui.cc:830
+#: src/gtk/gui.cc:875
 #, fuzzy, c-format
 #| msgid "s: %F"
 msgid "%s: %s"
 msgstr "s: %F"
 
-#: src/gtk/gui.cc:833
+#: src/gtk/gui.cc:878
 #, fuzzy, c-format
 #| msgid "No broken packages."
 msgid "Error in package %s"
 msgstr "Δεν υπάρχουν \"σπασμένα\" πακέτα."
 
-#: src/gtk/gui.cc:861
+#: src/gtk/gui.cc:906
 #, fuzzy, c-format
 #| msgid "Unable to replace %s with new configuration file"
 msgid "Asking whether to replace the configuration file %s"
 msgstr "Αδύνατη η αντικατάσταση του %s με νέο αρχείο ρυθμίσεων"
 
-#: src/gtk/gui.cc:917 src/ui.cc:1211
+#: src/gtk/gui.cc:962 src/ui.cc:1210
 msgid "Downloading packages"
 msgstr "Μεταφόρτωση πακέτων"
 
-#: src/gtk/gui.cc:993
+#: src/gtk/gui.cc:1038
 #, fuzzy
 #| msgid "No broken packages."
 msgid "Broken packages"
 msgstr "Δεν υπάρχουν \"σπασμένα\" πακέτα."
 
-#: src/gtk/gui.cc:1026
+#: src/gtk/gui.cc:1071
 #, fuzzy
 #| msgid "No broken packages."
 msgid "Show broken packages"
 msgstr "Δεν υπάρχουν \"σπασμένα\" πακέτα."
 
-#: src/gtk/gui.cc:1030
+#: src/gtk/gui.cc:1075
 #, fuzzy
 #| msgid "Resolve Dependencies"
 msgid "Resolve dependencies"
 msgstr "Επίλυση Εξαρτήσεων"
 
-#: src/gtk/gui.cc:1058
+#: src/gtk/gui.cc:1103
 #, fuzzy, c-format
 #| msgid "No packages are broken."
 msgid "%d package is broken"
@@ -4296,13 +4195,13 @@ msgid_plural "%d packages are broken."
 msgstr[0] "Δεν υπάρχουν \"σπασμένα\" πακέτα."
 msgstr[1] "Δεν υπάρχουν \"σπασμένα\" πακέτα."
 
-#: src/gtk/gui.cc:1102
+#: src/gtk/gui.cc:1147
 #, fuzzy
 #| msgid "%s changes"
 msgid "View changes"
 msgstr "%s αλλαγές"
 
-#: src/gtk/gui.cc:1106
+#: src/gtk/gui.cc:1151
 #, fuzzy
 #| msgid "%s changes"
 msgid "Apply changes"
@@ -4311,7 +4210,7 @@ msgstr "%s αλλαγές"
 #. ForTranslators: any numbers in this
 #. string will be displayed in a larger
 #. font.
-#: src/gtk/gui.cc:1147
+#: src/gtk/gui.cc:1192
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4323,7 +4222,7 @@ msgstr[1] "%d εγκατάσταση"
 #. ForTranslators: any numbers in this
 #. string will be displayed in a larger
 #. font.
-#: src/gtk/gui.cc:1162
+#: src/gtk/gui.cc:1207
 #, fuzzy, c-format
 #| msgid "failed to remove %s"
 msgid "%d package to remove"
@@ -4331,99 +4230,99 @@ msgid_plural "%d packages to remove"
 msgstr[0] "αποτυχία αφαίρεσης του %s"
 msgstr[1] "αποτυχία αφαίρεσης του %s"
 
-#: src/gtk/gui.cc:1201
+#: src/gtk/gui.cc:1246
 #, fuzzy, c-format
 #| msgid "DownloadSize"
 msgid "Download size: %sB."
 msgstr "ΜέγεθοςΛήψης"
 
-#: src/gtk/gui.cc:1243
+#: src/gtk/gui.cc:1288
 #, c-format
 msgid "Tags of %s:\n"
 msgstr ""
 
-#: src/gtk/gui.cc:1304
+#: src/gtk/gui.cc:1349
 msgid "This feature is not implemented, yet."
 msgstr ""
 
-#: src/gtk/gui.cc:1310
+#: src/gtk/gui.cc:1355
 #, fuzzy
 #| msgid "not installed"
 msgid "Not implemented"
 msgstr "μη εγκατεστημένο"
 
-#: src/gtk/gui.cc:1362 src/gtk/gui.cc:1381
+#: src/gtk/gui.cc:1407 src/gtk/gui.cc:1426
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Upgrade"
 msgstr "Εγκατεστημένο"
 
-#: src/gtk/gui.cc:1388
+#: src/gtk/gui.cc:1433
 #, fuzzy
 #| msgid "^Purge"
 msgid "Purge"
 msgstr "^Διαγραφή"
 
-#: src/gtk/gui.cc:1393
+#: src/gtk/gui.cc:1438
 msgid "Keep"
 msgstr "Διατήρηση"
 
-#: src/gtk/gui.cc:1398
+#: src/gtk/gui.cc:1443
 msgid "Hold"
 msgstr "Αναμονή"
 
-#: src/gtk/gui.cc:1404
+#: src/gtk/gui.cc:1449
 msgid "Set as automatic"
 msgstr ""
 
-#: src/gtk/gui.cc:1409
+#: src/gtk/gui.cc:1454
 #, fuzzy
 #| msgid "User's Manual"
 msgid "Set as manual"
 msgstr "Εγχειρίδιο Χρήσης"
 
-#: src/gtk/gui.cc:1414
+#: src/gtk/gui.cc:1459
 msgid "Toggle automatic status"
 msgstr ""
 
-#: src/gtk/gui.cc:1738
+#: src/gtk/gui.cc:1783
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
 
-#: src/gtk/info.cc:160 src/gtk/pkgview.cc:169
+#: src/gtk/info.cc:161 src/gtk/pkgview.cc:169
 #, fuzzy
 #| msgid "Current status: %F."
 msgid "Current status"
 msgstr "Τρέχουσα κατάσταση: %F"
 
-#: src/gtk/info.cc:162 src/gtk/pkgview.cc:171
+#: src/gtk/info.cc:163 src/gtk/pkgview.cc:171
 msgid "Selected status"
 msgstr ""
 
-#: src/gtk/info.cc:495
+#: src/gtk/info.cc:496
 #, fuzzy
 #| msgid "Not Installed"
 msgid "Not available"
 msgstr "Μη εγκατεστημένο"
 
-#: src/gtk/info.cc:540
+#: src/gtk/info.cc:545
 #, fuzzy
 #| msgid "C^ycle Package Information"
 msgid "Package information: version list"
 msgstr "Κυκλική εναλλαγή Πληροφοριών Πακέτου"
 
-#: src/gtk/info.cc:550
+#: src/gtk/info.cc:555
 #, fuzzy
 #| msgid "Packages which depend on %s"
 msgid "Package information: dependency list"
 msgstr "Πακέτα που εξαρτώνται από το %s"
 
-#: src/gtk/info.cc:592
+#: src/gtk/info.cc:597
 msgid "Please wait; reloading cache..."
 msgstr ""
 
-#: src/gtk/info.cc:737
+#: src/gtk/info.cc:778
 #, fuzzy
 #| msgid "no"
 msgid "Info"
@@ -4629,13 +4528,13 @@ msgstr ""
 msgid "Preview: "
 msgstr "Προεπισκόπηση"
 
-#: src/gtk/resolver.cc:70
+#: src/gtk/resolver.cc:69
 #, fuzzy, c-format
 #| msgid "Error while dumping resolver state"
 msgid "Error in dependency resolver: %s"
 msgstr "Λάθος κατά το \"άδειασμα\" της κατάστασης του resolver"
 
-#: src/gtk/resolver.cc:73
+#: src/gtk/resolver.cc:72
 #, c-format
 msgid ""
 "Fatal error in dependency resolver.  You can continue searching, but some "
@@ -4644,123 +4543,124 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/gtk/resolver.cc:216
+#: src/gtk/resolver.cc:213
 #, fuzzy
 #| msgid "Package"
 msgid "Virtual package"
 msgstr "Πακέτο"
 
-#: src/gtk/resolver.cc:250 src/solution_fragment.cc:275
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:275
 msgid "Not Installed"
 msgstr "Μη εγκατεστημένο"
 
-#: src/gtk/resolver.cc:381
+#: src/gtk/resolver.cc:378
 #, fuzzy, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
 msgstr "Αφαίρεση το %s"
 
-#: src/gtk/resolver.cc:386
+#: src/gtk/resolver.cc:383
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Canceling the installation of %s is rejected."
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/resolver.cc:396
+#: src/gtk/resolver.cc:392
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Canceling the removal of %s is rejected."
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/resolver.cc:399
+#: src/gtk/resolver.cc:395
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
 msgstr "Διατήρηση του %F στην έκδοση %s (%s)"
 
-#: src/gtk/resolver.cc:406
+#: src/gtk/resolver.cc:402
 #, fuzzy, c-format
 #| msgid "Install(%s provides %s)"
 msgid "Installing %s version %s is rejected."
 msgstr "Εγκατάσταση(%s παρέχει %s)"
 
-#: src/gtk/resolver.cc:412
+#: src/gtk/resolver.cc:408
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "Downgrading %s to version %s is rejected."
 msgstr "  έκδοση cwidget: %s\n"
 
-#: src/gtk/resolver.cc:418
+#: src/gtk/resolver.cc:414
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrading %s to version %s is rejected."
 msgstr "Εκδόσεις του %s"
 
-#: src/gtk/resolver.cc:435
+#: src/gtk/resolver.cc:431
 #, c-format
 msgid "Removing %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:440
+#: src/gtk/resolver.cc:436
 #, c-format
 msgid ""
 "Canceling the installation of %s is preferred over all un-accepted "
 "alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:450
+#: src/gtk/resolver.cc:445
 #, c-format
 msgid ""
 "Canceling the removal of %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:453
+#: src/gtk/resolver.cc:448
 #, c-format
 msgid ""
 "Keeping %s at version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:460
+#: src/gtk/resolver.cc:455
 #, c-format
 msgid ""
 "Installing %s version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:466
+#: src/gtk/resolver.cc:461
 #, c-format
 msgid ""
 "Downgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:472
-#, c-format
+#: src/gtk/resolver.cc:467
+#, fuzzy, c-format
+#| msgid "%s versions"
 msgid ""
-"Upgrading %s to version %s is preferred over all un-accpted alternatives."
-msgstr ""
+"Upgrading %s to version %s is preferred over all un-accepted alternatives."
+msgstr "Εκδόσεις του %s"
 
-#: src/gtk/resolver.cc:490
+#: src/gtk/resolver.cc:485
 #, c-format
 msgid "Leaving %ls unresolved is rejected."
 msgstr ""
 
-#: src/gtk/resolver.cc:496
+#: src/gtk/resolver.cc:491
 #, c-format
 msgid "Leaving %ls unresolved is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:914
+#: src/gtk/resolver.cc:909
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:918
+#: src/gtk/resolver.cc:913
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:922
+#: src/gtk/resolver.cc:917
 msgid ""
 "Allow solutions containing this action, but do not prefer them to other "
 "solutions."
@@ -4770,7 +4670,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:926
+#: src/gtk/resolver.cc:921
 msgid ""
 "Always prefer this action over alternatives that have not been accepted."
 msgid_plural ""
@@ -4778,204 +4678,204 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1235 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:108
 #, c-format
 msgid "%s depends upon %s"
 msgstr "το %s εξαρτάται από το %s"
 
-#: src/gtk/resolver.cc:1238 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:111
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "το %s προ-εξαρτάται από το %s"
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:114
 #, c-format
 msgid "%s suggests %s"
 msgstr "το πακέτο %s προτείνει το %s"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:117
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "το %s συνιστά το %s"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:120
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "το πακέτο %s συγκρούεται με το %s"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:123
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s \"σπάει\" %s"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:126
 #, c-format
 msgid "%s replaces %s"
 msgstr "το %s αντικαθιστά το %s"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:129
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "το %s καθιστά άχρηστο το %s"
 
-#: src/gtk/resolver.cc:1368 src/gtk/resolver.cc:1833
+#: src/gtk/resolver.cc:1374 src/gtk/resolver.cc:1839
 #: src/solution_screen.cc:272
 msgid "Remove the following packages:"
 msgstr "Αφαίρεσε τα ακόλουθα πακέτα:"
 
-#: src/gtk/resolver.cc:1382 src/gtk/resolver.cc:1845
+#: src/gtk/resolver.cc:1388 src/gtk/resolver.cc:1851
 #: src/solution_screen.cc:296
 msgid "Install the following packages:"
 msgstr "Εγκατάσταση των ακόλουθων πακέτων:"
 
-#: src/gtk/resolver.cc:1395 src/gtk/resolver.cc:1857
+#: src/gtk/resolver.cc:1401 src/gtk/resolver.cc:1863
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "Αφαίρεσε τα ακόλουθα πακέτα:"
 
-#: src/gtk/resolver.cc:1408 src/gtk/resolver.cc:1869
+#: src/gtk/resolver.cc:1414 src/gtk/resolver.cc:1875
 #: src/solution_screen.cc:308
 msgid "Upgrade the following packages:"
 msgstr "Αναβάθμιση των ακόλουθων πακέτων:"
 
-#: src/gtk/resolver.cc:1421 src/gtk/resolver.cc:1882
+#: src/gtk/resolver.cc:1427 src/gtk/resolver.cc:1888
 #: src/solution_screen.cc:320
 msgid "Downgrade the following packages:"
 msgstr "Υποβάθμιση των ακόλουθων πακέτων:"
 
-#: src/gtk/resolver.cc:1434 src/gtk/resolver.cc:1895
+#: src/gtk/resolver.cc:1440 src/gtk/resolver.cc:1901
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "Μην επιλύσεις τις ακόλουθες εξαρτήσεις: %n"
 
-#: src/gtk/resolver.cc:1511
+#: src/gtk/resolver.cc:1517
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Αφαίρεση του %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1518
+#: src/gtk/resolver.cc:1524
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "Εγκατάσταση του %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1526
+#: src/gtk/resolver.cc:1532
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/resolver.cc:1529
+#: src/gtk/resolver.cc:1535
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "Ακύρωση της αφαίρεσης του %F"
 
-#: src/gtk/resolver.cc:1532
+#: src/gtk/resolver.cc:1538
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "Διατήρηση του %F στην έκδοση %s (%s)"
 
-#: src/gtk/resolver.cc:1539
+#: src/gtk/resolver.cc:1545
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Αναβάθμιση του %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1548
+#: src/gtk/resolver.cc:1554
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Υποβάθμιση έκδοσης %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1607
+#: src/gtk/resolver.cc:1613
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>Remove</b> %s"
 msgstr "Αφαίρεση(%s)"
 
-#: src/gtk/resolver.cc:1607
+#: src/gtk/resolver.cc:1613
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>remove</b> %s"
 msgstr "Αφαίρεση(%s)"
 
-#: src/gtk/resolver.cc:1616
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "Διατήρηση του %F στην έκδοση %s (%s)"
 
-#: src/gtk/resolver.cc:1616
+#: src/gtk/resolver.cc:1622
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "Διατήρηση του %F στην έκδοση %s (%s)"
 
-#: src/gtk/resolver.cc:1624
+#: src/gtk/resolver.cc:1630
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>Cancel</b> the installation of %s"
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/resolver.cc:1624
+#: src/gtk/resolver.cc:1630
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>cancel</b> the installation of %s"
 msgstr "Ακύρωση της εγκατάστασης του %F"
 
-#: src/gtk/resolver.cc:1631
+#: src/gtk/resolver.cc:1637
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "Εγκατάσταση του %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1631
+#: src/gtk/resolver.cc:1637
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "Εγκατάσταση του %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1640
+#: src/gtk/resolver.cc:1646
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "  έκδοση cwidget: %s\n"
 
-#: src/gtk/resolver.cc:1640
+#: src/gtk/resolver.cc:1646
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "  έκδοση cwidget: %s\n"
 
-#: src/gtk/resolver.cc:1649
+#: src/gtk/resolver.cc:1655
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "Εκδόσεις του %s"
 
-#: src/gtk/resolver.cc:1649
+#: src/gtk/resolver.cc:1655
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "Εκδόσεις του %s"
 
-#: src/gtk/resolver.cc:1662
+#: src/gtk/resolver.cc:1668
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1662
+#: src/gtk/resolver.cc:1668
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1730
+#: src/gtk/resolver.cc:1736
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4984,7 +4884,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d εγκατάσταση"
 msgstr[1] "%d εγκαταστάσεις"
 
-#: src/gtk/resolver.cc:1735
+#: src/gtk/resolver.cc:1741
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4993,7 +4893,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d αφαίρεση"
 msgstr[1] "%d αφαιρέσεις"
 
-#: src/gtk/resolver.cc:1741
+#: src/gtk/resolver.cc:1747
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -5002,7 +4902,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d διατήρηση"
 msgstr[1] "%d διατηρήσεις"
 
-#: src/gtk/resolver.cc:1747
+#: src/gtk/resolver.cc:1753
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -5011,7 +4911,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d αναβάθμιση"
 msgstr[1] "%d αναβαθμίσεις"
 
-#: src/gtk/resolver.cc:1753
+#: src/gtk/resolver.cc:1759
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -5020,7 +4920,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d υποβαθμίζεται"
 msgstr[1] "%d υποβαθμίζονται"
 
-#: src/gtk/resolver.cc:1759
+#: src/gtk/resolver.cc:1765
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -5028,35 +4928,35 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "Εξέταση ^Συστάσεων"
 msgstr[1] "Εξέταση ^Συστάσεων"
 
-#: src/gtk/resolver.cc:2051
+#: src/gtk/resolver.cc:2057
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "Δεν υπάρχουν περισσότερες λύσεις."
 
-#: src/gtk/resolver.cc:2058
+#: src/gtk/resolver.cc:2064
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency solution was found."
 msgstr "Διαχείριση εξαρτήσεων"
 
-#: src/gtk/resolver.cc:2059
+#: src/gtk/resolver.cc:2065
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "Δεν υπάρχουν περισσότερες λύσεις."
 
-#: src/gtk/resolver.cc:2070
+#: src/gtk/resolver.cc:2076
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:2071
+#: src/gtk/resolver.cc:2077
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "Δεν υπάρχουν περισσότερες λύσεις."
 
-#: src/gtk/resolver.cc:2102
+#: src/gtk/resolver.cc:2108
 #, c-format
 msgid "Solution %s of %s (tier %s)."
 msgstr ""
@@ -5290,80 +5190,80 @@ msgstr "Αταίριαστη '(' στην περιγραφή της πολιτι
 msgid "Invalid sorting policy type '%s'"
 msgstr "Μη έγκυρη πολιτική ταξινόμησης '%s'"
 
-#: src/main.cc:106
+#: src/main.cc:108
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "Αδυναμία αποκωδικοποίησης multibyte συμβολοσειράς μετά το \"%ls\""
 
-#: src/main.cc:115
+#: src/main.cc:117
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr ""
 "Αδυναμία αποκωδικοποίησης συμβολοσειράς ευρέως-χαρακτήρα μετά το \"%s\""
 
-#: src/main.cc:123
+#: src/main.cc:125
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s μεταγλωττίστηκε στις %s %s\n"
 
-#: src/main.cc:126
+#: src/main.cc:128
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "Πρόγραμμα μεταγλώττισης : g++ %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:130
 msgid "Compiled against:\n"
 msgstr "Μεταγλωττίστηκε με:\n"
 
-#: src/main.cc:129
+#: src/main.cc:131
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "  έκδοση apt %d.%d.%d\n"
 
-#: src/main.cc:132
+#: src/main.cc:134
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  Έκδοση NCurses: Άγνωστη\n"
 
-#: src/main.cc:134
+#: src/main.cc:136
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  Έκδοση NCurses %s\n"
 
-#: src/main.cc:136
+#: src/main.cc:138
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  έκδοση libsigc++: %s\n"
 
-#: src/main.cc:138
+#: src/main.cc:140
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Ενεργοποίηση υποστήριξης Ept .\n"
 
-#: src/main.cc:140
+#: src/main.cc:142
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Απενεργοποίηση υποστήριξης Ept.\n"
 
-#: src/main.cc:143
+#: src/main.cc:145
 #, fuzzy, c-format
 #| msgid "  apt version %d.%d.%d\n"
 msgid "  Gtk+ version %d.%d.%d\n"
 msgstr "  έκδοση apt %d.%d.%d\n"
 
-#: src/main.cc:145
+#: src/main.cc:147
 #, fuzzy, c-format
 #| msgid "  apt version %d.%d.%d\n"
 msgid "  Gtk-- version %d.%d.%d\n"
 msgstr "  έκδοση apt %d.%d.%d\n"
 
-#: src/main.cc:148
+#: src/main.cc:150
 #, fuzzy, c-format
 #| msgid "  Ept support disabled.\n"
 msgid "  Gtk+ support disabled.\n"
 msgstr "  Απενεργοποίηση υποστήριξης Ept.\n"
 
-#: src/main.cc:151
+#: src/main.cc:153
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -5371,32 +5271,32 @@ msgstr ""
 "\n"
 "Τρέχουσα έκδοση βιβλιοθήκης:\n"
 
-#: src/main.cc:152
+#: src/main.cc:154
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  Έκδοση NCurses: %s\n"
 
-#: src/main.cc:153
+#: src/main.cc:155
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  έκδοση cwidget: %s\n"
 
-#: src/main.cc:154
+#: src/main.cc:156
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Έκδοση Apt: %s\n"
 
-#: src/main.cc:160
+#: src/main.cc:162
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Χρήση: aptitude [-S fname] [-u|-i]"
 
-#: src/main.cc:162
+#: src/main.cc:164
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [επιλογές] <ενέργεια> ..."
 
-#: src/main.cc:164
+#: src/main.cc:166
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -5406,51 +5306,51 @@ msgstr ""
 "λειτουργία):\n"
 "\n"
 
-#: src/main.cc:165
+#: src/main.cc:167
 #, fuzzy, c-format
 #| msgid " install      - Install/upgrade packages\n"
 msgid " install      - Install/upgrade packages.\n"
 msgstr " install      - Εγκατάσταση/αναβάθμιση πακέτου\n"
 
-#: src/main.cc:166
+#: src/main.cc:168
 #, fuzzy, c-format
 #| msgid " remove       - Remove packages\n"
 msgid " remove       - Remove packages.\n"
 msgstr " remove       - Αφαίρεση πακέτων\n"
 
-#: src/main.cc:167
+#: src/main.cc:169
 #, fuzzy, c-format
 #| msgid " purge        - Remove packages and their configuration files\n"
 msgid " purge        - Remove packages and their configuration files.\n"
 msgstr " purge        - Αφαίρεση πακέτων μαζί με τα αρχεία ρυθμίσεών τους\n"
 
-#: src/main.cc:168
+#: src/main.cc:170
 #, fuzzy, c-format
 #| msgid " hold         - Place packages on hold\n"
 msgid " hold         - Place packages on hold.\n"
 msgstr " hold         - Τοποθέτηση πακέτων σε αναμονή\n"
 
-#: src/main.cc:169
+#: src/main.cc:171
 #, fuzzy, c-format
 #| msgid " unhold       - Cancel a hold command for a package\n"
 msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr " unhold       - Ακύρωση της εντολής αναμονή για πακέτο\n"
 
-#: src/main.cc:170
+#: src/main.cc:172
 #, fuzzy, c-format
 #| msgid ""
 #| " markauto     - Mark packages as having been automatically installed\n"
 msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr "markauto    - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί αυτόματα\n"
 
-#: src/main.cc:171
+#: src/main.cc:173
 #, fuzzy, c-format
 #| msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr ""
 "unmarkauto   - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί χειροκίνητα\n"
 
-#: src/main.cc:172
+#: src/main.cc:174
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -5459,19 +5359,19 @@ msgstr ""
 " forbid-version - Απαγόρευση της αναβάθμισης ενός πακέτου σε μια "
 "συγκεκριμένη έκδοση.\n"
 
-#: src/main.cc:173
+#: src/main.cc:175
 #, fuzzy, c-format
 #| msgid " update       - Download lists of new/upgradable packages\n"
 msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr "update       - Μεταφόρτωση λιστών των νέων/αναβαθμιζόμενων πακέτων\n"
 
-#: src/main.cc:174
+#: src/main.cc:176
 #, fuzzy, c-format
 #| msgid " safe-upgrade - Perform a safe upgrade\n"
 msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr " safe-upgrade - Εκτέλεση μιας ασφαλούς αναβάθμισης\n"
 
-#: src/main.cc:175
+#: src/main.cc:177
 #, fuzzy, c-format
 #| msgid ""
 #| " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -5483,56 +5383,56 @@ msgstr ""
 " full-upgrade - Εκτέλεση μιας αναβάθμισης, πιθανόν με εγκατάσταση και "
 "αφαίρεση πακέτων\n"
 
-#: src/main.cc:176
+#: src/main.cc:178
 #, fuzzy, c-format
 #| msgid "'&BD' to install the build-dependencies of a package."
 msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "'&BD' για να εγκαταστήσετε τις build-εξαρτήσεις ενός πακέτου."
 
-#: src/main.cc:177
+#: src/main.cc:179
 #, fuzzy, c-format
 #| msgid " forget-new   - Forget what packages are \"new\"\n"
 msgid " forget-new   - Forget what packages are \"new\".\n"
 msgstr "forget-new   - Ξέχασε ποια πακέτα είναι \"νέα\"\n"
 
-#: src/main.cc:178
+#: src/main.cc:180
 #, fuzzy, c-format
 #| msgid " search       - Search for a package by name and/or expression\n"
 msgid " search       - Search for a package by name and/or expression.\n"
 msgstr ""
 " search       - Αναζήτηση ενός πακέτου με βάση το όνομα ή/και έκφραση\n"
 
-#: src/main.cc:179
+#: src/main.cc:181
 #, fuzzy, c-format
 #| msgid " show         - Display detailed information about a package\n"
 msgid " show         - Display detailed information about a package.\n"
 msgstr " show         - Εμφάνιση λεπτομερειών σχετικά με ένα πακέτο\n"
 
-#: src/main.cc:180
+#: src/main.cc:182
 #, fuzzy, c-format
 #| msgid " clean        - Erase downloaded package files\n"
 msgid " clean        - Erase downloaded package files.\n"
 msgstr " clean        - Διαγραφή μεταφορτομένων πακέτων\n"
 
-#: src/main.cc:181
+#: src/main.cc:183
 #, fuzzy, c-format
 #| msgid " autoclean    - Erase old downloaded package files\n"
 msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr " autoclean    - Διαγραφή παλαιότερα μεταφορτομένων αρχεία πακέτων\n"
 
-#: src/main.cc:182
+#: src/main.cc:184
 #, fuzzy, c-format
 #| msgid " changelog    - View a package's changelog\n"
 msgid " changelog    - View a package's changelog.\n"
 msgstr " ημερ. αλλαγών    -Εμφάνισε το ημερολόγιο αλλαγών ενός πακέτου\n"
 
-#: src/main.cc:183
+#: src/main.cc:185
 #, fuzzy, c-format
 #| msgid " download     - Download the .deb file for a package\n"
 msgid " download     - Download the .deb file for a package.\n"
 msgstr " download     - Μεταφόρτωση ενός αρχείου .deb για ένα πακέτο\n"
 
-#: src/main.cc:184
+#: src/main.cc:186
 #, fuzzy, c-format
 #| msgid ""
 #| " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -5544,7 +5444,7 @@ msgstr ""
 "επανεγκατάσταση    - Κατέβασμα και (πιθανόν) επανεγκατάσταση ενός ήδη "
 "εγκατεστημένου πακέτου\n"
 
-#: src/main.cc:185
+#: src/main.cc:187
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5556,7 +5456,7 @@ msgstr ""
 "                του γιατί ένα ή περισσότερα πακέτα θα απαιτούσαν το "
 "συγκεκριμένο πακέτο\n"
 
-#: src/main.cc:187
+#: src/main.cc:189
 #, fuzzy, c-format
 #| msgid ""
 #| " why-not      - Show the manually installed packages that lead to a "
@@ -5577,36 +5477,36 @@ msgstr ""
 "                οδηγήσουν σε μια σύγκρουση με το δοσμένο πακέτο αν "
 "εγκατασταθούν\n"
 
-#: src/main.cc:191
+#: src/main.cc:193
 #, c-format
 msgid "  Options:\n"
 msgstr "  Επιλογές:\n"
 
-#: src/main.cc:192
+#: src/main.cc:194
 #, fuzzy, c-format
 #| msgid " -h             This help text\n"
 msgid " -h             This help text.\n"
 msgstr " -h             Αυτό το κείμενο βοήθειας\n"
 
-#: src/main.cc:194
+#: src/main.cc:196
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:196
+#: src/main.cc:198
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:197
+#: src/main.cc:199
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 " -s             Εξομοίωση ενεργειών, αλλά να μην πραγματοποιηθούν στην "
 "πραγματικότητα.\n"
 
-#: src/main.cc:198
+#: src/main.cc:200
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
@@ -5614,13 +5514,13 @@ msgstr ""
 " -d             Μόνο μεταφόρτωση των πακέτων, να μην γίνει εγκατάσταση ή "
 "απεγκατάσταση κάτι.\n"
 
-#: src/main.cc:199
+#: src/main.cc:201
 #, fuzzy, c-format
 #| msgid " -P             Always prompt for confirmation or actions\n"
 msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr "-P             Να γίνονται πάντα ερωτήσεις επιβεβαίωσης ή ενέργειες\n"
 
-#: src/main.cc:200
+#: src/main.cc:202
 #, fuzzy, c-format
 #| msgid ""
 #| " -y             Assume that the answer to simple yes/no questions is "
@@ -5630,7 +5530,7 @@ msgid ""
 msgstr ""
 "-y            Υπέθεσε ότι η απάντηση σε απλές ερωτήσεις ναι/όχι είναι 'ναι'\n"
 
-#: src/main.cc:201
+#: src/main.cc:203
 #, fuzzy, c-format
 #| msgid ""
 #| " -F format      Specify a format for displaying search results; see the "
@@ -5642,7 +5542,7 @@ msgstr ""
 "-F format      Ορισμός του τρόπου εμφάνισης των αποτελεσμάτων αναζήτησης, "
 "δείτε εγχειρίδιο χρήσης\n"
 
-#: src/main.cc:202
+#: src/main.cc:204
 #, fuzzy, c-format
 #| msgid ""
 #| " -O order       Specify how search results should be sorted; see the "
@@ -5654,7 +5554,7 @@ msgstr ""
 "-O order       Ορισμός του τρόπου ταξινόμησης των αποτελεσμάτων  αναζήτησης, "
 "δείτε το εγχειρίδιο χρήσης\n"
 
-#: src/main.cc:203
+#: src/main.cc:205
 #, fuzzy, c-format
 #| msgid ""
 #| " -w width       Specify the display width for formatting search results\n"
@@ -5664,32 +5564,32 @@ msgstr ""
 " -w width       Καθορισμός του πλάτους εμφάνισης των αποτελεσμάτων "
 "αναζήτησης\n"
 
-#: src/main.cc:204
+#: src/main.cc:206
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr "-f             Επιθετική προσπάθεια επίλυσης των σπασμένων πακέτων.\n"
 
-#: src/main.cc:205
+#: src/main.cc:207
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr ""
 "-V             Εμφάνιση των εκδόσεων των πακέτων που πρόκειται να "
 "εγκατασταθούν.\n"
 
-#: src/main.cc:206
+#: src/main.cc:208
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 "-D             Εμφάνιση των εξαρτήσεων των αυτόματα αλλαγμένων πακέτων.\n"
 
-#: src/main.cc:207
+#: src/main.cc:209
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr ""
 "-Z\t\t    Εμφάνιση της αλλαγής μεγέθους στο εγκατεστημένο κάθε πακέτου.\n"
 
-#: src/main.cc:208
+#: src/main.cc:210
 #, fuzzy, c-format
 #| msgid ""
 #| " -v             Display extra information. (may be supplied multiple "
@@ -5701,7 +5601,7 @@ msgstr ""
 "-v             Εμφανίζει επιπλέον πληροφορίες (μπορεί να οριστεί πολλαπλές "
 "φορές)\n"
 
-#: src/main.cc:209
+#: src/main.cc:211
 #, fuzzy, c-format
 #| msgid ""
 #| " -t [release]   Set the release from which packages should be installed\n"
@@ -5711,7 +5611,7 @@ msgstr ""
 " -t [release]   Ορίστε την έκδοση από ποια πακέτα θα πρέπει να "
 "εγκατασταθούν\n"
 
-#: src/main.cc:210
+#: src/main.cc:212
 #, fuzzy, c-format
 #| msgid ""
 #| " -q             In command-line mode, suppress the incremental progress\n"
@@ -5724,13 +5624,13 @@ msgstr ""
 "σταδιακής\n"
 "                  προόδου.\n"
 
-#: src/main.cc:212
+#: src/main.cc:214
 #, fuzzy, c-format
 #| msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr " -o key=val     Άμεσος καθορισμός μια παραμέτρου με όνομα 'key'\n"
 
-#: src/main.cc:213
+#: src/main.cc:215
 #, fuzzy, c-format
 #| msgid ""
 #| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -5742,35 +5642,35 @@ msgstr ""
 " --with(out)-recommends\tΚαθορισμός αντιμετώπισης των συνιστώμενων ως\n"
 "                ισχυρών εξαρτήσεων\n"
 
-#: src/main.cc:215
+#: src/main.cc:217
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S fname       Ανάγνωση των εκτεταμένων πληροφοριών από το αρχείο fname.\n"
 
-#: src/main.cc:216
+#: src/main.cc:218
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr "u       : Μεταφόρτωση νέας λίστας πακέτων κατά την εκκίνηση.\n"
 
-#: src/main.cc:217 src/main.cc:219
+#: src/main.cc:219 src/main.cc:221
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:218
+#: src/main.cc:220
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr "-i             Εκτέλεση μιας εγκατάστασης κατά την εκκίνηση.\n"
 
-#: src/main.cc:221
+#: src/main.cc:223
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Αυτό το APT έχει Δυνάμεις ΥπερΑγελάδας.\n"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:343
+#: src/main.cc:345
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5778,13 +5678,13 @@ msgstr "αληθές"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:346
+#: src/main.cc:348
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:349
+#: src/main.cc:351
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5792,13 +5692,13 @@ msgstr "όχι"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:352
+#: src/main.cc:354
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:355
+#: src/main.cc:357
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5806,7 +5706,7 @@ msgstr "Σφάλμα "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:358
+#: src/main.cc:360
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5814,76 +5714,76 @@ msgstr "ψευδές"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:361
+#: src/main.cc:363
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:431
+#: src/main.cc:433
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:444
+#: src/main.cc:446
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "Ακυρη λειτουργία %s"
 
-#: src/main.cc:688
+#: src/main.cc:692
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Περίμενα έναν αριθμό μετά το -q=\n"
 
-#: src/main.cc:697
+#: src/main.cc:701
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Περίμενα έναν αριθμό μετά το -q=, έλαβα %s\n"
 
-#: src/main.cc:721
+#: src/main.cc:725
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o απαιτεί μια παράμετρο της μορφής key=value, έλαβα %s\n"
 
-#: src/main.cc:819
+#: src/main.cc:823
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Δεν υπάρχει ερωτηματικό που να ακολουθεί το όνομα του tag \"%s\".\n"
 
-#: src/main.cc:889 src/main.cc:898
+#: src/main.cc:893 src/main.cc:902
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "ΠΑΡΑΞΕΝΟ: ελήφθη άγνωστος κώδικας παράμετρου\n"
 
-#: src/main.cc:904
+#: src/main.cc:908
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:906
+#: src/main.cc:910
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Πακέτο"
 
-#: src/main.cc:908
+#: src/main.cc:912
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:910
+#: src/main.cc:914
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Όλα πακέτα"
 
-#: src/main.cc:912
+#: src/main.cc:916
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:918
+#: src/main.cc:922
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5891,7 +5791,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:968
+#: src/main.cc:972
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -5899,7 +5799,7 @@ msgid ""
 "specified\n"
 msgstr "Μόνο ένα από το -u και i μπορούν να οριστούν\n"
 
-#: src/main.cc:977
+#: src/main.cc:981
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -5910,23 +5810,23 @@ msgstr ""
 "το -u και -i δεν μπορεί να οριστούν στη λειτουργία γραμμής εντολών(π.χ. με "
 "το 'install')"
 
-#: src/main.cc:998
+#: src/main.cc:1002
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "το -u και -i δεν μπορούν να οριστούν στην ίδια εντολή"
 
-#: src/main.cc:1100
+#: src/main.cc:1104
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Αγνωστη εντολή \"%s\"\n"
 
-#: src/main.cc:1112 src/main.cc:1180
+#: src/main.cc:1116 src/main.cc:1184
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Uncaught exception: %s\n"
 
-#: src/main.cc:1116 src/main.cc:1184
+#: src/main.cc:1120 src/main.cc:1188
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -5943,7 +5843,7 @@ msgstr "Αναζήτηση του: "
 msgid "Search backwards for: "
 msgstr "Αναζήτηση προς τα πίσω του: "
 
-#: src/mine/cmine.cc:115 src/mine/cmine.cc:154 src/ui.cc:1711
+#: src/mine/cmine.cc:115 src/mine/cmine.cc:154 src/ui.cc:1710
 msgid "Minesweeper"
 msgstr "Ναρκαλιευτής"
 
@@ -6157,7 +6057,7 @@ msgstr "Κωδικοποίηση του mine-help.txt|UTF-8"
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2704
+#: src/pkg_columnizer.cc:88 src/ui.cc:2698
 msgid "Package"
 msgstr "Πακέτο"
 
@@ -6651,7 +6551,7 @@ msgstr ""
 msgid "Reconfiguring %s\n"
 msgstr "Ξαναρυθμίζεται το %s\n"
 
-#: src/pkg_item.cc:451 src/ui.cc:1164
+#: src/pkg_item.cc:451 src/ui.cc:1163
 msgid "Press return to continue.\n"
 msgstr "Πατήστε enter για συνέχεια.\n"
 
@@ -7168,57 +7068,57 @@ msgid "Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"
 msgstr ""
 "Μη έγκυρη Get-Root-Command; θα έπρεπε να ξεκινά με su: ή sudo:, όχι %s:"
 
-#: src/ui.cc:473
+#: src/ui.cc:472
 #, fuzzy, c-format
 #| msgid "Unable to open %ls"
 msgid "Unable to fork: %s"
 msgstr "Αδύνατο το άνοιγμα του %ls"
 
-#: src/ui.cc:566
+#: src/ui.cc:565
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
 msgstr ""
 "Η υποδιεργασία τερματίστηκε με σφάλμα -- εισάγατε τον κωδικό σας σωστά;"
 
-#: src/ui.cc:605
+#: src/ui.cc:604
 msgid "Loading cache"
 msgstr "Φόρτωση του cache"
 
-#: src/ui.cc:647
+#: src/ui.cc:646
 msgid "Really quit Aptitude?"
 msgstr "Έξοδος από το Aptitude; Σίγουρα;"
 
-#: src/ui.cc:700 src/ui.cc:702
+#: src/ui.cc:699 src/ui.cc:701
 msgid "Preferences"
 msgstr "Προτιμήσεις"
 
-#: src/ui.cc:701 src/ui.cc:2467
+#: src/ui.cc:700 src/ui.cc:2461
 msgid "Change the behavior of aptitude"
 msgstr "Άλλαξε την συμπεριφορά του aptitude"
 
-#: src/ui.cc:737
+#: src/ui.cc:736
 msgid "Really discard your personal settings and reload the defaults?"
 msgstr ""
 "Είστε σίγουροι ότι θέλετε να διαγράψετε τις προσωπικές σας ρυθμίσεις και να "
 "φορτώσετε τις προκαθορισμένες;"
 
-#: src/ui.cc:842 src/ui.cc:889 src/ui.cc:917 src/ui.cc:940
+#: src/ui.cc:841 src/ui.cc:888 src/ui.cc:916 src/ui.cc:939
 msgid "View available packages and choose actions to perform"
 msgstr "Εμφάνιση των διαθέσιμων πακέτων και επιλογή εργασιών"
 
-#: src/ui.cc:871
+#: src/ui.cc:870
 msgid "Recommended Packages"
 msgstr "Συνιστώμενα Πακέτα"
 
-#: src/ui.cc:872
+#: src/ui.cc:871
 msgid "View packages that it is recommended that you install"
 msgstr "Δείτε όλα τα πακέτα που προτείνονται για εγκατάσταση"
 
-#: src/ui.cc:873
+#: src/ui.cc:872
 msgid "Recommendations"
 msgstr "Συστάσεις"
 
-#: src/ui.cc:982
+#: src/ui.cc:981
 msgid ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude comes with %"
 "BABSOLUTELY NO WARRANTY%b; for details see 'license' in the Help menu.  This "
@@ -7231,74 +7131,74 @@ msgstr ""
 "το αναδιανείμετε κάτω από ορισμένες συνθήκες. Δείτε την 'άδεια' για "
 "λεπτομέρειες."
 
-#: src/ui.cc:1032 src/ui.cc:1034
+#: src/ui.cc:1031 src/ui.cc:1033
 msgid "License"
 msgstr "Άδεια Χρήσης"
 
-#: src/ui.cc:1033 src/ui.cc:2559
+#: src/ui.cc:1032 src/ui.cc:2553
 msgid "View the terms under which you may copy and distribute aptitude"
 msgstr ""
 "Δείτε τους όρους κάτω από τους οποίους μπορείτε να αντιγράψετε και να "
 "διανείμετε το aptitude"
 
-#: src/ui.cc:1047
+#: src/ui.cc:1046
 msgid "help.txt"
 msgstr "help.txt"
 
-#: src/ui.cc:1049
+#: src/ui.cc:1048
 msgid "Encoding of help.txt|UTF-8"
 msgstr "Κωδικοποίηση του help.txt|UTF-8"
 
-#: src/ui.cc:1060
+#: src/ui.cc:1059
 msgid "Online Help"
 msgstr "Βοήθεια Online"
 
-#: src/ui.cc:1061
+#: src/ui.cc:1060
 msgid "View a brief introduction to aptitude"
 msgstr "Δες μια σύντομη εισαγωγή στο aptitude"
 
-#: src/ui.cc:1062 src/ui.cc:2709
+#: src/ui.cc:1061 src/ui.cc:2703
 msgid "Help"
 msgstr "Βοήθεια"
 
-#: src/ui.cc:1070
+#: src/ui.cc:1069
 msgid "README"
 msgstr "README"
 
-#: src/ui.cc:1071
+#: src/ui.cc:1070
 msgid "Encoding of README|ISO_8859-1"
 msgstr "Κωδικοποίηση του README|ISO_8859-1"
 
-#: src/ui.cc:1082
+#: src/ui.cc:1081
 msgid "User's Manual"
 msgstr "Εγχειρίδιο Χρήσης"
 
-#: src/ui.cc:1083
+#: src/ui.cc:1082
 msgid "Read the full user's manual of aptitude"
 msgstr "Διαβάστε το πλήρες εγχειρίδιο χρήσης του aptitude"
 
-#: src/ui.cc:1084
+#: src/ui.cc:1083
 msgid "Manual"
 msgstr "Εγχειρίδιο"
 
-#: src/ui.cc:1091 src/ui.cc:1093
+#: src/ui.cc:1090 src/ui.cc:1092
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/ui.cc:1092 src/ui.cc:2551
+#: src/ui.cc:1091 src/ui.cc:2545
 msgid "View a list of frequently asked questions"
 msgstr "Εμφάνιση των πιο συχνών ερωτήσεων"
 
-#: src/ui.cc:1101 src/ui.cc:1103
+#: src/ui.cc:1100 src/ui.cc:1102
 msgid "News"
 msgstr "Νέα"
 
-#: src/ui.cc:1102
+#: src/ui.cc:1101
 #, c-format
 msgid "View the important changes made in each version of %s"
 msgstr "Δείτε τις σημαντικές αλλαγές που έχουν γίνει σε κάθε έκδοση του %s"
 
-#: src/ui.cc:1109
+#: src/ui.cc:1108
 #, c-format
 msgid ""
 "Unable to remove the old temporary directory; you should remove %s by hand."
@@ -7306,7 +7206,7 @@ msgstr ""
 "Αδύνατη η διαγραφή του προηγούμενου προσωρινού καταλόγου; θα πρέπει να "
 "διαγράψετε το %s με το χέρι."
 
-#: src/ui.cc:1114
+#: src/ui.cc:1113
 #, c-format
 msgid ""
 "Will not remove %s; you should examine the files in it and remove them by "
@@ -7315,7 +7215,7 @@ msgstr ""
 "Δεν θα αφαιρεθεί ο κατάλογος %s;θα πρέπει να εξετάσετε τα αρχεία σ' αυτόν "
 "και να τα αφαιρέσετε με το χέρι."
 
-#: src/ui.cc:1140
+#: src/ui.cc:1139
 #, c-format
 msgid ""
 "It appears that a previous version of aptitude left files behind in %s.  "
@@ -7329,15 +7229,15 @@ msgstr ""
 "κατάλογο και όλα τα περιεχόμενά του; Αν επιλέξετε \"Όχι\", δεν θα ξαναδείτε "
 "αυτό το μήνυμα."
 
-#: src/ui.cc:1212
+#: src/ui.cc:1211
 msgid "View the progress of the package download"
 msgstr "Εμφάνιση προόδου της διαδικασίας μεταφόρτωσης πακέτου"
 
-#: src/ui.cc:1213
+#: src/ui.cc:1212
 msgid "Package Download"
 msgstr "Κατέβασμα Πακέτου"
 
-#: src/ui.cc:1260
+#: src/ui.cc:1259
 msgid ""
 "%BWARNING%b: untrusted versions of the following packages will be installed!%"
 "n%nUntrusted packages could %Bcompromise your system's security%b.  You "
@@ -7349,35 +7249,35 @@ msgstr ""
 "Bπαραβίαση της ασφάλειας του συστήματός σας%b.  Προχωρήστε στην εγκατάσταση "
 "μόνο αν είστε βέβαιοι ότι αυτό θέλετε.%n%n"
 
-#: src/ui.cc:1266
+#: src/ui.cc:1265
 msgid "  %S*%N %s [version %s]%n"
 msgstr "  %S*%N %s [έκδοση %s]%n"
 
-#: src/ui.cc:1272
+#: src/ui.cc:1271
 msgid "Really Continue"
 msgstr "Χωρίς πλάκα, συνέχεια"
 
-#: src/ui.cc:1274
+#: src/ui.cc:1273
 msgid "Abort Installation"
 msgstr "Εγκατάλειψη εγκατάστασης"
 
-#: src/ui.cc:1339
+#: src/ui.cc:1338
 msgid "Preview of package installation"
 msgstr "Προεπισκόπηση της εγκατάστασης των πακέτων"
 
-#: src/ui.cc:1340
+#: src/ui.cc:1339
 msgid "View and/or adjust the actions that will be performed"
 msgstr "Εμφάνιση και/ή ρύθμιση των ενεργειών που θα εκτελεστούν"
 
-#: src/ui.cc:1397
+#: src/ui.cc:1396
 msgid "Some packages were broken and have been fixed:"
 msgstr "Κάποια πακέτα ήταν κατεστραμμένα και έχουν διορθωθεί:"
 
-#: src/ui.cc:1405
+#: src/ui.cc:1404
 msgid "No solution to these dependency problems exists!"
 msgstr "Δεν υπάρχει λύση για τα προβλήματα αυτά εξαρτήσεων!"
 
-#: src/ui.cc:1411
+#: src/ui.cc:1410
 #, c-format
 msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
@@ -7386,7 +7286,7 @@ msgstr ""
 "Εξάντληση χρόνου κατά την προσπάθεια επίλυσης των εξαρτήσεων (πατήστε \"%s\" "
 "για να προσπαθήσετε πιο επίμονα)"
 
-#: src/ui.cc:1457
+#: src/ui.cc:1456
 msgid ""
 "Installing/removing packages requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -7394,19 +7294,19 @@ msgstr ""
 "Η εγκατάσταση/αφαίρεση πακέτων απαιτεί προνόμια διαχειριστή, που δεν έχετε "
 "αυτή τη στιγμή. Θα θέλατε να περάσετε στο λογαριασμό χρήστη root;"
 
-#: src/ui.cc:1460 src/ui.cc:1699 src/ui.cc:1748 src/ui.cc:1831
+#: src/ui.cc:1459 src/ui.cc:1698 src/ui.cc:1747 src/ui.cc:1830
 msgid "Become root"
 msgstr "Μετατροπή σε root"
 
-#: src/ui.cc:1462 src/ui.cc:1701 src/ui.cc:1750 src/ui.cc:1833
+#: src/ui.cc:1461 src/ui.cc:1700 src/ui.cc:1749 src/ui.cc:1832
 msgid "Don't become root"
 msgstr "Οχι μετατροπή σε root"
 
-#: src/ui.cc:1583
+#: src/ui.cc:1582
 msgid "No packages are scheduled to be installed, removed, or upgraded."
 msgstr "Δεν έχουν επιλεγεί πακέτα για εγκατάσταση, αφαίρεση ή αναβάθμιση."
 
-#: src/ui.cc:1589
+#: src/ui.cc:1588
 msgid ""
 "No packages will be installed, removed or upgraded.  Some packages could be "
 "upgraded, but you have not chosen to upgrade them.  Type \"U\" to prepare an "
@@ -7416,23 +7316,23 @@ msgstr ""
 "μπορούσαν να αναβαθμιστούν, αλλά επιλέξατε να μην τα αναβαθμίσετε. "
 "Πληκτρολογήστε \"U\" για να προετοιμάσετε μια αναβάθμιση."
 
-#: src/ui.cc:1652 src/ui.cc:1797
+#: src/ui.cc:1651 src/ui.cc:1796
 msgid "Deleting obsolete downloaded files"
 msgstr "Διαγράφονται τα περιττά μεταφορτωμένα αρχεία"
 
-#: src/ui.cc:1669
+#: src/ui.cc:1668
 msgid "Updating package lists"
 msgstr "Ανανέωση της λίστας πακέτων"
 
-#: src/ui.cc:1670
+#: src/ui.cc:1669
 msgid "View the progress of the package list update"
 msgstr "Εμφάνιση προόδου της διαδικασίας ανανέωσης πακέτων"
 
-#: src/ui.cc:1671
+#: src/ui.cc:1670
 msgid "List Update"
 msgstr "Αναβάθμιση λίστας"
 
-#: src/ui.cc:1696
+#: src/ui.cc:1695
 msgid ""
 "Updating the package lists requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
@@ -7440,19 +7340,19 @@ msgstr ""
 "Η ενημέρωση των καταλόγων των πακέτων απαιτεί προνόμια διαχειριστή, που δεν "
 "έχετε αυτή τη στιγμή. Θα θέλατε να αλλάξετε στον λογαριασμό του χρήστη root;"
 
-#: src/ui.cc:1718 src/ui.cc:1794
+#: src/ui.cc:1717 src/ui.cc:1793
 msgid "Cleaning while a download is in progress is not allowed"
 msgstr "Δεν επιτρέπεται εκκαθάριση κατά τη διάρκεια της μεταφόρτωσης"
 
-#: src/ui.cc:1721
+#: src/ui.cc:1720
 msgid "Deleting downloaded files"
 msgstr "Διαγράφονται τα μεταφορτωμένα αρχείων"
 
-#: src/ui.cc:1735
+#: src/ui.cc:1734
 msgid "Downloaded package files have been deleted"
 msgstr "Τα μεταφορτωμένα αρχεία έχουν διαγραφεί"
 
-#: src/ui.cc:1745
+#: src/ui.cc:1744
 #, fuzzy
 #| msgid ""
 #| "Updating the package lists requires administrative privileges, which you "
@@ -7464,12 +7364,12 @@ msgstr ""
 "Η ενημέρωση των καταλόγων των πακέτων απαιτεί προνόμια διαχειριστή, που δεν "
 "έχετε αυτή τη στιγμή. Θα θέλατε να αλλάξετε στον λογαριασμό του χρήστη root;"
 
-#: src/ui.cc:1791
+#: src/ui.cc:1790
 msgid "The apt cache file is not available; cannot auto-clean."
 msgstr ""
 "%Το αρχείο της cache του apt δεν είναι διαθέσιμο. Αδύνατο το auto-clean."
 
-#: src/ui.cc:1817
+#: src/ui.cc:1816
 #, c-format
 msgid ""
 "Obsolete downloaded package files have been deleted, freeing %sB of disk "
@@ -7478,7 +7378,7 @@ msgstr ""
 "Τα περιττά αρχεία που έχετε κατεβάσει έχουν διαγραφεί, απελευθερώνοντας %sB "
 "χώρου στον δίσκο."
 
-#: src/ui.cc:1828
+#: src/ui.cc:1827
 #, fuzzy
 #| msgid ""
 #| "Updating the package lists requires administrative privileges, which you "
@@ -7490,126 +7390,126 @@ msgstr ""
 "Η ενημέρωση των καταλόγων των πακέτων απαιτεί προνόμια διαχειριστή, που δεν "
 "έχετε αυτή τη στιγμή. Θα θέλατε να αλλάξετε στον λογαριασμό του χρήστη root;"
 
-#: src/ui.cc:1930
+#: src/ui.cc:1929
 msgid "No more solutions."
 msgstr "Δεν υπάρχουν περισσότερες λύσεις."
 
-#: src/ui.cc:2143
+#: src/ui.cc:2137
 msgid "Unable to find a solution to apply."
 msgstr "Δεν μπορώ να βρω μια εφαρμόσιμη λύση."
 
-#: src/ui.cc:2149
+#: src/ui.cc:2143
 msgid "Ran out of time while trying to find a solution."
 msgstr "Εξάντληση χρόνου κατά την προσπάθεια εύρεσης μιας λύσης."
 
-#: src/ui.cc:2209 src/ui.cc:2211
+#: src/ui.cc:2203 src/ui.cc:2205
 msgid "Resolve Dependencies"
 msgstr "Επίλυση Εξαρτήσεων"
 
-#: src/ui.cc:2210
+#: src/ui.cc:2204
 msgid "Search for solutions to unsatisfied dependencies"
 msgstr "Ψάξιμο λύσεων για τις μη ικανοποιημένες εξαρτήσεις"
 
-#: src/ui.cc:2222
+#: src/ui.cc:2216
 #, c-format
 msgid "Unable to open %ls"
 msgstr "Αδύνατο το άνοιγμα του %ls"
 
-#: src/ui.cc:2228
+#: src/ui.cc:2222
 msgid "Error while dumping resolver state"
 msgstr "Λάθος κατά το \"άδειασμα\" της κατάστασης του resolver"
 
-#: src/ui.cc:2238
+#: src/ui.cc:2232
 msgid "File to which the resolver state should be dumped:"
 msgstr "Αρχείο για το \"άδειασμα\" της κατάστασης του resolver:"
 
-#: src/ui.cc:2268
+#: src/ui.cc:2262
 msgid "^Install/remove packages"
 msgstr "^Εγκατάσταση/Αφαίρεση πακέτων"
 
-#: src/ui.cc:2271
+#: src/ui.cc:2265
 msgid "^Update package list"
 msgstr "^Ενημέρωση της λίστας πακέτων"
 
-#: src/ui.cc:2276
+#: src/ui.cc:2270
 msgid "Mark Up^gradable"
 msgstr "Σημείωση Ανα^βαθμίσιμων"
 
-#: src/ui.cc:2281
+#: src/ui.cc:2275
 msgid "^Forget new packages"
 msgstr "Ξέχασε τα νέα πακέτα"
 
-#: src/ui.cc:2285
+#: src/ui.cc:2279
 msgid "Canc^el pending actions"
 msgstr "Ακύ^ρωση των εκκρεμών ενεργειών"
 
-#: src/ui.cc:2289
+#: src/ui.cc:2283
 msgid "^Clean package cache"
 msgstr "Εκκαθάριση του cache των πακέτων"
 
-#: src/ui.cc:2293
+#: src/ui.cc:2287
 msgid "Clean ^obsolete files"
 msgstr "Εκκαθάριση ^περιττών αρχείων"
 
-#: src/ui.cc:2300
+#: src/ui.cc:2294
 msgid "^Reload package cache"
 msgstr "Επαναφόρτωση του cache πακέτων"
 
-#: src/ui.cc:2305
+#: src/ui.cc:2299
 msgid "^Play Minesweeper"
 msgstr "Παίξε Ναρκαλιευτή"
 
-#: src/ui.cc:2310
+#: src/ui.cc:2304
 msgid "^Become root"
 msgstr "Σύνδεση ως root"
 
-#: src/ui.cc:2313
+#: src/ui.cc:2307
 msgid "^Quit"
 msgstr "Έξοδος"
 
-#: src/ui.cc:2320 src/ui.cc:2703
+#: src/ui.cc:2314 src/ui.cc:2697
 msgid "Undo"
 msgstr "Αναίρεση"
 
-#: src/ui.cc:2329
+#: src/ui.cc:2323
 msgid "^Install"
 msgstr "^Εγκατάσταση"
 
-#: src/ui.cc:2330
+#: src/ui.cc:2324
 msgid "Flag the currently selected package for installation or upgrade"
 msgstr "Σήμανση του τρέχοντος πακέτου για εγκατάσταση ή αναβάθμιση"
 
-#: src/ui.cc:2333
+#: src/ui.cc:2327
 msgid "^Remove"
 msgstr "^Αφαίρεση"
 
-#: src/ui.cc:2334
+#: src/ui.cc:2328
 msgid "Flag the currently selected package for removal"
 msgstr "Σήμανση του τρέχοντος πακέτου για αφαίρεση"
 
-#: src/ui.cc:2337
+#: src/ui.cc:2331
 msgid "^Purge"
 msgstr "^Διαγραφή"
 
-#: src/ui.cc:2338
+#: src/ui.cc:2332
 msgid ""
 "Flag the currently selected package and its configuration files for removal"
 msgstr ""
 "Σήμανση του τρέχοντος πακέτου και των αρχείων ρυθμίσεών του για αφαίρεση"
 
-#: src/ui.cc:2341
+#: src/ui.cc:2335
 msgid "^Keep"
 msgstr "^Κράτηση"
 
-#: src/ui.cc:2342
+#: src/ui.cc:2336
 msgid "Cancel any action on the selected package"
 msgstr "Ακύρωση κάθε ενέργειας για το επιλεγμένο πακέτο"
 
-#: src/ui.cc:2345
+#: src/ui.cc:2339
 msgid "^Hold"
 msgstr "^Αναμονή"
 
-#: src/ui.cc:2346
+#: src/ui.cc:2340
 msgid ""
 "Cancel any action on the selected package, and protect it from future "
 "upgrades"
@@ -7617,11 +7517,11 @@ msgstr ""
 "Ακύρωση κάθε ενέργειας για το επιλεγμένο πακέτο, και προστασία του από "
 "μελλοντικές αναβαθμίσεις"
 
-#: src/ui.cc:2349
+#: src/ui.cc:2343
 msgid "Mark ^Auto"
 msgstr "^Αυτόματη Σήμανση"
 
-#: src/ui.cc:2350
+#: src/ui.cc:2344
 msgid ""
 "Mark the selected package as having been automatically installed; it will "
 "automatically be removed if no other packages depend on it"
@@ -7629,11 +7529,11 @@ msgstr ""
 "Επισημάνετε το επιλεγμένο πακέτο ως αυτόματα εγκατεστημένο. Θα αφαιρεθεί "
 "αυτόματα αν κανένα άλλο πακέτο δεν εξαρτάται από αυτό"
 
-#: src/ui.cc:2353
+#: src/ui.cc:2347
 msgid "Mark ^Manual"
 msgstr "^Χειροκίνητη Σήμανση"
 
-#: src/ui.cc:2354
+#: src/ui.cc:2348
 msgid ""
 "Mark the selected package as having been manually installed; it will not be "
 "removed unless you manually remove it"
@@ -7641,11 +7541,11 @@ msgstr ""
 "Επισημάνετε το επιλεγμένο πακέτο ως χειροκίνητα εγκατεστημένο. Δεν πρόκειται "
 "να αφαιρεθεί αν δεν το αφαιρέσετε εσείς χειροκίνητα"
 
-#: src/ui.cc:2357
+#: src/ui.cc:2351
 msgid "^Forbid Version"
 msgstr "^Απαγόρευση έκδοσης"
 
-#: src/ui.cc:2358
+#: src/ui.cc:2352
 msgid ""
 "Forbid the candidate version of the selected package from being installed; "
 "newer versions of the package will be installed as usual"
@@ -7653,19 +7553,19 @@ msgstr ""
 "Απαγόρευσε την εγκατάσταση της υποψήφιας έκδοσης του επιλεγμένου πακέτου. "
 "Νεώτερες εκδόσεις του πακέτου θα εγκατασταθούν ως συνήθως"
 
-#: src/ui.cc:2362
+#: src/ui.cc:2356
 msgid "I^nformation"
 msgstr "Π^ληροφορίες"
 
-#: src/ui.cc:2363
+#: src/ui.cc:2357
 msgid "Display more information about the selected package"
 msgstr "Εμφάνισε περισσότερες πληροφορίες για το επιλεγμένο πακέτο"
 
-#: src/ui.cc:2366
+#: src/ui.cc:2360
 msgid "C^ycle Package Information"
 msgstr "Κυκλική εναλλαγή Πληροφοριών Πακέτου"
 
-#: src/ui.cc:2367
+#: src/ui.cc:2361
 msgid ""
 "Cycle through the modes of the package information area: it can show the "
 "package's long description, a summary of its dependency status, or an "
@@ -7675,60 +7575,60 @@ msgstr ""
 "μπορεί να εμφανίζει την εκτενή περιγραφή του πακέτου, μια περίληψη της "
 "κατάστασης εξαρτήσεών του ή μια ανάλυση του γιατί το πακέτο είναι απαραίτητο."
 
-#: src/ui.cc:2370
+#: src/ui.cc:2364
 msgid "^Changelog"
 msgstr "Α^ρχείο Αλλαγών"
 
-#: src/ui.cc:2371
+#: src/ui.cc:2365
 msgid "Display the Debian changelog of the selected package"
 msgstr "Εμφάνισε το ημερολόγιο αλλαγών του Debian για το επιλεγμένο πακέτο"
 
-#: src/ui.cc:2378
+#: src/ui.cc:2372
 msgid "^Examine Solution"
 msgstr "^Εξέταση της λύσης"
 
-#: src/ui.cc:2379
+#: src/ui.cc:2373
 msgid "Examine the currently selected solution to the dependency problems."
 msgstr "Εξέτασε την παρούσα λύση των προβλημάτων εξάρτησης."
 
-#: src/ui.cc:2382
+#: src/ui.cc:2376
 msgid "Apply ^Solution"
 msgstr "Εφαρμογή της ^Λύσης"
 
-#: src/ui.cc:2383
+#: src/ui.cc:2377
 msgid "Perform the actions contained in the currently selected solution."
 msgstr ""
 "Εφαρμογή των ενεργειών που περιέχονται στην λύση που έχει τώρα επιλεχθεί."
 
-#: src/ui.cc:2386
+#: src/ui.cc:2380
 msgid "^Next Solution"
 msgstr "^Επόμενη λύση"
 
-#: src/ui.cc:2387
+#: src/ui.cc:2381
 msgid "Select the next solution to the dependency problems."
 msgstr "Επέλεξε την επόμενη λύση στα προβλήματα εξαρτήσεων."
 
-#: src/ui.cc:2390
+#: src/ui.cc:2384
 msgid "^Previous Solution"
 msgstr "^Προηγούμενη λύση"
 
-#: src/ui.cc:2391
+#: src/ui.cc:2385
 msgid "Select the previous solution to the dependency problems."
 msgstr "Επέλεξε την προηγούμενη λύση στα προβλήματα εξαρτήσεων."
 
-#: src/ui.cc:2394
+#: src/ui.cc:2388
 msgid "^First Solution"
 msgstr "^Πρώτη λύση"
 
-#: src/ui.cc:2395
+#: src/ui.cc:2389
 msgid "Select the first solution to the dependency problems."
 msgstr "Επέλεξε την πρώτη λύση στα προβλήματα εξαρτήσεων."
 
-#: src/ui.cc:2398
+#: src/ui.cc:2392
 msgid "^Last Solution"
 msgstr "^Τελευταία λύση"
 
-#: src/ui.cc:2399
+#: src/ui.cc:2393
 msgid ""
 "Select the last solution to the dependency problems that has been generated "
 "so far."
@@ -7736,38 +7636,38 @@ msgstr ""
 "Επέλεξε την τελευταία λύση στα προβλήματα εξαρτήσεων που έχουν δημιουργηθεί "
 "μέχρι τώρα."
 
-#: src/ui.cc:2405
+#: src/ui.cc:2399
 msgid "Toggle ^Rejected"
 msgstr "Αλλαγή επιλογής ^Απορριφθέντων"
 
-#: src/ui.cc:2406
+#: src/ui.cc:2400
 msgid "Toggle whether the currently selected action is rejected."
 msgstr ""
 "Αλλαγή επιλογής για την απόρριψη της ενέργειας που έχει αυτή την στιγμή "
 "επιλεχθεί."
 
-#: src/ui.cc:2410
+#: src/ui.cc:2404
 msgid "Toggle ^Approved"
 msgstr "Αλλαγή επιλογής ^Αποδεχθέντων"
 
-#: src/ui.cc:2411
+#: src/ui.cc:2405
 msgid "Toggle whether the currently selected action is approved."
 msgstr ""
 "Αλλαγή επιλογής αποδοχής της ενέργειας που έχει αυτή τη στιγμή επιλεχθεί."
 
-#: src/ui.cc:2415
+#: src/ui.cc:2409
 msgid "^View Target"
 msgstr "^Επιθεώρηση Στόχου"
 
-#: src/ui.cc:2416
+#: src/ui.cc:2410
 msgid "View the package which will be affected by the selected action"
 msgstr "Επιθεώρηση των πακέτων που θα επηρρεαστούν από την επιλεγμένη ενέργεια"
 
-#: src/ui.cc:2422
+#: src/ui.cc:2416
 msgid "Reject Breaking ^Holds"
 msgstr "Απόρριψη Breaking ^Holds"
 
-#: src/ui.cc:2424
+#: src/ui.cc:2418
 msgid ""
 "Reject all actions that would change the state of held packages or install "
 "forbidden versions"
@@ -7775,136 +7675,136 @@ msgstr ""
 "Απόρριψη όλων των ενεργειών που θα άλλαζαν την κατάσταση των σε αναμονή "
 "πακέτων ή θα εγκαθιστούσαν αποαγορευμένες εκδόσεις."
 
-#: src/ui.cc:2432
+#: src/ui.cc:2426
 msgid "^Find"
 msgstr "^Ευρεση"
 
-#: src/ui.cc:2433
+#: src/ui.cc:2427
 msgid "Search forwards"
 msgstr "Αναζήτηση προς τα εμπρός"
 
-#: src/ui.cc:2436
+#: src/ui.cc:2430
 msgid "^Find Backwards"
 msgstr "^Αναζήτηση προς τα πίσω"
 
-#: src/ui.cc:2437
+#: src/ui.cc:2431
 msgid "Search backwards"
 msgstr "Αναζήτηση προς τα πίσω"
 
-#: src/ui.cc:2440
+#: src/ui.cc:2434
 msgid "Find ^Again"
 msgstr "Βρές ^Ξανά"
 
-#: src/ui.cc:2441
+#: src/ui.cc:2435
 msgid "Repeat the last search"
 msgstr "Επανάληψη της τελευταίας αναζήτησης"
 
-#: src/ui.cc:2444
+#: src/ui.cc:2438
 msgid "Find Again ^Backwards"
 msgstr "Αναζήτηση και πάλι ^προς τα πίσω"
 
-#: src/ui.cc:2445
+#: src/ui.cc:2439
 msgid "Repeat the last search in the opposite direction"
 msgstr "Επανάληψη της τελευταίας αναζήτησης στην αντίθετη κατεύθυνση"
 
-#: src/ui.cc:2449
+#: src/ui.cc:2443
 msgid "^Limit Display"
 msgstr "^Περιόρισε Εμφάνιση"
 
-#: src/ui.cc:2450
+#: src/ui.cc:2444
 msgid "Apply a filter to the package list"
 msgstr "Εφαρμογή φίλτρου στον κατάλογο των πακέτων"
 
-#: src/ui.cc:2453
+#: src/ui.cc:2447
 msgid "^Un-Limit Display"
 msgstr "^Εμφάνιση Χωρίς Περιορισμούς"
 
-#: src/ui.cc:2454
+#: src/ui.cc:2448
 msgid "Remove the filter from the package list"
 msgstr "Αφαίρεση του φίλτρου από τον κατάλογο των πακέτων"
 
-#: src/ui.cc:2458
+#: src/ui.cc:2452
 msgid "Find ^Broken"
 msgstr "Βρές Σ^πασμένο"
 
-#: src/ui.cc:2459
+#: src/ui.cc:2453
 msgid "Find the next package with unsatisfied dependencies"
 msgstr "Βρες το επόμενο πακέτο με ανεπίλυτες εξαρτήσεις"
 
-#: src/ui.cc:2466
+#: src/ui.cc:2460
 msgid "^Preferences"
 msgstr "^Προτιμήσεις"
 
-#: src/ui.cc:2471
+#: src/ui.cc:2465
 msgid "^UI options"
 msgstr "Επιλογές ^Περιβάλλοντος"
 
-#: src/ui.cc:2472
+#: src/ui.cc:2466
 msgid "Change the settings which affect the user interface"
 msgstr "Αλλαγή των επιλογών που μεταβάλουν το περιβάλλον εργασίας"
 
-#: src/ui.cc:2475
+#: src/ui.cc:2469
 msgid "^Dependency handling"
 msgstr "Διαχείριση Εξαρτήσεων"
 
-#: src/ui.cc:2476
+#: src/ui.cc:2470
 msgid "Change the settings which affect how package dependencies are handled"
 msgstr ""
 "Αλλαγή των ρυθμίσεων που επηρεάζουν τη διαχείριση των εξαρτήσεων των πακέτων"
 
-#: src/ui.cc:2479
+#: src/ui.cc:2473
 msgid "^Miscellaneous"
 msgstr "^Διάφορα"
 
-#: src/ui.cc:2480
+#: src/ui.cc:2474
 msgid "Change miscellaneous program settings"
 msgstr "Αλλαγή διαφόρων επιλογών του προγράμματος"
 
-#: src/ui.cc:2486
+#: src/ui.cc:2480
 msgid "^Revert options"
 msgstr "^Επαναφορά επιλογών"
 
-#: src/ui.cc:2487
+#: src/ui.cc:2481
 msgid "Reset all settings to the system defaults"
 msgstr "Ορισμός όλων των επιλογών στις προκαθορισμένες τιμές"
 
-#: src/ui.cc:2498
+#: src/ui.cc:2492
 msgid "^Next"
 msgstr "^Επόμενο"
 
-#: src/ui.cc:2499
+#: src/ui.cc:2493
 msgid "View next display"
 msgstr "Εμφάνιση επόμενης οθόνης"
 
-#: src/ui.cc:2502
+#: src/ui.cc:2496
 msgid "^Prev"
 msgstr "^Προηγ"
 
-#: src/ui.cc:2503
+#: src/ui.cc:2497
 msgid "View previous display"
 msgstr "Εμφάνιση προηγούμενης οθόνης"
 
-#: src/ui.cc:2506
+#: src/ui.cc:2500
 msgid "^Close"
 msgstr "^Κλείσιμο"
 
-#: src/ui.cc:2507
+#: src/ui.cc:2501
 msgid "Close this display"
 msgstr "Κλείσιμο αυτής της οθόνης"
 
-#: src/ui.cc:2512
+#: src/ui.cc:2506
 msgid "New Package ^View"
 msgstr "Νέα Εμφάνιση ^Πακέτου"
 
-#: src/ui.cc:2513
+#: src/ui.cc:2507
 msgid "Create a new default package view"
 msgstr "Δημιουργία νέας οθόνης εμφάνισης πακέτου"
 
-#: src/ui.cc:2516
+#: src/ui.cc:2510
 msgid "Audit ^Recommendations"
 msgstr "Εξέταση ^Συστάσεων"
 
-#: src/ui.cc:2517
+#: src/ui.cc:2511
 msgid ""
 "View packages which it is recommended that you install, but which are not "
 "currently installed."
@@ -7912,87 +7812,87 @@ msgstr ""
 "Επίβλεψη πακέτων που συνίσταται να εγκατασταθούν, αλλά δεν είναι αυτή τη "
 "στιγμή εγκατεστημένα."
 
-#: src/ui.cc:2520
+#: src/ui.cc:2514
 msgid "New ^Flat Package List"
 msgstr "Νέα ^Απλή Λίστα Πακέτων"
 
-#: src/ui.cc:2521
+#: src/ui.cc:2515
 msgid "View all the packages on the system in a single uncategorized list"
 msgstr "Δείτε όλα τα πακέτα στο σύστημα σε μια μοναδική χωρίς κατηγορίες λίστα"
 
-#: src/ui.cc:2524
+#: src/ui.cc:2518
 msgid "New ^Debtags Browser"
 msgstr "Νέός browser για ^Debtags"
 
-#: src/ui.cc:2526
+#: src/ui.cc:2520
 msgid "Browse packages using Debtags data"
 msgstr "Επιθεώρηση των πακέτων χρησιμοποιώντας τα δεδομένα του Debtags"
 
-#: src/ui.cc:2529
+#: src/ui.cc:2523
 msgid "New Categorical ^Browser"
 msgstr "Εμφάνιση Νέας Κατηγοριοποίησης"
 
-#: src/ui.cc:2531
+#: src/ui.cc:2525
 msgid "Browse packages by category"
 msgstr "Εμφάνιση πακέτων ανά κατηγορία"
 
-#: src/ui.cc:2539
+#: src/ui.cc:2533
 msgid "^About"
 msgstr "Σχετικά"
 
-#: src/ui.cc:2540
+#: src/ui.cc:2534
 msgid "View information about this program"
 msgstr "Εμφάνιση πληροφορίας σχετικά με το πρόγραμμα"
 
-#: src/ui.cc:2543
+#: src/ui.cc:2537
 msgid "^Help"
 msgstr "^Βοήθεια"
 
-#: src/ui.cc:2544
+#: src/ui.cc:2538
 msgid "View the on-line help"
 msgstr "Εμφάνιση της βοήθειας του προγράμματος"
 
-#: src/ui.cc:2546
+#: src/ui.cc:2540
 msgid "User's ^Manual"
 msgstr "Οδηγίες ^Χρήσης"
 
-#: src/ui.cc:2547
+#: src/ui.cc:2541
 msgid "View the detailed program manual"
 msgstr "Εμφάνιση των αναλυτικών οδηγιών χρήσης"
 
-#: src/ui.cc:2550
+#: src/ui.cc:2544
 msgid "^FAQ"
 msgstr "^FAQ"
 
-#: src/ui.cc:2554
+#: src/ui.cc:2548
 msgid "^News"
 msgstr "^Νέα"
 
-#: src/ui.cc:2555
+#: src/ui.cc:2549
 msgid "View the important changes made in each version of "
 msgstr "Δείτε τις σημαντικές αλλαγές που έχουν γίνει σε κάθε έκδοση του"
 
-#: src/ui.cc:2558
+#: src/ui.cc:2552
 msgid "^License"
 msgstr "Άδεια ^χρήσης"
 
-#: src/ui.cc:2702
+#: src/ui.cc:2696
 msgid "Actions"
 msgstr "Ενέργειες"
 
-#: src/ui.cc:2706
+#: src/ui.cc:2700
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: src/ui.cc:2707
+#: src/ui.cc:2701
 msgid "Options"
 msgstr "Επιλογές"
 
-#: src/ui.cc:2708
+#: src/ui.cc:2702
 msgid "Views"
 msgstr "Οθόνες"
 
-#: src/ui.cc:2774
+#: src/ui.cc:2768
 #, c-format
 msgid ""
 "%ls: Menu  %ls: Help  %ls: Quit  %ls: Update  %ls: Download/Install/Remove "
@@ -8001,11 +7901,11 @@ msgstr ""
 "%ls: Μενού %ls: Βοήθεια %ls: Έξοδος %ls: Ενημέρωση %ls:Κατέβασμα/Εγκατάσταση/"
 "Αφαίρεση πακέτων"
 
-#: src/ui.cc:3133
+#: src/ui.cc:3127
 msgid "yes_key"
 msgstr "Ν"
 
-#: src/ui.cc:3134
+#: src/ui.cc:3128
 msgid "no_key"
 msgstr "Ο"
 
@@ -8029,6 +7929,79 @@ msgstr "Μεταφόρτωση Αρχείου Αλλαγών"
 #: src/view_changelog.cc:391
 msgid "Download Changelog"
 msgstr "Κατέβασμα Αρχείου Αλλαγών"
+
+#~ msgid "Unable to delete temporary directory \"%s\""
+#~ msgstr "Αδύνατη η διαγραφή του προσωρινού καταλόγου \"%s\""
+
+#, fuzzy
+#~| msgid "^Install/remove packages"
+#~ msgid "_Install/Remove Packages"
+#~ msgstr "^Εγκατάσταση/Αφαίρεση πακέτων"
+
+#, fuzzy
+#~| msgid "^Update package list"
+#~ msgid "_Update Package List"
+#~ msgstr "^Ενημέρωση της λίστας πακέτων"
+
+#, fuzzy
+#~| msgid "Mark Up^gradable"
+#~ msgid "Mark Up_gradable"
+#~ msgstr "Σημείωση Ανα^βαθμίσιμων"
+
+#, fuzzy
+#~| msgid "^Forget new packages"
+#~ msgid "_Forget New Packages"
+#~ msgstr "Ξέχασε τα νέα πακέτα"
+
+#, fuzzy
+#~| msgid "Canc^el pending actions"
+#~ msgid "Canc_el Pending Actions"
+#~ msgstr "Ακύ^ρωση των εκκρεμών ενεργειών"
+
+#, fuzzy
+#~| msgid "^Clean package cache"
+#~ msgid "C_lean Package Cache"
+#~ msgstr "Εκκαθάριση του cache των πακέτων"
+
+#, fuzzy
+#~| msgid "Clean ^obsolete files"
+#~ msgid "Clean _Obsolete Files"
+#~ msgstr "Εκκαθάριση ^περιττών αρχείων"
+
+#, fuzzy
+#~| msgid "^Reload package cache"
+#~ msgid "_Reload Package Cache"
+#~ msgstr "Επαναφόρτωση του cache πακέτων"
+
+#, fuzzy
+#~| msgid "^Play Minesweeper"
+#~ msgid "_Play Minesweeper"
+#~ msgstr "Παίξε Ναρκαλιευτή"
+
+#, fuzzy
+#~| msgid "Become root"
+#~ msgid "_Become Root"
+#~ msgstr "Μετατροπή σε root"
+
+#, fuzzy
+#~| msgid "^Quit"
+#~ msgid "_Quit"
+#~ msgstr "Έξοδος"
+
+#, fuzzy
+#~| msgid "Dependency handling"
+#~ msgid "Find _Dependency Chains"
+#~ msgstr "Διαχείριση εξαρτήσεων"
+
+#, fuzzy
+#~| msgid "delete"
+#~ msgid "gtk-close"
+#~ msgstr "διαγραφή"
+
+#, fuzzy
+#~| msgid "yes"
+#~ msgid "gtk-yes"
+#~ msgstr "ναι"
 
 #, fuzzy
 #~| msgid "Invalid operation %s"
