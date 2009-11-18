@@ -60,8 +60,10 @@ public:
 
 dummy_dep::dummy_dep(dummy_version *_source,
 		     const std::vector<dummy_version *> &_target_set,
-		     unsigned int _ID, bool _soft)
-  :source(_source), target_set(_target_set), ID(_ID), soft(_soft)
+		     unsigned int _ID, bool _soft,
+		     bool _candidate_for_initial_set)
+  :source(_source), target_set(_target_set), ID(_ID), soft(_soft),
+   candidate_for_initial_set(_candidate_for_initial_set)
 {
 
   sort(target_set.begin(), target_set.end(),
@@ -129,7 +131,8 @@ void dummy_universe::add_package(const string &name,
 
 void dummy_universe::add_dep(const string &pkg_name, const string &pkg_ver,
 			     const vector<pair<string, string> > &target_names,
-			     bool is_conflict, bool is_soft)
+			     bool is_conflict, bool is_soft,
+			     bool is_candidate_for_initial_set)
 {
   dummy_package *pkg=find_package_internal(pkg_name);
 
@@ -149,7 +152,8 @@ void dummy_universe::add_dep(const string &pkg_name, const string &pkg_ver,
     deps.push_back(new dummy_dep(pkg->version_from_name(pkg_ver),
 				 vector<dummy_version *>(targets.begin(), targets.end()),
 				 deps.size(),
-				 is_soft));
+				 is_soft,
+				 is_candidate_for_initial_set));
   else
     {
       set<dummy_version *> targets2;
@@ -164,7 +168,8 @@ void dummy_universe::add_dep(const string &pkg_name, const string &pkg_ver,
       deps.push_back(new dummy_dep(pkg->version_from_name(pkg_ver),
 				   vector<dummy_version *>(targets2.begin(), targets2.end()),
 				   deps.size(),
-				   is_soft));
+				   is_soft,
+				   is_candidate_for_initial_set));
     }
 
   dummy_dep *newdep=deps.back();
@@ -188,7 +193,14 @@ ostream &operator<<(ostream &out, const dummy_universe::version &v)
 
 ostream &operator<<(ostream &out, const dummy_universe::dep &d)
 {
-  out << d.get_source() << (d.is_soft() ? " -S> {" : " -> {");
+  out << d.get_source() << " -";
+
+  if(d.is_soft())
+    out << "S";
+  if(d.is_candidate_for_initial_set())
+    out << "?";
+  out << "> {";
+
   for(dummy_universe::dep::solver_iterator i=d.solvers_begin();
       !i.end(); ++i)
     {
@@ -326,13 +338,16 @@ dummy_universe_ref parse_universe_tail(istream &in)
 	  pair<string, string> source=read_pkgverpair(in);
 	  bool is_conflict=false;
 	  bool is_soft = (s == "SOFTDEP");
+	  bool is_candidate_for_initial_set = true;
 
 	  in >> s >> ws;
 
 	  if(s == "!!")
 	    is_conflict=true;
+	  else if(s == "-?>")
+	    is_candidate_for_initial_set = false;
 	  else if(s != "->")
-	    throw ParseError("Expected '->' or '!!', got "+s);
+	    throw ParseError("Expected '->', '-?>', or '!!', got "+s);
 
 	  if(in.eof())
 	    throw ParseError("Expected '<', got EOF");
@@ -371,7 +386,8 @@ dummy_universe_ref parse_universe_tail(istream &in)
 	    }
 
 	  rval.add_dep(source.first, source.second, targets,
-		       is_conflict, is_soft);
+		       is_conflict, is_soft,
+		       is_candidate_for_initial_set);
 	}
       else
 	throw ParseError("Expected PACKAGE, DEP, or SOFTDEP, got "+s);

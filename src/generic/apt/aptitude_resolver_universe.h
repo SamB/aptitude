@@ -1367,6 +1367,8 @@ public:
     return broken_dep_iterator(cache);
   }
 
+  bool is_candidate_for_initial_set(const dep &d) const;
+
   unsigned long get_version_count() const
   {
     // PackageCount is added to make room for the UNINST versions.

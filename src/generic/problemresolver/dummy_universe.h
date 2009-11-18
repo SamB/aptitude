@@ -245,16 +245,22 @@ class dummy_dep
   unsigned int ID;
 
   bool soft;
+  bool candidate_for_initial_set;
 public:
   typedef std::vector<dummy_version *>::const_iterator solver_iterator;
 
   dummy_dep(dummy_version *_source,
 	    const std::vector<dummy_version *> &_target_set,
-	    unsigned int _ID, bool _soft);
+	    unsigned int _ID, bool _soft, bool _candidate_for_initial_set);
 
   bool is_soft() const
   {
     return soft;
+  }
+
+  bool is_candidate_for_initial_set() const
+  {
+    return candidate_for_initial_set;
   }
 
   bool operator==(const dummy_dep &other) const
@@ -445,6 +451,11 @@ public:
     bool is_soft() const
     {
       return real_dep->is_soft();
+    }
+
+    bool is_candidate_for_initial_set() const
+    {
+      return real_dep->is_candidate_for_initial_set();
     }
 
     std::size_t get_hash_value() const
@@ -676,7 +687,7 @@ public:
    */
   void add_dep(const std::string &pkg_name, const std::string &pkg_ver,
 	       const std::vector<std::pair<std::string, std::string> > &target_names,
-	       bool is_conflict, bool is_soft);
+	       bool is_conflict, bool is_soft, bool candidate_for_initial_set);
 
   std::vector<package>::size_type get_package_count() const
   {
@@ -701,6 +712,11 @@ public:
   broken_dep_iterator broken_begin() const
   {
     return broken_dep_iterator(deps.begin(), deps.end());
+  }
+
+  bool is_candidate_for_initial_set(const dep &d) const
+  {
+    return d.is_candidate_for_initial_set();
   }
 };
 
@@ -809,10 +825,10 @@ public:
 
   void add_dep(std::string pkg_name, std::string pkg_ver,
 	       const std::vector<std::pair<std::string, std::string> > &target_names,
-	       bool is_conflict, bool is_soft)
+	       bool is_conflict, bool is_soft, bool candidate_for_initial_set)
   {
     rep->universe->add_dep(pkg_name, pkg_ver,
-			   target_names, is_conflict, is_soft);
+			   target_names, is_conflict, is_soft, candidate_for_initial_set);
   }
 
   package find_package(const std::string &pkg_name) const
@@ -843,6 +859,11 @@ public:
   broken_dep_iterator broken_begin() const
   {
     return rep->universe->broken_begin();
+  }
+
+  bool is_candidate_for_initial_set(const dep &d) const
+  {
+    return rep->universe->is_candidate_for_initial_set(d);
   }
 };
 

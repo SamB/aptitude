@@ -292,6 +292,17 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  first \ref universe_dep "dependency" (in an arbitrary ordering) in
  *  the universe.
  *
+ *  - <b>bool is_candidate_for_initial_set(const dep &)</b>: returns
+ *    \b true if the dependency should be in the set of dependencies
+ *    the resolver initially sets out to solve.  Dependencies for
+ *    which this returns "false" will not be deliberately solved
+ *    (although they might be coincidentally solved by other changes
+ *    the resolver makes).  This is a member of the universe and not
+ *    the dependency concept because I forsee the program possibly
+ *    wanting to create universes with different behavior in this
+ *    regard at some point in the future.
+ *
+ *
  *  \page universe_package Package concept
  *
  *  A package is simply a unique collection of \ref universe_version
@@ -3649,13 +3660,26 @@ public:
       {
 	dep d(*di);
 
-	if(d.broken_under(initial_state))
+	if(!universe.is_candidate_for_initial_set(d))
+	  {
+	    // This test is slow and only used for logging:
+	    if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+	      {
+		if(!d.broken_under(initial_state))
+		  LOG_TRACE(logger, "Not using " << d
+			    << " as an initially broken dependency because it is flagged as a dependency that shouldn't be in the initial set.");
+	      }
+	  }
+	else if(d.broken_under(initial_state))
 	  {
 	    if(!d.broken_under(empty_step))
 	      LOG_ERROR(logger, "Internal error: the dependency "
 			<< d << " is claimed to be broken, but it doesn't appear to be broken in the initial state.");
 	    else
-	      initial_broken.insert(d);
+	      {
+		LOG_INFO(logger, "Initially broken dependency: " << d);
+		initial_broken.insert(d);
+	      }
 	  }
       }
   }

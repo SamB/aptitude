@@ -1,6 +1,6 @@
 // dump_universe.h                                      -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -50,7 +50,10 @@ void dump_universe(const PackageUniverse &world, std::ostream &out)
       else
 	out << "  DEP ";
 
-      out << sp.get_name() << " " << sv.get_name() << " -> < ";
+      out << sp.get_name() << " " << sv.get_name() << " "
+	  << (world.is_candidate_for_initial_set(*d)
+	      ? "->" : "-?>")
+	  << " < ";
 
       for(typename PackageUniverse::dep::solver_iterator t=(*d).solvers_begin();
 	  !t.end(); ++t)

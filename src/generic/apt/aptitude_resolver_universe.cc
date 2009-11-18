@@ -311,8 +311,6 @@ void aptitude_resolver_version::dep_iterator::normalize()
   // If we ran out of deps, we're done!
 }
 
-
-
 void aptitude_resolver_dep::solver_iterator::normalize()
 {
   if(!is_conflict(dep_lst->Type))
@@ -957,4 +955,24 @@ std::string aptitude_universe::get_tier_name(const tier &t)
       else
 	return ssprintf("%s (%d)", name.c_str(), t.get_policy());
     }
+}
+
+
+bool aptitude_universe::is_candidate_for_initial_set(const aptitude_resolver_dep &d) const
+{
+  if(!d.is_soft())
+    return true;
+
+  if(cache == NULL)
+    return false;
+
+  pkgCache::DepIterator d2(d.get_dep());
+  while(!d2.end() && (d2->CompareOp & pkgCache::Dep::Or))
+    ++d2;
+
+  if(d2.end())
+    return true;
+
+  // Return true only if the dependency is *currently* not broken.
+  return (*cache)[d2] & pkgDepCache::DepGNow;
 }

@@ -75,8 +75,10 @@ const char *dummy_universe_4 = "\
 UNIVERSE [ \
   PACKAGE a < v1 v2 v3 > v1 \
   PACKAGE b < v1 v2 v3 > v1 \
+  PACKAGE c < v1 > v1 \
 \
-  SOFTDEP a v1 -> < b v2  b v3 > \
+  SOFTDEP a v2 -> < b v2  b v3 > \
+  DEP c v1 -> < a v2 > \
 ]";
 
 // Similar -- the non-soft dependency is needed because altering the
@@ -92,10 +94,25 @@ UNIVERSE [ \
 // Used to test breaking and hardening a soft dependency.
 const char *dummy_universe_5 = "\
 UNIVERSE [ \
+  PACKAGE a < v1 v2 > v1 \
+  PACKAGE b < v1 v2 v3 > v1 \
+  PACKAGE c < v1 > v1 \
+\
+  SOFTDEP a v2 -> < b v2 > \
+  DEP c v1 -> < a v2 > \
+]";
+
+// Check that the resolver doesn't wander off and try to fix soft
+// dependencies that aren't broken to start with.  The "-?>" tells the
+// resolver to not place the dependency in the initial set.
+const char *dummy_universe_6 = "\
+UNIVERSE [ \
   PACKAGE a < v1 > v1 \
   PACKAGE b < v1 v2 v3 > v1 \
+  PACKAGE c < v1 v2 > v1 \
 \
-  SOFTDEP a v1 -> < b v2 > \
+  DEP a v1 -> < c v2 > \
+  SOFTDEP a v1 -?> < b v2  b v3 > \
 ]";
 
 // Done this way so meaningful line numbers are generated.
@@ -168,6 +185,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testMandateDepSource);
   CPPUNIT_TEST(testHardenDependency);
   CPPUNIT_TEST(testApproveBreak);
+  CPPUNIT_TEST(testInitialSetExclusion);
   CPPUNIT_TEST(testSimpleResolution);
   CPPUNIT_TEST(testSimpleBreakSoftDep);
   CPPUNIT_TEST(testTiers);
@@ -400,6 +418,7 @@ private:
 
     choice_set expected_solution;
     expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v3"), 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(a.version_from_name("v2"), 1));
     assertSameEffect(expected_solution, sol.get_choices());
 
     try
@@ -419,6 +438,7 @@ private:
 
 	    choice_set expected_solution2;
 	    expected_solution2.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+	    expected_solution2.insert_or_narrow(choice::make_install_version(a.version_from_name("v2"), 1));
 	    assertSameEffect(expected_solution2, sol.get_choices());
 	  }
 	catch(NoMoreSolutions)
@@ -437,9 +457,9 @@ private:
 	  {
 	    try
 	      {
-		dep av1d1 = *a.version_from_name("v1").deps_begin();
-		r.harden(av1d1);
-		r.unharden(av1d1);
+		dep av2d1 = *a.version_from_name("v2").deps_begin();
+		r.harden(av2d1);
+		r.unharden(av2d1);
 
 		sol = r.find_next_solution(1000, NULL);
 		LOG_ERROR(logger, "Got an extra solution: " << sol);
@@ -558,9 +578,9 @@ private:
 
     package a = u.find_package("a");
     package b = u.find_package("b");
-    dep av1d1(*a.version_from_name("v1").deps_begin());
+    dep av2d1(*a.version_from_name("v2").deps_begin());
 
-    r.harden(av1d1);
+    r.harden(av2d1);
     solution sol;
     try
       {
@@ -574,7 +594,8 @@ private:
       }
 
     choice_set expected_solution;
-    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(a.version_from_name("v2"), 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(b.version_from_name("v2"), 1));
     assertSameEffect(expected_solution, sol.get_choices());
 
     try
@@ -606,9 +627,9 @@ private:
 
     package a = u.find_package("a");
     package b = u.find_package("b");
-    dep av1d1(*a.version_from_name("v1").deps_begin());
+    dep av2d1(*a.version_from_name("v2").deps_begin());
 
-    r.approve_break(av1d1);
+    r.approve_break(av2d1);
     solution sol;
     try
       {
@@ -622,7 +643,54 @@ private:
       }
 
     choice_set expected_solution;
-    expected_solution.insert_or_narrow(choice::make_break_soft_dep(av1d1, 0));
+    expected_solution.insert_or_narrow(choice::make_break_soft_dep(av2d1, 0));
+    expected_solution.insert_or_narrow(choice::make_install_version(a.version_from_name("v2"), 1));
+    assertSameEffect(expected_solution, sol.get_choices());
+
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_TRACE(logger, "Success: only one solution was found.");
+	return;
+      }
+
+    LOG_ERROR(logger, "Found an unexpected solution: " << sol);
+    CPPUNIT_FAIL("Expected exactly one solution, got two.");
+  }
+
+  // Test that excluding dependencies from the set to solve works.
+  void testInitialSetExclusion()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testInitialSetExclusion"));
+
+    LOG_TRACE(logger, "Entering testInitialSetExclusion.");
+
+    dummy_universe_ref u = parseUniverse(dummy_universe_6);
+    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+		     imm::map<dummy_universe::package, dummy_universe::version>(),
+		     u);
+
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+    package c = u.find_package("c");
+
+    solution sol;
+    try
+      {
+	sol = r.find_next_solution(1000, NULL);
+	LOG_TRACE(logger, "Got first solution: " << sol);
+      }
+    catch(NoMoreSolutions)
+      {
+	LOG_ERROR(logger, "Expected exactly one solution, got none.");
+	CPPUNIT_FAIL("Expected exactly one solution, got none.");
+      }
+
+    choice_set expected_solution;
+    expected_solution.insert_or_narrow(choice::make_install_version(c.version_from_name("v2"), 1));
     assertSameEffect(expected_solution, sol.get_choices());
 
     try
