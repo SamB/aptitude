@@ -451,7 +451,7 @@ void resolver_manager::dump_visited_packages(const std::set<aptitude_resolver_pa
     trace_dir = resolver_trace_dir;
   else if(!resolver_trace_file.empty())
     {
-      temp_trace_dir = temp::dir("aptitude-trace-dump", true);
+      temp_trace_dir = temp::dir("aptitude-trace-dump");
       trace_dir = temp_trace_dir.get_name();
     }
   else

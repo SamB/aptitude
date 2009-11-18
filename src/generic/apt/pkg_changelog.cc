@@ -689,13 +689,11 @@ void changelog_cache::get_changelogs(const std::vector<std::pair<boost::shared_p
       const std::string &srcpkg(info->get_source_package());
       const std::string &sourcever(info->get_source_version());
 
-      temp::dir tempdir;
       temp::name tempname;
 
       try
 	{
-	  tempdir = temp::dir("aptitude");
-	  tempname = temp::name(tempdir, "changelog");
+	  tempname = temp::name("changelog");
 	}
       catch(temp::TemporaryCreationFailure e)
 	{
@@ -782,13 +780,11 @@ changelog_cache::get_changelog_from_source(const string &srcpkg,
 	    << srcpkg << " " << ver << " in section "
 	    << section << " (display name " << name << ")");
 
-  temp::dir tempdir;
   temp::name tempname;
 
   try
     {
-      tempdir = temp::dir("aptitude");
-      tempname = temp::name(tempdir, "changelog");
+      tempname = temp::name("changelog");
     }
   catch(temp::TemporaryCreationFailure e)
     {

@@ -1,6 +1,6 @@
 // dump_packages.cc     -*-c++-*-
 //
-//   Copyright (C) 2007 Daniel Burrows
+//   Copyright (C) 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -713,7 +713,7 @@ namespace aptitude
       // Declaring aptitude_states_filename is a workaround for
       // strange behavior in g++ 4.3.
       std::string aptitude_states_filename("aptitude_states");
-      temp::name tmp_states(tmp_dir, aptitude_states_filename);
+      temp::name tmp_states(aptitude_states_filename);
       OpProgress progress;
 
       if(!(*apt_cache_file)->save_selection_list(progress,

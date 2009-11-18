@@ -81,6 +81,7 @@ boost/multi_index/mem_fun.hpp dnl
 boost/multi_index/sequenced_index.hpp dnl
 boost/optional.hpp dnl
 boost/ref.hpp dnl
+boost/scoped_array.hpp dnl
 boost/scoped_ptr.hpp dnl
 boost/shared_ptr.hpp dnl
 boost/test/unit_test.hpp dnl

@@ -316,7 +316,7 @@ namespace aptitude
     temp::name digest_changelog(const temp::name &changelog,
 				const std::string &from)
     {
-      temp::name rval(changelog.get_parent(), "parsedchangelog");
+      temp::name rval("parsedchangelog");
 
       std::string version_fragment;
       if(from.empty())

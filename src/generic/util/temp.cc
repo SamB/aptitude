@@ -30,8 +30,10 @@
 #include <apt-pkg/error.h>
 
 #include <boost/format.hpp>
+#include <boost/scoped_array.hpp>
 
 using aptitude::Loggers;
+namespace cw = cwidget;
 
 namespace temp
 {
@@ -40,98 +42,193 @@ namespace temp
     return msg;
   }
 
-  void dir::impl::init_dir(const std::string &_prefix)
+  // The name of the root temporary directory, or an empty string if
+  // the system is shut down.
+  namespace
   {
-    // Need to modify it
-    std::string prefix(_prefix);
+    std::string temp_base;
+    bool created_atexit_handler = false;
+    cw::threads::mutex temp_state_mutex;
+  }
 
-    if(prefix.size() > 0 && prefix[0] != '/')
+  void initialize(const std::string &initial_prefix)
+  {
+    cw::threads::mutex::lock l(temp_state_mutex);
+
+    if(!temp_base.empty())
       {
-	const char *tmpdir = getenv("TMPDIR");
-
-	if(tmpdir == NULL)
-	  tmpdir = getenv("TMP");
-
-	if(tmpdir == NULL)
-	  tmpdir = "/tmp";
-
-	prefix = std::string(tmpdir) + "/" + prefix.c_str();
+	LOG_WARN(Loggers::getAptitudeTemp(),
+		 "Ignoring the second attempt to initialize the temporary file module.");
+	return;
       }
+
+    LOG_TRACE(Loggers::getAptitudeTemp(),
+	      "Initializing the temporary file module.");
+
+    if(initial_prefix.size() > 0 && initial_prefix[0] == '/')
+      {
+	LOG_ERROR(Loggers::getAptitudeTemp(),
+		  "Invalid attempt to create a rooted temporary directory.");
+	return;
+      }
+
+    std::string prefix(initial_prefix);
+
+    const char *tmpdir = getenv("TMPDIR");
+
+    if(tmpdir == NULL)
+      tmpdir = getenv("TMP");
+
+    if(tmpdir == NULL)
+      tmpdir = "/tmp";
+
+    prefix = std::string(tmpdir) + "/" + prefix.c_str();
 
 
     size_t bufsize = prefix.size() + 6 + 1;
-    char *tmpl = new char[bufsize];
-    strcpy(tmpl, prefix.c_str());
-    strcat(tmpl, "XXXXXX");
+    boost::scoped_array<char> tmpl(new char[bufsize]);
+    strcpy(tmpl.get(), prefix.c_str());
+    strcat(tmpl.get(), "XXXXXX");
 
 
-    if(mkdtemp(tmpl) == NULL)
+    if(mkdtemp(tmpl.get()) == NULL)
       {
-	std::string err = sstrerror(errno);
-	std::string errmsg = ssprintf(_("Unable to create temporary directory from template \"%s\": %s"),
-				      tmpl, err.c_str());
+	int errnum = errno;
+	std::string err = sstrerror(errnum);
+	LOG_ERROR(Loggers::getAptitudeTemp(),
+		  boost::format(_("Unable to create temporary directory from template \"%s\": %s"))
+		  % tmpl % err);
 
-	delete[] tmpl;
+	return;
+      }
+
+    if(!created_atexit_handler)
+      {
+	LOG_TRACE(Loggers::getAptitudeTemp(),
+		  "Adding an atexit handler for the temporary directory shut-down routine.");
+	atexit(&temp::shutdown);
+	created_atexit_handler = true;
+      }
+
+    temp_base.assign(tmpl.get());
+    LOG_INFO(Loggers::getAptitudeTemp(),
+	     "Initialized the temporary file module using the base directory "
+	     << temp_base);
+  }
+
+  void shutdown()
+  {
+    cw::threads::mutex::lock l(temp_state_mutex);
+
+    if(temp_base.empty())
+      {
+	LOG_TRACE(Loggers::getAptitudeTemp(),
+		  "Ignoring a second attempt to shut down the temporary directory module.");
+	return;
+      }
+
+    LOG_TRACE(Loggers::getAptitudeTemp(),
+	      "Recursively deleting the base temporary directory "
+	      << temp_base);
+
+    aptitude::util::recursive_remdir(temp_base);
+
+    LOG_INFO(Loggers::getAptitudeTemp(),
+	     "Shut down the temporary file module and deleted the directory "
+	     << temp_base);
+    temp_base.clear();
+  }
+
+
+
+  void dir::impl::init_dir(const std::string &initial_prefix)
+  {
+    LOG_TRACE(Loggers::getAptitudeTemp(),
+	      "Creating a temporary directory with prefix " << initial_prefix);
+
+    std::string prefix(initial_prefix);
+
+    if(prefix.size() > 0 && prefix[0] == '/')
+      throw TemporaryCreationFailure("Invalid attempt to create an absolutely named temporary directory.");
+
+
+    size_t bufsize = prefix.size() + 6 + 1;
+    boost::scoped_array<char> tmpl(new char[bufsize]);
+    strcpy(tmpl.get(), prefix.c_str());
+    strcat(tmpl.get(), "XXXXXX");
+
+
+    if(mkdtemp(tmpl.get()) == NULL)
+      {
+	int errnum = errno;
+	std::string err = sstrerror(errnum);
+
+	LOG_FATAL(Loggers::getAptitudeTemp(),
+		  "Unable to create temporary directory from template \""
+		  << tmpl.get() << "\": " << err);
+
+	std::string errmsg = ssprintf(_("Unable to create temporary directory from template \"%s\": %s"),
+				      tmpl.get(), err.c_str());
 
 	throw TemporaryCreationFailure(errmsg);
       }
 
-    dirname.assign(tmpl);
-    delete[] tmpl;
+    dirname.assign(tmpl.get());
+
+    LOG_INFO(Loggers::getAptitudeTemp(),
+	     "Temporary directory created in " << dirname);
   }
 
-  dir::impl::impl(const std::string &prefix, bool _forceful_delete)
-    : refcount(1), forceful_delete(_forceful_delete)
+  dir::impl::impl(const std::string &prefix)
+    : refcount(1)
   {
     init_dir(prefix);
   }
 
-  dir::impl::impl(const std::string &prefix, const dir &_parent, bool _forceful_delete)
-    : parent(_parent), refcount(1), forceful_delete(_forceful_delete)
-  {
-    if(prefix.size() > 0 && prefix[0] == '/')
-      throw TemporaryCreationFailure("Invalid attempt to create an absolute rooted temporary directory.");
-
-    init_dir(parent.get_name() + '/' + prefix);
-  }
-
   dir::impl::~impl()
   {
-    if(forceful_delete)
-      aptitude::util::recursive_remdir(dirname);
-    else
-      {
-	if(rmdir(dirname.c_str()) != 0)
-	  {
-	    int errnum = errno;
-	    LOG_WARN(Loggers::getAptitudeTemp(),
-		     boost::format(_("rmdir: Unable to delete temporary directory \"%s\": %s"))
-		     % dirname % sstrerror(errnum));
-	  }
-      }
+    aptitude::util::recursive_remdir(dirname);
   }
 
 
-  name::impl::impl(const dir &_parent, const std::string &_filename)
-    : parent(_parent), refcount(1)
+  name::impl::impl(const std::string &_filename)
+    : refcount(1)
   {
+    std::string parentdir;
+
+    LOG_TRACE(Loggers::getAptitudeTemp(),
+	      "Creating temporary file name with base name " << _filename);
+
+    {
+      cw::threads::mutex::lock l(temp_state_mutex);
+      if(temp_base.empty())
+	{
+	  const char * const msg = "Can't create a temporary filename: the temporary filename system hasn't been initialized yet.";
+	  LOG_FATAL(Loggers::getAptitudeTemp(), msg);
+	  throw TemporaryCreationFailure(msg);
+	}
+      else
+	parentdir = temp_base;
+    }
+
     // Warn early about bad filenames.
     if(_filename.find('/') != _filename.npos)
-      throw TemporaryCreationFailure(ssprintf("Invalid temporary filename (contains directory separator): \"%s\"",
-					      _filename.c_str()));
+      {
+	std::string msg = ssprintf("Invalid temporary filename (contains directory separator): \"%s\"",
+				   _filename.c_str());
+	LOG_FATAL(Loggers::getAptitudeTemp(), msg);
+	throw TemporaryCreationFailure(msg);
+      }
 
-    if(!_parent.valid())
-      throw TemporaryCreationFailure("NULL parent directory passed to temp::name constructor");
-
-    size_t parentsize = parent.get_name().size();
+    size_t parentsize = parentdir.size();
     size_t filenamesize = _filename.size();
     size_t bufsize = parentsize + 1 + filenamesize + 6 + 1;
-    char *tmpl = new char[bufsize];
+    boost::scoped_array<char> tmpl(new char[bufsize]);
 
-    strncpy(tmpl, parent.get_name().c_str(), bufsize);
-    strncat(tmpl, "/", bufsize - parentsize);
-    strncat(tmpl, _filename.c_str(), bufsize - parentsize - 1);
-    strncat(tmpl, "XXXXXX", bufsize - parentsize - 1 - filenamesize);
+    strncpy(tmpl.get(), parentdir.c_str(), bufsize);
+    strncat(tmpl.get(), "/", bufsize - parentsize);
+    strncat(tmpl.get(), _filename.c_str(), bufsize - parentsize - 1);
+    strncat(tmpl.get(), "XXXXXX", bufsize - parentsize - 1 - filenamesize);
 
     errno = 0;
 
@@ -139,13 +236,16 @@ namespace temp
     // safe (because it was created using mkdtemp, which unlike mktemp
     // is safe) and that the user running the program didn't screw with
     // the permissions of the temporary directory.
-    if(mktemp(tmpl) == NULL)
+    if(mktemp(tmpl.get()) == NULL)
       {
 	std::string err = sstrerror(errno);
 
-	delete[] tmpl;
-	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary directory from template \"%s\": %s"),
-						(_parent.get_name() + "/" + _filename).c_str(),
+	LOG_FATAL(Loggers::getAptitudeTemp(),
+		  "Unable to create temporary filename from template \"" << tmpl.get()
+		  << "\": " << err);
+
+	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary filename from template \"%s\": %s"),
+						tmpl.get(),
 						err.c_str()));
       }
 
@@ -157,14 +257,16 @@ namespace temp
 	else
 	  err = sstrerror(errno);
 
-	delete[] tmpl;
-	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary directory from template \"%s\": %s"),
-						(_parent.get_name() + "/" + _filename).c_str(),
+	LOG_FATAL(Loggers::getAptitudeTemp(),
+		  "Unable to create temporary filename from template \"" << tmpl.get()
+		  << "\": " << err);
+
+	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary filename from template \"%s\": %s"),
+						tmpl.get(),
 						err.c_str()));
       }
 
-    filename.assign(tmpl);
-    delete[] tmpl;
+    filename.assign(tmpl.get());
   }
 
   // We don't know if it's a filename or a directory, so try blowing

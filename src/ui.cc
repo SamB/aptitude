@@ -445,9 +445,8 @@ static void do_su_to_root(string args)
     }
   std::string root_program(root_command, splitloc + 1);
 
-  temp::dir  tempdir("aptitude");
-  temp::name statusname(tempdir, "pkgstates");
-  temp::name fifoname(tempdir, "control");
+  temp::name statusname("pkgstates");
+  temp::name fifoname("control");
 
   if(mkfifo(fifoname.get_name().c_str(), 0600) != 0)
     {
@@ -575,8 +574,8 @@ static void do_su_to_root(string args)
       else
 	{
 	  // Clear out our references to these objects so they get
-	  // removed.
-	  tempdir    = temp::dir();
+	  // removed, although the shutdown routine should also do
+	  // that.
 	  statusname = temp::name();
 	  fifoname   = temp::name();
 

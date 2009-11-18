@@ -1,6 +1,6 @@
 // temp.h                                 -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,9 +27,19 @@
 #include <cwidget/generic/util/exception.h>
 #include <cwidget/generic/threads/threads.h>
 
-/** \brief Code to support safely creating files in a temporary directory and
- *  deleting the directory when finished.
- * 
+/** \brief Code to support safely creating files in a temporary
+ *  directory and deleting the files when they are no longer needed.
+ *
+ *  This differs somewhat from tempnam() and friends in that it
+ *  creates a private directory when the module is initialized and
+ *  uses that for all operations to avoid race conditions.  The
+ *  temporary directory is deleted when the program exits or invokes
+ *  temp::shutdown().
+ *
+ *  \note The objects here are global because they model something
+ *  global: we want to have a single, globally unique directory in
+ *  which all temporary files are created.
+ *
  *  \file temp.h
  */
 
@@ -48,6 +58,22 @@ namespace temp
     std::string errmsg() const;
   };
 
+  /** \brief Initialize the temporary name system, using the given
+   *  string as part of the name of the temporary directory to create.
+   *
+   *  If the temporary directory can't be created for some reason,
+   *  this logs an error and continues; any attempt to create a name
+   *  object after this will throw.
+   */
+  void initialize(const std::string &prefix);
+
+  /** \brief Shut down the temporary name system if it's initialized,
+   *  recursively deleting the temporary directory and its contents.
+   *
+   *  This is automatically called when you invoke exit().
+   */
+  void shutdown();
+
   /** This object represents a directory in which temporary files can
    *  be created.  While you can extract the file name, it is
    *  recommended that you instead create temporary file(name)
@@ -55,7 +81,7 @@ namespace temp
    */
   class dir
   {
-    class impl;;
+    class impl;
 
     impl *real_dir;
   public:
@@ -65,35 +91,19 @@ namespace temp
     {
     }
 
-    /** Create a new temporary directory whose name begins with the
-     *  text in prefix.
+    /** \brief Create a new temporary directory within the global
+     *  temporary directory whose name begins with the text in prefix.
+     *
+     *  When all references to this directory are discarded, it will
+     *  be recursively deleted.
      *
      *  \throws TemporaryCreationFailure
      */
     dir(const std::string &prefix);
 
-    /** \brief Create a new temporary directory.
-     *
-     *  \param prefix   the text with which the new directory's
-     *                  name should begin.
-     *  \param forceful_delete   if \b true, the new directory
-     *                           and all its contents will be
-     *                           unconditionally removed when
-     *                           all references to it leave scope.
-     *                           Otherwise, the directory
-     *                           will only be deleted if it is
-     *                           not empty.
-     */
-    dir(const std::string &prefix, bool forceful_delete);
-
-    /** Create a new temporary directory that is a subdirectory of an
-     *  existing directory and whose name begins with prefix.
-     *
-     *  \throws TemporaryCreationFailure
-     */
-    dir(const std::string &prefix, const dir &parent);
     /** Create a new reference to an existing temporary directory. */
     dir(const dir &other);
+
     /** Copy a reference to an existing temporary directory. */
     dir &operator=(const dir &other);
 
@@ -108,11 +118,6 @@ namespace temp
      */
     std::string get_name() const;
 
-    /** \return the parent of this directory, or an invalid reference
-     *  if it has none.
-     */
-    dir get_parent() const;
-
     ~dir();
   };
 
@@ -120,9 +125,6 @@ namespace temp
   {
     /** The name of this directory. */
     std::string dirname;
-
-    /** The parent of this directory, if any. */
-    dir parent;
 
     cwidget::threads::mutex m;
 
@@ -150,29 +152,10 @@ namespace temp
      *  prefix begins with a '/', then it is considered an absolute
      *  path; otherwise, it is considered a relative path within the
      *  system temporary directory.
-     *  \param forceful_delete If \b true, the directory will be
-     *  deleted as if with rm -rf; otherwise it's deleted as if with
-     *  rmdir.
      *
      *  \throws TemporaryCreationFailure
      */
-    impl(const std::string &prefix, bool forceful_delete);
-
-    /** Create a new temporary directory within another temporary
-     *  directory.
-     *
-     *  \param prefix the prefix of the name of this directory
-     *                within the parent directory; must not begin
-     *                with a '/'
-     *  \param parent the parent directory to create this directory
-     *                within
-     *  \param forceful_delete If \b true, the directory will be
-     *  deleted as if with rm -rf; otherwise it's deleted as if with
-     *  rmdir.
-     *
-     *  \throws TemporaryCreationFailure
-     */
-    impl(const std::string &prefix, const dir &parent, bool forceful_delete);
+    impl(const std::string &prefix);
 
     /** Attempt to remove the temporary directory. */
     ~impl();
@@ -180,14 +163,6 @@ namespace temp
     std::string get_name() const
     {
       return dirname;
-    }
-
-    /** \return the parent directory of this temporary directory, if
-     *  any.  If none, an invalid reference is returned.
-     */
-    dir get_parent() const
-    {
-      return parent;
     }
 
     /** Increment the reference count of this impl. */
@@ -217,17 +192,7 @@ namespace temp
   };
 
   inline dir::dir(const std::string &prefix)
-    : real_dir(new impl(prefix, false))
-  {
-  }
-
-  inline dir::dir(const std::string &prefix, bool forceful_delete)
-    : real_dir(new impl(prefix, forceful_delete))
-  {
-  }
-
-  inline dir::dir(const std::string &prefix, const dir &parent)
-    : real_dir(new impl(prefix, parent, false))
+    : real_dir(new impl(prefix))
   {
   }
 
@@ -261,11 +226,6 @@ namespace temp
     return real_dir->get_name();
   }
 
-  inline dir dir::get_parent() const
-  {
-    return real_dir->get_parent();
-  }
-
   inline dir::~dir()
   {
     if(real_dir != NULL)
@@ -283,15 +243,14 @@ namespace temp
     impl *real_name;
 
   public:
-    /** Create a new temporary filename in the given directory.
+    /** Create a new temporary filename.
      *
-     *  \param d the directory in which to create the filename
      *  \param prefix the prefix of the new filename
      *
      *  \throws TemporaryCreationFailure if no temporary name can be
      *  reserved.
      */
-    name(const dir &d, const std::string &prefix);
+    name(const std::string &prefix);
 
     /** Create an empty temporary name. */
     name();
@@ -307,10 +266,6 @@ namespace temp
 
     bool valid() const;
     std::string get_name() const;
-    /** \return the enclosing directory of this temporary name; will
-     *          never be an invalid reference unless this is invalid.
-     */
-    dir get_parent() const;
   };
 
   class name::impl
@@ -318,25 +273,20 @@ namespace temp
     /** The name of this temporary object. */
     std::string filename;
 
-    /** The directory in which this temporary should be created. */
-    dir parent;
-
     /** The mutex of this name's reference count. */
     cwidget::threads::mutex m;
 
     /** The reference count of this name. */
     int refcount;
   public:
-    /** Create a new temporary filename in the given directory.
+    /** Create a new temporary filename.
      *
-     *  \param dir the temporary directory in which to create the file
      *  \param filename the prefix of the temporary filename
      *
      *  \throws TemporaryCreationFailure if no temporary name can be
      *  reserved.
      */
-    impl(const dir &parent,
-	 const std::string &filename);
+    impl(const std::string &filename);
 
     /** Remove the filename associated with this temporary. */
     ~impl();
@@ -345,11 +295,6 @@ namespace temp
     std::string get_name() const
     {
       return filename;
-    }
-
-    dir get_parent() const
-    {
-      return parent;
     }
 
     /** Increment the reference count of this impl. */
@@ -377,8 +322,8 @@ namespace temp
     }
   };
 
-  inline name::name(const dir &d, const std::string &prefix)
-    : real_name(new impl(d, prefix))
+  inline name::name(const std::string &prefix)
+    : real_name(new impl(prefix))
   {
   }
 
@@ -421,14 +366,6 @@ namespace temp
   inline std::string name::get_name() const
   {
     return real_name->get_name();
-  }
-
-  inline dir name::get_parent() const
-  {
-    if(real_name != NULL)
-      return real_name->get_parent();
-    else
-      return dir();
   }
 };
 

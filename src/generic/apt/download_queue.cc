@@ -785,8 +785,7 @@ namespace aptitude
 
 	boost::shared_ptr<start_request> start =
 	  boost::make_shared<start_request>(uri, short_description,
-					    temp::name(temp::dir("aptitudeDownload"),
-						       "aptitudeDownload"),
+					    temp::name("aptitudeDownload"),
 					    callbacks,
 					    post_thunk,
 					    rval);

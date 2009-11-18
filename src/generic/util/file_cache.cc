@@ -390,8 +390,7 @@ insert into globals(TotalBlobSize) values(0);				\
 	      // there's no way to know the size of the compressed
 	      // data, but we need that size in order to insert it
 	      // into the cache database.
-	      temp::dir td("aptitudeCache");
-	      temp::name tn(td, "compressed");
+	      temp::name tn("cacheContentCompressed");
 
 	      const std::string compressed_path(tn.get_name());
 
@@ -725,8 +724,7 @@ insert into globals(TotalBlobSize) values(0);				\
 
 		  // TODO: I should consolidate the temporary
 		  // directories aptitude creates.
-		  temp::dir d("aptitudeCacheExtract");
-		  temp::name rval(d, "extracted");
+		  temp::name rval("cacheExtracted");
 
 		  int extracted_size = -1;
 		  {

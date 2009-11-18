@@ -40,6 +40,8 @@
 
 #include <generic/problemresolver/exceptions.h>
 
+#include <generic/util/temp.h>
+
 #ifdef HAVE_GTK
 #include <gtkmm.h>
 #endif
@@ -537,6 +539,8 @@ int main(int argc, char *argv[])
   }
 
   srandom(time(0));
+
+  temp::initialize("aptitude");
 
   using namespace log4cxx;
 

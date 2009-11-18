@@ -585,8 +585,7 @@ namespace gui
   {
     // Create a temporary UNIX-domain socket to pass status
     // information to the parent.
-    temp::dir tempdir("aptitude");
-    temp::name dpkg_socket_name(tempdir, "commsocket");
+    temp::name dpkg_socket_name("commsocket");
 
     // To avoid races, we bind the receive end of the socket first and
     // start accepting connections.
