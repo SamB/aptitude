@@ -941,15 +941,6 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  break;
 		}
 
-	      if(first && assume_yes)
-		{
-		  // If we're supposed to assume "yes", then we actually
-		  // say to abort if there are still broken packages, and
-		  // say to continue otherwise.
-		  rval = !have_broken;
-		  exit = true;
-		}
-
 	      if(!exit)
 		{
 		  // Re-display the preview so the user can see any
@@ -957,6 +948,19 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  cmdline_show_preview(true, to_install, to_hold, to_remove,
 				       showvers, showdeps, showsize, showwhy,
 				       verbose);
+
+		  if((*apt_cache_file)->DelCount() == 0 &&
+		     (*apt_cache_file)->InstCount() == 0)
+		    exit = true;
+		}
+
+	      if(first && assume_yes)
+		{
+		  // If we're supposed to assume "yes", then we actually
+		  // say to abort if there are still broken packages, and
+		  // say to continue otherwise.
+		  rval = !have_broken;
+		  exit = true;
 		}
 	    }
 	  else
