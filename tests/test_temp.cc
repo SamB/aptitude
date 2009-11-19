@@ -39,7 +39,7 @@
         CPPUNIT_FAIL(ssprintf("Can't stat %s: %s", (s), __err.c_str())); \
       }									\
   } while(0)
-						    
+
 
 class TempTest : public CppUnit::TestFixture
 {
