@@ -540,8 +540,6 @@ int main(int argc, char *argv[])
 
   srandom(time(0));
 
-  temp::initialize("aptitude");
-
   using namespace log4cxx;
 
   // See earlier note
@@ -942,6 +940,8 @@ int main(int argc, char *argv[])
 	Logger::getRootLogger()->addAppender(new FileAppender(new PatternLayout("%-5p %c - %m%n"),
 							      log_file));
     }
+
+  temp::initialize("aptitude");
 
   const bool debug_search = aptcfg->FindB(PACKAGE "::CmdLine::Debug-Search", false);
 
