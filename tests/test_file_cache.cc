@@ -18,6 +18,20 @@
 
 using aptitude::util::file_cache;
 
+class usingTemp
+{
+public:
+  usingTemp()
+  {
+    temp::initialize("testFileCache");
+  }
+
+  ~usingTemp()
+  {
+    temp::shutdown();
+  }
+};
+
 bool exists(const std::string &s)
 {
   // Slightly lame way to test that a file exists.  Should be enough
@@ -27,11 +41,10 @@ bool exists(const std::string &s)
   return stat(s.c_str(), &buf) == 0;
 }
 
-BOOST_AUTO_TEST_CASE(createFileCache)
+BOOST_FIXTURE_TEST_CASE(createFileCache, usingTemp)
 {
   {
-    temp::dir td("testFileCache");
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
 
     BOOST_CHECK(!exists(tn.get_name()));
 
@@ -42,8 +55,7 @@ BOOST_AUTO_TEST_CASE(createFileCache)
   }
 
   {
-    temp::dir td("testFileCache");
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
 
     {
       boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 0, 10000));
@@ -52,8 +64,7 @@ BOOST_AUTO_TEST_CASE(createFileCache)
   }
 
   {
-    temp::dir td("testFileCache");
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
 
     {
       boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 10000, 0));
@@ -157,14 +168,13 @@ struct fileCacheTestInfo
 };
 
 // Creates a file cache containing three files whose sizes add up to 1,000 bytes.
-void setupFileCacheTest(const temp::dir &td,
-			const boost::shared_ptr<file_cache> cache,
+void setupFileCacheTest(const boost::shared_ptr<file_cache> cache,
 			fileCacheTestInfo &testInfo)
 {
   // Store three files whose sizes add up to 1,000 bytes.
-  testInfo.infilename1 = temp::name(td, "testInFile");
-  testInfo.infilename2 = temp::name(td, "testInFile");
-  testInfo.infilename3 = temp::name(td, "testInFile");
+  testInfo.infilename1 = temp::name("testInFile");
+  testInfo.infilename2 = temp::name("testInFile");
+  testInfo.infilename3 = temp::name("testInFile");
 
   std::ofstream
     infile1(testInfo.infilename1.get_name().c_str()),
@@ -239,51 +249,47 @@ void setupFileCacheTest(const temp::dir &td,
   CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3, testInfo.time3);
 }
 
-BOOST_AUTO_TEST_CASE(fileCacheStoreDisk)
+BOOST_FIXTURE_TEST_CASE(fileCacheStoreDisk, usingTemp)
 {
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
   boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 0, 1000));
   BOOST_CHECK(exists(tn.get_name()));
 
   fileCacheTestInfo testInfo;
-  setupFileCacheTest(td, cache, testInfo);
+  setupFileCacheTest(cache, testInfo);
 }
 
-BOOST_AUTO_TEST_CASE(fileCacheStoreMemory)
+BOOST_FIXTURE_TEST_CASE(fileCacheStoreMemory, usingTemp)
 {
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
   boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 1000, 0));
 
   fileCacheTestInfo testInfo;
-  setupFileCacheTest(td, cache, testInfo);
+  setupFileCacheTest(cache, testInfo);
 }
 
-BOOST_AUTO_TEST_CASE(fileCacheStoreDiskAndMemory)
+BOOST_FIXTURE_TEST_CASE(fileCacheStoreDiskAndMemory, usingTemp)
 {
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
   boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 333, 1000));
   BOOST_CHECK(exists(tn.get_name()));
 
   fileCacheTestInfo testInfo;
-  setupFileCacheTest(td, cache, testInfo);
+  setupFileCacheTest(cache, testInfo);
 }
 
-BOOST_AUTO_TEST_CASE(fileCacheModifiedTime)
+BOOST_FIXTURE_TEST_CASE(fileCacheModifiedTime, usingTemp)
 {
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
   boost::shared_ptr<file_cache> cache(file_cache::create(tn.get_name(), 333, 1000));
   BOOST_CHECK(exists(tn.get_name()));
 
   fileCacheTestInfo testInfo;
-  setupFileCacheTest(td, cache, testInfo);
+  setupFileCacheTest(cache, testInfo);
 
 
   time_t mtime1 = 0, mtime2 = 0, mtime3 = 0;
@@ -297,8 +303,7 @@ BOOST_AUTO_TEST_CASE(fileCacheModifiedTime)
   BOOST_CHECK_EQUAL(mtime3, testInfo.time3);
 }
 
-void runDropLeastRecentlyUsedTest(const temp::dir &td,
-				  const boost::function<boost::shared_ptr<file_cache> (std::string)> &cache_k)
+void runDropLeastRecentlyUsedTest(const boost::function<boost::shared_ptr<file_cache> (std::string)> &cache_k)
 {
   // Check that we can control which of the three entries is dropped
   // when we add a fourth entry.
@@ -306,11 +311,11 @@ void runDropLeastRecentlyUsedTest(const temp::dir &td,
 
   // Drop key3.
   {
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
     boost::shared_ptr<file_cache> cache(cache_k(tn.get_name()));
 
     fileCacheTestInfo testInfo;
-    setupFileCacheTest(td, cache, testInfo);
+    setupFileCacheTest(cache, testInfo);
 
     CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3, testInfo.time3);
     CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1, testInfo.time1);
@@ -328,11 +333,11 @@ void runDropLeastRecentlyUsedTest(const temp::dir &td,
 
   // Drop key2.
   {
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
     boost::shared_ptr<file_cache> cache(cache_k(tn.get_name()));
 
     fileCacheTestInfo testInfo;
-    setupFileCacheTest(td, cache, testInfo);
+    setupFileCacheTest(cache, testInfo);
 
     CHECK_CACHED_VALUE(cache, testInfo.key2, testInfo.infileData2, testInfo.time2);
     CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1, testInfo.time1);
@@ -350,11 +355,11 @@ void runDropLeastRecentlyUsedTest(const temp::dir &td,
 
   // Drop key1.
   {
-    temp::name tn(td, "testFileCache");
+    temp::name tn("cache");
     boost::shared_ptr<file_cache> cache(cache_k(tn.get_name()));
 
     fileCacheTestInfo testInfo;
-    setupFileCacheTest(td, cache, testInfo);
+    setupFileCacheTest(cache, testInfo);
 
     CHECK_CACHED_VALUE(cache, testInfo.key1, testInfo.infileData1, testInfo.time1);
     CHECK_CACHED_VALUE(cache, testInfo.key3, testInfo.infileData3, testInfo.time3);
@@ -370,12 +375,12 @@ void runDropLeastRecentlyUsedTest(const temp::dir &td,
   }
 }
 
-BOOST_AUTO_TEST_CASE(fileCacheDropLeastRecentlyUsedDisk)
+BOOST_FIXTURE_TEST_CASE(fileCacheDropLeastRecentlyUsedDisk, usingTemp)
 {
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
-  runDropLeastRecentlyUsedTest(td, boost::lambda::bind(&file_cache::create, boost::lambda::_1, 0, 1000));
+  runDropLeastRecentlyUsedTest(boost::lambda::bind(&file_cache::create,
+						   boost::lambda::_1, 0, 1000));
 }
 
 // The changelog that's expected to be in the upgrade test database.
@@ -442,8 +447,7 @@ void testCacheUpgradeFrom(int version)
 
   // Make a temporary copy, since the upgrade is in-place (don't want
   // to modify the test data!).
-  temp::dir td("testFileCache");
-  temp::name tn(td, "testFileCache");
+  temp::name tn("cache");
 
 
   namespace io = boost::iostreams;
@@ -475,7 +479,7 @@ void testCacheUpgradeFrom(int version)
 // but you can't use those unless you manually register test cases,
 // which would mean that I'd have to have the main .cc file know all
 // the parameterized test cases in the world (yuck).
-BOOST_AUTO_TEST_CASE(testCacheUpgrade)
+BOOST_FIXTURE_TEST_CASE(testCacheUpgrade, usingTemp)
 {
   for(int version = min_database_test_upgrade_version;
       version <= max_database_test_upgrade_version;
