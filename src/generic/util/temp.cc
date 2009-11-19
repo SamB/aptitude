@@ -42,20 +42,23 @@ namespace temp
     return msg;
   }
 
-  // The name of the root temporary directory, or an empty string if
-  // the system is shut down.
   namespace
   {
-    std::string temp_base;
     bool created_atexit_handler = false;
-    cw::threads::mutex temp_state_mutex;
+    // This mutex is deliberately allocated on the heap and leaked.
+    // This ensures that it is still accessible when exit handlers
+    // run.
+    cw::threads::mutex *temp_state_mutex = new cw::threads::mutex;
+    // This string is allocated when the temporary system is
+    // initialized.
+    std::string *temp_base = NULL;
   }
 
   void initialize(const std::string &initial_prefix)
   {
-    cw::threads::mutex::lock l(temp_state_mutex);
+    cw::threads::mutex::lock l(*temp_state_mutex);
 
-    if(!temp_base.empty())
+    if(temp_base != NULL)
       {
 	LOG_WARN(Loggers::getAptitudeTemp(),
 		 "Ignoring the second attempt to initialize the temporary file module.");
@@ -118,7 +121,7 @@ namespace temp
 	created_atexit_handler = true;
       }
 
-    temp_base.assign(tmpl.get());
+    temp_base = new std::string(tmpl.get());
     LOG_INFO(Loggers::getAptitudeTemp(),
 	     "Initialized the temporary file module using the base directory "
 	     << temp_base);
@@ -126,33 +129,32 @@ namespace temp
 
   void shutdown()
   {
-    cw::threads::mutex::lock l(temp_state_mutex);
+    // No log statements because this might run after log4cxx's global
+    // destructors.
+    cw::threads::mutex::lock l(*temp_state_mutex);
 
-    if(temp_base.empty())
-      {
-	LOG_TRACE(Loggers::getAptitudeTemp(),
-		  "Ignoring a second attempt to shut down the temporary directory module.");
-	return;
-      }
+    if(temp_base == NULL)
+      return;
 
-    LOG_TRACE(Loggers::getAptitudeTemp(),
-	      "Recursively deleting the base temporary directory "
-	      << temp_base);
-
-    if(!aptitude::util::recursive_remdir(temp_base))
-      LOG_WARN(Loggers::getAptitudeTemp(),
-	       "Failed to recursively remove the temporary directory.");
-
-    LOG_INFO(Loggers::getAptitudeTemp(),
-	     "Shut down the temporary file module and deleted the directory "
-	     << temp_base);
-    temp_base.clear();
+    aptitude::util::recursive_remdir(*temp_base);
+    delete temp_base;
+    temp_base = NULL;
   }
 
 
 
   void dir::impl::init_dir(const std::string &initial_prefix)
   {
+    cw::threads::mutex::lock l(*temp_state_mutex);
+
+    if(temp_base == NULL)
+      {
+	const char * const msg = "Can't create a new temporary directory object when the temporary file module is not initialized.";
+	LOG_ERROR(Loggers::getAptitudeTemp(),
+		  msg);
+	throw TemporaryCreationFailure(msg);
+      }
+
     LOG_TRACE(Loggers::getAptitudeTemp(),
 	      "Creating a temporary directory with prefix " << initial_prefix);
 
@@ -162,7 +164,7 @@ namespace temp
       throw TemporaryCreationFailure("Invalid attempt to create an absolutely named temporary directory.");
 
 
-    prefix = temp_base + "/" + prefix;
+    prefix = *temp_base + "/" + prefix;
 
     size_t bufsize = prefix.size() + 6 + 1;
     boost::scoped_array<char> tmpl(new char[bufsize]);
@@ -212,15 +214,15 @@ namespace temp
 	      "Creating temporary file name with base name " << _filename);
 
     {
-      cw::threads::mutex::lock l(temp_state_mutex);
-      if(temp_base.empty())
+      cw::threads::mutex::lock l(*temp_state_mutex);
+      if(temp_base == NULL)
 	{
 	  const char * const msg = "Can't create a temporary filename: the temporary filename system hasn't been initialized yet.";
 	  LOG_FATAL(Loggers::getAptitudeTemp(), msg);
 	  throw TemporaryCreationFailure(msg);
 	}
       else
-	parentdir = temp_base;
+	parentdir = *temp_base;
     }
 
     // Warn early about bad filenames.
