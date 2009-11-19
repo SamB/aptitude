@@ -30,7 +30,7 @@ install-data-hook:
 	$(INSTALL_DATA) $(MANPAGE) $(DESTDIR)$(localemandir)/man8/aptitude.8
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)/images
 	$(INSTALL_DATA) output-html/*.html output-html/*.css $(DESTDIR)$(htmldir)
-	$(INSTALL_DATA) output-html/images/* $(htmldir)/images
+	$(INSTALL_DATA) output-html/images/* $(DESTDIR)$(htmldir)/images
 
 	$(INSTALL_DATA) README.$(LANGCODE) $(DESTDIR)$(pkgdatadir)/README.$(LANGCODE)
 
