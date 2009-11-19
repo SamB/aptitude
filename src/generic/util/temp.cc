@@ -162,6 +162,8 @@ namespace temp
       throw TemporaryCreationFailure("Invalid attempt to create an absolutely named temporary directory.");
 
 
+    prefix = temp_base + "/" + prefix;
+
     size_t bufsize = prefix.size() + 6 + 1;
     boost::scoped_array<char> tmpl(new char[bufsize]);
     strcpy(tmpl.get(), prefix.c_str());
