@@ -1,6 +1,6 @@
 // test_temp.cc
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -33,7 +33,11 @@
   do \
   { \
     if(stat((s), (buf)) != 0) \
-       CPPUNIT_FAIL(ssprintf("Can't stat %s: %s", (s), sstrerror(errno).c_str())); \
+      {									\
+	int __errnum = errno;						\
+	std::string __err = sstrerror(__errnum);			\
+        CPPUNIT_FAIL(ssprintf("Can't stat %s: %s", (s), __err.c_str())); \
+      }									\
   } while(0)
 						    
 
