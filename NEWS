@@ -1,4 +1,19 @@
 [11/19/2009]
+Version 0.6.1.2                             "I think I can, I think I can..."
+
+- Crashes and serious erroors:
+
+  + [all] Modified the new temporary file module so that it doesn't
+          rely on the order in which global destructors run.  This was
+          causing an abort when the program exited if it was built
+          with optimizations.
+
+- Internal changes:
+
+  + [test] Wrote an additional unit test verifying that the program's
+           temporary directory is really deleted when it exits.
+
+[11/19/2009]
 Version 0.6.1.1                             "Again with the bug-writing."
 
 - Crashes and serious errors:
