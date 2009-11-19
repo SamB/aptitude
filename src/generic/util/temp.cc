@@ -139,7 +139,9 @@ namespace temp
 	      "Recursively deleting the base temporary directory "
 	      << temp_base);
 
-    aptitude::util::recursive_remdir(temp_base);
+    if(!aptitude::util::recursive_remdir(temp_base))
+      LOG_WARN(Loggers::getAptitudeTemp(),
+	       "Failed to recursively remove the temporary directory.");
 
     LOG_INFO(Loggers::getAptitudeTemp(),
 	     "Shut down the temporary file module and deleted the directory "
