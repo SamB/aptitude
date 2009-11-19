@@ -210,18 +210,23 @@ string sstrerror(int errnum)
 
       if(result == NULL)
 	{
+	  int strerror_errno = errno;
+
 	  delete[] buf;
 
-	  if(errno == EINVAL)
+	  if(strerror_errno == EINVAL)
 	    return ssprintf("Invalid error code %d", errnum);
-	  else if(errno != ERANGE)
+	  else if(strerror_errno != ERANGE)
 	    return ssprintf("Unexpected error from strerror_r: %d", errnum);
 	  else
 	    bufsize *= 2;
 	}
       else
 	{
-	  string rval(buf);
+	  // We need to copy "result", not "buf", because some
+	  // versions of strerror_r can return a static string and
+	  // leave "buf" alone.
+	  string rval(result);
 	  delete[] buf;
 	  return rval;
 	}
