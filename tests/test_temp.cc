@@ -27,6 +27,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <libgen.h>
 
@@ -50,6 +51,8 @@ class TempTest : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testTempDir);
   CPPUNIT_TEST(testTempName);
+  CPPUNIT_TEST(testShutdown);
+  CPPUNIT_TEST(testShutdownOnExit);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -292,6 +295,91 @@ public:
     close(fd);
 
     CPPUNIT_ASSERT_EQUAL(0, access(f.get_name().c_str(), F_OK));
+  }
+
+  void testShutdownOnExit()
+  {
+    temporaryShutdown x;
+
+    temp::initialize("test");
+
+    temp::name f("tmpf");
+
+    std::string fname;
+    std::string dname;
+
+    fname = f.get_name();
+
+    {
+      char *fnamecopy = strdup(fname.c_str());
+      std::string base = basename(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(fname.c_str());
+      dname = dirname(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(dname.c_str());
+      std::string dirbase = basename(fnamecopy);
+      free(fnamecopy);
+      fnamecopy = NULL;
+
+
+
+      CPPUNIT_ASSERT_EQUAL((boost::format("%s-%s.%s:")
+			    % "test" % get_username() % getpid()).str(),
+			   std::string(dirbase, 0, dirbase.size() - 6));
+
+      CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
+			   std::string(base, 0, base.size() - 6));
+
+      CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
+      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+    }
+
+    // Create it.
+    int fd = open(fname.c_str(), O_EXCL | O_CREAT | O_WRONLY, 0700);
+    if(fd == -1)
+      CPPUNIT_FAIL(ssprintf("Can't create \"%s\": %s",
+			    fname.c_str(),
+			    sstrerror(errno).c_str()));
+    close(fd);
+
+    CPPUNIT_ASSERT_EQUAL(0, access(f.get_name().c_str(), F_OK));
+
+    pid_t pid = fork();
+    switch(pid)
+      {
+      case -1:
+	{
+	  int errnum = errno;
+	  CPPUNIT_FAIL(ssprintf("fork() failed: %s",
+				sstrerror(errnum).c_str()));
+	}
+	return;
+
+      default:
+	{
+	  int status;
+	  if(waitpid(pid, &status, 0) < 0)
+	    {
+	      int errnum = errno;
+	      CPPUNIT_FAIL(ssprintf("waitpid() failed: %s",
+				    sstrerror(errnum).c_str()));
+	      return;
+	    }
+	  else
+	    {
+	      CPPUNIT_ASSERT(access(dname.c_str(), F_OK) != 0);
+	      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+
+	      CPPUNIT_ASSERT(access(fname.c_str(), F_OK) != 0);
+	      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+	    }
+	}
+      }
+
+    temp::shutdown();
   }
 };
 
