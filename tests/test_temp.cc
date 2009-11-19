@@ -28,6 +28,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <libgen.h>
+
+#include <boost/format.hpp>
 
 #define ASSERT_STAT(s, buf) \
   do \
@@ -51,20 +54,26 @@ class TempTest : public CppUnit::TestFixture
   CPPUNIT_TEST_SUITE_END();
 
 public:
+  void setUp()
+  {
+    temp::initialize("test");
+  }
+
+  void tearDown()
+  {
+    temp::shutdown();
+  }
+
   void testTempDir()
   {
-    std::string d1name, d2name, d3name, d4name;
+    std::string d1name, d2name;
 
     {
       temp::dir d1("tmp");
-      temp::dir d2("tmp", d1);
-      temp::dir d3("tmp");
-      temp::dir d4("tmp", true);
+      temp::dir d2("tmp");
 
       d1name = d1.get_name();
       d2name = d2.get_name();
-      d3name = d3.get_name();
-      d4name = d4.get_name();
 
       int result = access(d1name.c_str(), F_OK);
       if(result != 0)
@@ -79,27 +88,34 @@ public:
       char *d1namecopy = strdup(d1name.c_str());
       std::string base1 = basename(d1namecopy);
       free(d1namecopy);
+
+      d1namecopy = strdup(d1name.c_str());
+      std::string dir1 = dirname(d1namecopy);
+      free(d1namecopy);
+
+      d1namecopy = strdup(dir1.c_str());
+      std::string dir1base = basename(d1namecopy);
+      free(d1namecopy);
       d1namecopy = NULL;
 
-      CPPUNIT_ASSERT_EQUAL(std::string("tmp"), std::string(base1, 0, base1.size()-6));
 
-      char *d2namecopy = strdup(d2name.c_str());
-      std::string base2 = basename(d2namecopy);
-      free(d2namecopy);
-      d2namecopy = NULL;
+      CPPUNIT_ASSERT_EQUAL((boost::format("%s-%s.%s:")
+			    % "test" % get_username() % getpid()).str(),
+			   std::string(dir1base, 0, dir1base.size() - 6));
 
-      CPPUNIT_ASSERT_EQUAL(std::string("tmp"), std::string(base2, 0, base2.size()-6));
+      CPPUNIT_ASSERT_EQUAL(std::string("tmp"),
+			   std::string(base1, 0, base1.size() - 6));
+
 
       struct stat stbuf;
 
       ASSERT_STAT(d1.get_name().c_str(), &stbuf);
       CPPUNIT_ASSERT(S_ISDIR(stbuf.st_mode));
 
-      ASSERT_STAT(d2.get_name().c_str(), &stbuf);
-      CPPUNIT_ASSERT(S_ISDIR(stbuf.st_mode));
+      ASSERT_STAT(dir1.c_str(), &stbuf);
+      CPPUNIT_ASSERT_EQUAL(0700, (int)(stbuf.st_mode & 0777));
 
-      close(creat((d3name + "/" + "foo").c_str(), 0644));
-      close(creat((d4name + "/" + "foo").c_str(), 0644));
+      close(creat((d2name + "/" + "foo").c_str(), 0644));
     }
 
     int result = access(d1name.c_str(), F_OK);
@@ -109,40 +125,40 @@ public:
     result = access(d2name.c_str(), F_OK);
     CPPUNIT_ASSERT(result != 0);
     CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
-
-    result = access(d3name.c_str(), F_OK);
-    CPPUNIT_ASSERT(result == 0);
-
-    CPPUNIT_ASSERT(aptitude::util::recursive_remdir(d3name));
-
-    result = access(d3name.c_str(), F_OK);
-    CPPUNIT_ASSERT(result != 0);
-    CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
-
-    result = access(d4name.c_str(), F_OK);
-    CPPUNIT_ASSERT(result != 0);
-    CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
   }
 
   void testTempName()
   {
-    std::string dname;
     std::string fname;
 
     {
-      temp::dir d("tmp");
+      temp::name f("tmpf");
 
-      temp::name f(d, "tmpf");
-
-      dname = d.get_name();
       fname = f.get_name();
 
       char *fnamecopy = strdup(fname.c_str());
       std::string base = basename(fnamecopy);
       free(fnamecopy);
+
+      fnamecopy = strdup(fname.c_str());
+      std::string dir = dirname(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(dir.c_str());
+      std::string dirbase = basename(fnamecopy);
+      free(fnamecopy);
+
+
       fnamecopy = NULL;
 
-      CPPUNIT_ASSERT_EQUAL(std::string("tmpf"), std::string(base, 0, base.size()-6));
+
+
+      CPPUNIT_ASSERT_EQUAL((boost::format("%s-%s.%s:")
+			    % "test" % get_username() % getpid()).str(),
+			   std::string(dirbase, 0, dirbase.size() - 6));
+
+      CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
+			   std::string(base, 0, base.size() - 6));
 
       CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
       CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
@@ -153,17 +169,129 @@ public:
 	CPPUNIT_FAIL(ssprintf("Can't create \"%s\": %s",
 			      fname.c_str(),
 			      sstrerror(errno).c_str()));
+      close(fd);
 
       CPPUNIT_ASSERT_EQUAL(0, access(f.get_name().c_str(), F_OK));
-
-      close(fd);
     }
 
     CPPUNIT_ASSERT(access(fname.c_str(), F_OK) != 0);
     CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+  }
 
-    CPPUNIT_ASSERT(access(dname.c_str(), F_OK) != 0);
+  class temporaryShutdown
+  {
+  public:
+    temporaryShutdown()
+    {
+      temp::shutdown();
+    }
+
+    ~temporaryShutdown()
+    {
+      temp::initialize("test");
+    }
+  };
+
+  void testShutdown()
+  {
+    // Check that shutting the system down deletes everything.
+
+    std::string fname;
+    std::string dname;
+
+    temp::name f("tmpf");
+
+    fname = f.get_name();
+
+    {
+      char *fnamecopy = strdup(fname.c_str());
+      std::string base = basename(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(fname.c_str());
+      dname = dirname(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(dname.c_str());
+      std::string dirbase = basename(fnamecopy);
+      free(fnamecopy);
+      fnamecopy = NULL;
+
+
+
+      CPPUNIT_ASSERT_EQUAL((boost::format("%s-%s.%s:")
+			    % "test" % get_username() % getpid()).str(),
+			   std::string(dirbase, 0, dirbase.size() - 6));
+
+      CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
+			   std::string(base, 0, base.size() - 6));
+
+      CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
+      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+    }
+
+    // Create it.
+    int fd = open(fname.c_str(), O_EXCL | O_CREAT | O_WRONLY, 0700);
+    if(fd == -1)
+      CPPUNIT_FAIL(ssprintf("Can't create \"%s\": %s",
+			    fname.c_str(),
+			    sstrerror(errno).c_str()));
+    close(fd);
+
+    CPPUNIT_ASSERT_EQUAL(0, access(f.get_name().c_str(), F_OK));
+
+    {
+      temporaryShutdown x;
+
+      CPPUNIT_ASSERT(access(dname.c_str(), F_OK) != 0);
+      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+
+      CPPUNIT_ASSERT(access(fname.c_str(), F_OK) != 0);
+      CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+    }
+
+
+
+    f = temp::name("tmpf");
+
+    fname = f.get_name();
+
+    {
+      char *fnamecopy = strdup(fname.c_str());
+      std::string base = basename(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(fname.c_str());
+      std::string dir = dirname(fnamecopy);
+      free(fnamecopy);
+
+      fnamecopy = strdup(dir.c_str());
+      std::string dirbase = basename(fnamecopy);
+      free(fnamecopy);
+      fnamecopy = NULL;
+
+
+
+      CPPUNIT_ASSERT_EQUAL((boost::format("%s-%s.%s:")
+			    % "test" % get_username() % getpid()).str(),
+			   std::string(dirbase, 0, dirbase.size() - 6));
+
+      CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
+			   std::string(base, 0, base.size() - 6));
+    }
+
+    CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
     CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
+
+    // Create it.
+    fd = open(fname.c_str(), O_EXCL | O_CREAT | O_WRONLY, 0700);
+    if(fd == -1)
+      CPPUNIT_FAIL(ssprintf("Can't create \"%s\": %s",
+			    fname.c_str(),
+			    sstrerror(errno).c_str()));
+    close(fd);
+
+    CPPUNIT_ASSERT_EQUAL(0, access(f.get_name().c_str(), F_OK));
   }
 };
 
