@@ -116,7 +116,7 @@ namespace gui
       Glib::RefPtr<Gdk::PixbufLoader> loader;
       // This stores the number of bytes tat have been read from the
       // file into the loader.  It's initially 0.
-      off64_t num_bytes_read;
+      off_t num_bytes_read;
 
       // If the download isn't started yet, this is NULL.  Otherwise,
       // this is set to the loaded pixbuf.
@@ -173,14 +173,14 @@ namespace gui
 	// handling.
 	FileFd fd(fdnum);
 
-	off64_t where = lseek64(fdnum, num_bytes_read, SEEK_SET);
-	if(where == (off64_t)-1)
+	off_t where = lseek(fdnum, num_bytes_read, SEEK_SET);
+	if(where == (off_t)-1)
 	  {
 	    int errnum = errno;
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
 		     << " from the file " << name.get_name()
-		     << " failed: lseek64() failed: "
+		     << " failed: lseek() failed: "
 		     << cw::util::sstrerror(errnum));
 
 	    return false;
@@ -213,7 +213,7 @@ namespace gui
 
 	    return false;
 	  }
-	else if(endpos >= 0 && num_bytes_read < endpos)
+	else if(endpos >= 0 && num_bytes_read < (off_t)endpos)
 	  {
 	    LOG_WARN(Loggers::getAptitudeGtkScreenshotCache(),
 		     "Loading " << key
@@ -440,9 +440,12 @@ namespace gui
 	  aptcfg->FindI(PACKAGE "::Screenshot::Incremental-Load-Limit",
 			16384);
 
+	// Apparently num_bytes_read ends up as a signed integer on
+	// some platforms, so cast it to an unsigned integer for
+	// comparison.
 	if(incrementalLoadLimit < 0 ||
-	   (currentSize >= (unsigned int)incrementalLoadLimit &&
-	    currentSize > num_bytes_read))
+	   (currentSize >= (unsigned long)incrementalLoadLimit &&
+	    currentSize > (unsigned long)num_bytes_read))
 	  {
 	    if(!loader)
 	      {
