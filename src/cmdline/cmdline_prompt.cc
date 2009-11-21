@@ -869,6 +869,17 @@ static void prompt_help(ostream &out, bool show_resolver_key)
   fragments.push_back(flowindentbox(0, 4,
 				    cw::fragf(_("'&BD' to install the build-dependencies of a package."))));
 
+  fragments.push_back(cw::fragf("\n"));
+  fragments.push_back(cw::flowbox(cw::fragf(_("In the list of actions to be performed, some packages will be followed by one or more characters enclosed in braces; for instance: \"aptitude{u}\".  These characters provide extra information about the package's state, and can include any combination of the following:"))));
+  fragments.push_back(cw::fragf("\n"));
+
+  fragments.push_back(flowindentbox(0, 4,
+				    cw::fragf(_("'a': the package was automatically installed or removed."))));
+  fragments.push_back(flowindentbox(0, 4,
+				    cw::fragf(_("'p': the package will be purged in addition to being removed."))));
+  fragments.push_back(flowindentbox(0, 4,
+				    cw::fragf(_("'u': the package is being removed because it is unused."))));
+
   cw::fragment *f = indentbox(2, 2, cw::sequence_fragment(fragments));
 
   out << _("Commands:") << endl;
