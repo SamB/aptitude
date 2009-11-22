@@ -171,6 +171,24 @@ namespace aptitude
 	    it->second(make_keepalive_slot(partial_download_slot, it->first));
 	  }
       }
+
+      /** \brief Invoke the canceled callback on each listener. */
+      void invoke_canceled() const
+      {
+	for(std::list<listener>::const_iterator
+	      it = listeners.begin(); it != listeners.end(); ++it)
+	  {
+	    sigc::slot<void> canceled_slot =
+	      sigc::mem_fun(*it->first, &download_callbacks::canceled);
+
+	    // Note that we use a keepalive slot to ensure that the
+	    // callback object doesn't get deleted before the thunk
+	    // fires off!  We need to do this because the last
+	    // reference to the callback could be dropped from any
+	    // thread.
+	    it->second(make_keepalive_slot(canceled_slot, it->first));
+	  }
+      }
     };
 
     // Responsible for downloading a file and informing the listener
@@ -987,6 +1005,7 @@ namespace aptitude
 	  job->remove_listener(connection);
 	  if(job->listeners_empty())
 	    download_thread::remove_job_by_uri(job->get_uri());
+	  job->invoke_canceled();
 	}
 
       canceled = true;

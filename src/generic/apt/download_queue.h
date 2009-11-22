@@ -76,6 +76,11 @@ namespace aptitude
 				  unsigned long totalSize)
     {
     }
+
+    /** \brief Invoked when the item is canceled. */
+    virtual void canceled()
+    {
+    }
   };
 
   /** \brief Handle to a screenshot download request; can be used to
