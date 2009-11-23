@@ -16,6 +16,7 @@ libgeneric_util_a_SOURCES = \
 	job_queue_thread.h \
 	maybe.h \
 	mut_fun.h \
+        post_thunk.h        \
 	refcounted_base.cc \
 	refcounted_base.h \
 	refcounted_wrapper.h \

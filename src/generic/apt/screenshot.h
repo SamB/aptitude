@@ -23,9 +23,8 @@
 #include <boost/functional/hash.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <generic/util/post_thunk.h>
 #include <generic/util/safe_slot.h>
-
-#include "post_thunk.h"
 
 namespace aptitude
 {

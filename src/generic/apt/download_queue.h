@@ -23,11 +23,10 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <generic/util/post_thunk.h>
 #include <generic/util/temp.h>
 
 #include <sigc++/slot.h>
-
-#include "post_thunk.h"
 
 namespace aptitude
 {

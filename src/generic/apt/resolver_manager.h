@@ -22,8 +22,6 @@
 #ifndef RESOLVER_MANAGER_H
 #define RESOLVER_MANAGER_H
 
-#include "post_thunk.h"
-
 #include <cwidget/generic/threads/threads.h>
 
 #include <cwidget/generic/util/exception.h>
@@ -40,6 +38,7 @@
 #include <vector>
 
 #include <generic/util/immset.h>
+#include <generic/util/post_thunk.h>
 
 /** \brief A higher-level resolver interface
  *
