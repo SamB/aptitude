@@ -378,138 +378,6 @@ namespace gui
 					 ssprintf(_("Failed to download the changelog: %s"), error.c_str()));
     }
 
-    class parse_changelog_job
-    {
-      // Remember that this is passed by copy-construction, so
-      // everything here has to be safe to copy (it is).
-
-      temp::name name;
-      safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot;
-      const std::string from;
-      const std::string to;
-      const std::string source_package;
-      bool digested;
-
-    public:
-      parse_changelog_job(const temp::name &_name,
-			  const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &_slot,
-			  const std::string &_from,
-			  const std::string &_to,
-			  const std::string &_source_package,
-			  bool _digested)
-	: name(_name), slot(_slot), from(_from),
-	  to(_to), source_package(_source_package),
-	  digested(_digested)
-      {
-      }
-
-      /** \brief Return the temporary file name of the changelog. */
-      const temp::name &get_name() const { return name; }
-      /** \brief Return the slot that should be invoked when the changelog is parsed. */
-      const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > &get_slot() const { return slot; }
-      /** \brief Return the earliest version that should be included in the parse. */
-      const std::string &get_from() const { return from; }
-      /** \brief Return the version whose changelog is being parsed. */
-      const std::string &get_to() const { return to; }
-      /** \brief Return the source package whose changelog is being parsed. */
-      const std::string &get_source_package() const { return source_package; }
-      /** \brief Return \b true if the input file has already been
-       *  passed through digest_changelog().
-       *
-       *  This is true, for instance, when retrieving a digested
-       *  changelog from the cache.
-       */
-      bool get_digested() const { return digested; }
-    };
-
-    std::ostream &operator<<(std::ostream &out, const boost::shared_ptr<parse_changelog_job> &job)
-    {
-      return out
-	<< "(name=" << job->get_name().get_name()
-	<< ", from=" << job->get_from()
-	<< ", to=" << job->get_to()
-	<< ", source_package=" << job->get_source_package()
-	<< ", digested=" << (job->get_digested() ? "true" : "false")
-	<< ")";
-    }
-
-    /** \brief Parses a queue of changelogs in the background.
-     *
-     *  The purpose of the queue is to ensure that aptitude only
-     *  parses one changelog at a time and doesn't waste a ton of time
-     *  starting new changelog parse threads and spawning copies of
-     *  parsechangelog.
-     *
-     *  This is a self-terminating singleton thread.
-     */
-    class parse_changelog_thread : public aptitude::util::job_queue_thread<parse_changelog_thread,
-									   boost::shared_ptr<parse_changelog_job> >
-    {
-      // Set to true when the global signal handlers are connected up.
-      static bool signals_connected;
-
-    public:
-      // Tell the job_queue_thread what our log category is.
-      static log4cxx::LoggerPtr get_log_category()
-      {
-	return aptitude::Loggers::getAptitudeGtkChangelogParse();
-      }
-
-      parse_changelog_thread()
-      {
-	if(!signals_connected)
-	  {
-	    cache_closed.connect(sigc::ptr_fun(&parse_changelog_thread::stop));
-	    cache_reloaded.connect(sigc::ptr_fun(&parse_changelog_thread::start));
-	    signals_connected = true;
-	  }
-      }
-
-      static void add_job_from_details(const temp::name &name,
-				       safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > slot,
-				       const std::string &from,
-				       const std::string &to,
-				       const std::string &source_package,
-				       bool digested)
-      {
-	add_job(boost::make_shared<parse_changelog_job>(name, slot, from, to, source_package, digested));
-      }
-
-      void process_job(const boost::shared_ptr<parse_changelog_job> &job)
-      {
-	std::string changelog_uri;
-	if(job->get_from().empty())
-	  changelog_uri = ssprintf("changelog://%s/%s",
-				   job->get_source_package().c_str(),
-				   job->get_to().c_str());
-	else
-	  changelog_uri = ssprintf("delta-changelog://%s/%s/%s",
-				   job->get_source_package().c_str(),
-				   job->get_from().c_str(),
-				   job->get_to().c_str());
-
-	temp::name digested;
-	if(job->get_digested())
-	  digested = job->get_name();
-	else
-	  digested = aptitude::apt::digest_changelog(job->get_name(), job->get_from());
-
-	// Note that we don't re-cache the digested
-	// changelog if it was retrieved from the cache
-	// earlier (i.e., if job->get_digested() is true).
-	if(digested.valid() && !job->get_digested())
-	  {
-	    LOG_TRACE(get_log_category(),
-		      "Caching digested changelog as " << changelog_uri);
-	    download_cache->putItem(changelog_uri, digested.get_name());
-	  }
-
-	cw::util::ref_ptr<aptitude::apt::changelog> parsed =
-	  aptitude::apt::parse_digested_changelog(digested);
-	post_event(safe_bind(job->get_slot(), parsed));
-      }
-    };
-    bool parse_changelog_thread::signals_connected = false;
 
     /** \brief The job structure after the frontend routine has
      *  processed it and before it's passed through
@@ -606,12 +474,13 @@ namespace gui
 	const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_safe_slot =
 	  make_safe_slot(finish_changelog_download_slot);
 
-	parse_changelog_thread::add_job_from_details(name,
-						     finish_changelog_download_safe_slot,
-						     from,
-						     to,
-						     source_package,
-						     false);
+	parse_changelog_background(name,
+				   finish_changelog_download_safe_slot,
+				   from,
+				   to,
+				   source_package,
+				   false,
+				   &post_thunk);
       }
 
       void failure(const std::string &msg)
@@ -727,12 +596,13 @@ namespace gui
 	      const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_safe_slot =
 		make_safe_slot(finish_changelog_download_slot);
 
-	      parse_changelog_thread::add_job_from_details(digested_file,
-							   finish_changelog_download_safe_slot,
-							   only_new ? current_info->get_source_version() : "",
-							   target_info->get_source_version(),
-							   target_info->get_source_package(),
-							   true);
+	      parse_changelog_background(digested_file,
+					 finish_changelog_download_safe_slot,
+					 only_new ? current_info->get_source_version() : "",
+					 target_info->get_source_version(),
+					 target_info->get_source_package(),
+					 true,
+					 &post_thunk);
 	    }
 	  else
 	    {

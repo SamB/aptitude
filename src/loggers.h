@@ -62,8 +62,17 @@ namespace aptitude
 
     /** \brief The logger for events having to do with aptitude's
      *  backend changelog download code.
+     *
+     *  Name: aptitude.changelog
      */
     static log4cxx::LoggerPtr getAptitudeChangelog();
+
+    /** \brief The logger for events having to do with aptitude's
+     *  backend changelog parser.
+     *
+     *  Name: aptitude.changelog.parse
+     */
+    static log4cxx::LoggerPtr getAptitudeChangelogParse();
 
     /** \brief The logger for events having to do with aptitude's
      *  caching of downloaded data (other than package lists and

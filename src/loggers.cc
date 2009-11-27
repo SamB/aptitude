@@ -38,6 +38,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.changelog");
   }
 
+  LoggerPtr Loggers::getAptitudeChangelogParse()
+  {
+    return Logger::getLogger("aptitude.changelog.parse");
+  }
+
   LoggerPtr Loggers::getAptitudeDownloadCache()
   {
     return Logger::getLogger("aptitude.downloadCache");

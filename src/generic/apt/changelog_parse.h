@@ -28,7 +28,9 @@
 
 #include <cwidget/generic/util/ref_ptr.h>
 
+#include <generic/util/post_thunk.h>
 #include <generic/util/refcounted_base.h>
+#include <generic/util/safe_slot.h>
 
 /** \file changelog_parse.h
  */
@@ -247,6 +249,33 @@ namespace aptitude
      */
     cwidget::util::ref_ptr<changelog> parse_changelog(const temp::name &file,
 						      const std::string &from = "");
+
+
+
+    /** \brief Start parsing a changelog in the background.
+     *
+     *  \param name The name of the file in which to find the
+     *              changelog.
+     *  \param slot A slot to invoke when teh changelog is parsed.  It
+     *              will be invoked in the main thread.
+     *  \param from The first version to parse, or an empty string
+     *              to start at the beginning of the changelog.
+     *  \param to   The last version to parse, or an empty string
+     *              to parse until the end of the changelog.
+     *  \param source_package The name of the source package whose
+     *                        changelog is being parsed.
+     *  \param digested       True if the changelog was already
+     *                        digested.
+     *  \param post_thunk     A function that should be used to post
+     *                        thunks to the main thread.
+     */
+    void parse_changelog_background(const temp::name &name,
+				    safe_slot1<void, cwidget::util::ref_ptr<aptitude::apt::changelog> > slot,
+				    const std::string &from,
+				    const std::string &to,
+				    const std::string &source_package,
+				    bool digested,
+				    post_thunk_f post_thunk);
   }
 }
 
