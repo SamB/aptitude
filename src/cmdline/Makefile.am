@@ -22,6 +22,8 @@ libcmdline_a_SOURCES=\
 	cmdline_extract_cache_subset.h \
 	cmdline_forget_new.cc \
 	cmdline_forget_new.h \
+	cmdline_main_loop.cc \
+	cmdline_main_loop.h \
 	cmdline_moo.cc \
 	cmdline_moo.h \
 	cmdline_progress.cc \

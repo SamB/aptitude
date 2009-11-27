@@ -30,15 +30,15 @@
 #include "download_list.h"
 #include "menu_redirect.h"
 #include "menu_text_layout.h"
+#include "progress.h"
 #include "safe_slot_event.h"
 #include "ui.h"
-#include "ui_download_manager.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/changelog_parse.h>
 #include <generic/apt/pkg_changelog.h>
 #include <generic/apt/config_signal.h>
-#include <generic/apt/download_signal_log.h>
+#include <generic/apt/download_queue.h>
 
 #include <generic/util/util.h>
 
@@ -47,6 +47,8 @@
 
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/version.h>
+
+#include <boost/make_shared.hpp>
 
 using namespace std;
 
@@ -316,26 +318,52 @@ static void do_view_changelog(temp::name n,
 
 namespace
 {
-  // Note that this is only safe if it's OK to copy the thunk in a
-  // background thread (i.e., it won't be invalidated by an object being
-  // destroyed in another thread).  In the special cases where we use
-  // this it should be all right.
-  void do_post_thunk(const safe_slot0<void> &thunk)
+  void do_post_thunk(const sigc::slot<void> &thunk)
   {
-    cw::toplevel::post_event(new aptitude::safe_slot_event(thunk));
-  }
-
-  // Helper routine to safely run do_view_changelog in the main
-  // thread.
-  void do_view_changelog_trampoline(temp::name n,
-				    string pkgname,
-				    string curverstr)
-  {
-    sigc::slot0<void> slot(sigc::bind(sigc::ptr_fun(&do_view_changelog),
-				      n, pkgname, curverstr));
-    do_post_thunk(make_safe_slot(slot));
+    cw::toplevel::post_event(new aptitude::safe_slot_event(make_safe_slot(thunk)));
   }
 }
+
+class changelog_callbacks : public aptitude::download_callbacks
+{
+  progress_ref download_progress;
+  std::string pkgname;
+  std::string curverstr;
+
+public:
+  changelog_callbacks(const std::string &_pkgname,
+		      const std::string &_curverstr)
+    : download_progress(progress::create()),
+      pkgname(_pkgname),
+      curverstr(_curverstr)
+  {
+  }
+
+  ~changelog_callbacks()
+  {
+  }
+
+  void success(const temp::name &filename)
+  {
+    download_progress->Done();
+    do_view_changelog(filename, pkgname, curverstr);
+  }
+
+  void failure(const std::string &msg)
+  {
+    download_progress->Done();
+  }
+
+  void partial_download(const temp::name &name,
+			unsigned long currentSize,
+			unsigned long totalSize)
+  {
+    cwidget::util::ref_ptr<refcounted_progress> p = download_progress->get_progress();
+
+    p->OverallProgress(currentSize, totalSize, 1,
+		       _("Downloading Changelog"));
+  }
+};
 
 void view_changelog(pkgCache::VerIterator ver)
 {
@@ -371,32 +399,10 @@ void view_changelog(pkgCache::VerIterator ver)
       return;
     }
 
-  // When the download completes, we'll invoke the trampoline
-  // function, which packages up a cwidget-style event in order to
-  // alert the main thread.  Errors are ignored (although I expect
-  // that they should show up in the apt error stack).
-  using aptitude::apt::global_changelog_cache;
-  boost::shared_ptr<download_manager> manager =
-    global_changelog_cache.get_changelog(ver,
-					 sigc::bind(sigc::ptr_fun(&do_view_changelog_trampoline),
-						    pkgname, current_source_ver),
-					 sigc::slot<void, std::string>());
-
-  if(manager.get() != NULL)
-    {
-      std::pair<download_signal_log *, download_list_ref>
-	download_log_pair = gen_download_progress(true, false,
-						  _("Downloading Changelog"),
-						  "",
-						  _("Download Changelog"));
-
-      ui_download_manager *uim =
-	new ui_download_manager(manager,
-				download_log_pair.first,
-				download_log_pair.second,
-				sigc::ptr_fun(&refcounted_progress::make),
-				&do_post_thunk);
-
-      uim->start();
-    }
+  boost::shared_ptr<changelog_callbacks> callbacks =
+    boost::make_shared<changelog_callbacks>(ver.ParentPkg().Name(),
+					    current_source_ver);
+  boost::shared_ptr<aptitude::apt::changelog_info> info =
+    aptitude::apt::changelog_info::create(ver);
+  aptitude::apt::get_changelog(info, callbacks, do_post_thunk);
 }

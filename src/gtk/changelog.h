@@ -83,62 +83,29 @@ namespace gui
 		   Gtk::TextBuffer::iterator where,
 		   bool only_new);
 
-  /** \brief A changelog job says to download the changelog of a
-   *  binary package version at the given buffer location.
-   */
-  class changelog_download_job
-  {
-    Glib::RefPtr<Gtk::TextBuffer::Mark> begin;
-    Glib::RefPtr<Gtk::TextBuffer> text_buffer;
-    pkgCache::VerIterator ver;
-    bool only_new;
-
-  public:
-    /** \brief Create a new changelog download job.
-     *
-     *  \param _begin   The buffer location where the changelog should be inserted.
-     *  \param _text_buffer  The text buffer in which to insert the changelog.
-     *  \param _ver     The version whose changelog should be downloaded.
-     *  \param _only_new  If \b true, only new entries will be displayed.
-     */
-    changelog_download_job(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
-			   const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
-			   const pkgCache::VerIterator &_ver,
-			   bool _only_new)
-      : begin(_begin),
-	text_buffer(_text_buffer),
-	ver(_ver),
-	only_new(_only_new)
-    {
-    }
-
-    const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_begin() const { return begin; }
-    const Glib::RefPtr<Gtk::TextBuffer> &get_text_buffer() const { return text_buffer; }
-    const pkgCache::VerIterator &get_ver() const { return ver; }
-    bool get_only_new() const { return only_new; }
-  };
-
-  /** \brief Start downloading changelogs for the given package
-   *  versions and insert them into the corresponding buffers.
-   *
-   *  \param changelogs   The versions whose changelogs should
-   *                      be downloaded and where to put them.
-   */
-  void fetch_and_show_changelogs(const std::vector<changelog_download_job> &changelogs);
-
-  /** \brief Start downloading a changelog for a single version,
-   *  inserting it at the given location in the given buffer.
-   *
-   *  \param ver   The version whose changelog should be downloaded.
-   *  \param text_buffer  The text buffer in which to display the changelog.
-   *  \param where  The location in text_buffer where the changelog
-   *                should appear.
-   *
-   *  This is a convenience wrapper for fetch_and_show_changelogs.
+  /** \brief Add a changelog to the queue of changelogs that are to be
+   *  downloaded in the background.
+   *  \param begin   The buffer location where the changelog should be inserted.
+   *  \param text_buffer  The text buffer in which to insert the changelog.
+   *  \param ver     The version whose changelog should be downloaded.
+   *  \param only_new  If \b true, only new entries will be displayed.
    */
   void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
 				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
-				const Gtk::TextBuffer::iterator &where);
+				const Glib::RefPtr<Gtk::TextBuffer::Mark> &where,
+				bool only_new = false);
+
+  /** \brief Add a changelog to the queue of changelogs that are to be
+   *  downloaded in the background.
+   *  \param begin   The buffer location where the changelog should be inserted.
+   *  \param text_buffer  The text buffer in which to insert the changelog.
+   *  \param ver     The version whose changelog should be downloaded.
+   *  \param only_new  If \b true, only new entries will be displayed.
+   */
+  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
+				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
+				const Gtk::TextBuffer::iterator &where,
+				bool only_new = false);
 }
 
 #endif /* CHANGELOG_H_ */

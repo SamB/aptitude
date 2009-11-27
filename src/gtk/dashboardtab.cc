@@ -332,7 +332,6 @@ namespace gui
     std::sort(versions.begin(), versions.end(),
 	      sort_versions_by_package_name());
 
-    std::vector<changelog_download_job> changelogs;
     for(std::vector<pkgCache::VerIterator>::const_iterator it =
 	  versions.begin(); it != versions.end(); ++it)
       {
@@ -378,20 +377,16 @@ namespace gui
 	const Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_begin =
 	  text_buffer->create_mark(changelog_begin_iter);
 
-	changelog_download_job job(changelog_begin,
-				   text_buffer,
-				   candver,
-				   true);
-
-	changelogs.push_back(job);
+	fetch_and_show_changelog(candver,
+				 text_buffer,
+				 changelog_begin,
+				 true);
 
 	where = text_buffer->insert(where, "\n\n");
       }
 
     upgrades_summary_textview->set_buffer(text_buffer);
     changelog_locations.swap(changelog_locations_new);
-
-    fetch_and_show_changelogs(changelogs);
   }
 
   void DashboardTab::handle_cache_closed()
