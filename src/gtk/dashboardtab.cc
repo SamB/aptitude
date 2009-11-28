@@ -332,6 +332,8 @@ namespace gui
     std::sort(versions.begin(), versions.end(),
 	      sort_versions_by_package_name());
 
+    upgrades_summary_textview->set_buffer(text_buffer);
+
     for(std::vector<pkgCache::VerIterator>::const_iterator it =
 	  versions.begin(); it != versions.end(); ++it)
       {
@@ -374,13 +376,12 @@ namespace gui
 	where = text_buffer->insert(where, "\n");
 
 	const Gtk::TextBuffer::iterator changelog_begin_iter = where;
-	const Glib::RefPtr<Gtk::TextBuffer::Mark> changelog_begin =
-	  text_buffer->create_mark(changelog_begin_iter);
 
-	fetch_and_show_changelog(candver,
-				 text_buffer,
-				 changelog_begin,
-				 true);
+	where = fetch_and_show_changelog(candver,
+					 text_buffer,
+					 upgrades_summary_textview,
+					 changelog_begin_iter,
+					 true);
 
 	where = text_buffer->insert(where, "\n\n");
       }

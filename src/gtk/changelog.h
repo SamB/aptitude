@@ -87,25 +87,18 @@ namespace gui
    *  downloaded in the background.
    *  \param begin   The buffer location where the changelog should be inserted.
    *  \param text_buffer  The text buffer in which to insert the changelog.
+   *  \param text_view The text view in which we will insert the changelog.
+   *                   Used to display a progress bar during the download.
    *  \param ver     The version whose changelog should be downloaded.
    *  \param only_new  If \b true, only new entries will be displayed.
+   *
+   *  \return An iterator following any text inserted by this routine.
    */
-  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
-				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
-				const Glib::RefPtr<Gtk::TextBuffer::Mark> &where,
-				bool only_new = false);
-
-  /** \brief Add a changelog to the queue of changelogs that are to be
-   *  downloaded in the background.
-   *  \param begin   The buffer location where the changelog should be inserted.
-   *  \param text_buffer  The text buffer in which to insert the changelog.
-   *  \param ver     The version whose changelog should be downloaded.
-   *  \param only_new  If \b true, only new entries will be displayed.
-   */
-  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
-				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
-				const Gtk::TextBuffer::iterator &where,
-				bool only_new = false);
+  Gtk::TextBuffer::iterator fetch_and_show_changelog(const pkgCache::VerIterator &ver,
+						     const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
+						     Gtk::TextView *text_view,
+						     const Gtk::TextBuffer::iterator &where,
+						     bool only_new = false);
 }
 
 #endif /* CHANGELOG_H_ */

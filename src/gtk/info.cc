@@ -633,6 +633,7 @@ namespace gui
 	changelog_textview->set_buffer(text_buffer);
 	fetch_and_show_changelog(current_version,
 				 text_buffer,
+				 changelog_textview,
 				 text_buffer->end());
         changelog_loaded = true;
       }

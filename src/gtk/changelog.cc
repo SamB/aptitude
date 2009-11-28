@@ -391,7 +391,16 @@ namespace gui
      */
     class preprocessed_changelog_job
     {
-      Glib::RefPtr<Gtk::TextBuffer::Mark> begin;
+      // A slot to add a widget into the text view that we're
+      // rendering into.  Used to hopefully avoid problems if the text
+      // view is destroyed (the slot will become a NOP).  Note that
+      // this calls back to a method on this object that the job is
+      // bound to.
+      sigc::slot<void, Gtk::Widget &, Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> > text_view_add_child_at_anchor;
+
+      // The region of the text buffer that the previous bit of code
+      // used to display the changelog's status.
+      Glib::RefPtr<Gtk::TextBuffer::Mark> begin, end;
       Glib::RefPtr<Gtk::TextBuffer> text_buffer;
 
       bool only_new;
@@ -405,10 +414,14 @@ namespace gui
 
     public:
       explicit preprocessed_changelog_job(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
+					  const Glib::RefPtr<Gtk::TextBuffer::Mark> &_end,
 					  const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
+					  sigc::slot<void, Gtk::Widget &, Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> > _text_view_add_child_at_anchor,
 					  const pkgCache::VerIterator &ver,
 					  bool _only_new)
-	: begin(_begin),
+	: text_view_add_child_at_anchor(_text_view_add_child_at_anchor),
+	  begin(_begin),
+	  end(_end),
 	  text_buffer(_text_buffer),
 	  only_new(_only_new),
 	  binary_package_name(ver.ParentPkg().Name()),
@@ -423,12 +436,20 @@ namespace gui
 	  }
       }
       const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_begin() const { return begin; }
-      const Glib::RefPtr<Gtk::TextBuffer> get_text_buffer() const { return text_buffer; }
+      const Glib::RefPtr<Gtk::TextBuffer::Mark> &get_end() const { return end; }
+      const Glib::RefPtr<Gtk::TextBuffer> &get_text_buffer() const { return text_buffer; }
+      //Gtk::TextView *get_text_view() const { return text_view; }
       bool get_only_new() const { return only_new; }
       const std::string &get_binary_package_name() const { return binary_package_name; }
       const boost::shared_ptr<aptitude::apt::changelog_info> &get_target_info() const { return target_info; }
       const boost::shared_ptr<aptitude::apt::changelog_info> &get_current_info() const { return current_info; }
       const std::set<std::string> &get_origins() const { return origins; }
+
+      void add_child_at_anchor(Gtk::Widget &child,
+			       const Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> &anchor)
+      {
+	text_view_add_child_at_anchor(child, anchor);
+      }
     };
 
     std::ostream &operator<<(std::ostream &out, const preprocessed_changelog_job &job)
@@ -453,23 +474,60 @@ namespace gui
       std::string to;
       std::string source_package;
 
+      // Information used to nicely display information about the
+      // package.
+      std::string source_version;
+
+      boost::shared_ptr<Gtk::ProgressBar> progress_bar;
+
     public:
       changelog_download_callbacks(const boost::shared_ptr<finish_changelog_download_info> &_download_info,
 				   const std::string &_from,
 				   const std::string &_to,
-				   const std::string &_source_package)
+				   const std::string &_source_package,
+				   const std::string &_source_version,
+				   const boost::shared_ptr<Gtk::ProgressBar> &_progress_bar)
 	: download_info(_download_info),
 	  from(_from),
 	  to(_to),
-	  source_package(_source_package)
+	  source_package(_source_package),
+	  source_version(_source_version),
+	  progress_bar(_progress_bar)
       {
       }
 
       void success(const temp::name &name)
       {
+	// Replace the progress bar and text with a message about the
+	// download being complete.
+	progress_bar->hide();
+
+	Glib::RefPtr<Gtk::TextBuffer> text_buffer(download_info->text_buffer);
+
+	Gtk::TextBuffer::iterator begin_iter =
+	  text_buffer->get_iter_at_mark(download_info->begin);
+
+	Gtk::TextBuffer::iterator end_iter =
+	  text_buffer->get_iter_at_mark(download_info->end);
+
+	end_iter = text_buffer->erase(begin_iter, end_iter);
+	end_iter = text_buffer->insert(end_iter, cw::util::ssprintf(_("Parsing the changelog of %s version %s..."),
+								    source_package.c_str(),
+								    source_version.c_str()));
+
+	Glib::RefPtr<Gtk::TextBuffer::Mark> end_mark = text_buffer->create_mark(end_iter);
+
+	boost::shared_ptr<finish_changelog_download_info>
+	  new_download_info = boost::make_shared<finish_changelog_download_info>(download_info->begin,
+										 end_mark,
+										 text_buffer,
+										 download_info->current_version,
+										 download_info->only_new);
+
+
 	const sigc::slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_slot =
 	  sigc::bind(sigc::ptr_fun(&finish_changelog_download),
-		     download_info);
+		     new_download_info);
 
 	const safe_slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_safe_slot =
 	  make_safe_slot(finish_changelog_download_slot);
@@ -485,7 +543,19 @@ namespace gui
 
       void failure(const std::string &msg)
       {
+	progress_bar->hide();
+
 	changelog_download_error(msg, download_info);
+      }
+
+      void partial_download(const temp::name &filename,
+			    unsigned long currentSize,
+			    unsigned long totalSize)
+      {
+	if(totalSize == 0)
+	  progress_bar->set_fraction(0);
+	else
+	  progress_bar->set_fraction(((double)currentSize) / ((double)totalSize));
       }
     };
 
@@ -502,7 +572,18 @@ namespace gui
     void process_changelog_job(const boost::shared_ptr<preprocessed_changelog_job> &entry,
 			       const temp::name &digested_file)
     {
+      //Gtk::TextView *textView = entry->get_text_view();
       Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry->get_text_buffer();
+      Glib::RefPtr<Gtk::TextBuffer::Mark> beginMark = entry->get_begin();
+
+      // First, erase any old text that was displayed.
+      {
+	Glib::RefPtr<Gtk::TextBuffer::Mark> endMark = entry->get_end();
+
+	textBuffer->erase(textBuffer->get_iter_at_mark(beginMark),
+			  textBuffer->get_iter_at_mark(endMark));
+      }
+
 
       const std::string &binary_package_name(entry->get_binary_package_name());
       const boost::shared_ptr<aptitude::apt::changelog_info> &target_info(entry->get_target_info());
@@ -525,9 +606,8 @@ namespace gui
 	      origins_str += "\"";
 	    }
 
-	  const Glib::RefPtr<Gtk::TextBuffer::Mark> begin = entry->get_begin();
 	  const Gtk::TextBuffer::iterator begin_iter =
-	    textBuffer->get_iter_at_mark(begin);
+	    textBuffer->get_iter_at_mark(beginMark);
 	  if(origins_str.empty())
 	    textBuffer->insert(begin_iter,
 			       ssprintf(_("You can only view changelogs of official Debian packages; the origin of %s is unknown."),
@@ -539,39 +619,6 @@ namespace gui
 	}
       else
 	{
-	  // Insert a temporary message telling the user that we're
-	  // downloading a changelog, and store sticky anchors
-	  // pointing to its beginning and end.
-	  Glib::RefPtr<Gtk::TextBuffer::Mark> begin = entry->get_begin();
-	  Glib::RefPtr<Gtk::TextBuffer::Mark> end;
-
-	  {
-	    const Gtk::TextBuffer::iterator begin_iter =
-	      textBuffer->get_iter_at_mark(begin);
-	    const Gtk::TextBuffer::iterator end_iter =
-	      textBuffer->insert(begin_iter,
-				 _("Downloading changelog; please wait..."));
-
-	    end = textBuffer->create_mark(end_iter);
-	  }
-
-	  // Bind up the buffer location, the buffer pointer, and the
-	  // source version with the finalization code (so we can
-	  // invoke it when the changelog downloads).
-	  //
-	  // The changelog continuation is triggered in the background
-	  // thread, so we need to safely wrap it and post it to the
-	  // main thread.
-	  const bool only_new = entry->get_only_new();
-	  boost::shared_ptr<finish_changelog_download_info> download_info =
-	    boost::make_shared<finish_changelog_download_info>(begin, end, textBuffer,
-							       only_new ? current_info->get_source_version() : "",
-							       only_new);
-
-	  // Note that both the above slots are invoked in the main
-	  // thread, so this code doesn't need to handle passing those
-	  // events to the main thread.
-
 
 	  // The normal flow here is that the download invokes
 	  // parse_and_view_changelog_download_trampoline, which tells
@@ -588,6 +635,33 @@ namespace gui
 			"Using a predigested file to display the changelog of "
 			<< target_info->get_source_package() << " "
 			<< target_info->get_source_version());
+
+	      Glib::RefPtr<Gtk::TextBuffer::Mark> endMark;
+
+	      {
+		const Gtk::TextBuffer::iterator begin_iter =
+		  textBuffer->get_iter_at_mark(beginMark);
+		const Gtk::TextBuffer::iterator end_iter =
+		  textBuffer->insert(begin_iter,
+				     cw::util::ssprintf(_("Parsing the changelog of %s version %s..."),
+							target_info->get_source_package().c_str(),
+							target_info->get_source_version().c_str()));
+
+		endMark = textBuffer->create_mark(end_iter);
+	      }
+
+	      // Bind up the buffer location, the buffer pointer, and the
+	      // source version with the finalization code (so we can
+	      // invoke it when the changelog downloads).
+	      //
+	      // The changelog continuation is triggered in the background
+	      // thread, so we need to safely wrap it and post it to the
+	      // main thread.
+	      const bool only_new = entry->get_only_new();
+	      boost::shared_ptr<finish_changelog_download_info> download_info =
+		boost::make_shared<finish_changelog_download_info>(beginMark, endMark, textBuffer,
+								   only_new ? current_info->get_source_version() : "",
+								   only_new);
 
 	      const sigc::slot1<void, cw::util::ref_ptr<aptitude::apt::changelog> > finish_changelog_download_slot =
 		sigc::bind(sigc::ptr_fun(&finish_changelog_download),
@@ -606,11 +680,55 @@ namespace gui
 	    }
 	  else
 	    {
+	      Glib::RefPtr<Gtk::TextBuffer::Mark> endMark;
+	      Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> anchor =
+		Gtk::TextBuffer::ChildAnchor::create();
+
+	      {
+		const Gtk::TextBuffer::iterator begin_iter =
+		  textBuffer->get_iter_at_mark(beginMark);
+		Gtk::TextBuffer::iterator end_iter =
+		  textBuffer->insert(begin_iter,
+				     cw::util::ssprintf(_("Downloading the changelog of %s version %s..."),
+							   target_info->get_source_package().c_str(),
+							   target_info->get_source_version().c_str()));
+
+		end_iter = textBuffer->insert(end_iter, "\n");
+
+		end_iter = textBuffer->insert_child_anchor(end_iter, anchor);
+
+		end_iter = textBuffer->insert(end_iter, "\n");
+
+		endMark = textBuffer->create_mark(end_iter);
+	      }
+
+	      // A boost::shared_ptr is used here instead of manage()
+	      // because I want to ensure that the C++ object is
+	      // destroyed when it runs out of references.  In
+	      // particular: if there is no text view any more, we
+	      // won't be able to add the progress bar to it and it
+	      // would never be deleted if I was relying on manage().
+	      // This way, the progress bar will be valid as long as I
+	      // need it, then get deleted.  (at least, I hope that's
+	      // what will happen)
+	      boost::shared_ptr<Gtk::ProgressBar> progressBar(boost::make_shared<Gtk::ProgressBar>());
+
+	      entry->add_child_at_anchor(*progressBar, anchor);
+	      progressBar->show();
+
+	      const bool only_new = entry->get_only_new();
+	      boost::shared_ptr<finish_changelog_download_info> download_info =
+		boost::make_shared<finish_changelog_download_info>(beginMark, endMark, textBuffer,
+								   only_new ? current_info->get_source_version() : "",
+								   only_new);
+
 	      boost::shared_ptr<changelog_download_callbacks> callbacks =
 		boost::make_shared<changelog_download_callbacks>(download_info,
 								 only_new ? current_info->get_source_version() : "",
 								 target_info->get_source_version(),
-								 target_info->get_source_package());
+								 target_info->get_source_package(),
+								 target_info->get_source_version(),
+								 progressBar);
 
 	      aptitude::apt::get_changelog(target_info, callbacks, &post_thunk);
 	    }
@@ -752,27 +870,34 @@ namespace gui
 
 
 
-  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
-				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
-				const Glib::RefPtr<Gtk::TextBuffer::Mark> &where,
-				bool only_new)
+  Gtk::TextBuffer::iterator fetch_and_show_changelog(const pkgCache::VerIterator &ver,
+						     const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
+						     Gtk::TextView *text_view,
+						     const Gtk::TextBuffer::iterator &where,
+						     bool only_new)
   {
+    Glib::RefPtr<Gtk::TextBuffer::Mark> begin_mark =
+      text_buffer->create_mark(where);
+
+    Gtk::TextBuffer::iterator end = text_buffer->insert(where,
+							cw::util::ssprintf(_("Preparing to download the changelog of %s version %s."),
+									   ver.ParentPkg().Name(),
+									   ver.VerStr()));
+    Glib::RefPtr<Gtk::TextBuffer::Mark> end_mark =
+      text_buffer->create_mark(end);
+
+    sigc::slot<void, Gtk::Widget &, Glib::RefPtr<Gtk::TextBuffer::ChildAnchor> > text_view_add_child_at_anchor =
+      sigc::mem_fun(*text_view, &Gtk::TextView::add_child_at_anchor);
+
     boost::shared_ptr<preprocessed_changelog_job> preprocessed =
-      boost::make_shared<preprocessed_changelog_job>(where, text_buffer, ver, only_new);
+      boost::make_shared<preprocessed_changelog_job>(begin_mark, end_mark, text_buffer,
+						     text_view_add_child_at_anchor,
+						     ver, only_new);
 
     check_cache_for_parsed_changelogs_job job(preprocessed);
     check_cache_for_parsed_changelogs_thread::add_job(job);
-  }
 
-  void fetch_and_show_changelog(const pkgCache::VerIterator &ver,
-				const Glib::RefPtr<Gtk::TextBuffer> &text_buffer,
-				const Gtk::TextBuffer::iterator &where,
-				bool only_new)
-  {
-    Glib::RefPtr<Gtk::TextBuffer::Mark> where_mark =
-      text_buffer->create_mark(where);
 
-    fetch_and_show_changelog(ver, text_buffer,
-			     where_mark, only_new);
+    return end;
   }
 }
