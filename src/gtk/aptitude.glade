@@ -9,6 +9,7 @@
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkMenuBar" id="main_menubar">
             <property name="visible">True</property>
@@ -504,6 +505,7 @@
         <child>
           <widget class="GtkVBox" id="main_notify_rows">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -596,6 +598,7 @@
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <widget class="GtkLabel" id="edit_package_columns_label">
@@ -707,6 +710,7 @@
         <child>
           <widget class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <widget class="GtkHBox" id="hbox2">
@@ -863,6 +867,7 @@
           <widget class="GtkVPaned" id="vbox3">
             <property name="width_request">300</property>
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkScrolledWindow" id="scrolledwindow8">
                 <property name="visible">True</property>
@@ -888,6 +893,7 @@
               <widget class="GtkVBox" id="vbox4">
                 <property name="height_request">200</property>
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <widget class="GtkLabel" id="label4">
                     <property name="visible">True</property>
@@ -1439,6 +1445,7 @@ This is the default view mode.</property>
     <child>
       <widget class="GtkVBox" id="dashboard_main">
         <property name="border_width">6</property>
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkHBox" id="hbox7">
             <property name="height_request">32</property>
@@ -1517,6 +1524,7 @@ This is the default view mode.</property>
                 <child>
                   <widget class="GtkVBox" id="vbox8">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">4</property>
                     <child>
                       <widget class="GtkHPaned" id="hpaned1">
@@ -1755,6 +1763,7 @@ This is the default view mode.</property>
           <widget class="GtkVPaned" id="vpaned1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkFrame" id="frame1">
                 <property name="visible">True</property>
@@ -1767,6 +1776,7 @@ This is the default view mode.</property>
                     <child>
                       <widget class="GtkVBox" id="vbox5">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <widget class="GtkHBox" id="hbox4">
@@ -1905,6 +1915,7 @@ This is the default view mode.</property>
                     <child>
                       <widget class="GtkVBox" id="vbox6">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <widget class="GtkHBox" id="hbox5">
@@ -2095,6 +2106,7 @@ This is the default view mode.</property>
   <widget class="GtkWindow" id="conffile_diff_tab">
     <child>
       <widget class="GtkVBox" id="main_conffile_diff_tab">
+        <property name="orientation">vertical</property>
         <child>
           <widget class="GtkLabel" id="main_conffile_explanation_label">
             <property name="visible">True</property>
