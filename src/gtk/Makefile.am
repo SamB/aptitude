@@ -11,6 +11,8 @@ pkgdata_DATA = aptitude.glade
 EXTRA_DIST = aptitude.glade
 
 libgtk_a_SOURCES=\
+	area.cc \
+	area.h \
 	changelog.cc \
 	changelog.h \
 	constants.h \
