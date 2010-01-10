@@ -1,6 +1,6 @@
 // Random utility functions that have nothing to do with apt. -*-c++-*-
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -23,6 +23,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <stdarg.h>
 
 /** \file util.h
  */
