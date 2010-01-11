@@ -113,7 +113,7 @@ public:
    */
   virtual void finish(pkgAcquire::RunResult result,
 		      OpProgress *progress,
-		      const sigc::slot1<void, result> &k) = 0;
+		      const sigc::slot1<void, download_manager::result> &k) = 0;
 };
 
 #endif

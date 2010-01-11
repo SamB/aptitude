@@ -1,6 +1,6 @@
 // aptitude_resolver.cc
 //
-//   Copyright (C) 2005, 2008-2009 Daniel Burrows
+//   Copyright (C) 2005, 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -445,7 +445,7 @@ int aptitude_resolver::hint::compare(const hint &other) const
     }
 }
 
-bool aptitude_resolver::hint::parse(const std::string &hint, hint &out)
+bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::hint &out)
 {
   LOG_TRACE(loggerHintsParse, "Parsing " << hint);
   std::string::const_iterator start = hint.begin();

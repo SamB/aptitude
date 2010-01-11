@@ -1,6 +1,6 @@
 // download_install_manager.h                          -*-c++-*-
 //
-//   Copyright (C) 2005, 2008 Daniel Burrows
+//   Copyright (C) 2005, 2008, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -148,7 +148,7 @@ public:
    */
   void finish(pkgAcquire::RunResult result,
 	      OpProgress *progress,
-	      const sigc::slot1<void, result> &k);
+	      const sigc::slot1<void, download_manager::result> &k);
 
   /** Invoked after an automatic 'forget new' operation. */
   sigc::signal0<void> post_forget_new_hook;

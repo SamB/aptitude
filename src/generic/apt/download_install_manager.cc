@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005-2009 Daniel Burrows
+//   Copyright (C) 2005-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -243,7 +243,7 @@ void download_install_manager::finish_post_dpkg(pkgPackageManager::OrderResult d
 
 void download_install_manager::finish(pkgAcquire::RunResult result,
 				      OpProgress *progress,
-				      const sigc::slot1<void, result> &k)
+				      const sigc::slot1<void, download_manager::result> &k)
 {
   const download_manager::result pre_res = finish_pre_dpkg(result);
 
