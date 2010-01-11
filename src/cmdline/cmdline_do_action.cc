@@ -23,6 +23,8 @@
 #include <apt-pkg/policy.h>
 #include <apt-pkg/progress.h>
 
+#include <stdio.h>
+
 using namespace std;
 
 namespace

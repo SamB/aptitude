@@ -21,6 +21,7 @@
 #include <apt-pkg/policy.h>
 #include <apt-pkg/version.h>
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include <cwidget/generic/util/transcode.h>

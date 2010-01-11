@@ -11,6 +11,8 @@
 
 #include <apt-pkg/error.h>
 
+#include <stdio.h>
+
 using namespace std;
 
 int cmdline_forget_new(int argc, char *argv[],

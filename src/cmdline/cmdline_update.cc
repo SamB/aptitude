@@ -1,6 +1,6 @@
 // cmdline_update.cc
 //
-//   Copyright (C) 2004-2008 Daniel Burrows
+//   Copyright (C) 2004-2008, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,6 +26,8 @@
 #include <generic/apt/download_update_manager.h>
 
 #include <apt-pkg/error.h>
+
+#include <stdio.h>
 
 void print_autoclean_msg()
 {
