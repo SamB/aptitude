@@ -15,6 +15,8 @@ localemandir=$(mandir)/$(LANGCODE)
 README=README.$(LANGCODE)
 MANPAGE=aptitude.$(LANGCODE).8
 
+HTML2TEXT=$(srcdir)/../html-to-text
+
 IMAGES = $(wildcard images/*.png)
 
 all-local: doc-stamp
@@ -42,10 +44,10 @@ $(MANPAGE): aptitude.xml $(srcdir)/../aptitude-man.xsl
 	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl $(srcdir)/aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
-$(README): aptitude.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl ../aptitude-txt.style
+$(README): aptitude.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
+	$(HTML2TEXT) output-txt/index.html > $(README)
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css

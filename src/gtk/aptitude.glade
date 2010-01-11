@@ -263,8 +263,8 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="Page_Up" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="F6" signal="activate"/>
+                        <accelerator key="Page_Up" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -273,8 +273,8 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="Page_Down" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="F7" signal="activate"/>
+                        <accelerator key="Page_Down" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                     <child>
@@ -283,8 +283,8 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <accelerator key="W" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                         <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                        <accelerator key="W" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                       </widget>
                     </child>
                   </widget>
@@ -318,183 +318,40 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkToolbar" id="main_toolbar">
-            <property name="visible">True</property>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_dashboard">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Dashboard</property>
-                <property name="stock_id">gtk-home</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkSeparatorToolItem" id="toolbutton1">
-                <property name="visible">True</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_update">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Update</property>
-                <property name="stock_id">gtk-refresh</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_packages">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Packages</property>
-                <property name="stock_id">gtk-new</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_preview">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Preview</property>
-                <property name="stock_id">gtk-print-preview</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_resolver">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Resolver</property>
-                <property name="stock_id">gtk-dialog-info</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkToolButton" id="main_toolbutton_installremove">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Install/Remove</property>
-                <property name="stock_id">gtk-apply</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">1</property>
-          </packing>
+          <placeholder/>
         </child>
         <child>
-          <widget class="GtkNotebook" id="main_notebook">
+          <widget class="GtkHPaned" id="main_window_panes">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="scrollable">True</property>
-            <property name="tab_border">0</property>
-            <property name="tab_vborder">0</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <widget class="GtkTreeView" id="main_area_treeview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </widget>
               <packing>
-                <property name="type">tab</property>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <widget class="GtkNotebook" id="main_area_notebook">
+                <property name="visible">True</property>
+                <property name="show_tabs">False</property>
+                <property name="show_border">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                  <packing>
+                    <property name="type">tab</property>
+                  </packing>
+                </child>
+              </widget>
               <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
-              </packing>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-              <packing>
-                <property name="type">tab</property>
+                <property name="resize">True</property>
+                <property name="shrink">True</property>
               </packing>
             </child>
           </widget>
@@ -509,7 +366,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>

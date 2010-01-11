@@ -1,6 +1,6 @@
 SUBDIRS=cs de en es fi fr ja po4a
 
-EXTRA_DIST=aptitude-common.xsl aptitude-html.xsl aptitude-man.xsl aptitude-txt.style aptitude-txt.xsl aptitude.css fixup-text
+EXTRA_DIST=aptitude-common.xsl aptitude-html.xsl aptitude-man.xsl aptitude-txt.xsl aptitude.css fixup-text html-to-text
 
 if USE_PO4A
 

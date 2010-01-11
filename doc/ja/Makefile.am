@@ -11,6 +11,8 @@ XMLSOURCES=aptitude.xml manpage.xml
 PERCENT_TRANSLATED=30
 MANPAGE_PERCENT_TRANSLATED=32
 
+HTML2TEXT=$(srcdir)/../html-to-text
+
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
 localemandir=$(mandir)/$(LANGCODE)
@@ -56,10 +58,10 @@ $(MANPAGE): $(XMLSOURCES) $(srcdir)/aptitude-man-$(LANGCODE).xsl $(srcdir)/../ap
 	xsltproc -o output-man/aptitude.8 $(srcdir)/aptitude-man-$(LANGCODE).xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
-$(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
+$(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
+	$(HTML2TEXT) output-txt/index.html > $(README)
 
 doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
 	ln -s ../images output-db2latex/images

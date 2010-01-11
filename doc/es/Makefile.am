@@ -10,6 +10,8 @@ MANPAGE_PERCENT_TRANSLATED=0 # status: 31%
 README=README.$(LANGCODE)
 XMLSOURCES=aptitude.xml manpage.xml $(srcdir)/../aptitude-common.xsl
 
+HTML2TEXT=$(srcdir)/../html-to-text
+
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
 localemandir=$(mandir)/$(LANGCODE)
@@ -48,10 +50,10 @@ $(MANPAGE): $(XMLSOURCES) $(srcdir)/../aptitude-man.xsl
 	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
-$(README): $(XMLSOURCES)  $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-txt.style
+$(README): $(XMLSOURCES)  $(srcdir)/../aptitude-txt.xsl
 	-rm -fr output-txt
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
+	$(HTML2TEXT) output-txt/index.html > $(README)
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css

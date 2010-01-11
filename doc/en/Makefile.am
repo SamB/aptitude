@@ -10,6 +10,8 @@ docdir=$(datadir)/doc/$(PACKAGE)
 # Automake automagically distributes README without asking..
 README=README.en
 
+HTML2TEXT=$(srcdir)/../html-to-text
+
 IMAGES = $(wildcard $(srcdir)/images/*.png)
 
 man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
@@ -42,10 +44,10 @@ man-stamp: $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-ma
 
 aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1: man-stamp
 
-$(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
+$(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
+	$(HTML2TEXT) output-txt/index.html | $(srcdir)/../fixup-text > $(README)
 
 doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
 	ln -s ../images output-db2latex/images

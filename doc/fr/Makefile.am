@@ -11,6 +11,8 @@ MANPAGE_PERCENT_TRANSLATED=38
 
 IMAGES = $(wildcard images/*.png)
 
+HTML2TEXT=$(srcdir)/../html-to-text
+
 # Put documentation in /usr/share/doc/aptitude (by default)
 docdir=$(datadir)/doc/$(PACKAGE)
 
@@ -55,10 +57,10 @@ $(MANPAGE): aptitude.xml manpage.xml $(srcdir)/../aptitude-man.xsl
 	mv output-man/aptitude.8 $(MANPAGE)
 	/bin/bash $(srcdir)/fixman
 
-$(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl $(srcdir)/../aptitude-txt.style
+$(README): aptitude.xml manpage.xml $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl
 	-rm -fr output-txt/
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl aptitude.xml
-	html2text -width 80 -ascii -nobs -rcfile $(srcdir)/../aptitude-txt.style output-txt/index.html | $(srcdir)/../fixup-text > $(README)
+	$(HTML2TEXT) output-txt/index.html > $(README)
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css
