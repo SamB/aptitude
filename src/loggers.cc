@@ -1,6 +1,6 @@
 /** \file loggers.cc */
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -116,6 +116,11 @@ namespace aptitude
   LoggerPtr Loggers::getAptitudeGtkTabs()
   {
     return Logger::getLogger("aptitude.gtk.tabs");
+  }
+
+  LoggerPtr Loggers::getAptitudeGtkToplevel()
+  {
+    return Logger::getLogger("aptitude.gtk.toplevel");
   }
 
   LoggerPtr Loggers::getAptitudeResolver()

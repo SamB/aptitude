@@ -1,6 +1,6 @@
 /** \file loggers.h    -*-c++-*- */
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -162,6 +162,12 @@ namespace aptitude
      *  Name: aptitude.gtk.tabs
      */
     static log4cxx::LoggerPtr getAptitudeGtkTabs();
+
+    /** \brief The logger for events related to the top-level GTK+ UI.
+     *
+     *  Name: aptitude.gtk.toplevel
+     */
+    static log4cxx::LoggerPtr getAptitudeGtkToplevel();
 
     /** \brief The logger for the dependency resolver.
      *
