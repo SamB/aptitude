@@ -237,6 +237,7 @@ namespace gui
   };
 
   boost::shared_ptr<area_info> create_area_info(const std::string &name,
+						const std::string &description,
 						const Glib::RefPtr<Gdk::Pixbuf> icon);
 
   /** \brief The abstract description of a tab. */

@@ -236,4 +236,11 @@ namespace gui
 	}
     }
   };
+
+  boost::shared_ptr<area_info> create_area_info(const std::string &name,
+						const std::string &description,
+						const Glib::RefPtr<Gdk::Pixbuf> &icon)
+  {
+    return boost::make_shared<area_info_impl>(name, description, icon);
+  }
 }
