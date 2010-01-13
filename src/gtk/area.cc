@@ -24,6 +24,13 @@
 
 #include <cwidget/generic/util/eassert.h>
 
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+
+using namespace boost::multi_index;
+
 namespace gui
 {
   /** \brief An enumerator over a range of STL iterators. */
@@ -111,8 +118,40 @@ namespace gui
     std::string name;
     std::string description;
     Glib::RefPtr<Gdk::Pixbuf> icon;
-    std::deque<boost::shared_ptr<tab_info> > tabs;
-    std::deque<boost::shared_ptr<notification_info> > notifications;
+    // Note: I don't recall whether hash<> is defined for shared
+    // pointers -- if it is, I could just use identity<> below instead
+    // of mem_fun<>.
+    class tab_hash_tag;
+    class tab_list_tag;
+    typedef multi_index_container<
+      boost::shared_ptr<tab_info>,
+      indexed_by<
+	hashed_unique<tag<tab_hash_tag>,
+		      const_mem_fun<boost::shared_ptr<tab_info>, tab_info *,
+				    &boost::shared_ptr<tab_info>::get> >,
+	sequenced<tag<tab_list_tag> > >
+      > tab_collection;
+
+    typedef tab_collection::index<tab_hash_tag>::type tab_hash;
+    typedef tab_collection::index<tab_list_tag>::type tab_list;
+
+
+    class notification_hash_tag;
+    class notification_list_tag;
+    typedef multi_index_container<
+      boost::shared_ptr<notification_info>,
+      indexed_by<
+	hashed_unique<tag<notification_hash_tag>,
+		      const_mem_fun<boost::shared_ptr<notification_info>, notification_info *,
+				    &boost::shared_ptr<notification_info>::get> >,
+	sequenced<tag<notification_list_tag> > >
+      > notification_collection;
+
+    typedef notification_collection::index<notification_hash_tag>::type notification_hash;
+    typedef notification_collection::index<notification_list_tag>::type notification_list;
+
+    tab_collection tabs;
+    notification_collection notifications;
 
   public:
     area_info_impl(const std::string &_name,
@@ -130,23 +169,33 @@ namespace gui
 
     boost::shared_ptr<tab_enumerator> get_tabs()
     {
-      return boost::make_shared<iterator_enumerator_with_keepalive<std::deque<boost::shared_ptr<tab_info> >::const_iterator, area_info_impl> >(tabs.begin(), tabs.end(), shared_from_this());
+      const tab_list &tabs_ordered = tabs.get<tab_list_tag>();
+
+      return boost::make_shared<iterator_enumerator_with_keepalive<tab_list::const_iterator, area_info_impl> >(tabs_ordered.begin(), tabs_ordered.end(), shared_from_this());
     }
 
     void append_tab(const boost::shared_ptr<tab_info> &tab)
     {
-      tabs.push_back(tab);
-      signal_tab_appended(tab);
+      tab_hash &tabs_hashed = tabs.get<tab_hash_tag>();
+
+      if(tabs_hashed.find(tab.get()) == tabs_hashed.end())
+	{
+	  tab_list &tabs_ordered = tabs.get<tab_list_tag>();
+
+	  tabs_ordered.push_back(tab);
+	  signal_tab_appended(tab);
+	}
     }
 
     void remove_tab(const boost::shared_ptr<tab_info> &tab)
     {
-      std::deque<boost::shared_ptr<tab_info> >::iterator new_end =
-	std::remove(tabs.begin(), tabs.end(), tab);
+      tab_hash &tabs_hashed = tabs.get<tab_hash_tag>();
 
-      if(new_end != tabs.end())
+      tab_hash::iterator found = tabs_hashed.find(tab.get());
+
+      if(found != tabs_hashed.end())
 	{
-	  tabs.erase(new_end, tabs.end());
+	  tabs_hashed.erase(found);
 	  signal_tab_removed(tab);
 	}
     }
