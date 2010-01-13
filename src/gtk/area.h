@@ -193,12 +193,6 @@ namespace gui
     virtual void remove_tab(const boost::shared_ptr<tab_info> &tab) = 0;
 
 
-    /** \brief Make the given tab the currently active tab in this area. */
-    virtual void set_active_tab(const boost::shared_ptr<tab_info> &tab) = 0;
-
-    /** \brief Retrieve the currently active tab in this area. */
-    virtual boost::shared_ptr<tab_info> get_active_tab() = 0;
-
 
 
     typedef enumerator<boost::shared_ptr<notification_info> > notification_enumerator;
@@ -228,15 +222,6 @@ namespace gui
     /** \brief Emitted after a tab is removed from the area's tab list. */
     sigc::signal<void, boost::shared_ptr<tab_info> > signal_tab_removed;
 
-
-    /** \brief Emitted after the currently active tab changes.
-     *
-     *  signal_active_tab_changed(from, to)
-     *
-     *  The first parameter is the previously active tab; the second
-     *  is the new active tab.
-     */
-    sigc::signal<void, boost::shared_ptr<tab_info>, boost::shared_ptr<tab_info> > signal_active_tab_changed;
 
 
     /** \brief Emitted after a notification is appended to the area's notification list. */
@@ -303,7 +288,11 @@ namespace gui
     /** \return \b true if this tab is currently visible.
      *
      *  This property is maintained by the view and read by the tab's
-     *  implementation.
+     *  implementation.  Note that it is \e not automatically
+     *  maintained by set_active_tab(), because that routine lacks the
+     *  information necessary to determine which tab is visible;
+     *  normally an implementation of the view will hook into
+     *  signal_active_tab_changed and emit this as appropriate.
      */
     virtual bool get_active() = 0;
 
@@ -325,6 +314,13 @@ namespace gui
      *  Emitted by the UI and read by the view implementation.
      */
     sigc::signal<void, bool> active_changed;
+
+    /** \brief Emitted when the tab should be made visible.
+     *
+     *  This is emitted by any part of the GUI that wants to display
+     *  a tab and read by the view.
+     */
+    sigc::signal<void> activated;
 
     /** \brief Emitted when the tab is about to be closed.
      *
