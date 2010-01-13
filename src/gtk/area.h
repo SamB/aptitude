@@ -1,4 +1,4 @@
-/** \file area.h */    // *-c++-*-
+/** \file area.h */    // -*-c++-*-
 
 // Copyright (C) 2009-2010 Daniel Burrows
 //
