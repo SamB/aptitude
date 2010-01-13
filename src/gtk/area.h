@@ -44,6 +44,9 @@
 //
 // Areas are not thread-safe: only the main GUI thread should read and
 // write them.
+//
+// Below, the "view implementation" refers to the code that displays
+// the areas, tabs and so on.
 
 namespace gui
 {
@@ -311,20 +314,20 @@ namespace gui
 
     /** \brief Emitted when the tab becomes active or inactive.
      *
-     *  Emitted by the UI and read by the view implementation.
+     *  Emitted by the view implementation and read by the tab.
      */
     sigc::signal<void, bool> active_changed;
 
     /** \brief Emitted when the tab should be made visible.
      *
      *  This is emitted by any part of the GUI that wants to display
-     *  a tab and read by the view.
+     *  a tab and read by the view implementation.
      */
     sigc::signal<void> activated;
 
     /** \brief Emitted when the tab is about to be closed.
      *
-     *  Emitted by the UI and read by the view implementation.  The
+     *  Emitted by the view implementation and read by the tab.  The
      *  tab's widget is destroyed after this signal is emitted.
      */
     sigc::signal<void> closing;
