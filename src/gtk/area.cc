@@ -199,5 +199,41 @@ namespace gui
 	  signal_tab_removed(tab);
 	}
     }
+
+
+
+
+    boost::shared_ptr<notification_enumerator> get_notifications()
+    {
+      const notification_list &notifications_ordered = notifications.get<notification_list_tag>();
+
+      return boost::make_shared<iterator_enumerator_with_keepalive<notification_list::const_iterator, area_info_impl> >(notifications_ordered.begin(), notifications_ordered.end(), shared_from_this());
+    }
+
+    void append_notification(const boost::shared_ptr<notification_info> &notification)
+    {
+      notification_hash &notifications_hashed = notifications.get<notification_hash_tag>();
+
+      if(notifications_hashed.find(notification.get()) == notifications_hashed.end())
+	{
+	  notification_list &notifications_ordered = notifications.get<notification_list_tag>();
+
+	  notifications_ordered.push_back(notification);
+	  signal_notification_appended(notification);
+	}
+    }
+
+    void remove_notification(const boost::shared_ptr<notification_info> &notification)
+    {
+      notification_hash &notifications_hashed = notifications.get<notification_hash_tag>();
+
+      notification_hash::iterator found = notifications_hashed.find(notification.get());
+
+      if(found != notifications_hashed.end())
+	{
+	  notifications_hashed.erase(found);
+	  signal_notification_removed(notification);
+	}
+    }
   };
 }
