@@ -274,7 +274,7 @@ namespace gui
      *  As a side effect, deletes any old tooltip window and clears
      *  the old text.
      */
-    virtual void set_tooltip(const Gtk::Window *tooltip_window) = 0;
+    virtual void set_tooltip(Gtk::Window *tooltip_window) = 0;
 
     /** \brief Get the icon of this tab. */
     virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
