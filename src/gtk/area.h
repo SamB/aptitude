@@ -311,30 +311,30 @@ namespace gui
     // @{
 
     /** \brief Emitted when the tooltip information changes. */
-    sigc::signal<void, std::string, Gtk::Window *> tooltip_changed;
+    sigc::signal<void, std::string, Gtk::Window *> signal_tooltip_changed;
 
     /** \brief Emitted when the progress information changes. */
-    sigc::signal<void, progress_info> progress_changed;
+    sigc::signal<void, progress_info> signal_progress_changed;
 
     /** \brief Emitted when the tab becomes active or inactive.
      *
      *  Emitted by the view implementation and read by the tab.
      */
-    sigc::signal<void, bool> active_changed;
+    sigc::signal<void, bool> signal_active_changed;
 
     /** \brief Emitted when the tab should be made visible.
      *
      *  This is emitted by any part of the GUI that wants to display
      *  a tab and read by the view implementation.
      */
-    sigc::signal<void> activated;
+    sigc::signal<void> signal_activated;
 
     /** \brief Emitted when the tab is about to be closed.
      *
      *  Emitted by the view implementation and read by the tab.  The
      *  tab's widget is destroyed after this signal is emitted.
      */
-    sigc::signal<void> closing;
+    sigc::signal<void> signal_closing;
 
     // @}
   };
@@ -377,10 +377,10 @@ namespace gui
     // @{
 
     /** \brief Emitted when the progress information changes. */
-    sigc::signal<void, progress_info> progress_changed;
+    sigc::signal<void, progress_info> signal_progress_changed;
 
     /** \brief Emitted when the user clicks the notification. */
-    sigc::signal<void> clicked;
+    sigc::signal<void> signal_clicked;
 
     // @}
   };

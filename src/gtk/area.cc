@@ -293,7 +293,7 @@ namespace gui
       tooltip_window = NULL;
 
       tooltip_text = new_tooltip_text;
-      tooltip_changed(tooltip_text, tooltip_window);
+      signal_tooltip_changed(tooltip_text, tooltip_window);
     }
 
     void set_tooltip(Gtk::Window *new_tooltip_window)
@@ -303,7 +303,7 @@ namespace gui
       delete tooltip_window;
       tooltip_window = new_tooltip_window;
 
-      tooltip_changed(tooltip_text, tooltip_window);
+      signal_tooltip_changed(tooltip_text, tooltip_window);
     }
 
     Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
@@ -313,7 +313,7 @@ namespace gui
     void set_progress(const progress_info &info)
     {
       progress = info;
-      progress_changed(progress);
+      signal_progress_changed(progress);
     }
 
     Gtk::Widget *get_widget() { return tab; }
@@ -324,7 +324,7 @@ namespace gui
       if(active != new_active)
 	{
 	  active = new_active;
-	  active_changed(active);
+	  signal_active_changed(active);
 	}
     }
   };
@@ -362,7 +362,7 @@ namespace gui
     void set_progress(const progress_info &new_progress)
     {
       progress = new_progress;
-      progress_changed(progress);
+      signal_progress_changed(progress);
     }
   };
 
