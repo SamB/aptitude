@@ -384,6 +384,11 @@ namespace gui
 
     // @}
   };
+
+  boost::shared_ptr<notification_info>
+  create_notification(const std::string &name,
+		      const std::string &description,
+		      const Glib::RefPtr<Gdk::Pixbuf> &icon);
 }
 
 #endif // AREA_H
