@@ -146,7 +146,7 @@ namespace gui
    *   OTOH it avoids trouble if we, e.g., move to a mutable area list
    *   and change the representation)
    */
-  class area_list
+  class area_list : public sigc::trackable
   {
   public:
     virtual ~area_list() {}
@@ -162,7 +162,7 @@ namespace gui
   boost::shared_ptr<area_list> create_area_list(const std::vector<boost::shared_ptr<area_info> > &areas);
 
   /** \brief The abstract description of an area. */
-  class area_info
+  class area_info : public sigc::trackable
   {
   public:
     virtual ~area_info() {}
@@ -241,7 +241,7 @@ namespace gui
 						const Glib::RefPtr<Gdk::Pixbuf> icon);
 
   /** \brief The abstract description of a tab. */
-  class tab_info
+  class tab_info : public sigc::trackable
   {
   public:
     virtual ~tab_info() {}
@@ -341,7 +341,7 @@ namespace gui
 					 Gtk::Widget *widget);
 
   /** \brief The abstract description of a notification. */
-  class notification
+  class notification : public sigc::trackable
   {
     virtual ~notification() {}
 
