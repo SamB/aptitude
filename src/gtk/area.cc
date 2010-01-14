@@ -335,4 +335,44 @@ namespace gui
   {
     return boost::make_shared<tab_info_impl>(name, icon, widget);
   }
+
+  class notification_info_impl : public notification_info
+  {
+    std::string name, description;
+    Glib::RefPtr<Gdk::Pixbuf> icon;
+
+    progress_info progress;
+
+  public:
+    notification_info_impl(const std::string &_name,
+			   const std::string &_description,
+			   const Glib::RefPtr<Gdk::Pixbuf> &_icon)
+      : name(_name),
+	description(_description),
+	icon(_icon),
+	progress(progress_info::none())
+    {
+    }
+
+    std::string get_name() { return name; }
+    std::string get_description() { return description; }
+    Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
+
+    progress_info get_progress() { return progress; }
+    void set_progress(const progress_info &new_progress)
+    {
+      progress = new_progress;
+      progress_changed(progress);
+    }
+  };
+
+  boost::shared_ptr<notification_info>
+  create_notification(const std::string &name,
+		      const std::string &description,
+		      const Glib::RefPtr<Gdk::Pixbuf> &icon)
+  {
+    return boost::make_shared<notification_info_impl>(name,
+						      description,
+						      icon);
+  }
 }
