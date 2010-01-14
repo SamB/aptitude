@@ -29,6 +29,8 @@
 #include <boost/multi_index/mem_fun.hpp>
 #include <boost/multi_index/sequenced_index.hpp>
 
+#include <gtkmm/window.h>
+
 using namespace boost::multi_index;
 
 namespace gui
@@ -242,5 +244,95 @@ namespace gui
 						const Glib::RefPtr<Gdk::Pixbuf> &icon)
   {
     return boost::make_shared<area_info_impl>(name, description, icon);
+  }
+
+  class tab_info_impl : public tab_info
+  {
+    std::string name;
+    Glib::RefPtr<Gdk::Pixbuf> icon;
+
+    std::string tooltip_text;
+    Gtk::Window *tooltip_window;
+
+    Gtk::Widget *tab;
+
+    progress_info progress;
+
+    bool active;
+
+  public:
+    tab_info_impl(const std::string &_name,
+		  const Glib::RefPtr<Gdk::Pixbuf> &_icon,
+		  Gtk::Widget *_tab)
+      : name(_name),
+	icon(_icon),
+	tooltip_window(NULL),
+	tab(_tab),
+	progress(progress_info::none()),
+	active(false)
+    {
+    }
+
+    ~tab_info_impl()
+    {
+      delete tooltip_window;
+    }
+
+    std::string get_name() { return name; }
+
+    void get_tooltip(std::string &out_tooltip_text,
+		     Gtk::Window * &out_tooltip_window)
+    {
+      out_tooltip_text = tooltip_text;
+      out_tooltip_window = tooltip_window;
+    }
+
+    void set_tooltip(const std::string &new_tooltip_text)
+    {
+      delete tooltip_window;
+      tooltip_window = NULL;
+
+      tooltip_text = new_tooltip_text;
+      tooltip_changed(tooltip_text, tooltip_window);
+    }
+
+    void set_tooltip(Gtk::Window *new_tooltip_window)
+    {
+      tooltip_text.clear();
+
+      delete tooltip_window;
+      tooltip_window = new_tooltip_window;
+
+      tooltip_changed(tooltip_text, tooltip_window);
+    }
+
+    Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
+
+    progress_info get_progress() { return progress; }
+
+    void set_progress(const progress_info &info)
+    {
+      progress = info;
+      progress_changed(progress);
+    }
+
+    Gtk::Widget *get_widget() { return tab; }
+
+    bool get_active() { return active; }
+    void set_active(bool new_active)
+    {
+      if(active != new_active)
+	{
+	  active = new_active;
+	  active_changed(active);
+	}
+    }
+  };
+
+  boost::shared_ptr<tab_info> create_tab(const std::string &name,
+					 const Glib::RefPtr<Gdk::Pixbuf> &icon,
+					 Gtk::Widget *widget)
+  {
+    return boost::make_shared<tab_info_impl>(name, icon, widget);
   }
 }
