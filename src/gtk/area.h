@@ -341,9 +341,10 @@ namespace gui
 					 Gtk::Widget *widget);
 
   /** \brief The abstract description of a notification. */
-  class notification : public sigc::trackable
+  class notification_info : public sigc::trackable
   {
-    virtual ~notification() {}
+  public:
+    virtual ~notification_info() {}
 
     /** \brief Get the name of this notification. */
     virtual std::string get_name() = 0;
