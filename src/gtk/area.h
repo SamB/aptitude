@@ -282,7 +282,10 @@ namespace gui
     /** \brief Get any progress information associated with this tab. */
     virtual progress_info get_progress() = 0;
 
-    /** \brief Update the progress information associated with this tab. */
+    /** \brief Update the progress information associated with this tab.
+     *
+     *  Invokes signal_progress_changed() as a side-effect.
+     */
     virtual void set_progress(const progress_info &info) = 0;
 
     /** \brief Get the main widget of this tab. */
@@ -363,6 +366,8 @@ namespace gui
 
     /** \brief Update the progress display associated with this
      *	notification.
+     *
+     *  Invokes signal_progress_changed as a side-effect.
      */
     virtual void set_progress(const progress_info &progress) = 0;
 
