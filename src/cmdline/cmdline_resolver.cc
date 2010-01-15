@@ -1,6 +1,6 @@
 // cmdline_resolver.cc
 //
-//   Copyright (C) 2005-2009 Daniel Burrows
+//   Copyright (C) 2005-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -30,6 +30,7 @@
 #include <aptitude.h>
 #include <solution_fragment.h>
 
+#include <boost/lexical_cast.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/ref.hpp>
 
@@ -65,8 +66,13 @@ namespace cw = cwidget;
 
 /** Generate a cw::fragment describing a solution as an ordered sequence
  *  of actions.
+ *
+ *  \param ids If not NULL, updated with a mapping from the string
+ *  keys identifying choices in the solution to the associated
+ *  choices.
  */
-static cw::fragment *solution_story(const aptitude_solution &s)
+static cw::fragment *solution_story(const aptitude_solution &s,
+				    std::map<std::string, choice> *ids)
 {
   std::vector<choice> choices;
   for(choice_set::const_iterator it = s.get_choices().begin();
@@ -84,7 +90,33 @@ static cw::fragment *solution_story(const aptitude_solution &s)
 				  dep_text(i->get_dep().get_dep()).c_str(),
 				  indentbox(0, 4, choice_fragment(*i))));
 
-  return cw::sequence_fragment(fragments);
+  if(ids == NULL)
+    return cw::sequence_fragment(fragments);
+  else
+    {
+      std::vector<cw::fragment *> id_fragments;
+
+      for(std::vector<choice>::size_type i = 0; i < choices.size(); ++i)
+	{
+	  std::string key = boost::lexical_cast<std::string>(i + 1);
+	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
+	  (*ids)[key] = choices[i];
+	}
+
+
+      std::vector<cw::fragment_column_entry> columns;
+      columns.push_back(cw::fragment_column_entry(false, true,
+						  1, cw::fragment_column_entry::top,
+						  id_fragments));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  NULL));
+      columns.push_back(cw::fragment_column_entry(false, true,
+						  1, cw::fragment_column_entry::top,
+						  fragments));
+
+      return cw::fragment_columns(columns);
+    }
 }
 
 void cmdline_dump_resolver()
@@ -174,8 +206,8 @@ static void resolver_help(ostream &out)
 				"o: %F"
 				"e: %F"
 				"x: %F"
-				"r pkg ver ...: %F%n"
-				"a pkg ver ...: %F%n"
+				"r (ID|pkg ver) ...: %F%n"
+				"a (ID|pkg ver) ...: %F%n"
 				"<ACTION> pkg... : %F%n"
 				"%F"
 				"%F"
@@ -202,9 +234,9 @@ static void resolver_help(ostream &out)
 			      flowindentbox(0, 3,
 					    cw::fragf(_("abort automatic dependency resolution; resolve dependencies by hand instead"))),
 			      flowindentbox(0, 15,
-					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur.  Enter UNINST instead of a version to reject removing the package."))),
+					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur.  Enter UNINST instead of a version to reject removing the package.  ID is the integer printed to the left of the action."))),
 			      flowindentbox(0, 15,
-					    cw::fragf(_("accept the given package versions; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package."))),
+					    cw::fragf(_("accept the given package versions; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package.  ID is the integer printed to the left of the action."))),
 			      flowindentbox(0, 3,
 					    cw::fragf(_("adjust the state of the listed packages, where ACTION is one of:"))),
 			      flowindentbox(0, 4,
@@ -260,6 +292,7 @@ static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> 
 }
 
 static void reject_or_mandate_version(const string &s,
+				      const std::map<std::string, choice> &ids,
 				      bool is_reject)
 {
   istringstream in(s);
@@ -280,101 +313,187 @@ static void reject_or_mandate_version(const string &s,
     {
       in >> pkgname >> ws;
 
-      if(in.eof())
+      choice c; // Initialized below.
+
+      std::map<std::string, choice>::const_iterator found =
+	ids.find(pkgname);
+      if(found != ids.end())
+	c = found->second;
+      else
 	{
-	  cerr << ssprintf(_("Expected a version or \"%s\" after \"%s\""), "UNINST", pkgname.c_str()) << endl;
-	  return;
-	}
-
-      in >> vername >> ws;
-
-      pkgCache::PkgIterator pkg((*apt_cache_file)->FindPkg(pkgname));
-
-      if(pkg.end())
-	{
-	  cerr << ssprintf(_("No such package \"%s\""), pkgname.c_str()) << endl;
-	  continue;
-	}
-
-      aptitude_universe::version ver =
-	aptitude_universe::version::make_removal(pkg,
-						 *apt_cache_file);
-      if(stringcasecmp(vername, "UNINST") != 0)
-	{
-	  vector<pkgCache::VerIterator> found;
-	  for(pkgCache::VerIterator vi = pkg.VersionList(); !vi.end(); ++vi)
-	    if(vi.VerStr() == vername)
-	      found.push_back(vi);
-
-	  if(found.empty())
+	  if(in.eof())
 	    {
-	      cerr << ssprintf(_("%s has no version named \"%s\""),
-			       pkgname.c_str(), vername.c_str()) << endl;
+	      cerr << ssprintf(_("Expected a version or \"%s\" after \"%s\""), "UNINST", pkgname.c_str()) << endl;
+	      return;
+	    }
+
+	  in >> vername >> ws;
+
+	  pkgCache::PkgIterator pkg((*apt_cache_file)->FindPkg(pkgname));
+
+	  if(pkg.end())
+	    {
+	      cerr << ssprintf(_("No such package \"%s\""), pkgname.c_str()) << endl;
 	      continue;
 	    }
 
-	  ver = aptitude_universe::version::make_install(choose_version(found),
-							 *apt_cache_file);
-
-	  eassert(!ver.get_ver().end());
-	  eassert(ver.get_pkg() == ver.get_ver().ParentPkg());
-	}
-
-      if(is_reject)
-	{
-	  if(resman->is_rejected(ver))
+	  aptitude_universe::version ver =
+	    aptitude_universe::version::make_removal(pkg,
+						 *apt_cache_file);
+	  if(stringcasecmp(vername, "UNINST") != 0)
 	    {
-	      if(ver.get_ver().end())
-		cout << ssprintf(_("Allowing the removal of %s"),
-				 pkgname.c_str()) << endl;
-	      else
-		cout << ssprintf(_("Allowing the installation of %s version %s (%s)"),
-				 pkg.Name(),
-				 ver.get_ver().VerStr(),
-				 archives_text(ver.get_ver()).c_str()) << endl;
+	      vector<pkgCache::VerIterator> found;
+	      for(pkgCache::VerIterator vi = pkg.VersionList(); !vi.end(); ++vi)
+		if(vi.VerStr() == vername)
+		  found.push_back(vi);
 
-	      resman->unreject_version(ver);
-	    }
-	  else
-	    {
-	      if(ver.get_ver().end())
-		cout << ssprintf(_("Rejecting the removal of %s"),
-				 pkgname.c_str()) << endl;
-	      else
-		cout << ssprintf(_("Rejecting the installation of %s version %s (%s)"),
-				 pkg.Name(),
-				 ver.get_ver().VerStr(),
-				 archives_text(ver.get_ver()).c_str()) << endl;
+	      if(found.empty())
+		{
+		  cerr << ssprintf(_("%s has no version named \"%s\""),
+				   pkgname.c_str(), vername.c_str()) << endl;
+		  continue;
+		}
 
-	      resman->reject_version(ver);
+	      ver = aptitude_universe::version::make_install(choose_version(found),
+							     *apt_cache_file);
+
+	      eassert(!ver.get_ver().end());
+	      eassert(ver.get_pkg() == ver.get_ver().ParentPkg());
 	    }
 	}
-      else
+
+      switch(c.get_type())
 	{
-	  if(resman->is_mandatory(ver))
-	    {
-	      if(ver.get_ver().end())
-		cout << ssprintf(_("No longer requiring the removal of %s"),
-				 pkgname.c_str()) << endl;
-	      else
-		cout << ssprintf(_("No longer requiring the installation of %s version %s (%s)"),
-				 pkg.Name(), ver.get_ver().VerStr(),
-				 archives_text(ver.get_ver()).c_str()) << endl;
+	case choice::install_version:
+	  {
+	    aptitude_resolver_version ver(c.get_ver());
+	    pkgCache::PkgIterator pkg(ver.get_pkg());
+	    if(is_reject)
+	      {
+		if(resman->is_rejected(ver))
+		  {
+		    if(ver.get_ver().end())
+		      cout << ssprintf(_("Allowing the removal of %s"),
+				       pkg.Name()) << endl;
+		    else
+		      cout << ssprintf(_("Allowing the installation of %s version %s (%s)"),
+				       pkg.Name(),
+				       ver.get_ver().VerStr(),
+				       archives_text(ver.get_ver()).c_str()) << endl;
 
-	      resman->unmandate_version(ver);
-	    }
-	  else
-	    {
-	      if(ver.get_ver().end())
-		cout << ssprintf(_("Requiring the removal of %s"),
-				 pkgname.c_str()) << endl;
-	      else
-		cout << ssprintf(_("Requiring the installation of %s version %s (%s)"),
-				 pkg.Name(), ver.get_ver().VerStr(),
-				 archives_text(ver.get_ver()).c_str()) << endl;
+		    resman->unreject_version(ver);
+		  }
+		else
+		  {
+		    if(ver.get_ver().end())
+		      cout << ssprintf(_("Rejecting the removal of %s"),
+				       pkg.Name()) << endl;
+		    else
+		      cout << ssprintf(_("Rejecting the installation of %s version %s (%s)"),
+				       pkg.Name(),
+				       ver.get_ver().VerStr(),
+				       archives_text(ver.get_ver()).c_str()) << endl;
 
-	      resman->mandate_version(ver);
-	    }
+		    resman->reject_version(ver);
+		  }
+	      }
+	    else
+	      {
+		if(resman->is_mandatory(ver))
+		  {
+		    if(ver.get_ver().end())
+		      cout << ssprintf(_("No longer requiring the removal of %s"),
+				       pkg.Name()) << endl;
+		    else
+		      cout << ssprintf(_("No longer requiring the installation of %s version %s (%s)"),
+				       pkg.Name(), ver.get_ver().VerStr(),
+				       archives_text(ver.get_ver()).c_str()) << endl;
+
+		    resman->unmandate_version(ver);
+		  }
+		else
+		  {
+		    if(ver.get_ver().end())
+		      cout << ssprintf(_("Requiring the removal of %s"),
+				       pkg.Name()) << endl;
+		    else
+		      cout << ssprintf(_("Requiring the installation of %s version %s (%s)"),
+				       pkg.Name(), ver.get_ver().VerStr(),
+				       archives_text(ver.get_ver()).c_str()) << endl;
+
+		    resman->mandate_version(ver);
+		  }
+	      }
+	  }
+	  break;
+
+	case choice::break_soft_dep:
+	  {
+	    aptitude_resolver_dep d(c.get_dep());
+
+	    pkgCache::DepIterator start, end;
+	    surrounding_or(d.get_dep(), start, end, d.get_dep().Cache());
+	    std::ostringstream dep_rendering_stream;
+
+	    if(start.end()) // Sanity-check.
+	      dep_rendering_stream << "(??\?)";
+	    else
+	      {
+		dep_rendering_stream << start.ParentPkg().Name()
+				     << " "
+				     << start.ParentVer().VerStr()
+				     << " "
+				     << start.DepType()
+				     << " ";
+		bool first = true;
+
+		while(!start.end() && start != end)
+		  {
+		    if(first)
+		      first = false;
+		    else
+		      dep_rendering_stream << " | ";
+
+		    dep_rendering_stream << start.TargetPkg().Name()
+					 << " "
+					 << start.TargetVer();
+
+		    ++start;
+		  }
+		std::string dep_rendering = dep_rendering_stream.str();
+
+		if(is_reject)
+		  {
+		    if(resman->is_hardened(d))
+		      {
+			cout << ssprintf(_("Allowing this recommendation to be ignored: %s"),
+					 dep_rendering.c_str()) << endl;
+			resman->unharden_dep(d);
+		      }
+		    else
+		      {
+			cout << ssprintf(_("Always obeying this recommendation: %s"),
+					 dep_rendering.c_str()) << endl;
+			resman->harden_dep(d);
+		      }
+		  }
+		else
+		  {
+		    if(resman->is_approved_broken(d))
+		      {
+			cout << ssprintf(_("No longer ignoring this recommendation: %s"),
+					 dep_rendering.c_str()) << endl;
+			resman->unapprove_broken_dep(d);
+		      }
+		    else
+		      {
+			cout << ssprintf(_("Ignoring this recommendation: %s"),
+					 dep_rendering.c_str()) << endl;
+			resman->approve_broken_dep(d);
+		      }
+		  }
+	      }
+	  }
 	}
     }
 }
@@ -619,6 +738,13 @@ cmdline_resolve_deps(pkgset &to_install,
 		     force_no_change);
       aptitude_solution lastsol;
 
+      // Stores the string IDs that can be used for accept/reject
+      // commands.  Filled in when the solution is being rendered
+      // (since the IDs are integers counting from the first entry in
+      // the displayed lists).
+      std::map<std::string, choice> ids;
+
+
       // The inner loop tries to generate solutions until some
       // packages are modified by the user (then the new set of broken
       // packages, if any, is displayed and we start over)
@@ -635,11 +761,12 @@ cmdline_resolve_deps(pkgset &to_install,
 
 		if(sol != lastsol)
 		  {
+		    ids.clear();
 		    cw::fragment *f=cw::sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
 						  cwidget::newline_fragment(),
 						  story_is_default
-						    ? solution_story(sol)
-						    : solution_fragment(sol),
+						    ? solution_story(sol, &ids)
+						    : solution_fragment_with_ids(sol, ids),
 						  NULL);
 
 		    update_screen_width();
@@ -687,9 +814,10 @@ cmdline_resolve_deps(pkgset &to_install,
 		  case 'O':
 		    {
 		      story_is_default = !story_is_default;
+		      ids.clear();
 		      cw::fragment *f = story_is_default
-			              ? solution_story(sol)
-			              : solution_fragment(sol);
+			? solution_story(sol, &ids)
+			: solution_fragment_with_ids(sol, ids);
 		      update_screen_width();
 		      cout << f->layout(screen_width, screen_width,
 					cwidget::style()) << endl;
@@ -700,10 +828,10 @@ cmdline_resolve_deps(pkgset &to_install,
 		    ui_solution_screen();
 		    break;
 		  case 'R':
-		    reject_or_mandate_version(string(response, 1), true);
+		    reject_or_mandate_version(string(response, 1), ids, true);
 		    break;
 		  case 'A':
-		    reject_or_mandate_version(string(response, 1), false);
+		    reject_or_mandate_version(string(response, 1), ids, false);
 		    break;
 		  case '.':
 		    resman->select_next_solution();
@@ -858,7 +986,7 @@ namespace aptitude
 	  // The previous line will say "resolving dependencies...";
 	  // separate the solution from this message..
 	  std::cout << std::endl;
-	  std::auto_ptr<cw::fragment> story(solution_story(solution));
+	  std::auto_ptr<cw::fragment> story(solution_story(solution, NULL));
 	  std::cout << story->layout(screen_width, screen_width, cwidget::style());
 	}
     }

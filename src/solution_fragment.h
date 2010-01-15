@@ -1,6 +1,6 @@
 // solution_fragment.h            -*-c++-*-
 //
-//   Copyright (C) 2005, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -42,6 +42,17 @@ namespace cwidget
 class aptitude_universe;
 
 cwidget::fragment *solution_fragment(const generic_solution<aptitude_universe> &solution);
+
+/** \return a fragment describing the given solution.
+ *
+ *  \param solution  The solution to render.
+ *  \param ids       A map in which bindings from string values to the
+ *                   choices in the solution will be stored; the strings
+ *                   can be used later on to act on entries in the
+ *                   solution.
+ */
+cwidget::fragment *solution_fragment_with_ids(const generic_solution<aptitude_universe> &solution,
+					      std::map<std::string, generic_choice<aptitude_universe> > &ids);
 
 /** \return a list of the archives to which a version
  *  belongs in the form "archive1,archive2,..."

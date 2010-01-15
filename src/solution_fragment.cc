@@ -1,7 +1,7 @@
 // solution_fragment.cc
 //
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,10 +28,13 @@
 
 #include <generic/util/util.h>
 
+#include <boost/lexical_cast.hpp>
+
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
 
 #include <algorithm>
+#include <functional>
 #include <vector>
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
@@ -166,16 +169,105 @@ cw::fragment *choice_fragment(const choice &c)
     }
 }
 
+namespace
+{
+  // Used to centralize the logic to generate an ID map and column if
+  // requested (otherwise it does nothing).
+  class ids_column_generator
+  {
+    int next_id;
+    std::vector<cw::fragment *> id_fragments;
+    std::map<std::string, choice> *ids_out;
 
-cw::fragment *solution_fragment(const aptitude_solution &sol)
+  public:
+    ids_column_generator(int first_id, std::map<std::string, choice> *_ids_out)
+      : next_id(first_id),
+	ids_out(_ids_out)
+    {
+    }
+
+    ~ids_column_generator()
+    {
+      for(std::vector<cw::fragment *>::const_iterator it =
+	    id_fragments.begin();
+	  it != id_fragments.end(); ++it)
+	delete *it;
+    }
+
+    /** \brief If ID generation is enabled, create an ID for the given
+     *         choice, adding it to both the output map and the in-order
+     *         list of IDs.
+     */
+    void append_id(const choice &c)
+    {
+      if(ids_out != NULL)
+	{
+	  std::string key = boost::lexical_cast<std::string>(next_id);
+	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
+	  (*ids_out)[key] = c;
+
+	  ++next_id;
+	}
+    }
+
+    /** \brief Append a newline to the IDs column, normally to match a
+     *         newline in the matching fragments column.
+     */
+    void append_newline()
+    {
+      if(ids_out != NULL)
+	id_fragments.push_back(cw::newline_fragment());
+    }
+
+    /** \brief Append a fragment for each row in the ID listing
+     *  column to the given vector.
+     *
+     *  After this function completes, its caller is responsible for
+     *  deleting the fragments.
+     */
+    void release_ids_column(std::vector<cw::fragment *> &fragments)
+    {
+      for(std::vector<cw::fragment *>::const_iterator it = id_fragments.begin();
+	  it != id_fragments.end(); ++it)
+	fragments.push_back(*it);
+
+      id_fragments.clear();
+    }
+  };
+
+  class pkg_name_pair_lt
+  {
+    pkg_name_lt base;
+  public:
+    bool operator()(const std::pair<pkgCache::PkgIterator, choice> &p1,
+		    const std::pair<pkgCache::PkgIterator, choice> &p2) const
+    {
+      return base(p1.first, p2.first);
+    }
+  };
+
+  class ver_name_pair_lt
+  {
+    ver_name_lt base;
+  public:
+    bool operator()(const std::pair<pkgCache::VerIterator, choice> &p1,
+		    const std::pair<pkgCache::VerIterator, choice> &p2) const
+    {
+      return base(p1.first, p2.first);
+    }
+  };
+}
+
+cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
+					 std::map<std::string, choice> *ids)
 {
   // Bin packages according to what will happen to them.
-  vector<pkgCache::PkgIterator> remove_packages;
-  vector<pkgCache::PkgIterator> keep_packages;
-  vector<pkgCache::VerIterator> install_packages;
-  vector<pkgCache::VerIterator> downgrade_packages;
-  vector<pkgCache::VerIterator> upgrade_packages;
-  vector<pkgCache::DepIterator> unresolved;
+  vector<std::pair<pkgCache::PkgIterator, choice> > remove_packages;
+  vector<std::pair<pkgCache::PkgIterator, choice> > keep_packages;
+  vector<std::pair<pkgCache::VerIterator, choice> > install_packages;
+  vector<std::pair<pkgCache::VerIterator, choice> > downgrade_packages;
+  vector<std::pair<pkgCache::VerIterator, choice> > upgrade_packages;
+  vector<std::pair<pkgCache::DepIterator, choice> > unresolved;
 
   for(choice_set::const_iterator i = sol.get_choices().begin();
       i != sol.get_choices().end(); ++i)
@@ -191,14 +283,14 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
 	    if(curver.end())
 	      {
 		if(newver.end())
-		  keep_packages.push_back(pkg);
+		  keep_packages.push_back(std::make_pair(pkg, *i));
 		else
-		  install_packages.push_back(newver);
+		  install_packages.push_back(std::make_pair(newver, *i));
 	      }
 	    else if(newver.end())
-	      remove_packages.push_back(pkg);
+	      remove_packages.push_back(std::make_pair(pkg, *i));
 	    else if(newver == curver)
-	      keep_packages.push_back(pkg);
+	      keep_packages.push_back(std::make_pair(pkg, *i));
 	    else
 	      {
 		int cmp=_system->VS->CmpVersion(curver.VerStr(),
@@ -213,116 +305,179 @@ cw::fragment *solution_fragment(const aptitude_solution &sol)
 
 		/** \todo indicate "sidegrades" separately? */
 		if(cmp<=0)
-		  upgrade_packages.push_back(newver);
+		  upgrade_packages.push_back(std::make_pair(newver, *i));
 		else if(cmp>0)
-		  downgrade_packages.push_back(newver);
+		  downgrade_packages.push_back(std::make_pair(newver, *i));
 	      }
 	  }
 	  break;
 
 	case choice::break_soft_dep:
-	  unresolved.push_back(i->get_dep().get_dep());
+	  unresolved.push_back(std::make_pair(i->get_dep().get_dep(), *i));
 	  break;
 	}
     }
 
   sort(remove_packages.begin(), remove_packages.end(),
-       pkg_name_lt());
+       pkg_name_pair_lt());
   sort(keep_packages.begin(), keep_packages.end(),
-       pkg_name_lt());
+       pkg_name_pair_lt());
   sort(install_packages.begin(), install_packages.end(),
-       ver_name_lt());
+       ver_name_pair_lt());
   sort(downgrade_packages.begin(), downgrade_packages.end(),
-       ver_name_lt());
+       ver_name_pair_lt());
   sort(upgrade_packages.begin(), upgrade_packages.end(),
-       ver_name_lt());
+       ver_name_pair_lt());
   // \todo Sort the unresolved list in some readable fashion.
 
   vector<cw::fragment *> fragments;
+  ids_column_generator ids_column(1, ids);
 
   if(!remove_packages.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("%BRemove%b the following packages:%n")));
-      for(vector<pkgCache::PkgIterator>::const_iterator i=remove_packages.begin();
+      for(std::vector<std::pair<pkgCache::PkgIterator, choice> >::const_iterator i=remove_packages.begin();
 	  i!=remove_packages.end(); ++i)
-	fragments.push_back(cw::fragf("  %s%n", i->Name()));
+	{
+	  ids_column.append_id(i->second);
+	  fragments.push_back(cw::fragf("  %s%n", i->first.Name()));
+	}
 
+      ids_column.append_newline();
       fragments.push_back(cw::newline_fragment());
     }
 
   if(!install_packages.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("%BInstall%b the following packages:%n")));
-      for(vector<pkgCache::VerIterator>::const_iterator i=install_packages.begin();
+      for(std::vector<std::pair<pkgCache::VerIterator, choice> >::const_iterator i=install_packages.begin();
 	  i!=install_packages.end(); ++i)
-	fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
-				  i->ParentPkg().Name(),
-				  i->VerStr(),
-				  archives_text(*i).c_str()));
+	{
+	  ids_column.append_id(i->second);
+	  fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
+					i->first.ParentPkg().Name(),
+					i->first.VerStr(),
+					archives_text(i->first).c_str()));
+	}
 
+      ids_column.append_newline();
       fragments.push_back(cw::newline_fragment());
     }
 
   if(!keep_packages.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("%BKeep%b the following packages at their current version:%n")));
-      for(vector<pkgCache::PkgIterator>::const_iterator i=keep_packages.begin();
+      for(std::vector<std::pair<pkgCache::PkgIterator, choice> >::const_iterator i=keep_packages.begin();
 	  i!=keep_packages.end(); ++i)
 	{
-	  if(i->CurrentVer().end())
+	  ids_column.append_id(i->second);
+
+	  if(i->first.CurrentVer().end())
 	    fragments.push_back(cw::fragf("  %s [%s]%n",
-				      i->Name(),
-				      _("Not Installed")));
+					  i->first.Name(),
+					  _("Not Installed")));
 	  else
 	    fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
-				      i->Name(),
-				      i->CurrentVer().VerStr(),
-				      archives_text(i->CurrentVer()).c_str()));
+					  i->first.Name(),
+					  i->first.CurrentVer().VerStr(),
+					  archives_text(i->first.CurrentVer()).c_str()));
 	}
 
+      ids_column.append_newline();
       fragments.push_back(cw::newline_fragment());
     }
 
   if(!upgrade_packages.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("%BUpgrade%b the following packages:%n")));
-      for(vector<pkgCache::VerIterator>::const_iterator i=upgrade_packages.begin();
+      for(std::vector<std::pair<pkgCache::VerIterator, choice> >::const_iterator i=upgrade_packages.begin();
 	  i!=upgrade_packages.end(); ++i)
-	fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
-				  i->ParentPkg().Name(),
-				  i->ParentPkg().CurrentVer().VerStr(),
-				  archives_text(i->ParentPkg().CurrentVer()).c_str(),
-				  i->VerStr(),
-				  archives_text(*i).c_str()));
+	{
+	  ids_column.append_id(i->second);
+	  fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
+					i->first.ParentPkg().Name(),
+					i->first.ParentPkg().CurrentVer().VerStr(),
+					archives_text(i->first.ParentPkg().CurrentVer()).c_str(),
+					i->first.VerStr(),
+					archives_text(i->first).c_str()));
+	}
 
+      ids_column.append_newline();
       fragments.push_back(cw::newline_fragment());
     }
 
   if(!downgrade_packages.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("%BDowngrade%b the following packages:%n")));
-      for(vector<pkgCache::VerIterator>::const_iterator i=downgrade_packages.begin();
+      for(std::vector<std::pair<pkgCache::VerIterator, choice> >::const_iterator i=downgrade_packages.begin();
 	  i!=downgrade_packages.end(); ++i)
-	fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
-				  i->ParentPkg().Name(),
-				  i->ParentPkg().CurrentVer().VerStr(),
-				  archives_text(i->ParentPkg().CurrentVer()).c_str(),
-				  i->VerStr(),
-				  archives_text(*i).c_str()));
+	{
+	  ids_column.append_id(i->second);
 
+	  fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
+					i->first.ParentPkg().Name(),
+					i->first.ParentPkg().CurrentVer().VerStr(),
+					archives_text(i->first.ParentPkg().CurrentVer()).c_str(),
+					i->first.VerStr(),
+					archives_text(i->first).c_str()));
+	}
+
+      ids_column.append_newline();
       fragments.push_back(cw::newline_fragment());
     }
 
   if(!unresolved.empty())
     {
+      ids_column.append_newline();
       fragments.push_back(cw::fragf(_("Leave the following dependencies unresolved:%n")));
 
-      for(std::vector<pkgCache::DepIterator>::const_iterator i = unresolved.begin();
+      for(std::vector<std::pair<pkgCache::DepIterator, choice> >::const_iterator i = unresolved.begin();
 	  i != unresolved.end(); ++i)
-	fragments.push_back(cw::fragf("%ls%n", dep_text(*i).c_str()));
+	{
+	  ids_column.append_id(i->second);
+	  fragments.push_back(cw::fragf("  %ls%n", dep_text(i->first).c_str()));
+	}
     }
 
+  ids_column.append_newline();
   fragments.push_back(cw::fragf(_("Tier: %s"), aptitude_universe::get_tier_name(sol.get_tier()).c_str()));
 
-  return flowbox(cw::sequence_fragment(fragments));
+  if(ids == NULL)
+    return flowbox(cw::sequence_fragment(fragments));
+  else
+    {
+      std::vector<cw::fragment_column_entry> columns;
+
+      std::vector<cw::fragment *> ids_column_fragments;
+      ids_column.release_ids_column(ids_column_fragments);
+
+      columns.push_back(cw::fragment_column_entry(false, true,
+						  1, cw::fragment_column_entry::top,
+						  ids_column_fragments));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  NULL));
+      columns.push_back(cw::fragment_column_entry(false, true,
+						  1, cw::fragment_column_entry::top,
+						  fragments));
+
+      return cw::fragment_columns(columns);
+    }
+}
+
+cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
+					 std::map<std::string, choice> &ids)
+
+{
+  return solution_fragment_with_ids(sol, &ids);
+}
+
+cw::fragment *solution_fragment(const aptitude_solution &sol)
+{
+  return solution_fragment_with_ids(sol, NULL);
 }
