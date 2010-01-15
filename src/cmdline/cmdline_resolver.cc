@@ -757,6 +757,8 @@ cmdline_resolve_deps(pkgset &to_install,
       // packages are modified by the user (then the new set of broken
       // packages, if any, is displayed and we start over)
       bool modified_pkgs=false;
+
+      bool redisplay = false;
       while(!modified_pkgs)
 	try
 	  {
@@ -767,7 +769,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		if(_error->PendingError())
 		  _error->DumpErrors();
 
-		if(sol != lastsol)
+		if(sol != lastsol || redisplay)
 		  {
 		    ids.clear();
 		    cw::fragment *f=cw::sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
@@ -786,6 +788,8 @@ cmdline_resolve_deps(pkgset &to_install,
 		    cout << lines << endl;
 		    lastsol=sol;
 		  }
+
+		redisplay = false;
 
 		string response=assume_yes?"Y":prompt_string(_("Accept this solution? [Y/n/q/?] "));
 
@@ -837,9 +841,11 @@ cmdline_resolve_deps(pkgset &to_install,
 		    break;
 		  case 'R':
 		    reject_or_mandate_version(string(response, 1), ids, true);
+		    redisplay = true;
 		    break;
 		  case 'A':
 		    reject_or_mandate_version(string(response, 1), ids, false);
+		    redisplay = true;
 		    break;
 		  case '.':
 		    resman->select_next_solution();
