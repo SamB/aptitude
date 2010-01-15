@@ -772,6 +772,8 @@ cmdline_resolve_deps(pkgset &to_install,
 		if(sol != lastsol || redisplay)
 		  {
 		    ids.clear();
+		    // \todo display "the following actions..." only
+		    // the first time through.
 		    cw::fragment *f=cw::sequence_fragment(flowbox(cwidget::text_fragment(_("The following actions will resolve these dependencies:"))),
 						  cwidget::newline_fragment(),
 						  story_is_default
