@@ -23,6 +23,7 @@
 #include <aptitude.h>
 
 #include <generic/apt/aptitude_resolver_universe.h>
+#include <generic/apt/resolver_manager.h>
 
 #include <generic/problemresolver/solution.h>
 
@@ -169,15 +170,48 @@ cw::fragment *choice_fragment(const choice &c)
     }
 }
 
+cw::fragment *choice_state_fragment(const choice &c)
+{
+  std::string flag;
+
+  switch(c.get_type())
+    {
+    case choice::install_version:
+      if(resman->is_rejected(c.get_ver()))
+	flag = "R";
+      else if(resman->is_mandatory(c.get_ver()))
+	flag = "A";
+      break;
+
+    case choice::break_soft_dep:
+      if(resman->is_hardened(c.get_dep()))
+	flag = "R";
+      else if(resman->is_approved_broken(c.get_dep()))
+	flag = "A";
+      break;
+    }
+
+  if(flag.empty())
+    return NULL;
+  else
+    return cw::text_fragment(flag);
+}
+
 namespace
 {
-  // Used to centralize the logic to generate an ID map and column if
-  // requested (otherwise it does nothing).
+  // Used to centralize the logic to generate an ID map and the
+  // columns for the ID and state flags if requested (otherwise it
+  // does nothing).
   class ids_column_generator
   {
     int next_id;
-    std::vector<cw::fragment *> id_fragments;
+    std::vector<cw::fragment *> id_fragments, flag_fragments;
     std::map<std::string, choice> *ids_out;
+
+    void append_flag(const choice &c)
+    {
+      flag_fragments.push_back(choice_state_fragment(c));
+    }
 
   public:
     ids_column_generator(int first_id, std::map<std::string, choice> *_ids_out)
@@ -191,6 +225,11 @@ namespace
       for(std::vector<cw::fragment *>::const_iterator it =
 	    id_fragments.begin();
 	  it != id_fragments.end(); ++it)
+	delete *it;
+
+      for(std::vector<cw::fragment *>::const_iterator it =
+	    flag_fragments.begin();
+	  it != flag_fragments.end(); ++it)
 	delete *it;
     }
 
@@ -206,6 +245,8 @@ namespace
 	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
 	  (*ids_out)[key] = c;
 
+	  append_flag(c);
+
 	  ++next_id;
 	}
     }
@@ -216,7 +257,10 @@ namespace
     void append_newline()
     {
       if(ids_out != NULL)
-	id_fragments.push_back(cw::newline_fragment());
+	{
+	  id_fragments.push_back(cw::newline_fragment());
+	  flag_fragments.push_back(cw::newline_fragment());
+	}
     }
 
     /** \brief Append a fragment for each row in the ID listing
@@ -232,6 +276,15 @@ namespace
 	fragments.push_back(*it);
 
       id_fragments.clear();
+    }
+
+    void release_flags_column(std::vector<cw::fragment *> &fragments)
+    {
+      for(std::vector<cw::fragment *>::const_iterator it = flag_fragments.begin();
+	  it != flag_fragments.end(); ++it)
+	fragments.push_back(*it);
+
+      flag_fragments.clear();
     }
   };
 
@@ -453,12 +506,19 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
     {
       std::vector<cw::fragment_column_entry> columns;
 
-      std::vector<cw::fragment *> ids_column_fragments;
+      std::vector<cw::fragment *> ids_column_fragments, flags_column_fragments;
       ids_column.release_ids_column(ids_column_fragments);
+      ids_column.release_flags_column(flags_column_fragments);
 
       columns.push_back(cw::fragment_column_entry(false, true,
 						  1, cw::fragment_column_entry::top,
 						  ids_column_fragments));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  NULL));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  flags_column_fragments));
       columns.push_back(cw::fragment_column_entry(false, false,
 						  1, cw::fragment_column_entry::top,
 						  NULL));

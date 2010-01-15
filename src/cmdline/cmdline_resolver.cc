@@ -94,13 +94,15 @@ static cw::fragment *solution_story(const aptitude_solution &s,
     return cw::sequence_fragment(fragments);
   else
     {
-      std::vector<cw::fragment *> id_fragments;
+      std::vector<cw::fragment *> id_fragments, flag_fragments;
 
       for(std::vector<choice>::size_type i = 0; i < choices.size(); ++i)
 	{
 	  std::string key = boost::lexical_cast<std::string>(i + 1);
 	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
 	  (*ids)[key] = choices[i];
+
+	  flag_fragments.push_back(choice_state_fragment(choices[i]));
 	}
 
 
@@ -108,6 +110,12 @@ static cw::fragment *solution_story(const aptitude_solution &s,
       columns.push_back(cw::fragment_column_entry(false, true,
 						  1, cw::fragment_column_entry::top,
 						  id_fragments));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  NULL));
+      columns.push_back(cw::fragment_column_entry(false, false,
+						  1, cw::fragment_column_entry::top,
+						  flag_fragments));
       columns.push_back(cw::fragment_column_entry(false, false,
 						  1, cw::fragment_column_entry::top,
 						  NULL));

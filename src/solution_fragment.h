@@ -62,6 +62,11 @@ std::string archives_text(const pkgCache::VerIterator &v);
 /** \return a cwidget::fragment describing the given choice. */
 cwidget::fragment *choice_fragment(const generic_choice<aptitude_universe> &c);
 
+/** \return a cwidget::fragment with a flag giving the state of the
+ *  given choice (rejected/accepted), or NULL if the state is blank.
+ */
+cwidget::fragment *choice_state_fragment(const generic_choice<aptitude_universe> &c);
+
 /** \return descriptive text about a single dependency. */
 std::wstring dep_text(const pkgCache::DepIterator &d);
 
