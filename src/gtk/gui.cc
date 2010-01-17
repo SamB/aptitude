@@ -1,6 +1,6 @@
 // gui.cc
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2010 Daniel Burrows
 //  Copyright 2008-2009 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1770,7 +1770,11 @@ namespace gui
       return false;
 
     Glib::init();
-    Glib::thread_init();
+    // If we don't check thread_supported() first, thread_init()
+    // aborts with an error on some architectures. (see Debian bug
+    // #555120)
+    if(!Glib::thread_supported())
+      Glib::thread_init();
 
     background_events_dispatcher.connect(sigc::ptr_fun(&run_background_events));
 
