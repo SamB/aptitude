@@ -1,6 +1,6 @@
 // main.cc  (neé testscr.cc)
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
 
     sigaddset(&mask, SIGWINCH);
 
-    sigprocmask(SIG_SETMASK, &mask, NULL);
+    pthread_sigmask(SIG_BLOCK, &mask, NULL);
   }
 
   srandom(time(0));
