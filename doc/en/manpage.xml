@@ -22,7 +22,7 @@
 
     <legalnotice>
       <para>
-	Copyright 2004-2009 Daniel Burrows.
+	Copyright 2004-2010 Daniel Burrows.
       </para>
 
       <para>
@@ -508,16 +508,6 @@
 	    package.
 	  </para>
 
-	  <note>
-	    <para>
-	      The way <literal>safe-upgrade</literal> treats its extra
-	      arguments is in contrast to <link
-	      linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>,
-	      which will always upgrade every package, treating its
-	      command-line arguments as additional actions to perform.
-	    </para>
-	  </note>
-
 	  <para>
 	      It is sometimes necessary to remove one package in order
 	      to upgrade another; this command is not able to upgrade
@@ -544,15 +534,19 @@
 	  </para>
 
 	  <para>
-	    Additional <replaceable>package</replaceable>s listed on
-	    the command line are treated as extra actions to be taken
-	    above and beyond simply upgrading all packages.  These
-	    arguments are treated in the same manner as arguments to
-	    <link linkend='cmdlineInstall'><literal>aptitude
-	    install</literal></link>; for instance, <literal>aptitude
-	    dist-upgrade gimp-</literal> will upgrade all packages
-	    that can be upgraded, except for
-	    <systemitem>gimp</systemitem>, which will be removed.
+	    If no <replaceable>package</replaceable>s are listed on
+	    the command line, &aptitude; will attempt to upgrade every
+	    package that can be upgraded.  Otherwise, &aptitude; will
+	    attempt to upgrade only the packages which it is
+	    instructed to upgrade.  The
+	    <replaceable>package</replaceable>s can be extended with
+	    suffixes in the same manner as arguments to
+	    <literal>aptitude install</literal>, so you can also give
+	    additional instructions to &aptitude; here; for instance,
+	    <literal>aptitude full-upgrade bash dash-</literal> will
+	    attempt to upgrade the <systemitem>bash</systemitem>
+	    package and remove the <systemitem>dash</systemitem>
+	    package.
 	  </para>
 
 	  <note>

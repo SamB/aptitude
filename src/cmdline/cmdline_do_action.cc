@@ -88,8 +88,9 @@ int cmdline_do_action(int argc, char *argv[],
   else if(!strcasecmp(argv[0], "full-upgrade") ||
 	  !strcasecmp(argv[0], "dist-upgrade"))
     {
-      default_action = cmdline_install;
-      upgrade_mode = full_upgrade;
+      default_action = cmdline_upgrade;
+      if(argc == 1)
+	upgrade_mode = full_upgrade;
       if(resolver_mode == resolver_mode_default)
 	resolver_mode = resolver_mode_full;
     }
