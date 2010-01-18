@@ -220,6 +220,7 @@ static void resolver_help(ostream &out)
 				"x: %F"
 				"r (ID|pkg ver) ...: %F%n"
 				"a (ID|pkg ver) ...: %F%n"
+                                "<ID>: %F%n"
 				"<ACTION> pkg... : %F%n"
 				"%F"
 				"%F"
@@ -249,6 +250,8 @@ static void resolver_help(ostream &out)
 					    cw::fragf(_("reject the given package versions; don't display any solutions in which they occur.  Enter UNINST instead of a version to reject removing the package.  ID is the integer printed to the left of the action."))),
 			      flowindentbox(0, 15,
 					    cw::fragf(_("accept the given package versions; display only solutions in which they occur.  Enter UNINST instead of a version to accept removing the package.  ID is the integer printed to the left of the action."))),
+                              flowindentbox(0, 15,
+                                            cw::fragf(_("display information about the action labeled ID from the solution.  The label is the integer printed to the left of the action."))),
 			      flowindentbox(0, 3,
 					    cw::fragf(_("adjust the state of the listed packages, where ACTION is one of:"))),
 			      flowindentbox(0, 4,
@@ -508,6 +511,78 @@ static void reject_or_mandate_version(const string &s,
 	  }
 	}
     }
+}
+
+void cmdline_resolver_show_choice(const choice &c,
+				  const std::string &tag)
+{
+  cw::fragment *info_fragment = NULL;
+  bool is_rejected = false;
+  bool is_approved = false;
+
+  switch(c.get_type())
+    {
+    case choice::install_version:
+      info_fragment = cw::fragf("%F\n\n",
+				version_file_fragment(c.get_ver().get_ver(),
+						      c.get_ver().get_ver().FileList(),
+						      0));
+
+      is_rejected = resman->is_rejected(c.get_ver());
+      is_approved = resman->is_mandatory(c.get_ver());
+      break;
+
+    case choice::break_soft_dep:
+      info_fragment = cw::text_fragment("");
+      is_rejected = resman->is_hardened(c.get_dep());
+      is_approved = resman->is_approved_broken(c.get_dep());
+      break;
+
+    default:
+      info_fragment = cw::text_fragment("");
+      break;
+    }
+
+  cw::fragment *f =
+    cw::fragf("%F%F%F",
+	      flowbox(cw::fragf("%F: %F\n\n",
+				cw::fragf(_("Action \"%s\""), tag.c_str()),
+				choice_fragment(c))),
+	      info_fragment,
+	      flowbox(cw::fragf("%F%F\n%F\n",
+				is_rejected ? cw::fragf("%s\n", _("This action is currently rejected; it will not appear in new solutions.")) :
+				is_approved ? cw::fragf("%s\n", _("This action is currently approved; it will be selected whenever possible.")) :
+				cw::text_fragment(""),
+				// ForTranslators: the "r" here is
+				// for "reject", but should not be
+				// translated since the commands in
+				// aptitude's internal command-line
+				// aren't translated.
+				is_rejected ? cw::fragf(_("Enter \"r %s\" to allow this action to appear in new solutions."), tag.c_str())
+				// ForTranslators: the "r" here is
+				// for "reject", but should not be
+				// translated since the commands in
+				// aptitude's internal command-line
+				// aren't translated.
+                                            : cw::fragf(_("Enter \"r %s\" to prevent this action from appearing in new solutions."), tag.c_str()),
+				// ForTranslators: the "a" here is
+				// for "approve", but should not be
+				// translated since the commands in
+				// aptitude's internal command-line
+				// aren't translated.
+				is_approved ? cw::fragf(_("Enter \"a %s\" to cease requiring that new solutions include this action if possible."), tag.c_str())
+				// ForTranslators: the "a" here is
+				// for "approve", but should not be
+				// translated since the commands in
+				// aptitude's internal command-line
+				// aren't translated.
+                                            : cw::fragf(_("Enter \"a %s\" to require that new solutions include this action if possible."), tag.c_str()))));
+
+  cwidget::fragment_contents lines = f->layout(screen_width, screen_width, cwidget::style());
+
+  delete f;
+
+  cout << lines << endl;
 }
 
 // The command-line blocks until the continuation hits, so we can just
@@ -895,8 +970,32 @@ cmdline_resolve_deps(pkgset &to_install,
 		    }
 		    break;
 		  default:
-		    cout << _("Invalid response; please enter one of the following commands:") << endl;
-		    resolver_help(cout);
+		    // Look for a choice tag in the first word of the
+		    // string.  NB: checking only the first word
+		    // requires special knowledge that choice tags are
+		    // in fact single words.
+		    {
+		      std::string first_word;
+
+		      while(loc < response.size() && !isspace(response[loc]))
+			{
+			  first_word += response[loc];
+			  ++loc;
+			}
+
+		      std::map<std::string, choice>::const_iterator found =
+			ids.find(first_word);
+		      if(found == ids.end())
+			{
+			  cout << _("Invalid response; please enter one of the following commands:") << endl;
+			  resolver_help(cout);
+			}
+		      else
+			{
+			  const choice &c = found->second;
+			  cmdline_resolver_show_choice(c, first_word);
+			}
+		    }
 		    break;
 		  }
 	      }
