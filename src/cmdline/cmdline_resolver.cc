@@ -549,7 +549,18 @@ void cmdline_resolver_show_choice(const choice &c,
 				cw::fragf(_("Action \"%s\""), tag.c_str()),
 				choice_fragment(c))),
 	      info_fragment,
-	      flowbox(cw::fragf("%F%F\n%F\n",
+	      flowbox(cw::fragf("%F\n\n%F%F\n%F\n",
+                                // TODO: maybe this message could be
+                                // improved -- we could probably print
+                                // the dependency in a more
+                                // traditional way and maybe explain
+                                // which part failed?
+                                //
+                                // ForTranslators: the substitution is
+                                // replaced in English with something
+                                // like "Pkg1 depends upon Pkg2".
+                                cw::fragf(_("This action was selected because %ls."),
+                                          dep_text(c.get_dep().get_dep()).c_str()),
 				is_rejected ? cw::fragf("%s\n", _("This action is currently rejected; it will not appear in new solutions.")) :
 				is_approved ? cw::fragf("%s\n", _("This action is currently approved; it will be selected whenever possible.")) :
 				cw::text_fragment(""),
