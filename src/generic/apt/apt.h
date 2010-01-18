@@ -1,6 +1,6 @@
 // apt.h  -*-c++-*-
 //
-//  Copyright 1999-2002, 2004-2005, 2007-2009 Daniel Burrows
+//  Copyright 1999-2002, 2004-2005, 2007-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -209,9 +209,13 @@ const int num_pkg_action_states=12;
  *
  *  \param pkg   The package whose state is to be computed.
  *  \param cache The open package cache associated with pkg.
+ *  \param ignore_broken  Never return pkg_broken; instead
+ *                        return whatever status the package
+ *                        would have if it wasn't broken.
  */
 pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg,
-				aptitudeDepCache &cache);
+				aptitudeDepCache &cache,
+                                bool ignore_broken = false);
 // A utility routine to return a useful notion of a package's "action-state"
 // and an enum associated with it
 

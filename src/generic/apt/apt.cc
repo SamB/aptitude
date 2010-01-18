@@ -1,6 +1,6 @@
 // apt.cc
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -588,12 +588,13 @@ pkg_hier *get_user_pkg_hier()
 }
 
 pkg_action_state find_pkg_state(pkgCache::PkgIterator pkg,
-				aptitudeDepCache &cache)
+				aptitudeDepCache &cache,
+                                bool ignore_broken)
 {
   aptitudeDepCache::StateCache &state = cache[pkg];
   aptitudeDepCache::aptitude_state &extstate = cache.get_ext_state(pkg);
 
-  if(state.InstBroken())
+  if(state.InstBroken() && !ignore_broken)
     return pkg_broken;
   else if(state.Delete())
     {
