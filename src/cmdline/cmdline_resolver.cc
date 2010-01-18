@@ -106,6 +106,7 @@ static cw::fragment *solution_story(const aptitude_solution &s,
 	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
 	  (*ids)[key] = choices[i];
 
+          flag_fragments.push_back(NULL);
 	  flag_fragments.push_back(choice_state_fragment(choices[i]));
 	}
 
