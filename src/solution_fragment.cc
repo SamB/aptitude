@@ -18,6 +18,10 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// g++ generates a spurious warning in a call to std::sort below;
+// downgrade it to a non-error.
+#pragma GCC diagnostic warning "-Wuninitialized"
+
 #include "solution_fragment.h"
 
 #include <aptitude.h>

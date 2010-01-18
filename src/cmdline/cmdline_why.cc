@@ -1,6 +1,6 @@
 // cmdline_why.cc                                -*-c++-*-
 //
-//   Copyright (C) 2007-2009 Daniel Burrows
+//   Copyright (C) 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,6 +17,9 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// g++ generates a spurious warning in a call to std::sort below;
+// downgrade it to a non-error.
+#pragma GCC diagnostic warning "-Wuninitialized"
 
 #include "cmdline_why.h"
 
@@ -1436,6 +1439,7 @@ namespace aptitude
 	    {
 	      std::vector<std::pair<std::string, pkgCache::Dep::DepType> >
 		packages_by_dep_strength(roots.begin(), roots.end());
+              // g++ emits a spurious error here.  Don't know why:
 	      std::sort(packages_by_dep_strength.begin(),
 			packages_by_dep_strength.end(),
 			compare_pair_by_dep_type());
