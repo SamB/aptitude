@@ -1,3 +1,62 @@
+[1/17/2010]
+Version 0.6.1.4                             "You can't take the sky from me."
+
+- New features:
+
+  + [gtk] The status of each changelog download is now displayed in
+          the space where that changelog will appear.
+
+  + [cmdline] When aptitude displays a resolver solution, it now
+              displays a number next to each entry in the solution.
+              This number can be used to manipulate the corresponding
+              entry (for instance, to reject it or to view information
+              about it).  This makes it much more convenient to use
+              the command-line resolver interactively.
+
+- Crashes and serious errors:
+
+  + [all] Be paranoid about the sign of file offsets (on some
+          architectures they're apparently signed). (Closes: #557212)
+
+  + [all] Fix various include and compilation errors revealed by the
+          new version of g++ being stricter. (Closes: #531687, #560517)
+
+  + [all] Use pthread_sigmask() instead of sigprocmask() on startup to
+          avoid problems on architectures where sigprocmask() behaves
+          poorly in multi-threaded processes. (Closes: #559980)
+
+  + [gtk] Fix a startup crash caused by not properly protecting the
+          call to Glib::thread_init(). (Closes: #555120)
+
+- Cosmetic and UI bugs:
+
+  + [cmdline] Document the flags that are shown after packages in the
+              preview.
+
+  + [cmdline] Instead of showing broken packages in their own group,
+              show them in the group they would normally appear in but
+              with a "b" flag.
+
+              It was somewhat confusing that packages which were being
+              installed but had broken dependencies showed up in the
+              "broken" section instead of the "install" section.
+              Packages that are unchanged and have broken dependencies
+              won't show up in the preview any more, but they will
+              show up just below it, in the list of packages with
+              broken dependencies.
+
+  + [all] Eliminate spurious error messages from log4cxx. (Closes: #557150)
+
+- Internal changes:
+
+  + [all] Download changelogs using the new internal download queue,
+          not the download_manager system.  Fixes random crashes at
+          shutdown.
+
+  + [gtk] Wrote the first draft of some harness code that will
+          underpin a redesign of the main window.  Currently this is
+          unused.
+
 [11/19/2009]
 Version 0.6.1.3                             "Too many cooks put lots of
                                              beans in the soup."
