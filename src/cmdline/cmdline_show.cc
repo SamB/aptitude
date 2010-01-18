@@ -232,14 +232,14 @@ static cwidget::fragment *deletion_fragment(const char *statestr,
       if(unused_delete)
 	return cw::fragf(_("%s; will be purged because nothing depends on it"), statestr);
       else
-	return cw::fragf(_("%s; will be purged"));
+	return cw::fragf(_("%s; will be purged"), statestr);
     }
   else
     {
       if(unused_delete)
 	return cw::fragf(_("%s; will be removed because nothing depends on it"), statestr);
       else
-	return cw::fragf(_("%s; will be removed"));
+	return cw::fragf(_("%s; will be removed"), statestr);
     }
 }
 
