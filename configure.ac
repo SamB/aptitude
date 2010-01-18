@@ -73,6 +73,7 @@ boost/iostreams/seek.hpp dnl
 boost/iostreams/stream.hpp dnl
 boost/iostreams/write.hpp dnl
 boost/lambda/bind.hpp dnl
+boost/lexical_cast.hpp dnl
 boost/make_shared.hpp dnl
 boost/multi_index_container.hpp dnl
 boost/multi_index/hashed_index.hpp dnl
