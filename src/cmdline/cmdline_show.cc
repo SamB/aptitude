@@ -358,9 +358,9 @@ static void show_package(pkgCache::PkgIterator pkg, int verbose)
   delete f;
 }
 
-static cw::fragment *version_file_fragment(pkgCache::VerIterator ver,
-				       pkgCache::VerFileIterator vf,
-				       int verbose)
+cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
+				    const pkgCache::VerFileIterator &vf,
+				    int verbose)
 {
   vector<cw::fragment *> fragments;
 
@@ -390,7 +390,7 @@ static cw::fragment *version_file_fragment(pkgCache::VerIterator ver,
 
   fragments.push_back(cw::fragf("%s%s%n", _("Version: "), ver.VerStr()));
   fragments.push_back(cw::fragf("%s%s%n", _("Priority: "),
-			    ver.PriorityType()?ver.PriorityType():_("N/A")));
+				const_cast<pkgCache::VerIterator &>(ver).PriorityType() ? const_cast<pkgCache::VerIterator &>(ver).PriorityType() : _("N/A")));
   fragments.push_back(cw::fragf("%s%s%n", _("Section: "),
 			    ver.Section()?ver.Section():_("N/A")));
   fragments.push_back(cw::fragf("%s%s%n", _("Maintainer: "),
