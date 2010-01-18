@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.5.9rc2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2009-11-19 07:59-0800\n"
+"POT-Creation-Date: 2010-01-17 19:53-0800\n"
 "PO-Revision-Date: 2009-09-13 18:12+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@spamcop.net>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -699,17 +699,17 @@ msgstr[1] "%d nedgraderinger"
 msgid "Suggest %F"
 msgstr "Foreslår %F"
 
-#: src/cmdline/cmdline_action.cc:50
+#: src/cmdline/cmdline_action.cc:51
 #, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Kunne ikke finde kildearkivs-pakke for \"%s\".\n"
 
-#: src/cmdline/cmdline_action.cc:205
+#: src/cmdline/cmdline_action.cc:206
 #, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
 msgstr "Kan ikke opfylde pakkebygnings-afhængigheder: %s.\n"
 
-#: src/cmdline/cmdline_action.cc:241
+#: src/cmdline/cmdline_action.cc:242
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -718,7 +718,7 @@ msgstr ""
 "Bemærk: \"%s\", som giver den virtuelle pakke\n"
 "        \"%s\", er allerede installeret.\n"
 
-#: src/cmdline/cmdline_action.cc:248
+#: src/cmdline/cmdline_action.cc:249
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -727,7 +727,7 @@ msgstr ""
 "Bemærk: \"%s\", som giver den virtuelle pakke\n"
 "        \"%s\", er allerede valgt til installering.\n"
 
-#: src/cmdline/cmdline_action.cc:270
+#: src/cmdline/cmdline_action.cc:271
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -736,17 +736,17 @@ msgstr ""
 "\"%s\" eksisterer i pakkedatabasen, men den er ikke en\n"
 "rigtig pakke og den gives ikke af nogen pakke.\n"
 
-#: src/cmdline/cmdline_action.cc:278
+#: src/cmdline/cmdline_action.cc:279
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" er en virtuel pakke som gives af:\n"
 
-#: src/cmdline/cmdline_action.cc:281
+#: src/cmdline/cmdline_action.cc:282
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "Du skal vælge at installere en.\n"
 
-#: src/cmdline/cmdline_action.cc:289
+#: src/cmdline/cmdline_action.cc:290
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -755,17 +755,17 @@ msgstr ""
 "Bemærk: vælger \"%s\" i stedet for\n"
 "        den virtuelle pakke \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:310
+#: src/cmdline/cmdline_action.cc:311
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s er allerede installeret i den ønskede version (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:320
+#: src/cmdline/cmdline_action.cc:321
 #, c-format
 msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s er aktuelt ikke installeret, så den vil ikke blive opgraderet.\n"
 
-#: src/cmdline/cmdline_action.cc:323
+#: src/cmdline/cmdline_action.cc:324
 #, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded."
@@ -773,33 +773,33 @@ msgstr ""
 "%s er allerede installeret i den nyeste version, så den vil ikke blive "
 "opgraderet."
 
-#: src/cmdline/cmdline_action.cc:328
+#: src/cmdline/cmdline_action.cc:329
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr ""
 "%s er aktuelt ikke installeret, så den vil ikke blive geninstalleret.\n"
 
-#: src/cmdline/cmdline_action.cc:335 src/cmdline/cmdline_action.cc:341
+#: src/cmdline/cmdline_action.cc:336 src/cmdline/cmdline_action.cc:342
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "Pakke %s er ikke installeret, så den vil ikke blive afinstalleret\n"
 
-#: src/cmdline/cmdline_action.cc:359
+#: src/cmdline/cmdline_action.cc:360
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "Pakke %s er ikke installeret, kan ikke forbyde en opgradering\n"
 
-#: src/cmdline/cmdline_action.cc:361
+#: src/cmdline/cmdline_action.cc:362
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "Pakke %s er ikke opgradérbar, kan ikke forbyde en opgradering\n"
 
-#: src/cmdline/cmdline_action.cc:460
+#: src/cmdline/cmdline_action.cc:461
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "Bemærk: vælger opgavepakken \"%s: %s\" til installering\n"
 
-#: src/cmdline/cmdline_action.cc:494
+#: src/cmdline/cmdline_action.cc:495
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -808,12 +808,12 @@ msgstr ""
 "Man kan kun angive en pakkeversion med kommandoerne \"install\" eller "
 "\"forbid-version\"\n"
 
-#: src/cmdline/cmdline_action.cc:503
+#: src/cmdline/cmdline_action.cc:504
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "Man kan kun angive et pakkearkiv med kommandoen \"install\".\n"
 
-#: src/cmdline/cmdline_action.cc:540
+#: src/cmdline/cmdline_action.cc:541
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -822,7 +822,7 @@ msgstr ""
 "Kunne ikke finde pakke \"%s\" og mere end 40\n"
 "pakker som har \"%s\" i deres navn.\n"
 
-#: src/cmdline/cmdline_action.cc:543
+#: src/cmdline/cmdline_action.cc:544
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -831,13 +831,13 @@ msgstr ""
 "Kunne ikke finde pakken \"%s\". Men følgende\n"
 "pakker har \"%s\" i deres navn:\n"
 
-#: src/cmdline/cmdline_action.cc:565
+#: src/cmdline/cmdline_action.cc:566
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr ""
 "Kunne ikke finde nogen pakke, hvis navn eller beskrivelse passer på \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:567
+#: src/cmdline/cmdline_action.cc:568
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -846,7 +846,7 @@ msgstr ""
 "Kunne ikke finde nogen pakke som passer på \"%s\" og mere end 40\n"
 "pakker som har \"%s\" i deres navn.\n"
 
-#: src/cmdline/cmdline_action.cc:570
+#: src/cmdline/cmdline_action.cc:571
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -855,65 +855,79 @@ msgstr ""
 "Kunne ikke finde nogen pakke som passer på \"%s\", men følgende\n"
 "pakker har \"%s\" i deres beskrivelse:\n"
 
-#: src/cmdline/cmdline_action.cc:709
+#: src/cmdline/cmdline_action.cc:710
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "Forkert tegn \"%c\" til handling\n"
 
-#: src/cmdline/cmdline_changelog.cc:93
+#: src/cmdline/cmdline_changelog.cc:105 src/generic/apt/acqprogress.cc:89
+msgid "Get:"
+msgstr "Hent:"
+
+#: src/cmdline/cmdline_changelog.cc:113 src/generic/apt/acqprogress.cc:124
+msgid "Err "
+msgstr "Fejl "
+
+#: src/cmdline/cmdline_changelog.cc:144
+#, fuzzy, c-format
+#| msgid "ChangeLog of %s"
+msgid "Changelog download failed: %s"
+msgstr "Ændringslog for %s"
+
+#: src/cmdline/cmdline_changelog.cc:242
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr "Kan ikke starte et skærmvisningsprogram, virker dette Debian-system?"
 
-#: src/cmdline/cmdline_changelog.cc:151
+#: src/cmdline/cmdline_changelog.cc:300
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr "%s er ikke en officiel Debian-pakke, kan ikke vise dens ændringslog."
 
-#: src/cmdline/cmdline_changelog.cc:240
+#: src/cmdline/cmdline_changelog.cc:376
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Kunne ikke finde en ændringslog til %s"
 
-#: src/cmdline/cmdline_clean.cc:29
+#: src/cmdline/cmdline_clean.cc:30
 #, c-format
 msgid "E: The clean command takes no arguments\n"
 msgstr "E:  kommandoen \"clean\" tager ingen argumenter\n"
 
-#: src/cmdline/cmdline_clean.cc:58
+#: src/cmdline/cmdline_clean.cc:59
 #, c-format
 msgid "Del %s* %spartial/*\n"
 msgstr "Slet %s* %sdelvis/*\n"
 
-#: src/cmdline/cmdline_clean.cc:86
+#: src/cmdline/cmdline_clean.cc:87
 #, c-format
 msgid "Del %s %s [%sB]\n"
 msgstr "Slet %s %s [%sB]\n"
 
-#: src/cmdline/cmdline_clean.cc:111
+#: src/cmdline/cmdline_clean.cc:112
 #, c-format
 msgid "E: The autoclean command takes no arguments\n"
 msgstr "E:  kommandoen \"autoclean\" tager ingen argumenter\n"
 
-#: src/cmdline/cmdline_clean.cc:148
+#: src/cmdline/cmdline_clean.cc:149
 #, c-format
 msgid "Would free %sB of disk space\n"
 msgstr "Ville frigøre %sB diskplads\n"
 
-#: src/cmdline/cmdline_clean.cc:151
+#: src/cmdline/cmdline_clean.cc:152
 #, c-format
 msgid "Freed %sB of disk space\n"
 msgstr "Frigjorde %sB diskplads\n"
 
-#: src/cmdline/cmdline_do_action.cc:128
+#: src/cmdline/cmdline_do_action.cc:131
 #, c-format
 msgid "Invalid operation %s"
 msgstr "Ugyldig operation %s"
 
-#: src/cmdline/cmdline_do_action.cc:200
+#: src/cmdline/cmdline_do_action.cc:203
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "Uventet argument til mønster efter \"keep-all\""
 
-#: src/cmdline/cmdline_do_action.cc:307
+#: src/cmdline/cmdline_do_action.cc:310
 #, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
@@ -921,7 +935,7 @@ msgstr ""
 "Kunne ikke foretage sikker udredning afhængigheder, prøv med --full-"
 "resolver.\n"
 
-#: src/cmdline/cmdline_do_action.cc:346 src/cmdline/cmdline_simulate.cc:35
+#: src/cmdline/cmdline_do_action.cc:349 src/cmdline/cmdline_simulate.cc:35
 #: src/main.cc:1111
 #, c-format
 msgid "Abort.\n"
@@ -961,7 +975,7 @@ msgstr ""
 "skal skrives til).\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:79
-#: src/cmdline/cmdline_user_tag.cc:118
+#: src/cmdline/cmdline_user_tag.cc:119
 #, c-format
 msgid "No such package \"%s\".\n"
 msgstr "Ingen sådan pakke \"%s\".\n"
@@ -972,12 +986,12 @@ msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
 "Ingen pakke blev valgt ud fra det angivne søgemønster. Intet at gøre.\n"
 
-#: src/cmdline/cmdline_forget_new.cc:25
+#: src/cmdline/cmdline_forget_new.cc:27
 #, c-format
 msgid "E: The forget-new command takes no arguments\n"
 msgstr "E: Kommandoen \"forget-new\" tager ingen argumenter\n"
 
-#: src/cmdline/cmdline_forget_new.cc:52
+#: src/cmdline/cmdline_forget_new.cc:54
 #, c-format
 msgid "Would forget what packages are new\n"
 msgstr "Ville glemme hvilke pakker der er nye\n"
@@ -1028,71 +1042,71 @@ msgstr "Uventet filafslutning på standardinddata"
 msgid "Couldn't read list of sources"
 msgstr "Kunne ikke læse liste over pakkekilder"
 
-#: src/cmdline/cmdline_prompt.cc:322
+#: src/cmdline/cmdline_prompt.cc:319
 msgid "Config files"
 msgstr "Opsætningsfiler"
 
-#: src/cmdline/cmdline_prompt.cc:373
+#: src/cmdline/cmdline_prompt.cc:370
 msgid "The following packages are BROKEN:"
 msgstr "Følgende pakker er BRUDTE:"
 
-#: src/cmdline/cmdline_prompt.cc:374
+#: src/cmdline/cmdline_prompt.cc:371
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "Følgende pakker er ikke i brug og vil blive AFINSTALLERET:"
 
-#: src/cmdline/cmdline_prompt.cc:375
+#: src/cmdline/cmdline_prompt.cc:372
 msgid "The following packages have been automatically kept back:"
 msgstr "Følgende pakker er automatisk blevet tilbageholdt:"
 
-#: src/cmdline/cmdline_prompt.cc:376
+#: src/cmdline/cmdline_prompt.cc:373
 msgid "The following NEW packages will be automatically installed:"
 msgstr "Følgende NYE pakker vil automatisk blive installeret:"
 
-#: src/cmdline/cmdline_prompt.cc:377
+#: src/cmdline/cmdline_prompt.cc:374
 msgid "The following packages will be automatically REMOVED:"
 msgstr "Følgende pakker vil automatisk blive AFINSTALLERET:"
 
-#: src/cmdline/cmdline_prompt.cc:378
+#: src/cmdline/cmdline_prompt.cc:375
 msgid "The following packages will be DOWNGRADED:"
 msgstr "Følgende pakker vil blive NEDGRADERET:"
 
-#: src/cmdline/cmdline_prompt.cc:379
+#: src/cmdline/cmdline_prompt.cc:376
 msgid "The following packages have been kept back:"
 msgstr "Følgende pakker er blevet tilbageholdt:"
 
-#: src/cmdline/cmdline_prompt.cc:380
+#: src/cmdline/cmdline_prompt.cc:377
 msgid "The following packages will be REINSTALLED:"
 msgstr "Følgende pakker vil blive GENINSTALLERET:"
 
-#: src/cmdline/cmdline_prompt.cc:381
+#: src/cmdline/cmdline_prompt.cc:378
 msgid "The following NEW packages will be installed:"
 msgstr "Følgende NYE pakker vil blive installeret:"
 
-#: src/cmdline/cmdline_prompt.cc:382
+#: src/cmdline/cmdline_prompt.cc:379
 msgid "The following packages will be REMOVED:"
 msgstr "Følgende pakker vil blive AFINSTALLERET:"
 
-#: src/cmdline/cmdline_prompt.cc:383
+#: src/cmdline/cmdline_prompt.cc:380
 msgid "The following packages will be upgraded:"
 msgstr "Følgende pakker vil blive opgraderet:"
 
-#: src/cmdline/cmdline_prompt.cc:384
+#: src/cmdline/cmdline_prompt.cc:381
 msgid "The following partially installed packages will be configured:"
 msgstr "Følgende delvist installerede pakker vil blive konfigurerede:"
 
-#: src/cmdline/cmdline_prompt.cc:439 src/ui.cc:1514
+#: src/cmdline/cmdline_prompt.cc:436 src/ui.cc:1514
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "Følgende ESSENTIELLE pakker vil blive AFINSTALLERET!\n"
 
-#: src/cmdline/cmdline_prompt.cc:448 src/ui.cc:1529
+#: src/cmdline/cmdline_prompt.cc:445 src/ui.cc:1529
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr ""
 "Følgende ESSENTIELLE pakkers afhængigheder vil blive BRUDT af denne "
 "handling:\n"
 
-#: src/cmdline/cmdline_prompt.cc:458 src/ui.cc:1542
+#: src/cmdline/cmdline_prompt.cc:455 src/ui.cc:1542
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -1101,16 +1115,16 @@ msgstr ""
 "ADVARSEL: Udførelsen af denne handling vil nok ødelægge dit system!\n"
 "          Fortsæt IKKE, medmindre du ved PRÆCIS hvad det er du gør!\n"
 
-#: src/cmdline/cmdline_prompt.cc:460
+#: src/cmdline/cmdline_prompt.cc:457
 msgid "I am aware that this is a very bad idea"
 msgstr "Jeg er klar over at dette er en meget dårlig idé"
 
-#: src/cmdline/cmdline_prompt.cc:464 src/ui.cc:1543
+#: src/cmdline/cmdline_prompt.cc:461 src/ui.cc:1543
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "For at fortsætte, indtast sætningen \"%s\":\n"
 
-#: src/cmdline/cmdline_prompt.cc:506
+#: src/cmdline/cmdline_prompt.cc:503
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1127,7 +1141,7 @@ msgstr ""
 "Du bør kun fortsætte med installeringen hvis du er sikker i din sag.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:518
+#: src/cmdline/cmdline_prompt.cc:515
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1136,7 +1150,7 @@ msgstr ""
 "*** ADVARSEL ***  Ignorerer disse tillidskrænkelser fordi\n"
 "                  %s::CmdLine::Ignore-Trust-Violations er \"sand\"!\n"
 
-#: src/cmdline/cmdline_prompt.cc:527
+#: src/cmdline/cmdline_prompt.cc:524
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
@@ -1149,7 +1163,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:538
+#: src/cmdline/cmdline_prompt.cc:535
 msgid "Go ahead and ignore the warning|Yes"
 msgstr "Ja"
 
@@ -1158,99 +1172,99 @@ msgstr "Ja"
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:544
+#: src/cmdline/cmdline_prompt.cc:541
 msgid "Abort instead of overriding the warning|No"
 msgstr "Nej"
 
-#: src/cmdline/cmdline_prompt.cc:555
+#: src/cmdline/cmdline_prompt.cc:552
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "Vil du ignorere denne advarsel og fortsætte alligevel?\n"
 
-#: src/cmdline/cmdline_prompt.cc:556
+#: src/cmdline/cmdline_prompt.cc:553
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "For at fortsætte, indtast \"%s\"; for at afbryde indtast \"%s\": "
 
-#: src/cmdline/cmdline_prompt.cc:573
+#: src/cmdline/cmdline_prompt.cc:570
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "Forkert indtastning. Indtast enten \"%s\" eller \"%s\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:685
+#: src/cmdline/cmdline_prompt.cc:682
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "Følgende pakker ANBEFALES installeret, men vil IKKE blive det:\n"
 
-#: src/cmdline/cmdline_prompt.cc:691
+#: src/cmdline/cmdline_prompt.cc:688
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "Følgende pakker FORESLÅS installeret, men vil IKKE blive det:\n"
 
-#: src/cmdline/cmdline_prompt.cc:697
+#: src/cmdline/cmdline_prompt.cc:694
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "Ingen pakker vil blive installeret, opgraderet eller afinstalleret.\n"
 
-#: src/cmdline/cmdline_prompt.cc:699
+#: src/cmdline/cmdline_prompt.cc:696
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "%lu pakker opgraderet, %lu nyinstalleret, "
 
-#: src/cmdline/cmdline_prompt.cc:703
+#: src/cmdline/cmdline_prompt.cc:700
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu geninstalleret, "
 
-#: src/cmdline/cmdline_prompt.cc:705
+#: src/cmdline/cmdline_prompt.cc:702
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu nedgraderet, "
 
-#: src/cmdline/cmdline_prompt.cc:707
+#: src/cmdline/cmdline_prompt.cc:704
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu til afinstallering og %lu ikke opgraderet.\n"
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:711
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "Skal hente %sB/%sB arkiver. "
 
-#: src/cmdline/cmdline_prompt.cc:717
+#: src/cmdline/cmdline_prompt.cc:714
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "Skal hente %sB arkiver. "
 
-#: src/cmdline/cmdline_prompt.cc:724
+#: src/cmdline/cmdline_prompt.cc:721
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "Efter udpakning vil %sB blive brugt.\n"
 
-#: src/cmdline/cmdline_prompt.cc:727
+#: src/cmdline/cmdline_prompt.cc:724
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "Efter udpakning vil %sB blive frigjort.\n"
 
-#: src/cmdline/cmdline_prompt.cc:748
+#: src/cmdline/cmdline_prompt.cc:745
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Ingen pakker at vise - angiv pakkenavne på linjen efter \"i\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:754
+#: src/cmdline/cmdline_prompt.cc:751
 msgid "Press Return to continue."
 msgstr "Tryk retur for at fortsætte."
 
-#: src/cmdline/cmdline_prompt.cc:765
+#: src/cmdline/cmdline_prompt.cc:762
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Ingen pakker fundet - angiv pakkenavne på linjen efter \"c\".\n"
 
-#: src/cmdline/cmdline_prompt.cc:769
+#: src/cmdline/cmdline_prompt.cc:766
 msgid "Press Return to continue"
 msgstr "Tryk retur for at fortsætte"
 
-#: src/cmdline/cmdline_prompt.cc:779
+#: src/cmdline/cmdline_prompt.cc:776
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
@@ -1259,41 +1273,41 @@ msgstr ""
 "Ingen pakker fundet - indtast nul eller flere udgangspunkter for søgningen, "
 "efterfulgt af pakken.\n"
 
-#: src/cmdline/cmdline_prompt.cc:804
+#: src/cmdline/cmdline_prompt.cc:801
 #, c-format
 msgid "y: %F"
 msgstr "y: %F"
 
-#: src/cmdline/cmdline_prompt.cc:806
+#: src/cmdline/cmdline_prompt.cc:803
 msgid "continue with the installation"
 msgstr "fortsæt med installeringen"
 
-#: src/cmdline/cmdline_prompt.cc:808
+#: src/cmdline/cmdline_prompt.cc:805
 #, c-format
 msgid "n: %F"
 msgstr "n: %F"
 
-#: src/cmdline/cmdline_prompt.cc:810
+#: src/cmdline/cmdline_prompt.cc:807
 msgid "abort and quit"
 msgstr "afbryd og afslut"
 
-#: src/cmdline/cmdline_prompt.cc:812
+#: src/cmdline/cmdline_prompt.cc:809
 #, c-format
 msgid "i: %F"
 msgstr "i: %F"
 
-#: src/cmdline/cmdline_prompt.cc:814
+#: src/cmdline/cmdline_prompt.cc:811
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "vis oplysninger om en eller flere pakker; pakkenavnet skal følge 'i'et"
 
-#: src/cmdline/cmdline_prompt.cc:816
+#: src/cmdline/cmdline_prompt.cc:813
 #, c-format
 msgid "c: %F"
 msgstr "c: %F"
 
-#: src/cmdline/cmdline_prompt.cc:818
+#: src/cmdline/cmdline_prompt.cc:815
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
@@ -1301,39 +1315,39 @@ msgstr ""
 "vis Debians ændringslog for en eller flere pakker; pakkenavnet skal følge "
 "efter 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:820
+#: src/cmdline/cmdline_prompt.cc:817
 #, c-format
 msgid "d: %F"
 msgstr "d: %F"
 
-#: src/cmdline/cmdline_prompt.cc:822
+#: src/cmdline/cmdline_prompt.cc:819
 msgid "toggle the display of dependency information"
 msgstr "slå oversigt over pakkeafhængigheder fra/til"
 
-#: src/cmdline/cmdline_prompt.cc:824
+#: src/cmdline/cmdline_prompt.cc:821
 #, c-format
 msgid "s: %F"
 msgstr "s: %F"
 
-#: src/cmdline/cmdline_prompt.cc:826
+#: src/cmdline/cmdline_prompt.cc:823
 msgid "toggle the display of changes in package sizes"
 msgstr "slå oversigt over ændringer i pakkestørrelser fra/til"
 
-#: src/cmdline/cmdline_prompt.cc:828
+#: src/cmdline/cmdline_prompt.cc:825
 #, c-format
 msgid "v: %F"
 msgstr "v: %F"
 
-#: src/cmdline/cmdline_prompt.cc:830
+#: src/cmdline/cmdline_prompt.cc:827
 msgid "toggle the display of version numbers"
 msgstr "slå oversigt over versionsnumre fra/til"
 
-#: src/cmdline/cmdline_prompt.cc:832
+#: src/cmdline/cmdline_prompt.cc:829
 #, c-format
 msgid "w: %F"
 msgstr "w: %F"
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:831
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
@@ -1341,26 +1355,26 @@ msgstr ""
 "forsøg at finde en grund til at installere en enkelt pakke, eller forklar "
 "hvorfor installering af én pakke skal medføre installering af en anden pakke."
 
-#: src/cmdline/cmdline_prompt.cc:837
+#: src/cmdline/cmdline_prompt.cc:834
 #, c-format
 msgid "r: %F"
 msgstr "r: %F"
 
-#: src/cmdline/cmdline_prompt.cc:839
+#: src/cmdline/cmdline_prompt.cc:836
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 "kør den automatiske afhængighedsudreder for at rette brudte afhængigheder."
 
-#: src/cmdline/cmdline_prompt.cc:841
+#: src/cmdline/cmdline_prompt.cc:838
 #, c-format
 msgid "e: %F"
 msgstr "e: %F"
 
-#: src/cmdline/cmdline_prompt.cc:843
+#: src/cmdline/cmdline_prompt.cc:840
 msgid "enter the full visual interface"
 msgstr "start den visuelle brugerflade"
 
-#: src/cmdline/cmdline_prompt.cc:846
+#: src/cmdline/cmdline_prompt.cc:843
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1372,52 +1386,79 @@ msgstr ""
 "eller flere pakkenavne (eller mønstre). Handlingen vil så blive anvendt på "
 "alle de pakker du anfører. Følgende handlinger kan bruges:"
 
-#: src/cmdline/cmdline_prompt.cc:853 src/cmdline/cmdline_resolver.cc:211
+#: src/cmdline/cmdline_prompt.cc:850 src/cmdline/cmdline_resolver.cc:259
 msgid "'+' to install packages"
 msgstr "'+' for at installere pakker"
 
-#: src/cmdline/cmdline_prompt.cc:856 src/cmdline/cmdline_resolver.cc:213
+#: src/cmdline/cmdline_prompt.cc:853 src/cmdline/cmdline_resolver.cc:261
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
 "'+M' for at installere pakker samtidig med at de markeres automatisk "
 "installeret"
 
-#: src/cmdline/cmdline_prompt.cc:858 src/cmdline/cmdline_resolver.cc:215
+#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:263
 msgid "'-' to remove packages"
 msgstr "'-' for at afinstallere pakker"
 
-#: src/cmdline/cmdline_prompt.cc:860 src/cmdline/cmdline_resolver.cc:217
+#: src/cmdline/cmdline_prompt.cc:857 src/cmdline/cmdline_resolver.cc:265
 msgid "'_' to purge packages"
 msgstr "'_' for at udrense pakker"
 
-#: src/cmdline/cmdline_prompt.cc:862 src/cmdline/cmdline_resolver.cc:219
+#: src/cmdline/cmdline_prompt.cc:859 src/cmdline/cmdline_resolver.cc:267
 msgid "'=' to place packages on hold"
 msgstr "'=' for at tilbageholde pakker"
 
-#: src/cmdline/cmdline_prompt.cc:864 src/cmdline/cmdline_resolver.cc:221
+#: src/cmdline/cmdline_prompt.cc:861 src/cmdline/cmdline_resolver.cc:269
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr ""
 "':' for at bevare pakker i deres nuværende tilstand, uden at tilbageholde dem"
 
-#: src/cmdline/cmdline_prompt.cc:866 src/cmdline/cmdline_resolver.cc:223
+#: src/cmdline/cmdline_prompt.cc:863 src/cmdline/cmdline_resolver.cc:271
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' for at markere pakker som automatisk installerede"
 
-#: src/cmdline/cmdline_prompt.cc:868 src/cmdline/cmdline_resolver.cc:225
+#: src/cmdline/cmdline_prompt.cc:865 src/cmdline/cmdline_resolver.cc:273
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' for at markere pakker som manuelt installerede"
 
-#: src/cmdline/cmdline_prompt.cc:870
+#: src/cmdline/cmdline_prompt.cc:867
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr "\"&BD\" for at installere en pakkes byggeafhængigheder."
 
+#: src/cmdline/cmdline_prompt.cc:870
+msgid ""
+"In the list of actions to be performed, some packages will be followed by "
+"one or more characters enclosed in braces; for instance: \"aptitude{u}\".  "
+"These characters provide extra information about the package's state, and "
+"can include any combination of the following:"
+msgstr ""
+
 #: src/cmdline/cmdline_prompt.cc:874
+#, fuzzy
+#| msgid "Whether the package is automatically installed."
+msgid "'a': the package was automatically installed or removed."
+msgstr "Vælg om pakken er automatisk installeret."
+
+#: src/cmdline/cmdline_prompt.cc:876
+msgid ""
+"'b': some of the package's dependencies are violated by the proposed changes."
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:878
+msgid "'p': the package will be purged in addition to being removed."
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:880
+msgid "'u': the package is being removed because it is unused."
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:884
 msgid "Commands:"
 msgstr "Kommandoer:"
 
-#: src/cmdline/cmdline_prompt.cc:987
+#: src/cmdline/cmdline_prompt.cc:997
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
@@ -1425,19 +1466,19 @@ msgstr ""
 "aptitude kunne ikke udrede disse afhængigheder. Du kan selv udrede dem "
 "manuelt eller taste 'n' for at afslutte."
 
-#: src/cmdline/cmdline_prompt.cc:1005
+#: src/cmdline/cmdline_prompt.cc:1015
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "Vil du fortsætte) [Y/n?] "
 
-#: src/cmdline/cmdline_prompt.cc:1006
+#: src/cmdline/cmdline_prompt.cc:1016
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr "Udred disse afhængigheder manuelt? [N/+/-/_/:/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1024
+#: src/cmdline/cmdline_prompt.cc:1034
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "Ugyldigt svar. Anfør en gyldig kommando eller \"?\" for hjælp.\n"
 
-#: src/cmdline/cmdline_prompt.cc:1030
+#: src/cmdline/cmdline_prompt.cc:1040
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
@@ -1446,7 +1487,7 @@ msgstr ""
 "installere en pakke), 'R' for at forsøge automatisk afhængighedsudredning "
 "eller 'N' forat annullere."
 
-#: src/cmdline/cmdline_prompt.cc:1061
+#: src/cmdline/cmdline_prompt.cc:1071
 #, c-format
 msgid ""
 "\n"
@@ -1457,7 +1498,7 @@ msgstr ""
 "Oplysning om afhængigheder vil blive vist\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1063
+#: src/cmdline/cmdline_prompt.cc:1073
 #, c-format
 msgid ""
 "\n"
@@ -1468,7 +1509,7 @@ msgstr ""
 "Oplysning om afhængigheder vil ikke blive vist\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1069
+#: src/cmdline/cmdline_prompt.cc:1079
 #, c-format
 msgid ""
 "\n"
@@ -1479,7 +1520,7 @@ msgstr ""
 "Versioner vil blive vist.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1071
+#: src/cmdline/cmdline_prompt.cc:1081
 #, c-format
 msgid ""
 "\n"
@@ -1490,7 +1531,7 @@ msgstr ""
 "Versioner vil ikke blive vist.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1076
+#: src/cmdline/cmdline_prompt.cc:1086
 #, c-format
 msgid ""
 "\n"
@@ -1501,7 +1542,7 @@ msgstr ""
 "Størrelsesændringer vil blive vist.\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1078
+#: src/cmdline/cmdline_prompt.cc:1088
 #, c-format
 msgid ""
 "\n"
@@ -1512,91 +1553,111 @@ msgstr ""
 "Størrelsesændringer vil ikke blive vist.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:97 src/cmdline/cmdline_resolver.cc:738
+#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:973
 #: src/generic/apt/apt.cc:290
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Kunne ikke åbne %s til skrivning"
 
-#: src/cmdline/cmdline_resolver.cc:103 src/cmdline/cmdline_resolver.cc:743
+#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:978
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Kunne ikke skrive status for afhængighedsudreder til %s"
 
-#: src/cmdline/cmdline_resolver.cc:105 src/cmdline/cmdline_resolver.cc:745
+#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:980
 msgid "Resolver state successfully written!"
 msgstr "Status for afhængighedsudreder gemt!"
 
-#: src/cmdline/cmdline_resolver.cc:169
-#, c-format
+#: src/cmdline/cmdline_resolver.cc:214
+#, fuzzy, c-format
+#| msgid ""
+#| "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: "
+#| "%F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgid ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
-"n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
+"ver) ...: %F%n<ID>: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pk ver ...: %F%na pk ver ...: %F%"
 "n<HANDLING> pk... : %F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_resolver.cc:189
+#: src/cmdline/cmdline_resolver.cc:235
 msgid "accept the proposed changes"
 msgstr "godkend de foreslåede ændringer"
 
-#: src/cmdline/cmdline_resolver.cc:191
+#: src/cmdline/cmdline_resolver.cc:237
 msgid "reject the proposed changes and search for another solution"
 msgstr "forkast de foreslåede ændringer og søg efter en anden løsning"
 
-#: src/cmdline/cmdline_resolver.cc:193
+#: src/cmdline/cmdline_resolver.cc:239
 msgid "give up and quit the program"
 msgstr "opgiv og afslut programmet"
 
-#: src/cmdline/cmdline_resolver.cc:195
+#: src/cmdline/cmdline_resolver.cc:241
 msgid "move to the next solution"
 msgstr "flyt til den næste løsning"
 
-#: src/cmdline/cmdline_resolver.cc:197
+#: src/cmdline/cmdline_resolver.cc:243
 msgid "move to the previous solution"
 msgstr "flyt til den forrige løsning"
 
-#: src/cmdline/cmdline_resolver.cc:199
+#: src/cmdline/cmdline_resolver.cc:245
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
 msgstr ""
 "skift mellem visning af løsningens indhold og forklaringen til løsningen."
 
-#: src/cmdline/cmdline_resolver.cc:201
+#: src/cmdline/cmdline_resolver.cc:247
 msgid "examine the solution in the visual user interface"
 msgstr "gennemgå løsningen i den interaktive brugerflade"
 
-#: src/cmdline/cmdline_resolver.cc:203
+#: src/cmdline/cmdline_resolver.cc:249
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
 "annullér automatisk afhængighedsudredning; udred afhængigheder manuelt i "
 "stedet"
 
-#: src/cmdline/cmdline_resolver.cc:205
+#: src/cmdline/cmdline_resolver.cc:251
+#, fuzzy
+#| msgid ""
+#| "reject the given package versions; don't display any solutions in which "
+#| "they occur.  Enter UNINST instead of a version to reject removing the "
+#| "package."
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
-"occur.  Enter UNINST instead of a version to reject removing the package."
+"occur.  Enter UNINST instead of a version to reject removing the package.  "
+"ID is the integer printed to the left of the action."
 msgstr ""
 "afvis de angivne pakkeversioner; vis ikke nogen løsninger hvori de "
 "forekommer. Indtast \"UNINST\" til en version i stedet for at afvise "
 "afinstallering af pakken."
 
-#: src/cmdline/cmdline_resolver.cc:207
+#: src/cmdline/cmdline_resolver.cc:253
+#, fuzzy
+#| msgid ""
+#| "accept the given package versions; display only solutions in which they "
+#| "occur.  Enter UNINST instead of a version to accept removing the package."
 msgid ""
 "accept the given package versions; display only solutions in which they "
-"occur.  Enter UNINST instead of a version to accept removing the package."
+"occur.  Enter UNINST instead of a version to accept removing the package.  "
+"ID is the integer printed to the left of the action."
 msgstr ""
 "godkend de angivne pakkeversioner; vis kun løsninger hvori de forekommer. "
 "Indtast \"UNINST\" i stedet for en version for at godkende afinstallering af "
 "pakken."
 
-#: src/cmdline/cmdline_resolver.cc:209
+#: src/cmdline/cmdline_resolver.cc:255
+msgid ""
+"display information about the action labeled ID from the solution.  The "
+"label is the integer printed to the left of the action."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:257
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "justér status på oplistede pakker hvor HANDLING er en af:"
 
-#: src/cmdline/cmdline_resolver.cc:227
+#: src/cmdline/cmdline_resolver.cc:275
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
@@ -1604,88 +1665,178 @@ msgstr ""
 "Justeringer vil medføre at den nuværende løsning forkastes og genberegnes "
 "omnødvendigt."
 
-#: src/cmdline/cmdline_resolver.cc:241
+#: src/cmdline/cmdline_resolver.cc:289
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "Versionen %s er tilgængelig i de følgende arkiver:"
 
-#: src/cmdline/cmdline_resolver.cc:249
+#: src/cmdline/cmdline_resolver.cc:297
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "Vælg versionen af %s som skal bruges: "
 
-#: src/cmdline/cmdline_resolver.cc:256
+#: src/cmdline/cmdline_resolver.cc:304
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "Ugyldigt svar. Anfør venligst et heltal mellem 1 og %d."
 
-#: src/cmdline/cmdline_resolver.cc:271
+#: src/cmdline/cmdline_resolver.cc:320
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "Forventede mindst én angivelse af pakke og version efter \"%c\""
 
-#: src/cmdline/cmdline_resolver.cc:285
+#: src/cmdline/cmdline_resolver.cc:342
 #, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "Forventede et versionsnummer eller \"%s\" efter \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:295
+#: src/cmdline/cmdline_resolver.cc:352
 #, c-format
 msgid "No such package \"%s\""
 msgstr "Ingen sådan pakke \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:311
+#: src/cmdline/cmdline_resolver.cc:368
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s har ingen version ved navn \"%s"
 
-#: src/cmdline/cmdline_resolver.cc:328
+#: src/cmdline/cmdline_resolver.cc:392
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "Tillader afinstallering af %s"
 
-#: src/cmdline/cmdline_resolver.cc:331
+#: src/cmdline/cmdline_resolver.cc:395
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "Tillader installeringen af %s version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:341
+#: src/cmdline/cmdline_resolver.cc:405
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "Afviser afinstallering af %s"
 
-#: src/cmdline/cmdline_resolver.cc:344
+#: src/cmdline/cmdline_resolver.cc:408
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "Afviser installeringen af %s version %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:357
+#: src/cmdline/cmdline_resolver.cc:421
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "Kræver ikke længere %s afinstalleret"
 
-#: src/cmdline/cmdline_resolver.cc:360
+#: src/cmdline/cmdline_resolver.cc:424
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "Kræver ikke længere %s version %s (%s) installeret"
 
-#: src/cmdline/cmdline_resolver.cc:369
+#: src/cmdline/cmdline_resolver.cc:433
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "Kræver %s afinstalleret"
 
-#: src/cmdline/cmdline_resolver.cc:372
+#: src/cmdline/cmdline_resolver.cc:436
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Kræver installering af %s version %s (%s)"
 
+#: src/cmdline/cmdline_resolver.cc:485
+#, fuzzy, c-format
+#| msgid "Leave the following recommendations unresolved:"
+msgid "Allowing this recommendation to be ignored: %s"
+msgstr "Afinstallér de følgende pakker:"
+
+#: src/cmdline/cmdline_resolver.cc:491
+#, fuzzy, c-format
+#| msgid "Audit ^Recommendations"
+msgid "Always obeying this recommendation: %s"
+msgstr "Se ^anbefalinger"
+
+#: src/cmdline/cmdline_resolver.cc:500
+#, fuzzy, c-format
+#| msgid "No longer requiring the removal of %s"
+msgid "No longer ignoring this recommendation: %s"
+msgstr "Kræver ikke længere %s afinstalleret"
+
+#: src/cmdline/cmdline_resolver.cc:506
+#, fuzzy, c-format
+#| msgid "Audit ^Recommendations"
+msgid "Ignoring this recommendation: %s"
+msgstr "Se ^anbefalinger"
+
+#: src/cmdline/cmdline_resolver.cc:550
+#, fuzzy, c-format
+#| msgid "Actions"
+msgid "Action \"%s\""
+msgstr "Handlinger"
+
+#. ForTranslators: the substitution is
+#. replaced in English with something
+#. like "Pkg1 depends upon Pkg2".
+#: src/cmdline/cmdline_resolver.cc:563
+#, c-format
+msgid "This action was selected because %ls."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:565
+msgid "This action is currently rejected; it will not appear in new solutions."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:566
+msgid ""
+"This action is currently approved; it will be selected whenever possible."
+msgstr ""
+
+#. ForTranslators: the "r" here is
+#. for "reject", but should not be
+#. translated since the commands in
+#. aptitude's internal command-line
+#. aren't translated.
+#: src/cmdline/cmdline_resolver.cc:573
+#, c-format
+msgid "Enter \"r %s\" to allow this action to appear in new solutions."
+msgstr ""
+
+#. ForTranslators: the "r" here is
+#. for "reject", but should not be
+#. translated since the commands in
+#. aptitude's internal command-line
+#. aren't translated.
+#: src/cmdline/cmdline_resolver.cc:579
+#, c-format
+msgid "Enter \"r %s\" to prevent this action from appearing in new solutions."
+msgstr ""
+
+#. ForTranslators: the "a" here is
+#. for "approve", but should not be
+#. translated since the commands in
+#. aptitude's internal command-line
+#. aren't translated.
+#: src/cmdline/cmdline_resolver.cc:585
+#, c-format
+msgid ""
+"Enter \"a %s\" to cease requiring that new solutions include this action if "
+"possible."
+msgstr ""
+
+#. ForTranslators: the "a" here is
+#. for "approve", but should not be
+#. translated since the commands in
+#. aptitude's internal command-line
+#. aren't translated.
+#: src/cmdline/cmdline_resolver.cc:591
+#, c-format
+msgid ""
+"Enter \"a %s\" to require that new solutions include this action if possible."
+msgstr ""
+
 # Er i tvivl om "defer" -MBJ
-#: src/cmdline/cmdline_resolver.cc:545
+#: src/cmdline/cmdline_resolver.cc:763
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "åbne: %zd; lukkede: %zd; afvist: %zd; konflikt: %zd"
 
-#: src/cmdline/cmdline_resolver.cc:568
+#: src/cmdline/cmdline_resolver.cc:786
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1694,31 +1845,31 @@ msgstr ""
 "Forsøgte at udrede afhængigheder, men afhængighedsudredning er slået fra..\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:577
+#: src/cmdline/cmdline_resolver.cc:795
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 "Afhængigheder ønskes udredt, men der er ikke oprettet nogen "
 "afhængighedsudreder for disse."
 
-#: src/cmdline/cmdline_resolver.cc:591 src/cmdline/cmdline_resolver.cc:886
+#: src/cmdline/cmdline_resolver.cc:809 src/cmdline/cmdline_resolver.cc:1145
 #: src/gtk/resolver.cc:2056 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "Udreder afhængigheder ..."
 
-#: src/cmdline/cmdline_resolver.cc:638
+#: src/cmdline/cmdline_resolver.cc:868
 msgid "The following actions will resolve these dependencies:"
 msgstr "De følgende handlinger vil udrede disse afhængigheder:"
 
-#: src/cmdline/cmdline_resolver.cc:655
+#: src/cmdline/cmdline_resolver.cc:887
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "Godkend denne løsning? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:682 src/cmdline/cmdline_resolver.cc:789
+#: src/cmdline/cmdline_resolver.cc:914 src/cmdline/cmdline_resolver.cc:1048
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Opgiver alle forsøg på at udrede disse afhængigheder."
 
-#: src/cmdline/cmdline_resolver.cc:685
+#: src/cmdline/cmdline_resolver.cc:917
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
@@ -1726,36 +1877,36 @@ msgstr ""
 "Opgiver automatisk afhængighedsudredning og falder tilbage til manuel "
 "udredning."
 
-#: src/cmdline/cmdline_resolver.cc:715
+#: src/cmdline/cmdline_resolver.cc:950
 msgid "The following commands are available:"
 msgstr "De følgende kommandoer er tilgængelige:"
 
-#: src/cmdline/cmdline_resolver.cc:735
+#: src/cmdline/cmdline_resolver.cc:970
 msgid "File to write resolver state to: "
 msgstr "Fil som status for afhængighedsudreder skrives til: "
 
-#: src/cmdline/cmdline_resolver.cc:750
+#: src/cmdline/cmdline_resolver.cc:1002
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ugyldigt svar. Anfør en af følgende kommandoer:"
 
-#: src/cmdline/cmdline_resolver.cc:763
+#: src/cmdline/cmdline_resolver.cc:1022
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:792
+#: src/cmdline/cmdline_resolver.cc:1051
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Ugyldigt svar; anfør venligst 'y' eller 'n'."
 
-#: src/cmdline/cmdline_resolver.cc:801
+#: src/cmdline/cmdline_resolver.cc:1060
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Kunne ikke udrede afhængigheder! Opgiver ..."
 
-#: src/cmdline/cmdline_resolver.cc:807
+#: src/cmdline/cmdline_resolver.cc:1066
 msgid "*** No more solutions available ***"
 msgstr "*** Ikke flere tilgængelige løsninger ***"
 
-#: src/cmdline/cmdline_resolver.cc:826
+#: src/cmdline/cmdline_resolver.cc:1085
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1763,19 +1914,19 @@ msgstr ""
 "*** FEJL: søgning afbrudt pga. en kritisk undtagelse. Du kan fortsætte\n"
 "          søgningen, men visse løsninger vil være utilgængelige.."
 
-#: src/cmdline/cmdline_resolver.cc:902
+#: src/cmdline/cmdline_resolver.cc:1161
 msgid ""
 "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 msgstr ""
 "Opgraderingens afhængigheder kunne ikke udredes (tidsudløb på "
 "afhængighedsudreder)."
 
-#: src/cmdline/cmdline_resolver.cc:908
+#: src/cmdline/cmdline_resolver.cc:1167
 msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgstr ""
 "Kunne ikke udrede afhængigheder for opgradering (ingen løsning fundet)."
 
-#: src/cmdline/cmdline_resolver.cc:914
+#: src/cmdline/cmdline_resolver.cc:1173
 #, c-format
 msgid "Unable to resolve dependencies for the upgrade (%s)."
 msgstr "Kunne ikke udrede afhængigheder for opgraderingen (%s)."
@@ -1831,7 +1982,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Følgende pakker har uopfyldte afhængigheder:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:60
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
 msgid "<NULL>"
 msgstr "<NUL>"
 
@@ -2050,7 +2201,7 @@ msgid "Provides"
 msgstr "Giver"
 
 #: src/cmdline/cmdline_show.cc:441 src/gtk/entitysummary.cc:367
-#: src/gtk/info.cc:715 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
+#: src/gtk/info.cc:716 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Beskrivelse: "
 
@@ -2078,27 +2229,27 @@ msgstr "Ville hente/installere/afinstallere pakker.\n"
 msgid "Internal Error, Ordering didn't finish"
 msgstr "Intern fejl, sortering ikke afsluttet"
 
-#: src/cmdline/cmdline_update.cc:32
+#: src/cmdline/cmdline_update.cc:34
 #, c-format
 msgid "Deleting obsolete downloaded files\n"
 msgstr "Sletter hentede filer som er forældede\n"
 
-#: src/cmdline/cmdline_update.cc:41
+#: src/cmdline/cmdline_update.cc:43
 #, c-format
 msgid "E: The update command takes no arguments\n"
 msgstr "E:  Kommandoen \"update\" tager ingen argumenter\n"
 
-#: src/cmdline/cmdline_user_tag.cc:54
+#: src/cmdline/cmdline_user_tag.cc:55
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "Føjer et brugermærkat \"%s\" til pakken \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:61
+#: src/cmdline/cmdline_user_tag.cc:62
 #, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "Fjerner brugermærkat \"%s\" fra pakken \"%s\".\n"
 
-#: src/cmdline/cmdline_user_tag.cc:91
+#: src/cmdline/cmdline_user_tag.cc:92
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr "%s: for få argumenter. Forventede mindst et mærkatnavn og en pakke.\n"
@@ -2325,7 +2476,7 @@ msgstr "UOPFYLDT"
 msgid "UNAVAILABLE"
 msgstr "UTILGÆNGELIG"
 
-#: src/desc_render.cc:133 src/gtk/aptitude.glade:1054
+#: src/desc_render.cc:133 src/gtk/aptitude.glade:1060
 msgid "Tags"
 msgstr "Mærkater"
 
@@ -2426,17 +2577,9 @@ msgstr "Kunne ikke finde dit hjemmekatalog, gemmer i /tmp/function_pkgs!"
 msgid "Hit "
 msgstr "Fundet "
 
-#: src/generic/apt/acqprogress.cc:89
-msgid "Get:"
-msgstr "Hent:"
-
 #: src/generic/apt/acqprogress.cc:120
 msgid "Ign "
 msgstr "Ign "
-
-#: src/generic/apt/acqprogress.cc:124
-msgid "Err "
-msgstr "Fejl "
 
 #: src/generic/apt/acqprogress.cc:148
 #, c-format
@@ -2772,21 +2915,21 @@ msgstr "Kunne ikke finde %s."
 msgid "Unable to create truncated cache: %s."
 msgstr "Kunne ikke oprette forkortet cache: %s."
 
-#: src/generic/apt/log.cc:54
+#: src/generic/apt/log.cc:55
 #, c-format
 msgid "Unable to open %s to log actions"
 msgstr "Kunne ikke åbne %s til at logge handlinger"
 
-#: src/generic/apt/log.cc:66
+#: src/generic/apt/log.cc:67
 #, c-format
 msgid "Error generating local time (%s)"
 msgstr "Fejl ved generering af lokaltid (%s)"
 
-#: src/generic/apt/log.cc:70
+#: src/generic/apt/log.cc:71
 msgid "log report"
 msgstr "log-rapport"
 
-#: src/generic/apt/log.cc:71
+#: src/generic/apt/log.cc:72
 #, c-format
 msgid ""
 "IMPORTANT: this log only lists intended actions; actions which fail due to\n"
@@ -2796,81 +2939,81 @@ msgstr ""
 "VIGTIGT: denne log opregner kun påtænkte handlinger; handlinger som slår\n"
 "fejl pga. problemer med dpkg kan muligvis ikke fuldføres.\n"
 
-#: src/generic/apt/log.cc:72
+#: src/generic/apt/log.cc:73
 #, c-format
 msgid "Will install %li packages, and remove %li packages.\n"
 msgstr "Vil installere %li pakker og afinstallere %li pakker.\n"
 
-#: src/generic/apt/log.cc:76
+#: src/generic/apt/log.cc:77
 #, c-format
 msgid "%sB of disk space will be used\n"
 msgstr "%sB diskplads vil blive brugt\n"
 
-#: src/generic/apt/log.cc:79
+#: src/generic/apt/log.cc:80
 #, c-format
 msgid "%sB of disk space will be freed\n"
 msgstr "%sB diskplads vil blive frigjort\n"
 
-#: src/generic/apt/log.cc:89
+#: src/generic/apt/log.cc:90
 #, c-format
 msgid "[UPGRADE] %s %s -> %s\n"
 msgstr "[OPGRADER] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:93
+#: src/generic/apt/log.cc:94
 #, c-format
 msgid "[DOWNGRADE] %s %s -> %s\n"
 msgstr "[NEDGRADER] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:103
+#: src/generic/apt/log.cc:104
 msgid "REMOVE"
 msgstr "AFINSTALLÉR"
 
-#: src/generic/apt/log.cc:109
+#: src/generic/apt/log.cc:110
 msgid "INSTALL"
 msgstr "INSTALLÉR"
 
-#: src/generic/apt/log.cc:112
+#: src/generic/apt/log.cc:113
 msgid "REINSTALL"
 msgstr "GENINSTALLÉR"
 
-#: src/generic/apt/log.cc:115
+#: src/generic/apt/log.cc:116
 msgid "HOLD"
 msgstr "TILBAGEHOLD"
 
-#: src/generic/apt/log.cc:118
+#: src/generic/apt/log.cc:119
 msgid "BROKEN"
 msgstr "BRUDTE"
 
-#: src/generic/apt/log.cc:121
+#: src/generic/apt/log.cc:122
 msgid "REMOVE, NOT USED"
 msgstr "AFINSTALLÉR, UBRUGTE"
 
-#: src/generic/apt/log.cc:124
+#: src/generic/apt/log.cc:125
 msgid "REMOVE, DEPENDENCIES"
 msgstr "AFINSTALLÉR, AFHÆNGIGHEDER"
 
-#: src/generic/apt/log.cc:127
+#: src/generic/apt/log.cc:128
 msgid "INSTALL, DEPENDENCIES"
 msgstr "INSTALLÉR, AFHÆNGIGHEDER"
 
-#: src/generic/apt/log.cc:130
+#: src/generic/apt/log.cc:131
 msgid "HOLD, DEPENDENCIES"
 msgstr "TILBAGEHOLD, AFHÆNGIGHEDER"
 
-#: src/generic/apt/log.cc:133
+#: src/generic/apt/log.cc:134
 msgid "UNCONFIGURED"
 msgstr "UKONFIGURERET"
 
-#: src/generic/apt/log.cc:136
+#: src/generic/apt/log.cc:137
 msgid "????????"
 msgstr "????????"
 
-#: src/generic/apt/log.cc:140
+#: src/generic/apt/log.cc:141
 #, c-format
 msgid "[%s] %s\n"
 msgstr "[%s] %s\n"
 
-#: src/generic/apt/log.cc:143
+#: src/generic/apt/log.cc:144
 #, c-format
 msgid ""
 "===============================================================================\n"
@@ -2982,28 +3125,28 @@ msgid ""
 "The package index files are corrupted. No Filename: field for package %s."
 msgstr "Pakkeindeksfilerne er ødelagt. Ingen Filename:-linje for pakke %s."
 
-#: src/generic/apt/pkg_changelog.cc:368 src/view_changelog.cc:270
+#: src/generic/apt/pkg_changelog.cc:441 src/view_changelog.cc:272
 #, c-format
 msgid "ChangeLog of %s"
 msgstr "Ændringslog for %s"
 
-#: src/generic/apt/pkg_changelog.cc:549
+#: src/generic/apt/pkg_changelog.cc:565 src/generic/apt/pkg_changelog.cc:570
+#, fuzzy, c-format
+#| msgid "Failed to download the changelog: %s"
+msgid "Failed to download changelogs: %s"
+msgstr "Kunne ikke hente ændringsloggen til: %s"
+
+#: src/generic/apt/pkg_changelog.cc:575
+#, fuzzy
+#| msgid "Failed to download the changelog: %s"
+msgid "Failed to download changelogs: unexpected exception."
+msgstr "Kunne ikke hente ændringsloggen til: %s"
+
+#: src/generic/apt/pkg_changelog.cc:589
 #, fuzzy, c-format
 #| msgid "ChangeLog of %s"
 msgid "Changelog of %s"
 msgstr "Ændringslog for %s"
-
-#: src/generic/apt/pkg_changelog.cc:685
-#, fuzzy
-#| msgid "No resolution found."
-msgid "No changelog found."
-msgstr "Ingen løsning fundet."
-
-#: src/generic/apt/pkg_changelog.cc:702
-#, fuzzy, c-format
-#| msgid "Cannot open package hierarchy file %s"
-msgid "Can't create a temporary file: %s"
-msgstr "Kan ikke åbne pakkehierarki-fil %s"
 
 #: src/generic/apt/pkg_hier.cc:28 src/generic/apt/pkg_hier.cc:49
 #, c-format
@@ -3071,27 +3214,27 @@ msgstr "Kan ikke oprette midlertidigt katalog fra skabelon \"%s\": %s"
 msgid "Unknown error"
 msgstr "Ukendt fejl"
 
-#: src/generic/util/util.cc:345
+#: src/generic/util/util.cc:346
 #, c-format
 msgid "Unable to stat \"%s\""
 msgstr "Kunne ikke finde \"%s\""
 
-#: src/generic/util/util.cc:351
+#: src/generic/util/util.cc:352
 #, c-format
 msgid "Unable to remove \"%s\""
 msgstr "Kunne ikke afinstallere \"%s\""
 
-#: src/generic/util/util.cc:361
+#: src/generic/util/util.cc:362
 #, c-format
 msgid "Unable to list files in \"%s\""
 msgstr "Kunne ikke opliste filer i \"%s\""
 
-#: src/generic/util/util.cc:378
+#: src/generic/util/util.cc:379
 #, c-format
 msgid "Failure closing directory \"%s\""
 msgstr "Fejl ved lukning af katalog \"%s\""
 
-#: src/generic/util/util.cc:384
+#: src/generic/util/util.cc:385
 #, c-format
 msgid "Unable to remove directory \"%s\""
 msgstr "Kunne ikke fjerne katalog \"%s\""
@@ -3100,49 +3243,49 @@ msgstr "Kunne ikke fjerne katalog \"%s\""
 msgid "Aptitude Package Manager"
 msgstr "Aptitude pakkestyring"
 
-#: src/gtk/aptitude.glade:18
+#: src/gtk/aptitude.glade:19
 msgid "_File"
 msgstr "_Fil"
 
-#: src/gtk/aptitude.glade:27 src/ui.cc:2263
+#: src/gtk/aptitude.glade:28 src/ui.cc:2263
 msgid "Perform all pending installs and removals"
 msgstr "Udfør alle afventende installeringer og afinstalleringer"
 
-#: src/gtk/aptitude.glade:37 src/ui.cc:2266
+#: src/gtk/aptitude.glade:38 src/ui.cc:2266
 msgid "Check for new versions of packages"
 msgstr "Se efter nye versioner af pakker"
 
-#: src/gtk/aptitude.glade:52 src/ui.cc:2271
+#: src/gtk/aptitude.glade:53 src/ui.cc:2271
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "Markér alle ikke-tilbageholdte pakker til opgradering"
 
-#: src/gtk/aptitude.glade:62 src/ui.cc:2276
+#: src/gtk/aptitude.glade:63 src/ui.cc:2276
 msgid "Forget which packages are \"new\""
 msgstr "Glem hvilke pakker der er \"nye\""
 
-#: src/gtk/aptitude.glade:71 src/ui.cc:2280
+#: src/gtk/aptitude.glade:72 src/ui.cc:2280
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr ""
 "Annullér alle afventende installeringer, afinstalleringer, tilbageholdelser "
 "og opgraderinger."
 
-#: src/gtk/aptitude.glade:80 src/ui.cc:2284
+#: src/gtk/aptitude.glade:81 src/ui.cc:2284
 msgid "Delete package files which were previously downloaded"
 msgstr "Slet tidligere hentede pakkefiler"
 
-#: src/gtk/aptitude.glade:89 src/ui.cc:2288
+#: src/gtk/aptitude.glade:90 src/ui.cc:2288
 msgid "Delete package files which can no longer be downloaded"
 msgstr "Slet pakkefiler som ikke længere kan hentes"
 
-#: src/gtk/aptitude.glade:103 src/ui.cc:2295
+#: src/gtk/aptitude.glade:104 src/ui.cc:2295
 msgid "Reload the package cache"
 msgstr "Genindlæs pakkecachen"
 
-#: src/gtk/aptitude.glade:112 src/ui.cc:1710 src/ui.cc:2300
+#: src/gtk/aptitude.glade:113 src/ui.cc:1710 src/ui.cc:2300
 msgid "Waste time trying to find mines"
 msgstr "Spild tid mens du prøver at finde miner"
 
-#: src/gtk/aptitude.glade:126 src/ui.cc:2305
+#: src/gtk/aptitude.glade:127 src/ui.cc:2305
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3150,162 +3293,162 @@ msgstr ""
 "Kør \"su\" for at blive root. Dette vil genstarte programmet, men dine "
 "indstillinger vil blive bevaret"
 
-#: src/gtk/aptitude.glade:135 src/ui.cc:2308
+#: src/gtk/aptitude.glade:136 src/ui.cc:2308
 msgid "Exit the program"
 msgstr "Afslut programmet"
 
-#: src/gtk/aptitude.glade:147
+#: src/gtk/aptitude.glade:148
 msgid "E_dit"
 msgstr "Re_digér"
 
-#: src/gtk/aptitude.glade:156 src/ui.cc:2315
+#: src/gtk/aptitude.glade:157 src/ui.cc:2315
 msgid "Undo the last package operation or group of operations"
 msgstr "Fortryd den sidste pakkehandling eller gruppe af handlinger"
 
-#: src/gtk/aptitude.glade:205
+#: src/gtk/aptitude.glade:206
 msgid "_Package"
 msgstr "_Pakke"
 
-#: src/gtk/aptitude.glade:217
+#: src/gtk/aptitude.glade:218
 msgid "_View"
 msgstr "_Oversigter"
 
-#: src/gtk/aptitude.glade:226
+#: src/gtk/aptitude.glade:227
 msgid "Change which columns are visible in the currently active view."
 msgstr ""
 "Foretag ændring i hvilke kolonner der er synlige i den aktuelle oversigt."
 
-#: src/gtk/aptitude.glade:240
+#: src/gtk/aptitude.glade:241
 msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr "Vis fejl der er opstået i apt-systemet siden programstart."
 
-#: src/gtk/aptitude.glade:249
+#: src/gtk/aptitude.glade:250
 msgid "Find chains of dependencies linking one package to another."
 msgstr "Find kæder af afhængigheder der kæder en pakke sammen med en anden."
 
-#: src/gtk/aptitude.glade:296
+#: src/gtk/aptitude.glade:297
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: src/gtk/aptitude.glade:325 src/gtk/dashboardtab.cc:758 src/gtk/gui.cc:1610
-#: src/gtk/gui.cc:1804
+#: src/gtk/aptitude.glade:326 src/gtk/dashboardtab.cc:754 src/gtk/gui.cc:1610
+#: src/gtk/gui.cc:1808
 msgid "Dashboard"
 msgstr "Instrumentbræt"
 
-#: src/gtk/aptitude.glade:344
+#: src/gtk/aptitude.glade:345
 msgid "Update"
 msgstr "Opdatér"
 
-#: src/gtk/aptitude.glade:355 src/gtk/gui.cc:1322 src/ui.cc:840 src/ui.cc:842
+#: src/gtk/aptitude.glade:356 src/gtk/gui.cc:1322 src/ui.cc:840 src/ui.cc:842
 #: src/ui.cc:887 src/ui.cc:889 src/ui.cc:915 src/ui.cc:917 src/ui.cc:938
 #: src/ui.cc:940
 msgid "Packages"
 msgstr "Pakker"
 
-#: src/gtk/aptitude.glade:366 src/gtk/gui.cc:1033 src/gtk/previewtab.cc:118
+#: src/gtk/aptitude.glade:367 src/gtk/gui.cc:1033 src/gtk/previewtab.cc:118
 #: src/ui.cc:1340
 msgid "Preview"
 msgstr "Forhåndsvisning"
 
-#: src/gtk/aptitude.glade:377 src/gtk/gui.cc:1028 src/ui.cc:2699
+#: src/gtk/aptitude.glade:378 src/gtk/gui.cc:1028 src/ui.cc:2699
 msgid "Resolver"
 msgstr "Afhængighedsudreder"
 
-#: src/gtk/aptitude.glade:388
+#: src/gtk/aptitude.glade:389
 msgid "Install/Remove"
 msgstr "Installér/afinstallér"
 
-#: src/gtk/aptitude.glade:590
+#: src/gtk/aptitude.glade:592
 msgid "Edit Columns..."
 msgstr "Redigér kolonner ..."
 
-#: src/gtk/aptitude.glade:603
+#: src/gtk/aptitude.glade:606
 msgid "Dummy label (will be replaced at runtime)."
 msgstr "Standard mærkat (vil blive erstatet ved programkørsel)."
 
-#: src/gtk/aptitude.glade:631
+#: src/gtk/aptitude.glade:634
 msgid "Make this the default for new package lists."
 msgstr "Gør dette til standard for nye pakkelister."
 
-#: src/gtk/aptitude.glade:646
+#: src/gtk/aptitude.glade:649
 msgid "Apply these settings to all active package lists."
 msgstr "Anvend disse indstillinger på alle aktive pakkelister."
 
-#: src/gtk/aptitude.glade:719 src/gtk/aptitude.glade:1450
-#: src/gtk/aptitude.glade:1779 src/gtk/aptitude.glade:1917
+#: src/gtk/aptitude.glade:723 src/gtk/aptitude.glade:1457
+#: src/gtk/aptitude.glade:1789 src/gtk/aptitude.glade:1928
 msgid "Search:"
 msgstr "Søg:"
 
-#: src/gtk/aptitude.glade:750
+#: src/gtk/aptitude.glade:754
 msgid "Incremental"
 msgstr "Trinvis"
 
-#: src/gtk/aptitude.glade:770 src/gtk/aptitude.glade:1489
-#: src/gtk/aptitude.glade:1818 src/gtk/aptitude.glade:1956
+#: src/gtk/aptitude.glade:774 src/gtk/aptitude.glade:1496
+#: src/gtk/aptitude.glade:1828 src/gtk/aptitude.glade:1967
 msgid "Errors"
 msgstr "Fejl"
 
-#: src/gtk/aptitude.glade:787 src/gtk/aptitude.glade:1835
-#: src/gtk/aptitude.glade:1973
+#: src/gtk/aptitude.glade:791 src/gtk/aptitude.glade:1845
+#: src/gtk/aptitude.glade:1984
 msgid "Show "
 msgstr "Vis "
 
-#: src/gtk/aptitude.glade:895
+#: src/gtk/aptitude.glade:901
 msgid "<span size=\"xx-large\">Versions:</span>"
 msgstr "<span size=\"xx-large\">Versioner:</span>"
 
-#: src/gtk/aptitude.glade:956
+#: src/gtk/aptitude.glade:962
 msgid "Dependencies"
 msgstr "Afhængigheder"
 
-#: src/gtk/aptitude.glade:986
+#: src/gtk/aptitude.glade:992
 msgid "Changelog"
 msgstr "Ændringslog"
 
-#: src/gtk/aptitude.glade:1014
+#: src/gtk/aptitude.glade:1020
 msgid "Files"
 msgstr "Filer"
 
-#: src/gtk/aptitude.glade:1025
+#: src/gtk/aptitude.glade:1031
 msgid "popcon"
 msgstr "popcon"
 
-#: src/gtk/aptitude.glade:1034
+#: src/gtk/aptitude.glade:1040
 msgid "Popcon"
 msgstr "Popcon"
 
-#: src/gtk/aptitude.glade:1045
+#: src/gtk/aptitude.glade:1051
 msgid "tags"
 msgstr "mærkater"
 
-#: src/gtk/aptitude.glade:1079
+#: src/gtk/aptitude.glade:1085
 msgid "Screenshot"
 msgstr ""
 
-#: src/gtk/aptitude.glade:1131
+#: src/gtk/aptitude.glade:1137
 msgid "Fixing upgrade manually:"
 msgstr "Reparerer opgradering manuelt:"
 
-#: src/gtk/aptitude.glade:1141 src/gtk/dashboardtab.cc:544
+#: src/gtk/aptitude.glade:1147 src/gtk/dashboardtab.cc:540
 msgid "Calculating upgrade..."
 msgstr "Beregner opgradering ..."
 
-#: src/gtk/aptitude.glade:1189
+#: src/gtk/aptitude.glade:1195
 msgid "<b>Solutions</b>"
 msgstr "<b>Løsninger</b>"
 
-#: src/gtk/aptitude.glade:1207 src/gtk/download.cc:261
+#: src/gtk/aptitude.glade:1213 src/gtk/download.cc:261
 #: src/gtk/entityview.cc:551
 msgid "Status"
 msgstr "Status"
 
-#: src/gtk/aptitude.glade:1241
+#: src/gtk/aptitude.glade:1247
 msgid "Group by action type"
 msgstr "Gruppér efter handlingstype"
 
-#: src/gtk/aptitude.glade:1245
+#: src/gtk/aptitude.glade:1251
 msgid ""
 "Arrange the actions of the current solution so that actions that are of the "
 "same type are placed together (for instance, all the actions that remove "
@@ -3318,11 +3461,11 @@ msgstr ""
 "\n"
 "Dette er standarden i oversigten."
 
-#: src/gtk/aptitude.glade:1259
+#: src/gtk/aptitude.glade:1265
 msgid "Group by dependency"
 msgstr "Gruppér efter afhængighed"
 
-#: src/gtk/aptitude.glade:1263
+#: src/gtk/aptitude.glade:1269
 msgid ""
 "Show the order in which the actions in the current solution were performed "
 "and the dependency that triggered each action."
@@ -3330,48 +3473,48 @@ msgstr ""
 "Vis rækkefølgen som handlinger i den aktuelle løsning udførtes i, samt den "
 "afhængighed som udløste hver handling."
 
-#: src/gtk/aptitude.glade:1280
+#: src/gtk/aptitude.glade:1286
 msgid "<b>View Mode</b>"
 msgstr "<b>Oversigtstilstand</b>"
 
-#: src/gtk/aptitude.glade:1322
+#: src/gtk/aptitude.glade:1328
 msgid "Rejected"
 msgstr "Afvist"
 
-#: src/gtk/aptitude.glade:1337
+#: src/gtk/aptitude.glade:1343
 msgid "No preference"
 msgstr "Ingen præference"
 
-#: src/gtk/aptitude.glade:1353
+#: src/gtk/aptitude.glade:1359
 msgid "Accepted"
 msgstr "Godkendt"
 
-#: src/gtk/aptitude.glade:1373
+#: src/gtk/aptitude.glade:1379
 msgid "<b>Status of selected action</b>"
 msgstr "<b>Status på den valgte handling</b>"
 
-#: src/gtk/aptitude.glade:1394
+#: src/gtk/aptitude.glade:1400
 msgid "Find a new solution"
 msgstr "Find en ny løsning"
 
-#: src/gtk/aptitude.glade:1398
+#: src/gtk/aptitude.glade:1404
 msgid "Calculate the next solution that has not yet been generated."
 msgstr "Beregn den næste løsning som endnu ikke er blevet genereret."
 
-#: src/gtk/aptitude.glade:1413
+#: src/gtk/aptitude.glade:1419
 msgid ""
 "Perform the actions in the currently selected solution and close this tab."
 msgstr "Udfør handlingerne i den aktuelt valgte løsning og luk dette faneblad."
 
-#: src/gtk/aptitude.glade:1568
+#: src/gtk/aptitude.glade:1576
 msgid "Upgrade Summary"
 msgstr "Opsummering af opgraderinger"
 
-#: src/gtk/aptitude.glade:1597
+#: src/gtk/aptitude.glade:1605
 msgid "Selected Package"
 msgstr "Valgte pakke"
 
-#: src/gtk/aptitude.glade:1632
+#: src/gtk/aptitude.glade:1640
 msgid ""
 "Label explaining the upgrade.  This text will not appear in the program at "
 "runtime."
@@ -3379,31 +3522,31 @@ msgstr ""
 "Mærkat der forklarer opgraderingen. Denne tekst vil ikke blive vist i "
 "programmet ved opstart."
 
-#: src/gtk/aptitude.glade:1644
+#: src/gtk/aptitude.glade:1652
 msgid "Fix Manually"
 msgstr "Reparér manuelt"
 
-#: src/gtk/aptitude.glade:1657 src/gtk/gui.cc:93 src/gtk/gui.cc:1412
+#: src/gtk/aptitude.glade:1665 src/gtk/gui.cc:93 src/gtk/gui.cc:1412
 msgid "Upgrade"
 msgstr "Opgradér"
 
-#: src/gtk/aptitude.glade:1688
+#: src/gtk/aptitude.glade:1696
 msgid "<b>Available Upgrades:</b>"
 msgstr "<b>Tilgængelige opgraderinger:</b>"
 
-#: src/gtk/aptitude.glade:1883
+#: src/gtk/aptitude.glade:1893
 msgid "<b>Start at these packages:</b>"
 msgstr "<b>Begynd ved disse pakker:</b>"
 
-#: src/gtk/aptitude.glade:2021
+#: src/gtk/aptitude.glade:2032
 msgid "<b>End at these packages:</b>"
 msgstr "<b>Afslut ved disse pakker:</b>"
 
-#: src/gtk/aptitude.glade:2089
+#: src/gtk/aptitude.glade:2100
 msgid "A terminal running dpkg will appear here."
 msgstr "En terminal der kører dpkg vil blive vist her."
 
-#: src/gtk/aptitude.glade:2101
+#: src/gtk/aptitude.glade:2113
 msgid ""
 "Placeholder label for the explanation that two conffiles are being "
 "compared.\n"
@@ -3413,11 +3556,11 @@ msgstr ""
 "sammenlignet.\n"
 "Denne tekst bør ikke optræde i programmet."
 
-#: src/gtk/aptitude.glade:2130
+#: src/gtk/aptitude.glade:2142
 msgid "View the differences\t"
 msgstr "Vis forskellene\t"
 
-#: src/gtk/aptitude.glade:2156
+#: src/gtk/aptitude.glade:2168
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
@@ -3425,11 +3568,11 @@ msgstr ""
 "Ønsker du at udføre disse ændringer?\n"
 "Du kan også rette filerne manuelt og så klikke \"Nej\"."
 
-#: src/gtk/changelog.cc:285
+#: src/gtk/changelog.cc:283
 msgid "The changelog is empty."
 msgstr "Ændringsloggen er tom."
 
-#: src/gtk/changelog.cc:287
+#: src/gtk/changelog.cc:285
 msgid ""
 "No new changelog entries; it looks like you installed a locally compiled "
 "version of this package."
@@ -3437,7 +3580,7 @@ msgstr ""
 "Ingen nye tilførsler til ændringsloggen. Det ser ud som om du har "
 "installeret en egenoversat verssion af denne pakke."
 
-#: src/gtk/changelog.cc:289
+#: src/gtk/changelog.cc:287
 msgid ""
 "No new changelog entries; this is likely due to a binary-only upload of this "
 "package."
@@ -3445,12 +3588,18 @@ msgstr ""
 "Ingen nye tilførsler til ændringsloggen. Det skyldes sikkert at denne pakke "
 "kun er uploadet i en binær version."
 
-#: src/gtk/changelog.cc:382
+#: src/gtk/changelog.cc:378
 #, c-format
 msgid "Failed to download the changelog: %s"
 msgstr "Kunne ikke hente ændringsloggen til: %s"
 
-#: src/gtk/changelog.cc:625
+#: src/gtk/changelog.cc:514 src/gtk/changelog.cc:646
+#, fuzzy, c-format
+#| msgid "Requiring the installation of %s version %s (%s)"
+msgid "Parsing the changelog of %s version %s..."
+msgstr "Kræver installering af %s version %s (%s)"
+
+#: src/gtk/changelog.cc:613
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; the origin of %s "
@@ -3459,20 +3608,24 @@ msgstr ""
 "Du kan kun se ændringslogfiler for officielle Debian-pakker. Oprindelsen af %"
 "s er ukendt."
 
-#: src/gtk/changelog.cc:629
+#: src/gtk/changelog.cc:617
 #, c-format
 msgid ""
 "You can only view changelogs of official Debian packages; %s is from %s."
 msgstr ""
 "Du kan kun se ændringslogfiler for officielle Debian-pakker; %s er fra %s."
 
-#: src/gtk/changelog.cc:649
-msgid "Downloading changelog; please wait..."
+#: src/gtk/changelog.cc:692
+#, fuzzy, c-format
+#| msgid "Downloading changelog; please wait..."
+msgid "Downloading the changelog of %s version %s..."
 msgstr "Henter ændringslog: vent venligst ..."
 
-#: src/gtk/changelog.cc:734
-msgid "Downloading changelogs"
-msgstr "Henter ændringslogs"
+#: src/gtk/changelog.cc:883
+#, fuzzy, c-format
+#| msgid "Preparing to download changelogs"
+msgid "Preparing to download the changelog of %s version %s."
+msgstr "Forbereder download af ændringslogfiler"
 
 #: src/gtk/dashboardtab.cc:215
 msgid "Resolve Upgrade Manually"
@@ -3482,26 +3635,26 @@ msgstr "Udred opgradering manuelt"
 msgid "Preparing to download changelogs"
 msgstr "Forbereder download af ændringslogfiler"
 
-#: src/gtk/dashboardtab.cc:401
+#: src/gtk/dashboardtab.cc:397
 msgid "Available upgrades:"
 msgstr "Tilgængelige opgraderinger:"
 
-#: src/gtk/dashboardtab.cc:418
+#: src/gtk/dashboardtab.cc:414
 #, c-format
 msgid "%d available upgrade:"
 msgid_plural "%d available upgrades:"
 msgstr[0] "%d tilgængelig opgradering:"
 msgstr[1] "%d tilgængelige opgraderinger:"
 
-#: src/gtk/dashboardtab.cc:637
+#: src/gtk/dashboardtab.cc:633
 msgid "No upgrades are available."
 msgstr "Ingen tilgængelige opgraderinger."
 
-#: src/gtk/dashboardtab.cc:649
+#: src/gtk/dashboardtab.cc:645
 msgid "Unable to calculate an upgrade."
 msgstr "Kan ikke beregne en opgradering."
 
-#: src/gtk/dashboardtab.cc:658
+#: src/gtk/dashboardtab.cc:654
 #, c-format
 msgid ""
 "Press \"%s\" to install <span size='large'>%d</span> upgrade out of <span "
@@ -3516,7 +3669,7 @@ msgstr[1] ""
 "Tast \"%s\" for at installere <span size='large'>%d</span> opgraderinger af "
 "<span size='large'>%d</span>."
 
-#: src/gtk/dashboardtab.cc:670
+#: src/gtk/dashboardtab.cc:666
 #, c-format
 msgid ""
 "Press \"%s\" to manually attempt to install the remaining <span size='large'>"
@@ -3531,7 +3684,7 @@ msgstr[1] ""
 "Tast \"%s\" for at forsøge manuel installering af <span size='large'>%d</"
 "span> opgraderinger."
 
-#: src/gtk/dashboardtab.cc:695
+#: src/gtk/dashboardtab.cc:691
 #, c-format
 msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
@@ -3540,7 +3693,7 @@ msgstr ""
 "Kan ikke beregne en opgradering. Tast \"%s\" for at søge efter en manuel "
 "løsning."
 
-#: src/gtk/dashboardtab.cc:712
+#: src/gtk/dashboardtab.cc:708
 #, c-format
 msgid "Internal error encountered while calculating an upgrade: %s"
 msgstr "Intern fejl opstod under beregning af en opgradering: %s"
@@ -4072,7 +4225,7 @@ msgstr "Markér som manuel"
 msgid "Toggle automatic status"
 msgstr "Skift status for automatisk"
 
-#: src/gtk/gui.cc:1783
+#: src/gtk/gui.cc:1787
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
@@ -4102,7 +4255,7 @@ msgstr "Pakkeoplysninger: afhængighedsliste"
 msgid "Please wait; reloading cache..."
 msgstr "Vent venligst; genindlæser cache ..."
 
-#: src/gtk/info.cc:778
+#: src/gtk/info.cc:779
 msgid "Info"
 msgstr "Info"
 
@@ -4315,7 +4468,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "Virtuel pakke"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:275
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
 msgid "Not Installed"
 msgstr "Ikke installeret"
 
@@ -4462,43 +4615,43 @@ msgstr[1] ""
 "Foretræk altid disse handlinger frem for alternativer der ikke er blevet "
 "accepteret."
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:108
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s afhænger af %s"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:111
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s forhåndsafhænger af %s"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:114
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s foreslår %s"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:117
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s anbefaler %s"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:120
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s konflikter med %s"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:123
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s ødelægger %s"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:126
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s erstatter %s"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:129
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s gør %s forældet"
@@ -5441,53 +5594,53 @@ msgstr ""
 msgid "Invalid logger name \"%s\"."
 msgstr "Ugyldigt logningsbetegnelse \"%s\"."
 
-#: src/main.cc:692
+#: src/main.cc:690
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Forventede et tal efter -q=\n"
 
-#: src/main.cc:701
+#: src/main.cc:699
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Forventede et tal efter -q=, fik %s\n"
 
-#: src/main.cc:725
+#: src/main.cc:723
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o kræver et argument på formen taste=værdi, fik %s\n"
 
-#: src/main.cc:823
+#: src/main.cc:821
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Intet komma efter mærkatnavn \"%s\".\n"
 
-#: src/main.cc:893 src/main.cc:902
+#: src/main.cc:891 src/main.cc:900
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "MYSTISK: modtog en ukendt kode for tilvalg\n"
 
-#: src/main.cc:908
+#: src/main.cc:906
 msgid "no-summary"
 msgstr "ingen-opsummering"
 
-#: src/main.cc:910
+#: src/main.cc:908
 msgid "first-package"
 msgstr "første-pakke"
 
-#: src/main.cc:912
+#: src/main.cc:910
 msgid "first-package-and-type"
 msgstr "første-pakke-og-type"
 
-#: src/main.cc:914
+#: src/main.cc:912
 msgid "all-packages"
 msgstr "alle-pakker"
 
-#: src/main.cc:916
+#: src/main.cc:914
 msgid "all-packages-with-dep-versions"
 msgstr "alle-pakke-med-afh-versioner"
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:922
+#: src/main.cc:920
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5538,11 +5691,11 @@ msgstr ""
 "Backtrace:\n"
 "%s\n"
 
-#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:166
+#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:168
 msgid "Search for: "
 msgstr "Søg efter: "
 
-#: src/menu_text_layout.cc:75 src/menu_tree.cc:244 src/view_changelog.cc:178
+#: src/menu_text_layout.cc:75 src/menu_tree.cc:244 src/view_changelog.cc:180
 msgid "Search backwards for: "
 msgstr "Søg baglæns efter: "
 
@@ -6580,52 +6733,52 @@ msgstr "Anvend"
 msgid "Close"
 msgstr "Luk"
 
-#: src/solution_fragment.cc:142
+#: src/solution_fragment.cc:146
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s konflikter med %s [givet af %s %s]"
 
-#: src/solution_fragment.cc:155
+#: src/solution_fragment.cc:159
 #, c-format
 msgid "Removing %s"
 msgstr "Afinstallerer %s"
 
-#: src/solution_fragment.cc:157
+#: src/solution_fragment.cc:161
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "Installerer %s %s (%s)"
 
-#: src/solution_fragment.cc:162
+#: src/solution_fragment.cc:166
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr "Efterlad %ls uløst."
 
-#: src/solution_fragment.cc:245
+#: src/solution_fragment.cc:392
 msgid "%BRemove%b the following packages:%n"
 msgstr "%BAfinstallér%b de følgende pakker:%n"
 
-#: src/solution_fragment.cc:255
+#: src/solution_fragment.cc:407
 msgid "%BInstall%b the following packages:%n"
 msgstr "%BInstallér%b de følgende pakker:%n"
 
-#: src/solution_fragment.cc:268
+#: src/solution_fragment.cc:425
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BBehold%b de følgende pakker i deres nuværende version:%n"
 
-#: src/solution_fragment.cc:288
+#: src/solution_fragment.cc:449
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%BOpgradér%b de følgende pakker:%n"
 
-#: src/solution_fragment.cc:303
+#: src/solution_fragment.cc:469
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BNedgradér%b de følgende pakker:%n"
 
-#: src/solution_fragment.cc:318
+#: src/solution_fragment.cc:490
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Efterlad de følgende afhængigheder uafklaret:%n"
 
-#: src/solution_fragment.cc:325
+#: src/solution_fragment.cc:501
 #, c-format
 msgid "Tier: %s"
 msgstr "Lag: %s"
@@ -7576,26 +7729,38 @@ msgstr "ja_taste"
 msgid "no_key"
 msgstr "nej_taste"
 
-#: src/view_changelog.cc:271
+#: src/view_changelog.cc:273
 #, c-format
 msgid "%s changes"
 msgstr "%s ændringer"
 
-#: src/view_changelog.cc:272
+#: src/view_changelog.cc:274
 msgid "View the list of changes made to this Debian package."
 msgstr "Vis listen over ændringer i denne Debian-pakke."
 
-#: src/view_changelog.cc:369
-msgid "You can only view changelogs of official Debian packages."
-msgstr "Du kan kun se ændringslogfiler for officielle Debian-pakker."
-
-#: src/view_changelog.cc:389
+#: src/view_changelog.cc:364
 msgid "Downloading Changelog"
 msgstr "Henter ændringslog"
 
-#: src/view_changelog.cc:391
-msgid "Download Changelog"
-msgstr "Hent ændringslog"
+#: src/view_changelog.cc:397
+msgid "You can only view changelogs of official Debian packages."
+msgstr "Du kan kun se ændringslogfiler for officielle Debian-pakker."
+
+#, fuzzy
+#~| msgid "No resolution found."
+#~ msgid "No changelog found."
+#~ msgstr "Ingen løsning fundet."
+
+#, fuzzy
+#~| msgid "Cannot open package hierarchy file %s"
+#~ msgid "Can't create a temporary file: %s"
+#~ msgstr "Kan ikke åbne pakkehierarki-fil %s"
+
+#~ msgid "Downloading changelogs"
+#~ msgstr "Henter ændringslogs"
+
+#~ msgid "Download Changelog"
+#~ msgstr "Hent ændringslog"
 
 #~ msgid "Unable to delete temporary directory \"%s\""
 #~ msgstr "Kunne ikke fjerne midlertidigt katalog \"%s\""

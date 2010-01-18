@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude doc es 0.6\n"
-"POT-Creation-Date: 2009-11-19 09:26-0800\n"
+"POT-Creation-Date: 2010-01-17 19:52-0800\n"
 "PO-Revision-Date: 2009-11-13 22:23+0100\n"
 "Last-Translator: Omar Campagne <ocampagne@gmail.com>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -66,7 +66,7 @@ msgstr "<systemitem class=\"username\">root</systemitem>"
 #. type: Content of the VERSION entity
 #: en/aptitude.xml:10
 #, fuzzy
-msgid "0.6.1.3"
+msgid "0.6.1.4"
 msgstr "0.6.0.1"
 
 #. type: Content of the actions-install entity
@@ -3989,7 +3989,7 @@ msgstr "Orden"
 #: en/aptitude.xml:4425 en/aptitude.xml:5230 en/aptitude.xml:6769
 #: en/aptitude.xml:6860 en/aptitude.xml:7678 en/aptitude.xml:8511
 #: en/aptitude.xml:8820 en/aptitude.xml:9135 en/aptitude.xml:10220
-#: en/manpage.xml:183 en/manpage.xml:2333 en/manpage.xml:2538
+#: en/manpage.xml:183 en/manpage.xml:2327 en/manpage.xml:2532
 msgid "Description"
 msgstr "Descripción"
 
@@ -10619,7 +10619,7 @@ msgstr "Literal <literal>%</literal>"
 #. type: Content of: <refentry><refmeta><manvolnum>
 #: en/aptitude.xml:6774 en/aptitude.xml:6802 en/aptitude.xml:6838
 #: en/aptitude.xml:6923 en/aptitude.xml:7030 en/aptitude.xml:7050
-#: en/manpage.xml:2314 en/manpage.xml:2517
+#: en/manpage.xml:2308 en/manpage.xml:2511
 msgid "1"
 msgstr "1"
 
@@ -18918,7 +18918,7 @@ msgid "<literal>Dir::Aptitude::state</literal>"
 msgstr "<literal>Dir::Aptitude::state</literal>"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/aptitude.xml:12103 en/manpage.xml:2348
+#: en/aptitude.xml:12103 en/manpage.xml:2342
 msgid "<filename>/var/lib/aptitude</filename>"
 msgstr "<filename>/var/lib/aptitude</filename>"
 
@@ -20002,11 +20002,13 @@ msgstr ""
 
 #. type: Content of: <refentry><refentryinfo><legalnotice><para>
 #: en/manpage.xml:25
-msgid "Copyright 2004-2009 Daniel Burrows."
+#, fuzzy
+#| msgid "Copyright 2004-2009 Daniel Burrows."
+msgid "Copyright 2004-2010 Daniel Burrows."
 msgstr "Copyright 2004-2009 Daniel Burrows."
 
 #. type: Content of: <refentry><refentryinfo><legalnotice><para>
-#: en/manpage.xml:29 en/manpage.xml:2288 en/manpage.xml:2491
+#: en/manpage.xml:29 en/manpage.xml:2282 en/manpage.xml:2485
 msgid ""
 "This manual page is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -20019,7 +20021,7 @@ msgstr ""
 "any later version."
 
 #. type: Content of: <refentry><refentryinfo><legalnotice><para>
-#: en/manpage.xml:37 en/manpage.xml:2296 en/manpage.xml:2499
+#: en/manpage.xml:37 en/manpage.xml:2290 en/manpage.xml:2493
 msgid ""
 "This manual page is distributed in the hope that it will be useful, but "
 "WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY "
@@ -20032,7 +20034,7 @@ msgstr ""
 "more details."
 
 #. type: Content of: <refentry><refentryinfo><legalnotice><para>
-#: en/manpage.xml:45 en/manpage.xml:2304 en/manpage.xml:2507
+#: en/manpage.xml:45 en/manpage.xml:2298 en/manpage.xml:2501
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -20651,21 +20653,8 @@ msgstr ""
 "literal> intentaría actualizar el paquete <systemitem>bash</systemitem> y "
 "eliminar el paquete <systemitem>dash</systemitem>."
 
-#. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><note><para>
-#: en/manpage.xml:513
-msgid ""
-"The way <literal>safe-upgrade</literal> treats its extra arguments is in "
-"contrast to <link linkend='manpageFullUpgrade'><literal>full-upgrade</"
-"literal></link>, which will always upgrade every package, treating its "
-"command-line arguments as additional actions to perform."
-msgstr ""
-"La manera en que <literal>safe-upgrade</literal> trata sus argumentos se "
-"diferencia de <link linkend='manpageFullUpgrade'><literal>full-upgrade</"
-"literal></link>, el cual siempre actualizaría todo paquete, tratando sus "
-"argumentos en la línea de órdenes como acciones adicionales a ejecutar."
-
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:522
+#: en/manpage.xml:512
 msgid ""
 "It is sometimes necessary to remove one package in order to upgrade another; "
 "this command is not able to upgrade packages in such situations.  Use the "
@@ -20678,12 +20667,12 @@ msgstr ""
 "link> para actualizar tantos paquetes como sea posible."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:532
+#: en/manpage.xml:522
 msgid "<literal>full-upgrade</literal>"
 msgstr "<literal>full-upgrade</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:536
+#: en/manpage.xml:526
 msgid ""
 "Upgrades installed packages to their most recent version, removing or "
 "installing packages as necessary.  This command is less conservative than "
@@ -20700,26 +20689,42 @@ msgstr ""
 "upgrade</literal></link> es incapaz de actualizar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:547
+#: en/manpage.xml:537
+#, fuzzy
+#| msgid ""
+#| "If no <replaceable>package</replaceable>s are listed on the command line, "
+#| "&aptitude; will attempt to upgrade every package that can be upgraded.  "
+#| "Otherwise, &aptitude; will attempt to upgrade only the packages which it "
+#| "is instructed to upgrade.  The <replaceable>package</replaceable>s can be "
+#| "extended with suffixes in the same manner as arguments to "
+#| "<literal>aptitude install</literal>, so you can also give additional "
+#| "instructions to &aptitude; here; for instance, <literal>aptitude safe-"
+#| "upgrade bash dash-</literal> will attempt to upgrade the "
+#| "<systemitem>bash</systemitem> package and remove the <systemitem>dash</"
+#| "systemitem> package."
 msgid ""
-"Additional <replaceable>package</replaceable>s listed on the command line "
-"are treated as extra actions to be taken above and beyond simply upgrading "
-"all packages.  These arguments are treated in the same manner as arguments "
-"to <link linkend='cmdlineInstall'><literal>aptitude install</literal></"
-"link>; for instance, <literal>aptitude dist-upgrade gimp-</literal> will "
-"upgrade all packages that can be upgraded, except for <systemitem>gimp</"
-"systemitem>, which will be removed."
+"If no <replaceable>package</replaceable>s are listed on the command line, "
+"&aptitude; will attempt to upgrade every package that can be upgraded.  "
+"Otherwise, &aptitude; will attempt to upgrade only the packages which it is "
+"instructed to upgrade.  The <replaceable>package</replaceable>s can be "
+"extended with suffixes in the same manner as arguments to <literal>aptitude "
+"install</literal>, so you can also give additional instructions to "
+"&aptitude; here; for instance, <literal>aptitude full-upgrade bash dash-</"
+"literal> will attempt to upgrade the <systemitem>bash</systemitem> package "
+"and remove the <systemitem>dash</systemitem> package."
 msgstr ""
-"Los <replaceable>paquete</replaceable>s añadidos en la línea de órdenes se "
-"toman como acciones adicionales más allá de sólo actualizar todos los "
-"paquetes. Estos argumentos se tratan de la misma forma que con <link "
-"linkend='cmdlineInstall'><literal>aptitude install</literal></link>. Por "
-"ejemplo, <literal>aptitude dist-upgrade gimp-</literal> actualizaría todos "
-"los paquetes susceptibles de ello, a excepción de <systemitem>gimp</"
-"systemitem>, que se eliminará."
+"Si no introduce ningún <replaceable>paquete</replaceable> en la línea de "
+"órdenes, &aptitude; intentará actualizar todos los paquetes susceptibles de "
+"ello. De no ser así, &aptitude; intentará actualizar sólo aquellos paquetes "
+"que se deben actualizar. Puede extender <replaceable>paquete</replaceable> "
+"con sufijos de la misma manera que da argumentos a <literal>aptitude "
+"install</literal>, lo que le permite dar a &aptitude; instrucciones "
+"adicionales. Por ejemplo, <literal>aptitude safe-upgrade bash dash-</"
+"literal> intentaría actualizar el paquete <systemitem>bash</systemitem> y "
+"eliminar el paquete <systemitem>dash</systemitem>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><note><para>
-#: en/manpage.xml:560
+#: en/manpage.xml:554
 msgid ""
 "This command was originally named <literal>dist-upgrade</literal> for "
 "historical reasons, and &aptitude; still recognizes <literal>dist-upgrade</"
@@ -20730,12 +20735,12 @@ msgstr ""
 "como sinónimo de <literal>full-upgrade</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:571
+#: en/manpage.xml:565
 msgid "<literal>keep-all</literal>"
 msgstr "<literal>keep-all</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:575
+#: en/manpage.xml:569
 msgid ""
 "Cancels all scheduled actions on all packages; any packages whose sticky "
 "state indicates an installation, removal, or upgrade will have this sticky "
@@ -20746,12 +20751,12 @@ msgstr ""
 "actualizar o eliminar el paquete."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:583
+#: en/manpage.xml:577
 msgid "<literal>forget-new</literal>"
 msgstr "<literal>forget-new</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:587
+#: en/manpage.xml:581
 msgid ""
 "Forgets all internal information about what packages are <quote>new</quote> "
 "(equivalent to pressing <quote><keycap>f</keycap></quote> when in visual "
@@ -20762,12 +20767,12 @@ msgstr ""
 "gráfico)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:595
+#: en/manpage.xml:589
 msgid "<literal>search</literal>"
 msgstr "<literal>search</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:599
+#: en/manpage.xml:593
 msgid ""
 "Searches for packages matching one of the patterns supplied on the command "
 "line.  All packages which match any of the given patterns will be displayed; "
@@ -20787,7 +20792,7 @@ msgstr ""
 "linkend='secSearchPatterns'>Patrones de búsqueda</link></quote>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:611
+#: en/manpage.xml:605
 msgid ""
 "Unless you pass the <link linkend='cmdlineOptionFormat'><literal>-F</"
 "literal></link> option, the output of <literal>aptitude search</literal> "
@@ -20798,7 +20803,7 @@ msgstr ""
 "<literal>aptitude search</literal> tendrá este aspecto:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><screen>
-#: en/manpage.xml:617
+#: en/manpage.xml:611
 #, no-wrap
 msgid ""
 "i   apt                             - Advanced front-end for dpkg              \n"
@@ -20812,7 +20817,7 @@ msgstr ""
 "ihA raptor-utils                    - Raptor RDF Parser utilities"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:623
+#: en/manpage.xml:617
 msgid ""
 "Each search result is listed on a separate line.  The first character of "
 "each line indicates the current state of the package: the most common states "
@@ -20843,7 +20848,7 @@ msgstr ""
 "que el paquete se instaló automáticamente."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:644
+#: en/manpage.xml:638
 msgid ""
 "For a complete list of the possible state and action flags, see the section "
 "<quote><link linkend='secAccessingPackageInformation'>Accessing Package "
@@ -20861,12 +20866,12 @@ msgstr ""
 "linkend='cmdlineOptionSort'><literal>--sort</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:659
+#: en/manpage.xml:653
 msgid "<literal>show</literal>"
 msgstr "<literal>show</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:663
+#: en/manpage.xml:657
 msgid ""
 "Displays detailed information about one or more packages, listed following "
 "the search command.  If a package name contains a tilde character "
@@ -20885,7 +20890,7 @@ msgstr ""
 "de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:675
+#: en/manpage.xml:669
 msgid ""
 "If the verbosity level is 1 or greater (i.e., at least one <literal>-v</"
 "literal> is present on the command-line), information about all versions of "
@@ -20900,7 +20905,7 @@ msgstr ""
 "<quote><literal>aptitude install</literal></quote> descargaría)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:684
+#: en/manpage.xml:678
 msgid ""
 "You can display information about a different version of the package by "
 "appending <literal>=<replaceable>version</replaceable></literal> to the "
@@ -20920,7 +20925,7 @@ msgstr ""
 "independientemente del nivel de verbosidad."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:699
+#: en/manpage.xml:693
 msgid ""
 "If the verbosity level is 1 or greater, the package's architecture, "
 "compressed size, filename, and md5sum fields will be displayed.  If the "
@@ -20933,12 +20938,12 @@ msgstr ""
 "mostrarán una vez por cada archivo en el que se encontraron."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:709
+#: en/manpage.xml:703
 msgid "<literal>add-user-tag</literal>, <literal>remove-user-tag</literal>"
 msgstr "<literal>add-user-tag</literal>, <literal>remove-user-tag</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:713
+#: en/manpage.xml:707
 msgid ""
 "Adds a user tag to or removes a user tag from the selected group of "
 "packages.  If a package name contains a tilde (<quote><literal>~</literal></"
@@ -20957,7 +20962,7 @@ msgstr ""
 "de búsqueda</link></quote> en el manual de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:725
+#: en/manpage.xml:719
 msgid ""
 "User tags are arbitrary strings associated with a package.  They can be used "
 "with the <link linkend='searchUserTag'><literal>?user-tag(<replaceable>tag</"
@@ -20971,12 +20976,12 @@ msgstr ""
 "una etiqueta de usuario que coincide con <replaceable>etiqueta</replaceable>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:735
+#: en/manpage.xml:729
 msgid "<literal>why</literal>, <literal>why-not</literal>"
 msgstr "<literal>why</literal>, <literal>why-not</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:739
+#: en/manpage.xml:733
 msgid ""
 "Explains the reason that a particular package should or cannot be installed "
 "on the system."
@@ -20985,7 +20990,7 @@ msgstr ""
 "instalar en el sistema."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:744
+#: en/manpage.xml:738
 msgid ""
 "This command searches for packages that require or conflict with the given "
 "package.  It displays a sequence of dependencies leading to the target "
@@ -20998,7 +21003,7 @@ msgstr ""
 "en la cadena de dependencias."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><screen>
-#: en/manpage.xml:751
+#: en/manpage.xml:745
 #, no-wrap
 msgid ""
 "$ aptitude why kdepim\n"
@@ -21014,7 +21019,7 @@ msgstr ""
 "p   kde           Depende de   kdepim (>= 4:3.4.3)"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:758
+#: en/manpage.xml:752
 msgid ""
 "The command <literal>why</literal> finds a dependency chain that installs "
 "the package named on the command line, as above.  Note that the dependency "
@@ -21031,7 +21036,7 @@ msgstr ""
 "de haber una dependencia más fuerte, aptitude la habría mostrado."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:769
+#: en/manpage.xml:763
 msgid ""
 "In contrast, <literal>why-not</literal> finds a dependency chain leading to "
 "a conflict with the target package:"
@@ -21040,7 +21045,7 @@ msgstr ""
 "dependencias que lleva a un conflicto con el paquete objetivo."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><screen>
-#: en/manpage.xml:774
+#: en/manpage.xml:768
 #, no-wrap
 msgid ""
 "$ aptitude why-not textopo\n"
@@ -21054,7 +21059,7 @@ msgstr ""
 "i A texlive-latex-extra tiene conflictos con textopo"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:780
+#: en/manpage.xml:774
 msgid ""
 "If one or more <replaceable>pattern</replaceable>s are present, then "
 "aptitude will begin its search at these patterns; that is, the first package "
@@ -21077,7 +21082,7 @@ msgstr ""
 "de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:795
+#: en/manpage.xml:789
 msgid ""
 "If no patterns are present, then &aptitude; will search for dependency "
 "chains beginning at manually installed packages.  This effectively shows the "
@@ -21089,7 +21094,7 @@ msgstr ""
 "particular."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><note><para>
-#: en/manpage.xml:803
+#: en/manpage.xml:797
 msgid ""
 "<literal>aptitude why</literal> does not perform full dependency resolution; "
 "it only displays direct relationships between packages.  For instance, if A "
@@ -21105,7 +21110,7 @@ msgstr ""
 "C</quote>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:814
+#: en/manpage.xml:808
 msgid ""
 "By default aptitude outputs only the <quote>most installed, strongest, "
 "tightest, shortest</quote> dependency chain.  That is, it looks for a chain "
@@ -21124,7 +21129,7 @@ msgstr ""
 "reglas se debilitan de manera progresiva hasta encontrar una correspondencia."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:827
+#: en/manpage.xml:821
 msgid ""
 "If the verbosity level is 1 or more, then <emphasis>all</emphasis> the "
 "explanations aptitude can find will be displayed, in inverse order of "
@@ -21138,7 +21143,7 @@ msgstr ""
 "de la salida estándar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:836
+#: en/manpage.xml:830
 msgid ""
 "This command returns 0 if successful, 1 if no explanation could be "
 "constructed, and -1 if an error occured."
@@ -21147,12 +21152,12 @@ msgstr ""
 "explicación, y -1 en caso de error."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:843
+#: en/manpage.xml:837
 msgid "<literal>clean</literal>"
 msgstr "<literal>clean</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:847
+#: en/manpage.xml:841
 msgid ""
 "Removes all previously downloaded <literal>.deb</literal> files from the "
 "package cache directory (usually <filename>/var/cache/apt/archives</"
@@ -21162,12 +21167,12 @@ msgstr ""
 "de paquetes (generalmente <filename>/var/cache/apt/archives</filename>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:854
+#: en/manpage.xml:848
 msgid "<literal>autoclean</literal>"
 msgstr "<literal>autoclean</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:858
+#: en/manpage.xml:852
 msgid ""
 "Removes any cached packages which can no longer be downloaded.  This allows "
 "you to prevent a cache from growing out of control over time without "
@@ -21178,12 +21183,12 @@ msgstr ""
 "sin tener que vaciarlo en su totalidad."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:867
+#: en/manpage.xml:861
 msgid "<literal>changelog</literal>"
 msgstr "<literal>changelog</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:871
+#: en/manpage.xml:865
 msgid ""
 "Downloads and displays the Debian changelog for each of the given source or "
 "binary packages."
@@ -21192,7 +21197,7 @@ msgstr ""
 "binario o fuente dado."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:876
+#: en/manpage.xml:870
 msgid ""
 "By default, the changelog for the version which would be installed with "
 "<quote><literal>aptitude install</literal></quote> is downloaded.  You can "
@@ -21214,12 +21219,12 @@ msgstr ""
 "literal>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:892
+#: en/manpage.xml:886
 msgid "<literal>download</literal>"
 msgstr "<literal>download</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:896
+#: en/manpage.xml:890
 msgid ""
 "Downloads the <literal>.deb</literal> file for the given package to the "
 "current directory.  If a package name contains a tilde character "
@@ -21238,7 +21243,7 @@ msgstr ""
 "del manual de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:908
+#: en/manpage.xml:902
 msgid ""
 "By default, the version which would be installed with "
 "<quote><literal>aptitude install</literal></quote> is downloaded.  You can "
@@ -21260,12 +21265,12 @@ msgstr ""
 "literal>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:924
+#: en/manpage.xml:918
 msgid "<literal>extract-cache-subset</literal>"
 msgstr "<literal>extract-cache-subset</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:928
+#: en/manpage.xml:922
 msgid ""
 "Copy the apt configuration directory (<literal>/etc/apt</literal>) and a "
 "subset of the package database to the specified directory.  If no packages "
@@ -21287,7 +21292,7 @@ msgstr ""
 "el directorio de salida se sobreescribirá."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:943
+#: en/manpage.xml:937
 msgid ""
 "Dependencies in binary package stanzas will be rewritten to remove "
 "references to packages not in the selected set."
@@ -21297,22 +21302,22 @@ msgstr ""
 "seleccionado."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:950
+#: en/manpage.xml:944
 msgid "<literal>help</literal>"
 msgstr "<literal>help</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:954
+#: en/manpage.xml:948
 msgid "Displays a brief summary of the available commands and options."
 msgstr "Mostrar un breve resumen de las órdenes disponibles y sus opciones."
 
 #. type: Content of: <refentry><refsect1><title>
-#: en/manpage.xml:963 en/manpage.xml:2375 en/manpage.xml:2554
+#: en/manpage.xml:957 en/manpage.xml:2369 en/manpage.xml:2548
 msgid "Options"
 msgstr "Opciones"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:966
+#: en/manpage.xml:960
 msgid ""
 "The following options may be used to modify the behavior of the actions "
 "described above.  Note that while all options will be accepted for all "
@@ -21325,12 +21330,12 @@ msgstr ""
 "órdenes y estas órdenes las ignorarán."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:976
+#: en/manpage.xml:970
 msgid "<literal>--add-user-tag <replaceable>tag</replaceable></literal>"
 msgstr "<literal>--add-user-tag <replaceable>etiqueta</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:980
+#: en/manpage.xml:974
 msgid ""
 "For <literal>full-upgrade</literal>, <literal>safe-upgrade</literal>, "
 "<literal>forbid-version</literal>, <literal>hold</literal>, "
@@ -21355,7 +21360,7 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:999
+#: en/manpage.xml:993
 msgid ""
 "<literal>--add-user-tag-to <replaceable>tag</replaceable>,"
 "<replaceable>pattern</replaceable></literal>"
@@ -21364,7 +21369,7 @@ msgstr ""
 "<replaceable>patrón</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1003
+#: en/manpage.xml:997
 msgid ""
 "For <literal>full-upgrade</literal>, <literal>safe-upgrade</literal> "
 "<literal>forbid-version</literal>, <literal>hold</literal>, "
@@ -21393,7 +21398,7 @@ msgstr ""
 "en el manual de referencia de aptitude."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1021
+#: en/manpage.xml:1015
 msgid ""
 "For instance, <literal>aptitude safe-upgrade --add-user-tag-to \"new-"
 "installs,?action(install)\"</literal> will add the tag <literal>new-"
@@ -21406,12 +21411,12 @@ msgstr ""
 "linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1032
+#: en/manpage.xml:1026
 msgid "<literal>--allow-new-upgrades</literal>"
 msgstr "<literal>--allow-new-upgrades</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1036
+#: en/manpage.xml:1030
 msgid ""
 "When the safe resolver is being used (i.e., <link "
 "linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link> was "
@@ -21430,12 +21435,12 @@ msgstr ""
 "Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1049
+#: en/manpage.xml:1043
 msgid "<literal>--allow-new-installs</literal>"
 msgstr "<literal>--allow-new-installs</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1053
+#: en/manpage.xml:1047
 msgid ""
 "Allow the <link linkend='manpageSafeUpgrade'><literal>safe-upgrade</"
 "literal></link> command to install new packages; when the safe resolver is "
@@ -21459,12 +21464,12 @@ msgstr ""
 "Resolver::No-New-Installs</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1069
+#: en/manpage.xml:1063
 msgid "<literal>--allow-untrusted</literal>"
 msgstr "<literal>--allow-untrusted</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1073
+#: en/manpage.xml:1067
 msgid ""
 "Install packages from untrusted sources without prompting.  You should only "
 "use this if you know what you are doing, as it could easily compromise your "
@@ -21475,12 +21480,12 @@ msgstr ""
 "fácilmente la seguridad de su sistema."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1081
+#: en/manpage.xml:1075
 msgid "<literal>--disable-columns</literal>"
 msgstr "<literal>--disable-columns</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1085
+#: en/manpage.xml:1079
 msgid ""
 "This option causes <literal>aptitude search</literal> to output its results "
 "without any special formatting.  In particular: normally &aptitude; will add "
@@ -21498,7 +21503,7 @@ msgstr ""
 "las columnas."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1096
+#: en/manpage.xml:1090
 msgid ""
 "For instance, the first few lines of output from <quote><literal>aptitude "
 "search -F '%p %V' --disable-columns libedataserver</literal></quote> might "
@@ -21509,7 +21514,7 @@ msgstr ""
 "ser:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><screen>
-#: en/manpage.xml:1099
+#: en/manpage.xml:1093
 #, no-wrap
 msgid ""
 "disksearch 1.2.1-3\n"
@@ -21527,7 +21532,7 @@ msgstr ""
 "libdbix-fulltextsearch-perl 0.73-10"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1107
+#: en/manpage.xml:1101
 msgid ""
 "As in the above example, <literal>--disable-columns</literal> is often "
 "useful in combination with a custom display format set using the command-"
@@ -21539,7 +21544,7 @@ msgstr ""
 "linkend='cmdlineOptionFormat'><literal>-F</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1115
+#: en/manpage.xml:1109
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Disable-Columns'>Aptitude::CmdLine::Disable-Columns</"
@@ -21550,12 +21555,12 @@ msgstr ""
 "link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1123
+#: en/manpage.xml:1117
 msgid "<literal>-D</literal>, <literal>--show-deps</literal>"
 msgstr "<literal>-D</literal>, <literal>--show-deps</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1127
+#: en/manpage.xml:1121
 msgid ""
 "For commands that will install or remove packages (<literal>install</"
 "literal>, <link linkend='manpageFullUpgrade'><literal>full-upgrade</"
@@ -21568,7 +21573,7 @@ msgstr ""
 "linkend='manpageFullUpgrade'><literal>full-upgrade</literal></link>, etc)"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1135
+#: en/manpage.xml:1129
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Show-Deps'>Aptitude::CmdLine::Show-Deps</link></"
@@ -21579,12 +21584,12 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1141
+#: en/manpage.xml:1135
 msgid "<literal>-d</literal>, <literal>--download-only</literal>"
 msgstr "<literal>-d</literal>, <literal>--download-only</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1145
+#: en/manpage.xml:1139
 msgid ""
 "Download packages to the package cache as necessary, but do not install or "
 "remove anything.  By default, the package cache is stored in <filename>/var/"
@@ -21595,7 +21600,7 @@ msgstr ""
 "se guarda en <filename>/var/cache/apt/archives</filename>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1152
+#: en/manpage.xml:1146
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Download-Only'>Aptitude::CmdLine::Download-Only</"
@@ -21606,7 +21611,7 @@ msgstr ""
 "link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1160
+#: en/manpage.xml:1154
 msgid ""
 "<literal>-F</literal> <replaceable>format</replaceable>, <literal>--display-"
 "format</literal> <replaceable>format</replaceable>"
@@ -21615,7 +21620,7 @@ msgstr ""
 "format</literal> <replaceable>formato</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1165
+#: en/manpage.xml:1159
 msgid ""
 "Specify the format which should be used to display output from the "
 "<literal>search</literal> command.  For instance, passing <quote><literal>%p "
@@ -21634,7 +21639,7 @@ msgstr ""
 "link></quote>) en el manual de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1174
+#: en/manpage.xml:1168
 msgid ""
 "The command-line option <link "
 "linkend='cmdlineOptionDisableColumns'><literal>--disable-columns</literal></"
@@ -21645,7 +21650,7 @@ msgstr ""
 "link> es a veces útil combinado con <literal>-F</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1180
+#: en/manpage.xml:1174
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Package-Display-Format'>Aptitude::CmdLine::Package-"
@@ -21656,12 +21661,12 @@ msgstr ""
 "Display-Format</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1186
+#: en/manpage.xml:1180
 msgid "<literal>-f</literal>"
 msgstr "<literal>-f</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1190
+#: en/manpage.xml:1184
 msgid ""
 "Try hard to fix the dependencies of broken packages, even if it means "
 "ignoring the actions requested on the command line."
@@ -21670,7 +21675,7 @@ msgstr ""
 "si ello significa ignorar las acciones introducidas en la línea de órdenes."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1196
+#: en/manpage.xml:1190
 msgid ""
 "This corresponds to the configuration item <literal><link "
 "linkend='configCmdLine-Fix-Broken'>Aptitude::CmdLine::Fix-Broken</link></"
@@ -21681,12 +21686,12 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1202
+#: en/manpage.xml:1196
 msgid "<literal>--full-resolver</literal>"
 msgstr "<literal>--full-resolver</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1206
+#: en/manpage.xml:1200
 msgid ""
 "When package dependency problems are encountered, use the default "
 "<quote>full</quote> resolver to solve them.  Unlike the <quote>safe</quote> "
@@ -21704,7 +21709,7 @@ msgstr ""
 "algoritmo seguro, pero puede que sus soluciones sean indeseables."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1217
+#: en/manpage.xml:1211
 msgid ""
 "This option can be used to force the use of the full resolver even when "
 "<link linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-"
@@ -21721,12 +21726,12 @@ msgstr ""
 "full-resolver</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1230
+#: en/manpage.xml:1224
 msgid "<literal>-h</literal>, <literal>--help</literal>"
 msgstr "<literal>-h</literal>, <literal>--help</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1235
+#: en/manpage.xml:1229
 msgid ""
 "Display a brief help message.  Identical to the <literal>help</literal> "
 "action."
@@ -21735,13 +21740,13 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1242
+#: en/manpage.xml:1236
 msgid "<literal>--log-config-file=<replaceable>file</replaceable></literal>"
 msgstr ""
 "<literal>--log-config-file=<replaceable>archivo</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1247
+#: en/manpage.xml:1241
 msgid ""
 "Read logging configuration from the given <replaceable>file</replaceable>.  "
 "The logging configuration is in the file format used by <ulink "
@@ -21758,7 +21763,7 @@ msgstr ""
 "opción varias veces, la última aparición es la única que tiene efecto."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1258
+#: en/manpage.xml:1252
 msgid ""
 "This does not affect the log of installations that aptitude has performed "
 "(<filename>/var/log/aptitude</filename>); the log messages written using "
@@ -21780,7 +21785,7 @@ msgstr ""
 "cualquier configuración realizada en este archivo de configuración."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1273
+#: en/manpage.xml:1267
 msgid ""
 "This corresponds to the configuration option <link "
 "linkend='configLoggingConfigFile'><literal>Aptitude::Logging::Config-File</"
@@ -21791,12 +21796,12 @@ msgstr ""
 "literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1281
+#: en/manpage.xml:1275
 msgid "<literal>--log-file=<replaceable>file</replaceable></literal>"
 msgstr "<literal>--log-file=<replaceable>archivo</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1286
+#: en/manpage.xml:1280
 msgid ""
 "If <replaceable>file</replaceable> is a nonempty string, log messages will "
 "be written to it, except that if <replaceable>file</replaceable> is "
@@ -21811,7 +21816,7 @@ msgstr ""
 "aparición es la que tiene efecto."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1296
+#: en/manpage.xml:1290
 msgid ""
 "This does not affect the log of installations that aptitude has performed "
 "(<filename>/var/log/aptitude</filename>); the log messages written using "
@@ -21839,7 +21844,7 @@ msgstr ""
 "configurado con <literal>--log-config-file</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1314
+#: en/manpage.xml:1308
 msgid ""
 "This corresponds to the configuration option <link "
 "linkend='configLoggingFile'><literal>Aptitude::Logging::File</literal></"
@@ -21850,7 +21855,7 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1322
+#: en/manpage.xml:1316
 msgid ""
 "<literal>--log-level=<replaceable>level</replaceable></literal>, <literal>--"
 "log-level=<replaceable>category</replaceable>:<replaceable>level</"
@@ -21861,7 +21866,7 @@ msgstr ""
 "replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1327
+#: en/manpage.xml:1321
 msgid ""
 "<literal>--log-level=<replaceable>level</replaceable></literal> causes "
 "&aptitude; to only log messages whose level is <replaceable>level</"
@@ -21885,7 +21890,7 @@ msgstr ""
 "literal>. El nivel de registro predeterminado es <literal>warn</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1342
+#: en/manpage.xml:1336
 msgid ""
 "<literal>--log-level=<replaceable>category</replaceable>:<replaceable>level</"
 "replaceable></literal> causes messages in <replaceable>category</"
@@ -21898,7 +21903,7 @@ msgstr ""
 "su nivel es <replaceable>nivel</replaceable> o superior."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1349
+#: en/manpage.xml:1343
 msgid ""
 "<literal>--log-level</literal> may appear multiple times on the command "
 "line; the most specific setting is the one that takes effect, so if you pass "
@@ -21921,7 +21926,7 @@ msgstr ""
 "la que tiene efecto."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1365
+#: en/manpage.xml:1359
 msgid ""
 "This does not affect the log of installations that aptitude has performed "
 "(<filename>/var/log/aptitude</filename>); the log messages written using "
@@ -21947,7 +21952,7 @@ msgstr ""
 "level</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1382
+#: en/manpage.xml:1376
 msgid ""
 "This corresponds to the configuration group <link "
 "linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></"
@@ -21958,12 +21963,12 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1390
+#: en/manpage.xml:1384
 msgid "<literal>--log-resolver</literal>"
 msgstr "<literal>--log-resolver</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1395
+#: en/manpage.xml:1389
 msgid ""
 "Set some standard log levels related to the resolver, to produce logging "
 "output suitable for processing with automated tools.  This is equivalent to "
@@ -21977,12 +21982,12 @@ msgstr ""
 "resolver.search.tiers:warn</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1407
+#: en/manpage.xml:1401
 msgid "<literal>--no-new-installs</literal>"
 msgstr "<literal>--no-new-installs</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1412
+#: en/manpage.xml:1406
 msgid ""
 "Prevent <link linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></"
 "link> from installing any new packages; when the safe resolver is being used "
@@ -22006,14 +22011,14 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1426
+#: en/manpage.xml:1420
 msgid ""
 "This mimics the historical behavior of <command>apt-get upgrade</command>."
 msgstr ""
 "Esto imita el comportamiento histórico de <command>apt-get upgrade</command>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1431
+#: en/manpage.xml:1425
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Safe-Upgrade-No-New-Installs'>Aptitude::CmdLine::Safe-"
@@ -22024,12 +22029,12 @@ msgstr ""
 "Upgrade::No-New-Installs</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1439
+#: en/manpage.xml:1433
 msgid "<literal>--no-new-upgrades</literal>"
 msgstr "<literal>--no-new-upgrades</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1443
+#: en/manpage.xml:1437
 msgid ""
 "When the safe resolver is being used (i.e., <link "
 "linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link> was "
@@ -22048,12 +22053,12 @@ msgstr ""
 "Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1456
+#: en/manpage.xml:1450
 msgid "<literal>--no-show-resolver-actions</literal>"
 msgstr "<literal>--no-show-resolver-actions</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1460
+#: en/manpage.xml:1454
 msgid ""
 "Do not display the actions performed by the <quote>safe</quote> resolver, "
 "overriding any configuration option or earlier <link "
@@ -22066,7 +22071,7 @@ msgstr ""
 "literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1469
+#: en/manpage.xml:1463
 msgid ""
 "<literal>-O</literal> <replaceable>order</replaceable>, <literal>--sort</"
 "literal> <replaceable>order</replaceable>"
@@ -22075,7 +22080,7 @@ msgstr ""
 "literal> <replaceable>orden</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1473
+#: en/manpage.xml:1467
 msgid ""
 "Specify the order in which output from the <link "
 "linkend='cmdlineSearch'><literal>search</literal></link> command should be "
@@ -22094,7 +22099,7 @@ msgstr ""
 "paquetes</link></quote> en el manual de referencia de &aptitude;)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1482
+#: en/manpage.xml:1476
 msgid ""
 "<literal>-o</literal> <replaceable>key</replaceable><literal>=</"
 "literal><replaceable>value</replaceable>"
@@ -22103,7 +22108,7 @@ msgstr ""
 "literal><replaceable>valor</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1486
+#: en/manpage.xml:1480
 msgid ""
 "Set a configuration file option directly; for instance, use <literal>-o "
 "Aptitude::Log=/tmp/my-log</literal> to log &aptitude;'s actions to "
@@ -22120,12 +22125,12 @@ msgstr ""
 "configuración</link></quote> en el manual de referencia de &aptitude;."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1499
+#: en/manpage.xml:1493
 msgid "<literal>-P</literal>, <literal>--prompt</literal>"
 msgstr "<literal>-P</literal>, <literal>--prompt</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1503
+#: en/manpage.xml:1497
 msgid ""
 "Always display a prompt before downloading, installing or removing packages, "
 "even when no actions other than those explicitly requested will be performed."
@@ -22135,7 +22140,7 @@ msgstr ""
 "requirió."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1509
+#: en/manpage.xml:1503
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Always-Prompt'>Aptitude::CmdLine::Always-Prompt</"
@@ -22146,12 +22151,12 @@ msgstr ""
 "link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1516
+#: en/manpage.xml:1510
 msgid "<literal>--purge-unused</literal>"
 msgstr "<literal>--purge-unused</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1520
+#: en/manpage.xml:1514
 msgid ""
 "If <literal><link linkend='configDelete-Unused'>Aptitude::Delete-Unused</"
 "link></literal> is set to <quote><literal>true</literal></quote> (its "
@@ -22176,7 +22181,7 @@ msgstr ""
 "</emphasis>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1536
+#: en/manpage.xml:1530
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configPurge-Unused'>Aptitude::Purge-Unused</link></literal>."
@@ -22185,7 +22190,7 @@ msgstr ""
 "linkend='configPurge-Unused'>Aptitude::Purge-Unused</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1544
+#: en/manpage.xml:1538
 msgid ""
 "<literal>-q<optional>=<replaceable>n</replaceable></optional></literal>, "
 "<literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal>"
@@ -22194,7 +22199,7 @@ msgstr ""
 "<literal>--quiet<optional>=<replaceable>n</replaceable></optional></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1548
+#: en/manpage.xml:1542
 msgid ""
 "Suppress all incremental progress indicators, thus making the output "
 "loggable.  This may be supplied multiple times to make the program quieter, "
@@ -22207,7 +22212,7 @@ msgstr ""
 "<literal>-y</literal> cuando introduce <literal>q</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1557
+#: en/manpage.xml:1551
 msgid ""
 "The optional <literal>=<replaceable>n</replaceable></literal> may be used to "
 "directly set the amount of quietness (for instance, to override a setting in "
@@ -22222,12 +22227,12 @@ msgstr ""
 "introducido <literal>-q</literal> <replaceable>número</replaceable> veces."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1568
+#: en/manpage.xml:1562
 msgid "<literal>-R</literal>, <literal>--without-recommends</literal>"
 msgstr "<literal>-R</literal>, <literal>--without-recommends</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1572
+#: en/manpage.xml:1566
 msgid ""
 "Do <emphasis>not</emphasis> treat recommendations as dependencies when "
 "installing new packages (this overrides settings in <filename>/etc/apt/apt."
@@ -22239,7 +22244,7 @@ msgstr ""
 "apt.conf</filename> y <filename>~/.aptitude/config</filename>)"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1579
+#: en/manpage.xml:1573
 msgid ""
 "This corresponds to the pair of configuration options <literal><link "
 "linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></"
@@ -22252,12 +22257,12 @@ msgstr ""
 "RecommendsImportant'>Apt::AutoRemove::InstallRecommends</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1585
+#: en/manpage.xml:1579
 msgid "<literal>-r</literal>, <literal>--with-recommends</literal>"
 msgstr "<literal>-r</literal>, <literal>--with-recommends</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1589
+#: en/manpage.xml:1583
 msgid ""
 "Treat recommendations as dependencies when installing new packages (this "
 "overrides settings in <filename>/etc/apt/apt.conf</filename> and "
@@ -22268,7 +22273,7 @@ msgstr ""
 "filename> y <filename>~/.aptitude/config</filename>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1594
+#: en/manpage.xml:1588
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></"
@@ -22279,13 +22284,13 @@ msgstr ""
 "literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1600
+#: en/manpage.xml:1594
 msgid "<literal>--remove-user-tag <replaceable>tag</replaceable></literal>"
 msgstr ""
 "<literal>--remove-user-tag <replaceable>etiqueta</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1604
+#: en/manpage.xml:1598
 msgid ""
 "For <literal>full-upgrade</literal>, <literal>safe-upgrade</literal> "
 "<literal>forbid-version</literal>, <literal>hold</literal>, "
@@ -22310,7 +22315,7 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1623
+#: en/manpage.xml:1617
 msgid ""
 "<literal>--remove-user-tag-from <replaceable>tag</replaceable>,"
 "<replaceable>pattern</replaceable></literal>"
@@ -22319,7 +22324,7 @@ msgstr ""
 "<replaceable>patrón</replaceable></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1627
+#: en/manpage.xml:1621
 msgid ""
 "For <literal>full-upgrade</literal>, <literal>safe-upgrade</literal> "
 "<literal>forbid-version</literal>, <literal>hold</literal>, "
@@ -22348,7 +22353,7 @@ msgstr ""
 "link></quote> en el manual de referencia de &aptitude;."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1647
+#: en/manpage.xml:1641
 msgid ""
 "For instance, <literal>aptitude safe-upgrade --remove-user-tag-from \"not-"
 "upgraded,?action(upgrade)\"</literal> will remove the <literal>not-upgraded</"
@@ -22363,12 +22368,12 @@ msgstr ""
 "actualizar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1659
+#: en/manpage.xml:1653
 msgid "<literal>-s</literal>, <literal>--simulate</literal>"
 msgstr "<literal>-s</literal>, <literal>--simulate</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1663
+#: en/manpage.xml:1657
 msgid ""
 "In command-line mode, print the actions that would normally be performed, "
 "but don't actually perform them.  This does not require &root; privileges.  "
@@ -22382,7 +22387,7 @@ msgstr ""
 "administrador."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1671
+#: en/manpage.xml:1665
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configSimulate'>Aptitude::Simulate</link></literal>."
@@ -22391,12 +22396,12 @@ msgstr ""
 "linkend='configSimulate'>Aptitude::Simulate</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1678
+#: en/manpage.xml:1672
 msgid "<literal>--safe-resolver</literal>"
 msgstr "<literal>--safe-resolver</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1682
+#: en/manpage.xml:1676
 msgid ""
 "When package dependency problems are encountered, use a <quote>safe</quote> "
 "algorithm to solve them.  This resolver attempts to preserve as many of your "
@@ -22420,7 +22425,7 @@ msgstr ""
 "acepta la marca <literal>--safe-resolver</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1698
+#: en/manpage.xml:1692
 msgid ""
 "This option is equivalent to setting the configuration variable <link "
 "linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-"
@@ -22431,12 +22436,12 @@ msgstr ""
 "Resolver</literal></link> como <literal>true</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1707
+#: en/manpage.xml:1701
 msgid "<literal>--schedule-only</literal>"
 msgstr "<literal>--schedule-only</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1711
+#: en/manpage.xml:1705
 msgid ""
 "For commands that modify package states, schedule operations to be performed "
 "in the future, but don't perform them.  You can execute scheduled actions by "
@@ -22453,7 +22458,7 @@ msgstr ""
 "ello."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1721
+#: en/manpage.xml:1715
 msgid ""
 "For instance, <literal>aptitude --schedule-only install evolution</literal> "
 "will schedule the <literal>evolution</literal> package for later "
@@ -22464,19 +22469,19 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1730
+#: en/manpage.xml:1724
 msgid "<literal>--show-resolver-actions</literal>"
 msgstr "<literal>--show-resolver-actions</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1734
+#: en/manpage.xml:1728
 msgid "Display the actions performed by the <quote>safe</quote> resolver."
 msgstr ""
 "Mostrar las acciones tomadas por el solucionador seguro (<quote>safe</"
 "quote>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1741
+#: en/manpage.xml:1735
 msgid ""
 "<literal>--show-summary<optional>=<replaceable>MODE</replaceable></"
 "optional></literal>"
@@ -22485,7 +22490,7 @@ msgstr ""
 "optional></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1745
+#: en/manpage.xml:1739
 msgid ""
 "Changes the behavior of <quote><literal>aptitude why</literal></quote> to "
 "summarize each dependency chain that it outputs, rather than displaying it "
@@ -22505,13 +22510,13 @@ msgstr ""
 "objetivo se va a instalar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1758
+#: en/manpage.xml:1752
 msgid "<replaceable>MODE</replaceable> can be any one of the following:"
 msgstr ""
 "El <replaceable>MODO</replaceable> puede ser cualquiera de los siguientes:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><orderedlist><listitem><para>
-#: en/manpage.xml:1765
+#: en/manpage.xml:1759
 msgid ""
 "<literal>no-summary</literal>: don't show a summary (the default behavior if "
 "<literal>--show-summary</literal> is not present)."
@@ -22520,7 +22525,7 @@ msgstr ""
 "predeterminado si no se ha introducido <literal>--show-summary</literal>)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><orderedlist><listitem><para>
-#: en/manpage.xml:1773
+#: en/manpage.xml:1767
 msgid ""
 "<literal>first-package</literal>: display the first package in each chain.  "
 "This is the default value of <replaceable>MODE</replaceable> if it is not "
@@ -22531,7 +22536,7 @@ msgstr ""
 "está presente."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><orderedlist><listitem><para>
-#: en/manpage.xml:1781
+#: en/manpage.xml:1775
 msgid ""
 "<literal>first-package-and-type</literal>: display the first package in each "
 "chain, along with the strength of the weakest dependency in the chain."
@@ -22540,7 +22545,7 @@ msgstr ""
 "cadena, acompañado de la fuerza de la dependencia más débil de la cadena."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><orderedlist><listitem><para>
-#: en/manpage.xml:1789
+#: en/manpage.xml:1783
 msgid ""
 "<literal>all-packages</literal>: briefly display each chain of dependencies "
 "leading to the target package."
@@ -22549,7 +22554,7 @@ msgstr ""
 "dependencias que lleva al paquete objetivo."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><orderedlist><listitem><para>
-#: en/manpage.xml:1796
+#: en/manpage.xml:1790
 msgid ""
 "<literal>all-packages-with-dep-versions</literal>: briefly display each "
 "chain of dependencies leading to the target package, including the target "
@@ -22560,7 +22565,7 @@ msgstr ""
 "versión objetivo de cada dependencia."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1805
+#: en/manpage.xml:1799
 msgid ""
 "This option corresponds to the configuration item <link "
 "linkend='configCmdLine-Show-Summary'><literal>Aptitude::CmdLine::Show-"
@@ -22575,12 +22580,12 @@ msgstr ""
 "Show-Summary'><literal>Aptitude::CmdLine::Show-Summary</literal></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example><title>
-#: en/manpage.xml:1813
+#: en/manpage.xml:1807
 msgid "Usage of <literal>--show-summary</literal>"
 msgstr "Uso de <literal>--show-summary</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example><para>
-#: en/manpage.xml:1816
+#: en/manpage.xml:1810
 msgid ""
 "<literal>--show-summary</literal> used with <literal>-v</literal> to display "
 "all the reasons a package is installed:"
@@ -22589,7 +22594,7 @@ msgstr ""
 "muestra las razones de porqué un paquete está instalado:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example><screen>
-#: en/manpage.xml:1821
+#: en/manpage.xml:1815
 #, no-wrap
 msgid ""
 "$ aptitude -v --show-summary why foomatic-db\n"
@@ -22691,19 +22696,19 @@ msgstr ""
 "\t    "
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1821 en/manpage.xml:1975 en/manpage.xml:1990
+#: en/manpage.xml:1815 en/manpage.xml:1969 en/manpage.xml:1984
 msgid "<placeholder type=\"screen\" id=\"0\"/>"
 msgstr "<placeholder type=\"screen\" id=\"0\"/>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example><para>
-#: en/manpage.xml:1871
+#: en/manpage.xml:1865
 msgid "<literal>--show-summary</literal> used to list a chain on one line:"
 msgstr ""
 "<literal>--show-summary</literal> se emplea para mostrar la cadena en una "
 "línea:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example><screen>
-#: en/manpage.xml:1874
+#: en/manpage.xml:1868
 #, no-wrap
 msgid ""
 "$ aptitude --show-summary=all-packages why aptitude-gtk libglib2.0-data\n"
@@ -22715,12 +22720,12 @@ msgstr ""
 "  aptitude-gtk D: libglib2.0-0 R: libglib2.0-data"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><example>
-#: en/manpage.xml:1874
+#: en/manpage.xml:1868
 msgid "  <placeholder type=\"screen\" id=\"0\"/>"
 msgstr "  <placeholder type=\"screen\" id=\"0\"/>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1882
+#: en/manpage.xml:1876
 msgid ""
 "<literal>-t</literal> <replaceable>release</replaceable>, <literal>--target-"
 "release</literal> <replaceable>release</replaceable>"
@@ -22729,7 +22734,7 @@ msgstr ""
 "target-release</literal> <replaceable>distribución</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1886
+#: en/manpage.xml:1880
 msgid ""
 "Set the release from which packages should be installed.  For instance, "
 "<quote><literal>aptitude -t experimental ...</literal></quote> will install "
@@ -22754,7 +22759,7 @@ msgstr ""
 "manvolnum></citerefentry>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1898
+#: en/manpage.xml:1892
 msgid ""
 "This corresponds to the configuration item <literal>APT::Default-Release</"
 "literal>."
@@ -22763,17 +22768,17 @@ msgstr ""
 "Release</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1904
+#: en/manpage.xml:1898
 msgid "<literal>-V</literal>, <literal>--show-versions</literal>"
 msgstr "<literal>-V</literal>, <literal>--show-versions</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1908
+#: en/manpage.xml:1902
 msgid "Show which versions of packages will be installed."
 msgstr "Mostrar qué versiones de paquetes se van a instalar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1912
+#: en/manpage.xml:1906
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Show-Versions'>Aptitude::CmdLine::Show-Versions</"
@@ -22784,12 +22789,12 @@ msgstr ""
 "link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1918
+#: en/manpage.xml:1912
 msgid "<literal>-v</literal>, <literal>--verbose</literal>"
 msgstr "<literal>-v</literal>, <literal>--verbose</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1922
+#: en/manpage.xml:1916
 msgid ""
 "Causes some commands (for instance, <literal>show</literal>) to display "
 "extra information.  This may be supplied multiple times to get more and more "
@@ -22800,7 +22805,7 @@ msgstr ""
 "obtener más y más información."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1926
+#: en/manpage.xml:1920
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Verbose'>Aptitude::CmdLine::Verbose</link></literal>."
@@ -22809,12 +22814,12 @@ msgstr ""
 "linkend='configCmdLine-Verbose'>Aptitude::CmdLine::Verbose</link></literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1932
+#: en/manpage.xml:1926
 msgid "<literal>--version</literal>"
 msgstr "<literal>--version</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1936
+#: en/manpage.xml:1930
 msgid ""
 "Display the version of &aptitude; and some information about how it was "
 "compiled."
@@ -22823,7 +22828,7 @@ msgstr ""
 "compiló."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1941
+#: en/manpage.xml:1935
 msgid ""
 "When executing the command <link linkend='manpageSafeUpgrade'><literal>safe-"
 "upgrade</literal></link> or when the option <link "
@@ -22848,12 +22853,12 @@ msgstr ""
 "link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1953
+#: en/manpage.xml:1947
 msgid "<literal>--visual-preview</literal>"
 msgstr "<literal>--visual-preview</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1957
+#: en/manpage.xml:1951
 msgid ""
 "When installing or removing packages from the command line, instead of "
 "displaying the usual prompt, start up the visual interface and display its "
@@ -22863,12 +22868,12 @@ msgstr ""
 "instalar paquetes desde la línea de órdenes, en lugar de la pantalla normal."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:1966
+#: en/manpage.xml:1960
 msgid "<literal>-W</literal>, <literal>--show-why</literal>"
 msgstr "<literal>-W</literal>, <literal>--show-why</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1970
+#: en/manpage.xml:1964
 msgid ""
 "In the preview displayed before packages are installed or removed, show "
 "which manually installed package requires each automatically installed "
@@ -22879,7 +22884,7 @@ msgstr ""
 "instalados sobre cada paquete automáticamente instalado. Por ejemplo:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para><screen>
-#: en/manpage.xml:1975
+#: en/manpage.xml:1969
 #, no-wrap
 msgid ""
 "$ aptitude --show-why install mediawiki\n"
@@ -22897,7 +22902,7 @@ msgstr ""
 "  php5-mysql{a} (for mediawiki)"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1983
+#: en/manpage.xml:1977
 msgid ""
 "When combined with <literal>-v</literal> or a non-zero value for <link "
 "linkend='configCmdLine-Verbose'><literal>Aptitude::CmdLine::Verbose</"
@@ -22910,7 +22915,7 @@ msgstr ""
 "conducen a cada paquete que se va a instalar. Por ejemplo:"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para><screen>
-#: en/manpage.xml:1990
+#: en/manpage.xml:1984
 #, no-wrap
 msgid ""
 "$ aptitude -v --show-why install libdb4.2-dev\n"
@@ -22926,7 +22931,7 @@ msgstr ""
 "  libdb4.4-dev{a} (libdb4.2-dev C: libdb-dev P&lt;- libdb-dev)"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:1997
+#: en/manpage.xml:1991
 msgid ""
 "This option will also describe why packages are being removed, as shown "
 "above.  In this example, <systemitem>libdb4.2-dev</systemitem> conflicts "
@@ -22939,7 +22944,7 @@ msgstr ""
 "que provee <systemitem>libdb-dev</systemitem>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2005
+#: en/manpage.xml:1999
 msgid ""
 "This argument corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Show-Why'>Aptitude::CmdLine::Show-Why</link></"
@@ -22952,7 +22957,7 @@ msgstr ""
 "why</literal> y <literal>aptitude why-not</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2016
+#: en/manpage.xml:2010
 msgid ""
 "<literal>-w</literal> <replaceable>width</replaceable>, <literal>--width</"
 "literal> <replaceable>width</replaceable>"
@@ -22961,7 +22966,7 @@ msgstr ""
 "literal> <replaceable>ancho</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2020
+#: en/manpage.xml:2014
 msgid ""
 "Specify the display width which should be used for output from the "
 "<literal>search</literal> command (by default, the terminal width is used)."
@@ -22971,7 +22976,7 @@ msgstr ""
 "predeterminada)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2026
+#: en/manpage.xml:2020
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Package-Display-Width'>Aptitude::CmdLine::Package-"
@@ -22982,12 +22987,12 @@ msgstr ""
 "Display-Width</link></literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2032
+#: en/manpage.xml:2026
 msgid "<literal>-y</literal>, <literal>--assume-yes</literal>"
 msgstr "<literal>-y</literal>, <literal>--assume-yes</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2036
+#: en/manpage.xml:2030
 msgid ""
 "When a yes/no prompt would be presented, assume that the user entered "
 "<quote>yes</quote>.  In particular, suppresses the prompt that appears when "
@@ -23002,7 +23007,7 @@ msgstr ""
 "Esta opción invalida <literal>-P</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2045
+#: en/manpage.xml:2039
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Assume-Yes'>Aptitude::CmdLine::Assume-Yes</link></"
@@ -23013,12 +23018,12 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2051
+#: en/manpage.xml:2045
 msgid "<literal>-Z</literal>"
 msgstr "<literal>-Z</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2055
+#: en/manpage.xml:2049
 msgid ""
 "Show how much disk space will be used or freed by the individual packages "
 "being installed, upgraded, or removed."
@@ -23027,7 +23032,7 @@ msgstr ""
 "individual que se va a instalar, actualizar, o eliminar."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2061
+#: en/manpage.xml:2055
 msgid ""
 "This corresponds to the configuration option <literal><link "
 "linkend='configCmdLine-Show-Size-Changes'>Aptitude::CmdLine::Show-Size-"
@@ -23038,7 +23043,7 @@ msgstr ""
 "Changes</link></literal>."
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2068
+#: en/manpage.xml:2062
 msgid ""
 "The following options apply to the visual mode of the program, but are "
 "primarily for internal use; you generally won't need to use them yourself."
@@ -23047,12 +23052,12 @@ msgstr ""
 "han diseñado para un uso interno; generalmente, no tendrá que utilizarlas."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2075
+#: en/manpage.xml:2069
 msgid "<literal>--autoclean-on-startup</literal>"
 msgstr "<literal>--autoclean-on-startup</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2079
+#: en/manpage.xml:2073
 msgid ""
 "Deletes old downloaded files when the program starts (equivalent to starting "
 "the program and immediately selecting <menuchoice><guimenu>Actions</"
@@ -23069,12 +23074,12 @@ msgstr ""
 "<quote><literal>-u</literal></quote> a la vez."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2093
+#: en/manpage.xml:2087
 msgid "<literal>--clean-on-startup</literal>"
 msgstr "<literal>--clean-on-startup</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2097
+#: en/manpage.xml:2091
 msgid ""
 "Cleans the package cache when the program starts (equivalent to starting the "
 "program and immediately selecting <menuchoice><guimenu>Actions</"
@@ -23091,12 +23096,12 @@ msgstr ""
 "i</literal></quote>, o <quote><literal>-u</literal></quote> a la vez."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2111
+#: en/manpage.xml:2105
 msgid "<literal>-i</literal>"
 msgstr "<literal>-i</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2115
+#: en/manpage.xml:2109
 msgid ""
 "Displays a download preview when the program starts (equivalent to starting "
 "the program and immediately pressing <quote><keycap>g</keycap></quote>).  "
@@ -23111,12 +23116,12 @@ msgstr ""
 "quote>, o <quote><literal>-u</literal></quote> a la vez."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2127
+#: en/manpage.xml:2121
 msgid "<literal>-S</literal> <replaceable>fname</replaceable>"
 msgstr "<literal>-S</literal> <replaceable>nombre_de_archivo</replaceable>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2131
+#: en/manpage.xml:2125
 msgid ""
 "Loads the extended state information from <replaceable>fname</replaceable> "
 "instead of the standard state file."
@@ -23126,12 +23131,12 @@ msgstr ""
 "de estado."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2138
+#: en/manpage.xml:2132
 msgid "<literal>-u</literal>"
 msgstr "<literal>-u</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2142
+#: en/manpage.xml:2136
 msgid ""
 "Begins updating the package lists as soon as the program starts.  You cannot "
 "use this option and <quote><literal>--autoclean-on-startup</literal></"
@@ -23144,17 +23149,17 @@ msgstr ""
 "literal></quote> a la vez."
 
 #. type: Content of: <refentry><refsect1><title>
-#: en/manpage.xml:2154
+#: en/manpage.xml:2148
 msgid "Environment"
 msgstr "Entorno"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2158
+#: en/manpage.xml:2152
 msgid "<literal>HOME</literal>"
 msgstr "<literal>HOME</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2162
+#: en/manpage.xml:2156
 msgid ""
 "If $HOME/.aptitude exists, aptitude will store its configuration file in "
 "$HOME/.aptitude/config.  Otherwise, it will look up the current user's home "
@@ -23169,12 +23174,12 @@ msgstr ""
 "archivo de configuración."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2171
+#: en/manpage.xml:2165
 msgid "<literal>PAGER</literal>"
 msgstr "<literal>PAGER</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2175
+#: en/manpage.xml:2169
 msgid ""
 "If this environment variable is set, &aptitude; will use it to display "
 "changelogs when <quote><literal>aptitude changelog</literal></quote> is "
@@ -23186,12 +23191,12 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2184
+#: en/manpage.xml:2178
 msgid "<literal>TMP</literal>"
 msgstr "<literal>TMP</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2188
+#: en/manpage.xml:2182
 msgid ""
 "If <literal>TMPDIR</literal> is unset, &aptitude; will store its temporary "
 "files in <literal>TMP</literal> if that variable is set.  Otherwise, it will "
@@ -23202,12 +23207,12 @@ msgstr ""
 "ser así, los guardará en <filename>/tmp</filename>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2197
+#: en/manpage.xml:2191
 msgid "<literal>TMPDIR</literal>"
 msgstr "<literal>TMPDIR</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2201
+#: en/manpage.xml:2195
 msgid ""
 "&aptitude; will store its temporary files in the directory indicated by this "
 "environment variable.  If <literal>TMPDIR</literal> is not set, then "
@@ -23220,17 +23225,17 @@ msgstr ""
 "&aptitude; usará <filename>/tmp</filename>."
 
 #. type: Content of: <refentry><refsect1><title>
-#: en/manpage.xml:2215
+#: en/manpage.xml:2209
 msgid "Files"
 msgstr "Archivos"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2219
+#: en/manpage.xml:2213
 msgid "<filename>/var/lib/aptitude/pkgstates</filename>"
 msgstr "<filename>/var/lib/aptitude/pkgstates</filename>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2222
+#: en/manpage.xml:2216
 msgid ""
 "The file in which stored package states and some package flags are stored."
 msgstr ""
@@ -23238,7 +23243,7 @@ msgstr ""
 "de acción."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2232
+#: en/manpage.xml:2226
 msgid ""
 "<filename>/etc/apt/apt.conf</filename>, <filename>/etc/apt/apt.conf.d/*</"
 "filename>, <filename>~/.aptitude/config</filename>"
@@ -23247,7 +23252,7 @@ msgstr ""
 "filename>, <filename>~/.aptitude/config</filename>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2238
+#: en/manpage.xml:2232
 msgid ""
 "The configuration files for &aptitude;.  <filename>~/.aptitude/config</"
 "filename> overrides <filename>/etc/apt/apt.conf</filename>.  See "
@@ -23262,12 +23267,12 @@ msgstr ""
 "contenido de estos archivos."
 
 #. type: Content of: <refentry><refsect1><title>
-#: en/manpage.xml:2251 en/manpage.xml:2454 en/manpage.xml:2662
+#: en/manpage.xml:2245 en/manpage.xml:2448 en/manpage.xml:2656
 msgid "See also"
 msgstr "Véase también"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2254
+#: en/manpage.xml:2248
 msgid ""
 "<citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</"
 "manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</"
@@ -23282,13 +23287,13 @@ msgstr ""
 "disponible en el paquete aptitude-doc-<replaceable>es</replaceable>"
 
 #. type: Content of: <refentry><refnamediv><refname>
-#: en/manpage.xml:2276 en/manpage.xml:2318
+#: en/manpage.xml:2270 en/manpage.xml:2312
 msgid "aptitude-create-state-bundle"
 msgstr "aptitude-create-state-bundle"
 
 #.  NWalsh's docbook scripts use this to generate the footer: 
 #. type: Content of: <refentry><refentryinfo>
-#: en/manpage.xml:2279
+#: en/manpage.xml:2273
 msgid ""
 "<productname><command>aptitude-create-state-bundle</command></productname> "
 "<productnumber>&VERSION;</productnumber>"
@@ -23297,22 +23302,22 @@ msgstr ""
 "<productnumber>&VERSION;</productnumber>"
 
 #. type: Content of: <refentry><refentryinfo><legalnotice><para>
-#: en/manpage.xml:2284 en/manpage.xml:2487
+#: en/manpage.xml:2278 en/manpage.xml:2481
 msgid "Copyright 2007 Daniel Burrows."
 msgstr "Copyright 2007 Daniel Burrows."
 
 #. type: Content of: <refentry><refmeta><refentrytitle>
-#: en/manpage.xml:2313
+#: en/manpage.xml:2307
 msgid "<command>aptitude-create-state-bundle</command>"
 msgstr "<command>aptitude-create-state-bundle</command>"
 
 #. type: Content of: <refentry><refnamediv><refpurpose>
-#: en/manpage.xml:2319
+#: en/manpage.xml:2313
 msgid "bundle the current aptitude state"
 msgstr "empaquetar el estado actual de aptitude"
 
 #. type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
-#: en/manpage.xml:2324
+#: en/manpage.xml:2318
 msgid ""
 "<command>aptitude-create-state-bundle</command> <arg choice='opt' "
 "rep='repeat'><replaceable>options</replaceable></arg> <arg "
@@ -23323,7 +23328,7 @@ msgstr ""
 "choice='plain'><replaceable>archivo_de_salida</replaceable></arg>"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2336
+#: en/manpage.xml:2330
 msgid ""
 "<command>aptitude-create-state-bundle</command> produces a compressed "
 "archive storing the files that are required to replicate the current package "
@@ -23336,32 +23341,32 @@ msgstr ""
 "siguientes archivos y directorios:"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/manpage.xml:2344
+#: en/manpage.xml:2338
 msgid "<filename><envar>$HOME</envar>/.aptitude</filename>"
 msgstr "<filename><envar>$HOME</envar>/.aptitude</filename>"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/manpage.xml:2352
+#: en/manpage.xml:2346
 msgid "<filename>/var/lib/apt</filename>"
 msgstr "<filename>/var/lib/apt</filename>"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/manpage.xml:2356
+#: en/manpage.xml:2350
 msgid "<filename>/var/cache/apt/*.bin</filename>"
 msgstr "<filename>/var/cache/apt/*.bin</filename>"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/manpage.xml:2360
+#: en/manpage.xml:2354
 msgid "<filename>/etc/apt</filename>"
 msgstr "<filename>/etc/apt</filename>"
 
 #. type: Content of: <refentry><refsect1><itemizedlist><listitem><para>
-#: en/manpage.xml:2364
+#: en/manpage.xml:2358
 msgid "<filename>/var/lib/dpkg/status</filename>"
 msgstr "<filename>/var/lib/dpkg/status</filename>"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2369
+#: en/manpage.xml:2363
 msgid ""
 "The output of this program can be used as an argument to <link "
 "linkend='aptitudeRunStateBundle'><citerefentry><refentrytitle>aptitude-run-"
@@ -23372,12 +23377,12 @@ msgstr ""
 "state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry></link>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2379
+#: en/manpage.xml:2373
 msgid "<literal>--force-bzip2</literal>"
 msgstr "<literal>--force-bzip2</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2383
+#: en/manpage.xml:2377
 msgid ""
 "Override the autodetection of which compression algorithm to use.  By "
 "default, <command>aptitude-create-state-bundle</command> uses "
@@ -23396,12 +23401,12 @@ msgstr ""
 "parezca estar disponible."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2397
+#: en/manpage.xml:2391
 msgid "<literal>--force-gzip</literal>"
 msgstr "<literal>--force-gzip</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2401
+#: en/manpage.xml:2395
 msgid ""
 "Override the autodetection of which compression algorithm to use.  By "
 "default, <command>aptitude-create-state-bundle</command> uses "
@@ -23420,22 +23425,22 @@ msgstr ""
 "<command>bzip2</command> esté disponible."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2415 en/manpage.xml:2578
+#: en/manpage.xml:2409 en/manpage.xml:2572
 msgid "<literal>--help</literal>"
 msgstr "<literal>--help</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2419
+#: en/manpage.xml:2413
 msgid "Print a brief usage message, then exit."
 msgstr "Mostrar un breve resumen del uso, después cierra."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2425
+#: en/manpage.xml:2419
 msgid "<literal>--print-inputs</literal>"
 msgstr "<literal>--print-inputs</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2429
+#: en/manpage.xml:2423
 msgid ""
 "Instead of creating a bundle, display a list of the files and directories "
 "that the program would include if it generated a bundle."
@@ -23444,12 +23449,12 @@ msgstr ""
 "directorios que el programa incluiría de generar un archivo de estado."
 
 #. type: Content of: <refentry><refsect1><title>
-#: en/manpage.xml:2439
+#: en/manpage.xml:2433
 msgid "File format"
 msgstr "El formato del archivo"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2442
+#: en/manpage.xml:2436
 msgid ""
 "The bundle file is simply a <citerefentry><refentrytitle>tar</"
 "refentrytitle><manvolnum>1</manvolnum></citerefentry> file compressed with "
@@ -23467,7 +23472,7 @@ msgstr ""
 "es <quote><filename>.</filename></quote>."
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2457
+#: en/manpage.xml:2451
 msgid ""
 "<citerefentry><refentrytitle>aptitude-run-state-bundle</"
 "refentrytitle><manvolnum>1</manvolnum></citerefentry>, "
@@ -23482,13 +23487,13 @@ msgstr ""
 "refentrytitle><manvolnum>8</manvolnum></citerefentry>"
 
 #. type: Content of: <refentry><refnamediv><refname>
-#: en/manpage.xml:2479 en/manpage.xml:2521
+#: en/manpage.xml:2473 en/manpage.xml:2515
 msgid "aptitude-run-state-bundle"
 msgstr "aptitude-run-state-bundle"
 
 #.  NWalsh's docbook scripts use this to generate the footer: 
 #. type: Content of: <refentry><refentryinfo>
-#: en/manpage.xml:2482
+#: en/manpage.xml:2476
 msgid ""
 "<productname><command>aptitude-run-state-bundle</command></productname> "
 "<productnumber>&VERSION;</productnumber>"
@@ -23497,18 +23502,18 @@ msgstr ""
 "<productnumber>&VERSION;</productnumber>"
 
 #. type: Content of: <refentry><refmeta><refentrytitle>
-#: en/manpage.xml:2516
+#: en/manpage.xml:2510
 msgid "<command>aptitude-run-state-bundle</command>"
 msgstr "<command>aptitude-run-state-bundle</command>"
 
 #. type: Content of: <refentry><refnamediv><refpurpose>
-#: en/manpage.xml:2522
+#: en/manpage.xml:2516
 msgid "unpack an aptitude state bundle and invoke aptitude on it"
 msgstr ""
 "desempaquetar un archivo de estado de aptitude e invocar aptitude sobre éste "
 
 #. type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
-#: en/manpage.xml:2527
+#: en/manpage.xml:2521
 msgid ""
 "<command>aptitude-run-state-bundle</command> <arg choice='opt' "
 "rep='repeat'><replaceable>options</replaceable></arg> <arg "
@@ -23523,7 +23528,7 @@ msgstr ""
 "rep='repeat'><replaceable>argumentos</replaceable></arg></arg>"
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2541
+#: en/manpage.xml:2535
 msgid ""
 "<command>aptitude-run-state-bundle</command> unpacks the given aptitude "
 "state bundle created by <citerefentry><refentrytitle>aptitude-create-state-"
@@ -23545,7 +23550,7 @@ msgstr ""
 "manvolnum></citerefentry>."
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2557
+#: en/manpage.xml:2551
 msgid ""
 "The following options may occur on the command-line before the input file.  "
 "Options following the input file are presumed to be arguments to aptitude."
@@ -23555,12 +23560,12 @@ msgstr ""
 "argumentos para aptitude."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2564
+#: en/manpage.xml:2558
 msgid "<literal>--append-args</literal>"
 msgstr "<literal>--append-args</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2568
+#: en/manpage.xml:2562
 msgid ""
 "Place the options that give the location of the state bundle at the end of "
 "the command line when invoking <replaceable>program</replaceable>, rather "
@@ -23571,17 +23576,17 @@ msgstr ""
 "lugar de al principio de éste (comportamiento predeterminado)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2582
+#: en/manpage.xml:2576
 msgid "Display a brief usage summary."
 msgstr "Mostrar un breve resumen del uso."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2588
+#: en/manpage.xml:2582
 msgid "<literal>--prepend-args</literal>"
 msgstr "<literal>--prepend-args</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2592
+#: en/manpage.xml:2586
 msgid ""
 "Place the options that give the location of the state bundle at the "
 "beginning of the command line when invoking <replaceable>program</"
@@ -23594,12 +23599,12 @@ msgstr ""
 "(el valor predeterminado es ubicar las opciones al inicio)."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2602
+#: en/manpage.xml:2596
 msgid "<literal>--no-clean</literal>"
 msgstr "<literal>--no-clean</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2606
+#: en/manpage.xml:2600
 msgid ""
 "Do not remove the unpacked state directory after running <command>aptitude</"
 "command>.  You might want to use this if, for instance, you are debugging a "
@@ -23615,18 +23620,18 @@ msgstr ""
 "futuro."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2616
+#: en/manpage.xml:2610
 msgid "This option is enabled automatically by <literal>--statedir</literal>."
 msgstr ""
 "Esta opción se activa automáticamente por <literal>--statedir</literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2623
+#: en/manpage.xml:2617
 msgid "<literal>--really-clean</literal>"
 msgstr "<literal>--really-clean</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2627
+#: en/manpage.xml:2621
 msgid ""
 "Delete the state directory after running <command>aptitude</command>, even "
 "if <literal>--no-clean</literal> or <literal>--statedir</literal> was "
@@ -23637,12 +23642,12 @@ msgstr ""
 "literal>."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2636
+#: en/manpage.xml:2630
 msgid "<literal>--statedir</literal>"
 msgstr "<literal>--statedir</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2640
+#: en/manpage.xml:2634
 msgid ""
 "Instead of treating the input file as a state bundle, treat it as an "
 "unpacked state bundle.  For instance, you can use this to access the state "
@@ -23654,12 +23659,12 @@ msgstr ""
 "literal> con anterioridad."
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
-#: en/manpage.xml:2649
+#: en/manpage.xml:2643
 msgid "<literal>--unpack</literal>"
 msgstr "<literal>--unpack</literal>"
 
 #. type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
-#: en/manpage.xml:2653
+#: en/manpage.xml:2647
 msgid ""
 "Unpack the input file to a temporary directory, but don't actually run "
 "<command>aptitude</command>."
@@ -23668,7 +23673,7 @@ msgstr ""
 "ejecutar la orden <command>aptitude</command>."
 
 #. type: Content of: <refentry><refsect1><para>
-#: en/manpage.xml:2665
+#: en/manpage.xml:2659
 msgid ""
 "<citerefentry><refentrytitle>aptitude-create-state-bundle</"
 "refentrytitle><manvolnum>1</manvolnum></citerefentry>, "
@@ -23681,6 +23686,34 @@ msgstr ""
 "<citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</"
 "manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</"
 "refentrytitle><manvolnum>8</manvolnum></citerefentry>"
+
+#~ msgid ""
+#~ "The way <literal>safe-upgrade</literal> treats its extra arguments is in "
+#~ "contrast to <link linkend='manpageFullUpgrade'><literal>full-upgrade</"
+#~ "literal></link>, which will always upgrade every package, treating its "
+#~ "command-line arguments as additional actions to perform."
+#~ msgstr ""
+#~ "La manera en que <literal>safe-upgrade</literal> trata sus argumentos se "
+#~ "diferencia de <link linkend='manpageFullUpgrade'><literal>full-upgrade</"
+#~ "literal></link>, el cual siempre actualizaría todo paquete, tratando sus "
+#~ "argumentos en la línea de órdenes como acciones adicionales a ejecutar."
+
+#~ msgid ""
+#~ "Additional <replaceable>package</replaceable>s listed on the command line "
+#~ "are treated as extra actions to be taken above and beyond simply "
+#~ "upgrading all packages.  These arguments are treated in the same manner "
+#~ "as arguments to <link linkend='cmdlineInstall'><literal>aptitude install</"
+#~ "literal></link>; for instance, <literal>aptitude dist-upgrade gimp-</"
+#~ "literal> will upgrade all packages that can be upgraded, except for "
+#~ "<systemitem>gimp</systemitem>, which will be removed."
+#~ msgstr ""
+#~ "Los <replaceable>paquete</replaceable>s añadidos en la línea de órdenes "
+#~ "se toman como acciones adicionales más allá de sólo actualizar todos los "
+#~ "paquetes. Estos argumentos se tratan de la misma forma que con <link "
+#~ "linkend='cmdlineInstall'><literal>aptitude install</literal></link>. Por "
+#~ "ejemplo, <literal>aptitude dist-upgrade gimp-</literal> actualizaría "
+#~ "todos los paquetes susceptibles de ello, a excepción de <systemitem>gimp</"
+#~ "systemitem>, que se eliminará."
 
 #~ msgid "<literal>Aptitude::ProblemResolver::WaitSteps</literal>"
 #~ msgstr "<literal>Aptitude::ProblemResolver::WaitSteps</literal>"
