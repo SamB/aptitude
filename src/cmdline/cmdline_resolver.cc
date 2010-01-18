@@ -86,9 +86,12 @@ static cw::fragment *solution_story(const aptitude_solution &s,
 
   for(vector<choice>::const_iterator i = choices.begin();
       i != choices.end(); ++i)
-    fragments.push_back(cw::fragf("%ls%n -> %F%n",
-				  dep_text(i->get_dep().get_dep()).c_str(),
-				  indentbox(0, 4, choice_fragment(*i))));
+    {
+      fragments.push_back(cw::fragf("%ls",
+				    dep_text(i->get_dep().get_dep()).c_str()));
+      fragments.push_back(cw::fragf(" -> %F%n",
+				    indentbox(0, 4, choice_fragment(*i))));
+    }
 
   if(ids == NULL)
     return cw::sequence_fragment(fragments);
@@ -99,6 +102,7 @@ static cw::fragment *solution_story(const aptitude_solution &s,
       for(std::vector<choice>::size_type i = 0; i < choices.size(); ++i)
 	{
 	  std::string key = boost::lexical_cast<std::string>(i + 1);
+	  id_fragments.push_back(NULL);
 	  id_fragments.push_back(cw::fragf("%s)", key.c_str()));
 	  (*ids)[key] = choices[i];
 
