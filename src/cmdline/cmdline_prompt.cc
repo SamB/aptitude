@@ -253,7 +253,10 @@ static void cmdline_show_instinfo(pkgvector &items,
 	    tags.push_back('p');
 	}
 
-      switch(find_pkg_state(*i, *apt_cache_file))
+      if(state.InstBroken())
+        tags.push_back('b');
+
+      switch(find_pkg_state(*i, *apt_cache_file, true))
 	{
 	case pkg_auto_remove:
 	case pkg_auto_install:
@@ -607,7 +610,7 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 	      ((*apt_cache_file)[pkg].iFlags & pkgDepCache::ReInstall))
 	++ReInstall;
 
-      pkg_action_state state=find_pkg_state(pkg, *apt_cache_file);
+      pkg_action_state state=find_pkg_state(pkg, *apt_cache_file, true);
 
       switch(state)
 	{
@@ -869,6 +872,8 @@ static void prompt_help(ostream &out, bool show_resolver_key)
 
   fragments.push_back(flowindentbox(0, 4,
 				    cw::fragf(_("'a': the package was automatically installed or removed."))));
+  fragments.push_back(flowindentbox(0, 4,
+                                    cw::fragf(_("'b': some of the package's dependencies are violated by the proposed changes."))));
   fragments.push_back(flowindentbox(0, 4,
 				    cw::fragf(_("'p': the package will be purged in addition to being removed."))));
   fragments.push_back(flowindentbox(0, 4,
