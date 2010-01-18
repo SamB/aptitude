@@ -185,7 +185,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 19:53-0800\n"
+"POT-Creation-Date: 2010-01-17 20:35-0800\n"
 "PO-Revision-Date: 2008-05-16 03:35+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -2188,7 +2188,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "以下のパッケージには満たされていない依存関係があります:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -2379,11 +2379,11 @@ msgstr "依存"
 msgid "PreDepends"
 msgstr "事前依存"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
 msgid "Recommends"
 msgstr "推奨"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
 msgid "Suggests"
 msgstr "提案"
 
@@ -2404,8 +2404,8 @@ msgstr "置換"
 msgid "Obsoletes"
 msgstr "廃止"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
+#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "提供"
 
@@ -2531,141 +2531,141 @@ msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "新たに廃止されたパッケージが %d 個あります:"
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
 msgstr "依存レベル"
 
-#: src/cmdline/cmdline_why.cc:317
+#: src/cmdline/cmdline_why.cc:320
 msgid "DependsOnly"
 msgstr "依存のみ"
 
-#: src/cmdline/cmdline_why.cc:331
+#: src/cmdline/cmdline_why.cc:334
 msgid "version_selection"
 msgstr "バージョン選択"
 
-#: src/cmdline/cmdline_why.cc:336
+#: src/cmdline/cmdline_why.cc:339
 msgid "Current"
 msgstr "現在"
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:342
 msgid "Candidate"
 msgstr "候補"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 msgid "Install"
 msgstr "インストール"
 
-#: src/cmdline/cmdline_why.cc:345
+#: src/cmdline/cmdline_why.cc:348
 msgid "InstallNotCurrent"
 msgstr "現在以外をインストール"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:356
 msgid "allow_choices"
 msgstr "選択してよいか"
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:359
 msgid "true"
 msgstr "はい"
 
-#: src/cmdline/cmdline_why.cc:358
+#: src/cmdline/cmdline_why.cc:361
 msgid "false"
 msgstr "いいえ"
 
-#: src/cmdline/cmdline_why.cc:412
+#: src/cmdline/cmdline_why.cc:415
 #, c-format
 msgid "Install(%s)"
 msgstr "インストール(%s)"
 
-#: src/cmdline/cmdline_why.cc:414
+#: src/cmdline/cmdline_why.cc:417
 #, c-format
 msgid "Remove(%s)"
 msgstr "削除(%s)"
 
-#: src/cmdline/cmdline_why.cc:416
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "インストール(%s 提供 %s)"
 
-#: src/cmdline/cmdline_why.cc:420
+#: src/cmdline/cmdline_why.cc:423
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "削除(%s 提供 %s)"
 
-#: src/cmdline/cmdline_why.cc:478
+#: src/cmdline/cmdline_why.cc:481
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ 「%F」を検討します\n"
 
-#: src/cmdline/cmdline_why.cc:488
+#: src/cmdline/cmdline_why.cc:491
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> 無視します。競合ではありません\n"
 
-#: src/cmdline/cmdline_why.cc:498
+#: src/cmdline/cmdline_why.cc:501
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> 競合は無視します\n"
 
-#: src/cmdline/cmdline_why.cc:506
+#: src/cmdline/cmdline_why.cc:509
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> 無視します。このパラメータの設定では無関係です\n"
 
-#: src/cmdline/cmdline_why.cc:513
+#: src/cmdline/cmdline_why.cc:516
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> 無視します。親が選択されたバージョンではありません\n"
 
-#: src/cmdline/cmdline_why.cc:560
+#: src/cmdline/cmdline_why.cc:563
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> 無視します。この依存関係は現在のバージョンで満たされています\n"
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:596
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> キューに投入します\n"
 
-#: src/cmdline/cmdline_why.cc:600
+#: src/cmdline/cmdline_why.cc:603
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> 無視します。バージョンのチェックが失敗しました\n"
 
-#: src/cmdline/cmdline_why.cc:618
+#: src/cmdline/cmdline_why.cc:621
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> 「%s 提案 %s」をキューに投入します\n"
 
-#: src/cmdline/cmdline_why.cc:752
+#: src/cmdline/cmdline_why.cc:755
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "以下のパラメータで検索を開始します: %ls\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "この解決方法は無視します。これは既に現れました。\n"
 
-#: src/cmdline/cmdline_why.cc:1097
+#: src/cmdline/cmdline_why.cc:1100
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "%s を削除する理由が見つかりません。\n"
 
-#: src/cmdline/cmdline_why.cc:1099
+#: src/cmdline/cmdline_why.cc:1102
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "%s をインストールする理由が見つかりません。\n"
 
-#: src/cmdline/cmdline_why.cc:1138
+#: src/cmdline/cmdline_why.cc:1141
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "%s に依存しているパッケージ"
 
-#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
-#: src/cmdline/cmdline_why.cc:1277
+#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
+#: src/cmdline/cmdline_why.cc:1280
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "\"%s\" という名前のパッケージは存在しません。"
 
-#: src/cmdline/cmdline_why.cc:1222
+#: src/cmdline/cmdline_why.cc:1225
 msgid "Unable to parse some match patterns."
 msgstr "一部のマッチパターンをパースできません。"
 
-#: src/cmdline/cmdline_why.cc:1250
+#: src/cmdline/cmdline_why.cc:1253
 #, fuzzy, c-format
 #| msgid ""
 #| "%s: this command requires at least one argument (the package to query)."
@@ -4905,7 +4905,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "パッケージ"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
 msgid "Not Installed"
 msgstr "インストールされていません"
 
@@ -5030,43 +5030,43 @@ msgid_plural ""
 "Always prefer these actions over alternatives that have not been accepted."
 msgstr[0] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s が %s に依存"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s が %s に事前依存"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s が %s を提案"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s が %s を推奨"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s が %s と競合"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s によって %s が破損"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s が %s を置換"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s が %s を廃止"
@@ -7295,52 +7295,52 @@ msgstr "適用"
 msgid "Close"
 msgstr "閉じる"
 
-#: src/solution_fragment.cc:146
+#: src/solution_fragment.cc:150
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s が %s (%s %s が提供) と競合"
 
-#: src/solution_fragment.cc:159
+#: src/solution_fragment.cc:163
 #, c-format
 msgid "Removing %s"
 msgstr "%s を削除しています"
 
-#: src/solution_fragment.cc:161
+#: src/solution_fragment.cc:165
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "%s %s (%s) をインストールしています"
 
-#: src/solution_fragment.cc:166
+#: src/solution_fragment.cc:170
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:392
+#: src/solution_fragment.cc:396
 msgid "%BRemove%b the following packages:%n"
 msgstr "以下のパッケージを%B削除%bする:%n"
 
-#: src/solution_fragment.cc:407
+#: src/solution_fragment.cc:411
 msgid "%BInstall%b the following packages:%n"
 msgstr "以下のパッケージを%Bインストール%bする:%n"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:429
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "以下のパッケージを現在のバージョンに%B一時固定%bする:%n"
 
-#: src/solution_fragment.cc:449
+#: src/solution_fragment.cc:453
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "以下のパッケージを%B更新%bする:%n"
 
-#: src/solution_fragment.cc:469
+#: src/solution_fragment.cc:473
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "以下のパッケージを%Bダウングレード%bする:%n"
 
-#: src/solution_fragment.cc:490
+#: src/solution_fragment.cc:494
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "以下の依存関係を未解決のままにする:%n"
 
-#: src/solution_fragment.cc:501
+#: src/solution_fragment.cc:505
 #, fuzzy, c-format
 #| msgid "i: %F"
 msgid "Tier: %s"

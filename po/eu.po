@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 19:53-0800\n"
+"POT-Creation-Date: 2010-01-17 20:35-0800\n"
 "PO-Revision-Date: 2008-05-05 22:00+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -1991,7 +1991,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Ondorengo paketeetan bete gabeko mendekotasunak daude:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -2182,11 +2182,11 @@ msgstr "Mendekotasuna:"
 msgid "PreDepends"
 msgstr "Aurremendekotasuna:"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
 msgid "Recommends"
 msgstr "Gomendioa:"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
 msgid "Suggests"
 msgstr "Iradokizuna:"
 
@@ -2206,8 +2206,8 @@ msgstr "Ordezten du:"
 msgid "Obsoletes"
 msgstr "Zaharkitzea:"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
+#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Hornitzen du:"
 
@@ -2337,140 +2337,140 @@ msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "Zaharkitu berri den pakete %d dago: "
 msgstr[1] "Zaharkitu berri diren %d pakete daude: "
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
 msgstr "men_maila"
 
-#: src/cmdline/cmdline_why.cc:317
+#: src/cmdline/cmdline_why.cc:320
 msgid "DependsOnly"
 msgstr "MendekoakBakarrik"
 
-#: src/cmdline/cmdline_why.cc:331
+#: src/cmdline/cmdline_why.cc:334
 msgid "version_selection"
 msgstr "bertsioa_hautaketa"
 
-#: src/cmdline/cmdline_why.cc:336
+#: src/cmdline/cmdline_why.cc:339
 msgid "Current"
 msgstr "Unekoa"
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:342
 msgid "Candidate"
 msgstr "Hautagarria"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 msgid "Install"
 msgstr "Instalatu"
 
-#: src/cmdline/cmdline_why.cc:345
+#: src/cmdline/cmdline_why.cc:348
 msgid "InstallNotCurrent"
 msgstr "InstalatuEzUnekoa"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:356
 msgid "allow_choices"
 msgstr "onartu_aukerak"
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:359
 msgid "true"
 msgstr "egia"
 
-#: src/cmdline/cmdline_why.cc:358
+#: src/cmdline/cmdline_why.cc:361
 msgid "false"
 msgstr "faltsua"
 
-#: src/cmdline/cmdline_why.cc:412
+#: src/cmdline/cmdline_why.cc:415
 #, c-format
 msgid "Install(%s)"
 msgstr "Instalatu(%s)"
 
-#: src/cmdline/cmdline_why.cc:414
+#: src/cmdline/cmdline_why.cc:417
 #, c-format
 msgid "Remove(%s)"
 msgstr "Kendu(%s)"
 
-#: src/cmdline/cmdline_why.cc:416
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "Instalatu: (%s-ek  %s hornitzen du)"
 
-#: src/cmdline/cmdline_why.cc:420
+#: src/cmdline/cmdline_why.cc:423
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Kendu: (%s-ek  %s hornitzen du)"
 
-#: src/cmdline/cmdline_why.cc:478
+#: src/cmdline/cmdline_why.cc:481
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ %F aztertzen\n"
 
-#: src/cmdline/cmdline_why.cc:488
+#: src/cmdline/cmdline_why.cc:491
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> alde batetara uzten, ez dago gatazkan\n"
 
-#: src/cmdline/cmdline_why.cc:498
+#: src/cmdline/cmdline_why.cc:501
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> gatazka alde batetara uzten\n"
 
-#: src/cmdline/cmdline_why.cc:506
+#: src/cmdline/cmdline_why.cc:509
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> baztertzen, ez da beharrezkoa parametroen arabera\n"
 
-#: src/cmdline/cmdline_why.cc:513
+#: src/cmdline/cmdline_why.cc:516
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> baztertzen, parent ez da hautatutako bertsioa\n"
 
-#: src/cmdline/cmdline_why.cc:560
+#: src/cmdline/cmdline_why.cc:563
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr "    ++   --> saltatzen, mend. uneko bertsioan beteta\n"
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:596
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> HILARAN_IPINTZEN\n"
 
-#: src/cmdline/cmdline_why.cc:600
+#: src/cmdline/cmdline_why.cc:603
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> alde batera uzten, bertsio egiaztapenak huts egin du\n"
 
-#: src/cmdline/cmdline_why.cc:618
+#: src/cmdline/cmdline_why.cc:621
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> %s HILARAN IPINTZEN %s hornitzen du\n"
 
-#: src/cmdline/cmdline_why.cc:752
+#: src/cmdline/cmdline_why.cc:755
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Bilaketa %ls parametroez hasten\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "Konponbidea alde batetara uzten. Dagoeneko ikusi dut.\n"
 
-#: src/cmdline/cmdline_why.cc:1097
+#: src/cmdline/cmdline_why.cc:1100
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Ezin da arrazoirik aurkitu %s kentzeko.\n"
 
-#: src/cmdline/cmdline_why.cc:1099
+#: src/cmdline/cmdline_why.cc:1102
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Ezin da arrazoirik aurkitu %s instalatzeko.\n"
 
-#: src/cmdline/cmdline_why.cc:1138
+#: src/cmdline/cmdline_why.cc:1141
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "Honen mendeko paketeak: %s"
 
-#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
-#: src/cmdline/cmdline_why.cc:1277
+#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
+#: src/cmdline/cmdline_why.cc:1280
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Ez dago \"%s\" izeneko paketerik."
 
-#: src/cmdline/cmdline_why.cc:1222
+#: src/cmdline/cmdline_why.cc:1225
 msgid "Unable to parse some match patterns."
 msgstr "Ezin dira analizatu aurkitutako parekatze batzuek."
 
-#: src/cmdline/cmdline_why.cc:1250
+#: src/cmdline/cmdline_why.cc:1253
 #, fuzzy, c-format
 #| msgid ""
 #| "%s: this command requires at least one argument (the package to query)."
@@ -4665,7 +4665,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "Paketea"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
 msgid "Not Installed"
 msgstr "Ez dago instalatuta"
 
@@ -4794,43 +4794,43 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s-ek %s-ren mendekotasuna du."
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s-ek %s-ren aurre-mendekotasuna du."
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s-ek %s iradokitzen du"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s-ek %s gomendatzen du"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s-ek %s-rekin elkar-jotzen du"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s-ek %s hausten du"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s-ek %s ordezkatzen du"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s-ek %s zaharkiturik uzten du"
@@ -6981,52 +6981,52 @@ msgstr "Aplikatu"
 msgid "Close"
 msgstr "Itxi"
 
-#: src/solution_fragment.cc:146
+#: src/solution_fragment.cc:150
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s-ek %s-rekin elkarjotzen du [%s %s-ek hornitua]"
 
-#: src/solution_fragment.cc:159
+#: src/solution_fragment.cc:163
 #, c-format
 msgid "Removing %s"
 msgstr "%s kentzen"
 
-#: src/solution_fragment.cc:161
+#: src/solution_fragment.cc:165
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "Instalatzen: %s %s (%s)"
 
-#: src/solution_fragment.cc:166
+#: src/solution_fragment.cc:170
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:392
+#: src/solution_fragment.cc:396
 msgid "%BRemove%b the following packages:%n"
 msgstr "%BKendu%b honako paketeak:%n"
 
-#: src/solution_fragment.cc:407
+#: src/solution_fragment.cc:411
 msgid "%BInstall%b the following packages:%n"
 msgstr "%BInstalatu%b honako paketeak:%n"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:429
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BMantendu%b honako paketeak beraien uneko bertsioan:%n"
 
-#: src/solution_fragment.cc:449
+#: src/solution_fragment.cc:453
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%BBertsio-berritu%b honako paketeak:%n"
 
-#: src/solution_fragment.cc:469
+#: src/solution_fragment.cc:473
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BAurreko bertsiora itzuli%b honako paketeak:%n"
 
-#: src/solution_fragment.cc:490
+#: src/solution_fragment.cc:494
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Utzi honako mendekotasunak ebatzi gabe:%n"
 
-#: src/solution_fragment.cc:501
+#: src/solution_fragment.cc:505
 #, fuzzy, c-format
 #| msgid "i: %F"
 msgid "Tier: %s"

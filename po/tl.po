@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 19:53-0800\n"
+"POT-Creation-Date: 2010-01-17 20:35-0800\n"
 "PO-Revision-Date: 2005-03-30 16:02+0800\n"
 "Last-Translator: Ryan Escarez <rescarez@gmail.com>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -1838,7 +1838,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Ang mga sumusunod na pakete ay may kulang na dependensiya:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr ""
 
@@ -2027,11 +2027,11 @@ msgstr "Depends"
 msgid "PreDepends"
 msgstr "PreDepends"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
 msgid "Recommends"
 msgstr "Rekomendasyon"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
 msgid "Suggests"
 msgstr "Suhesyon"
 
@@ -2051,8 +2051,8 @@ msgstr "Palitan"
 msgid "Obsoletes"
 msgstr "Obsoletes"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
+#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Provides"
 
@@ -2181,147 +2181,147 @@ msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:314
 #, fuzzy
 msgid "dep_level"
 msgstr "burahin"
 
-#: src/cmdline/cmdline_why.cc:317
+#: src/cmdline/cmdline_why.cc:320
 #, fuzzy
 msgid "DependsOnly"
 msgstr "Depends"
 
-#: src/cmdline/cmdline_why.cc:331
+#: src/cmdline/cmdline_why.cc:334
 msgid "version_selection"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:336
+#: src/cmdline/cmdline_why.cc:339
 msgid "Current"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:342
 #, fuzzy
 msgid "Candidate"
 msgstr "CandVer"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 #, fuzzy
 msgid "Install"
 msgstr "^Instal"
 
-#: src/cmdline/cmdline_why.cc:345
+#: src/cmdline/cmdline_why.cc:348
 #, fuzzy
 msgid "InstallNotCurrent"
 msgstr "naka-instol"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:356
 msgid "allow_choices"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:359
 msgid "true"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:358
+#: src/cmdline/cmdline_why.cc:361
 #, fuzzy
 msgid "false"
 msgstr "^Isara"
 
-#: src/cmdline/cmdline_why.cc:412
+#: src/cmdline/cmdline_why.cc:415
 #, fuzzy, c-format
 msgid "Install(%s)"
 msgstr "^Instal"
 
-#: src/cmdline/cmdline_why.cc:414
+#: src/cmdline/cmdline_why.cc:417
 #, fuzzy, c-format
 msgid "Remove(%s)"
 msgstr "^Tanggalin"
 
-#: src/cmdline/cmdline_why.cc:416
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:420
+#: src/cmdline/cmdline_why.cc:423
 #, fuzzy, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Pangalan ng pakete na binibigay ng %s"
 
-#: src/cmdline/cmdline_why.cc:478
+#: src/cmdline/cmdline_why.cc:481
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:488
+#: src/cmdline/cmdline_why.cc:491
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:498
+#: src/cmdline/cmdline_why.cc:501
 msgid "    ++   --> skipping conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:506
+#: src/cmdline/cmdline_why.cc:509
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:513
+#: src/cmdline/cmdline_why.cc:516
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:560
+#: src/cmdline/cmdline_why.cc:563
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:596
 msgid "    ++   --> ENQUEUING\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:600
+#: src/cmdline/cmdline_why.cc:603
 msgid "    ++   --> skipping, version check failed\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:618
+#: src/cmdline/cmdline_why.cc:621
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:752
+#: src/cmdline/cmdline_why.cc:755
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:1097
+#: src/cmdline/cmdline_why.cc:1100
 #, fuzzy, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Hindi makita ang version \"%s\" para sa pakete \"%s\"\n"
 
-#: src/cmdline/cmdline_why.cc:1099
+#: src/cmdline/cmdline_why.cc:1102
 #, fuzzy, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Hindi makita ang version \"%s\" para sa pakete \"%s\"\n"
 
-#: src/cmdline/cmdline_why.cc:1138
+#: src/cmdline/cmdline_why.cc:1141
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "Pakete na umaasa sa %s"
 
-#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
-#: src/cmdline/cmdline_why.cc:1277
+#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
+#: src/cmdline/cmdline_why.cc:1280
 #, fuzzy, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Hindi mahanap ang paketeng nagngangalang \"%s\""
 
-#: src/cmdline/cmdline_why.cc:1222
+#: src/cmdline/cmdline_why.cc:1225
 #, fuzzy
 msgid "Unable to parse some match patterns."
 msgstr "Hindi ma-buksan ang %s para sulatan"
 
-#: src/cmdline/cmdline_why.cc:1250
+#: src/cmdline/cmdline_why.cc:1253
 #, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
@@ -4426,7 +4426,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "Pakete"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
 #, fuzzy
 msgid "Not Installed"
 msgstr "hindi naka-instol"
@@ -4550,43 +4550,43 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
 #, fuzzy, c-format
 msgid "%s depends upon %s"
 msgstr "naka-depende sa"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
 #, fuzzy, c-format
 msgid "%s pre-depends upon %s"
 msgstr "pre-depends sa"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
 #, fuzzy, c-format
 msgid "%s suggests %s"
 msgstr "suhisyon"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
 #: src/solution_item.cc:603
 #, fuzzy, c-format
 msgid "%s recommends %s"
 msgstr "rekomedasyon"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
 #, fuzzy, c-format
 msgid "%s conflicts with %s"
 msgstr "complikado sa"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
 #, fuzzy, c-format
 msgid "%s breaks %s"
 msgstr "papalitan"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
 #, fuzzy, c-format
 msgid "%s replaces %s"
 msgstr "papalitan"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
 #, fuzzy, c-format
 msgid "%s obsoletes %s"
 msgstr "lipas na"
@@ -6731,56 +6731,56 @@ msgstr ""
 msgid "Close"
 msgstr "^Isara"
 
-#: src/solution_fragment.cc:146
+#: src/solution_fragment.cc:150
 #, fuzzy, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "complikado sa"
 
-#: src/solution_fragment.cc:159
+#: src/solution_fragment.cc:163
 #, fuzzy, c-format
 msgid "Removing %s"
 msgstr "Reconfiguring %s\n"
 
-#: src/solution_fragment.cc:161
+#: src/solution_fragment.cc:165
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr ""
 
-#: src/solution_fragment.cc:166
+#: src/solution_fragment.cc:170
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:392
+#: src/solution_fragment.cc:396
 #, fuzzy
 msgid "%BRemove%b the following packages:%n"
 msgstr "Ang mga sumusunod na pakete ay SIRA:"
 
-#: src/solution_fragment.cc:407
+#: src/solution_fragment.cc:411
 #, fuzzy
 msgid "%BInstall%b the following packages:%n"
 msgstr "Ang mga sumusunod na pakete ay SIRA:"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:429
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr ""
 
-#: src/solution_fragment.cc:449
+#: src/solution_fragment.cc:453
 #, fuzzy
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "Ang mga sumusunod na pakete ay SIRA:"
 
-#: src/solution_fragment.cc:469
+#: src/solution_fragment.cc:473
 #, fuzzy
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "Kinukuha ang mga pakete"
 
-#: src/solution_fragment.cc:490
+#: src/solution_fragment.cc:494
 #, fuzzy, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Ang mga sumusunod na pakete ay SIRA:"
 
-#: src/solution_fragment.cc:501
+#: src/solution_fragment.cc:505
 #, fuzzy, c-format
 #| msgid "DL Size: %sB"
 msgid "Tier: %s"

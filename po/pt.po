@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 19:53-0800\n"
+"POT-Creation-Date: 2010-01-17 20:35-0800\n"
 "PO-Revision-Date: 2009-09-23 12:45+0200\n"
 "Last-Translator: Miguel Figueiredo <elmig@debianPT.org>\n"
 "Language-Team: Portuguese <traduz@debianpt.org>\n"
@@ -2000,7 +2000,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Os seguintes pacotes têm dependências não satisfeitas:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -2189,11 +2189,11 @@ msgstr "Dependente de"
 msgid "PreDepends"
 msgstr "Pré-Dependente de"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
 msgid "Recommends"
 msgstr "Recomenda"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
 msgid "Suggests"
 msgstr "Sugere"
 
@@ -2213,8 +2213,8 @@ msgstr "Substitui"
 msgid "Obsoletes"
 msgstr "Obsoleta"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
+#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Disponibiliza"
 
@@ -2345,142 +2345,142 @@ msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "Existe %d novo pacote obsoleto: "
 msgstr[1] "Existem %d novos pacotes obsoletos: "
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
 msgstr "dep_level"
 
-#: src/cmdline/cmdline_why.cc:317
+#: src/cmdline/cmdline_why.cc:320
 msgid "DependsOnly"
 msgstr "DependeApenas"
 
-#: src/cmdline/cmdline_why.cc:331
+#: src/cmdline/cmdline_why.cc:334
 msgid "version_selection"
 msgstr "escolha_de_versão"
 
-#: src/cmdline/cmdline_why.cc:336
+#: src/cmdline/cmdline_why.cc:339
 msgid "Current"
 msgstr "Actual"
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:342
 msgid "Candidate"
 msgstr "Candidato"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 msgid "Install"
 msgstr "Instalar"
 
-#: src/cmdline/cmdline_why.cc:345
+#: src/cmdline/cmdline_why.cc:348
 msgid "InstallNotCurrent"
 msgstr "InstalarNãoActuais"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:356
 msgid "allow_choices"
 msgstr "permitir_escohas"
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:359
 msgid "true"
 msgstr "verdadeiro"
 
-#: src/cmdline/cmdline_why.cc:358
+#: src/cmdline/cmdline_why.cc:361
 msgid "false"
 msgstr "falso"
 
-#: src/cmdline/cmdline_why.cc:412
+#: src/cmdline/cmdline_why.cc:415
 #, c-format
 msgid "Install(%s)"
 msgstr "Instalar(%s)"
 
-#: src/cmdline/cmdline_why.cc:414
+#: src/cmdline/cmdline_why.cc:417
 #, c-format
 msgid "Remove(%s)"
 msgstr "Remover(%s)"
 
-#: src/cmdline/cmdline_why.cc:416
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "A instalar (%s disponibiliza %s)"
 
-#: src/cmdline/cmdline_why.cc:420
+#: src/cmdline/cmdline_why.cc:423
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "Remover (%s disponibiliza %s)"
 
-#: src/cmdline/cmdline_why.cc:478
+#: src/cmdline/cmdline_why.cc:481
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ A examinar %F\n"
 
-#: src/cmdline/cmdline_why.cc:488
+#: src/cmdline/cmdline_why.cc:491
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> a ultrapassar, não é um conflito\n"
 
-#: src/cmdline/cmdline_why.cc:498
+#: src/cmdline/cmdline_why.cc:501
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> a ultrapassar o conflito\n"
 
-#: src/cmdline/cmdline_why.cc:506
+#: src/cmdline/cmdline_why.cc:509
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 "    ++   --> a ultrapassar, de acordo com os parâmetros não é relevante\n"
 
-#: src/cmdline/cmdline_why.cc:513
+#: src/cmdline/cmdline_why.cc:516
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> a ultrapassar, o pai não está na versão escolhida\n"
 
-#: src/cmdline/cmdline_why.cc:560
+#: src/cmdline/cmdline_why.cc:563
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 "    ++   --> a ultrapassar, a dependência está satisfeita pela versão "
 "actual\n"
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:596
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> A COLOCAR EM FILA\n"
 
-#: src/cmdline/cmdline_why.cc:600
+#: src/cmdline/cmdline_why.cc:603
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> a ultrapassar, falhou a verificação de versão\n"
 
-#: src/cmdline/cmdline_why.cc:618
+#: src/cmdline/cmdline_why.cc:621
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> A COLOCAR %s NA FILA Disponibiliza %s\n"
 
-#: src/cmdline/cmdline_why.cc:752
+#: src/cmdline/cmdline_why.cc:755
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "Iniciar a pesquisa com os parâmetros %ls\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "A ultrapassar esta solução, eu já a vi.\n"
 
-#: src/cmdline/cmdline_why.cc:1097
+#: src/cmdline/cmdline_why.cc:1100
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "Não foi possível encontrar uma razão para remover %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1099
+#: src/cmdline/cmdline_why.cc:1102
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "Não foi possível encontrar uma razão para instalar %s.\n"
 
-#: src/cmdline/cmdline_why.cc:1138
+#: src/cmdline/cmdline_why.cc:1141
 #, fuzzy, c-format
 msgid "Packages requiring %s:"
 msgstr "Pacotes que dependem de %s"
 
-#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
-#: src/cmdline/cmdline_why.cc:1277
+#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
+#: src/cmdline/cmdline_why.cc:1280
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "Não existe nenhum pacote chamado \"%s\"."
 
-#: src/cmdline/cmdline_why.cc:1222
+#: src/cmdline/cmdline_why.cc:1225
 msgid "Unable to parse some match patterns."
 msgstr "Não foi possível analisar alguns padrões a coincidir."
 
-#: src/cmdline/cmdline_why.cc:1250
+#: src/cmdline/cmdline_why.cc:1253
 #, fuzzy, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
@@ -4525,7 +4525,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "não é um pacote verdadeiro"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
 msgid "Not Installed"
 msgstr "Não Instalado"
 
@@ -4646,43 +4646,43 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s depende de %s"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s predepende de %s"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s sugere %s"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s recomenda %s"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s faz conflito com %s"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s estraga %s"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s substitui %s"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s torna obsoleto %s"
@@ -6795,52 +6795,52 @@ msgstr "Aplicar"
 msgid "Close"
 msgstr "Fechar"
 
-#: src/solution_fragment.cc:146
+#: src/solution_fragment.cc:150
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s em conflito com %s [disponibilizado por %s %s]"
 
-#: src/solution_fragment.cc:159
+#: src/solution_fragment.cc:163
 #, c-format
 msgid "Removing %s"
 msgstr "A remover %s"
 
-#: src/solution_fragment.cc:161
+#: src/solution_fragment.cc:165
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "A instalar %s %s (%s)"
 
-#: src/solution_fragment.cc:166
+#: src/solution_fragment.cc:170
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:392
+#: src/solution_fragment.cc:396
 msgid "%BRemove%b the following packages:%n"
 msgstr "%BRemover%b os seguintes pacotes:%n"
 
-#: src/solution_fragment.cc:407
+#: src/solution_fragment.cc:411
 msgid "%BInstall%b the following packages:%n"
 msgstr "%BInstalar%b os seguintes pacotes:%n"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:429
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BManter%b os seguintes pacotes na sua versão actual:%n"
 
-#: src/solution_fragment.cc:449
+#: src/solution_fragment.cc:453
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%BActualizar%b os seguintes pacotes:%n"
 
-#: src/solution_fragment.cc:469
+#: src/solution_fragment.cc:473
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BDowngrade%b dos seguintes pacotes:%n"
 
-#: src/solution_fragment.cc:490
+#: src/solution_fragment.cc:494
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Deixar as seguintes dependências por resolver:%n"
 
-#: src/solution_fragment.cc:501
+#: src/solution_fragment.cc:505
 #, fuzzy, c-format
 msgid "Tier: %s"
 msgstr "i: %F"

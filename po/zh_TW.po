@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 19:53-0800\n"
+"POT-Creation-Date: 2010-01-17 20:35-0800\n"
 "PO-Revision-Date: 2008-10-26 21:02+0100\n"
 "Last-Translator: Asho Yeh <ashoyeh@gmail.com>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -1873,7 +1873,7 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "以下套件含有相依性:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:64
+#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<NULL>"
 
@@ -2064,11 +2064,11 @@ msgstr "依賴於"
 msgid "PreDepends"
 msgstr "預依賴於"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
 msgid "Recommends"
 msgstr "推薦"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
 msgid "Suggests"
 msgstr "建議"
 
@@ -2088,8 +2088,8 @@ msgstr "替換"
 msgid "Obsoletes"
 msgstr "過期檔案"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:251
-#: src/cmdline/cmdline_why.cc:1512 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
+#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "提供"
 
@@ -2212,140 +2212,140 @@ msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "共有 %d 個新被癈棄不用的套件："
 
-#: src/cmdline/cmdline_why.cc:311
+#: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
 msgstr "相依程度"
 
-#: src/cmdline/cmdline_why.cc:317
+#: src/cmdline/cmdline_why.cc:320
 msgid "DependsOnly"
 msgstr "DependsOnly"
 
-#: src/cmdline/cmdline_why.cc:331
+#: src/cmdline/cmdline_why.cc:334
 msgid "version_selection"
 msgstr "版本選擇"
 
-#: src/cmdline/cmdline_why.cc:336
+#: src/cmdline/cmdline_why.cc:339
 msgid "Current"
 msgstr "目前"
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:342
 msgid "Candidate"
 msgstr "候選版本"
 
-#: src/cmdline/cmdline_why.cc:342 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
 msgid "Install"
 msgstr "安裝"
 
-#: src/cmdline/cmdline_why.cc:345
+#: src/cmdline/cmdline_why.cc:348
 msgid "InstallNotCurrent"
 msgstr "已安裝但不是最新版本"
 
-#: src/cmdline/cmdline_why.cc:353
+#: src/cmdline/cmdline_why.cc:356
 msgid "allow_choices"
 msgstr "允許的選項"
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:359
 msgid "true"
 msgstr "真"
 
-#: src/cmdline/cmdline_why.cc:358
+#: src/cmdline/cmdline_why.cc:361
 msgid "false"
 msgstr "否"
 
-#: src/cmdline/cmdline_why.cc:412
+#: src/cmdline/cmdline_why.cc:415
 #, c-format
 msgid "Install(%s)"
 msgstr "安裝(%s)"
 
-#: src/cmdline/cmdline_why.cc:414
+#: src/cmdline/cmdline_why.cc:417
 #, c-format
 msgid "Remove(%s)"
 msgstr "移除(%s)"
 
-#: src/cmdline/cmdline_why.cc:416
+#: src/cmdline/cmdline_why.cc:419
 #, c-format
 msgid "Install(%s provides %s)"
 msgstr "安裝(%s 提供 %s)"
 
-#: src/cmdline/cmdline_why.cc:420
+#: src/cmdline/cmdline_why.cc:423
 #, c-format
 msgid "Remove(%s provides %s)"
 msgstr "移除(%s提供%s)"
 
-#: src/cmdline/cmdline_why.cc:478
+#: src/cmdline/cmdline_why.cc:481
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr "    ++ 正在檢查 %F\n"
 
-#: src/cmdline/cmdline_why.cc:488
+#: src/cmdline/cmdline_why.cc:491
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr "    ++   --> 忽略，並非衝突\n"
 
-#: src/cmdline/cmdline_why.cc:498
+#: src/cmdline/cmdline_why.cc:501
 msgid "    ++   --> skipping conflict\n"
 msgstr "    ++   --> 忽略衝突\n"
 
-#: src/cmdline/cmdline_why.cc:506
+#: src/cmdline/cmdline_why.cc:509
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr "    ++   --> 忽略與參數無關的動作\n"
 
-#: src/cmdline/cmdline_why.cc:513
+#: src/cmdline/cmdline_why.cc:516
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr "    ++   --> 忽略，上一個不是選擇的版本\n"
 
-#: src/cmdline/cmdline_why.cc:560
+#: src/cmdline/cmdline_why.cc:563
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr "    ++   --> 忽略，相依性符合目前的版本\n"
 
-#: src/cmdline/cmdline_why.cc:593
+#: src/cmdline/cmdline_why.cc:596
 msgid "    ++   --> ENQUEUING\n"
 msgstr "    ++   --> 加入佇列\n"
 
-#: src/cmdline/cmdline_why.cc:600
+#: src/cmdline/cmdline_why.cc:603
 msgid "    ++   --> skipping, version check failed\n"
 msgstr "    ++   --> 忽略，版本檢查失敗\n"
 
-#: src/cmdline/cmdline_why.cc:618
+#: src/cmdline/cmdline_why.cc:621
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr "    ++   --> 加入佇列 %s 提供 %s\n"
 
-#: src/cmdline/cmdline_why.cc:752
+#: src/cmdline/cmdline_why.cc:755
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr "開始以%ls參數來搜尋\n"
 
-#: src/cmdline/cmdline_why.cc:970
+#: src/cmdline/cmdline_why.cc:973
 msgid "Skipping this solution, I've already seen it.\n"
 msgstr "跳過該解法，我已考慮過了。\n"
 
-#: src/cmdline/cmdline_why.cc:1097
+#: src/cmdline/cmdline_why.cc:1100
 #, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "未能找到移除%s的理由。\n"
 
-#: src/cmdline/cmdline_why.cc:1099
+#: src/cmdline/cmdline_why.cc:1102
 #, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "未能找到安裝%s套件的理由。\n"
 
-#: src/cmdline/cmdline_why.cc:1138
+#: src/cmdline/cmdline_why.cc:1141
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "依賴於 %s 的套件"
 
-#: src/cmdline/cmdline_why.cc:1191 src/cmdline/cmdline_why.cc:1218
-#: src/cmdline/cmdline_why.cc:1277
+#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
+#: src/cmdline/cmdline_why.cc:1280
 #, c-format
 msgid "No package named \"%s\" exists."
 msgstr "套件“%s”不存在。"
 
-#: src/cmdline/cmdline_why.cc:1222
+#: src/cmdline/cmdline_why.cc:1225
 msgid "Unable to parse some match patterns."
 msgstr "無法解析匹配的模式。"
 
-#: src/cmdline/cmdline_why.cc:1250
+#: src/cmdline/cmdline_why.cc:1253
 #, fuzzy, c-format
 #| msgid ""
 #| "%s: this command requires at least one argument (the package to query)."
@@ -4483,7 +4483,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "套件"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:434
+#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
 msgid "Not Installed"
 msgstr "尚未安裝"
 
@@ -4608,43 +4608,43 @@ msgid_plural ""
 "Always prefer these actions over alternatives that have not been accepted."
 msgstr[0] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:112
+#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s 相依於 %s"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:115
+#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s 預先相依於 %s"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:118
+#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s 建議 %s"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:121
+#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s 推薦 %s"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:124
+#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s 衝突 %s"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:127
+#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
 #, c-format
 msgid "%s breaks %s"
 msgstr "%s 破壞 %s 的相依性"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:130
+#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s 替代 %s"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:133
+#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s 過期 %s"
@@ -6702,52 +6702,52 @@ msgstr "套用"
 msgid "Close"
 msgstr "關閉"
 
-#: src/solution_fragment.cc:146
+#: src/solution_fragment.cc:150
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s 和 %s 衝突 [由 %s %s 提供]"
 
-#: src/solution_fragment.cc:159
+#: src/solution_fragment.cc:163
 #, c-format
 msgid "Removing %s"
 msgstr "%s 移除中"
 
-#: src/solution_fragment.cc:161
+#: src/solution_fragment.cc:165
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "正在安裝 %s %s (%s)"
 
-#: src/solution_fragment.cc:166
+#: src/solution_fragment.cc:170
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:392
+#: src/solution_fragment.cc:396
 msgid "%BRemove%b the following packages:%n"
 msgstr "%B移除%b 下列套件：%n"
 
-#: src/solution_fragment.cc:407
+#: src/solution_fragment.cc:411
 msgid "%BInstall%b the following packages:%n"
 msgstr "%B安裝%b 下列套件：%n"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:429
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%B保持%b 下列套件於其當前版本：%n"
 
-#: src/solution_fragment.cc:449
+#: src/solution_fragment.cc:453
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%B升級%b 下列套件：%n"
 
-#: src/solution_fragment.cc:469
+#: src/solution_fragment.cc:473
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%B降級%b 下列套件：%n"
 
-#: src/solution_fragment.cc:490
+#: src/solution_fragment.cc:494
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "保留下列未解決的相依關係：%n"
 
-#: src/solution_fragment.cc:501
+#: src/solution_fragment.cc:505
 #, fuzzy, c-format
 #| msgid "i: %F"
 msgid "Tier: %s"
