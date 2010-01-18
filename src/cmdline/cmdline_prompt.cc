@@ -263,6 +263,8 @@ static void cmdline_show_instinfo(pkgvector &items,
 	case pkg_unused_remove:
 	  tags.push_back('u');
 	  break;
+        default:
+          break;
 	}
 
       if(!tags.empty())
