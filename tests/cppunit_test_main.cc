@@ -1,6 +1,6 @@
 // Main test program for the generic aptitude code.
 //
-//   Copyright (C) 2005, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -47,13 +47,13 @@ int main(int argc, char **argv)
     log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
   log4cxx::BasicConfigurator::configure();
 
-  CppUnit::TextUi::TestRunner runner;
+  CppUnit::TextTestRunner runner;
   CppUnit::TestFactoryRegistry &registry =
     CppUnit::TestFactoryRegistry::getRegistry();
 
   runner.addTest(registry.makeTest());
 
-  bool wasSuccessful = (runner.run("", false) == 0);
+  bool wasSuccessful = runner.run("", false);
 
-  return wasSuccessful;
+  return wasSuccessful ? 0 : -255;
 }
