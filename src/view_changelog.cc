@@ -340,7 +340,7 @@ public:
     cw::util::ref_ptr<refcounted_progress> p(download_progress->get_progress());
 
     p->OverallProgress(0, 0, 0,
-                       ssprintf(_("Preparing to download changelog of %s"), pkgname.c_str()));
+                       ssprintf(_("Preparing to download the changelog of %s"), pkgname.c_str()));
   }
 
   ~changelog_callbacks()
@@ -365,7 +365,7 @@ public:
     cwidget::util::ref_ptr<refcounted_progress> p = download_progress->get_progress();
 
     p->OverallProgress(currentSize, totalSize, 1,
-		       ssprintf(_("Downloading changelog of %s"), pkgname.c_str()));
+		       ssprintf(_("Downloading the changelog of %s"), pkgname.c_str()));
   }
 };
 
