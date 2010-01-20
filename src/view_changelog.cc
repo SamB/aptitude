@@ -1,6 +1,6 @@
 // view_changelog.cc
 //
-//   Copyright (C) 2004-2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -333,10 +333,14 @@ class changelog_callbacks : public aptitude::download_callbacks
 public:
   changelog_callbacks(const std::string &_pkgname,
 		      const std::string &_curverstr)
-    : download_progress(progress::create()),
+    : download_progress(gen_progress_bar()),
       pkgname(_pkgname),
       curverstr(_curverstr)
   {
+    cw::util::ref_ptr<refcounted_progress> p(download_progress->get_progress());
+
+    p->OverallProgress(0, 0, 0,
+                       ssprintf(_("Preparing to download changelog of %s"), pkgname.c_str()));
   }
 
   ~changelog_callbacks()
@@ -361,7 +365,7 @@ public:
     cwidget::util::ref_ptr<refcounted_progress> p = download_progress->get_progress();
 
     p->OverallProgress(currentSize, totalSize, 1,
-		       _("Downloading Changelog"));
+		       ssprintf(_("Downloading changelog of %s"), pkgname.c_str()));
   }
 };
 
