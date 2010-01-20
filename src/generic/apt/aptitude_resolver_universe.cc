@@ -853,7 +853,7 @@ aptitude_universe::tier aptitude_universe::get_keep_all_tier()
 
 aptitude_universe::tier aptitude_universe::get_remove_tier()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "30000"));
+  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000"));
 }
 
 aptitude_universe::tier aptitude_universe::get_break_hold_tier()

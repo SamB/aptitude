@@ -4431,10 +4431,12 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <row>
 		<entry>10,000</entry>
 		<entry>
-		  <quote>Safe</quote> actions: no removals, broken
-		  holds, or non-default versions.
+		  Solutions that include only <quote>safe</quote>
+		  actions (installing the default target for a package
+		  or keeping a package at its current version) and
+		  package removals.
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Safe-Tier'>Aptitude::ProblemResolver::Safe-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Safe-Tier'>Aptitude::ProblemResolver::Safe-Tier</link></literal>, <literal><link linkend='configProblemResolver-Remove-Tier'>Aptitude::ProblemResolver::Remove-Tier</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4443,14 +4445,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  The solution that cancels all the user's actions.
 		</entry>
 		<entry><literal><link linkend='configProblemResolver-Keep-All-Tier'>Aptitude::ProblemResolver::Keep-All-Tier</link></literal></entry>
-	      </row>
-
-	      <row>
-		<entry>30,000</entry>
-		<entry>
-		  Solutions that remove packages.
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Remove-Tier'>Aptitude::ProblemResolver::Remove-Tier</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4488,9 +4482,9 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  If a solution qualifies for several tiers, it will be placed
 	  in the highest (that is to say, latest) one.  For example, a
 	  solution that upgrades one package to its default version
-	  and removes a second package will be placed at tier 30,000.
-	  You can adjust the tiers of individual versions using
-	  resolver hints; see <xref
+	  and breaks a hold on a second package will be placed at tier
+	  40,000.  You can adjust the tiers of individual versions
+	  using resolver hints; see <xref
 	  linkend='secDependencyResolutionHints'/> for details.  The
 	  default tiers are illustrated in <xref
 	  linkend='figureSearchTiers'/>.
@@ -11361,7 +11355,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	    <seglistitem id='configProblemResolver-Remove-Tier'>
 	      <seg><literal>Aptitude::ProblemResolver::Remove-Tier</literal></seg>
-	      <seg><literal>30000</literal></seg>
+	      <seg><literal>10000</literal></seg>
 	      <seg>
 		The search tier assigned to actions that remove a
 		package.  See <xref
