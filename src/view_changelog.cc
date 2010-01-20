@@ -356,6 +356,8 @@ public:
   void failure(const std::string &msg)
   {
     download_progress->Done();
+    show_message(ssprintf(_("Failed to download the changelog of %s: %s"),
+                          pkgname.c_str(), msg.c_str());
   }
 
   void partial_download(const temp::name &name,
