@@ -75,7 +75,6 @@ class tier
      *
      *  This will be the smallest tier in its structural level.
      */
-    template<typename Iterator>
     tier_impl(int _structural_level)
       : structural_level(_structural_level),
 	user_levels()
