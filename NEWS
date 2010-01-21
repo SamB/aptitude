@@ -1,3 +1,33 @@
+[1/20/2010]
+Version 0.6.1.5                             "All around the dependency bush,
+                                             the monkey chased the weasel..."
+
+- Crashes and serious errors:
+
+  + [all] Changed the default resolver configuration so that removals
+          and "safe" actions are grouped together.  Without this
+          change, aptitude was being too conservative and failing to
+          solve simple upgrades. (Closes: #565867)
+
+          The safe-upgrade resolver is unaffected by this change,
+          since it uses explicit constraints to prevent removals from
+          being installed.
+
+- Cosmetic and UI bugs:
+
+  + [test] Eliminated a spurious error message that was being printed
+           by the cppunit unit tests.
+
+  + [curses] Fixed the progress display and error reporting for
+             changelog downloads.
+
+- Documentation:
+
+  + [doc] Added a note in the manpage explaining the principles of the
+          Linux command-line to hopefully forestall future bug reports
+          telling me that the manpage for "aptitude search"
+          contradicts the user manual.  (Closes: #566003)
+
 [1/17/2010]
 Version 0.6.1.4                             "You can't take the sky from me."
 
