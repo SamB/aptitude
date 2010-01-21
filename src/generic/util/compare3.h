@@ -1,7 +1,7 @@
 /** \file compare3.h */   // -*-c++-*-
 
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -24,6 +24,9 @@
 // Forward-declare STL templates to avoid pulling the whole STL in.
 namespace std
 {
+  template<typename Iterator>
+  class iterator_traits;
+
   template<typename T, typename Alloc>
   class list;
 
@@ -44,6 +47,9 @@ namespace std
 
   template<typename Key, typename Val, typename Compare, typename Alloc>
   class multimap;
+
+  template<typename charT, typename traits, typename Alloc>
+  class basic_string;
 }
 
 // Forward-declare ref_ptrs.
