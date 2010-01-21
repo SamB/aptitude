@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_hu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2006-10-12 20:44+0100\n"
 "Last-Translator: SZERVÁC Attila <sas@321.hu>\n"
 "Language-Team: Hungarian <debian-l10n-hungarian@lists.debian.org>\n"
@@ -7794,13 +7794,30 @@ msgstr "%s változás"
 msgid "View the list of changes made to this Debian package."
 msgstr "E Debian csomag változásainak megtekintése."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL a módosításnaplók letöltéséhez"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL a módosításnaplók letöltéséhez"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Munkanapló letöltése"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Csak a hivatalos Debian csomagok munkanaplói olvashatók."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Munkanapló letöltése"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7811,11 +7828,6 @@ msgstr "Csak a hivatalos Debian csomagok munkanaplói olvashatók."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Nem sikerült megnyitni a(z) %s csomaghierarchiafájlt"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Munkanapló letöltése"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Munkanapló letöltése"

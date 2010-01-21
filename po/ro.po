@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-10-17 15:42+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
@@ -8070,14 +8070,31 @@ msgstr "%s schimbări"
 msgid "View the list of changes made to this Debian package."
 msgstr "Vedeți lista modificărilor făcute în acest pachet Debian."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL de folosit la descărcarea jurnalelor de modificări"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL de folosit la descărcarea jurnalelor de modificări"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Se descarcă jurnalul de modificări"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr ""
 "Puteți să vedeți doar jurnalele de modificări ale pachetelor Debian oficiale."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Se descarcă jurnalul de modificări"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -8088,11 +8105,6 @@ msgstr ""
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Nu se poate deschide fișierul de ierarhii al pachetelor %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Se descarcă jurnalul de modificări"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Descarcă jurnalul de modificări"

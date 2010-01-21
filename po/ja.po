@@ -185,7 +185,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-05-16 03:35+0900\n"
 "Last-Translator: Noritada Kobayashi <nori1@dolphin.c.u-tokyo.ac.jp>\n"
 "Language-Team: Japanese\n"
@@ -8423,13 +8423,30 @@ msgstr "%s の変更"
 msgid "View the list of changes made to this Debian package."
 msgstr "この Debian パッケージに加えられた変更点を一覧表示します。"
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "変更履歴のダウンロードに用いる URL"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "変更履歴のダウンロードに用いる URL"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "変更履歴をダウンロードしています"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "公式の Debian パッケージのみ変更履歴を閲覧できます。"
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "変更履歴をダウンロードしています"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -8440,11 +8457,6 @@ msgstr "公式の Debian パッケージのみ変更履歴を閲覧できます�
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "パッケージ階層ファイル %s を開けません"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "変更履歴をダウンロードしています"
 
 #~ msgid "Download Changelog"
 #~ msgstr "変更履歴をダウンロードしました"

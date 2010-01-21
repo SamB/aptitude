@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-08-22 10:20+0200\n"
 "Last-Translator: Priti Patil <prithisd@gmail.com>\n"
 "Language-Team: <janabhaaratii@cdacmumbai.in>\n"
@@ -7676,13 +7676,30 @@ msgstr "%s बदलं"
 msgid "View the list of changes made to this Debian package."
 msgstr "ह्या डेबियन पॅकेज मध्ये केलेल्या बदलांची यादी दाखवा."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "बदल नोंदी उतरवून घेण्यासाठी यूआरएल(URL) वापरावीत"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "बदल नोंदी उतरवून घेण्यासाठी यूआरएल(URL) वापरावीत"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "चेंजलाॅग डाऊनलोड होत आहे."
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "तुम्ही फक्त डेबियन पॅकेजेसचे चेंजलाॅग्ज बघू शकाल."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "चेंजलाॅग डाऊनलोड होत आहे."
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7693,11 +7710,6 @@ msgstr "तुम्ही फक्त डेबियन पॅकेजेस
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "पॅकेज स्तरीय फाइल %s उघडता येत नाही."
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "चेंजलाॅग डाऊनलोड होत आहे."
 
 #~ msgid "Download Changelog"
 #~ msgstr "डाऊनलोड चेंजलाॅग"

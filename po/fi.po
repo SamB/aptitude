@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.4\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2006-11-05 15:47+0200\n"
 "Last-Translator: Jaakko Kangasharju <ashar@iki.fi>\n"
 "Language-Team: Finnish <debian-l10n-finnish@lists.debian.org>\n"
@@ -7737,13 +7737,30 @@ msgstr "%s: muutokset"
 msgid "View the list of changes made to this Debian package."
 msgstr "Näytä tähän Debian-pakettiin tehdyt muutokset."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL josta muutoslokit noudetaan"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL josta muutoslokit noudetaan"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Noudan muutoslokia"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Vain virallisten Debian-pakettien muutoslokit ovat saatavilla."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Noudan muutoslokia"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7754,11 +7771,6 @@ msgstr "Vain virallisten Debian-pakettien muutoslokit ovat saatavilla."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "En pystynyt avaamaan pakettihierarkiatiedostoa %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Noudan muutoslokia"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Nouda muutosloki"

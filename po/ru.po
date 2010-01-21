@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.3-1\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2009-09-23 12:30+0200\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -7754,13 +7754,30 @@ msgstr "%s изменений"
 msgid "View the list of changes made to this Debian package."
 msgstr "Показать список изменений, сделанных для этого пакета Debian."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
-msgstr "Скачивается Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "Preparing to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "Подготовка к получению файлов списков изменений"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "Failed to download the changelog: %s"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "Не удалось скачать список изменений: %s"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading changelogs"
+msgid "Downloading the changelog of %s"
+msgstr "Скачиваются файлы списков изменений"
+
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Списки изменений можно посмотреть только у официальных пакетов Debian."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Скачивается Changelog"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7771,9 +7788,6 @@ msgstr "Списки изменений можно посмотреть толь
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Не удалось открыть файл иерархии пакетов %s"
-
-#~ msgid "Downloading changelogs"
-#~ msgstr "Скачиваются файлы списков изменений"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Скачать Changelog"

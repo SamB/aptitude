@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-10-26 21:02+0100\n"
 "Last-Translator: Asho Yeh <ashoyeh@gmail.com>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -7680,13 +7680,30 @@ msgstr "%s 個套件已改變"
 msgid "View the list of changes made to this Debian package."
 msgstr "查看這個 Debian 套件的修訂列表"
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "用於下載變更日誌的 URL"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "用於下載變更日誌的 URL"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "正在下載更改紀錄"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "您只能閱讀官方 Debian 套件的更改紀錄。"
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "正在下載更改紀錄"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7697,11 +7714,6 @@ msgstr "您只能閱讀官方 Debian 套件的更改紀錄。"
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "無法打開套件層次檔案 %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "正在下載更改紀錄"
 
 #~ msgid "Download Changelog"
 #~ msgstr "下載更動記錄"

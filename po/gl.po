@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-04-19 14:12+0100\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -8008,13 +8008,30 @@ msgstr "Cambios de %s"
 msgid "View the list of changes made to this Debian package."
 msgstr "Ver a lista dos cambios feitos neste paquete Debian."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL a empregar para descargar os rexistros de cambios"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL a empregar para descargar os rexistros de cambios"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "A descargar o rexistro de cambios"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Só se poden ver rexistros de cambios de paquetes Debian oficiais."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "A descargar o rexistro de cambios"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -8025,11 +8042,6 @@ msgstr "Só se poden ver rexistros de cambios de paquetes Debian oficiais."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Non se pode abrir o ficheiro de xerarquía de paquetes %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "A descargar o rexistro de cambios"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Descargar rexistro de cambios"

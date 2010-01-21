@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2005-03-30 16:02+0800\n"
 "Last-Translator: Ryan Escarez <rescarez@gmail.com>\n"
 "Language-Team: Tagalog <debian-tl@banwa.upm.edu.ph>\n"
@@ -7784,13 +7784,30 @@ msgstr ""
 msgid "View the list of changes made to this Debian package."
 msgstr "Tignan ang mga mahalagang pagbabago sa bawat bersyon ng programa"
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL na gamitin upang kunin ang mga changelog"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL na gamitin upang kunin ang mga changelog"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Kinukuha ang Changelog"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Maari lang tignan ang mga changelog ng mga opisyal na paketeng Debian."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Kinukuha ang Changelog"
 
 #, fuzzy
 #~ msgid "No changelog found."
@@ -7800,11 +7817,6 @@ msgstr "Maari lang tignan ang mga changelog ng mga opisyal na paketeng Debian."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Hindi ma-buksan ang pakete hierarchy file %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Kinukuha ang Changelog"
 
 #, fuzzy
 #~ msgid "Download Changelog"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2007-06-14 03:27+0530\n"
 "Last-Translator: Tshewang Norbu <bumthap2006@hotmail.com>\n"
 "Language-Team: Dzongkha <pgeyleg@dit.gov.bt>\n"
@@ -7847,13 +7847,30 @@ msgstr "%s བསྒྱུར་བཅོས།"
 msgid "View the list of changes made to this Debian package."
 msgstr "ཌེ་བི་ཡན་ཐུམ་སྒྲིལ་འདི་གི་དོན་ལུ་བཟོ་ཡོད་མི་ བསྒྱུར་བཅོས་ཀྱི་ཐོ་ཡིག་དེ་སྟོན།"
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "བསྒྱུར་བཅོས་ལོགསི་ ཚུ་ཕབ་ལེན་འབད་ནིའི་དོན་ལུ་ལག་ལེན་འཐབ་་ནི་གི་ཡུ་ཨཱར་ཨེལ།"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "བསྒྱུར་བཅོས་ལོགསི་ ཚུ་ཕབ་ལེན་འབད་ནིའི་དོན་ལུ་ལག་ལེན་འཐབ་་ནི་གི་ཡུ་ཨཱར་ཨེལ།"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་ལེན་འབད་དོ།"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "ཁྱོད་ཀྱིས་གཞུང་འབྲེལ་གྱི་ཌེ་བི་ཡཱན་ཐུམ་སྒྲིལ་ཚུ་གི་བསྒྱུར་བཅོས་དྲན་དེབ་རྐྱངམ་ཅིག་སྟོན་ཚུགས།"
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་ལེན་འབད་དོ།"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7864,11 +7881,6 @@ msgstr "ཁྱོད་ཀྱིས་གཞུང་འབྲེལ་གྱི
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "ཐུམ་སྒྲིལ་སྡེ་རིམ་གྱི་ཡིག་སྣོད་%sདེ་ཁ་ཕྱེ་མ་ཚུགས།"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "བསྒྱུར་བཅོས་དྲེན་དེབ་ཕབ་ལེན་འབད་དོ།"
 
 #~ msgid "Download Changelog"
 #~ msgstr "བསྒྱུར་བཅོས་དྲན་དེབ་ཕབ་ལེན་འབད།"

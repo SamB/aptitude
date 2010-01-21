@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2009-02-03 15:46+0100\n"
 "Last-Translator: Martin Bagge <brother@bsnet.se>\n"
 "Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
@@ -7962,13 +7962,30 @@ msgstr "%s ändrar"
 msgid "View the list of changes made to this Debian package."
 msgstr "Visa listan av ändringar gjorda i detta Debian-paket."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL att använda för att hämta ändringsloggar"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL att använda för att hämta ändringsloggar"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Hämtar ändringslogg"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Du kan endast se ändringsloggar från officiella Debianpaket."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Hämtar ändringslogg"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7979,11 +7996,6 @@ msgstr "Du kan endast se ändringsloggar från officiella Debianpaket."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Kunde inte öppna pakethierarkifilen %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Hämtar ändringslogg"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Hämta ändringslogg"

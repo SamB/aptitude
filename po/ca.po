@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.9\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-09-19 00:45+0200\n"
 "Last-Translator: Jordi Mallach <jordi@debian.org>\n"
 "Language-Team: Catalan <debian-l10n-catalan@lists.debian.org>\n"
@@ -7868,15 +7868,32 @@ msgstr "%s modificacions"
 msgid "View the list of changes made to this Debian package."
 msgstr "Mostra els canvis realitzats en aquest paquet de Debian."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL a utilitzar per baixar els registres de canvis"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL a utilitzar per baixar els registres de canvis"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "S'està baixant el registre de canvis"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr ""
 "Només podeu visualitzar els registres de cavis dels paquets oficials de "
 "Debian."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "S'està baixant el registre de canvis"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7887,11 +7904,6 @@ msgstr ""
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "No s'ha pogut obrir el fitxer de jerarquia del paquet %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "S'està baixant el registre de canvis"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Descarrega el registre de canvis"
