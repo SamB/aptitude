@@ -34,15 +34,15 @@
  *  order by tier.  This is as opposed to score, which is merely used
  *  in a best-effort manner.
  *
- *  A tier is simply a sequence of integers.  By convention, each tier
- *  in a search should have the same length; tiers are compared
- *  lexicographically.
+ *  A tier is simply a sequence of integers, each of which is known as
+ *  a "level".  By convention, each tier in a search should have the
+ *  same length; tiers are compared lexicographically.
  *
- *  The first entry in the tier list is reserved by the resolver to
- *  store "structural" priorities (for instance, to mark nodes as
- *  conflicted or deferred); to make things simpler for client code
- *  that doesn't care about this information, that entry is stored and
- *  accessed separately from the main list.
+ *  The first level in the tier is reserved by the resolver to store
+ *  "structural" priorities (for instance, to mark nodes as conflicted
+ *  or deferred); to make things simpler for client code that doesn't
+ *  care about this information, that level is stored and accessed
+ *  separately from the main list.
  */
 class tier
 {
@@ -53,47 +53,58 @@ class tier
   /** \brief The object that actually stores the tier data. */
   struct tier_impl
   {
-    // Tier set by the resolver itself to control the search
+    // Level set by the resolver itself to control the search
     // algorithm.
-    int structural_tier;
+    int structural_level;
 
-    // Tiers set by client code to customize the search order.
-    std::vector<int> user_tiers;
+    // Levels set by client code to customize the search order.
+    std::vector<int> user_levels;
 
-    /** \brief Initialize a tier object from a collection of user tiers.
+    /** \brief Initialize a tier object from a collection of user levels.
      *
-     *  The structural tier is set to 0.
+     *  The structural level is set to INT_MIN.
      */
     template<typename Iterator>
-    tier_impl(Iterator user_tiers_begin, Iterator user_tiers_end)
-      : structural_tier(0),
-	user_tiers(user_tiers_begin, user_tiers_end)
+    tier_impl(Iterator user_levels_begin, Iterator user_levels_end)
+      : structural_level(INT_MIN),
+	user_levels(user_levels_begin, user_levels_end)
+    {
+    }
+
+    /** \brief Initialize a tier object with no user levels.
+     *
+     *  This will be the smallest tier in its structural level.
+     */
+    template<typename Iterator>
+    tier_impl(int _structural_level)
+      : structural_level(_structural_level),
+	user_levels()
     {
     }
 
     /** \brief Initialize a tier object given its contents. */
     template<typename Iterator>
-    tier_impl(int _structural_tier,
-	      Iterator user_tiers_begin, Iterator user_tiers_end)
-      : structural_tier(_structural_tier),
-	user_tiers(user_tiers_begin, user_tiers_end)
+    tier_impl(int _structural_level,
+	      Iterator user_levels_begin, Iterator user_levels_end)
+      : structural_level(_structural_level),
+	user_levels(user_levels_begin, user_levels_end)
     {
     }
 
     /** \brief Initialize a tier object given its contents and a change to make. */
     template<typename Iterator>
-    tier_impl(int _structural_tier,
-	      Iterator user_tiers_begin, Iterator user_tiers_end,
-	      int change_location, // 0 for the structural tier, 1 for
-	                           // the first user tier.
+    tier_impl(int _structural_level,
+	      Iterator user_levels_begin, Iterator user_levels_end,
+	      int change_location, // 0 for the structural level, 1 for
+	                           // the first user level, etc.
 	      int new_value)
-      : structural_tier(_structural_tier),
-	user_tiers(user_tiers_begin, user_tiers_end)
+      : structural_level(_structural_level),
+	user_levels(user_levels_begin, user_levels_end)
     {
       if(change_location == 0)
-	structural_tier = new_value;
+	structural_level = new_value;
       else
-	user_tiers[change_location] = new_value;
+	user_levels[change_location] = new_value;
     }
   };
 
@@ -104,9 +115,9 @@ class tier
     {
       std::size_t rval = 0;
 
-      boost::hash_combine(rval, impl.structural_tier);
-      for(std::vector<int>::const_iterator it = impl.user_tiers.begin();
-	  it != impl.user_tiers.end(); ++it)
+      boost::hash_combine(rval, impl.structural_level);
+      for(std::vector<int>::const_iterator it = impl.user_levels.begin();
+	  it != impl.user_levels.end(); ++it)
 	boost::hash_combine(rval, *it);
 
       return rval;
@@ -130,87 +141,98 @@ class tier
   }
 
 public:
-  /** \brief Create a new tier object with structural tier 0.
+  /** \brief Create a new tier object with structural level INT_MIN.
    *
-   *  \param user_tier_begin The beginning of a range of tiers to
-   *                         insert into the user tier list.
+   *  \param user_level_begin The beginning of a range of levels to
+   *                          insert into the user level list.
    *
-   *  \param user_tier_end The end of a range of tiers to insert into
-   *                       the user tier list.
+   *  \param user_level_end The end of a range of levels to insert
+   *                        into the user level list.
    */
   template<typename Iterator>
-  tier create(Iterator user_tiers_begin, Iterator user_tiers_end)
+  tier create(Iterator user_levels_begin, Iterator user_levels_end)
   {
-    tier(tier_impl(user_tiers_begin, user_tiers_end));
+    tier(tier_impl(user_levels_begin, user_levels_end));
+  }
+
+  /** \brief Create a new tier object with the given structural level
+   *  and no user levels.
+   *
+   *  The returned tier will be the smallest tier in its structural
+   *  level.
+   */
+  tier create(int structural_level)
+  {
+    return tier(tier_impl(structural_level));
   }
 
   /** \brief Create a new tier object.
    *
-   *  \param structural_tier The structural tier to store in the new
-   *                         tier object.
+   *  \param structural_level The structural level to store in the new
+   *                          level object.
    *
-   *  \param user_tier_begin The beginning of a range of tiers to
-   *                         insert into the user tier list.
+   *  \param user_level_begin The beginning of a range of levels to
+   *                          insert into the user level list.
    *
-   *  \param user_tier_end The end of a range of tiers to insert into
-   *                       the user tier list.
+   *  \param user_level_end The end of a range of levels to insert
+   *                        into the user level list.
    */
   template<typename Iterator>
-  boost::flyweight<tier> create(int structural_tier,
-				Iterator user_tiers_begin, Iterator user_tiers_end)
+  boost::flyweight<tier> create(int structural_level,
+				Iterator user_levels_begin, Iterator user_levels_end)
   {
-    return tier(tier_impl(structural_tier, user_tiers_begin, user_tiers_end));
+    return tier(tier_impl(structural_level, user_levels_begin, user_levels_end));
   }
 
-  /** \brief Create a new tier object in which this object's structural tier
-   *  has been modified.
+  /** \brief Create a new tier object in which this object's
+   *  structural level has been modified.
    *
-   *  \param new_structural_tier The structural tier of the new tier
-   *  object.
+   *  \param new_structural_level The structural level of the new
+   *  level object.
    *
-   *  \return a tier object with the same user tiers as this object
-   *  and the given structural tier.
+   *  \return a tier object with the same user levels as this object
+   *  and the given structural level.
    */
-  boost::flyweight<tier> set_structural_tier(int new_structural_tier)
+  boost::flyweight<tier> set_structural_level(int new_structural_level)
   {
-    return tier(tier_impl(structural_tier,
-			  user_tiers.begin(), user_tiers.end(),
-			  0, new_structural_tier));
+    return tier(tier_impl(structural_level,
+			  user_levels.begin(), user_levels.end(),
+			  0, new_structural_level));
   }
 
   /** \brief Create a new tier object in which one of this object's
-   *  user tiers has been modified.
+   *  user levels has been modified.
    *
-   *  \param location A zero-based index into the list of user tiers.
+   *  \param location A zero-based index into the list of user levels.
    *
-   *  \param new_value The new tier to store in the list in that
+   *  \param new_value The new level to store in the list in that
    *                   location.
    *
-   *  \return a tier object with the same structural tier as this
-   *          object whose user tiers are identical to this object's,
-   *          except that the tier in slot "location" has been set to
+   *  \return a tier object with the same structural level as this
+   *          object whose user levels are identical to this object's,
+   *          except that the level in slot "location" has been set to
    *          new_value.
    */
   boost::flyweight<tier> set_user_tier(int location, int new_value)
   {
-    return tier(tier_impl(structural_tier,
-			  user_tiers.begin(), user_tiers.end(),
+    return tier(tier_impl(structural_level,
+			  user_levels.begin(), user_levels.end(),
 			  location + 1, new_value));
   }
 
-  /** \brief Retrieve the value of the structural tier slot. */
-  int get_structural_tier() const { return get_impl().structural_tier; }
+  /** \brief Retrieve the value of the structural level slot. */
+  int get_structural_level() const { return get_impl().structural_level; }
 
-  typedef std::vector<int>::const_iterator user_tier_iterator;
+  typedef std::vector<int>::const_iterator user_level_iterator;
 
-  /** \brief Get a reference to the first user tier as a random-access
-   *  iterator.
-   */
-  user_tier_iterator user_tiers_begin() const { return get_impl().user_tiers.begin(); }
-  /** \brief Get a reference to the end of the user tier list as a
+  /** \brief Get a reference to the first user level as a
    *  random-access iterator.
    */
-  user_tier_iterator user_tiers_end() const { return get_impl().user_tiers.end(); }
+  user_level_iterator user_levels_begin() const { return get_impl().user_levels.begin(); }
+  /** \brief Get a reference to the end of the user level list as a
+   *  random-access iterator.
+   */
+  user_level_iterator user_levels_end() const { return get_impl().user_levels.end(); }
 
   std::size_t get_hash_value() const
   {
@@ -223,8 +245,8 @@ public:
     const tier_impl &other_impl(other.get_impl());
 
     return
-      impl.structural_tier == other_impl.structural_tier &&
-      impl.user_tiers == other_impl.user_tiers;
+      impl.structural_level == other_impl.structural_level &&
+      impl.user_levels == other_impl.user_levels;
   }
 
   bool operator!=(const tier &other) const
@@ -233,8 +255,8 @@ public:
     const tier_impl &other_impl(other.get_impl());
 
     return
-      impl.structural_tier != other_impl.structural_tier ||
-      impl.user_tiers != other_impl.user_tiers;
+      impl.structural_level != other_impl.structural_level ||
+      impl.user_levels != other_impl.user_levels;
   }
 
   int compare(const tier &other) const
@@ -244,11 +266,11 @@ public:
 
     using aptitude::util::compare3;
 
-    const int cmp = compare3(impl.structural_tier, other_impl.structural_tier);
+    const int cmp = compare3(impl.structural_level, other_impl.structural_level);
     if(cmp != 0)
       return cmp;
     else
-      return compare3(impl.user_tiers, other_impl.user_tiers);
+      return compare3(impl.user_levels, other_impl.user_levels);
   }
 
   bool operator<(const tier &other) const
