@@ -149,7 +149,7 @@ public:
   template<typename Iterator>
   tier create(Iterator user_levels_begin, Iterator user_levels_end)
   {
-    tier(tier_impl(user_levels_begin, user_levels_end));
+    return tier(tier_impl(user_levels_begin, user_levels_end));
   }
 
   /** \brief Create a new tier object with the given structural level
