@@ -126,6 +126,20 @@ class tier
 
       return rval;
     }
+
+    bool operator==(const tier_impl &other) const
+    {
+      return
+	structural_level == other.structural_level &&
+	user_levels == other.user_levels;
+    }
+
+    bool operator!=(const tier_impl &other) const
+    {
+      return
+	structural_level != other.structural_level ||
+	user_levels != other.user_levels;
+    }
   };
 
   class tier_impl_hasher
@@ -258,22 +272,12 @@ public:
 
   bool operator==(const tier &other) const
   {
-    const tier_impl &impl(get_impl());
-    const tier_impl &other_impl(other.get_impl());
-
-    return
-      impl.structural_level == other_impl.structural_level &&
-      impl.user_levels == other_impl.user_levels;
+    return impl_flyweight == other.impl_flyweight;
   }
 
   bool operator!=(const tier &other) const
   {
-    const tier_impl &impl(get_impl());
-    const tier_impl &other_impl(other.get_impl());
-
-    return
-      impl.structural_level != other_impl.structural_level ||
-      impl.user_levels != other_impl.user_levels;
+    return impl_flyweight != other.impl_flyweight;
   }
 
   int compare(const tier &other) const
