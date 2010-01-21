@@ -60,6 +60,9 @@ class tier
     // Levels set by client code to customize the search order.
     std::vector<int> user_levels;
 
+    // Cache the hash value.  Initialized during construction.
+    std::size_t hash_value;
+
     /** \brief Initialize a tier object from a collection of user levels.
      *
      *  The structural level is set to INT_MIN.
@@ -67,8 +70,10 @@ class tier
     template<typename Iterator>
     tier_impl(Iterator user_levels_begin, Iterator user_levels_end)
       : structural_level(INT_MIN),
-	user_levels(user_levels_begin, user_levels_end)
+	user_levels(user_levels_begin, user_levels_end),
+	hash_value(0)
     {
+      hash_value = get_hash_value();
     }
 
     /** \brief Initialize a tier object with no user levels.
@@ -77,8 +82,10 @@ class tier
      */
     tier_impl(int _structural_level)
       : structural_level(_structural_level),
-	user_levels()
+	user_levels(),
+	hash_value(0)
     {
+      hash_value = get_hash_value();
     }
 
     /** \brief Initialize a tier object given its contents. */
@@ -86,8 +93,10 @@ class tier
     tier_impl(int _structural_level,
 	      Iterator user_levels_begin, Iterator user_levels_end)
       : structural_level(_structural_level),
-	user_levels(user_levels_begin, user_levels_end)
+	user_levels(user_levels_begin, user_levels_end),
+	hash_value(0)
     {
+      hash_value = get_hash_value();
     }
 
     /** \brief Initialize a tier object given its contents and a
@@ -99,9 +108,23 @@ class tier
 	      int change_location,
 	      int new_value)
       : structural_level(_structural_level),
-	user_levels(user_levels_begin, user_levels_end)
+	user_levels(user_levels_begin, user_levels_end),
+	hash_value(0)
     {
       user_levels[change_location] = new_value;
+      hash_value = get_hash_value();
+    }
+
+    std::size_t get_hash_value() const
+    {
+      std::size_t rval = 0;
+
+      boost::hash_combine(rval, structural_level);
+      for(std::vector<int>::const_iterator it = user_levels.begin();
+	  it != user_levels.end(); ++it)
+	boost::hash_combine(rval, *it);
+
+      return rval;
     }
   };
 
@@ -110,14 +133,7 @@ class tier
   public:
     std::size_t operator()(const tier_impl &impl) const
     {
-      std::size_t rval = 0;
-
-      boost::hash_combine(rval, impl.structural_level);
-      for(std::vector<int>::const_iterator it = impl.user_levels.begin();
-	  it != impl.user_levels.end(); ++it)
-	boost::hash_combine(rval, *it);
-
-      return rval;
+      return impl.hash_value;
     }
   };
 
