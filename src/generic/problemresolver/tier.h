@@ -252,7 +252,7 @@ public:
 
   std::size_t get_hash_value() const
   {
-    return boost::hash_value(impl_flyweight);
+    return get_impl().hash_value;
   }
 
   bool operator==(const tier &other) const
