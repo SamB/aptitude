@@ -132,7 +132,7 @@ class tier
   {
   }
 
-  const impl &get_impl() const
+  const tier_impl &get_impl() const
   {
     return impl_flyweight.get();
   }
