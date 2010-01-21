@@ -90,20 +90,18 @@ class tier
     {
     }
 
-    /** \brief Initialize a tier object given its contents and a change to make. */
+    /** \brief Initialize a tier object given its contents and a
+     *         change to the list of user levels.
+     */
     template<typename Iterator>
     tier_impl(int _structural_level,
 	      Iterator user_levels_begin, Iterator user_levels_end,
-	      int change_location, // 0 for the structural level, 1 for
-	                           // the first user level, etc.
+	      int change_location,
 	      int new_value)
       : structural_level(_structural_level),
 	user_levels(user_levels_begin, user_levels_end)
     {
-      if(change_location == 0)
-	structural_level = new_value;
-      else
-	user_levels[change_location] = new_value;
+      user_levels[change_location] = new_value;
     }
   };
 
@@ -194,9 +192,10 @@ public:
    */
   boost::flyweight<tier> set_structural_level(int new_structural_level)
   {
-    return tier(tier_impl(structural_level,
-			  user_levels.begin(), user_levels.end(),
-			  0, new_structural_level));
+    const tier_impl &impl(get_impl());
+
+    return tier(tier_impl(new_structural_level,
+			  impl.user_levels.begin(), impl.user_levels.end()));
   }
 
   /** \brief Create a new tier object in which one of this object's
@@ -214,9 +213,11 @@ public:
    */
   boost::flyweight<tier> set_user_tier(int location, int new_value)
   {
-    return tier(tier_impl(structural_level,
-			  user_levels.begin(), user_levels.end(),
-			  location + 1, new_value));
+    const tier_impl &impl(get_impl());
+
+    return tier(tier_impl(impl.structural_level,
+			  impl.user_levels.begin(), impl.user_levels.end(),
+			  location, new_value));
   }
 
   /** \brief Retrieve the value of the structural level slot. */
