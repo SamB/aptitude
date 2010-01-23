@@ -26,6 +26,7 @@
 #include <boost/flyweight/hashed_factory.hpp>
 #include <boost/functional/hash.hpp>
 
+#include <iosfwd>
 #include <vector>
 
 /** \brief Represents the tier of a search node.
@@ -168,6 +169,12 @@ class tier
   }
 
 public:
+  /** \brief A default-constructed tier is the smallest possible tier. */
+  tier()
+    : impl_flyweight(tier_impl(INT_MIN))
+  {
+  }
+
   /** \brief Create a new tier object with structural level INT_MIN.
    *
    *  \param user_level_begin The beginning of a range of levels to
