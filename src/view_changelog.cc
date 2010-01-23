@@ -345,17 +345,29 @@ public:
 
   ~changelog_callbacks()
   {
+    if(download_progress.valid())
+      download_progress->destroy();
   }
 
   void success(const temp::name &filename)
   {
-    download_progress->Done();
+    if(download_progress.valid())
+      {
+        download_progress->Done();
+        download_progress->destroy();
+        download_progress.clear();
+      }
     do_view_changelog(filename, pkgname, curverstr);
   }
 
   void failure(const std::string &msg)
   {
-    download_progress->Done();
+    if(download_progress.valid())
+      {
+        download_progress->Done();
+        download_progress->destroy();
+        download_progress.clear();
+      }
     show_message(ssprintf(_("Failed to download the changelog of %s: %s"),
                           pkgname.c_str(), msg.c_str()));
   }
