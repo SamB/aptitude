@@ -348,4 +348,6 @@ namespace aptitude
   }
 }
 
+std::ostream &operator<<(std::ostream &, const tier &t);
+
 #endif // TIER_H
