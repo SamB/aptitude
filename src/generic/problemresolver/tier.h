@@ -327,12 +327,9 @@ public:
   }
 };
 
-namespace boost
+inline std::size_t hash_value(const tier &t)
 {
-  std::size_t hash_value(const tier &t)
-  {
-    return t.get_hash_value();
-  }
+  return t.get_hash_value();
 }
 
 namespace aptitude
