@@ -1,6 +1,6 @@
 // view_changelog.cc
 //
-//   Copyright (C) 2004-2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2004-2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -333,25 +333,43 @@ class changelog_callbacks : public aptitude::download_callbacks
 public:
   changelog_callbacks(const std::string &_pkgname,
 		      const std::string &_curverstr)
-    : download_progress(progress::create()),
+    : download_progress(gen_progress_bar()),
       pkgname(_pkgname),
       curverstr(_curverstr)
   {
+    cw::util::ref_ptr<refcounted_progress> p(download_progress->get_progress());
+
+    p->OverallProgress(0, 0, 0,
+                       ssprintf(_("Preparing to download the changelog of %s"), pkgname.c_str()));
   }
 
   ~changelog_callbacks()
   {
+    if(download_progress.valid())
+      download_progress->destroy();
   }
 
   void success(const temp::name &filename)
   {
-    download_progress->Done();
+    if(download_progress.valid())
+      {
+        download_progress->Done();
+        download_progress->destroy();
+        download_progress.clear();
+      }
     do_view_changelog(filename, pkgname, curverstr);
   }
 
   void failure(const std::string &msg)
   {
-    download_progress->Done();
+    if(download_progress.valid())
+      {
+        download_progress->Done();
+        download_progress->destroy();
+        download_progress.clear();
+      }
+    show_message(ssprintf(_("Failed to download the changelog of %s: %s"),
+                          pkgname.c_str(), msg.c_str()));
   }
 
   void partial_download(const temp::name &name,
@@ -361,7 +379,7 @@ public:
     cwidget::util::ref_ptr<refcounted_progress> p = download_progress->get_progress();
 
     p->OverallProgress(currentSize, totalSize, 1,
-		       _("Downloading Changelog"));
+		       ssprintf(_("Downloading the changelog of %s"), pkgname.c_str()));
   }
 };
 

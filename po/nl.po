@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-09-05 23:04+0200\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -7939,13 +7939,30 @@ msgstr "%s wijzigingen"
 msgid "View the list of changes made to this Debian package."
 msgstr "Bekijk de gemaakte wijzigingen in dit Debian-pakket."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "Te gebruiken URL voor het ophalen van changelogs"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "Te gebruiken URL voor het ophalen van changelogs"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Changelog wordt opgehaald"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "U kunt alleen changelogs van officiële Debian-pakketten bekijken."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Changelog wordt opgehaald"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7956,11 +7973,6 @@ msgstr "U kunt alleen changelogs van officiële Debian-pakketten bekijken."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Kan pakkethiërarchiebestand %s niet openen"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Changelog wordt opgehaald"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Changelog Ophalen"

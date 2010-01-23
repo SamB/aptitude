@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2009-09-05 10:59+0200\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
@@ -7682,13 +7682,30 @@ msgstr "Změny v %s"
 msgid "View the list of changes made to this Debian package."
 msgstr "Zobrazí seznam změn v tomto debianím balíku."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
-msgstr "Stahuji Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "Preparing to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "Připravuji se na stažení seznamů změn"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "Failed to download the changelog: %s"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "Nepodařilo se stáhnout seznam změn: %s"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading changelogs"
+msgid "Downloading the changelog of %s"
+msgstr "Stahují se změny"
+
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Můžete prohlížet seznamy změn pouze u oficiálních debianích balíků."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Stahuji Changelog"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7699,9 +7716,6 @@ msgstr "Můžete prohlížet seznamy změn pouze u oficiálních debianích bal�
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Nemohu otevřít soubor s hierarchií balíků %s"
-
-#~ msgid "Downloading changelogs"
-#~ msgstr "Stahují se změny"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Stáhnout Changelog"

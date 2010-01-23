@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-17 20:35-0800\n"
+"POT-Creation-Date: 2010-01-20 20:39-0800\n"
 "PO-Revision-Date: 2008-08-25 12:12+0300\n"
 "Last-Translator: Darius Žitkevičius <skystis@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -7937,13 +7937,30 @@ msgstr "%s pakeitimų"
 msgid "View the list of changes made to this Debian package."
 msgstr "Rodyti šiam Debian paketui pritaikytus pakeitimus."
 
-#: src/view_changelog.cc:364
-msgid "Downloading Changelog"
+#: src/view_changelog.cc:343
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Preparing to download the changelog of %s"
+msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
+
+#: src/view_changelog.cc:359
+#, fuzzy, c-format
+#| msgid "URL to use to download changelogs"
+msgid "Failed to download the changelog of %s: %s"
+msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
+
+#: src/view_changelog.cc:370
+#, fuzzy, c-format
+#| msgid "Downloading Changelog"
+msgid "Downloading the changelog of %s"
 msgstr "Gaunu pakeitimų sąrašą"
 
-#: src/view_changelog.cc:397
+#: src/view_changelog.cc:403
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Oficialių Debian paketų pakeitimų sąrašą galima tik skaityti."
+
+#~ msgid "Downloading Changelog"
+#~ msgstr "Gaunu pakeitimų sąrašą"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7954,11 +7971,6 @@ msgstr "Oficialių Debian paketų pakeitimų sąrašą galima tik skaityti."
 #~| msgid "Cannot open package hierarchy file %s"
 #~ msgid "Can't create a temporary file: %s"
 #~ msgstr "Negaliu atidaryti paketo hierarchijos bylos %s"
-
-#, fuzzy
-#~| msgid "Downloading Changelog"
-#~ msgid "Downloading changelogs"
-#~ msgstr "Gaunu pakeitimų sąrašą"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Gauti pakeitimų sąrašą"

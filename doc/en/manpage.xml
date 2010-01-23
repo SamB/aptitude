@@ -601,6 +601,26 @@
 	    manual.
 	  </para>
 
+          <note>
+            <para>
+              In the example above, <quote><literal>aptitude search
+              '~N' edit</literal></quote> has two arguments after
+              <literal>search</literal> and thus is searching for
+              <emphasis>two</emphasis> patterns:
+              <quote><literal>~N</literal></quote> and
+              <quote><literal>edit</literal></quote>.  As described in
+              the <link linkend='secSearchPatterns'>search pattern
+              reference</link>, a <emphasis>single</emphasis> pattern
+              composed of two sub-patterns separated by a space (such
+              as <quote><literal>~N edit</literal></quote>) matches
+              only if <emphasis>both</emphasis> patterns match.  Thus,
+              the command <quote><literal>aptitude search '~N
+              edit'</literal></quote> will only show
+              <quote>new</quote> packages whose name contains
+              <quote>edit</quote>.
+            </para>
+          </note>
+
 	  <para>
 	    Unless you pass the <link
 	    linkend='cmdlineOptionFormat'><literal>-F</literal></link> option, the output of
