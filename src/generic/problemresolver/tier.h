@@ -285,6 +285,13 @@ public:
     return impl_flyweight != other.impl_flyweight;
   }
 
+  tier &operator=(const tier &other)
+  {
+    impl_flyweight = other.impl_flyweight;
+
+    return *this;
+  }
+
   int compare(const tier &other) const
   {
     const tier_impl &impl(get_impl());
