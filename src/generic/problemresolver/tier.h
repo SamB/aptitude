@@ -184,20 +184,19 @@ public:
    *                        into the user level list.
    */
   template<typename Iterator>
-  static tier create(Iterator user_levels_begin, Iterator user_levels_end)
+  tier(Iterator user_levels_begin, Iterator user_levels_end)
+    : impl_flyweight(tier_impl(user_levels_begin, user_levels_end))
   {
-    return tier(tier_impl(user_levels_begin, user_levels_end));
   }
 
   /** \brief Create a new tier object with the given structural level
    *  and no user levels.
    *
-   *  The returned tier will be the smallest tier in its structural
-   *  level.
+   *  The new tier will be the smallest tier in its structural level.
    */
-  static tier create(int structural_level)
+  tier(int structural_level)
+    : impl_flyweight(tier_impl(structural_level))
   {
-    return tier(tier_impl(structural_level));
   }
 
   /** \brief Create a new tier object.
@@ -212,11 +211,10 @@ public:
    *                        into the user level list.
    */
   template<typename Iterator>
-  static boost::flyweight<tier>
-  create(int structural_level,
-	 Iterator user_levels_begin, Iterator user_levels_end)
+  tier(int structural_level,
+       Iterator user_levels_begin, Iterator user_levels_end)
+    : impl_flyweight(tier_impl(structural_level, user_levels_begin, user_levels_end))
   {
-    return tier(tier_impl(structural_level, user_levels_begin, user_levels_end));
   }
 
   /** \brief Create a new tier object in which this object's
