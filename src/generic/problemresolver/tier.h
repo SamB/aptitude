@@ -310,6 +310,21 @@ public:
   {
     return compare(other) < 0;
   }
+
+  bool operator<=(const tier &other) const
+  {
+    return compare(other) <= 0;
+  }
+
+  bool operator>(const tier &other) const
+  {
+    return compare(other) > 0;
+  }
+
+  bool operator>=(const tier &other) const
+  {
+    return compare(other) >= 0;
+  }
 };
 
 namespace boost
