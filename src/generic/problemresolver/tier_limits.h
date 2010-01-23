@@ -1,7 +1,7 @@
 /** \file tier_limits.h */    // -*-c++-*-
 
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,38 +21,38 @@
 #ifndef TIER_LIMITS_H
 #define TIER_LIMITS_H
 
-template<typename PackageUniverse>
-class generic_tier_limits
+#include "tier.h"
+
+class tier_limits
 {
-  typedef typename PackageUniverse::tier tier;
-
 public:
-  static const int maximum_tier_num = INT_MAX;
+  static const int maximum_level = INT_MAX;
 
-  /** \brief The maximum tier; reserved for solutions that contain a
-   *  logical conflict and thus are dead-ends.
+  /** \brief The maximum structural level; reserved for solutions that
+   *  contain a logical conflict and thus are dead-ends.
    *
-   *  Search nodes at this tier are discarded without being visited.
+   *  Search nodes at this level are discarded without being visited.
    */
-  static const int conflict_tier_num = maximum_tier_num;
+  static const int conflict_structural_level = maximum_level;
 
-  /** \brief The second highest tier; reserved for solutions that were
-   *  already generated (to prevent them from being generated again).
+  /** \brief The second highest structural level; reserved for
+   *  solutions that were already generated (to prevent them from
+   *  being generated again).
    *
-   *  Search nodes at this tier are discarded without being visited.
+   *  Search nodes at this level are discarded without being visited.
    */
-  static const int already_generated_tier_num = conflict_tier_num - 1;
+  static const int already_generated_structural_level = conflict_structural_level - 1;
 
-  /** \brief The third highest tier; reserved for solutions that
-   *  violate a user constraint and will be deferred until the
+  /** \brief The third highest structural level; reserved for solutions
+   *  that violate a user constraint and will be deferred until the
    *  constraints are changed.
    */
-  static const int defer_tier_num = conflict_tier_num - 2;
+  static const int defer_structural_level = conflict_structural_level - 2;
 
-  /** \brief The minimum tier; this is the initial tier of the empty
+  /** \brief The minimum level; this is the initial level of the empty
    *  solution.
    */
-  static const int minimum_tier_num = INT_MIN;
+  static const int minimum_level = INT_MIN;
 
   static const tier maximum_tier;
   static const tier conflict_tier;
@@ -60,39 +60,5 @@ public:
   static const tier defer_tier;
   static const tier minimum_tier;
 };
-
-// Appease the C++ gods by writing dummy definitions of these things.
-// g++ happily accepts definitions of static constants inside a class,
-// but they aren't actually defined unless you define them outside the
-// class and don't give a definition in the definition, so without
-// these dummy lines, the linker will complain that there are
-// undefined references to the constants defined above because their
-// definitions aren't really definitions.  Hopefully that's all
-// obvious.
-template<typename PackageUniverse>
-const int generic_tier_limits<PackageUniverse>::maximum_tier_num;
-template<typename PackageUniverse>
-const int generic_tier_limits<PackageUniverse>::conflict_tier_num;
-template<typename PackageUniverse>
-const int generic_tier_limits<PackageUniverse>::already_generated_tier_num;
-template<typename PackageUniverse>
-const int generic_tier_limits<PackageUniverse>::defer_tier_num;
-template<typename PackageUniverse>
-const int generic_tier_limits<PackageUniverse>::minimum_tier_num;
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_tier_limits<PackageUniverse>::maximum_tier(maximum_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_tier_limits<PackageUniverse>::conflict_tier(conflict_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_tier_limits<PackageUniverse>::already_generated_tier(already_generated_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_tier_limits<PackageUniverse>::defer_tier(defer_tier_num);
-
-template<typename PackageUniverse>
-const typename PackageUniverse::tier generic_tier_limits<PackageUniverse>::minimum_tier(minimum_tier_num);
 
 #endif

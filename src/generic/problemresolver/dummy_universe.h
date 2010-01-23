@@ -1,6 +1,6 @@
 // dummy_universe.h                               -*-c++-*-
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -507,64 +507,6 @@ public:
     bool solved_by(const version &other) const;
   };
 
-  class tier
-  {
-    std::vector<int> values;
-
-  public:
-    tier()
-    {
-    }
-
-    template<typename iter>
-    tier(iter begin, iter end)
-      : values(begin, end)
-    {
-    }
-
-    explicit tier(int first)
-      : values(1, first)
-    {
-    }
-
-    std::size_t get_hash_value() const
-    {
-      boost::hash<std::vector<int> > hasher;
-      return hasher(values);
-    }
-
-    typedef std::vector<int>::const_iterator const_iterator;
-
-    const_iterator begin() const { return values.begin(); }
-    const_iterator end() const { return values.end(); }
-
-    bool operator<(const tier &other) const
-    {
-      return values < other.values;
-    }
-
-    bool operator>=(const tier &other) const
-    {
-      return values >= other.values;
-    }
-
-    bool operator==(const tier &other) const
-    {
-      return values == other.values;
-    }
-
-    bool operator!=(const tier &other) const
-    {
-      return values != other.values;
-    }
-
-    tier &operator=(const tier &other)
-    {
-      values = other.values;
-      return *this;
-    }
-  };
-
   typedef wrap_ptr_iter<dummy_package, package> package_iterator;
   typedef wrap_ptr_iter<dummy_dep, dep> dep_iterator;
 
@@ -735,11 +677,6 @@ inline std::size_t hash_value(const dummy_universe::dep &d)
   return d.get_hash_value();
 }
 
-inline std::size_t hash_value(const dummy_universe::tier &t)
-{
-  return t.get_hash_value();
-}
-
 // A refcounting wrapper for a dummy_universe; used to sanitize memory
 // management without copying all over (and because the resolver
 // expects to be able to have a full copy of its argument type)
@@ -765,7 +702,6 @@ public:
   typedef dummy_universe::package package;
   typedef dummy_universe::version version;
   typedef dummy_universe::dep dep;
-  typedef dummy_universe::tier tier;
   typedef dummy_universe::package_iterator package_iterator;
   typedef dummy_universe::dep_iterator dep_iterator;
   typedef dummy_universe::broken_dep_iterator broken_dep_iterator;
@@ -876,8 +812,6 @@ std::ostream &operator<<(std::ostream &out, const dummy_universe::package &p);
 std::ostream &operator<<(std::ostream &out, const dummy_universe::version &v);
 
 std::ostream &operator<<(std::ostream &out, const dummy_universe::dep &d);
-
-std::ostream &operator<<(std::ostream &out, const dummy_universe::tier &tier);
 
 class ParseError : public cwidget::util::Exception
 {

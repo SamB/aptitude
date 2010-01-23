@@ -1,7 +1,7 @@
 /** \file search_graph.h */     // -*-c++-*-
 
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,6 +28,7 @@
 #include "choice_set.h"
 #include "promotion_set.h"
 #include "solution.h"
+#include "tier.h"
 #include "tier_limits.h"
 
 #include <generic/util/compare3.h>
@@ -52,10 +53,8 @@ template<typename PackageUniverse>
 class generic_solver_information
 {
 public:
-  typedef typename PackageUniverse::tier tier;
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
-  typedef generic_tier_limits<PackageUniverse> tier_limits;
 
 private:
   class combine_reason_hashes
@@ -647,14 +646,12 @@ class generic_search_graph
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
-  typedef typename PackageUniverse::tier tier;
 
   typedef generic_solution<PackageUniverse> solution;
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
-  typedef generic_tier_limits<PackageUniverse> tier_limits;
   typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
 
   // Structures that store the search graph.

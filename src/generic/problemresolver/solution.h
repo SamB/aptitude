@@ -1,6 +1,6 @@
 // solution.h                                             -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -31,6 +31,7 @@
 #include <generic/util/refcounted_base.h>
 #include "choice.h"
 #include "choice_set.h"
+#include "tier.h"
 
 /** \brief The solution class for the problem resolver.
  * 
@@ -259,7 +260,6 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
-  typedef typename PackageUniverse::tier tier;
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
 

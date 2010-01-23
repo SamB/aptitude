@@ -1,6 +1,6 @@
 // dummy_universe.cc
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -209,21 +209,6 @@ ostream &operator<<(ostream &out, const dummy_universe::dep &d)
       out << *i;
     }
   out << "}";
-
-  return out;
-}
-
-std::ostream &operator<<(std::ostream &out, const dummy_universe::tier &tier)
-{
-  out << "(";
-  for(dummy_universe::tier::const_iterator it = tier.begin();
-      it != tier.end(); ++it)
-    {
-      if(it != tier.begin())
-	out << ", ";
-      out << *it;
-    }
-  out << ")";
 
   return out;
 }

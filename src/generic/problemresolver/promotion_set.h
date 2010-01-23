@@ -1,6 +1,6 @@
 /** \file promotion_set.h */             // -*-c++-*-
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -45,6 +45,7 @@
 #include "choice_indexed_map.h"
 #include "choice_set.h"
 #include "incremental_expression.h"
+#include "tier.h"
 
 /** \brief Represents a tier promotion: the knowledge that
  *  a set of choices forces a solution to a higher tier.
@@ -55,7 +56,6 @@ class generic_promotion
 public:
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;
-  typedef typename PackageUniverse::tier tier;
 
 private:
   choice_set choices;
@@ -229,7 +229,6 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
-  typedef typename PackageUniverse::tier tier;
 
   typedef generic_choice<PackageUniverse> choice;
   typedef generic_choice_set<PackageUniverse> choice_set;

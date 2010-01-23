@@ -1,6 +1,6 @@
 // problemresolver.h                  -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -57,6 +57,7 @@
 #include "solution.h"
 #include "resolver_undo.h"
 #include "search_graph.h"
+#include "tier.h"
 #include "tier_limits.h"
 
 #include "log4cxx/consoleappender.h"
@@ -276,8 +277,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *  - <b>dep_iterator</b>: an iterator over the list of all the \ref
  *  universe_dep "dependencies" in this universe.
  *
- *  - <b>tier</b>: a model of \ref universe_tier "the Tier concept".
- *
  *  - <b>get_package_count()</b>: returns the number of \ref
  *  universe_package "package"s in the universe.
  *
@@ -467,53 +466,6 @@ static inline dummy_end_iterator<V> operator++(dummy_end_iterator<V>&)
  *
  *  The generic_solution class is a model of the Installation concept.
  *
- *  \page universe_tier   Tier concept
- *
- *  A Tier represents a value that controls the order in which
- *  solutions are generated.  Tiers are conceptually tuples of
- *  integers ordered lexicographically, but how they are represented
- *  is up to the implementation.  (in the dummy implementation they
- *  are std::vectors; in the apt implementation they are fixed-size
- *  arrays of integers)
- *
- *  Three special tiers are created by the dependency solver, by
- *  storing the three highest integers in the first entry of a Tier
- *  object.  All tiers above the lowest of these tiers are reserved
- *  for use by the solver.  In the apt implementation, the first entry
- *  is used to store the "policy" set by the user or the solver, with
- *  the remaining entries tracking things like the APT priority of the
- *  version.
- *
- *  Note that a single integer is a model of Tier if it is augmented
- *  with appropriate implementations of the Tier methods.
- *
- *  A class modeling the Tier concept should provide the following
- *  members:
- *
- * - <b>Tier(n)</b>: construct a tier with the given first element.
- *
- * - <b>const_iterator</b>: a type name that is used to iterate over
- *    the elements of the tuple (used only for debugging output).
- *
- * - <b>begin() const</b>, <b>end() const</b>: first and last iterators in the
- *   tuple.
- *
- * - <b>operator&lt;(Tier) const</b>: a total ordering on Tiers
- *   corresponding to lexicographic ordering on the corresponding
- *   tuples.
- *
- * - <b>operator&gt;=(Tier) const</b>: a total ordering on Tiers
- *   corresponding to lexicographic ordering on the corresponding
- *   tuples.
- *
- * - <b>operator==(Tier) const</b>, <b>operator!=(Tier) const</b>:
- *   comparison of tiers.
- *
- * - <b>operator=(Tier)<b/>: assignment.
- *
- * - <b>operator&lt;&lt;(std::ostream &, Tier)</b>: write a Tier
- *   as a parenthesized list of integers.
- *
  *  \sa \ref abstract_universe
  *
  *  A class modelling the Installation concept should provide the
@@ -565,7 +517,6 @@ public:
   typedef typename PackageUniverse::package package;
   typedef typename PackageUniverse::version version;
   typedef typename PackageUniverse::dep dep;
-  typedef typename PackageUniverse::tier tier;
 
   typedef generic_solution<PackageUniverse> solution;
   typedef generic_choice<PackageUniverse> choice;
@@ -573,7 +524,6 @@ public:
   typedef generic_promotion<PackageUniverse> promotion;
   typedef generic_promotion_set<PackageUniverse> promotion_set;
   typedef generic_search_graph<PackageUniverse> search_graph;
-  typedef generic_tier_limits<PackageUniverse> tier_limits;
   typedef generic_compare_choices_by_effects<PackageUniverse> compare_choices_by_effects;
   typedef generic_promotion_queue_entry<PackageUniverse> promotion_queue_entry;
 
