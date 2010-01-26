@@ -15,6 +15,8 @@ libgeneric_problemresolver_a_SOURCES = \
 	incremental_expression.cc incremental_expression.h \
 	problemresolver.h \
 	promotion_set.h sanity_check_universe.h \
-	search_graph.h solution.h tier.h tier_limits.h
+	search_graph.h solution.h \
+	tier.cc tier.h \
+	tier_limits.cc tier_limits.h
 
 test_SOURCES=test.cc
