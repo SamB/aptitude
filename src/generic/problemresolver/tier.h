@@ -247,7 +247,7 @@ public:
    *          except that the level in slot "location" has been set to
    *          new_value.
    */
-  tier set_user_tier(int location, int new_value)
+  tier set_user_level(int location, int new_value)
   {
     const tier_impl &impl(get_impl());
 
