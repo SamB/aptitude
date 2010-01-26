@@ -270,6 +270,9 @@ public:
    */
   user_level_iterator user_levels_end() const { return get_impl().user_levels.end(); }
 
+  /** \brief Retrieve one user level from this tier. */
+  int get_user_level(int index) const { return get_impl().user_levels[index]; }
+
   std::size_t get_hash_value() const
   {
     return get_impl().hash_value;
