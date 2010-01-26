@@ -226,7 +226,7 @@ public:
    *  \return a tier object with the same user levels as this object
    *  and the given structural level.
    */
-  tier set_structural_level(int new_structural_level)
+  tier set_structural_level(int new_structural_level) const
   {
     const tier_impl &impl(get_impl());
 
@@ -247,7 +247,7 @@ public:
    *          except that the level in slot "location" has been set to
    *          new_value.
    */
-  tier set_user_level(int location, int new_value)
+  tier set_user_level(int location, int new_value) const
   {
     const tier_impl &impl(get_impl());
 
