@@ -53,12 +53,12 @@ namespace
    *  base tier, but whose subordinate values have been set
    *  appropriately for the given version.
    */
-  aptitude_resolver::tier specialize_tier(const aptitude_resolver::tier &base,
-					  const pkgCache::VerIterator &ver,
-					  pkgPolicy *policy)
+  tier specialize_tier(const tier &base,
+		       const pkgCache::VerIterator &ver,
+		       pkgPolicy *policy)
   {
     if(ver.end())
-      return aptitude_resolver::tier(base.get_policy(), INT_MIN);
+      return base.set_user_level(1, INT_MIN);
     else
       {
 	int apt_priority = INT_MIN;
@@ -69,7 +69,7 @@ namespace
 	    apt_priority = std::max(apt_priority, pin);
 	  }
 
-	return aptitude_resolver::tier(base.get_policy(), -apt_priority);
+	return base.set_user_level(1, -apt_priority);
       }
   }
 }

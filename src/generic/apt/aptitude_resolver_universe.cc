@@ -801,72 +801,59 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
   return out;
 }
 
-std::ostream &operator<<(ostream &out, const aptitude_universe::tier &t)
-{
-  out << "(";
-  for(aptitude_universe::tier::const_iterator it =
-	t.begin(); it != t.end(); ++it)
-    {
-      if(it != t.begin())
-	out << ", ";
-      out << *it;
-    }
 
-  out << ")";
-  return out;
-}
-
-aptitude_universe::tier aptitude_universe::parse_tier(const std::string &s)
+tier aptitude_universe::parse_tier(const std::string &s)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
   if(s == "conflict")
-    return aptitude_resolver::tier_limits::conflict_tier;
+    return tier_limits::conflict_tier;
   else if(s == "minimum" || s == "")
-    return aptitude_resolver::tier_limits::minimum_tier;
+    return tier_limits::minimum_tier;
   else
     {
       char *endptr;
-      long n = strtol(s.c_str(), &endptr, 0);
+      int n = static_cast<int>(strtol(s.c_str(), &endptr, 0));
       if(*endptr != '\0')
 	{
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
 	  _error->Error(_(msg.c_str()));
-	  return aptitude_resolver::tier_limits::minimum_tier;
+	  return tier_limits::minimum_tier;
 	}
       else
 	{
-	  return tier(n);
+	  return tier(tier_limits::minimum_level,
+		      &n, (&n) + 1);
 	}
     }
 }
 
-aptitude_universe::tier aptitude_universe::get_safe_tier()
+tier aptitude_universe::get_safe_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
 }
 
-aptitude_universe::tier aptitude_universe::get_keep_all_tier()
+tier aptitude_universe::get_keep_all_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
 }
 
-aptitude_universe::tier aptitude_universe::get_remove_tier()
+tier aptitude_universe::get_remove_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000"));
 }
 
-aptitude_universe::tier aptitude_universe::get_break_hold_tier()
+tier aptitude_universe::get_break_hold_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
 }
 
-aptitude_universe::tier aptitude_universe::get_non_default_tier()
+tier aptitude_universe::get_non_default_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
 }
 
-aptitude_universe::tier aptitude_universe::get_remove_essential_tier()
+tier aptitude_universe::get_remove_essential_tier()
 {
   return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
 }
@@ -916,7 +903,7 @@ void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string>
 	  else if(has_tier)
 	    LOG_ERROR(Loggers::getAptitudeResolverTiers(),
 		      ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
-			       item_tier.get_policy(), PACKAGE));
+			       item_tier.get_user_level(0), PACKAGE));
 	  else
 	    ; // Assume this is junk that got in accidentally.
 	}
@@ -926,11 +913,11 @@ void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string>
 std::string aptitude_universe::get_tier_name(const tier &t)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
-  if(t >= aptitude_resolver::tier_limits::conflict_tier)
+  if(t >= tier_limits::conflict_tier)
     return "Unsolvable search nodes"; // Should never happen in a returned solution.
-  else if(t >= aptitude_resolver::tier_limits::already_generated_tier)
+  else if(t >= tier_limits::already_generated_tier)
     return "Already generated solutions"; // Should never happen in a returned solution.
-  else if(t >= aptitude_resolver::tier_limits::defer_tier)
+  else if(t >= tier_limits::defer_tier)
     return "Deferred search nodes"; // Should never happen in a returned solution.
   else
     {
@@ -941,7 +928,7 @@ std::string aptitude_universe::get_tier_name(const tier &t)
       for(std::vector<std::pair<tier, std::string> >::const_iterator it =
 	    named_tiers.begin(); it != named_tiers.end(); ++it)
 	{
-	  if(it->first.get_policy() == t.get_policy() &&
+	  if(it->first.get_user_level(0) == t.get_user_level(0) &&
 	     t >= it->first)
 	    {
 	      if(!name.empty())
@@ -951,9 +938,9 @@ std::string aptitude_universe::get_tier_name(const tier &t)
 	}
 
       if(name.empty())
-	return ssprintf("%d", t.get_policy());
+	return ssprintf("%d", t.get_user_level(0));
       else
-	return ssprintf("%s (%d)", name.c_str(), t.get_policy());
+	return ssprintf("%s (%d)", name.c_str(), t.get_user_level(0));
     }
 }
 
