@@ -22,12 +22,14 @@
 
 #include <generic/util/compare3.h>
 
-#include <boost/flyweight.hpp>
-#include <boost/flyweight/hashed_factory.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <iosfwd>
 #include <vector>
+
+#include <limits.h>
 
 /** \brief Represents the tier of a search node.
  *
@@ -47,10 +49,6 @@
  */
 class tier
 {
-  // Tiers are transparently flyweighted; the advantage is that it'll
-  // be easy for me to experiment with not flyweighting them or with
-  // using other allocation schemes down the road.
-
   /** \brief The object that actually stores the tier data. */
   struct tier_impl
   {
@@ -152,26 +150,24 @@ class tier
     }
   };
 
-  typedef boost::flyweight<tier_impl,
-			   boost::flyweights::hashed_factory<tier_impl_hasher> >
-  tier_impl_flyweight;
+  typedef boost::shared_ptr<tier_impl> tier_impl_ref;
 
-  tier_impl_flyweight impl_flyweight;
+  tier_impl_ref impl_ref;
 
-  tier(const tier_impl &impl)
-    : impl_flyweight(impl)
+  tier(const tier_impl_ref &_impl_ref)
+    : impl_ref(_impl_ref)
   {
   }
 
   const tier_impl &get_impl() const
   {
-    return impl_flyweight.get();
+    return *impl_ref;
   }
 
 public:
   /** \brief A default-constructed tier is the smallest possible tier. */
   tier()
-    : impl_flyweight(tier_impl(INT_MIN))
+    : impl_ref(boost::make_shared<tier_impl>(INT_MIN))
   {
   }
 
@@ -185,7 +181,7 @@ public:
    */
   template<typename Iterator>
   tier(Iterator user_levels_begin, Iterator user_levels_end)
-    : impl_flyweight(tier_impl(user_levels_begin, user_levels_end))
+    : impl_ref(boost::make_shared<tier_impl>(user_levels_begin, user_levels_end))
   {
   }
 
@@ -195,7 +191,7 @@ public:
    *  The new tier will be the smallest tier in its structural level.
    */
   tier(int structural_level)
-    : impl_flyweight(tier_impl(structural_level))
+    : impl_ref(boost::make_shared<tier_impl>(structural_level))
   {
   }
 
@@ -213,7 +209,7 @@ public:
   template<typename Iterator>
   tier(int structural_level,
        Iterator user_levels_begin, Iterator user_levels_end)
-    : impl_flyweight(tier_impl(structural_level, user_levels_begin, user_levels_end))
+    : impl_ref(boost::make_shared<tier_impl>(structural_level, user_levels_begin, user_levels_end))
   {
   }
 
@@ -230,8 +226,9 @@ public:
   {
     const tier_impl &impl(get_impl());
 
-    return tier(tier_impl(new_structural_level,
-			  impl.user_levels.begin(), impl.user_levels.end()));
+    return tier(boost::make_shared<tier_impl>(new_structural_level,
+					      impl.user_levels.begin(),
+					      impl.user_levels.end()));
   }
 
   /** \brief Create a new tier object in which one of this object's
@@ -251,9 +248,10 @@ public:
   {
     const tier_impl &impl(get_impl());
 
-    return tier(tier_impl(impl.structural_level,
-			  impl.user_levels.begin(), impl.user_levels.end(),
-			  location, new_value));
+    return tier(boost::make_shared<tier_impl>(impl.structural_level,
+					      impl.user_levels.begin(),
+					      impl.user_levels.end(),
+					      location, new_value));
   }
 
   /** \brief Retrieve the value of the structural level slot. */
@@ -278,19 +276,9 @@ public:
     return get_impl().hash_value;
   }
 
-  bool operator==(const tier &other) const
-  {
-    return impl_flyweight == other.impl_flyweight;
-  }
-
-  bool operator!=(const tier &other) const
-  {
-    return impl_flyweight != other.impl_flyweight;
-  }
-
   tier &operator=(const tier &other)
   {
-    impl_flyweight = other.impl_flyweight;
+    impl_ref = other.impl_ref;
 
     return *this;
   }
@@ -307,6 +295,16 @@ public:
       return cmp;
     else
       return compare3(impl.user_levels, other_impl.user_levels);
+  }
+
+  bool operator==(const tier &other) const
+  {
+    return compare(other) == 0;
+  }
+
+  bool operator!=(const tier &other) const
+  {
+    return compare(other) != 0;
   }
 
   bool operator<(const tier &other) const
