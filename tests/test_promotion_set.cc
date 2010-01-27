@@ -1,6 +1,6 @@
 // test_dense_setset.cc
 //
-//   Copyright (C) 2005, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,8 +17,9 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
-#include <generic/problemresolver/promotion_set.h>
 #include <generic/problemresolver/dummy_universe.h>
+#include <generic/problemresolver/promotion_set.h>
+#include <generic/problemresolver/tier_limits.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -38,11 +39,6 @@ UNIVERSE [			  \
   DEP a v2 -> < >		  \
   DEP a v3 -> < >		  \
 ]";
-
-  const int complex_tier_array[] = { 125, 10 };
-
-  const int * const complex_tier_begin = complex_tier_array;
-  const int * const complex_tier_end = complex_tier_array + (sizeof(complex_tier_array) / sizeof(complex_tier_array[0]));
 }
 
 template<typename Key, typename Val>
@@ -85,7 +81,6 @@ class Promotion_SetTest : public CppUnit::TestFixture
   typedef dummy_universe_ref::package package;
   typedef dummy_universe_ref::version version;
   typedef dummy_universe_ref::dep dep;
-  typedef dummy_universe_ref::tier tier;
   typedef generic_choice<dummy_universe_ref> choice;
   typedef generic_choice_set<dummy_universe_ref> choice_set;
   typedef generic_promotion_set<dummy_universe_ref> dummy_promotion_set;
@@ -107,6 +102,22 @@ class Promotion_SetTest : public CppUnit::TestFixture
 	it != promotions.end(); ++it)
       ++rval;
     return rval;
+  }
+
+  static tier make_tier(int first_user_level)
+  {
+    return tier(tier_limits::minimum_level,
+		&first_user_level,
+		(&first_user_level) + 1);
+  }
+
+  static tier make_tier(int first_user_level, int second_user_level)
+  {
+    int user_levels[2] = { first_user_level, second_user_level };
+
+    return tier(tier_limits::minimum_level,
+		user_levels,
+		user_levels + 2);
   }
 
   static void make_test_promotions(const dummy_universe_ref &u,
@@ -158,7 +169,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p1_choices;
     p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-    promotion p1(p1_choices, tier(100));
+    promotion p1(p1_choices, make_tier(100));
     expected_promotions.insert(p1);
     promotions.insert(p1);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -169,7 +180,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     p2_choices.insert_or_narrow(make_install_version(av1));
     p2_choices.insert_or_narrow(make_install_version(bv2));
     p2_choices.insert_or_narrow(make_install_version(cv3));
-    promotion p2(p2_choices, tier(50));
+    promotion p2(p2_choices, make_tier(50));
     expected_promotions.insert(p2);
     promotions.insert(p2);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -179,7 +190,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p3_choices;
     p3_choices.insert_or_narrow(make_install_version(av1));
     p3_choices.insert_or_narrow(make_install_version(bv2));
-    promotion p3(p3_choices, tier(75));
+    promotion p3(p3_choices, make_tier(75));
     expected_promotions.insert(p3);
     expected_promotions.erase(p2);
     promotions.insert(p3);
@@ -191,7 +202,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     p4_choices.insert_or_narrow(make_install_version(av1));
     p4_choices.insert_or_narrow(make_install_version(bv2));
     p4_choices.insert_or_narrow(make_install_version(cv1));
-    promotion p4(p4_choices, tier(10));
+    promotion p4(p4_choices, make_tier(10));
     promotions.insert(p4);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
@@ -199,7 +210,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p5_choices;
     p5_choices.insert_or_narrow(make_install_version(bv2));
-    promotion p5(p5_choices, tier(30));
+    promotion p5(p5_choices, make_tier(30));
     expected_promotions.insert(p5);
     promotions.insert(p5);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -208,7 +219,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p6_choices;
     p6_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p6(p6_choices, tier(125));
+    promotion p6(p6_choices, make_tier(125));
     expected_promotions.insert(p6);
     promotions.insert(p6);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -218,7 +229,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p7_choices;
     p7_choices.insert_or_narrow(make_install_version(cv3));
     p7_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p7(p7_choices, tier(complex_tier_begin, complex_tier_end));
+    promotion p7(p7_choices, make_tier(125, 10));
     expected_promotions.insert(p7);
     promotions.insert(p7);
     std::cout << expected_promotions << std::endl;
@@ -230,7 +241,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p8_choices;
     p8_choices.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
     p8_choices.insert_or_narrow(make_install_version(cv2));
-    promotion p8(p8_choices, tier(50));
+    promotion p8(p8_choices, make_tier(50));
     expected_promotions.insert(p8);
     promotions.insert(p8);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -321,7 +332,7 @@ public:
     choice_set expected1_choices;
     expected1_choices.insert_or_narrow(make_install_version(cv3));
     expected1_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion expected1(expected1_choices, tier(complex_tier_begin, complex_tier_end));
+    promotion expected1(expected1_choices, make_tier(125, 10));
 
     dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
     CPPUNIT_ASSERT(found != p.end());
@@ -465,7 +476,7 @@ public:
     search3.insert_or_narrow(make_break_soft_dep(bv2d1));
 
     choice_set expected_choices3 = search3;
-    promotion expected3(expected_choices3, tier(125));
+    promotion expected3(expected_choices3, make_tier(125));
 
     found = p.find_highest_promotion_for(search3);
     CPPUNIT_ASSERT(found != p.end());
@@ -489,7 +500,7 @@ public:
     choice_set expected_choices4;
     expected_choices4.insert_or_narrow(make_install_version(av1));
     expected_choices4.insert_or_narrow(make_install_version(bv2));
-    promotion expected4(expected_choices4, tier(75));
+    promotion expected4(expected_choices4, make_tier(75));
 
     found = p.find_highest_promotion_for(search4);
     CPPUNIT_ASSERT(found != p.end());
@@ -516,7 +527,7 @@ public:
 
     choice_set expected_choices5;
     expected_choices5.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-    promotion expected5(expected_choices5, tier(100));
+    promotion expected5(expected_choices5, make_tier(100));
 
     found = p.find_highest_promotion_for(search5);
     CPPUNIT_ASSERT(found != p.end());
@@ -580,7 +591,7 @@ public:
     choice_set expected_choices5_2;
     expected_choices5_2.insert_or_narrow(make_install_version(av1));
     expected_choices5_2.insert_or_narrow(make_install_version(bv2));
-    promotion expected5_2(expected_choices5_2, tier(75));
+    promotion expected5_2(expected_choices5_2, make_tier(75));
     found = p.find_highest_promotion_containing(search5, make_install_version(bv2));
     CPPUNIT_ASSERT(found != p.end());
     CPPUNIT_ASSERT_EQUAL(expected5_2, *found);
@@ -631,7 +642,7 @@ public:
     search7.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
     search7.insert_or_narrow(make_install_version(cv2));
 
-    promotion expected7(search7, tier(50));
+    promotion expected7(search7, make_tier(50));
 
     found = p.find_highest_promotion_for(search7);
     CPPUNIT_ASSERT(found != p.end());
@@ -677,8 +688,8 @@ public:
 
     // Remove tiers 50 and (125, 10), and make sure they don't show up
     // in the results.
-    p.remove_between_tiers(tier(50), tier(100));
-    p.remove_between_tiers(tier(125, 10), tier(500));
+    p.remove_between_tiers(make_tier(50), make_tier(100));
+    p.remove_between_tiers(make_tier(125, 10), make_tier(500));
 
     // Check that the size and contents (when iterating) of the
     // promotion set are maintained correctly.
@@ -686,7 +697,7 @@ public:
       imm::set<promotion> expected_promotions;
       choice_set p1_choices;
       p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-      promotion p1(p1_choices, tier(100));
+      promotion p1(p1_choices, make_tier(100));
       expected_promotions.insert(p1);
       p.insert(p1);
 
@@ -694,20 +705,20 @@ public:
       choice_set p2_choices;
       p2_choices.insert_or_narrow(make_install_version(av1));
       p2_choices.insert_or_narrow(make_install_version(bv2));
-      promotion p2(p2_choices, tier(75));
+      promotion p2(p2_choices, make_tier(75));
       expected_promotions.insert(p2);
       p.insert(p2);
 
 
       choice_set p3_choices;
       p3_choices.insert_or_narrow(make_install_version(bv2));
-      promotion p3(p3_choices, tier(30));
+      promotion p3(p3_choices, make_tier(30));
       expected_promotions.insert(p3);
       p.insert(p3);
 
       choice_set p4_choices;
       p4_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-      promotion p4(p4_choices, tier(125));
+      promotion p4(p4_choices, make_tier(125));
       expected_promotions.insert(p4);
       p.insert(p4);
 
@@ -730,7 +741,7 @@ public:
 
     choice_set expected_choices1;
     expected_choices1.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion expected1(expected_choices1, tier(125));
+    promotion expected1(expected_choices1, make_tier(125));
 
     dummy_promotion_set::const_iterator found = p.find_highest_promotion_for(search1);
     CPPUNIT_ASSERT(found != p.end());
@@ -791,7 +802,7 @@ public:
     make_test_promotions(u, p);
 
     // Remove everything below (and including) tier 75.
-    p.remove_below_tier(tier(76));
+    p.remove_below_tier(make_tier(76));
 
     // We expect {(T100: Install(a v1 [a v2 -> <>])),
     //            (T125: Break(b v2 -> <c v2>)),
@@ -805,18 +816,18 @@ public:
     imm::set<promotion> expected;
     choice_set p1_choices;
     p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-    promotion p1(p1_choices, tier(100));
+    promotion p1(p1_choices, make_tier(100));
     expected.insert(p1);
 
     choice_set p2_choices;
     p2_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p2(p2_choices, tier(125));
+    promotion p2(p2_choices, make_tier(125));
     expected.insert(p2);
 
     choice_set p3_choices;
     p3_choices.insert_or_narrow(make_install_version(cv3));
     p3_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p3(p3_choices, tier(complex_tier_begin, complex_tier_end));
+    promotion p3(p3_choices, make_tier(125, 10));
     expected.insert(p3);
 
 

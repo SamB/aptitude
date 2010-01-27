@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,6 +21,7 @@
 
 #include <generic/problemresolver/dummy_universe.h>
 #include <generic/problemresolver/problemresolver.h>
+#include <generic/problemresolver/tier_limits.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -199,7 +200,6 @@ private:
   typedef dummy_universe_ref::package package;
   typedef dummy_universe_ref::version version;
   typedef dummy_universe_ref::dep dep;
-  typedef dummy_universe_ref::tier tier;
 
   typedef generic_solution<dummy_universe_ref> solution;
   typedef generic_choice_set<dummy_universe_ref> choice_set;
@@ -294,7 +294,7 @@ private:
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
 						  u, weights, initial_state,
-						  tier(0));
+						  tier());
     dummy_solution s1
       = unsafe_successor(s0, &c1, &c1 + 1);
     dummy_solution s2
@@ -901,7 +901,10 @@ private:
       r.set_version_score(av2, 1000);
       r.set_version_score(bv2, -100);
       r.set_version_score(cv2, -100);
-      r.set_version_min_tier(av2, tier(100));
+      int av2_user_level = 100;
+      r.set_version_min_tier(av2, tier(tier_limits::minimum_level,
+				       &av2_user_level,
+				       (&av2_user_level) + 1));
 
       solution sol;
       try

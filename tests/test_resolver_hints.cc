@@ -1,6 +1,6 @@
 // test_resolver_hints.cc                       -*-c++-*-
 //
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,6 +21,9 @@
 
 #include <generic/apt/aptitude_resolver.h>
 
+#include <generic/problemresolver/tier.h>
+#include <generic/problemresolver/tier_limits.h>
+
 #include <cppunit/extensions/HelperMacros.h>
 
 using namespace aptitude::matching;
@@ -28,6 +31,13 @@ using namespace aptitude::matching;
 namespace
 {
   typedef aptitude_resolver::hint hint;
+
+  tier make_tier(int first_user_level)
+  {
+    return tier(tier_limits::minimum_level,
+		&first_user_level,
+		(&first_user_level) + 1);
+  }
 
   struct test
   {
@@ -76,15 +86,15 @@ namespace
       test("increase-tier-to 100 wesnoth <5.0.0",
 	   hint::make_increase_tier_to(pattern::make_exact_name("wesnoth"),
 				       hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
-				       aptitude_resolver::tier(100))),
+				       make_tier(100))),
       test("increase-tier-to 500 xroach",
 	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
 				       hint::version_selection::make_inst(),
-				       aptitude_resolver::tier(500))),
+				       make_tier(500))),
       test("increase-tier-to 800 xroach",
 	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
 				       hint::version_selection::make_inst(),
-				       aptitude_resolver::tier(800))),
+				       make_tier(800))),
     };
   const int num_resolver_tests =
     sizeof(resolver_tests) / sizeof(resolver_tests[0]);
