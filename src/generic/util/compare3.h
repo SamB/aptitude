@@ -293,8 +293,8 @@ namespace aptitude
     public:
       bool operator()(const T &c1, const T &c2) const
       {
-	return lexicographical_compare3(c1.begin(), c2.begin(),
-					c1.end(), c2.end());
+	return lexicographical_compare3(c1.begin(), c1.end(),
+					c2.begin(), c2.end());
       }
     };
 
