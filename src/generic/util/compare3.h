@@ -224,7 +224,18 @@ namespace aptitude
     // Comparison for integers.
     template<typename T>
     class compare3_f_int
-    { public: int operator()(T n1, T n2) const { return static_cast<int>(n1 - n2); } };
+    {
+    public:
+      int operator()(T n1, T n2) const
+      {
+	if(n1 < n2)
+	   return -1;
+	else if(n2 < n1)
+	  return 1;
+	else
+	  return 0;
+      }
+    };
 
     template<> class compare3_f<bool>
     {
