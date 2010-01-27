@@ -1160,7 +1160,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	  if(was_manually_installed)
 	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it was manually installed.");
 	  else if(was_manually_removed)
-	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it was manually removed.");
+	    {
+	      if(p.get_pkg().CurrentVer().end())
+		LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it is not currently installed.");
+	      else
+		LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as manual: it was manually marked for removal.");
+	    }
 	  else
 	    LOG_TRACE(loggerInitialManualFlags, "Marking " << p << " as automatic: it was neither manually installed nor manually removed.");
 
