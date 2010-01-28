@@ -291,8 +291,8 @@ namespace aptitude
     class compare3_f<std::basic_string<charT, traits, Alloc> >
     {
     public:
-      bool operator()(const std::basic_string<charT, traits, Alloc> &s1,
-		      const std::basic_string<charT, traits, Alloc> &s2) const
+      int operator()(const std::basic_string<charT, traits, Alloc> &s1,
+                     const std::basic_string<charT, traits, Alloc> &s2) const
       {
 	return s1.compare(s2);
       }
@@ -302,7 +302,7 @@ namespace aptitude
     class compare3_f_container
     {
     public:
-      bool operator()(const T &c1, const T &c2) const
+      int operator()(const T &c1, const T &c2) const
       {
 	return lexicographical_compare3(c1.begin(), c1.end(),
 					c2.begin(), c2.end());
