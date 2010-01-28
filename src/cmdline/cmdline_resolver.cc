@@ -376,6 +376,8 @@ static void reject_or_mandate_version(const string &s,
 	      eassert(!ver.get_ver().end());
 	      eassert(ver.get_pkg() == ver.get_ver().ParentPkg());
 	    }
+
+          c = choice::make_install_version(ver, -1);
 	}
 
       switch(c.get_type())
