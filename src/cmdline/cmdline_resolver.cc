@@ -526,10 +526,24 @@ void cmdline_resolver_show_choice(const choice &c,
   switch(c.get_type())
     {
     case choice::install_version:
-      info_fragment = cw::fragf("%F\n\n",
-				version_file_fragment(c.get_ver().get_ver(),
-						      c.get_ver().get_ver().FileList(),
-						      0));
+      {
+        pkgCache::VerIterator disp_ver = c.get_ver().get_ver();
+
+        if(disp_ver.end())
+          disp_ver = c.get_ver().get_pkg().CurrentVer();
+
+        if(disp_ver.end())
+          disp_ver = c.get_ver().get_pkg().VersionList();
+
+        if(disp_ver.end())
+          info_fragment = cw::fragf("Package: %s\n\n",
+                                    c.get_ver().get_pkg().Name());
+        else
+          info_fragment = cw::fragf("%F\n\n",
+                                    version_file_fragment(disp_ver,
+                                                          disp_ver.FileList(),
+                                                          0));
+      }
 
       is_rejected = resman->is_rejected(c.get_ver());
       is_approved = resman->is_mandatory(c.get_ver());
