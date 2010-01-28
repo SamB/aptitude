@@ -172,9 +172,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotion p1(p1_choices, make_tier(100));
     expected_promotions.insert(p1);
     promotions.insert(p1);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p2_choices;
     p2_choices.insert_or_narrow(make_install_version(av1));
@@ -183,9 +183,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotion p2(p2_choices, make_tier(50));
     expected_promotions.insert(p2);
     promotions.insert(p2);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p3_choices;
     p3_choices.insert_or_narrow(make_install_version(av1));
@@ -194,9 +194,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     expected_promotions.insert(p3);
     expected_promotions.erase(p2);
     promotions.insert(p3);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p4_choices;
     p4_choices.insert_or_narrow(make_install_version(av1));
@@ -204,18 +204,18 @@ class Promotion_SetTest : public CppUnit::TestFixture
     p4_choices.insert_or_narrow(make_install_version(cv1));
     promotion p4(p4_choices, make_tier(10));
     promotions.insert(p4);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p5_choices;
     p5_choices.insert_or_narrow(make_install_version(bv2));
     promotion p5(p5_choices, make_tier(30));
     expected_promotions.insert(p5);
     promotions.insert(p5);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p6_choices;
     p6_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
@@ -234,9 +234,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotions.insert(p7);
     std::cout << expected_promotions << std::endl;
     std::cout << promotions << std::endl;
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
 
     choice_set p8_choices;
     p8_choices.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
@@ -244,9 +244,9 @@ class Promotion_SetTest : public CppUnit::TestFixture
     promotion p8(p8_choices, make_tier(50));
     expected_promotions.insert(p8);
     promotions.insert(p8);
+    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), empirical_promotions_size(promotions));
-    CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
   }
 
 
