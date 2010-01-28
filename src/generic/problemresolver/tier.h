@@ -271,6 +271,9 @@ public:
   /** \brief Retrieve one user level from this tier. */
   int get_user_level(int index) const { return get_impl().user_levels[index]; }
 
+  /** \brief Retrieve the number of user levels in this tier. */
+  std::size_t get_num_user_levels() const { return get_impl().user_levels.size(); }
+
   std::size_t get_hash_value() const
   {
     return get_impl().hash_value;
