@@ -841,7 +841,7 @@ private:
     tier_renderings.push_back("(minimum)");
     tier_renderings.push_back("(minimum, 50)");
     tier_renderings.push_back("(minimum, 100)");
-    tier_renderings.push_back("(maximum)");
+    tier_renderings.push_back("(conflict)");
 
     for(std::size_t i = 0; i < tiers.size(); ++i)
       for(std::size_t j = 0; j < tiers.size(); ++j)
