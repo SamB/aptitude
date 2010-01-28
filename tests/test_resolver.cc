@@ -852,8 +852,8 @@ private:
          const std::string s1 = boost::lexical_cast<std::string>(t1);
          const std::string s2 = boost::lexical_cast<std::string>(t2);
 
-         CPPUNIT_ASSERT_EQUAL(s1, tier_renderings[i]);
-         CPPUNIT_ASSERT_EQUAL(s2, tier_renderings[j]);
+         CPPUNIT_ASSERT_EQUAL(tier_renderings[i], s1);
+         CPPUNIT_ASSERT_EQUAL(tier_renderings[j], s2);
 
          if(i < j)
            CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s2, t1 < t2);
