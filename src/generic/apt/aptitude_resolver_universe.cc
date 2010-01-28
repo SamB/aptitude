@@ -901,9 +901,15 @@ void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string>
 		      ssprintf(_("The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a Tier entry."),
 			       item_name.c_str(), PACKAGE));
 	  else if(has_tier)
-	    LOG_ERROR(Loggers::getAptitudeResolverTiers(),
-		      ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
-			       item_tier.get_user_level(0), PACKAGE));
+	    {
+	      if(item_tier.get_num_user_levels() < 1)
+		LOG_ERROR(Loggers::getAptitudeResolverTiers(),
+			  "A tier is lacking both a name and a value.");
+	      else
+		LOG_ERROR(Loggers::getAptitudeResolverTiers(),
+			  ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
+				   item_tier.get_user_level(0), PACKAGE));
+	    }
 	  else
 	    ; // Assume this is junk that got in accidentally.
 	}
@@ -919,6 +925,8 @@ std::string aptitude_universe::get_tier_name(const tier &t)
     return "Already generated solutions"; // Should never happen in a returned solution.
   else if(t >= tier_limits::defer_tier)
     return "Deferred search nodes"; // Should never happen in a returned solution.
+  else if(t.get_num_user_levels() == 0)
+    return "Initial tier";
   else
     {
       std::vector<std::pair<tier, std::string> > named_tiers;
@@ -928,7 +936,8 @@ std::string aptitude_universe::get_tier_name(const tier &t)
       for(std::vector<std::pair<tier, std::string> >::const_iterator it =
 	    named_tiers.begin(); it != named_tiers.end(); ++it)
 	{
-	  if(it->first.get_user_level(0) == t.get_user_level(0) &&
+	  if(it->first.get_num_user_levels() > 0 &&
+	     it->first.get_user_level(0) == t.get_user_level(0) &&
 	     t >= it->first)
 	    {
 	      if(!name.empty())
