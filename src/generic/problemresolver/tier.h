@@ -99,7 +99,8 @@ class tier
     }
 
     /** \brief Initialize a tier object given its contents and a
-     *         change to the list of user levels.
+     *         change to the list of user levels (possibly extending
+     *         the list in the process).
      */
     template<typename Iterator>
     tier_impl(int _structural_level,
@@ -110,7 +111,16 @@ class tier
 	user_levels(user_levels_begin, user_levels_end),
 	hash_value(0)
     {
-      user_levels[change_location] = new_value;
+      if(static_cast<std::vector<int>::size_type>(change_location) >= user_levels.size())
+	{
+	  user_levels.reserve(change_location);
+	  user_levels.insert(user_levels.end(),
+			     change_location - user_levels.size(),
+			     INT_MIN);
+	  user_levels.push_back(new_value);
+	}
+      else
+	user_levels[change_location] = new_value;
       hash_value = get_hash_value();
     }
 
@@ -238,6 +248,11 @@ public:
    *
    *  \param new_value The new level to store in the list in that
    *                   location.
+   *
+   *  If location is greater than or equal to get_num_user_levels(),
+   *  the user level list is automatically extended to the appropriate
+   *  length.  Intervening levels are set to
+   *  tier_limits::minimum_tier.
    *
    *  \return a tier object with the same structural level as this
    *          object whose user levels are identical to this object's,
