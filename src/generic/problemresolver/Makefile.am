@@ -17,6 +17,7 @@ libgeneric_problemresolver_a_SOURCES = \
 	promotion_set.h sanity_check_universe.h \
 	search_graph.h solution.h \
 	tier.cc tier.h \
-	tier_limits.cc tier_limits.h
+	tier_limits.cc tier_limits.h \
+	tier_operation.h
 
 test_SOURCES=test.cc

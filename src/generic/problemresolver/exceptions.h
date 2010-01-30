@@ -1,6 +1,6 @@
 // exceptions.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -91,6 +91,16 @@ class DoubleRunException : public ProblemResolverError {
   std::string errmsg() const
   {
     return "Internal error: Multiple threads of execution tried to enter the resolver at once.";
+  }
+};
+
+/** An exception indicating that something tried to add a negative
+ *  quantity to a tier.
+ */
+class NegativeTierAdditionException : public ProblemResolverError {
+  std::string errmsg() const
+  {
+    return _("Tier increments must be nonnegative.");
   }
 };
 
