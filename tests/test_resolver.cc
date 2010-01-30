@@ -820,7 +820,8 @@ private:
     log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTiers"));
     LOG_TRACE(logger, "Entering testTiers");
 
-    const int n50 = 50, n100 = 100;
+    const int n50 = 50;
+    int n50_100[2] = { 50, 100 };
 
     // Instantiate 4 tier objects and make sure they're properly
     // ordered; instantiate them twice to ensure there's no special
@@ -828,58 +829,81 @@ private:
     std::vector<tier> tiers;
     tiers.push_back(tier());
     tiers.push_back(tier(&n50, (&n50) + 1));
-    tiers.push_back(tier(tier_limits::minimum_level, &n100, (&n100) + 1));
+    tiers.push_back(tier(tier_limits::minimum_level, n50_100, n50_100 + 2));
     tiers.push_back(tier(tier_limits::maximum_level));
 
     std::vector<tier> tiers2;
     tiers2.push_back(tier());
     tiers2.push_back(tier(&n50, (&n50) + 1));
-    tiers2.push_back(tier(tier_limits::minimum_level, &n100, (&n100) + 1));
+    tiers2.push_back(tier(tier_limits::minimum_level, n50_100, n50_100 + 2));
     tiers2.push_back(tier(tier_limits::maximum_level));
 
     std::vector<std::string> tier_renderings;
     tier_renderings.push_back("(minimum)");
     tier_renderings.push_back("(minimum, 50)");
-    tier_renderings.push_back("(minimum, 100)");
+    tier_renderings.push_back("(minimum, 50, 100)");
     tier_renderings.push_back("(conflict)");
 
+    std::vector<std::string> tier_renderings_with_400_at_1;
+    tier_renderings_with_400_at_1.push_back("(minimum, minimum, 400)");
+    tier_renderings_with_400_at_1.push_back("(minimum, 50, 400)");
+    tier_renderings_with_400_at_1.push_back("(minimum, 50, 400)");
+    tier_renderings_with_400_at_1.push_back("(conflict, minimum, 400)");
+
     for(std::size_t i = 0; i < tiers.size(); ++i)
-      for(std::size_t j = 0; j < tiers.size(); ++j)
-       {
-         const tier &t1 = tiers[i];
-         const tier &t2 = tiers[j];
+      {
+	const tier &t1 = tiers[i];
+	const std::string s1 = boost::lexical_cast<std::string>(t1);
 
-         const std::string s1 = boost::lexical_cast<std::string>(t1);
-         const std::string s2 = boost::lexical_cast<std::string>(t2);
+	const tier t1_with_400_at_1 = t1.set_user_level(1, 400);
+	const std::string s1_with_400_at_1 =
+	  boost::lexical_cast<std::string>(t1_with_400_at_1);
 
-         CPPUNIT_ASSERT_EQUAL(tier_renderings[i], s1);
-         CPPUNIT_ASSERT_EQUAL(tier_renderings[j], s2);
+	CPPUNIT_ASSERT_EQUAL(tier_renderings_with_400_at_1[i],
+			     s1_with_400_at_1);
 
-         if(i < j)
-           CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s2, t1 < t2);
-         else
-           CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " < " + s2 + ")", !(t1 < t2));
+	CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s1_with_400_at_1, t1 < t1_with_400_at_1);
+	CPPUNIT_ASSERT_MESSAGE(s1 + " <= " + s1_with_400_at_1, t1 <= t1_with_400_at_1);
+	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " == " + s1_with_400_at_1 + ")", !(t1 == t1_with_400_at_1));
+	CPPUNIT_ASSERT_MESSAGE(s1 + " != " + s1_with_400_at_1, t1 != t1_with_400_at_1);
+	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " >= " + s1_with_400_at_1 + ")", !(t1 >= t1_with_400_at_1));
+	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " > " + s1_with_400_at_1 + ")", !(t1 > t1_with_400_at_1));
 
-         if(i == j)
-           CPPUNIT_ASSERT_MESSAGE(s1 + " == " + s2, t1 == t2);
-         else
-           CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " == " + s2 + ")", !(t1 == t2));
+	for(std::size_t j = 0; j < tiers.size(); ++j)
+	  {
+	    const tier &t2 = tiers[j];
 
-         if(i <= j)
-           CPPUNIT_ASSERT_MESSAGE(s1 + " <= " + s2, t1 <= t2);
-         else
-           CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " <= " + s2 + ")", !(t1 <= t2));
+	    const std::string s2 = boost::lexical_cast<std::string>(t2);
 
-         if(i >= j)
-           CPPUNIT_ASSERT_MESSAGE(s1 + " >= " + s2, t1 >= t2);
-         else
-           CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " >= " + s2 + ")", !(t1 >= t2));
+	    CPPUNIT_ASSERT_EQUAL(tier_renderings[i], s1);
+	    CPPUNIT_ASSERT_EQUAL(tier_renderings[j], s2);
 
-         if(i > j)
-           CPPUNIT_ASSERT_MESSAGE(s1 + " > " + s2, t1 > t2);
-         else
-           CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " > " + s2 + ")", !(t1 > t2));
-       }
+	    if(i < j)
+	      CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s2, t1 < t2);
+	    else
+	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " < " + s2 + ")", !(t1 < t2));
+
+	    if(i == j)
+	      CPPUNIT_ASSERT_MESSAGE(s1 + " == " + s2, t1 == t2);
+	    else
+	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " == " + s2 + ")", !(t1 == t2));
+
+	    if(i <= j)
+	      CPPUNIT_ASSERT_MESSAGE(s1 + " <= " + s2, t1 <= t2);
+	    else
+	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " <= " + s2 + ")", !(t1 <= t2));
+
+	    if(i >= j)
+	      CPPUNIT_ASSERT_MESSAGE(s1 + " >= " + s2, t1 >= t2);
+	    else
+	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " >= " + s2 + ")", !(t1 >= t2));
+
+	    if(i > j)
+	      CPPUNIT_ASSERT_MESSAGE(s1 + " > " + s2, t1 > t2);
+	    else
+	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " > " + s2 + ")", !(t1 > t2));
+	  }
+      }
   }
 
   void testTierEffects()
