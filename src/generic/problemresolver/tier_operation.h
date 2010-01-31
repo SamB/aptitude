@@ -64,6 +64,8 @@ class tier_operation
 	if(add_levels.get_user_level(i) < 0)
 	  throw NegativeTierAdditionException();
       }
+
+    normalize();
   }
 
   /** \brief Compute the levelwise maximum of two tiers.
@@ -108,6 +110,12 @@ class tier_operation
    *  longer than the other, the missing levels are assumed to be 0.
    */
   static tier levelwise_add(const tier &t1, const tier &t2);
+
+  /** \brief Rewrite equivalent values to a canonical form.
+   *
+   *  The drops trailing zeros from add_levels.
+   */
+  void normalize();
 
 public:
   /** \brief Create the identity tier operation: an operation with no

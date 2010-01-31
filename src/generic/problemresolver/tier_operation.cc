@@ -22,6 +22,22 @@
 
 #include <ostream>
 
+void tier_operation::normalize()
+{
+  if(add_levels.get_num_user_levels() > 0 &&
+     add_levels.get_user_level(add_levels.get_num_user_levels() - 1) == 0)
+    {
+      tier::user_level_iterator
+        begin = add_levels.user_levels_begin(),
+        end = add_levels.user_levels_end();
+
+      while(end > begin && end[-1] == 0)
+        --end;
+
+      add_levels = tier(add_levels.get_structural_level(), begin, end);
+    }
+}
+
 tier tier_operation::levelwise_maximum(const tier &t1, const tier &t2)
 {
   const int out_structural_level =
