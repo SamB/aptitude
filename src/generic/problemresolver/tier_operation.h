@@ -86,7 +86,7 @@ class tier_operation
    *  of the corresponding entries in the input tiers.  Unpaired
    *  levels (in the event that one of the tiers is longer than the
    *  other) are assumed to equal tier_limits::maximum_level, with the
-   *  effect that the longer tier's elements are copied unchanged.
+   *  effect that the longer tier's elements are discarded.
    *
    *  This function is implemented here instead of in tier.h because
    *  tier operations require exactly this behavior and nothing else

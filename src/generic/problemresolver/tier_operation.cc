@@ -84,13 +84,6 @@ tier tier_operation::levelwise_minimum(const tier &t1, const tier &t2)
       ++it2;
     }
 
-  if(it1 != end1)
-    out_user_levels.insert(out_user_levels.end(),
-                           it1, end1);
-  else if(it2 != end2)
-    out_user_levels.insert(out_user_levels.end(),
-                           it2, end2);
-
   return tier(out_structural_level,
               out_user_levels.begin(),
               out_user_levels.end());
