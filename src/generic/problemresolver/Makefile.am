@@ -18,6 +18,6 @@ libgeneric_problemresolver_a_SOURCES = \
 	search_graph.h solution.h \
 	tier.cc tier.h \
 	tier_limits.cc tier_limits.h \
-	tier_operation.h
+	tier_operation.cc tier_operation.h
 
 test_SOURCES=test.cc

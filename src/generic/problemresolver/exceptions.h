@@ -22,6 +22,8 @@
 
 #include <cwidget/generic/util/exception.h>
 
+#include <aptitude.h> // For _()
+
 /** \file exceptions.h
  */
 
@@ -101,6 +103,15 @@ class NegativeTierAdditionException : public ProblemResolverError {
   std::string errmsg() const
   {
     return _("Tier increments must be nonnegative.");
+  }
+};
+
+/** An exception indicating that a tier addition overflowed.
+ */
+class TierTooBigException : public ProblemResolverError {
+  std::string errmsg() const
+  {
+    return _("The maximum tier value was exceeded.");
   }
 };
 

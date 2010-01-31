@@ -1,4 +1,4 @@
-d/** \file tier_operation.h */  // -*-c++-*-
+/** \file tier_operation.h */  // -*-c++-*-
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -62,12 +62,41 @@ class tier_operation
     if(add_levels.get_structural_level() < 0)
       throw NegativeTierAdditionException();
 
-    for(std::size_t i = 0; i < add_levels.size(); ++i)
+    const std::size_t add_levels_size(add_levels.get_num_user_levels());
+    for(std::size_t i = 0; i < add_levels_size; ++i)
       {
-	if(add_levels[i] < 0)
+	if(add_levels.get_user_level(i) < 0)
 	  throw NegativeTierAdditionException();
       }
   }
+
+  /** \brief Compute the levelwise maximum of two tiers.
+   *
+   *  The output is a tier in which each level is equal to the maximum
+   *  of the corresponding entries in the input tiers.  Unpaired
+   *  levels (in the event that one of the tiers is longer than the
+   *  other) are assumed to equal tier_limits::minimum_level.
+   *
+   *  This function is implemented here instead of in tier.h because
+   *  tier operations require exactly this behavior and nothing else
+   *  does.
+   */
+  static tier levelwise_maximum(const tier &t1, const tier &t2);
+
+  /** \brief Safely add two tier levels.
+   *
+   *  Checks that at least one operand is nonnegative and that the
+   *  result won't overflow.
+   */
+  static int safe_add_levels(int l1, int l2);
+
+  /** \brief Compute the levelwise sum of two tiers.
+   *
+   *  The output is a tier in which each level is equal to the sum of
+   *  the corresponding levels in the input tiers.  If one tier is
+   *  longer than the other, the missing levels are assumed to be 0.
+   */
+  static tier levelwise_add(const tier &t1, const tier &t2);
 
 public:
   /** \brief Create the identity tier operation: an operation with no
@@ -113,16 +142,13 @@ public:
    *  The composition of tier operations is both associative and
    *  commutative.
    */
-  static tier_operation operator+(const tier_operation &other)
-  {
-    std::vector<int>
-      output_increase_user_levels(increase_levels.user_levels_begin(),
-				  increase_levels.user_levels_end());
+  tier_operation operator+(const tier_operation &other);
 
-    output_increase_user_levels.reserve(std::max<std::vector<int>::size_type>(output_increase_user_levels.size(), other.increase_levels.get_num_user_levels()));
-
-    // TODO: take corresponding maximums.
-  }
+  /** \brief Apply this operation to a tier.
+   *
+   *  \param t  The tier that this operation should modify.
+   */
+  tier apply(const tier &t);
 };
 
 #endif // TIER_OPERATION_H
