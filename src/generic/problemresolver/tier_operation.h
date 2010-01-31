@@ -23,6 +23,8 @@
 #include "exceptions.h"
 #include "tier.h"
 
+#include <iosfwd>
+
 /** \brief A tier operation describes how any solution's tier will
  * change as a result of adding a choice.
  *
@@ -149,6 +151,12 @@ public:
    *  \param t  The tier that this operation should modify.
    */
   tier apply(const tier &t) const;
+
+  /** \brief Write a description of a tier operation to an ostream.
+   */
+  void dump(std::ostream &out) const;
 };
+
+std::ostream &operator<<(std::ostream &out, const tier_operation &t);
 
 #endif // TIER_OPERATION_H

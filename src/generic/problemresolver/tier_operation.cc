@@ -20,6 +20,8 @@
 
 #include "tier_operation.h"
 
+#include <ostream>
+
 tier tier_operation::levelwise_maximum(const tier &t1, const tier &t2)
 {
   const int out_structural_level =
@@ -122,4 +124,31 @@ tier tier_operation::apply(const tier &t) const
   // int vectors instead of tiers.
   const tier increased = levelwise_maximum(t, increase_levels);
   return levelwise_add(t, add_levels);
+}
+
+void tier_operation::dump(std::ostream &out) const
+{
+  out << "(";
+
+  bool first = true;
+
+  if(increase_levels != tier())
+    {
+      out << "increase: " << increase_levels;
+      first = false;
+    }
+
+  if(add_levels != tier(0))
+    {
+      if(first)
+        out << ", ";
+      out << "add: " << add_levels;
+    }
+}
+
+std::ostream &operator<<(std::ostream &out, const tier_operation &t)
+{
+  t.dump(out);
+
+  return out;
 }
