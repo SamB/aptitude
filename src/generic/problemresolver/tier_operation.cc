@@ -166,6 +166,45 @@ tier_operation tier_operation::operator+(const tier_operation &other) const
                                       other.add_levels));
 }
 
+bool tier_operation::operator==(const tier_operation &other) const
+{
+  // Comparing the add_levels is *almost* a straight tier comparison,
+  // except that if one is longer we return "true" if the trailing
+  // levels are zeroes.
+  if(add_levels.get_structural_level() != other.add_levels.get_structural_level())
+    return false;
+
+  tier::user_level_iterator
+    this_it   = add_levels.user_levels_begin(),
+    other_it  = other.add_levels.user_levels_begin();
+
+  const tier::user_level_iterator
+    this_end  = add_levels.user_levels_end(),
+    other_end = other.add_levels.user_levels_end();
+
+  while(this_it != this_end && other_it != other_end)
+    {
+      if(*this_it != *other_it)
+        return false;
+      ++this_it;
+      ++other_it;
+    }
+
+  while(this_it != this_end)
+    {
+      if(*this_it != 0)
+        return false;
+    }
+
+  while(other_it != other_end)
+    {
+      if(*other_it != 0)
+        return false;
+    }
+
+  return true;
+}
+
 tier tier_operation::apply(const tier &t) const
 {
   return levelwise_add(t, add_levels);

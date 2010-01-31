@@ -157,6 +157,15 @@ public:
    */
   tier_operation operator+(const tier_operation &other) const;
 
+  /** \brief Test whether two operations have the same effect. */
+  bool operator==(const tier_operation &other) const;
+
+  /** \brief Test whether two operations don't have the same effect. */
+  bool operator!=(const tier_operation &other) const
+  {
+    return !(*this == other);
+  }
+
   /** \brief Apply this operation to a tier.
    *
    *  \param t  The tier that this operation should modify.
