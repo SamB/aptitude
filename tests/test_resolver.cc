@@ -1151,11 +1151,11 @@ private:
           {
             const tier_operation &op2(ops[j]);
 
-            std::string wheremsg = "i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
+            std::string wheremsg = "(" + boost::lexical_cast<std::string>(op1) + ", " + boost::lexical_cast<std::string>(op2) + "); i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
 
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, lubs[i][j], tier_operation::least_upper_bound(op1, op2));
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, glbs[i][j], tier_operation::greatest_lower_bound(op1, op2));
-            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, sums[i][j], op1 + op2);
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("lub" + wheremsg, lubs[i][j], tier_operation::least_upper_bound(op1, op2));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], tier_operation::greatest_lower_bound(op1, op2));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], op1 + op2);
           }
       }
   }
