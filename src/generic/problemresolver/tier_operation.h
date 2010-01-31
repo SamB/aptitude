@@ -166,13 +166,25 @@ public:
   tier_operation operator+(const tier_operation &other) const;
 
   /** \brief Test whether two operations have the same effect. */
-  bool operator==(const tier_operation &other) const;
+  bool operator==(const tier_operation &other) const
+  {
+    return compare(other) == 0;
+  }
 
   /** \brief Test whether two operations don't have the same effect. */
   bool operator!=(const tier_operation &other) const
   {
-    return !(*this == other);
+    return compare(other) != 0;
   }
+
+  /** \brief Arbitrary ordering on tier operations.
+   *
+   *  This ordering is NOT the partial ordering of the tier operation
+   *  lattice; it's a total ordering of tier operations that can be
+   *  used to place them into data structures that require entries to
+   *  be ordered.
+   */
+  int compare(const tier_operation &other) const;
 
   /** \brief Apply this operation to a tier.
    *
@@ -183,7 +195,27 @@ public:
   /** \brief Write a description of a tier operation to an ostream.
    */
   void dump(std::ostream &out) const;
+
+  std::size_t get_hash_value() const;
 };
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<>
+    class compare3_f<tier_operation>
+    {
+    public:
+      int operator()(const tier_operation &op1, const tier_operation &op2) const
+      {
+	return op1.compare(op2);
+      }
+    };
+  }
+}
+
+std::size_t hash_value(const tier_operation &op);
 
 std::ostream &operator<<(std::ostream &out, const tier_operation &t);
 
