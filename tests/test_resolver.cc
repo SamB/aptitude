@@ -22,6 +22,7 @@
 #include <generic/problemresolver/dummy_universe.h>
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/problemresolver/tier_limits.h>
+#include <generic/problemresolver/tier_operation.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -193,6 +194,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSimpleBreakSoftDep);
   CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testTierEffects);
+  CPPUNIT_TEST(testTierOperations);
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
@@ -1042,6 +1044,120 @@ private:
 
       CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
     }
+  }
+
+  void testTierOperations()
+  {
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierOperations"));
+    LOG_TRACE(logger, "Entering testTierOperations");
+
+    // We will use three tier operations here:
+    //
+    // ()
+    // (add: (2))
+    // (add: (1, 5))
+
+    const int op2_user_levels_begin[1] = { 5 };
+    const int *op2_user_levels_end = op2_user_levels_begin + sizeof(op2_user_levels_begin) / sizeof(op2_user_levels_begin[0]);
+    std::vector<tier_operation> ops;
+    ops.push_back(tier_operation());
+    ops.push_back(tier_operation::make_add_to_levels(tier(2)));
+    ops.push_back(tier_operation::make_add_to_levels(tier(1, op2_user_levels_begin, op2_user_levels_end)));
+
+    std::vector<std::string> op_renderings;
+    op_renderings.push_back("()");
+    op_renderings.push_back("(2)");
+    op_renderings.push_back("(1, 5)");
+
+    // Tiers we expect to see after applying each operation.
+    tier t1(4);
+    std::vector<tier> expected_tiers_1;
+    expected_tiers_1.push_back(t1);
+    expected_tiers_1.push_back(tier(6));
+    expected_tiers_1.push_back(tier(5, op2_user_levels_begin, op2_user_levels_end));
+
+    const int t2_user_levels_begin[3] = { -10, 6, 2 };
+    const int *t2_user_levels_end = t2_user_levels_begin + sizeof(t2_user_levels_begin) / sizeof(t2_user_levels_begin[0]);
+
+    const int t2_expected_user_levels_2_begin[3] = { -5, 6, 2 };
+    const int *t2_expected_user_levels_2_end = t2_expected_user_levels_2_begin + sizeof(t2_expected_user_levels_2_begin) / sizeof(t2_expected_user_levels_2_end);
+
+    tier t2(-32, t2_user_levels_begin, t2_user_levels_end);
+    std::vector<tier> expected_tiers_2;
+    expected_tiers_2.push_back(t2);
+    expected_tiers_2.push_back(tier(-30, t2_user_levels_begin, t2_user_levels_end));
+    expected_tiers_2.push_back(tier(-31, t2_expected_user_levels_2_begin, t2_expected_user_levels_2_end));
+
+    // Combined values.  Each vector is a matrix where [i][j] contains
+    // the combination of entries i and j for i<=j.
+
+    // Least upper bounds:
+    std::vector<std::vector<tier_operation> > lubs(3, std::vector<tier_operation>(3, tier_operation()));
+    lubs[0][0] = ops[0];
+    lubs[0][1] = ops[1];
+    lubs[0][2] = ops[2];
+
+    lubs[1][0] = ops[1];
+    lubs[1][1] = ops[1];
+    lubs[1][2] = tier_operation::make_add_to_levels(tier(2, op2_user_levels_begin, op2_user_levels_end));
+
+    lubs[2][0] = ops[2];
+    lubs[2][1] = tier_operation::make_add_to_levels(tier(2, op2_user_levels_begin, op2_user_levels_end));
+    lubs[2][2] = ops[2];
+
+    // Greatest lower bounds:
+    std::vector<std::vector<tier_operation> > glbs(3, std::vector<tier_operation>(3, tier_operation()));
+
+    glbs[0][0] = ops[0];
+    glbs[0][1] = ops[0];
+    glbs[0][2] = ops[0];
+
+    glbs[1][0] = ops[0];
+    glbs[1][1] = ops[1];
+    glbs[1][2] = tier_operation::make_add_to_levels(tier(1));
+
+    glbs[2][0] = ops[0];
+    glbs[2][1] = tier_operation::make_add_to_levels(tier(1));
+    glbs[2][2] = ops[2];
+
+    // Sums:
+    std::vector<std::vector<tier_operation> > sums(3, std::vector<tier_operation>(3, tier_operation()));
+
+    sums[0][0] = ops[0];
+    sums[0][1] = ops[1];
+    sums[0][2] = ops[2];
+
+    sums[1][0] = ops[1];
+    sums[1][1] = tier_operation::make_add_to_levels(tier(4));
+    sums[1][2] = tier_operation::make_add_to_levels(tier(3, op2_user_levels_begin, op2_user_levels_end));
+
+    const int op2_plus_op2_user_levels_begin[1] = { 10 };
+    const int *op2_plus_op2_user_levels_end = op2_plus_op2_user_levels_begin + sizeof(op2_plus_op2_user_levels_begin) / sizeof(op2_plus_op2_user_levels_begin[0]);
+
+    sums[2][0] = ops[0];
+    sums[2][1] = tier_operation::make_add_to_levels(tier(3, op2_user_levels_begin, op2_user_levels_end));
+    sums[2][2] = tier_operation::make_add_to_levels(tier(2, op2_plus_op2_user_levels_begin, op2_plus_op2_user_levels_end));
+
+
+    for(std::size_t i = 0; i < ops.size(); ++i)
+      {
+        const tier_operation &op1(ops[i]);
+
+        CPPUNIT_ASSERT_EQUAL(op_renderings[i], boost::lexical_cast<std::string>(op1));
+        CPPUNIT_ASSERT_EQUAL(expected_tiers_1[i], op1.apply(t1));
+        CPPUNIT_ASSERT_EQUAL(expected_tiers_2[i], op1.apply(t2));
+
+        for(std::size_t j = 0; j < ops.size(); ++j)
+          {
+            const tier_operation &op2(ops[j]);
+
+            std::string wheremsg = "i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
+
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, lubs[i][j], tier_operation::least_upper_bound(op1, op2));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, glbs[i][j], tier_operation::greatest_lower_bound(op1, op2));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE(wheremsg, sums[i][j], op1 + op2);
+          }
+      }
   }
 
   // Check that initial states work.
