@@ -142,13 +142,13 @@ public:
    *  The composition of tier operations is both associative and
    *  commutative.
    */
-  tier_operation operator+(const tier_operation &other);
+  tier_operation operator+(const tier_operation &other) const;
 
   /** \brief Apply this operation to a tier.
    *
    *  \param t  The tier that this operation should modify.
    */
-  tier apply(const tier &t);
+  tier apply(const tier &t) const;
 };
 
 #endif // TIER_OPERATION_H

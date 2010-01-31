@@ -107,7 +107,7 @@ tier tier_operation::levelwise_add(const tier &t1, const tier &t2)
               out_user_levels.end());
 }
 
-tier_operation tier_operation::operator+(const tier_operation &other)
+tier_operation tier_operation::operator+(const tier_operation &other) const
 {
   return tier_operation(levelwise_maximum(increase_levels,
                                           other.increase_levels),
@@ -115,7 +115,7 @@ tier_operation tier_operation::operator+(const tier_operation &other)
                                       other.add_levels));
 }
 
-tier tier_operation::apply(const tier &t)
+tier tier_operation::apply(const tier &t) const
 {
   // Note that we construct an unnecessary intermediate tier here;
   // that could be avoided by having the levelwise routines operate on
