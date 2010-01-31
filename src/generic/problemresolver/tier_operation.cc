@@ -59,6 +59,43 @@ tier tier_operation::levelwise_maximum(const tier &t1, const tier &t2)
               out_user_levels.end());
 }
 
+tier tier_operation::levelwise_minimum(const tier &t1, const tier &t2)
+{
+  const int out_structural_level =
+    std::min<int>(t1.get_structural_level(),
+                  t2.get_structural_level());
+
+  std::vector<int> out_user_levels;
+  out_user_levels.reserve(std::min<std::size_t>(t1.get_num_user_levels(),
+                                                t2.get_num_user_levels()));
+
+  tier::user_level_iterator
+    it1 = t1.user_levels_begin(),
+    it2 = t2.user_levels_begin();
+
+  const tier::user_level_iterator
+    end1 = t1.user_levels_end(),
+    end2 = t2.user_levels_end();
+
+  while(it1 != end1 && it2 != end2)
+    {
+      out_user_levels.push_back(std::min<int>(*it1, *it2));
+      ++it1;
+      ++it2;
+    }
+
+  if(it1 != end1)
+    out_user_levels.insert(out_user_levels.end(),
+                           it1, end1);
+  else if(it2 != end2)
+    out_user_levels.insert(out_user_levels.end(),
+                           it2, end2);
+
+  return tier(out_structural_level,
+              out_user_levels.begin(),
+              out_user_levels.end());
+}
+
 inline int tier_operation::safe_add_levels(int l1, int l2)
 {
   if(l1 < 0 && l2 < 0)
@@ -109,20 +146,28 @@ tier tier_operation::levelwise_add(const tier &t1, const tier &t2)
               out_user_levels.end());
 }
 
+tier_operation tier_operation::least_upper_bound(const tier_operation &op1,
+                                                 const tier_operation &op2)
+{
+  return tier_operation(levelwise_maximum(op1.add_levels,
+                                          op2.add_levels));
+}
+
+tier_operation tier_operation::greatest_lower_bound(const tier_operation &op1,
+                                                    const tier_operation &op2)
+{
+  return tier_operation(levelwise_minimum(op1.add_levels,
+                                          op2.add_levels));
+}
+
 tier_operation tier_operation::operator+(const tier_operation &other) const
 {
-  return tier_operation(levelwise_maximum(increase_levels,
-                                          other.increase_levels),
-                        levelwise_add(add_levels,
+  return tier_operation(levelwise_add(add_levels,
                                       other.add_levels));
 }
 
 tier tier_operation::apply(const tier &t) const
 {
-  // Note that we construct an unnecessary intermediate tier here;
-  // that could be avoided by having the levelwise routines operate on
-  // int vectors instead of tiers.
-  const tier increased = levelwise_maximum(t, increase_levels);
   return levelwise_add(t, add_levels);
 }
 
@@ -130,18 +175,8 @@ void tier_operation::dump(std::ostream &out) const
 {
   out << "(";
 
-  bool first = true;
-
-  if(increase_levels != tier())
-    {
-      out << "increase: " << increase_levels;
-      first = false;
-    }
-
   if(add_levels != tier(0))
     {
-      if(first)
-        out << ", ";
       out << "add: " << add_levels;
     }
 }

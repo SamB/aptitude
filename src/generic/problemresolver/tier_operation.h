@@ -29,17 +29,16 @@
  * change as a result of adding a choice.
  *
  *  Tier operations are associative and closed under composition.
- *  They are ordered in the natural way (if o1 < o2, then for any tier
- *  t, o1(t) < o2(t) -- this ordering exists due to the above
- *  properties).
+ *  They are partially ordered in the natural way (if o1 < o2, then
+ *  for any tier t, o1(t) < o2(t) -- this ordering exists due to the
+ *  above properties) and exist in a lattice.  (least upper and
+ *  greatest lower bounds are levelwise minimum and maximum,
+ *  respectively)
  *
- *  There are two base types of tier operations: increase-level and
- *  add-to-level.  increase-level raises one or more levels within a
- *  tier to the given values, possibly extending the tier in the
- *  process.  add-to-level increments the components of a tier
- *  levelwise.  When these operations are composed, increase-level
- *  always takes place first (so the increased levels are added to,
- *  rather than the added-to levels being increased).
+ *  Currently the only available tier operation is "add X to a level".
+ *  The old operation (increase a level to a value if it was below
+ *  that value) couldn't be combined with this one because they don't
+ *  commute.
  */
 class tier_operation
 {
@@ -47,19 +46,14 @@ class tier_operation
   // because the information that each component of the operation
   // stores is exactly isomorphic to a tier.
 
-  // The tier levels that are to be increased by this operation.
-  tier increase_levels;
-
   // Values that this operation should add to a tier's level.
   //
   // Each level in this tier must be a nonnegative integer; if not,
   // constructing the operation will throw an exception.
   tier add_levels;
 
-  tier_operation(const tier &_increase_levels,
-		 const tier &_add_levels)
-    : increase_levels(_increase_levels),
-      add_levels(_add_levels)
+  tier_operation(const tier &_add_levels)
+    : add_levels(_add_levels)
   {
     if(add_levels.get_structural_level() < 0)
       throw NegativeTierAdditionException();
@@ -77,13 +71,28 @@ class tier_operation
    *  The output is a tier in which each level is equal to the maximum
    *  of the corresponding entries in the input tiers.  Unpaired
    *  levels (in the event that one of the tiers is longer than the
-   *  other) are assumed to equal tier_limits::minimum_level.
+   *  other) are assumed to equal tier_limits::minimum_level, with the
+   *  effect that the longer tier's elements are copied unchanged.
    *
    *  This function is implemented here instead of in tier.h because
    *  tier operations require exactly this behavior and nothing else
    *  does.
    */
   static tier levelwise_maximum(const tier &t1, const tier &t2);
+
+  /** \brief Compute the levelwise minimum of two tiers.
+   *
+   *  The output is a tier in which each level is equal to the minimum
+   *  of the corresponding entries in the input tiers.  Unpaired
+   *  levels (in the event that one of the tiers is longer than the
+   *  other) are assumed to equal tier_limits::maximum_level, with the
+   *  effect that the longer tier's elements are copied unchanged.
+   *
+   *  This function is implemented here instead of in tier.h because
+   *  tier operations require exactly this behavior and nothing else
+   *  does.
+   */
+  static tier levelwise_minimum(const tier &t1, const tier &t2);
 
   /** \brief Safely add two tier levels.
    *
@@ -105,23 +114,8 @@ public:
    *  effect.
    */
   tier_operation()
-    : increase_levels(),
-      add_levels(0)
+    : add_levels(0)
   {
-  }
-
-  /** \brief Create a tier operation that increases each level in the
-   *  target to the corresponding lower bound (levels that are already
-   *  above their lower bound are unchanged).
-   *
-   *  \param bounds The lower bounds to apply to affected tier
-   *  objects.  If the target tier is longer than bounds, the
-   *  unmatched levels are unaffected; if it is shorter, it is
-   *  extended to be as long as bounds.
-   */
-  static tier_operation make_increase_levels(const tier &bounds)
-  {
-    return tier_operation(bounds, tier(0));
   }
 
   /** \brief Create a tier operation that adds a value to each level
@@ -136,8 +130,25 @@ public:
    */
   static tier_operation make_add_to_levels(const tier &increments)
   {
-    return tier_operation(tier(), increments);
+    return tier_operation(increments);
   }
+
+  /** \brief Compute the least upper bound of two tier operations.
+   *
+   *  This is the smallest tier operation that produces tiers which
+   *  are strictly greater than those produced by both input
+   *  operations.
+   */
+  static tier_operation least_upper_bound(const tier_operation &op1,
+                                          const tier_operation &op2);
+
+  /** \brief Compute the greatest lower bound of two tier operations.
+   *
+   *  This is the largest tier operation that produces tiers which are
+   *  strictly less than those produced by both input operations.
+   */
+  static tier_operation greatest_lower_bound(const tier_operation &op1,
+                                             const tier_operation &op2);
 
   /** \brief Compose two tier operations.
    *
