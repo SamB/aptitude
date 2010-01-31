@@ -1066,8 +1066,8 @@ private:
 
     std::vector<std::string> op_renderings;
     op_renderings.push_back("()");
-    op_renderings.push_back("(2)");
-    op_renderings.push_back("(1, 5)");
+    op_renderings.push_back("(add: (2))");
+    op_renderings.push_back("(add: (1, 5))");
 
     // Tiers we expect to see after applying each operation.
     tier t1(4);
