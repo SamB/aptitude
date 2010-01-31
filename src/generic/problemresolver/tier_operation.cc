@@ -179,6 +179,8 @@ void tier_operation::dump(std::ostream &out) const
     {
       out << "add: " << add_levels;
     }
+
+  out << ")";
 }
 
 std::ostream &operator<<(std::ostream &out, const tier_operation &t)
