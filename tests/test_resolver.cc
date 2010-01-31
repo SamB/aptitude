@@ -1134,7 +1134,7 @@ private:
     const int op2_plus_op2_user_levels_begin[1] = { 10 };
     const int *op2_plus_op2_user_levels_end = op2_plus_op2_user_levels_begin + sizeof(op2_plus_op2_user_levels_begin) / sizeof(op2_plus_op2_user_levels_begin[0]);
 
-    sums[2][0] = ops[0];
+    sums[2][0] = ops[2];
     sums[2][1] = tier_operation::make_add_to_levels(tier(3, op2_user_levels_begin, op2_user_levels_end));
     sums[2][2] = tier_operation::make_add_to_levels(tier(2, op2_plus_op2_user_levels_begin, op2_plus_op2_user_levels_end));
 
