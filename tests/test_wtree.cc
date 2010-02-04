@@ -1,6 +1,6 @@
 // test_wtree.cc
 //
-//   Copyright (C) 2005, 2008-2009 Daniel Burrows
+//   Copyright (C) 2005, 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,9 +21,14 @@
 
 #include <generic/util/immset.h>
 
+#include <limits.h>
+
 using imm::map;
+using imm::nil_t;
 using imm::set;
 using imm::wtree_node;
+
+nil_t nil;
 
 template<typename T>
 std::ostream &operator<<(std::ostream &out, const imm::set<T> &t)
@@ -81,6 +86,7 @@ class WTreeTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testLessThan);
   CPPUNIT_TEST(testIntersects);
   CPPUNIT_TEST(testContains);
+  CPPUNIT_TEST(testAccumulation);
   CPPUNIT_TEST(generalWTreeTest);
   CPPUNIT_TEST(mapTest);
   CPPUNIT_TEST(mapIntersectTest);
@@ -94,8 +100,9 @@ public:
   void testRotateLeft()
   {
     int_node a(5,
-	       int_node(3, int_node(2), int_node(4)),
-	       int_node(7, int_node(6), int_node(8)));
+	       int_node(3, int_node(2, nil), int_node(4, nil), nil),
+	       int_node(7, int_node(6, nil), int_node(8, nil), nil),
+	       nil);
 
     int_node a_left = a.getLeft();
     int_node a_right = a.getRight();
@@ -129,7 +136,7 @@ public:
 
 
 
-    int_node b = a.left_rotate_single();
+    int_node b = a.left_rotate_single(nil);
 
     CPPUNIT_ASSERT_EQUAL(a.size(), b.size());
 
@@ -172,8 +179,9 @@ public:
   void testRotateRight()
   {
     int_node a(5,
-	       int_node(3, int_node(2), int_node(4)),
-	       int_node(7, int_node(6), int_node(8)));
+	       int_node(3, int_node(2, nil), int_node(4, nil), nil),
+	       int_node(7, int_node(6, nil), int_node(8, nil), nil),
+	       nil);
 
     int_node a_left = a.getLeft();
     int_node a_right = a.getRight();
@@ -207,7 +215,7 @@ public:
 
 
 
-    int_node c = a.right_rotate_single();
+    int_node c = a.right_rotate_single(nil);
 
     CPPUNIT_ASSERT_EQUAL(a.size(), c.size());
     CPPUNIT_ASSERT(c.isValid());
@@ -243,10 +251,13 @@ public:
 
   void testDoubleRotateLeft()
   {
-    int_node a = int_node(3, 2,
+    int_node a = int_node(3,
+			  int_node(2, nil),
 			  int_node(7,
-				   int_node(5, 4, 6),
-				   8));
+				   int_node(5, int_node(4, nil),
+					    int_node(6, nil), nil),
+				   int_node(8, nil), nil),
+			  nil);
 
     int_node a_left = a.getLeft(), a_right = a.getRight();
 
@@ -278,7 +289,7 @@ public:
     CPPUNIT_ASSERT_EQUAL(8, a_right_right.getVal());
 
 
-    int_node b = a.left_rotate_double();
+    int_node b = a.left_rotate_double(nil);
 
     CPPUNIT_ASSERT(b.isValid());
 
@@ -317,8 +328,13 @@ public:
   void testDoubleRotateRight()
   {
     int_node a = int_node(7,
-			  int_node(3, 2, int_node(5, 4, 6)),
-			  8);
+			  int_node(3,
+				   int_node(2, nil),
+				   int_node(5,
+					    int_node(4, nil),
+					    int_node(6, nil), nil),
+				   nil),
+			  int_node(8, nil), nil);
 
     CPPUNIT_ASSERT(a.isValid());
 
@@ -352,7 +368,7 @@ public:
 
 
 
-    int_node b = a.right_rotate_double();
+    int_node b = a.right_rotate_double(nil);
 
     CPPUNIT_ASSERT(b.isValid());
 
@@ -747,6 +763,64 @@ do  { \
     assertNotContains(t, s1);
     assertContains(t, s2);
     assertNotContains(t, s3);
+  }
+
+  class maxAccumOps
+  {
+  public:
+    int empty() const { return INT_MIN; }
+    int project(const std::pair<int, int> &p) const { return p.first; }
+    int merge(int n, int m) const { return std::max<int>(n, m); }
+  };
+
+  void testAccumulation()
+  {
+    // Build a set of pairs where we accumulate the maximum of the
+    // first element in the pair.
+    set<std::pair<int, int>,
+        aptitude::util::compare3_f<std::pair<int, int> >,
+        int,
+        maxAccumOps> s;
+
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), INT_MIN);
+
+    s.insert(std::make_pair(5, 20));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 5);
+
+    s.insert(std::make_pair(10, 5));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 10);
+
+    s.insert(std::make_pair(5, 10));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 10);
+
+    s.insert(std::make_pair(-1, 4));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 10);
+
+    s.insert(std::make_pair(1, 6));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 10);
+
+    s.erase(std::make_pair(10, 5));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 5);
+
+    s.erase(std::make_pair(5, 20));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 5);
+
+    s.insert(std::make_pair(2, 4));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 5);
+
+    s.erase(std::make_pair(5, 10));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 2);
+
+    s.erase(std::make_pair(2, 4));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), 1);
+
+    s.erase(std::make_pair(1, 6));
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), -1);
+
+    s.erase(std::make_pair(-1, 4));
+    CPPUNIT_ASSERT_EQUAL((unsigned)0, s.size());
+    CPPUNIT_ASSERT(s.empty());
+    CPPUNIT_ASSERT_EQUAL(s.getAccumVal(), INT_MIN);
   }
 
 #define assertNotSupermap(a, b) \

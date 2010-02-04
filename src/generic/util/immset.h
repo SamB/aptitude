@@ -1,6 +1,6 @@
 // immset.h                                     -*-c++-*-
 //
-//   Copyright (C) 2005-2006, 2008-2009 Daniel Burrows
+//   Copyright (C) 2005-2006, 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,6 +26,8 @@
 
 #include <vector>
 
+#include <boost/compressed_pair.hpp>
+
 #include "compare3.h"
 
 /** \brief A class to represent immutable sets
@@ -49,6 +51,35 @@
 
 namespace imm
 {
+  /** \brief A class used in metaprogramming for imm::set.
+   */
+  class nil_t {};
+
+  template<typename Val, typename AccumVal, typename AccumOps, int w>
+  class wtree_node;
+
+  /** \brief Helper function used below to accumulate information up
+   *  the tree.
+   *
+   *  \tparam AccumOps The class carrying information about how to
+   *  accumulate values up the tree; if this is nil_t, then this
+   *  function is a NOP.
+   *
+   *  \todo Isn't there a better way of getting this behavior?  I
+   *  tried partially specializing a private member function, but ran
+   *  into syntactic trouble.
+   */
+  template<typename Val, typename AccumVal, typename AccumOps, int w>
+  class doAccumulate
+  {
+  public:
+    static AccumVal
+    call(const Val &val,
+	 const wtree_node<Val, AccumVal, AccumOps, w> &left,
+	 const wtree_node<Val, AccumVal, AccumOps, w> &right,
+	 const AccumOps &accumOps);
+  };
+
   /** A generic node in a weighted tree as described in "Implementing
    *  Sets Efficiently In A Functional Language".  The tree invariant
    *  is that the tree is not "too unbalanced"; in this case, that no
@@ -61,8 +92,28 @@ namespace imm
    *
    *  The weighted-tree data structure is reasonably efficient and
    *  much more straightforward to implement correctly.
+   *
+   *
+   *  In addition to the above notes, this class can be used to
+   *  iteratively maintain the result of accumulating an associative
+   *  and commutative operation across the set.
+   *
+   *  \tparam Val  The type of value stored in this set.
+   *
+   *  \tparam AccumVal The type of value being accumulated at each
+   *  node, or nil_t for no accumulation.
+   *
+   *  \tparam AccumOps If AccumVal is non-nil, this is the type used to
+   *  compute accumulated values.  Must be a class type supporting
+   *  three operations: empty(), project(Val) and merge(AccumVal,
+   *  AccumVal), where empty() produces an AccumVal corresponding to
+   *  an empty set, project() computes the AccumVal associated with a
+   *  single value, and merge() combines two AccumVals.  merge() must
+   *  be associative and commutative.
+   *
+   *  \tparam the weighting value of the tree; must be at least 3.75.
    */
-  template<typename Val, const int w = 4>
+  template<typename Val, typename AccumVal = nil_t, typename AccumOps = nil_t, const int w = 4>
   class wtree_node
   {
     // Type hack to let us dump trees containing pairs without
@@ -92,20 +143,35 @@ namespace imm
       /** Left and right children (may be \b null). */
       wtree_node left, right;
 
-      /** The size of the subtree rooted at this node. */
-      size_type size;
+      /** The size of the subtree rooted at this node, paired with any
+       *  accumulated information specified by the user.
+       *
+       *  Using compressed_pair allows us to avoid allocating space if
+       *  the accumulated value is empty, without having to contain an
+       *  implementation of empty member elision.
+       */
+      boost::compressed_pair<size_type, AccumVal> sizeAndAccumVal;
 
       /** The reference-count of this node. */
       mutable int refcount;
 
       /** The enclosed value. */
       Val val;
+
     public:
       impl(const Val &_val,
-	   const wtree_node &_left, const wtree_node &_right)
-	:left(_left), right(_right), size(_left.size()+_right.size()+1),
+	   const wtree_node &_left, const wtree_node &_right,
+	   const AccumOps &ops)
+	:left(_left), right(_right),
+	 sizeAndAccumVal(_left.size() + _right.size() + 1,
+			 doAccumulate<Val, AccumVal, AccumOps, w>::call(_val, _left, _right, ops)),
 	 refcount(1), val(_val)
       {
+      }
+
+      impl *clone(const AccumOps &ops) const
+      {
+	return new impl(val, left.clone(ops), right.clone(ops), ops);
       }
 
       /** \return the left child. */
@@ -122,7 +188,7 @@ namespace imm
 
       size_type getSize() const
       {
-	return size;
+	return sizeAndAccumVal.first();
       }
 
       const Val &getVal() const
@@ -145,6 +211,9 @@ namespace imm
 	if(refcount == 0)
 	  delete this;
       }
+
+
+      const AccumVal &getAccumVal() const { return sizeAndAccumVal.second(); }
     };
 
     const impl *realNode;
@@ -153,13 +222,16 @@ namespace imm
     typedef unsigned int size_type;
 
     wtree_node(const Val &val,
-	       const wtree_node &left, const wtree_node &right)
-      :realNode(new impl(val, left, right))
+	       const wtree_node &left, const wtree_node &right,
+	       const AccumOps &accumOps)
+      :realNode(new impl(val, left, right, accumOps))
     {
     }
 
-    wtree_node(const Val &val)
-      :realNode(new impl(val, wtree_node(), wtree_node()))
+    wtree_node(const Val &val,
+	       const AccumOps &accumOps)
+      :realNode(new impl(val, wtree_node(), wtree_node(),
+			 accumOps))
     {
     }
 
@@ -247,39 +319,50 @@ namespace imm
       return realNode->getVal();
     }
 
+    /** \return the accumulated value of this node.
+     *
+     *  Only allowed if AccumVal is non-nil and isValid() is truea.
+     */
+    const AccumVal &getAccumVal() const
+    {
+      return realNode->getAccumVal();
+    }
+
     // Tree management routines:
 
     /** Perform a 'left rotate' operation on this node.  Requires
      *  that the right child is not \b null.
      */
-    wtree_node left_rotate_single() const
+    wtree_node left_rotate_single(const AccumOps &accumOps) const
     {
       wtree_node right = getRight(), left = getLeft();
       wtree_node right_left = right.getLeft(), right_right = right.getRight();
 
       return wtree_node(right.getVal(),
-			wtree_node(getVal(), left, right_left),
-			right_right);
+			wtree_node(getVal(), left, right_left, accumOps),
+			right_right,
+			accumOps);
     }
 
     /** Perform a 'right rotate' operation on this node.  Requires
      *  that the left child is not \b null.
      */
-    wtree_node right_rotate_single() const
+    wtree_node right_rotate_single(const AccumOps &accumOps) const
     {
       wtree_node right = getRight(), left = getLeft();
       wtree_node left_left = left.getLeft(), left_right = left.getRight();
 
       return wtree_node(left.getVal(),
 			left_left,
-			wtree_node(getVal(), left_right, right));
+			wtree_node(getVal(), left_right, right, accumOps),
+			accumOps);
     }
 
     /** Perform a 'double left rotate' operation on this node.
      *  Requires that the right child not be \b null and that
      *  its left child is also not \b null.
      */
-    wtree_node left_rotate_double() const
+    wtree_node left_rotate_double(const AccumOps &accumOps) const
     {
       wtree_node right = getRight(), left = getLeft();
       wtree_node right_right = right.getRight(), right_left = right.getLeft();
@@ -287,16 +370,17 @@ namespace imm
       wtree_node right_left_right = right_left.getRight();
 
       return wtree_node(right_left.getVal(),
-			wtree_node(getVal(), left, right_left_left),
+			wtree_node(getVal(), left, right_left_left, accumOps),
 			wtree_node(right.getVal(), right_left_right,
-				   right_right));
+				   right_right, accumOps),
+			accumOps);
     }
 
     /** Perform a 'double right rotate' operation on this node.
      *  Requires that the left child not be \b null and that
      *  its right child is also not \b null.
      */
-    wtree_node right_rotate_double() const
+    wtree_node right_rotate_double(const AccumOps &accumOps) const
     {
       wtree_node right = getRight(), left = getLeft();
       wtree_node left_right = left.getRight(), left_left = left.getLeft();
@@ -304,8 +388,11 @@ namespace imm
       wtree_node left_right_right = left_right.getRight();
 
       return wtree_node(left_right.getVal(),
-			wtree_node(left.getVal(), left_left, left_right_left),
-			wtree_node(getVal(), left_right_right, right));
+			wtree_node(left.getVal(), left_left, left_right_left,
+				   accumOps),
+			wtree_node(getVal(), left_right_right, right,
+				   accumOps),
+			accumOps);
     }
 
 
@@ -316,7 +403,7 @@ namespace imm
      *  element (think inserting or deleting a single element).
      *  Equivalent to T' in the paper.
      */ 
-    wtree_node rebalance() const
+    wtree_node rebalance(const AccumOps &accumOps) const
     {
       wtree_node left = getLeft(), right = getRight();
       size_type left_size = left.size();
@@ -334,18 +421,18 @@ namespace imm
 	  // double rotation is guaranteed sufficient.
 	  wtree_node right_left = right.getLeft(), right_right = right.getRight();
 	  if(right_left.size() < right_right.size())
-	    return left_rotate_single();
+	    return left_rotate_single(accumOps);
 	  else
-	    return left_rotate_double();
+	    return left_rotate_double(accumOps);
 	}
       else if(right_size * w < left_size)
 	{
 	  // Dual of above.
 	  wtree_node left_left = left.getLeft(), left_right = left.getRight();
 	  if(left_right.size() < left_left.size())
-	    return right_rotate_single();
+	    return right_rotate_single(accumOps);
 	  else
-	    return right_rotate_double();
+	    return right_rotate_double(accumOps);
 	}
       else
 	// Nothing to do; the tree is already balanced.
@@ -402,26 +489,72 @@ namespace imm
     /** Return a new tree that does not share its structure with any
      *  other tree.
      */
-    wtree_node clone() const
+    wtree_node clone(const AccumOps &ops) const
     {
       if(empty())
 	return wtree_node();
       else
-	return wtree_node(getVal(), getLeft().clone(), getRight().clone());
+	return wtree_node(realNode->clone(ops));
     }
   };
 
+  template<typename Val, typename AccumVal, typename AccumOps, int w>
+  inline AccumVal
+  doAccumulate<Val, AccumVal, AccumOps, w>::call(const Val &val,
+						 const wtree_node<Val, AccumVal, AccumOps, w> &left,
+						 const wtree_node<Val, AccumVal, AccumOps, w> &right,
+						 const AccumOps &accumOps)
+  {
+    if(left.isValid() && right.isValid())
+      {
+	const AccumVal valAndRight =
+	  accumOps.merge(accumOps.project(val),
+			 right.getAccumVal());
+	return accumOps.merge(left.getAccumVal(),
+			      valAndRight);
+      }
+    else if(left.isValid())
+      return accumOps.merge(left.getAccumVal(),
+			    accumOps.project(val));
+    else if(right.isValid())
+      return accumOps.merge(accumOps.project(val),
+			    right.getAccumVal());
+    else
+      return accumOps.project(val);
+  }
+
+  template<typename Val, typename AccumVal, int w>
+  class doAccumulate<Val, AccumVal, nil_t, w>
+  {
+  public:
+    static inline AccumVal
+    call(const Val &val,
+	 const wtree_node<Val, AccumVal, nil_t, w> &left,
+	 const wtree_node<Val, AccumVal, nil_t, w> &right,
+	 const nil_t &accumOps)
+    {
+      return AccumVal();
+    }
+  };
+
+
   /** An entire weighted tree.
+   *
+   *  \tparam AccumVal if non-nil, a value of this type will be
+   *  computed that represents the combination of all the values in
+   *  the tree under AccumOps.
+   *
+   *  \tparam AccumOps A class type that allows values to be combined;
+   *  documented under wtree_node.
    */
-  template<typename Val, typename Compare = aptitude::util::compare3_f<Val>, int w = 4 >
+  template<typename Val, typename Compare = aptitude::util::compare3_f<Val>,
+	   typename AccumVal = nil_t, typename AccumOps = nil_t, int w = 4 >
   class set
   {
   public:
     typedef Val value_type;
-    typedef wtree_node<Val, w> node;
+    typedef wtree_node<Val, AccumVal, AccumOps, w> node;
     typedef typename node::size_type size_type;
-
-    Compare value_compare;
 
     /** An iterator over a wtree.  Note that the lack of parent
      *  pointers (necessary to allow full memory sharing) forces the
@@ -513,8 +646,29 @@ namespace imm
       }
     };
   private:
-    /** Root of the tree. */
-    node root;
+    // Save space by throwing out empty comparison operators and
+    // accumulation operators.
+    class contents
+    {
+      boost::compressed_pair<Compare, boost::compressed_pair<AccumOps, node> >
+      rootAndParameters;
+
+    public:
+      contents(const node &root,
+	       const Compare &value_compare,
+	       const AccumOps &accumOps)
+	: rootAndParameters(value_compare,
+			    boost::compressed_pair<AccumOps, node>(accumOps, root))
+      {
+      }
+
+      const Compare &get_value_compare() const { return rootAndParameters.first(); }
+      const AccumOps &get_accumOps() const { return rootAndParameters.second().first(); }
+      const node &get_root() const { return rootAndParameters.second().second(); }
+      void set_root(const node &n) { rootAndParameters.second().second() = n; }
+    };
+
+    contents impl;
 
     /** Returns a balanced tree constructed by adding x to n.
      *
@@ -524,19 +678,21 @@ namespace imm
     node add(const node &n, const Val &x, bool &added_anything) const
     {
       if(n.empty())
-	return node(x, node(), node());
+	return node(x, node(), node(), impl.get_accumOps());
       else
 	{
-	  int cmp = value_compare(x, n.getVal());
+	  int cmp = impl.get_value_compare()(x, n.getVal());
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
 			add(n.getLeft(), x, added_anything),
-			n.getRight()).rebalance();
+			n.getRight(),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			add(n.getRight(), x, added_anything)).rebalance();
+			add(n.getRight(), x, added_anything),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else
 	    {
 	      added_anything = false;
@@ -554,23 +710,25 @@ namespace imm
     node addUpdate(const node &n, const Val &x, bool &added_new_entry) const
     {
       if(n.empty())
-        return node(x, node(), node());
+        return node(x, node(), node(), impl.get_accumOps());
       else
 	{
-	  int cmp = value_compare(x, n.getVal());
+	  int cmp = impl.get_value_compare()(x, n.getVal());
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
 			addUpdate(n.getLeft(), x, added_new_entry),
-			n.getRight()).rebalance();
+			n.getRight(),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			addUpdate(n.getRight(), x, added_new_entry)).rebalance();
+			addUpdate(n.getRight(), x, added_new_entry),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else
 	    {
 	      added_new_entry = false;
-	      return node(x, n.getLeft(), n.getRight());
+	      return node(x, n.getLeft(), n.getRight(), impl.get_accumOps());
 	    }
 	}
     }
@@ -579,13 +737,15 @@ namespace imm
      *  simultaneously constructing a new (balanced) node that doesn't
      *  contain the minimum.
      */
-    static std::pair<node, Val> find_and_remove_min(const node &n)
+    static std::pair<node, Val> find_and_remove_min(const node &n,
+						    const AccumOps &accumOps)
     {
       if(n.getLeft().isValid())
       {
-	std::pair<node, Val> tmp = find_and_remove_min(n.getLeft());
+	std::pair<node, Val> tmp = find_and_remove_min(n.getLeft(), accumOps);
 	  return std::pair<node, Val>(node(n.getVal(),
-					   tmp.first, n.getRight()).rebalance(),
+					   tmp.first, n.getRight(),
+					   accumOps).rebalance(accumOps),
 				      tmp.second);
       }
       else
@@ -597,15 +757,16 @@ namespace imm
     /** Join together two trees; every element of l must be less than
      *  every element of r.
      */
-    static node splice_trees(const node &l, const node &r)
+    static node splice_trees(const node &l, const node &r,
+			     const AccumOps &accumOps)
     {
       if(r.empty())
         return l;
       else if(l.empty())
         return r;
 
-      std::pair<node, Val> tmp = find_and_remove_min(r);
-      return node(tmp.second, l, tmp.first);
+      std::pair<node, Val> tmp = find_and_remove_min(r, accumOps);
+      return node(tmp.second, l, tmp.first, accumOps);
     }
 
     /** \return \b true if there exist elements x1 and x2 in n1 and n2
@@ -626,7 +787,7 @@ namespace imm
         return false;
       else
 	{
-	  int cmp = value_compare(n1.getVal(), n2.getVal());
+	  int cmp = impl.get_value_compare()(n1.getVal(), n2.getVal());
 
 	  if(cmp < 0)
 	    return
@@ -659,13 +820,14 @@ namespace imm
         return false;
       else
 	{
-	  int cmp = value_compare(n1.getVal(), n2.getVal());
+	  int cmp = impl.get_value_compare()(n1.getVal(), n2.getVal());
 
 	  if(cmp < 0)
 	    {
 	      // Strip the left subtree of n2.
 	      node n2repl = n2.getLeft().empty()
-		? n2 : node(n2.getVal(), node(), n2.getRight());
+		? n2 : node(n2.getVal(), node(), n2.getRight(),
+			    impl.get_accumOps());
 
 	      return node_contains(n1, n2.getLeft(), f) &&
 		node_contains(n1.getRight(), n2repl, f);
@@ -674,7 +836,8 @@ namespace imm
 	    {
 	      // Strip the right subtree of n2.
 	      node n2repl = n2.getRight().empty()
-		? n2 : node(n2.getVal(), n2.getLeft(), node());
+		? n2 : node(n2.getVal(), n2.getLeft(), node(),
+			    impl.get_accumOps());
 
 	      return node_contains(n1, n2.getRight(), f) &&
 		node_contains(n1.getLeft(), n2repl, f);
@@ -695,26 +858,28 @@ namespace imm
         return n;
       else
 	{
-	  const int cmp = value_compare(x, n.getVal());
+	  const int cmp = impl.get_value_compare()(x, n.getVal());
 
 	  if(cmp < 0)
 	    return node(n.getVal(),
 			remove(n.getLeft(), x, removed_anything),
-			n.getRight()).rebalance();
+			n.getRight(),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else if(cmp > 0)
 	    return node(n.getVal(),
 			n.getLeft(),
-			remove(n.getRight(), x, removed_anything)).rebalance();
+			remove(n.getRight(), x, removed_anything),
+			impl.get_accumOps()).rebalance(impl.get_accumOps());
 	  else // found an equivalent node:
 	    {
 	      removed_anything = true;
-	      return splice_trees(n.getLeft(), n.getRight());
+	      return splice_trees(n.getLeft(), n.getRight(), impl.get_accumOps());
 	    }
 	}
     }
 
-    set(const node &n, const Compare &_value_compare)
-      :value_compare(_value_compare), root(n)
+    set(const node &n, const Compare &value_compare, const AccumOps &accumOps)
+      : impl(n, value_compare, accumOps)
     {
     }
 
@@ -729,8 +894,9 @@ namespace imm
     };
   public:
     /** Construct an empty tree. */
-    set(const Compare &_value_compare = Compare())
-      : value_compare(_value_compare)
+    set(const Compare &value_compare = Compare(),
+	const AccumOps &accumOps = AccumOps())
+      : impl(node(), value_compare, accumOps)
     {
     }
 
@@ -738,7 +904,7 @@ namespace imm
     template<typename Op>
     bool for_each(const Op &o) const
     {
-      return root.for_each(o);
+      return impl.get_root().for_each(o);
     }
 
     /** Insert an element into a tree, returning a new tree.  This is
@@ -748,7 +914,9 @@ namespace imm
      */
     static set add(const set &old, const Val &x, bool &added_anything)
     {
-      return set(old.add(old.root, x, added_anything), old.value_compare);
+      return set(old.add(old.impl.get_root(), x, added_anything),
+		 old.impl.get_value_compare(),
+		 old.impl.get_accumOps());
     }
 
     static set add(const set &old, const Val &x)
@@ -760,7 +928,9 @@ namespace imm
     /** Like add, but updates existing equivalent elements. */
     static set addUpdate(const set &old, const Val &x, bool &added_new_entry)
     {
-      return set(old.addUpdate(old.root, x, added_new_entry), old.value_compare);
+      return set(old.addUpdate(old.impl.get_root(), x, added_new_entry),
+		 old.impl.get_value_compare(),
+		 old.impl.get_accumOps());
     }
 
     static set addUpdate(const set &old, const Val &x)
@@ -773,7 +943,9 @@ namespace imm
     static set remove(const set &old, const Val &x, bool &removed_anything)
     {
       removed_anything = false;
-      return set(old.remove(old.root, x, removed_anything), old.value_compare);
+      return set(old.remove(old.impl.get_root(), x, removed_anything),
+		 old.impl.get_value_compare(),
+		 old.impl.get_accumOps());
     }
 
     static set remove(const set &old, const Val &x)
@@ -789,13 +961,13 @@ namespace imm
     template<typename F>
     bool intersects(const set &other, const F &f) const
     {
-      return nodes_intersect(root, other.root, f);
+      return nodes_intersect(impl.get_root(), other.impl.get_root(), f);
     }
 
     /** \return \b true if this set intersects the given set. */
     bool intersects(const set &other) const
     {
-      return nodes_intersect(root, other.root, universal_relation<Val>());
+      return nodes_intersect(impl.get_root(), other.impl.get_root(), universal_relation<Val>());
     }
 
     /** \return \b true if each element of other is related by f to an
@@ -805,7 +977,7 @@ namespace imm
     template<typename F>
     bool contains(const set &other, const F &f) const
     {
-      return node_contains(root, other.root, f);
+      return node_contains(impl.get_root(), other.impl.get_root(), f);
     }
 
     /** \return \b true if each element in other has an equivalent
@@ -813,7 +985,7 @@ namespace imm
      */
     bool contains(const set &other) const
     {
-      return node_contains(root, other.root, universal_relation<Val>());
+      return node_contains(impl.get_root(), other.impl.get_root(), universal_relation<Val>());
     }
 
     /** Do an "in-place" update of this set, by replacing the root
@@ -824,7 +996,7 @@ namespace imm
     bool insert(const Val &x)
     {
       bool rval = true;
-      root = add(root, x, rval);
+      impl.set_root(add(impl.get_root(), x, rval));
       return rval;
     }
 
@@ -832,7 +1004,7 @@ namespace imm
     bool insertUpdate(const Val &x)
     {
       bool rval = true;
-      root = addUpdate(root, x, rval);
+      impl.set_root(addUpdate(impl.get_root(), x, rval));
       return rval;
     }
 
@@ -843,7 +1015,7 @@ namespace imm
     bool erase(const Val &x)
     {
       bool rval = false;
-      root = remove(root, x, rval);
+      impl.set_root(remove(impl.get_root(), x, rval));
       return rval;
     }
 
@@ -852,11 +1024,11 @@ namespace imm
      */
     node find_node(const Val &x) const
     {
-      node rval = root;
+      node rval = impl.get_root();
 
       while(rval.isValid())
       {
-	int cmp = value_compare(x, rval.getVal());
+	int cmp = impl.get_value_compare()(x, rval.getVal());
 
 	if(cmp < 0)
 	  rval = rval.getLeft();
@@ -869,6 +1041,15 @@ namespace imm
       return rval;
     }
 
+    /** \return the accumulated value for the entire set. */
+    AccumVal getAccumVal() const
+    {
+      if(impl.get_root().isValid())
+	return impl.get_root().getAccumVal();
+      else
+	return impl.get_accumOps().empty();
+    }
+
     /** \return \b true if this set contains the given value. */
     bool contains(const Val &x) const
     {
@@ -877,7 +1058,7 @@ namespace imm
 
     const_iterator begin() const
     {
-      return const_iterator(root);
+      return const_iterator(impl.get_root());
     }
 
     const_iterator end() const
@@ -887,15 +1068,15 @@ namespace imm
 
     node get_root() const
     {
-      return root;
+      return impl.get_root();
     }
 
     node get_minimum() const
     {
-      if(!root.isValid())
-	return root;
+      if(!impl.get_root().isValid())
+	return impl.get_root();
 
-      node rval = root;
+      node rval = impl.get_root();
       while(rval.getLeft().isValid())
 	rval = rval.getLeft();
 
@@ -904,17 +1085,17 @@ namespace imm
 
     size_type size() const
     {
-      return root.size();
+      return impl.get_root().size();
     }
 
     int empty() const
     {
-      return root.empty();
+      return impl.get_root().empty();
     }
 
     void dump(std::ostream &out) const
     {
-      root.dump(out);
+      impl.get_root().dump(out);
     }
 
     /** Return a new set that does not share memory with the original
@@ -923,7 +1104,9 @@ namespace imm
      */
     set clone() const
     {
-      return set(root.clone(), value_compare);
+      return set(impl.get_root().clone(impl.get_accumOps()),
+		 impl.get_value_compare(),
+		 impl.get_accumOps());
     }
   };
 
@@ -954,8 +1137,8 @@ namespace imm
   /** \brief Write a set to a stream as a set (values are written with
    *  operator<<).
    */
-  template<typename Val, typename Compare, int w>
-  std::ostream &operator<<(std::ostream &out, const set<Val, Compare, w> &s)
+  template<typename Val, typename Compare, typename AccumVal, typename AccumOps, int w>
+  std::ostream &operator<<(std::ostream &out, const set<Val, Compare, AccumVal, AccumOps, w> &s)
   {
     out.put('{');
     set_write_action<Val> act(out);
@@ -975,12 +1158,12 @@ namespace aptitude
      *  ensuring that this is the case. (i.e., if the comparator has
      *  associated data, it should be identical in the two sets)
      */
-    template<typename Val, typename Compare, int w>
-    class compare3_f<imm::set<Val, Compare, w> >
+    template<typename Val, typename Compare, typename AccumVal, typename AccumOps, int w>
+    class compare3_f<imm::set<Val, Compare, AccumVal, AccumOps, w> >
     {
     public:
-      int operator()(const imm::set<Val, Compare, w> &s1,
-		     const imm::set<Val, Compare, w> &s2) const
+      int operator()(const imm::set<Val, Compare, AccumVal, AccumOps, w> &s1,
+		     const imm::set<Val, Compare, AccumVal, AccumOps, w> &s2) const
       {
 	return aptitude::util::lexicographical_compare3(s1.begin(), s1.end(),
 							s2.begin(), s2.end());
@@ -991,19 +1174,19 @@ namespace aptitude
 
 namespace imm
 {
-  template<typename Val, typename Compare, int w>
-  inline bool operator<(const set<Val, Compare, w> &s1,
-			const set<Val, Compare, w> &s2)
+  template<typename Val, typename Compare, typename AccumVal, typename AccumOps, int w>
+  inline bool operator<(const set<Val, Compare, AccumVal, AccumOps, w> &s1,
+			const set<Val, Compare, AccumVal, AccumOps, w> &s2)
   {
     return aptitude::util::compare3(s1, s2) < 0;
   }
 
   /** Compare two sets for equality, with the same caveat as operator<. */
-  template<typename Val, typename Compare, int w>
-  inline bool operator==(const set<Val, Compare, w> &s1,
-			 const set<Val, Compare, w> &s2)
+  template<typename Val, typename Compare, typename AccumVal, typename AccumOps, int w>
+  inline bool operator==(const set<Val, Compare, AccumVal, AccumOps, w> &s1,
+			 const set<Val, Compare, AccumVal, AccumOps, w> &s2)
   {
-    typename set<Val, Compare, w>::const_iterator
+    typename set<Val, Compare, AccumVal, AccumOps, w>::const_iterator
       i1 = s1.begin(), i2 = s2.begin();
 
     while(i1 != s1.end() && i2 != s2.end())
@@ -1039,12 +1222,14 @@ namespace imm
     }
   };
 
-  template<typename Key, typename Val, typename Compare = aptitude::util::compare3_f<Key> >
+  template<typename Key, typename Val, typename Compare = aptitude::util::compare3_f<Key>,
+	   typename AccumVal = nil_t,
+	   typename AccumOps = nil_t>
   class map
   {
   public:
     typedef std::pair<Key, Val> binding_type;
-    typedef set<binding_type, key_compare<Key, Val, Compare> > mapping_type;
+    typedef set<binding_type, key_compare<Key, Val, Compare>, AccumVal, AccumOps> mapping_type;
     typedef typename mapping_type::const_iterator const_iterator;
     typedef typename mapping_type::size_type size_type;
     typedef typename mapping_type::node node;
@@ -1060,8 +1245,10 @@ namespace imm
     }
 
     /** Construct an empty map */
-    map(const Compare &value_compare = Compare())
-      :contents(mapping_type(key_compare<Key, Val, Compare>(value_compare)))
+    map(const Compare &value_compare = Compare(),
+	const AccumOps &accumOps = AccumOps())
+      :contents(mapping_type(key_compare<Key, Val, Compare>(value_compare),
+			     accumOps))
     {
     }
 
@@ -1106,6 +1293,12 @@ namespace imm
     node lookup(const Key &k) const
     {
       return contents.find_node(binding_type(k, Val()));
+    }
+
+    /** \return the accumulated value of the whole map. */
+    AccumVal getAccumVal() const
+    {
+      return contents.getAccumVal();
     }
 
     /** \return either the value of the mapping at k, or dflt if k is
@@ -1251,8 +1444,8 @@ namespace imm
   /** \brief Write a map to a stream as a map (values are written with
    *  operator<<).
    */
-  template<typename Key, typename Val, typename Compare>
-  std::ostream &operator<<(std::ostream &out, const map<Key, Val, Compare> &m)
+  template<typename Key, typename Val, typename Compare, typename AccumVal, typename AccumOps>
+  std::ostream &operator<<(std::ostream &out, const map<Key, Val, Compare, AccumVal, AccumOps> &m)
   {
 
     out.put('{');
@@ -1274,12 +1467,12 @@ namespace aptitude
      *  ensuring that this is the case. (i.e., if the comparator has
      *  associated data, it should be identical in the two sets)
      */
-    template<typename Key, typename Val, typename Compare>
-    class compare3_f<imm::map<Key, Val, Compare> >
+    template<typename Key, typename Val, typename Compare, typename AccumVal, typename AccumOps>
+    class compare3_f<imm::map<Key, Val, Compare, AccumVal, AccumOps> >
     {
     public:
-      int operator()(const imm::map<Key, Val, Compare> &m1,
-		     const imm::map<Key, Val, Compare> &m2) const
+      int operator()(const imm::map<Key, Val, Compare, AccumVal, AccumOps> &m1,
+		     const imm::map<Key, Val, Compare, AccumVal, AccumOps> &m2) const
       {
 	return compare3(m1.get_bindings(), m2.get_bindings());
       }
