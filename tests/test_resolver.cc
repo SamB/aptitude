@@ -1134,9 +1134,9 @@ private:
     // Just to be sure, test those again here:
     CPPUNIT_ASSERT_THROW(incompatible1 + ops[1], TierOperationMismatchException);
     CPPUNIT_ASSERT_THROW(tier_operation::least_upper_bound(incompatible1, ops[1]),
-			 TierOperationMismatchException);
+                         TierOperationMismatchException);
     CPPUNIT_ASSERT_THROW(tier_operation::greatest_lower_bound(incompatible1, ops[1]),
-			 TierOperationMismatchException);
+                         TierOperationMismatchException);
 
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 3, advance: 6, advance: 5)"),
 			 boost::lexical_cast<std::string>(incompatible1 + ops[2]));
