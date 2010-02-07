@@ -1211,7 +1211,7 @@ private:
     lubs[1][1] = op_renderings[1];
     lubs[1][2] = "(nop, add: 2, add: 4, advance: 5)";
 
-    lubs[2][0] = lubs[2][0];
+    lubs[2][0] = lubs[0][2];
     lubs[2][1] = lubs[1][2];
     lubs[2][2] = op_renderings[2];
 
