@@ -812,7 +812,7 @@ tier aptitude_universe::parse_tier(const std::string &s)
   else
     {
       char *endptr;
-      int n = static_cast<int>(strtol(s.c_str(), &endptr, 0));
+      level n = level::make_lower_bounded(static_cast<int>(strtol(s.c_str(), &endptr, 0)));
       if(*endptr != '\0')
 	{
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
@@ -908,7 +908,7 @@ void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string>
 	      else
 		LOG_ERROR(Loggers::getAptitudeResolverTiers(),
 			  ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
-				   item_tier.get_user_level(0), PACKAGE));
+				   item_tier.get_user_level(0).get_value(), PACKAGE));
 	    }
 	  else
 	    ; // Assume this is junk that got in accidentally.
@@ -947,9 +947,9 @@ std::string aptitude_universe::get_tier_name(const tier &t)
 	}
 
       if(name.empty())
-	return ssprintf("%d", t.get_user_level(0));
+	return ssprintf("%d", t.get_user_level(0).get_value());
       else
-	return ssprintf("%s (%d)", name.c_str(), t.get_user_level(0));
+	return ssprintf("%s (%d)", name.c_str(), t.get_user_level(0).get_value());
     }
 }
 

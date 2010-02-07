@@ -106,14 +106,17 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
   static tier make_tier(int first_user_level)
   {
+    level l(level::make_lower_bounded(first_user_level));
+
     return tier(tier_limits::minimum_level,
-		&first_user_level,
-		(&first_user_level) + 1);
+		&l,
+		(&l) + 1);
   }
 
   static tier make_tier(int first_user_level, int second_user_level)
   {
-    int user_levels[2] = { first_user_level, second_user_level };
+    level user_levels[2] = { level::make_lower_bounded(first_user_level),
+			     level::make_lower_bounded(second_user_level) };
 
     return tier(tier_limits::minimum_level,
 		user_levels,

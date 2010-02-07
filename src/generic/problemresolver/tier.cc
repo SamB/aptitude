@@ -22,6 +22,18 @@
 
 #include <iostream>
 
+std::ostream &operator<<(std::ostream &out, const level &l)
+{
+  if(l.get_value() == tier_limits::minimum_level)
+    out << "minimum";
+  else if(l.get_value() == tier_limits::maximum_level)
+    out << "maximum";
+  else
+    out << l.get_value();
+
+  return out;
+}
+
 std::ostream &operator<<(std::ostream &out, const tier &t)
 {
   out << "(";
@@ -41,17 +53,7 @@ std::ostream &operator<<(std::ostream &out, const tier &t)
 
   for(tier::user_level_iterator it = t.user_levels_begin();
       it != t.user_levels_end(); ++it)
-    {
-      out << ", ";
-      const int user_level = *it;
-
-      if(user_level == tier_limits::minimum_level)
-	out << "minimum";
-      else if(user_level == tier_limits::maximum_level)
-	out << "maximum";
-      else
-	out << user_level;
-    }
+    out << ", " << *it;
 
   out << ")";
 

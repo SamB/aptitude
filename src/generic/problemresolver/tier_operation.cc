@@ -22,186 +22,200 @@
 
 #include <ostream>
 
-void tier_operation::normalize()
+tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, combine_tag)
+  : structural_level(std::max<int>(op1.structural_level,
+				   op2.structural_level))
 {
-  if(add_levels.get_num_user_levels() > 0 &&
-     add_levels.get_user_level(add_levels.get_num_user_levels() - 1) == 0)
+  // Straightforward merge (why doesn't STL have a merge that lets
+  // you combine equivalent elements instead of just copying one
+  // of them to the output?
+  std::vector<std::pair<level_index, level> >::const_iterator
+    it1 = op1.actions.begin(), it2 = op2.actions.begin();
+
+  while(it1 != op1.actions.end() && it2 != op2.actions.end())
     {
-      tier::user_level_iterator
-        begin = add_levels.user_levels_begin(),
-        end = add_levels.user_levels_end();
-
-      while(end > begin && end[-1] == 0)
-        --end;
-
-      add_levels = tier(add_levels.get_structural_level(), begin, end);
-    }
-}
-
-tier tier_operation::levelwise_maximum(const tier &t1, const tier &t2)
-{
-  const int out_structural_level =
-    std::max<int>(t1.get_structural_level(),
-                  t2.get_structural_level());
-
-  std::vector<int> out_user_levels;
-  out_user_levels.reserve(std::max<std::size_t>(t1.get_num_user_levels(),
-                                                t2.get_num_user_levels()));
-
-  tier::user_level_iterator
-    it1 = t1.user_levels_begin(),
-    it2 = t2.user_levels_begin();
-
-  const tier::user_level_iterator
-    end1 = t1.user_levels_end(),
-    end2 = t2.user_levels_end();
-
-  while(it1 != end1 && it2 != end2)
-    {
-      out_user_levels.push_back(std::max<int>(*it1, *it2));
-      ++it1;
-      ++it2;
+      if(it1->first < it2->first)
+	{
+	  actions.push_back(*it1);
+	  ++it1;
+	}
+      else if(it2->first < it1->first)
+	{
+	  actions.push_back(*it2);
+	  ++it2;
+	}
+      else
+	{
+	  actions.push_back(std::make_pair(it1->first,
+					   level::combine(it1->second, it2->second)));
+	  ++it1;
+	  ++it2;
+	}
     }
 
-  if(it1 != end1)
-    out_user_levels.insert(out_user_levels.end(),
-                           it1, end1);
-  else if(it2 != end2)
-    out_user_levels.insert(out_user_levels.end(),
-                           it2, end2);
-
-  return tier(out_structural_level,
-              out_user_levels.begin(),
-              out_user_levels.end());
+  if(it1 != op1.actions.end())
+    actions.insert(actions.end(), it1, op1.actions.end());
+  else if(it2 != op2.actions.end())
+    actions.insert(actions.end(), it2, op2.actions.end());
 }
 
-tier tier_operation::levelwise_minimum(const tier &t1, const tier &t2)
-{
-  const int out_structural_level =
-    std::min<int>(t1.get_structural_level(),
-                  t2.get_structural_level());
-
-  std::vector<int> out_user_levels;
-  out_user_levels.reserve(std::min<std::size_t>(t1.get_num_user_levels(),
-                                                t2.get_num_user_levels()));
-
-  tier::user_level_iterator
-    it1 = t1.user_levels_begin(),
-    it2 = t2.user_levels_begin();
-
-  const tier::user_level_iterator
-    end1 = t1.user_levels_end(),
-    end2 = t2.user_levels_end();
-
-  while(it1 != end1 && it2 != end2)
-    {
-      out_user_levels.push_back(std::min<int>(*it1, *it2));
-      ++it1;
-      ++it2;
-    }
-
-  return tier(out_structural_level,
-              out_user_levels.begin(),
-              out_user_levels.end());
-}
-
-inline int tier_operation::safe_add_levels(int l1, int l2)
-{
-  if(l1 < 0 && l2 < 0)
-    throw NegativeTierAdditionException();
-
-  // Check for overflow.
-  //
-  // If one level is nonnegative, we can only overflow if both are
-  // strictly positive.
-  if(l1 > 0 && l2 > 0 &&
-     l1 > (INT_MAX - l2))
-    throw TierTooBigException();
-
-  return l1 + l2;
-}
-
-tier tier_operation::levelwise_add(const tier &t1, const tier &t2)
+tier tier_operation::op_impl::apply(const tier &t) const
 {
   int out_structural_level =
-    safe_add_levels(t1.get_structural_level(), t2.get_structural_level());
+    std::max<int>(t.get_structural_level(), structural_level);
+  std::vector<level> out_user_levels(t.user_levels_begin(), t.user_levels_end());
 
-  std::vector<int> out_user_levels;
+  if(!actions.empty())
+    {
+      // If the actions array will modify slots off the end of the
+      // tier's list of levels, we first pre-extend that list.
+      if(out_user_levels.size() <= actions.back().first)
+	{
+	  level_index
+	    gap_size = actions.back().first + 1 - out_user_levels.size();
 
-  tier::user_level_iterator
-    it1 = t1.user_levels_begin(),
-    it2 = t2.user_levels_begin();
+	  out_user_levels.insert(out_user_levels.end(),
+				 gap_size,
+				 level());
+	}
 
-  const tier::user_level_iterator
-    end1 = t1.user_levels_end(),
-    end2 = t2.user_levels_end();
-
-  while(it1 != end1 && it2 != end2)
-   {
-     out_user_levels.push_back(safe_add_levels(*it1, *it2));
-     ++it1;
-     ++it2;
-   }
-
-  if(it1 != end1)
-    out_user_levels.insert(out_user_levels.end(),
-                           it1, end1);
-  else if(it2 != end2)
-    out_user_levels.insert(out_user_levels.end(),
-                           it2, end2);
+      for(std::vector<std::pair<level_index, level> >::const_iterator it =
+	    actions.begin(); it != actions.end(); ++it)
+	{
+	  level &target(out_user_levels[it->first]);
+	  target = level::combine(target, it->second);
+	}
+    }
 
   return tier(out_structural_level,
-              out_user_levels.begin(),
-              out_user_levels.end());
+	      out_user_levels.begin(),
+	      out_user_levels.end());
 }
 
-tier_operation tier_operation::least_upper_bound(const tier_operation &op1,
-                                                 const tier_operation &op2)
-{
-  return tier_operation(levelwise_maximum(op1.add_levels,
-                                          op2.add_levels));
-}
-
-tier_operation tier_operation::greatest_lower_bound(const tier_operation &op1,
-                                                    const tier_operation &op2)
-{
-  return tier_operation(levelwise_minimum(op1.add_levels,
-                                          op2.add_levels));
-}
-
-tier_operation tier_operation::operator+(const tier_operation &other) const
-{
-  return tier_operation(levelwise_add(add_levels,
-                                      other.add_levels));
-}
-
-tier tier_operation::apply(const tier &t) const
-{
-  return levelwise_add(t, add_levels);
-}
-
-void tier_operation::dump(std::ostream &out) const
+void tier_operation::op_impl::dump(std::ostream &out) const
 {
   out << "(";
+  if(structural_level != INT_MIN)
+    out << "advance: " << structural_level;
+  else
+    out << "nop";
 
-  if(add_levels != tier(0))
+  std::size_t column = 0;
+  for(std::vector<std::pair<level_index, level> >::const_iterator
+	it = actions.begin(); it != actions.end(); ++it)
     {
-      out << "add: " << add_levels;
+      out << ", ";
+
+      while(column < it->first)
+	{
+	  out << "nop, ";
+	  ++column;
+	}
+
+      switch(it->second.get_state())
+	{
+	case level::added:
+	  out << "add: ";
+	  break;
+	case level::lower_bounded:
+	  out << "advance: ";
+	  break;
+	case level::unmodified:
+	  // Shouldn't happen:
+	  out << "(unmodified): ";
+	  break;
+	}
+      out << it->second.get_value();
     }
 
   out << ")";
 }
 
-int tier_operation::compare(const tier_operation &other) const
+tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, upper_bound_tag)
+  : structural_level(std::max<int>(op1.structural_level,
+				   op2.structural_level))
 {
-  // This comparison is correct only because we pre-normalize the
-  // object to discard trailing zeroes.
-  return aptitude::util::compare3(add_levels, other.add_levels);
+  actions.reserve(std::max<std::size_t>(op1.actions.size(), op2.actions.size()));
+
+  std::vector<std::pair<level_index, level> >::const_iterator
+    it1 = op1.actions.begin(),
+    it2 = op2.actions.begin();
+
+  const std::vector<std::pair<level_index, level> >::const_iterator
+    end1 = op1.actions.end(),
+    end2 = op2.actions.end();
+
+  while(it1 != end1 && it2 != end2)
+    {
+      const std::pair<level_index, level> &p1 = *it1, &p2 = *it2;
+
+      if(p1.first < p2.first)
+	{
+	  actions.push_back(p1);
+	  ++it1;
+	}
+      else if(p2.first < p1.first)
+	{
+	  actions.push_back(p2);
+	  ++it2;
+	}
+      else
+	{
+	  actions.push_back(std::make_pair(p1.first,
+					   level::upper_bound(p1.second, p2.second)));
+	  ++it1;
+	  ++it2;
+	}
+    }
+
+  if(it1 != end1)
+    actions.insert(actions.end(),
+		   it1, end1);
+  else if(it2 != end2)
+    actions.insert(actions.end(),
+		   it2, end2);
 }
 
-std::size_t tier_operation::get_hash_value() const
+tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, lower_bound_tag)
+  : structural_level(std::min<int>(op1.structural_level,
+				   op2.structural_level))
 {
-  return hash_value(add_levels);
+  std::vector<std::pair<level_index, level> >::const_iterator
+    it1 = op1.actions.begin(),
+    it2 = op2.actions.begin();
+
+  const std::vector<std::pair<level_index, level> >::const_iterator
+    end1 = op1.actions.end(),
+    end2 = op2.actions.end();
+
+  while(it1 != end1 && it2 != end2)
+    {
+      const std::pair<level_index, level> &p1 = *it1, &p2 = *it2;
+
+      if(p1.first < p2.first)
+	++it1;
+      else if(p2.first < p1.first)
+	++it2;
+      else
+	{
+	  actions.push_back(std::make_pair(p1.first,
+					   level::lower_bound(p1.second, p2.second)));
+	  ++it1;
+	  ++it2;
+	}
+    }
+}
+
+tier_operation tier_operation::least_upper_bound(const tier_operation &op1,
+                                                 const tier_operation &op2)
+{
+  return tier_operation(op1, op2, upper_bound_tag());
+}
+
+tier_operation tier_operation::greatest_lower_bound(const tier_operation &op1,
+                                                    const tier_operation &op2)
+{
+  return tier_operation(op1, op2, lower_bound_tag());
 }
 
 std::size_t hash_value(const tier_operation &op)

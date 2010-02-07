@@ -25,6 +25,8 @@
 
 #include <iosfwd>
 
+#include <boost/flyweight.hpp>
+
 /** \brief A tier operation describes how any solution's tier will
  * change as a result of adding a choice.
  *
@@ -42,103 +44,221 @@
  */
 class tier_operation
 {
-  // We use tiers internally to store the list of levels to modify,
-  // because the information that each component of the operation
-  // stores is exactly isomorphic to a tier.
+  // These classes are used to disambiguate constructors.
+  class combine_tag { };
+  class lower_bound_tag { };
+  class upper_bound_tag { };
 
-  // Values that this operation should add to a tier's level.
-  //
-  // Each level in this tier must be a nonnegative integer; if not,
-  // constructing the operation will throw an exception.
-  tier add_levels;
-
-  tier_operation(const tier &_add_levels)
-    : add_levels(_add_levels)
+  // \todo Should have an abstracted "key"" that covers the 3 ways of
+  // instantiating this object.  Also, should cache the hash value to
+  // avoid recomputing it over and over.
+  class op_impl
   {
-    if(add_levels.get_structural_level() < 0)
-      throw NegativeTierAdditionException();
+    typedef std::vector<level>::size_type level_index;
 
-    const std::size_t add_levels_size(add_levels.get_num_user_levels());
-    for(std::size_t i = 0; i < add_levels_size; ++i)
-      {
-	if(add_levels.get_user_level(i) < 0)
-	  throw NegativeTierAdditionException();
-      }
+    // The value that a target tier's structural level should be
+    // increased to.
+    int structural_level;
 
-    normalize();
+    // The operation is a collection of pairs giving level operations
+    // and the level's location in the tier vector.  Storing tier
+    // operations this way lets us save a little memory, considering
+    // that most operations will probably modify only a few tiers.
+    //
+    // This vector is always sorted, and level numbers are unique.
+    std::vector<std::pair<level_index, level> > actions;
+
+  public:
+    /** \brief Create a blank tier operation. */
+    op_impl()
+      : structural_level(INT_MIN)
+    {
+    }
+
+    /** \brief Create a tier operation that modifies the structural
+     *	level of the tier.
+     */
+    explicit op_impl(int _structural_level)
+      : structural_level(_structural_level)
+    {
+    }
+
+    /** \brief Create a tier operation that modifies a single level of
+     *	the tier.
+     */
+    op_impl(int index, const level &l)
+      : structural_level(INT_MIN)
+    {
+      if(l.get_state() == level::added &&
+	 l.get_value() <= 0)
+	throw NonPositiveTierAdditionException();
+
+      actions.push_back(std::make_pair(index, l));
+    }
+
+    /** \brief Create a tier operation that combines two other operations. */
+    op_impl(const op_impl &op1, const op_impl &op2, combine_tag);
+
+    /** \brief Create a new operation that computes the lower bound of
+     *  two input operations.
+     */
+    op_impl(const op_impl &op1, const op_impl &op2, lower_bound_tag);
+
+    /** \brief Create a new operation that computes the upper bound of
+     *  two input operations.
+     */
+    op_impl(const op_impl &op1, const op_impl &op2, upper_bound_tag);
+
+    /** \brief Compute a hash on this tier operation.
+     *
+     *  \note Relies on the fact that the level's hash includes
+     *  whether it's an addition or a lower-bound.
+     */
+    std::size_t get_hash_value() const
+    {
+      std::size_t rval = 0;
+
+      boost::hash_combine(rval, structural_level);
+      boost::hash_combine(rval, actions);
+
+      return rval;
+    }
+
+    /** \brief Test two tier operations for equality.
+     *
+     *  \note Relies on the fact that the level's equality comparison
+     *  returns "true" only when the two levels have the same state.
+     */
+    bool operator==(const op_impl &other) const
+    {
+      return
+	structural_level == other.structural_level &&
+	actions == other.actions;
+    }
+
+    /** \brief Apply the operation to the tier.
+     *
+     *  Each level is combined with the corresponding level in the
+     *  target tier.  If there is no corresponding level, it is copied
+     *  directly (which is exactly the desired behavior).
+     */
+    tier apply(const tier &t) const;
+
+    /** \brief Dump this operation to a stream. */
+    void dump(std::ostream &out) const;
+  };
+
+  class op_impl_hasher
+  {
+  public:
+    std::size_t operator()(const op_impl &op) const
+    {
+      return op.get_hash_value();
+    }
+  };
+
+  typedef boost::flyweight<op_impl,
+			   boost::flyweights::hashed_factory<op_impl_hasher> >
+  op_impl_flyweight;
+
+  op_impl_flyweight impl_flyweight;
+
+  const op_impl &get_impl() const { return impl_flyweight.get(); }
+
+  /** \brief Create a tier operation that modifies the structural
+   *	level of the tier.
+   */
+  explicit tier_operation(int structural_level)
+    : impl_flyweight(op_impl(structural_level))
+  {
   }
 
-  /** \brief Compute the levelwise maximum of two tiers.
-   *
-   *  The output is a tier in which each level is equal to the maximum
-   *  of the corresponding entries in the input tiers.  Unpaired
-   *  levels (in the event that one of the tiers is longer than the
-   *  other) are assumed to equal tier_limits::minimum_level, with the
-   *  effect that the longer tier's elements are copied unchanged.
-   *
-   *  This function is implemented here instead of in tier.h because
-   *  tier operations require exactly this behavior and nothing else
-   *  does.
+  /** \brief Create a tier operation that combines two other
+   *  operations.
    */
-  static tier levelwise_maximum(const tier &t1, const tier &t2);
+  tier_operation(const tier_operation &op1,
+		 const tier_operation &op2)
+    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
+			     combine_tag()))
+  {
+  }
 
-  /** \brief Compute the levelwise minimum of two tiers.
-   *
-   *  The output is a tier in which each level is equal to the minimum
-   *  of the corresponding entries in the input tiers.  Unpaired
-   *  levels (in the event that one of the tiers is longer than the
-   *  other) are assumed to equal tier_limits::maximum_level, with the
-   *  effect that the longer tier's elements are discarded.
-   *
-   *  This function is implemented here instead of in tier.h because
-   *  tier operations require exactly this behavior and nothing else
-   *  does.
+  /** \brief Create a tier operation that modifies a single level of
+   *  the tier.
    */
-  static tier levelwise_minimum(const tier &t1, const tier &t2);
+  tier_operation(int index, const level &l)
+    : impl_flyweight(op_impl(index, l))
+  {
+  }
 
-  /** \brief Safely add two tier levels.
-   *
-   *  Checks that at least one operand is nonnegative and that the
-   *  result won't overflow.
+  /** \brief Create a new operation that computes the lower bound of
+   *  two input operations.
    */
-  static int safe_add_levels(int l1, int l2);
+  tier_operation(const tier_operation &op1, const tier_operation &op2, lower_bound_tag)
+    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
+			     lower_bound_tag()))
+  {
+  }
 
-  /** \brief Compute the levelwise sum of two tiers.
-   *
-   *  The output is a tier in which each level is equal to the sum of
-   *  the corresponding levels in the input tiers.  If one tier is
-   *  longer than the other, the missing levels are assumed to be 0.
+  /** \brief Create a new operation that computes the upper bound of
+   *  two input operations.
    */
-  static tier levelwise_add(const tier &t1, const tier &t2);
-
-  /** \brief Rewrite equivalent values to a canonical form.
-   *
-   *  The drops trailing zeros from add_levels.
-   */
-  void normalize();
+  tier_operation(const tier_operation &op1, const tier_operation &op2, upper_bound_tag)
+    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
+			     upper_bound_tag()))
+  {
+  }
 
 public:
   /** \brief Create the identity tier operation: an operation with no
    *  effect.
    */
   tier_operation()
-    : add_levels(0)
+    : impl_flyweight(op_impl())
   {
   }
 
-  /** \brief Create a tier operation that adds a value to each level
-   *  in the target.
+  /** \brief Create a tier operation that increases the structural
+   *  level of its target to a particular value.
    *
-   *  \param increments The values to add to affected tiers.  The
-   *  value at each level is added to the corresponding level in the
-   *  target; the values must be nonnegative.  If the target is longer
-   *  than increments, the extra levels are unaffected; if the target
-   *  is shorter, the extra levels of increments are added to
-   *  tier_limits::minimum_level and then appended to the target tier.
+   *  \param structural_level The structural level that the resulting
+   *  operation will increase affected tiers to; tiers at a higher
+   *  structural level are unaffected.
    */
-  static tier_operation make_add_to_levels(const tier &increments)
+  static tier_operation make_advance_structural_level(int structural_level)
   {
-    return tier_operation(increments);
+    return tier_operation(structural_level);
+  }
+
+  /** \brief Create a tier operation that increases a single user
+   *  level of its target to a particular value.
+   *
+   *  \param index The index within the user tier list of the level
+   *               that is to be modified.
+   *
+   *  \param value The value that the resulting operation will
+   *               increase affected user levels to; higher user
+   *               levels are unaffected.
+   */
+  static tier_operation make_advance_user_level(int index,
+						int value)
+  {
+    return tier_operation(index, level::make_lower_bounded(value));
+  }
+
+  /** \brief Create a tier operation that adds a fixed value to a
+   *  single user level.
+   *
+   *  \param index The index within the user tier list of the level
+   *               that is to be modified.
+   *
+   *  \param value The value that the resulting operation will add to
+   *               affected user levels.
+   */
+  static tier_operation make_add_to_user_level(int index,
+					       int value)
+  {
+    return tier_operation(index, level::make_added(value));
   }
 
   /** \brief Compute the least upper bound of two tier operations.
@@ -163,57 +283,44 @@ public:
    *  The composition of tier operations is both associative and
    *  commutative.
    */
-  tier_operation operator+(const tier_operation &other) const;
+  tier_operation operator+(const tier_operation &other) const
+  {
+    return tier_operation(*this, other);
+  }
 
   /** \brief Test whether two operations have the same effect. */
   bool operator==(const tier_operation &other) const
   {
-    return compare(other) == 0;
+    return impl_flyweight == other.impl_flyweight;
   }
 
   /** \brief Test whether two operations don't have the same effect. */
   bool operator!=(const tier_operation &other) const
   {
-    return compare(other) != 0;
+    return impl_flyweight != other.impl_flyweight;
   }
-
-  /** \brief Arbitrary ordering on tier operations.
-   *
-   *  This ordering is NOT the partial ordering of the tier operation
-   *  lattice; it's a total ordering of tier operations that can be
-   *  used to place them into data structures that require entries to
-   *  be ordered.
-   */
-  int compare(const tier_operation &other) const;
 
   /** \brief Apply this operation to a tier.
    *
    *  \param t  The tier that this operation should modify.
    */
-  tier apply(const tier &t) const;
+  tier apply(const tier &t) const
+  {
+    return get_impl().apply(t);
+  }
 
   /** \brief Write a description of a tier operation to an ostream.
    */
-  void dump(std::ostream &out) const;
-
-  std::size_t get_hash_value() const;
-};
-
-namespace aptitude
-{
-  namespace util
+  void dump(std::ostream &out) const
   {
-    template<>
-    class compare3_f<tier_operation>
-    {
-    public:
-      int operator()(const tier_operation &op1, const tier_operation &op2) const
-      {
-	return op1.compare(op2);
-      }
-    };
+    get_impl().dump(out);
   }
-}
+
+  std::size_t get_hash_value() const
+  {
+    return get_impl().get_hash_value();
+  }
+};
 
 std::size_t hash_value(const tier_operation &op);
 

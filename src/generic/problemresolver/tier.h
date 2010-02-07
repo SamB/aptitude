@@ -31,15 +31,240 @@
 
 #include <limits.h>
 
+#include "exceptions.h"
+
+/** \brief Represents one level in a search tier.
+ *
+ *  A search tier is an ordered sequence of levels.  Levels are
+ *  integers that can be modified either by being incremented or by
+ *  being increased to be at least the given value.  However, the two
+ *  operations may not be applied to the same level; attempting to do
+ *  so will raise an exception.  This does not apply to the identity
+ *  of each operation (adding 0 or raising to INT_MIN).
+ *
+ *  The reason for representing levels this way is that it allows the
+ *  resolver to support both "increase the tier to X" and "add X to
+ *  the tier" operations in a sound manner; in particular, this way
+ *  those two operations are both associative and commutative.  (in
+ *  this case, they are associative and commutative in the sense that
+ *  applying both types of operations always errors out)
+ *
+ *  Note: the "increase tier to X" operation is important for
+ *  respecting priorities (there doesn't seem to be an obvious
+ *  alternative there), for backwards-compatibility, and so that the
+ *  resolver can easily become non-optimizing if necessary (e.g., if
+ *  the optimizing version experiences too many performance problems,
+ *  reverting to the old behavior is a simple change to the default
+ *  settings).
+ *
+ *  Note that levels can represent both a tier entry, or a *change* to
+ *  a tier entry.  The "combine" method will either merge two changes
+ *  into a single change, or apply a change to a level.
+ *
+ *  Instead of failing out when two different operations are applied,
+ *  I could instead resolve the conflict by accumulating lower-bounds
+ *  separately from increments and always applying lower-bounds first.
+ *  That would resolve the conflict, but it might produce a somewhat
+ *  unintuitive result for the user.  I've chosen this route because
+ *  at least the behavior is obvious (and I can't think of any use
+ *  case for actually merging lower-bounds and increments).
+ */
+class level
+{
+public:
+  // The level's state; if it's ever been modified, this tracks how it
+  // was modified.
+  enum state_enum { unmodified, added, lower_bounded };
+
+private:
+  // Note: I would use a single iinteger if I thought I could get away
+  // with it.
+
+  // Note 2: the reason for using signed integers is that it makes the
+  // case of policy-priorities-as-tiers a bit clearer.
+
+  int value;
+
+  state_enum state;
+
+  level(int _value, state_enum _state)
+    : value(_value), state(_state)
+  {
+  }
+
+public:
+  /** \brief Create a new level at the minimum tier. */
+  level() : value(INT_MIN), state(unmodified)
+  {
+  }
+
+  /** \brief Create a new level with the given value and state "added". */
+  static level make_added(int value)
+  {
+    return level(value, added);
+  }
+
+  /** \brief Create a new level with the given value and state "lower_bounded." */
+  static level make_lower_bounded(int value)
+  {
+    return level(value, lower_bounded);
+  }
+
+  int get_value() const { return value; }
+  state_enum get_state() const { return state; }
+
+  void increase_tier_to(int new_value)
+  {
+    if(state == added)
+      throw TierOperationMismatchException();
+    else if(new_value != INT_MIN)
+      {
+	if(value < new_value)
+	  value = new_value;
+	state = lower_bounded;
+      }
+  }
+
+  void add(int amt)
+  {
+    if(state == lower_bounded)
+      throw TierOperationMismatchException();
+    else if(amt <= 0)
+      throw NonPositiveTierAdditionException();
+    else if(amt != 0)
+      {
+	value += amt;
+	state = added;
+      }
+  }
+
+  /** \brief Combine two levels and return a new level.
+   *
+   *  If either input level is unmodified, the result is the other
+   *  level.  Otherwise, the two levels must have the same state, and
+   *  the levels are combined according to that state.
+   */
+  static level combine(const level &l1, const level &l2)
+  {
+    if(l1.state == unmodified)
+      return l2;
+    else if(l2.state == unmodified)
+      return l1;
+    else if(l1.state != l2.state)
+      throw TierOperationMismatchException();
+    else if(l1.state == lower_bounded)
+      return level(std::max<int>(l1.value, l2.value), lower_bounded);
+    else // if(l1.state == added)
+      {
+	if(!(l1.value > 0 || l2.value > 0))
+	  throw NonPositiveTierAdditionException();
+	else
+	  return level(l1.value + l2.value, added);
+      }
+  }
+
+  /** \brief Compute the upper bound of two levels.
+   *
+   *  If the levels have incompatible states, throws an exception;
+   *  otherwise, returns a level whose numerical value is the maximum
+   *  of the numerical values of the two input levels and whose type
+   *  is the upper-bound of their types.
+   */
+  static level upper_bound(const level &l1, const level &l2)
+  {
+    if(l1.state == unmodified)
+      return l2;
+    else if(l2.state == unmodified)
+      return l1;
+    else if(l1.state != l2.state)
+      throw TierOperationMismatchException();
+    else
+      return level(std::max<int>(l1.value, l2.value),
+		   l1.state);
+  }
+
+  /** \brief Compute the lower bound of two levels.
+   *
+   *  If the levels have incompatible states, throws an exception; if
+   *  either is "unmodified", returns an unmodified level; otherwise,
+   *  returns a level whose numerical value is the minimum of the
+   *  numerical values of the two input levels and whose type is the
+   *  lower-bound of their types.
+   */
+  static level lower_bound(const level &l1, const level &l2)
+  {
+    if(l1.state == unmodified || l2.state == unmodified)
+      return level();
+    else if(l1.state != l2.state)
+      throw TierOperationMismatchException();
+    else
+      return level(std::min<int>(l1.value, l2.value),
+		   l1.state);
+  }
+
+  /** \brief Compare two levels.
+   *
+   *  Only the value of each level is compared.  The additional
+   *  information is discarded, so this should not be used to build an
+   *  associative data structure where that information might matter.
+   */
+  int compare(const level &other) const
+  {
+    return aptitude::util::compare3(value, other.value);
+  }
+
+  /** \brief Hashes a level object. */
+  std::size_t get_hash_value() const
+  {
+    std::size_t rval = 0;
+
+    boost::hash_combine(rval, value);
+    boost::hash_combine(rval, state);
+
+    return rval;
+  }
+
+  /** \brief Returns \b true if two levels are identical (both value
+   *  and state).
+   */
+  bool operator==(const level &other) const
+  {
+    return value == other.value && state == other.state;
+  }
+};
+
+std::ostream &operator<<(std::ostream &out, const level &l);
+
+inline std::size_t hash_value(const level &l)
+{
+  return l.get_hash_value();
+}
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<>
+    class compare3_f<level>
+    {
+    public:
+      int operator()(const level &t1, const level &t2) const
+      {
+	return t1.compare(t2);
+      }
+    };
+  }
+}
+
 /** \brief Represents the tier of a search node.
  *
  *  The resolver is \e guaranteed to produce solutions in increasing
  *  order by tier.  This is as opposed to score, which is merely used
  *  in a best-effort manner.
  *
- *  A tier is simply a sequence of integers, each of which is known as
- *  a "level".  By convention, each tier in a search should have the
- *  same length; tiers are compared lexicographically.
+ *  A tier is a sequence of levels (as defined above).  By convention,
+ *  each tier in a search should have the same length; tiers are
+ *  compared lexicographically.
  *
  *  The first level in the tier is reserved by the resolver to store
  *  "structural" priorities (for instance, to mark nodes as conflicted
@@ -53,11 +278,12 @@ class tier
   struct tier_impl
   {
     // Level set by the resolver itself to control the search
-    // algorithm.
+    // algorithm.  This is always increased in an upper-bound / cutoff
+    // fashion.
     int structural_level;
 
     // Levels set by client code to customize the search order.
-    std::vector<int> user_levels;
+    std::vector<level> user_levels;
 
     // Cache the hash value.  Initialized during construction.
     std::size_t hash_value;
@@ -98,38 +324,12 @@ class tier
       hash_value = get_hash_value();
     }
 
-    /** \brief Initialize a tier object given its contents and a
-     *         change to the list of user levels (possibly extending
-     *         the list in the process).
-     */
-    template<typename Iterator>
-    tier_impl(int _structural_level,
-	      Iterator user_levels_begin, Iterator user_levels_end,
-	      int change_location,
-	      int new_value)
-      : structural_level(_structural_level),
-	user_levels(user_levels_begin, user_levels_end),
-	hash_value(0)
-    {
-      if(static_cast<std::vector<int>::size_type>(change_location) >= user_levels.size())
-	{
-	  user_levels.reserve(change_location);
-	  user_levels.insert(user_levels.end(),
-			     change_location - user_levels.size(),
-			     INT_MIN);
-	  user_levels.push_back(new_value);
-	}
-      else
-	user_levels[change_location] = new_value;
-      hash_value = get_hash_value();
-    }
-
     std::size_t get_hash_value() const
     {
       std::size_t rval = 0;
 
       boost::hash_combine(rval, structural_level);
-      for(std::vector<int>::const_iterator it = user_levels.begin();
+      for(std::vector<level>::const_iterator it = user_levels.begin();
 	  it != user_levels.end(); ++it)
 	boost::hash_combine(rval, *it);
 
@@ -241,38 +441,10 @@ public:
 					      impl.user_levels.end()));
   }
 
-  /** \brief Create a new tier object in which one of this object's
-   *  user levels has been modified.
-   *
-   *  \param location A zero-based index into the list of user levels.
-   *
-   *  \param new_value The new level to store in the list in that
-   *                   location.
-   *
-   *  If location is greater than or equal to get_num_user_levels(),
-   *  the user level list is automatically extended to the appropriate
-   *  length.  Intervening levels are set to
-   *  tier_limits::minimum_tier.
-   *
-   *  \return a tier object with the same structural level as this
-   *          object whose user levels are identical to this object's,
-   *          except that the level in slot "location" has been set to
-   *          new_value.
-   */
-  tier set_user_level(int location, int new_value) const
-  {
-    const tier_impl &impl(get_impl());
-
-    return tier(boost::make_shared<tier_impl>(impl.structural_level,
-					      impl.user_levels.begin(),
-					      impl.user_levels.end(),
-					      location, new_value));
-  }
-
   /** \brief Retrieve the value of the structural level slot. */
   int get_structural_level() const { return get_impl().structural_level; }
 
-  typedef std::vector<int>::const_iterator user_level_iterator;
+  typedef std::vector<level>::const_iterator user_level_iterator;
 
   /** \brief Get a reference to the first user level as a
    *  random-access iterator.
@@ -284,7 +456,7 @@ public:
   user_level_iterator user_levels_end() const { return get_impl().user_levels.end(); }
 
   /** \brief Retrieve one user level from this tier. */
-  int get_user_level(int index) const { return get_impl().user_levels[index]; }
+  const level &get_user_level(int index) const { return get_impl().user_levels[index]; }
 
   /** \brief Retrieve the number of user levels in this tier. */
   std::size_t get_num_user_levels() const { return get_impl().user_levels.size(); }
@@ -301,6 +473,10 @@ public:
     return *this;
   }
 
+  /** \brief Compare two tiers.
+   *
+   *  Tiers are compared lexicographically, ignoring level states.
+   */
   int compare(const tier &other) const
   {
     const tier_impl &impl(get_impl());

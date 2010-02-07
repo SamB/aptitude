@@ -34,9 +34,10 @@ namespace
 
   tier make_tier(int first_user_level)
   {
+    level l(level::make_lower_bounded(first_user_level));
     return tier(tier_limits::minimum_level,
-		&first_user_level,
-		(&first_user_level) + 1);
+		&l,
+		(&l) + 1);
   }
 
   struct test

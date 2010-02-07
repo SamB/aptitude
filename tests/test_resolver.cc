@@ -822,8 +822,9 @@ private:
     log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTiers"));
     LOG_TRACE(logger, "Entering testTiers");
 
-    const int n50 = 50;
-    int n50_100[2] = { 50, 100 };
+    const level n50 = level::make_lower_bounded(50);
+    level n50_100[2] = { level::make_lower_bounded(50),
+			 level::make_lower_bounded(100) };
 
     // Instantiate 4 tier objects and make sure they're properly
     // ordered; instantiate them twice to ensure there's no special
@@ -857,7 +858,7 @@ private:
 	const tier &t1 = tiers[i];
 	const std::string s1 = boost::lexical_cast<std::string>(t1);
 
-	const tier t1_with_400_at_1 = t1.set_user_level(1, 400);
+	const tier t1_with_400_at_1 = tier_operation::make_advance_user_level(1, 400).apply(t1);
 	const std::string s1_with_400_at_1 =
 	  boost::lexical_cast<std::string>(t1_with_400_at_1);
 
@@ -997,7 +998,7 @@ private:
       r.set_version_score(av2, 1000);
       r.set_version_score(bv2, -100);
       r.set_version_score(cv2, -100);
-      int av2_user_level = 100;
+      level av2_user_level = level::make_lower_bounded(100);
       r.set_version_min_tier(av2, tier(tier_limits::minimum_level,
 				       &av2_user_level,
 				       (&av2_user_level) + 1));
@@ -1053,90 +1054,149 @@ private:
 
     // We will use three tier operations here:
     //
-    // ()
-    // (add: (2))
-    // (add: (1, 5))
+    // (advance: 100)
+    // (nop, add: 2, add: 4)
+    // (nop, add: 1, nop, advance: 5)
 
-    const int op2_user_levels_begin[1] = { 5 };
-    const int *op2_user_levels_end = op2_user_levels_begin + sizeof(op2_user_levels_begin) / sizeof(op2_user_levels_begin[0]);
     std::vector<tier_operation> ops;
-    ops.push_back(tier_operation());
-    ops.push_back(tier_operation::make_add_to_levels(tier(2)));
-    ops.push_back(tier_operation::make_add_to_levels(tier(1, op2_user_levels_begin, op2_user_levels_end)));
+    ops.push_back(tier_operation::make_advance_structural_level(100));
+    ops.push_back(tier_operation::make_add_to_user_level(0, 2) +
+		  tier_operation::make_add_to_user_level(0, 4));
+    ops.push_back(tier_operation::make_add_to_user_level(0, 1) +
+		  tier_operation::make_add_to_user_level(2, 5));
 
+    // Test that instantiating illegal operations fails.
+    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 0),
+			 NonPositiveTierAdditionException);
+    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, -1),
+			 NonPositiveTierAdditionException);
+    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(-1, 5),
+			 std::out_of_range);
+    CPPUNIT_ASSERT_THROW(tier_operation::make_advance_user_level(-1, 5),
+			 std::out_of_range);
+
+    // Test that combining incompatible operations fails.  Also, take
+    // the opportunity to test a few additional operation
+    // combinations.
+    const tier_operation incompatible1(tier_operation::make_add_to_user_level(0, 2) +
+				       tier_operation::make_advance_user_level(1, 6) +
+				       tier_operation::make_advance_user_level(2, 3));
+
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, advance: 6, advance: 3)"),
+			 boost::lexical_cast<std::string>(incompatible1));
+
+    CPPUNIT_ASSERT_EQUAL(std::string("(advance: 100, add: 2, advance: 6, advance: 3)"),
+			 boost::lexical_cast<std::string>(incompatible1 + ops[0]));
+    CPPUNIT_ASSERT_EQUAL(std::string("(advance: 100, add: 2, advance: 6, advance: 3)"),
+			 boost::lexical_cast<std::string>(tier_operation::least_upper_bound(incompatible1, ops[0])));
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop)"),
+			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[0])));
+
+    CPPUNIT_ASSERT_THROW(incompatible1 + ops[1], TierOperationMismatchException);
+    CPPUNIT_ASSERT_THROW(tier_operation::least_upper_bound(incompatible1, ops[1]),
+			 TierOperationMismatchException);
+    CPPUNIT_ASSERT_THROW(tier_operation::greatest_lower_bound(incompatible1, ops[1]),
+			 TierOperationMismatchException);
+
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 3, advance: 6, advance: 5)"),
+			 boost::lexical_cast<std::string>(incompatible1 + ops[2]));
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, advance: 6, advance: 5)"),
+			 boost::lexical_cast<std::string>(tier_operation::least_upper_bound(incompatible1, ops[2])));
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 1, nop, advance: 3)"),
+			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[2])));
+
+    // Test out-of-bound operations.
+    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(1, INT_MAX) +
+			 tier_operation::make_add_to_user_level(1, 5),
+			 TierTooBigException);
+
+    // Test rendering the initial operations:
     std::vector<std::string> op_renderings;
-    op_renderings.push_back("()");
-    op_renderings.push_back("(add: (2))");
-    op_renderings.push_back("(add: (1, 5))");
+    op_renderings.push_back("(advance: 100)");
+    op_renderings.push_back("(nop, add: 2, add: 4)");
+    op_renderings.push_back("(nop, add: 1, nop, advance: 5)");
 
-    // Tiers we expect to see after applying each operation.
+    // Input tiers and the tiers we expect to see after applying each operation.
     tier t1(4);
+    const level t1_op1_user_levels_begin[2] = { level::make_added(2),
+						level::make_added(4) };
+    const level t1_op2_user_levels_begin[3] = { level::make_added(1),
+						level(),
+						level::make_added(5) };
+    const level *t1_op1_user_levels_end = t1_op1_user_levels_begin + sizeof(t1_op1_user_levels_begin) / sizeof(t1_op1_user_levels_begin[0]);
+    const level *t1_op2_user_levels_end = t1_op2_user_levels_begin + sizeof(t1_op2_user_levels_begin) / sizeof(t1_op2_user_levels_begin[0]);
+
     std::vector<tier> expected_tiers_1;
-    expected_tiers_1.push_back(t1);
-    expected_tiers_1.push_back(tier(6));
-    expected_tiers_1.push_back(tier(5, op2_user_levels_begin, op2_user_levels_end));
 
-    const int t2_user_levels_begin[3] = { -10, 6, 2 };
-    const int *t2_user_levels_end = t2_user_levels_begin + sizeof(t2_user_levels_begin) / sizeof(t2_user_levels_begin[0]);
+    expected_tiers_1.push_back(tier(100));
+    expected_tiers_1.push_back(tier(4, t1_op1_user_levels_begin, t1_op1_user_levels_end));
+    expected_tiers_1.push_back(tier(4, t1_op2_user_levels_begin, t1_op2_user_levels_end));
 
-    const int t2_expected_user_levels_2_begin[3] = { -5, 6, 2 };
-    const int *t2_expected_user_levels_2_end = t2_expected_user_levels_2_begin + sizeof(t2_expected_user_levels_2_begin) / sizeof(t2_expected_user_levels_2_end);
-
+    const level t2_user_levels_begin[3] = { level(), level::make_added(2), level::make_lower_bounded(-10) };
+    const level *t2_user_levels_end = t2_user_levels_begin + sizeof(t2_user_levels_begin) / sizeof(t2_user_levels_begin[0]);
     tier t2(-32, t2_user_levels_begin, t2_user_levels_end);
+
+    const level t2_op1_user_levels_begin[3] = { level::make_added(2), level::make_added(6), level::make_lower_bounded(-10) };
+    const level *t2_op1_user_levels_end = t2_op1_user_levels_begin + sizeof(t2_op1_user_levels_begin) / sizeof(t2_op1_user_levels_begin[0]);
+
+    const level t2_op2_user_levels_begin[3] = { level::make_added(1), level::make_added(2), level::make_lower_bounded(5) };
+    const level *t2_op2_user_levels_end = t2_op2_user_levels_begin + sizeof(t2_op2_user_levels_begin) / sizeof(t2_op2_user_levels_begin[0]);
+
     std::vector<tier> expected_tiers_2;
-    expected_tiers_2.push_back(t2);
-    expected_tiers_2.push_back(tier(-30, t2_user_levels_begin, t2_user_levels_end));
-    expected_tiers_2.push_back(tier(-31, t2_expected_user_levels_2_begin, t2_expected_user_levels_2_end));
+    expected_tiers_2.push_back(tier(4));
+    expected_tiers_2.push_back(tier(-32, t2_op1_user_levels_begin, t2_op1_user_levels_end));
+    expected_tiers_2.push_back(tier(-32, t2_op2_user_levels_begin, t2_op2_user_levels_end));
 
     // Combined values.  Each vector is a matrix where [i][j] contains
-    // the combination of entries i and j for i<=j.
+    // the combination of entries i and j for i<=j.  Combined values
+    // are stored as strings to avoid any bias from passing through
+    // the constructor (although of course this means we rely on a
+    // working operator<<).  As a bonus, using strings should make
+    // this part of the code much more readable.
 
     // Least upper bounds:
-    std::vector<std::vector<tier_operation> > lubs(3, std::vector<tier_operation>(3, tier_operation()));
-    lubs[0][0] = ops[0];
-    lubs[0][1] = ops[1];
-    lubs[0][2] = ops[2];
+    std::vector<std::vector<std::string> > lubs(3, std::vector<std::string>(3, std::string()));
+    lubs[0][0] = op_renderings[0];
+    lubs[0][1] = "(advance: 100, add: 2, add: 4)";
+    lubs[0][2] = "(advance: 100, add: 1, nop, advance: 5)";
 
-    lubs[1][0] = ops[1];
-    lubs[1][1] = ops[1];
-    lubs[1][2] = tier_operation::make_add_to_levels(tier(2, op2_user_levels_begin, op2_user_levels_end));
+    lubs[1][0] = lubs[0][1];
+    lubs[1][1] = op_renderings[1];
+    lubs[1][2] = "(nop, add: 2, add: 4, advance: 5)";
 
-    lubs[2][0] = ops[2];
-    lubs[2][1] = tier_operation::make_add_to_levels(tier(2, op2_user_levels_begin, op2_user_levels_end));
-    lubs[2][2] = ops[2];
+    lubs[2][0] = lubs[2][0];
+    lubs[2][1] = lubs[1][2];
+    lubs[2][2] = op_renderings[2];
 
     // Greatest lower bounds:
-    std::vector<std::vector<tier_operation> > glbs(3, std::vector<tier_operation>(3, tier_operation()));
+    std::vector<std::vector<std::string> > glbs(3, std::vector<std::string>(3, std::string()));
 
-    glbs[0][0] = ops[0];
-    glbs[0][1] = ops[0];
-    glbs[0][2] = ops[0];
+    glbs[0][0] = op_renderings[0];
+    glbs[0][1] = "(nop)";
+    glbs[0][2] = "(nop)";
 
-    glbs[1][0] = ops[0];
-    glbs[1][1] = ops[1];
-    glbs[1][2] = tier_operation::make_add_to_levels(tier(1));
+    glbs[1][0] = glbs[0][1];
+    glbs[1][1] = op_renderings[1];
+    glbs[1][2] = "(nop, add: 1)";
 
-    glbs[2][0] = ops[0];
-    glbs[2][1] = tier_operation::make_add_to_levels(tier(1));
-    glbs[2][2] = ops[2];
+    glbs[2][0] = glbs[0][2];
+    glbs[2][1] = glbs[1][2];
+    glbs[2][2] = op_renderings[2];
 
     // Sums:
-    std::vector<std::vector<tier_operation> > sums(3, std::vector<tier_operation>(3, tier_operation()));
+    std::vector<std::vector<std::string> > sums(3, std::vector<std::string>(3, std::string()));
 
-    sums[0][0] = ops[0];
-    sums[0][1] = ops[1];
-    sums[0][2] = ops[2];
+    sums[0][0] = "(advance: 100)";
+    sums[0][1] = "(advance: 100, add: 2, add: 4)";
+    sums[0][2] = "(advance: 100, add: 1, nop, advance: 5)";
 
-    sums[1][0] = ops[1];
-    sums[1][1] = tier_operation::make_add_to_levels(tier(4));
-    sums[1][2] = tier_operation::make_add_to_levels(tier(3, op2_user_levels_begin, op2_user_levels_end));
+    sums[1][0] = sums[0][1];
+    sums[1][1] = "(nop, add: 4, add: 8)";
+    sums[1][2] = "(nop, add: 3, add: 4, advance: 5)";
 
-    const int op2_plus_op2_user_levels_begin[1] = { 10 };
-    const int *op2_plus_op2_user_levels_end = op2_plus_op2_user_levels_begin + sizeof(op2_plus_op2_user_levels_begin) / sizeof(op2_plus_op2_user_levels_begin[0]);
-
-    sums[2][0] = ops[2];
-    sums[2][1] = tier_operation::make_add_to_levels(tier(3, op2_user_levels_begin, op2_user_levels_end));
-    sums[2][2] = tier_operation::make_add_to_levels(tier(2, op2_plus_op2_user_levels_begin, op2_plus_op2_user_levels_end));
+    sums[2][0] = sums[0][2];
+    sums[2][1] = sums[1][2];
+    sums[2][2] = "(nop, add: 2, nop, advance: 5)";
 
 
     for(std::size_t i = 0; i < ops.size(); ++i)
@@ -1153,9 +1213,9 @@ private:
 
             std::string wheremsg = "(" + boost::lexical_cast<std::string>(op1) + ", " + boost::lexical_cast<std::string>(op2) + "); i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
 
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("lub" + wheremsg, lubs[i][j], tier_operation::least_upper_bound(op1, op2));
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], tier_operation::greatest_lower_bound(op1, op2));
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], op1 + op2);
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("lub" + wheremsg, lubs[i][j], boost::lexical_cast<std::string>(tier_operation::least_upper_bound(op1, op2)));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(op1, op2)));
+	    CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], boost::lexical_cast<std::string>(op1 + op2));
           }
       }
   }

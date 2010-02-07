@@ -33,6 +33,8 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 
+#include <generic/problemresolver/tier_operation.h>
+
 #include <cwidget/generic/util/ssprintf.h>
 
 #include <loggers.h>
@@ -58,7 +60,7 @@ namespace
 		       pkgPolicy *policy)
   {
     if(ver.end())
-      return base.set_user_level(1, INT_MIN);
+      return base;
     else
       {
 	int apt_priority = INT_MIN;
@@ -69,7 +71,7 @@ namespace
 	    apt_priority = std::max(apt_priority, pin);
 	  }
 
-	return base.set_user_level(1, -apt_priority);
+	return tier_operation::make_advance_user_level(0, -apt_priority).apply(base);
       }
   }
 }

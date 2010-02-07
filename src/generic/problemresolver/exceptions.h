@@ -96,13 +96,13 @@ class DoubleRunException : public ProblemResolverError {
   }
 };
 
-/** An exception indicating that something tried to add a negative
+/** An exception indicating that something tried to add a nonpositive
  *  quantity to a tier.
  */
-class NegativeTierAdditionException : public ProblemResolverError {
+class NonPositiveTierAdditionException : public ProblemResolverError {
   std::string errmsg() const
   {
-    return _("Tier increments must be nonnegative.");
+    return _("Tier increments must be strictly positive.");
   }
 };
 
@@ -112,6 +112,16 @@ class TierTooBigException : public ProblemResolverError {
   std::string errmsg() const
   {
     return _("The maximum tier value was exceeded.");
+  }
+};
+
+/** An exception indicating that incompatible operations were applied
+ *  to a tier.
+ */
+class TierOperationMismatchException : public ProblemResolverError {
+  std::string errmsg() const
+  {
+    return _("A single tier level was both added and lower-bounded.");
   }
 };
 
