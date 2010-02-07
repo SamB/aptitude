@@ -1190,7 +1190,7 @@ private:
     const level *t2_op2_user_levels_end = t2_op2_user_levels_begin + sizeof(t2_op2_user_levels_begin) / sizeof(t2_op2_user_levels_begin[0]);
 
     std::vector<tier> expected_tiers_2;
-    expected_tiers_2.push_back(tier(4));
+    expected_tiers_2.push_back(tier(100, t2_user_levels_begin, t2_user_levels_end));
     expected_tiers_2.push_back(tier(-32, t2_op1_user_levels_begin, t2_op1_user_levels_end));
     expected_tiers_2.push_back(tier(-32, t2_op2_user_levels_begin, t2_op2_user_levels_end));
 
