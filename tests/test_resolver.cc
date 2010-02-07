@@ -1149,6 +1149,13 @@ private:
     CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(1, INT_MAX) +
 			 tier_operation::make_add_to_user_level(1, 5),
 			 TierTooBigException);
+    {
+      const level biggest_tier_level = level::make_added(INT_MAX);
+      tier biggest_singleton_tier = tier(&biggest_tier_level, (&biggest_tier_level) + 1);
+
+      CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 1).apply(biggest_singleton_tier),
+                           TierTooBigException);
+    }
 
     // Test rendering the initial operations:
     std::vector<std::string> op_renderings;
