@@ -1047,7 +1047,7 @@ private:
     }
   }
 
-  void testTierOperations()
+  void doTestTierOperations()
   {
     log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierOperations"));
     LOG_TRACE(logger, "Entering testTierOperations");
@@ -1092,6 +1092,46 @@ private:
     CPPUNIT_ASSERT_EQUAL(std::string("(nop)"),
 			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[0])));
 
+    try
+      {
+        tier_operation impossible = incompatible1 + ops[1];
+        CPPUNIT_FAIL("Expected a TierOperationMismatchException from " + boost::lexical_cast<std::string>(incompatible1) + " + " + boost::lexical_cast<std::string>(ops[1]) + ", got a result: " + boost::lexical_cast<std::string>(impossible));
+      }
+    catch(TierOperationMismatchException &)
+      {
+      }
+    catch(...)
+      {
+        CPPUNIT_FAIL("Unexpected exception!");
+      }
+
+    try
+      {
+        tier_operation impossible = tier_operation::least_upper_bound(incompatible1, ops[1]);
+        CPPUNIT_FAIL("Expected a TierOperationMismatchException from lub(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
+      }
+    catch(TierOperationMismatchException &)
+      {
+      }
+    catch(...)
+      {
+        CPPUNIT_FAIL("Unexpected exception!");
+      }
+
+    try
+      {
+        tier_operation impossible = tier_operation::greatest_lower_bound(incompatible1, ops[1]);
+        CPPUNIT_FAIL("Expected a TierOperationMismatchException from glb(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
+      }
+    catch(TierOperationMismatchException &)
+      {
+      }
+    catch(...)
+      {
+        CPPUNIT_FAIL("Unexpected exception!");
+      }
+
+    // Just to be sure, test those again here:
     CPPUNIT_ASSERT_THROW(incompatible1 + ops[1], TierOperationMismatchException);
     CPPUNIT_ASSERT_THROW(tier_operation::least_upper_bound(incompatible1, ops[1]),
 			 TierOperationMismatchException);
@@ -1217,6 +1257,18 @@ private:
             CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(op1, op2)));
 	    CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], boost::lexical_cast<std::string>(op1 + op2));
           }
+      }
+  }
+
+  void testTierOperations()
+  {
+    try
+      {
+        doTestTierOperations();
+      }
+    catch(const cwidget::util::Exception &ex)
+      {
+        CPPUNIT_FAIL("Uncaught exception: " + ex.errmsg());
       }
   }
 
