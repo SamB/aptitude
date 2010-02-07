@@ -1061,9 +1061,9 @@ private:
     std::vector<tier_operation> ops;
     ops.push_back(tier_operation::make_advance_structural_level(100));
     ops.push_back(tier_operation::make_add_to_user_level(0, 2) +
-		  tier_operation::make_add_to_user_level(0, 4));
+		  tier_operation::make_add_to_user_level(1, 4));
     ops.push_back(tier_operation::make_add_to_user_level(0, 1) +
-		  tier_operation::make_add_to_user_level(2, 5));
+		  tier_operation::make_advance_user_level(2, 5));
 
     // Test that instantiating illegal operations fails.
     CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 0),
