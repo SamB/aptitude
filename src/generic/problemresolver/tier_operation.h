@@ -24,6 +24,7 @@
 #include "tier.h"
 
 #include <iosfwd>
+#include <stdexcept>
 
 #include <boost/flyweight.hpp>
 
@@ -89,6 +90,9 @@ class tier_operation
     op_impl(int index, const level &l)
       : structural_level(INT_MIN)
     {
+      if(index < 0)
+        throw std::out_of_range("Negative index used to construct a tier operation");
+
       if(l.get_state() == level::added &&
 	 l.get_value() <= 0)
 	throw NonPositiveTierAdditionException();
