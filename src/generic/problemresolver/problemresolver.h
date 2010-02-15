@@ -4192,6 +4192,20 @@ private:
     if(promotion_queue_tail != s.promotion_queue_location)
       eassert(step_location.get_has_contents());
 
+    // We can check for promotions either by starting with the current
+    // step and looking for promotions that match it, or by looking at
+    // each new promotion and checking whether it matches the current
+    // step.  The cost of the first one is approximately the size of
+    // the step; the cost of the second one is approximately the
+    // number of choices contained in the intervening promotions.
+    //
+    // This isn't a perfect heuristic, but it should allow the
+    // resolver to use the new promotions if there are just a handful,
+    // or the solution if there are a huge number of new promotions
+    // for some reason.  Somewhere in the middle it might be a little
+    // inefficient since I haven't perfectly calibrated the break-even
+    // point, but the idea is more to take advantage of the "few
+    // promotions optimization" while avoiding its potential downside.
     const unsigned int extra_actions = current_tail.get_action_sum() - step_location.get_action_sum();
     if(extra_actions <= s.actions.size() + s.deps_solved_by_choice.size())
       {
