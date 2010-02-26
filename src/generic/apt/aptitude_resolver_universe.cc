@@ -817,7 +817,7 @@ tier aptitude_universe::parse_tier(const std::string &s)
 	{
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
-	  _error->Error(_(msg.c_str()));
+	  _error->Error("%s", _(msg.c_str()));
 	  return tier_limits::minimum_tier;
 	}
       else
