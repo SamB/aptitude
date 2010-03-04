@@ -215,6 +215,19 @@ tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, lower_b
     }
 }
 
+level tier_operation::op_impl::get_user_level(level_index idx) const
+{
+
+  // "Slow" implementation right now because this isn't used much
+  // (only for display).
+  for(std::vector<std::pair<level_index, level> >::const_iterator it =
+	actions.begin(); it != actions.end(); ++it)
+    if(it->first == idx)
+      return it->second;
+
+  return level();
+}
+
 tier_operation tier_operation::least_upper_bound(const tier_operation &op1,
                                                  const tier_operation &op2)
 {

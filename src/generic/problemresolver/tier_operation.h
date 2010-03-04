@@ -124,6 +124,18 @@ class tier_operation
       return rval;
     }
 
+    int get_structural_level() const
+    {
+      return structural_level;
+    }
+
+    level get_user_level(std::size_t idx) const;
+
+    bool get_has_user_level_changes() const
+    {
+      return !actions.empty();
+    }
+
     /** \brief Test two tier operations for equality.
      *
      *  \note Relies on the fact that the level's equality comparison
@@ -318,6 +330,28 @@ public:
   void dump(std::ostream &out) const
   {
     get_impl().dump(out);
+  }
+
+  /** \brief Get the structural level that this operation raises its
+   *  target to.
+   */
+  int get_structural_level() const
+  {
+    return get_impl().get_structural_level();
+  }
+
+  /** \brief Get the operation performed on a user level. */
+  level get_user_level(int idx) const
+  {
+    return get_impl().get_user_level(idx);
+  }
+
+  /** \brief Check whether any actions performed by the operation
+   *  affect user levels.
+   */
+  bool get_has_user_level_changes() const
+  {
+    return get_impl().get_has_user_level_changes();
   }
 
   std::size_t get_hash_value() const
