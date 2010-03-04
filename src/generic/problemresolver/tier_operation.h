@@ -324,7 +324,42 @@ public:
   {
     return get_impl().get_hash_value();
   }
+
+  /** \brief Compare tier operations according to their
+   *  identity, NOT their natural order.
+   *
+   *  This is a total ordering that can be used to place operations
+   *  into ordered data structures.  It has no relation to the natural
+   *  partial ordering on tier operations that least_upper_bound and
+   *  greatest_upper_bound rely upon.
+   */
+  int compare(const tier_operation &other) const
+  {
+    const op_impl &this_op = get_impl(), &other_op = other.get_impl();
+
+    // Rely on equality of flyweights being fast.
+    if(this_op == other_op)
+      return 0;
+    else
+      return this_op.compare(other_op);
+  }
 };
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<>
+    class compare3_f<tier_operation>
+    {
+    public:
+      int operator()(const tier_operation &op1, const tier_operation &op2) const
+      {
+	return op1.compare(op2);
+      }
+    };
+  }
+}
 
 std::size_t hash_value(const tier_operation &op);
 
