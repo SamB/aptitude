@@ -92,6 +92,15 @@ tier tier_operation::op_impl::apply(const tier &t) const
 	      out_user_levels.end());
 }
 
+int tier_operation::op_impl::compare(const op_impl &other) const
+{
+  const int structural_level_cmp = aptitude::util::compare3(structural_level, other.structural_level);
+  if(structural_level_cmp != 0)
+    return structural_level_cmp;
+  else
+    return aptitude::util::compare3(actions, other.actions);
+}
+
 void tier_operation::op_impl::dump(std::ostream &out) const
 {
   out << "(";

@@ -144,6 +144,10 @@ class tier_operation
      */
     tier apply(const tier &t) const;
 
+    /** \brief Compare two operations by their identity.
+     */
+    int compare(const op_impl &other) const;
+
     /** \brief Dump this operation to a stream. */
     void dump(std::ostream &out) const;
   };
