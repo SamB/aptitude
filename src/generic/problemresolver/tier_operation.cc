@@ -135,6 +135,7 @@ void tier_operation::op_impl::dump(std::ostream &out) const
 	  break;
 	}
       out << it->second.get_value();
+      ++column;
     }
 
   out << ")";
