@@ -24,6 +24,7 @@
 #include "tier.h"
 
 #include <iosfwd>
+#include <stdexcept>
 
 #include <boost/flyweight.hpp>
 
@@ -92,6 +93,9 @@ class tier_operation
       if(l.get_state() == level::added &&
 	 l.get_value() <= 0)
 	throw NonPositiveTierAdditionException();
+
+      if(index < 0)
+	throw std::out_of_range("User level indices must be non-negative.");
 
       actions.push_back(std::make_pair(index, l));
     }
