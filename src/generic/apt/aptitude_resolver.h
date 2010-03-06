@@ -1,7 +1,7 @@
 // aptitude_resolver.h                  -*-c++-*-
 //
 // 
-//   Copyright (C) 2005, 2008-2009 Daniel Burrows
+//   Copyright (C) 2005, 2008-2010 Daniel Burrows
 
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -82,9 +82,10 @@ public:
     enum hint_type
       {
 	/** \brief A hint that one or more package versions should
-	 *  have their tier increased.
+	 *  have their tier operations composed with this hint's
+	 *  operation.
 	 */
-	increase_tier_to,
+	compose_tier_op,
 	/** \brief A hint that one or more package versions should be
 	 *  rejected.
 	 */
@@ -276,46 +277,46 @@ public:
   private:
     hint_type type;
     int score;
-    tier tier_val;
+    tier_operation tier_op_val;
     cwidget::util::ref_ptr<aptitude::matching::pattern> target;
     version_selection selection;
 
-    hint(hint_type _type, int _score, tier _tier_val,
+    hint(hint_type _type, int _score, tier_operation _tier_op_val,
 	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
 	 version_selection _selection)
-      : type(_type), score(_score), tier_val(_tier_val),
+      : type(_type), score(_score), tier_op_val(_tier_op_val),
 	target(_target), selection(_selection)
     {
     }
 
   public:
     hint()
-      : type((hint_type)-1), score(-1), tier_val(), target(NULL), selection()
+      : type((hint_type)-1), score(-1), tier_op_val(), target(NULL), selection()
     {
     }
 
     ~hint();
 
     /** \brief Create a hint that increases the tier of a version. */
-    static hint make_increase_tier_to(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
-				      const version_selection &selection,
-				      tier tier_val)
+    static hint make_compose_tier_op(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+				     const version_selection &selection,
+				     tier_operation tier_op_val)
     {
-      return hint(increase_tier_to, 0, tier_val, target, selection);
+      return hint(compose_tier_op, 0, tier_op_val, target, selection);
     }
 
     /** \brief Create a hint that rejects a version or versions of a package. */
     static hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				     const version_selection &selection)
     {
-      return hint(reject, 0, tier(), target, selection);
+      return hint(reject, 0, tier_operation(), target, selection);
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
     static hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				      const version_selection &selection)
     {
-      return hint(mandate, 0, tier(), target, selection);
+      return hint(mandate, 0, tier_operation(), target, selection);
     }
 
     /** \brief Create a hint that adjusts the score of a package. */
@@ -323,7 +324,7 @@ public:
 					  const version_selection &selection,
 					  int score)
     {
-      return hint(tweak_score, score, tier(), target, selection);
+      return hint(tweak_score, score, tier_operation(), target, selection);
     }
 
     /** \brief Parse a resolver hint definition.
@@ -385,10 +386,10 @@ public:
      */
     int get_score() const { return score; }
 
-    /** \brief For tier-tweaking hints, get the tier associated with
-     *  the hint.
+    /** \brief For tier operation changing hints, get the tier
+     *  operation associated with the hint.
      */
-    const tier &get_tier() const { return tier_val; }
+    const tier_operation &get_tier_op() const { return tier_op_val; }
 
     /** \brief Return the pattern identifying the package or packages
      *  to be adjusted.

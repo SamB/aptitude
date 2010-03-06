@@ -32,6 +32,7 @@
 #include "aptcache.h"
 
 #include <generic/problemresolver/tier.h>
+#include <generic/problemresolver/tier_operation.h>
 
 #include <limits.h>
 
@@ -1299,23 +1300,15 @@ public:
   }
 
   // Configuration helper -- should this be somewhere better?
-  static tier parse_tier(const std::string &s);
+  static int parse_level(const std::string &s);
 
   // Configuration fetchers.
-  static tier get_safe_tier();
-  static tier get_keep_all_tier();
-  static tier get_remove_tier();
-  static tier get_break_hold_tier();
-  static tier get_non_default_tier();
-  static tier get_remove_essential_tier();
-
-  /** \brief Retrieve the tiers that the user has assigned
-   *  names to.
-   */
-  static void get_named_tiers(std::vector<std::pair<tier, std::string> > &out);
-
-  /** \brief Return a string description of the given tier. */
-  static std::string get_tier_name(const tier &t);
+  static tier_operation get_safe_tier_op();
+  static tier_operation get_keep_all_tier_op();
+  static tier_operation get_remove_tier_op();
+  static tier_operation get_break_hold_tier_op();
+  static tier_operation get_non_default_tier_op();
+  static tier_operation get_remove_essential_tier_op();
 };
 
 /** \brief Write an aptitude_resolver_package to the given stream. */

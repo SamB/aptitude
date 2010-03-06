@@ -502,7 +502,6 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
     }
 
   ids_column.append_newline();
-  fragments.push_back(cw::fragf(_("Tier: %s"), aptitude_universe::get_tier_name(sol.get_tier()).c_str()));
 
   if(ids == NULL)
     return flowbox(cw::sequence_fragment(fragments));

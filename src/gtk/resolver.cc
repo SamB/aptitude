@@ -1,6 +1,6 @@
 // resolver.cc
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2010 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -2104,11 +2104,9 @@ namespace gui
 
 	solution_view->set_model(store, get_resolver());
 	solution_view->get_treeview()->expand_all();
-	const std::string tier_name(aptitude_universe::get_tier_name(displayed_solution.get_tier()));
-	pResolverStatus->set_markup(ssprintf(_("Solution %s of %s (tier %s)."),
+	pResolverStatus->set_markup(ssprintf(_("Solution %s of %s."),
 					     largenum(index).c_str(),
-					     largenum(state.generated_solutions).c_str(),
-					     Glib::Markup::escape_text(tier_name).c_str()));
+					     largenum(state.generated_solutions).c_str()));
       }
     else
       LOG_TRACE(Loggers::getAptitudeGtkResolver(),

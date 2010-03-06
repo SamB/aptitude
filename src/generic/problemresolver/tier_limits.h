@@ -22,6 +22,7 @@
 #define TIER_LIMITS_H
 
 #include "tier.h"
+#include "tier_operation.h"
 
 class tier_limits
 {
@@ -59,6 +60,16 @@ public:
   static const tier already_generated_tier;
   static const tier defer_tier;
   static const tier minimum_tier;
+
+  /** \brief Tier operations that just increase the structural level.
+   */
+  // @{
+  static const tier_operation increase_to_maximum_op;
+  static const tier_operation increase_to_conflict_op;
+  static const tier_operation increase_to_already_generated_op;
+  static const tier_operation increase_to_defer_op;
+  static const tier_operation minimum_op;
+  // @}
 };
 
 #endif

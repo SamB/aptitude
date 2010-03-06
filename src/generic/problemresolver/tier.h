@@ -125,19 +125,6 @@ public:
       }
   }
 
-  void add(int amt)
-  {
-    if(state == lower_bounded)
-      throw TierOperationMismatchException();
-    else if(amt <= 0)
-      throw NonPositiveTierAdditionException();
-    else if(amt != 0)
-      {
-	value += amt;
-	state = added;
-      }
-  }
-
   /** \brief Combine two levels and return a new level.
    *
    *  If either input level is unmodified, the result is the other
@@ -158,6 +145,8 @@ public:
       {
 	if(!(l1.value > 0 || l2.value > 0))
 	  throw NonPositiveTierAdditionException();
+	else if(l1.value > INT_MAX - l2.value)
+	  throw TierTooBigException();
 	else
 	  return level(l1.value + l2.value, added);
       }

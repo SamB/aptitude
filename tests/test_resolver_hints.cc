@@ -32,12 +32,9 @@ namespace
 {
   typedef aptitude_resolver::hint hint;
 
-  tier make_tier(int first_user_level)
+  tier_operation make_tier_op(int first_user_level)
   {
-    level l(level::make_lower_bounded(first_user_level));
-    return tier(tier_limits::minimum_level,
-		&l,
-		(&l) + 1);
+    return tier_operation::make_advance_user_level(0, first_user_level);
   }
 
   struct test
@@ -85,17 +82,17 @@ namespace
       test("reject ?task(desktop) <>4.0", hint::make_reject(pattern::make_task("desktop"),
 							    hint::version_selection::make_version(hint::version_selection::not_equal_to, "4.0"))),
       test("increase-tier-to 100 wesnoth <5.0.0",
-	   hint::make_increase_tier_to(pattern::make_exact_name("wesnoth"),
-				       hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
-				       make_tier(100))),
+	   hint::make_compose_tier_op(pattern::make_exact_name("wesnoth"),
+				      hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
+				      make_tier_op(100))),
       test("increase-tier-to 500 xroach",
-	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
-				       hint::version_selection::make_inst(),
-				       make_tier(500))),
+	   hint::make_compose_tier_op(pattern::make_exact_name("xroach"),
+				      hint::version_selection::make_inst(),
+				      make_tier_op(500))),
       test("increase-tier-to 800 xroach",
-	   hint::make_increase_tier_to(pattern::make_exact_name("xroach"),
-				       hint::version_selection::make_inst(),
-				       make_tier(800))),
+	   hint::make_compose_tier_op(pattern::make_exact_name("xroach"),
+				      hint::version_selection::make_inst(),
+				      make_tier_op(800))),
     };
   const int num_resolver_tests =
     sizeof(resolver_tests) / sizeof(resolver_tests[0]);
