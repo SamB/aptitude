@@ -30,6 +30,7 @@
 #include "solution.h"
 #include "tier.h"
 #include "tier_limits.h"
+#include "tier_operation.h"
 
 #include <generic/util/compare3.h>
 #include <generic/util/immlist.h>
@@ -127,29 +128,29 @@ private:
 			   boost::flyweights::hashed_factory<hash_choice_set_with_hash> >
   choice_set_flyweight;
 
-  tier t;
+  tier_operation t_op;
   choice_set_flyweight reasons;
-  cwidget::util::ref_ptr<expression<bool> > tier_valid;
+  cwidget::util::ref_ptr<expression<bool> > tier_operation_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
 public:
   generic_solver_information()
-    : t(tier_limits::minimum_tier),
+    : t_op(),
       reasons(),
-      tier_valid(),
+      tier_operation_valid(),
       is_deferred_listener()
   {
   }
 
   /** \brief Create a new solver_information.
    *
-   *  \param _t       The tier of the associated solver.
+   *  \param _t_op    The tier operation of the associated solver.
    *  \param _reason  The reasons for the solver's tier (other than
    *                  the solver itself).
-   *  \param _tier_valid
+   *  \param _tier_operation valid
    *                  A pure expression indicating whether the tier
-   *                  of this solver is valid.  Used to create
-   *                  promotions.
+   *                  operation of this solver is valid.  Used to
+   *                  create promotions.
    *  \param _is_deferred_listener
    *                  A side-effecting expression whose sub-expression
    *                  is true exactly when this solver violates a
@@ -157,18 +158,18 @@ public:
    *                  here to ensure that the expression remains alive
    *                  while this solver exists.
    */
-  generic_solver_information(const tier &_t,
+  generic_solver_information(const tier_operation &_t_op,
 			     const choice_set &_reasons,
-			     const cwidget::util::ref_ptr<expression<bool> > &_tier_valid,
+			     const cwidget::util::ref_ptr<expression<bool> > &_tier_operation_valid,
 			     const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
-    : t(_t), reasons(_reasons),
-      tier_valid(_tier_valid),
+    : t_op(_t_op), reasons(_reasons),
+      tier_operation_valid(_tier_operation_valid),
       is_deferred_listener(_is_deferred_listener)
   {
   }
 
   /** \brief Retrieve the tier of the associated solver. */
-  const tier &get_tier() const { return t; }
+  const tier_operation &get_tier_op() const { return t_op; }
 
   /** \brief Retrieve the reason that this solver has the tier
    *  that it does.
@@ -179,9 +180,9 @@ public:
    *  tier is valid (if true, the tier is always valid).
    */
   const cwidget::util::ref_ptr<expression<bool> > &
-  get_tier_valid() const
+  get_tier_op_valid() const
   {
-    return tier_valid;
+    return tier_operation_valid;
   }
 
   /** \brief Retrieve the listener that tracks whether the solver
@@ -208,9 +209,9 @@ public:
   std::size_t get_hash_value() const
   {
     std::size_t rval = 0;
-    boost::hash_combine(rval, tier_valid.unsafe_get_ref());
+    boost::hash_combine(rval, tier_operation_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
-    boost::hash_combine(rval, t);
+    boost::hash_combine(rval, t_op);
     boost::hash_combine(rval, reasons.get().get_hash());
 
     return rval;
@@ -226,9 +227,9 @@ public:
    */
   int compare(const generic_solver_information &other) const
   {
-    if(tier_valid < other.tier_valid)
+    if(tier_operation_valid < other.tier_operation_valid)
       return -1;
-    else if(other.tier_valid < tier_valid)
+    else if(other.tier_operation_valid < tier_operation_valid)
       return -1;
     else if(is_deferred_listener < other.is_deferred_listener)
       return -1;
@@ -236,11 +237,11 @@ public:
       return 1;
     else
       {
-	const int tier_compare =
-	  aptitude::util::compare3<tier>(t, other.t);
+	const int tier_operation_compare =
+	  aptitude::util::compare3<tier_operation>(t_op, other.t_op);
 
-	if(tier_compare != 0)
-	  return tier_compare;
+	if(tier_operation_compare != 0)
+	  return tier_operation_compare;
 	else
 	  return aptitude::util::compare3<choice_set>(reasons.get().get_choices(), other.reasons.get().get_choices());
       }
@@ -789,8 +790,31 @@ public:
      */
     int action_score;
 
-    /** \brief The tier of this step. */
-    tier step_tier;
+    /** \brief The true tier of this step.
+     *
+     *  This is the tier *before* any forward-looking operations are
+     *  applied to it.
+     */
+    tier base_step_tier;
+
+    /** \brief The cumulative effect of all forward-looking operations
+     *  applied to this step.
+     *
+     *  Unlike base_step_tier, this can decrease from step to step
+     *  (which is why it's separated; it needs to be recomputed for
+     *  each step).  This could be computed incrementally, but the
+     *  natural way of doing that would require making a frequent
+     *  operation (increasing this value) expensive to make an
+     *  infrequent operation (creating a new step) less expensive.
+     */
+    tier_operation effective_step_tier_op;
+
+    /** \brief The effective tier of this step.
+     *
+     *  This tier is step_tier combined with any inferred tier
+     *  operations, and is used to sort the step in the search queue.
+     */
+    tier effective_step_tier;
 
     /** \brief A side-effecting expression that fires when the most
      *  recently added action becomes deferred or un-deferred.
@@ -1478,9 +1502,11 @@ private:
   // Returns "true" if anything was generated.  We care because we
   // need to know whether to queue the parent of the parent for
   // propagation.
+  //
+  // Here t_op is the operation we're currently building.
   template<typename AddPromotion>
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
-			    const choice_set &choices, const tier &t,
+			    const choice_set &choices, const tier_operation &t_op,
 			    const AddPromotion &addPromotion)
   {
     // Where to insert any promotions we run into.
@@ -1489,7 +1515,7 @@ private:
 			      ? parentNum
 			      : parent.canonical_clone);
     const step &canonicalParent = get_step(canonicalParentNum);
-    const std::vector<promotion> &canonicalParentPromotionsList = get_promotions_list(parent);
+    const std::vector<promotion> &canonicalParentPromotionsList = get_promotions_list(canonicalParent);
 
     if(canonicalParentNum == parentNum)
       LOG_TRACE(logger, "Propagating promotions from the step " << childNum
@@ -1532,7 +1558,6 @@ private:
 	  (it - canonicalChildPromotionsList.begin()) >= (signed)child.promotions_list_first_new_promotion;
 
 	choice_set new_choices(choices);
-	tier new_tier(t);
 
 	const promotion &p(*it);
 	choice_set p_choices(p.get_choices());
@@ -1545,30 +1570,26 @@ private:
 	// Strip out the child's link before merging with the existing
 	// choice set.
 	p_choices.remove_overlaps(child.reason);
-	const tier &p_tier(p.get_tier());
+	const tier_operation &p_tier_op(p.get_tier_op());
 	// Augment the choice set with these new choices.  Narrowing
 	// is appropriate: anything matching the promotion should
 	// match all the choices we found.
 	new_choices.insert_or_narrow(p_choices);
-	if(p_tier < new_tier)
-	  new_tier = p_tier;
 
-	if(canonicalParent.step_tier >= new_tier)
-	  // No point in generating a promotion whose tier is below
-	  // the parent's tier.
-	  {
-	    LOG_TRACE(logger, "Not backpropagating this promotion: its tier, "
-		      << new_tier
-		      << " is not above the tier of step "
-		      << canonicalParentNum << ", "
-		      << canonicalParent.step_tier);
-	    continue;
-	  }
+	const tier_operation new_tier_op =
+	  tier_operation::least_upper_bound(p_tier_op, t_op);
 
+	// TODO: We used to throw out promotions that were below their
+	// parent's tier.  In the new system this *might* correspond
+	// to having a tier operation less than or equal to the
+	// parent's amalgamated tier operation.  I'm not 100% sure of
+	// this, and it would require having access to the amalgamated
+	// operation, something I'm not going to code up since this
+	// routine is currently dead.
 
 	if(child.is_last_child)
 	  {
-	    promotion new_promotion(new_choices, new_tier);
+	    promotion new_promotion(new_choices, new_tier_op);
 
 	    // Emit a new promotion.
 	    addPromotion(canonicalParentNum, new_promotion);
@@ -1587,7 +1608,7 @@ private:
 	    bool generated_anything =
 	      add_child_promotions(parentNum, childNum + 1,
 				   new_has_new_promotion,
-				   new_choices, new_tier,
+				   new_choices, new_tier_op,
 				   addPromotion);
 
 	    rval = rval || generated_anything;
@@ -1616,7 +1637,7 @@ private:
 
     if(add_child_promotions(stepNum, parentStep.first_child,
 			    false, parentStep.successor_constraints,
-			    tier_limits::maximum_tier,
+			    tier_limits::increase_to_maximum_op,
 			    addPromotion))
       {
 	if(parentStep.parent != -1)
@@ -1886,13 +1907,13 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_solver_information<PackageUniverse> &info)
 {
-  out << "(" << info.get_tier()
+  out << "(" << info.get_tier_op()
       << ":" << info.get_reasons();
 
-  if(info.get_tier_valid().valid())
+  if(info.get_tier_op_valid().valid())
     {
       out << "; V: ";
-      info.get_tier_valid()->dump(out);
+      info.get_tier_op_valid()->dump(out);
     }
 
   if(info.get_is_deferred_listener().valid())

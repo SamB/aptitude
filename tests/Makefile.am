@@ -27,7 +27,8 @@ test_promotion_set.o test_resolver_hints.o: $(top_srcdir)/src/generic/problemres
 # way...
 cppunit_test_SOURCES = \
 	cppunit_test_main.cc \
-	test_choice.cc \
+	test_resolver.cc
+#test_choice.cc \
 	test_choice_set.cc \
 	test_config_pusher.cc \
 	test_dense_setset.cc \

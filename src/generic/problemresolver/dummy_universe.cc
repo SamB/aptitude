@@ -197,7 +197,7 @@ ostream &operator<<(ostream &out, const dummy_universe::dep &d)
 
   if(d.is_soft())
     out << "S";
-  if(d.is_candidate_for_initial_set())
+  if(!d.is_candidate_for_initial_set())
     out << "?";
   out << "> {";
 

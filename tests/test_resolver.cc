@@ -998,10 +998,8 @@ private:
       r.set_version_score(av2, 1000);
       r.set_version_score(bv2, -100);
       r.set_version_score(cv2, -100);
-      level av2_user_level = level::make_lower_bounded(100);
-      r.set_version_min_tier(av2, tier(tier_limits::minimum_level,
-				       &av2_user_level,
-				       (&av2_user_level) + 1));
+      r.set_version_tier_op(av2,
+			    tier_operation::make_advance_user_level(0, 100));
 
       solution sol;
       try
@@ -1065,6 +1063,17 @@ private:
     ops.push_back(tier_operation::make_add_to_user_level(0, 1) +
 		  tier_operation::make_advance_user_level(2, 5));
 
+    LOG_TRACE(logger, "Checking that converting operations to strings works.");
+
+    CPPUNIT_ASSERT_EQUAL(std::string("(advance: 100)"),
+			 boost::lexical_cast<std::string>(ops[0]));
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, add: 4)"),
+			 boost::lexical_cast<std::string>(ops[1]));
+    CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 1, nop, advance: 5)"),
+			 boost::lexical_cast<std::string>(ops[2]));
+
+    LOG_TRACE(logger, "Checking that instantiating illegal operations fails.");
+
     // Test that instantiating illegal operations fails.
     CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 0),
 			 NonPositiveTierAdditionException);
@@ -1074,6 +1083,8 @@ private:
 			 std::out_of_range);
     CPPUNIT_ASSERT_THROW(tier_operation::make_advance_user_level(-1, 5),
 			 std::out_of_range);
+
+    LOG_TRACE(logger, "Testing that combining incompatible operations fails.");
 
     // Test that combining incompatible operations fails.  Also, take
     // the opportunity to test a few additional operation
@@ -1138,12 +1149,16 @@ private:
     CPPUNIT_ASSERT_THROW(tier_operation::greatest_lower_bound(incompatible1, ops[1]),
                          TierOperationMismatchException);
 
+    LOG_TRACE(logger, "Checking the outcome of some particular operation compositions.");
+
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 3, advance: 6, advance: 5)"),
 			 boost::lexical_cast<std::string>(incompatible1 + ops[2]));
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, advance: 6, advance: 5)"),
 			 boost::lexical_cast<std::string>(tier_operation::least_upper_bound(incompatible1, ops[2])));
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 1, nop, advance: 3)"),
 			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[2])));
+
+    LOG_TRACE(logger, "Testing out-of-bounds operations.");
 
     // Test out-of-bound operations.
     CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(1, INT_MAX) +
@@ -1162,6 +1177,8 @@ private:
     op_renderings.push_back("(advance: 100)");
     op_renderings.push_back("(nop, add: 2, add: 4)");
     op_renderings.push_back("(nop, add: 1, nop, advance: 5)");
+
+    LOG_TRACE(logger, "Testing the results of applying operations to tiers.");
 
     // Input tiers and the tiers we expect to see after applying each operation.
     tier t1(4);
@@ -1193,6 +1210,8 @@ private:
     expected_tiers_2.push_back(tier(100, t2_user_levels_begin, t2_user_levels_end));
     expected_tiers_2.push_back(tier(-32, t2_op1_user_levels_begin, t2_op1_user_levels_end));
     expected_tiers_2.push_back(tier(-32, t2_op2_user_levels_begin, t2_op2_user_levels_end));
+
+    LOG_TRACE(logger, "Testing sums, lubs, and glbs of three tiers.");
 
     // Combined values.  Each vector is a matrix where [i][j] contains
     // the combination of entries i and j for i<=j.  Combined values

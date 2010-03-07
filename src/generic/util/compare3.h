@@ -27,6 +27,9 @@ namespace std
   template<typename Iterator>
   class iterator_traits;
 
+  template<typename T1, typename T2>
+  class pair;
+
   template<typename T, typename Alloc>
   class list;
 
@@ -310,6 +313,21 @@ namespace aptitude
     };
 
     // Comparison operators for common STL types.
+    template<typename T1, typename T2>
+    class compare3_f<std::pair<T1, T2> >
+    {
+    public:
+      int operator()(const std::pair<T1, T2> &p1,
+		     const std::pair<T1, T2> &p2) const
+      {
+	const int cmp1 = compare3(p1.first, p2.first);
+	if(cmp1 != 0)
+	  return cmp1;
+	else
+	  return compare3(p1.second, p2.second);
+      }
+    };
+
     template<typename T, typename Alloc>
     class compare3_f<std::list<T, Alloc> >
       : public compare3_f_container<std::list<T, Alloc> >

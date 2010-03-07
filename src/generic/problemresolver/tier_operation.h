@@ -97,6 +97,9 @@ class tier_operation
 	 l.get_value() <= 0)
 	throw NonPositiveTierAdditionException();
 
+      if(index < 0)
+	throw std::out_of_range("User level indices must be non-negative.");
+
       actions.push_back(std::make_pair(index, l));
     }
 
@@ -128,6 +131,18 @@ class tier_operation
       return rval;
     }
 
+    int get_structural_level() const
+    {
+      return structural_level;
+    }
+
+    level get_user_level(std::size_t idx) const;
+
+    bool get_has_user_level_changes() const
+    {
+      return !actions.empty();
+    }
+
     /** \brief Test two tier operations for equality.
      *
      *  \note Relies on the fact that the level's equality comparison
@@ -147,6 +162,10 @@ class tier_operation
      *  directly (which is exactly the desired behavior).
      */
     tier apply(const tier &t) const;
+
+    /** \brief Compare two operations by their identity.
+     */
+    int compare(const op_impl &other) const;
 
     /** \brief Dump this operation to a stream. */
     void dump(std::ostream &out) const;
@@ -320,11 +339,68 @@ public:
     get_impl().dump(out);
   }
 
+  /** \brief Get the structural level that this operation raises its
+   *  target to.
+   */
+  int get_structural_level() const
+  {
+    return get_impl().get_structural_level();
+  }
+
+  /** \brief Get the operation performed on a user level. */
+  level get_user_level(int idx) const
+  {
+    return get_impl().get_user_level(idx);
+  }
+
+  /** \brief Check whether any actions performed by the operation
+   *  affect user levels.
+   */
+  bool get_has_user_level_changes() const
+  {
+    return get_impl().get_has_user_level_changes();
+  }
+
   std::size_t get_hash_value() const
   {
     return get_impl().get_hash_value();
   }
+
+  /** \brief Compare tier operations according to their
+   *  identity, NOT their natural order.
+   *
+   *  This is a total ordering that can be used to place operations
+   *  into ordered data structures.  It has no relation to the natural
+   *  partial ordering on tier operations that least_upper_bound and
+   *  greatest_upper_bound rely upon.
+   */
+  int compare(const tier_operation &other) const
+  {
+    const op_impl &this_op = get_impl(), &other_op = other.get_impl();
+
+    // Rely on equality of flyweights being fast.
+    if(this_op == other_op)
+      return 0;
+    else
+      return this_op.compare(other_op);
+  }
 };
+
+namespace aptitude
+{
+  namespace util
+  {
+    template<>
+    class compare3_f<tier_operation>
+    {
+    public:
+      int operator()(const tier_operation &op1, const tier_operation &op2) const
+      {
+	return op1.compare(op2);
+      }
+    };
+  }
+}
 
 std::size_t hash_value(const tier_operation &op);
 

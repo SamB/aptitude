@@ -89,6 +89,7 @@ boost/shared_ptr.hpp dnl
 boost/test/unit_test.hpp dnl
 boost/unordered_map.hpp dnl
 boost/unordered_set.hpp dnl
+boost/variant.hpp dnl
 boost/weak_ptr.hpp dnl
                   ,
 		  ,

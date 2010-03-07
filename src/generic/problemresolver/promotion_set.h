@@ -40,12 +40,15 @@
 
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
+#include <boost/variant.hpp>
 
 #include "choice.h"
 #include "choice_indexed_map.h"
 #include "choice_set.h"
 #include "incremental_expression.h"
 #include "tier.h"
+#include "tier_limits.h"
+#include "tier_operation.h"
 
 /** \brief Represents a tier promotion: the knowledge that
  *  a set of choices forces a solution to a higher tier.
@@ -59,7 +62,7 @@ public:
 
 private:
   choice_set choices;
-  tier promotion_tier;
+  tier_operation promotion_tier_operation;
   // An expression that is "true" when this promotion is valid and
   // "false" otherwise; it is NULL if the promotion is universally
   // valid.  Invalid promotions are culled from the promotion set.
@@ -71,36 +74,96 @@ private:
 
 public:
   generic_promotion()
-    : choices(), promotion_tier(), valid_condition()
+    : choices(), promotion_tier_operation(), valid_condition()
   {
   }
 
   /** \brief Create a new promotion. */
-  generic_promotion(const choice_set &_choices, const tier &_promotion_tier)
-    : choices(_choices), promotion_tier(_promotion_tier), valid_condition()
+  generic_promotion(const choice_set &_choices, const tier_operation &_promotion_tier_operation)
+    : choices(_choices), promotion_tier_operation(_promotion_tier_operation), valid_condition()
   {
   }
 
   /** \brief Create a new promotion with a validity condition. */
   generic_promotion(const choice_set &_choices,
-		    const tier &_promotion_tier,
+		    const tier_operation &_promotion_tier_operation,
 		    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
     : choices(_choices),
-      promotion_tier(_promotion_tier),
+      promotion_tier_operation(_promotion_tier_operation),
       valid_condition(_valid_condition)
   {
   }
 
   const choice_set &get_choices() const { return choices; }
-  const tier &get_tier() const { return promotion_tier; }
+  const tier_operation &get_tier_op() const { return promotion_tier_operation; }
   const cwidget::util::ref_ptr<expression<bool> > &get_valid_condition() const { return valid_condition; }
+
+  /** \brief Return a promotion representing both of the
+   *  input promotions.
+   *
+   *  The output promotion's tier is the least upper bound of the
+   *  input promotions' tiers.  If only one promotion was required to
+   *  achieve this upper bound, then a promotion that is sufficient
+   *  will be selected and returned directly.  Otherwise, a new
+   *  promotion will be created -- most likely expanding the trigger
+   *  sets and validity conditions of the input promotions in the
+   *  process.
+   */
+  static generic_promotion least_upper_bound(const generic_promotion &p1,
+					     const generic_promotion &p2)
+  {
+    const tier_operation &p1_op(p1.get_tier_op());
+    const tier_operation &p2_op(p2.get_tier_op());
+
+    tier_operation new_op =
+      tier_operation::least_upper_bound(p1_op, p2_op);
+
+    // If the least upper bound has the same content as one of the two
+    // promotions, return that promotion directly.
+    if(new_op == p1_op)
+      return p1;
+    else if(new_op == p2_op)
+      return p2;
+
+    // Otherwise we'll have to construct a new combined promotion,
+    // being careful with regard to validity conditions and triggers.
+
+    const choice_set &p1_choices(p1.get_choices());
+    const choice_set &p2_choices(p2.get_choices());
+
+    const cwidget::util::ref_ptr<expression<bool> > &p1_valid(p1.get_valid_condition());
+    const cwidget::util::ref_ptr<expression<bool> > &p2_valid(p2.get_valid_condition());
+
+    choice_set new_choices;
+
+    // Minor optimization: I "know" that the current implementation of
+    // insert_or_narrow means that it's potentially more efficient to
+    // start with the larger set and incorporate the smaller one.
+    if(p1_choices.size() > p2_choices.size())
+      {
+	new_choices = p1_choices;
+	new_choices.insert_or_narrow(p2_choices);
+      }
+    else
+      {
+	new_choices = p2_choices;
+	new_choices.insert_or_narrow(p2_choices);
+      }
+
+    // Note that this will compute a somewhat inefficient validity
+    // condition when applied across several expressions.
+    cwidget::util::ref_ptr<expression<bool> > new_valid =
+      and_e::create(p1_valid, p2_valid);
+
+    return generic_promotion(new_choices, new_op, new_valid);
+  }
 
   int compare(const generic_promotion &other) const
   {
     using aptitude::util::compare3;
 
     const int promotion_cmp =
-      compare3(promotion_tier, other.promotion_tier);
+      compare3(promotion_tier_operation, other.promotion_tier_operation);
 
     if(promotion_cmp != 0)
       return promotion_cmp;
@@ -115,7 +178,7 @@ public:
 
   bool operator==(const generic_promotion &other) const
   {
-    if(promotion_tier != other.promotion_tier)
+    if(promotion_tier_operation != other.promotion_tier_operation)
       return false;
 
     if(!(choices == other.choices))
@@ -126,7 +189,7 @@ public:
 
   bool operator!=(const generic_promotion &other) const
   {
-    if(promotion_tier != other.promotion_tier)
+    if(promotion_tier_operation != other.promotion_tier_operation)
       return true;
 
     if(!(choices == other.choices))
@@ -156,7 +219,7 @@ namespace aptitude
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUniverse> &p)
 {
-  out << "(T" << p.get_tier() << ": " << p.get_choices();
+  out << "(T" << p.get_tier_op() << ": " << p.get_choices();
 
   if(p.get_valid_condition().valid())
     // Output p.get_valid_condition() if it isn't null.
@@ -177,7 +240,7 @@ class promotion_set_callbacks
 };
 
 /** \brief Represents a set of "promotions": mappings from sets of
- *  choices to tiers of the search space.
+ *  choices to tier operations implied by those choices.
  *
  *  Wraps up the various customizations of dense_setset for this case.
  *
@@ -189,23 +252,17 @@ class promotion_set_callbacks
  *      tier it matches (this requires indexing on version OR
  *      dependency, depending on what type of choice we have).
  *
- *   2. We also want to be able to prune the structure of all entries
- *      below a particular tier, or to yank out the contents of a
- *      range of tiers entirely (used when deferrals are removed, or
- *      when we advance to a new tier and want to get rid of cruft
- *      from the previous tier).
- *
- *   3. When a new tier promotion is inserted, it should override any
+ *   2. When a new tier promotion is inserted, it should override any
  *      lower promotions that it is a subset of or equal to, but not
  *      higher ones.  Conversely, if a new tier promotion contains an
  *      existing promotion that has a higher tier, it should not be
  *      inserted.
  *
- *   4. We need to be able to learn which promotions would match a
+ *   3. We need to be able to learn which promotions would match a
  *      step with a single extra choice, and what that choice is.
  *      This is used to update the solver status of a step.
- 
- *   5. We need to be able to learn which promotions containing a
+ *
+ *   4. We need to be able to learn which promotions containing a
  *      particular choice would match a step with a single extra
  *      choice, and one choice that should be contained in the result.
  *      This is used to update the solver status when generating a
@@ -219,6 +276,10 @@ class promotion_set_callbacks
  *  This object gets some of its efficiencies from actually knowing
  *  the structure of choices (e.g., it indexes choices to break soft
  *  dependencies differently from choices to install versions).
+ *
+ *  Iterators on the promotion set are stable (erasing an iterator
+ *  will of course invalidate it, but other iterators will still be
+ *  valid).
  *
  *  \sa generic_choice, generic_choice_set
  */
@@ -281,8 +342,9 @@ private:
     }
   };
 
-  typedef typename std::list<entry>::const_iterator entry_const_ref;
-  typedef typename std::list<entry>::iterator entry_ref;
+  typedef std::list<entry> entries_holder;
+  typedef typename entries_holder::const_iterator entry_const_ref;
+  typedef typename entries_holder::iterator entry_ref;
 
   /** \brief An expression that ejects a promotion from its parent set
    *  when that promotion becomes invalid.
@@ -338,16 +400,12 @@ private:
     }
   };
 
-  /** \brief Stores the promotions that exist, organized by tier.
-   *
-   *  This map is maintained so that it has no empty entries.
+  /** \brief Stores the promotions that exist. */
+  entries_holder entries;
 
-   *  Lists are used so that we can store stable references to
-   *  entries.
-   */
-  std::map<tier, std::list<entry> > entries;
-
-  unsigned int num_promotions;
+  // The number of promotions that would produce a conflict.  Used
+  // only for the sake of display.
+  unsigned int num_conflicts;
 
   /** \brief An entry in the index related to install_version entries.
    *
@@ -489,86 +547,28 @@ private:
   {
     promotion p(victim->p);
 
-    // First, find the promotion's tier.
-    const typename std::map<tier, std::list<entry> >::iterator
-      found = entries.find(p.get_tier());
-    if(found == entries.end())
-      LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
-    else
-      {
-	erase(iterator(found, entries.end(), victim));
-	callbacks.promotion_retracted(p);
-      }
+    erase(iterator(victim));
+    callbacks.promotion_retracted(p);
   }
 
 public:
   typedef unsigned int size_type;
-  size_type size() const { return num_promotions; }
-  size_type tier_size(const tier &selected_tier) const
-  {
-    typename std::map<tier, std::list<entry> >::const_iterator found =
-      entries.find(selected_tier);
-    if(found == entries.end())
-      return 0;
-    else
-      return found->second.size();
-  }
-
-  size_type tier_size_above(const tier &selected_tier) const
-  {
-    size_type rval = 0;
-
-    typename std::map<tier, std::list<entry> >::const_iterator first =
-      entries.lower_bound(selected_tier);
-    for(typename std::map<tier, std::list<entry> >::const_iterator it = first;
-	it != entries.end(); ++it)
-      rval += it->second.size();
-
-    return rval;
-  }
+  size_type size() const { return entries.size(); }
+  size_type conflicts_size() const { return num_conflicts; }
 
 private:
-  template<typename tier_iter, typename entry_iter>
+  // The iterators on this set hide the entry objects and other
+  // metadata, returning only the promotions.
+  template<typename entry_iter>
   class iterator_base
   {
-    // This is the only place where it's awkward to have a
-    // map-of-lists be the canonical location where all the entries in
-    // this object are stored.
-    tier_iter entries_it;
-    // The end iterator for the map -- necessary so that we know
-    // whether it's safe to start walking down the current list.
-    tier_iter entries_end;
-
-    // The current entry in the current list.
-    entry_iter entry_list_it;
+    entry_iter entry_it;
 
     friend class generic_promotion_set;
 
     // This overload is used for non-end iterators.
-    iterator_base(tier_iter _entries_it,
-		  tier_iter _entries_end,
-		  entry_iter _entry_list_it)
-      : entries_it(_entries_it),
-	entries_end(_entries_end),
-	entry_list_it(_entry_list_it)
-    {
-      // Should never happen; this is pure defensiveness.
-      while(entries_it != entries_end &&
-	    entry_list_it == entries_it->second.end())
-	{
-	  LOG_ERROR(aptitude::Loggers::getAptitudeResolverSearchTiers(), "Empty tier in promotion set!");
-
-	  ++entries_it;
-	  if(entries_it != entries_end)
-	    entry_list_it = entries_it->second.begin();
-	}
-    }
-
-    // This overload is used only to create an end iterator.
-    iterator_base(tier_iter _entries_it,
-		  tier_iter _entries_end)
-      : entries_it(_entries_it),
-	entries_end(_entries_end)
+    iterator_base(entry_iter _entry_it)
+      : entry_it(_entry_it)
     {
     }
 
@@ -579,99 +579,56 @@ private:
 
     const promotion &operator*() const
     {
-      eassert(entries_it != entries_end);
-
-      return entry_list_it->p;
+      return entry_it->p;
     }
 
     const promotion *operator->() const
     {
-      eassert(entries_it != entries_end);
-
-      return &entry_list_it->p;
+      return &entry_it->p;
     }
 
     iterator_base &operator++()
     {
-      eassert(entries_it != entries_end);
-
-      ++entry_list_it;
-      bool first = true;
-      while(entries_it != entries_end &&
-	    entry_list_it == entries_it->second.end())
-	{
-	  if(first)
-	    first = false;
-	  else
-	    LOG_ERROR(aptitude::Loggers::getAptitudeResolverSearchTiers(), "Empty tier in promotion set!");
-
-	  ++entries_it;
-	  if(entries_it != entries_end)
-	    entry_list_it = entries_it->second.begin();
-	}
+      ++entry_it;
       return *this;
     }
 
-    template<typename other_tier_iter, typename other_entry_iter>
-    bool operator==(const iterator_base<other_tier_iter, other_entry_iter> &other) const
+    template<typename other_entry_iter>
+    bool operator==(const iterator_base<other_entry_iter> &other) const
     {
-      eassert(entries_end == other.entries_end);
-
-      if(entries_it != other.entries_it)
-	return false;
-      else if(entries_it == entries_end)
-	return true; // Don't compare the list iterators if they're
-		     // invalid.
-      else
-	return entry_list_it == other.entry_list_it;
+      return entry_it == other.entry_it;
     }
 
-    template<typename other_tier_iter, typename other_entry_iter>
-    bool operator!=(const iterator_base<other_tier_iter, other_entry_iter> &other) const
+    template<typename other_entry_iter>
+    bool operator!=(const iterator_base<other_entry_iter> &other) const
     {
-      eassert(entries_end == other.entries_end);
-
-      if(entries_it != other.entries_it)
-	return true;
-      else if(entries_it == entries_end)
-	return false; // Don't compare the list iterators if they're
-		      // invalid.
-      else
-	return entry_list_it == other.entry_list_it;
+      return entry_it != other.entry_it;
     }
   };
 
 public:
-  typedef iterator_base<typename std::map<tier, std::list<entry> >::const_iterator,
-			typename std::list<entry>::const_iterator> const_iterator;
+  typedef iterator_base<typename entries_holder::const_iterator> const_iterator;
 
-  typedef iterator_base<typename std::map<tier, std::list<entry> >::iterator,
-			typename std::list<entry>::iterator> iterator;
+  typedef iterator_base<typename entries_holder::iterator> iterator;
 
   const_iterator begin() const
   {
-    if(entries.empty())
-      return end();
-    else
-      return const_iterator(entries.begin(), entries.end(), entries.begin()->second.begin());
+    return const_iterator(entries.begin());
   }
 
   iterator begin()
   {
-    if(entries.empty())
-      return end();
-    else
-      return const_iterator(entries.begin(), entries.end(), entries.begin()->second.begin());
+    return iterator(entries.begin());
   }
 
   const_iterator end() const
   {
-    return const_iterator(entries.end(), entries.end());
+    return const_iterator(entries.end());
   }
 
   iterator end()
   {
-    return iterator(entries.end(), entries.end());
+    return iterator(entries.end());
   }
 
   void erase(const iterator &victim)
@@ -681,32 +638,16 @@ public:
 	LOG_ERROR(logger, "Can't erase an end iterator.");
 	return;
       }
-
-    const promotion &p(victim->p);
-
-    // First, find the promotion's tier.
-    const typename std::map<tier, std::list<entry> >::iterator
-      found = victim.entries_it;
-    if(found == entries.end())
-      LOG_ERROR(logger, "Can't eject " << p << ": its tier cannot be located.");
     else
       {
-	std::list<entry> &tier_entries(found->second);
+	const promotion &p(*victim);
 
 	LOG_TRACE(logger, "Ejecting promotion: " << p);
-	// Remove the promotion from the reverse indices.
 	p.get_choices().for_each(drop_choice(install_version_index,
 					     break_soft_dep_index,
-					     victim));
-	// Drop it from the tier.
-	tier_entries.erase(victim);
+					     victim.entry_it));
 
-	if(tier_entries.empty())
-	  {
-	    LOG_TRACE(logger, "The tier " << found->first
-		      << " is now empty, removing it.");
-	    entries.erase(found);
-	  }
+	entries.erase(victim.entry_it);
       }
   }
 
@@ -923,26 +864,37 @@ private:
   // two distinct elements (no two choices in a search node can match
   // each other).
   //
-  // This returns an arbitrary element that has the highest possible
-  // search tier.  We don't return all elements because we don't need
-  // to (this represents testing whether a set matches an existing
+  // This computes the upper bound of all the elements that were
+  // matched.  We don't return all elements because we don't need to
+  // (this represents testing whether a set matches an existing
   // promotion).  NB: the only reason for returning a promotion
   // pointer rather than a boolean is so that we can provide
   // diagnostic logging.
-  struct find_entry_subset_op
+  class find_entry_subset_op
   {
-    // The return value.  Needs to be mutable because the traversal
-    // routine uses a const reference.  (I think maybe it shouldn't
-    // use a const reference: that should be fixed)
-    mutable entry_ref return_value_ref;
-    // Set to true if the return value is meaningful.  Mutable for the
-    // same reason as return_value_ref.
-    mutable bool was_set;
+    // A collection of conditions under which the returned promotion
+    // is true.  Each intersected promotion's validity condition is
+    // thrown in here.
+    mutable std::vector<cwidget::util::ref_ptr<expression<bool> > > rval_valid_conditions;
+    // The tier operation to return.
+    mutable tier_operation rval_op;
+
     log4cxx::LoggerPtr logger;
 
+  public:
     find_entry_subset_op(const log4cxx::LoggerPtr &_logger)
-      : was_set(false), logger(_logger)
+      : logger(_logger)
     {
+    }
+
+    const std::vector<cwidget::util::ref_ptr<expression<bool> > > &get_rval_valid_conditions() const
+    {
+      return rval_valid_conditions;
+    }
+
+    const tier_operation &get_rval_op() const
+    {
+      return rval_op;
     }
 
     bool operator()(entry_ref r) const
@@ -951,26 +903,23 @@ private:
 	{
 	  if(r->hit_count == r->p.get_choices().size())
 	    {
-	      if(!was_set ||
-		 return_value_ref->p.get_tier() < r->p.get_tier())
-		{
-		  if(was_set)
-		    LOG_DEBUG(logger, "find_entry_subset_op: resetting the hit count for "
-			      << r->p << " to 0 and returning it (highest tier: "
-			      << return_value_ref->p.get_tier() << " -> " << r->p.get_tier());
-		  else
-		    LOG_DEBUG(logger, "find_entry_subset_op: resetting the hit count for "
-			      << r->p << " to 0 and returning it (new highest tier: "
-			      << r->p.get_tier());
+	      tier_operation new_op =
+		tier_operation::least_upper_bound(r->p.get_tier_op(), rval_op);
 
-		  return_value_ref = r;
-		  was_set = true;
+	      if(new_op != rval_op)
+		{
+		  LOG_DEBUG(logger, "find_entry_subset_op: resetting the hit count for "
+			    << r->p << " to 0 and incorporating it into the result (return value: "
+			    << rval_op << " -> " << new_op);
+
+		  rval_op = new_op;
+		  rval_valid_conditions.push_back(r->p.get_valid_condition());
 		}
 	      else
 		LOG_TRACE(logger, "find_entry_subset_op: resetting the hit count for "
-			  << r->p << " to 0, but not returning it, because its tier "
-			  << r->p.get_tier() << " is lower than the current highest tier "
-			  << return_value_ref->p.get_tier());
+			  << r->p << " to 0, but not incorporating it into the result, because its tier operation "
+			  << r->p.get_tier_op() << " is lower than the current highest tier operation "
+			  << rval_op);
 	    }
 	  else
 	    LOG_TRACE(logger, "find_entry_subset_op: " << r->p
@@ -989,27 +938,29 @@ private:
     }
   };
 
-  /** \brief Retrieve all the supersets of the input set: entries that
-   *  contain elements which are all contained within entries of the
-   *  input set, and whose tiers are not higher than the input set's
-   *  tier.
+  /** \brief Retrieve all the supersets of the input set: entries
+   *  whose trigger sets are supersets of the input promotion, and
+   *  whose tier operations are less than or equal to the input set's
+   *  tier operation (bearing mind that tier operations are only
+   *  partially ordered).
    *
    *  As a side effect, resets all hit counts to 0.
    *
    *  This is used to purge redundant entries when a new entry is
    *  inserted.
    */
-  struct find_entry_supersets_op
+  class find_entry_supersets_op
   {
     // Where to store the output entry references.
     std::vector<entry_ref> &output_entries;
     // How many hits to require from each entry we process.
     unsigned int required_hits;
-    // The maximum tier to return; entries with a higher tier will be
-    // ignored.
-    tier maximum_tier;
+    // Tier operations smaller than or equal to this limit are not
+    // returned:
+    tier_operation maximum_tier_operation;
     log4cxx::LoggerPtr logger;
 
+  public:
     /** \brief Create a find-supersets operation.
      *
      *  \param _output_entries   The location in which to place the
@@ -1018,18 +969,18 @@ private:
      *                           that we are searching for supersets
      *                           of; only entries with this many hits
      *                           are returned.
-     *  \param _maximum_tier     The maximum tier to examine; only entries
-     *                           at this tier or lower are returned.
+     *  \param _maximum_tier_operation     The maximum tier to examine; only entries
+     *                                     with this tier operation or lower are returned.
      *  \param _logger           The logger to use to write messages
      *                           about this process.
      */
     find_entry_supersets_op(std::vector<entry_ref> &_output_entries,
 			    unsigned int _required_hits,
-			    const tier &_maximum_tier,
+			    const tier_operation &_maximum_tier_operation,
 			    const log4cxx::LoggerPtr &_logger)
       : output_entries(_output_entries),
 	required_hits(_required_hits),
-	maximum_tier(_maximum_tier),
+	maximum_tier_operation(_maximum_tier_operation),
 	logger(_logger)
     {
     }
@@ -1038,12 +989,13 @@ private:
     {
       if(r->active)
 	{
-	  if(maximum_tier < r->p.get_tier())
+	  if(tier_operation::greatest_lower_bound(maximum_tier_operation,
+						  r->p.get_tier_op()) != r->p.get_tier_op())
 	    {
 	      LOG_DEBUG(logger, "find_entry_supersets_op: resetting the hit count for "
-		       << r->p << " to 0, but not returning it, because its tier "
-		       << r->p.get_tier() << " is above the maximum tier "
-		       << maximum_tier);
+		       << r->p << " to 0, but not returning it, because its tier operation "
+		       << r->p.get_tier_op() << " is not below the maximum tier operation "
+		       << maximum_tier_operation);
 	    }
 	  else if(r->hit_count == required_hits)
 	    {
@@ -1070,14 +1022,14 @@ private:
   };
 
 public:
-  /** \brief Find a highest tier promotion that is a subset of the
-   *  given set of choices.
+  /** \brief Compute the upper bound of all the promotions contained
+   * in the given set of choices.
    *
    *  Implements requirement (1).
    */
-  const_iterator find_highest_promotion_for(const choice_set &choices) const
+  tier_operation find_highest_promotion_tier_op(const choice_set &choices) const
   {
-    LOG_TRACE(logger, "Entering find_highest_promotion_for(" << choices << ")");
+    LOG_TRACE(logger, "Entering find_highest_promotion_tier_op(" << choices << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
@@ -1090,27 +1042,7 @@ public:
     // need to reset all the counters to 0 for the next run.
     choices.for_each(find_result_f);
 
-    if(!find_result.was_set)
-      return end();
-    else
-      {
-	const entry_ref result_entry(find_result.return_value_ref);
-	const tier &result_tier = result_entry->p.get_tier();
-	typename std::map<tier, std::list<entry> >::const_iterator tier_found =
-	  entries.find(result_tier);
-	if(tier_found == entries.end())
-	  {
-	    LOG_ERROR(logger, "Unable to find tier " << result_tier << " even though we just found an entry in it!");
-	    return end();
-	  }
-	else
-	  {
-	    LOG_TRACE(logger, "find_highest_promotion_for: For the set " << choices << ", returning an iterator to " << result_entry->p);
-	    // Assume that result_entry is in this list, since if it
-	    // isn't, something is very wrong.
-	    return const_iterator(tier_found, entries.end(), result_entry);
-	  }
-      }
+    return find_result.get_rval_op();
   }
 
   /** \brief A functor that, when applied to a Boolean value,
@@ -1139,8 +1071,9 @@ public:
    *  This is initialized with a promotion, the output domain, and an
    *  output location, then invoked with various choices.  For each of
    *  the choices that is contained in the output domain, the
-   *  corresponding cell in the output map is updated if the new
-   *  promotion is higher than the old one.
+   *  corresponding cell in the output map is updated to the upper
+   *  bound of the promotion it stores and the update object's
+   *  promotion.
    *
    *  Normally the choices this is invoked on represent the choices in
    *  the promotion.
@@ -1172,8 +1105,9 @@ public:
 
 	  if(found.first == found.second)
 	    output.insert(found.first, std::make_pair(c, p));
-	  else if(found.first->second.get_tier() < p.get_tier())
-	    found.first->second = p;
+	  else
+	    found.first->second =
+	      promotion::least_upper_bound(found.first->second, p);
 	}
 
       return true;
@@ -1220,20 +1154,11 @@ public:
 	    }
 	  else if(r->hit_count == r->p.get_choices().size())
 	    {
-	      bool hit = true;
 	      if(output_non_incipient.get_has_value())
-		{
-		  if(output_non_incipient.get_value().get_tier() >= r->p.get_tier())
-		    hit = false;
-		}
-
-	      if(hit)
-		{
-		  LOG_DEBUG(logger, "find_incipient_entry_subset_op: updating the non-incipient output value to " << r->p << " and resetting its hit count to 0.");
-		  output_non_incipient = r->p;
-		}
-
-	      output_non_incipient = maybe<promotion>(r->p);
+		output_non_incipient =
+		  promotion::least_upper_bound(output_non_incipient.get_value(), r->p);
+	      else
+		output_non_incipient = r->p;
 	    }
 	  else
 	    LOG_DEBUG(logger, "find_incipient_entry_subset_op: " << r->p << " is not an incipient promotion; resetting its hit count to 0 and not returning it.");
@@ -1251,8 +1176,9 @@ public:
   /** \brief A function object that, for each choice it is applied to,
    *  adds an entry to the given output set for the choice if there is
    *  a single-element promotion containing that choice.  If an entry
-   *  already exists, it is updated only if the new promotion is to a
-   *  higher tier.
+   *  already exists, it is updated only if the new promotion is not
+   *  less than or equal to the current one (i.e., it is larger or
+   *  unrelated).
    */
   template<typename T>
   class find_unary_promotions
@@ -1294,8 +1220,9 @@ public:
 
 		  if(found.first == found.second)
 		    output.insert(found.first, std::make_pair(p_c, p));
-		  else if(found.first->second.get_tier() < p.get_tier())
-		    found.first->second = p;
+		  else
+		    found.first->second =
+		      promotion::least_upper_bound(p, found.first->second);
 		}
 	    }
 	}
@@ -1340,7 +1267,7 @@ public:
 					 boost::unordered_map<choice, promotion> &output_incipient,
 					 maybe<promotion> &output_non_incipient) const
   {
-    LOG_TRACE(logger, "Entering find_highest_incipient_promotion_for(" << choices << ", " << output_domain << ")");
+    LOG_TRACE(logger, "Entering find_highest_incipient_promotions(" << choices << ", " << output_domain << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
@@ -1528,9 +1455,11 @@ public:
    *  given set of choices *and* that contains the given choice.
    *
    *  Implements requirement (1).
+   *
+   *  Returns a default-initialized promotion if nothing was found.
    */
-  const_iterator find_highest_promotion_containing(const choice_set &choices,
-						   const choice &c) const
+  promotion find_highest_promotion_containing(const choice_set &choices,
+					      const choice &c) const
   {
     LOG_TRACE(logger, "Entering find_highest_promotion_containing(" << choices << ", " << c << ")");
 
@@ -1538,8 +1467,8 @@ public:
 
     if(index_entries == NULL || index_entries->empty())
       {
-	LOG_TRACE(logger, "find_highest_promotion_containing: There are no index entries for " << c << "; returning an end iterator.");
-	return end();
+	LOG_TRACE(logger, "find_highest_promotion_containing: There are no index entries for " << c << "; returning a minimal promotion.");
+	return promotion();
       }
     else
       {
@@ -1558,8 +1487,7 @@ public:
 
 	LOG_TRACE(logger, "find_highest_promotion_containing: Matching indexed entries for " << c << " to the local index.");
 
-	bool found_anything = false;
-	entry_ref highest_entry;
+	promotion rval;
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
@@ -1576,47 +1504,18 @@ public:
 	    p.get_choices().for_each(all_choices_found_f);
 	    if(contains_match)
 	      {
-		if(!found_anything)
+		promotion upper_bound = promotion::least_upper_bound(rval, p);
+		if(upper_bound.get_tier_op() != rval.get_tier_op())
 		  {
-		    LOG_TRACE(logger, "find_highest_promotion_containing: found the first match: " << p);
-		    found_anything = true;
-		    highest_entry = *it;
-		  }
-		else if(highest_entry->p.get_tier() >= p.get_tier())
-		  LOG_TRACE(logger, "find_highest_promotion_containing: found a match " << p
-			    << ", but its tier is lower than the existing match ("
-			    << p.get_tier() << " vs " << highest_entry->p.get_tier());
-		else
-		  {
-		    LOG_TRACE(logger, "find_highest_promotion_containing: found a new highest match: " << p
-			      << " (previous tier was " << highest_entry->p.get_tier());
-		    highest_entry = *it;
+		    LOG_TRACE(logger, "find_highest_promotion_containing: found a new promotion: " << p
+			      << " (previous promotion was " << rval
+			      << ", new is " << upper_bound << ")");
+		    rval = upper_bound;
 		  }		  
 	      }
 	  }
 
-	if(!found_anything)
-	  {
-	    LOG_TRACE(logger, "find_highest_promotion_containing: no matches found; returning an end iterator.");
-	    return end();
-	  }
-	else
-	  {
-	    const tier &highest_entry_tier = highest_entry->p.get_tier();
-	    typename std::map<tier, std::list<entry> >::const_iterator tier_found =
-	      entries.find(highest_entry_tier);
-
-	    if(tier_found == entries.end())
-	      {
-		LOG_ERROR(logger, "Unable to find tier " << highest_entry_tier << " even though we just found an entry in it!");
-		return end();
-	      }
-	    else
-	      {
-		LOG_TRACE(logger, "find_highest_promotion_containing: returning a reference to " << highest_entry->p);
-		return const_iterator(tier_found, entries.end(), highest_entry);
-	      }
-	  }
+	return rval;
       }
   }
 
@@ -1688,8 +1587,6 @@ public:
 
 	LOG_TRACE(logger, "find_highest_incipient_promotion_containing: Matching indexed entries for " << c << " to the local index.");
 
-	bool found_anything = false;
-	entry_ref highest_entry;
 	for(typename std::vector<entry_ref>::const_iterator it = index_entries->begin();
 	    it != index_entries->end(); ++it)
 	  {
@@ -1713,7 +1610,6 @@ public:
 		update_incipient_output<T> updater(p, output_domain, output);
 		LOG_TRACE(logger, "find_highest_incipient_promotion_containing: found a match: " << p);
 		p.get_choices().for_each(updater);
-		found_anything = true;
 	      }
 	  }
       }
@@ -1743,7 +1639,7 @@ private:
       find_results_f(*this, false,
 		     find_entry_supersets_op(output,
 					     p.get_choices().size(),
-					     p.get_tier(),
+					     p.get_tier_op(),
 					     logger));
 
     const choice_set &choices(p.get_choices());
@@ -1987,75 +1883,6 @@ private:
       }
   }
 
-public:
-  /** \brief Remove all the promotions whose tier is greater than or
-   * equal to begin_tier, and strictly less than end_tier.
-   *
-   *  Implements requirement (2).
-   */
-  void remove_between_tiers(const tier &begin_tier, const tier &end_tier)
-  {
-    LOG_DEBUG(logger, "Removing all promotions between tiers " << begin_tier << " and " << end_tier);
-
-    typename std::map<tier, std::list<entry> >::iterator start =
-      entries.lower_bound(begin_tier);
-
-    typename std::map<tier, std::list<entry> >::iterator stop =
-      entries.lower_bound(end_tier);
-
-    // Collect the versions and soft dependencies related to each
-    // choice in the selected tiers.
-    boost::unordered_set<version> installed_versions;
-    boost::unordered_set<dep> broken_soft_deps;
-
-    int num_promotions_erased = 0;
-    for(typename std::map<tier, std::list<entry> >::iterator it = start;
-	it != stop; ++it)
-      {
-	collect_indexers(it->second,
-			 installed_versions,
-			 broken_soft_deps,
-			 logger);
-
-	num_promotions_erased += it->second.size();
-      }
-
-    // Now zap all the index entries in these tiers.
-    drop_install_version_index_entries(installed_versions,
-				       entry_ref_between_tiers_pred(begin_tier, end_tier));
-    drop_broken_soft_dep_index_entries(broken_soft_deps,
-				       entry_ref_between_tiers_pred(begin_tier, end_tier));
-
-    // Delete the tiers.
-    entries.erase(start, stop);
-    num_promotions -= num_promotions_erased;
-
-    LOG_TRACE(logger, "Removed tiers " << begin_tier
-	      << " through " << end_tier
-	      << ", dropping " << num_promotions_erased << " promotions.");
-  }
-
-  /** \brief Remove all the promotions below the given tier.
-   *
-   *  Implements requirement (2).
-   */
-  void remove_below_tier(const tier &min_tier)
-  {
-    LOG_DEBUG(logger, "Removing all promotions below tier " << min_tier);
-
-    if(entries.size() > 0)
-      {
-	// Note: we have to copy this instead of taking a reference
-	// because the source will be deleted, and the callee assumes
-	// that the ending tier is valid even after the deletion takes
-	// place.
-	const tier curr_min_tier(entries.begin()->first);
-	if(curr_min_tier < min_tier)
-	  remove_between_tiers(curr_min_tier, min_tier);
-      }
-  }
-
-private:
   /** \brief Function object that inserts choices into the index
    *  structures one at a time.
    */
@@ -2170,9 +1997,9 @@ private:
    */
   struct entry_ref_in_dropped_set_pred
   {
-    const boost::unordered_set<entry *> &dropped_set;
+    const boost::unordered_set<const entry *> &dropped_set;
 
-    entry_ref_in_dropped_set_pred(const boost::unordered_set<entry *> &_dropped_set)
+    entry_ref_in_dropped_set_pred(const boost::unordered_set<const entry *> &_dropped_set)
       : dropped_set(_dropped_set)
     {
     }
@@ -2187,24 +2014,31 @@ public:
   /** \brief Insert a promotion into this set.
    *
    *  The promotion will not be inserted if an existing promotion of
-   *  the same tier or higher is a subset of it; otherwise, it will be
-   *  inserted and all existing promotions of the same tier or lower
-   *  that are supersets of the new promotion will be removed.
+   *  the same tier operation or higher is a subset of it; otherwise,
+   *  it will be inserted and all existing promotions of the same tier
+   *  operation or lower that are supersets of the new promotion will
+   *  be removed.  (promotions with an unrelated tier operation are
+   *  unaffected)
    *
    *  \return   an iterator pointing at the new promotion if one was
    *            actually inserted, or an end iterator otherwise.
    */
   iterator insert(const promotion &p)
   {
-    const tier &p_tier = p.get_tier();
+    const tier_operation &p_tier_op = p.get_tier_op();
     const choice_set &choices = p.get_choices();
 
     LOG_DEBUG(logger, "Inserting " << p << " into the promotion set.");
 
-    const const_iterator highest(find_highest_promotion_for(choices));
-    if(highest != end() && highest->get_tier() >= p_tier)
+    // Note that we can suppress adding a promotion if there are
+    // several promotions that would jointly imply it.  e.g., if the
+    // set {a, b} has a promotion (0, +1) and {b, c} has a promotion
+    // (+1, 0), we don't need to store a promotion for {a, b, c} with
+    // the operation (+1, +1), as it wouldn't add any information.
+    const tier_operation highest(find_highest_promotion_tier_op(choices));
+    if(tier_operation::least_upper_bound(highest, p_tier_op) == highest)
       {
-	LOG_INFO(logger, "Canceling the insertion of " << p << ": it is redundant with the existing promotion " << *highest);
+	LOG_INFO(logger, "Canceling the insertion of " << p << ": it is redundant with the existing or inferred promotion " << highest);
 	return end();
       }
     else
@@ -2230,7 +2064,7 @@ public:
 	  // Note: This relies on knowing that pointers to entries are
 	  // stable as long as we don't modify the lists that contain
 	  // them.
-	  boost::unordered_set<entry *> superseded_entries_set;
+	  boost::unordered_set<const entry *> superseded_entries_set;
 	  for(typename std::vector<entry_ref>::const_iterator it = superseded_entries.begin();
 	      it != superseded_entries.end(); ++it)
 	    superseded_entries_set.insert(&**it);
@@ -2247,46 +2081,20 @@ public:
 	  {
 	    entry_ref ent(*it);
 	    LOG_TRACE(logger, "Removing " << ent->p);
-	    const tier removed_tier = ent->p.get_tier();
-	    typename std::map<tier, std::list<entry> >::iterator found =
-	      entries.find(removed_tier);
 
-	    if(found == entries.end())
-	      LOG_ERROR(logger, "Tier " << removed_tier << " has gone missing!");
-	    else
-	      {
-		typename std::list<entry>::size_type initial_size(found->second.size());
-		found->second.erase(ent);
-		if(found->second.size() + 1 != initial_size)
-		  LOG_ERROR(logger, "Inconsistency after removing entry: the size should have decreased to " << initial_size - 1 << ", but instead it is now " << found->second.size());
+	    if(ent->p.get_tier_op().get_structural_level() >= tier_limits::conflict_structural_level)
+	      --num_conflicts;
 
-		if(found->second.empty())
-		  {
-		    LOG_DEBUG(logger, "Tier " << removed_tier << " is empty, deleting it.");
-		    entries.erase(found);
-		  }
-	      }
+	    entries.erase(ent);
           }
-        num_promotions -= superseded_entries.size();
 
-	LOG_TRACE(logger, "Inserting " << p << " into tier " << p_tier);
-
-	// Find the tier list.  Use a roundabout means instead of
-	// operator[] so we can log when we allocate a new tier.
-	typename std::map<tier, std::list<entry> >::iterator p_tier_found = entries.find(p_tier);
-
-	if(p_tier_found == entries.end())
-	  {
-	    LOG_DEBUG(logger, "Allocating initial structures for tier " << p_tier);
-	    p_tier_found = entries.insert(p_tier_found, std::make_pair(p_tier, std::list<entry>()));
-	  }
+	LOG_TRACE(logger, "Inserting " << p);
 
 	// Insert the new entry into the list of entries in this tier.
-	std::list<entry> &p_tier_entries = p_tier_found->second;
 	const entry_ref new_entry =
-	  p_tier_entries.insert(p_tier_entries.end(),
-				entry(p));
-	++num_promotions;
+	  entries.insert(entries.end(), entry(p));
+	if(p.get_tier_op().get_structural_level() >= tier_limits::conflict_structural_level)
+	  ++num_conflicts;
 
 	LOG_TRACE(logger, "Building index entries for " << p);
 	p.get_choices().for_each(make_index_entries(new_entry,
@@ -2294,7 +2102,7 @@ public:
 						    break_soft_dep_index,
 						    logger));
 
-	return iterator(p_tier_found, entries.end(), new_entry);
+	return iterator(new_entry);
       }
   }
 
@@ -2303,7 +2111,7 @@ public:
   {
     entries.clear();
     break_soft_dep_index.clear();
-    num_promotions = 0;
+    num_conflicts = 0;
     for(int i = 0; i < num_versions; ++i)
       {
 	delete install_version_index[i];
@@ -2315,7 +2123,7 @@ public:
 			promotion_set_callbacks<PackageUniverse> &_callbacks)
     : logger(aptitude::Loggers::getAptitudeResolverSearchTiers()),
       callbacks(_callbacks),
-      num_promotions(0),
+      num_conflicts(0),
       num_versions(u.get_version_count()),
       install_version_index(new install_version_index_entry*[num_versions])
   {

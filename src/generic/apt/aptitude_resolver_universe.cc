@@ -802,157 +802,61 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
 }
 
 
-tier aptitude_universe::parse_tier(const std::string &s)
+int aptitude_universe::parse_level(const std::string &s)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
   if(s == "conflict")
-    return tier_limits::conflict_tier;
+    // Note that this is slightly broken (it should send it to the
+    // conflict tier, not just a high level) -- but the whole tier
+    // configuration system needs to be rewritten anyway.
+    return tier_limits::conflict_structural_level;
   else if(s == "minimum" || s == "")
-    return tier_limits::minimum_tier;
+    return tier_limits::minimum_level;
   else
     {
       char *endptr;
-      level n = level::make_lower_bounded(static_cast<int>(strtol(s.c_str(), &endptr, 0)));
+      int n = static_cast<int>(strtol(s.c_str(), &endptr, 0));
       if(*endptr != '\0')
 	{
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
 	  _error->Error("%s", _(msg.c_str()));
-	  return tier_limits::minimum_tier;
+	  return tier_limits::minimum_level;
 	}
       else
-	{
-	  return tier(tier_limits::minimum_level,
-		      &n, (&n) + 1);
-	}
+	return n;
     }
 }
 
-tier aptitude_universe::get_safe_tier()
+tier_operation aptitude_universe::get_safe_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000")));
 }
 
-tier aptitude_universe::get_keep_all_tier()
+tier_operation aptitude_universe::get_keep_all_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000")));
 }
 
-tier aptitude_universe::get_remove_tier()
+tier_operation aptitude_universe::get_remove_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000")));
 }
 
-tier aptitude_universe::get_break_hold_tier()
+tier_operation aptitude_universe::get_break_hold_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000")));
 }
 
-tier aptitude_universe::get_non_default_tier()
+tier_operation aptitude_universe::get_non_default_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000")));
 }
 
-tier aptitude_universe::get_remove_essential_tier()
+tier_operation aptitude_universe::get_remove_essential_tier_op()
 {
-  return parse_tier(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
+  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000")));
 }
-
-void aptitude_universe::get_named_tiers(std::vector<std::pair<tier, std::string> > &out)
-{
-  out.push_back(std::make_pair(get_safe_tier(), _("Safe actions")));
-  out.push_back(std::make_pair(get_keep_all_tier(), _("Cancel all user actions")));
-  out.push_back(std::make_pair(get_remove_tier(), _("Remove packages")));
-  out.push_back(std::make_pair(get_break_hold_tier(), _("Modify held packages")));
-  out.push_back(std::make_pair(get_non_default_tier(), _("Install versions from non-default sources")));
-  out.push_back(std::make_pair(get_remove_essential_tier(), _("Remove essential packages")));
-
-  const Configuration::Item *tree = aptcfg->Tree(PACKAGE "::ProblemResolver::Tier-Names");
-
-  if(tree == NULL)
-    return;
-
-  for(const Configuration::Item *item = tree->Child; item != NULL; item = item->Next)
-    {
-      // Each sub-tree should have a Name and a Tier value.
-      bool has_name = false, has_tier = false;
-      std::string item_name;
-      tier item_tier;
-      for(Configuration::Item const *sub_item = item->Child; sub_item != NULL; sub_item = sub_item->Next)
-	{
-	  if(stringcasecmp(sub_item->Tag, "Name") == 0)
-	    {
-	      has_name = true;
-	      item_name = sub_item->Value;
-	    }
-	  else if(stringcasecmp(sub_item->Tag, "Tier") == 0)
-	    {
-	      has_tier = true;
-	      item_tier = parse_tier(sub_item->Value);
-	    }
-	}
-
-      if(has_name && has_tier)
-	out.push_back(std::make_pair(item_tier, item_name));
-      else
-	{
-	  if(has_name)
-	    LOG_ERROR(Loggers::getAptitudeResolverTiers(),
-		      ssprintf(_("The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a Tier entry."),
-			       item_name.c_str(), PACKAGE));
-	  else if(has_tier)
-	    {
-	      if(item_tier.get_num_user_levels() < 1)
-		LOG_ERROR(Loggers::getAptitudeResolverTiers(),
-			  "A tier is lacking both a name and a value.");
-	      else
-		LOG_ERROR(Loggers::getAptitudeResolverTiers(),
-			  ssprintf(_("The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a Name entry."),
-				   item_tier.get_user_level(0).get_value(), PACKAGE));
-	    }
-	  else
-	    ; // Assume this is junk that got in accidentally.
-	}
-    }
-}
-
-std::string aptitude_universe::get_tier_name(const tier &t)
-{
-  typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
-  if(t >= tier_limits::conflict_tier)
-    return "Unsolvable search nodes"; // Should never happen in a returned solution.
-  else if(t >= tier_limits::already_generated_tier)
-    return "Already generated solutions"; // Should never happen in a returned solution.
-  else if(t >= tier_limits::defer_tier)
-    return "Deferred search nodes"; // Should never happen in a returned solution.
-  else if(t.get_num_user_levels() == 0)
-    return "Initial tier";
-  else
-    {
-      std::vector<std::pair<tier, std::string> > named_tiers;
-      get_named_tiers(named_tiers);
-
-      std::string name;
-      for(std::vector<std::pair<tier, std::string> >::const_iterator it =
-	    named_tiers.begin(); it != named_tiers.end(); ++it)
-	{
-	  if(it->first.get_num_user_levels() > 0 &&
-	     it->first.get_user_level(0) == t.get_user_level(0) &&
-	     t >= it->first)
-	    {
-	      if(!name.empty())
-		name += ", ";
-	      name += it->second;
-	    }
-	}
-
-      if(name.empty())
-	return ssprintf("%d", t.get_user_level(0).get_value());
-      else
-	return ssprintf("%s (%d)", name.c_str(), t.get_user_level(0).get_value());
-    }
-}
-
 
 bool aptitude_universe::is_candidate_for_initial_set(const aptitude_resolver_dep &d) const
 {
