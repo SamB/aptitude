@@ -116,6 +116,14 @@ class tier_operation
      */
     op_impl(const op_impl &op1, const op_impl &op2, upper_bound_tag);
 
+    /** \brief Return \b true if this operation is greater than or
+     *  equal to the other operation under the natural partial order.
+     *
+     *  Equivalent to testing whether least_upper_bound is this
+     *  object, but doesn't create an intermediary.
+     */
+    bool is_above_or_equal(const op_impl &other) const;
+
     /** \brief Compute a hash on this tier operation.
      *
      *  \note Relies on the fact that the level's hash includes
@@ -300,6 +308,17 @@ public:
    */
   static tier_operation greatest_lower_bound(const tier_operation &op1,
                                              const tier_operation &op2);
+
+  /** \brief Return \b true if this operation is greater than or equal
+   *  to the other operation under the natural partial order.
+   *
+   *  Equivalent to testing whether least_upper_bound is this object,
+   *  but doesn't create an intermediary.
+   */
+  bool is_above_or_equal(const tier_operation &other) const
+  {
+    return get_impl().is_above_or_equal(other.get_impl());
+  }
 
   /** \brief Compose two tier operations.
    *

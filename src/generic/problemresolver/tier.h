@@ -113,6 +113,32 @@ public:
   int get_value() const { return value; }
   state_enum get_state() const { return state; }
 
+  /** \brief Test whether this level is greater than or equal to the
+   *  given other level under the natural partial ordering of levels.
+   */
+  bool is_above_or_equal(const level &other) const
+  {
+    if(other.state == unmodified)
+      return true;
+    else if(state != other.state)
+      return false;
+    else
+      switch(state)
+	{
+	case unmodified:
+	  return true;
+
+	case added:
+	case lower_bounded:
+	  return value >= other.value;
+	}
+
+    // Fall-through in case the case statement missed something;
+    // outside the case so that the compiler checks that all enum
+    // values are handled.
+    return false;
+  }
+
   void increase_tier_to(int new_value)
   {
     if(state == added)
