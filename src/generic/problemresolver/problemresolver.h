@@ -2727,7 +2727,7 @@ private:
       p.second.for_each_solver(find_solvers_tier_op_lower_bound(dep_tier_op));
 
       tier_operation new_output_tier_op =
-	dep_tier_op.get_has_value()
+	(dep_tier_op.get_has_value() && !output_tier_op.is_above_or_equal(dep_tier_op.get_value()))
 	? tier_operation::least_upper_bound(output_tier_op, dep_tier_op.get_value())
 	: output_tier_op;
 
@@ -2771,7 +2771,8 @@ private:
 	  break;
 	}
 
-      if(resolver.build_is_deferred_listener(c)->get_value())
+      if(resolver.build_is_deferred_listener(c)->get_value() &&
+         !choice_op.is_above_or_equal(tier_limits::increase_to_defer_op))
 	choice_op = tier_operation::least_upper_bound(tier_limits::increase_to_defer_op,
 						      choice_op);
 
@@ -2823,7 +2824,7 @@ private:
     tier_operation found_promotion =
       promotions.find_highest_promotion_tier_op(s.actions);
 
-    if(found_promotion != tier_operation())
+    if(!new_tier_op.is_above_or_equal(found_promotion))
       {
 	tier_operation new_new_tier_op =
 	  tier_operation::least_upper_bound(new_tier_op,
@@ -2915,7 +2916,7 @@ private:
     // are below the current search tier, in which case there's no
     // point in saving it.
     if(t_op.apply(get_current_search_tier()) == get_current_search_tier() &&
-       tier_operation::least_upper_bound(s.effective_step_tier_op, t_op) == s.effective_step_tier_op)
+       s.effective_step_tier_op.is_above_or_equal(t_op))
       return;
 
     solvers.for_each_solver(build_promotion(reasons, valid_conditions));
@@ -2964,10 +2965,13 @@ private:
   {
     const tier_operation &p_tier_op(p.get_tier_op());
 
-    tier_operation new_effective_step_tier_op =
-      tier_operation::least_upper_bound(p_tier_op, s.effective_step_tier_op);
+    if(!s.effective_step_tier_op.is_above_or_equal(p_tier_op))
+      {
+        tier_operation new_effective_step_tier_op =
+          tier_operation::least_upper_bound(p_tier_op, s.effective_step_tier_op);
 
-    set_effective_step_tier_op(s.step_num, new_effective_step_tier_op);
+        set_effective_step_tier_op(s.step_num, new_effective_step_tier_op);
+      }
   }
 
   // Increases the tier of each dependency in each dependency list
@@ -3033,11 +3037,12 @@ private:
 		  // increase.  Empirically, the resolver was wasting
 		  // lots of time and memory increasing tiers when the
 		  // solver tiers hadn't actually changed.
-		  tier_operation updated_solver_tier_op =
-		    tier_operation::least_upper_bound(old_inf.get_tier_op(),
-						      new_tier_op);
-		  if(old_inf.get_tier_op() != updated_solver_tier_op)
-		    {
+                  if(!old_inf.get_tier_op().is_above_or_equal(new_tier_op))
+                    {
+                      tier_operation updated_solver_tier_op =
+                        tier_operation::least_upper_bound(old_inf.get_tier_op(),
+                                                          new_tier_op);
+
 		      typename step::solver_information
 			new_inf(updated_solver_tier_op,
 				new_choices,
@@ -4269,8 +4274,7 @@ private:
   /** \brief Apply a single promotion to a single step. */
   void apply_promotion(step &s, const promotion &p)
   {
-    if(tier_operation::least_upper_bound(s.effective_step_tier_op,
-					 p.get_tier_op()) == s.effective_step_tier_op)
+    if(s.effective_step_tier_op.is_above_or_equal(p.get_tier_op()))
       LOG_TRACE(logger, "Not applying " << p
 		<< " to step " << s.step_num << ": the step tier operation "
 		<< s.effective_step_tier_op << " is above the promotion tier operation.");

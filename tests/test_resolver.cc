@@ -180,6 +180,14 @@ UNIVERSE [ \
 			   !(lt((x1), (x2)) && lt((x2), (x1))));	\
   } while(0)
 
+#define ASSERT_ABOVE_OR_EQUAL( e1, e2 )		\
+  CPPUNIT_ASSERT_MESSAGE( boost::lexical_cast<std::string>(e1) + " should be above or equal to " + boost::lexical_cast<std::string>(e2), \
+			  (e1).is_above_or_equal(e2) );
+
+#define ASSERT_NOT_ABOVE_OR_EQUAL( e1, e2 )		\
+  CPPUNIT_ASSERT_MESSAGE( boost::lexical_cast<std::string>(e1) + " should not be above or equal to " + boost::lexical_cast<std::string>(e2), \
+			  !((e1).is_above_or_equal(e2)) );
+
 class ResolverTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ResolverTest);
@@ -1049,6 +1057,80 @@ private:
   {
     log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierOperations"));
     LOG_TRACE(logger, "Entering testTierOperations");
+
+    LOG_TRACE(logger, "Testing basic above-or-equal relationships.");
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			   tier_operation() );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			   tier_operation::make_advance_structural_level(35) );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			   tier_operation::make_advance_structural_level(50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			       tier_operation::make_advance_structural_level(75) );
+
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			   tier_operation() );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			   tier_operation::make_advance_user_level(1, 35) );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			   tier_operation::make_advance_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			       tier_operation::make_advance_user_level(1, 75) );
+
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
+			   tier_operation() );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
+			   tier_operation::make_add_to_user_level(1, 35) );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
+			   tier_operation::make_add_to_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
+			       tier_operation::make_add_to_user_level(1, 75) );
+
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			       tier_operation::make_advance_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
+			       tier_operation::make_add_to_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			       tier_operation::make_add_to_user_level(1, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			       tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
+			       tier_operation::make_add_to_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
+			       tier_operation::make_advance_user_level(2, 50) );
+
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50) +
+			   tier_operation::make_advance_user_level(2, 50),
+			   tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
+			   tier_operation::make_advance_user_level(2, 50),
+			   tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
+			   tier_operation::make_add_to_user_level(2, 50),
+			   tier_operation::make_add_to_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50) +
+			       tier_operation::make_advance_user_level(2, 45),
+			       tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
+			       tier_operation::make_advance_user_level(2, 45),
+			       tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
+			       tier_operation::make_add_to_user_level(2, 45),
+			       tier_operation::make_add_to_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
+			       tier_operation::make_advance_user_level(2, 45),
+			       tier_operation::make_advance_user_level(1, 45) +
+			       tier_operation::make_advance_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50) +
+			       tier_operation::make_advance_user_level(2, 45),
+			       tier_operation::make_advance_structural_level(45) +
+			       tier_operation::make_advance_user_level(2, 50) );
+
 
     // We will use three tier operations here:
     //

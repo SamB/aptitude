@@ -115,18 +115,18 @@ public:
     const tier_operation &p1_op(p1.get_tier_op());
     const tier_operation &p2_op(p2.get_tier_op());
 
-    tier_operation new_op =
-      tier_operation::least_upper_bound(p1_op, p2_op);
-
     // If the least upper bound has the same content as one of the two
     // promotions, return that promotion directly.
-    if(new_op == p1_op)
+    if(p1_op.is_above_or_equal(p2_op))
       return p1;
-    else if(new_op == p2_op)
+    else if(p2_op.is_above_or_equal(p1_op))
       return p2;
 
     // Otherwise we'll have to construct a new combined promotion,
     // being careful with regard to validity conditions and triggers.
+
+    tier_operation new_op =
+      tier_operation::least_upper_bound(p1_op, p2_op);
 
     const choice_set &p1_choices(p1.get_choices());
     const choice_set &p2_choices(p2.get_choices());
@@ -903,11 +903,11 @@ private:
 	{
 	  if(r->hit_count == r->p.get_choices().size())
 	    {
-	      tier_operation new_op =
-		tier_operation::least_upper_bound(r->p.get_tier_op(), rval_op);
-
-	      if(new_op != rval_op)
+	      if(r->p.get_tier_op().is_above_or_equal(rval_op))
 		{
+		  tier_operation new_op =
+		    tier_operation::least_upper_bound(r->p.get_tier_op(), rval_op);
+
 		  LOG_DEBUG(logger, "find_entry_subset_op: resetting the hit count for "
 			    << r->p << " to 0 and incorporating it into the result (return value: "
 			    << rval_op << " -> " << new_op);
@@ -2036,7 +2036,7 @@ public:
     // (+1, 0), we don't need to store a promotion for {a, b, c} with
     // the operation (+1, +1), as it wouldn't add any information.
     const tier_operation highest(find_highest_promotion_tier_op(choices));
-    if(tier_operation::least_upper_bound(highest, p_tier_op) == highest)
+    if(highest.is_above_or_equal(p_tier_op))
       {
 	LOG_INFO(logger, "Canceling the insertion of " << p << ": it is redundant with the existing or inferred promotion " << highest);
 	return end();

@@ -1577,7 +1577,9 @@ private:
 	new_choices.insert_or_narrow(p_choices);
 
 	const tier_operation new_tier_op =
-	  tier_operation::least_upper_bound(p_tier_op, t_op);
+          (t_op.is_above_or_equal(p_tier_op)
+           ? t_op
+           : tier_operation::least_upper_bound(p_tier_op, t_op));
 
 	// TODO: We used to throw out promotions that were below their
 	// parent's tier.  In the new system this *might* correspond

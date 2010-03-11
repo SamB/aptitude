@@ -97,36 +97,27 @@ bool tier_operation::op_impl::is_above_or_equal(const op_impl &other) const
   std::vector<std::pair<level_index, level> >::const_iterator
     it_this = actions.begin(), it_other = other.actions.begin();
 
-  // Set to true if an individual level is *strictly* less than or
-  // greater than its counterpart.  If both are true, the tier
-  // operations are unrelated.
-  bool is_greater = false;
-  bool is_less = false;
+  bool is_greater_or_equal = true;
 
-  while(it_this != actions.end() && it_other != other.actions.end() &&
-	!(is_greater && is_less))
+  if(structural_level < other.structural_level)
+    is_greater_or_equal = false;
+
+  while(is_greater_or_equal && it_this != actions.end() && it_other != other.actions.end())
     {
       if(it_this->first < it_other->first)
-	{
-	  if(it_this->second.get_state() != level::unmodified)
-	    is_greater = true;
-	  ++it_this;
-	}
+	++it_this;
       else if(it_other->first < it_this->first)
 	{
 	  if(it_other->second.get_state() != level::unmodified)
-	    is_less = true;
+	    is_greater_or_equal = false;
 	  ++it_other;
 	}
       else
 	{
 	  if( !(it_this->second == it_other->second) )
 	    {
-	      if(it_this->second.is_above_or_equal(it_other->second))
-		is_greater = true;
-
-	      if(it_other->second.is_above_or_equal(it_this->second))
-		is_less = true;
+	      if(!it_this->second.is_above_or_equal(it_other->second))
+		is_greater_or_equal = false;
 	    }
 
 	  ++it_this;
@@ -134,13 +125,10 @@ bool tier_operation::op_impl::is_above_or_equal(const op_impl &other) const
 	}
     }
 
-  if(it_this != actions.end())
-    is_greater = true;
+  if(is_greater_or_equal && it_other != other.actions.end())
+    is_greater_or_equal = false;
 
-  if(it_other != other.actions.end())
-    is_less = true;
-
-  return is_greater && !is_less;
+  return is_greater_or_equal;
 }
 
 int tier_operation::op_impl::compare(const op_impl &other) const
