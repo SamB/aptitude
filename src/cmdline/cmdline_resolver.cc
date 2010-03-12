@@ -1169,24 +1169,24 @@ namespace aptitude
       // If anything goes wrong, we give up (silently if verbosity is disabled).
       catch(NoMoreTime)
 	{
-	  // We used to warn the user that the resolver timed out and
-	  // also produced a solution, but now that information is
-	  // buried in the resolver manager.  I don't think this is a
-	  // huge problem.
-	  if(verbose > 0)
-	    std::cout << _("Unable to resolve dependencies for the upgrade (the resolver timed out).");
+	  std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade because the resolver timed out.\n  You may be able to solve this problem by increasing\n  Aptitude::ProblemResolver::StepLimit (currently %d)."),
+					  // TODO: bad magic number
+					  // here -- get it from the
+					  // backend directly instead.
+					  aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 100000))
+		    << std::endl;
 	  return false;
 	}
       catch(NoMoreSolutions)
 	{
-	  if(verbose > 0)
-	    std::cout << _("Unable to resolve dependencies for the upgrade (no solution found).");
+	  std::cout << _("Unable to resolve dependencies for the upgrade: no solution found.")
+		    << std::endl;
 	  return false;
 	}
       catch(const cw::util::Exception &e)
 	{
-	  if(verbose > 0)
-	    std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade (%s)."), e.errmsg().c_str());
+	  std::cout << cw::util::ssprintf(_("Unable to resolve dependencies for the upgrade: %s"), e.errmsg().c_str())
+		    << std::endl;
 	  return false;
 	}
 
