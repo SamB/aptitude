@@ -1324,7 +1324,9 @@ private:
 	  promotions.find_highest_incipient_promotions_containing(s.actions,
 								  solver,
 								  s.deps_solved_by_choice,
-								  discards_blessed(s.is_blessed_solution),
+								  discards_blessed(s.is_blessed_solution,
+										   *this,
+										   s),
 								  incipient);
 
 	  typename boost::unordered_map<choice, promotion>::const_iterator
@@ -1349,6 +1351,29 @@ private:
 #endif
   }
 
+  /** \return \b true if the given tier is one that should cause
+   *  solvers and search steps to be discarded.
+   */
+  bool is_discard_tier(const tier &t) const
+  {
+    return
+      t.get_structural_level() >= tier_limits::already_generated_structural_level;
+  }
+
+  /** \return \b true if the given tier operation will always cause
+   * the given step to be discarded.
+   *
+   *  \param op the operation to test.
+   *
+   *  \param s the step to test; is_discard_op returns \b true iff
+   *           applying the tier operation to this step's base tier
+   *           results in a discarding tier.
+   */
+  bool is_discard_op(const tier_operation &op, const step &s) const
+  {
+    return is_discard_tier(op.apply(s.base_step_tier));
+  }
+
   /** \return \b true if the given step is "irrelevant": that is,
    *  either it was already generated and placed in the closed queue,
    *  or it was marked as having a conflict, or it is infinitely
@@ -1357,14 +1382,9 @@ private:
   bool irrelevant(const step &s)
   {
     const tier &s_tier = s.effective_step_tier;
-    if(s_tier >= tier_limits::conflict_tier)
+    if(is_discard_tier(s_tier))
       {
-	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it contains a conflict.");
-	return true;
-      }
-    else if(s_tier >= tier_limits::already_generated_tier)
-      {
-	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: it was already produced as a result.");
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: its tier " << s_tier << " indicates it should be discarded.");
 	return true;
       }
 
@@ -1422,8 +1442,7 @@ private:
     if(s.effective_step_tier == new_effective_step_tier)
       return;
 
-    if(s.is_blessed_solution &&
-       new_effective_step_tier >= tier_limits::already_generated_tier)
+    if(s.is_blessed_solution && is_discard_tier(new_effective_step_tier))
       {
 	LOG_TRACE(logger, "Step " << s.step_num
 		  << " is a blessed solution; ignoring the attempt to promote it to tier " << new_effective_step_tier);
@@ -1438,7 +1457,7 @@ private:
 
 
     if(s.effective_step_tier >= tier_limits::defer_tier &&
-       s.effective_step_tier < tier_limits::already_generated_tier)
+       !is_discard_tier(s.effective_step_tier))
       {
 	if(was_in_pending)
 	  --num_deferred;
@@ -1456,7 +1475,7 @@ private:
 
 
     if(s.effective_step_tier >= tier_limits::defer_tier &&
-       s.effective_step_tier < tier_limits::already_generated_tier)
+       !is_discard_tier(s.effective_step_tier))
       {
 	if(was_in_pending)
 	  ++num_deferred;
@@ -2438,6 +2457,14 @@ private:
   /** \brief Predicate used to throw away promotions that would
    *  promote a blessed solution to the already-generated tier (or
    *  discard it for containing a "conflict").
+   *
+   *  Returns \b true if a promotion does *not* discard a "blessed"
+   *  solution.
+   *
+   *  Whether a promotion would throw away a solver is determined by
+   *  testing that promotion against the containing step's current
+   *  tier; if applying the promotion would raise the tier too much,
+   *  the solver is struck.
    */
   class discards_blessed
   {
@@ -2446,16 +2473,24 @@ private:
     // the already-generated tier are allowed through.
     bool blessed;
 
+    const generic_problem_resolver &resolver;
+
+    const step &s;
+
   public:
-    discards_blessed(bool _blessed)
-      : blessed(_blessed)
+    discards_blessed(bool _blessed,
+		     const generic_problem_resolver &_resolver,
+		     const step &_s)
+      : blessed(_blessed),
+	resolver(_resolver),
+	s(_s)
     {
     }
 
     bool operator()(const promotion &p) const
     {
       if(blessed)
-	return p.get_tier_op().get_structural_level() < tier_limits::already_generated_structural_level;
+	return !resolver.is_discard_op(p.get_tier_op(), s);
       else
 	return true;
     }
@@ -2475,7 +2510,7 @@ private:
 
     output_domain.put(solver, imm::list<dep>());
 
-    discards_blessed discards_blessed_p(s.is_blessed_solution);
+    discards_blessed discards_blessed_p(s.is_blessed_solution, *this, s);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    solver,
 							    output_domain,
@@ -3087,8 +3122,7 @@ private:
     // to the point that the solver should be ejected, or the tier
     // should just be bumped up a bit.  Either way, we might end up
     // changing the tier of the whole step.
-    if(new_tier_op.get_structural_level() >= tier_limits::conflict_structural_level ||
-       new_tier_op.get_structural_level() >= tier_limits::already_generated_structural_level)
+    if(is_discard_op(new_tier_op, s))
       {
 	// \todo this throws away information about whether we're at
 	// the already-generated tier.  This isn't that important,
@@ -3352,7 +3386,9 @@ private:
   {
     boost::unordered_map<choice, promotion> output;
 
-    discards_blessed discards_blessed_p(s.is_blessed_solution);
+    discards_blessed discards_blessed_p(s.is_blessed_solution,
+					*this,
+					s);
     promotions.find_highest_incipient_promotions_containing(s.actions,
 							    c,
 							    s.deps_solved_by_choice,
@@ -3598,8 +3634,7 @@ private:
 	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.effective_step_tier
 	      << "S" << output.score);
 
-    if(output.effective_step_tier >= tier_limits::defer_tier &&
-       output.effective_step_tier < tier_limits::already_generated_tier)
+    if(is_discard_tier(output.effective_step_tier))
       ++num_deferred;
 
     pending.insert(output.step_num);
