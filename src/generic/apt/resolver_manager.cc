@@ -1,6 +1,6 @@
 // resolver_manager.cc
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -46,6 +46,8 @@
 #include <sys/wait.h>
 
 using aptitude::Loggers;
+
+const int defaultStepLimit = 500000;
 
 class resolver_manager::resolver_interaction
 {
@@ -1649,7 +1651,7 @@ void resolver_manager::dump(ostream &out)
 
   resolver->dump_scores(out);
 
-  out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000) << " ANY )" << std::endl;
+  out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", defaultStepLimit) << " ANY )" << std::endl;
 }
 
 void resolver_manager::maybe_start_solution_calculation(const boost::shared_ptr<background_continuation> &k,
@@ -1666,7 +1668,7 @@ void resolver_manager::maybe_start_solution_calculation(const boost::shared_ptr<
       const int selected = st.selected_solution;
       // TODO: duplication of information!  These config values should
       // be moved into a central function that everyone else can call.
-      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+      const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", defaultStepLimit);
 
       if(limit > 0)
 	get_solution_background(selected, limit, k, post_thunk);
@@ -1776,7 +1778,7 @@ public:
 	// generated_solutions_count() and get_solution_background())
 	cwidget::threads::mutex::lock l(manager->mutex);
 
-	const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
+	const int limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", defaultStepLimit);
 
 	manager->get_solution_background(manager->generated_solution_count(),
 					 limit, safe_resolver_k, post_thunk);

@@ -1173,7 +1173,7 @@ namespace aptitude
 					  // TODO: bad magic number
 					  // here -- get it from the
 					  // backend directly instead.
-					  aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 100000))
+					  aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 500000))
 		    << std::endl;
 	  return false;
 	}
