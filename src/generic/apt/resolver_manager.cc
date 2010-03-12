@@ -1649,7 +1649,7 @@ void resolver_manager::dump(ostream &out)
 
   resolver->dump_scores(out);
 
-  out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::Resolver::StepLimit", 5000) << " ANY )" << std::endl;
+  out << "EXPECT ( " << aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000) << " ANY )" << std::endl;
 }
 
 void resolver_manager::maybe_start_solution_calculation(const boost::shared_ptr<background_continuation> &k,
