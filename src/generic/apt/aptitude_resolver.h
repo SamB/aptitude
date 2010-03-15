@@ -32,6 +32,8 @@
 
 #include <generic/util/immset.h>
 
+#include <iosfwd>
+
 class pkgPolicy;
 
 /** \brief Glue code to make the resolver talk to the core aptitude classes.
@@ -81,11 +83,14 @@ public:
     /** \brief The type of hint represented by this object. */
     enum hint_type
       {
-	/** \brief A hint that one or more package versions should
-	 *  have their tier operations composed with this hint's
-	 *  operation.
+	/** \brief A hint indicating that a named component of the
+	 *  cost tuple should have a number added to it.
 	 */
-	compose_tier_op,
+	add_to_cost_component,
+	/** \brief A hint indicating that a named component of the
+	 *  cost tuple should be increased to an upper bound.
+	 */
+	raise_cost_component,
 	/** \brief A hint that one or more package versions should be
 	 *  rejected.
 	 */
@@ -276,47 +281,63 @@ public:
 
   private:
     hint_type type;
-    int score;
-    tier_operation tier_op_val;
+    int amt;
     cwidget::util::ref_ptr<aptitude::matching::pattern> target;
     version_selection selection;
+    std::string component_name;
 
-    hint(hint_type _type, int _score, tier_operation _tier_op_val,
+    hint(hint_type _type, int _amt,
 	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
-	 version_selection _selection)
-      : type(_type), score(_score), tier_op_val(_tier_op_val),
-	target(_target), selection(_selection)
+	 version_selection _selection, const std::string &_component_name)
+      : type(_type), amt(_amt),
+	target(_target), selection(_selection), component_name()
     {
     }
 
   public:
     hint()
-      : type((hint_type)-1), score(-1), tier_op_val(), target(NULL), selection()
+      : type((hint_type)-1), amt(-1), target(NULL), selection(), component_name()
     {
     }
 
     ~hint();
 
-    /** \brief Create a hint that increases the tier of a version. */
-    static hint make_compose_tier_op(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
-				     const version_selection &selection,
-				     tier_operation tier_op_val)
+    /** \brief Create a hint that adds to a single component of the
+     *  cost tuple.
+     */
+    static hint make_add_to_cost_component(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+					   const version_selection &selection,
+					   const std::string &component_name,
+					   int amt)
     {
-      return hint(compose_tier_op, 0, tier_op_val, target, selection);
+      return hint(add_to_cost_component, amt,
+		  target, selection, component_name);
+    }
+
+    /** \brief Create a hint that increases a single component of the
+     *  cost level to the given value.
+     */
+    static hint make_raise_cost_component(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+					  const version_selection &selection,
+					  const std::string &component_name,
+					  int amt)
+    {
+      return hint(raise_cost_component, amt,
+		  target, selection, component_name);
     }
 
     /** \brief Create a hint that rejects a version or versions of a package. */
     static hint make_reject(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				     const version_selection &selection)
     {
-      return hint(reject, 0, tier_operation(), target, selection);
+      return hint(reject, 0, target, selection, "");
     }
 
     /** \brief Create a hint that mandates a version or versions of a package. */
     static hint make_mandate(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
 				      const version_selection &selection)
     {
-      return hint(mandate, 0, tier_operation(), target, selection);
+      return hint(mandate, 0, target, selection, "");
     }
 
     /** \brief Create a hint that adjusts the score of a package. */
@@ -324,7 +345,7 @@ public:
 					  const version_selection &selection,
 					  int score)
     {
-      return hint(tweak_score, score, tier_operation(), target, selection);
+      return hint(tweak_score, score, target, selection, "");
     }
 
     /** \brief Parse a resolver hint definition.
@@ -381,15 +402,17 @@ public:
      */
     hint_type get_type() const { return type; }
 
-    /** \brief For score-tweaking hints, get the number of points to be
-     *  added to the version's score.
+    /** \brief Retrieve the integer associated with this hint.
+     *
+     *  For score-tweaking hints, this is the number of points to be
+     *  added to the version's score.  For tier level-tweaking hints,
+     *  this is the amount to increase the tier by or the value to
+     *  increase it to.
      */
-    int get_score() const { return score; }
+    int get_amt() const { return amt; }
 
-    /** \brief For tier operation changing hints, get the tier
-     *  operation associated with the hint.
-     */
-    const tier_operation &get_tier_op() const { return tier_op_val; }
+    /** \brief Retrieve the cost component name associated with this hint. */
+    const std::string &get_component_name() const { return component_name; }
 
     /** \brief Return the pattern identifying the package or packages
      *  to be adjusted.
@@ -507,5 +530,7 @@ public:
    */
   choice_set get_keep_all_solution() const;
 };
+
+std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint);
 
 #endif

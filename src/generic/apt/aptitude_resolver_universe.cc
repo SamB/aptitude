@@ -810,6 +810,8 @@ int aptitude_universe::parse_level(const std::string &s)
     // conflict tier, not just a high level) -- but the whole tier
     // configuration system needs to be rewritten anyway.
     return tier_limits::conflict_structural_level;
+  else if(s == "maximum")
+    return tier_limits::maximum_level;
   else if(s == "minimum" || s == "")
     return tier_limits::minimum_level;
   else

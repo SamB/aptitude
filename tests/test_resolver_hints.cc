@@ -26,16 +26,13 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <boost/lexical_cast.hpp>
+
 using namespace aptitude::matching;
 
 namespace
 {
   typedef aptitude_resolver::hint hint;
-
-  tier_operation make_tier_op(int first_user_level)
-  {
-    return tier_operation::make_advance_user_level(0, first_user_level);
-  }
 
   struct test
   {
@@ -82,17 +79,32 @@ namespace
       test("reject ?task(desktop) <>4.0", hint::make_reject(pattern::make_task("desktop"),
 							    hint::version_selection::make_version(hint::version_selection::not_equal_to, "4.0"))),
       test("increase-tier-to 100 wesnoth <5.0.0",
-	   hint::make_compose_tier_op(pattern::make_exact_name("wesnoth"),
-				      hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
-				      make_tier_op(100))),
-      test("increase-tier-to 500 xroach",
-	   hint::make_compose_tier_op(pattern::make_exact_name("xroach"),
-				      hint::version_selection::make_inst(),
-				      make_tier_op(500))),
+	   hint::make_raise_cost_component(pattern::make_exact_name("wesnoth"),
+					   hint::version_selection::make_version(hint::version_selection::less_than, "5.0.0"),
+					   "safety",
+					   100)),
+      test("increase-tier-to maximum xroach",
+	   hint::make_raise_cost_component(pattern::make_exact_name("xroach"),
+					   hint::version_selection::make_inst(),
+					   "safety",
+					   INT_MAX)),
       test("increase-tier-to 800 xroach",
-	   hint::make_compose_tier_op(pattern::make_exact_name("xroach"),
-				      hint::version_selection::make_inst(),
-				      make_tier_op(800))),
+	   hint::make_raise_cost_component(pattern::make_exact_name("xroach"),
+					   hint::version_selection::make_inst(),
+					   "safety",
+					   800)),
+
+      test("add-to-cost-component nadaComponent 45 nada",
+	   hint::make_add_to_cost_component(pattern::make_exact_name("nada"),
+					    hint::version_selection::make_inst(),
+					    "nadaComponent",
+					    45)),
+
+      test("raise-cost-component albertComponent 299 albert",
+	   hint::make_raise_cost_component(pattern::make_exact_name("albert"),
+					   hint::version_selection::make_inst(),
+					   "albertComponent",
+					   299)),
     };
   const int num_resolver_tests =
     sizeof(resolver_tests) / sizeof(resolver_tests[0]);
@@ -120,7 +132,10 @@ public:
 	hint h;
 	CPPUNIT_ASSERT_MESSAGE("Parsing " + t.text, hint::parse(t.text, h));
 
-	CPPUNIT_ASSERT_MESSAGE("Checking " + t.text, h == t.h);
+	CPPUNIT_ASSERT_MESSAGE("Checking " + t.text + ": " +
+			       boost::lexical_cast<std::string>(h) +
+			       " == " + boost::lexical_cast<std::string>(t.h),
+			       h == t.h);
       }
 
     // Try some failure cases too.

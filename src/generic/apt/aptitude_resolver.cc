@@ -404,27 +404,28 @@ int aptitude_resolver::hint::compare(const hint &other) const
       TRACE_HINTS_INEQUAL(1, "[type]");
       return 1;
     }
-  else if(score < other.score)
+  else if(amt < other.amt)
     {
-      TRACE_HINTS_INEQUAL(-1, "[score]");
+      TRACE_HINTS_INEQUAL(-1, "[amt]");
       return -1;
     }
-  else if(score > other.score)
+  else if(amt > other.amt)
     {
-      TRACE_HINTS_INEQUAL(1, "[score]");
+      TRACE_HINTS_INEQUAL(1, "[amt]");
       return 1;
     }
   else
     {
-      if(type == compose_tier_op)
+      if(type == add_to_cost_component || type == raise_cost_component)
 	{
-	  int cmp = tier_op_val.compare(other.tier_op_val);
+	  int cmp = component_name.compare(other.component_name);
 	  if(cmp < 0)
-	    TRACE_HINTS_INEQUAL(-1, "[tier]");
+	    TRACE_HINTS_INEQUAL(-1, "[component]");
 	  else if(cmp > 0)
-	    TRACE_HINTS_INEQUAL(1, "[tier]");
+	    TRACE_HINTS_INEQUAL(1, "[component]");
 
-	  return cmp;
+	  if(cmp != 0)
+	    return cmp;
 	}
 
       const int selection_compare = selection.compare(other.selection);
@@ -475,8 +476,60 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
   while(start != hint.end() && isspace(*start))
     ++start;
 
-  tier_operation parsed_tier_op;
-  if(action == "increase-tier-to")
+  int amt = -1;
+  std::string component_name;
+  if(action == "add-to-cost-component" ||
+     action == "raise-cost-component")
+    {
+      if(start == hint.end())
+	{
+	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": expected a component name and a number, but found nothing.",
+					       hint.c_str()));
+	  _error->Error(_("Invalid hint \"%s\": expected a component name and a number, but found nothing."),
+			hint.c_str());
+	  return false;
+	}
+
+      std::string amt_string;
+      while(start != hint.end() && !isspace(*start))
+	{
+	  component_name.push_back(*start);
+	  ++start;
+	}
+
+      while(start != hint.end() && isspace(*start))
+	++start;
+
+      if(start == hint.end())
+	{
+	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": expected the numeric value following the component name, but found nothing.",
+					       hint.c_str()));
+	  _error->Error(_("Invalid hint \"%s\": expected the numeric value following the component name, but found nothing."),
+			hint.c_str());
+	  return false;
+	}
+
+      while(start != hint.end() && !isspace(*start))
+	{
+	  amt_string.push_back(*start);
+	  ++start;
+	}
+
+      while(start != hint.end() && isspace(*start))
+	++start;
+
+      char *endptr;
+      amt = strtol(amt_string.c_str(), &endptr, 0);
+      if(*endptr != 0)
+	{
+	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": the numeric value \"%s\" cannot be parsed.",
+					       hint.c_str(), amt_string.c_str()));
+	  _error->Error(_("Invalid hint \"%s\": the numeric component \"%s\" cannot be parsed."),
+			hint.c_str(), amt_string.c_str());
+	  return false;
+	}
+    }
+  else if(action == "increase-tier-to")
     {
       if(start == hint.end())
 	{
@@ -497,7 +550,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
       while(start != hint.end() && isspace(*start))
 	++start;
 
-      parsed_tier_op = tier_operation::make_advance_user_level(0, aptitude_universe::parse_level(tier_number));
+      amt = aptitude_universe::parse_level(tier_number);
     }
 
   if(start == hint.end())
@@ -626,7 +679,11 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
   else if(action == "approve")
     out = make_mandate(target, selection);
   else if(action == "increase-tier-to")
-    out = make_compose_tier_op(target, selection, parsed_tier_op);
+    out = make_raise_cost_component(target, selection, "safety", amt);
+  else if(action == "add-to-cost-component")
+    out = make_add_to_cost_component(target, selection, component_name, amt);
+  else if(action == "raise-cost-component")
+    out = make_raise_cost_component(target, selection, component_name, amt);
   else
     {
       unsigned long score_tweak = 0;
@@ -1232,14 +1289,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      // OK, apply the hint.
 	      switch(h.get_type())
 		{
-		case hint::compose_tier_op:
-		  {
-		    tier_operation v_tier_op(specialize_tier_op(h.get_tier_op(),
-								v.get_ver(),
-								policy));
-		    LOG_DEBUG(loggerTiers, "** Tier op: " << v_tier_op << " for " << v << " due to the hint " << h);
-		    modify_version_tier_op(v, v_tier_op);
-		  }
+		case hint::add_to_cost_component:
+		case hint::raise_cost_component:
+		  LOG_ERROR(loggerScores, "This resolver hint type is not yet implemented.");
 		  break;
 
 		case hint::reject:
@@ -1253,8 +1305,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  break;
 
 		case hint::tweak_score:
-		  LOG_DEBUG(loggerScores, "** Score: " << std::showpos << h.get_score() << std::noshowpos << " for " << v << " due to the hint " << h);
-		  add_version_score(v, h.get_score());
+		  LOG_DEBUG(loggerScores, "** Score: " << std::showpos << h.get_amt() << std::noshowpos << " for " << v << " due to the hint " << h);
+		  add_version_score(v, h.get_amt());
 		  break;
 
 		default:
