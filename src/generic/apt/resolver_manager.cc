@@ -22,6 +22,7 @@
 #include <aptitude.h>
 #include "apt.h"
 #include "aptitude_resolver.h"
+#include "aptitude_resolver_cost_settings.h"
 #include "aptitude_resolver_universe.h"
 #include "config_signal.h"
 #include "dump_packages.h"
@@ -892,12 +893,31 @@ void resolver_manager::create_resolver()
   // resolver will actually remove packages rather than leaving their
   // Recommends: field unsatisfied!
 
+
+
+  // TODO: this should be parsed from a configuration setting.  This
+  // hardcoding is just a placeholder until I write the parser code.
+  boost::shared_ptr<std::vector<cost_component_structure> > cost_components(new std::vector<cost_component_structure>);
+
+  std::vector<cost_component_structure::entry> level0;
+  level0.push_back(cost_component_structure::entry("safety", 1));
+  cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level0));
+
+  std::vector<cost_component_structure::entry> level1;
+  level1.push_back(cost_component_structure::entry("priority", 1));
+  cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level1));
+
+  aptitude_resolver_cost_settings cost_settings(cost_components);
+
+
+
   resolver=new aptitude_resolver(aptcfg->FindI(PACKAGE "::ProblemResolver::StepScore", 70),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::BrokenScore", -100),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::FutureHorizon", 50),
+                                 cost_settings,
 				 initial_installations,
 				 (*cache_file),
 				 cache_file->Policy);

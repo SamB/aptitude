@@ -51,28 +51,37 @@ namespace
   log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
   log4cxx::LoggerPtr loggerTiers(aptitude::Loggers::getAptitudeResolverTiers());
 
-  /** \brief Return a tier that has the same major level as the given
-   *  base tier, but whose subordinate values have been set
-   *  appropriately for the given version.
+  /** \brief If the given version is valid, find its maximum priority
+   *  and return a raise-cost operation for that priority.
    */
-  tier_operation specialize_tier_op(const tier_operation &base,
-				    const pkgCache::VerIterator &ver,
-				    pkgPolicy *policy)
+  tier_operation raise_priority_op(aptitude_resolver_cost_settings &settings,
+                                   const aptitude_resolver_version &ver,
+                                   pkgPolicy *policy,
+                                   aptitude_resolver_cost_settings::component &priority_component)
   {
-    if(ver.end())
-      return base;
-    else
+    if(!settings.is_component_relevant(priority_component))
+      return tier_operation();
+
+    pkgCache::VerIterator apt_ver(ver.get_ver());
+
+    if(!apt_ver.end())
       {
 	int apt_priority = INT_MIN;
-	for(pkgCache::VerFileIterator vf = ver.FileList();
+	for(pkgCache::VerFileIterator vf = apt_ver.FileList();
 	    !vf.end(); ++vf)
 	  {
 	    int pin = policy->GetPriority(vf.File());
 	    apt_priority = std::max(apt_priority, pin);
 	  }
 
-	return base + tier_operation::make_advance_user_level(0, -apt_priority);
+        if(apt_priority > INT_MIN)
+          return settings.raise_cost(priority_component,
+                                     apt_priority);
+        else
+          return tier_operation();
       }
+    else
+      return tier_operation();
   }
 }
 
@@ -715,6 +724,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int infinity,
 				     int resolution_score,
 				     int future_horizon,
+				     const aptitude_resolver_cost_settings &_cost_settings,
 				     const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
 				     aptitudeDepCache *cache,
 				     pkgPolicy *_policy)
@@ -722,7 +732,8 @@ aptitude_resolver::aptitude_resolver(int step_score,
 					       future_horizon,
 					       initial_installations,
 					       aptitude_universe(cache)),
-   policy(_policy)
+   policy(_policy),
+   cost_settings(_cost_settings)
 {
   using cwidget::util::ref_ptr;
   using aptitude::matching::pattern;
@@ -732,7 +743,11 @@ aptitude_resolver::aptitude_resolver(int step_score,
 	    << ", infinity = " << infinity << ", resolution_score = " << resolution_score
 	    << ", future_horizon = " << future_horizon << ".");
 
-  tier_operation keep_all_tier_op(aptitude_universe::get_keep_all_tier_op());
+  aptitude_resolver_cost_settings::component safety_component =
+    cost_settings.get_or_create_component("safety", aptitude_resolver_cost_settings::maximized);
+
+  int keep_all_level(aptitude_universe::get_keep_all_level());
+  tier_operation keep_all_tier_op(cost_settings.raise_cost(safety_component, keep_all_level));
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
@@ -1163,12 +1178,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  const std::map<package, bool> &initial_state_manual_flags,
 					  const std::vector<hint> &hints)
 {
-  tier_operation safe_tier_op(aptitude_universe::get_safe_tier_op());
-  tier_operation keep_all_tier_op(aptitude_universe::get_keep_all_tier_op());
-  tier_operation remove_tier_op(aptitude_universe::get_remove_tier_op());
-  tier_operation break_hold_tier_op(aptitude_universe::get_break_hold_tier_op());
-  tier_operation non_default_tier_op(aptitude_universe::get_non_default_tier_op());
-  tier_operation remove_essential_tier_op(aptitude_universe::get_remove_essential_tier_op());
+  int safe_level(aptitude_universe::get_safe_level());
+  int keep_all_level(aptitude_universe::get_keep_all_level());
+  int remove_level(aptitude_universe::get_remove_level());
+  int break_hold_level(aptitude_universe::get_break_hold_level());
+  int non_default_level(aptitude_universe::get_non_default_level());
+  int remove_essential_level(aptitude_universe::get_remove_essential_level());
 
   LOG_TRACE(loggerScores, "Setting up action scores; score parameters: preserver_score = " << preserve_score
 	    << ", auto_score = " << auto_score << ", remove_score = " << remove_score
@@ -1180,16 +1195,43 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	    << ", break_hold_score = " << break_hold_score
 	    << ", allow_break_holds_and_forbids = " << (allow_break_holds_and_forbids ? "true" : "false")
 	    << ", default_resolution_score = " << default_resolution_score);
-  LOG_TRACE(loggerTiers, "Setting up action scores; tier parameters: safe_tier_op = " << safe_tier_op
-	    << ", keep_all_tier_op = " << keep_all_tier_op << ", remove_tier_op = " << remove_tier_op
-	    << ", break_hold_tier_op = " << break_hold_tier_op << ", non_default_tier_op = "
-	    << non_default_tier_op << ", remove_essential_tier_op = " << remove_essential_tier_op << ".");
+  LOG_TRACE(loggerTiers, "Setting up action scores; tier parameters: safe_level = " << safe_level
+	    << ", keep_all_level = " << keep_all_level << ", remove_level = " << remove_level
+	    << ", break_hold_level = " << break_hold_level << ", non_default_level = "
+	    << non_default_level << ", remove_essential_level = " << remove_essential_level << ".");
 
   cwidget::util::ref_ptr<aptitude::matching::search_cache>
     search_info(aptitude::matching::search_cache::create());
   aptitudeDepCache *cache(get_universe().get_cache());
   pkgRecords records(*cache);
   const resolver_initial_state<aptitude_universe> &initial_state(get_initial_state());
+
+  aptitude_resolver_cost_settings::component
+    safety_component(cost_settings.get_or_create_component("safety", aptitude_resolver_cost_settings::maximized)),
+    priority_component(cost_settings.get_or_create_component("priority", aptitude_resolver_cost_settings::maximized));
+
+  // Resolve the component of each hint into a side table (since hints
+  // are supposed to be purely syntactic, it would be wrong to store
+  // the component there when we can look it up here with little
+  // cost).
+  std::vector<aptitude_resolver_cost_settings::component> hint_components;
+  for(std::vector<hint>::const_iterator it = hints.begin(); it != hints.end(); ++it)
+    {
+      switch(it->get_type())
+        {
+        case hint::add_to_cost_component:
+          hint_components.push_back(cost_settings.get_or_create_component(it->get_component_name(), aptitude_resolver_cost_settings::additive));
+          break;
+
+        case hint::raise_cost_component:
+          hint_components.push_back(cost_settings.get_or_create_component(it->get_component_name(), aptitude_resolver_cost_settings::maximized));
+          break;
+
+        default:
+          hint_components.push_back(aptitude_resolver_cost_settings::component());
+          break;
+        }
+    }
 
   // Should I stick with APT iterators instead?  This is a bit more
   // convenient, though..
@@ -1262,6 +1304,21 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      it != hints.end(); ++it)
 	    {
 	      const hint &h(*it);
+              const aptitude_resolver_cost_settings::component
+                &component = hint_components[it - hints.begin()];
+
+              // Bypass hints that are irrelevant.
+              switch(h.get_type())
+                {
+                case hint::add_to_cost_component:
+                case hint::raise_cost_component:
+                  if(!cost_settings.is_component_relevant(component))
+                    continue;
+                  break;
+
+                default:
+                  break;
+                }
 
 	      using aptitude::matching::get_match;
 
@@ -1290,8 +1347,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      switch(h.get_type())
 		{
 		case hint::add_to_cost_component:
+                  LOG_DEBUG(loggerScores, "** Adding " << h.get_amt() << " to the cost component \"" << h.get_component_name() << "\" for " << v);
+                  modify_version_tier_op(v, cost_settings.add_to_cost(component, h.get_amt()));
+                  break;
+
 		case hint::raise_cost_component:
-		  LOG_ERROR(loggerScores, "This resolver hint type is not yet implemented.");
+                  LOG_DEBUG(loggerScores, "** Raising the cost component \"" << h.get_component_name() << "\" to " << h.get_amt() << " for " << v);
+                  modify_version_tier_op(v, cost_settings.raise_cost(component, h.get_amt()));
 		  break;
 
 		case hint::reject:
@@ -1315,6 +1377,19 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  break;
 		}
 	    }
+
+          // We only raise the priority component if v is not the
+          // initial version of p, for two reasons: first and
+          // foremost, this was the old behavior, and I don't want to
+          // change the behavior of the code while I'm changing the
+          // mechanism used to set costs.  Less important but also a
+          // consideration: this is a small optimization (since
+          // there's no point in updating the tier operation of the
+          // initial version of a package).
+          if(v != initial_state.version_of(p))
+            modify_version_tier_op(v, raise_priority_op(cost_settings,
+                                                        v, policy,
+                                                        priority_component));
 
 	  // Remember, the initial version is the InstVer.
 	  if(v == initial_state.version_of(p))
@@ -1350,11 +1425,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  add_version_score(v, keep_score);
 		}
 
-	      tier_operation v_tier_op(specialize_tier_op(safe_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, safe_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier op: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Tier)");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 	  else if(apt_ver.end())
 	    {
@@ -1367,11 +1441,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  add_version_score(v, remove_score);
 		}
 
-	      tier_operation v_tier_op(specialize_tier_op(remove_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, remove_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier op: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << remove_level << " for " << v
 			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Tier)");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 	  else if(apt_ver == (*cache)[p.get_pkg()].CandidateVerIter(*cache))
 	    {
@@ -1396,11 +1469,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		    }
 		}
 
-	      tier_operation v_tier_op(specialize_tier_op(safe_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, safe_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier operation: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Tier).");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 	  else
 	    // We know that:
@@ -1416,11 +1488,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::NonDefaultScore).");
 	      add_version_score(v, non_default_score);
 
-	      tier_operation v_tier_op(specialize_tier_op(non_default_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, non_default_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier op: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << non_default_level << " for " << v
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Tier).");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 
 	  // This logic is slightly duplicated in resolver_manger.cc,
@@ -1439,11 +1510,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  reject_version(v);
 		}
 
-	      tier_operation v_tier_op(specialize_tier_op(break_hold_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, break_hold_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier op: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << break_hold_level << " for " << v
 			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Tier).");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 
 	  // In addition, add the essential-removal score:
@@ -1461,11 +1531,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			"** Rejecting " << v << " because it represents removing an essential package.");
 	      reject_version(v);
 
-	      tier_operation v_tier_op(specialize_tier_op(remove_essential_tier_op, v.get_ver(), policy));
+              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, remove_essential_level));
 	      LOG_DEBUG(loggerTiers,
-			"** Tier op: " << v_tier_op << " for " << v
+			"** Tier level raised to at least " << remove_essential_level << " for " << v
 			<< " because it represents removing an essential package.");
-	      modify_version_tier_op(v, v_tier_op);
 	    }
 
 	  // Look for a conflicts/provides/replaces.

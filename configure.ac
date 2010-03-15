@@ -80,6 +80,7 @@ boost/multi_index_container.hpp dnl
 boost/multi_index/hashed_index.hpp dnl
 boost/multi_index/member.hpp dnl
 boost/multi_index/mem_fun.hpp dnl
+boost/multi_index/random_access_index.hpp dnl
 boost/multi_index/sequenced_index.hpp dnl
 boost/optional.hpp dnl
 boost/ref.hpp dnl

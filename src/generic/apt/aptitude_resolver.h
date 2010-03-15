@@ -25,6 +25,7 @@
 #ifndef APTITUDE_RESOLVER_H
 #define APTITUDE_RESOLVER_H
 
+#include "aptitude_resolver_cost_settings.h"
 #include "aptitude_resolver_universe.h"
 
 #include <generic/apt/matching/pattern.h>
@@ -63,6 +64,8 @@ class aptitude_resolver:public generic_problem_resolver<aptitude_universe>
 {
   choice_set keep_all_solution;
   pkgPolicy *policy;
+
+  aptitude_resolver_cost_settings cost_settings;
 
   void add_full_replacement_score(const pkgCache::VerIterator &src,
 				  const pkgCache::PkgIterator &real_target,
@@ -288,7 +291,8 @@ public:
 
     hint(hint_type _type, int _amt,
 	 const cwidget::util::ref_ptr<aptitude::matching::pattern> &_target,
-	 version_selection _selection, const std::string &_component_name)
+	 version_selection _selection,
+         const std::string &_component_name)
       : type(_type), amt(_amt),
 	target(_target), selection(_selection), component_name()
     {
@@ -429,6 +433,7 @@ public:
 		    int infinity,
 		    int resolution_score,
 		    int future_horizon,
+		    const aptitude_resolver_cost_settings &_cost_settings,
 		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
 		    aptitudeDepCache *cache,
 		    pkgPolicy *_policy);

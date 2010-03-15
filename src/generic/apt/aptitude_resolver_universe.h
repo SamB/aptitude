@@ -1303,12 +1303,12 @@ public:
   static int parse_level(const std::string &s);
 
   // Configuration fetchers.
-  static tier_operation get_safe_tier_op();
-  static tier_operation get_keep_all_tier_op();
-  static tier_operation get_remove_tier_op();
-  static tier_operation get_break_hold_tier_op();
-  static tier_operation get_non_default_tier_op();
-  static tier_operation get_remove_essential_tier_op();
+  static int get_safe_level();
+  static int get_keep_all_level();
+  static int get_remove_level();
+  static int get_break_hold_level();
+  static int get_non_default_level();
+  static int get_remove_essential_level();
 };
 
 /** \brief Write an aptitude_resolver_package to the given stream. */

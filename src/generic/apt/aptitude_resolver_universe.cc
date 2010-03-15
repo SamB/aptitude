@@ -830,34 +830,34 @@ int aptitude_universe::parse_level(const std::string &s)
     }
 }
 
-tier_operation aptitude_universe::get_safe_tier_op()
+int aptitude_universe::get_safe_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
 }
 
-tier_operation aptitude_universe::get_keep_all_tier_op()
+int aptitude_universe::get_keep_all_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
 }
 
-tier_operation aptitude_universe::get_remove_tier_op()
+int aptitude_universe::get_remove_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000"));
 }
 
-tier_operation aptitude_universe::get_break_hold_tier_op()
+int aptitude_universe::get_break_hold_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
 }
 
-tier_operation aptitude_universe::get_non_default_tier_op()
+int aptitude_universe::get_non_default_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
 }
 
-tier_operation aptitude_universe::get_remove_essential_tier_op()
+int aptitude_universe::get_remove_essential_level()
 {
-  return tier_operation::make_advance_user_level(0, parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000")));
+  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
 }
 
 bool aptitude_universe::is_candidate_for_initial_set(const aptitude_resolver_dep &d) const
