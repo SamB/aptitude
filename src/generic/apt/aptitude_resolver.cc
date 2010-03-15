@@ -187,15 +187,19 @@ std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint)
       break;
 
     case aptitude_resolver::hint::tweak_score:
-      out << "tweak(" << hint.get_score() << ")";
+      out << "tweak " << hint.get_amt();
       break;
 
-    case aptitude_resolver::hint::compose_tier_op:
-      out << "increase-tier-to(" << hint.get_tier_op().get_user_level(0) << ")";
+    case aptitude_resolver::hint::add_to_cost_component:
+      out << "add-to-cost-component " << hint.get_component_name() << " " << hint.get_amt();
+      break;
+
+    case aptitude_resolver::hint::raise_cost_component:
+      out << "raise-cost-component " << hint.get_component_name() << " " << hint.get_amt();
       break;
 
     default:
-      out << "bad-hint-type(" << hint.get_type() << ")";
+      out << "bad-hint-type " << hint.get_type();
       break;
     }
 
