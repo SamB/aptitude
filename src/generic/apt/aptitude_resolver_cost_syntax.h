@@ -34,7 +34,9 @@ parse_cost_settings(const std::string &settings);
 
 /** \brief Write some settings to a stream.
  *
- *  This is the inverse of parse_cost_settings.
+ *  This produces a string that, when passed to parse_cost_settings(),
+ *  will produce an identical settings object to one passed as a
+ *  parameter to dump_settings().
  */
 void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings);
 
