@@ -22,6 +22,29 @@
 
 #include <ostream>
 
+namespace
+{
+  class ResolverCostParseException : public cwidget::util::Exception
+  {
+    std::string msg;
+
+  public:
+    ResolverCostParseException(const std::string &_msg)
+      : msg(_msg)
+    {
+    }
+
+    std::string errmsg() const { return msg; }
+  };
+}
+
+boost::shared_ptr<std::vector<cost_component_structure> >
+parse_cost_settings(const std::string &settings)
+{
+  throw ResolverCostParseException("Cost settings parsing: not implemented.");
+}
+
+
 void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings)
 {
   bool first_component = true;
