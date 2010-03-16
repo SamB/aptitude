@@ -30,7 +30,7 @@
  *  Throws a cwidget::util::Exception if parsing failed.
  */
 boost::shared_ptr<std::vector<cost_component_structure> >
-parse_cost_settings(const std::string settings);
+parse_cost_settings(const std::string &settings);
 
 /** \brief Write some settings to a stream.
  *
