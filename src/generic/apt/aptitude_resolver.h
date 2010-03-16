@@ -294,7 +294,7 @@ public:
 	 version_selection _selection,
          const std::string &_component_name)
       : type(_type), amt(_amt),
-	target(_target), selection(_selection), component_name()
+	target(_target), selection(_selection), component_name(_component_name)
     {
     }
 
