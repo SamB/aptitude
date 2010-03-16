@@ -897,7 +897,7 @@ void resolver_manager::create_resolver()
 
   // TODO: this should be parsed from a configuration setting.  This
   // hardcoding is just a placeholder until I write the parser code.
-  boost::shared_ptr<std::vector<cost_component_structure> > cost_components(new std::vector<cost_component_structure>);
+  boost::shared_ptr<std::vector<cost_component_structure> > cost_components(boost::make_shared<std::vector<cost_component_structure> >());
 
   std::vector<cost_component_structure::entry> level0;
   level0.push_back(cost_component_structure::entry("safety", 1));

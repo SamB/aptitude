@@ -24,6 +24,7 @@
 #include "aptitude_resolver_cost_syntax.h"
 
 #include <boost/format.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/mem_fun.hpp>
@@ -318,7 +319,7 @@ public:
 };
 
 aptitude_resolver_cost_settings::aptitude_resolver_cost_settings(const boost::shared_ptr<std::vector<cost_component_structure> > &settings)
-  : impl(new settings_impl(settings))
+  : impl(boost::make_shared<settings_impl>(settings))
 {
 }
 
