@@ -63,6 +63,13 @@ boost/flyweight.hpp dnl
 boost/format.hpp dnl
 boost/functional/hash.hpp dnl
 boost/function.hpp dnl
+boost/fusion/algorithm/transformation/join.hpp dnl
+boost/fusion/algorithm/transformation/push_back.hpp dnl
+boost/fusion/algorithm/transformation/push_front.hpp dnl
+boost/fusion/container/list.hpp dnl
+boost/fusion/include/join.hpp dnl
+boost/fusion/include/sequence.hpp dnl
+boost/fusion/sequence.hpp dnl
 boost/iostreams/copy.hpp dnl
 boost/iostreams/device/file.hpp dnl
 boost/iostreams/filter/gzip.hpp dnl
@@ -82,6 +89,7 @@ boost/multi_index/member.hpp dnl
 boost/multi_index/mem_fun.hpp dnl
 boost/multi_index/random_access_index.hpp dnl
 boost/multi_index/sequenced_index.hpp dnl
+boost/numeric/conversion/cast.hpp dnl
 boost/optional.hpp dnl
 boost/ref.hpp dnl
 boost/scoped_array.hpp dnl

@@ -33,6 +33,7 @@ cppunit_test_SOURCES = \
 	test_dense_setset.cc \
 	test_matching.cc \
 	test_misc.cc \
+	test_parsers.cc \
 	test_promotion_set.cc \
 	test_resolver.cc \
 	test_resolver_costs.cc \
