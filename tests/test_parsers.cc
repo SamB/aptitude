@@ -21,6 +21,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 using namespace parsers;
@@ -32,6 +33,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testParseChar);
   CPPUNIT_TEST(testParseAnyChar);
   CPPUNIT_TEST(testWhitespace);
+  CPPUNIT_TEST(testInteger);
+  CPPUNIT_TEST(testIntegerInvalid);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -110,6 +113,77 @@ public:
 
     CPPUNIT_ASSERT_THROW(sp.parse(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+  }
+
+  void testInteger()
+  {
+    integer_p integer;
+
+    for(int i = -1000; i <= 1000; ++i)
+      {
+        std::string input = boost::lexical_cast<std::string>(i) + "Q";
+
+        std::string::const_iterator begin = input.begin(), end = input.end();
+        CPPUNIT_ASSERT_EQUAL(i, integer.parse(begin, end));
+        CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+      }
+
+    {
+      std::string input = boost::lexical_cast<std::string>(INT_MIN) + "Q";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(INT_MIN, integer.parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+    }
+
+    {
+      std::string input = boost::lexical_cast<std::string>(INT_MAX) + "Q";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(INT_MAX, integer.parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+    }
+  }
+
+  void testIntegerInvalid()
+  {
+    integer_p integer;
+
+    // Try something that's just not an integer at all (but has
+    // integer bits later in the string).
+    {
+      std::string input = "abc123";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+    }
+
+    // If we see a lone hyphen, we should eat it and fail.
+    {
+      std::string input = "-abc123";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+    }
+
+    // The only other failure mode would be an integer that's too
+    // large or too small.  Ideally we would test INT_MIN-1 and
+    // INT_MAX+1, but computing that would require some complexity.
+    // Easier to just append zeroes.
+
+    {
+      std::string input = boost::lexical_cast<std::string>(INT_MIN) + "0";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW(integer.parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+    }
+
+    {
+      std::string input = boost::lexical_cast<std::string>(INT_MAX) + "0";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW(integer.parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+    }
   }
 };
 
