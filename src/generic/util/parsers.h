@@ -249,7 +249,7 @@ namespace parsers
    *  predicate.
    */
   template<typename CType, typename F>
-  class charif_p
+  class charif_p : public parser_base<charif_p<CType, F>, CType>
   {
     F f;
     std::string description;
