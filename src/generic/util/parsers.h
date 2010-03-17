@@ -139,7 +139,7 @@ namespace parsers
     template<typename Iter>
     return_type operator()(Iter &begin, const Iter &end) const
     {
-      return static_cast<DerivedT*>(this)->parse(begin, end);
+      return static_cast<const DerivedT*>(this)->parse(begin, end);
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -147,7 +147,7 @@ namespace parsers
      */
     void get_expected_next(std::ostream &out) const
     {
-      static_cast<DerivedT*>(this)->get_expected_next(out);
+      static_cast<const DerivedT*>(this)->get_expected_next(out);
     }
   };
 
@@ -446,14 +446,13 @@ namespace parsers
     typedef int return_type;
 
     template<typename Iter>
-    int parse(Iter &begin, const Iter &end)
+    int parse(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException(_("Expected an integer, got EOF."));
 
       Iter start = begin;
 
-      bool negate = false;
       // First, parse the sign (if any).
       if(begin != end && *begin == '-')
         ++begin;
