@@ -170,7 +170,7 @@ namespace parsers
     typedef typename parser_base<ch_p<CType>, CType>::return_type return_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end)
+    return_type parse(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException((boost::format(_("Expected '%s', but got EOF.")) %  c).str());
