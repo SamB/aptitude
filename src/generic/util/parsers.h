@@ -463,6 +463,9 @@ namespace parsers
       while(begin != end && isdigit(*begin))
         ++begin;
 
+      if(start == begin)
+        throw ParseException((boost::format(_("Expected an integer, got '%c'.")) % *begin).str());
+
       // Lean on strtol for now.
       std::string s(start, begin);
       char *endptr;
