@@ -48,40 +48,40 @@ public:
 
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_THROW(semicolon.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(',', comma.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
 
-    CPPUNIT_ASSERT_THROW(comma.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(comma(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(';', semicolon.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
     CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(';', semicolon.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
     CPPUNIT_ASSERT_EQUAL(3, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(',', comma.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
     CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
 
-    CPPUNIT_ASSERT_THROW(semicolon.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(',', comma.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
     CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(',', comma.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
     CPPUNIT_ASSERT_EQUAL(6, begin - input.begin());
 
-    CPPUNIT_ASSERT_EQUAL(';', semicolon.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
     CPPUNIT_ASSERT_EQUAL(7, begin - input.begin());
 
-    CPPUNIT_ASSERT_THROW(comma.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(comma(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(7, begin - input.begin());
 
-    CPPUNIT_ASSERT_THROW(semicolon.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(7, begin - input.begin());
   }
 
@@ -94,7 +94,7 @@ public:
     for(std::string::size_type i = 0; i < input.size(); ++i)
       {
         CPPUNIT_ASSERT_EQUAL(i, boost::numeric_cast<std::string::size_type>((begin - input.begin())));
-        CPPUNIT_ASSERT_EQUAL(input[i], any.parse(begin, end));
+        CPPUNIT_ASSERT_EQUAL(input[i], any(begin, end));
       }
 
     CPPUNIT_ASSERT_EQUAL(input.size(), boost::numeric_cast<std::string::size_type>(begin - input.begin()));
@@ -108,10 +108,10 @@ public:
 
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_EQUAL(' ', sp.parse(begin, end));
+    CPPUNIT_ASSERT_EQUAL(' ', sp(begin, end));
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
 
-    CPPUNIT_ASSERT_THROW(sp.parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW(sp(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
   }
 
@@ -124,21 +124,21 @@ public:
         std::string input = boost::lexical_cast<std::string>(i) + "Q";
 
         std::string::const_iterator begin = input.begin(), end = input.end();
-        CPPUNIT_ASSERT_EQUAL(i, integer.parse(begin, end));
+        CPPUNIT_ASSERT_EQUAL(i, integer(begin, end));
         CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
       }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MIN) + "Q";
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_EQUAL(INT_MIN, integer.parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(INT_MIN, integer(begin, end));
       CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
     }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MAX) + "Q";
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_EQUAL(INT_MAX, integer.parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(INT_MAX, integer(begin, end));
       CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
     }
   }
@@ -174,14 +174,14 @@ public:
     {
       std::string input = boost::lexical_cast<std::string>(INT_MIN) + "0";
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_THROW(integer.parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
     }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MAX) + "0";
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_THROW(integer.parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
     }
   }
