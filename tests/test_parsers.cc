@@ -50,6 +50,10 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testForeachEmptyEndEOF);
   CPPUNIT_TEST(testForeachNotEmptyEndNotEOF);
   CPPUNIT_TEST(testForeachNotEmptyEndEOF);
+  CPPUNIT_TEST(testSkipEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipEmptyEndEOF);
+  CPPUNIT_TEST(testSkipNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipNotEmptyEndEOF);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -438,6 +442,54 @@ public:
     (foreach(letter, push_back_a(result)))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), result);
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testSkipEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "   abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    (skip(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testSkipEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    (skip(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testSkipNotEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    (skip(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testSkipNotEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    (skip(letter))(begin, end);
+
     CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
   }
 };
