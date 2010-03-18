@@ -210,6 +210,26 @@ public:
     CPPUNIT_ASSERT_NO_THROW(e(begin, end));
     CPPUNIT_ASSERT_EQUAL(3, begin - input.begin());
   }
+
+  void testStr()
+  {
+    std::string input = "abcdef";
+
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    str abc("abc");
+    str da("da");
+    str xyz("xyz");
+
+    CPPUNIT_ASSERT_NO_THROW(abc(begin, end));
+    CPPUNIT_ASSERT_EQUAL(3, begin - input.begin());
+
+    CPPUNIT_ASSERT_THROW(da(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
+
+    CPPUNIT_ASSERT_THROW(xyz(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
+  }
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ParsersTest);
