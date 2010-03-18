@@ -65,7 +65,7 @@ namespace parsers
    *    Iter must be a model of ForwardIterator.  begin will be updated
    *    to point to the first character that was not parsed.  Throws
    *    ParseException if the input could not be parsed.
-   *  - get_expected_next(std::ostream &out) const: writes a brief description
+   *  - get_expected_description(std::ostream &out) const: writes a brief description
    *    of the next token expected by this parser to "out".
    *
    *  \note Parsers are not specialized on the character type of their
@@ -85,7 +85,7 @@ namespace parsers
    *    parse routine.  Iter must be a model of ForwardIterator.  begin
    *    will be updated to point to the first character that was not
    *    parsed.  Throws ParseException if the input could not be parsed.
-   *  - get_expected_next(std::ostream &out) const: writes a brief description
+   *  - get_expected(std::ostream &out) const: writes a brief description
    *    of the next token expected by this rule to "out".
    */
 
@@ -163,9 +163,9 @@ namespace parsers
     /** \brief Write a description of what we expect to see here to
      *  the given stream.
      */
-    void get_expected_next(std::ostream &out) const
+    void get_expected_description(std::ostream &out) const
     {
-      derived().get_expected_next(out);
+      derived().get_expected(out);
     }
 
     /** \brief Get a reference to this object, cast to its derived type.
@@ -626,7 +626,7 @@ namespace parsers
       return value;
     }
 
-    void get_expected_next(std::ostream &out) const
+    void get_expected(std::ostream &out) const
     {
       out << _("anything");
     }
@@ -677,9 +677,9 @@ namespace parsers
       return p2(begin, end);
     }
 
-    void get_expected_next(std::ostream &out) const
+    void get_expected(std::ostream &out) const
     {
-      p1.get_expected_next(out);
+      p1.get_expected_description(out);
     }
   };
 
@@ -716,7 +716,7 @@ namespace parsers
 
     void get_expected(std::ostream &out)
     {
-      p.get_expected(out);
+      p.get_expected_description(out);
     }
   };
 
