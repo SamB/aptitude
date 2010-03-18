@@ -36,6 +36,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testInteger);
   CPPUNIT_TEST(testIntegerInvalid);
   CPPUNIT_TEST(testEof);
+  CPPUNIT_TEST(testStr);
 
   CPPUNIT_TEST_SUITE_END();
 
