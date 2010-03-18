@@ -711,12 +711,12 @@ namespace parsers
     typedef typename P::return_type return_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end)
+    return_type parse(Iter &begin, const Iter &end) const
     {
       return p(begin, end);
     }
 
-    void get_expected(std::ostream &out)
+    void get_expected(std::ostream &out) const
     {
       p.get_expected_description(out);
     }
