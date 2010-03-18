@@ -67,6 +67,8 @@ namespace parsers
    *    ParseException if the input could not be parsed.
    *  - get_expected_description(std::ostream &out) const: writes a brief description
    *    of the next token expected by this parser to "out".
+   *  - derived(): returns a reference to the object, cast to its
+   *    concrete parser type.
    *
    *  \note Parsers are not specialized on the character type of their
    *  input stream; the character type is simply the value_type of the
