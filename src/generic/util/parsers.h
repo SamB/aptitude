@@ -718,7 +718,7 @@ namespace parsers
 
     void get_expected(std::ostream &out) const
     {
-      p.get_expected_description(out);
+      out << msg;
     }
   };
 
