@@ -38,7 +38,11 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <generic/util/util.h>
+
 #include <aptitude.h>
+
+#include <errno.h>
 
 namespace parsers
 {
@@ -469,7 +473,13 @@ namespace parsers
       // Lean on strtol for now.
       std::string s(start, begin);
       char *endptr;
+      errno = 0;
       long rval = strtol(s.c_str(), &endptr, 0);
+      if(errno != 0)
+        {
+          int errnum = errno;
+          throw ParseException(sstrerror(errnum));
+        }
 
       if(*endptr != '\0')
         throw ParseException((boost::format(_("Invalid integer: \"%s\".")) % s).str());
