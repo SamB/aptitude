@@ -54,6 +54,10 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSkipEmptyEndEOF);
   CPPUNIT_TEST(testSkipNotEmptyEndNotEOF);
   CPPUNIT_TEST(testSkipNotEmptyEndEOF);
+  CPPUNIT_TEST(testManyEmptyEndNotEOF);
+  CPPUNIT_TEST(testManyEmptyEndEOF);
+  CPPUNIT_TEST(testManyNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testManyNotEmptyEndEOF);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -490,6 +494,58 @@ public:
 
     (skip(letter))(begin, end);
 
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testManyEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "   abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testManyEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testManyNotEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testManyNotEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
     CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
   }
 };
