@@ -585,7 +585,7 @@ namespace parsers
     typedef T return_type;
 
     template<typename Iter>
-    T parse(Iter &begin, Iter &end) const
+    T parse(Iter &begin, const Iter &end) const
     {
       return value;
     }
