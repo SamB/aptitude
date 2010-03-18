@@ -45,6 +45,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testAndThenFirstFailsAndConsumesInput);
   CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInput);
   CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInputChained);
+  CPPUNIT_TEST(testSetExpected);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -347,6 +348,33 @@ public:
 
     CPPUNIT_ASSERT_THROW((w >> x >> y >> z)(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testSetExpected()
+  {
+    ch_p<char> a('a');
+
+    std::string new_expected("My hovercraft is full of eels");
+
+    set_expected_p<ch_p<char> > a2 = a << new_expected;
+
+    std::stringstream msg1;
+    a.get_expected_description(msg1);
+    CPPUNIT_ASSERT( msg1.str() != new_expected );
+
+    std::stringstream msg2;
+    a2.get_expected_description(msg2);
+    CPPUNIT_ASSERT_EQUAL(new_expected, msg2.str());
+
+    // Test that we can parse, too.
+    std::string input("aba");
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_EQUAL('a', a2(begin, end));
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+
+    CPPUNIT_ASSERT_THROW(a2(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
   }
 };
 
