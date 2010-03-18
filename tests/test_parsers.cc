@@ -175,14 +175,14 @@ public:
       std::string input = boost::lexical_cast<std::string>(INT_MIN) + "0";
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+      CPPUNIT_ASSERT(begin != input.begin());
     }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MAX) + "0";
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL(1, input.end() - begin);
+      CPPUNIT_ASSERT(begin != input.begin());
     }
   }
 };
