@@ -554,8 +554,8 @@ namespace parsers
         }
 
       if(s_begin != s_end)
-        throw ParseException((boost::format("Expected \"%s\", but got EOF following \"%s\"."))
-                             % s % std::string(start, begin));
+        throw ParseException((boost::format("Expected \"%s\", but got EOF following \"%s\".")
+                              % s % std::string(start, begin)).str());
 
       return nil_t();
     }
