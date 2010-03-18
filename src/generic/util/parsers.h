@@ -687,10 +687,10 @@ namespace parsers
    *  parser's result.
    */
   template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
-  andthen_p<parser_base<Rule1, ReturnType1>, parser_base<Rule2, ReturnType2> >
+  andthen_p<Rule1, Rule2>
   inline operator>>(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
   {
-    return andthen_p<parser_base<Rule1, ReturnType1>, parser_base<Rule2, ReturnType2> >(p1, p2);
+    return andthen_p<Rule1, Rule2>(p1.derived(), p2.derived());
   }
 
   /** \brief A parser that modifies the expected value of its target. */
