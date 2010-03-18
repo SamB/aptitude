@@ -115,6 +115,9 @@ namespace parsers
   /** \brief Used when a parser has no sensible return value. */
   class nil_t { };
 
+  template<typename P>
+  class set_expected_p;
+
   /** \brief The base class for all parser objects.
    *
    *  Having a common base for parsers allows us to do operator
@@ -190,6 +193,14 @@ namespace parsers
     const DerivedT &derived() const
     {
       return *static_cast<const DerivedT *>(this);
+    }
+
+    /** \brief Create a parser that modifies the expected value of
+     *  this parser.
+     */
+    set_expected_p<DerivedT> operator[](const std::string &msg) const
+    {
+      return set_expected_p<DerivedT>(derived(), msg);
     }
   };
 
@@ -721,15 +732,6 @@ namespace parsers
       out << msg;
     }
   };
-
-  /** \brief Create a parser that modifies the expected value of its
-   *  target.
-   */
-  template<typename Rule, typename ReturnType>
-  inline set_expected_p<Rule> operator<<(const parser_base<Rule, ReturnType> &p, const std::string &msg)
-  {
-    return set_expected_p<Rule>(p.derived(), msg);
-  }
 
   /** \brief Parse zero or more occurrences of the input pattern,
    *  invoking a function object for each occurrence.

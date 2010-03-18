@@ -356,7 +356,7 @@ public:
 
     std::string new_expected("My hovercraft is full of eels");
 
-    set_expected_p<ch_p<char> > a2 = a << new_expected;
+    set_expected_p<ch_p<char> > a2 = a[new_expected];
 
     std::stringstream msg1;
     a.get_expected_description(msg1);
