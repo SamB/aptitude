@@ -25,6 +25,22 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
+/** \brief Exception type thrown by parse_cost_settings(). */
+class ResolverCostParseException : public std::exception
+{
+  std::string msg;
+
+public:
+  ResolverCostParseException(const std::string &_msg)
+    : msg(_msg)
+  {
+  }
+
+  ~ResolverCostParseException() throw() { }
+
+  const char *what() const throw() { return msg.c_str(); }
+};
+
 /** \brief Parse a settings string.
  *
  *  Throws a cwidget::util::Exception if parsing failed.

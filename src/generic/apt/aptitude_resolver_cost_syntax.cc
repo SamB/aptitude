@@ -22,24 +22,6 @@
 
 #include <ostream>
 
-namespace
-{
-  class ResolverCostParseException : public std::exception
-  {
-    std::string msg;
-
-  public:
-    ResolverCostParseException(const std::string &_msg)
-      : msg(_msg)
-    {
-    }
-
-    ~ResolverCostParseException() throw() { }
-
-    const char *what() const throw() { return msg.c_str(); }
-  };
-}
-
 boost::shared_ptr<std::vector<cost_component_structure> >
 parse_cost_settings(const std::string &settings)
 {

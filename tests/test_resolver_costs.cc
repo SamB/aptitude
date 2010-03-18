@@ -345,7 +345,7 @@ public:
     int fail_inputs_length = sizeof(fail_inputs) / sizeof(fail_inputs[0]);
 
     for(int i = 0; i < fail_inputs_length; ++i)
-      CPPUNIT_ASSERT_THROW(parse_cost_settings(fail_inputs[i]), cwidget::util::Exception);
+      CPPUNIT_ASSERT_THROW(parse_cost_settings(fail_inputs[i]), ResolverCostParseException);
   }
 
   void testResolverCostSettingsSerialize()
