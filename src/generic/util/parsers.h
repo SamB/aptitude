@@ -726,9 +726,9 @@ namespace parsers
    *  target.
    */
   template<typename Rule, typename ReturnType>
-  inline set_expected_p<parser_base<Rule, ReturnType> > operator<<(const parser_base<Rule, ReturnType> &p, const std::string &msg)
+  inline set_expected_p<Rule> operator<<(const parser_base<Rule, ReturnType> &p, const std::string &msg)
   {
-    return set_expected_p<parser_base<Rule, ReturnType> >(p, msg);
+    return set_expected_p<Rule>(p.derived(), msg);
   }
 
   /** \brief Parse zero or more occurrences of the input pattern,
