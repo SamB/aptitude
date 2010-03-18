@@ -213,7 +213,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    CType parse(Iter &begin, Iter end) const
+    CType parse(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         {
