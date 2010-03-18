@@ -157,7 +157,7 @@ namespace parsers
     template<typename Iter>
     return_type operator()(Iter &begin, const Iter &end) const
     {
-      return static_cast<const DerivedT*>(this)->parse(begin, end);
+      return derived().parse(begin, end);
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -165,7 +165,29 @@ namespace parsers
      */
     void get_expected_next(std::ostream &out) const
     {
-      static_cast<const DerivedT*>(this)->get_expected_next(out);
+      derived().get_expected_next(out);
+    }
+
+    /** \brief Get a reference to this object, cast to its derived type.
+     *
+     *  We need a reference to the derived type whenever this is going
+     *  to be stored (since you shouldn't store parser_base by
+     *  accident).
+     */
+    DerivedT &derived()
+    {
+      return *static_cast<DerivedT *>(*this);
+    }
+
+    /** \brief Get a reference to this object, cast to its derived type.
+     *
+     *  We need a reference to the derived type whenever this is going
+     *  to be stored (since you shouldn't store parser_base by
+     *  accident).
+     */
+    const DerivedT &derived() const
+    {
+      return *static_cast<const DerivedT *>(this);
     }
   };
 
