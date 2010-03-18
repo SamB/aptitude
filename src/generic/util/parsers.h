@@ -603,6 +603,16 @@ namespace parsers
     return val_p<T>(value);
   }
 
+  /** \brief Create a parser that parses nothing and returns a string.
+   *
+   *  This overload is purely so val("abc") works; otherwise the
+   *  compiler tries to save an array or a char pointer.
+   */
+  inline val_p<std::string> val(const char *s)
+  {
+    return val_p<std::string>(s);
+  }
+
   // @}
 
   /** \brief Combine two parsers in sequence, throwing away the first
