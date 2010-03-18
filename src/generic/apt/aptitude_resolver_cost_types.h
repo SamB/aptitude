@@ -27,7 +27,7 @@
 
 #include <string>
 
-class CostTypeCheckFailure : public cwidget::util::Exception
+class CostTypeCheckFailure : public std::exception
 {
   std::string msg;
 
@@ -37,7 +37,9 @@ public:
   {
   }
 
-  std::string errmsg() const { return msg; }
+  ~CostTypeCheckFailure() throw() { }
+
+  const char *what() const throw() { return msg.c_str(); }
 };
 
 /** \brief A representation of the syntactic structure of a single

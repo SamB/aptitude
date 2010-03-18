@@ -24,7 +24,7 @@
 
 namespace
 {
-  class ResolverCostParseException : public cwidget::util::Exception
+  class ResolverCostParseException : public std::exception
   {
     std::string msg;
 
@@ -34,7 +34,9 @@ namespace
     {
     }
 
-    std::string errmsg() const { return msg; }
+    ~ResolverCostParseException() throw() { }
+
+    const char *what() const throw() { return msg.c_str(); }
   };
 }
 
