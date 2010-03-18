@@ -813,6 +813,13 @@ namespace parsers
     }
   };
 
+  /** \brief Push incoming values onto an STL-style sequence. */
+  template<typename C>
+  push_back_f<C> push_back_a(C &c)
+  {
+    return push_back_f<C>(c);
+  }
+
   // @}
 
   /** \brief Parse zero or more occurrences of the input pattern,
