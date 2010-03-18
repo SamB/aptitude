@@ -37,6 +37,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testIntegerInvalid);
   CPPUNIT_TEST(testEof);
   CPPUNIT_TEST(testStr);
+  CPPUNIT_TEST(testVal);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -230,6 +231,17 @@ public:
 
     CPPUNIT_ASSERT_THROW(xyz(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
+  }
+
+  void testVal()
+  {
+    std::string input = "o3qithkje5hgkjh";
+    std::string::const_iterator begin = input.begin(), end = input.begin();
+
+    val_p<std::string> v = val("abcdefg");
+
+    CPPUNIT_ASSERT_EQUAL(std::string("abcdefg"), v(begin, end));
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
   }
 };
 
