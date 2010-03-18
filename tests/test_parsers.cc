@@ -35,6 +35,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testWhitespace);
   CPPUNIT_TEST(testInteger);
   CPPUNIT_TEST(testIntegerInvalid);
+  CPPUNIT_TEST(testEof);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -184,6 +185,30 @@ public:
       CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
       CPPUNIT_ASSERT(begin != input.begin());
     }
+  }
+
+  void testEof()
+  {
+    std::string input = "abc";
+
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    eof e;
+
+    CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+
+    ++begin;
+    CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+
+    ++begin;
+    CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+
+    ++begin;
+    CPPUNIT_ASSERT_NO_THROW(e(begin, end));
+    CPPUNIT_ASSERT_EQUAL(3, begin - input.begin());
   }
 };
 
