@@ -125,12 +125,26 @@ namespace parsers
    *  useful.
    *
    *  \tparam DerivedT   The derived type that actually implements the parser's
-   *                     behavior.
+   *                     behavior.  Must be a subclass of this instantiation
+   *                     of parser_base, or bad stuff will happen.
    *  \tparam ReturnType The type returned by the parse operation.
    */
   template<typename DerivedT, typename ReturnType>
   class parser_base
   {
+  protected:
+    parser_base()
+    {
+    }
+
+    parser_base(const parser_base &other)
+    {
+    }
+
+    ~parser_base()
+    {
+    }
+
   public:
     typedef ReturnType return_type;
 
