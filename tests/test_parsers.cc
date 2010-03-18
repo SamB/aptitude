@@ -38,6 +38,10 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testEof);
   CPPUNIT_TEST(testStr);
   CPPUNIT_TEST(testVal);
+  CPPUNIT_TEST(testAndThenBothMatch);
+  CPPUNIT_TEST(testAndThenOnlyFirstMatches);
+  CPPUNIT_TEST(testAndThenFirstFailsAndConsumesInput);
+  CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInput);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -241,6 +245,68 @@ public:
     val_p<std::string> v = val("abcdefg");
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcdefg"), v(begin, end));
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  // Cases to test for the "and then" parser:
+  //
+  //  1. Both parsers match.  Check that "begin" is advanced
+  //     past the second match and that the second value (not
+  //     the first) is returned.
+  //  2. Only the first parser matches.  Check that "begin" is
+  //     advanced and an exception is thrown.
+  //  3. The first parser fails after consuming input.
+  //     Check that "begin" is advanced and an exception is
+  //     thrown.
+  //  4. The first parser fails without consuming input.
+  //     Check that "begin" is NOT advanced and that an
+  //     exception is thrown.
+
+  // Case 1: both parsers match.
+  void testAndThenBothMatch()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    str ab("ab"), cd("cd");
+
+    CPPUNIT_ASSERT_NO_THROW((ab >> cd)(begin, end));
+    CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
+  }
+
+  // Case 2: only the first parser matches.
+  void testAndThenOnlyFirstMatches()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    str ab("ab"), yz("yz");
+
+    CPPUNIT_ASSERT_THROW((ab >> yz)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+  }
+
+  // Case 3: the first parser fails after consuming input.
+  void testAndThenFirstFailsAndConsumesInput()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    str ax("ax"), yz("yz");
+
+    CPPUNIT_ASSERT_THROW((ax >> yz)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+  }
+
+  // Case 4: the first parser fails without consuming input.
+  void testAndThenFirstFailsWithoutConsumingInput()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    str wx("wx"), yz("yz");
+
+    CPPUNIT_ASSERT_THROW((wx >> yz)(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
   }
 };
