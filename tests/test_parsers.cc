@@ -46,6 +46,10 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInput);
   CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInputChained);
   CPPUNIT_TEST(testSetExpected);
+  CPPUNIT_TEST(testForeachEmptyEndNotEOF);
+  CPPUNIT_TEST(testForeachEmptyEndEOF);
+  CPPUNIT_TEST(testForeachNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testForeachNotEmptyEndEOF);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -375,6 +379,66 @@ public:
 
     CPPUNIT_ASSERT_THROW(a2(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+  }
+
+  void testForeachEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "   abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    std::string result;
+
+    (foreach(letter, push_back_a(result)))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string(""), result);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testForeachEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    std::string result;
+
+    (foreach(letter, push_back_a(result)))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string(""), result);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testForeachNotEmptyEndNotEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde   ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    std::string result;
+
+    (foreach(letter, push_back_a(result)))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string("abcde"), result);
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testForeachNotEmptyEndEOF()
+  {
+    alpha_p letter = alpha();
+
+    std::string input = "abcde";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    std::string result;
+
+    (foreach(letter, push_back_a(result)))(begin, end);
+
+    CPPUNIT_ASSERT_EQUAL(std::string("abcde"), result);
+    CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
   }
 };
 
