@@ -39,9 +39,12 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testStr);
   CPPUNIT_TEST(testVal);
   CPPUNIT_TEST(testAndThenBothMatch);
+  CPPUNIT_TEST(testAndThenBothMatchChained);
   CPPUNIT_TEST(testAndThenOnlyFirstMatches);
+  CPPUNIT_TEST(testAndThenOnlyFirstMatchesChained);
   CPPUNIT_TEST(testAndThenFirstFailsAndConsumesInput);
   CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInput);
+  CPPUNIT_TEST(testAndThenFirstFailsWithoutConsumingInputChained);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -274,6 +277,18 @@ public:
     CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
   }
 
+  // Case 1.5: chain together multiple parsers.
+  void testAndThenBothMatchChained()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    ch_p<char> a('a'), b('b'), c('c'), d('d');
+
+    CPPUNIT_ASSERT_NO_THROW((a >> b >> c >> d)(begin, end));
+    CPPUNIT_ASSERT_EQUAL(4, begin - input.begin());
+  }
+
   // Case 2: only the first parser matches.
   void testAndThenOnlyFirstMatches()
   {
@@ -283,6 +298,18 @@ public:
     str ab("ab"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((ab >> yz)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+  }
+
+  // Case 2.5: only the first two parsers match, with several chained together.
+  void testAndThenOnlyFirstMatchesChained()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    ch_p<char> a('a'), b('b'), y('y'), z('z');
+
+    CPPUNIT_ASSERT_THROW((a >> b >> y >> z)(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
   }
 
@@ -307,6 +334,18 @@ public:
     str wx("wx"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((wx >> yz)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  // Case 4.5: the first parser fails without consuming input (chained).
+  void testAndThenFirstFailsWithoutConsumingInputChained()
+  {
+    std::string input = "abcd";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    ch_p<char> w('w'), x('x'), y('y'), z('z');
+
+    CPPUNIT_ASSERT_THROW((w >> x >> y >> z)(begin, end), ParseException);
     CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
   }
 };
