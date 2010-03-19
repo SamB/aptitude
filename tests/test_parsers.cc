@@ -58,6 +58,14 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testManyEmptyEndEOF);
   CPPUNIT_TEST(testManyNotEmptyEndNotEOF);
   CPPUNIT_TEST(testManyNotEmptyEndEOF);
+  CPPUNIT_TEST(testOrFirstBranchMatches);
+  CPPUNIT_TEST(testOrFirstBranchFailsAndConsumesInput);
+  CPPUNIT_TEST(testOrSecondBranchMatches);
+  CPPUNIT_TEST(testOrSecondBranchFailsAndConsumesInput);
+  CPPUNIT_TEST(testOrSecondBranchFailsAndConsumesNoInput);
+  CPPUNIT_TEST(testOrChainedSuccess);
+  CPPUNIT_TEST(testOrChainedFailure);
+  CPPUNIT_TEST(testOrChainedCollapsesParsers);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -547,6 +555,134 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
     CPPUNIT_ASSERT_EQUAL(5, begin - input.begin());
+  }
+
+  void testOrFirstBranchMatches()
+  {
+    str ab("ab"), a("a");
+
+    std::string input = "abskrj";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_NO_THROW((ab | a)(begin, end));
+    CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+  }
+
+  void testOrFirstBranchFailsAndConsumesInput()
+  {
+    str ab("ab"), a("a");
+
+    std::string input = "acskrj";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_THROW((ab | a)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+  }
+
+  void testOrSecondBranchMatches()
+  {
+    str ab("ab"), cd("cd");
+
+    std::string input = "cdlkwrj";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_NO_THROW((ab | cd)(begin, end));
+    CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+  }
+
+  void testOrSecondBranchFailsAndConsumesInput()
+  {
+    str ab("ab"), cd("cd");
+
+    std::string input = "cyzablksdfj";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_THROW((ab | cd)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+  }
+
+  void testOrSecondBranchFailsAndConsumesNoInput()
+  {
+    str ab("ab"), cd("cd");
+
+    std::string input = "yzablksdfj";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_THROW((ab | cd)(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+  }
+
+  void testOrChainedSuccess()
+  {
+    str ab("ab"), cd("cd"), ef("ef");
+
+    {
+      std::string input = "abcdef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
+      CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+    }
+
+    {
+      std::string input = "cd";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
+      CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+    }
+
+    {
+      std::string input = "ef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
+      CPPUNIT_ASSERT_EQUAL(2, begin - input.begin());
+    }
+  }
+
+  void testOrChainedFailure()
+  {
+    str ab("ab"), cd("cd"), ef("ef");
+
+    {
+      std::string input = "axyz";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+    }
+
+    {
+      std::string input = "cxyz";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+    }
+
+    {
+      std::string input = "exyz";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(1, begin - input.begin());
+    }
+
+    {
+      std::string input = "xyz";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL(0, begin - input.begin());
+    }
+  }
+
+  void testOrChainedCollapsesParsers()
+  {
+    ch_p<char> a('a'), b('b'), c('c'), d('d'), e('e'), f('f');
+
+    CPPUNIT_ASSERT_EQUAL(6, (int)boost::fusion::size((a | b | c | d | e | f).get_values()));
   }
 };
 
