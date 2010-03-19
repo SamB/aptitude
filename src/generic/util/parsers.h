@@ -31,6 +31,7 @@
 #include <boost/fusion/algorithm/transformation/push_back.hpp>
 #include <boost/fusion/algorithm/transformation/push_front.hpp>
 #include <boost/fusion/container/list.hpp>
+#include <boost/fusion/container/vector/convert.hpp>
 #include <boost/fusion/include/join.hpp>
 #include <boost/fusion/include/sequence.hpp>
 #include <boost/fusion/sequence.hpp>
@@ -1056,18 +1057,32 @@ namespace parsers
   // Boost.Fusion to flatten expressions at compile-time.  (hopefully
   // at compile-time)
 
+  // Note: this could be a bit more efficient if I was able to build
+  // an intermediate container type that could be used only as a
+  // constructor argument to "or".  That way I wouldn't need to
+  // eagerly copy structures around all over.  However, doing this now
+  // would be premature optimization.
+
+  // Each of these routines creates an "or" that stores a Fusion
+  // vector with copies of the input arguments.  Doing this is a bit
+  // tricky since a lot of Fusion objects like to store references to
+  // their input arguments.
+
   /** \brief Create a parser that tries the left-hand argument; if it
    *  fails without advancing "begin", then the right-hand argument is
    *  tried.
    */
   template<typename C1, typename C2>
-  inline or_p<typename boost::fusion::result_of::join<C1, C2>::type>
+  inline or_p<typename boost::fusion::result_of::as_vector<boost::fusion::joint_view<C1, C2> >::type>
   operator|(const or_p<C1> &o1, const or_p<C2> &o2)
   {
-    typedef typename boost::fusion::result_of::join<C1, C2>::type
-      result_container;
-    return or_p<result_container>(boost::fusion::join(o1.get_values(),
-                                                      o2.get_values()));
+    // We use joint_view directly instead of via join() because
+    // template parameter inference puts too many consts into the
+    // template arguments otherwise.
+    typedef boost::fusion::joint_view<C1, C2> interim_container;
+    typedef typename boost::fusion::result_of::as_vector<interim_container>::type result_container;
+    return or_p<result_container>(boost::fusion::as_vector(boost::fusion::join(o1.get_values(),
+                                                                               o2.get_values())));
   }
 
   /** \brief Create a parser that tries the left-hand argument; if it
@@ -1075,13 +1090,15 @@ namespace parsers
    *  tried.
    */
   template<typename C, typename Rule, typename ReturnType>
-  inline or_p<typename boost::fusion::result_of::push_back<C, Rule>::type>
+  inline or_p<typename boost::fusion::result_of::as_vector<typename boost::fusion::result_of::push_back<C, Rule>::type>::type>
   operator|(const or_p<C> &o, const parser_base<Rule, ReturnType> &p)
   {
     typedef typename boost::fusion::result_of::push_back<C, Rule>::type
+      interim_container;
+    typedef typename boost::fusion::result_of::as_vector<interim_container>::type
       result_container;
-    return or_p<result_container>(boost::fusion::push_back(o.get_values(),
-                                                           p.derived()));
+    return or_p<result_container>(boost::fusion::as_vector(boost::fusion::push_back(o.get_values(),
+                                                                                    p.derived())));
   }
 
   /** \brief Create a parser that tries the left-hand argument; if it
@@ -1089,13 +1106,15 @@ namespace parsers
    *  tried.
    */
   template<typename C, typename Rule, typename ReturnType>
-  inline or_p<typename boost::fusion::result_of::push_front<C, Rule>::type>
+  inline or_p<typename boost::fusion::result_of::as_vector<boost::fusion::joint_view<boost::fusion::cons<Rule>, C> >::type>
   operator|(const parser_base<Rule, ReturnType> &p, const or_p<C> &o)
   {
-    typedef typename boost::fusion::result_of::push_front<C, Rule>::type
+    typedef boost::fusion::result_of::push_front<C, Rule>
+      interim_container;
+    typedef typename boost::fusion::result_of::as_vector<interim_container>::type
       result_container;
-    return or_p<result_container>(boost::fusion::push_front(o.get_values(),
-                                                            p.derived()));
+    return or_p<result_container>(boost::fusion::as_vector(boost::fusion::push_front(o.get_values(),
+                                                                                     p.derived())));
   }
 
   /** \brief Create a parser that tries the left-hand argument; if it
@@ -1103,10 +1122,10 @@ namespace parsers
    *  tried.
    */
   template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
-  inline or_p<boost::fusion::list<Rule1, Rule2> >
+  inline or_p<boost::fusion::vector<Rule1, Rule2> >
   operator|(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
   {
-    typedef boost::fusion::list<Rule1, Rule2>
+    typedef boost::fusion::vector<Rule1, Rule2>
       result_container;
 
     return or_p<result_container>(result_container(p1.derived(), p2.derived()));
