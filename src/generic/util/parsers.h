@@ -1075,13 +1075,13 @@ namespace parsers
    *  tried.
    */
   template<typename C, typename Rule, typename ReturnType>
-  inline or_p<typename boost::fusion::result_of::push_back<C, parser_base<Rule, ReturnType> >::type>
+  inline or_p<typename boost::fusion::result_of::push_back<C, Rule>::type>
   operator|(const or_p<C> &o, const parser_base<Rule, ReturnType> &p)
   {
-    typedef typename boost::fusion::result_of::push_back<C, parser_base<Rule, ReturnType> >::type
+    typedef typename boost::fusion::result_of::push_back<C, Rule>::type
       result_container;
     return or_p<result_container>(boost::fusion::push_back(o.get_values(),
-                                                           p));
+                                                           p.derived()));
   }
 
   /** \brief Create a parser that tries the left-hand argument; if it
@@ -1089,13 +1089,13 @@ namespace parsers
    *  tried.
    */
   template<typename C, typename Rule, typename ReturnType>
-  inline or_p<typename boost::fusion::result_of::push_front<C, parser_base<Rule, ReturnType> >::type>
+  inline or_p<typename boost::fusion::result_of::push_front<C, Rule>::type>
   operator|(const parser_base<Rule, ReturnType> &p, const or_p<C> &o)
   {
-    typedef typename boost::fusion::result_of::push_front<C, parser_base<Rule, ReturnType> >::type
+    typedef typename boost::fusion::result_of::push_front<C, Rule>::type
       result_container;
     return or_p<result_container>(boost::fusion::push_front(o.get_values(),
-                                                            p));
+                                                            p.derived()));
   }
 
   /** \brief Create a parser that tries the left-hand argument; if it
@@ -1103,13 +1103,13 @@ namespace parsers
    *  tried.
    */
   template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
-  inline or_p<boost::fusion::list<parser_base<Rule1, ReturnType1>, parser_base<Rule2, ReturnType2> > >
+  inline or_p<boost::fusion::list<Rule1, Rule2> >
   operator|(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
   {
-    typedef boost::fusion::list<parser_base<Rule1, ReturnType1>, parser_base<Rule2, ReturnType2> >
+    typedef boost::fusion::list<Rule1, Rule2>
       result_container;
 
-    return or_p<result_container>(result_container(p1, p2));
+    return or_p<result_container>(result_container(p1.derived(), p2.derived()));
   }
 
 
