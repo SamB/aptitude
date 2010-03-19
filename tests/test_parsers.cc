@@ -643,13 +643,21 @@ public:
 
   void testOrChainedFailure()
   {
-    str ab("ab"), cd("cd"), ef("ef");
+    str ab("ab"), cd("cd"), ef("ef"), a("a");
 
     {
       std::string input = "axyz";
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    }
+
+    {
+      std::string input = "axyz";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((ab | a | a | a | a | cd | ef)(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
     }
 
