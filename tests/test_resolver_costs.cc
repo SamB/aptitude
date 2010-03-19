@@ -244,7 +244,7 @@ public:
     boost::shared_ptr<std::vector<cost_component_structure> >
       parsed = parse_cost_settings(input);
 
-    CPPUNIT_ASSERT_EQUAL((unsigned int)6, parsed->size());
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)6, parsed->size());
 
     const cost_component_structure &level0 = (*parsed)[0];
     const cost_component_structure &level1 = (*parsed)[1];
@@ -257,7 +257,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_add,
                          level0.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)3,
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)3,
                          level0.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("removals"), (*level0.get_entries())[0].get_name());
@@ -273,7 +273,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_max,
                          level1.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)3,
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)3,
                          level1.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("removals"), (*level1.get_entries())[0].get_name());
@@ -289,7 +289,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_none,
                          level2.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)1, level2.get_entries()->size());
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)1, level2.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("aardvarks"), (*level2.get_entries())[0].get_name());
     CPPUNIT_ASSERT_EQUAL(1, (*level2.get_entries())[0].get_scaling_factor());
@@ -299,7 +299,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_none,
                          level3.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)1, level3.get_entries()->size());
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)1, level3.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("removals"), (*level3.get_entries())[0].get_name());
     CPPUNIT_ASSERT_EQUAL(4, (*level3.get_entries())[0].get_scaling_factor());
@@ -308,7 +308,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_max,
                          level4.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)1, level4.get_entries()->size());
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)1, level4.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("cancels"), (*level4.get_entries())[0].get_name());
     CPPUNIT_ASSERT_EQUAL(1, (*level4.get_entries())[0].get_scaling_factor());
@@ -318,7 +318,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(cost_component_structure::combine_max,
                          level5.get_combining_op());
-    CPPUNIT_ASSERT_EQUAL((unsigned int)1, level5.get_entries()->size());
+    CPPUNIT_ASSERT_EQUAL((std::vector<cost_component_structure>::size_type)1, level5.get_entries()->size());
 
     CPPUNIT_ASSERT_EQUAL(std::string("cancels"), (*level5.get_entries())[0].get_name());
     CPPUNIT_ASSERT_EQUAL(2, (*level5.get_entries())[0].get_scaling_factor());
