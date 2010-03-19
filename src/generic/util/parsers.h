@@ -936,6 +936,29 @@ namespace parsers
     return many_p<P, std::string>(p);
   }
 
+  /** \brief Given a Boost.Fusion sequence, get the first type it
+   *  stores.
+   *
+   *  Can't use the "front" metafunction directly, because that
+   *  returns a reference type -- OK for knowing "front"'s return
+   *  value, no good when you're trying to access members of the type
+   *  for metaprogramming purposes.
+   *
+   *  Utility code.
+   */
+  template<typename C>
+  class front_type
+  {
+  public:
+    typedef C type;
+  };
+
+  template<typename C>
+  class front_type<C &>
+  {
+  public:
+    typedef C type;
+  };
 
   /** \brief Given a Boost.Fusion sequence, try each of the parsers it
    *  contains in turn.
@@ -950,10 +973,10 @@ namespace parsers
    *  return_type.
    */
   template<typename C>
-  class or_p
+  class or_p : public parser_base<or_p<C>, typename front_type<typename boost::fusion::result_of::front<C>::type>::type::return_type>
   {
   public:
-    typedef typename boost::fusion::result_of::front<C>::type::return_type
+    typedef typename front_type<typename boost::fusion::result_of::front<C>::type>::type::return_type
     return_type;
 
   private:
