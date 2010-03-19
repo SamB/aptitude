@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <boost/format.hpp>
+#include <boost/fusion/algorithm/iteration/for_each.hpp>
 #include <boost/fusion/algorithm/transformation/join.hpp>
 #include <boost/fusion/algorithm/transformation/push_back.hpp>
 #include <boost/fusion/algorithm/transformation/push_front.hpp>
@@ -34,6 +35,7 @@
 #include <boost/fusion/container/vector/convert.hpp>
 #include <boost/fusion/include/join.hpp>
 #include <boost/fusion/include/sequence.hpp>
+#include <boost/fusion/iterator/equal_to.hpp>
 #include <boost/fusion/sequence.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/numeric/conversion/cast.hpp>
@@ -983,36 +985,57 @@ namespace parsers
   private:
     C values;
 
-    template<typename CIter>
-    void do_get_expected(std::ostream &out, const CIter &valuesIter, bool first = true) const
+    class do_get_expected
     {
-      if(valuesIter == boost::fusion::end(values))
-        return;
+      std::ostream &out;
+      bool &first;
 
-      if(!first)
-        out << _(" or ");
+    public:
+      do_get_expected(std::ostream &_out, bool &_first)
+        : out(_out),
+          first(_first)
+      {
+      }
 
-      (*valuesIter).get_expected(out);
+      template<typename Rule>
+      void operator()(const Rule &r) const
+      {
+        if(!first)
+          out << _(" or ");
+        else
+          first = false;
 
-      do_get_expected(out, boost::fusion::next(valuesIter), false);
+        r.get_expected(out);
+      }
+    };
+
+    // The do_or routine is constructed so that the base vs non-base
+    // case can be resolved as compile-time (it has to be since *iter
+    // doesn't compile at all for the end iter).  The frontend routine
+    // "do_or" is called as the main entry point and for recursive
+    // calls, and it dispatches to "do_or_conditional" using
+    // overloading and boost::fusion::equal_to to decide which case to
+    // take.
+
+    // Base case (we ran out of branches, so fail):
+    template<typename TextIter, typename CIter>
+    return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+                                  const CIter &valuesIter, boost::mpl::false_) const
+    {
+      std::ostringstream msg;
+      get_expected(msg);
+
+      // ForTranslators: this is used to generate an error
+      // message; a brief description of what we expected to see
+      // is inserted into it.
+      throw ParseException((boost::format(_("Expected %s")) % msg.str()).str());
     }
 
-    // Helper routine that iterates down the container, trying to
-    // parse each entry.
+    // Non-base case (try the first branch):
     template<typename TextIter, typename CIter>
-    return_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end, const CIter &valuesIter) const
+    return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+                                  const CIter &valuesIter, boost::mpl::true_) const
     {
-      if(valuesIter == boost::fusion::end(values))
-        {
-          std::ostringstream msg;
-          get_expected(msg);
-
-          // ForTranslators: this is used to generate an error
-          // message; a brief description of what we expected to see
-          // is inserted into it.
-          throw ParseException((boost::format(_("Expected %s")) % msg.str()).str());
-        }
-
       try
         {
           return (*valuesIter).parse(begin, end);
@@ -1025,7 +1048,18 @@ namespace parsers
 
       // We only get here if the parse failed, so go to the next entry
       // in "values".
-      do_or(begin, initialBegin, end, boost::fusion::next(valuesIter));
+      return do_or(begin, initialBegin, end, boost::fusion::next(valuesIter));
+    }
+
+    template<typename TextIter, typename CIter>
+    return_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+                      const CIter &valuesIter) const
+    {
+      typedef typename boost::fusion::result_of::next<CIter>::type NextCIter;
+      typedef typename boost::fusion::result_of::end<C>::type EndCIter;
+      typedef typename boost::fusion::result_of::equal_to<NextCIter, EndCIter>::type IsAtEnd;
+
+      return do_or_conditional(begin, initialBegin, end, valuesIter, IsAtEnd());
     }
 
   public:
@@ -1049,7 +1083,8 @@ namespace parsers
 
     void get_expected(std::ostream &out) const
     {
-      do_get_expected(out, boost::fusion::begin(values));
+      bool first = true;
+      boost::fusion::for_each(values, do_get_expected(out, first));
     }
   };
 
