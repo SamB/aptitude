@@ -1055,9 +1055,8 @@ namespace parsers
     return_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
                       const CIter &valuesIter) const
     {
-      typedef typename boost::fusion::result_of::next<CIter>::type NextCIter;
       typedef typename boost::fusion::result_of::end<C>::type EndCIter;
-      typedef typename boost::fusion::result_of::equal_to<NextCIter, EndCIter>::type IsAtEnd;
+      typedef typename boost::fusion::result_of::equal_to<CIter, EndCIter>::type IsAtEnd;
 
       return do_or_conditional(begin, initialBegin, end, valuesIter, IsAtEnd());
     }
