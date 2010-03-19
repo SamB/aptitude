@@ -68,6 +68,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testOrChainedCollapsesParsers);
   CPPUNIT_TEST(testMaybeFailure);
   CPPUNIT_TEST(testMaybeSuccess);
+  CPPUNIT_TEST(testMaybeValue);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -713,6 +714,14 @@ public:
     CPPUNIT_ASSERT_EQUAL(std::string("a"),
                          std::string((maybe(str("ad") >> val("ad")) | (str("a") >> val("a")))(begin, end)));
     CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+  }
+
+  void testMaybeValue()
+  {
+    std::string input("12345");
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_EQUAL(12345, integer()(begin, end));
   }
 };
 
