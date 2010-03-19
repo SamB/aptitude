@@ -1020,7 +1020,7 @@ namespace parsers
     // Base case (we ran out of branches, so fail):
     template<typename TextIter, typename CIter>
     return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
-                                  const CIter &valuesIter, boost::mpl::false_) const
+                                  const CIter &valuesIter, boost::mpl::true_) const
     {
       std::ostringstream msg;
       get_expected(msg);
@@ -1034,7 +1034,7 @@ namespace parsers
     // Non-base case (try the first branch):
     template<typename TextIter, typename CIter>
     return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
-                                  const CIter &valuesIter, boost::mpl::true_) const
+                                  const CIter &valuesIter, boost::mpl::false_) const
     {
       try
         {
