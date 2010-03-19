@@ -1190,7 +1190,7 @@ namespace parsers
 
       try
         {
-          p(begin, end);
+          return p(begin, end);
         }
       catch(ParseException &ex)
         {
