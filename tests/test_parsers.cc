@@ -66,6 +66,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testOrChainedSuccess);
   CPPUNIT_TEST(testOrChainedFailure);
   CPPUNIT_TEST(testOrChainedCollapsesParsers);
+  CPPUNIT_TEST(testMaybeFailure);
+  CPPUNIT_TEST(testMaybeSuccess);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -691,6 +693,26 @@ public:
     ch_p<char> a('a'), b('b'), c('c'), d('d'), e('e'), f('f');
 
     CPPUNIT_ASSERT_EQUAL(6, (int)boost::fusion::size((a | b | c | d | e | f).get_values()));
+  }
+
+  void testMaybeSuccess()
+  {
+    std::string input("abcdefg");
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_EQUAL(std::string("ab"),
+                         std::string((maybe(str("ab") >> val("ab")) | (str("a") >> val("a")))(begin, end)));
+    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+  }
+
+  void testMaybeFailure()
+  {
+    std::string input("abcdefg");
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_EQUAL(std::string("a"),
+                         std::string((maybe(str("ad") >> val("ad")) | (str("a") >> val("a")))(begin, end)));
+    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
   }
 };
 
