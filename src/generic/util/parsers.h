@@ -77,7 +77,7 @@ namespace parsers
    *  \page parser Parsers
    *
    *  A parser provides an operator() method that receives an iterator
-   *  range and returns a value of the parser's return_type.  Parsers
+   *  range and returns a value of the parser's result_type.  Parsers
    *  are generated from rules; see \ref rule_concept.
    *
    *  Parsers must be derived from a specialization of parser_base;
@@ -85,7 +85,7 @@ namespace parsers
    *
    *  Members required:
    *
-   *  - return_type: the type returned from operator().  Must be default
+   *  - result_type: the type returned from operator().  Must be default
    *    constructible, assignable, and copy-constructible.
    *  - operator()(Iter &begin, const Iter &end) const: the actual parse routine.
    *    Iter must be a model of ForwardIterator.  begin will be updated
@@ -108,7 +108,7 @@ namespace parsers
    *
    *  Members required:
    *
-   *  - return_type: the type returned from operator().
+   *  - result_type: the type returned from operator().
    *  - parse(Iter &begin, const Iter &end) const: the actual
    *    parse routine.  Iter must be a model of ForwardIterator.  begin
    *    will be updated to point to the first character that was not
@@ -158,9 +158,9 @@ namespace parsers
    *  \tparam DerivedT   The derived type that actually implements the parser's
    *                     behavior.  Must be a subclass of this instantiation
    *                     of parser_base, or bad stuff will happen.
-   *  \tparam ReturnType The type returned by the parse operation.
+   *  \tparam ResultType The type returned by the parse operation.
    */
-  template<typename DerivedT, typename ReturnType>
+  template<typename DerivedT, typename ResultType>
   class parser_base
   {
   protected:
@@ -177,7 +177,7 @@ namespace parsers
     }
 
   public:
-    typedef ReturnType return_type;
+    typedef ResultType result_type;
 
     // These names are provided both here *and* in the derived class
     // to allow operators to accept a parser_base<> and still get
@@ -186,7 +186,7 @@ namespace parsers
 
     /** \brief Parse a range of text. */
     template<typename Iter>
-    return_type operator()(Iter &begin, const Iter &end) const
+    result_type operator()(Iter &begin, const Iter &end) const
     {
       return derived().parse(begin, end);
     }
@@ -231,12 +231,12 @@ namespace parsers
   };
 
   /** \brief Metafunction class to retrieve the return type of a parser. */
-  struct get_return_type
+  struct get_result_type
   {
     template<typename P>
     struct apply
     {
-      typedef typename P::return_type type;
+      typedef typename P::result_type type;
     };
   };
 
@@ -256,10 +256,10 @@ namespace parsers
     {
     }
 
-    typedef typename parser_base<ch_p<CType>, CType>::return_type return_type;
+    typedef typename parser_base<ch_p<CType>, CType>::result_type result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException((boost::format(_("Expected '%s', but got EOF.")) %  c).str());
@@ -349,10 +349,10 @@ namespace parsers
     {
     }
 
-    typedef CType return_type;
+    typedef CType result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException((boost::format(_("Expected %s, but got EOF.")) % description).str());
@@ -532,7 +532,7 @@ namespace parsers
   class integer_p : public parser_base<integer_p, int>
   {
   public:
-    typedef int return_type;
+    typedef int result_type;
 
     template<typename Iter>
     int parse(Iter &begin, const Iter &end) const
@@ -592,10 +592,10 @@ namespace parsers
   class eof : public parser_base<eof, nil_t>
   {
   public:
-    typedef nil_t return_type;
+    typedef nil_t result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       if(begin != end)
         throw ParseException((boost::format(_("Expected EOF, got '%c'.")) % *begin).str());
@@ -624,10 +624,10 @@ namespace parsers
     {
     }
 
-    typedef nil_t return_type;
+    typedef nil_t result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       Iter start = begin;
 
@@ -672,7 +672,7 @@ namespace parsers
     {
     }
 
-    typedef T return_type;
+    typedef T result_type;
 
     template<typename Iter>
     T parse(Iter &begin, const Iter &end) const
@@ -711,7 +711,7 @@ namespace parsers
    *  \todo Implement this using Boost.Fusion containers, like or_p.
    */
   template<typename P1, typename P2>
-  class andthen_p : public parser_base<andthen_p<P1, P2>, typename P2::return_type>
+  class andthen_p : public parser_base<andthen_p<P1, P2>, typename P2::result_type>
   {
     P1 p1;
     P2 p2;
@@ -722,10 +722,10 @@ namespace parsers
     {
     }
 
-    typedef typename P2::return_type return_type;
+    typedef typename P2::result_type result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       p1(begin, end);
       return p2(begin, end);
@@ -740,9 +740,9 @@ namespace parsers
   /** \brief Combine two parsers in sequence, throwing away the first
    *  parser's result.
    */
-  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  template<typename Rule1, typename ResultType1, typename Rule2, typename ResultType2>
   andthen_p<Rule1, Rule2>
-  inline operator>>(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  inline operator>>(const parser_base<Rule1, ResultType1> &p1, const parser_base<Rule2, ResultType2> &p2)
   {
     return andthen_p<Rule1, Rule2>(p1.derived(), p2.derived());
   }
@@ -753,7 +753,7 @@ namespace parsers
    *  \todo Implement this using Boost.Fusion containers, like or_p.
    */
   template<typename P1, typename P2>
-  class andfirst_p : public parser_base<andfirst_p<P1, P2>, typename P1::return_type>
+  class andfirst_p : public parser_base<andfirst_p<P1, P2>, typename P1::result_type>
   {
     P1 p1;
     P2 p2;
@@ -764,12 +764,12 @@ namespace parsers
     {
     }
 
-    typedef typename P1::return_type return_type;
+    typedef typename P1::result_type result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
-      return_type rval = p1(begin, end);
+      result_type rval = p1(begin, end);
       p2(begin, end);
       return rval;
     }
@@ -785,16 +785,16 @@ namespace parsers
    *
    *  Mnemonic: the arrow points at the value that's returned.
    */
-  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  template<typename Rule1, typename ResultType1, typename Rule2, typename ResultType2>
   andfirst_p<Rule1, Rule2>
-  inline operator<<(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  inline operator<<(const parser_base<Rule1, ResultType1> &p1, const parser_base<Rule2, ResultType2> &p2)
   {
     return andfirst_p<Rule1, Rule2>(p1.derived(), p2.derived());
   }
 
   /** \brief A parser that modifies the expected value of its target. */
   template<typename P>
-  class set_expected_p : public parser_base<set_expected_p<P>, typename P::return_type>
+  class set_expected_p : public parser_base<set_expected_p<P>, typename P::result_type>
   {
     P p;
     std::string msg;
@@ -805,10 +805,10 @@ namespace parsers
     {
     }
 
-    typedef typename P::return_type return_type;
+    typedef typename P::result_type result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       return p(begin, end);
     }
@@ -837,14 +837,14 @@ namespace parsers
     {
     }
 
-    typedef nil_t return_type;
+    typedef nil_t result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       while(true)
         {
-          typename P::return_type result;
+          typename P::result_type result;
 
           try
             {
@@ -922,10 +922,10 @@ namespace parsers
       {
       }
 
-    typedef nil_t return_type;
+    typedef nil_t result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       while(true)
         {
@@ -965,7 +965,7 @@ namespace parsers
    *  The returned container is wrapped in a shared_ptr to avoid
    *  unnecessary copies.
    */
-  template<typename P, typename Container = std::vector<typename P::return_type> >
+  template<typename P, typename Container = std::vector<typename P::result_type> >
   class many_p : public parser_base<many_p<P, Container>, boost::shared_ptr<Container> >
   {
     P p;
@@ -975,10 +975,10 @@ namespace parsers
     {
     }
 
-    typedef boost::shared_ptr<Container> return_type;
+    typedef boost::shared_ptr<Container> result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       boost::shared_ptr<Container> rval =
         boost::make_shared<Container>();
@@ -1030,23 +1030,23 @@ namespace parsers
    *  input, this parser fails.  If none of the parsers succeed, this
    *  parser fails.
    *
-   *  The return_type of or_p is the return_type of the first parser.
+   *  The result_type of or_p is the result_type of the first parser.
    *  The parsers that follow it must be convertible to the same
-   *  return_type.
+   *  result_type.
    */
   template<typename C>
-  class or_p : public parser_base<or_p<C>, typename boost::mpl::front<C>::type::return_type>
+  class or_p : public parser_base<or_p<C>, typename boost::mpl::front<C>::type::result_type>
   {
   public:
-    typedef typename boost::mpl::front<C>::type::return_type return_type;
+    typedef typename boost::mpl::front<C>::type::result_type result_type;
 
   private:
     // Metaprogramming to verify that all the sub-types are the same.
-    typedef typename boost::mpl::transform<C, get_return_type>::type C_return_types;
-    typedef typename boost::mpl::transform<C_return_types,
-                                           boost::is_same<return_type,
-                                                          boost::mpl::_1> >::type C_return_types_equal_to_front;
-    typedef typename boost::mpl::fold<C_return_types_equal_to_front,
+    typedef typename boost::mpl::transform<C, get_result_type>::type C_result_types;
+    typedef typename boost::mpl::transform<C_result_types,
+                                           boost::is_same<result_type,
+                                                          boost::mpl::_1> >::type C_result_types_equal_to_front;
+    typedef typename boost::mpl::fold<C_result_types_equal_to_front,
                                       boost::mpl::true_,
                                       boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_equal;
 
@@ -1088,7 +1088,7 @@ namespace parsers
 
     // Base case (we ran out of branches, so fail):
     template<typename TextIter, typename CIter>
-    return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    result_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
                                   const CIter &valuesIter, boost::mpl::true_) const
     {
       std::ostringstream msg;
@@ -1102,7 +1102,7 @@ namespace parsers
 
     // Non-base case (try the first branch):
     template<typename TextIter, typename CIter>
-    return_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    result_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
                                   const CIter &valuesIter, boost::mpl::false_) const
     {
       try
@@ -1121,7 +1121,7 @@ namespace parsers
     }
 
     template<typename TextIter, typename CIter>
-    return_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    result_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
                       const CIter &valuesIter) const
     {
       typedef typename boost::fusion::result_of::end<C>::type EndCIter;
@@ -1143,7 +1143,7 @@ namespace parsers
     const C &get_values() const { return values; }
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       Iter initialBegin = begin;
       return do_or(begin, initialBegin, end, boost::fusion::begin(values));
@@ -1192,9 +1192,9 @@ namespace parsers
    *  fails without advancing "begin", then the right-hand argument is
    *  tried.
    */
-  template<typename C, typename Rule, typename ReturnType>
+  template<typename C, typename Rule, typename ResultType>
   inline or_p<typename boost::fusion::result_of::as_vector<typename boost::fusion::result_of::push_back<C, Rule>::type>::type>
-  operator|(const or_p<C> &o, const parser_base<Rule, ReturnType> &p)
+  operator|(const or_p<C> &o, const parser_base<Rule, ResultType> &p)
   {
     typedef typename boost::fusion::result_of::push_back<C, Rule>::type
       interim_container;
@@ -1208,9 +1208,9 @@ namespace parsers
    *  fails without advancing "begin", then the right-hand argument is
    *  tried.
    */
-  template<typename C, typename Rule, typename ReturnType>
+  template<typename C, typename Rule, typename ResultType>
   inline or_p<typename boost::fusion::result_of::as_vector<boost::fusion::joint_view<boost::fusion::cons<Rule>, C> >::type>
-  operator|(const parser_base<Rule, ReturnType> &p, const or_p<C> &o)
+  operator|(const parser_base<Rule, ResultType> &p, const or_p<C> &o)
   {
     typedef boost::fusion::result_of::push_front<C, Rule>
       interim_container;
@@ -1224,9 +1224,9 @@ namespace parsers
    *  fails without advancing "begin", then the right-hand argument is
    *  tried.
    */
-  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  template<typename Rule1, typename ResultType1, typename Rule2, typename ResultType2>
   inline or_p<boost::fusion::vector<Rule1, Rule2> >
-  operator|(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  operator|(const parser_base<Rule1, ResultType1> &p1, const parser_base<Rule2, ResultType2> &p2)
   {
     typedef boost::fusion::vector<Rule1, Rule2>
       result_container;
@@ -1241,7 +1241,7 @@ namespace parsers
    *  Essentially makes every failure into a zero-length failure.
    */
   template<typename P>
-  class maybe_p : public parser_base<maybe_p<P>, typename P::return_type>
+  class maybe_p : public parser_base<maybe_p<P>, typename P::result_type>
   {
     P p;
   public:
@@ -1250,10 +1250,10 @@ namespace parsers
     {
     }
 
-    typedef typename P::return_type return_type;
+    typedef typename P::result_type result_type;
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       Iter start = begin;
 
@@ -1294,13 +1294,13 @@ namespace parsers
    */
   template<typename C>
   class tuple_p : public parser_base<tuple_p<C>,
-                                     typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_return_type>::type >::type>
+                                     typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_result_type>::type >::type>
   // as_vector is invoked on C before we pass it to mpl::transform,
   // because mpl::transform doesn't seem to work on arbitrary fusion
   // containers (e.g., joint_view produces an error).
   {
   public:
-    typedef typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_return_type>::type>::type return_type;
+    typedef typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_result_type>::type>::type result_type;
     typedef typename boost::fusion::result_of::as_vector<C>::type values_type;
 
   private:
@@ -1326,11 +1326,11 @@ namespace parsers
       template<typename Element, typename ResultIn>
       struct result<do_parse(const Element &, const ResultIn &)>
       {
-        typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::return_type>::type type;
+        typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type type;
       };
 
       template<typename Element, typename ResultIn>
-      typename boost::fusion::result_of::push_back<const ResultIn, typename Element::return_type>::type
+      typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type
       operator()(const Element &e, const ResultIn &result) const
       {
         return boost::fusion::push_back(result, e.parse(begin, end));
@@ -1353,7 +1353,7 @@ namespace parsers
     const values_type &get_values() const { return values; }
 
     template<typename TextIter>
-    return_type parse(TextIter &begin, const TextIter &end) const
+    result_type parse(TextIter &begin, const TextIter &end) const
     {
       return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_parse<TextIter>(begin, end)));
     }
@@ -1391,11 +1391,11 @@ namespace parsers
    *  contains the element returned by the new non-tuple parser,
    *  followed by the elements returned by the tuple parser.
    */
-  template<typename Rule, typename ReturnType, typename C>
+  template<typename Rule, typename ResultType, typename C>
   inline tuple_p<typename boost::fusion::result_of::push_front<
                    typename tuple_p<C>::values_type,
                    Rule>::type>
-  operator,(const parser_base<Rule, ReturnType> &p1, const tuple_p<C> &t2)
+  operator,(const parser_base<Rule, ResultType> &p1, const tuple_p<C> &t2)
   {
     typedef typename boost::fusion::result_of::push_front<typename tuple_p<C>::values_type, Rule>::type
       result_container;
@@ -1410,11 +1410,11 @@ namespace parsers
    *  contains the elements returned by the tuple parser, followed by
    *  the element returned by the new non-tuple parser
    */
-  template<typename Rule, typename ReturnType, typename C>
+  template<typename Rule, typename ResultType, typename C>
   inline tuple_p<typename boost::fusion::result_of::push_back<
                    typename tuple_p<C>::values_type,
                    Rule>::type>
-  operator,(const tuple_p<C> &t1, const parser_base<Rule, ReturnType> &p2)
+  operator,(const tuple_p<C> &t1, const parser_base<Rule, ResultType> &p2)
   {
     typedef typename boost::fusion::result_of::push_back<typename tuple_p<C>::values_type, Rule>::type
       result_container;
@@ -1429,9 +1429,9 @@ namespace parsers
    *  first parser, followed by the value returned by the second
    *  parser.
    */
-  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  template<typename Rule1, typename ResultType1, typename Rule2, typename ResultType2>
   inline tuple_p<boost::fusion::vector<Rule1, Rule2> >
-  operator,(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  operator,(const parser_base<Rule1, ResultType1> &p1, const parser_base<Rule2, ResultType2> &p2)
   {
     return tuple_p<boost::fusion::vector<Rule1, Rule2> >(boost::fusion::vector<Rule1, Rule2>(p1.derived(), p2.derived()));
   }
@@ -1446,9 +1446,9 @@ namespace parsers
    *  need to wrap it in a tuple to avoid having the sequence become
    *  the arguments).
    */
-  template<typename Rule, typename ReturnType>
+  template<typename Rule, typename ResultType>
   inline tuple_p<boost::fusion::vector<Rule> >
-  tuple(const parser_base<Rule, ReturnType> &p)
+  tuple(const parser_base<Rule, ResultType> &p)
   {
     return tuple_p<boost::fusion::vector<Rule> >(boost::fusion::vector<Rule>(p.derived()));
   }
@@ -1474,10 +1474,10 @@ namespace parsers
                                      // sub-parser.
                                      typename boost::fusion::result_of::invoke<
                                        Func,
-                                       typename P::return_type>::type>
+                                       typename P::result_type>::type>
   {
   public:
-    typedef typename boost::fusion::result_of::invoke<Func, typename P::return_type>::type return_type;
+    typedef typename boost::fusion::result_of::invoke<Func, typename P::result_type>::type result_type;
 
   private:
     // It might be better to "bake in" the fusion magic by using a
@@ -1493,7 +1493,7 @@ namespace parsers
     }
 
     template<typename TextIter>
-    return_type parse(TextIter &begin, const TextIter &end) const
+    result_type parse(TextIter &begin, const TextIter &end) const
     {
       return func(p(begin, end));
     }
@@ -1546,24 +1546,24 @@ namespace parsers
    *            that can be passed to f or a single non-sequence value,
    *            which will be passed as the only argument to f.
    */
-  template<typename Func, typename Rule, typename ReturnType>
+  template<typename Func, typename Rule, typename ResultType>
   inline typename internal_do_apply<
     Func, Rule,
-    typename boost::fusion::traits::is_sequence<ReturnType>::type>::result_type
-  apply(const Func &f, const parser_base<Rule, ReturnType> &p)
+    typename boost::fusion::traits::is_sequence<ResultType>::type>::result_type
+  apply(const Func &f, const parser_base<Rule, ResultType> &p)
   {
     return internal_do_apply<
       Func, Rule,
-      typename boost::fusion::traits::is_sequence<ReturnType>::type>()(f, p.derived());
+      typename boost::fusion::traits::is_sequence<ResultType>::type>()(f, p.derived());
   }
 
   /** \brief Run a sub-parser, but don't advance the read position. */
   template<typename LookaheadP>
   class followedBy_p : public parser_base<followedBy_p<LookaheadP>,
-                                          typename LookaheadP::return_type>
+                                          typename LookaheadP::result_type>
   {
   public:
-    typedef typename LookaheadP::return_type return_type;
+    typedef typename LookaheadP::result_type result_type;
 
   private:
     LookaheadP lookaheadP;
@@ -1575,7 +1575,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       Iter lookaheadBegin = begin;
       return lookaheadP.parse(lookaheadBegin, end);
@@ -1614,7 +1614,7 @@ namespace parsers
                                              nil_t>
   {
   public:
-    typedef nil_t return_type;
+    typedef nil_t result_type;
 
   private:
     LookaheadP lookaheadP;
@@ -1626,7 +1626,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    return_type parse(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
       Iter lookaheadBegin = begin;
       try
