@@ -27,6 +27,8 @@
 
 using namespace parsers;
 
+typedef std::string::const_iterator::difference_type iter_difftype;
+
 class ParsersTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ParsersTest);
@@ -100,40 +102,40 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(comma(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(',', comma(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)6, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
 
     CPPUNIT_ASSERT_EQUAL(';', semicolon(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(comma(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(semicolon(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
   }
 
   void testParseAnyChar()
@@ -160,10 +162,10 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_EQUAL(' ', sp(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(sp(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   void testInteger()
@@ -176,21 +178,21 @@ public:
 
         std::string::const_iterator begin = input.begin(), end = input.end();
         CPPUNIT_ASSERT_EQUAL(i, integer(begin, end));
-        CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, input.end() - begin);
+        CPPUNIT_ASSERT_EQUAL((iter_difftype)1, input.end() - begin);
       }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MIN) + "Q";
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(INT_MIN, integer(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, input.end() - begin);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, input.end() - begin);
     }
 
     {
       std::string input = boost::lexical_cast<std::string>(INT_MAX) + "Q";
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(INT_MAX, integer(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, input.end() - begin);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, input.end() - begin);
     }
   }
 
@@ -205,7 +207,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
     }
 
     // If we see a lone hyphen, we should eat it and fail.
@@ -214,7 +216,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW(integer(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     // The only other failure mode would be an integer that's too
@@ -246,19 +248,19 @@ public:
     eof e;
 
     CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
 
     ++begin;
     CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
 
     ++begin;
     CPPUNIT_ASSERT_THROW(e(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
 
     ++begin;
     CPPUNIT_ASSERT_NO_THROW(e(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
   }
 
   void testStr()
@@ -272,13 +274,13 @@ public:
     str xyz("xyz");
 
     CPPUNIT_ASSERT_NO_THROW(abc(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(da(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(xyz(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
   }
 
   void testVal()
@@ -289,7 +291,7 @@ public:
     val_p<std::string> v = val("abcdefg");
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcdefg"), v(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   // Cases to test for the "and then" parser:
@@ -316,7 +318,7 @@ public:
     ch_p<char> d('d');
 
     CPPUNIT_ASSERT_EQUAL('d', (abc >> d)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
   }
 
   // Case 1.5: chain together multiple parsers.
@@ -328,7 +330,7 @@ public:
     ch_p<char> a('a'), b('b'), c('c'), d('d');
 
     CPPUNIT_ASSERT_EQUAL('d', (a >> b >> c >> d)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
   }
 
   // Case 2: only the first parser matches.
@@ -340,7 +342,7 @@ public:
     str ab("ab"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((ab >> yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   // Case 2.5: only the first two parsers match, with several chained together.
@@ -352,7 +354,7 @@ public:
     ch_p<char> a('a'), b('b'), y('y'), z('z');
 
     CPPUNIT_ASSERT_THROW((a >> b >> y >> z)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   // Case 3: the first parser fails after consuming input.
@@ -364,7 +366,7 @@ public:
     str ax("ax"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((ax >> yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   // Case 4: the first parser fails without consuming input.
@@ -376,7 +378,7 @@ public:
     str wx("wx"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((wx >> yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   // Case 4.5: the first parser fails without consuming input (chained).
@@ -388,7 +390,7 @@ public:
     ch_p<char> w('w'), x('x'), y('y'), z('z');
 
     CPPUNIT_ASSERT_THROW((w >> x >> y >> z)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   // Cases to test for the "and first" parser:
@@ -415,7 +417,7 @@ public:
     str bcd("bcd");
 
     CPPUNIT_ASSERT_EQUAL('a', (a << bcd)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
   }
 
   // Case 1.5: chain together multiple parsers.
@@ -427,7 +429,7 @@ public:
     ch_p<char> a('a'), b('b'), c('c'), d('d');
 
     CPPUNIT_ASSERT_EQUAL('a', (a << b << c << d)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
   }
 
   // Case 2: only the first parser matches.
@@ -439,7 +441,7 @@ public:
     str ab("ab"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((ab << yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   // Case 2.5: only the first two parsers match, with several chained together.
@@ -451,7 +453,7 @@ public:
     ch_p<char> a('a'), b('b'), y('y'), z('z');
 
     CPPUNIT_ASSERT_THROW((a << b << y << z)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   // Case 3: the first parser fails after consuming input.
@@ -463,7 +465,7 @@ public:
     str ax("ax"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((ax << yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   // Case 4: the first parser fails without consuming input.
@@ -475,7 +477,7 @@ public:
     str wx("wx"), yz("yz");
 
     CPPUNIT_ASSERT_THROW((wx << yz)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   // Case 4.5: the first parser fails without consuming input (chained).
@@ -487,7 +489,7 @@ public:
     ch_p<char> w('w'), x('x'), y('y'), z('z');
 
     CPPUNIT_ASSERT_THROW((w << x << y << z)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testSetExpected()
@@ -511,10 +513,10 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_EQUAL('a', a2(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
 
     CPPUNIT_ASSERT_THROW(a2(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   void testForeachEmptyEndNotEOF()
@@ -529,7 +531,7 @@ public:
     (foreach(letter, push_back_a(result)))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testForeachEmptyEndEOF()
@@ -544,7 +546,7 @@ public:
     (foreach(letter, push_back_a(result)))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testForeachNotEmptyEndNotEOF()
@@ -559,7 +561,7 @@ public:
     (foreach(letter, push_back_a(result)))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testForeachNotEmptyEndEOF()
@@ -574,7 +576,7 @@ public:
     (foreach(letter, push_back_a(result)))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testSkipEmptyEndNotEOF()
@@ -586,7 +588,7 @@ public:
 
     (skip(letter))(begin, end);
 
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testSkipEmptyEndEOF()
@@ -598,7 +600,7 @@ public:
 
     (skip(letter))(begin, end);
 
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testSkipNotEmptyEndNotEOF()
@@ -610,7 +612,7 @@ public:
 
     (skip(letter))(begin, end);
 
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testSkipNotEmptyEndEOF()
@@ -622,7 +624,7 @@ public:
 
     (skip(letter))(begin, end);
 
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testManyEmptyEndNotEOF()
@@ -635,7 +637,7 @@ public:
     boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testManyEmptyEndEOF()
@@ -648,7 +650,7 @@ public:
     boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testManyNotEmptyEndNotEOF()
@@ -661,7 +663,7 @@ public:
     boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testManyNotEmptyEndEOF()
@@ -674,7 +676,7 @@ public:
     boost::shared_ptr<std::string> result = (many_string(letter))(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)5, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
   void testOrFirstBranchMatches()
@@ -685,7 +687,7 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_NO_THROW((ab | a)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   void testOrFirstBranchFailsAndConsumesInput()
@@ -696,7 +698,7 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_THROW((ab | a)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   void testOrSecondBranchMatches()
@@ -707,7 +709,7 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_NO_THROW((ab | cd)(begin, end));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   void testOrSecondBranchFailsAndConsumesInput()
@@ -718,7 +720,7 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_THROW((ab | cd)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   void testOrSecondBranchFailsAndConsumesNoInput()
@@ -729,7 +731,7 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_THROW((ab | cd)(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
   void testOrChainedSuccess()
@@ -741,7 +743,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
     }
 
     {
@@ -749,7 +751,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
     }
 
     {
@@ -757,7 +759,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_NO_THROW((ab | cd | ef)(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
     }
   }
 
@@ -770,7 +772,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     {
@@ -778,7 +780,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | a | a | a | a | cd | ef)(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     {
@@ -786,7 +788,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     {
@@ -794,7 +796,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     {
@@ -802,7 +804,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((ab | cd | ef)(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
     }
   }
 
@@ -820,7 +822,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(std::string("ab"),
                          std::string((maybe(str("ab") >> val("ab")) | (str("a") >> val("a")))(begin, end)));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)2, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
   }
 
   void testMaybeFailure()
@@ -830,7 +832,7 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(std::string("a"),
                          std::string((maybe(str("ad") >> val("ad")) | (str("a") >> val("a")))(begin, end)));
-    CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
   }
 
   void testMaybeValue()
@@ -848,7 +850,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(765),
                            parsers::tuple(integer())(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
 
     {
@@ -856,7 +858,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456, 789),
                            (integer(), ch(',') >> integer(), ch(',') >> integer())(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)11, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)11, begin - input.begin());
 
     }
   }
@@ -867,7 +869,7 @@ public:
       std::string input("abcdefg");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW((integer(), str("abc"), str("def"))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
     }
   }
 
@@ -881,21 +883,21 @@ public:
       std::string input("123,456,789");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW((digit() >> alpha(), integer(), integer())(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)1, begin - input.begin());
     }
 
     {
       std::string input("123,456,789");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW((integer(), ch(',') >> alpha(), integer())(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
 
     {
       std::string input("123,456,789");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW((integer(), ch(',') >> integer(), ch(',') >> integer() >> alpha())(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)11, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)11, begin - input.begin());
     }
   }
 
@@ -927,7 +929,7 @@ public:
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(124, apply(addOne(), integer())(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
 
     // Unary test using a unary tuple.
@@ -935,7 +937,7 @@ public:
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(124, ::parsers::apply(addOne(), tuple(integer()))(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
 
     // Unary test without the apply() convenience routine..
@@ -943,7 +945,7 @@ public:
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(124, (apply_p<addOne, tuple_p<boost::fusion::vector<integer_p> > >(addOne(), tuple(integer()))(begin, end)));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
 
     // Binary test.
@@ -951,7 +953,7 @@ public:
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(makeIntPair(), (integer(), ch(',') >> integer()))(begin, end)));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
 
     // Test that parsers::construct_f works as expected.
@@ -960,7 +962,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(construct_f<boost::fusion::vector<int, int> >(),
                                                                         (integer(), ch(',') >> integer()))(begin, end)));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
   }
 
@@ -971,7 +973,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW(apply(makeIntPair(), (integer(), integer()))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
   }
 
@@ -982,7 +984,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_EQUAL(456, (integer() >> ch(',') >> followedBy(integer()))(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
   }
 
@@ -993,7 +995,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> followedBy(integer()))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
 
     {
@@ -1001,7 +1003,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> followedBy(str("abc")))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
   }
 
@@ -1012,7 +1014,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_NO_THROW((integer() >> notFollowedBy(str(",abc")))(begin, end));
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
   }
 
@@ -1023,7 +1025,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> notFollowedBy(integer()))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
 
     {
@@ -1031,7 +1033,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> notFollowedBy(str("abc")))(begin, end), ParseException);
-      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
     }
   }
 };
