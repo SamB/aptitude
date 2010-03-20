@@ -58,6 +58,9 @@
 #include <boost/mpl/front.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/preprocessor/repetition/enum_binary_params.hpp>
+#include <boost/preprocessor/repetition/enum_params.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/type_traits/is_same.hpp>
 
@@ -1529,7 +1532,9 @@ namespace parsers
    *  tuple (or other Fusion sequence) of parsed values and return its
    *  result.
    *
-   *  Mainly meant to be used with the tuple_p parser.
+   *  Mainly meant to be used with the tuple_p parser.  Also
+   *  particularly useful with the construct_f function, to construct
+   *  objects from parsed subexpressions.
    *
    *  \param f  The function to apply.
    *  \param p  A parser that will return either a sequence of values
@@ -1595,6 +1600,43 @@ namespace parsers
   {
     return followedBy_p<LookaheadP>(lookaheadP);
   }
+
+  /** Used to generate operator() overloads for the type C in the
+   *  construct_f class.
+   */
+#define PARSERS_MAKE_CONSTRUCTOR_WRAPPER( z, n, C )                     \
+  template<BOOST_PP_ENUM_PARAMS(n, typename Arg)>                       \
+  C operator()(BOOST_PP_ENUM_BINARY_PARAMS(n, const Arg, &arg)) const   \
+  {                                                                     \
+    return C(BOOST_PP_ENUM_PARAMS(n, arg));                             \
+  }
+
+  /** \brief The maximum number of parameters that can be passed to a
+   *  constructor wrapped by construct_f.
+   */
+#define MAX_CONSTRUCTOR_F_ARGS 20
+
+  /** \brief A function object whose operator() invokes a constructor
+   *  on the given type.
+   *
+   *  \tparam C The type to construct.
+   */
+  template<typename C>
+  struct construct_f
+  {
+    typedef C result_type;
+
+    // The nullary constructor is handled specially since it shouldn't
+    // have a template parameter list.
+    C operator()() const
+    {
+      return C();
+    }
+
+    BOOST_PP_REPEAT_FROM_TO( 1, MAX_CONSTRUCTOR_F_ARGS, PARSERS_MAKE_CONSTRUCTOR_WRAPPER, C );
+  };
+
+#undef PARSERS_MAKE_CONSTRUCTOR_WRAPPER
 }
 
 #endif // PARSERS_H

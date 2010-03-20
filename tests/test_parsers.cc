@@ -951,6 +951,15 @@ public:
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(makeIntPair(), (integer(), ch(',') >> integer()))(begin, end)));
       CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
     }
+
+    // Test that parsers::construct_f works as expected.
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(construct_f<boost::fusion::vector<int, int> >(),
+                                                                        (integer(), ch(',') >> integer()))(begin, end)));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+    }
   }
 
   void testApplyFailure()
