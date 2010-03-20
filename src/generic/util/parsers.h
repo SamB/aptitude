@@ -1006,6 +1006,11 @@ namespace parsers
     }
   };
 
+  // Sanity-check that we get the correct result type out of a
+  // many_p expression.
+  BOOST_STATIC_ASSERT((boost::is_same<many_p<integer_p, std::vector<integer_p::result_type> >::result_type,
+                                      boost::shared_ptr<std::vector<int> > >::value));
+
   /** \brief Apply the input parser zero or more times, saving
    *  the results to a vector.
    */
