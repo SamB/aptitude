@@ -34,11 +34,14 @@
 // sequences.
 
 #include <boost/format.hpp>
+#include <boost/fusion/adapted/mpl.hpp>
 #include <boost/fusion/algorithm/iteration/fold.hpp>
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
+#include <boost/fusion/algorithm/transformation/clear.hpp>
 #include <boost/fusion/algorithm/transformation/join.hpp>
 #include <boost/fusion/algorithm/transformation/push_back.hpp>
 #include <boost/fusion/algorithm/transformation/push_front.hpp>
+#include <boost/fusion/container/generation/make_vector.hpp>
 #include <boost/fusion/container/list.hpp>
 #include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/container/vector/convert.hpp>
@@ -222,11 +225,14 @@ namespace parsers
     }
   };
 
-  /** \brief Metafunction to retrieve the return type of a parser. */
-  template<typename P>
+  /** \brief Metafunction class to retrieve the return type of a parser. */
   struct get_return_type
   {
-    typedef typename P::return_type type;
+    template<typename P>
+    struct apply
+    {
+      typedef typename P::return_type type;
+    };
   };
 
   /** \brief Atomic parsers */
@@ -981,7 +987,7 @@ namespace parsers
 
   private:
     // Metaprogramming to verify that all the sub-types are the same.
-    typedef typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> >::type C_return_types;
+    typedef typename boost::mpl::transform<C, get_return_type>::type C_return_types;
     typedef typename boost::mpl::transform<C_return_types,
                                            boost::is_same<return_type,
                                                           boost::mpl::_1> >::type C_return_types_equal_to_front;
@@ -1233,10 +1239,13 @@ namespace parsers
    */
   template<typename C>
   class tuple_p : public parser_base<tuple_p<C>,
-                                     typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> > >::type>
+                                     typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_return_type>::type >::type>
+  // as_vector is invoked on C before we pass it to mpl::transform,
+  // because mpl::transform doesn't seem to work on arbitrary fusion
+  // containers (e.g., joint_view produces an error).
   {
   public:
-    typedef typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> > >::type return_type;
+    typedef typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<typename boost::fusion::result_of::as_vector<C>::type, get_return_type>::type>::type return_type;
     typedef typename boost::fusion::result_of::as_vector<C>::type values_type;
 
   private:
@@ -1256,8 +1265,17 @@ namespace parsers
       {
       }
 
+      template<typename Args>
+      struct result;
+
       template<typename Element, typename ResultIn>
-      typename boost::fusion::result_of::push_back<ResultIn, Element>
+      struct result<do_parse(const Element &, const ResultIn &)>
+      {
+        typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::return_type>::type type;
+      };
+
+      template<typename Element, typename ResultIn>
+      typename boost::fusion::result_of::push_back<const ResultIn, typename Element::return_type>::type
       operator()(const Element &e, const ResultIn &result) const
       {
         return boost::fusion::push_back(result, e.parse(begin, end));
@@ -1267,7 +1285,12 @@ namespace parsers
     values_type values;
 
   public:
-    tuple_p(const C &_values)
+    // Note that D only has to be convertible to C.  This works around
+    // some places where slightly different types than we expect are
+    // passed in, but was can convert them to values_type via
+    // as_vector anyway.
+    template<typename D>
+    tuple_p(const D &_values)
       : values(boost::fusion::as_vector(_values))
     {
     }
@@ -1277,7 +1300,7 @@ namespace parsers
     template<typename TextIter>
     return_type parse(TextIter &begin, const TextIter &end) const
     {
-      return boost::fusion::as_vector(boost::fusion::fold(values, do_parse<TextIter>(begin, end)));
+      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_parse<TextIter>(begin, end)));
     }
 
     void get_expected(std::ostream &out) const
@@ -1355,7 +1378,7 @@ namespace parsers
   inline tuple_p<boost::fusion::vector<Rule1, Rule2> >
   operator,(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
   {
-    return tuple_p<boost::fusion::vector<Rule1, Rule2> >(boost::fusion::vector<Rule1, Rule2>(p1.derived(), p2.derievd()));
+    return tuple_p<boost::fusion::vector<Rule1, Rule2> >(boost::fusion::vector<Rule1, Rule2>(p1.derived(), p2.derived()));
   }
 }
 
