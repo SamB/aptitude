@@ -1546,6 +1546,55 @@ namespace parsers
       Func, Rule,
       typename boost::fusion::traits::is_sequence<ReturnType>::type>()(f, p.derived());
   }
+
+  /** \brief Run a sub-parser, but don't advance the read position. */
+  template<typename LookaheadP>
+  class followedBy_p : public parser_base<followedBy_p<LookaheadP>,
+                                          typename LookaheadP::return_type>
+  {
+  public:
+    typedef typename LookaheadP::return_type return_type;
+
+  private:
+    LookaheadP lookaheadP;
+
+  public:
+    followedBy_p(const LookaheadP &_lookaheadP)
+      : lookaheadP(_lookaheadP)
+    {
+    }
+
+    template<typename Iter>
+    return_type parse(Iter &begin, const Iter &end) const
+    {
+      Iter lookaheadBegin = begin;
+      return lookaheadP.parse(lookaheadBegin, end);
+    }
+
+    void get_expected(std::ostream &out)
+    {
+      lookaheadP.get_expected(out);
+    }
+  };
+
+  /** \brief Create a parser that runs a parser without advancing the
+   *  read position.
+   *
+   *  Tests whether a string recognized by the parser is present at
+   *  the current read position, without actually advancing the read
+   *  position.  Fails if the parser fails.
+   *
+   *  \tparam LookaheadP The parser type used to recognize the
+   *                     lookahead token.
+   *
+   *  \param lookahead   The parser used to recognize the
+   *                     lookahead token.
+   */
+  template<typename LookaheadP>
+  followedBy_p<LookaheadP> followedBy(const LookaheadP &lookaheadP)
+  {
+    return followedBy_p<LookaheadP>(lookaheadP);
+  }
 }
 
 #endif // PARSERS_H
