@@ -90,6 +90,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testNotFollowedByFailure);
   CPPUNIT_TEST(testPostAssertSuccess);
   CPPUNIT_TEST(testPostAssertFailure);
+  CPPUNIT_TEST(testManyOneSuccess);
+  CPPUNIT_TEST(testManyOneFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1068,6 +1070,66 @@ public:
 
       CPPUNIT_ASSERT_THROW(postAssert(integer(), "integer below 10", lessThan_f(10))(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
+    }
+  }
+
+  void testManyOneSuccess()
+  {
+    {
+      std::string input("57482adfb");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      manyOne_result<charif_p<char, digit_f>, std::string>::type
+        p = manyOne_string(digit());
+      boost::shared_ptr<std::string> ptr;
+      CPPUNIT_ASSERT_NO_THROW(ptr = p(begin, end));
+      CPPUNIT_ASSERT_EQUAL(std::string("57482"), *ptr);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
+    }
+
+    {
+      std::string input("a34b15c999");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      typedef boost::fusion::vector<char, int> charint_vector;
+      typedef std::vector<charint_vector> result_type;
+      result_type expected;
+      expected.push_back(charint_vector('a', 34));
+      expected.push_back(charint_vector('b', 15));
+      expected.push_back(charint_vector('c', 999));
+
+      boost::shared_ptr<result_type> result;
+      CPPUNIT_ASSERT_NO_THROW(result = manyOne( (anychar(), integer()) )(begin, end));
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)10, begin - input.begin());
+
+      CPPUNIT_ASSERT_EQUAL(expected.size(), result->size());
+      for(result_type::size_type i = 0; i < expected.size(); ++i)
+        {
+          std::ostringstream msg;
+
+          msg << "At index " << i;
+          CPPUNIT_ASSERT_EQUAL(expected[i], (*result)[i]);
+        }
+    }
+  }
+
+  void testManyOneFailure()
+  {
+    {
+      std::string input("abdsfa");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(manyOne_string(digit())(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
+    }
+
+    {
+      std::string input("a34b15c");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW( manyOne( (anychar(), integer()) )(begin, end), ParseException );
+
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
   }
 };

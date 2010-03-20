@@ -1777,6 +1777,90 @@ namespace parsers
   };
 
 #undef PARSERS_MAKE_CONSTRUCTOR_WRAPPER
+
+  /** \brief Convenience parsers
+   *
+   *  These parsers are defined in terms of other parsers; they aren't
+   *  strictly necessary in the library, but they're often useful and
+   *  having them available saves lots of typing.
+   */
+  // @{
+
+  /** \brief Function object to test whether a shared pointer to an
+   *  STL-style sequence is not empty.
+   *
+   *  Used to implement manyOne.
+   */
+  template<typename Seq>
+  struct notEmpty_f
+  {
+    bool operator()(const boost::shared_ptr<Seq> &s) const
+    {
+      return !s->empty();
+    }
+  };
+
+  /** \brief Metafunction computing the type of parser returned by
+   *  manyOne.
+   */
+  template<typename P, typename Seq>
+  class manyOne_result
+  {
+  public:
+    typedef assert_p<many_p<P, Seq>, notEmpty_f<Seq> > type;
+  };
+
+  // Sanity-check that we get the right type out of a manyOne
+  // expression.
+  BOOST_STATIC_ASSERT( (boost::is_same< assert_p<many_p<charif_p<char, digit_f>, std::string>, notEmpty_f<std::string> >,
+                                        manyOne_result<charif_p<char, digit_f>, std::string>::type>::value) );
+  BOOST_STATIC_ASSERT( (boost::is_same< boost::shared_ptr<std::string>,
+                                        manyOne_result<charif_p<char, digit_f>, std::string>::type::result_type>::value) );
+
+  /** \brief Match one or more copies of the given parser.
+   *
+   *  \tparam P   The type of parser to match.
+   *  \tparam Seq The STL sequence type to return.
+   *
+   *  \param p  The parser to match.
+   */
+  template<typename P, typename Seq>
+  typename manyOne_result<P, Seq>::type
+  manyOne_p(const P &p)
+  {
+    std::ostringstream msg;
+    p.get_expected_description(msg);
+
+    return postAssert(many_p<P, Seq>(p),
+                      msg.str(),
+                      notEmpty_f<Seq>());
+  }
+
+  /** \brief Match one or more copies of a parser and build a vector from them.
+   *
+   *  \tparam P  The type of parser to match.
+   *  \param p   The parser to match.
+   */
+  template<typename P>
+  typename manyOne_result<P, std::vector<typename P::result_type> >::type
+  manyOne(const P &p)
+  {
+    return manyOne_p<P, std::vector<typename P::result_type> >(p);
+  }
+
+  /** \brief Match one or more copies of a parser and build a string from them.
+   *
+   *  \tparam P  The type of parser to match.
+   *  \param p   The parser to match.
+   */
+  template<typename P>
+  typename manyOne_result<P, std::string>::type
+  manyOne_string(const P &p)
+  {
+    return manyOne_p<P, std::string>(p);
+  }
+
+  // @}
 }
 
 #endif // PARSERS_H
