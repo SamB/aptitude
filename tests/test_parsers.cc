@@ -84,6 +84,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testApplyFailure);
   CPPUNIT_TEST(testLookaheadSuccess);
   CPPUNIT_TEST(testLookaheadFailure);
+  CPPUNIT_TEST(testNotFollowedBySuccess);
+  CPPUNIT_TEST(testNotFollowedByFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -999,6 +1001,36 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> followedBy(str("abc")))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    }
+  }
+
+  void testNotFollowedBySuccess()
+  {
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_NO_THROW((integer() >> notFollowedBy(str(",abc")))(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+  }
+
+  void testNotFollowedByFailure()
+  {
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> notFollowedBy(integer()))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    }
+
+    {
+      std::string input("123,abc");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> notFollowedBy(str("abc")))(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
     }
   }

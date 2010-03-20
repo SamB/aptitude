@@ -1606,6 +1606,69 @@ namespace parsers
     return followedBy_p<LookaheadP>(lookaheadP);
   }
 
+  /** \brief Run a sub-parser, but don't advance the read position;
+   *  succeed only if the sub-parser fails.
+   */
+  template<typename LookaheadP>
+  class notFollowedBy_p : public parser_base<notFollowedBy_p<LookaheadP>,
+                                             nil_t>
+  {
+  public:
+    typedef nil_t return_type;
+
+  private:
+    LookaheadP lookaheadP;
+
+  public:
+    notFollowedBy_p(const LookaheadP &_lookaheadP)
+      : lookaheadP(_lookaheadP)
+    {
+    }
+
+    template<typename Iter>
+    return_type parse(Iter &begin, const Iter &end) const
+    {
+      Iter lookaheadBegin = begin;
+      try
+        {
+          lookaheadP.parse(lookaheadBegin, end);
+        }
+      catch(ParseException &)
+        {
+          return nil_t();
+        }
+
+      std::ostringstream msg;
+      lookaheadP.get_expected_description(msg);
+      throw ParseException((boost::format(_("Unexpected %s")) % msg.str()).str());
+    }
+
+    void get_expected(std::ostream &out)
+    {
+      out << "not ";
+      lookaheadP.get_expected(out);
+    }
+  };
+
+  /** \brief Create a parser that succeeds only if the given parser
+   *         fails.
+   *
+   *  Tests whether a string recognized by the parser is present at
+   *  the current read position, without actually advancing the read
+   *  position.  Fails if the parser succeeds.
+   *
+   *  \tparam LookaheadP The parser type used to recognize the
+   *                     lookahead token.
+   *
+   *  \param lookahead   The parser used to recognize the
+   *                     lookahead token.
+   */
+  template<typename LookaheadP>
+  notFollowedBy_p<LookaheadP> notFollowedBy(const LookaheadP &lookaheadP)
+  {
+    return notFollowedBy_p<LookaheadP>(lookaheadP);
+  }
+
   /** Used to generate operator() overloads for the type C in the
    *  construct_f class.
    */
