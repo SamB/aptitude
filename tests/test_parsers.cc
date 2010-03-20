@@ -88,6 +88,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testFollowedByFailure);
   CPPUNIT_TEST(testNotFollowedBySuccess);
   CPPUNIT_TEST(testNotFollowedByFailure);
+  CPPUNIT_TEST(testPostAssertSuccess);
+  CPPUNIT_TEST(testPostAssertFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1034,6 +1036,38 @@ public:
 
       CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> notFollowedBy(str("abc")))(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)4, begin - input.begin());
+    }
+  }
+
+  class lessThan_f
+  {
+    int x;
+
+  public:
+    lessThan_f(int _x) : x(_x) { }
+
+    bool operator()(int y) const { return y < x; }
+  };
+
+  void testPostAssertSuccess()
+  {
+    {
+      std::string input("123456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_EQUAL(123456, postAssert(integer(), "integer below 500000", lessThan_f(500000))(begin, end));
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
+    }
+  }
+
+  void testPostAssertFailure()
+  {
+    {
+      std::string input("123456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(postAssert(integer(), "integer below 10", lessThan_f(10))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
     }
   }
 };

@@ -1022,6 +1022,69 @@ namespace parsers
     return many_p<P, std::string>(p);
   }
 
+  /** \brief A parser that applies a sub-parser and checks its output
+   *  against a post-condition, returning a result only if the output
+   *  passes a test.
+   *
+   *  \tparam P  The parser type to wrap.
+   *  \tparam F  The function object type of the assertion.
+   */
+  template<typename P, typename F>
+  class assert_p : public parser_base<assert_p<P, F>,
+                                      typename P::result_type>
+  {
+    P p;
+    F f;
+    std::string expected;
+
+  public:
+    /** \brief Create a new assertion parser.
+     *
+     *  \param _p The parser to wrap.
+     *  \param _f The assertion to test.
+     *  \param _expected A description of what this assertion expects.
+     */
+    assert_p(const P &_p, const F &_f, const std::string &_expected)
+      : p(_p), f(_f), expected(_expected)
+    {
+    }
+
+    typedef typename P::result_type result_type;
+
+    template<typename Iter>
+    result_type parse(Iter &begin, const Iter &end) const
+    {
+      result_type rval = p(begin, end);
+
+      if(!f(rval))
+        throw ParseException((boost::format(_("Expected %s")) % expected).str());
+
+      return rval;
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      out << expected;
+    }
+  };
+
+  /** \brief Create a parser that applies a sub-parser and checks its
+   *  output against a post-condition, returning a result only if the
+   *  output passes a test.
+   *
+   *  \tparam P  The parser type to wrap.
+   *  \tparam F  The function object type of the assertion.
+   *
+   *  \param p The parser to wrap.
+   *  \param expected The error message to throw if the assert fails.
+   *  \param f The assertion to test (defaults to F()).
+   */
+  template<typename P, typename F>
+  assert_p<P, F> postAssert(const P &p, const std::string &expected, const F &f = F())
+  {
+    return assert_p<P, F>(p, f, expected);
+  }
+
   /** \brief Given a Boost.Fusion sequence, try each of the parsers it
    *  contains in turn.
    *
