@@ -578,6 +578,11 @@ namespace parsers
           throw ParseException((boost::format(_("Invalid integer: \"%s\".")) % ex.what()).str());
         }
     }
+
+    void get_expected(std::ostream &out) const
+    {
+      out << "integer";
+    }
   };
 
   /** \brief Create a parser that recognizes integers. */
