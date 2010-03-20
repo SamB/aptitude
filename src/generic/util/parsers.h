@@ -739,6 +739,51 @@ namespace parsers
     return andthen_p<Rule1, Rule2>(p1.derived(), p2.derived());
   }
 
+  /** \brief Combine two parsers in sequence, throwing away the second
+   *  parser's result.
+   *
+   *  \todo Implement this using Boost.Fusion containers, like or_p.
+   */
+  template<typename P1, typename P2>
+  class andfirst_p : public parser_base<andfirst_p<P1, P2>, typename P1::return_type>
+  {
+    P1 p1;
+    P2 p2;
+
+  public:
+    andfirst_p(const P1 &_p1, const P2 &_p2)
+      : p1(_p1), p2(_p2)
+    {
+    }
+
+    typedef typename P2::return_type return_type;
+
+    template<typename Iter>
+    return_type parse(Iter &begin, const Iter &end) const
+    {
+      return_type rval = p1(begin, end);
+      p2(begin, end);
+      return rval;
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      p1.get_expected_description(out);
+    }
+  };
+
+  /** \brief Combine two parsers in sequence, throwing away the second
+   *  parser's result.
+   *
+   *  Mnemonic: the arrow points at the value that's returned.
+   */
+  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  andfirst_p<Rule1, Rule2>
+  inline operator<<(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  {
+    return andfirst_p<Rule1, Rule2>(p1.derived(), p2.derived());
+  }
+
   /** \brief A parser that modifies the expected value of its target. */
   template<typename P>
   class set_expected_p : public parser_base<set_expected_p<P>, typename P::return_type>
