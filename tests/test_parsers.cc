@@ -82,6 +82,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testTupleFailureWithConsumingInput);
   CPPUNIT_TEST(testApplySuccess);
   CPPUNIT_TEST(testApplyFailure);
+  CPPUNIT_TEST(testLookaheadSuccess);
+  CPPUNIT_TEST(testLookaheadFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -959,6 +961,36 @@ public:
 
       CPPUNIT_ASSERT_THROW(apply(makeIntPair(), (integer(), integer()))(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+  }
+
+  void testLookaheadSuccess()
+  {
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_EQUAL(456, (integer() >> ch(',') >> followedBy(integer()))(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    }
+  }
+
+  void testLookaheadFailure()
+  {
+    {
+      std::string input("123,abc");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> followedBy(integer()))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    }
+
+    {
+      std::string input("123,axy");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW((integer() >> ch(',') >> followedBy(str("abc")))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
     }
   }
 };
