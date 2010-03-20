@@ -955,6 +955,59 @@ namespace parsers
     return skip_p<P>(p);
   }
 
+  /** \brief A parser that applies a sub-parser one or more times,
+   *  discarding its parses.
+   *
+   *  \note Implemented this way and not as a convenience wrapper
+   *  because the convenience wrapper would store two copies of the
+   *  parser P.
+   */
+  template<typename P>
+  class skipOne_p : public parser_base<skipOne_p<P>, nil_t>
+  {
+    P p;
+
+  public:
+    skipOne_p(const P &_p) : p(_p) { }
+
+    template<typename Iter>
+    nil_t parse(Iter &begin, const Iter &end) const
+    {
+      p(begin, end);
+
+      while(true)
+        {
+          Iter where = begin;
+
+          try
+            {
+              p(begin, end);
+            }
+          catch(ParseException &)
+            {
+              if(where != begin)
+                throw;
+
+              break;
+            }
+        }
+
+      return nil_t();
+    }
+  };
+
+  /** \brief Create a parser that applies the given parser one
+   *  or more times.
+   *
+   *  Stops when the sub-parser fails; if it fails without consuming
+   *  input after producing at least one result, this parser succeeds.
+   */
+  template<typename P>
+  skipOne_p<P> skipOne(const P &p)
+  {
+    return skipOne_p<P>(p);
+  }
+
   /** \brief A parser that applies a sub-parser zero or more times,
    *  collecting its parses.
    *
