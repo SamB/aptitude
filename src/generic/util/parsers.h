@@ -964,6 +964,10 @@ namespace parsers
    *
    *  The returned container is wrapped in a shared_ptr to avoid
    *  unnecessary copies.
+   *
+   *  Note that if the sub-parser fails after consuming input, this
+   *  parser will fail as well (since otherwise we would leave the
+   *  parse in a bad state).
    */
   template<typename P, typename Container = std::vector<typename P::result_type> >
   class many_p : public parser_base<many_p<P, Container>, boost::shared_ptr<Container> >
