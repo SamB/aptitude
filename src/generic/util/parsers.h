@@ -756,7 +756,7 @@ namespace parsers
     {
     }
 
-    typedef typename P2::return_type return_type;
+    typedef typename P1::return_type return_type;
 
     template<typename Iter>
     return_type parse(Iter &begin, const Iter &end) const
