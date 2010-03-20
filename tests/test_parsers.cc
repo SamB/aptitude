@@ -82,8 +82,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testTupleFailureWithConsumingInput);
   CPPUNIT_TEST(testApplySuccess);
   CPPUNIT_TEST(testApplyFailure);
-  CPPUNIT_TEST(testLookaheadSuccess);
-  CPPUNIT_TEST(testLookaheadFailure);
+  CPPUNIT_TEST(testFollowedBySuccess);
+  CPPUNIT_TEST(testFollowedByFailure);
   CPPUNIT_TEST(testNotFollowedBySuccess);
   CPPUNIT_TEST(testNotFollowedByFailure);
 
@@ -975,7 +975,7 @@ public:
     }
   }
 
-  void testLookaheadSuccess()
+  void testFollowedBySuccess()
   {
     {
       std::string input("123,456");
@@ -986,7 +986,7 @@ public:
     }
   }
 
-  void testLookaheadFailure()
+  void testFollowedByFailure()
   {
     {
       std::string input("123,abc");
