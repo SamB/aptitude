@@ -26,20 +26,34 @@
 #include <ostream>
 #include <vector>
 
+// A note regarding boost/fusion/include/mpl.hpp: the documentation
+// only says this makes MPL sequences into Fusion sequences, but
+// according to
+// http://archives.free.net.ph/message/20090113.031604.6f18fda2.en.html#boost,
+// you also have to include it in order to use Fusion sequences as MPL
+// sequences.
+
 #include <boost/format.hpp>
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
 #include <boost/fusion/algorithm/transformation/join.hpp>
 #include <boost/fusion/algorithm/transformation/push_back.hpp>
 #include <boost/fusion/algorithm/transformation/push_front.hpp>
 #include <boost/fusion/container/list.hpp>
+#include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/container/vector/convert.hpp>
 #include <boost/fusion/include/join.hpp>
+#include <boost/fusion/include/mpl.hpp>
 #include <boost/fusion/include/sequence.hpp>
 #include <boost/fusion/iterator/equal_to.hpp>
 #include <boost/fusion/sequence.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/mpl/begin.hpp>
+#include <boost/mpl/fold.hpp>
+#include <boost/mpl/front.hpp>
+#include <boost/mpl/transform.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 #include <generic/util/util.h>
 
@@ -205,6 +219,13 @@ namespace parsers
     {
       return set_expected_p<DerivedT>(derived(), msg);
     }
+  };
+
+  /** \brief Metafunction to retrieve the return type of a parser. */
+  template<typename P>
+  struct get_return_type
+  {
+    typedef typename P::return_type type;
   };
 
   /** \brief Atomic parsers */
@@ -939,30 +960,6 @@ namespace parsers
     return many_p<P, std::string>(p);
   }
 
-  /** \brief Given a Boost.Fusion sequence, get the first type it
-   *  stores.
-   *
-   *  Can't use the "front" metafunction directly, because that
-   *  returns a reference type -- OK for knowing "front"'s return
-   *  value, no good when you're trying to access members of the type
-   *  for metaprogramming purposes.
-   *
-   *  Utility code.
-   */
-  template<typename C>
-  class front_type
-  {
-  public:
-    typedef C type;
-  };
-
-  template<typename C>
-  class front_type<C &>
-  {
-  public:
-    typedef C type;
-  };
-
   /** \brief Given a Boost.Fusion sequence, try each of the parsers it
    *  contains in turn.
    *
@@ -976,13 +973,23 @@ namespace parsers
    *  return_type.
    */
   template<typename C>
-  class or_p : public parser_base<or_p<C>, typename front_type<typename boost::fusion::result_of::front<C>::type>::type::return_type>
+  class or_p : public parser_base<or_p<C>, typename boost::mpl::front<C>::type::return_type>
   {
   public:
-    typedef typename front_type<typename boost::fusion::result_of::front<C>::type>::type::return_type
-    return_type;
+    typedef typename boost::mpl::front<C>::type::return_type return_type;
 
   private:
+    // Metaprogramming to verify that all the sub-types are the same.
+    typedef typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> >::type C_return_types;
+    typedef typename boost::mpl::transform<C_return_types,
+                                           boost::is_same<return_type,
+                                                          boost::mpl::_1> >::type C_return_types_equal_to_front;
+    typedef typename boost::mpl::fold<C_return_types_equal_to_front,
+                                      boost::mpl::true_,
+                                      boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_equal;
+
+    BOOST_STATIC_ASSERT(all_subtypes_are_equal::value);
+
     C values;
 
     class do_get_expected
