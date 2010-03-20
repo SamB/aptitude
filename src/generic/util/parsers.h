@@ -34,6 +34,7 @@
 // sequences.
 
 #include <boost/format.hpp>
+#include <boost/fusion/algorithm/iteration/fold.hpp>
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
 #include <boost/fusion/algorithm/transformation/join.hpp>
 #include <boost/fusion/algorithm/transformation/push_back.hpp>
@@ -1219,6 +1220,142 @@ namespace parsers
   maybe_p<P> maybe(const P &p)
   {
     return maybe_p<P>(p);
+  }
+
+  /** \brief Apply each parser in the given Boost.Fusion container in
+   *  turn, returning a tuple of their results if they all match and
+   *  throwing an exception otherwise.
+   *
+   *  An instance of this object is constructed using operator, like
+   *  so:
+   *
+   *  (p1 p2, p3, p4)
+   */
+  template<typename C>
+  class tuple_p : public parser_base<tuple_p<C>,
+                                     typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> > >::type>
+  {
+  public:
+    typedef typename boost::fusion::result_of::as_vector<typename boost::mpl::transform<C, get_return_type<boost::mpl::_1> > >::type return_type;
+    typedef typename boost::fusion::result_of::as_vector<C>::type values_type;
+
+  private:
+
+    // Used to fold down the list of parsers and produce the output
+    // list.  The state parameter will be the final return value; we
+    // build it left-to-right (since fold works left-to-right).
+    template<typename TextIter>
+    class do_parse
+    {
+      TextIter &begin;
+      const TextIter &end;
+
+    public:
+      do_parse(TextIter &_begin, const TextIter &_end)
+        : begin(_begin), end(_end)
+      {
+      }
+
+      template<typename Element, typename ResultIn>
+      typename boost::fusion::result_of::push_back<ResultIn, Element>
+      operator()(const Element &e, const ResultIn &result) const
+      {
+        return boost::fusion::push_back(result, e.parse(begin, end));
+      }
+    };
+
+    values_type values;
+
+  public:
+    tuple_p(const C &_values)
+      : values(boost::fusion::as_vector(_values))
+    {
+    }
+
+    const values_type &get_values() const { return values; }
+
+    template<typename TextIter>
+    return_type parse(TextIter &begin, const TextIter &end) const
+    {
+      return boost::fusion::as_vector(boost::fusion::fold(values, do_parse<TextIter>(begin, end)));
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      boost::fusion::front(values).get_expected_description(out);
+    }
+  };
+
+  /** \brief Combine two tuple parsers to produce a new parser
+   *  that concatenates the two tuple parsers.
+   *
+   *  The generated parser parses the first tuple followed by the
+   *  second tuple; it returns a single tuple that contains the
+   *  elements returned by the first parser, followed by the elements
+   *  returned by the second parser.
+   */
+  template<typename C1, typename C2>
+  inline tuple_p<typename boost::fusion::result_of::join<
+                   typename tuple_p<C1>::values_type,
+                   typename tuple_p<C2>::values_type>::type>
+  operator,(const tuple_p<C1> &t1, const tuple_p<C2> &t2)
+  {
+    typedef typename boost::fusion::result_of::join<typename tuple_p<C1>::values_type, typename tuple_p<C2>::values_type>
+      result_container;
+
+    return tuple_p<result_container>(boost::fusion::join(t1.get_values(), t2.get_values()));
+  }
+
+  /** \brief Add a new entry to the left of a tuple parser.
+   *
+   *  The generated parser parses the non-tuple element followed by
+   *  the elements of the tuple; it returns a single tuple that
+   *  contains the element returned by the new non-tuple parser,
+   *  followed by the elements returned by the tuple parser.
+   */
+  template<typename Rule, typename ReturnType, typename C>
+  inline tuple_p<typename boost::fusion::result_of::push_front<
+                   typename tuple_p<C>::values_type,
+                   Rule>::type>
+  operator,(const parser_base<Rule, ReturnType> &p1, const tuple_p<C> &t2)
+  {
+    typedef typename boost::fusion::result_of::push_front<typename tuple_p<C>::values_type, Rule>::type
+      result_container;
+
+    return tuple_p<result_container>(boost::fusion::push_front(t2.get_values(), p1.derived()));
+  }
+
+  /** \brief Add a new entry to the right of a tuple parser.
+   *
+   *  The generated parser parses the elements of the tuple, followed
+   *  by the new non-tuple element; it returns a single tuple that
+   *  contains the elements returned by the tuple parser, followed by
+   *  the element returned by the new non-tuple parser
+   */
+  template<typename Rule, typename ReturnType, typename C>
+  inline tuple_p<typename boost::fusion::result_of::push_back<
+                   typename tuple_p<C>::values_type,
+                   Rule>::type>
+  operator,(const tuple_p<C> &t1, const parser_base<Rule, ReturnType> &p2)
+  {
+    typedef typename boost::fusion::result_of::push_back<typename tuple_p<C>::values_type, Rule>::type
+      result_container;
+
+    return tuple_p<result_container>(boost::fusion::push_back(t1.get_values(), p2.derived()));
+  }
+
+  /** \brief Join two parsers into a tuple parser.
+   *
+   *  The generated parser runs the first parser and then the second
+   *  parser; it returns a tuple containing the value returned by the
+   *  first parser, followed by the value returned by the second
+   *  parser.
+   */
+  template<typename Rule1, typename ReturnType1, typename Rule2, typename ReturnType2>
+  inline tuple_p<boost::fusion::vector<Rule1, Rule2> >
+  operator,(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
+  {
+    return tuple_p<boost::fusion::vector<Rule1, Rule2> >(boost::fusion::vector<Rule1, Rule2>(p1.derived(), p2.derievd()));
   }
 }
 
