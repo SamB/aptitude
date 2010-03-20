@@ -21,6 +21,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+#include <boost/fusion/container/generation/make_vector.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
@@ -69,6 +70,9 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testMaybeFailure);
   CPPUNIT_TEST(testMaybeSuccess);
   CPPUNIT_TEST(testMaybeValue);
+  CPPUNIT_TEST(testTupleSuccess);
+  CPPUNIT_TEST(testTupleFailureWithoutConsumingInput);
+  CPPUNIT_TEST(testTupleFailureWithConsumingInput);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -722,6 +726,56 @@ public:
     std::string::const_iterator begin = input.begin(), end = input.end();
 
     CPPUNIT_ASSERT_EQUAL(12345, integer()(begin, end));
+  }
+
+  void testTupleSuccess()
+  {
+    {
+      std::string input("123,456,789");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456, 789),
+                           (integer(), ch(',') >> integer(), ch(',') >> integer())(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)11, begin - input.begin());
+
+    }
+  }
+
+  void testTupleFailureWithoutConsumingInput()
+  {
+    {
+      std::string input("abcdefg");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW((integer(), str("abc"), str("def"))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)0, begin - input.begin());
+    }
+  }
+
+  void testTupleFailureWithConsumingInput()
+  {
+    // Cases tested: in a 3-tuple, check what happens if the first
+    // parser fails, if the second parser fails, and if the third
+    // fails, with input consumed in each case.
+
+    {
+      std::string input("123,456,789");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW((digit() >> alpha(), integer(), integer())(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)1, begin - input.begin());
+    }
+
+    {
+      std::string input("123,456,789");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW((integer(), ch(',') >> alpha(), integer())(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
+    }
+
+    {
+      std::string input("123,456,789");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_THROW((integer(), ch(',') >> integer(), ch(',') >> integer() >> alpha())(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)11, begin - input.begin());
+    }
   }
 };
 
