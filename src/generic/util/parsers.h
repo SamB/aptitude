@@ -81,14 +81,14 @@ namespace parsers
    *  range and returns a value of the parser's result_type.  Parsers
    *  are generated from rules; see \ref rule_concept.
    *
-   *  Parsers must be derived from a specialization of parser_base;
-   *  this allows operator overloading to work properly.
+   *  Parsers are derived from a specialization of parser_base; this
+   *  allows operator overloading to work properly.
    *
-   *  Members required:
+   *  Members (see parser_base for more details):
    *
    *  - result_type: the type returned from operator().  Must be default
-   *    constructible, assignable, and copy-constructible.
-   *  - operator()(Iter &begin, const Iter &end) const: the actual parse routine.
+   *    constructible, assignable, and copy-constructable.
+   *  - parse(Iter &begin, const Iter &end) const: the actual parse routine.
    *    Iter must be a model of ForwardIterator.  begin will be updated
    *    to point to the first character that was not parsed.  Throws
    *    ParseException if the input could not be parsed.
@@ -103,14 +103,17 @@ namespace parsers
    *
    *  \page rule_concept
    *
-   *  A rule is the code that defines a parser (see \ref parser_concept).
-   *  Rules can be used with the parser_base class to produce an object
-   *  modelling parser_concept.
+   *  A rule is the code that defines a parser (see \ref parser).
+   *  Rules must derive from a parser_base class instantiated with
+   *  their own class type and their return type.
    *
    *  Members required:
    *
-   *  - result_type: the type returned from operator().
-   *  - parse(Iter &begin, const Iter &end) const: the actual
+   *  - result_type: the type returned from operator().  This is
+   *    inherited from parser_base.  However, some rules choose to
+   *    define it themselves because otherwise it's not available in
+   *    the rule class's definition (for technical reasons).
+   *  - apply(Iter &begin, const Iter &end) const: the actual
    *    parse routine.  Iter must be a model of ForwardIterator.  begin
    *    will be updated to point to the first character that was not
    *    parsed.  Throws ParseException if the input could not be parsed.
@@ -152,14 +155,21 @@ namespace parsers
    *  locus for various sorts of frontend activities (e.g., accepting
    *  a Boost-style range instead of two iterators).
    *
+   *  This class is not copy-constructible, default-constructible, or
+   *  destructible, but its subclasses are.  This is because you
+   *  should always instantiate a subclass, not one of these; treat
+   *  parser_base as an abstract class.
+   *
    *  \todo It's not clear that the Curious Template Pattern does much
    *  for us here; just having an empty base class might be equally
    *  useful.
    *
    *  \tparam DerivedT   The derived type that actually implements the parser's
    *                     behavior.  Must be a subclass of this instantiation
-   *                     of parser_base, or bad stuff will happen.
+   *                     of parser_base.
    *  \tparam ResultType The type returned by the parse operation.
+   *                     Must be default constructable, assignable,
+   *                     and copy-constructable.
    */
   template<typename DerivedT, typename ResultType>
   class parser_base
@@ -185,11 +195,25 @@ namespace parsers
     // compile-time resolution of the parse functionality (well, sort
     // of).
 
-    /** \brief Parse a range of text. */
+    /** \brief Parse a range of text.
+     *
+     *  \tparam Iter   A model of ForwardIterator used to store
+     *                 iterators over the input text.
+     *
+     *  \param begin   The start of the range of text to parse.
+     *                 Will be updated to point past whatever
+     *                 was parsed.
+     *
+     *  \param end     The end of the range of text to parse.
+     *
+     *  \return the parsed value.
+     *
+     *  \throw ParseException if the parse fails.
+     */
     template<typename Iter>
-    result_type operator()(Iter &begin, const Iter &end) const
+    result_type parse(Iter &begin, const Iter &end) const
     {
-      return derived().parse(begin, end);
+      return derived().apply(begin, end);
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -260,7 +284,7 @@ namespace parsers
     typedef typename parser_base<ch_p<CType>, CType>::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException((boost::format(_("Expected '%s', but got EOF.")) %  c).str());
@@ -299,7 +323,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    CType parse(Iter &begin, const Iter &end) const
+    CType apply(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         {
@@ -353,7 +377,7 @@ namespace parsers
     typedef CType result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException((boost::format(_("Expected %s, but got EOF.")) % description).str());
@@ -536,7 +560,7 @@ namespace parsers
     typedef int result_type;
 
     template<typename Iter>
-    int parse(Iter &begin, const Iter &end) const
+    int apply(Iter &begin, const Iter &end) const
     {
       if(begin == end)
         throw ParseException(_("Expected an integer, got EOF."));
@@ -596,7 +620,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       if(begin != end)
         throw ParseException((boost::format(_("Expected EOF, got '%c'.")) % *begin).str());
@@ -628,7 +652,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       Iter start = begin;
 
@@ -676,7 +700,7 @@ namespace parsers
     typedef T result_type;
 
     template<typename Iter>
-    T parse(Iter &begin, const Iter &end) const
+    T apply(Iter &begin, const Iter &end) const
     {
       return value;
     }
@@ -726,10 +750,10 @@ namespace parsers
     typedef typename P2::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
-      p1(begin, end);
-      return p2(begin, end);
+      p1.parse(begin, end);
+      return p2.parse(begin, end);
     }
 
     void get_expected(std::ostream &out) const
@@ -768,10 +792,10 @@ namespace parsers
     typedef typename P1::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
-      result_type rval = p1(begin, end);
-      p2(begin, end);
+      result_type rval = p1.parse(begin, end);
+      p2.parse(begin, end);
       return rval;
     }
 
@@ -809,9 +833,9 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
-      return p(begin, end);
+      return p.parse(begin, end);
     }
 
     void get_expected(std::ostream &out) const
@@ -841,7 +865,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       while(true)
         {
@@ -849,7 +873,7 @@ namespace parsers
 
           try
             {
-              result = p(begin, end);
+              result = p.parse(begin, end);
             }
           catch(ParseException &)
             {
@@ -926,14 +950,14 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       while(true)
         {
           Iter where = begin;
           try
             {
-              p(begin, end);
+              p.parse(begin, end);
             }
           catch(ParseException &)
             {
@@ -972,9 +996,9 @@ namespace parsers
     skipOne_p(const P &_p) : p(_p) { }
 
     template<typename Iter>
-    nil_t parse(Iter &begin, const Iter &end) const
+    nil_t apply(Iter &begin, const Iter &end) const
     {
-      p(begin, end);
+      p.parse(begin, end);
 
       while(true)
         {
@@ -982,7 +1006,7 @@ namespace parsers
 
           try
             {
-              p(begin, end);
+              p.parse(begin, end);
             }
           catch(ParseException &)
             {
@@ -1036,7 +1060,7 @@ namespace parsers
     typedef boost::shared_ptr<Container> result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       boost::shared_ptr<Container> rval =
         boost::make_shared<Container>();
@@ -1115,9 +1139,9 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
-      result_type rval = p(begin, end);
+      result_type rval = p.parse(begin, end);
 
       if(!f(rval))
         throw ParseException((boost::format(_("Expected %s")) % expected).str());
@@ -1269,7 +1293,7 @@ namespace parsers
     const C &get_values() const { return values; }
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       Iter initialBegin = begin;
       return do_or(begin, initialBegin, end, boost::fusion::begin(values));
@@ -1379,13 +1403,13 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       Iter start = begin;
 
       try
         {
-          return p(begin, end);
+          return p.parse(begin, end);
         }
       catch(ParseException &ex)
         {
@@ -1435,13 +1459,13 @@ namespace parsers
     // list.  The state parameter will be the final return value; we
     // build it left-to-right (since fold works left-to-right).
     template<typename TextIter>
-    class do_parse
+    class do_apply
     {
       TextIter &begin;
       const TextIter &end;
 
     public:
-      do_parse(TextIter &_begin, const TextIter &_end)
+      do_apply(TextIter &_begin, const TextIter &_end)
         : begin(_begin), end(_end)
       {
       }
@@ -1450,7 +1474,7 @@ namespace parsers
       struct result;
 
       template<typename Element, typename ResultIn>
-      struct result<do_parse(const Element &, const ResultIn &)>
+      struct result<do_apply(const Element &, const ResultIn &)>
       {
         typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type type;
       };
@@ -1479,9 +1503,9 @@ namespace parsers
     const values_type &get_values() const { return values; }
 
     template<typename TextIter>
-    result_type parse(TextIter &begin, const TextIter &end) const
+    result_type apply(TextIter &begin, const TextIter &end) const
     {
-      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_parse<TextIter>(begin, end)));
+      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_apply<TextIter>(begin, end)));
     }
 
     void get_expected(std::ostream &out) const
@@ -1619,9 +1643,9 @@ namespace parsers
     }
 
     template<typename TextIter>
-    result_type parse(TextIter &begin, const TextIter &end) const
+    result_type apply(TextIter &begin, const TextIter &end) const
     {
-      return func(p(begin, end));
+      return func(p.parse(begin, end));
     }
 
     void get_expected(std::ostream &out) const
@@ -1701,7 +1725,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       Iter lookaheadBegin = begin;
       return lookaheadP.parse(lookaheadBegin, end);
@@ -1752,7 +1776,7 @@ namespace parsers
     }
 
     template<typename Iter>
-    result_type parse(Iter &begin, const Iter &end) const
+    result_type apply(Iter &begin, const Iter &end) const
     {
       Iter lookaheadBegin = begin;
       try
