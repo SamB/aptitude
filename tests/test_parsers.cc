@@ -308,9 +308,10 @@ public:
     std::string input = "abcd";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    str ab("ab"), cd("cd");
+    str abc("abc");
+    ch_p<char> d('d');
 
-    CPPUNIT_ASSERT_NO_THROW((ab >> cd)(begin, end));
+    CPPUNIT_ASSERT_EQUAL('d', (abc >> d)(begin, end));
     CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
   }
 
@@ -322,7 +323,7 @@ public:
 
     ch_p<char> a('a'), b('b'), c('c'), d('d');
 
-    CPPUNIT_ASSERT_NO_THROW((a >> b >> c >> d)(begin, end));
+    CPPUNIT_ASSERT_EQUAL('d', (a >> b >> c >> d)(begin, end));
     CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
   }
 
@@ -406,9 +407,10 @@ public:
     std::string input = "abcd";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    str ab("ab"), cd("cd");
+    ch_p<char> a('a');
+    str bcd("bcd");
 
-    CPPUNIT_ASSERT_NO_THROW((ab << cd)(begin, end));
+    CPPUNIT_ASSERT_EQUAL('a', (a << bcd)(begin, end));
     CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
   }
 
@@ -420,7 +422,7 @@ public:
 
     ch_p<char> a('a'), b('b'), c('c'), d('d');
 
-    CPPUNIT_ASSERT_NO_THROW((a << b << c << d)(begin, end));
+    CPPUNIT_ASSERT_EQUAL('a', (a << b << c << d)(begin, end));
     CPPUNIT_ASSERT_EQUAL((ptrdiff_t)4, begin - input.begin());
   }
 
