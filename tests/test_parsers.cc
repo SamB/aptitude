@@ -29,6 +29,15 @@ using namespace parsers;
 
 typedef std::string::const_iterator::difference_type iter_difftype;
 
+template<typename T>
+std::ostream &operator<<(std::ostream &out, const boost::optional<T> &o)
+{
+  if(o)
+    return out << "Just " << o;
+  else
+    return out << "Nothing";
+}
+
 class ParsersTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ParsersTest);
@@ -96,6 +105,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testPostAssertFailure);
   CPPUNIT_TEST(testManyOneSuccess);
   CPPUNIT_TEST(testManyOneFailure);
+  CPPUNIT_TEST(testOptionalSuccess);
+  CPPUNIT_TEST(testOptionalFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1182,6 +1193,40 @@ public:
       CPPUNIT_ASSERT_THROW( manyOne( (anychar(), integer()) )(begin, end), ParseException );
 
       CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
+    }
+  }
+
+  void testOptionalSuccess()
+  {
+    {
+      std::string input("123478zs");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      boost::optional<int> result;
+      CPPUNIT_ASSERT_NO_THROW( result = optional(integer())(begin, end) );
+      CPPUNIT_ASSERT_EQUAL(boost::optional<int>(123478), result);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
+    }
+
+    {
+      std::string input("alsdkfj");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      boost::optional<int> result;
+      CPPUNIT_ASSERT_NO_THROW( result = optional(integer())(begin, end) );
+      CPPUNIT_ASSERT_EQUAL(boost::optional<int>(), result);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
+    }
+  }
+
+  void testOptionalFailure()
+  {
+    {
+      std::string input("234,abc");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(optional( (integer(), integer()) )(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
     }
   }
 };

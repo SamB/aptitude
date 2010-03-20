@@ -58,6 +58,7 @@
 #include <boost/mpl/front.hpp>
 #include <boost/mpl/transform.hpp>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/optional.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
@@ -1911,6 +1912,33 @@ namespace parsers
   manyOne_string(const P &p)
   {
     return manyOne_p<P, std::string>(p);
+  }
+
+  /** \brief Metafunction computing the result type of optional(). */
+  template<typename P>
+  struct optional_result
+  {
+    typedef boost::optional<typename P::result_type> parse_type;
+    typedef or_p<boost::fusion::vector<apply_p<construct_f<parse_type>, tuple_p<boost::fusion::vector<P> > >,
+                                       val_p<parse_type> > >
+    type;
+  };
+
+  /** \brief Match zero or one copies of the given parser.
+   *
+   *  There are three ways this can behave:
+   *
+   *   1. If the parser succeeds, its value is returned.
+   *   2. If the parser fails without consuming input, an empty optional
+   *      value is returned.
+   *   3. If the parser fails and consumes input, this parser fails.
+   */
+  template<typename P>
+  typename optional_result<P>::type optional(const P &p)
+  {
+    return
+        apply(construct_f<boost::optional<typename P::result_type> >(), tuple(p))
+      | val(boost::optional<typename P::result_type>());
   }
 
   // @}
