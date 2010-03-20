@@ -73,6 +73,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testTupleSuccess);
   CPPUNIT_TEST(testTupleFailureWithoutConsumingInput);
   CPPUNIT_TEST(testTupleFailureWithConsumingInput);
+  CPPUNIT_TEST(testApplySuccess);
+  CPPUNIT_TEST(testApplyFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -731,6 +733,14 @@ public:
   void testTupleSuccess()
   {
     {
+      std::string input("765");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(765),
+                           parsers::tuple(integer())(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+
+    {
       std::string input("123,456,789");
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456, 789),
@@ -775,6 +785,73 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
       CPPUNIT_ASSERT_THROW((integer(), ch(',') >> integer(), ch(',') >> integer() >> alpha())(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((ptrdiff_t)11, begin - input.begin());
+    }
+  }
+
+  // Simple function object usable with apply().
+  struct addOne
+  {
+    typedef int result_type;
+
+    result_type operator()(int input) const
+    {
+      return input + 1;
+    }
+  };
+
+  struct makeIntPair
+  {
+    typedef boost::fusion::vector<int, int> result_type;
+
+    result_type operator()(int n1, int n2) const
+    {
+      return boost::fusion::make_vector(n1, n2);
+    }
+  };
+
+  void testApplySuccess()
+  {
+    // Unary test via apply().
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(124, apply(addOne(), integer())(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+
+    // Unary test using a unary tuple.
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(124, ::parsers::apply(addOne(), tuple(integer()))(begin, end));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+
+    // Unary test without the apply() convenience routine..
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(124, (apply_p<addOne, tuple_p<boost::fusion::vector<integer_p> > >(addOne(), tuple(integer()))(begin, end)));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
+    }
+
+    // Binary test.
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(makeIntPair(), (integer(), ch(',') >> integer()))(begin, end)));
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)7, begin - input.begin());
+    }
+  }
+
+  void testApplyFailure()
+  {
+    {
+      std::string input("123,456");
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(apply(makeIntPair(), (integer(), integer()))(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((ptrdiff_t)3, begin - input.begin());
     }
   }
 };

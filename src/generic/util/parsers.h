@@ -45,11 +45,13 @@
 #include <boost/fusion/container/list.hpp>
 #include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/container/vector/convert.hpp>
+#include <boost/fusion/functional/adapter/fused.hpp>
 #include <boost/fusion/include/join.hpp>
 #include <boost/fusion/include/mpl.hpp>
 #include <boost/fusion/include/sequence.hpp>
 #include <boost/fusion/iterator/equal_to.hpp>
 #include <boost/fusion/sequence.hpp>
+#include <boost/fusion/support/is_sequence.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/mpl/begin.hpp>
 #include <boost/mpl/fold.hpp>
@@ -1379,6 +1381,125 @@ namespace parsers
   operator,(const parser_base<Rule1, ReturnType1> &p1, const parser_base<Rule2, ReturnType2> &p2)
   {
     return tuple_p<boost::fusion::vector<Rule1, Rule2> >(boost::fusion::vector<Rule1, Rule2>(p1.derived(), p2.derived()));
+  }
+
+  /** \brief Create a unary tuple parser.
+   *
+   *  Use in conjunction with "apply" to invoke unary functions.
+   *
+   *  Note that since "apply" can accept a non-sequence, this is
+   *  primarily useful in corner cases (e.g., if the function being
+   *  applied actually takes a Fusion sequence as an argument, you
+   *  need to wrap it in a tuple to avoid having the sequence become
+   *  the arguments).
+   */
+  template<typename Rule, typename ReturnType>
+  inline tuple_p<boost::fusion::vector<Rule> >
+  tuple(const parser_base<Rule, ReturnType> &p)
+  {
+    return tuple_p<boost::fusion::vector<Rule> >(boost::fusion::vector<Rule>(p.derived()));
+  }
+
+  /** \brief Helper parser to apply a function object to a tuple of
+   *  parsed values and return its result.
+   *
+   *  \tparam Func The type of function object to invoke; must be
+   *               compatible with boost::fusion::fused.  In
+   *               particular, this may *not* be a function type; it
+   *               *must* be a class type (due to "technical reasons"
+   *               aka "utter nonsense in the C++ standard").
+   *
+   *  \tparam P The type of the sub-parser; its return type must be a
+   *            value that can be given as an argument to the result
+   *            of boost::fusion::make_fused_function_object.
+   */
+  template<typename Func, typename P>
+  class apply_p : public parser_base<apply_p<Func, P>,
+                                     // The return type is the result
+                                     // of applying the fused function
+                                     // object to the result of the
+                                     // sub-parser.
+                                     typename boost::fusion::result_of::invoke<
+                                       Func,
+                                       typename P::return_type>::type>
+  {
+  public:
+    typedef typename boost::fusion::result_of::invoke<Func, typename P::return_type>::type return_type;
+
+  private:
+    // It might be better to "bake in" the fusion magic by using a
+    // fused_function_object here.  However, the metaprogramming got
+    // too hairy when I tried going down that road.
+    boost::fusion::fused<Func> func;
+    P p;
+
+  public:
+    apply_p(const Func &_func, const P &_p)
+      : func(_func), p(_p)
+    {
+    }
+
+    template<typename TextIter>
+    return_type parse(TextIter &begin, const TextIter &end) const
+    {
+      return func(p(begin, end));
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      p.get_expected(out);
+    }
+  };
+
+  /** \brief Helper routine for apply(); do not invoke directly.
+   *
+   *  Handles wrapping P in a boost::fusion::vector() if it is not a
+   *  Fusion sequence.
+   */
+  template<typename Func, typename P, typename IsSequence>
+  struct internal_do_apply
+  // The case where P is a Fusion sequence.
+  {
+    typedef apply_p<Func, P> result_type;
+
+    result_type operator()(const Func &f, const P &p) const
+    {
+      return result_type(f, p);
+    }
+  };
+
+  // The case where P is not a Fusion sequence.
+  template<typename Func, typename P>
+  struct internal_do_apply<Func, P, boost::mpl::false_>
+  {
+    typedef apply_p<Func, tuple_p<boost::fusion::vector<P> > > result_type;
+
+    result_type operator()(const Func &f, const P &p) const
+    {
+      return result_type(f, tuple(p));
+    }
+  };
+
+  /** \brief Create a helper parser to apply a function object to a
+   *  tuple (or other Fusion sequence) of parsed values and return its
+   *  result.
+   *
+   *  Mainly meant to be used with the tuple_p parser.
+   *
+   *  \param f  The function to apply.
+   *  \param p  A parser that will return either a sequence of values
+   *            that can be passed to f or a single non-sequence value,
+   *            which will be passed as the only argument to f.
+   */
+  template<typename Func, typename Rule, typename ReturnType>
+  inline typename internal_do_apply<
+    Func, Rule,
+    typename boost::fusion::traits::is_sequence<ReturnType>::type>::result_type
+  apply(const Func &f, const parser_base<Rule, ReturnType> &p)
+  {
+    return internal_do_apply<
+      Func, Rule,
+      typename boost::fusion::traits::is_sequence<ReturnType>::type>()(f, p.derived());
   }
 }
 
