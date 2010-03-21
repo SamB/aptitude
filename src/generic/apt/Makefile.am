@@ -27,6 +27,8 @@ libgeneric_apt_a_SOURCES = \
         aptitude_resolver_cost_settings.h \
         aptitude_resolver_cost_syntax.cc \
         aptitude_resolver_cost_syntax.h \
+	aptitude_resolver_cost_types.cc \
+	aptitude_resolver_cost_types.h \
         aptitude_resolver_universe.cc \
         aptitude_resolver_universe.h \
         apt_undo_group.cc   \

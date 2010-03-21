@@ -56,6 +56,8 @@ parse_cost_settings(const std::string &settings);
  */
 void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings);
 
+/** \brief Synonym for dump_settings(). */
+std::ostream &operator<<(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings);
 
 #endif // APTITUDE_RESOLVER_COST_SYNTAX_H
 

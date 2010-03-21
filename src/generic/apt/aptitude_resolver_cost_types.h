@@ -28,6 +28,8 @@
 
 #include <string>
 
+#include <iosfwd>
+
 class CostTypeCheckFailure : public std::exception
 {
   std::string msg;
@@ -125,5 +127,7 @@ public:
     return entries;
   }
 };
+
+std::ostream &operator<<(std::ostream &out, const cost_component_structure &costs);
 
 #endif // APTITUDE_RESOLVER_COST_TYPES_H

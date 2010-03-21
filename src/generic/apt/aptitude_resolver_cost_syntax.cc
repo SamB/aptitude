@@ -183,42 +183,13 @@ void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_c
       else
         out << ", ";
 
-      if(settings_it->get_combining_op() == cost_component_structure::combine_max)
-        out << "max(";
-
-      bool first_entry = true;
-      for(std::vector<cost_component_structure::entry>::const_iterator
-            entries_it = entries.begin(); entries_it != entries.end();
-          ++entries_it)
-        {
-          if(entries_it->get_scaling_factor() == 0)
-            continue;
-
-          if(first_entry)
-            first_entry = false;
-          else switch(settings_it->get_combining_op())
-                 {
-                 case cost_component_structure::combine_add:
-                   out << " + ";
-                   break;
-
-                 case cost_component_structure::combine_max:
-                   out << ", ";
-                   break;
-
-                 default:
-                   // Should never happen.
-                   out << " ";
-                   break;
-                 }
-
-          if(entries_it->get_scaling_factor() != 1)
-            out << entries_it->get_scaling_factor() << "*";
-          out << entries_it->get_name();
-        }
-
-      if(settings_it->get_combining_op() == cost_component_structure::combine_max)
-        out << ")";
+      out << *settings_it;
     }
 }
 
+std::ostream &operator<<(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings)
+{
+  dump_settings(out, settings);
+
+  return out;
+}
