@@ -114,6 +114,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSepByFailureInFirstElement);
   CPPUNIT_TEST(testSepByFailureInSeparator);
   CPPUNIT_TEST(testSepByFailureInSecondElement);
+  CPPUNIT_TEST(testSepByTrailingSeparator);
   CPPUNIT_TEST(testLexemeSuccess);
   CPPUNIT_TEST(testLexemeFailure);
   CPPUNIT_TEST(testBetweenSuccess);
@@ -1343,6 +1344,17 @@ public:
     // at the end of the list).
     {
       std::string input = "ab,cd,,ef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
+    }
+  }
+
+  void testSepByTrailingSeparator()
+  {
+    {
+      std::string input = "ab,cd,";
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
