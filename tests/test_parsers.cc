@@ -69,6 +69,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testForeachEmptyEndEOF);
   CPPUNIT_TEST(testForeachNotEmptyEndNotEOF);
   CPPUNIT_TEST(testForeachNotEmptyEndEOF);
+  CPPUNIT_TEST(testForeachFailure);
   CPPUNIT_TEST(testSkipEmptyEndNotEOF);
   CPPUNIT_TEST(testSkipEmptyEndEOF);
   CPPUNIT_TEST(testSkipNotEmptyEndNotEOF);
@@ -81,6 +82,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testManyEmptyEndEOF);
   CPPUNIT_TEST(testManyNotEmptyEndNotEOF);
   CPPUNIT_TEST(testManyNotEmptyEndEOF);
+  CPPUNIT_TEST(testManyFailure);
   CPPUNIT_TEST(testOrFirstBranchMatches);
   CPPUNIT_TEST(testOrFirstBranchFailsAndConsumesInput);
   CPPUNIT_TEST(testOrSecondBranchMatches);
@@ -603,6 +605,19 @@ public:
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
+  void testForeachFailure()
+  {
+    std::string input = "2345 1234 234jf ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    std::vector<int> result;
+
+    CPPUNIT_ASSERT_THROW(foreach(integer() >> ch(' '),
+                                 push_back_a(result)).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)14, begin - input.begin());
+  }
+
+
   void testSkipEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
@@ -749,6 +764,15 @@ public:
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
+  }
+
+  void testManyFailure()
+  {
+    std::string input = "2345 1234 234jf ";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    CPPUNIT_ASSERT_THROW(many(integer() >> ch(' ')).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)13, begin - input.begin());
   }
 
   void testOrFirstBranchMatches()
