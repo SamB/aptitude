@@ -1156,6 +1156,7 @@ namespace parsers
     {
       while(true)
         {
+          typename ParseInput::const_iterator initialBegin = input.begin();
           typename P::result_type result;
 
           try
@@ -1164,6 +1165,9 @@ namespace parsers
             }
           catch(ParseException &)
             {
+              // Only fail if the parser consumed input.
+              if(initialBegin != input.begin())
+                throw;
               break;
             }
 
