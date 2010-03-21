@@ -299,7 +299,8 @@ public:
         "max(asdf, g + h)",
         "a, b, ",
         "a + , b",
-        "a, + b"
+        "a, + b",
+        "b+max+c"
       };
     int fail_inputs_length = sizeof(fail_inputs) / sizeof(fail_inputs[0]);
 
