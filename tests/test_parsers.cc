@@ -294,6 +294,27 @@ public:
     CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
   }
 
+  void testFail()
+  {
+    std::string input = "abc def ghi";
+    std::string::const_iterator begin = input.begin(), end = input.end();
+
+    boost::optional<ParseException> thrown;
+    try
+      {
+        ( (maybe(str("def")) >> fail("This is an ex-parser") >> val(boost::shared_ptr<std::vector<boost::shared_ptr<std::string> > >()))
+          | many(lexeme(many_string(alpha())))).parse(begin, end);
+      }
+    catch(ParseException &ex)
+      {
+        thrown = ex;
+      }
+
+    CPPUNIT_ASSERT_MESSAGE("Expected exception not thrown.", thrown);
+    CPPUNIT_ASSERT_EQUAL(std::string("This is an ex-parser"), thrown->get_raw_msg());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
+  }
+
   void testStr()
   {
     std::string input = "abcdef";

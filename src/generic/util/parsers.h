@@ -943,6 +943,36 @@ namespace parsers
     }
   };
 
+  /** \brief A parser that always fails.
+   *
+   *  Unfortunately, unlike the Haskell equivalent, there's no way to
+   *  have a polymorphic return type, so if this is used in an
+   *  alternative list, a dummy return value will have to be provided.
+   *  That might limit its usefulness.
+   */
+  class fail : public parser_base<fail, nil_t>
+  {
+    std::string msg;
+
+  public:
+    fail(const std::string &_msg) : msg(_msg)
+    {
+    }
+
+    template<typename ParseInput>
+    nil_t do_parse(ParseInput &input) const
+    {
+      input.fail(msg);
+
+      return nil_t();
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      out << "(nothing)";
+    }
+  };
+
   /** \brief A parser that recognizes a particular string.
    *
    *  \note For the sake of efficiency, returns nothing (normally this
