@@ -33,7 +33,7 @@ template<typename T>
 std::ostream &operator<<(std::ostream &out, const boost::optional<T> &o)
 {
   if(o)
-    return out << "Just " << o;
+    return out << "Just " << *o;
   else
     return out << "Nothing";
 }

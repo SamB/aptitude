@@ -62,6 +62,7 @@
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
+#include <boost/range.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/type_traits/is_same.hpp>
 
@@ -88,12 +89,21 @@ namespace parsers
    *
    *  - result_type: the type returned from operator().  Must be default
    *    constructible, assignable, and copy-constructable.
-   *  - parse(Iter &begin, const Iter &end) const: the actual parse routine.
-   *    Iter must be a model of ForwardIterator.  begin will be updated
-   *    to point to the first character that was not parsed.  Throws
-   *    ParseException if the input could not be parsed.
+   *
+   *  - template<typename ParseInput> parse(ParseInput &input)
+   *    const: the actual parse routine.  ParseInput is a parse input
+   *    object (see \ref parse_input_concept).  The parse input will
+   *    be updated to point to the first character that was not
+   *    parsed.  Throws ParseException if the input could not be
+   *    parsed.
+   *
+   *  - template<typename ForwardReadableRange> parse(const
+   *    ForwardReadableRange &r) const: a convenience frontend to
+   *    parse() that unpacks the given range.
+   *
    *  - get_expected_description(std::ostream &out) const: writes a brief description
    *    of the next token expected by this parser to "out".
+   *
    *  - derived(): returns a reference to the object, cast to its
    *    concrete parser type.
    *
@@ -101,7 +111,7 @@ namespace parsers
    *  input stream; the character type is simply the value_type of the
    *  iterator passed to operator().
    *
-   *  \page rule_concept
+   *  \page rule_concept Rule concept
    *
    *  A rule is the code that defines a parser (see \ref parser).
    *  Rules must derive from a parser_base class instantiated with
@@ -113,24 +123,131 @@ namespace parsers
    *    inherited from parser_base.  However, some rules choose to
    *    define it themselves because otherwise it's not available in
    *    the rule class's definition (for technical reasons).
-   *  - apply(Iter &begin, const Iter &end) const: the actual
-   *    parse routine.  Iter must be a model of ForwardIterator.  begin
-   *    will be updated to point to the first character that was not
-   *    parsed.  Throws ParseException if the input could not be parsed.
+   *
+   *  - template<typename ParseInput> apply(ParseInput &input)
+   *    const: the actual parse routine.  ParseInput is a parse input
+   *    object (see \ref parse_input_concept).  The parse input will
+   *    be updated to point to the first character that was not
+   *    parsed.  Throws ParseException if the input could not be
+   *    parsed.
+   *
    *  - get_expected(std::ostream &out) const: writes a brief description
    *    of the next token expected by this rule to "out".
+   *
+   *  \page parse_input_concept ParseInput concept
+   *
+   *  The ParseInput concept represents objects that provides access
+   *  to an input range for the parser, and also handles keeping track
+   *  of the current line and column number.
+   *
+   *  An object modeling ParseInput provides the following members:
+   *
+   *  - ParseInput(ParseInput &): copy-constructor.
+   *
+   *  - typedef (...) value_type: the type of object that the input
+   *                              stream consists of.
+   *
+   *  - typedef (...) const_iterator: a model of ForwardIterator.
+   *
+   *  - bool empty() const: test whether there is any more input in
+   *                        the stream.
+   *
+   *  - value_type front() const: if the stream is not empty, return
+   *                              its first element.
+   *
+   *  - const_iterator begin() const: returns an iterator to the
+   *                                  current stream position.  Used
+   *                                  to check whether a sub-parser
+   *                                  consumed anything, and to report
+   *                                  how much was parsed to client
+   *                                  code.
+   *
+   *  - const std::string &getFilename() const: retrieve the file name
+   *                                            of the current input
+   *                                            position.
+   *
+   *  - int getLineNumber() const: retrieve the line number of the
+   *                               current input position.
+   *
+   *  - int getColumnNumber() const: retrieve the column number of the
+   *                                 current input position.
+   *
+   *  - void setFilename(const std::string &): set the filename of the
+   *                                           current input position.
+   *
+   *  - void setLineNumber(int): set the line number of the current
+   *                             input position.
+   *
+   *  - void setColumnNumber(int): set the column number of the
+   *                               current input position.
+   *
+   *  - void fail(const std::string &msg) const:
+   *     throw a ParseException initialized with the current input state.
+   *     This routine should have __attribute__ ((noreturn)) so the compiler
+   *     knows it doesn't return.
+   *
+   *  - void advance(): if the stream is nonempty, advance to the next
+   *                    input location and update the internal
+   *                    accounting accordingly.
+   *
+   *  The lack of an end() is deliberate: begin() isn't supposed to be
+   *  used to iterate over the sequence (since then you lose the
+   *  benefit of keeping track of the current position) and so end()
+   *  is hidden to keep absent-minded coders from accidentally
+   *  iterating with begin().
    */
 
   /** \brief Exception thrown for parse errors. */
   class ParseException : public std::exception
   {
     std::string msg;
+    std::string raw_msg;
+    std::string filename;
+    int lineNumber;
+    int columnNumber;
+
+    static std::string show_filename(const std::string &input_filename)
+    {
+      if(input_filename.empty())
+        return "<none>";
+      else
+        return input_filename;
+    }
 
   public:
-    ParseException(const std::string &_msg)
-      : msg(_msg)
+    /** \brief Create a new parse exception.
+     *
+     *  \param _msg  The error message attached to this exception.
+     *  \param _filename     The filename in which the error occurred, or
+     *                       an empty string for an anonymous file.
+     *  \param _lineNumber   The line number in which the error occurred.
+     *  \param _columnNumber The column number in which the error occurred.
+     */
+    ParseException(const std::string &_msg,
+                   const std::string &_filename,
+                   int _lineNumber,
+                   int _columnNumber)
+      : msg( (boost::format("%s:%d:%d: %s") % show_filename(_filename) % _lineNumber % _columnNumber % _msg).str() ),
+        raw_msg(msg),
+        filename(_filename),
+        lineNumber(_lineNumber),
+        columnNumber(_columnNumber)
     {
     }
+
+    /** \brief Retrieve the raw error message, without the filename
+     *  and line/column numbers.
+     */
+    const std::string &get_raw_msg() const { return raw_msg; }
+
+    /** \brief Retrieve the filename in which the error occurred. */
+    const std::string &get_filename() const { return filename; }
+
+    /** \brief Retrieve the line number on which the error occurred. */
+    int get_line_number() const { return lineNumber; }
+
+    /** \brief Retrieve the column number in which the error occurred. */
+    int get_column_number() const { return columnNumber; }
 
     ~ParseException() throw()
     {
@@ -139,6 +256,127 @@ namespace parsers
     const char *what() throw()
     {
       return msg.c_str();
+    }
+  };
+
+  /** \brief Abstraction used to represent the input stream.
+   *
+   *  Using this instead of raw iterators allows us to encapsulate
+   *  line and character computation.  Normally only one of these is
+   *  instantiated at the highest level of a parse.
+   *
+   *  Models the \ref parse_input_concept.
+   *
+   *  \tparam ForwardReadableRange The ForwardReadableRange type
+   *  wrapped by this ParseInput (see Boost.Range).
+   */
+  template<typename ForwardReadableRange>
+  class parse_input
+  {
+  public:
+    typedef typename boost::range_iterator<ForwardReadableRange>::type const_iterator;
+    typedef typename const_iterator::value_type value_type;
+
+  private:
+    const_iterator beginIt, end;
+    std::string filename;
+    int lineNumber, columnNumber;
+
+  public:
+    /** \brief Create a new parse-input object.
+     *
+     *  \param r The range to process.  Iterators into the given
+     *  object will be stored, so the new parse_input object should
+     *  not be used after the range it was constructed from has been
+     *  destroyed.
+     *
+     *  \param _filename The filename that should be used to generate
+     *                   error messages; if empty or omitted, the file
+     *                   is assumed to be anonymous.
+     *
+     *  \param _lineNumber   The initial line number of this input object.
+     *  \param _columnNumber The initial column number of this input object.
+     */
+    parse_input(const ForwardReadableRange &r, const std::string &_filename = std::string(),
+                int _lineNumber = 1, int _columnNumber = 1)
+      : beginIt(r.begin()),
+        end(r.end()),
+        filename(_filename),
+        lineNumber(_lineNumber),
+        columnNumber(_columnNumber)
+    {
+    }
+
+    /** \brief Test whether this range is empty. */
+    bool empty() const { return beginIt == end; }
+
+    /** \brief Retrieve the first element of a non-empty range. */
+    value_type front() const
+    {
+      if(beginIt == end)
+        fail("Internal error: accessing past end of input.");
+
+      return *beginIt;
+    }
+
+    /** \brief Retrieve an iterator to the first element.
+     *
+     *  \note This should only be used for two purposes: first, to
+     *  report to the caller how far "begin" moved; and second, to
+     *  test whether "begin" was moved by a sub-parser.
+     */
+    const_iterator begin() const
+    {
+      return beginIt;
+    }
+
+    /** \brief Get the current file name. */
+    const std::string &getFilename() const { return filename; }
+
+    /** \brief Get the current line number. */
+    int getLineNumber() const { return lineNumber; }
+
+    /** \brief Get the current column number. */
+    int getColumnNumber() const { return columnNumber; }
+
+    /** \brief Set the current file name. */
+    void setFilename(const std::string &newFilename) { filename = newFilename; }
+
+    /** \brief Set the current line number. */
+    void setLineNumber(int newLineNumber) { lineNumber = newLineNumber; }
+
+    /** \brief Set the current column number. */
+    void setColumnNumber(int newColumnNumber) { columnNumber = newColumnNumber; }
+
+    /** \brief Throw a ParseException that includes information about
+     *  the current input position.
+     */
+    void fail(const std::string &msg) const __attribute__((noreturn))
+    {
+      throw ParseException(msg, filename, lineNumber, columnNumber);
+    }
+
+    /** \brief Advance to the next character of the input. */
+    void advance()
+    {
+      if(beginIt == end)
+        fail("Internal error: advancing past end of input.");
+
+      // Update the count of lines and columns.  Should tabs be
+      // handled specially?
+      switch(*beginIt)
+        {
+        case '\n':
+          ++lineNumber;
+          columnNumber = 1;
+          break;
+
+        default:
+          ++columnNumber;
+          break;
+        }
+
+      ++beginIt;
     }
   };
 
@@ -213,7 +451,50 @@ namespace parsers
     template<typename Iter>
     result_type parse(Iter &begin, const Iter &end) const
     {
-      return derived().apply(begin, end);
+      parse_input<boost::iterator_range<Iter> > input(boost::make_iterator_range(begin, end));
+
+      try
+        {
+          result_type rval = parse(input);
+          begin = input.begin();
+          return rval;
+        }
+      catch(ParseException &)
+        {
+          // Ensure that the caller gets to see changes in "begin".
+          // (is this really required?)
+          begin = input.begin();
+          throw;
+        }
+    }
+
+    /** \brief Parse a range of text.
+     *
+     *  \tparam ForwardReadableRange  The type of the input range.
+     *
+     *  \param r       The range to parse.
+     *
+     *  \return the parsed value.
+     *
+     *  \throw ParseException if the parse fails.
+     */
+    template<typename ForwardReadableRange>
+    result_type parse(const ForwardReadableRange &r) const
+    {
+      parse_input<ForwardReadableRange> input(r);
+      return parse(input);
+    }
+
+    /** \brief Parse a parse input object.
+     *
+     *  \tparam ParseInput  The model of ParseInput that is passed
+     *                      into this method.
+     *  \param input        The input to parse.
+     */
+    template<typename ParseInput>
+    result_type parse(ParseInput &input) const
+    {
+      return derived().apply(input);
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -283,16 +564,16 @@ namespace parsers
 
     typedef typename parser_base<ch_p<CType>, CType>::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      if(begin == end)
-        throw ParseException((boost::format(_("Expected '%s', but got EOF.")) %  c).str());
-      else if(*begin != c)
-        throw ParseException((boost::format(_("Expected '%s', but got '%s'.")) % c % *begin).str());
+      if(input.empty())
+        input.fail((boost::format(_("Expected '%s', but got EOF.")) % c).str());
+      else if(input.front() != c)
+        input.fail((boost::format(_("Expected '%s', but got '%s'.")) % c % input.front()).str());
       else
         {
-          ++begin;
+          input.advance();
           return c;
         }
     }
@@ -322,19 +603,21 @@ namespace parsers
     {
     }
 
-    template<typename Iter>
-    CType apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    CType apply(ParseInput &input) const
     {
-      if(begin == end)
+      BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
+
+      if(input.empty())
         {
           std::ostringstream msg;
           msg << _("Expected any character, but got EOF.");
-          throw ParseException(msg.str());
+          input.fail(msg.str());
         }
       else
         {
-          CType rval = *begin;
-          ++begin;
+          CType rval = input.front();
+          input.advance();
           return rval;
         }
     }
@@ -376,22 +659,24 @@ namespace parsers
 
     typedef CType result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      if(begin == end)
-        throw ParseException((boost::format(_("Expected %s, but got EOF.")) % description).str());
+      BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
+
+      if(input.empty())
+        input.fail((boost::format(_("Expected %s, but got EOF.")) % description).str());
       else
         {
-          CType c(*begin);
+          CType c(input.front());
 
           if(f(c))
             {
-              ++begin;
+              input.advance();
               return c;
             }
           else
-            throw ParseException((boost::format(_("Expected %s, but got '%c'.")) % description % c).str());
+            input.fail((boost::format(_("Expected %s, but got '%c'.")) % description % c).str());
         }
     }
 
@@ -559,40 +844,42 @@ namespace parsers
   public:
     typedef int result_type;
 
-    template<typename Iter>
-    int apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    int apply(ParseInput &input) const
     {
-      if(begin == end)
-        throw ParseException(_("Expected an integer, got EOF."));
+      BOOST_STATIC_ASSERT( (boost::is_same<char, typename ParseInput::value_type>::value) );
 
-      Iter start = begin;
+      if(input.empty())
+        input.fail(_("Expected an integer, got EOF."));
+
+      typename ParseInput::const_iterator start = input.begin();
 
       // First, parse the sign (if any).
-      if(begin != end && *begin == '-')
-        ++begin;
+      if(input.front() == '-')
+        input.advance();
 
-      if(begin == end)
-        throw ParseException(_("Expected an integer following '-', got EOF."));
+      if(input.empty())
+        input.fail(_("Expected an integer following '-', got EOF."));
 
-      while(begin != end && isdigit(*begin))
-        ++begin;
+      while(!input.empty() && isdigit(input.front()))
+        input.advance();
 
-      if(start == begin)
-        throw ParseException((boost::format(_("Expected an integer, got '%c'.")) % *begin).str());
+      if(input.begin() == start)
+        input.fail((boost::format(_("Expected an integer, got '%c'.")) % input.front()).str());
 
       // Lean on strtol for now.
-      std::string s(start, begin);
+      std::string s(start, input.begin());
       char *endptr;
       errno = 0;
       long rval = strtol(s.c_str(), &endptr, 0);
       if(errno != 0)
         {
           int errnum = errno;
-          throw ParseException(sstrerror(errnum));
+          input.fail(sstrerror(errnum));
         }
 
       if(*endptr != '\0')
-        throw ParseException((boost::format(_("Invalid integer: \"%s\".")) % s).str());
+        input.fail((boost::format(_("Invalid integer: \"%s\".")) % s).str());
 
       try
         {
@@ -600,7 +887,7 @@ namespace parsers
         }
       catch(boost::bad_numeric_cast &ex)
         {
-          throw ParseException((boost::format(_("Invalid integer: \"%s\".")) % ex.what()).str());
+          input.fail((boost::format(_("Invalid integer: \"%s\".")) % ex.what()).str());
         }
     }
 
@@ -619,11 +906,11 @@ namespace parsers
   public:
     typedef nil_t result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      if(begin != end)
-        throw ParseException((boost::format(_("Expected EOF, got '%c'.")) % *begin).str());
+      if(!input.empty())
+        input.fail((boost::format(_("Expected EOF, got '%c'.")) % input.front()).str());
 
       return nil_t();
     }
@@ -651,26 +938,26 @@ namespace parsers
 
     typedef nil_t result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      Iter start = begin;
+      typename ParseInput::const_iterator start = input.begin();
 
       std::string::const_iterator s_begin(s.begin()), s_end(s.end());
 
-      while(begin != end && s_begin != s_end)
+      while(!input.empty() && s_begin != s_end)
         {
-          if(*begin != *s_begin)
-            throw ParseException((boost::format("Expected \"%s\", but got '%c' following \"%s\".")
-                                  % s % *begin % std::string(start, begin)).str());
+          if(input.front() != *s_begin)
+            input.fail((boost::format("Expected \"%s\", but got '%c' following \"%s\".")
+                        % s % input.front() % std::string(start, input.begin())).str());
 
-          ++begin;
+          input.advance();
           ++s_begin;
         }
 
       if(s_begin != s_end)
-        throw ParseException((boost::format("Expected \"%s\", but got EOF following \"%s\".")
-                              % s % std::string(start, begin)).str());
+        input.fail((boost::format("Expected \"%s\", but got EOF following \"%s\".")
+                    % s % std::string(start, input.begin())).str());
 
       return nil_t();
     }
@@ -699,8 +986,8 @@ namespace parsers
 
     typedef T result_type;
 
-    template<typename Iter>
-    T apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    T apply(ParseInput &) const
     {
       return value;
     }
@@ -749,11 +1036,11 @@ namespace parsers
 
     typedef typename P2::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      p1.parse(begin, end);
-      return p2.parse(begin, end);
+      p1.parse(input);
+      return p2.parse(input);
     }
 
     void get_expected(std::ostream &out) const
@@ -791,11 +1078,11 @@ namespace parsers
 
     typedef typename P1::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      result_type rval = p1.parse(begin, end);
-      p2.parse(begin, end);
+      result_type rval = p1.parse(input);
+      p2.parse(input);
       return rval;
     }
 
@@ -832,10 +1119,10 @@ namespace parsers
 
     typedef typename P::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      return p.parse(begin, end);
+      return p.parse(input);
     }
 
     void get_expected(std::ostream &out) const
@@ -864,8 +1151,8 @@ namespace parsers
 
     typedef nil_t result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
       while(true)
         {
@@ -873,7 +1160,7 @@ namespace parsers
 
           try
             {
-              result = p.parse(begin, end);
+              result = p.parse(input);
             }
           catch(ParseException &)
             {
@@ -949,19 +1236,19 @@ namespace parsers
 
     typedef nil_t result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
       while(true)
         {
-          Iter where = begin;
+          typename ParseInput::const_iterator where = input.begin();
           try
             {
-              p.parse(begin, end);
+              p.parse(input);
             }
           catch(ParseException &)
             {
-              if(begin != where)
+              if(input.begin() != where)
                 throw;
               break;
             }
@@ -995,22 +1282,22 @@ namespace parsers
   public:
     skipOne_p(const P &_p) : p(_p) { }
 
-    template<typename Iter>
-    nil_t apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    nil_t apply(ParseInput &input) const
     {
-      p.parse(begin, end);
+      p.parse(input);
 
       while(true)
         {
-          Iter where = begin;
+          typename ParseInput::const_iterator where = input.begin();
 
           try
             {
-              p.parse(begin, end);
+              p.parse(input);
             }
           catch(ParseException &)
             {
-              if(where != begin)
+              if(where != input.begin())
                 throw;
 
               break;
@@ -1059,22 +1346,22 @@ namespace parsers
 
     typedef boost::shared_ptr<Container> result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
       boost::shared_ptr<Container> rval =
         boost::make_shared<Container>();
 
       while(true)
         {
-          Iter where = begin;
+          typename ParseInput::const_iterator where = input.begin();
           try
             {
-              rval->push_back(p.parse(begin, end));
+              rval->push_back(p.parse(input));
             }
           catch(ParseException &ex)
             {
-              if(where != begin)
+              if(where != input.begin())
                 throw;
               break;
             }
@@ -1138,13 +1425,13 @@ namespace parsers
 
     typedef typename P::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      result_type rval = p.parse(begin, end);
+      result_type rval = p.parse(input);
 
       if(!f(rval))
-        throw ParseException((boost::format(_("Expected %s")) % expected).str());
+        input.fail((boost::format(_("Expected %s")) % expected).str());
 
       return rval;
     }
@@ -1237,8 +1524,8 @@ namespace parsers
     // take.
 
     // Base case (we ran out of branches, so fail):
-    template<typename TextIter, typename CIter>
-    result_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    template<typename ParseInput, typename CIter>
+    result_type do_or_conditional(ParseInput &input, const typename ParseInput::const_iterator &initialBegin,
                                   const CIter &valuesIter, boost::mpl::true_) const
     {
       std::ostringstream msg;
@@ -1247,37 +1534,37 @@ namespace parsers
       // ForTranslators: this is used to generate an error
       // message; a brief description of what we expected to see
       // is inserted into it.
-      throw ParseException((boost::format(_("Expected %s")) % msg.str()).str());
+      input.fail((boost::format(_("Expected %s")) % msg.str()).str());
     }
 
     // Non-base case (try the first branch):
-    template<typename TextIter, typename CIter>
-    result_type do_or_conditional(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    template<typename ParseInput, typename CIter>
+    result_type do_or_conditional(ParseInput &input, const typename ParseInput::const_iterator &initialBegin,
                                   const CIter &valuesIter, boost::mpl::false_) const
     {
       try
         {
-          return (*valuesIter).parse(begin, end);
+          return (*valuesIter).parse(input);
         }
       catch(ParseException &ex)
         {
-          if(initialBegin != begin)
+          if(initialBegin != input.begin())
             throw;
         }
 
       // We only get here if the parse failed, so go to the next entry
       // in "values".
-      return do_or(begin, initialBegin, end, boost::fusion::next(valuesIter));
+      return do_or(input, initialBegin, boost::fusion::next(valuesIter));
     }
 
-    template<typename TextIter, typename CIter>
-    result_type do_or(TextIter &begin, const TextIter &initialBegin, const TextIter &end,
+    template<typename ParseInput, typename CIter>
+    result_type do_or(ParseInput &input, const typename ParseInput::const_iterator &initialBegin,
                       const CIter &valuesIter) const
     {
       typedef typename boost::fusion::result_of::end<C>::type EndCIter;
       typedef typename boost::fusion::result_of::equal_to<CIter, EndCIter>::type IsAtEnd;
 
-      return do_or_conditional(begin, initialBegin, end, valuesIter, IsAtEnd());
+      return do_or_conditional(input, initialBegin, valuesIter, IsAtEnd());
     }
 
   public:
@@ -1292,11 +1579,11 @@ namespace parsers
      */
     const C &get_values() const { return values; }
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      Iter initialBegin = begin;
-      return do_or(begin, initialBegin, end, boost::fusion::begin(values));
+      typename ParseInput::const_iterator initialBegin = input.begin();
+      return do_or(input, initialBegin, boost::fusion::begin(values));
     }
 
     void get_expected(std::ostream &out) const
@@ -1402,18 +1689,19 @@ namespace parsers
 
     typedef typename P::result_type result_type;
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      Iter start = begin;
+      ParseInput input_start(input);
 
       try
         {
-          return p.parse(begin, end);
+          return p.parse(input);
         }
       catch(ParseException &ex)
         {
-          begin = start;
+          // Restore the initial parse context.
+          input = input_start;
           throw;
         }
     }
@@ -1458,15 +1746,14 @@ namespace parsers
     // Used to fold down the list of parsers and produce the output
     // list.  The state parameter will be the final return value; we
     // build it left-to-right (since fold works left-to-right).
-    template<typename TextIter>
+    template<typename ParseInput>
     class do_apply
     {
-      TextIter &begin;
-      const TextIter &end;
+      ParseInput &input;
 
     public:
-      do_apply(TextIter &_begin, const TextIter &_end)
-        : begin(_begin), end(_end)
+      do_apply(ParseInput &_input)
+        : input(_input)
       {
       }
 
@@ -1483,7 +1770,7 @@ namespace parsers
       typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type
       operator()(const Element &e, const ResultIn &result) const
       {
-        return boost::fusion::push_back(result, e.parse(begin, end));
+        return boost::fusion::push_back(result, e.parse(input));
       }
     };
 
@@ -1502,10 +1789,10 @@ namespace parsers
 
     const values_type &get_values() const { return values; }
 
-    template<typename TextIter>
-    result_type apply(TextIter &begin, const TextIter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_apply<TextIter>(begin, end)));
+      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_apply<ParseInput>(input)));
     }
 
     void get_expected(std::ostream &out) const
@@ -1642,10 +1929,10 @@ namespace parsers
     {
     }
 
-    template<typename TextIter>
-    result_type apply(TextIter &begin, const TextIter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      return func(p.parse(begin, end));
+      return func(p.parse(input));
     }
 
     void get_expected(std::ostream &out) const
@@ -1724,11 +2011,11 @@ namespace parsers
     {
     }
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      Iter lookaheadBegin = begin;
-      return lookaheadP.parse(lookaheadBegin, end);
+      ParseInput lookaheadInput(input);
+      return lookaheadP.parse(lookaheadInput);
     }
 
     void get_expected(std::ostream &out)
@@ -1775,13 +2062,13 @@ namespace parsers
     {
     }
 
-    template<typename Iter>
-    result_type apply(Iter &begin, const Iter &end) const
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
     {
-      Iter lookaheadBegin = begin;
       try
         {
-          lookaheadP.parse(lookaheadBegin, end);
+          ParseInput lookaheadInput = input;
+          lookaheadP.parse(lookaheadInput);
         }
       catch(ParseException &)
         {
@@ -1790,7 +2077,7 @@ namespace parsers
 
       std::ostringstream msg;
       lookaheadP.get_expected_description(msg);
-      throw ParseException((boost::format(_("Unexpected %s")) % msg.str()).str());
+      input.fail((boost::format(_("Unexpected %s")) % msg.str()).str());
     }
 
     void get_expected(std::ostream &out)
