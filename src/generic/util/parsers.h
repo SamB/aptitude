@@ -97,10 +97,6 @@ namespace parsers
    *    parsed.  Throws ParseException if the input could not be
    *    parsed.
    *
-   *  - template<typename ForwardReadableRange> parse(const
-   *    ForwardReadableRange &r) const: a convenience frontend to
-   *    parse() that unpacks the given range.
-   *
    *  - get_expected_description(std::ostream &out) const: writes a brief description
    *    of the next token expected by this parser to "out".
    *
@@ -468,23 +464,6 @@ namespace parsers
         }
     }
 
-    /** \brief Parse a range of text.
-     *
-     *  \tparam ForwardReadableRange  The type of the input range.
-     *
-     *  \param r       The range to parse.
-     *
-     *  \return the parsed value.
-     *
-     *  \throw ParseException if the parse fails.
-     */
-    template<typename ForwardReadableRange>
-    result_type parse(const ForwardReadableRange &r) const
-    {
-      parse_input<ForwardReadableRange> input(r);
-      return parse(input);
-    }
-
     /** \brief Parse a parse input object.
      *
      *  \tparam ParseInput  The model of ParseInput that is passed
@@ -535,6 +514,22 @@ namespace parsers
       return set_expected_p<DerivedT>(derived(), msg);
     }
   };
+
+  /** \brief Parse a Boost-style range using the given parser.
+   *
+   *  Not a member of parser_base because it would conflict with the
+   *  single-parameter parse() routine on that class.  Could be
+   *  resolved using some metaprogramming.  This is easier.
+   *
+   *  \param r   The range to parse
+   *  \param p   The parser to apply to r.
+   */
+  template<typename ForwardReadableRange, typename P>
+  typename P::result_type parse(const ForwardReadableRange &r, const P &p)
+  {
+    parse_input<const ForwardReadableRange> input(r);
+    return p.parse(input);
+  }
 
   /** \brief Metafunction class to retrieve the return type of a parser. */
   struct get_result_type

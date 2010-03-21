@@ -118,6 +118,7 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testLexemeFailure);
   CPPUNIT_TEST(testBetweenSuccess);
   CPPUNIT_TEST(testBetweenFailure);
+  CPPUNIT_TEST(testErrorPositionInformation);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1405,6 +1406,47 @@ public:
                                    lexeme(ch(')'))).parse(begin, end),
                            ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)8, begin - input.begin());
+    }
+  }
+
+  void testErrorPositionInformation()
+  {
+    {
+      bool threw = false;
+      std::string input = "123,abc";
+
+      try
+        {
+          parse(input, sepBy(ch(','), integer()));
+        }
+      catch(ParseException &ex)
+        {
+          threw = true;
+
+          CPPUNIT_ASSERT_EQUAL(1, ex.get_line_number());
+          CPPUNIT_ASSERT_EQUAL(5, ex.get_column_number());
+        }
+
+      CPPUNIT_ASSERT(threw);
+    }
+
+    {
+      bool threw = false;
+      std::string input = "123  \n  ,  456  \n\n\n\n\n,\n  abc";
+
+      try
+        {
+          parse(input, sepBy(lexeme(ch(',')), lexeme(integer())));
+        }
+      catch(ParseException &ex)
+        {
+          threw = true;
+
+          CPPUNIT_ASSERT_EQUAL(8, ex.get_line_number());
+          CPPUNIT_ASSERT_EQUAL(3, ex.get_column_number());
+        }
+
+      CPPUNIT_ASSERT(threw);
     }
   }
 };
