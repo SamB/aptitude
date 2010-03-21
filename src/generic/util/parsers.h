@@ -65,6 +65,7 @@
 #include <boost/range.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/type_traits/is_same.hpp>
+#include <boost/variant.hpp>
 
 #include <generic/util/util.h>
 
@@ -515,20 +516,46 @@ namespace parsers
     }
   };
 
+  /** \brief Metafunction computing the result type of the free
+   *         parse() function.
+   */
+  template<typename P>
+  struct parse_result
+  {
+    typedef boost::variant<typename P::result_type, ParseException> type;
+  };
+
   /** \brief Parse a Boost-style range using the given parser.
+   *
+   *  This is the main recommended entry point to the parse code.  It
+   *  can handle many different data types conveniently, and it avoids
+   *  the accidental escape of exceptions from the parser by packaging
+   *  them into its return value.
    *
    *  Not a member of parser_base because it would conflict with the
    *  single-parameter parse() routine on that class.  Could be
    *  resolved using some metaprogramming.  This is easier.
    *
+   *  \note If your parser legitimately returns an exception for some
+   *  odd reason, you're out of luck; go use a lower-level entry
+   *  point.
+   *
    *  \param r   The range to parse
    *  \param p   The parser to apply to r.
    */
   template<typename ForwardReadableRange, typename P>
-  typename P::result_type parse(const ForwardReadableRange &r, const P &p)
+  inline typename parse_result<P>::type
+  parse(const ForwardReadableRange &r, const P &p)
   {
-    parse_input<const ForwardReadableRange> input(r);
-    return p.parse(input);
+    try
+      {
+        parse_input<const ForwardReadableRange> input(r);
+        return p.parse(input);
+      }
+    catch(ParseException &ex)
+      {
+        return ex;
+      }
   }
 
   /** \brief Metafunction class to retrieve the return type of a parser. */

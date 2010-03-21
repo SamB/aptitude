@@ -1412,41 +1412,29 @@ public:
   void testErrorPositionInformation()
   {
     {
-      bool threw = false;
       std::string input = "123,abc";
 
-      try
-        {
-          parse(input, sepBy(ch(','), integer()));
-        }
-      catch(ParseException &ex)
-        {
-          threw = true;
+      boost::variant<boost::shared_ptr<std::vector<int> >, ParseException>
+        result = parse(input, sepBy(ch(','), integer()));
 
-          CPPUNIT_ASSERT_EQUAL(1, ex.get_line_number());
-          CPPUNIT_ASSERT_EQUAL(5, ex.get_column_number());
-        }
+      ParseException *ex = boost::get<ParseException>(&result);
+      CPPUNIT_ASSERT(ex != NULL);
 
-      CPPUNIT_ASSERT(threw);
+      CPPUNIT_ASSERT_EQUAL(1, ex->get_line_number());
+      CPPUNIT_ASSERT_EQUAL(5, ex->get_column_number());
     }
 
     {
-      bool threw = false;
       std::string input = "123  \n  ,  456  \n\n\n\n\n,\n  abc";
 
-      try
-        {
-          parse(input, sepBy(lexeme(ch(',')), lexeme(integer())));
-        }
-      catch(ParseException &ex)
-        {
-          threw = true;
+      boost::variant<boost::shared_ptr<std::vector<int> >, ParseException>
+        result = parse(input, sepBy(lexeme(ch(',')), lexeme(integer())));
 
-          CPPUNIT_ASSERT_EQUAL(8, ex.get_line_number());
-          CPPUNIT_ASSERT_EQUAL(3, ex.get_column_number());
-        }
+      ParseException *ex = boost::get<ParseException>(&result);
+      CPPUNIT_ASSERT(ex != NULL);
 
-      CPPUNIT_ASSERT(threw);
+      CPPUNIT_ASSERT_EQUAL(8, ex->get_line_number());
+      CPPUNIT_ASSERT_EQUAL(3, ex->get_column_number());
     }
   }
 };
