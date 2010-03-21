@@ -65,8 +65,11 @@ namespace
       // Also, a convenience routine to parse character sets would be
       // nice.
 
+      // Note that "max" is not an allowed cost name, to make room for
+      // using it as an operator in future expansions.
+
       return apply(make_entry(),
-                   (  ( (lexeme(integer()) << lexeme(ch('*'))) | val(1) ),
+                   (  ( (lexeme(integer()) << lexeme(ch('*'))) | val(1) ) << notFollowedBy(str("max")),
                       alpha(),
                       lexeme(many_string(alnum() | ch('-') | ch('_')))  )).parse(input);
     }
