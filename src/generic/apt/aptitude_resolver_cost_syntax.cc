@@ -22,10 +22,147 @@
 
 #include <ostream>
 
+#include <generic/util/parsers.h>
+
+namespace
+{
+  // Parser for individual cost entries.
+  //
+  // Cost entries consist of either a name or a scaling factor.  Names
+  // have the form [a-zA-Z][a-zA-Z0-9-_]*; i.e, they must lead with a
+  // letter, but later letters can include other alphanumerics and
+  // hyphens.  (quoted strings might come into play eventually, to
+  // support GUI users who don't want to know weird syntactic
+  // restrictions)
+  //
+  // Note that this is a lexeme parser and doesn't need to be wrapped.
+  class cost_entry_parser : public parsers::parser_base<cost_entry_parser, cost_component_structure::entry>
+  {
+    struct make_entry
+    {
+      typedef cost_component_structure::entry result_type;
+
+      result_type operator()(int scaling_factor, char nameFirst, const boost::shared_ptr<std::string> &nameRest) const
+      {
+        return result_type(nameFirst + *nameRest, scaling_factor);
+      }
+    };
+
+  public:
+    template<typename ParseInput>
+    cost_component_structure::entry do_parse(ParseInput &input) const
+    {
+      using namespace parsers;
+
+      // \todo The need to parse the first character separately from
+      // the rest shows up a deficiency in the parsing framework: I
+      // need a way to manipulate sequences of results.  (possible
+      // syntax: a+b to either concatenate a and b, stick a singular
+      // element onto the side of a parse, or build a sequence from
+      // two singular elements -- efficiency is left as an exercise to
+      // the reader)
+      //
+      // Also, a convenience routine to parse character sets would be
+      // nice.
+
+      return apply(make_entry(),
+                   (  ( (lexeme(integer()) << lexeme(ch('*'))) | val(1) ),
+                      alpha(),
+                      lexeme(many_string(alnum() | ch('-') | ch('_')))  )).parse(input);
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      out << "cost value";
+    }
+  };
+
+  class cost_component_structure_parser : public parsers::parser_base<cost_component_structure_parser, cost_component_structure>
+  {
+    struct make_cost_component_structure
+    {
+      typedef cost_component_structure result_type;
+
+      result_type operator()(cost_component_structure::op combining_op,
+                             const boost::shared_ptr<std::vector<cost_component_structure::entry> > &entries) const
+      {
+        return cost_component_structure(combining_op, *entries);
+      }
+    };
+
+    // Probably the easiest way to decide whether to combine with
+    // "add" or "none".  I could do this with just parsers below, but
+    // it would get ugly.
+    struct make_add_or_none_cost_component_structure
+    {
+      typedef cost_component_structure result_type;
+
+      result_type operator()(const boost::shared_ptr<std::vector<cost_component_structure::entry> > &entries) const
+      {
+        return cost_component_structure(entries->size() == 1
+                                          ? cost_component_structure::combine_none
+                                          : cost_component_structure::combine_add,
+                                        *entries);
+      }
+
+    };
+
+  public:
+    template<typename ParseInput>
+    cost_component_structure do_parse(ParseInput &input) const
+    {
+      using namespace parsers;
+
+      // Parse plan: check for "max" up front first (and check that it
+      // can't be a cost component name).  If we see it, parse an
+      // argument list to max().  Otherwise, parse one or more cost
+      // entries separated by '+'.  If there's only one, we return a
+      // structure with the operator set to "none"; otherwise we set
+      // it to "add".
+      return (  (maybe(lexeme(str("max"))) >>
+                 notFollowedBy(alnum() | ch('-') | ch('_')) >>
+                 apply(make_cost_component_structure(),
+                       (   val(cost_component_structure::combine_max)
+                        ,  lexeme(ch('('))
+                        >> sepBy(lexeme(ch(',')),
+                                 cost_entry_parser())
+                        << lexeme(ch(')')) )))
+               | apply(make_add_or_none_cost_component_structure(),
+                       sepBy(lexeme(ch('+')),
+                             cost_entry_parser()))  ).parse(input);
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      out << "a combination of cost components";
+    }
+  };
+}
+
+class unpack_parse_result_visitor : public boost::static_visitor<boost::shared_ptr<std::vector<cost_component_structure> > >
+{
+public:
+  boost::shared_ptr<std::vector<cost_component_structure> > operator()(const parsers::ParseException &ex) const
+  {
+    throw ex;
+  }
+
+  boost::shared_ptr<std::vector<cost_component_structure> > operator()(const boost::shared_ptr<std::vector<cost_component_structure> > &rval) const
+  {
+    return rval;
+  }
+};
+
 boost::shared_ptr<std::vector<cost_component_structure> >
 parse_cost_settings(const std::string &settings)
 {
-  throw ResolverCostParseException("Cost settings parsing: not implemented.");
+  using namespace parsers;
+
+  boost::variant<boost::shared_ptr<std::vector<cost_component_structure> >, ParseException>
+    result = parsers::parse(settings, sepBy(lexeme(ch('+')), cost_component_structure_parser()));
+
+  return boost::apply_visitor(unpack_parse_result_visitor(),
+                              result);
 }
 
 
