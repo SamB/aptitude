@@ -1425,6 +1425,11 @@ namespace parsers
 
       return rval;
     }
+
+    void get_expected(std::ostream &out) const
+    {
+      p.get_expected(out);
+    }
   };
 
   // Sanity-check that we get the correct result type out of a
