@@ -614,7 +614,7 @@ public:
 
     CPPUNIT_ASSERT_THROW(foreach(integer() >> ch(' '),
                                  push_back_a(result)).parse(begin, end), ParseException);
-    CPPUNIT_ASSERT_EQUAL((iter_difftype)14, begin - input.begin());
+    CPPUNIT_ASSERT_EQUAL((iter_difftype)13, begin - input.begin());
   }
 
 
