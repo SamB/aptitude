@@ -168,9 +168,14 @@ parse_cost_settings(const std::string &settings)
 
 void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings)
 {
+  out << *settings;
+}
+
+std::ostream &operator<<(std::ostream &out, const std::vector<cost_component_structure> &settings)
+{
   bool first_component = true;
   for(std::vector<cost_component_structure>::const_iterator
-        settings_it = settings->begin(); settings_it != settings->end(); ++settings_it)
+        settings_it = settings.begin(); settings_it != settings.end(); ++settings_it)
     {
       const std::vector<cost_component_structure::entry> &entries =
         *settings_it->get_entries();
@@ -185,6 +190,8 @@ void dump_settings(std::ostream &out, const boost::shared_ptr<std::vector<cost_c
 
       out << *settings_it;
     }
+
+  return out;
 }
 
 std::ostream &operator<<(std::ostream &out, const boost::shared_ptr<std::vector<cost_component_structure> > &settings)
