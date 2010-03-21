@@ -250,7 +250,7 @@ namespace parsers
     {
     }
 
-    const char *what() throw()
+    const char *what() const throw()
     {
       return msg.c_str();
     }
