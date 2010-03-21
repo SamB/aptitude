@@ -121,7 +121,7 @@ namespace parsers
    *    define it themselves because otherwise it's not available in
    *    the rule class's definition (for technical reasons).
    *
-   *  - template<typename ParseInput> apply(ParseInput &input)
+   *  - template<typename ParseInput> do_parse(ParseInput &input)
    *    const: the actual parse routine.  ParseInput is a parse input
    *    object (see \ref parse_input_concept).  The parse input will
    *    be updated to point to the first character that was not
@@ -474,7 +474,7 @@ namespace parsers
     template<typename ParseInput>
     result_type parse(ParseInput &input) const
     {
-      return derived().apply(input);
+      return derived().do_parse(input);
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -587,7 +587,7 @@ namespace parsers
     typedef typename parser_base<ch_p<CType>, CType>::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       if(input.empty())
         input.fail((boost::format(_("Expected '%s', but got EOF.")) % c).str());
@@ -626,7 +626,7 @@ namespace parsers
     }
 
     template<typename ParseInput>
-    CType apply(ParseInput &input) const
+    CType do_parse(ParseInput &input) const
     {
       BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
 
@@ -682,7 +682,7 @@ namespace parsers
     typedef CType result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
 
@@ -867,7 +867,7 @@ namespace parsers
     typedef int result_type;
 
     template<typename ParseInput>
-    int apply(ParseInput &input) const
+    int do_parse(ParseInput &input) const
     {
       BOOST_STATIC_ASSERT( (boost::is_same<char, typename ParseInput::value_type>::value) );
 
@@ -929,7 +929,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       if(!input.empty())
         input.fail((boost::format(_("Expected EOF, got '%c'.")) % input.front()).str());
@@ -961,7 +961,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       typename ParseInput::const_iterator start = input.begin();
 
@@ -1009,7 +1009,7 @@ namespace parsers
     typedef T result_type;
 
     template<typename ParseInput>
-    T apply(ParseInput &) const
+    T do_parse(ParseInput &) const
     {
       return value;
     }
@@ -1059,7 +1059,7 @@ namespace parsers
     typedef typename P2::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       p1.parse(input);
       return p2.parse(input);
@@ -1101,7 +1101,7 @@ namespace parsers
     typedef typename P1::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       result_type rval = p1.parse(input);
       p2.parse(input);
@@ -1142,7 +1142,7 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       return p.parse(input);
     }
@@ -1174,7 +1174,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       while(true)
         {
@@ -1263,7 +1263,7 @@ namespace parsers
     typedef nil_t result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       while(true)
         {
@@ -1309,7 +1309,7 @@ namespace parsers
     skipManyOne_p(const P &_p) : p(_p) { }
 
     template<typename ParseInput>
-    nil_t apply(ParseInput &input) const
+    nil_t do_parse(ParseInput &input) const
     {
       p.parse(input);
 
@@ -1373,7 +1373,7 @@ namespace parsers
     typedef boost::shared_ptr<Container> result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       boost::shared_ptr<Container> rval =
         boost::make_shared<Container>();
@@ -1455,7 +1455,7 @@ namespace parsers
     typedef boost::shared_ptr<Seq> result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       result_type rval = boost::make_shared<Seq>();
 
@@ -1483,6 +1483,11 @@ namespace parsers
       }
 
       return rval;
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      valueP.get_expected(out);
     }
   };
 
@@ -1540,7 +1545,7 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       result_type rval = p.parse(input);
 
@@ -1694,7 +1699,7 @@ namespace parsers
     const C &get_values() const { return values; }
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       typename ParseInput::const_iterator initialBegin = input.begin();
       return do_or(input, initialBegin, boost::fusion::begin(values));
@@ -1804,7 +1809,7 @@ namespace parsers
     typedef typename P::result_type result_type;
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       ParseInput input_start(input);
 
@@ -1861,12 +1866,12 @@ namespace parsers
     // list.  The state parameter will be the final return value; we
     // build it left-to-right (since fold works left-to-right).
     template<typename ParseInput>
-    class do_apply
+    class do_do_parse
     {
       ParseInput &input;
 
     public:
-      do_apply(ParseInput &_input)
+      do_do_parse(ParseInput &_input)
         : input(_input)
       {
       }
@@ -1875,7 +1880,7 @@ namespace parsers
       struct result;
 
       template<typename Element, typename ResultIn>
-      struct result<do_apply(const Element &, const ResultIn &)>
+      struct result<do_do_parse(const Element &, const ResultIn &)>
       {
         typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type type;
       };
@@ -1904,9 +1909,9 @@ namespace parsers
     const values_type &get_values() const { return values; }
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
-      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_apply<ParseInput>(input)));
+      return boost::fusion::as_vector(boost::fusion::fold(values, boost::fusion::make_vector(), do_do_parse<ParseInput>(input)));
     }
 
     void get_expected(std::ostream &out) const
@@ -2044,7 +2049,7 @@ namespace parsers
     }
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       return func(p.parse(input));
     }
@@ -2126,7 +2131,7 @@ namespace parsers
     }
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       ParseInput lookaheadInput(input);
       return lookaheadP.parse(lookaheadInput);
@@ -2177,7 +2182,7 @@ namespace parsers
     }
 
     template<typename ParseInput>
-    result_type apply(ParseInput &input) const
+    result_type do_parse(ParseInput &input) const
     {
       try
         {
