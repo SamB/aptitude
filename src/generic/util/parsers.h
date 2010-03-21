@@ -2348,7 +2348,7 @@ namespace parsers
   template<typename P>
   struct lexeme_result
   {
-    typedef andfirst_p<P, many_p<space_p> > type;
+    typedef andfirst_p<P, skip_p<space_p> > type;
   };
 
   /** \brief Modify a token to be a lexeme parser (one that ignores
@@ -2357,7 +2357,7 @@ namespace parsers
   template<typename P>
   typename lexeme_result<P>::type lexeme(const P &p)
   {
-    return p << many(space());
+    return p << skip(space());
   }
 
   // @}
