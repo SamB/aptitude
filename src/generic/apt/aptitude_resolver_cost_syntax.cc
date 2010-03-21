@@ -165,7 +165,7 @@ parse_cost_settings(const std::string &settings)
   using namespace parsers;
 
   boost::variant<boost::shared_ptr<std::vector<cost_component_structure> >, ParseException>
-    result = parsers::parse(settings, sepBy(lexeme(ch(',')), cost_component_structure_parser()));
+    result = parsers::parse(settings, sepBy(lexeme(ch(',')), cost_component_structure_parser()) << eof());
 
   return boost::apply_visitor(unpack_parse_result_visitor(),
                               result);
