@@ -1228,12 +1228,12 @@ namespace parsers
    *  ignoring the resulting values.
    */
   template<typename P>
-  class skip_p : public parser_base<skip_p<P>, nil_t>
+  class skipMany_p : public parser_base<skipMany_p<P>, nil_t>
   {
     P p;
   public:
 
-    skip_p(const P &_p)
+    skipMany_p(const P &_p)
       : p(_p)
       {
       }
@@ -1266,9 +1266,9 @@ namespace parsers
    *  input parser.
    */
   template<typename P>
-  inline skip_p<P> skip(const P &p)
+  inline skipMany_p<P> skipMany(const P &p)
   {
-    return skip_p<P>(p);
+    return skipMany_p<P>(p);
   }
 
   /** \brief A parser that applies a sub-parser one or more times,
@@ -1279,12 +1279,12 @@ namespace parsers
    *  parser P.
    */
   template<typename P>
-  class skipOne_p : public parser_base<skipOne_p<P>, nil_t>
+  class skipManyOne_p : public parser_base<skipManyOne_p<P>, nil_t>
   {
     P p;
 
   public:
-    skipOne_p(const P &_p) : p(_p) { }
+    skipManyOne_p(const P &_p) : p(_p) { }
 
     template<typename ParseInput>
     nil_t apply(ParseInput &input) const
@@ -1319,9 +1319,9 @@ namespace parsers
    *  input after producing at least one result, this parser succeeds.
    */
   template<typename P>
-  skipOne_p<P> skipOne(const P &p)
+  skipManyOne_p<P> skipManyOne(const P &p)
   {
-    return skipOne_p<P>(p);
+    return skipManyOne_p<P>(p);
   }
 
   /** \brief A parser that applies a sub-parser zero or more times,
@@ -2348,7 +2348,7 @@ namespace parsers
   template<typename P>
   struct lexeme_result
   {
-    typedef andfirst_p<P, skip_p<space_p> > type;
+    typedef andfirst_p<P, skipMany_p<space_p> > type;
   };
 
   /** \brief Modify a token to be a lexeme parser (one that ignores
@@ -2357,7 +2357,7 @@ namespace parsers
   template<typename P>
   typename lexeme_result<P>::type lexeme(const P &p)
   {
-    return p << skip(space());
+    return p << skipMany(space());
   }
 
   // @}

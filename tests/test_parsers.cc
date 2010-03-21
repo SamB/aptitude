@@ -70,14 +70,14 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testForeachNotEmptyEndNotEOF);
   CPPUNIT_TEST(testForeachNotEmptyEndEOF);
   CPPUNIT_TEST(testForeachFailure);
-  CPPUNIT_TEST(testSkipEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipEmptyEndEOF);
-  CPPUNIT_TEST(testSkipNotEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipNotEmptyEndEOF);
-  CPPUNIT_TEST(testSkipOneEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipOneEmptyEndEOF);
-  CPPUNIT_TEST(testSkipOneNotEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipOneNotEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyNotEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyOneEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyOneEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyOneNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyOneNotEmptyEndEOF);
   CPPUNIT_TEST(testManyEmptyEndNotEOF);
   CPPUNIT_TEST(testManyEmptyEndEOF);
   CPPUNIT_TEST(testManyNotEmptyEndNotEOF);
@@ -620,98 +620,98 @@ public:
   }
 
 
-  void testSkipEmptyEndNotEOF()
+  void testSkipManyEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "   abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skip(letter)).parse(begin, end);
+    (skipMany(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipEmptyEndEOF()
+  void testSkipManyEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skip(letter)).parse(begin, end);
+    (skipMany(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipNotEmptyEndNotEOF()
+  void testSkipManyNotEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skip(letter)).parse(begin, end);
+    (skipMany(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
-  void testSkipNotEmptyEndEOF()
+  void testSkipManyNotEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skip(letter)).parse(begin, end);
+    (skipMany(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
-  void testSkipOneEmptyEndNotEOF()
+  void testSkipManyOneEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "   abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_THROW((skipOne(letter)).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW((skipManyOne(letter)).parse(begin, end), ParseException);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipOneEmptyEndEOF()
+  void testSkipManyOneEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_THROW((skipOne(letter)).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW((skipManyOne(letter)).parse(begin, end), ParseException);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipOneNotEmptyEndNotEOF()
+  void testSkipManyOneNotEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skipOne(letter)).parse(begin, end);
+    (skipManyOne(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
-  void testSkipOneNotEmptyEndEOF()
+  void testSkipManyOneNotEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skipOne(letter)).parse(begin, end);
+    (skipManyOne(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
