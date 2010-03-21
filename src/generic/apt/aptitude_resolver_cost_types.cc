@@ -24,6 +24,11 @@
 
 #include <iostream>
 
+bool cost_component_structure::operator==(const cost_component_structure &other) const
+{
+  return combining_op == other.combining_op && *entries == *other.entries;
+}
+
 std::ostream &operator<<(std::ostream &out, const cost_component_structure &costs)
 {
   const std::vector<cost_component_structure::entry> &entries =

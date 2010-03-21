@@ -92,6 +92,11 @@ public:
 
     const std::string &get_name() const { return name; }
     int get_scaling_factor() const { return scaling_factor; }
+
+    bool operator==(const entry &other) const
+    {
+      return name == other.name && scaling_factor == other.scaling_factor;
+    }
   };
 
 private:
@@ -126,6 +131,9 @@ public:
   {
     return entries;
   }
+
+  /** \brief Compare two components for structural equality. */
+  bool operator==(const cost_component_structure &other) const;
 };
 
 std::ostream &operator<<(std::ostream &out, const cost_component_structure &costs);
