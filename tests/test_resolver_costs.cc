@@ -304,7 +304,20 @@ public:
     int fail_inputs_length = sizeof(fail_inputs) / sizeof(fail_inputs[0]);
 
     for(int i = 0; i < fail_inputs_length; ++i)
-      CPPUNIT_ASSERT_THROW(parse_cost_settings(fail_inputs[i]), ResolverCostParseException);
+      {
+        bool threw = false;
+
+        CPPUNIT_ASSERT_NO_THROW(try
+          {
+            parse_cost_settings(fail_inputs[i]);
+          }
+        catch(ResolverCostParseException &)
+          {
+            threw = true;
+          });
+
+        CPPUNIT_ASSERT_MESSAGE(fail_inputs[i], threw);
+      }
   }
 
   void testResolverCostSettingsSerialize()
