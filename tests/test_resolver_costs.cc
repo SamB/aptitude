@@ -307,16 +307,23 @@ public:
       {
         bool threw = false;
 
+        boost::shared_ptr<std::vector<cost_component_structure> > components;
         CPPUNIT_ASSERT_NO_THROW(try
           {
-            parse_cost_settings(fail_inputs[i]);
+            components = parse_cost_settings(fail_inputs[i]);
           }
         catch(ResolverCostParseException &)
           {
             threw = true;
           });
 
-        CPPUNIT_ASSERT_MESSAGE(fail_inputs[i], threw);
+        std::ostringstream msg;
+        if(components)
+          msg << fail_inputs[i] << " -> " << components;
+        else
+          msg << fail_inputs[i];
+
+        CPPUNIT_ASSERT_MESSAGE(msg.str(), threw);
       }
   }
 
