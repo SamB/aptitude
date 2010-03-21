@@ -21,6 +21,7 @@
 #ifndef APTITUDE_RESOLVER_COST_TYPES_H
 #define APTITUDE_RESOLVER_COST_TYPES_H
 
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <cwidget/generic/util/exception.h>
@@ -99,14 +100,14 @@ public:
   cost_component_structure(op _combining_op,
                            const std::vector<entry> &_entries)
     : combining_op(_combining_op),
-      entries(new std::vector<entry>(_entries))
+      entries(boost::make_shared<std::vector<entry> >(_entries))
   {
   }
 
   template<typename Iter>
   cost_component_structure(op _combining_op, Iter begin, Iter end)
     : combining_op(_combining_op),
-      entries(new std::vector<entry>(begin, end))
+      entries(boost::make_shared<std::vector<entry> >(begin, end))
   {
   }
 
