@@ -114,6 +114,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSepByFailureInFirstElement);
   CPPUNIT_TEST(testSepByFailureInSeparator);
   CPPUNIT_TEST(testSepByFailureInSecondElement);
+  CPPUNIT_TEST(testLexemeSuccess);
+  CPPUNIT_TEST(testLexemeFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1321,6 +1323,35 @@ public:
 
       CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
+    }
+  }
+
+  void testLexemeSuccess()
+  {
+    {
+      std::string input = "abcd    ef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      boost::shared_ptr<std::string> result;
+      CPPUNIT_ASSERT_NO_THROW(result = lexeme(many_string(alpha())).parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(std::string("abcd"), *result);
+      // Unlike in many parsers, this test is NOT purely cosmetic; it
+      // verifies that we really consumed the whitespace (which is,
+      // y'know, the whole point).
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)8, begin - input.begin());
+    }
+  }
+
+  void testLexemeFailure()
+  {
+    // Just check that a failure really is propagated out of the
+    // lexeme parser.
+    {
+      std::string input = "ab43   ";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(lexeme(alpha() >> alpha() >> alpha()).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
     }
   }
 };

@@ -2344,6 +2344,22 @@ namespace parsers
       | val(boost::optional<typename P::result_type>());
   }
 
+  /** \brief Metafunction computing the result type of lexeme(). */
+  template<typename P>
+  struct lexeme_result
+  {
+    typedef andfirst_p<P, many_p<space_p> > type;
+  };
+
+  /** \brief Modify a token to be a lexeme parser (one that ignores
+   *  trailing whitespace).
+   */
+  template<typename P>
+  typename lexeme_result<P>::type lexeme(const P &p)
+  {
+    return p << many(space());
+  }
+
   // @}
 }
 
