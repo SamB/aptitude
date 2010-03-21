@@ -29,14 +29,27 @@
 class ResolverCostParseException : public std::exception
 {
   std::string msg;
+  std::string rawMsg;
+  int lineNumber;
+  int columnNumber;
 
 public:
-  ResolverCostParseException(const std::string &_msg)
-    : msg(_msg)
+  ResolverCostParseException(const std::string &_msg,
+                             const std::string &_rawMsg,
+                             int _lineNumber,
+                             int _columnNumber)
+    : msg(_msg),
+      rawMsg(_rawMsg),
+      lineNumber(_lineNumber),
+      columnNumber(_columnNumber)
   {
   }
 
   ~ResolverCostParseException() throw() { }
+
+  const std::string &get_raw_msg() const { return rawMsg; }
+  int get_line_number() const { return lineNumber; }
+  int get_column_number() const { return columnNumber; }
 
   const char *what() const throw() { return msg.c_str(); }
 };
