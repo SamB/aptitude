@@ -1396,6 +1396,94 @@ namespace parsers
     return many_p<P, std::string>(p);
   }
 
+  /** \brief A parser that recognizes zero or more occurrences of its
+   *  sub-parser, separated by occurrences of a separator parser.  The
+   *  separator's return values are discarded.
+   *
+   *  \tparam SeparatorP  A parser type that will recognize the
+   *                      separators between occurrences of ValueP.
+   *  \tparam ValueP A parser type that will recognize the values that
+   *                 this parser returns.
+   *  \tparam Seq    The sequence type used to store the results of
+   *                 the ValueP parser. 
+  *
+   *  The parser terminates successfully when SeparatorP matches a
+   *  zero-length value.  Any other condition (ValueP failing to match
+   *  or SeparatorP failing and consuming input) will result in a
+   *  parse failure.
+   */
+  template<typename SeparatorP, typename ValueP,
+	   typename Seq = std::vector<typename ValueP::result_type> >
+  class sepBy_p : public parser_base<sepBy_p<SeparatorP, ValueP, Seq>,
+				     boost::shared_ptr<Seq> >
+  {
+    SeparatorP separatorP;
+    ValueP valueP;
+
+  public:
+    sepBy_p(const SeparatorP &_separatorP, const ValueP &_valueP)
+      : separatorP(_separatorP), valueP(_valueP)
+    {
+    }
+
+    typedef boost::shared_ptr<Seq> result_type;
+
+    template<typename ParseInput>
+    result_type apply(ParseInput &input) const
+    {
+      result_type rval = boost::make_shared<Seq>();
+
+      bool first = true;
+      while(true)
+      {
+	typename ParseInput::const_iterator initialBegin = input.begin();
+
+	try
+	  {
+	    if(first)
+	      first = false;
+	    else
+	      separatorP.parse(input);
+
+	    rval->push_back(valueP.parse(input));
+	  }
+	catch(ParseException &)
+	  {
+	    if(input.begin() == initialBegin)
+	      break;
+	    else
+	      throw;
+	  }
+      }
+
+      return rval;
+    }
+  };
+
+  /** \brief Create a parser that recognizes zero or more occurrences
+   *  of its sub-parser, with occurrences of a separator parser
+   *  between them (but not at the beginning or end of the match).
+   *
+   *  \tparam ValueP A parser type that will recognize the values that
+   *                 this parser returns.
+   *  \tparam SeparatorP  A parser type that will recognize the
+   *                      separators between occurrences of ValueP.
+   *
+   *  \param separatorP The parser for the tokens that separate
+   *                     values.  The values returned by this parser
+   *                     are discarded.
+   *
+   *  \param valueP The parser that generates the values that are to
+   *                 be returned.
+   */
+  template<typename SeparatorP, typename ValueP>
+  sepBy_p<SeparatorP, ValueP> sepBy(const SeparatorP &separatorP,
+				    const ValueP &valueP)
+  {
+    return sepBy_p<SeparatorP, ValueP>(separatorP, valueP);
+  }
+
+
   /** \brief A parser that applies a sub-parser and checks its output
    *  against a post-condition, returning a result only if the output
    *  passes a test.

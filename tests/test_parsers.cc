@@ -107,6 +107,11 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testManyOneFailure);
   CPPUNIT_TEST(testOptionalSuccess);
   CPPUNIT_TEST(testOptionalFailure);
+  CPPUNIT_TEST(testSepBySuccessEmpty);
+  CPPUNIT_TEST(testSepBySuccessNonempty);
+  CPPUNIT_TEST(testSepByFailureInFirstElement);
+  CPPUNIT_TEST(testSepByFailureInSeparator);
+  CPPUNIT_TEST(testSepByFailureInSecondElement);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1227,6 +1232,71 @@ public:
 
       CPPUNIT_ASSERT_THROW(optional( (integer(), integer()) ).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)3, begin - input.begin());
+    }
+  }
+
+  void testSepBySuccessEmpty()
+  {
+    {
+      std::string input = "abcde";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      boost::shared_ptr<std::vector<int> > result;
+      CPPUNIT_ASSERT_NO_THROW(result = sepBy(str(","), integer()).parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(0, (int)result->size());
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
+    }
+  }
+
+  void testSepBySuccessNonempty()
+  {
+    {
+      std::string input = "3094,124498,34saflk";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      boost::shared_ptr<std::vector<int> > result;
+      CPPUNIT_ASSERT_NO_THROW(result = sepBy(str(","), integer()).parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(3, (int)result->size());
+      CPPUNIT_ASSERT_EQUAL(3094, (*result)[0]);
+      CPPUNIT_ASSERT_EQUAL(124498, (*result)[1]);
+      CPPUNIT_ASSERT_EQUAL(34, (*result)[2]);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)14, begin - input.begin());
+    }
+  }
+
+  void testSepByFailureInFirstElement()
+  {
+    {
+      std::string input = "abxyz,abcde,abcde";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(sepBy(str(","), str("abcde")).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
+    }
+  }
+
+  void testSepByFailureInSeparator()
+  {
+    {
+      std::string input = "ab,,cd,ef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(sepBy(str(",,"), many(alpha())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
+    }
+  }
+
+  void testSepByFailureInSecondElement()
+  {
+    // Check that if we see a separator, we have to see an element
+    // after it (i.e., the parser doesn't accept dangling separators
+    // at the end of the list).
+    {
+      std::string input = "ab,cd,,ef";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
     }
   }
 };
