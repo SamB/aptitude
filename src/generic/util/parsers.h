@@ -2360,6 +2360,26 @@ namespace parsers
     return p << skipMany(space());
   }
 
+  /** \brief Metafunction computing the result type of between(). */
+  template<typename Open, typename Body, typename Close>
+  struct between_result
+  {
+    typedef andthen_p<Open, andfirst_p<Body, Close> > type;
+  };
+
+  /** \brief Create a parser that Open, followed by Body and then
+   *  Close, returning the value parsed by Body.
+   *
+   *  For instance, between(ch('('), p, ch(')')) puts p between
+   *  parens.
+   */
+  template<typename Open, typename Body, typename Close>
+  typename between_result<Open, Body, Close>::type
+  between(const Open &open, const Body &body, const Close &close)
+  {
+    return open >> (body << close);
+  }
+
   // @}
 }
 

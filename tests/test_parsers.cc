@@ -116,6 +116,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSepByFailureInSecondElement);
   CPPUNIT_TEST(testLexemeSuccess);
   CPPUNIT_TEST(testLexemeFailure);
+  CPPUNIT_TEST(testBetweenSuccess);
+  CPPUNIT_TEST(testBetweenFailure);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1352,6 +1354,57 @@ public:
 
       CPPUNIT_ASSERT_THROW(lexeme(alpha() >> alpha() >> alpha()).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
+    }
+  }
+
+  void testBetweenSuccess()
+  {
+    {
+      std::string input = "( 12345 )asdflj";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      int result;
+      CPPUNIT_ASSERT_NO_THROW(result = between(lexeme(ch('(')),
+                                               lexeme(integer()),
+                                               lexeme(ch(')'))).parse(begin, end));
+      CPPUNIT_ASSERT_EQUAL(12345, result);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)9, begin - input.begin());
+    }
+  }
+
+  void testBetweenFailure()
+  {
+    {
+      std::string input = "12345 )asdflj";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(between(lexeme(ch('(')),
+                                   lexeme(integer()),
+                                   lexeme(ch(')'))).parse(begin, end),
+                           ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
+    }
+
+    {
+      std::string input = "( asdlfkj )asdflj";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(between(lexeme(ch('(')),
+                                   lexeme(integer()),
+                                   lexeme(ch(')'))).parse(begin, end),
+                           ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)2, begin - input.begin());
+    }
+
+    {
+      std::string input = "( 12345 asdflj";
+      std::string::const_iterator begin = input.begin(), end = input.end();
+
+      CPPUNIT_ASSERT_THROW(between(lexeme(ch('(')),
+                                   lexeme(integer()),
+                                   lexeme(ch(')'))).parse(begin, end),
+                           ParseException);
+      CPPUNIT_ASSERT_EQUAL((iter_difftype)8, begin - input.begin());
     }
   }
 };
