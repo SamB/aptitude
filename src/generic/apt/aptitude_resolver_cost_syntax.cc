@@ -144,7 +144,10 @@ class unpack_parse_result_visitor : public boost::static_visitor<boost::shared_p
 public:
   boost::shared_ptr<std::vector<cost_component_structure> > operator()(const parsers::ParseException &ex) const
   {
-    throw ex;
+    throw ResolverCostParseException(ex.what(),
+                                     ex.get_raw_msg(),
+                                     ex.get_line_number(),
+                                     ex.get_column_number());
   }
 
   boost::shared_ptr<std::vector<cost_component_structure> > operator()(const boost::shared_ptr<std::vector<cost_component_structure> > &rval) const
