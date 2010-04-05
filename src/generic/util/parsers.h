@@ -816,8 +816,8 @@ namespace parsers
     std::string description;
 
   public:
-    charif_p(const F &_f, const std::string &description)
-      : f(_f)
+    charif_p(const F &_f, const std::string &_description)
+      : f(_f), description(_description)
     {
     }
 
