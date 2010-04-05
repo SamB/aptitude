@@ -1986,30 +1986,6 @@ namespace parsers
     typedef typename boost::mpl::front<C>::type::element_type element_type;
 
   private:
-    // Metaprogramming to verify that all the sub-types are the same.
-    typedef typename boost::mpl::transform<C, get_result_type>::type C_result_types;
-    typedef typename boost::mpl::transform<C_result_types,
-                                           boost::is_same<result_type,
-                                                          boost::mpl::_1> >::type C_result_types_equal_to_front;
-    typedef typename boost::mpl::fold<C_result_types_equal_to_front,
-                                      boost::mpl::true_,
-                                      boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_equal;
-
-    BOOST_STATIC_ASSERT(all_subtypes_are_equal::value);
-
-
-    // Metaprogramming to verify that all the element types are
-    // interconvertible.
-    /*typedef typename boost::mpl::transform<C, get_element_type>::type C_element_types;
-    typedef typename boost::mpl::transform<C_element_types,
-                                           boost::is_convertible<element_type,
-                                                                 boost::mpl::_1> >::type C_element_types_convertible_to_front;
-    typedef typename boost::mpl::fold<C_element_types_convertible_to_front,
-                                      boost::mpl::true_,
-                                      boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_element_types_are_legal;
-
-                                      BOOST_STATIC_ASSERT(all_element_types_are_legal::value);*/
-
     C values;
 
     class do_get_expected
@@ -2168,6 +2144,22 @@ namespace parsers
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
     {
+      // Metaprogramming to verify that all the sub-types are the same.
+      //
+      // In here because it's possible that do_parse() and
+      // parse_container() are valid in different cases.
+      typedef typename boost::mpl::transform<C, get_result_type>::type C_result_types;
+      typedef typename boost::mpl::transform<C_result_types,
+                                             boost::is_convertible<result_type,
+                                                                   boost::mpl::_1> >::type C_result_types_convertible_to_front;
+      typedef typename boost::mpl::fold<C_result_types_convertible_to_front,
+                                        boost::mpl::true_,
+                                        boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_compatible;
+
+      BOOST_STATIC_ASSERT(all_subtypes_are_compatible::value);
+
+
+
       typename ParseInput::const_iterator initialBegin = input.begin();
       return do_or(input, initialBegin, boost::fusion::begin(values));
     }
@@ -2175,6 +2167,20 @@ namespace parsers
     template<typename ParseInput, typename Container>
     void parse_container(ParseInput &input, Container &output) const
     {
+      // Metaprogramming to verify that all the element types are
+      // interconvertible.
+      typedef typename boost::mpl::transform<C, get_element_type>::type C_element_types;
+      typedef typename boost::mpl::transform<C_element_types,
+                                             boost::is_convertible<element_type,
+                                                                   boost::mpl::_1> >::type C_element_types_convertible_to_front;
+      typedef typename boost::mpl::fold<C_element_types_convertible_to_front,
+                                        boost::mpl::true_,
+                                        boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_element_types_are_compatible;
+
+      BOOST_STATIC_ASSERT(all_element_types_are_compatible::value);
+
+
+
       typename ParseInput::const_iterator initialBegin = input.begin();
       do_or_container(input, output, initialBegin, boost::fusion::begin(values));
     }
