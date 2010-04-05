@@ -770,7 +770,7 @@ namespace parsers
     template<typename ParseInput>
     CType do_parse(ParseInput &input) const
     {
-      BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
+      BOOST_STATIC_ASSERT( (boost::is_convertible<typename ParseInput::value_type, CType>::value) );
 
       if(input.empty())
         {
@@ -826,7 +826,7 @@ namespace parsers
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
     {
-      BOOST_STATIC_ASSERT( (boost::is_same<typename ParseInput::value_type, CType>::value) );
+      BOOST_STATIC_ASSERT( (boost::is_convertible<typename ParseInput::value_type, CType>::value) );
 
       if(input.empty())
         input.fail((boost::format(_("Expected %s, but got EOF.")) % description).str());
@@ -1011,7 +1011,7 @@ namespace parsers
     template<typename ParseInput>
     int do_parse(ParseInput &input) const
     {
-      BOOST_STATIC_ASSERT( (boost::is_same<char, typename ParseInput::value_type>::value) );
+      BOOST_STATIC_ASSERT( (boost::is_convertible<typename ParseInput::value_type, char>::value) );
 
       if(input.empty())
         input.fail(_("Expected an integer, got EOF."));
