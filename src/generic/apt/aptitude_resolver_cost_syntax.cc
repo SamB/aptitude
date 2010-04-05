@@ -54,15 +54,7 @@ namespace
     {
       using namespace parsers;
 
-      // \todo The need to parse the first character separately from
-      // the rest shows up a deficiency in the parsing framework: I
-      // need a way to manipulate sequences of results.  (possible
-      // syntax: a+b to either concatenate a and b, stick a singular
-      // element onto the side of a parse, or build a sequence from
-      // two singular elements -- efficiency is left as an exercise to
-      // the reader)
-      //
-      // Also, a convenience routine to parse character sets would be
+      // TODO: a convenience routine to parse character sets would be
       // nice.
 
       // Note that "max" is not an allowed cost name, to make room for
