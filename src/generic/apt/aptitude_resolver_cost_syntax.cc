@@ -71,7 +71,7 @@ namespace
       return apply(make_entry(),
                    (  ( (lexeme(integer()) << lexeme(ch('*'))) | val(1) ) << notFollowedBy(str("max")),
                       alpha(),
-                      lexeme(many_string(alnum() | ch('-') | ch('_')))  )).parse(input);
+                      container(std::string(), lexeme(many(alnum() | ch('-') | ch('_'))))  )).parse(input);
     }
 
     void get_expected(std::ostream &out) const

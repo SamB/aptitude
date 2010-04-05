@@ -38,6 +38,113 @@ std::ostream &operator<<(std::ostream &out, const boost::optional<T> &o)
     return out << "Nothing";
 }
 
+template<typename T>
+std::ostream &operator<<(std::ostream &out, const std::vector<T> &v)
+{
+  out << "[";
+
+  bool first = true;
+  for(typename std::vector<T>::const_iterator it = v.begin(); it != v.end(); ++it)
+    {
+      if(first)
+        first = false;
+      else
+        out << ", ";
+
+      out << *it;
+    }
+
+  out << "]";
+
+  return out;
+}
+
+// Used to make it easier to compare results that are vectors.
+class strip_shared_ptrs_result
+{
+  template<typename T>
+  struct apply
+  {
+    typedef T type;
+  };
+
+  template<typename T>
+  struct apply<boost::shared_ptr<T> >
+  {
+    typedef typename apply<T>::type type;
+  };
+
+  template<typename T>
+  struct apply<std::vector<T> >
+  {
+    typedef std::vector<typename apply<T>::type > type;
+  };
+};
+
+BOOST_STATIC_ASSERT( (boost::is_same<std::vector<std::vector<int> >,
+                      strip_shared_ptrs_result::apply<boost::shared_ptr<std::vector<std::vector<boost::shared_ptr<int> > > > >::type>::value) );
+
+template<typename T>
+T strip_shared_ptrs(const T &t)
+{
+  return t;
+}
+
+// Without this forward declaration, the mutual recursion between the
+// two specializations below doesn't work (the shared_ptr
+// specialization invokes the default specialization instead of the
+// std::vector one).
+template<typename T>
+typename std::vector<typename strip_shared_ptrs_result::apply<T>::type>
+strip_shared_ptrs(const std::vector<T> &v);
+
+template<typename T>
+typename strip_shared_ptrs_result::apply<T>::type
+strip_shared_ptrs(const boost::shared_ptr<T> &t)
+{
+  return strip_shared_ptrs(*t);
+}
+
+template<typename T>
+typename std::vector<typename strip_shared_ptrs_result::apply<T>::type>
+strip_shared_ptrs(const std::vector<T> &v)
+{
+  std::vector<typename strip_shared_ptrs_result::apply<T>::type> rval;
+
+  for(typename std::vector<T>::const_iterator it = v.begin(); it != v.end(); ++it)
+    rval.push_back(strip_shared_ptrs(*it));
+
+  return rval;
+}
+
+template<typename P>
+void verify_success(const std::string &input,
+                    const P &parser,
+                    const typename strip_shared_ptrs_result::apply<typename P::result_type>::type &expected)
+{
+  boost::variant<typename P::result_type, ParseException> result =
+    parse(input, parser);
+
+  if(boost::get<ParseException>(&result) != NULL)
+    CPPUNIT_FAIL(boost::get<ParseException>(result).what());
+
+  CPPUNIT_ASSERT(boost::get<typename P::result_type>(&result) != NULL);
+
+  typename strip_shared_ptrs_result::apply<typename P::result_type>::type
+    actual_result(strip_shared_ptrs(boost::get<typename P::result_type>(result)));
+  CPPUNIT_ASSERT_EQUAL(expected, actual_result);
+}
+
+template<typename P>
+void verify_failure(const std::string &input,
+                    const P &parser)
+{
+  boost::variant<typename P::result_type, ParseException> result =
+    parse(input, parser);
+
+  CPPUNIT_ASSERT(boost::get<ParseException>(&result) != NULL);
+}
+
 class ParsersTest : public CppUnit::TestFixture
 {
   CPPUNIT_TEST_SUITE(ParsersTest);
@@ -120,6 +227,12 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testBetweenSuccess);
   CPPUNIT_TEST(testBetweenFailure);
   CPPUNIT_TEST(testErrorPositionInformation);
+  CPPUNIT_TEST(testContainerSuccess);
+  CPPUNIT_TEST(testContainerOr);
+  CPPUNIT_TEST(testConcatenateInts);
+  CPPUNIT_TEST(testConcatenateMany);
+  CPPUNIT_TEST(testConcatenateSepBy);
+  CPPUNIT_TEST(testConcatenateOptional);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -304,7 +417,7 @@ public:
     try
       {
         ( (maybe(str("def")) >> fail("This is an ex-parser") >> val(boost::shared_ptr<std::vector<boost::shared_ptr<std::string> > >()))
-          | many(lexeme(many_string(alpha())))).parse(begin, end);
+          | many(lexeme(container(std::string(), many(alpha()))))).parse(begin, end);
       }
     catch(ParseException &ex)
       {
@@ -748,7 +861,7 @@ public:
     std::string input = "   abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    boost::shared_ptr<std::string> result = (many_string(letter)).parse(begin, end);
+    boost::shared_ptr<std::string> result = (container(std::string(), many(letter))).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
@@ -761,7 +874,7 @@ public:
     std::string input = "";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    boost::shared_ptr<std::string> result = (many_string(letter)).parse(begin, end);
+    boost::shared_ptr<std::string> result = (container(std::string(), many(letter))).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string(""), *result);
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
@@ -774,7 +887,7 @@ public:
     std::string input = "abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    boost::shared_ptr<std::string> result = (many_string(letter)).parse(begin, end);
+    boost::shared_ptr<std::string> result = (container(std::string(), many(letter))).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
@@ -787,7 +900,7 @@ public:
     std::string input = "abcde";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    boost::shared_ptr<std::string> result = (many_string(letter)).parse(begin, end);
+    boost::shared_ptr<std::string> result = (container(std::string(), many(letter))).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL(std::string("abcde"), *result);
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
@@ -1198,10 +1311,8 @@ public:
       std::string input("57482adfb");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      manyOne_result<charif_p<char, digit_f>, std::string>::type
-        p = manyOne_string(digit());
       boost::shared_ptr<std::string> ptr;
-      CPPUNIT_ASSERT_NO_THROW(ptr = p.parse(begin, end));
+      CPPUNIT_ASSERT_NO_THROW(ptr = (container(std::string(), manyOne(digit()))).parse(begin, end));
       CPPUNIT_ASSERT_EQUAL(std::string("57482"), *ptr);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
     }
@@ -1238,7 +1349,7 @@ public:
       std::string input("abdsfa");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      CPPUNIT_ASSERT_THROW(manyOne_string(digit()).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(container(std::string(), manyOne(digit())).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
     }
 
@@ -1369,7 +1480,7 @@ public:
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       boost::shared_ptr<std::string> result;
-      CPPUNIT_ASSERT_NO_THROW(result = lexeme(many_string(alpha())).parse(begin, end));
+      CPPUNIT_ASSERT_NO_THROW(result = lexeme(container(std::string(), many(alpha()))).parse(begin, end));
       CPPUNIT_ASSERT_EQUAL(std::string("abcd"), *result);
       // Unlike in many parsers, this test is NOT purely cosmetic; it
       // verifies that we really consumed the whitespace (which is,
@@ -1468,6 +1579,124 @@ public:
 
       CPPUNIT_ASSERT_EQUAL(8, ex->get_line_number());
       CPPUNIT_ASSERT_EQUAL(3, ex->get_column_number());
+    }
+  }
+
+  void testContainerSuccess()
+  {
+    {
+      std::string input = "123abc";
+      std::vector<std::string> expected;
+      expected.push_back("123");
+      expected.push_back("abc");
+
+      verify_success(input,
+                     many(container(std::string(), manyOne(alpha()) | manyOne(digit()))),
+                     expected);
+    }
+
+    {
+      std::string input = "123abc";
+      std::vector<std::string> expected;
+      expected.push_back("x123");
+      expected.push_back("xabc");
+
+      verify_success(input,
+                     many(container(std::string("x"), manyOne(alpha()) | manyOne(digit()))),
+                     expected);
+    }
+  }
+
+  void testContainerOr()
+  {
+    {
+      std::string input = "2hj4j46g4jhg";
+      std::vector<char> expected(input.begin(), input.end());
+
+      verify_success(input,
+                     many(alpha() | digit()),
+                     expected);
+    }
+  }
+
+  void testConcatenateInts()
+  {
+    {
+      std::string input = "123 456";
+      std::vector<int> expected;
+      expected.push_back(123);
+      expected.push_back(456);
+
+      verify_success(input,
+                     lexeme(integer()) + lexeme(integer()),
+                     expected);
+    }
+
+    {
+      std::string input = "123 456 789";
+      std::vector<int> expected;
+      expected.push_back(123);
+      expected.push_back(456);
+      expected.push_back(789);
+
+      verify_success(input,
+                     lexeme(integer()) + lexeme(integer()) + lexeme(integer()),
+                     expected);
+    }
+  }
+
+  void testConcatenateMany()
+  {
+    {
+      std::string input = "abc123xyz";
+      std::string expected = "abc123";
+
+      verify_success(input,
+                     container(std::string(), many(alpha()) + many(digit())),
+                     expected);
+    }
+  }
+
+  void testConcatenateSepBy()
+  {
+    {
+      std::string input = "abc,def123,456xyz";
+      std::vector<std::string> expected;
+      expected.push_back("abc");
+      expected.push_back("def");
+      expected.push_back("123");
+      expected.push_back("456");
+
+      verify_success(input,
+                     sepBy(str(","),
+                           container(std::string(),
+                                     manyOne(alpha()))) +
+                     sepBy(str(","),
+                           container(std::string(),
+                                     manyOne(digit()))),
+                     expected);
+    }
+  }
+
+  void testConcatenateOptional()
+  {
+    {
+      std::string input = "abc3j2k3h";
+      std::string expected = input;
+
+      verify_success(input,
+                     container(std::string(),
+                               many(alpha() + optional(digit()))),
+                     expected);
+    }
+
+    {
+      std::string input = "abc32j2k3h";
+      std::string expected = "abc3";
+      verify_success(input,
+                     container(std::string(),
+                               many(alpha() + optional(digit()))),
+                     expected);
     }
   }
 };

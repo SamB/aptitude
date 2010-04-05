@@ -73,6 +73,12 @@
 
 #include <errno.h>
 
+namespace std
+{
+  template<typename T, typename Alloc>
+  class deque;
+}
+
 namespace parsers
 {
   /** \defgroup Parser combinators in C++
@@ -91,12 +97,24 @@ namespace parsers
    *  - result_type: the type returned from operator().  Must be default
    *    constructible, assignable, and copy-constructable.
    *
+   *  - element_type: the type inserted into a container by
+   *    parse_container.  Must be default constructible, assignable,
+   *    and copy-constructible.  By default this is equal to
+   *    result_type, but it can be overridden by derived classes.
+   *
    *  - template<typename ParseInput> parse(ParseInput &input)
    *    const: the actual parse routine.  ParseInput is a parse input
    *    object (see \ref parse_input_concept).  The parse input will
    *    be updated to point to the first character that was not
    *    parsed.  Throws ParseException if the input could not be
    *    parsed.
+   *
+   *  - template<typename ParseInput, typename Container>
+   *    void parse_container(ParseInput &input, Container &output) const:
+   *    parses one or more elements and inserts them into the given
+   *    container.  Container must support push_back.  The default
+   *    implementation simply invokes parse() and pushes the result onto
+   *    the back of the given container.
    *
    *  - get_expected_description(std::ostream &out) const: writes a brief description
    *    of the next token expected by this parser to "out".
@@ -253,6 +271,110 @@ namespace parsers
     const char *what() const throw()
     {
       return msg.c_str();
+    }
+  };
+
+  /** \brief Utility class used to retract values placed onto an
+   *  output container prior to throwing an exception.
+   *
+   *  Needed because a common container of interest isn't actually a
+   *  back insertion sequence (std::basic_string lacks pop_back()) and
+   *  some others allow a much more efficient implementation
+   *  (std::vector and std::deque).
+   */
+  template<typename Container>
+  class undo_push_backs
+  {
+    // The default specialization works on any back insertion
+    // sequence.  Note that we have to store the original size instead
+    // of an iterator since not all back insertion sequences have
+    // stable iterators.
+
+    typename Container::size_type original_size;
+
+  public:
+    undo_push_backs(Container &container)
+      : original_size(container.size())
+    {
+    }
+
+    void rollback(Container &container) const
+    {
+      while(container.size() > original_size)
+        container.pop_back();
+    }
+
+    bool empty(const Container &container) const
+    {
+      return container.size() == original_size;
+    }
+  };
+
+  template<typename charT, typename traits, typename Alloc>
+  class undo_push_backs<std::basic_string<charT, traits, Alloc> >
+  {
+    typename std::basic_string<charT, traits, Alloc>::size_type original_size;
+
+  public:
+    undo_push_backs(std::basic_string<charT, traits, Alloc> &s)
+      : original_size(s.size())
+    {
+    }
+
+    void rollback(std::basic_string<charT, traits, Alloc> &s) const
+    {
+      s.erase(original_size);
+    }
+
+    bool empty(const std::basic_string<charT, traits, Alloc> &s) const
+    {
+      return s.size() == original_size;
+    }
+  };
+
+  // Utility class for implementations of undo_push_backs on random
+  // access sequences.
+  template<typename Container>
+  class undo_push_backs_random_access
+  {
+    typename Container::size_type original_size;
+
+  public:
+    undo_push_backs_random_access(Container &c)
+      : original_size(c.size())
+    {
+    }
+
+    void rollback(Container &c) const
+    {
+      c.erase(c.begin() + original_size, c.end());
+    }
+
+    bool empty(const Container &c) const
+    {
+      return c.size() == original_size;
+    }
+  };
+
+  template<typename T, typename Alloc>
+  class undo_push_backs<std::vector<T, Alloc> >
+    : public undo_push_backs_random_access<std::vector<T, Alloc> >
+  {
+  public:
+    undo_push_backs(std::vector<T, Alloc> &c)
+      : undo_push_backs_random_access<std::vector<T, Alloc> >(c)
+    {
+    }
+  };
+
+  template<typename T, typename Alloc>
+  class undo_push_backs<std::deque<T, Alloc> >
+    : public undo_push_backs_random_access<std::deque<T, Alloc> >
+  {
+  public:
+    undo_push_backs(std::deque<T, Alloc> &c)
+      : undo_push_backs_random_access<std::deque<T, Alloc> >(c)
+    {
     }
   };
 
@@ -424,6 +546,7 @@ namespace parsers
 
   public:
     typedef ResultType result_type;
+    typedef ResultType element_type;
 
     // These names are provided both here *and* in the derived class
     // to allow operators to accept a parser_base<> and still get
@@ -475,6 +598,15 @@ namespace parsers
     result_type parse(ParseInput &input) const
     {
       return derived().do_parse(input);
+    }
+
+    /** \brief Parse one or more elements and push them onto the back
+     *  of the given container.
+     */
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      output.push_back(parse(input));
     }
 
     /** \brief Write a description of what we expect to see here to
@@ -565,6 +697,16 @@ namespace parsers
     struct apply
     {
       typedef typename P::result_type type;
+    };
+  };
+
+  /** \brief Metafunction class to retrieve the element type of a parser. */
+  struct get_element_type
+  {
+    template<typename P>
+    struct apply
+    {
+      typedef typename P::element_type type;
     };
   };
 
@@ -1087,12 +1229,20 @@ namespace parsers
     }
 
     typedef typename P2::result_type result_type;
+    typedef typename P2::element_type element_type;
 
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
     {
       p1.parse(input);
       return p2.parse(input);
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      p1.parse(input);
+      p2.parse_container(input, output);
     }
 
     void get_expected(std::ostream &out) const
@@ -1129,6 +1279,7 @@ namespace parsers
     }
 
     typedef typename P1::result_type result_type;
+    typedef typename P1::element_type element_type;
 
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
@@ -1136,6 +1287,13 @@ namespace parsers
       result_type rval = p1.parse(input);
       p2.parse(input);
       return rval;
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      p1.parse_container(input, output);
+      p2.parse(input);
     }
 
     void get_expected(std::ostream &out) const
@@ -1276,6 +1434,134 @@ namespace parsers
 
   // @}
 
+  /** \brief Wrap a single sub-parser, forcing it to return a shared
+   *  pointer to the given container type and preventing it from being
+   *  concatenated with or folded into other containers.
+   *
+   *  Essentially turns a container parser into a non-container
+   *  parser.
+   */
+  template<typename P, typename Container>
+  class container_p : public parser_base<container_p<P, Container>, boost::shared_ptr<Container> >
+  {
+    P p;
+    // Elements to include at the front of each parse.
+    boost::shared_ptr<Container> prefix;
+
+  public:
+    container_p(const P &_p, const Container &_prefix)
+      : p(_p), prefix(boost::make_shared<Container>(_prefix))
+    {
+    }
+
+    template<typename ParseInput>
+    boost::shared_ptr<Container> do_parse(ParseInput &input) const
+    {
+      boost::shared_ptr<Container> rval = boost::make_shared<Container>(*prefix);
+      p.parse_container(input, *rval);
+      return rval;
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      return p.get_expected(out);
+    }
+  };
+
+  /** \brief Create a parser that places the elements of its
+   *  sub-parser into a container of the given type, but is not itself
+   *  a container parser.
+   *
+   *  \param prefix A container whose elements are always placed at
+   *                the front of the new container.
+   *
+   *  \param p The sub-parser.
+   */
+  template<typename P, typename Container>
+  container_p<P, Container> container(const Container &prefix, const P &p)
+  {
+    return container_p<P, Container>(p, prefix);
+  }
+
+  /** \brief Create a parser that places the elements of its
+   *  sub-parser into a std::vector, but is not itself a container
+   *  parser.
+   *
+   *  \param p The sub-parser.
+   */
+  template<typename P>
+  container_p<P, std::vector<typename P::element_type> > container(const P &p)
+  {
+    return container_p<P, std::vector<typename P::element_type> >(p, std::vector<typename P::element_type>());
+  }
+
+  /** \brief Create a parser that places the elements of its
+   *  sub-parser into a std::string, but is not itself a container
+   *  parser.
+   *
+   *  \param p The sub-parser; must have an element_type of char.
+   */
+  template<typename P>
+  container_p<P, std::string> container_string(const P &p)
+  {
+    return container_p<P, std::string>(p, std::string());
+  }
+
+
+  /** \brief A parser that concatenates two sub-parsers into a single
+   *  container parser.
+   *
+   *  If invoked as a non-container parser, places its elements into a
+   *  std::vector.
+   */
+  template<typename P1, typename P2>
+  class concatenate_p : public parser_base<concatenate_p<P1, P2>,
+                                           boost::shared_ptr<std::vector<typename P1::element_type> > >
+  {
+    P1 p1;
+    P2 p2;
+
+  public:
+    concatenate_p(const P1 &_p1, const P2 &_p2)
+      : p1(_p1), p2(_p2)
+    {
+    }
+
+    typedef typename P1::element_type element_type;
+    typedef boost::shared_ptr<std::vector<element_type> > result_type;
+
+    template<typename ParseInput>
+    result_type do_parse(ParseInput &input) const
+    {
+      result_type rval = boost::make_shared<std::vector<element_type> >();
+      parse_container(input, *rval);
+      return rval;
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      p1.parse_container(input, output);
+      p2.parse_container(input, output);
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      p1.get_expected(out);
+    }
+  };
+
+  /** \brief Create a new parser that parses the elements of the first
+   *  parser, followed by the elements of the second parser.
+   */
+  template<typename Rule1, typename ResultType1, typename Rule2, typename ResultType2>
+  concatenate_p<Rule1, Rule2> operator+(const parser_base<Rule1, ResultType1> &p1,
+                                        const parser_base<Rule2, ResultType2> &p2)
+  {
+    return concatenate_p<Rule1, Rule2>(p1.derived(), p2.derived());
+  }
+
+
   /** \brief Parse zero or more occurrences of the input pattern,
    *  ignoring the resulting values.
    */
@@ -1380,50 +1666,76 @@ namespace parsers
    *  collecting its parses.
    *
    *  \tparam P  The sub-parser.
-   *  \tparam Container  The container type to return.  e.g., change
-   *                     to std::string to produce a string value.
-   *
-   *  The returned container is wrapped in a shared_ptr to avoid
-   *  unnecessary copies.
    *
    *  Note that if the sub-parser fails after consuming input, this
    *  parser will fail as well (since otherwise we would leave the
    *  parse in a bad state).
    */
-  template<typename P, typename Container = std::vector<typename P::result_type> >
-  class many_p : public parser_base<many_p<P, Container>, boost::shared_ptr<Container> >
+  template<typename P>
+  class many_p : public parser_base<many_p<P>, boost::shared_ptr<std::vector<typename P::element_type> > >
   {
     P p;
+    bool requireOne;
+
   public:
-    many_p(const P &_p)
-      : p(_p)
+    /** \brief Create a many_p parser.
+     *
+     *  \param _p          The parser for elements of this list.
+     *  \param _requireOne If \b true, then the list must be nonempty.
+     */
+    many_p(const P &_p, bool _requireOne)
+      : p(_p), requireOne(_requireOne)
     {
     }
 
-    typedef boost::shared_ptr<Container> result_type;
+    typedef boost::shared_ptr<std::vector<typename P::element_type> > result_type;
+    typedef typename P::element_type element_type;
 
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
     {
-      boost::shared_ptr<Container> rval =
-        boost::make_shared<Container>();
+      result_type rval =
+        boost::make_shared<std::vector<typename P::element_type> >();
 
+      parse_container(input, *rval);
+
+      return rval;
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      // Used below to test whether we parsed at least one value.
+      bool foundOne = false;
       while(true)
         {
           typename ParseInput::const_iterator where = input.begin();
+          undo_push_backs<Container> outputWhere(output);
           try
             {
-              rval->push_back(p.parse(input));
+              p.parse_container(input, output);
+              foundOne = true;
             }
           catch(ParseException &ex)
             {
               if(where != input.begin())
                 throw;
-              break;
+              else
+                {
+                  outputWhere.rollback(output);
+                  break;
+                }
             }
         }
 
-      return rval;
+      if(requireOne && !foundOne)
+        {
+          std::ostringstream msg;
+          msg << "Expected ";
+          get_expected(msg);
+
+          input.fail(msg.str());
+        }
     }
 
     void get_expected(std::ostream &out) const
@@ -1434,27 +1746,23 @@ namespace parsers
 
   // Sanity-check that we get the correct result type out of a
   // many_p expression.
-  BOOST_STATIC_ASSERT((boost::is_same<many_p<integer_p, std::vector<integer_p::result_type> >::result_type,
+  BOOST_STATIC_ASSERT((boost::is_same<many_p<integer_p>::result_type,
                                       boost::shared_ptr<std::vector<int> > >::value));
 
-  /** \brief Apply the input parser zero or more times, saving
-   *  the results to a vector.
+  /** \brief Apply the input parser zero or more times.
    */
   template<typename P>
   inline many_p<P> many(const P &p)
   {
-    return many_p<P>(p);
+    return many_p<P>(p, false);
   }
 
-  /** \brief Apply the input parser zero or more times, saving
-   *  the results to a string.
-   *
-   *  \note The input parser must have a return type of char.
+  /** \brief Apply the input parser one or more times.
    */
   template<typename P>
-  inline many_p<P, std::string> many_string(const P &p)
+  inline many_p<P> manyOne(const P &p)
   {
-    return many_p<P, std::string>(p);
+    return many_p<P>(p, true);
   }
 
   /** \brief A parser that recognizes zero or more occurrences of its
@@ -1465,39 +1773,49 @@ namespace parsers
    *                      separators between occurrences of ValueP.
    *  \tparam ValueP A parser type that will recognize the values that
    *                 this parser returns.
-   *  \tparam Seq    The sequence type used to store the results of
-   *                 the ValueP parser. 
-  *
-   *  The parser terminates successfully when SeparatorP matches a
-   *  zero-length value.  Any other condition (ValueP failing to match
+   *
+   *  The parser terminates successfully when SeparatorP fails without
+   *  consuming input.  Any other condition (ValueP failing to match
    *  or SeparatorP failing and consuming input) will result in a
    *  parse failure.
    */
-  template<typename SeparatorP, typename ValueP,
-	   typename Seq = std::vector<typename ValueP::result_type> >
-  class sepBy_p : public parser_base<sepBy_p<SeparatorP, ValueP, Seq>,
-				     boost::shared_ptr<Seq> >
+  template<typename SeparatorP, typename ValueP>
+  class sepBy_p : public parser_base<sepBy_p<SeparatorP, ValueP>,
+				     boost::shared_ptr<std::vector<typename ValueP::element_type> > >
   {
     SeparatorP separatorP;
     ValueP valueP;
+    bool requireOne;
 
   public:
-    sepBy_p(const SeparatorP &_separatorP, const ValueP &_valueP)
-      : separatorP(_separatorP), valueP(_valueP)
+    sepBy_p(const SeparatorP &_separatorP, const ValueP &_valueP, bool _requireOne)
+      : separatorP(_separatorP), valueP(_valueP), requireOne(_requireOne)
     {
     }
 
-    typedef boost::shared_ptr<Seq> result_type;
+    typedef boost::shared_ptr<std::vector<typename ValueP::element_type> > result_type;
+    typedef typename ValueP::element_type element_type;
 
     template<typename ParseInput>
     result_type do_parse(ParseInput &input) const
     {
-      result_type rval = boost::make_shared<Seq>();
+      result_type rval = boost::make_shared<std::vector<typename ValueP::element_type> >();
 
+      parse_container(input, *rval);
+
+      return rval;
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      bool foundOne = false;
       bool first = true;
+
       while(true)
       {
 	typename ParseInput::const_iterator initialBegin = input.begin();
+        undo_push_backs<Container> initialOutput(output);
 
 	try
 	  {
@@ -1506,18 +1824,30 @@ namespace parsers
 	    else
 	      separatorP.parse(input);
 
-	    rval->push_back(valueP.parse(input));
+            valueP.parse_container(input, output);
+
+            foundOne = true;
 	  }
 	catch(ParseException &)
 	  {
 	    if(input.begin() == initialBegin)
-	      break;
+              {
+                initialOutput.rollback(output);
+                break;
+              }
 	    else
 	      throw;
 	  }
       }
 
-      return rval;
+      if(requireOne && !foundOne)
+        {
+          std::ostringstream msg;
+          msg << "Expected ";
+          get_expected(msg);
+
+          input.fail(msg.str());
+        }
     }
 
     void get_expected(std::ostream &out) const
@@ -1546,7 +1876,30 @@ namespace parsers
   sepBy_p<SeparatorP, ValueP> sepBy(const SeparatorP &separatorP,
 				    const ValueP &valueP)
   {
-    return sepBy_p<SeparatorP, ValueP>(separatorP, valueP);
+    return sepBy_p<SeparatorP, ValueP>(separatorP, valueP, false);
+  }
+
+  /** \brief Create a parser that recognizes one or more occurrences
+   *  of its sub-parser, with occurrences of a separator parser
+   *  between them (but not at the beginning or end of the match).
+   *
+   *  \tparam ValueP A parser type that will recognize the values that
+   *                 this parser returns.
+   *  \tparam SeparatorP  A parser type that will recognize the
+   *                      separators between occurrences of ValueP.
+   *
+   *  \param separatorP The parser for the tokens that separate
+   *                     values.  The values returned by this parser
+   *                     are discarded.
+   *
+   *  \param valueP The parser that generates the values that are to
+   *                 be returned.
+   */
+  template<typename SeparatorP, typename ValueP>
+  sepBy_p<SeparatorP, ValueP> sepByOne(const SeparatorP &separatorP,
+                                       const ValueP &valueP)
+  {
+    return sepBy_p<SeparatorP, ValueP>(separatorP, valueP, true);
   }
 
 
@@ -1630,6 +1983,7 @@ namespace parsers
   {
   public:
     typedef typename boost::mpl::front<C>::type::result_type result_type;
+    typedef typename boost::mpl::front<C>::type::element_type element_type;
 
   private:
     // Metaprogramming to verify that all the sub-types are the same.
@@ -1642,6 +1996,19 @@ namespace parsers
                                       boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_equal;
 
     BOOST_STATIC_ASSERT(all_subtypes_are_equal::value);
+
+
+    // Metaprogramming to verify that all the element types are
+    // interconvertible.
+    /*typedef typename boost::mpl::transform<C, get_element_type>::type C_element_types;
+    typedef typename boost::mpl::transform<C_element_types,
+                                           boost::is_convertible<element_type,
+                                                                 boost::mpl::_1> >::type C_element_types_convertible_to_front;
+    typedef typename boost::mpl::fold<C_element_types_convertible_to_front,
+                                      boost::mpl::true_,
+                                      boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_element_types_are_legal;
+
+                                      BOOST_STATIC_ASSERT(all_element_types_are_legal::value);*/
 
     C values;
 
@@ -1721,6 +2088,71 @@ namespace parsers
       return do_or_conditional(input, initialBegin, valuesIter, IsAtEnd());
     }
 
+
+
+    // do_or_container is like do_or, but parses its sub-parts as
+    // containers.
+
+    // Base case (we ran out of branches, so fail):
+    template<typename ParseInput, typename CIter, typename Container>
+    void do_or_conditional_container(ParseInput &input,
+                                     Container &output,
+                                     const typename ParseInput::const_iterator &initialBegin,
+                                     const CIter &valuesIter, boost::mpl::true_) const
+    {
+      std::ostringstream msg;
+      get_expected(msg);
+
+      // ForTranslators: this is used to generate an error
+      // message; a brief description of what we expected to see
+      // is inserted into it.
+      input.fail((boost::format(_("Expected %s")) % msg.str()).str());
+    }
+
+    // Non-base case (try the first branch):
+    template<typename ParseInput, typename CIter, typename Container>
+    void do_or_conditional_container(ParseInput &input,
+                                     Container &output,
+                                     const typename ParseInput::const_iterator &initialBegin,
+                                     const CIter &valuesIter, boost::mpl::false_) const
+    {
+      {
+        undo_push_backs<Container> initialOutput(output);
+
+        try
+          {
+            (*valuesIter).parse_container(input, output);
+            // If nothing was thrown, the parse succeeded; break out
+            // of the loop (otherwise we'd run all the other parsers
+            // in the list).
+            return;
+          }
+        catch(ParseException &ex)
+          {
+            if(initialBegin != input.begin())
+              throw;
+            else
+              initialOutput.rollback(output);
+          }
+      }
+
+      // We only get here if the parse failed, so go to the next entry
+      // in "values".
+      do_or_container(input, output, initialBegin, boost::fusion::next(valuesIter));
+    }
+
+    template<typename ParseInput, typename CIter, typename Container>
+    void do_or_container(ParseInput &input,
+                         Container &output,
+                         const typename ParseInput::const_iterator &initialBegin,
+                         const CIter &valuesIter) const
+    {
+      typedef typename boost::fusion::result_of::end<C>::type EndCIter;
+      typedef typename boost::fusion::result_of::equal_to<CIter, EndCIter>::type IsAtEnd;
+
+      do_or_conditional_container(input, output, initialBegin, valuesIter, IsAtEnd());
+    }
+
   public:
     or_p(const C &_values)
       : values(_values)
@@ -1738,6 +2170,13 @@ namespace parsers
     {
       typename ParseInput::const_iterator initialBegin = input.begin();
       return do_or(input, initialBegin, boost::fusion::begin(values));
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      typename ParseInput::const_iterator initialBegin = input.begin();
+      do_or_container(input, output, initialBegin, boost::fusion::begin(values));
     }
 
     void get_expected(std::ostream &out) const
@@ -1862,7 +2301,7 @@ namespace parsers
 
     void get_expected(std::ostream &out) const
     {
-      p.get_expected(out);
+      p.get_expected_description(out);
     }
   };
 
@@ -1873,6 +2312,89 @@ namespace parsers
   maybe_p<P> maybe(const P &p)
   {
     return maybe_p<P>(p);
+  }
+
+  /** \brief A parser that matches an optional value.
+   *
+   *  There are three ways this can behave:
+   *
+   *   1. If the sub-parser succeeds, its value is returned.
+   *   2. If the sub-parser fails without consuming input, an empty
+   *      optional value is returned.
+   *   3. If the sub-parser fails and consumes input, this parser fails.
+   *
+   *  In a container context, the element type is the *element type of
+   *  P*; if the sub-parser fails without consuming input, nothing
+   *  will be inserted into the output container.
+   */
+  template<typename P>
+  class optional_p : public parser_base<optional_p<P>,
+                                        boost::optional<typename P::result_type> >
+  {
+    P p;
+
+  public:
+    optional_p(const P &_p)
+      : p(_p)
+    {
+    }
+
+    typedef boost::optional<typename P::result_type> result_type;
+    typedef typename P::element_type element_type;
+
+    template<typename ParseInput>
+    result_type do_parse(ParseInput &input) const
+    {
+      typename ParseInput::const_iterator inputWhere = input.begin();
+
+      try
+        {
+          return p.parse(input);
+        }
+      catch(ParseException &)
+        {
+          if(inputWhere == input.begin())
+            // Case 2: failed without consuming input; return an empty
+            // optional value.
+            return result_type();
+          else
+            // Case 3: failed and consumed input; re-throw.
+            throw;
+        }
+    }
+
+    template<typename ParseInput, typename Container>
+    void parse_container(ParseInput &input, Container &output) const
+    {
+      typename ParseInput::const_iterator inputWhere = input.begin();
+      undo_push_backs<Container> outputWhere(output);
+
+      try
+        {
+          p.parse_container(input, output);
+        }
+      catch(ParseException &)
+        {
+          if(inputWhere == input.begin())
+            // Case 2: failed without consuming input; leave output
+            // unchanged.
+            outputWhere.rollback(output);
+          else
+            // Case 3: failed and consumed input; re-throw.
+            throw;
+        }
+    }
+
+    void get_expected(std::ostream &out) const
+    {
+      p.get_expected(out);
+    }
+  };
+
+  template<typename P>
+  optional_p<P> optional(const P &p)
+  {
+    return optional_p<P>(p);
   }
 
   /** \brief Apply each parser in the given Boost.Fusion container in
@@ -2307,8 +2829,6 @@ namespace parsers
 
   /** \brief Function object to test whether a shared pointer to an
    *  STL-style sequence is not empty.
-   *
-   *  Used to implement manyOne.
    */
   template<typename Seq>
   struct notEmpty_f
@@ -2318,93 +2838,6 @@ namespace parsers
       return !s->empty();
     }
   };
-
-  /** \brief Metafunction computing the type of parser returned by
-   *  manyOne.
-   */
-  template<typename P, typename Seq>
-  class manyOne_result
-  {
-  public:
-    typedef assert_p<many_p<P, Seq>, notEmpty_f<Seq> > type;
-  };
-
-  // Sanity-check that we get the right type out of a manyOne
-  // expression.
-  BOOST_STATIC_ASSERT( (boost::is_same< assert_p<many_p<charif_p<char, digit_f>, std::string>, notEmpty_f<std::string> >,
-                                        manyOne_result<charif_p<char, digit_f>, std::string>::type>::value) );
-  BOOST_STATIC_ASSERT( (boost::is_same< boost::shared_ptr<std::string>,
-                                        manyOne_result<charif_p<char, digit_f>, std::string>::type::result_type>::value) );
-
-  /** \brief Match one or more copies of the given parser.
-   *
-   *  \tparam P   The type of parser to match.
-   *  \tparam Seq The STL sequence type to return.
-   *
-   *  \param p  The parser to match.
-   */
-  template<typename P, typename Seq>
-  typename manyOne_result<P, Seq>::type
-  manyOne_p(const P &p)
-  {
-    std::ostringstream msg;
-    p.get_expected_description(msg);
-
-    return postAssert(many_p<P, Seq>(p),
-                      msg.str(),
-                      notEmpty_f<Seq>());
-  }
-
-  /** \brief Match one or more copies of a parser and build a vector from them.
-   *
-   *  \tparam P  The type of parser to match.
-   *  \param p   The parser to match.
-   */
-  template<typename P>
-  typename manyOne_result<P, std::vector<typename P::result_type> >::type
-  manyOne(const P &p)
-  {
-    return manyOne_p<P, std::vector<typename P::result_type> >(p);
-  }
-
-  /** \brief Match one or more copies of a parser and build a string from them.
-   *
-   *  \tparam P  The type of parser to match.
-   *  \param p   The parser to match.
-   */
-  template<typename P>
-  typename manyOne_result<P, std::string>::type
-  manyOne_string(const P &p)
-  {
-    return manyOne_p<P, std::string>(p);
-  }
-
-  /** \brief Metafunction computing the result type of optional(). */
-  template<typename P>
-  struct optional_result
-  {
-    typedef boost::optional<typename P::result_type> parse_type;
-    typedef or_p<boost::fusion::vector<apply_p<construct_f<parse_type>, tuple_p<boost::fusion::vector<P> > >,
-                                       val_p<parse_type> > >
-    type;
-  };
-
-  /** \brief Match zero or one copies of the given parser.
-   *
-   *  There are three ways this can behave:
-   *
-   *   1. If the parser succeeds, its value is returned.
-   *   2. If the parser fails without consuming input, an empty optional
-   *      value is returned.
-   *   3. If the parser fails and consumes input, this parser fails.
-   */
-  template<typename P>
-  typename optional_result<P>::type optional(const P &p)
-  {
-    return
-        apply(construct_f<boost::optional<typename P::result_type> >(), tuple(p))
-      | val(boost::optional<typename P::result_type>());
-  }
 
   /** \brief Metafunction computing the result type of lexeme(). */
   template<typename P>
