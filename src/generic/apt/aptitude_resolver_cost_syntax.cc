@@ -42,9 +42,9 @@ namespace
     {
       typedef cost_component_structure::entry result_type;
 
-      result_type operator()(int scaling_factor, char nameFirst, const boost::shared_ptr<std::string> &nameRest) const
+      result_type operator()(int scaling_factor, const boost::shared_ptr<std::string> &name) const
       {
-        return result_type(nameFirst + *nameRest, scaling_factor);
+        return result_type(name, scaling_factor);
       }
     };
 
@@ -70,8 +70,7 @@ namespace
 
       return apply(make_entry(),
                    (  ( (lexeme(integer()) << lexeme(ch('*'))) | val(1) ) << notFollowedBy(str("max")),
-                      alpha(),
-                      container(std::string(), lexeme(many(alnum() | ch('-') | ch('_'))))  )).parse(input);
+                      container(std::string(), lexeme(alpha() + many(alnum() | ch('-') | ch('_'))))  )).parse(input);
     }
 
     void get_expected(std::ostream &out) const
