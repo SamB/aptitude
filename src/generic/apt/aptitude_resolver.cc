@@ -1208,7 +1208,16 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 
   aptitude_resolver_cost_settings::component
     safety_component(cost_settings.get_or_create_component("safety", aptitude_resolver_cost_settings::maximized)),
-    priority_component(cost_settings.get_or_create_component("priority", aptitude_resolver_cost_settings::maximized));
+    priority_component(cost_settings.get_or_create_component("priority", aptitude_resolver_cost_settings::maximized)),
+    removals_component = cost_settings.get_or_create_component("removals", aptitude_resolver_cost_settings::additive),
+    removals_of_manual_component = cost_settings.get_or_create_component("removals-of-manual", aptitude_resolver_cost_settings::additive),
+    installs_component = cost_settings.get_or_create_component("installs", aptitude_resolver_cost_settings::additive),
+    upgrades_component = cost_settings.get_or_create_component("upgrades", aptitude_resolver_cost_settings::additive),
+    non_default_versions_component = cost_settings.get_or_create_component("non-default-versions", aptitude_resolver_cost_settings::additive),
+    broken_holds_component = cost_settings.get_or_create_component("broken-holds", aptitude_resolver_cost_settings::additive),
+    canceled_actions_component = cost_settings.get_or_create_component("canceled-actions", aptitude_resolver_cost_settings::additive),
+    canceled_manual_actions_component = cost_settings.get_or_create_component("canceled-manual-actions", aptitude_resolver_cost_settings::additive),
+    removed_essential_packages_component = cost_settings.get_or_create_component("removed-essential-packages", aptitude_resolver_cost_settings::additive);
 
   // Resolve the component of each hint into a side table (since hints
   // are supposed to be purely syntactic, it would be wrong to store
@@ -1423,9 +1432,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << std::noshowpos << " for " << v
 			    << " because it is the currently installed version of a manually installed package  (" PACKAGE "::ProblemResolver::KeepScore).");
 		  add_version_score(v, keep_score);
+                  modify_version_tier_op(v,
+                                         cost_settings.add_to_cost(canceled_manual_actions_component, 1));
 		}
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, safe_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, safe_level)
+                                     + cost_settings.add_to_cost(canceled_actions_component, 1));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Tier)");
@@ -1439,9 +1452,13 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << std::noshowpos << " for " << v
 			    << " because it represents the removal of a manually installed package  (" PACKAGE "::ProblemResolver::RemoveScore).");
 		  add_version_score(v, remove_score);
+                  modify_version_tier_op(v,
+                                         cost_settings.add_to_cost(removals_of_manual_component, 1));
 		}
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, remove_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, remove_level)
+                                     + cost_settings.add_to_cost(removals_component, 1));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << remove_level << " for " << v
 			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Tier)");
@@ -1469,7 +1486,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		    }
 		}
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, safe_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, safe_level));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Tier).");
@@ -1488,7 +1506,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::NonDefaultScore).");
 	      add_version_score(v, non_default_score);
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, non_default_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, non_default_level)
+                                     + cost_settings.add_to_cost(non_default_versions_component, 1));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << non_default_level << " for " << v
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Tier).");
@@ -1510,7 +1530,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  reject_version(v);
 		}
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, break_hold_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, break_hold_level)
+                                     + cost_settings.add_to_cost(broken_holds_component, 1));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << break_hold_level << " for " << v
 			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Tier).");
@@ -1531,7 +1553,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			"** Rejecting " << v << " because it represents removing an essential package.");
 	      reject_version(v);
 
-              modify_version_tier_op(v, cost_settings.raise_cost(safety_component, remove_essential_level));
+              modify_version_tier_op(v,
+                                     cost_settings.raise_cost(safety_component, remove_essential_level) +
+                                     cost_settings.add_to_cost(removed_essential_packages_component, 1));
 	      LOG_DEBUG(loggerTiers,
 			"** Tier level raised to at least " << remove_essential_level << " for " << v
 			<< " because it represents removing an essential package.");
