@@ -1617,12 +1617,12 @@ namespace parsers
    *  parser P.
    */
   template<typename P>
-  class skipManyOne_p : public parser_base<skipManyOne_p<P>, nil_t>
+  class skipManyPlus_p : public parser_base<skipManyPlus_p<P>, nil_t>
   {
     P p;
 
   public:
-    skipManyOne_p(const P &_p) : p(_p) { }
+    skipManyPlus_p(const P &_p) : p(_p) { }
 
     template<typename ParseInput>
     nil_t do_parse(ParseInput &input) const
@@ -1657,9 +1657,9 @@ namespace parsers
    *  input after producing at least one result, this parser succeeds.
    */
   template<typename P>
-  skipManyOne_p<P> skipManyOne(const P &p)
+  skipManyPlus_p<P> skipManyPlus(const P &p)
   {
-    return skipManyOne_p<P>(p);
+    return skipManyPlus_p<P>(p);
   }
 
   /** \brief A parser that applies a sub-parser zero or more times,
@@ -1760,7 +1760,7 @@ namespace parsers
   /** \brief Apply the input parser one or more times.
    */
   template<typename P>
-  inline many_p<P> manyOne(const P &p)
+  inline many_p<P> manyPlus(const P &p)
   {
     return many_p<P>(p, true);
   }
@@ -1896,8 +1896,8 @@ namespace parsers
    *                 be returned.
    */
   template<typename SeparatorP, typename ValueP>
-  sepBy_p<SeparatorP, ValueP> sepByOne(const SeparatorP &separatorP,
-                                       const ValueP &valueP)
+  sepBy_p<SeparatorP, ValueP> sepByPlus(const SeparatorP &separatorP,
+                                        const ValueP &valueP)
   {
     return sepBy_p<SeparatorP, ValueP>(separatorP, valueP, true);
   }

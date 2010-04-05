@@ -181,10 +181,10 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testSkipManyEmptyEndEOF);
   CPPUNIT_TEST(testSkipManyNotEmptyEndNotEOF);
   CPPUNIT_TEST(testSkipManyNotEmptyEndEOF);
-  CPPUNIT_TEST(testSkipManyOneEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipManyOneEmptyEndEOF);
-  CPPUNIT_TEST(testSkipManyOneNotEmptyEndNotEOF);
-  CPPUNIT_TEST(testSkipManyOneNotEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyPlusEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyPlusEmptyEndEOF);
+  CPPUNIT_TEST(testSkipManyPlusNotEmptyEndNotEOF);
+  CPPUNIT_TEST(testSkipManyPlusNotEmptyEndEOF);
   CPPUNIT_TEST(testManyEmptyEndNotEOF);
   CPPUNIT_TEST(testManyEmptyEndEOF);
   CPPUNIT_TEST(testManyNotEmptyEndNotEOF);
@@ -212,8 +212,8 @@ class ParsersTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testNotFollowedByFailure);
   CPPUNIT_TEST(testPostAssertSuccess);
   CPPUNIT_TEST(testPostAssertFailure);
-  CPPUNIT_TEST(testManyOneSuccess);
-  CPPUNIT_TEST(testManyOneFailure);
+  CPPUNIT_TEST(testManyPlusSuccess);
+  CPPUNIT_TEST(testManyPlusFailure);
   CPPUNIT_TEST(testOptionalSuccess);
   CPPUNIT_TEST(testOptionalFailure);
   CPPUNIT_TEST(testSepBySuccessEmpty);
@@ -806,50 +806,50 @@ public:
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
-  void testSkipManyOneEmptyEndNotEOF()
+  void testSkipManyPlusEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "   abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_THROW((skipManyOne(letter)).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW((skipManyPlus(letter)).parse(begin, end), ParseException);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipManyOneEmptyEndEOF()
+  void testSkipManyPlusEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    CPPUNIT_ASSERT_THROW((skipManyOne(letter)).parse(begin, end), ParseException);
+    CPPUNIT_ASSERT_THROW((skipManyPlus(letter)).parse(begin, end), ParseException);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
   }
 
-  void testSkipManyOneNotEmptyEndNotEOF()
+  void testSkipManyPlusNotEmptyEndNotEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde   ";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skipManyOne(letter)).parse(begin, end);
+    (skipManyPlus(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
 
-  void testSkipManyOneNotEmptyEndEOF()
+  void testSkipManyPlusNotEmptyEndEOF()
   {
     alpha_p letter = alpha();
 
     std::string input = "abcde";
     std::string::const_iterator begin = input.begin(), end = input.end();
 
-    (skipManyOne(letter)).parse(begin, end);
+    (skipManyPlus(letter)).parse(begin, end);
 
     CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
   }
@@ -1305,14 +1305,14 @@ public:
     }
   }
 
-  void testManyOneSuccess()
+  void testManyPlusSuccess()
   {
     {
       std::string input("57482adfb");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
       boost::shared_ptr<std::string> ptr;
-      CPPUNIT_ASSERT_NO_THROW(ptr = (container(std::string(), manyOne(digit()))).parse(begin, end));
+      CPPUNIT_ASSERT_NO_THROW(ptr = (container(std::string(), manyPlus(digit()))).parse(begin, end));
       CPPUNIT_ASSERT_EQUAL(std::string("57482"), *ptr);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)5, begin - input.begin());
     }
@@ -1329,7 +1329,7 @@ public:
       expected.push_back(charint_vector('c', 999));
 
       boost::shared_ptr<result_type> result;
-      CPPUNIT_ASSERT_NO_THROW(result = manyOne( (anychar(), integer()) ).parse(begin, end));
+      CPPUNIT_ASSERT_NO_THROW(result = manyPlus( (anychar(), integer()) ).parse(begin, end));
       CPPUNIT_ASSERT_EQUAL((iter_difftype)10, begin - input.begin());
 
       CPPUNIT_ASSERT_EQUAL(expected.size(), result->size());
@@ -1343,13 +1343,13 @@ public:
     }
   }
 
-  void testManyOneFailure()
+  void testManyPlusFailure()
   {
     {
       std::string input("abdsfa");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      CPPUNIT_ASSERT_THROW(container(std::string(), manyOne(digit())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(container(std::string(), manyPlus(digit())).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)0, begin - input.begin());
     }
 
@@ -1357,7 +1357,7 @@ public:
       std::string input("a34b15c");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      CPPUNIT_ASSERT_THROW( manyOne( (anychar(), integer()) ).parse(begin, end), ParseException );
+      CPPUNIT_ASSERT_THROW( manyPlus( (anychar(), integer()) ).parse(begin, end), ParseException );
 
       CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
@@ -1457,7 +1457,7 @@ public:
       std::string input = "ab,cd,,ef";
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyPlus(alpha())).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
     }
   }
@@ -1468,7 +1468,7 @@ public:
       std::string input = "ab,cd,";
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyOne(alpha())).parse(begin, end), ParseException);
+      CPPUNIT_ASSERT_THROW(sepBy(str(","), manyPlus(alpha())).parse(begin, end), ParseException);
       CPPUNIT_ASSERT_EQUAL((iter_difftype)6, begin - input.begin());
     }
   }
@@ -1591,7 +1591,7 @@ public:
       expected.push_back("abc");
 
       verify_success(input,
-                     many(container(std::string(), manyOne(alpha()) | manyOne(digit()))),
+                     many(container(std::string(), manyPlus(alpha()) | manyPlus(digit()))),
                      expected);
     }
 
@@ -1602,7 +1602,7 @@ public:
       expected.push_back("xabc");
 
       verify_success(input,
-                     many(container(std::string("x"), manyOne(alpha()) | manyOne(digit()))),
+                     many(container(std::string("x"), manyPlus(alpha()) | manyPlus(digit()))),
                      expected);
     }
   }
@@ -1670,10 +1670,10 @@ public:
       verify_success(input,
                      sepBy(str(","),
                            container(std::string(),
-                                     manyOne(alpha()))) +
+                                     manyPlus(alpha()))) +
                      sepBy(str(","),
                            container(std::string(),
-                                     manyOne(digit()))),
+                                     manyPlus(digit()))),
                      expected);
     }
   }
