@@ -44,7 +44,7 @@ namespace
 
       result_type operator()(int scaling_factor, const boost::shared_ptr<std::string> &name) const
       {
-        return result_type(name, scaling_factor);
+        return result_type(*name, scaling_factor);
       }
     };
 
