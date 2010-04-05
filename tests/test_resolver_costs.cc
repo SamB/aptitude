@@ -274,8 +274,8 @@ public:
 
       expected.push_back(cost_component_structure(cost_component_structure::combine_add, expected_entries0));
       expected.push_back(cost_component_structure(cost_component_structure::combine_max, expected_entries1));
-      expected.push_back(cost_component_structure(cost_component_structure::combine_add, expected_entries2));
-      expected.push_back(cost_component_structure(cost_component_structure::combine_add, expected_entries3));
+      expected.push_back(cost_component_structure(cost_component_structure::combine_none, expected_entries2));
+      expected.push_back(cost_component_structure(cost_component_structure::combine_none, expected_entries3));
       expected.push_back(cost_component_structure(cost_component_structure::combine_max, expected_entries4));
       expected.push_back(cost_component_structure(cost_component_structure::combine_max, expected_entries5));
     }
