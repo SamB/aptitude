@@ -118,12 +118,12 @@ namespace
                  apply(make_cost_component_structure(),
                        (   val(cost_component_structure::combine_max)
                         ,  lexeme(ch('('))
-                        >> sepBy(lexeme(ch(',')),
-                                 cost_entry_parser())
+                        >> sepByOne(lexeme(ch(',')),
+                                    cost_entry_parser())
                         << lexeme(ch(')')) )))
                | apply(make_add_or_none_cost_component_structure(),
-                       sepBy(lexeme(ch('+')),
-                             cost_entry_parser()))  ).parse(input);
+                       sepByOne(lexeme(ch('+')),
+                                cost_entry_parser()))  ).parse(input);
     }
 
     void get_expected(std::ostream &out) const
@@ -156,7 +156,7 @@ parse_cost_settings(const std::string &settings)
   using namespace parsers;
 
   boost::variant<boost::shared_ptr<std::vector<cost_component_structure> >, ParseException>
-    result = parsers::parse(settings, sepBy(lexeme(ch(',')), cost_component_structure_parser()) << eof());
+    result = parsers::parse(settings, sepByOne(lexeme(ch(',')), cost_component_structure_parser()) << eof());
 
   return boost::apply_visitor(unpack_parse_result_visitor(),
                               result);
