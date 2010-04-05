@@ -2150,8 +2150,8 @@ namespace parsers
       // parse_container() are valid in different cases.
       typedef typename boost::mpl::transform<C, get_result_type>::type C_result_types;
       typedef typename boost::mpl::transform<C_result_types,
-                                             boost::is_convertible<result_type,
-                                                                   boost::mpl::_1> >::type C_result_types_convertible_to_front;
+                                             boost::is_convertible<boost::mpl::_1,
+                                                                   result_type> >::type C_result_types_convertible_to_front;
       typedef typename boost::mpl::fold<C_result_types_convertible_to_front,
                                         boost::mpl::true_,
                                         boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_subtypes_are_compatible;
@@ -2171,8 +2171,8 @@ namespace parsers
       // interconvertible.
       typedef typename boost::mpl::transform<C, get_element_type>::type C_element_types;
       typedef typename boost::mpl::transform<C_element_types,
-                                             boost::is_convertible<element_type,
-                                                                   boost::mpl::_1> >::type C_element_types_convertible_to_front;
+                                             boost::is_convertible<boost::mpl::_1,
+                                                                   element_type> >::type C_element_types_convertible_to_front;
       typedef typename boost::mpl::fold<C_element_types_convertible_to_front,
                                         boost::mpl::true_,
                                         boost::mpl::and_<boost::mpl::_1, boost::mpl::_2> >::type all_element_types_are_compatible;
