@@ -319,9 +319,15 @@ void do_cmdline_changelog(const vector<string> &packages)
 	    }
 	  else
 	    {
-	      // Fall back to string-based guessing.
-	      if(ver.end() && source == cmdline_version_version)
-		filename = changelog_by_version(package, sourcestr);
+	      // Fall back to string-based guessing if the version is
+	      // invalid.
+	      if(ver.end())
+                {
+                  if(source == cmdline_version_version)
+                    filename = changelog_by_version(package, sourcestr);
+                  // If we don't even have a version string, leave
+                  // filename blank; we'll fail below.
+                }
 	      else
 		{
 		  get_changelog(ver, filename);
