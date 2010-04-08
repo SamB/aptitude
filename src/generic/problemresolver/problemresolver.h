@@ -777,6 +777,11 @@ private:
   // constructors.
   solution_weights<PackageUniverse> weights;
 
+  /** \brief The cost operation applied for each soft dependency
+   *  that's left unresolved.
+   */
+  tier_operation unfixed_soft_cost;
+
   /** Solutions whose score is smaller than this value will be
    *  discarded rather than being enqueued.
    */
@@ -2537,9 +2542,7 @@ private:
 	return version_tier_ops[c.get_ver().get_id()];
 
       case choice::break_soft_dep:
-	// \todo Store tier operations corresponding to breaking
-	// soft deps.
-	return tier_operation();
+        return unfixed_soft_cost;
 
       default:
 	LOG_ERROR(logger, "get_intrinsic_solver_op: bad choice type: " << c);
@@ -3755,6 +3758,7 @@ public:
 			   int _unfixed_soft_score,
 			   int infinity,
 			   int _full_solution_score,
+                           const tier_operation &_unfixed_soft_cost,
 			   int _future_horizon,
 			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
@@ -3765,6 +3769,7 @@ public:
      weights(_step_score, _broken_score, _unfixed_soft_score,
 	     _full_solution_score, _universe.get_version_count(),
 	     initial_state),
+     unfixed_soft_cost(_unfixed_soft_cost),
      minimum_score(-infinity),
      future_horizon(_future_horizon),
      universe(_universe), finished(false),

@@ -910,12 +910,21 @@ void resolver_manager::create_resolver()
   aptitude_resolver_cost_settings cost_settings(cost_components);
 
 
+  // TODO: perhaps this shouldn't be hardcoded?  But it would require
+  // its own specialized configuration syntax :-(
+  tier_operation ignored_recommends_cost;
+  {
+    aptitude_resolver_cost_settings::component ignored_recommends_component =
+      cost_settings.get_or_create_component("ignored-recommends", aptitude_resolver_cost_settings::additive);
+    ignored_recommends_cost = cost_settings.add_to_cost(ignored_recommends_component, 1);
+  }
 
   resolver=new aptitude_resolver(aptcfg->FindI(PACKAGE "::ProblemResolver::StepScore", 70),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::BrokenScore", -100),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::UnfixedSoftScore", -200),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::Infinity", 1000000),
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::ResolutionScore", 50),
+                                 ignored_recommends_cost,
 				 aptcfg->FindI(PACKAGE "::ProblemResolver::FutureHorizon", 50),
                                  cost_settings,
 				 initial_installations,
