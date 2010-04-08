@@ -23,6 +23,7 @@
 #include "apt.h"
 #include "aptitude_resolver.h"
 #include "aptitude_resolver_cost_settings.h"
+#include "aptitude_resolver_cost_syntax.h"
 #include "aptitude_resolver_universe.h"
 #include "config_signal.h"
 #include "dump_packages.h"
@@ -894,18 +895,35 @@ void resolver_manager::create_resolver()
   // Recommends: field unsatisfied!
 
 
+  std::string cost_configuration = aptcfg->Find(PACKAGE "::ProblemResolver::SolutionCost",
+                                                "safety,priority");
 
-  // TODO: this should be parsed from a configuration setting.  This
-  // hardcoding is just a placeholder until I write the parser code.
-  boost::shared_ptr<std::vector<cost_component_structure> > cost_components(boost::make_shared<std::vector<cost_component_structure> >());
+  boost::shared_ptr<std::vector<cost_component_structure> > cost_components;
+  try
+    {
+      cost_components = parse_cost_settings(cost_configuration);
+    }
+  catch(ResolverCostParseException &ex)
+    {
+      LOG_ERROR(Loggers::getAptitudeResolver(),
+                boost::format(_("Failed to parse the cost settings string: %s")) % ex.what());
 
-  std::vector<cost_component_structure::entry> level0;
-  level0.push_back(cost_component_structure::entry("safety", 1));
-  cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level0));
+      _error->Error(_("Failed to parse the cost settings string: %s"),
+                    ex.what());
 
-  std::vector<cost_component_structure::entry> level1;
-  level1.push_back(cost_component_structure::entry("priority", 1));
-  cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level1));
+      // Fall back to a default cost settings list containing the
+      // "safety" and "priority" components.
+      cost_components = boost::make_shared<std::vector<cost_component_structure> >();
+
+      std::vector<cost_component_structure::entry> level0;
+      level0.push_back(cost_component_structure::entry("safety", 1));
+      cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level0));
+
+      std::vector<cost_component_structure::entry> level1;
+      level1.push_back(cost_component_structure::entry("priority", 1));
+      cost_components->push_back(cost_component_structure(cost_component_structure::combine_none, level1));
+    }
+
 
   aptitude_resolver_cost_settings cost_settings(cost_components);
 

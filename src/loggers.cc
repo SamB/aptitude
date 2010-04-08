@@ -128,6 +128,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver");
   }
 
+  LoggerPtr Loggers::getAptitudeResolverCosts()
+  {
+    return Logger::getLogger("aptitude.resolver.costs");
+  }
+
   LoggerPtr Loggers::getAptitudeResolverHints()
   {
     return Logger::getLogger("aptitude.resolver.hints");

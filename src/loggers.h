@@ -175,6 +175,11 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolver();
 
+    /** \brief The logger for the resolver cost settings.
+     *
+     *  Name: aptitude.resolver.costs
+     */
+    static log4cxx::LoggerPtr getAptitudeResolverCosts();
 
     /** \brief The logger for resolver hints.
      *
