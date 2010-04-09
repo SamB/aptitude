@@ -31,7 +31,7 @@
 #include <generic/util/refcounted_base.h>
 #include "choice.h"
 #include "choice_set.h"
-#include "tier.h"
+#include "tier_operation.h"
 
 /** \brief The solution class for the problem resolver.
  * 
@@ -294,7 +294,7 @@ private:
      *  Informational only; not considered when comparing solutions by
      *  identity.
      */
-    tier sol_tier;
+    tier_operation sol_tier_op;
 
     /** The reference count of this solution. */
     mutable unsigned int refcount;
@@ -307,10 +307,10 @@ private:
     solution_rep(const choice_set &_choices,
 		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
-		 const tier &_sol_tier)
+		 const tier_operation &_sol_tier_op)
       : initial_state(_initial_state), choices(_choices),
 	score(_score),
-	sol_tier(_sol_tier),
+	sol_tier_op(_sol_tier_op),
 	refcount(1)
     {
     }
@@ -326,7 +326,7 @@ private:
     }
 
     int get_score() const {return score;}
-    const tier &get_tier() const { return sol_tier; }
+    const tier_operation &get_tier() const { return sol_tier_op; }
 
     version version_of(const package &pkg) const
     {
@@ -394,8 +394,8 @@ public:
   generic_solution(const choice_set &choices,
 		   const resolver_initial_state<PackageUniverse> &initial_state,
 		   int score,
-		   const tier &sol_tier)
-    : real_soln(new solution_rep(choices, initial_state, score, sol_tier))
+		   const tier_operation &sol_tier_op)
+    : real_soln(new solution_rep(choices, initial_state, score, sol_tier_op))
   {
   }
 
@@ -487,7 +487,7 @@ public:
   }
 
   /** \return The tier at which this solution was calculated. */
-  const tier &get_tier() const
+  const tier_operation &get_tier() const
   {
     return real_soln->get_tier();
   }

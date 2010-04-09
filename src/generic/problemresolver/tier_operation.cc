@@ -59,39 +59,6 @@ tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, combine
     actions.insert(actions.end(), it2, op2.actions.end());
 }
 
-tier tier_operation::op_impl::apply(const tier &t) const
-{
-  int out_structural_level =
-    std::max<int>(t.get_structural_level(), structural_level);
-  std::vector<level> out_user_levels(t.user_levels_begin(), t.user_levels_end());
-
-  if(!actions.empty())
-    {
-      // If the actions array will modify slots off the end of the
-      // tier's list of levels, we first pre-extend that list.
-      if(out_user_levels.size() <= actions.back().first)
-	{
-	  level_index
-	    gap_size = actions.back().first + 1 - out_user_levels.size();
-
-	  out_user_levels.insert(out_user_levels.end(),
-				 gap_size,
-				 level());
-	}
-
-      for(std::vector<std::pair<level_index, level> >::const_iterator it =
-	    actions.begin(); it != actions.end(); ++it)
-	{
-	  level &target(out_user_levels[it->first]);
-	  target = level::combine(target, it->second);
-	}
-    }
-
-  return tier(out_structural_level,
-	      out_user_levels.begin(),
-	      out_user_levels.end());
-}
-
 bool tier_operation::op_impl::is_above_or_equal(const op_impl &other) const
 {
   std::vector<std::pair<level_index, level> >::const_iterator

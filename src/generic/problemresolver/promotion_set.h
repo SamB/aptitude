@@ -1647,67 +1647,6 @@ private:
     choices.for_each(find_results_f);
   }
 
-  /** \brief Predicate testing whether an entry reference refers to
-   *  something in a particular tier.
-   */
-  struct entry_ref_in_tier_pred
-  {
-    tier selected_tier;
-
-    entry_ref_in_tier_pred(const tier &_selected_tier)
-      : selected_tier(_selected_tier)
-    {
-    }
-
-    bool operator()(entry_ref r) const
-    {
-      return r->p.get_tier() == selected_tier;
-    }
-  };
-
-  /** \brief Predicate testing whether an entry reference refers to
-   *  something between two tiers.
-   */
-  struct entry_ref_between_tiers_pred
-  {
-    tier begin_tier, end_tier;
-
-    /** \brief Create a new entry_ref_in_tier_pred.
-     *
-     *  \param _begin_tier  The first tier to select.
-     *  \param _end_tier The first tier to *not* select.
-     */
-    entry_ref_between_tiers_pred(const tier &_begin_tier, const tier &_end_tier)
-      : begin_tier(_begin_tier), end_tier(_end_tier)
-    {
-    }
-
-    bool operator()(entry_ref r) const
-    {
-      const tier &r_tier(r->p.get_tier());
-
-      return r_tier >= begin_tier && r_tier < end_tier;
-    }
-  };
-
-  /** \brief Predicate testing whether an entry reference is strictly
-   *  below a particular tier.
-   */
-  struct entry_ref_strictly_below_tier_pred
-  {
-    tier selected_tier;
-
-    entry_ref_strictly_below_tier_pred(const tier &_selected_tier)
-      : selected_tier(_selected_tier)
-    {
-    }
-
-    bool operator()(entry_ref r) const
-    {
-      return r->p.get_tier() < selected_tier;
-    }
-  };
-
   /** \brief Collect the versions and soft dependencies related
    *  to a single choice.
    */

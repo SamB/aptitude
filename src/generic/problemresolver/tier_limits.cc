@@ -26,12 +26,6 @@ const int tier_limits::defer_structural_level;
 const int tier_limits::already_generated_structural_level;
 const int tier_limits::minimum_level;
 
-const tier tier_limits::maximum_tier(tier_limits::maximum_level);
-const tier tier_limits::conflict_tier(tier_limits::conflict_structural_level);
-const tier tier_limits::already_generated_tier(tier_limits::already_generated_structural_level);
-const tier tier_limits::defer_tier(tier_limits::defer_structural_level);
-const tier tier_limits::minimum_tier(tier_limits::minimum_level);
-
 const tier_operation tier_limits::increase_to_maximum_op(tier_operation::make_advance_structural_level(maximum_level));
 const tier_operation tier_limits::increase_to_conflict_op(tier_operation::make_advance_structural_level(conflict_structural_level));
 const tier_operation tier_limits::increase_to_already_generated_op(tier_operation::make_advance_structural_level(already_generated_structural_level));

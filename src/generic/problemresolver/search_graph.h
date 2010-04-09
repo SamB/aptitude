@@ -790,12 +790,13 @@ public:
      */
     int action_score;
 
-    /** \brief The true tier of this step.
+    /** \brief The tier operation induced by the actions performed at
+     * this step.
      *
      *  This is the tier *before* any forward-looking operations are
      *  applied to it.
      */
-    tier base_step_tier;
+    tier_operation base_step_tier_op;
 
     /** \brief The cumulative effect of all forward-looking operations
      *  applied to this step.
@@ -809,12 +810,13 @@ public:
      */
     tier_operation effective_step_tier_op;
 
-    /** \brief The effective tier of this step.
+    /** \brief The tier of this step after taking into account
+     *  knowledge about the available solutions to its dependencies.
      *
      *  This tier is step_tier combined with any inferred tier
      *  operations, and is used to sort the step in the search queue.
      */
-    tier effective_step_tier;
+    tier_operation final_step_tier_op;
 
     /** \brief A side-effecting expression that fires when the most
      *  recently added action becomes deferred or un-deferred.
@@ -1790,11 +1792,11 @@ private:
   {
     bool operator()(const promotion &p) const
     {
-      const tier &p_tier(p.get_tier());
+      const tier_operation &p_tier_op(p.get_tier_op());
 
       return
-	p_tier >= tier_limits::defer_tier &&
-	p_tier < tier_limits::already_generated_tier;
+	p_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
+	p_tier_op.get_structural_level() < tier_limits::already_generated_structural_level;
     }
   };
 

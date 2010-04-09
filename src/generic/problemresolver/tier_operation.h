@@ -163,14 +163,6 @@ class tier_operation
 	actions == other.actions;
     }
 
-    /** \brief Apply the operation to the tier.
-     *
-     *  Each level is combined with the corresponding level in the
-     *  target tier.  If there is no corresponding level, it is copied
-     *  directly (which is exactly the desired behavior).
-     */
-    tier apply(const tier &t) const;
-
     /** \brief Compare two operations by their identity.
      */
     int compare(const op_impl &other) const;
@@ -340,15 +332,6 @@ public:
   bool operator!=(const tier_operation &other) const
   {
     return impl_flyweight != other.impl_flyweight;
-  }
-
-  /** \brief Apply this operation to a tier.
-   *
-   *  \param t  The tier that this operation should modify.
-   */
-  tier apply(const tier &t) const
-  {
-    return get_impl().apply(t);
   }
 
   /** \brief Write a description of a tier operation to an ostream.

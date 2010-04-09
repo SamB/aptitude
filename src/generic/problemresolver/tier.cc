@@ -33,30 +33,3 @@ std::ostream &operator<<(std::ostream &out, const level &l)
 
   return out;
 }
-
-std::ostream &operator<<(std::ostream &out, const tier &t)
-{
-  out << "(";
-
-  const int t_structural_level = t.get_structural_level();
-
-  if(t_structural_level == tier_limits::conflict_structural_level)
-    out << "conflict";
-  else if(t_structural_level == tier_limits::already_generated_structural_level)
-    out << "already-generated";
-  else if(t_structural_level == tier_limits::defer_structural_level)
-    out << "defer";
-  else if(t_structural_level == tier_limits::minimum_level)
-    out << "minimum";
-  else
-    out << t_structural_level;
-
-  for(tier::user_level_iterator it = t.user_levels_begin();
-      it != t.user_levels_end(); ++it)
-    out << ", " << *it;
-
-  out << ")";
-
-  return out;
-}
-

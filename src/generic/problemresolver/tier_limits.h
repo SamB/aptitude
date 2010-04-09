@@ -55,12 +55,6 @@ public:
    */
   static const int minimum_level = INT_MIN;
 
-  static const tier maximum_tier;
-  static const tier conflict_tier;
-  static const tier already_generated_tier;
-  static const tier defer_tier;
-  static const tier minimum_tier;
-
   /** \brief Tier operations that just increase the structural level.
    */
   // @{

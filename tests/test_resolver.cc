@@ -200,7 +200,6 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testInitialSetExclusion);
   CPPUNIT_TEST(testSimpleResolution);
   CPPUNIT_TEST(testSimpleBreakSoftDep);
-  CPPUNIT_TEST(testTiers);
   CPPUNIT_TEST(testTierEffects);
   CPPUNIT_TEST(testTierOperations);
   CPPUNIT_TEST(testInitialState);
@@ -842,98 +841,6 @@ private:
 			 3 * step_score + unfixed_soft_score + full_solution_score);
   }
 
-  void testTiers()
-  {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTiers"));
-    LOG_TRACE(logger, "Entering testTiers");
-
-    const level n50 = level::make_lower_bounded(50);
-    level n50_100[2] = { level::make_lower_bounded(50),
-			 level::make_lower_bounded(100) };
-
-    // Instantiate 4 tier objects and make sure they're properly
-    // ordered; instantiate them twice to ensure there's no special
-    // behavior relying on things being the same object instance.
-    std::vector<tier> tiers;
-    tiers.push_back(tier());
-    tiers.push_back(tier(&n50, (&n50) + 1));
-    tiers.push_back(tier(tier_limits::minimum_level, n50_100, n50_100 + 2));
-    tiers.push_back(tier(tier_limits::maximum_level));
-
-    std::vector<tier> tiers2;
-    tiers2.push_back(tier());
-    tiers2.push_back(tier(&n50, (&n50) + 1));
-    tiers2.push_back(tier(tier_limits::minimum_level, n50_100, n50_100 + 2));
-    tiers2.push_back(tier(tier_limits::maximum_level));
-
-    std::vector<std::string> tier_renderings;
-    tier_renderings.push_back("(minimum)");
-    tier_renderings.push_back("(minimum, 50)");
-    tier_renderings.push_back("(minimum, 50, 100)");
-    tier_renderings.push_back("(conflict)");
-
-    std::vector<std::string> tier_renderings_with_400_at_1;
-    tier_renderings_with_400_at_1.push_back("(minimum, minimum, 400)");
-    tier_renderings_with_400_at_1.push_back("(minimum, 50, 400)");
-    tier_renderings_with_400_at_1.push_back("(minimum, 50, 400)");
-    tier_renderings_with_400_at_1.push_back("(conflict, minimum, 400)");
-
-    for(std::size_t i = 0; i < tiers.size(); ++i)
-      {
-	const tier &t1 = tiers[i];
-	const std::string s1 = boost::lexical_cast<std::string>(t1);
-
-	const tier t1_with_400_at_1 = tier_operation::make_advance_user_level(1, 400).apply(t1);
-	const std::string s1_with_400_at_1 =
-	  boost::lexical_cast<std::string>(t1_with_400_at_1);
-
-	CPPUNIT_ASSERT_EQUAL(tier_renderings_with_400_at_1[i],
-			     s1_with_400_at_1);
-
-	CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s1_with_400_at_1, t1 < t1_with_400_at_1);
-	CPPUNIT_ASSERT_MESSAGE(s1 + " <= " + s1_with_400_at_1, t1 <= t1_with_400_at_1);
-	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " == " + s1_with_400_at_1 + ")", !(t1 == t1_with_400_at_1));
-	CPPUNIT_ASSERT_MESSAGE(s1 + " != " + s1_with_400_at_1, t1 != t1_with_400_at_1);
-	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " >= " + s1_with_400_at_1 + ")", !(t1 >= t1_with_400_at_1));
-	CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " > " + s1_with_400_at_1 + ")", !(t1 > t1_with_400_at_1));
-
-	for(std::size_t j = 0; j < tiers.size(); ++j)
-	  {
-	    const tier &t2 = tiers[j];
-
-	    const std::string s2 = boost::lexical_cast<std::string>(t2);
-
-	    CPPUNIT_ASSERT_EQUAL(tier_renderings[i], s1);
-	    CPPUNIT_ASSERT_EQUAL(tier_renderings[j], s2);
-
-	    if(i < j)
-	      CPPUNIT_ASSERT_MESSAGE(s1 + " < " + s2, t1 < t2);
-	    else
-	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " < " + s2 + ")", !(t1 < t2));
-
-	    if(i == j)
-	      CPPUNIT_ASSERT_MESSAGE(s1 + " == " + s2, t1 == t2);
-	    else
-	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " == " + s2 + ")", !(t1 == t2));
-
-	    if(i <= j)
-	      CPPUNIT_ASSERT_MESSAGE(s1 + " <= " + s2, t1 <= t2);
-	    else
-	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " <= " + s2 + ")", !(t1 <= t2));
-
-	    if(i >= j)
-	      CPPUNIT_ASSERT_MESSAGE(s1 + " >= " + s2, t1 >= t2);
-	    else
-	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " >= " + s2 + ")", !(t1 >= t2));
-
-	    if(i > j)
-	      CPPUNIT_ASSERT_MESSAGE(s1 + " > " + s2, t1 > t2);
-	    else
-	      CPPUNIT_ASSERT_MESSAGE("!(" + s1 + " > " + s2 + ")", !(t1 > t2));
-	  }
-      }
-  }
-
   void testTierEffects()
   {
     log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierEffects"));
@@ -1267,13 +1174,6 @@ private:
     CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(1, INT_MAX) +
 			 tier_operation::make_add_to_user_level(1, 5),
 			 TierTooBigException);
-    {
-      const level biggest_tier_level = level::make_added(INT_MAX);
-      tier biggest_singleton_tier = tier(&biggest_tier_level, (&biggest_tier_level) + 1);
-
-      CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 1).apply(biggest_singleton_tier),
-                           TierTooBigException);
-    }
 
     // Test rendering the initial operations:
     std::vector<std::string> op_renderings;
@@ -1281,40 +1181,9 @@ private:
     op_renderings.push_back("(nop, add: 2, add: 4)");
     op_renderings.push_back("(nop, add: 1, nop, advance: 5)");
 
-    LOG_TRACE(logger, "Testing the results of applying operations to tiers.");
-
     // Input tiers and the tiers we expect to see after applying each operation.
-    tier t1(4);
-    const level t1_op1_user_levels_begin[2] = { level::make_added(2),
-						level::make_added(4) };
-    const level t1_op2_user_levels_begin[3] = { level::make_added(1),
-						level(),
-						level::make_added(5) };
-    const level *t1_op1_user_levels_end = t1_op1_user_levels_begin + sizeof(t1_op1_user_levels_begin) / sizeof(t1_op1_user_levels_begin[0]);
-    const level *t1_op2_user_levels_end = t1_op2_user_levels_begin + sizeof(t1_op2_user_levels_begin) / sizeof(t1_op2_user_levels_begin[0]);
 
-    std::vector<tier> expected_tiers_1;
-
-    expected_tiers_1.push_back(tier(100));
-    expected_tiers_1.push_back(tier(4, t1_op1_user_levels_begin, t1_op1_user_levels_end));
-    expected_tiers_1.push_back(tier(4, t1_op2_user_levels_begin, t1_op2_user_levels_end));
-
-    const level t2_user_levels_begin[3] = { level(), level::make_added(2), level::make_lower_bounded(-10) };
-    const level *t2_user_levels_end = t2_user_levels_begin + sizeof(t2_user_levels_begin) / sizeof(t2_user_levels_begin[0]);
-    tier t2(-32, t2_user_levels_begin, t2_user_levels_end);
-
-    const level t2_op1_user_levels_begin[3] = { level::make_added(2), level::make_added(6), level::make_lower_bounded(-10) };
-    const level *t2_op1_user_levels_end = t2_op1_user_levels_begin + sizeof(t2_op1_user_levels_begin) / sizeof(t2_op1_user_levels_begin[0]);
-
-    const level t2_op2_user_levels_begin[3] = { level::make_added(1), level::make_added(2), level::make_lower_bounded(5) };
-    const level *t2_op2_user_levels_end = t2_op2_user_levels_begin + sizeof(t2_op2_user_levels_begin) / sizeof(t2_op2_user_levels_begin[0]);
-
-    std::vector<tier> expected_tiers_2;
-    expected_tiers_2.push_back(tier(100, t2_user_levels_begin, t2_user_levels_end));
-    expected_tiers_2.push_back(tier(-32, t2_op1_user_levels_begin, t2_op1_user_levels_end));
-    expected_tiers_2.push_back(tier(-32, t2_op2_user_levels_begin, t2_op2_user_levels_end));
-
-    LOG_TRACE(logger, "Testing sums, lubs, and glbs of three tiers.");
+    LOG_TRACE(logger, "Testing sums, lubs, and glbs of three tier operations.");
 
     // Combined values.  Each vector is a matrix where [i][j] contains
     // the combination of entries i and j for i<=j.  Combined values
@@ -1373,8 +1242,6 @@ private:
         const tier_operation &op1(ops[i]);
 
         CPPUNIT_ASSERT_EQUAL(op_renderings[i], boost::lexical_cast<std::string>(op1));
-        CPPUNIT_ASSERT_EQUAL(expected_tiers_1[i], op1.apply(t1));
-        CPPUNIT_ASSERT_EQUAL(expected_tiers_2[i], op1.apply(t2));
 
         for(std::size_t j = 0; j < ops.size(); ++j)
           {

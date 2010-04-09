@@ -548,14 +548,15 @@ public:
      */
     bool finished;
 
-    /** \brief The search tier of the next solution to consider.
+    /** \brief The search tier operation of the next solution to
+     *  consider.
      */
-    tier current_tier;
+    tier_operation current_tier_op;
 
     queue_counts()
       : open(0), closed(0), deferred(0), conflicts(0), promotions(0),
 	finished(false),
-	current_tier(tier_limits::minimum_tier)
+	current_tier_op()
     {
     }
   };
@@ -604,10 +605,9 @@ private:
 
       // Note that *lower* tiers come "before" higher tiers, hence the
       // reversed comparison there.
-      if(step1.effective_step_tier < step2.effective_step_tier)
-	return true;
-      else if(step2.effective_step_tier < step1.effective_step_tier)
-	return false;
+      int tier_op_cmp = step1.final_step_tier_op.compare(step2.final_step_tier_op);
+      if(tier_op_cmp != 0)
+	return tier_op_cmp < 0;
       else if(step2.score < step1.score)
 	return true;
       else if(step1.score < step2.score)
@@ -845,23 +845,6 @@ private:
 
   /** \brief Counts how many steps are deferred. */
   int num_deferred;
-
-  /** \brief The current minimum search tier.
-   *
-   *  Solutions generated below this tier are discarded.  Defaults to
-   *  minimum_tier.
-   */
-  tier minimum_search_tier;
-
-  /** \brief The current maximum search tier.
-   *
-   *  Solutions generated above this tier are placed into deferred.
-   *  This is advanced automatically when the current tier is
-   *  exhausted; it can also be advanced manually by the user.
-   *
-   *  Defaults to minimum_tier.
-   */
-  tier maximum_search_tier;
 
   /** Solutions generated "in the future", stored by reference to
    *  their step numbers.
@@ -1285,7 +1268,7 @@ private:
 						 non_incipient);
 
     if(non_incipient.get_has_value() &&
-       s.effective_step_tier < non_incipient.get_value().get_tier())
+       s.final_step_tier_op < non_incipient.get_value().get_tier())
       LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
 		<< non_incipient.get_value() << " was not applied.");
     else
@@ -1294,7 +1277,7 @@ private:
 	  promotions.find_highest_promotion_for(s.actions);
 
 	if(found_promotion != promotions.end() &&
-	   s.effective_step_tier < found_promotion->get_tier())
+	   s.final_step_tier_op < found_promotion->get_tier())
 	  LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
 		    << *found_promotion << " was not applied.");
       }
@@ -1356,27 +1339,15 @@ private:
 #endif
   }
 
-  /** \return \b true if the given tier is one that should cause
-   *  solvers and search steps to be discarded.
-   */
-  bool is_discard_tier(const tier &t) const
-  {
-    return
-      t.get_structural_level() >= tier_limits::already_generated_structural_level;
-  }
-
   /** \return \b true if the given tier operation will always cause
-   * the given step to be discarded.
+   *  any step to be discarded.
    *
    *  \param op the operation to test.
-   *
-   *  \param s the step to test; is_discard_op returns \b true iff
-   *           applying the tier operation to this step's base tier
-   *           results in a discarding tier.
    */
-  bool is_discard_op(const tier_operation &op, const step &s) const
+  bool is_discard_op(const tier_operation &op) const
   {
-    return is_discard_tier(op.apply(s.base_step_tier));
+    return
+      op.get_structural_level() >= tier_limits::already_generated_structural_level;
   }
 
   /** \return \b true if the given step is "irrelevant": that is,
@@ -1386,8 +1357,8 @@ private:
    */
   bool irrelevant(const step &s)
   {
-    const tier &s_tier = s.effective_step_tier;
-    if(is_discard_tier(s_tier))
+    const tier_operation &s_tier = s.final_step_tier_op;
+    if(is_discard_op(s_tier))
       {
 	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: its tier " << s_tier << " indicates it should be discarded.");
 	return true;
@@ -1405,14 +1376,14 @@ private:
   }
 
   /** \brief Adjust the tier of a step, keeping everything consistent. */
-  void set_step_tier(int step_num,
-		     const tier &t)
+  void set_base_step_tier_op(int step_num,
+                             const tier_operation &t_op)
   {
     step &s(graph.get_step(step_num));
 
-    s.base_step_tier = t;
+    s.base_step_tier_op = t_op;
 
-    update_effective_step_tier(step_num);
+    update_final_step_tier_op(step_num);
   }
 
   /** \brief Update the operation that computes the *effective* tier
@@ -1427,42 +1398,42 @@ private:
 
     s.effective_step_tier_op = t_op;
 
-    update_effective_step_tier(step_num);
+    update_final_step_tier_op(step_num);
   }
 
   /** \brief Update the effective tier of a step.
    *
-   *  This should only be invoked by set_base_step_tier and
+   *  This should only be invoked by set_base_step_tier_op and
    *  set_effective_step_tier_op.  It recomputes the effective tier
    *  from its components and performs any follow-up work that's
    *  needed to enforce consistency.
    */
-  void update_effective_step_tier(int step_num)
+  void update_final_step_tier_op(int step_num)
   {
     step &s(graph.get_step(step_num));
 
-    tier new_effective_step_tier =
-      s.effective_step_tier_op.apply(s.base_step_tier);
+    tier_operation new_final_step_tier_op =
+      s.effective_step_tier_op + s.base_step_tier_op;
 
-    if(s.effective_step_tier == new_effective_step_tier)
+    if(s.final_step_tier_op == new_final_step_tier_op)
       return;
 
-    if(s.is_blessed_solution && is_discard_tier(new_effective_step_tier))
+    if(s.is_blessed_solution && is_discard_op(new_final_step_tier_op))
       {
 	LOG_TRACE(logger, "Step " << s.step_num
-		  << " is a blessed solution; ignoring the attempt to promote it to tier " << new_effective_step_tier);
+		  << " is a blessed solution; ignoring the attempt to promote it to tier " << new_final_step_tier_op);
 	return;
       }
 
-    LOG_TRACE(logger, "Setting the effective tier of step " << step_num
-	      << " to " << new_effective_step_tier);
+    LOG_TRACE(logger, "Setting the final tier of step " << step_num
+	      << " to " << new_final_step_tier_op);
 
     bool was_in_pending =  (pending.erase(step_num) > 0);
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
 
-    if(s.effective_step_tier >= tier_limits::defer_tier &&
-       !is_discard_tier(s.effective_step_tier))
+    if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
+       !is_discard_op(s.final_step_tier_op))
       {
 	if(was_in_pending)
 	  --num_deferred;
@@ -1470,7 +1441,7 @@ private:
 	  --num_deferred;
       }
 
-    s.effective_step_tier = new_effective_step_tier;
+    s.final_step_tier_op = new_final_step_tier_op;
 
 
     if(was_in_pending)
@@ -1479,15 +1450,15 @@ private:
       pending_future_solutions.insert(step_num);
 
 
-    if(s.effective_step_tier >= tier_limits::defer_tier &&
-       !is_discard_tier(s.effective_step_tier))
+    if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
+       !is_discard_op(s.final_step_tier_op))
       {
 	if(was_in_pending)
 	  ++num_deferred;
 	if(was_in_pending_future_solutions)
 	  ++num_deferred;
       }
-    else if(s.effective_step_tier < tier_limits::defer_tier)
+    else if(s.final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
       {
 	// Clear the "finished" flag if this is now a pending
 	// candidate.
@@ -2495,7 +2466,7 @@ private:
     bool operator()(const promotion &p) const
     {
       if(blessed)
-	return !resolver.is_discard_op(p.get_tier_op(), s);
+	return !resolver.is_discard_op(p.get_tier_op() + s.base_step_tier_op);
       else
 	return true;
     }
@@ -2845,8 +2816,8 @@ private:
    */
   void recompute_effective_step_tier_op(step &s)
   {
-    LOG_TRACE(logger, "Recomputing the effective tier operation of step " << s.step_num
-	      << " (was " << s.effective_step_tier << ")");
+    LOG_TRACE(logger, "Recomputing the final tier operation of step " << s.step_num
+	      << " (was " << s.final_step_tier_op << ")");
 
     tier_operation new_tier_op(tier_limits::minimum_op);
     s.unresolved_deps.for_each(find_dep_tier_op_upper_bound(new_tier_op, *this));
@@ -2953,7 +2924,7 @@ private:
     // checks whether t_op consists only of maximizing operations that
     // are below the current search tier, in which case there's no
     // point in saving it.
-    if(t_op.apply(get_current_search_tier()) == get_current_search_tier() &&
+    if(t_op + get_current_search_tier() == get_current_search_tier() &&
        s.effective_step_tier_op.is_above_or_equal(t_op))
       return;
 
@@ -3125,7 +3096,7 @@ private:
     // to the point that the solver should be ejected, or the tier
     // should just be bumped up a bit.  Either way, we might end up
     // changing the tier of the whole step.
-    if(is_discard_op(new_tier_op, s))
+    if(is_discard_op(new_tier_op + s.base_step_tier_op))
       {
 	// \todo this throws away information about whether we're at
 	// the already-generated tier.  This isn't that important,
@@ -3536,9 +3507,9 @@ private:
     output.action_score = parent.action_score;
     output.score = parent.score;
     output.reason = c;
-    output.base_step_tier = c_op.apply(parent.base_step_tier);
+    output.base_step_tier_op = c_op + parent.base_step_tier_op;
     output.effective_step_tier_op = tier_operation();
-    output.effective_step_tier = output.effective_step_tier_op.apply(output.base_step_tier);
+    output.final_step_tier_op = output.effective_step_tier_op + output.base_step_tier_op;
     output.is_deferred_listener = build_is_deferred_listener(c);
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
@@ -3634,10 +3605,10 @@ private:
     extend_score_to_new_step(output, c);
 
     LOG_TRACE(logger, "Generated step " << output.step_num
-	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.effective_step_tier
+	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.final_step_tier_op
 	      << "S" << output.score);
 
-    if(is_discard_tier(output.effective_step_tier))
+    if(is_discard_op(output.final_step_tier_op))
       ++num_deferred;
 
     pending.insert(output.step_num);
@@ -3777,8 +3748,6 @@ public:
      solver_executing(false), solver_cancelled(false),
      pending(step_goodness_compare(graph)),
      num_deferred(0),
-     minimum_search_tier(tier_limits::minimum_tier),
-     maximum_search_tier(tier_limits::minimum_tier),
      pending_future_solutions(step_goodness_compare(graph)),
      closed(),
      promotions(_universe, *this),
@@ -4228,7 +4197,7 @@ public:
     counts.conflicts  = promotions.conflicts_size();
     counts.promotions = promotions.size() - counts.conflicts;
     counts.finished   = finished;
-    counts.current_tier = get_current_search_tier();
+    counts.current_tier_op = get_current_search_tier();
   }
 
   /** If no resolver is running, run through the deferred list and
@@ -4249,12 +4218,12 @@ public:
    *  solution that would be considered (or minimum_search_tier if
    *  pending is empty).
    */
-  const tier &get_current_search_tier() const
+  tier_operation get_current_search_tier() const
   {
     if(pending.empty())
-      return tier_limits::minimum_tier;
+      return tier_operation();
     else
-      return graph.get_step(*pending.begin()).effective_step_tier;
+      return graph.get_step(*pending.begin()).final_step_tier_op;
   }
 
 private:
@@ -4265,7 +4234,7 @@ private:
   {
     return
       !pending.empty() &&
-      graph.get_step(*pending.begin()).effective_step_tier < tier_limits::defer_tier;
+      graph.get_step(*pending.begin()).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level;
   }
 
   /** \brief Returns \b true if the pending future solutions queue
@@ -4275,7 +4244,7 @@ private:
   {
     return
       !pending_future_solutions.empty() &&
-      graph.get_step(*pending_future_solutions.begin()).effective_step_tier < tier_limits::defer_tier;
+      graph.get_step(*pending_future_solutions.begin()).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level;
   }
 
   // Counts how many action hits existed in a promotion, allowing up
@@ -4461,10 +4430,10 @@ private:
 	step &s = graph.get_step(step_num);
 
 	LOG_INFO(logger, "Examining step " << step_num
-		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.effective_step_tier
+		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.final_step_tier_op
 		 << "S" << s.score);
 
-	if(s.effective_step_tier >= tier_limits::defer_tier)
+	if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level)
 	  {
 	    LOG_ERROR(logger, "Internal error: the tier of step "
 		      << s.step_num
@@ -4487,7 +4456,7 @@ private:
 	  }
 	// The step might have been promoted to the defer tier by
 	// check_for_new_promotions.
-	else if(s.effective_step_tier >= tier_limits::defer_tier)
+	else if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level)
 	  {
 	    LOG_DEBUG(logger, "Skipping newly deferred step " << s.step_num);
 	    // Stick it back into the open queue.
@@ -4504,7 +4473,7 @@ private:
 	    if(s.unresolved_deps.empty())
 	      {
 		LOG_INFO(logger, " --- Found solution at step " << s.step_num
-			 << ": " << s.actions << ";T" << s.effective_step_tier
+			 << ": " << s.actions << ";T" << s.final_step_tier_op
 			 << "S" << s.score);
 
 		// Remember this solution, so we don't try to return it
@@ -4528,7 +4497,7 @@ private:
 		// was a forced dependency and we should process that
 		// successor before returning.
 		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child &&
-		   graph.get_step(s.first_child).effective_step_tier < tier_limits::defer_tier)
+		   graph.get_step(s.first_child).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
 		  {
 		    LOG_TRACE(logger, "Following forced dependency resolution from step "
 			      << step_num << " to step " << s.first_child);
@@ -4614,9 +4583,9 @@ public:
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
 
-	root.base_step_tier = tier_limits::minimum_tier;
+	root.base_step_tier_op = tier_operation();
 	root.effective_step_tier_op = tier_operation();
-	root.effective_step_tier = tier_limits::minimum_tier;
+	root.final_step_tier_op = tier_operation();
 	root.promotion_queue_location = promotion_queue_tail;
 
 	for(typename imm::set<dep>::const_iterator it = initial_broken.begin();
@@ -4624,7 +4593,7 @@ public:
 	  add_unresolved_dep(root, *it);
 
 	LOG_TRACE(logger, "Inserting the root at step " << root.step_num
-		  << " with tier " << root.effective_step_tier);
+		  << " with tier " << root.final_step_tier_op);
 	pending.insert(root.step_num);
       }
 
@@ -4686,14 +4655,14 @@ public:
       {
 	int best_future_solution = *pending_future_solutions.begin();
 	step &best_future_solution_step = graph.get_step(best_future_solution);
-	if(best_future_solution_step.effective_step_tier < tier_limits::defer_tier)
+	if(best_future_solution_step.final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
 	  {
 	    sanity_check_not_deferred(best_future_solution_step);
 
 	    solution rval(best_future_solution_step.actions,
 			  initial_state,
 			  best_future_solution_step.score,
-			  best_future_solution_step.effective_step_tier);
+			  best_future_solution_step.final_step_tier_op);
 
 	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 
