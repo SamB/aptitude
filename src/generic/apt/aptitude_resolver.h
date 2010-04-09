@@ -432,6 +432,7 @@ public:
 		    int unfixed_soft_score,
 		    int infinity,
 		    int resolution_score,
+                    const tier_operation &unfixed_soft_cost,
 		    int future_horizon,
 		    const aptitude_resolver_cost_settings &_cost_settings,
 		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
