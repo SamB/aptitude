@@ -382,7 +382,9 @@ private:
   void testRejections()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -409,7 +411,9 @@ private:
     LOG_TRACE(logger, "Entering testMandateDepTarget.");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_4);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -498,7 +502,9 @@ private:
     LOG_TRACE(logger, "Entering testMandateDepSource.");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_4_not_soft);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -585,7 +591,9 @@ private:
     LOG_TRACE(logger, "Entering testHardenDependency.");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_5);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -634,7 +642,9 @@ private:
     LOG_TRACE(logger, "Entering testApproveBreak.");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_5);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -682,7 +692,9 @@ private:
     LOG_TRACE(logger, "Entering testInitialSetExclusion.");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_6);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -744,7 +756,9 @@ private:
     const int unfixed_soft_score = -100;
     const int full_solution_score = 50000;
     dummy_resolver r(step_score, -300, unfixed_soft_score,
-		     100000, full_solution_score, 50,
+		     100000, full_solution_score,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -799,7 +813,9 @@ private:
     const int unfixed_soft_score = -100;
     const int full_solution_score = 50000;
     dummy_resolver r(step_score, -300, unfixed_soft_score,
-		     100000, full_solution_score, 50,
+		     100000, full_solution_score,
+                     tier_operation(),
+                     50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
@@ -946,7 +962,9 @@ private:
     // Verify that without a tier we get the shorter solution first.
     // Without this we aren't testing anything!
     {
-      dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+      dummy_resolver r(10, -300, -100, 100000, 50000,
+                       tier_operation(),
+                       50,
 		       imm::map<dummy_universe::package, dummy_universe::version>(),
 		       u);
       r.set_version_score(av2, 10000);
@@ -1000,7 +1018,9 @@ private:
 
     // Now check that adjusting tiers changes the output.
     {
-      dummy_resolver r(10, -300, -100, 100000, 50000, 50,
+      dummy_resolver r(10, -300, -100, 100000, 50000,
+                       tier_operation(),
+                       50,
 		       imm::map<dummy_universe::package, dummy_universe::version>(),
 		       u);
       r.set_version_score(av2, 1000);
@@ -1403,7 +1423,9 @@ private:
     initial_state.put(a, av2);
     initial_state.put(c, cv2);
 
-    dummy_resolver r(10, -300, -100, 10000000, 500, 1,
+    dummy_resolver r(10, -300, -100, 10000000, 500,
+                     tier_operation(),
+                     1,
 		     initial_state,
 		     u);
 
@@ -1475,7 +1497,9 @@ private:
   void testJointScores()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 10000000, 500, 500,
+    dummy_resolver r(10, -300, -100, 10000000, 500,
+                     tier_operation(),
+                     500,
 		     imm::map<package, version>(),
 		     u);
     // Disable this to debug the resolver test.
@@ -1557,7 +1581,9 @@ private:
   void testDropSolutionSupersets()
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
-    dummy_resolver r(10, -300, -100, 100000, 50000, 500000,
+    dummy_resolver r(10, -300, -100, 100000, 50000,
+                     tier_operation(),
+                     500000,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
