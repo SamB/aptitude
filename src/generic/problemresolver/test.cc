@@ -1,6 +1,6 @@
 // test.cc
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -393,6 +393,10 @@ void run_test_file(istream &f, bool show_world)
 				  unfixed_soft_score,
 				  infinity,
 				  goal_score,
+                                  // TODO: add the broken soft dep
+                                  // tier operation to the test input
+                                  // language.
+                                  tier_operation(),
 				  future_horizon,
 				  imm::map<dummy_universe::package, dummy_universe::version>(),
 				  universe);
