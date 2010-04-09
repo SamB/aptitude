@@ -28,6 +28,7 @@
 #include "config_signal.h"
 #include "dump_packages.h"
 
+#include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 
 #include <loggers.h>
