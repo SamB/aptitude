@@ -206,6 +206,7 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
+  CPPUNIT_TEST(testBreakSoftDepCost);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -1633,6 +1634,11 @@ private:
     catch(NoMoreSolutions)
       {
       }
+  }
+
+  void testBreakSoftDepCost()
+  {
+    CPPUNIT_FAIL("TODO: this test needs to be implemented.");
   }
 };
 
