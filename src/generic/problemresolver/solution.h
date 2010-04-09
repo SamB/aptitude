@@ -31,7 +31,7 @@
 #include <generic/util/refcounted_base.h>
 #include "choice.h"
 #include "choice_set.h"
-#include "tier_operation.h"
+#include "cost.h"
 
 /** \brief The solution class for the problem resolver.
  * 

@@ -46,9 +46,8 @@
 #include "choice_indexed_map.h"
 #include "choice_set.h"
 #include "incremental_expression.h"
-#include "tier.h"
-#include "tier_limits.h"
-#include "tier_operation.h"
+#include "cost.h"
+#include "cost_limits.h"
 
 /** \brief Represents a tier promotion: the knowledge that
  *  a set of choices forces a solution to a higher tier.

@@ -23,7 +23,7 @@
 
 #include "aptitude_resolver_cost_types.h"
 
-#include <generic/problemresolver/tier_operation.h>
+#include <generic/problemresolver/cost.h>
 
 #include <boost/shared_ptr.hpp>
 #include <vector>

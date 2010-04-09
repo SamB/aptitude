@@ -1,4 +1,4 @@
-/** \file tier_limits.cc */
+/** \file cost_limits.cc */
 
 
 // Copyright (C) 2010 Daniel Burrows
@@ -18,7 +18,7 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#include "tier_limits.h"
+#include "cost_limits.h"
 
 const int tier_limits::maximum_level;
 const int tier_limits::conflict_structural_level;

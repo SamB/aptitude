@@ -21,8 +21,8 @@
 
 #include <generic/problemresolver/dummy_universe.h>
 #include <generic/problemresolver/problemresolver.h>
-#include <generic/problemresolver/tier_limits.h>
-#include <generic/problemresolver/tier_operation.h>
+#include <generic/problemresolver/cost_limits.h>
+#include <generic/problemresolver/cost.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 

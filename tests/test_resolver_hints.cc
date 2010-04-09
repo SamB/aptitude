@@ -21,8 +21,8 @@
 
 #include <generic/apt/aptitude_resolver.h>
 
-#include <generic/problemresolver/tier.h>
-#include <generic/problemresolver/tier_limits.h>
+#include <generic/problemresolver/cost.h>
+#include <generic/problemresolver/cost_limits.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 

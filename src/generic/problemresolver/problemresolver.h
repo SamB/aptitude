@@ -57,9 +57,8 @@
 #include "solution.h"
 #include "resolver_undo.h"
 #include "search_graph.h"
-#include "tier.h"
-#include "tier_limits.h"
-#include "tier_operation.h"
+#include "cost.h"
+#include "cost_limits.h"
 
 #include "log4cxx/consoleappender.h"
 #include "log4cxx/logger.h"

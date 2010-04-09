@@ -28,9 +28,8 @@
 #include "choice_set.h"
 #include "promotion_set.h"
 #include "solution.h"
-#include "tier.h"
-#include "tier_limits.h"
-#include "tier_operation.h"
+#include "cost.h"
+#include "cost_limits.h"
 
 #include <generic/util/compare3.h>
 #include <generic/util/immlist.h>

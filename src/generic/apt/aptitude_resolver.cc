@@ -33,7 +33,7 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 
-#include <generic/problemresolver/tier_operation.h>
+#include <generic/problemresolver/cost.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 

@@ -1,4 +1,4 @@
-/** \file tier_limits.h */    // -*-c++-*-
+/** \file cost_limits.h */    // -*-c++-*-
 
 
 //   Copyright (C) 2009-2010 Daniel Burrows
@@ -21,8 +21,7 @@
 #ifndef TIER_LIMITS_H
 #define TIER_LIMITS_H
 
-#include "tier.h"
-#include "tier_operation.h"
+#include "cost.h"
 
 class tier_limits
 {

@@ -1,4 +1,4 @@
-/** \file tier_operation.cc */
+/** \file cost.cc */
 
 
 // Copyright (C) 2010 Daniel Burrows
@@ -18,9 +18,22 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#include "tier_operation.h"
+#include "cost.h"
+#include "cost_limits.h"
 
 #include <ostream>
+
+std::ostream &operator<<(std::ostream &out, const level &l)
+{
+  if(l.get_value() == tier_limits::minimum_level)
+    out << "minimum";
+  else if(l.get_value() == tier_limits::maximum_level)
+    out << "maximum";
+  else
+    out << l.get_value();
+
+  return out;
+}
 
 tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, combine_tag)
   : structural_level(std::max<int>(op1.structural_level,

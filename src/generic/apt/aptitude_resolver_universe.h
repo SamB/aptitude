@@ -31,8 +31,7 @@
 #include "apt.h"
 #include "aptcache.h"
 
-#include <generic/problemresolver/tier.h>
-#include <generic/problemresolver/tier_operation.h>
+#include <generic/problemresolver/cost.h>
 
 #include <limits.h>
 

@@ -19,7 +19,7 @@
 
 #include <generic/problemresolver/dummy_universe.h>
 #include <generic/problemresolver/promotion_set.h>
-#include <generic/problemresolver/tier_limits.h>
+#include <generic/problemresolver/cost_limits.h>
 
 #include <cppunit/extensions/HelperMacros.h>
 
