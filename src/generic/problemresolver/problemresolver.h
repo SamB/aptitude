@@ -2864,19 +2864,36 @@ private:
   class calculate_cost
   {
     cost &output_cost;
+    // I need "first" here because there isn't a maximal cost, so we
+    // use a small hack here: if we never see a cost, we just return
+    // an arbitrary cost that forces a discard; otherwise, we take the
+    // maximum of the costs that were seen.  Ideally we would start
+    // with the highest cost and iteratively decrease it, but the
+    // theoretical top value (INT_MAX for each slot index) is
+    // infinite, or at least too large to create.
+    bool &first;
 
   public:
-    calculate_cost(cost &_output_cost)
-      : output_cost(_output_cost)
+    calculate_cost(cost &_output_cost,
+                   bool &_first)
+      : output_cost(_output_cost),
+        first(_first)
     {
       output_cost = cost_limits::maximum_structural_level_cost;
+      first = true;
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
     {
-      output_cost =
-	cost::greatest_lower_bound(entry.second.get_cost(),
-                                   output_cost);
+      if(first)
+        {
+          output_cost = entry.second.get_cost();
+          first = false;
+        }
+      else
+        output_cost =
+          cost::greatest_lower_bound(entry.second.get_cost(),
+                                     output_cost);
 
       return true;
     }
@@ -2925,7 +2942,10 @@ private:
     choice_set reasons;
     std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.for_each_solver(calculate_cost(c));
+    {
+      bool first = true;
+      solvers.for_each_solver(calculate_cost(c, first));
+    }
 
     // If no promotion would be emitted and the step cost wouldn't be
     // changed, don't do anything.  The "apply" test effectively
