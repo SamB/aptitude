@@ -409,9 +409,9 @@ public:
     /** \brief Retrieve the integer associated with this hint.
      *
      *  For score-tweaking hints, this is the number of points to be
-     *  added to the version's score.  For tier level-tweaking hints,
-     *  this is the amount to increase the tier by or the value to
-     *  increase it to.
+     *  added to the version's score.  For cost-component-tweaking
+     *  hints, this is the amount to increase the cost component by or
+     *  the value to increase it to.
      */
     int get_amt() const { return amt; }
 
@@ -432,7 +432,7 @@ public:
 		    int unfixed_soft_score,
 		    int infinity,
 		    int resolution_score,
-                    const tier_operation &unfixed_soft_cost,
+                    const cost &unfixed_soft_cost,
 		    int future_horizon,
 		    const aptitude_resolver_cost_settings &_cost_settings,
 		    const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,

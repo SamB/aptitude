@@ -138,20 +138,20 @@ public:
   component get_or_create_component(const std::string &name,
 				    component_type type);
 
-  /** \brief Get a tier operation that adds a value to a cost component.
+  /** \brief Get a cost that adds a value to a cost component.
    *
    *  The cost component must have type "additive".
    */
-  tier_operation add_to_cost(const component &component,
-                             int amt);
+  cost add_to_cost(const component &component,
+                   int amt);
 
-  /** \brief Get a tier operation that raises a cost component to an
-   *  upper bound.
+  /** \brief Get a cost that raises a cost component to an upper
+   *  bound.
    *
    *  The cost component must have type "maximized".
    */
-  tier_operation raise_cost(const component &component,
-                            int amt);
+  cost raise_cost(const component &component,
+                  int amt);
 };
 
 inline std::ostream &operator<<(std::ostream &out, const aptitude_resolver_cost_settings &settings)

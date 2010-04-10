@@ -244,24 +244,17 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeResolverSearchGraph();
 
-    /** \brief The logger for the tiering component of the resolver's
+    /** \brief The logger for the cost component of the resolver's
      *  search logic.
      *
-     *  Name: aptitude.resolver.search.tiers
+     *  Name: aptitude.resolver.search.costs
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSearchTiers();
+    static log4cxx::LoggerPtr getAptitudeResolverSearchCosts();
 
     /** \brief The logger for events related to setting up and running
      *  the background resolver thread.
      */
     static log4cxx::LoggerPtr getAptitudeResolverThread();
-
-    /** \brief The logger for setting up tiers for the dependency
-     *  resolver.
-     *
-     *  Name: aptitude.resolver.tiers
-     */
-    static log4cxx::LoggerPtr getAptitudeResolverTiers();
 
     /** \brief The logger for messages related to temporary files. */
     static log4cxx::LoggerPtr getAptitudeTemp();

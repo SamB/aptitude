@@ -4,7 +4,6 @@
 
 #include "config_signal.h"
 
-// Included only so that we can access the predefined tiers.
 #include <generic/problemresolver/problemresolver.h>
 #include <generic/problemresolver/solution.h>
 
@@ -806,14 +805,14 @@ int aptitude_universe::parse_level(const std::string &s)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
   if(s == "conflict")
-    // Note that this is slightly broken (it should send it to the
-    // conflict tier, not just a high level) -- but the whole tier
-    // configuration system needs to be rewritten anyway.
-    return tier_limits::conflict_structural_level;
+    // Note that this is slightly broken, since it actually sets a
+    // *user level* to a high value, not a structural level; included
+    // only for backwards compatibility.
+    return cost_limits::conflict_structural_level;
   else if(s == "maximum")
-    return tier_limits::maximum_level;
+    return cost_limits::maximum_level;
   else if(s == "minimum" || s == "")
-    return tier_limits::minimum_level;
+    return cost_limits::minimum_level;
   else
     {
       char *endptr;
@@ -821,9 +820,9 @@ int aptitude_universe::parse_level(const std::string &s)
       if(*endptr != '\0')
 	{
 	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
-	  LOG_ERROR(Loggers::getAptitudeResolverTiers(), msg);
+	  LOG_ERROR(Loggers::getAptitudeResolverCosts(), msg);
 	  _error->Error("%s", _(msg.c_str()));
-	  return tier_limits::minimum_level;
+	  return cost_limits::minimum_level;
 	}
       else
 	return n;

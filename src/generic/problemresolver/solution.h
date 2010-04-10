@@ -289,12 +289,12 @@ private:
     /** The score of this solution. */
     int score;
 
-    /** \brief The tier of this solution.
+    /** \brief The cost of this solution.
      *
      *  Informational only; not considered when comparing solutions by
      *  identity.
      */
-    tier_operation sol_tier_op;
+    cost sol_cost;
 
     /** The reference count of this solution. */
     mutable unsigned int refcount;
@@ -307,10 +307,10 @@ private:
     solution_rep(const choice_set &_choices,
 		 const resolver_initial_state<PackageUniverse> &_initial_state,
 		 int _score,
-		 const tier_operation &_sol_tier_op)
+		 const cost &_sol_cost)
       : initial_state(_initial_state), choices(_choices),
 	score(_score),
-	sol_tier_op(_sol_tier_op),
+	sol_cost(_sol_cost),
 	refcount(1)
     {
     }
@@ -326,7 +326,7 @@ private:
     }
 
     int get_score() const {return score;}
-    const tier_operation &get_tier() const { return sol_tier_op; }
+    const cost &get_cost() const { return sol_cost; }
 
     version version_of(const package &pkg) const
     {
@@ -394,8 +394,8 @@ public:
   generic_solution(const choice_set &choices,
 		   const resolver_initial_state<PackageUniverse> &initial_state,
 		   int score,
-		   const tier_operation &sol_tier_op)
-    : real_soln(new solution_rep(choices, initial_state, score, sol_tier_op))
+		   const cost &sol_cost)
+    : real_soln(new solution_rep(choices, initial_state, score, sol_cost))
   {
   }
 
@@ -410,7 +410,7 @@ public:
     return generic_solution(new solution_rep(get_choices().clone(),
 					     get_initial_state(),
 					     get_score(),
-					     get_tier()));
+					     get_cost()));
   }
 
 
@@ -486,10 +486,10 @@ public:
     return real_soln->get_score();
   }
 
-  /** \return The tier at which this solution was calculated. */
-  const tier_operation &get_tier() const
+  /** \return The cost of this solution. */
+  const cost &get_cost() const
   {
-    return real_soln->get_tier();
+    return real_soln->get_cost();
   }
 
   version version_of(const package &pkg) const
@@ -644,7 +644,7 @@ public:
       }
     out << ">;";
 
-    out << "T" << get_tier() << "S" << get_score();
+    out << "C" << get_cost() << "S" << get_score();
   }
 
   /** Compare choices by their ID */

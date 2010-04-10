@@ -188,14 +188,9 @@ namespace aptitude
     return Logger::getLogger("aptitude.resolver.search.graph");
   }
 
-  LoggerPtr Loggers::getAptitudeResolverSearchTiers()
+  LoggerPtr Loggers::getAptitudeResolverSearchCosts()
   {
-    return Logger::getLogger("aptitude.resolver.search.tiers");
-  }
-
-  LoggerPtr Loggers::getAptitudeResolverTiers()
-  {
-    return Logger::getLogger("aptitude.resolver.tiers");
+    return Logger::getLogger("aptitude.resolver.search.costs");
   }
 
   LoggerPtr Loggers::getAptitudeTemp()

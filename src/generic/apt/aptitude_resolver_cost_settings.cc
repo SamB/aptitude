@@ -250,12 +250,12 @@ public:
       }
   }
 
-  tier_operation add_to_cost(const component &component,
-                             int amt)
+  cost add_to_cost(const component &component,
+                   int amt)
   {
     // Ignore irrelevant components.
     if(component.id < 0)
-      return tier_operation();
+      return cost_limits::minimum_cost;
 
     // Sanity-check that the component's type is additive, then add
     // the given value to each target cost component.
@@ -268,27 +268,27 @@ public:
     ordered.modify(ordered.begin() + component.id, merge_types_f(additive));
 
     const entry &e = ordered[component.id];
-    tier_operation rval;
+    cost rval;
     for(std::vector<component_effect>::const_iterator it = e.get_effects().begin();
         it != e.get_effects().end(); ++it)
       {
-        tier_operation op =
-          tier_operation::make_add_to_user_level(it->get_id(), amt * it->get_multiplier());
+        cost c =
+          cost::make_add_to_user_level(it->get_id(), amt * it->get_multiplier());
 
-        rval = rval + op;
+        rval = rval + c;
       }
 
     return rval;
   }
 
-  tier_operation raise_cost(const component &component,
-                            int amt)
+  cost raise_cost(const component &component,
+                  int amt)
   {
     // Ignore irrelevant components.
     if(component.id < 0)
-      return tier_operation();
+      return cost_limits::minimum_cost;
 
-    // Sanity-check that the component's type is additive, then add
+    // Sanity-check that the component's type is maximized, then add
     // the given value to each target cost component.
 
     ordered_index &ordered = entries.get<ordered_t>();
@@ -298,15 +298,15 @@ public:
 
     ordered.modify(ordered.begin() + component.id, merge_types_f(maximized));
 
-    tier_operation rval;
+    cost rval;
     const entry &e = ordered[component.id];
     for(std::vector<component_effect>::const_iterator it = e.get_effects().begin();
         it != e.get_effects().end(); ++it)
       {
-        tier_operation op =
-          tier_operation::make_advance_user_level(it->get_id(), amt * it->get_multiplier());
+        cost c =
+          cost::make_advance_user_level(it->get_id(), amt * it->get_multiplier());
 
-        rval = rval + op;
+        rval = rval + c;
       }
 
     return rval;
@@ -339,14 +339,14 @@ aptitude_resolver_cost_settings::get_or_create_component(const std::string &name
   return impl->get_or_create_component(name, type);
 }
 
-tier_operation aptitude_resolver_cost_settings::add_to_cost(const component &component,
-                                                            int amt)
+cost aptitude_resolver_cost_settings::add_to_cost(const component &component,
+                                                  int amt)
 {
   return impl->add_to_cost(component, amt);
 }
 
-tier_operation aptitude_resolver_cost_settings::raise_cost(const component &component,
-                                                           int amt)
+cost aptitude_resolver_cost_settings::raise_cost(const component &component,
+                                                 int amt)
 {
   return impl->raise_cost(component, amt);
 }

@@ -28,23 +28,24 @@
 #include <stdexcept>
 
 #include <boost/flyweight.hpp>
-/** \brief Represents one level in a search tier.
+/** \brief Represents the value of a single component of a solution's
+ *  cost.
  *
- *  A search tier is an ordered sequence of levels.  Levels are
- *  integers that can be modified either by being incremented or by
- *  being increased to be at least the given value.  However, the two
- *  operations may not be applied to the same level; attempting to do
- *  so will raise an exception.  This does not apply to the identity
- *  of each operation (adding 0 or raising to INT_MIN).
+ *  A cost is an ordered sequence of levels.  Levels are integers that
+ *  can be modified either by being incremented or by being increased
+ *  to be at least the given value.  However, a given slot in a cost
+ *  object can only be modified in one of these ways; for instance, a
+ *  slot that is the result of an increment can't later be raised to a
+ *  minimum value.
  *
  *  The reason for representing levels this way is that it allows the
- *  resolver to support both "increase the tier to X" and "add X to
- *  the tier" operations in a sound manner; in particular, this way
+ *  resolver to support both "increase the cost to X" and "add X to
+ *  the cost" operations in a sound manner; in particular, this way
  *  those two operations are both associative and commutative.  (in
  *  this case, they are associative and commutative in the sense that
  *  applying both types of operations always errors out)
  *
- *  Note: the "increase tier to X" operation is important for
+ *  Note: the "increase cost to X" operation is important for
  *  respecting priorities (there doesn't seem to be an obvious
  *  alternative there), for backwards-compatibility, and so that the
  *  resolver can easily become non-optimizing if necessary (e.g., if
@@ -52,8 +53,8 @@
  *  reverting to the old behavior is a simple change to the default
  *  settings).
  *
- *  Note that levels can represent both a tier entry, or a *change* to
- *  a tier entry.  The "combine" method will either merge two changes
+ *  Note that levels can represent both a cost entry, or a *change* to
+ *  a cost entry.  The "combine" method will either merge two changes
  *  into a single change, or apply a change to a level.
  *
  *  Instead of failing out when two different operations are applied,
@@ -76,7 +77,7 @@ private:
   // with it.
 
   // Note 2: the reason for using signed integers is that it makes the
-  // case of policy-priorities-as-tiers a bit clearer.
+  // case of policy-priorities-as-costs a bit clearer.
 
   int value;
 
@@ -88,7 +89,7 @@ private:
   }
 
 public:
-  /** \brief Create a new level at the minimum tier. */
+  /** \brief Create a new level at the minimum cost. */
   level() : value(INT_MIN), state(unmodified)
   {
   }
@@ -134,10 +135,10 @@ public:
     return false;
   }
 
-  void increase_tier_to(int new_value)
+  void increase_cost_to(int new_value)
   {
     if(state == added)
-      throw TierOperationMismatchException();
+      throw CostOperationMismatchException();
     else if(new_value != INT_MIN)
       {
 	if(value < new_value)
@@ -159,15 +160,15 @@ public:
     else if(l2.state == unmodified)
       return l1;
     else if(l1.state != l2.state)
-      throw TierOperationMismatchException();
+      throw CostOperationMismatchException();
     else if(l1.state == lower_bounded)
       return level(std::max<int>(l1.value, l2.value), lower_bounded);
     else // if(l1.state == added)
       {
 	if(!(l1.value > 0 || l2.value > 0))
-	  throw NonPositiveTierAdditionException();
+	  throw NonPositiveCostAdditionException();
 	else if(l1.value > INT_MAX - l2.value)
-          throw TierTooBigException();
+          throw CostTooBigException();
         else
 	  return level(l1.value + l2.value, added);
       }
@@ -187,7 +188,7 @@ public:
     else if(l2.state == unmodified)
       return l1;
     else if(l1.state != l2.state)
-      throw TierOperationMismatchException();
+      throw CostOperationMismatchException();
     else
       return level(std::max<int>(l1.value, l2.value),
 		   l1.state);
@@ -206,7 +207,7 @@ public:
     if(l1.state == unmodified || l2.state == unmodified)
       return level();
     else if(l1.state != l2.state)
-      throw TierOperationMismatchException();
+      throw CostOperationMismatchException();
     else
       return level(std::min<int>(l1.value, l2.value),
 		   l1.state);
@@ -266,22 +267,22 @@ namespace aptitude
   }
 }
 
-/** \brief A tier operation describes how any solution's tier will
- * change as a result of adding a choice.
+/** \brief The cost of a solution describes how "bad" that solution is
+ * considered to be.
  *
- *  Tier operations are associative and closed under composition.
- *  They are partially ordered in the natural way (if o1 < o2, then
- *  for any tier t, o1(t) < o2(t) -- this ordering exists due to the
- *  above properties) and exist in a lattice.  (least upper and
- *  greatest lower bounds are levelwise minimum and maximum,
- *  respectively)
+ *  Costs can be composed with operator+; this operation is
+ *  commutative and associative (sort of, see below).  They are
+ *  partially ordered in the natural way (if o1 < o2, then for any
+ *  cost c, o1(c) < o2(c) -- this ordering exists due to the above
+ *  properties) and exist in a lattice.  (least upper and greatest
+ *  lower bounds are levelwise minimum and maximum, respectively)
  *
- *  Currently the only available tier operation is "add X to a level".
- *  The old operation (increase a level to a value if it was below
- *  that value) couldn't be combined with this one because they don't
- *  commute.
+ *  The two primitive cost types are "add X to a level" and "increase
+ *  a level to at least X".  These "commute" with each other only in
+ *  the sense that any expression involving both types will throw an
+ *  exception rather than producing a valid cost.
  */
-class tier_operation
+class cost
 {
   // These classes are used to disambiguate constructors.
   class combine_tag { };
@@ -291,49 +292,51 @@ class tier_operation
   // \todo Should have an abstracted "key"" that covers the 3 ways of
   // instantiating this object.  Also, should cache the hash value to
   // avoid recomputing it over and over.
-  class op_impl
+  class cost_impl
   {
     typedef std::vector<level>::size_type level_index;
 
-    // The value that a target tier's structural level should be
-    // increased to.
+    // This level is reserved for internal use by the dependency
+    // solver and is used to structure the search space.
     int structural_level;
 
-    // The operation is a collection of pairs giving level operations
-    // and the level's location in the tier vector.  Storing tier
-    // operations this way lets us save a little memory, considering
-    // that most operations will probably modify only a few tiers.
+    // The cost is a collection of pairs. each giving the cost at an
+    // individual level and the level's location in the cost vector.
+    // Level indices that don't occur have the NOP level
+    // value. Storing costs this way lets us save a little memory,
+    // considering that most operations will probably modify only a
+    // few levels.
     //
     // This vector is always sorted, and level numbers are unique.
     std::vector<std::pair<level_index, level> > actions;
 
   public:
-    /** \brief Create a blank tier operation. */
-    op_impl()
+    /** \brief Create a blank cost. */
+    cost_impl()
       : structural_level(INT_MIN)
     {
     }
 
-    /** \brief Create a tier operation that modifies the structural
-     *	level of the tier.
+    /** \brief Create a cost in which only the structural level is
+     *  set.
      */
-    explicit op_impl(int _structural_level)
+    explicit cost_impl(int _structural_level)
       : structural_level(_structural_level)
     {
     }
 
-    /** \brief Create a tier operation that modifies a single level of
-     *	the tier.
+    /** \brief Create a cost in which a single non-structural level is
+     *  set.
      */
-    op_impl(int index, const level &l)
+    cost_impl(int index, const level &l)
       : structural_level(INT_MIN)
     {
       if(index < 0)
-        throw std::out_of_range("Negative index used to construct a tier operation");
+        throw std::out_of_range("Negative index used to construct a cost");
 
       if(l.get_state() == level::added &&
 	 l.get_value() <= 0)
-	throw NonPositiveTierAdditionException();
+	throw NonPositiveCostAdditionException();
 
       if(index < 0)
 	throw std::out_of_range("User level indices must be non-negative.");
@@ -341,28 +344,28 @@ class tier_operation
       actions.push_back(std::make_pair(index, l));
     }
 
-    /** \brief Create a tier operation that combines two other operations. */
-    op_impl(const op_impl &op1, const op_impl &op2, combine_tag);
+    /** \brief Create a cost that combines two other costs. */
+    cost_impl(const cost_impl &cost1, const cost_impl &cost2, combine_tag);
 
-    /** \brief Create a new operation that computes the lower bound of
-     *  two input operations.
+    /** \brief Create a new cost that computes the lower bound of
+     *  two input costs.
      */
-    op_impl(const op_impl &op1, const op_impl &op2, lower_bound_tag);
+    cost_impl(const cost_impl &cost1, const cost_impl &cost2, lower_bound_tag);
 
-    /** \brief Create a new operation that computes the upper bound of
-     *  two input operations.
+    /** \brief Create a new cost that computes the upper bound of
+     *  two input costs.
      */
-    op_impl(const op_impl &op1, const op_impl &op2, upper_bound_tag);
+    cost_impl(const cost_impl &cost1, const cost_impl &cost2, upper_bound_tag);
 
-    /** \brief Return \b true if this operation is greater than or
-     *  equal to the other operation under the natural partial order.
+    /** \brief Return \b true if this cost is greater than or
+     *  equal to the other cost under the natural partial order.
      *
      *  Equivalent to testing whether least_upper_bound is this
      *  object, but doesn't create an intermediary.
      */
-    bool is_above_or_equal(const op_impl &other) const;
+    bool is_above_or_equal(const cost_impl &other) const;
 
-    /** \brief Compute a hash on this tier operation.
+    /** \brief Compute a hash on this cost.
      *
      *  \note Relies on the fact that the level's hash includes
      *  whether it's an addition or a lower-bound.
@@ -384,202 +387,195 @@ class tier_operation
 
     level get_user_level(std::size_t idx) const;
 
-    bool get_has_user_level_changes() const
+    bool get_has_user_levels() const
     {
       return !actions.empty();
     }
 
-    /** \brief Test two tier operations for equality.
+    /** \brief Test two costs for equality.
      *
      *  \note Relies on the fact that the level's equality comparison
      *  returns "true" only when the two levels have the same state.
      */
-    bool operator==(const op_impl &other) const
+    bool operator==(const cost_impl &other) const
     {
       return
 	structural_level == other.structural_level &&
 	actions == other.actions;
     }
 
-    /** \brief Compare two operations by their identity.
+    /** \brief Compare two costs by their identity.
      */
-    int compare(const op_impl &other) const;
+    int compare(const cost_impl &other) const;
 
-    /** \brief Dump this operation to a stream. */
+    /** \brief Dump this cost to a stream. */
     void dump(std::ostream &out) const;
   };
 
-  class op_impl_hasher
+  class cost_impl_hasher
   {
   public:
-    std::size_t operator()(const op_impl &op) const
+    std::size_t operator()(const cost_impl &cost) const
     {
-      return op.get_hash_value();
+      return cost.get_hash_value();
     }
   };
 
-  typedef boost::flyweight<op_impl,
-			   boost::flyweights::hashed_factory<op_impl_hasher> >
-  op_impl_flyweight;
+  typedef boost::flyweight<cost_impl,
+			   boost::flyweights::hashed_factory<cost_impl_hasher> >
+  cost_impl_flyweight;
 
-  op_impl_flyweight impl_flyweight;
+  cost_impl_flyweight impl_flyweight;
 
-  const op_impl &get_impl() const { return impl_flyweight.get(); }
+  const cost_impl &get_impl() const { return impl_flyweight.get(); }
 
-  /** \brief Create a tier operation that modifies the structural
-   *	level of the tier.
+  /** \brief Create a cost in which only the structural level is set.
    */
-  explicit tier_operation(int structural_level)
-    : impl_flyweight(op_impl(structural_level))
+  explicit cost(int structural_level)
+    : impl_flyweight(cost_impl(structural_level))
   {
   }
 
-  /** \brief Create a tier operation that combines two other
-   *  operations.
+  /** \brief Create a cost that combines two other
+   *  costs.
    */
-  tier_operation(const tier_operation &op1,
-		 const tier_operation &op2)
-    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
-			     combine_tag()))
+  cost(const cost &cost1,
+       const cost &cost2)
+    : impl_flyweight(cost_impl(cost1.get_impl(), cost2.get_impl(),
+                               combine_tag()))
   {
   }
 
-  /** \brief Create a tier operation that modifies a single level of
-   *  the tier.
+  /** \brief Create a cost in which a single level is set.
    */
-  tier_operation(int index, const level &l)
-    : impl_flyweight(op_impl(index, l))
+  cost(int index, const level &l)
+    : impl_flyweight(cost_impl(index, l))
   {
   }
 
-  /** \brief Create a new operation that computes the lower bound of
-   *  two input operations.
+  /** \brief Create a new cost that computes the lower bound of
+   *  two input costs.
    */
-  tier_operation(const tier_operation &op1, const tier_operation &op2, lower_bound_tag)
-    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
-			     lower_bound_tag()))
+  cost(const cost &cost1, const cost &cost2, lower_bound_tag)
+    : impl_flyweight(cost_impl(cost1.get_impl(), cost2.get_impl(),
+                               lower_bound_tag()))
   {
   }
 
-  /** \brief Create a new operation that computes the upper bound of
-   *  two input operations.
+  /** \brief Create a new cost that computes the upper bound of
+   *  two input costs.
    */
-  tier_operation(const tier_operation &op1, const tier_operation &op2, upper_bound_tag)
-    : impl_flyweight(op_impl(op1.get_impl(), op2.get_impl(),
-			     upper_bound_tag()))
+  cost(const cost &cost1, const cost &cost2, upper_bound_tag)
+    : impl_flyweight(cost_impl(cost1.get_impl(), cost2.get_impl(),
+                               upper_bound_tag()))
   {
   }
 
 public:
-  /** \brief Create the identity tier operation: an operation with no
-   *  effect.
+  /** \brief Create the minimum cost.
+   *
+   *  This cost has no effect when combined with other costs using
+   *  operator+.
    */
-  tier_operation()
-    : impl_flyweight(op_impl())
+  cost()
+    : impl_flyweight(cost_impl())
   {
   }
 
-  /** \brief Create a tier operation that increases the structural
-   *  level of its target to a particular value.
+  /** \brief Create a cost in which the structural level is set to the
+   *  given value.
    *
-   *  \param structural_level The structural level that the resulting
-   *  operation will increase affected tiers to; tiers at a higher
-   *  structural level are unaffected.
+   *  \param structural_level The structural level of the resulting
+   *  cost.
    */
-  static tier_operation make_advance_structural_level(int structural_level)
+  static cost make_advance_structural_level(int structural_level)
   {
-    return tier_operation(structural_level);
+    return cost(structural_level);
   }
 
-  /** \brief Create a tier operation that increases a single user
-   *  level of its target to a particular value.
+  /** \brief Create a cost in which a single user level is raised
+   *  to the given value.
    *
-   *  \param index The index within the user tier list of the level
-   *               that is to be modified.
+   *  \param index The index of the user level to set.
    *
-   *  \param value The value that the resulting operation will
-   *               increase affected user levels to; higher user
-   *               levels are unaffected.
+   *  \param value The value to set the user level to.
    */
-  static tier_operation make_advance_user_level(int index,
-						int value)
+  static cost make_advance_user_level(int index,
+                                      int value)
   {
-    return tier_operation(index, level::make_lower_bounded(value));
+    return cost(index, level::make_lower_bounded(value));
   }
 
-  /** \brief Create a tier operation that adds a fixed value to a
+  /** \brief Create a cost in which a fixed value is added to a
    *  single user level.
    *
-   *  \param index The index within the user tier list of the level
-   *               that is to be modified.
+   *  \param index The index of the user level to set.
    *
-   *  \param value The value that the resulting operation will add to
-   *               affected user levels.
+   *  \param value The value to add to the user level.
    */
-  static tier_operation make_add_to_user_level(int index,
-					       int value)
+  static cost make_add_to_user_level(int index,
+                                     int value)
   {
-    return tier_operation(index, level::make_added(value));
+    return cost(index, level::make_added(value));
   }
 
-  /** \brief Compute the least upper bound of two tier operations.
+  /** \brief Compute the least upper bound of two costs.
    *
-   *  This is the smallest tier operation that produces tiers which
-   *  are strictly greater than those produced by both input
-   *  operations.
+   *  This is the smallest cost that is greater than or equal to both
+   *  input costs.
    */
-  static tier_operation least_upper_bound(const tier_operation &op1,
-                                          const tier_operation &op2);
+  static cost least_upper_bound(const cost &cost1,
+                                const cost &cost2);
 
-  /** \brief Compute the greatest lower bound of two tier operations.
+  /** \brief Compute the greatest lower bound of two costs.
    *
-   *  This is the largest tier operation that produces tiers which are
-   *  strictly less than those produced by both input operations.
+   *  This is the largest cost that is less than or equal to both
+   *  input costs.
    */
-  static tier_operation greatest_lower_bound(const tier_operation &op1,
-                                             const tier_operation &op2);
+  static cost greatest_lower_bound(const cost &cost1,
+                                   const cost &cost2);
 
-  /** \brief Return \b true if this operation is greater than or equal
-   *  to the other operation under the natural partial order.
+  /** \brief Return \b true if this cost is greater than or equal
+   *  to the other cost under the natural partial order.
    *
    *  Equivalent to testing whether least_upper_bound is this object,
    *  but doesn't create an intermediary.
    */
-  bool is_above_or_equal(const tier_operation &other) const
+  bool is_above_or_equal(const cost &other) const
   {
     return get_impl().is_above_or_equal(other.get_impl());
   }
 
-  /** \brief Compose two tier operations.
+  /** \brief Compose two costs.
    *
-   *  The composition of tier operations is both associative and
+   *  The composition of costs is both associative and
    *  commutative.
    */
-  tier_operation operator+(const tier_operation &other) const
+  cost operator+(const cost &other) const
   {
-    return tier_operation(*this, other);
+    return cost(*this, other);
   }
 
-  /** \brief Test whether two operations have the same effect. */
-  bool operator==(const tier_operation &other) const
+  /** \brief Test whether two costs have the same level values. */
+  bool operator==(const cost &other) const
   {
     return impl_flyweight == other.impl_flyweight;
   }
 
-  /** \brief Test whether two operations don't have the same effect. */
-  bool operator!=(const tier_operation &other) const
+  /** \brief Test whether two costs don't have the same level values. */
+  bool operator!=(const cost &other) const
   {
     return impl_flyweight != other.impl_flyweight;
   }
 
-  /** \brief Write a description of a tier operation to an ostream.
+  /** \brief Write a description of a cost to an ostream.
    */
   void dump(std::ostream &out) const
   {
     get_impl().dump(out);
   }
 
-  /** \brief Get the structural level that this operation raises its
+  /** \brief Get the structural level that this cost raises its
    *  target to.
    */
   int get_structural_level() const
@@ -587,18 +583,18 @@ public:
     return get_impl().get_structural_level();
   }
 
-  /** \brief Get the operation performed on a user level. */
+  /** \brief Get the value of this cost at a user level. */
   level get_user_level(int idx) const
   {
     return get_impl().get_user_level(idx);
   }
 
-  /** \brief Check whether any actions performed by the operation
-   *  affect user levels.
+  /** \brief Check whether the cost contains any values at user
+   *  levels.
    */
-  bool get_has_user_level_changes() const
+  bool get_has_user_levels() const
   {
-    return get_impl().get_has_user_level_changes();
+    return get_impl().get_has_user_levels();
   }
 
   std::size_t get_hash_value() const
@@ -606,23 +602,23 @@ public:
     return get_impl().get_hash_value();
   }
 
-  /** \brief Compare tier operations according to their
+  /** \brief Compare costs according to their
    *  identity, NOT their natural order.
    *
-   *  This is a total ordering that can be used to place operations
+   *  This is a total ordering that can be used to place costs
    *  into ordered data structures.  It has no relation to the natural
-   *  partial ordering on tier operations that least_upper_bound and
+   *  partial ordering on costs that least_upper_bound and
    *  greatest_upper_bound rely upon.
    */
-  int compare(const tier_operation &other) const
+  int compare(const cost &other) const
   {
-    const op_impl &this_op = get_impl(), &other_op = other.get_impl();
+    const cost_impl &this_cost = get_impl(), &other_cost = other.get_impl();
 
     // Rely on equality of flyweights being fast.
-    if(this_op == other_op)
+    if(this_cost == other_cost)
       return 0;
     else
-      return this_op.compare(other_op);
+      return this_cost.compare(other_cost);
   }
 };
 
@@ -631,19 +627,19 @@ namespace aptitude
   namespace util
   {
     template<>
-    class compare3_f<tier_operation>
+    class compare3_f<cost>
     {
     public:
-      int operator()(const tier_operation &op1, const tier_operation &op2) const
+      int operator()(const cost &cost1, const cost &cost2) const
       {
-	return op1.compare(op2);
+	return cost1.compare(cost2);
       }
     };
   }
 }
 
-std::size_t hash_value(const tier_operation &op);
+std::size_t hash_value(const cost &cost);
 
-std::ostream &operator<<(std::ostream &out, const tier_operation &t);
+std::ostream &operator<<(std::ostream &out, const cost &t);
 
-#endif // TIER_OPERATION_H
+#endif // COST_H

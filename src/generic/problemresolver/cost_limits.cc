@@ -20,14 +20,14 @@
 
 #include "cost_limits.h"
 
-const int tier_limits::maximum_level;
-const int tier_limits::conflict_structural_level;
-const int tier_limits::defer_structural_level;
-const int tier_limits::already_generated_structural_level;
-const int tier_limits::minimum_level;
+const int cost_limits::maximum_level;
+const int cost_limits::conflict_structural_level;
+const int cost_limits::defer_structural_level;
+const int cost_limits::already_generated_structural_level;
+const int cost_limits::minimum_level;
 
-const tier_operation tier_limits::increase_to_maximum_op(tier_operation::make_advance_structural_level(maximum_level));
-const tier_operation tier_limits::increase_to_conflict_op(tier_operation::make_advance_structural_level(conflict_structural_level));
-const tier_operation tier_limits::increase_to_already_generated_op(tier_operation::make_advance_structural_level(already_generated_structural_level));
-const tier_operation tier_limits::increase_to_defer_op(tier_operation::make_advance_structural_level(defer_structural_level));
-const tier_operation tier_limits::minimum_op;
+const cost cost_limits::maximum_structural_level_cost(cost::make_advance_structural_level(maximum_level));
+const cost cost_limits::conflict_cost(cost::make_advance_structural_level(conflict_structural_level));
+const cost cost_limits::already_generated_cost(cost::make_advance_structural_level(already_generated_structural_level));
+const cost cost_limits::defer_cost(cost::make_advance_structural_level(defer_structural_level));
+const cost cost_limits::minimum_cost;

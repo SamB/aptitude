@@ -929,9 +929,7 @@ void resolver_manager::create_resolver()
   aptitude_resolver_cost_settings cost_settings(cost_components);
 
 
-  // TODO: perhaps this shouldn't be hardcoded?  But it would require
-  // its own specialized configuration syntax :-(
-  tier_operation ignored_recommends_cost;
+  cost ignored_recommends_cost;
   {
     aptitude_resolver_cost_settings::component ignored_recommends_component =
       cost_settings.get_or_create_component("ignored-recommends", aptitude_resolver_cost_settings::additive);

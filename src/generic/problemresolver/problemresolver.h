@@ -537,7 +537,7 @@ public:
     size_t deferred;
     size_t conflicts;
     /** \brief The number of deferred packages that are not at
-     *  defer_tier.
+     *  defer_cost.
      */
     size_t promotions;
 
@@ -547,15 +547,14 @@ public:
      */
     bool finished;
 
-    /** \brief The search tier operation of the next solution to
-     *  consider.
+    /** \brief The search cost of the next solution to consider.
      */
-    tier_operation current_tier_op;
+    cost current_cost;
 
     queue_counts()
       : open(0), closed(0), deferred(0), conflicts(0), promotions(0),
 	finished(false),
-	current_tier_op()
+	current_cost(cost_limits::minimum_cost)
     {
     }
   };
@@ -579,7 +578,7 @@ private:
   typedef ExtractPackageId PackageHash;
 
   /** Compares steps according to their "goodness": their effective
-   *  tier, then thier score, then their contents.
+   *  cost, then thier score, then their contents.
    *
    *  The comparisons are reversed, so better solutions compare
    *  "below" worse ones.
@@ -602,11 +601,11 @@ private:
       const step &step1(graph.get_step(step_num1));
       const step &step2(graph.get_step(step_num2));
 
-      // Note that *lower* tiers come "before" higher tiers, hence the
+      // Note that *lower* costs come "before" higher costs, hence the
       // reversed comparison there.
-      int tier_op_cmp = step1.final_step_tier_op.compare(step2.final_step_tier_op);
-      if(tier_op_cmp != 0)
-	return tier_op_cmp < 0;
+      int cost_cmp = step1.final_step_cost.compare(step2.final_step_cost);
+      if(cost_cmp != 0)
+	return cost_cmp < 0;
       else if(step2.score < step1.score)
 	return true;
       else if(step1.score < step2.score)
@@ -629,7 +628,7 @@ private:
    *  would be a lot more complicated and it's not clear that it's
    *  worth the trouble (plus, it's not clear what should happen if
    *  all the children of a step are duplicates; it should be thrown
-   *  out, but not go to the conflict tier!).
+   *  out, but not given a conflict cost!).
    */
   class step_contents
   {
@@ -776,10 +775,10 @@ private:
   // constructors.
   solution_weights<PackageUniverse> weights;
 
-  /** \brief The cost operation applied for each soft dependency
-   *  that's left unresolved.
+  /** \brief The cost applied for each soft dependency that's left
+   *  unresolved.
    */
-  tier_operation unfixed_soft_cost;
+  cost unfixed_soft_cost;
 
   /** Solutions whose score is smaller than this value will be
    *  discarded rather than being enqueued.
@@ -838,7 +837,7 @@ private:
 
   /** All the steps that have not yet been processed.
    *
-   *  Steps are sorted by tier, then by score, then by their contents.
+   *  Steps are sorted by cost, then by score, then by their contents.
    */
   std::set<int, step_goodness_compare> pending;
 
@@ -863,12 +862,12 @@ private:
    */
   boost::unordered_map<step_contents, int, hash_step_contents> closed;
 
-  /** Stores tier promotions: sets of installations that will force a
-   *  solution to a higher tier of the search.
+  /** Stores cost promotions: sets of installations that will force a
+   *  solution to a higher cost of the search.
    */
   promotion_set promotions;
 
-  /** \brief Stores the tail of the queue of tier promotions.
+  /** \brief Stores the tail of the queue of cost promotions.
    *
    *  Steps hold reference-counted pointers to links in the chain
    *  corresponding to where the tail was when they were inserted.  If
@@ -884,15 +883,15 @@ private:
    */
   imm::set<dep> initial_broken;
 
-  /** The intrinsic tier of each version (indexed by version).
+  /** The intrinsic cost of each version (indexed by version).
    *
-   *  Store here instead of in the weights table because tiers are the
+   *  Store here instead of in the weights table because costs are the
    *  resolver's responsibility, not the solution object's (because
    *  they are not a pure function of the contents of the solution; a
-   *  solution might get a higher tier if we can prove that it will
+   *  solution might get a higher cost if we can prove that it will
    *  eventually have one anyway).
    */
-  tier_operation *version_tier_ops;
+  cost *version_costs;
 
   /** \brief Used to track whether a single choice is approved or
    *  rejected.
@@ -1094,9 +1093,9 @@ private:
 	  // (the alternative is to expand the types of choices we can
 	  // handle, but that would impose costs on the rest of the
 	  // program for a feature that would never be used)
-	  promotion p(choice_set(), tier_limits::increase_to_defer_op,
+	  promotion p(choice_set(), cost_limits::defer_cost,
 		      get_child());
-	  resolver.increase_solver_tier_op_everywhere_with_dep(deferred_choice, p);
+	  resolver.increase_solver_cost_everywhere_with_dep(deferred_choice, p);
 	}
     }
   };
@@ -1149,7 +1148,7 @@ private:
    *  in the search.
    *
    *  Each expression is contained in a wrapper whose sole purpose is
-   *  to recompute the tier of the corresponding choice in all steps
+   *  to recompute the cost of the corresponding choice in all steps
    *  when it fires.
    *
    *  \sa build_is_deferred, build_is_deferred_real
@@ -1267,7 +1266,7 @@ private:
 						 non_incipient);
 
     if(non_incipient.get_has_value() &&
-       s.final_step_tier_op < non_incipient.get_value().get_tier())
+       s.final_step_cost < non_incipient.get_value().get_cost())
       LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
 		<< non_incipient.get_value() << " was not applied.");
     else
@@ -1276,7 +1275,7 @@ private:
 	  promotions.find_highest_promotion_for(s.actions);
 
 	if(found_promotion != promotions.end() &&
-	   s.final_step_tier_op < found_promotion->get_tier())
+	   s.final_step_cost < found_promotion->get_cost())
 	  LOG_ERROR(logger, "In step " << s.step_num << ": the embedded promotion "
 		    << *found_promotion << " was not applied.");
       }
@@ -1319,7 +1318,7 @@ private:
 	  typename boost::unordered_map<choice, promotion>::const_iterator
 	    found_incipient = incipient.find(solver);
 	  if(found_incipient != incipient.end() &&
-	     solver_inf.get_tier() < found_incipient->second.get_tier())
+	     solver_inf.get_cost() < found_incipient->second.get_cost())
 	    LOG_ERROR(logger, "In step " << s.step_num
 		      << ": incipient promotion " << found_incipient->second
 		      << " was never applied to " << solver << ".");
@@ -1329,7 +1328,7 @@ private:
 	  typename promotion_set::const_iterator found_promotion =
 	    promotions.find_highest_promotion_containing(test_set, solver);
 	  if(found_promotion != promotions.end() &&
-	     solver_inf.get_tier() < found_promotion->get_tier())
+	     solver_inf.get_cost() < found_promotion->get_cost())
 	    LOG_ERROR(logger, "In step " << s.step_num
 		      << ": the incipient promotion " << *found_promotion
 		      << " was not detected as incipient for " << solver);
@@ -1338,15 +1337,15 @@ private:
 #endif
   }
 
-  /** \return \b true if the given tier operation will always cause
-   *  any step to be discarded.
+  /** \return \b true if the given cost will always cause any step to
+   *  be discarded.
    *
    *  \param op the operation to test.
    */
-  bool is_discard_op(const tier_operation &op) const
+  bool is_discard_cost(const cost &cost) const
   {
     return
-      op.get_structural_level() >= tier_limits::already_generated_structural_level;
+      cost.get_structural_level() >= cost_limits::already_generated_structural_level;
   }
 
   /** \return \b true if the given step is "irrelevant": that is,
@@ -1356,10 +1355,10 @@ private:
    */
   bool irrelevant(const step &s)
   {
-    const tier_operation &s_tier = s.final_step_tier_op;
-    if(is_discard_op(s_tier))
+    const cost &s_cost = s.final_step_cost;
+    if(is_discard_cost(s_cost))
       {
-	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: its tier " << s_tier << " indicates it should be discarded.");
+	LOG_TRACE(logger, "Step " << s.step_num << " is irrelevant: its cost " << s_cost << " indicates it should be discarded.");
 	return true;
       }
 
@@ -1374,65 +1373,65 @@ private:
     return false;
   }
 
-  /** \brief Adjust the tier of a step, keeping everything consistent. */
-  void set_base_step_tier_op(int step_num,
-                             const tier_operation &t_op)
+  /** \brief Adjust the cost of a step, keeping everything consistent. */
+  void set_base_step_cost(int step_num,
+                          const cost &c)
   {
     step &s(graph.get_step(step_num));
 
-    s.base_step_tier_op = t_op;
+    s.base_step_cost = c;
 
-    update_final_step_tier_op(step_num);
+    update_final_step_cost(step_num);
   }
 
-  /** \brief Update the operation that computes the *effective* tier
+  /** \brief Update the operation that computes the *effective* cost
    *  of a step.
    *
-   *  Updates the effective tier itself as a side effect.
+   *  Updates the effective cost itself as a side effect.
    */
-  void set_effective_step_tier_op(int step_num,
-				  const tier_operation &t_op)
+  void set_effective_step_cost(int step_num,
+                               const cost &c)
   {
     step &s(graph.get_step(step_num));
 
-    s.effective_step_tier_op = t_op;
+    s.effective_step_cost = c;
 
-    update_final_step_tier_op(step_num);
+    update_final_step_cost(step_num);
   }
 
-  /** \brief Update the effective tier of a step.
+  /** \brief Update the effective cost of a step.
    *
-   *  This should only be invoked by set_base_step_tier_op and
-   *  set_effective_step_tier_op.  It recomputes the effective tier
+   *  This should only be invoked by set_base_step_cost and
+   *  set_effective_step_cost.  It recomputes the effective cost
    *  from its components and performs any follow-up work that's
    *  needed to enforce consistency.
    */
-  void update_final_step_tier_op(int step_num)
+  void update_final_step_cost(int step_num)
   {
     step &s(graph.get_step(step_num));
 
-    tier_operation new_final_step_tier_op =
-      s.effective_step_tier_op + s.base_step_tier_op;
+    cost new_final_step_cost =
+      s.effective_step_cost + s.base_step_cost;
 
-    if(s.final_step_tier_op == new_final_step_tier_op)
+    if(s.final_step_cost == new_final_step_cost)
       return;
 
-    if(s.is_blessed_solution && is_discard_op(new_final_step_tier_op))
+    if(s.is_blessed_solution && is_discard_cost(new_final_step_cost))
       {
 	LOG_TRACE(logger, "Step " << s.step_num
-		  << " is a blessed solution; ignoring the attempt to promote it to tier " << new_final_step_tier_op);
+		  << " is a blessed solution; ignoring the attempt to promote it to cost " << new_final_step_cost);
 	return;
       }
 
-    LOG_TRACE(logger, "Setting the final tier of step " << step_num
-	      << " to " << new_final_step_tier_op);
+    LOG_TRACE(logger, "Setting the final cost of step " << step_num
+	      << " to " << new_final_step_cost);
 
     bool was_in_pending =  (pending.erase(step_num) > 0);
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
 
-    if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
-       !is_discard_op(s.final_step_tier_op))
+    if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level &&
+       !is_discard_cost(s.final_step_cost))
       {
 	if(was_in_pending)
 	  --num_deferred;
@@ -1440,7 +1439,7 @@ private:
 	  --num_deferred;
       }
 
-    s.final_step_tier_op = new_final_step_tier_op;
+    s.final_step_cost = new_final_step_cost;
 
 
     if(was_in_pending)
@@ -1449,15 +1448,15 @@ private:
       pending_future_solutions.insert(step_num);
 
 
-    if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
-       !is_discard_op(s.final_step_tier_op))
+    if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level &&
+       !is_discard_cost(s.final_step_cost))
       {
 	if(was_in_pending)
 	  ++num_deferred;
 	if(was_in_pending_future_solutions)
 	  ++num_deferred;
       }
-    else if(s.final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
+    else if(s.final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
       {
 	// Clear the "finished" flag if this is now a pending
 	// candidate.
@@ -1718,9 +1717,9 @@ private:
     p.get_choices().for_each(find_promotion_f);
   }
 
-  /** \brief For each match of a promotion, increase the tier
+  /** \brief For each match of a promotion, increase the cost
    *  operation in a solver set if it's incipient; increase the
-   *  effective tier operation if it's not.
+   *  effective cost operation if it's not.
    */
   class do_process_promotion
   {
@@ -1736,14 +1735,14 @@ private:
 
     void incipient(int step_num, const choice &solver) const
     {
-      resolver.increase_solver_tier_op(resolver.graph.get_step(step_num),
-					      p, solver);
+      resolver.increase_solver_cost(resolver.graph.get_step(step_num),
+                                    p, solver);
     }
 
     void active(int step_num) const
     {
       step &s = graph.get_step(step_num);
-      resolver.increase_effective_step_tier_op(s, p);
+      resolver.increase_effective_step_cost(s, p);
       resolver.graph.schedule_promotion_propagation(step_num, p);
     }
   };
@@ -1765,18 +1764,18 @@ private:
   // figure out which dependency needs to be re-examined ahead of
   // time.
   //
-  // Only solvers whose tier equals the given tier are recomputed.
-  class recompute_solver_tier_op_for_dep
+  // Only solvers whose cost equals the given cost are recomputed.
+  class recompute_solver_cost_for_dep
   {
     generic_problem_resolver &resolver;
     step &s;
-    const tier_operation &t_op;
+    const cost &c;
 
   public:
-    recompute_solver_tier_op_for_dep(generic_problem_resolver &_resolver,
+    recompute_solver_cost_for_dep(generic_problem_resolver &_resolver,
 				  step &_s,
-				  const tier_operation &_t_op)
-      : resolver(_resolver), s(_s), t_op(_t_op)
+				  const cost &_c)
+      : resolver(_resolver), s(_s), c(_c)
     {
     }
 
@@ -1785,36 +1784,36 @@ private:
     {
       for(typename imm::list<dep>::const_iterator it = deps.begin();
 	  it != deps.end(); ++it)
-	resolver.recompute_solver_tier_op(s, *it, solver, t_op.get_structural_level());
+	resolver.recompute_solver_cost(s, *it, solver, c.get_structural_level());
 
       return true;
     }
   };
 
-  /** \brief For each promotion hit, recompute the solver tier if it's
-   *  an incipient promotion and the step tier otherwise.
+  /** \brief For each promotion hit, recompute the solver cost if it's
+   *  an incipient promotion and the step cost otherwise.
    *
-   *  The associated tier operation is used as a filter.  While it's
+   *  The associated cost is used as a filter.  While it's
    *  hard in general to tell if a promotion affected a step (without
    *  actually tracking the set of promotions that touched it), we can
-   *  be sure that if a promotion affected a step, the structural tier
-   *  of the step was increased to the structural tier of the
-   *  promotion.  Thus, if the step's structural tier is *below* that
+   *  be sure that if a promotion affected a step, the structural level
+   *  of the step was increased to the structural level of the
+   *  promotion.  Thus, if the step's structural level is *below* that
    *  of the promotion, it couldn't have been affected by the
    *  promotion and hence doesn't need to be recomputed.
    *
    *  (that's a useful heuristic because most of the promotions that
-   *  we'll retract promote to the deferral tier)
+   *  we'll retract promote to the deferral structural level)
    */
-  class recompute_tier_hits
+  class recompute_cost_hits
   {
     generic_problem_resolver &resolver;
-    const tier_operation &t_op;
+    const cost &c;
 
   public:
-    recompute_tier_hits(generic_problem_resolver &_resolver,
-			const tier_operation &_t_op)
-      : resolver(_resolver), t_op(_t_op)
+    recompute_cost_hits(generic_problem_resolver &_resolver,
+			const cost &_c)
+      : resolver(_resolver), c(_c)
     {
     }
 
@@ -1822,11 +1821,11 @@ private:
     {
       step &s(resolver.graph.get_step(step_num));
 
-      recompute_solver_tier_op_for_dep
-	recompute_solver_tier_op_f(resolver, s, t_op);
+      recompute_solver_cost_for_dep
+	recompute_solver_cost_f(resolver, s, c);
 
       s.deps_solved_by_choice.for_each_key_contained_in(solver,
-							recompute_solver_tier_op_f);
+							recompute_solver_cost_f);
     }
 
     void active(int step_num) const
@@ -1834,18 +1833,18 @@ private:
       step &s(resolver.graph.get_step(step_num));
 
       // The promotion could only have affected the step's effective
-      // tier if the effective tier's structural level is at least as
+      // cost if the effective cost's structural level is at least as
       // high.
-      if(s.effective_step_tier_op.get_structural_level() >= t_op.get_structural_level())
-	resolver.recompute_effective_step_tier_op(resolver.graph.get_step(step_num));
+      if(s.effective_step_cost.get_structural_level() >= c.get_structural_level())
+	resolver.recompute_effective_step_cost(resolver.graph.get_step(step_num));
     }
   };
 
   void promotion_retracted(const promotion &p)
   {
-    LOG_TRACE(logger, "Retracting all tier assignments that might be linked to " << p);
+    LOG_TRACE(logger, "Retracting all cost assignments that might be linked to " << p);
 
-    for_each_promotion_hit(p, recompute_tier_hits(*this, p.get_tier_op()));
+    for_each_promotion_hit(p, recompute_cost_hits(*this, p.get_cost()));
   }
 
 
@@ -2045,8 +2044,8 @@ private:
 		  s.unresolved_deps_by_num_solvers.insert(std::make_pair(new_num_solvers, d));
 		}
 
-	      // Rescan the solvers, maybe updating the step's tier.
-	      resolver.check_solvers_tier_op(s, new_solvers);
+	      // Rescan the solvers, maybe updating the step's cost.
+	      resolver.check_solvers_cost(s, new_solvers);
 	    }
 	  else
 	    LOG_TRACE(logger, "The dependency " << d
@@ -2312,13 +2311,13 @@ private:
     return rval;
   }
 
-  class invoke_recompute_solver_tier_op
+  class invoke_recompute_solver_cost
   {
     generic_problem_resolver &resolver;
     const dep &d;
 
   public:
-    invoke_recompute_solver_tier_op(generic_problem_resolver &_resolver,
+    invoke_recompute_solver_cost(generic_problem_resolver &_resolver,
 				    const dep &_d)
       : resolver(_resolver),
 	d(_d)
@@ -2332,47 +2331,47 @@ private:
       step &s(resolver.graph.get_step(step_num));
 
       if(how == search_graph::choice_mapping_action)
-	resolver.recompute_effective_step_tier_op(s);
+	resolver.recompute_effective_step_cost(s);
       else
-	resolver.recompute_solver_tier_op(s, d, c);
+	resolver.recompute_solver_cost(s, d, c);
 
       return true;
     }
   };
 
-  /** \brief Invoked when a solver's tier needs to be recomputed.
+  /** \brief Invoked when a solver's cost needs to be recomputed.
    *
-   *  Locates the solver in each step that it solves, tosses its tier,
+   *  Locates the solver in each step that it solves, tosses its cost,
    *  and recomputes it from scratch.
    */
   void deferral_retracted(const choice &deferral_choice,
 			  const dep &deferral_dep)
   {
-    LOG_TRACE(logger, "The choice " << deferral_choice << " is no longer deferred; recomputing its tier in all steps.");
+    LOG_TRACE(logger, "The choice " << deferral_choice << " is no longer deferred; recomputing its cost in all steps.");
 
-    invoke_recompute_solver_tier_op recompute_f(*this, deferral_dep);
+    invoke_recompute_solver_cost recompute_f(*this, deferral_dep);
     graph.for_each_step_related_to_choice_with_dep(deferral_choice,
 						   deferral_dep,
 						   recompute_f);
   }
 
-  /** \brief Recompute the tier operation of a single solver in the
+  /** \brief Recompute the cost of a single solver in the
    *  given step.
    *
-   *  Previous versions of this code would only recompute the tier
-   *  operation if it was equal to the tier of the promotion being
+   *  Previous versions of this code would only recompute the cost
+   *  operation if it was equal to the cost of the promotion being
    *  retracted.  However, with the introduction of partially ordered
-   *  tiers, upper-bounding, and nonidempotent operations, this isn't
+   *  costs, upper-bounding, and nonidempotent operations, this isn't
    *  sound any more.  There is exactly one case where it's definitely
-   *  safe, though: tier operations that don't change anything but the
-   *  structural tier.  Not coincidentally, this is also the only type
+   *  safe, though: costs that don't change anything but the
+   *  structural cost.  Not coincidentally, this is also the only type
    *  of operation that gets retracted.
    */
-  void recompute_solver_tier_op(step &s,
-				const dep &solver_dep,
-				const choice &solver,
-				const int &check_structural_level = tier_limits::minimum_level,
-				bool do_check_structural_level = false)
+  void recompute_solver_cost(step &s,
+                             const dep &solver_dep,
+                             const choice &solver,
+                             const int &check_structural_level = cost_limits::minimum_level,
+                             bool do_check_structural_level = false)
   {
     typename imm::map<dep, typename step::flyweight_dep_solvers>::node
       found_solvers(s.unresolved_deps.lookup(solver_dep));
@@ -2389,23 +2388,23 @@ private:
 		    << s.step_num << " as a solver for "
 		    << solver_dep << ", but it doesn't appear in that step.");
 	else if(!do_check_structural_level ||
-		(found_solver->get_tier_op().get_structural_level() == check_structural_level &&
-		 !found_solver->get_tier_op().get_has_user_level_changes()))
+		(found_solver->get_cost().get_structural_level() == check_structural_level &&
+		 !found_solver->get_cost().get_has_user_levels()))
 	  {
-	    tier_operation new_tier_op;
-	    cwidget::util::ref_ptr<expression_box<bool> > new_tier_is_deferred;
-	    cwidget::util::ref_ptr<expression<bool> > new_tier_valid;
+	    cost new_cost;
+	    cwidget::util::ref_ptr<expression_box<bool> > new_cost_is_deferred;
+	    cwidget::util::ref_ptr<expression<bool> > new_cost_valid;
 	    choice solver_with_dep(solver.copy_and_set_dep(solver_dep));
 	    get_solver_intrinsic_promotion_with_deferrals(solver_with_dep,
-							  new_tier_op,
-							  new_tier_is_deferred,
-							  new_tier_valid);
+							  new_cost,
+							  new_cost_is_deferred,
+							  new_cost_valid);
 
 	    typename step::solver_information
-	      new_solver_inf(new_tier_op,
+	      new_solver_inf(new_cost,
 			     choice_set(),
-			     new_tier_valid,
-			     new_tier_is_deferred);
+			     new_cost_valid,
+			     new_cost_is_deferred);
 	    new_dep_solvers.set_solver_information(solver_with_dep, new_solver_inf);
 	    {
 	      typename step::flyweight_dep_solvers
@@ -2413,24 +2412,24 @@ private:
 
 	      s.unresolved_deps.put(solver_dep, memoized_new_dep_solvers);
 	    }
-	    LOG_TRACE(logger, "Recomputed the tier of "
+	    LOG_TRACE(logger, "Recomputed the cost of "
 		      << solver << " in the solver list of "
 		      << solver_dep << " in step " << s.step_num
 		      << "; new solver list: " << new_dep_solvers);
 
 
 	    find_promotions_for_solver(s, solver_with_dep);
-	    // Recompute the step's tier from scratch.
+	    // Recompute the step's cost from scratch.
 	    //
-	    // \todo Only do this if the tier went down, and just do a
+	    // \todo Only do this if the cost went down, and just do a
 	    // local recomputation otherwise?
-	    recompute_effective_step_tier_op(s);
+	    recompute_effective_step_cost(s);
 	  }
       }
   }
 
   /** \brief Predicate used to throw away promotions that would
-   *  promote a blessed solution to the already-generated tier (or
+   *  promote a blessed solution to the already-generated cost (or
    *  discard it for containing a "conflict").
    *
    *  Returns \b true if a promotion does *not* discard a "blessed"
@@ -2438,14 +2437,14 @@ private:
    *
    *  Whether a promotion would throw away a solver is determined by
    *  testing that promotion against the containing step's current
-   *  tier; if applying the promotion would raise the tier too much,
+   *  cost; if applying the promotion would raise the cost too much,
    *  the solver is struck.
    */
   class discards_blessed
   {
     // True if the step being processed is blessed.  If not, all
     // promotions are allowed through; otherwise only promotions below
-    // the already-generated tier are allowed through.
+    // the already-generated cost are allowed through.
     bool blessed;
 
     const generic_problem_resolver &resolver;
@@ -2465,14 +2464,14 @@ private:
     bool operator()(const promotion &p) const
     {
       if(blessed)
-	return !resolver.is_discard_op(p.get_tier_op() + s.base_step_tier_op);
+	return !resolver.is_discard_cost(p.get_cost() + s.base_step_cost);
       else
 	return true;
     }
   };
 
   /** \brief Find promotions triggered by the given solver and
-   *  increment its tier accordingly.
+   *  increment its cost accordingly.
    */
   void find_promotions_for_solver(step &s,
 				  const choice &solver)
@@ -2501,65 +2500,65 @@ private:
     for(typename boost::unordered_map<choice, promotion>::const_iterator it =
 	  triggered_promotions.begin();
 	it != triggered_promotions.end(); ++it)
-      increase_solver_tier_op(s, it->second, it->first);
+      increase_solver_cost(s, it->second, it->first);
   }
 
-  tier_operation get_intrinsic_solver_op(const choice &c)
+  cost get_intrinsic_solver_cost(const choice &c)
   {
     switch(c.get_type())
       {
       case choice::install_version:
-	return version_tier_ops[c.get_ver().get_id()];
+	return version_costs[c.get_ver().get_id()];
 
       case choice::break_soft_dep:
         return unfixed_soft_cost;
 
       default:
-	LOG_ERROR(logger, "get_intrinsic_solver_op: bad choice type: " << c);
-	return tier_operation();
+	LOG_ERROR(logger, "get_intrinsic_solver_cost: bad choice type: " << c);
+	return cost_limits::minimum_cost;
       }
   }
 
-  /** \brief Compute the basic tier information of a choice.
+  /** \brief Compute the basic cost information of a choice.
    *
-   *  This is the tier it will have unless it's hit by a promotion,
-   *  along with information about conditions on its tier.
+   *  This is the cost it will have unless it's hit by a promotion,
+   *  along with information about conditions on its cost.
    */
   void get_solver_intrinsic_promotion_with_deferrals(const choice &c,
-						     tier_operation &out_tier_op,
+						     cost &out_cost,
 						     cwidget::util::ref_ptr<expression_box<bool> > &out_c_is_deferred,
-						     cwidget::util::ref_ptr<expression<bool> > &out_tier_valid)
+						     cwidget::util::ref_ptr<expression<bool> > &out_cost_valid)
   {
-    // Right now only deferrals can be retracted; other tier
+    // Right now only deferrals can be retracted; other cost
     // assignments are immutable.
     out_c_is_deferred = build_is_deferred_listener(c);
 
-    out_tier_op = tier_operation();
+    out_cost = cost_limits::minimum_cost;
     if(out_c_is_deferred->get_value())
       {
-	out_tier_op = tier_limits::increase_to_defer_op;
-	out_tier_valid = out_c_is_deferred->get_child();
+	out_cost = cost_limits::defer_cost;
+	out_cost_valid = out_c_is_deferred->get_child();
       }
     else
       {
-	out_tier_valid = cwidget::util::ref_ptr<expression<bool> >();
-	out_tier_op = get_intrinsic_solver_op(c);
+	out_cost_valid = cwidget::util::ref_ptr<expression<bool> >();
+	out_cost = get_intrinsic_solver_cost(c);
       }
   }
 
-  /** \brief Get the intrinsic tier operation of a single solver.
+  /** \brief Get the intrinsic cost of a single solver.
    *
    *  Currently a convenience wrapper for
    *  get_solver_intrinsic_promotion.
    */
-  tier_operation get_solver_intrinsic_op_with_deferrals(const choice &c)
+  cost get_solver_intrinsic_cost_with_deferrals(const choice &c)
   {
-    tier_operation rval;
+    cost rval;
     cwidget::util::ref_ptr<expression_box<bool> > dummy_is_deferred;
-    cwidget::util::ref_ptr<expression<bool> > dummy_tier_valid;
+    cwidget::util::ref_ptr<expression<bool> > dummy_cost_valid;
 
     get_solver_intrinsic_promotion_with_deferrals(c, rval,
-						  dummy_is_deferred, dummy_tier_valid);
+						  dummy_is_deferred, dummy_cost_valid);
 
     return rval;
   }
@@ -2643,21 +2642,21 @@ private:
 	  }
       }
 
-    // The choice is added with its intrinsic tier to start with.
+    // The choice is added with its intrinsic cost to start with.
     // Later, in step 6 of the update algorithm, we'll find promotions
-    // that include the new solvers and update tiers appropriately.
-    tier_operation choice_tier_op;
+    // that include the new solvers and update costs appropriately.
+    cost choice_cost;
     cwidget::util::ref_ptr<expression_box<bool> > choice_is_deferred;
-    cwidget::util::ref_ptr<expression<bool> > choice_tier_valid;
-    get_solver_intrinsic_promotion_with_deferrals(solver, choice_tier_op, choice_is_deferred, choice_tier_valid);
+    cwidget::util::ref_ptr<expression<bool> > choice_cost_valid;
+    get_solver_intrinsic_promotion_with_deferrals(solver, choice_cost, choice_is_deferred, choice_cost_valid);
 
     LOG_TRACE(logger, "Adding the solver " << solver
-	      << " with initial tier operation " << choice_tier_op);
+	      << " with initial cost " << choice_cost);
     {
       typename step::solver_information
-	new_solver_inf(choice_tier_op,
+	new_solver_inf(choice_cost,
 		       choice_set(),
-		       choice_tier_valid,
+		       choice_cost_valid,
 		       choice_is_deferred);
       solvers.set_solver_information(solver, new_solver_inf);
     }
@@ -2677,102 +2676,102 @@ private:
     graph.bind_choice(solver, s.step_num, d);
   }
 
-  /** \brief Compute the greatest lower bound of the tier operations
+  /** \brief Compute the greatest lower bound of the costs
    *  of the solvers of a single dependency.
    */
-  class find_solvers_tier_op_lower_bound
+  class find_solvers_cost_lower_bound
   {
-    maybe<tier_operation> &output_tier_op;
+    maybe<cost> &output_cost;
 
   public:
-    find_solvers_tier_op_lower_bound(maybe<tier_operation> &_output_tier_op)
-      : output_tier_op(_output_tier_op)
+    find_solvers_cost_lower_bound(maybe<cost> &_output_cost)
+      : output_cost(_output_cost)
     {
-      output_tier_op = maybe<tier_operation>();
+      output_cost = maybe<cost>();
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &p) const
     {
-      const tier_operation &p_tier_op(p.second.get_tier_op());
+      const cost &p_cost(p.second.get_cost());
 
-      if(output_tier_op.get_has_value())
-	output_tier_op = tier_operation::greatest_lower_bound(output_tier_op.get_value(),
-							      p_tier_op);
+      if(output_cost.get_has_value())
+	output_cost = cost::greatest_lower_bound(output_cost.get_value(),
+                                                 p_cost);
       else
-	output_tier_op = p_tier_op;
+	output_cost = p_cost;
 
       return true;
     }
   };
 
   /** \brief Compute the upper bound of the lower bound of each
-   *  dependency's tier operations.
+   *  dependency's costs.
    *
    *  \note In principle, it should sometimes be possible to \e
-   *  compose tiers instead of upper-bounding them, yielding stronger
+   *  compose costs instead of upper-bounding them, yielding stronger
    *  results (and better promotions).  However, it's not safe to do
-   *  that unless we're sure that the tiers don't result from
+   *  that unless we're sure that the costs don't result from
    *  "overlapping subcases", and trying to compute precisely, or even
    *  somewhat imprecisely, when that's the case seems to be NP-hard
    *  (related to independent set).
    */
-  class find_dep_tier_op_upper_bound
+  class find_dep_cost_upper_bound
   {
-    tier_operation &output_tier_op;
+    cost &output_cost;
     generic_problem_resolver &resolver;
 
   public:
-    find_dep_tier_op_upper_bound(tier_operation &_output_tier_op,
-				 generic_problem_resolver &_resolver)
-      : output_tier_op(_output_tier_op), resolver(_resolver)
+    find_dep_cost_upper_bound(cost &_output_cost,
+                              generic_problem_resolver &_resolver)
+      : output_cost(_output_cost), resolver(_resolver)
     {
     }
 
     bool operator()(const std::pair<dep, typename step::dep_solvers> &p) const
     {
-      maybe<tier_operation> dep_tier_op;
+      maybe<cost> dep_cost;
 
-      p.second.for_each_solver(find_solvers_tier_op_lower_bound(dep_tier_op));
+      p.second.for_each_solver(find_solvers_cost_lower_bound(dep_cost));
 
-      tier_operation new_output_tier_op =
-	(dep_tier_op.get_has_value() && !output_tier_op.is_above_or_equal(dep_tier_op.get_value()))
-	? tier_operation::least_upper_bound(output_tier_op, dep_tier_op.get_value())
-	: output_tier_op;
+      cost new_output_cost =
+	(dep_cost.get_has_value() && !output_cost.is_above_or_equal(dep_cost.get_value()))
+	? cost::least_upper_bound(output_cost, dep_cost.get_value())
+	: output_cost;
 
-      if(output_tier_op != new_output_tier_op)
+      if(output_cost != new_output_cost)
 	{
-	  LOG_TRACE(resolver.logger, "Updating the tier operation from "
-		    << output_tier_op << " to "
-		    << new_output_tier_op << " for the dependency " << p.first);
-	  output_tier_op = new_output_tier_op;
+	  LOG_TRACE(resolver.logger, "Updating the cost from "
+		    << output_cost << " to "
+		    << new_output_cost << " for the dependency " << p.first);
+	  output_cost = new_output_cost;
 	}
 
       return true;
     }
   };
 
-  // Look for deferrals and increase the target tier operation to the
-  // deferral tier if necessary.
+  // Look for deferrals and increase the target cost to the
+  // deferral cost if necessary.
   class find_deferrals
   {
-    tier_operation &output_tier_op;
+    cost &output_cost;
     generic_problem_resolver &resolver;
 
   public:
-    find_deferrals(tier_operation &_output_tier_op,
+    find_deferrals(cost &_output_cost,
 		   generic_problem_resolver &_resolver)
-      : output_tier_op(_output_tier_op), resolver(_resolver)
+      : output_cost(_output_cost), resolver(_resolver)
     {
     }
 
     bool operator()(const choice &c) const
     {
-      tier_operation choice_op;
+      cost choice_cost;
 
       switch(c.get_type())
 	{
 	case choice::install_version:
-	  choice_op = resolver.version_tier_ops[c.get_ver().get_id()];
+	  choice_cost = resolver.version_costs[c.get_ver().get_id()];
 	  break;
 
 	default:
@@ -2780,30 +2779,30 @@ private:
 	}
 
       if(resolver.build_is_deferred_listener(c)->get_value() &&
-         !choice_op.is_above_or_equal(tier_limits::increase_to_defer_op))
-	choice_op = tier_operation::least_upper_bound(tier_limits::increase_to_defer_op,
-						      choice_op);
+         !choice_cost.is_above_or_equal(cost_limits::defer_cost))
+	choice_cost = cost::least_upper_bound(cost_limits::defer_cost,
+                                              choice_cost);
 
-      const tier_operation new_output_tier_op =
-	tier_operation::least_upper_bound(output_tier_op, choice_op);
+      const cost new_output_cost =
+	cost::least_upper_bound(output_cost, choice_cost);
 
-      if(output_tier_op != new_output_tier_op)
+      if(output_cost != new_output_cost)
 	{
-	  LOG_TRACE(resolver.logger, "Updating the tier operation from "
-		    << output_tier_op << " to "
-		    << new_output_tier_op
+	  LOG_TRACE(resolver.logger, "Updating the cost from "
+		    << output_cost << " to "
+		    << new_output_cost
 		    << " for the action " << c);
-	  output_tier_op = new_output_tier_op;
+	  output_cost = new_output_cost;
 	}
 
       return true;
     }
   };
 
-  /** \brief Recompute a step's effective tier from scratch.
+  /** \brief Recompute a step's effective cost from scratch.
    *
    *  It is assumed that all the solvers in the step have the correct
-   *  tier; the recomputation is based on them.
+   *  cost; the recomputation is based on them.
    *
    *  This is a bit of a sledgehammer.  The places where this is used
    *  could be tuned to not need it; currently I'm just hoping it's
@@ -2813,13 +2812,13 @@ private:
    *  abilities of imm::set/imm::map; however, as noted above, I hope
    *  that this isn't invoked often enough for that to matter)
    */
-  void recompute_effective_step_tier_op(step &s)
+  void recompute_effective_step_cost(step &s)
   {
-    LOG_TRACE(logger, "Recomputing the final tier operation of step " << s.step_num
-	      << " (was " << s.final_step_tier_op << ")");
+    LOG_TRACE(logger, "Recomputing the final cost of step " << s.step_num
+	      << " (was " << s.final_step_cost << ")");
 
-    tier_operation new_tier_op(tier_limits::minimum_op);
-    s.unresolved_deps.for_each(find_dep_tier_op_upper_bound(new_tier_op, *this));
+    cost new_cost(cost_limits::minimum_cost);
+    s.unresolved_deps.for_each(find_dep_cost_upper_bound(new_cost, *this));
 
     // In addition to checking solvers, we need to check the action
     // set.  Look for existing promotions *and* for deferred entries.
@@ -2827,47 +2826,47 @@ private:
     // \todo Since this doesn't just find deferrals, it's really badly
     // named.  The name should be changed to something like
     // "find_deferrals_and_promotions".
-    s.actions.for_each(find_deferrals(new_tier_op, *this));
+    s.actions.for_each(find_deferrals(new_cost, *this));
 
-    tier_operation found_promotion =
-      promotions.find_highest_promotion_tier_op(s.actions);
+    cost found_promotion =
+      promotions.find_highest_promotion_cost(s.actions);
 
-    if(!new_tier_op.is_above_or_equal(found_promotion))
+    if(!new_cost.is_above_or_equal(found_promotion))
       {
-	tier_operation new_new_tier_op =
-	  tier_operation::least_upper_bound(new_tier_op,
-					    found_promotion);
+	cost new_new_cost =
+	  cost::least_upper_bound(new_cost,
+                                  found_promotion);
 
-	if(new_new_tier_op != new_tier_op)
+	if(new_new_cost != new_cost)
 	  {
-	    LOG_TRACE(logger, "Updating the tier operation from "
-		      << new_tier_op << " to "
-		      << new_new_tier_op
+	    LOG_TRACE(logger, "Updating the cost from "
+		      << new_cost << " to "
+		      << new_new_cost
 		      << " for a promotion.");
-	    new_tier_op = new_new_tier_op;
+	    new_cost = new_new_cost;
 	  }
       }
 
-    set_effective_step_tier_op(s.step_num, new_tier_op);
+    set_effective_step_cost(s.step_num, new_cost);
   }
 
-  // Calculate the tier operation of a dep-solvers set.
-  class calculate_tier
+  // Calculate the cost of a dep-solvers set.
+  class calculate_cost
   {
-    tier_operation &output_tier_op;
+    cost &output_cost;
 
   public:
-    calculate_tier(tier_operation &_output_tier_op)
-      : output_tier_op(_output_tier_op)
+    calculate_cost(cost &_output_cost)
+      : output_cost(_output_cost)
     {
-      output_tier_op = tier_limits::increase_to_maximum_op;
+      output_cost = cost_limits::maximum_structural_level_cost;
     }
 
     bool operator()(const std::pair<choice, typename step::solver_information> &entry) const
     {
-      output_tier_op =
-	tier_operation::greatest_lower_bound(entry.second.get_tier_op(),
-					     output_tier_op);
+      output_cost =
+	cost::greatest_lower_bound(entry.second.get_cost(),
+                                   output_cost);
 
       return true;
     }
@@ -2895,36 +2894,36 @@ private:
       // Correctness here depends on the fact that the reason set is
       // pre-generalized (the solver itself is already removed).
       output_reasons.insert_or_narrow(entry.second.get_reasons());
-      cwidget::util::ref_ptr<expression<bool> > tier_op_valid(entry.second.get_tier_op_valid());
-      if(tier_op_valid.valid())
-	output_valid_conditions.push_back(tier_op_valid);
+      cwidget::util::ref_ptr<expression<bool> > cost_valid(entry.second.get_cost_valid());
+      if(cost_valid.valid())
+	output_valid_conditions.push_back(cost_valid);
 
       return true;
     }
   };
 
   /** \brief If the given dependency solver set implies a promotion,
-   *         attempt to insert that promotion; also, update the tier
-   *         of the step to be at least the lowest tier of any of the
+   *         attempt to insert that promotion; also, update the cost
+   *         of the step to be at least the lowest cost of any of the
    *         solvers in the given list.
    *
    *  If the set is empty, this just inserts a conflict.
    */
-  void check_solvers_tier_op(step &s, const typename step::dep_solvers &solvers)
+  void check_solvers_cost(step &s, const typename step::dep_solvers &solvers)
   {
-    tier_operation t_op;
+    cost c;
     choice_set reasons;
     std::vector<cwidget::util::ref_ptr<expression<bool> > > valid_conditions;
 
-    solvers.for_each_solver(calculate_tier(t_op));
+    solvers.for_each_solver(calculate_cost(c));
 
-    // If no promotion would be emitted and the step tier wouldn't be
+    // If no promotion would be emitted and the step cost wouldn't be
     // changed, don't do anything.  The "apply" test effectively
-    // checks whether t_op consists only of maximizing operations that
-    // are below the current search tier, in which case there's no
+    // checks whether c consists only of maximizing operations that
+    // are below the current search cost, in which case there's no
     // point in saving it.
-    if(t_op + get_current_search_tier() == get_current_search_tier() &&
-       s.effective_step_tier_op.is_above_or_equal(t_op))
+    if(c + get_current_search_cost() == get_current_search_cost() &&
+       s.effective_step_cost.is_above_or_equal(c))
       return;
 
     solvers.for_each_solver(build_promotion(reasons, valid_conditions));
@@ -2959,49 +2958,49 @@ private:
       }
 
 
-    promotion p(reasons, t_op, valid_condition);
+    promotion p(reasons, c, valid_condition);
     LOG_TRACE(logger, "Emitting a new promotion " << p
 	      << " at step " << s.step_num);
 
     add_promotion(s.step_num, p);
-    increase_effective_step_tier_op(s, p);
+    increase_effective_step_cost(s, p);
   }
 
-  /** \brief Increases the effective tier of a single step. */
-  void increase_effective_step_tier_op(step &s,
-				       const promotion &p)
+  /** \brief Increases the effective cost of a single step. */
+  void increase_effective_step_cost(step &s,
+                                    const promotion &p)
   {
-    const tier_operation &p_tier_op(p.get_tier_op());
+    const cost &p_cost(p.get_cost());
 
-    if(!s.effective_step_tier_op.is_above_or_equal(p_tier_op))
+    if(!s.effective_step_cost.is_above_or_equal(p_cost))
       {
-        tier_operation new_effective_step_tier_op =
-          tier_operation::least_upper_bound(p_tier_op, s.effective_step_tier_op);
+        cost new_effective_step_cost =
+          cost::least_upper_bound(p_cost, s.effective_step_cost);
 
-        set_effective_step_tier_op(s.step_num, new_effective_step_tier_op);
+        set_effective_step_cost(s.step_num, new_effective_step_cost);
       }
   }
 
-  // Increases the tier of each dependency in each dependency list
-  // this is applied to.  Helper for increase_solver_tier.
-  struct do_increase_solver_tier_op
+  // Increases the cost of each dependency in each dependency list
+  // this is applied to.  Helper for increase_solver_cost.
+  struct do_increase_solver_cost
   {
     step &s;
-    const tier_operation &new_tier_op;
+    const cost &new_cost;
     const choice_set &new_choices;
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
     generic_problem_resolver &resolver;
     log4cxx::LoggerPtr logger;
 
   public:
-    do_increase_solver_tier_op(step &_s,
-			       const tier_operation &_new_tier_op,
-			       const choice_set &_new_choices,
-			       const cwidget::util::ref_ptr<expression<bool> > &_valid_condition,
-			       generic_problem_resolver &_resolver,
-			       const log4cxx::LoggerPtr &_logger)
+    do_increase_solver_cost(step &_s,
+                            const cost &_new_cost,
+                            const choice_set &_new_choices,
+                            const cwidget::util::ref_ptr<expression<bool> > &_valid_condition,
+                            generic_problem_resolver &_resolver,
+                            const log4cxx::LoggerPtr &_logger)
       : s(_s),
-	new_tier_op(_new_tier_op),
+	new_cost(_new_cost),
 	new_choices(_new_choices),
 	valid_condition(_valid_condition),
 	resolver(_resolver),
@@ -3041,18 +3040,18 @@ private:
 		  const typename step::solver_information &old_inf =
 		    *solver_found;
 
-		  // Don't do anything if the tier operation won't
+		  // Don't do anything if the cost won't
 		  // increase.  Empirically, the resolver was wasting
-		  // lots of time and memory increasing tiers when the
-		  // solver tiers hadn't actually changed.
-                  if(!old_inf.get_tier_op().is_above_or_equal(new_tier_op))
+		  // lots of time and memory increasing costs when the
+		  // solver costs hadn't actually changed.
+                  if(!old_inf.get_cost().is_above_or_equal(new_cost))
                     {
-                      tier_operation updated_solver_tier_op =
-                        tier_operation::least_upper_bound(old_inf.get_tier_op(),
-                                                          new_tier_op);
+                      cost updated_solver_cost =
+                        cost::least_upper_bound(old_inf.get_cost(),
+                                                new_cost);
 
 		      typename step::solver_information
-			new_inf(updated_solver_tier_op,
+			new_inf(updated_solver_cost,
 				new_choices,
 				valid_condition,
 				old_inf.get_is_deferred_listener());
@@ -3061,10 +3060,10 @@ private:
 		      typename step::flyweight_dep_solvers
 			memoized_new_solvers(new_solvers);
 		      s.unresolved_deps.put(d, memoized_new_solvers);
-		      resolver.check_solvers_tier_op(s, new_solvers);
+		      resolver.check_solvers_cost(s, new_solvers);
 
-		      LOG_TRACE(logger, "Increased the tier operation of "
-				<< solver_with_dep << " to " << updated_solver_tier_op
+		      LOG_TRACE(logger, "Increased the cost of "
+				<< solver_with_dep << " to " << updated_solver_cost
 				<< " in the solvers list of "
 				<< d << " in step " << s.step_num
 				<< " with the reason set " << new_choices
@@ -3080,30 +3079,31 @@ private:
     }
   };
 
-  /** \brief Increase the tier of a solver (for instance, because a
+  /** \brief Increase the cost of a solver (for instance, because a
    *  new incipient promotion was detected).
    */
-  void increase_solver_tier_op(step &s,
-			       const promotion &p,
-			       const choice &solver)
+  void increase_solver_cost(step &s,
+                            const promotion &p,
+                            const choice &solver)
   {
     LOG_TRACE(logger, "Applying the promotion " << p
 	      << " to the solver " << solver
 	      << " in the step " << s.step_num);
-    const tier_operation &new_tier_op(p.get_tier_op());
-    // There are really two cases here: either the tier was increased
-    // to the point that the solver should be ejected, or the tier
+    const cost &new_cost(p.get_cost());
+    // There are really two cases here: either the cost was increased
+    // to the point that the solver should be ejected, or the cost
     // should just be bumped up a bit.  Either way, we might end up
-    // changing the tier of the whole step.
-    if(is_discard_op(new_tier_op + s.base_step_tier_op))
+    // changing the cost of the whole step.
+    if(is_discard_cost(new_cost + s.base_step_cost))
       {
 	// \todo this throws away information about whether we're at
-	// the already-generated tier.  This isn't that important,
-	// except that it means that the already-generated tier will
-	// become fairly meaningless.  I could store this information
-	// at the cost of a little extra space in every solver cell,
-	// or I could get rid of the already-generated tier (just use
-	// the conflict tier), or I could not worry about it.
+	// the already-generated structural level.  This isn't that
+	// important, except that it means that the already-generated
+	// level will become fairly meaningless.  I could store this
+	// information at the cost of a little extra space in every
+	// solver cell, or I could get rid of the already-generated
+	// level (just use the conflict level), or I could not worry
+	// about it.
 
 	strike_choice(s, solver, p.get_choices());
       }
@@ -3115,34 +3115,34 @@ private:
 	const cwidget::util::ref_ptr<expression<bool> > &
 	  valid_condition(p.get_valid_condition());
 
-	LOG_TRACE(logger, "Increasing the tier operation of " << solver
-		  << " to " << new_tier_op << " in all solver lists in step "
+	LOG_TRACE(logger, "Increasing the cost of " << solver
+		  << " to " << new_cost << " in all solver lists in step "
 		  << s.step_num << " with the reason set " << new_choices);
 
-	do_increase_solver_tier_op
-	  do_increase_solver_tier_op_f(s,
-				       new_tier_op,
-				       new_choices,
-				       valid_condition,
-				       *this,
-				       logger);
+	do_increase_solver_cost
+	  do_increase_solver_cost_f(s,
+                                    new_cost,
+                                    new_choices,
+                                    valid_condition,
+                                    *this,
+                                    logger);
 
 	s.deps_solved_by_choice.for_each_key_contained_in(solver,
-							  do_increase_solver_tier_op_f);
+							  do_increase_solver_cost_f);
       }
   }
 
-  /** \brief Increase the tier operation of each solver that it's
+  /** \brief Increase the cost of each solver that it's
    *  applied to.
    */
-  class do_increase_solver_tier_op_everywhere
+  class do_increase_solver_cost_everywhere
   {
     generic_problem_resolver &r;
     const choice &solver;
     const promotion &p;
 
   public:
-    do_increase_solver_tier_op_everywhere(generic_problem_resolver &_r,
+    do_increase_solver_cost_everywhere(generic_problem_resolver &_r,
 					  const choice &_solver,
 					  const promotion &_p)
       : r(_r), solver(_solver), p(_p)
@@ -3158,33 +3158,33 @@ private:
       switch(tp)
 	{
 	case search_graph::choice_mapping_solver:
-	  r.increase_solver_tier_op(s, p, solver);
+	  r.increase_solver_cost(s, p, solver);
 	  break;
 
 	case search_graph::choice_mapping_action:
-	  r.increase_effective_step_tier_op(s, p);
+	  r.increase_effective_step_cost(s, p);
 	}
 
       return true;
     }
   };
 
-  /** \brief Increase the tier operation of a solver everywhere it
+  /** \brief Increase the cost of a solver everywhere it
    *  appears with the same dependency: that is, both in solver lists
    *  and in action sets.
    */
-  void increase_solver_tier_op_everywhere_with_dep(const choice &solver,
+  void increase_solver_cost_everywhere_with_dep(const choice &solver,
 						   const promotion &p)
   {
-    LOG_TRACE(logger, "Increasing the tier of " << solver
+    LOG_TRACE(logger, "Increasing the cost of " << solver
 	      << " according to the promotion " << p
 	      << " in all active steps.");
-    do_increase_solver_tier_op_everywhere
-      increase_solver_tier_op_everywhere_f(*this, solver, p);
+    do_increase_solver_cost_everywhere
+      increase_solver_cost_everywhere_f(*this, solver, p);
 
     graph.for_each_step_related_to_choice_with_dep(solver,
 						   solver.get_dep(),
-						   increase_solver_tier_op_everywhere_f);
+						   increase_solver_cost_everywhere_f);
   }
 
   class do_find_promotions_for_solver
@@ -3277,7 +3277,7 @@ private:
     s.unresolved_deps_by_num_solvers.insert(std::make_pair(num_solvers, d));
 
     find_promotions_for_dep_solvers(s, d);
-    check_solvers_tier_op(s, solvers);
+    check_solvers_cost(s, solvers);
   }
 
   /** \brief Find all the dependencies that are unresolved in step s
@@ -3370,7 +3370,7 @@ private:
 
     for(typename boost::unordered_map<choice, promotion>::const_iterator it =
 	  output.begin(); it != output.end(); ++it)
-      increase_solver_tier_op(s, it->second, it->first);
+      increase_solver_cost(s, it->second, it->first);
   }
 
   /** \brief Update a step's score to compute its successor, given
@@ -3459,7 +3459,7 @@ private:
     // parent step right before generating its successors.  However,
     // sometimes one of the successors will output a promotion.  If
     // that promotion hits the parent step, then we have a problem:
-    // the child will be generated with the old tier (since the parent
+    // the child will be generated with the old cost (since the parent
     // doesn't have the promotion applied yet), but its position in
     // the queue of pending promotions will be after that promotion
     // (since it's set when the child is created).
@@ -3486,9 +3486,9 @@ private:
     // intrinsic *promotion*, on the other hand, includes information
     // about whether it's deferred.  The intrinsic promotion isn't
     // taken into account right here; later, we'll recompute the
-    // effective tier operation from scratch and include the intrinsic
+    // effective cost from scratch and include the intrinsic
     // promotion when we do.
-    tier_operation c_op = get_intrinsic_solver_op(c);
+    cost c_cost = get_intrinsic_solver_cost(c);
 
     // Copy all the state information over so we can work in-place on
     // the output set.
@@ -3506,9 +3506,9 @@ private:
     output.action_score = parent.action_score;
     output.score = parent.score;
     output.reason = c;
-    output.base_step_tier_op = c_op + parent.base_step_tier_op;
-    output.effective_step_tier_op = tier_operation();
-    output.final_step_tier_op = output.effective_step_tier_op + output.base_step_tier_op;
+    output.base_step_cost = c_cost + parent.base_step_cost;
+    output.effective_step_cost = cost_limits::minimum_cost;
+    output.final_step_cost = output.effective_step_cost + output.base_step_cost;
     output.is_deferred_listener = build_is_deferred_listener(c);
     output.unresolved_deps = parent.unresolved_deps;
     output.unresolved_deps_by_num_solvers = parent.unresolved_deps_by_num_solvers;
@@ -3519,7 +3519,7 @@ private:
 
     LOG_TRACE(logger, "Generating a successor to step " << parent.step_num
 	      << " for the action " << c
-	      << " with intrinsic tier operation " << c_op
+	      << " with intrinsic cost " << c_cost
 	      << " and outputting to step " << output.step_num);
 
     // We need a dependency to correctly generate the deferral
@@ -3533,7 +3533,7 @@ private:
     // will be used below (in steps 3, 4, 5, 6 and 7).
     output.actions.insert_or_narrow(c);
 
-    // Rescan the solvers list to find the new tier operation.  I
+    // Rescan the solvers list to find the new cost.  I
     // could also handle this incrementally using the powers of
     // immset.  However, I think it's probably not worth it: doing
     // that would make this case cheaper, but increasing a solver in
@@ -3544,7 +3544,7 @@ private:
     //
     // Of course, this must be performed after we update the action
     // set (above).
-    recompute_effective_step_tier_op(output);
+    recompute_effective_step_cost(output);
 
     // Don't do this, because it isn't necessary and will cause
     // trouble.
@@ -3582,7 +3582,7 @@ private:
 
     // 5. Find newly unsatisfied dependencies.  For each one that's
     // not in the unresolved map, add it to the unresolved map with
-    // its solvers paired with their intrinsic tier operations.
+    // its solvers paired with their intrinsic costs.
     // Structurally forbidden solvers are not added to the solvers
     // list; instead, they are used to create the initial list of
     // forcing reasons.  Also, insert the dependency into the
@@ -3604,10 +3604,11 @@ private:
     extend_score_to_new_step(output, c);
 
     LOG_TRACE(logger, "Generated step " << output.step_num
-	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.final_step_tier_op
+	      << " (" << output.actions.size() << " actions): " << output.actions << ";T" << output.final_step_cost
 	      << "S" << output.score);
 
-    if(is_discard_op(output.final_step_tier_op))
+    if(is_discard_cost(output.final_step_cost))
+      // TODO: this is wrong!  Should check for deferral, not discarding.
       ++num_deferred;
 
     pending.insert(output.step_num);
@@ -3646,7 +3647,7 @@ private:
       output.is_last_child = true;
 
       // It would be nice to save a promotion lookup later by passing
-      // the solver tier along here.  However, that runs into some
+      // the solver cost along here.  However, that runs into some
       // tricky issues with separating the intrinsic and extrinsic
       // operations on the solver.
       resolver.generate_single_successor(parent,
@@ -3693,7 +3694,7 @@ private:
 
     const typename step::dep_solvers &bestDepSolvers(bestSolvers.getVal().second);
     if(bestDepSolvers.get_solvers_size() == 0)
-      LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict tier.");
+      LOG_ERROR(logger, "Internal error: a step containing a dependency with no solvers was not promoted to the conflict structural level.");
 
     LOG_TRACE(logger, "Generating successors for step " << step_num
 	      << " for the dependency " << bestDepSolvers
@@ -3728,7 +3729,7 @@ public:
 			   int _unfixed_soft_score,
 			   int infinity,
 			   int _full_solution_score,
-                           const tier_operation &_unfixed_soft_cost,
+                           const cost &_unfixed_soft_cost,
 			   int _future_horizon,
 			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
@@ -3751,7 +3752,7 @@ public:
      closed(),
      promotions(_universe, *this),
      promotion_queue_tail(new promotion_queue_entry(0, 0)),
-     version_tier_ops(new tier_operation[_universe.get_version_count()])
+     version_costs(new cost[_universe.get_version_count()])
   {
     LOG_DEBUG(logger, "Creating new problem resolver: step_score = " << _step_score
 	      << ", broken_score = " << _broken_score
@@ -3798,7 +3799,7 @@ public:
 
   ~generic_problem_resolver()
   {
-    delete[] version_tier_ops;
+    delete[] version_costs;
   }
 
   /** \brief Get the dependencies that were initially broken in this
@@ -3898,13 +3899,13 @@ public:
   /** \brief Apply the given operation to search nodes that include
    * the given set of choices.
    *
-   *  If tier is defer_tier, the promotion will be lost when the user
-   *  changes the set of rejected packages.
+   *  If cost has a structural level of defer_level, the promotion
+   *  will be lost when the user changes the set of rejected packages.
    */
   void add_promotion(const choice_set &choices,
-		     const tier_operation &promotion_tier_op)
+		     const cost &promotion_cost)
   {
-    add_promotion(promotion(choices, promotion_tier_op));
+    add_promotion(promotion(choices, promotion_cost));
   }
 
   /** Tells the resolver how highly to value a particular package
@@ -3927,31 +3928,31 @@ public:
     weights.version_scores[ver.get_id()]+=score;
   }
 
-  /** \brief Set the tier operation of a version.
+  /** \brief Set the cost of a version.
    *
-   *  Overrides any previous tier operation that was set on this
+   *  Overrides any previous cost that was set on this
    *  version.  Should not be called once dependency resolution is
    *  running, or you'll get inconsistent results.
    */
-  void set_version_tier_op(const version &ver, const tier_operation &t_op)
+  void set_version_cost(const version &ver, const cost &c)
   {
     eassert(ver.get_id() < universe.get_version_count());
-    version_tier_ops[ver.get_id()] = t_op;
+    version_costs[ver.get_id()] = c;
   }
 
-  /** \brief Combine the given tier operation with the operation of
+  /** \brief Combine the given cost with the operation of
    *  the given version.
    *
    *  Should not be called once dependency resolution is running, or
    *  you'll get inconsistent results.
    */
-  void modify_version_tier_op(const version &ver,
-			      const tier_operation &t_op)
+  void modify_version_cost(const version &ver,
+			      const cost &c)
   {
     eassert(ver.get_id() < universe.get_version_count());
-    tier_operation &version_tier_op = version_tier_ops[ver.get_id()];
+    cost &version_cost = version_costs[ver.get_id()];
 
-    version_tier_op = version_tier_op + t_op;
+    version_cost = version_cost + c;
   }
 
   /** \return the score of the version ver. */
@@ -4196,7 +4197,7 @@ public:
     counts.conflicts  = promotions.conflicts_size();
     counts.promotions = promotions.size() - counts.conflicts;
     counts.finished   = finished;
-    counts.current_tier_op = get_current_search_tier();
+    counts.current_cost = get_current_search_cost();
   }
 
   /** If no resolver is running, run through the deferred list and
@@ -4213,16 +4214,16 @@ public:
       }
   }
 
-  /** \brief Returns the "current" search tier, the tier of the next
-   *  solution that would be considered (or minimum_search_tier if
+  /** \brief Returns the "current" search cost, the cost of the next
+   *  solution that would be considered (or the minimum cost if
    *  pending is empty).
    */
-  tier_operation get_current_search_tier() const
+  cost get_current_search_cost() const
   {
     if(pending.empty())
-      return tier_operation();
+      return cost_limits::minimum_cost;
     else
-      return graph.get_step(*pending.begin()).final_step_tier_op;
+      return graph.get_step(*pending.begin()).final_step_cost;
   }
 
 private:
@@ -4233,7 +4234,7 @@ private:
   {
     return
       !pending.empty() &&
-      graph.get_step(*pending.begin()).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level;
+      graph.get_step(*pending.begin()).final_step_cost.get_structural_level() < cost_limits::defer_structural_level;
   }
 
   /** \brief Returns \b true if the pending future solutions queue
@@ -4243,7 +4244,7 @@ private:
   {
     return
       !pending_future_solutions.empty() &&
-      graph.get_step(*pending_future_solutions.begin()).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level;
+      graph.get_step(*pending_future_solutions.begin()).final_step_cost.get_structural_level() < cost_limits::defer_structural_level;
   }
 
   // Counts how many action hits existed in a promotion, allowing up
@@ -4282,10 +4283,10 @@ private:
   /** \brief Apply a single promotion to a single step. */
   void apply_promotion(step &s, const promotion &p)
   {
-    if(s.effective_step_tier_op.is_above_or_equal(p.get_tier_op()))
+    if(s.effective_step_cost.is_above_or_equal(p.get_cost()))
       LOG_TRACE(logger, "Not applying " << p
-		<< " to step " << s.step_num << ": the step tier operation "
-		<< s.effective_step_tier_op << " is above the promotion tier operation.");
+		<< " to step " << s.step_num << ": the step cost "
+		<< s.effective_step_cost << " is above the promotion cost.");
     else
       {
 	LOG_TRACE(logger, "Testing the promotion " << p
@@ -4305,7 +4306,7 @@ private:
 	      {
 		LOG_TRACE(logger, "Step " << s.step_num
 			  << " contains " << p << " as an active promotion.");
-		increase_effective_step_tier_op(s, p);
+		increase_effective_step_cost(s, p);
 	      }
 	    else if(action_hits + 1 < p_size)
 	      LOG_TRACE(logger, "Step " << s.step_num
@@ -4323,7 +4324,7 @@ private:
 			  << " contains " << p
 			  << " as an incipient promotion for the choice "
 			  << *mismatch << ".");
-		increase_solver_tier_op(s, p, *mismatch);
+		increase_solver_cost(s, p, *mismatch);
 	      }
 	  }
       }
@@ -4399,11 +4400,11 @@ private:
 	    const promotion &p(non_incipient_promotion.get_value());
 	    LOG_TRACE(logger, "Found a new promotion in the action set of step "
 		      << step_num << ": " << p);
-	    increase_effective_step_tier_op(s, p);
+	    increase_effective_step_cost(s, p);
 	  }
 
 	// Note that some promotions might be generated as a result of
-	// increasing tiers; to be perfectly correct we should account
+	// increasing costs; to be perfectly correct we should account
 	// for those.  On the other hand, this might not be necessary;
 	// any promotions that are generated should by definition
 	// already be included in the step, correct?
@@ -4411,7 +4412,7 @@ private:
 	for(typename boost::unordered_map<choice, promotion>::const_iterator it =
 	      incipient_promotions.begin();
 	    it != incipient_promotions.end(); ++it)
-	  increase_solver_tier_op(s, it->second, it->first);
+	  increase_solver_cost(s, it->second, it->first);
       }
   }
 
@@ -4429,14 +4430,14 @@ private:
 	step &s = graph.get_step(step_num);
 
 	LOG_INFO(logger, "Examining step " << step_num
-		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.final_step_tier_op
+		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.final_step_cost
 		 << "S" << s.score);
 
-	if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level)
+	if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level)
 	  {
-	    LOG_ERROR(logger, "Internal error: the tier of step "
+	    LOG_ERROR(logger, "Internal error: the cost of step "
 		      << s.step_num
-		      << " is an unprocessed tier, so why is it a candidate?");
+		      << " is at an unprocessed structural level, so why is it a candidate?");
 	    // Bail out.
 	    return;
 	  }
@@ -4453,9 +4454,9 @@ private:
 	  {
 	    LOG_DEBUG(logger, "Dropping irrelevant step " << s.step_num);
 	  }
-	// The step might have been promoted to the defer tier by
+	// The step might have been promoted to the defer structural level by
 	// check_for_new_promotions.
-	else if(s.final_step_tier_op.get_structural_level() >= tier_limits::defer_structural_level)
+	else if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level)
 	  {
 	    LOG_DEBUG(logger, "Skipping newly deferred step " << s.step_num);
 	    // Stick it back into the open queue.
@@ -4472,7 +4473,7 @@ private:
 	    if(s.unresolved_deps.empty())
 	      {
 		LOG_INFO(logger, " --- Found solution at step " << s.step_num
-			 << ": " << s.actions << ";T" << s.final_step_tier_op
+			 << ": " << s.actions << ";T" << s.final_step_cost
 			 << "S" << s.score);
 
 		// Remember this solution, so we don't try to return it
@@ -4482,7 +4483,7 @@ private:
 		    it != s.actions.end(); ++it)
 		  generalized_actions.insert_or_narrow(it->generalize());
 		promotion already_generated_promotion(generalized_actions,
-						      tier_limits::increase_to_already_generated_op);
+						      cost_limits::already_generated_cost);
 		add_promotion(step_num, already_generated_promotion);
 
 		s.is_blessed_solution = true;
@@ -4496,7 +4497,7 @@ private:
 		// was a forced dependency and we should process that
 		// successor before returning.
 		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child &&
-		   graph.get_step(s.first_child).final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
+		   graph.get_step(s.first_child).final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
 		  {
 		    LOG_TRACE(logger, "Following forced dependency resolution from step "
 			      << step_num << " to step " << s.first_child);
@@ -4582,9 +4583,9 @@ public:
 	if(initial_broken.empty())
 	  root.score += weights.full_solution_score;
 
-	root.base_step_tier_op = tier_operation();
-	root.effective_step_tier_op = tier_operation();
-	root.final_step_tier_op = tier_operation();
+	root.base_step_cost = cost_limits::minimum_cost;
+	root.effective_step_cost = cost_limits::minimum_cost;
+	root.final_step_cost = cost_limits::minimum_cost;
 	root.promotion_queue_location = promotion_queue_tail;
 
 	for(typename imm::set<dep>::const_iterator it = initial_broken.begin();
@@ -4592,7 +4593,7 @@ public:
 	  add_unresolved_dep(root, *it);
 
 	LOG_TRACE(logger, "Inserting the root at step " << root.step_num
-		  << " with tier " << root.final_step_tier_op);
+		  << " with cost " << root.final_step_cost);
 	pending.insert(root.step_num);
       }
 
@@ -4654,14 +4655,14 @@ public:
       {
 	int best_future_solution = *pending_future_solutions.begin();
 	step &best_future_solution_step = graph.get_step(best_future_solution);
-	if(best_future_solution_step.final_step_tier_op.get_structural_level() < tier_limits::defer_structural_level)
+	if(best_future_solution_step.final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
 	  {
 	    sanity_check_not_deferred(best_future_solution_step);
 
 	    solution rval(best_future_solution_step.actions,
 			  initial_state,
 			  best_future_solution_step.score,
-			  best_future_solution_step.final_step_tier_op);
+			  best_future_solution_step.final_step_cost);
 
 	    LOG_INFO(logger, " *** Converged after " << odometer << " steps.");
 

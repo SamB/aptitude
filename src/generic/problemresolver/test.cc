@@ -57,9 +57,9 @@ log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchGraph()
   return log4cxx::Logger::getLogger("aptitude.resolver.search.graph");
 }
 
-log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchTiers()
+log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchCosts()
 {
-  return log4cxx::Logger::getLogger("aptitude.resolver.search.tiers");
+  return log4cxx::Logger::getLogger("aptitude.resolver.search.costs");
 }
 
 // To make things easier, the tests are specified as plaintext files.
@@ -394,9 +394,8 @@ void run_test_file(istream &f, bool show_world)
 				  infinity,
 				  goal_score,
                                   // TODO: add the broken soft dep
-                                  // tier operation to the test input
-                                  // language.
-                                  tier_operation(),
+                                  // cost to the test input language.
+                                  cost_limits::minimum_cost,
 				  future_horizon,
 				  imm::map<dummy_universe::package, dummy_universe::version>(),
 				  universe);

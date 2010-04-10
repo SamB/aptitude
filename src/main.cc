@@ -478,7 +478,7 @@ namespace
     LevelPtr info = Level::getInfo();
 
     Loggers::getAptitudeResolverSearch()->setLevel(trace);
-    Loggers::getAptitudeResolverSearchTiers()->setLevel(info);
+    Loggers::getAptitudeResolverSearchCosts()->setLevel(info);
   }
 }
 

@@ -200,8 +200,8 @@ class ResolverTest : public CppUnit::TestFixture
   CPPUNIT_TEST(testInitialSetExclusion);
   CPPUNIT_TEST(testSimpleResolution);
   CPPUNIT_TEST(testSimpleBreakSoftDep);
-  CPPUNIT_TEST(testTierEffects);
-  CPPUNIT_TEST(testTierOperations);
+  CPPUNIT_TEST(testCostEffects);
+  CPPUNIT_TEST(testCostOperations);
   CPPUNIT_TEST(testInitialState);
   CPPUNIT_TEST(testJointScores);
   CPPUNIT_TEST(testDropSolutionSupersets);
@@ -263,7 +263,7 @@ private:
 							   parent.get_initial_state(),
 							   parent.get_score(),
 							   parent.get_action_score(),
-							   parent.get_tier()));
+							   parent.get_cost()));
   }
 
   /** Tests that the comparison operations on solutions work. */
@@ -307,7 +307,7 @@ private:
     // the set of unsolved soft deps.
     dummy_solution s0 = dummy_solution::root_node(u_broken,
 						  u, weights, initial_state,
-						  tier());
+						  cost());
     dummy_solution s1
       = unsafe_successor(s0, &c1, &c1 + 1);
     dummy_solution s2
@@ -383,7 +383,7 @@ private:
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -412,7 +412,7 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_4);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -503,7 +503,7 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_4_not_soft);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -592,7 +592,7 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_5);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -643,7 +643,7 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_5);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -693,7 +693,7 @@ private:
 
     dummy_universe_ref u = parseUniverse(dummy_universe_6);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -757,7 +757,7 @@ private:
     const int full_solution_score = 50000;
     dummy_resolver r(step_score, -300, unfixed_soft_score,
 		     100000, full_solution_score,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -814,7 +814,7 @@ private:
     const int full_solution_score = 50000;
     dummy_resolver r(step_score, -300, unfixed_soft_score,
 		     100000, full_solution_score,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      50,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
@@ -841,10 +841,10 @@ private:
 			 3 * step_score + unfixed_soft_score + full_solution_score);
   }
 
-  void testTierEffects()
+  void testCostEffects()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierEffects"));
-    LOG_TRACE(logger, "Entering testTierEffects");
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testCostEffects"));
+    LOG_TRACE(logger, "Entering testCostEffects");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
@@ -865,13 +865,13 @@ private:
     choice_set av2_choices;
     av2_choices.insert_or_narrow(choice::make_install_version(av2, 0));
 
-    LOG_TRACE(logger, "Verifying that without a tier the shortest solution is produced first and there are two solutions.");
+    LOG_TRACE(logger, "Verifying that without a cost the shortest solution is produced first and there are two solutions.");
 
-    // Verify that without a tier we get the shorter solution first.
+    // Verify that without a cost we get the shorter solution first.
     // Without this we aren't testing anything!
     {
       dummy_resolver r(10, -300, -100, 100000, 50000,
-                       tier_operation(),
+                       cost_limits::minimum_cost,
                        50,
 		       imm::map<dummy_universe::package, dummy_universe::version>(),
 		       u);
@@ -922,20 +922,20 @@ private:
       CPPUNIT_ASSERT_MESSAGE("Expected two solutions, got more.", done);
     }
 
-    LOG_TRACE(logger, "Checking that adjusting tiers changes the output.");
+    LOG_TRACE(logger, "Checking that adjusting costs changes the output.");
 
-    // Now check that adjusting tiers changes the output.
+    // Now check that adjusting costs changes the output.
     {
       dummy_resolver r(10, -300, -100, 100000, 50000,
-                       tier_operation(),
+                       cost_limits::minimum_cost,
                        50,
 		       imm::map<dummy_universe::package, dummy_universe::version>(),
 		       u);
       r.set_version_score(av2, 1000);
       r.set_version_score(bv2, -100);
       r.set_version_score(cv2, -100);
-      r.set_version_tier_op(av2,
-			    tier_operation::make_advance_user_level(0, 100));
+      r.set_version_cost(av2,
+                         cost::make_advance_user_level(0, 100));
 
       solution sol;
       try
@@ -981,97 +981,97 @@ private:
     }
   }
 
-  void doTestTierOperations()
+  void doTestCostOperations()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testTierOperations"));
-    LOG_TRACE(logger, "Entering testTierOperations");
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testCostOperations"));
+    LOG_TRACE(logger, "Entering testCostOperations");
 
     LOG_TRACE(logger, "Testing basic above-or-equal relationships.");
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			   tier_operation() );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			   tier_operation::make_advance_structural_level(35) );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			   tier_operation::make_advance_structural_level(50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			       tier_operation::make_advance_structural_level(75) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			   cost_limits::minimum_cost );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			   cost::make_advance_structural_level(35) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			   cost::make_advance_structural_level(50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			       cost::make_advance_structural_level(75) );
 
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			   tier_operation() );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			   tier_operation::make_advance_user_level(1, 35) );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			   tier_operation::make_advance_user_level(1, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			       tier_operation::make_advance_user_level(1, 75) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			   cost_limits::minimum_cost );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			   cost::make_advance_user_level(1, 35) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			   cost::make_advance_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			       cost::make_advance_user_level(1, 75) );
 
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
-			   tier_operation() );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
-			   tier_operation::make_add_to_user_level(1, 35) );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
-			   tier_operation::make_add_to_user_level(1, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
-			       tier_operation::make_add_to_user_level(1, 75) );
-
-
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			       tier_operation::make_advance_user_level(1, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50),
-			       tier_operation::make_add_to_user_level(1, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			       tier_operation::make_add_to_user_level(1, 50) );
-
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			       tier_operation::make_advance_user_level(2, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50),
-			       tier_operation::make_add_to_user_level(2, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50),
-			       tier_operation::make_advance_user_level(2, 50) );
-
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50) +
-			   tier_operation::make_advance_user_level(2, 50),
-			   tier_operation::make_advance_user_level(2, 50) );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
-			   tier_operation::make_advance_user_level(2, 50),
-			   tier_operation::make_advance_user_level(2, 50) );
-    ASSERT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
-			   tier_operation::make_add_to_user_level(2, 50),
-			   tier_operation::make_add_to_user_level(2, 50) );
-
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_add_to_user_level(1, 50) +
-			       tier_operation::make_advance_user_level(2, 45),
-			       tier_operation::make_advance_user_level(2, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
-			       tier_operation::make_advance_user_level(2, 45),
-			       tier_operation::make_advance_user_level(2, 50) );
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
-			       tier_operation::make_add_to_user_level(2, 45),
-			       tier_operation::make_add_to_user_level(2, 50) );
-
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_user_level(1, 50) +
-			       tier_operation::make_advance_user_level(2, 45),
-			       tier_operation::make_advance_user_level(1, 45) +
-			       tier_operation::make_advance_user_level(2, 50) );
-
-    ASSERT_NOT_ABOVE_OR_EQUAL( tier_operation::make_advance_structural_level(50) +
-			       tier_operation::make_advance_user_level(2, 45),
-			       tier_operation::make_advance_structural_level(45) +
-			       tier_operation::make_advance_user_level(2, 50) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50),
+			   cost_limits::minimum_cost );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50),
+			   cost::make_add_to_user_level(1, 35) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50),
+			   cost::make_add_to_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50),
+			       cost::make_add_to_user_level(1, 75) );
 
 
-    // We will use three tier operations here:
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			       cost::make_advance_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50),
+			       cost::make_add_to_user_level(1, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			       cost::make_add_to_user_level(1, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			       cost::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50),
+			       cost::make_add_to_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50),
+			       cost::make_advance_user_level(2, 50) );
+
+    ASSERT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50) +
+			   cost::make_advance_user_level(2, 50),
+			   cost::make_advance_user_level(2, 50) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50) +
+			   cost::make_advance_user_level(2, 50),
+			   cost::make_advance_user_level(2, 50) );
+    ASSERT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50) +
+			   cost::make_add_to_user_level(2, 50),
+			   cost::make_add_to_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_add_to_user_level(1, 50) +
+			       cost::make_advance_user_level(2, 45),
+			       cost::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50) +
+			       cost::make_advance_user_level(2, 45),
+			       cost::make_advance_user_level(2, 50) );
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50) +
+			       cost::make_add_to_user_level(2, 45),
+			       cost::make_add_to_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_user_level(1, 50) +
+			       cost::make_advance_user_level(2, 45),
+			       cost::make_advance_user_level(1, 45) +
+			       cost::make_advance_user_level(2, 50) );
+
+    ASSERT_NOT_ABOVE_OR_EQUAL( cost::make_advance_structural_level(50) +
+			       cost::make_advance_user_level(2, 45),
+			       cost::make_advance_structural_level(45) +
+			       cost::make_advance_user_level(2, 50) );
+
+
+    // We will use three cost operations here:
     //
     // (advance: 100)
     // (nop, add: 2, add: 4)
     // (nop, add: 1, nop, advance: 5)
 
-    std::vector<tier_operation> ops;
-    ops.push_back(tier_operation::make_advance_structural_level(100));
-    ops.push_back(tier_operation::make_add_to_user_level(0, 2) +
-		  tier_operation::make_add_to_user_level(1, 4));
-    ops.push_back(tier_operation::make_add_to_user_level(0, 1) +
-		  tier_operation::make_advance_user_level(2, 5));
+    std::vector<cost> ops;
+    ops.push_back(cost::make_advance_structural_level(100));
+    ops.push_back(cost::make_add_to_user_level(0, 2) +
+		  cost::make_add_to_user_level(1, 4));
+    ops.push_back(cost::make_add_to_user_level(0, 1) +
+		  cost::make_advance_user_level(2, 5));
 
     LOG_TRACE(logger, "Checking that converting operations to strings works.");
 
@@ -1085,13 +1085,13 @@ private:
     LOG_TRACE(logger, "Checking that instantiating illegal operations fails.");
 
     // Test that instantiating illegal operations fails.
-    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, 0),
-			 NonPositiveTierAdditionException);
-    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(0, -1),
-			 NonPositiveTierAdditionException);
-    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(-1, 5),
+    CPPUNIT_ASSERT_THROW(cost::make_add_to_user_level(0, 0),
+			 NonPositiveCostAdditionException);
+    CPPUNIT_ASSERT_THROW(cost::make_add_to_user_level(0, -1),
+			 NonPositiveCostAdditionException);
+    CPPUNIT_ASSERT_THROW(cost::make_add_to_user_level(-1, 5),
 			 std::out_of_range);
-    CPPUNIT_ASSERT_THROW(tier_operation::make_advance_user_level(-1, 5),
+    CPPUNIT_ASSERT_THROW(cost::make_advance_user_level(-1, 5),
 			 std::out_of_range);
 
     LOG_TRACE(logger, "Testing that combining incompatible operations fails.");
@@ -1099,9 +1099,9 @@ private:
     // Test that combining incompatible operations fails.  Also, take
     // the opportunity to test a few additional operation
     // combinations.
-    const tier_operation incompatible1(tier_operation::make_add_to_user_level(0, 2) +
-				       tier_operation::make_advance_user_level(1, 6) +
-				       tier_operation::make_advance_user_level(2, 3));
+    const cost incompatible1(cost::make_add_to_user_level(0, 2) +
+                             cost::make_advance_user_level(1, 6) +
+                             cost::make_advance_user_level(2, 3));
 
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, advance: 6, advance: 3)"),
 			 boost::lexical_cast<std::string>(incompatible1));
@@ -1109,16 +1109,16 @@ private:
     CPPUNIT_ASSERT_EQUAL(std::string("(advance: 100, add: 2, advance: 6, advance: 3)"),
 			 boost::lexical_cast<std::string>(incompatible1 + ops[0]));
     CPPUNIT_ASSERT_EQUAL(std::string("(advance: 100, add: 2, advance: 6, advance: 3)"),
-			 boost::lexical_cast<std::string>(tier_operation::least_upper_bound(incompatible1, ops[0])));
+			 boost::lexical_cast<std::string>(cost::least_upper_bound(incompatible1, ops[0])));
     CPPUNIT_ASSERT_EQUAL(std::string("(nop)"),
-			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[0])));
+			 boost::lexical_cast<std::string>(cost::greatest_lower_bound(incompatible1, ops[0])));
 
     try
       {
-        tier_operation impossible = incompatible1 + ops[1];
-        CPPUNIT_FAIL("Expected a TierOperationMismatchException from " + boost::lexical_cast<std::string>(incompatible1) + " + " + boost::lexical_cast<std::string>(ops[1]) + ", got a result: " + boost::lexical_cast<std::string>(impossible));
+        cost impossible = incompatible1 + ops[1];
+        CPPUNIT_FAIL("Expected a CostOperationMismatchException from " + boost::lexical_cast<std::string>(incompatible1) + " + " + boost::lexical_cast<std::string>(ops[1]) + ", got a result: " + boost::lexical_cast<std::string>(impossible));
       }
-    catch(TierOperationMismatchException &)
+    catch(CostOperationMismatchException &)
       {
       }
     catch(...)
@@ -1128,10 +1128,10 @@ private:
 
     try
       {
-        tier_operation impossible = tier_operation::least_upper_bound(incompatible1, ops[1]);
-        CPPUNIT_FAIL("Expected a TierOperationMismatchException from lub(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
+        cost impossible = cost::least_upper_bound(incompatible1, ops[1]);
+        CPPUNIT_FAIL("Expected a CostOperationMismatchException from lub(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
       }
-    catch(TierOperationMismatchException &)
+    catch(CostOperationMismatchException &)
       {
       }
     catch(...)
@@ -1141,10 +1141,10 @@ private:
 
     try
       {
-        tier_operation impossible = tier_operation::greatest_lower_bound(incompatible1, ops[1]);
-        CPPUNIT_FAIL("Expected a TierOperationMismatchException from glb(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
+        cost impossible = cost::greatest_lower_bound(incompatible1, ops[1]);
+        CPPUNIT_FAIL("Expected a CostOperationMismatchException from glb(" + boost::lexical_cast<std::string>(incompatible1) + ", " + boost::lexical_cast<std::string>(ops[1]) + "), got a result: " + boost::lexical_cast<std::string>(impossible));
       }
-    catch(TierOperationMismatchException &)
+    catch(CostOperationMismatchException &)
       {
       }
     catch(...)
@@ -1153,37 +1153,37 @@ private:
       }
 
     // Just to be sure, test those again here:
-    CPPUNIT_ASSERT_THROW(incompatible1 + ops[1], TierOperationMismatchException);
-    CPPUNIT_ASSERT_THROW(tier_operation::least_upper_bound(incompatible1, ops[1]),
-                         TierOperationMismatchException);
-    CPPUNIT_ASSERT_THROW(tier_operation::greatest_lower_bound(incompatible1, ops[1]),
-                         TierOperationMismatchException);
+    CPPUNIT_ASSERT_THROW(incompatible1 + ops[1], CostOperationMismatchException);
+    CPPUNIT_ASSERT_THROW(cost::least_upper_bound(incompatible1, ops[1]),
+                         CostOperationMismatchException);
+    CPPUNIT_ASSERT_THROW(cost::greatest_lower_bound(incompatible1, ops[1]),
+                         CostOperationMismatchException);
 
     LOG_TRACE(logger, "Checking the outcome of some particular operation compositions.");
 
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 3, advance: 6, advance: 5)"),
 			 boost::lexical_cast<std::string>(incompatible1 + ops[2]));
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 2, advance: 6, advance: 5)"),
-			 boost::lexical_cast<std::string>(tier_operation::least_upper_bound(incompatible1, ops[2])));
+			 boost::lexical_cast<std::string>(cost::least_upper_bound(incompatible1, ops[2])));
     CPPUNIT_ASSERT_EQUAL(std::string("(nop, add: 1, nop, advance: 3)"),
-			 boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(incompatible1, ops[2])));
+			 boost::lexical_cast<std::string>(cost::greatest_lower_bound(incompatible1, ops[2])));
 
     LOG_TRACE(logger, "Testing out-of-bounds operations.");
 
     // Test out-of-bound operations.
-    CPPUNIT_ASSERT_THROW(tier_operation::make_add_to_user_level(1, INT_MAX) +
-			 tier_operation::make_add_to_user_level(1, 5),
-			 TierTooBigException);
+    CPPUNIT_ASSERT_THROW(cost::make_add_to_user_level(1, INT_MAX) +
+			 cost::make_add_to_user_level(1, 5),
+			 CostTooBigException);
 
     // Test rendering the initial operations:
-    std::vector<std::string> op_renderings;
-    op_renderings.push_back("(advance: 100)");
-    op_renderings.push_back("(nop, add: 2, add: 4)");
-    op_renderings.push_back("(nop, add: 1, nop, advance: 5)");
+    std::vector<std::string> cost_renderings;
+    cost_renderings.push_back("(advance: 100)");
+    cost_renderings.push_back("(nop, add: 2, add: 4)");
+    cost_renderings.push_back("(nop, add: 1, nop, advance: 5)");
 
-    // Input tiers and the tiers we expect to see after applying each operation.
+    // Input costs and the costs we expect to see after applying each operation.
 
-    LOG_TRACE(logger, "Testing sums, lubs, and glbs of three tier operations.");
+    LOG_TRACE(logger, "Testing sums, lubs, and glbs of three cost operations.");
 
     // Combined values.  Each vector is a matrix where [i][j] contains
     // the combination of entries i and j for i<=j.  Combined values
@@ -1194,32 +1194,32 @@ private:
 
     // Least upper bounds:
     std::vector<std::vector<std::string> > lubs(3, std::vector<std::string>(3, std::string()));
-    lubs[0][0] = op_renderings[0];
+    lubs[0][0] = cost_renderings[0];
     lubs[0][1] = "(advance: 100, add: 2, add: 4)";
     lubs[0][2] = "(advance: 100, add: 1, nop, advance: 5)";
 
     lubs[1][0] = lubs[0][1];
-    lubs[1][1] = op_renderings[1];
+    lubs[1][1] = cost_renderings[1];
     lubs[1][2] = "(nop, add: 2, add: 4, advance: 5)";
 
     lubs[2][0] = lubs[0][2];
     lubs[2][1] = lubs[1][2];
-    lubs[2][2] = op_renderings[2];
+    lubs[2][2] = cost_renderings[2];
 
     // Greatest lower bounds:
     std::vector<std::vector<std::string> > glbs(3, std::vector<std::string>(3, std::string()));
 
-    glbs[0][0] = op_renderings[0];
+    glbs[0][0] = cost_renderings[0];
     glbs[0][1] = "(nop)";
     glbs[0][2] = "(nop)";
 
     glbs[1][0] = glbs[0][1];
-    glbs[1][1] = op_renderings[1];
+    glbs[1][1] = cost_renderings[1];
     glbs[1][2] = "(nop, add: 1)";
 
     glbs[2][0] = glbs[0][2];
     glbs[2][1] = glbs[1][2];
-    glbs[2][2] = op_renderings[2];
+    glbs[2][2] = cost_renderings[2];
 
     // Sums:
     std::vector<std::vector<std::string> > sums(3, std::vector<std::string>(3, std::string()));
@@ -1239,28 +1239,28 @@ private:
 
     for(std::size_t i = 0; i < ops.size(); ++i)
       {
-        const tier_operation &op1(ops[i]);
+        const cost &cost1(ops[i]);
 
-        CPPUNIT_ASSERT_EQUAL(op_renderings[i], boost::lexical_cast<std::string>(op1));
+        CPPUNIT_ASSERT_EQUAL(cost_renderings[i], boost::lexical_cast<std::string>(cost1));
 
         for(std::size_t j = 0; j < ops.size(); ++j)
           {
-            const tier_operation &op2(ops[j]);
+            const cost &cost2(ops[j]);
 
-            std::string wheremsg = "(" + boost::lexical_cast<std::string>(op1) + ", " + boost::lexical_cast<std::string>(op2) + "); i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
+            std::string wheremsg = "(" + boost::lexical_cast<std::string>(cost1) + ", " + boost::lexical_cast<std::string>(cost2) + "); i=" + boost::lexical_cast<std::string>(i) + ", j=" + boost::lexical_cast<std::string>(j);
 
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("lub" + wheremsg, lubs[i][j], boost::lexical_cast<std::string>(tier_operation::least_upper_bound(op1, op2)));
-            CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], boost::lexical_cast<std::string>(tier_operation::greatest_lower_bound(op1, op2)));
-	    CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], boost::lexical_cast<std::string>(op1 + op2));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("lub" + wheremsg, lubs[i][j], boost::lexical_cast<std::string>(cost::least_upper_bound(cost1, cost2)));
+            CPPUNIT_ASSERT_EQUAL_MESSAGE("glb" + wheremsg, glbs[i][j], boost::lexical_cast<std::string>(cost::greatest_lower_bound(cost1, cost2)));
+	    CPPUNIT_ASSERT_EQUAL_MESSAGE("sum" + wheremsg, sums[i][j], boost::lexical_cast<std::string>(cost1 + cost2));
           }
       }
   }
 
-  void testTierOperations()
+  void testCostOperations()
   {
     try
       {
-        doTestTierOperations();
+        doTestCostOperations();
       }
     catch(const cwidget::util::Exception &ex)
       {
@@ -1292,7 +1292,7 @@ private:
     initial_state.put(c, cv2);
 
     dummy_resolver r(10, -300, -100, 10000000, 500,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      1,
 		     initial_state,
 		     u);
@@ -1366,7 +1366,7 @@ private:
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
     dummy_resolver r(10, -300, -100, 10000000, 500,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      500,
 		     imm::map<package, version>(),
 		     u);
@@ -1450,7 +1450,7 @@ private:
   {
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
     dummy_resolver r(10, -300, -100, 100000, 50000,
-                     tier_operation(),
+                     cost_limits::minimum_cost,
                      500000,
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);

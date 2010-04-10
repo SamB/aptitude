@@ -25,9 +25,9 @@
 
 std::ostream &operator<<(std::ostream &out, const level &l)
 {
-  if(l.get_value() == tier_limits::minimum_level)
+  if(l.get_value() == cost_limits::minimum_level)
     out << "minimum";
-  else if(l.get_value() == tier_limits::maximum_level)
+  else if(l.get_value() == cost_limits::maximum_level)
     out << "maximum";
   else
     out << l.get_value();
@@ -35,17 +35,17 @@ std::ostream &operator<<(std::ostream &out, const level &l)
   return out;
 }
 
-tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, combine_tag)
-  : structural_level(std::max<int>(op1.structural_level,
-				   op2.structural_level))
+cost::cost_impl::cost_impl(const cost_impl &cost1, const cost_impl &cost2, combine_tag)
+  : structural_level(std::max<int>(cost1.structural_level,
+				   cost2.structural_level))
 {
   // Straightforward merge (why doesn't STL have a merge that lets
   // you combine equivalent elements instead of just copying one
   // of them to the output?
   std::vector<std::pair<level_index, level> >::const_iterator
-    it1 = op1.actions.begin(), it2 = op2.actions.begin();
+    it1 = cost1.actions.begin(), it2 = cost2.actions.begin();
 
-  while(it1 != op1.actions.end() && it2 != op2.actions.end())
+  while(it1 != cost1.actions.end() && it2 != cost2.actions.end())
     {
       if(it1->first < it2->first)
 	{
@@ -66,13 +66,13 @@ tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, combine
 	}
     }
 
-  if(it1 != op1.actions.end())
-    actions.insert(actions.end(), it1, op1.actions.end());
-  else if(it2 != op2.actions.end())
-    actions.insert(actions.end(), it2, op2.actions.end());
+  if(it1 != cost1.actions.end())
+    actions.insert(actions.end(), it1, cost1.actions.end());
+  else if(it2 != cost2.actions.end())
+    actions.insert(actions.end(), it2, cost2.actions.end());
 }
 
-bool tier_operation::op_impl::is_above_or_equal(const op_impl &other) const
+bool cost::cost_impl::is_above_or_equal(const cost_impl &other) const
 {
   std::vector<std::pair<level_index, level> >::const_iterator
     it_this = actions.begin(), it_other = other.actions.begin();
@@ -111,7 +111,7 @@ bool tier_operation::op_impl::is_above_or_equal(const op_impl &other) const
   return is_greater_or_equal;
 }
 
-int tier_operation::op_impl::compare(const op_impl &other) const
+int cost::cost_impl::compare(const cost_impl &other) const
 {
   const int structural_level_cmp = aptitude::util::compare3(structural_level, other.structural_level);
   if(structural_level_cmp != 0)
@@ -120,7 +120,7 @@ int tier_operation::op_impl::compare(const op_impl &other) const
     return aptitude::util::compare3(actions, other.actions);
 }
 
-void tier_operation::op_impl::dump(std::ostream &out) const
+void cost::cost_impl::dump(std::ostream &out) const
 {
   out << "(";
   if(structural_level != INT_MIN)
@@ -160,19 +160,19 @@ void tier_operation::op_impl::dump(std::ostream &out) const
   out << ")";
 }
 
-tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, upper_bound_tag)
-  : structural_level(std::max<int>(op1.structural_level,
-				   op2.structural_level))
+cost::cost_impl::cost_impl(const cost_impl &cost1, const cost_impl &cost2, upper_bound_tag)
+  : structural_level(std::max<int>(cost1.structural_level,
+				   cost2.structural_level))
 {
-  actions.reserve(std::max<std::size_t>(op1.actions.size(), op2.actions.size()));
+  actions.reserve(std::max<std::size_t>(cost1.actions.size(), cost2.actions.size()));
 
   std::vector<std::pair<level_index, level> >::const_iterator
-    it1 = op1.actions.begin(),
-    it2 = op2.actions.begin();
+    it1 = cost1.actions.begin(),
+    it2 = cost2.actions.begin();
 
   const std::vector<std::pair<level_index, level> >::const_iterator
-    end1 = op1.actions.end(),
-    end2 = op2.actions.end();
+    end1 = cost1.actions.end(),
+    end2 = cost2.actions.end();
 
   while(it1 != end1 && it2 != end2)
     {
@@ -205,17 +205,17 @@ tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, upper_b
 		   it2, end2);
 }
 
-tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, lower_bound_tag)
-  : structural_level(std::min<int>(op1.structural_level,
-				   op2.structural_level))
+cost::cost_impl::cost_impl(const cost_impl &cost1, const cost_impl &cost2, lower_bound_tag)
+  : structural_level(std::min<int>(cost1.structural_level,
+				   cost2.structural_level))
 {
   std::vector<std::pair<level_index, level> >::const_iterator
-    it1 = op1.actions.begin(),
-    it2 = op2.actions.begin();
+    it1 = cost1.actions.begin(),
+    it2 = cost2.actions.begin();
 
   const std::vector<std::pair<level_index, level> >::const_iterator
-    end1 = op1.actions.end(),
-    end2 = op2.actions.end();
+    end1 = cost1.actions.end(),
+    end2 = cost2.actions.end();
 
   while(it1 != end1 && it2 != end2)
     {
@@ -235,7 +235,7 @@ tier_operation::op_impl::op_impl(const op_impl &op1, const op_impl &op2, lower_b
     }
 }
 
-level tier_operation::op_impl::get_user_level(level_index idx) const
+level cost::cost_impl::get_user_level(level_index idx) const
 {
 
   // "Slow" implementation right now because this isn't used much
@@ -248,24 +248,24 @@ level tier_operation::op_impl::get_user_level(level_index idx) const
   return level();
 }
 
-tier_operation tier_operation::least_upper_bound(const tier_operation &op1,
-                                                 const tier_operation &op2)
+cost cost::least_upper_bound(const cost &cost1,
+                             const cost &cost2)
 {
-  return tier_operation(op1, op2, upper_bound_tag());
+  return cost(cost1, cost2, upper_bound_tag());
 }
 
-tier_operation tier_operation::greatest_lower_bound(const tier_operation &op1,
-                                                    const tier_operation &op2)
+cost cost::greatest_lower_bound(const cost &cost1,
+                                const cost &cost2)
 {
-  return tier_operation(op1, op2, lower_bound_tag());
+  return cost(cost1, cost2, lower_bound_tag());
 }
 
-std::size_t hash_value(const tier_operation &op)
+std::size_t hash_value(const cost &cost)
 {
-  return op.get_hash_value();
+  return cost.get_hash_value();
 }
 
-std::ostream &operator<<(std::ostream &out, const tier_operation &t)
+std::ostream &operator<<(std::ostream &out, const cost &t)
 {
   t.dump(out);
 

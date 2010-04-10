@@ -103,17 +103,17 @@ class Promotion_SetTest : public CppUnit::TestFixture
     return rval;
   }
 
-  static tier_operation make_tier_op(int first_user_level)
+  static cost make_cost(int first_user_level)
   {
     return
-      tier_operation::make_advance_user_level(0, first_user_level);
+      cost::make_advance_user_level(0, first_user_level);
   }
 
-  static tier_operation make_tier_op(int first_user_level, int second_user_level)
+  static cost make_cost(int first_user_level, int second_user_level)
   {
     return
-      tier_operation::make_advance_user_level(0, first_user_level) +
-      tier_operation::make_advance_user_level(1, second_user_level);
+      cost::make_advance_user_level(0, first_user_level) +
+      cost::make_advance_user_level(1, second_user_level);
   }
 
   static void make_test_promotions(const dummy_universe_ref &u,
@@ -165,7 +165,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p1_choices;
     p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-    promotion p1(p1_choices, make_tier_op(100));
+    promotion p1(p1_choices, make_cost(100));
     expected_promotions.insert(p1);
     promotions.insert(p1);
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -176,7 +176,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     p2_choices.insert_or_narrow(make_install_version(av1));
     p2_choices.insert_or_narrow(make_install_version(bv2));
     p2_choices.insert_or_narrow(make_install_version(cv3));
-    promotion p2(p2_choices, make_tier_op(50));
+    promotion p2(p2_choices, make_cost(50));
     expected_promotions.insert(p2);
     promotions.insert(p2);
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -186,7 +186,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p3_choices;
     p3_choices.insert_or_narrow(make_install_version(av1));
     p3_choices.insert_or_narrow(make_install_version(bv2));
-    promotion p3(p3_choices, make_tier_op(75));
+    promotion p3(p3_choices, make_cost(75));
     expected_promotions.insert(p3);
     expected_promotions.erase(p2);
     promotions.insert(p3);
@@ -198,7 +198,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     p4_choices.insert_or_narrow(make_install_version(av1));
     p4_choices.insert_or_narrow(make_install_version(bv2));
     p4_choices.insert_or_narrow(make_install_version(cv1));
-    promotion p4(p4_choices, make_tier_op(10));
+    promotion p4(p4_choices, make_cost(10));
     promotions.insert(p4);
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -206,7 +206,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p5_choices;
     p5_choices.insert_or_narrow(make_install_version(bv2));
-    promotion p5(p5_choices, make_tier_op(30));
+    promotion p5(p5_choices, make_cost(30));
     expected_promotions.insert(p5);
     promotions.insert(p5);
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -215,7 +215,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
 
     choice_set p6_choices;
     p6_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p6(p6_choices, make_tier_op(125));
+    promotion p6(p6_choices, make_cost(125));
     expected_promotions.insert(p6);
     promotions.insert(p6);
     CPPUNIT_ASSERT_EQUAL(expected_promotions.size(), promotions.size());
@@ -225,7 +225,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p7_choices;
     p7_choices.insert_or_narrow(make_install_version(cv3));
     p7_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion p7(p7_choices, make_tier_op(125, 10));
+    promotion p7(p7_choices, make_cost(125, 10));
     expected_promotions.insert(p7);
     promotions.insert(p7);
     std::cout << expected_promotions << std::endl;
@@ -237,7 +237,7 @@ class Promotion_SetTest : public CppUnit::TestFixture
     choice_set p8_choices;
     p8_choices.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
     p8_choices.insert_or_narrow(make_install_version(cv2));
-    promotion p8(p8_choices, make_tier_op(50));
+    promotion p8(p8_choices, make_cost(50));
     expected_promotions.insert(p8);
     promotions.insert(p8);
     CPPUNIT_ASSERT_EQUAL(expected_promotions, get_promotions(promotions));
@@ -328,10 +328,10 @@ public:
     choice_set expected1_choices;
     expected1_choices.insert_or_narrow(make_install_version(cv3));
     expected1_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion expected1(expected1_choices, make_tier_op(125, 10));
+    promotion expected1(expected1_choices, make_cost(125, 10));
 
-    tier_operation found_op = p.find_highest_promotion_tier_op(search1);
-    CPPUNIT_ASSERT_EQUAL(expected1.get_tier_op(), found_op);
+    cost found_cost = p.find_highest_promotion_cost(search1);
+    CPPUNIT_ASSERT_EQUAL(expected1.get_cost(), found_cost);
 
     promotion found2 =
       p.find_highest_promotion_containing(search1, make_install_version(av1));
@@ -456,7 +456,7 @@ public:
     search2.insert_or_narrow(make_install_version(av1));
     search2.insert_or_narrow(make_install_version(bv1));
 
-    CPPUNIT_ASSERT(p.find_highest_promotion_tier_op(search2) == tier_operation());
+    CPPUNIT_ASSERT(p.find_highest_promotion_cost(search2) == cost_limits::minimum_cost);
     CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, make_install_version(av1)) == promotion());
     CPPUNIT_ASSERT(p.find_highest_promotion_containing(search2, make_install_version(bv1)) == promotion());
 
@@ -469,10 +469,10 @@ public:
     search3.insert_or_narrow(make_break_soft_dep(bv2d1));
 
     choice_set expected_choices3 = search3;
-    promotion expected3(expected_choices3, make_tier_op(125));
+    promotion expected3(expected_choices3, make_cost(125));
 
-    found_op = p.find_highest_promotion_tier_op(search3);
-    CPPUNIT_ASSERT_EQUAL(expected3.get_tier_op(), found_op);
+    found_cost = p.find_highest_promotion_cost(search3);
+    CPPUNIT_ASSERT_EQUAL(expected3.get_cost(), found_cost);
 
     found2 = p.find_highest_promotion_containing(search3, make_break_soft_dep(bv2d1));
     CPPUNIT_ASSERT_EQUAL(expected3, found2);
@@ -491,10 +491,10 @@ public:
     choice_set expected_choices4;
     expected_choices4.insert_or_narrow(make_install_version(av1));
     expected_choices4.insert_or_narrow(make_install_version(bv2));
-    promotion expected4(expected_choices4, make_tier_op(75));
+    promotion expected4(expected_choices4, make_cost(75));
 
-    found_op = p.find_highest_promotion_tier_op(search4);
-    CPPUNIT_ASSERT_EQUAL(expected4.get_tier_op(), found_op);
+    found_cost = p.find_highest_promotion_cost(search4);
+    CPPUNIT_ASSERT_EQUAL(expected4.get_cost(), found_cost);
 
     found2 = p.find_highest_promotion_containing(search4, make_install_version_from_dep_source(av1, av3d1));
     CPPUNIT_ASSERT_EQUAL(expected4, found2);
@@ -515,10 +515,10 @@ public:
 
     choice_set expected_choices5;
     expected_choices5.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-    promotion expected5(expected_choices5, make_tier_op(100));
+    promotion expected5(expected_choices5, make_cost(100));
 
-    found_op = p.find_highest_promotion_tier_op(search5);
-    CPPUNIT_ASSERT_EQUAL(expected5.get_tier_op(), found_op);
+    found_cost = p.find_highest_promotion_cost(search5);
+    CPPUNIT_ASSERT_EQUAL(expected5.get_cost(), found_cost);
 
     found2 = p.find_highest_promotion_containing(search5, make_install_version_from_dep_source(av1, av2d1));
     CPPUNIT_ASSERT_EQUAL(expected5, found2);
@@ -577,7 +577,7 @@ public:
     choice_set expected_choices5_2;
     expected_choices5_2.insert_or_narrow(make_install_version(av1));
     expected_choices5_2.insert_or_narrow(make_install_version(bv2));
-    promotion expected5_2(expected_choices5_2, make_tier_op(75));
+    promotion expected5_2(expected_choices5_2, make_cost(75));
     found2 = p.find_highest_promotion_containing(search5, make_install_version(bv2));
     CPPUNIT_ASSERT_EQUAL(expected5_2, found2);
 
@@ -617,7 +617,7 @@ public:
     search6.insert_or_narrow(make_install_version(bv3));
     search6.insert_or_narrow(make_install_version(cv2));
 
-    CPPUNIT_ASSERT(tier_operation() == p.find_highest_promotion_tier_op(search6));
+    CPPUNIT_ASSERT(cost_limits::minimum_cost == p.find_highest_promotion_cost(search6));
     CPPUNIT_ASSERT(promotion() == p.find_highest_promotion_containing(search6, make_install_version(bv3)));
     CPPUNIT_ASSERT(promotion() == p.find_highest_promotion_containing(search6, make_install_version(cv2)));
 
@@ -627,10 +627,10 @@ public:
     search7.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
     search7.insert_or_narrow(make_install_version(cv2));
 
-    promotion expected7(search7, make_tier_op(50));
+    promotion expected7(search7, make_cost(50));
 
-    found_op = p.find_highest_promotion_tier_op(search7);
-    CPPUNIT_ASSERT_EQUAL(expected7.get_tier_op(), found_op);
+    found_cost = p.find_highest_promotion_cost(search7);
+    CPPUNIT_ASSERT_EQUAL(expected7.get_cost(), found_cost);
 
     found2 = p.find_highest_promotion_containing(search7, make_install_version_from_dep_source(bv3, bv2d1));
     CPPUNIT_ASSERT_EQUAL(expected7, found2);
@@ -677,8 +677,8 @@ public:
 	{
 	  ++next;
 
-	  if(it->get_tier_op() == make_tier_op(50) ||
-	     it->get_tier_op() == make_tier_op(125, 10))
+	  if(it->get_cost() == make_cost(50) ||
+	     it->get_cost() == make_cost(125, 10))
 	    p.erase(it);
 
 	  it = next;
@@ -691,7 +691,7 @@ public:
       imm::set<promotion> expected_promotions;
       choice_set p1_choices;
       p1_choices.insert_or_narrow(make_install_version_from_dep_source(av1, av2d1));
-      promotion p1(p1_choices, make_tier_op(100));
+      promotion p1(p1_choices, make_cost(100));
       expected_promotions.insert(p1);
       p.insert(p1);
 
@@ -699,20 +699,20 @@ public:
       choice_set p2_choices;
       p2_choices.insert_or_narrow(make_install_version(av1));
       p2_choices.insert_or_narrow(make_install_version(bv2));
-      promotion p2(p2_choices, make_tier_op(75));
+      promotion p2(p2_choices, make_cost(75));
       expected_promotions.insert(p2);
       p.insert(p2);
 
 
       choice_set p3_choices;
       p3_choices.insert_or_narrow(make_install_version(bv2));
-      promotion p3(p3_choices, make_tier_op(30));
+      promotion p3(p3_choices, make_cost(30));
       expected_promotions.insert(p3);
       p.insert(p3);
 
       choice_set p4_choices;
       p4_choices.insert_or_narrow(make_break_soft_dep(bv2d1));
-      promotion p4(p4_choices, make_tier_op(125));
+      promotion p4(p4_choices, make_cost(125));
       expected_promotions.insert(p4);
       p.insert(p4);
 
@@ -735,10 +735,10 @@ public:
 
     choice_set expected_choices1;
     expected_choices1.insert_or_narrow(make_break_soft_dep(bv2d1));
-    promotion expected1(expected_choices1, make_tier_op(125));
+    promotion expected1(expected_choices1, make_cost(125));
 
-    tier_operation found_op = p.find_highest_promotion_tier_op(search1);
-    CPPUNIT_ASSERT_EQUAL(expected1.get_tier_op(), found_op);
+    cost found_cost = p.find_highest_promotion_cost(search1);
+    CPPUNIT_ASSERT_EQUAL(expected1.get_cost(), found_cost);
 
     promotion found_p = p.find_highest_promotion_containing(search1, make_install_version(av1));
     CPPUNIT_ASSERT(found_p == promotion());
@@ -759,7 +759,7 @@ public:
     search2.insert_or_narrow(make_install_version_from_dep_source(bv3, bv2d1));
     search2.insert_or_narrow(make_install_version(cv2));
 
-    CPPUNIT_ASSERT(tier_operation() == p.find_highest_promotion_tier_op(search2));
+    CPPUNIT_ASSERT(cost_limits::minimum_cost == p.find_highest_promotion_cost(search2));
     CPPUNIT_ASSERT(promotion() == p.find_highest_promotion_containing(search2, make_install_version_from_dep_source(bv3, bv2d1)));
     CPPUNIT_ASSERT(promotion() == p.find_highest_promotion_containing(search2, make_install_version(cv2)));
   }

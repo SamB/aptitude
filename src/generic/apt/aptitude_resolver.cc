@@ -49,18 +49,18 @@ namespace
   log4cxx::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
   log4cxx::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
   log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
-  log4cxx::LoggerPtr loggerTiers(aptitude::Loggers::getAptitudeResolverTiers());
+  log4cxx::LoggerPtr loggerCosts(aptitude::Loggers::getAptitudeResolverCosts());
 
   /** \brief If the given version is valid, find its maximum priority
    *  and return a raise-cost operation for that priority.
    */
-  tier_operation raise_priority_op(aptitude_resolver_cost_settings &settings,
-                                   const aptitude_resolver_version &ver,
-                                   pkgPolicy *policy,
-                                   aptitude_resolver_cost_settings::component &priority_component)
+  cost raise_priority_op(aptitude_resolver_cost_settings &settings,
+                         const aptitude_resolver_version &ver,
+                         pkgPolicy *policy,
+                         aptitude_resolver_cost_settings::component &priority_component)
   {
     if(!settings.is_component_relevant(priority_component))
-      return tier_operation();
+      return cost_limits::minimum_cost;
 
     pkgCache::VerIterator apt_ver(ver.get_ver());
 
@@ -78,10 +78,10 @@ namespace
           return settings.raise_cost(priority_component,
                                      apt_priority);
         else
-          return tier_operation();
+          return cost_limits::minimum_cost;
       }
     else
-      return tier_operation();
+      return cost_limits::minimum_cost;
   }
 }
 
@@ -538,6 +538,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
 	  return false;
 	}
     }
+  // This hint is for backwards compatibility ONLY.
   else if(action == "increase-tier-to")
     {
       if(start == hint.end())
@@ -688,6 +689,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
   else if(action == "approve")
     out = make_mandate(target, selection);
   else if(action == "increase-tier-to")
+    // This hint is for backwards-compatibility ONLY.
     out = make_raise_cost_component(target, selection, "safety", amt);
   else if(action == "add-to-cost-component")
     out = make_add_to_cost_component(target, selection, component_name, amt);
@@ -723,7 +725,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
 				     int unfixed_soft_score,
 				     int infinity,
 				     int resolution_score,
-                                     const tier_operation &unfixed_soft_cost,
+                                     const cost &unfixed_soft_cost,
 				     int future_horizon,
 				     const aptitude_resolver_cost_settings &_cost_settings,
 				     const imm::map<aptitude_resolver_package, aptitude_resolver_version> &initial_installations,
@@ -749,7 +751,7 @@ aptitude_resolver::aptitude_resolver(int step_score,
     cost_settings.get_or_create_component("safety", aptitude_resolver_cost_settings::maximized);
 
   int keep_all_level(aptitude_universe::get_keep_all_level());
-  tier_operation keep_all_tier_op(cost_settings.raise_cost(safety_component, keep_all_level));
+  cost keep_all_cost(cost_settings.raise_cost(safety_component, keep_all_level));
 
   set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
 
@@ -776,12 +778,12 @@ aptitude_resolver::aptitude_resolver(int step_score,
       if(discardNullSolution)
 	{
 	  LOG_DEBUG(loggerScores, "Rejecting the solution that reverts all the user's actions (" << keep_all_solution << ")");
-	  add_promotion(keep_all_solution, tier_limits::increase_to_conflict_op);
+	  add_promotion(keep_all_solution, cost_limits::conflict_cost);
 	}
-      else if(keep_all_tier_op != tier_operation())
+      else if(keep_all_cost != cost_limits::minimum_cost)
 	{
-	  LOG_DEBUG(loggerTiers, "Promoting the solution that reverts all the user's actions (" << keep_all_solution << ") to tier " << keep_all_tier_op);
-	  add_promotion(keep_all_solution, keep_all_tier_op);
+	  LOG_DEBUG(loggerCosts, "Giving solution that reverts all the user's actions (" << keep_all_solution << ") a cost of " << keep_all_cost);
+	  add_promotion(keep_all_solution, keep_all_cost);
 	}
     }
   else
@@ -1197,7 +1199,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	    << ", break_hold_score = " << break_hold_score
 	    << ", allow_break_holds_and_forbids = " << (allow_break_holds_and_forbids ? "true" : "false")
 	    << ", default_resolution_score = " << default_resolution_score);
-  LOG_TRACE(loggerTiers, "Setting up action scores; tier parameters: safe_level = " << safe_level
+  LOG_TRACE(loggerCosts, "Setting up action scores; tier parameters: safe_level = " << safe_level
 	    << ", keep_all_level = " << keep_all_level << ", remove_level = " << remove_level
 	    << ", break_hold_level = " << break_hold_level << ", non_default_level = "
 	    << non_default_level << ", remove_essential_level = " << remove_essential_level << ".");
@@ -1359,12 +1361,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		{
 		case hint::add_to_cost_component:
                   LOG_DEBUG(loggerScores, "** Adding " << h.get_amt() << " to the cost component \"" << h.get_component_name() << "\" for " << v);
-                  modify_version_tier_op(v, cost_settings.add_to_cost(component, h.get_amt()));
+                  modify_version_cost(v, cost_settings.add_to_cost(component, h.get_amt()));
                   break;
 
 		case hint::raise_cost_component:
                   LOG_DEBUG(loggerScores, "** Raising the cost component \"" << h.get_component_name() << "\" to " << h.get_amt() << " for " << v);
-                  modify_version_tier_op(v, cost_settings.raise_cost(component, h.get_amt()));
+                  modify_version_cost(v, cost_settings.raise_cost(component, h.get_amt()));
 		  break;
 
 		case hint::reject:
@@ -1395,12 +1397,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
           // change the behavior of the code while I'm changing the
           // mechanism used to set costs.  Less important but also a
           // consideration: this is a small optimization (since
-          // there's no point in updating the tier operation of the
-          // initial version of a package).
+          // there's no point in updating the cost of the initial
+          // version of a package).
           if(v != initial_state.version_of(p))
-            modify_version_tier_op(v, raise_priority_op(cost_settings,
-                                                        v, policy,
-                                                        priority_component));
+            modify_version_cost(v, raise_priority_op(cost_settings,
+                                                     v, policy,
+                                                     priority_component));
 
 	  // Remember, the initial version is the InstVer.
 	  if(v == initial_state.version_of(p))
@@ -1422,7 +1424,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  add_version_score(v, auto_score);
 		}
 
-	      // No change to the tier operation in this case.
+	      // No change to the cost in this case.
 	    }
 	  // Ok, if this version is selected it'll be a change.
 	  else if(apt_ver == p.get_pkg().CurrentVer())
@@ -1434,14 +1436,14 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << std::noshowpos << " for " << v
 			    << " because it is the currently installed version of a manually installed package  (" PACKAGE "::ProblemResolver::KeepScore).");
 		  add_version_score(v, keep_score);
-                  modify_version_tier_op(v,
-                                         cost_settings.add_to_cost(canceled_manual_actions_component, 1));
+                  modify_version_cost(v,
+                                      cost_settings.add_to_cost(canceled_manual_actions_component, 1));
 		}
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, safe_level)
-                                     + cost_settings.add_to_cost(canceled_actions_component, 1));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, safe_level)
+                                  + cost_settings.add_to_cost(canceled_actions_component, 1));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Tier)");
 	    }
@@ -1454,14 +1456,14 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			    << std::noshowpos << " for " << v
 			    << " because it represents the removal of a manually installed package  (" PACKAGE "::ProblemResolver::RemoveScore).");
 		  add_version_score(v, remove_score);
-                  modify_version_tier_op(v,
-                                         cost_settings.add_to_cost(removals_of_manual_component, 1));
+                  modify_version_cost(v,
+                                      cost_settings.add_to_cost(removals_of_manual_component, 1));
 		}
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, remove_level)
-                                     + cost_settings.add_to_cost(removals_component, 1));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, remove_level)
+                                  + cost_settings.add_to_cost(removals_component, 1));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << remove_level << " for " << v
 			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Tier)");
 	    }
@@ -1488,9 +1490,9 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		    }
 		}
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, safe_level));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, safe_level));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << safe_level << " for " << v
 			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Tier).");
 	    }
@@ -1508,10 +1510,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::NonDefaultScore).");
 	      add_version_score(v, non_default_score);
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, non_default_level)
-                                     + cost_settings.add_to_cost(non_default_versions_component, 1));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, non_default_level)
+                                  + cost_settings.add_to_cost(non_default_versions_component, 1));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << non_default_level << " for " << v
 			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Tier).");
 	    }
@@ -1532,10 +1534,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		  reject_version(v);
 		}
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, break_hold_level)
-                                     + cost_settings.add_to_cost(broken_holds_component, 1));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, break_hold_level)
+                                  + cost_settings.add_to_cost(broken_holds_component, 1));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << break_hold_level << " for " << v
 			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Tier).");
 	    }
@@ -1555,10 +1557,10 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 			"** Rejecting " << v << " because it represents removing an essential package.");
 	      reject_version(v);
 
-              modify_version_tier_op(v,
-                                     cost_settings.raise_cost(safety_component, remove_essential_level) +
-                                     cost_settings.add_to_cost(removed_essential_packages_component, 1));
-	      LOG_DEBUG(loggerTiers,
+              modify_version_cost(v,
+                                  cost_settings.raise_cost(safety_component, remove_essential_level) +
+                                  cost_settings.add_to_cost(removed_essential_packages_component, 1));
+	      LOG_DEBUG(loggerCosts,
 			"** Tier level raised to at least " << remove_essential_level << " for " << v
 			<< " because it represents removing an essential package.");
 	    }

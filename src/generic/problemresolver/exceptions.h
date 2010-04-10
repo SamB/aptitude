@@ -97,31 +97,31 @@ class DoubleRunException : public ProblemResolverError {
 };
 
 /** An exception indicating that something tried to add a nonpositive
- *  quantity to a tier.
+ *  quantity to a cost.
  */
-class NonPositiveTierAdditionException : public ProblemResolverError {
+class NonPositiveCostAdditionException : public ProblemResolverError {
   std::string errmsg() const
   {
-    return _("Tier increments must be strictly positive.");
+    return _("Cost increments must be strictly positive.");
   }
 };
 
-/** An exception indicating that a tier addition overflowed.
+/** An exception indicating that a cost addition overflowed.
  */
-class TierTooBigException : public ProblemResolverError {
+class CostTooBigException : public ProblemResolverError {
   std::string errmsg() const
   {
-    return _("The maximum tier value was exceeded.");
+    return _("The maximum cost value was exceeded.");
   }
 };
 
 /** An exception indicating that incompatible operations were applied
- *  to a tier.
+ *  to a cost.
  */
-class TierOperationMismatchException : public ProblemResolverError {
+class CostOperationMismatchException : public ProblemResolverError {
   std::string errmsg() const
   {
-    return _("A single tier level was both added and lower-bounded.");
+    return _("A single cost level was both added and lower-bounded.");
   }
 };
 

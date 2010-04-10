@@ -127,29 +127,28 @@ private:
 			   boost::flyweights::hashed_factory<hash_choice_set_with_hash> >
   choice_set_flyweight;
 
-  tier_operation t_op;
+  cost t_op;
   choice_set_flyweight reasons;
-  cwidget::util::ref_ptr<expression<bool> > tier_operation_valid;
+  cwidget::util::ref_ptr<expression<bool> > cost_valid;
   cwidget::util::ref_ptr<expression_box<bool> > is_deferred_listener;
 
 public:
   generic_solver_information()
     : t_op(),
       reasons(),
-      tier_operation_valid(),
+      cost_valid(),
       is_deferred_listener()
   {
   }
 
   /** \brief Create a new solver_information.
    *
-   *  \param _t_op    The tier operation of the associated solver.
-   *  \param _reason  The reasons for the solver's tier (other than
+   *  \param _t_op    The cost of the associated solver.
+   *  \param _reason  The reasons for the solver's cost (other than
    *                  the solver itself).
-   *  \param _tier_operation valid
-   *                  A pure expression indicating whether the tier
-   *                  operation of this solver is valid.  Used to
-   *                  create promotions.
+   *  \param _cost valid
+   *                  A pure expression indicating whether the cost of
+   *                  this solver is valid.  Used to create promotions.
    *  \param _is_deferred_listener
    *                  A side-effecting expression whose sub-expression
    *                  is true exactly when this solver violates a
@@ -157,31 +156,31 @@ public:
    *                  here to ensure that the expression remains alive
    *                  while this solver exists.
    */
-  generic_solver_information(const tier_operation &_t_op,
+  generic_solver_information(const cost &_t_op,
 			     const choice_set &_reasons,
-			     const cwidget::util::ref_ptr<expression<bool> > &_tier_operation_valid,
+			     const cwidget::util::ref_ptr<expression<bool> > &_cost_valid,
 			     const cwidget::util::ref_ptr<expression_box<bool> > &_is_deferred_listener)
     : t_op(_t_op), reasons(_reasons),
-      tier_operation_valid(_tier_operation_valid),
+      cost_valid(_cost_valid),
       is_deferred_listener(_is_deferred_listener)
   {
   }
 
-  /** \brief Retrieve the tier of the associated solver. */
-  const tier_operation &get_tier_op() const { return t_op; }
+  /** \brief Retrieve the cost of the associated solver. */
+  const cost &get_cost() const { return t_op; }
 
-  /** \brief Retrieve the reason that this solver has the tier
+  /** \brief Retrieve the reason that this solver has the cost
    *  that it does.
    */
   const choice_set &get_reasons() const { return reasons.get().get_choices(); }
 
   /** \brief Retrieve an expression that returns whether the
-   *  tier is valid (if true, the tier is always valid).
+   *  cost is valid (if true, the cost is always valid).
    */
   const cwidget::util::ref_ptr<expression<bool> > &
-  get_tier_op_valid() const
+  get_cost_valid() const
   {
-    return tier_operation_valid;
+    return cost_valid;
   }
 
   /** \brief Retrieve the listener that tracks whether the solver
@@ -208,7 +207,7 @@ public:
   std::size_t get_hash_value() const
   {
     std::size_t rval = 0;
-    boost::hash_combine(rval, tier_operation_valid.unsafe_get_ref());
+    boost::hash_combine(rval, cost_valid.unsafe_get_ref());
     boost::hash_combine(rval, is_deferred_listener.unsafe_get_ref());
     boost::hash_combine(rval, t_op);
     boost::hash_combine(rval, reasons.get().get_hash());
@@ -221,14 +220,14 @@ public:
    *  solver_informations are compared according to their fields.
    *  This comparison is used to memoize solver_information objects;
    *  the resolver is careful to ensure that solvers which can be
-   *  merged have the same deferred listeners and tier-valid
+   *  merged have the same deferred listeners and cost-valid
    *  expressions.
    */
   int compare(const generic_solver_information &other) const
   {
-    if(tier_operation_valid < other.tier_operation_valid)
+    if(cost_valid < other.cost_valid)
       return -1;
-    else if(other.tier_operation_valid < tier_operation_valid)
+    else if(other.cost_valid < cost_valid)
       return -1;
     else if(is_deferred_listener < other.is_deferred_listener)
       return -1;
@@ -236,11 +235,11 @@ public:
       return 1;
     else
       {
-	const int tier_operation_compare =
-	  aptitude::util::compare3<tier_operation>(t_op, other.t_op);
+	const int cost_compare =
+	  aptitude::util::compare3<cost>(t_op, other.t_op);
 
-	if(tier_operation_compare != 0)
-	  return tier_operation_compare;
+	if(cost_compare != 0)
+	  return cost_compare;
 	else
 	  return aptitude::util::compare3<choice_set>(reasons.get().get_choices(), other.reasons.get().get_choices());
       }
@@ -667,9 +666,9 @@ class generic_search_graph
   // Actually, *all* steps are stored, not just ones with pending
   // children: this lets us handle situations where promotions are
   // generated more than once for the same step (for instance, if a
-  // step eventually ends up at tier 40,000 but has one child that
-  // passes through tier 30,000, it will first be promoted to tier
-  // 30,000, then later to tier 40,000).
+  // step eventually ends up at cost 40,000 but has one child that
+  // passes through cost 30,000, it will first be promoted to cost
+  // 30,000, then later to cost 40,000).
   //
   // The lifetime of a step is as follows:
   //  (1) Created with no children, an initial intrinsic promotion,
@@ -700,12 +699,12 @@ public:
     // If true, this is the last child in its parent's child list.
     // Meaningless if parent is -1 (meaning there is no parent node).
     bool is_last_child : 1;
-    // If true, this step is a "blessed" solution.  The tier of a
-    // blessed solution cannot be increased above the deferral tier
-    // (hence it will not be discarded).  Blessed solutions are
-    // solutions that have been moved into the pending future
-    // solutions queue and are just waiting for the future solution
-    // "counter" to be exhausted.
+    // If true, this step is a "blessed" solution.  The cost of a
+    // blessed solution cannot be increased past the deferral
+    // structural level (hence it will not be discarded).  Blessed
+    // solutions are solutions that have been moved into the pending
+    // future solutions queue and are just waiting for the future
+    // solution "counter" to be exhausted.
     //
     // \todo One subtlety here: it would be nice if we could throw out
     // already-visited solutions if we found another solution that was
@@ -789,33 +788,33 @@ public:
      */
     int action_score;
 
-    /** \brief The tier operation induced by the actions performed at
+    /** \brief The cost induced by the actions performed at
      * this step.
      *
-     *  This is the tier *before* any forward-looking operations are
+     *  This is the cost *before* any forward-looking operations are
      *  applied to it.
      */
-    tier_operation base_step_tier_op;
+    cost base_step_cost;
 
     /** \brief The cumulative effect of all forward-looking operations
      *  applied to this step.
      *
-     *  Unlike base_step_tier, this can decrease from step to step
+     *  Unlike base_step_cost, this can decrease from step to step
      *  (which is why it's separated; it needs to be recomputed for
      *  each step).  This could be computed incrementally, but the
      *  natural way of doing that would require making a frequent
      *  operation (increasing this value) expensive to make an
      *  infrequent operation (creating a new step) less expensive.
      */
-    tier_operation effective_step_tier_op;
+    cost effective_step_cost;
 
-    /** \brief The tier of this step after taking into account
+    /** \brief The cost of this step after taking into account
      *  knowledge about the available solutions to its dependencies.
      *
-     *  This tier is step_tier combined with any inferred tier
+     *  This cost is base_step_cost combined with any inferred cost
      *  operations, and is used to sort the step in the search queue.
      */
-    tier_operation final_step_tier_op;
+    cost final_step_cost;
 
     /** \brief A side-effecting expression that fires when the most
      *  recently added action becomes deferred or un-deferred.
@@ -1507,7 +1506,7 @@ private:
   // Here t_op is the operation we're currently building.
   template<typename AddPromotion>
   bool add_child_promotions(int parentNum, int childNum, bool has_new_promotion,
-			    const choice_set &choices, const tier_operation &t_op,
+			    const choice_set &choices, const cost &t_op,
 			    const AddPromotion &addPromotion)
   {
     // Where to insert any promotions we run into.
@@ -1571,28 +1570,28 @@ private:
 	// Strip out the child's link before merging with the existing
 	// choice set.
 	p_choices.remove_overlaps(child.reason);
-	const tier_operation &p_tier_op(p.get_tier_op());
+	const cost &p_cost(p.get_cost());
 	// Augment the choice set with these new choices.  Narrowing
 	// is appropriate: anything matching the promotion should
 	// match all the choices we found.
 	new_choices.insert_or_narrow(p_choices);
 
-	const tier_operation new_tier_op =
-          (t_op.is_above_or_equal(p_tier_op)
+	const cost new_cost =
+          (t_op.is_above_or_equal(p_cost)
            ? t_op
-           : tier_operation::least_upper_bound(p_tier_op, t_op));
+           : cost::least_upper_bound(p_cost, t_op));
 
 	// TODO: We used to throw out promotions that were below their
-	// parent's tier.  In the new system this *might* correspond
-	// to having a tier operation less than or equal to the
-	// parent's amalgamated tier operation.  I'm not 100% sure of
-	// this, and it would require having access to the amalgamated
-	// operation, something I'm not going to code up since this
-	// routine is currently dead.
+	// parent's cost.  In the new system this *might* correspond
+	// to having a cost less than or equal to the parent's
+	// amalgamated cost.  I'm not 100% sure of this, and it would
+	// require having access to the amalgamated cost, something
+	// I'm not going to code up since this routine is currently
+	// dead.
 
 	if(child.is_last_child)
 	  {
-	    promotion new_promotion(new_choices, new_tier_op);
+	    promotion new_promotion(new_choices, new_cost);
 
 	    // Emit a new promotion.
 	    addPromotion(canonicalParentNum, new_promotion);
@@ -1611,7 +1610,7 @@ private:
 	    bool generated_anything =
 	      add_child_promotions(parentNum, childNum + 1,
 				   new_has_new_promotion,
-				   new_choices, new_tier_op,
+				   new_choices, new_cost,
 				   addPromotion);
 
 	    rval = rval || generated_anything;
@@ -1640,7 +1639,7 @@ private:
 
     if(add_child_promotions(stepNum, parentStep.first_child,
 			    false, parentStep.successor_constraints,
-			    tier_limits::increase_to_maximum_op,
+			    cost_limits::maximum_structural_level_cost,
 			    addPromotion))
       {
 	if(parentStep.parent != -1)
@@ -1791,17 +1790,17 @@ private:
   {
     bool operator()(const promotion &p) const
     {
-      const tier_operation &p_tier_op(p.get_tier_op());
+      const cost &p_cost(p.get_cost());
 
       return
-	p_tier_op.get_structural_level() >= tier_limits::defer_structural_level &&
-	p_tier_op.get_structural_level() < tier_limits::already_generated_structural_level;
+	p_cost.get_structural_level() >= cost_limits::defer_structural_level &&
+	p_cost.get_structural_level() < cost_limits::already_generated_structural_level;
     }
   };
 
 public:
   /** \brief Remove any propagated promotions from the deferred
-   *  tier.
+   *  cost.
    *
    *  This should be invoked when the set of deferred solutions might
    *  have changed.
@@ -1910,13 +1909,13 @@ public:
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_solver_information<PackageUniverse> &info)
 {
-  out << "(" << info.get_tier_op()
+  out << "(" << info.get_cost()
       << ":" << info.get_reasons();
 
-  if(info.get_tier_op_valid().valid())
+  if(info.get_cost_valid().valid())
     {
       out << "; V: ";
-      info.get_tier_op_valid()->dump(out);
+      info.get_cost_valid()->dump(out);
     }
 
   if(info.get_is_deferred_listener().valid())

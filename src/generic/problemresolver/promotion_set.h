@@ -49,8 +49,8 @@
 #include "cost.h"
 #include "cost_limits.h"
 
-/** \brief Represents a tier promotion: the knowledge that
- *  a set of choices forces a solution to a higher tier.
+/** \brief Represents a cost promotion: the knowledge that
+ *  a set of choices forces a solution to a higher cost.
  */
 template<typename PackageUniverse>
 class generic_promotion
@@ -61,7 +61,7 @@ public:
 
 private:
   choice_set choices;
-  tier_operation promotion_tier_operation;
+  cost promotion_cost;
   // An expression that is "true" when this promotion is valid and
   // "false" otherwise; it is NULL if the promotion is universally
   // valid.  Invalid promotions are culled from the promotion set.
@@ -73,35 +73,35 @@ private:
 
 public:
   generic_promotion()
-    : choices(), promotion_tier_operation(), valid_condition()
+    : choices(), promotion_cost(), valid_condition()
   {
   }
 
   /** \brief Create a new promotion. */
-  generic_promotion(const choice_set &_choices, const tier_operation &_promotion_tier_operation)
-    : choices(_choices), promotion_tier_operation(_promotion_tier_operation), valid_condition()
+  generic_promotion(const choice_set &_choices, const cost &_promotion_cost)
+    : choices(_choices), promotion_cost(_promotion_cost), valid_condition()
   {
   }
 
   /** \brief Create a new promotion with a validity condition. */
   generic_promotion(const choice_set &_choices,
-		    const tier_operation &_promotion_tier_operation,
+		    const cost &_promotion_cost,
 		    const cwidget::util::ref_ptr<expression<bool> > &_valid_condition)
     : choices(_choices),
-      promotion_tier_operation(_promotion_tier_operation),
+      promotion_cost(_promotion_cost),
       valid_condition(_valid_condition)
   {
   }
 
   const choice_set &get_choices() const { return choices; }
-  const tier_operation &get_tier_op() const { return promotion_tier_operation; }
+  const cost &get_cost() const { return promotion_cost; }
   const cwidget::util::ref_ptr<expression<bool> > &get_valid_condition() const { return valid_condition; }
 
   /** \brief Return a promotion representing both of the
    *  input promotions.
    *
-   *  The output promotion's tier is the least upper bound of the
-   *  input promotions' tiers.  If only one promotion was required to
+   *  The output promotion's cost is the least upper bound of the
+   *  input promotions' costs.  If only one promotion was required to
    *  achieve this upper bound, then a promotion that is sufficient
    *  will be selected and returned directly.  Otherwise, a new
    *  promotion will be created -- most likely expanding the trigger
@@ -111,21 +111,21 @@ public:
   static generic_promotion least_upper_bound(const generic_promotion &p1,
 					     const generic_promotion &p2)
   {
-    const tier_operation &p1_op(p1.get_tier_op());
-    const tier_operation &p2_op(p2.get_tier_op());
+    const cost &p1_cost(p1.get_cost());
+    const cost &p2_cost(p2.get_cost());
 
     // If the least upper bound has the same content as one of the two
     // promotions, return that promotion directly.
-    if(p1_op.is_above_or_equal(p2_op))
+    if(p1_cost.is_above_or_equal(p2_cost))
       return p1;
-    else if(p2_op.is_above_or_equal(p1_op))
+    else if(p2_cost.is_above_or_equal(p1_cost))
       return p2;
 
     // Otherwise we'll have to construct a new combined promotion,
     // being careful with regard to validity conditions and triggers.
 
-    tier_operation new_op =
-      tier_operation::least_upper_bound(p1_op, p2_op);
+    cost new_cost =
+      cost::least_upper_bound(p1_cost, p2_cost);
 
     const choice_set &p1_choices(p1.get_choices());
     const choice_set &p2_choices(p2.get_choices());
@@ -154,7 +154,7 @@ public:
     cwidget::util::ref_ptr<expression<bool> > new_valid =
       and_e::create(p1_valid, p2_valid);
 
-    return generic_promotion(new_choices, new_op, new_valid);
+    return generic_promotion(new_choices, new_cost, new_valid);
   }
 
   int compare(const generic_promotion &other) const
@@ -162,7 +162,7 @@ public:
     using aptitude::util::compare3;
 
     const int promotion_cmp =
-      compare3(promotion_tier_operation, other.promotion_tier_operation);
+      compare3(promotion_cost, other.promotion_cost);
 
     if(promotion_cmp != 0)
       return promotion_cmp;
@@ -177,7 +177,7 @@ public:
 
   bool operator==(const generic_promotion &other) const
   {
-    if(promotion_tier_operation != other.promotion_tier_operation)
+    if(promotion_cost != other.promotion_cost)
       return false;
 
     if(!(choices == other.choices))
@@ -188,7 +188,7 @@ public:
 
   bool operator!=(const generic_promotion &other) const
   {
-    if(promotion_tier_operation != other.promotion_tier_operation)
+    if(promotion_cost != other.promotion_cost)
       return true;
 
     if(!(choices == other.choices))
@@ -218,7 +218,7 @@ namespace aptitude
 template<typename PackageUniverse>
 std::ostream &operator<<(std::ostream &out, const generic_promotion<PackageUniverse> &p)
 {
-  out << "(T" << p.get_tier_op() << ": " << p.get_choices();
+  out << "(T" << p.get_cost() << ": " << p.get_choices();
 
   if(p.get_valid_condition().valid())
     // Output p.get_valid_condition() if it isn't null.
@@ -239,7 +239,7 @@ class promotion_set_callbacks
 };
 
 /** \brief Represents a set of "promotions": mappings from sets of
- *  choices to tier operations implied by those choices.
+ *  choices to costs implied by those choices.
  *
  *  Wraps up the various customizations of dense_setset for this case.
  *
@@ -248,13 +248,13 @@ class promotion_set_callbacks
  *
  *   1. We want to be able to find a set of choices quickly from a
  *      superset of its elements, and then resolve that set to the
- *      tier it matches (this requires indexing on version OR
+ *      cost it matches (this requires indexing on version OR
  *      dependency, depending on what type of choice we have).
  *
- *   2. When a new tier promotion is inserted, it should override any
+ *   2. When a new cost promotion is inserted, it should override any
  *      lower promotions that it is a subset of or equal to, but not
- *      higher ones.  Conversely, if a new tier promotion contains an
- *      existing promotion that has a higher tier, it should not be
+ *      higher ones.  Conversely, if a new cost promotion contains an
+ *      existing promotion that has a higher cost, it should not be
  *      inserted.
  *
  *   3. We need to be able to learn which promotions would match a
@@ -386,7 +386,7 @@ private:
       // case it is.
       if(parent == NULL)
 	{
-	  LOG_ERROR(aptitude::Loggers::getAptitudeResolverSearchTiers(),
+	  LOG_ERROR(aptitude::Loggers::getAptitudeResolverSearchCosts(),
 		    "Internal error: a promotion was ejected twice!");
 	  return;
 	}
@@ -875,8 +875,8 @@ private:
     // is true.  Each intersected promotion's validity condition is
     // thrown in here.
     mutable std::vector<cwidget::util::ref_ptr<expression<bool> > > rval_valid_conditions;
-    // The tier operation to return.
-    mutable tier_operation rval_op;
+    // The cost to return.
+    mutable cost rval_cost;
 
     log4cxx::LoggerPtr logger;
 
@@ -891,9 +891,9 @@ private:
       return rval_valid_conditions;
     }
 
-    const tier_operation &get_rval_op() const
+    const cost &get_rval_cost() const
     {
-      return rval_op;
+      return rval_cost;
     }
 
     bool operator()(entry_ref r) const
@@ -902,23 +902,23 @@ private:
 	{
 	  if(r->hit_count == r->p.get_choices().size())
 	    {
-	      if(r->p.get_tier_op().is_above_or_equal(rval_op))
+	      if(r->p.get_cost().is_above_or_equal(rval_cost))
 		{
-		  tier_operation new_op =
-		    tier_operation::least_upper_bound(r->p.get_tier_op(), rval_op);
+		  cost new_cost =
+		    cost::least_upper_bound(r->p.get_cost(), rval_cost);
 
 		  LOG_DEBUG(logger, "find_entry_subset_op: resetting the hit count for "
 			    << r->p << " to 0 and incorporating it into the result (return value: "
-			    << rval_op << " -> " << new_op);
+			    << rval_cost << " -> " << new_cost);
 
-		  rval_op = new_op;
+		  rval_cost = new_cost;
 		  rval_valid_conditions.push_back(r->p.get_valid_condition());
 		}
 	      else
 		LOG_TRACE(logger, "find_entry_subset_op: resetting the hit count for "
-			  << r->p << " to 0, but not incorporating it into the result, because its tier operation "
-			  << r->p.get_tier_op() << " is lower than the current highest tier operation "
-			  << rval_op);
+			  << r->p << " to 0, but not incorporating it into the result, because its cost "
+			  << r->p.get_cost() << " is lower than the current highest cost "
+			  << rval_cost);
 	    }
 	  else
 	    LOG_TRACE(logger, "find_entry_subset_op: " << r->p
@@ -939,8 +939,8 @@ private:
 
   /** \brief Retrieve all the supersets of the input set: entries
    *  whose trigger sets are supersets of the input promotion, and
-   *  whose tier operations are less than or equal to the input set's
-   *  tier operation (bearing mind that tier operations are only
+   *  whose costs are less than or equal to the input set's
+   *  cost (bearing mind that costs are only
    *  partially ordered).
    *
    *  As a side effect, resets all hit counts to 0.
@@ -954,9 +954,9 @@ private:
     std::vector<entry_ref> &output_entries;
     // How many hits to require from each entry we process.
     unsigned int required_hits;
-    // Tier operations smaller than or equal to this limit are not
+    // costs smaller than or equal to this limit are not
     // returned:
-    tier_operation maximum_tier_operation;
+    cost maximum_cost;
     log4cxx::LoggerPtr logger;
 
   public:
@@ -968,18 +968,18 @@ private:
      *                           that we are searching for supersets
      *                           of; only entries with this many hits
      *                           are returned.
-     *  \param _maximum_tier_operation     The maximum tier to examine; only entries
-     *                                     with this tier operation or lower are returned.
+     *  \param _maximum_cost     The maximum cost to examine; only entries
+     *                           with this cost or lower are returned.
      *  \param _logger           The logger to use to write messages
      *                           about this process.
      */
     find_entry_supersets_op(std::vector<entry_ref> &_output_entries,
 			    unsigned int _required_hits,
-			    const tier_operation &_maximum_tier_operation,
+			    const cost &_maximum_cost,
 			    const log4cxx::LoggerPtr &_logger)
       : output_entries(_output_entries),
 	required_hits(_required_hits),
-	maximum_tier_operation(_maximum_tier_operation),
+	maximum_cost(_maximum_cost),
 	logger(_logger)
     {
     }
@@ -988,13 +988,13 @@ private:
     {
       if(r->active)
 	{
-	  if(tier_operation::greatest_lower_bound(maximum_tier_operation,
-						  r->p.get_tier_op()) != r->p.get_tier_op())
+	  if(cost::greatest_lower_bound(maximum_cost,
+						  r->p.get_cost()) != r->p.get_cost())
 	    {
 	      LOG_DEBUG(logger, "find_entry_supersets_op: resetting the hit count for "
-		       << r->p << " to 0, but not returning it, because its tier operation "
-		       << r->p.get_tier_op() << " is not below the maximum tier operation "
-		       << maximum_tier_operation);
+		       << r->p << " to 0, but not returning it, because its cost "
+		       << r->p.get_cost() << " is not below the maximum cost "
+		       << maximum_cost);
 	    }
 	  else if(r->hit_count == required_hits)
 	    {
@@ -1026,9 +1026,9 @@ public:
    *
    *  Implements requirement (1).
    */
-  tier_operation find_highest_promotion_tier_op(const choice_set &choices) const
+  cost find_highest_promotion_cost(const choice_set &choices) const
   {
-    LOG_TRACE(logger, "Entering find_highest_promotion_tier_op(" << choices << ")");
+    LOG_TRACE(logger, "Entering find_highest_promotion_cost(" << choices << ")");
 
     traverse_intersections<increment_entry_count_op>
       increment_f(*this, true, increment_entry_count_op(logger));
@@ -1041,7 +1041,7 @@ public:
     // need to reset all the counters to 0 for the next run.
     choices.for_each(find_result_f);
 
-    return find_result.get_rval_op();
+    return find_result.get_rval_cost();
   }
 
   /** \brief A functor that, when applied to a Boolean value,
@@ -1119,7 +1119,7 @@ public:
    *
    *  Similar to find_entry_subset_op, but finds incipient subsets as
    *  well as subsets, and fills in a map with its results rather than
-   *  simply storing the single highest tier.
+   *  simply storing the single highest cost.
    */
   template<typename T>
   class find_incipient_entry_subset_op
@@ -1231,7 +1231,7 @@ public:
   };
 public:
 
-  /** \brief Find the highest-tier incipient promotion containing a
+  /** \brief Find the highest-cost incipient promotion containing a
    *  particular choice.
    *
    *  An incipient promotion is one that doesn't match now, but that
@@ -1242,12 +1242,12 @@ public:
    *                  Additional choices, one of which must be contained
    *                  in every incipient promotion.  The return values
    *                  are organized according to which of these choices
-   *                  each one contained, and only the highest-tier
+   *                  each one contained, and only the highest-cost
    *                  promotion for each choice is returned.
    *                  output_domain must be disjoint with choices.
    *  \param output_incipient   A map in which to store the results of the search.
    *                  Choices in output_domain that were matched are
-   *                  mapped to the highest-tier promotion that they
+   *                  mapped to the highest-cost promotion that they
    *                  would trigger.
    *  \param output_non_incipient   A location in which to store the
    *                  promotion, if any, that was found in the choice set
@@ -1450,7 +1450,7 @@ private:
   };
 
 public:
-  /** \brief Find a highest tier promotion that is a subset of the
+  /** \brief Find a highest cost promotion that is a subset of the
    *  given set of choices *and* that contains the given choice.
    *
    *  Implements requirement (1).
@@ -1504,7 +1504,7 @@ public:
 	    if(contains_match)
 	      {
 		promotion upper_bound = promotion::least_upper_bound(rval, p);
-		if(upper_bound.get_tier_op() != rval.get_tier_op())
+		if(upper_bound.get_cost() != rval.get_cost())
 		  {
 		    LOG_TRACE(logger, "find_highest_promotion_containing: found a new promotion: " << p
 			      << " (previous promotion was " << rval
@@ -1518,7 +1518,7 @@ public:
       }
   }
 
-  /** \brief Find the highest-tier incipient promotion containing a
+  /** \brief Find the highest-cost incipient promotion containing a
    *  particular choice.
    *
    *  An incipient promotion is one that doesn't match now, but that
@@ -1534,14 +1534,14 @@ public:
    *                  Additional choices, one of which must be contained
    *                  in every returned promotion.  The return values
    *                  are organized according to which of these choices
-   *                  each one contained, and only the highest-tier
+   *                  each one contained, and only the highest-cost
    *                  promotion for each choice is returned.
    *  \param pred     A predicate used to filter the returned promotions.
    *                  Only promotions for which pred returns \b true are
    *                  returned.
    *  \param output   A map in which to store the results of the search.
    *                  Choices in output_domain that were matched are
-   *                  mapped to the highest-tier promotion that they
+   *                  mapped to the highest-cost promotion that they
    *                  would trigger.
    *
    *  The values that output_domain associates with the choices it
@@ -1620,11 +1620,11 @@ private:
    *
    *  This is used internally to purge redundant entries when adding a
    *  new entry.  The goal is to find all the entries that are not at
-   *  a higher tier, and for which every set of choices that contained
+   *  a higher cost, and for which every set of choices that contained
    *  them would also contain the new entry.  (i.e., removing those
-   *  entries has no effect on the tiers assigned to search nodes,
+   *  entries has no effect on the costs assigned to search nodes,
    *  because the new entry assigns the same nodes an equal or higher
-   *  tier)
+   *  cost)
    *
    *  \param p      The promotion whose supersets should be returned.
    *  \param output A vector in which to store the results.
@@ -1638,7 +1638,7 @@ private:
       find_results_f(*this, false,
 		     find_entry_supersets_op(output,
 					     p.get_choices().size(),
-					     p.get_tier_op(),
+					     p.get_cost(),
 					     logger));
 
     const choice_set &choices(p.get_choices());
@@ -1711,15 +1711,15 @@ private:
   }
 
   /** \brief Collect the versions and soft dependencies related to
-   *  each choice in a tier.
+   *  each choice in a cost.
    */
-  static void collect_indexers(const std::list<entry> &tier_entries,
+  static void collect_indexers(const std::list<entry> &cost_entries,
 			       boost::unordered_set<version> &installed_versions,
 			       boost::unordered_set<dep> &broken_soft_deps,
 			       const log4cxx::LoggerPtr &logger)
   {
-    for(typename std::list<entry>::const_iterator it = tier_entries.begin();
-	it != tier_entries.end(); ++it)
+    for(typename std::list<entry>::const_iterator it = cost_entries.begin();
+	it != cost_entries.end(); ++it)
       collect_indexers(*it, installed_versions, broken_soft_deps, logger);
   }
 
@@ -1952,10 +1952,10 @@ public:
   /** \brief Insert a promotion into this set.
    *
    *  The promotion will not be inserted if an existing promotion of
-   *  the same tier operation or higher is a subset of it; otherwise,
-   *  it will be inserted and all existing promotions of the same tier
+   *  the same cost or higher is a subset of it; otherwise,
+   *  it will be inserted and all existing promotions of the same cost
    *  operation or lower that are supersets of the new promotion will
-   *  be removed.  (promotions with an unrelated tier operation are
+   *  be removed.  (promotions with an unrelated cost are
    *  unaffected)
    *
    *  \return   an iterator pointing at the new promotion if one was
@@ -1963,7 +1963,7 @@ public:
    */
   iterator insert(const promotion &p)
   {
-    const tier_operation &p_tier_op = p.get_tier_op();
+    const cost &p_cost = p.get_cost();
     const choice_set &choices = p.get_choices();
 
     LOG_DEBUG(logger, "Inserting " << p << " into the promotion set.");
@@ -1973,8 +1973,8 @@ public:
     // set {a, b} has a promotion (0, +1) and {b, c} has a promotion
     // (+1, 0), we don't need to store a promotion for {a, b, c} with
     // the operation (+1, +1), as it wouldn't add any information.
-    const tier_operation highest(find_highest_promotion_tier_op(choices));
-    if(highest.is_above_or_equal(p_tier_op))
+    const cost highest(find_highest_promotion_cost(choices));
+    if(highest.is_above_or_equal(p_cost))
       {
 	LOG_INFO(logger, "Canceling the insertion of " << p << ": it is redundant with the existing or inferred promotion " << highest);
 	return end();
@@ -2020,7 +2020,7 @@ public:
 	    entry_ref ent(*it);
 	    LOG_TRACE(logger, "Removing " << ent->p);
 
-	    if(ent->p.get_tier_op().get_structural_level() >= tier_limits::conflict_structural_level)
+	    if(ent->p.get_cost().get_structural_level() >= cost_limits::conflict_structural_level)
 	      --num_conflicts;
 
 	    entries.erase(ent);
@@ -2028,10 +2028,10 @@ public:
 
 	LOG_TRACE(logger, "Inserting " << p);
 
-	// Insert the new entry into the list of entries in this tier.
+	// Insert the new entry into the list of entries in this cost.
 	const entry_ref new_entry =
 	  entries.insert(entries.end(), entry(p));
-	if(p.get_tier_op().get_structural_level() >= tier_limits::conflict_structural_level)
+	if(p.get_cost().get_structural_level() >= cost_limits::conflict_structural_level)
 	  ++num_conflicts;
 
 	LOG_TRACE(logger, "Building index entries for " << p);
@@ -2059,7 +2059,7 @@ public:
 
   generic_promotion_set(const PackageUniverse &u,
 			promotion_set_callbacks<PackageUniverse> &_callbacks)
-    : logger(aptitude::Loggers::getAptitudeResolverSearchTiers()),
+    : logger(aptitude::Loggers::getAptitudeResolverSearchCosts()),
       callbacks(_callbacks),
       num_conflicts(0),
       num_versions(u.get_version_count()),

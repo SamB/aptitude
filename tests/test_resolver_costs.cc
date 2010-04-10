@@ -20,6 +20,8 @@
 #include <generic/apt/aptitude_resolver_cost_settings.h>
 #include <generic/apt/aptitude_resolver_cost_syntax.h>
 
+#include <generic/problemresolver/cost_limits.h>
+
 #include <cppunit/extensions/HelperMacros.h>
 
 #include <boost/lexical_cast.hpp>
@@ -71,14 +73,14 @@ public:
       aardvarks_component = settings.get_or_create_component("aardvarks", aptitude_resolver_cost_settings::additive),
       nonexistent_component = settings.get_or_create_component("llamas", aptitude_resolver_cost_settings::additive);
 
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_add_to_user_level(0, 4),
+    CPPUNIT_ASSERT_EQUAL(cost::make_add_to_user_level(0, 4),
                          settings.add_to_cost(removals_component, 4));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_add_to_user_level(0, 2) +
-                         tier_operation::make_add_to_user_level(2, 1),
+    CPPUNIT_ASSERT_EQUAL(cost::make_add_to_user_level(0, 2) +
+                         cost::make_add_to_user_level(2, 1),
                          settings.add_to_cost(cancels_component, 1));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_add_to_user_level(1, 5),
+    CPPUNIT_ASSERT_EQUAL(cost::make_add_to_user_level(1, 5),
                          settings.add_to_cost(aardvarks_component, 5));
-    CPPUNIT_ASSERT_EQUAL(tier_operation(),
+    CPPUNIT_ASSERT_EQUAL(cost_limits::minimum_cost,
                          settings.add_to_cost(nonexistent_component, 100));
 
     CPPUNIT_ASSERT(settings.is_component_relevant(removals_component));
@@ -120,14 +122,14 @@ public:
       aardvarks_component = settings.get_or_create_component("aardvarks", aptitude_resolver_cost_settings::maximized),
       nonexistent_component = settings.get_or_create_component("llamas", aptitude_resolver_cost_settings::maximized);
 
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_advance_user_level(0, 4),
+    CPPUNIT_ASSERT_EQUAL(cost::make_advance_user_level(0, 4),
                          settings.raise_cost(removals_component, 4));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_advance_user_level(0, 2) +
-                         tier_operation::make_advance_user_level(2, 1),
+    CPPUNIT_ASSERT_EQUAL(cost::make_advance_user_level(0, 2) +
+                         cost::make_advance_user_level(2, 1),
                          settings.raise_cost(cancels_component, 1));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_advance_user_level(1, 5),
+    CPPUNIT_ASSERT_EQUAL(cost::make_advance_user_level(1, 5),
                          settings.raise_cost(aardvarks_component, 5));
-    CPPUNIT_ASSERT_EQUAL(tier_operation(),
+    CPPUNIT_ASSERT_EQUAL(cost_limits::minimum_cost,
                          settings.add_to_cost(nonexistent_component, 100));
 
     CPPUNIT_ASSERT(settings.is_component_relevant(removals_component));
@@ -169,14 +171,14 @@ public:
       aardvarks_component = settings.get_or_create_component("aardvarks", aptitude_resolver_cost_settings::additive),
       nonexistent_component = settings.get_or_create_component("llamas", aptitude_resolver_cost_settings::maximized);
 
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_advance_user_level(0, 4),
+    CPPUNIT_ASSERT_EQUAL(cost::make_advance_user_level(0, 4),
                          settings.raise_cost(removals_component, 4));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_advance_user_level(0, 2) +
-                         tier_operation::make_advance_user_level(2, 1),
+    CPPUNIT_ASSERT_EQUAL(cost::make_advance_user_level(0, 2) +
+                         cost::make_advance_user_level(2, 1),
                          settings.raise_cost(cancels_component, 1));
-    CPPUNIT_ASSERT_EQUAL(tier_operation::make_add_to_user_level(1, 5),
+    CPPUNIT_ASSERT_EQUAL(cost::make_add_to_user_level(1, 5),
                          settings.add_to_cost(aardvarks_component, 5));
-    CPPUNIT_ASSERT_EQUAL(tier_operation(),
+    CPPUNIT_ASSERT_EQUAL(cost_limits::minimum_cost,
                          settings.add_to_cost(nonexistent_component, 100));
 
     CPPUNIT_ASSERT(settings.is_component_relevant(removals_component));
