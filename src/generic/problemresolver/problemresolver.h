@@ -1338,6 +1338,19 @@ private:
   }
 
   /** \return \b true if the given cost will always cause any step to
+   *  be deferred.
+   *
+   *  Note that costs which would cause a step to be discarded aren't
+   *  considered to be defer costs.
+   */
+  bool is_defer_cost(const cost &cost) const
+  {
+    return
+      cost.get_structural_level() == cost_limits::defer_structural_level &&
+      !is_discard_cost(cost);
+  }
+
+  /** \return \b true if the given cost will always cause any step to
    *  be discarded.
    *
    *  \param op the operation to test.
@@ -1430,8 +1443,7 @@ private:
     bool was_in_pending_future_solutions =  (pending_future_solutions.erase(step_num) > 0);
 
 
-    if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level &&
-       !is_discard_cost(s.final_step_cost))
+    if(is_defer_cost(s.final_step_cost))
       {
 	if(was_in_pending)
 	  --num_deferred;
@@ -1448,15 +1460,14 @@ private:
       pending_future_solutions.insert(step_num);
 
 
-    if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level &&
-       !is_discard_cost(s.final_step_cost))
+    if(is_defer_cost(s.final_step_cost))
       {
 	if(was_in_pending)
 	  ++num_deferred;
 	if(was_in_pending_future_solutions)
 	  ++num_deferred;
       }
-    else if(s.final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
+    else if(!is_discard_cost(s.final_step_cost))
       {
 	// Clear the "finished" flag if this is now a pending
 	// candidate.
@@ -2778,8 +2789,7 @@ private:
 	  break;
 	}
 
-      if(resolver.build_is_deferred_listener(c)->get_value() &&
-         !choice_cost.is_above_or_equal(cost_limits::defer_cost))
+      if(resolver.build_is_deferred_listener(c)->get_value())
 	choice_cost = cost::least_upper_bound(cost_limits::defer_cost,
                                               choice_cost);
 
@@ -4232,9 +4242,14 @@ private:
    */
   bool pending_contains_candidate() const
   {
+    if(pending.empty())
+      return false;
+
+    const step &s = graph.get_step(*pending.begin());
+
     return
-      !pending.empty() &&
-      graph.get_step(*pending.begin()).final_step_cost.get_structural_level() < cost_limits::defer_structural_level;
+      !is_discard_cost(s.final_step_cost) &&
+      !is_defer_cost(s.final_step_cost);
   }
 
   /** \brief Returns \b true if the pending future solutions queue
@@ -4242,9 +4257,14 @@ private:
    */
   bool pending_future_solutions_contains_candidate() const
   {
+    if(pending_future_solutions.empty())
+      return false;
+
+    const step &s = graph.get_step(*pending_future_solutions.begin());
+
     return
-      !pending_future_solutions.empty() &&
-      graph.get_step(*pending_future_solutions.begin()).final_step_cost.get_structural_level() < cost_limits::defer_structural_level;
+      !is_discard_cost(s.final_step_cost) &&
+      !is_defer_cost(s.final_step_cost);
   }
 
   // Counts how many action hits existed in a promotion, allowing up
@@ -4433,7 +4453,8 @@ private:
 		 << " (" << s.actions.size() << " actions): " << s.actions << ";T" << s.final_step_cost
 		 << "S" << s.score);
 
-	if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level)
+	if(is_discard_cost(s.final_step_cost) ||
+           is_defer_cost(s.final_step_cost))
 	  {
 	    LOG_ERROR(logger, "Internal error: the cost of step "
 		      << s.step_num
@@ -4456,7 +4477,7 @@ private:
 	  }
 	// The step might have been promoted to the defer structural level by
 	// check_for_new_promotions.
-	else if(s.final_step_cost.get_structural_level() >= cost_limits::defer_structural_level)
+	else if(is_defer_cost(s.final_step_cost))
 	  {
 	    LOG_DEBUG(logger, "Skipping newly deferred step " << s.step_num);
 	    // Stick it back into the open queue.
@@ -4493,11 +4514,14 @@ private:
 	    else
 	      {
 		generate_successors(step_num, visited_packages);
+                const step &first_child = graph.get_step(s.first_child);
+
 		// If we enqueued *exactly* one successor, then this
 		// was a forced dependency and we should process that
 		// successor before returning.
-		if(s.first_child != -1 && graph.get_step(s.first_child).is_last_child &&
-		   graph.get_step(s.first_child).final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
+		if(s.first_child != -1 && first_child.is_last_child &&
+		   !is_defer_cost(first_child.final_step_cost) &&
+                   !is_discard_cost(first_child.final_step_cost))
 		  {
 		    LOG_TRACE(logger, "Following forced dependency resolution from step "
 			      << step_num << " to step " << s.first_child);
@@ -4655,7 +4679,8 @@ public:
       {
 	int best_future_solution = *pending_future_solutions.begin();
 	step &best_future_solution_step = graph.get_step(best_future_solution);
-	if(best_future_solution_step.final_step_cost.get_structural_level() < cost_limits::defer_structural_level)
+	if(!is_defer_cost(best_future_solution_step.final_step_cost) &&
+           !is_discard_cost(best_future_solution_step.final_step_cost))
 	  {
 	    sanity_check_not_deferred(best_future_solution_step);
 
