@@ -529,6 +529,13 @@ void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 		   << download_cache_file_name
 		   << "\": " << ex.errmsg());
 	}
+      catch(std::exception &ex)
+	{
+	  LOG_WARN(logger,
+		   "Can't open the file cache \""
+		   << download_cache_file_name
+		   << "\": " << ex.what());
+	}
     }
 
   LOG_DEBUG(logger, "Emitting cache_reloaded().");
