@@ -1,6 +1,6 @@
 // temp.h                                 -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -46,7 +46,7 @@
 namespace temp
 {
   /** An exception thrown when a temporary object cannot be created. */
-  class TemporaryCreationFailure : public cwidget::util::Exception
+  class TemporaryCreationFailure : public std::exception
   {
     std::string msg;
   public:
@@ -55,7 +55,11 @@ namespace temp
     {
     }
 
-    std::string errmsg() const;
+    ~TemporaryCreationFailure() throw()
+    {
+    }
+
+    const char *what() const throw();
   };
 
   /** \brief Initialize the temporary name system, using the given

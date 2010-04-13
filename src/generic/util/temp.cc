@@ -1,6 +1,6 @@
 // temp.cc
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -37,9 +37,16 @@ namespace cw = cwidget;
 
 namespace temp
 {
-  std::string TemporaryCreationFailure::errmsg() const
+  const char *TemporaryCreationFailure::what() const throw()
   {
-    return msg;
+    try
+      {
+        return msg.c_str();
+      }
+    catch(...)
+      {
+        return "Error generating error message.";
+      }
   }
 
   namespace
