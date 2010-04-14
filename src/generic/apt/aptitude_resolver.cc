@@ -538,29 +538,28 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
 	  return false;
 	}
     }
-  // This hint is for backwards compatibility ONLY.
-  else if(action == "increase-tier-to")
+  else if(action == "increase-tier-to" || action == "increase-safety-cost-to")
     {
       if(start == hint.end())
 	{
-	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": expected a tier number, but found nothing.",
+	  LOG_ERROR(loggerHintsParse, ssprintf("Invalid hint \"%s\": expected a level, but found nothing.",
 					       hint.c_str()));
-	  _error->Error(_("Invalid hint \"%s\": expected a tier number, but found nothing."),
+	  _error->Error(_("Invalid hint \"%s\": expected a level, but found nothing."),
 			hint.c_str());
 	  return false;
 	}
 
-      std::string tier_number;
+      std::string level_number;
       while(start != hint.end() && !isspace(*start))
 	{
-	  tier_number.push_back(*start);
+	  level_number.push_back(*start);
 	  ++start;
 	}
 
       while(start != hint.end() && isspace(*start))
 	++start;
 
-      amt = aptitude_universe::parse_level(tier_number);
+      amt = aptitude_universe::parse_level(level_number);
     }
 
   if(start == hint.end())
@@ -688,8 +687,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
     out = make_reject(target, selection);
   else if(action == "approve")
     out = make_mandate(target, selection);
-  else if(action == "increase-tier-to")
-    // This hint is for backwards-compatibility ONLY.
+  else if(action == "increase-tier-to" || action == "increase-safety-cost-to")
     out = make_raise_cost_component(target, selection, "safety", amt);
   else if(action == "add-to-cost-component")
     out = make_add_to_cost_component(target, selection, component_name, amt);
@@ -1199,7 +1197,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	    << ", break_hold_score = " << break_hold_score
 	    << ", allow_break_holds_and_forbids = " << (allow_break_holds_and_forbids ? "true" : "false")
 	    << ", default_resolution_score = " << default_resolution_score);
-  LOG_TRACE(loggerCosts, "Setting up action scores; tier parameters: safe_level = " << safe_level
+  LOG_TRACE(loggerCosts, "Setting up action scores; safety parameters: safe_level = " << safe_level
 	    << ", keep_all_level = " << keep_all_level << ", remove_level = " << remove_level
 	    << ", break_hold_level = " << break_hold_level << ", non_default_level = "
 	    << non_default_level << ", remove_essential_level = " << remove_essential_level << ".");
@@ -1440,8 +1438,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
                                   cost_settings.raise_cost(safety_component, safe_level)
                                   + cost_settings.add_to_cost(canceled_actions_component, 1));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << safe_level << " for " << v
-			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Tier)");
+			"** Safety level raised to at least " << safe_level << " for " << v
+			<< " because it is the currently installed version of a package  (" PACKAGE "::ProblemResolver::Safe-Level)");
 	    }
 	  else if(apt_ver.end())
 	    {
@@ -1460,8 +1458,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
                                   cost_settings.raise_cost(safety_component, remove_level)
                                   + cost_settings.add_to_cost(removals_component, 1));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << remove_level << " for " << v
-			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Tier)");
+			"** Safety level raised to at least " << remove_level << " for " << v
+			<< " because it represents the removal of a package (" PACKAGE "::ProblemResolver::Removal-Level)");
 	    }
 	  else if(apt_ver == (*cache)[p.get_pkg()].CandidateVerIter(*cache))
 	    {
@@ -1489,8 +1487,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
               modify_version_cost(v,
                                   cost_settings.raise_cost(safety_component, safe_level));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << safe_level << " for " << v
-			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Tier).");
+			"** Safety level raised to at least " << safe_level << " for " << v
+			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Level).");
 	    }
 	  else
 	    // We know that:
@@ -1510,8 +1508,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
                                   cost_settings.raise_cost(safety_component, non_default_level)
                                   + cost_settings.add_to_cost(non_default_versions_component, 1));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << non_default_level << " for " << v
-			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Tier).");
+			"** Safety level raised to at least " << non_default_level << " for " << v
+			<< " because it is a non-default version (" PACKAGE "::ProblemResolver::Non-Default-Level).");
 	    }
 
 	  // This logic is slightly duplicated in resolver_manger.cc,
@@ -1534,8 +1532,8 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
                                   cost_settings.raise_cost(safety_component, break_hold_level)
                                   + cost_settings.add_to_cost(broken_holds_component, 1));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << break_hold_level << " for " << v
-			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Tier).");
+			"** Safety level raised to at least " << break_hold_level << " for " << v
+			<< " because it breaks a hold/forbid (" PACKAGE "::ProblemResolver::Break-Hold-Level).");
 	    }
 
 	  // In addition, add the essential-removal score:
@@ -1556,7 +1554,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
               modify_version_cost(v,
                                   cost_settings.raise_cost(safety_component, remove_essential_level));
 	      LOG_DEBUG(loggerCosts,
-			"** Tier level raised to at least " << remove_essential_level << " for " << v
+			"** Safety level raised to at least " << remove_essential_level << " for " << v
 			<< " because it represents removing an essential package.");
 	    }
 

@@ -819,7 +819,7 @@ int aptitude_universe::parse_level(const std::string &s)
       int n = static_cast<int>(strtol(s.c_str(), &endptr, 0));
       if(*endptr != '\0')
 	{
-	  std::string msg(ssprintf(N_("Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
+	  std::string msg(ssprintf(N_("Invalid safety level \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverCosts(), msg);
 	  _error->Error("%s", _(msg.c_str()));
 	  return cost_limits::minimum_level;
@@ -831,32 +831,39 @@ int aptitude_universe::parse_level(const std::string &s)
 
 int aptitude_universe::get_safe_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "10000"));
+  return
+    std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Level", "10000")),
+                  parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Safe-Tier", "minimum")));
 }
 
 int aptitude_universe::get_keep_all_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "20000"));
+  return std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Level", "20000")),
+                       parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Keep-All-Tier", "minimum")));
 }
 
 int aptitude_universe::get_remove_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "10000"));
+  return std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Level", "10000")),
+                       parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Tier", "minimum")));
 }
 
 int aptitude_universe::get_break_hold_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "40000"));
+  return std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Level", "40000")),
+                       parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Break-Hold-Tier", "minimum")));
 }
 
 int aptitude_universe::get_non_default_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "50000"));
+  return std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Level", "50000")),
+                       parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Non-Default-Tier", "minimum")));
 }
 
 int aptitude_universe::get_remove_essential_level()
 {
-  return parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "60000"));
+  return std::max<int>(parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Level", "60000")),
+                       parse_level(aptcfg->Find(PACKAGE "::ProblemResolver::Remove-Essential-Tier", "minimum")));
 }
 
 bool aptitude_universe::is_candidate_for_initial_set(const aptitude_resolver_dep &d) const
