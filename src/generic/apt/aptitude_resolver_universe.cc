@@ -804,12 +804,7 @@ std::ostream &operator<<(ostream &out, const aptitude_resolver_dep &d)
 int aptitude_universe::parse_level(const std::string &s)
 {
   typedef generic_problem_resolver<aptitude_universe> aptitude_resolver;
-  if(s == "conflict")
-    // Note that this is slightly broken, since it actually sets a
-    // *user level* to a high value, not a structural level; included
-    // only for backwards compatibility.
-    return cost_limits::conflict_structural_level;
-  else if(s == "maximum")
+  if(s == "maximum")
     return cost_limits::maximum_level;
   else if(s == "minimum" || s == "")
     return cost_limits::minimum_level;
@@ -819,7 +814,7 @@ int aptitude_universe::parse_level(const std::string &s)
       int n = static_cast<int>(strtol(s.c_str(), &endptr, 0));
       if(*endptr != '\0')
 	{
-	  std::string msg(ssprintf(N_("Invalid safety level \"%s\" (not \"conflict\", \"minimum\", or an integer)."), s.c_str()));
+	  std::string msg(ssprintf(N_("Invalid safety level \"%s\" (not \"maximum\", \"minimum\", or an integer)."), s.c_str()));
 	  LOG_ERROR(Loggers::getAptitudeResolverCosts(), msg);
 	  _error->Error("%s", _(msg.c_str()));
 	  return cost_limits::minimum_level;
