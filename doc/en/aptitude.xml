@@ -11350,15 +11350,15 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Break-Hold-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Break-Hold-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Break-Hold-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Break-Hold-Level</literal></seg>
 	      <seg><literal>50000</literal></seg>
 	      <seg>
-		The search tier assigned to actions that break a hold
+		The safety cost assigned to actions that break a hold
 		set by the user (by upgrading a held package or by
 		installing a forbidden version of a package).  See
-		<xref linkend='secDependencyResolutionSafetyTiers'/>
-		for a description of how search tiers work.
+		<xref linkend='secDependencyResolutionCostsSafetyCosts'/>
+		for a description of safety costs.
 	      </seg>
 	    </seglistitem>
 
@@ -11410,14 +11410,14 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Remove-Essential-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Remove-Essential-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Remove-Essential-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Remove-Essential-Level</literal></seg>
 	      <seg><literal>60000</literal></seg>
 	      <seg>
-		The search tier assigned to actions that remove an
+		The safety cost assigned to actions that remove an
 		Essential package.  See <xref
-		linkend='secDependencyResolutionSafetyTiers'/> for a
-		description of how search tiers work.
+		linkend='secDependencyResolutionCostsSafetyCosts'/> for a
+		description of safety costs.
 	      </seg>
 	    </seglistitem>
 
@@ -11505,14 +11505,14 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Keep-All-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Keep-All-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Keep-All-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Keep-All-Level</literal></seg>
 	      <seg><literal>20000</literal></seg>
 	      <seg>
-		The search tier assigned to the single solution that
+		The safety cost assigned to the single solution that
 		cancels all of the actions selected by the user.  See
-		<xref linkend='secDependencyResolutionSafetyTiers'/>
-		for a description of how search tiers work.
+		<xref linkend='secDependencyResolutionCostsSafetyCosts'/>
+		for a description of safety costs.
 	      </seg>
 	    </seglistitem>
 
@@ -11538,18 +11538,18 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Non-Default-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Non-Default-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Non-Default-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Non-Default-Level</literal></seg>
 	      <seg><literal>50000</literal></seg>
 	      <seg>
-		The search tier assigned to actions that install
+		The safety cost assigned to actions that install
 		non-default versions of a package.  For instance, if
 		version 5 of a package is installed, versions 6, 7,
 		and 8 are available, and version 7 is the default
-		version, then versions 6 and 8 will be placed in this
-		tier.  See <xref
-		linkend='secDependencyResolutionSafetyTiers'/> for a
-		description of how search tiers work.
+		version, then versions 6 and 8 will be given a safety
+		cost that is at least this high.  See <xref
+		linkend='secDependencyResolutionCostsSafetyCosts'/> for a
+		description of safety costs.
 	      </seg>
 	    </seglistitem>
 
@@ -11592,14 +11592,14 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Remove-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Remove-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Remove-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Remove-Level</literal></seg>
 	      <seg><literal>10000</literal></seg>
 	      <seg>
-		The search tier assigned to actions that remove a
+		The safety cost assigned to actions that remove a
 		package.  See <xref
-		linkend='secDependencyResolutionSafetyTiers'/> for a
-		description of how search tiers work.
+		linkend='secDependencyResolutionCostsSafetyCosts'/> for a
+		description of safety costs.
 	      </seg>
 	    </seglistitem>
 
@@ -11625,19 +11625,19 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configProblemResolver-Safe-Tier'>
-	      <seg><literal>Aptitude::ProblemResolver::Safe-Tier</literal></seg>
+	    <seglistitem id='configProblemResolver-Safe-Level'>
+	      <seg><literal>Aptitude::ProblemResolver::Safe-Level</literal></seg>
 	      <seg><literal>10000</literal></seg>
 	      <seg>
-		The search tier assigned to actions that install the
+		The safety cost assigned to actions that install the
 		default version of a package, upgrade a package to its
 		default version, or cancel installing or upgrading a
-		package.  Solutions generated in this tier could be
+		package.  Solutions assigned this cost could be
 		generated by <link
 		linkend='manpageSafeUpgrade'><literal>aptitude
 		safe-upgrade</literal></link>.  See <xref
-		linkend='secDependencyResolutionSafetyTiers'/> for a
-		description of how search tiers work.
+		linkend='secDependencyResolutionCostsSafetyCosts'/> for
+		a description of safety costs.
 	      </seg>
 	    </seglistitem>
 
