@@ -4588,14 +4588,23 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
             <emphasis>and</emphasis> canceled actions.  Compound
             components combine counters by adding them together and
             levels by taking their maximum value, as shown in <xref
-            linkend='figureCompoundCostComponents'/>.<footnote><para>This
-            is an intentionally limited syntax, chosen because more
-            complex cost structures could make it difficult to
-            optimize the resolver.  Future versions of the program
-            might remove some of the restrictions, for instance, by
-            allowing <literal>max</literal> and <literal>+</literal>
-            to be arbitrarily nested.</para></footnote>
+            linkend='figureCompoundCostComponents'/>.
           </para>
+
+          <note>
+            <para>
+              It is an error to add two levels, or to take the maximum
+              of two counters, or to combine levels and counters in
+              any way.  For instance, the costs <literal>removals +
+              safety</literal> and <literal>max(upgrades,
+              installs)</literal> will be treated as errors and
+              ignored by the resolver.<footnote><para>This limit was
+              imposed because more complex cost structures could make
+              it difficult to optimize the resolver.  Future versions
+              of the program might remove some of the restrictions if
+              they turn out to be unnecessary.</para></footnote>
+            </para>
+          </note>
 
           <figure id='figureCompoundCostComponents'>
             <title>Syntax of compound cost components</title>
