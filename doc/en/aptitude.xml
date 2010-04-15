@@ -4633,149 +4633,150 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
           </para>
         </section>
 
-      <section id='secDependencyResolutionCostsSafetyCosts'>
-	<title>Safety costs</title>
+        <section id='secDependencyResolutionCostsSafetyCosts'>
+          <title>Safety costs</title>
 
-	<figure id='figureSafetyCostLevels'>
-	  <title>Safety cost levels</title>
+          <figure id='figureSafetyCostLevels'>
+            <title>Safety cost levels</title>
 
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata fileref='images/safety-cost-level-diagram.png'/>
-	    </imageobject>
-	  </mediaobject>
-	</figure>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref='images/safety-cost-level-diagram.png'/>
+              </imageobject>
+            </mediaobject>
+          </figure>
 
-	<para>
-	  When generating solutions, &aptitude; places them in order
-	  according to their <firstterm>safety cost</firstterm>.
-	  Safety costs can be thought of as a way of dividing
-	  solutions into several numbered <quote>levels</quote>, where
-	  <quote>less safe</quote> levels are given higher numbers.
-	  The dependency resolver will search each level in numerical
-	  order from lowest to highest, but will not leave a level
-	  until all the solutions it contains have been
-	  generated<footnote><para><quote>Generated</quote> solutions
-	  include those solutions that are rejected as described in
-	  <xref linkend='secResolver'/>; it is not necessary to
-	  actually look at all the solutions in a particular tier to
-	  skip past that tier!</para></footnote>.  <xref
-	  linkend='figureSafetyCostLevels'/> shows how this works with
-	  &aptitude;'s default settings.
-	</para>
-
-        <tip>
           <para>
-            Safety cost levels are just one way to control the order
-            in which dependency solutions are returned.  See <xref
-            linkend='secResolverCosts'/> for a full description of how
-            to change the order in which &aptitude; sorts solutions.
+            When generating solutions, &aptitude; places them in order
+            according to their <firstterm>safety cost</firstterm>.
+            Safety costs can be thought of as a way of dividing
+            solutions into several numbered <quote>levels</quote>,
+            where <quote>less safe</quote> levels are given higher
+            numbers.  The dependency resolver will search each level
+            in numerical order from lowest to highest, but will not
+            leave a level until all the solutions it contains have
+            been generated<footnote><para><quote>Generated</quote>
+            solutions include those solutions that are rejected as
+            described in <xref linkend='secResolver'/>; it is not
+            necessary to actually look at all the solutions in a
+            particular tier to skip past that tier!</para></footnote>.
+            <xref linkend='figureSafetyCostLevels'/> shows how this
+            works with &aptitude;'s default settings.
           </para>
-        </tip>
 
-	<para>
-	  By default, &aptitude; initializes the resolver with a
-	  <quote>reasonable</quote> set of safety cost levels.  They
-	  are:
-	</para>
+          <tip>
+            <para>
+              Safety cost levels are just one way to control the order
+              in which dependency solutions are returned.  See <xref
+              linkend='secResolverCosts'/> for a full description of
+              how to change the order in which &aptitude; sorts
+              solutions.
+            </para>
+          </tip>
 
-	<table id='tableDefaultSafetyCostLevels'>
-	  <title>Default safety cost levels</title>
+          <para>
+            By default, &aptitude; initializes the resolver with a
+            <quote>reasonable</quote> set of safety cost levels.  They
+            are:
+          </para>
 
-	  <tgroup cols='3'>
-	    <thead>
-	      <row>
-		<entry>Tier number</entry>
-		<entry>Description</entry>
-		<entry>Configuration option</entry>
-	      </row>
-	    </thead>
+          <table id='tableDefaultSafetyCostLevels'>
+            <title>Default safety cost levels</title>
 
-	    <tbody>
-	      <row>
-		<entry>10,000</entry>
-		<entry>
-		  Solutions that include only <quote>safe</quote>
-		  actions (installing the default target for a package
-		  or keeping a package at its current version) and
-		  package removals.
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Safe-Level'>Aptitude::ProblemResolver::Safe-Level</link></literal>, <literal><link linkend='configProblemResolver-Remove-Level'>Aptitude::ProblemResolver::Remove-Level</link></literal></entry>
-	      </row>
+            <tgroup cols='3'>
+              <thead>
+                <row>
+                  <entry>Tier number</entry>
+                  <entry>Description</entry>
+                  <entry>Configuration option</entry>
+                </row>
+              </thead>
 
-	      <row>
-		<entry>20,000</entry>
-		<entry>
-		  The solution that cancels all the user's actions.
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Keep-All-Level'>Aptitude::ProblemResolver::Keep-All-Level</link></literal></entry>
-	      </row>
+              <tbody>
+                <row>
+                  <entry>10,000</entry>
+                  <entry>
+                    Solutions that include only <quote>safe</quote>
+                    actions (installing the default target for a
+                    package or keeping a package at its current
+                    version) and package removals.
+                  </entry>
+                  <entry><literal><link linkend='configProblemResolver-Safe-Level'>Aptitude::ProblemResolver::Safe-Level</link></literal>, <literal><link linkend='configProblemResolver-Remove-Level'>Aptitude::ProblemResolver::Remove-Level</link></literal></entry>
+                </row>
 
-	      <row>
-		<entry>40,000</entry>
-		<entry>
-		  Solutions that break holds set by the user or
-		  install forbidden versions.
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Break-Hold-Level'>Aptitude::ProblemResolver::Break-Hold-Level</link></literal></entry>
-	      </row>
+                <row>
+                  <entry>20,000</entry>
+                  <entry>
+                    The solution that cancels all the user's actions.
+                  </entry>
+                  <entry><literal><link linkend='configProblemResolver-Keep-All-Level'>Aptitude::ProblemResolver::Keep-All-Level</link></literal></entry>
+                </row>
 
-	      <row>
-		<entry>50,000</entry>
-		<entry>
-		  Solutions that install packages from non-default
-		  versions (such as
-		  <quote><literal>experimental</literal></quote>, for
-		  instance).
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Non-Default-Level'>Aptitude::ProblemResolver::Non-Default-Level</link></literal></entry>
-	      </row>
+                <row>
+                  <entry>40,000</entry>
+                  <entry>
+                    Solutions that break holds set by the user or
+                    install forbidden versions.
+                  </entry>
+                  <entry><literal><link linkend='configProblemResolver-Break-Hold-Level'>Aptitude::ProblemResolver::Break-Hold-Level</link></literal></entry>
+                </row>
 
-	      <row>
-		<entry>60,000</entry>
-		<entry>
-		  Solutions that remove Essential packages.
-		</entry>
-		<entry><literal><link linkend='configProblemResolver-Remove-Essential-Level'>Aptitude::ProblemResolver::Remove-Essential-Level</link></literal></entry>
-	      </row>
-	    </tbody>
-	  </tgroup>
-	</table>
+                <row>
+                  <entry>50,000</entry>
+                  <entry>
+                    Solutions that install packages from non-default
+                    versions (such as
+                    <quote><literal>experimental</literal></quote>,
+                    for instance).
+                  </entry>
+                  <entry><literal><link linkend='configProblemResolver-Non-Default-Level'>Aptitude::ProblemResolver::Non-Default-Level</link></literal></entry>
+                </row>
 
-	<para>
-	  If a solution qualifies for several safety cost levels, it
-	  will be placed in the highest one, that is, the one that
-	  appears last.  For example, a solution that upgrades one
-	  package to its default version and breaks a hold on a second
-	  package will be placed at level 40,000.  You can adjust the
-	  levels of individual versions using resolver hints; see
-	  <xref linkend='secDependencyResolutionHints'/> for details.
-	  The default levels are illustrated in <xref
-	  linkend='figureSafetyCostLevels'/>.
-	</para>
+                <row>
+                  <entry>60,000</entry>
+                  <entry>
+                    Solutions that remove Essential packages.
+                  </entry>
+                  <entry><literal><link linkend='configProblemResolver-Remove-Essential-Level'>Aptitude::ProblemResolver::Remove-Essential-Level</link></literal></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
 
-	<tip>
-	  <para>
-	    By default, within each level, &aptitude; orders solutions
-	    according to the lowest pin priority of any package in the
-	    solution.  That is: if one solution contains packages with
-	    priorities 500, 1000, and 0, and another solution contains
-	    only packages with priority 50, the second solution will
-	    appear first.
-	  </para>
+          <para>
+            If a solution qualifies for several safety cost levels, it
+            will be placed in the highest one, that is, the one that
+            appears last.  For example, a solution that upgrades one
+            package to its default version and breaks a hold on a
+            second package will be placed at level 40,000.  You can
+            adjust the levels of individual versions using resolver
+            hints; see <xref linkend='secDependencyResolutionHints'/>
+            for details.  The default levels are illustrated in <xref
+            linkend='figureSafetyCostLevels'/>.
+          </para>
 
-	  <para>
-	    If two solutions in the same level have the same pin
-	    priority, &aptitude; will attempt to produce them in order
-	    according to their <quote>score</quote>.  However, the
-	    score of a solution is only a guideline, and solutions
-	    with a lower score might appear before solutions with a
-	    higher score.  If you need a guarantee that solutions will
-	    appear in a particular order, you should use the resolver
-	    costs.
-	  </para>
-	</tip>
-      </section>
+          <tip>
+            <para>
+              By default, within each level, &aptitude; orders
+              solutions according to the lowest pin priority of any
+              package in the solution.  That is: if one solution
+              contains packages with priorities 500, 1000, and 0, and
+              another solution contains only packages with priority
+              50, the second solution will appear first.
+            </para>
+
+            <para>
+              If two solutions in the same level have the same pin
+              priority, &aptitude; will attempt to produce them in
+              order according to their <quote>score</quote>.  However,
+              the score of a solution is only a guideline, and
+              solutions with a lower score might appear before
+              solutions with a higher score.  If you need a guarantee
+              that solutions will appear in a particular order, you
+              should use the resolver costs.
+            </para>
+          </tip>
+        </section>
       </section>
 
       <section id='secDependencyResolutionConfiguration'>
