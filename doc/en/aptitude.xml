@@ -4392,7 +4392,9 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
             &aptitude; uses to determine how <quote>bad</quote> that
             solution is.  Solutions that are <quote>better</quote> are
             always displayed before solutions that are
-            <quote>worse</quote>.
+            <quote>worse</quote>.  The cost of solutions is defined in
+            the configuration option <link
+            linkend='configProblemResolver-SolutionCost'><literal>Aptitude::ProblemResolver::SolutionCost</literal></link>.
           </para>
 
           <para>
@@ -11640,6 +11642,20 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		a description of safety costs.
 	      </seg>
 	    </seglistitem>
+
+            <seglistitem id='configProblemResolver-SolutionCost'>
+              <seg><literal>Aptitude::ProblemResolver::SolutionCost</literal></seg>
+              <seg><literal>safety,priority</literal></seg>
+
+              <seg>
+                Describes how to determine the cost of a solution.
+                See <xref linkend='secDependencyResolutionCosts'/> for
+                a description of what solution costs are, what they
+                do, and the syntax used to specify them.  If the cost
+                cannot be parsed, an error is issued and the default
+                cost is used instead.
+              </seg>
+            </seglistitem>
 
 	    <seglistitem id='configProblemResolver-StandardScore'>
 	      <seg><literal>Aptitude::ProblemResolver::StandardScore</literal></seg>
