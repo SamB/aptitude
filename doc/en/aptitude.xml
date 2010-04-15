@@ -4827,53 +4827,44 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	    <listitem>
 	      <para>
-		<quote><literal>increase-tier
+		<quote><literal>increase-safety-cost-to
 		<replaceable>number</replaceable></literal></quote>:
-		increase the tier of any solution that contains the
-		version to <replaceable>number</replaceable>; if its
-		tier is already higher than
+		increase the safety cost of any solution that contains
+		the version to <replaceable>number</replaceable>; if
+		its safety cost is already higher than
 		<replaceable>number</replaceable>, this hint has no
-		effect.  Solutions containing higher-tiered versions
-		will appear after solutions with only lower-tiered
-		versions; see <xref
-		linkend='secDependencyResolutionSafetyTiers'/> for
-		details.
+		effect.  The safety cost can be used (and is used by
+		default) to control the order in which solutions
+		appear; see <xref
+		linkend='secDependencyResolutionCostsAndCostComponents'/>
+		and <xref
+		linkend='secDependencyResolutionCostsSafetyCosts'/>
+		for details.
 	      </para>
 
 	      <para>
-		Several special tiers can be chosen by name:
+		Several special cost levels can be chosen by name:
 
 		<orderedlist>
 		  <listitem>
 		    <para>
-		      <literal>conflict</literal>: the highest
-		      possible tier.  Unlike other tiers, solutions
-		      generated at this tier are discarded
-		      immediately: they will never appear in the
-		      output list.  Thus, a hint of
-		      <quote><literal>increase-tier
-		      conflict</literal></quote> is similar to a
-		      <quote><literal>reject</literal></quote> hint:
-		      the difference is that the rejection can be
-		      canceled by the user at run-time, whereas once a
-		      version is set to the conflict tier, the only
-		      way to remove it is to change the configuration
-		      and restart &aptitude;.
+		      <literal>maximum</literal>: the highest safety
+		      cost.
 		    </para>
 		  </listitem>
 
 		  <listitem>
 		    <para>
-		      <literal>minimum</literal>: the lowest possible
-		      tier. All searches start at this tier, so
-		      <quote>increasing</quote> a version to this tier
+		      <literal>minimum</literal>: the lowest safety
+		      cost. All searches start at this cost, so
+		      <quote>increasing</quote> a version to this cost
 		      has no effect.  However, this value can also be
-		      used when adjusting the predefined tiers: for
-		      instance, setting <link
-		      linkend='configProblemResolver-Remove-Tier'><literal>Aptitude::ProblemResolver::Remove-Tier</literal></link>
+		      used when adjusting the predefined cost levels:
+		      for instance, setting <link
+		      linkend='configProblemResolver-Remove-Level'><literal>Aptitude::ProblemResolver::Remove-Level</literal></link>
 		      to <quote><literal>minimum</literal></quote>
 		      will cause removed packages to have no effect on
-		      the tier of a solution.
+		      the safety cost of a solution.
 		    </para>
 		  </listitem>
 		</orderedlist>
@@ -4881,16 +4872,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	      <note>
 		<para>
-		  The <literal>increase-tier</literal> hint is applied
-		  <emphasis>in addition</emphasis> to any default tier
-		  that is set due to the selected action.  For
-		  instance, a hint that increases the tier of
-		  <quote>install <systemitem>hal</systemitem> from
+		  The <literal>increase-safety-cost-to</literal> hint
+		  is applied <emphasis>in addition</emphasis> to any
+		  default safety cost that is due to the selected
+		  action.  For instance, a hint that increases the
+		  safety cost of <quote>install
+		  <systemitem>hal</systemitem> from
 		  <systemitem>experimental</systemitem></quote> to
-		  15,000 will have no effect, because that action is
-		  already at tier 50,000 (assuming that this version
-		  of <systemitem>hal</systemitem> is not the default
-		  candidate version).
+		  15,000 will have no effect, because that action
+		  already has a safety cost of 50,000 (assuming that
+		  this version of <systemitem>hal</systemitem> is not
+		  the default candidate version).
 		</para>
 	      </note>
 	    </listitem>
