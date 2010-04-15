@@ -796,11 +796,6 @@ private:
   /** If \b true, we have exhausted the list of solutions. */
   bool finished:1;
 
-  /** If \b true, so-called "stupid" pairs of actions will be
-   *  eliminated from solutions. (see paper)
-   */
-  bool remove_stupid:1;
-
 
   // Multithreading support variables.
   //
@@ -878,8 +873,7 @@ private:
    */
   boost::shared_ptr<promotion_queue_entry> promotion_queue_tail;
 
-  /** The initial set of broken dependencies.  Kept here for use in
-   *  the stupid-elimination algorithm.
+  /** The initial set of broken dependencies.
    */
   imm::set<dep> initial_broken;
 
@@ -3774,7 +3768,6 @@ public:
      minimum_score(-infinity),
      future_horizon(_future_horizon),
      universe(_universe), finished(false),
-     remove_stupid(true),
      solver_executing(false), solver_cancelled(false),
      pending(step_goodness_compare(graph)),
      num_deferred(0),
@@ -3875,14 +3868,6 @@ public:
 	logger->setLevel(log4cxx::Level::getOff());
 	logger->removeAppender(appender);
       }
-  }
-
-  /** Enables or disables the removal of "stupid pairs".  Initially
-   *  enabled.
-   */
-  void set_remove_stupid(bool new_remove_stupid)
-  {
-    remove_stupid = new_remove_stupid;
   }
 
   /** Clears all the internal state of the solver, discards solutions,

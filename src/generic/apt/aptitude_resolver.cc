@@ -751,8 +751,6 @@ aptitude_resolver::aptitude_resolver(int step_score,
   int keep_all_level(aptitude_universe::get_keep_all_level());
   cost keep_all_cost(cost_settings.raise_cost(safety_component, keep_all_level));
 
-  set_remove_stupid(aptcfg->FindB(PACKAGE "::ProblemResolver::Remove-Stupid-Pairs", true));
-
   for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
     {
       package p(i, cache);

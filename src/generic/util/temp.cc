@@ -1,6 +1,6 @@
 // temp.cc
 //
-//   Copyright (C) 2005, 2007, 2009 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -30,6 +30,7 @@
 #include <apt-pkg/error.h>
 
 #include <boost/format.hpp>
+#include <boost/random.hpp>
 #include <boost/scoped_array.hpp>
 
 using aptitude::Loggers;
@@ -37,9 +38,16 @@ namespace cw = cwidget;
 
 namespace temp
 {
-  std::string TemporaryCreationFailure::errmsg() const
+  const char *TemporaryCreationFailure::what() const throw()
   {
-    return msg;
+    try
+      {
+        return msg.c_str();
+      }
+    catch(...)
+      {
+        return "Error generating error message.";
+      }
   }
 
   namespace
@@ -52,6 +60,89 @@ namespace temp
     // This string is allocated when the temporary system is
     // initialized.
     std::string *temp_base = NULL;
+    // A private RNG used below; created when the temporary system is
+    // first used and controlled by temp_state_mutex.  Using
+    // boost::random instead of random_r to make this code more
+    // portable.
+    boost::mt19937 *temp_rng = NULL;
+
+    // Characters placed into the resulting file name.  A little
+    // punctuation is sprinkled in, but only characters that have no
+    // special meaning to the system shell, mostly out of politeness.
+    const char characters[] =
+      {
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '_', '+',
+        '=', ',', '.', ':', '%', '^'
+      };
+    const int num_characters = sizeof(characters) / sizeof(characters[0]);
+
+
+    // A mktemp() replacement that is guaranteed to use lots of
+    // randomness.  Only used once below, and it's only used to create
+    // a name in a directory that we should control (i.e., attackers
+    // shouldn't be able to create files in this directory *anyway*;
+    // using a random name is just a defensive measure).  mktemp()
+    // would be safe too for that reason, but it generates an annoying
+    // linker warning because it obviously doesn't know it's being
+    // used in a safe context.
+    //
+    // The reason for doing this instead of using mkstemp() is that
+    // several parts of aptitude really just need a name, because
+    // they're going to invoke external code that wants a name instead
+    // of an open file, and some of that code fails if the file
+    // exists.  Since mkstemp() creates the file implicitly, we'd have
+    // to unlink it before invoking the other code.  But that just
+    // puts back the race condition that mkstemp() was supposed to
+    // fix, only more so, since we would *definitely* leak the
+    // temporary file name.
+    //
+    // Returns an empty string if it can't find a unique name.
+    std::string mymktemp(std::string prefix)
+    {
+      // Obviously arbitrary -- the main requirement is that it needs
+      // to be big.
+      static const int num_random_characters = 32;
+
+      // Also arbitrary; just need a limit to avoid cycling if
+      // something goes horribly wrong..
+      static const int num_retries = 50;
+
+      cw::threads::mutex::lock l(*temp_state_mutex);
+
+
+      if(temp_rng == NULL)
+        temp_rng = new boost::mt19937;
+
+      boost::variate_generator<boost::mt19937&, boost::uniform_int<> >
+        random_char_idx(*temp_rng, boost::uniform_int<>(0, num_characters - 1));
+
+
+      for(int attempt = 0; attempt < num_retries; ++attempt)
+        {
+          std::string result = prefix;
+
+          for(int i = 0; i < num_random_characters; ++i)
+            result += characters[random_char_idx()];
+
+          // Nested "if" statements for better debugging.
+          if(access(result.c_str(), F_OK) != 0)
+            {
+              if(errno == ENOENT)
+                // The usual race condition exists here; I rely on
+                // both the fact that attackers can't write to the
+                // directory where this file exists and on the fact
+                // that it's a huge random number (but less on the
+                // latter since it's only a PRNG).
+                return result;
+            }
+        }
+
+      return std::string();
+    }
   }
 
   void initialize(const std::string &initial_prefix)
@@ -234,53 +325,23 @@ namespace temp
 	throw TemporaryCreationFailure(msg);
       }
 
-    size_t parentsize = parentdir.size();
-    size_t filenamesize = _filename.size();
-    size_t bufsize = parentsize + 1 + filenamesize + 6 + 1;
-    boost::scoped_array<char> tmpl(new char[bufsize]);
 
-    strncpy(tmpl.get(), parentdir.c_str(), bufsize);
-    strncat(tmpl.get(), "/", bufsize - parentsize);
-    strncat(tmpl.get(), _filename.c_str(), bufsize - parentsize - 1);
-    strncat(tmpl.get(), "XXXXXX", bufsize - parentsize - 1 - filenamesize);
+    std::string prefix = parentdir;
+    prefix += "/";
+    prefix += _filename;
 
     errno = 0;
 
-    // This use of mktemp is safe under the assumption that 'dir' is
-    // safe (because it was created using mkdtemp, which unlike mktemp
-    // is safe) and that the user running the program didn't screw with
-    // the permissions of the temporary directory.
-    if(mktemp(tmpl.get()) == NULL)
+    filename = mymktemp(prefix);
+    if(filename.empty())
       {
-	std::string err = sstrerror(errno);
-
 	LOG_FATAL(Loggers::getAptitudeTemp(),
-		  "Unable to create temporary filename from template \"" << tmpl.get()
-		  << "\": " << err);
+		  "Unable to create temporary filename from prefix \"" << prefix
+		  << "\"");
 
-	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary filename from template \"%s\": %s"),
-						tmpl.get(),
-						err.c_str()));
+	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary filename from prefix \"%s\""),
+						prefix.c_str()));
       }
-
-    if(tmpl[0] == '\0')
-      {
-	std::string err;
-	if(errno == 0)
-	  err = _("Unknown error");
-	else
-	  err = sstrerror(errno);
-
-	LOG_FATAL(Loggers::getAptitudeTemp(),
-		  "Unable to create temporary filename from template \"" << tmpl.get()
-		  << "\": " << err);
-
-	throw TemporaryCreationFailure(ssprintf(_("Unable to create temporary filename from template \"%s\": %s"),
-						tmpl.get(),
-						err.c_str()));
-      }
-
-    filename.assign(tmpl.get());
   }
 
   // We don't know if it's a filename or a directory, so try blowing
