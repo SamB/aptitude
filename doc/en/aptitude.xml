@@ -4380,43 +4380,314 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	</para>
       </section>
 
-      <section id='secDependencyResolutionSearchTiers'>
-	<title>Search tiers in the interactive dependency resolver</title>
+      <section id='secDependencyResolutionCosts'>
+        <title>Costs in the interactive dependency resolver</title>
 
-	<figure id='figureSearchTiers'>
-	  <title>Search tiers</title>
+        <section id='secDependencyResolutionCostsAndCostComponents'>
+          <title>Costs and cost components</title>
+
+          <para>
+            The <firstterm>cost</firstterm> of a solution produced by
+            the interactive dependency resolver is a value that
+            &aptitude; uses to determine how <quote>bad</quote> that
+            solution is.  Solutions that are <quote>worse</quote> are
+            always displayed before solutions that are
+            <quote>better</quote>.
+          </para>
+
+          <para>
+            Some typical costs are shown in <xref
+            linkend='exampleResolverCosts'/>.
+          </para>
+
+          <example id='exampleResolverCosts'>
+            <title>Sample resolver costs</title>
+
+            <para>
+              The default cost, sorting solutions by their <link
+              linkend='secDependencyResolutionCostsSafetyCosts'>safety
+              cost</link>, then by their apt priority:
+            </para>
+
+            <screen>safety, priority</screen>
+
+            <para>
+              Remove as few packages as possible, then cancel as few
+              actions as possible:
+            </para>
+
+            <screen>removals, canceled-actions</screen>
+
+            <para>
+              Sort solutions by the number of packages they remove
+              <emphasis>plus</emphasis> twice the number of actions
+              they cancel.
+            </para>
+
+            <screen>removals + 2 * canceled-actions</screen>
+          </example>
+
+          <para>
+            As can be seen from the above examples, a cost is not
+            necessarily a single number.  In fact, a cost consists of
+            one or more <firstterm>cost components</firstterm>, each
+            of which is a number associated with the solution.  When
+            sorting solutions, the resolver examines cost components
+            in order, proceeding to later components only if the
+            earlier ones are equal.  For instance, in the cost
+            <quote><literal>removals,
+            canceled-actions</literal></quote>, solutions with fewer
+            removals always appear before solutions with more
+            removals, regardless of how many canceled actions they
+            have.  However, solutions with the same number of removals
+            are sorted so that solutions with fewer canceled actions
+            appear first.
+          </para>
+
+          <para>
+            Cost components come in two flavors:
+            <emphasis>basic</emphasis> cost components and
+            <emphasis>compound</emphasis> cost components.
+          </para>
+
+          <para>
+            Basic components simply name some property of the
+            solution, such as
+            <quote><literal>upgrades</literal></quote> or
+            <quote><literal>removals</literal></quote>.  A list of
+            built-in basic components provided by &aptitude; can be
+            found in <xref linkend='tableBasicCostComponents'/>.  You
+            can also create your own cost components using the
+            <literal>add-to-cost-component</literal> and
+            <literal>raise-cost-component</literal> hints; see <xref
+            linkend='secDependencyResolutionHints'/> for details.
+          </para>
+
+          <para>
+            Each basic component is either a
+            <emphasis>counter</emphasis> or a
+            <emphasis>level</emphasis>.  Counters count how many of a
+            solution's actions meet some condition (such as removing
+            packages or installing new packages), while levels
+            associate a number with each action and compute the
+            highest number associated with any action in the solution.
+          </para>
+
+          <table id='tableBasicCostComponents'>
+            <title>Basic cost components</title>
+
+            <tgroup cols='3'>
+              <thead>
+                <row>
+                  <entry>Name</entry>
+                  <entry>Type</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry><literal>broken-holds</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of holds that the solution
+                    breaks, if the resolver is allowed to break holds
+                    (<link
+                    linkend='configProblemResolver-Allow-Break-Holds'><literal>Aptitude::ProblemResolver::Allow-Break-Holds</literal></link>).
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>canceled-actions</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of pending actions that the
+                    solution cancels (keeping packages at their
+                    current version).
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>installs</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of packages that the solution
+                    installs.
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>non-default-versions</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of versions that the solution
+                    installs or upgrades from non-default sources.
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>priority</literal></entry>
+                  <entry>Level</entry>
+                  <entry>
+                    A value that increases as the apt pin priority of
+                    a version decreases.  Specifically, this is
+                    computed by negating the pin priority (so, e.g.,
+                    if the pin priority is 500, this component will
+                    compute -500).
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>removals</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of packages that the solution
+                    removes.
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>removals-of-manual</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of manually installed packages
+                    that the solution removes.
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>safety</literal></entry>
+                  <entry>Level</entry>
+                  <entry>
+                    A broad heuristic that increases as actions become
+                    less <quote>safe</quote>; see <xref
+                    linkend='secDependencyResolutionCostsSafetyCosts'/>
+                    for details.
+                  </entry>
+                </row>
+
+                <row>
+                  <entry><literal>upgrades</literal></entry>
+                  <entry>Counter</entry>
+                  <entry>
+                    Counts the number of packages that the solution
+                    upgrades.
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <para>
+            Compound components are built by combining the values of
+            basic components.  For instance, <literal>removals +
+            canceled-actions</literal> adds the components
+            <literal>removal</literal> and
+            <literal>canceled-actions</literal>, resulting in a
+            component that counts the number of removals
+            <emphasis>and</emphasis> canceled actions.  Compound
+            components combine counters by adding them together and
+            levels by taking their maximum value, as shown in <xref
+            linkend='figureCompoundCostComponents'/>.<footnote><para>This
+            is an intentionally limited syntax, chosen because more
+            complex cost structures could make it difficult to
+            optimize the resolver.  Future versions of the program
+            might remove some of the restrictions, for instance, by
+            allowing <literal>max</literal> and <literal>+</literal>
+            to be arbitrarily nested.</para></footnote>
+          </para>
+
+          <figure>
+            <title>Syntax of compound cost components</title>
+
+            <informaltable>
+              <tgroup cols='2'>
+                <thead>
+                  <row>
+                    <entry>Operation</entry>
+                    <entry>Syntax</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>Add two or more basic costs</entry>
+                    <entry>
+                      <synopsis>
+                        <optional><replaceable>scale1</replaceable></optional><literal>*</literal><replaceable>cost1</replaceable>
+                        +
+                        <optional><replaceable>scale2</replaceable></optional><literal>*</literal><replaceable>cost2</replaceable>
+                        + ...
+                      </synopsis>
+                    </entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </informaltable>
+          </figure>
+
+          <para>
+            Note that each individual basic component can be
+            multiplied by a scaling factor before it is combined with
+            other components.  This can be used to control the
+            trade-offs that the resolver makes between costs.  For
+            instance, a cost of <literal>2*removals +
+            3*upgrades</literal> says that two removals are exactly as
+            <quote>bad</quote> as three upgrades.  Solutions that
+            contain four removals and one upgrade will be considered
+            equivalent to solutions containing one removal and three
+            upgrades, since both have a cost of eleven.
+          </para>
+        </section>
+
+      <section id='secDependencyResolutionCostsSafetyCosts'>
+	<title>Safety costs</title>
+
+	<figure id='figureSafetyCostLevels'>
+	  <title>Safety cost levels</title>
 
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref='images/search-tier-diagram.png'/>
+	      <imagedata fileref='images/safety-cost-level-diagram.png'/>
 	    </imageobject>
 	  </mediaobject>
 	</figure>
 
 	<para>
 	  When generating solutions, &aptitude; places them in order
-	  according to their <firstterm>tier</firstterm>.  Tiers can
-	  be thought of as a way of dividing solutions into several
-	  numbered <quote>compartments</quote>; the dependency
-	  resolver will search each compartment in numerical order
-	  from lowest to highest, but will not leave a compartment
+	  according to their <firstterm>safety cost</firstterm>.
+	  Safety costs can be thought of as a way of dividing
+	  solutions into several numbered <quote>levels</quote>, where
+	  <quote>less safe</quote> levels are given higher numbers.
+	  The dependency resolver will search each level in numerical
+	  order from lowest to highest, but will not leave a level
 	  until all the solutions it contains have been
 	  generated<footnote><para><quote>Generated</quote> solutions
 	  include those solutions that are rejected as described in
 	  <xref linkend='secResolver'/>; it is not necessary to
 	  actually look at all the solutions in a particular tier to
 	  skip past that tier!</para></footnote>.  <xref
-	  linkend='figureSearchTiers'/> shows how this works with
+	  linkend='figureSafetyCostLevels'/> shows how this works with
 	  &aptitude;'s default settings.
 	</para>
 
+        <tip>
+          <para>
+            Safety cost levels are just one way to control the order
+            in which dependency solutions are returned.  See <xref
+            linkend='secResolverCosts'/> for a full description of how
+            to change the order in which &aptitude; sorts solutions.
+          </para>
+        </tip>
+
 	<para>
 	  By default, &aptitude; initializes the resolver with a
-	  <quote>reasonable</quote> set of tiers.  They are:
+	  <quote>reasonable</quote> set of safety cost levels.  They
+	  are:
 	</para>
 
-	<table id='tableDefaultTiers'>
-	  <title>Default tiers</title>
+	<table id='tableDefaultSafetyCostLevels'>
+	  <title>Default safety cost levels</title>
 
 	  <tgroup cols='3'>
 	    <thead>
@@ -4436,7 +4707,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  or keeping a package at its current version) and
 		  package removals.
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Safe-Tier'>Aptitude::ProblemResolver::Safe-Tier</link></literal>, <literal><link linkend='configProblemResolver-Remove-Tier'>Aptitude::ProblemResolver::Remove-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Safe-Level'>Aptitude::ProblemResolver::Safe-Level</link></literal>, <literal><link linkend='configProblemResolver-Remove-Level'>Aptitude::ProblemResolver::Remove-Level</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4444,7 +4715,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<entry>
 		  The solution that cancels all the user's actions.
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Keep-All-Tier'>Aptitude::ProblemResolver::Keep-All-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Keep-All-Level'>Aptitude::ProblemResolver::Keep-All-Level</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4453,7 +4724,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  Solutions that break holds set by the user or
 		  install forbidden versions.
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Break-Hold-Tier'>Aptitude::ProblemResolver::Break-Hold-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Break-Hold-Level'>Aptitude::ProblemResolver::Break-Hold-Level</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4464,7 +4735,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		  <quote><literal>experimental</literal></quote>, for
 		  instance).
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Non-Default-Tier'>Aptitude::ProblemResolver::Non-Default-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Non-Default-Level'>Aptitude::ProblemResolver::Non-Default-Level</link></literal></entry>
 	      </row>
 
 	      <row>
@@ -4472,44 +4743,46 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<entry>
 		  Solutions that remove Essential packages.
 		</entry>
-		<entry><literal><link linkend='configProblemResolver-Remove-Essential-Tier'>Aptitude::ProblemResolver::Remove-Essential-Tier</link></literal></entry>
+		<entry><literal><link linkend='configProblemResolver-Remove-Essential-Level'>Aptitude::ProblemResolver::Remove-Essential-Level</link></literal></entry>
 	      </row>
 	    </tbody>
 	  </tgroup>
 	</table>
 
 	<para>
-	  If a solution qualifies for several tiers, it will be placed
-	  in the highest (that is to say, latest) one.  For example, a
-	  solution that upgrades one package to its default version
-	  and breaks a hold on a second package will be placed at tier
-	  40,000.  You can adjust the tiers of individual versions
-	  using resolver hints; see <xref
-	  linkend='secDependencyResolutionHints'/> for details.  The
-	  default tiers are illustrated in <xref
-	  linkend='figureSearchTiers'/>.
+	  If a solution qualifies for several safety cost levels, it
+	  will be placed in the highest one, that is, the one that
+	  appears last.  For example, a solution that upgrades one
+	  package to its default version and breaks a hold on a second
+	  package will be placed at level 40,000.  You can adjust the
+	  levels of individual versions using resolver hints; see
+	  <xref linkend='secDependencyResolutionHints'/> for details.
+	  The default levels are illustrated in <xref
+	  linkend='figureSafetyCostLevels'/>.
 	</para>
 
 	<tip>
 	  <para>
-	    Within each tier, &aptitude; orders solutions according to
-	    the lowest pin priority of any package in the solution.
-	    That is: if one solution contains packages with priorities
-	    500, 1000, and 0, and another solution contains only
-	    packages with priority 50, the second solution will appear
-	    first.
+	    By default, within each level, &aptitude; orders solutions
+	    according to the lowest pin priority of any package in the
+	    solution.  That is: if one solution contains packages with
+	    priorities 500, 1000, and 0, and another solution contains
+	    only packages with priority 50, the second solution will
+	    appear first.
 	  </para>
 
 	  <para>
-	    If two solutions in the same tier have the same pin
+	    If two solutions in the same level have the same pin
 	    priority, &aptitude; will attempt to produce them in order
 	    according to their <quote>score</quote>.  However, the
 	    score of a solution is only a guideline, and solutions
 	    with a lower score might appear before solutions with a
 	    higher score.  If you need a guarantee that solutions will
-	    appear in a particular order, you should use search tiers.
+	    appear in a particular order, you should use the resolver
+	    costs.
 	  </para>
 	</tip>
+      </section>
       </section>
 
       <section id='secDependencyResolutionConfiguration'>
@@ -4589,7 +4862,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		effect.  Solutions containing higher-tiered versions
 		will appear after solutions with only lower-tiered
 		versions; see <xref
-		linkend='secDependencyResolutionSearchTiers'/> for
+		linkend='secDependencyResolutionSafetyTiers'/> for
 		details.
 	      </para>
 
@@ -11118,7 +11391,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		The search tier assigned to actions that break a hold
 		set by the user (by upgrading a held package or by
 		installing a forbidden version of a package).  See
-		<xref linkend='secDependencyResolutionSearchTiers'/>
+		<xref linkend='secDependencyResolutionSafetyTiers'/>
 		for a description of how search tiers work.
 	      </seg>
 	    </seglistitem>
@@ -11177,7 +11450,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg>
 		The search tier assigned to actions that remove an
 		Essential package.  See <xref
-		linkend='secDependencyResolutionSearchTiers'/> for a
+		linkend='secDependencyResolutionSafetyTiers'/> for a
 		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
@@ -11272,7 +11545,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg>
 		The search tier assigned to the single solution that
 		cancels all of the actions selected by the user.  See
-		<xref linkend='secDependencyResolutionSearchTiers'/>
+		<xref linkend='secDependencyResolutionSafetyTiers'/>
 		for a description of how search tiers work.
 	      </seg>
 	    </seglistitem>
@@ -11309,7 +11582,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		and 8 are available, and version 7 is the default
 		version, then versions 6 and 8 will be placed in this
 		tier.  See <xref
-		linkend='secDependencyResolutionSearchTiers'/> for a
+		linkend='secDependencyResolutionSafetyTiers'/> for a
 		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
@@ -11359,7 +11632,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg>
 		The search tier assigned to actions that remove a
 		package.  See <xref
-		linkend='secDependencyResolutionSearchTiers'/> for a
+		linkend='secDependencyResolutionSafetyTiers'/> for a
 		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
@@ -11397,7 +11670,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		generated by <link
 		linkend='manpageSafeUpgrade'><literal>aptitude
 		safe-upgrade</literal></link>.  See <xref
-		linkend='secDependencyResolutionSearchTiers'/> for a
+		linkend='secDependencyResolutionSafetyTiers'/> for a
 		description of how search tiers work.
 	      </seg>
 	    </seglistitem>
