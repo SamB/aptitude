@@ -4597,33 +4597,26 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
             to be arbitrarily nested.</para></footnote>
           </para>
 
-          <figure>
+          <figure id='figureCompoundCostComponents'>
             <title>Syntax of compound cost components</title>
 
-            <informaltable>
-              <tgroup cols='2'>
-                <thead>
-                  <row>
-                    <entry>Operation</entry>
-                    <entry>Syntax</entry>
-                  </row>
-                </thead>
+            <!-- Using "informalexample" to get sane titles for the
+                 synopses without using two separate figures. -->
+            <informalexample>
+              <para>
+                Add two or more basic costs:
+              </para>
+              <synopsis>
+                <literal><optional><replaceable>scale1</replaceable></optional>*<replaceable>cost1</replaceable> + <optional><replaceable>scale2</replaceable></optional>*<replaceable>cost2</replaceable> + ...</literal>
+              </synopsis>
 
-                <tbody>
-                  <row>
-                    <entry>Add two or more basic costs</entry>
-                    <entry>
-                      <synopsis>
-                        <optional><replaceable>scale1</replaceable></optional><literal>*</literal><replaceable>cost1</replaceable>
-                        +
-                        <optional><replaceable>scale2</replaceable></optional><literal>*</literal><replaceable>cost2</replaceable>
-                        + ...
-                      </synopsis>
-                    </entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </informaltable>
+              <para>
+                Take the maximum value of two or more basic costs:
+              </para>
+              <synopsis>
+                <literal>max(<optional><replaceable>scale1</replaceable></optional>*<replaceable>cost1</replaceable>, <optional><replaceable>scale2</replaceable></optional>*<replaceable>cost2</replaceable>, ...)</literal>
+              </synopsis>
+            </informalexample>
           </figure>
 
           <para>
