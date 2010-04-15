@@ -4656,21 +4656,14 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
           </figure>
 
           <para>
-            When generating solutions, &aptitude; places them in order
-            according to their <firstterm>safety cost</firstterm>.
-            Safety costs can be thought of as a way of dividing
-            solutions into several numbered <quote>levels</quote>,
-            where <quote>less safe</quote> levels are given higher
-            numbers.  The dependency resolver will search each level
-            in numerical order from lowest to highest, but will not
-            leave a level until all the solutions it contains have
-            been generated<footnote><para><quote>Generated</quote>
-            solutions include those solutions that are rejected as
-            described in <xref linkend='secResolver'/>; it is not
-            necessary to actually look at all the solutions in a
-            particular tier to skip past that tier!</para></footnote>.
-            <xref linkend='figureSafetyCostLevels'/> shows how this
-            works with &aptitude;'s default settings.
+            The <literal>safety</literal> cost component is a
+            heuristic estimate of how <quote>safe</quote> or
+            <quote>unsafe</quote> a solution is.  Safety costs can be
+            thought of as a way of dividing solutions into several
+            numbered <quote>levels</quote>, where <quote>less
+            safe</quote> levels are given higher numbers.  <xref
+            linkend='figureSafetyCostLevels'/> shows how this works
+            with &aptitude;'s default settings.
           </para>
 
           <tip>
@@ -4763,28 +4756,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
             for details.  The default levels are illustrated in <xref
             linkend='figureSafetyCostLevels'/>.
           </para>
-
-          <tip>
-            <para>
-              By default, within each level, &aptitude; orders
-              solutions according to the lowest pin priority of any
-              package in the solution.  That is: if one solution
-              contains packages with priorities 500, 1000, and 0, and
-              another solution contains only packages with priority
-              50, the second solution will appear first.
-            </para>
-
-            <para>
-              If two solutions in the same level have the same pin
-              priority, &aptitude; will attempt to produce them in
-              order according to their <quote>score</quote>.  However,
-              the score of a solution is only a guideline, and
-              solutions with a lower score might appear before
-              solutions with a higher score.  If you need a guarantee
-              that solutions will appear in a particular order, you
-              should use the resolver costs.
-            </para>
-          </tip>
         </section>
       </section>
 
