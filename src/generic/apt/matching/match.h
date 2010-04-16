@@ -1,6 +1,6 @@
 // match.h    -*-c++-*-
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -688,6 +688,27 @@ namespace aptitude
 		aptitudeDepCache &cache,
 		pkgRecords &records,
 		bool debug = false);
+
+    /** \brief Retrieve all the package versions matching the given pattern.
+     *
+     *  This may use Xapian or other indices to accelerate the search
+     *  at the cost of exactness, depending on the query that was
+     *  passed in.
+     *
+     *  \param p            The pattern to match against.
+     *  \param search_info  Where to store "side information"
+     *                      associated with this search.
+     *  \param cache        The package cache in which to search.
+     *  \param records      The package records in which to perform the match.
+     *  \param debug        If \b true, information about the search
+     *                      process will be printed to standard output.
+     */
+    void search_versions(const cwidget::util::ref_ptr<pattern> &p,
+                         const cwidget::util::ref_ptr<search_cache> &search_info,
+                         std::vector<std::pair<pkgCache::VerIterator, cwidget::util::ref_ptr<structural_match> > > &matches,
+                         aptitudeDepCache &cache,
+                         pkgRecords &records,
+                         bool debug = false);
   }
 }
 

@@ -1,6 +1,6 @@
 // match.cc
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -2872,6 +2872,98 @@ namespace aptitude
 		      if(m.valid())
 			matches.push_back(std::make_pair(pkg, m));
 		    }
+		}
+	    }
+	}
+      catch(cwidget::util::Exception &e)
+	{
+	  _error->Error("%s", e.errmsg().c_str());
+	}
+      catch(std::exception &e)
+	{
+	  _error->Error("%s", e.what());
+	}
+      catch(Xapian::Error &e)
+	{
+	  _error->Error("%s", e.get_msg().c_str());
+	}
+    }
+
+    void search_versions(const ref_ptr<pattern> &p,
+                         const ref_ptr<search_cache> &search_info,
+                         std::vector<std::pair<pkgCache::VerIterator, ref_ptr<structural_match> > > &matches,
+                         aptitudeDepCache &cache,
+                         pkgRecords &records,
+                         bool debug)
+    {
+      // It's a bit ugly that this is separate from search(), but it's
+      // not obvious how to merge them given their different looping
+      // requirements.
+      try
+	{
+	  eassert(p.valid());
+	  eassert(search_info.valid());
+
+	  const ref_ptr<search_cache::implementation> info = search_info.dyn_downcast<search_cache::implementation>();
+	  eassert(info.valid());
+
+	  const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
+
+	  if(!xapian_results.get_matched_packages_valid())
+	    {
+	      if(debug)
+		std::cout << "Failed to build a Xapian query for this search." << std::endl
+			  << "Falling back to testing each package." << std::endl;
+
+	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
+		  !pkg.end(); ++pkg)
+                for(pkgCache::VerIterator ver = pkg.VersionList();
+                    !ver.end(); ++ver)
+                  {
+                    ref_ptr<structural_match> m(get_match(p,
+                                                          pkg, ver,
+                                                          info,
+                                                          cache,
+                                                          records,
+                                                          debug));
+
+                    if(m.valid())
+                      matches.push_back(std::make_pair(ver, m));
+                  }
+	    }
+	  else
+	    {
+	      Xapian::MSet mset(xapian_results.get_xapian_match());
+	      for(Xapian::MSetIterator it = mset.begin();
+		  it != mset.end(); ++it)
+		{
+		  std::string name(it.get_document().get_data());
+
+		  if(debug)
+		    std::cout << "HIT: " << name
+			      << " (score " << it.get_weight() << ")" << std::endl;
+
+		  pkgCache::PkgIterator pkg(cache.FindPkg(name));
+		  if(pkg.end())
+		    {
+		      if(debug)
+			std::cout << "W: unable to find the package " << name
+				  << std::endl;
+		    }
+		  else
+                    for(pkgCache::VerIterator ver = pkg.VersionList();
+                        !ver.end(); ++ver)
+                      {
+                        ref_ptr<structural_match> m(get_match(p,
+                                                              pkg, ver,
+                                                              info,
+                                                              cache,
+                                                              records,
+                                                              debug));
+
+                        if(m.valid())
+                          matches.push_back(std::make_pair(ver, m));
+                      }
 		}
 	    }
 	}
