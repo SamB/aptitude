@@ -561,8 +561,8 @@ int main(int argc, char *argv[])
 
   close_cache_on_exit close_on_exit;
 
-  char *status_fname=NULL;
   // The filename to read status information from.
+  char *status_fname=NULL;
   string display_format=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Format", "%c%a%M %p# - %d#");
   string sort_policy="name";
   string width=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Width", "");
