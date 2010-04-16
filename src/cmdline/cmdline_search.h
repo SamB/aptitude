@@ -10,6 +10,26 @@
 /** \file cmdline_search.h
  */
 
+/** \brief Represents the possible values of the "group-by-package"
+ *  command-line option.
+ */
+enum group_by_package_option
+  {
+    /** \brief Never group by package. */
+    group_by_package_never,
+
+    /** \brief Group by package automatically if there's more than one
+     *  package to display OR if the single package returned was not
+     *  chosen by exact name.
+     *
+     *  This is the default value.
+     */
+    group_by_package_auto,
+
+    /** \brief Always group by package. */
+    group_by_package_always
+  };
+
 /** \brief Invoke the "search" and "versions" command-line actions.
  *
  *  \param argc             The number of entries in argv.
@@ -45,6 +65,6 @@
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   std::string display_format, std::string width, std::string sort,
 		   bool disable_columns, bool debug,
-                   bool search_versions, bool group_by_package);
+                   bool search_versions, group_by_package_option group_by_package);
 
 #endif // CMDLINE_SEARCH_H

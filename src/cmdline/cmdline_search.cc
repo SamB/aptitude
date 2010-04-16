@@ -154,7 +154,7 @@ namespace
                          column_definition_list *columns,
                          int format_width,
                          bool disable_columns,
-                         bool group_by_package,
+                         group_by_package_option group_by_package,
                          bool debug)
   {
     LOG_ERROR(Loggers::getAptitudeCmdlineSearch(),
@@ -168,7 +168,7 @@ namespace
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
 		   bool disable_columns, bool debug,
-                   bool search_versions, bool group_by_package)
+                   bool search_versions, group_by_package_option group_by_package)
 {
   // This is essentially two routines folded into one to avoid having
   // to share a bunch of initialization.  This is a really bad idea,
