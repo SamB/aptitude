@@ -7,12 +7,16 @@
 
 #include "cmdline_common.h"
 
+#include <pkg_sortpolicy.h>
+
 // Ew: for column_definition_list.
 #include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/ref_ptr.h>
 
 // For download_manager::result
 #include <generic/apt/download_manager.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/matching/match.h> // For structural_match.
 
 #include <string>
 
@@ -203,6 +207,156 @@ namespace aptitude
     std::wstring de_columnize(const cwidget::config::column_definition_list &columns,
 			      cwidget::config::column_generator &columnizer,
 			      cwidget::config::column_parameters &p);
+
+    /** Compare pairs whose first elements are package iterators,
+     *  according to a sorting policy.
+     *
+     *  When a version is needed to do a comparison, I arbitrarily decided
+     *  to use the candidate version.
+     */
+    class package_results_lt
+    {
+      pkg_sortpolicy *s;
+
+    public:
+      package_results_lt(pkg_sortpolicy *_s):s(_s) {}
+
+      template<typename T, typename U>
+      bool operator()(const std::pair<pkgCache::PkgIterator, T> &a,
+                      const std::pair<pkgCache::PkgIterator, U> &b)
+      {
+        pkgCache::VerIterator av = (*apt_cache_file)[a.first].CandidateVerIter(*apt_cache_file);
+        pkgCache::VerIterator bv = (*apt_cache_file)[b.first].CandidateVerIter(*apt_cache_file);
+
+        return s->compare(a.first, av, b.first, bv)<0;
+      }
+    };
+
+    /** \brief Compare pairs whose first elements are package
+     *  iterators for equality.
+     */
+    class package_results_eq
+    {
+      pkg_sortpolicy *s;
+    public:
+      package_results_eq(pkg_sortpolicy *_s):s(_s) {}
+
+      template<typename T, typename U>
+      bool operator()(const std::pair<pkgCache::PkgIterator, T> &a,
+                      const std::pair<pkgCache::PkgIterator, U> &b)
+      {
+        pkgCache::VerIterator av =
+          (*apt_cache_file)[a.first].CandidateVerIter(*apt_cache_file);
+        pkgCache::VerIterator bv =
+          (*apt_cache_file)[b.first].CandidateVerIter(*apt_cache_file);
+
+        return s->compare(a.first, av, b.first, bv) == 0;
+      }
+    };
+
+    /** \brief 3-way compare of version match results (pairs whose
+     *  first element is a version).
+     */
+    class compare_version_results3
+    {
+      pkg_sortpolicy *sortpolicy;
+
+    public:
+      compare_version_results3(pkg_sortpolicy *_sortpolicy)
+        : sortpolicy(_sortpolicy)
+      {
+      }
+
+      template<typename T, typename U>
+      int operator()(const std::pair<pkgCache::VerIterator, T> &a,
+                     const std::pair<pkgCache::VerIterator, U> &b)
+      {
+        const pkgCache::VerIterator &av = a.first;
+        const pkgCache::VerIterator &bv = b.first;
+
+        return sortpolicy->compare(av.ParentPkg(), av, bv.ParentPkg(), bv);
+      }
+    };
+
+    /** \brief less-than over version match results. */
+    class version_results_lt
+    {
+      compare_version_results3 comparer;
+
+    public:
+      version_results_lt(pkg_sortpolicy *sortpolicy)
+        : comparer(sortpolicy)
+      {
+      }
+
+      template<typename T, typename U>
+      bool operator()(const std::pair<pkgCache::VerIterator, T> &a,
+                      const std::pair<pkgCache::VerIterator, U> &b)
+      {
+        return comparer(a, b) < 0;
+      }
+    };
+
+    /** \brief equality over version match results.
+     *
+     *  Returns \b true if two match results are equivalent under the
+     *  given sort order.
+     */
+    class version_results_eq
+    {
+      compare_version_results3 comparer;
+
+    public:
+      version_results_eq(pkg_sortpolicy *sortpolicy)
+        : comparer(sortpolicy)
+      {
+      }
+
+      template<typename T, typename U>
+      bool operator()(const std::pair<pkgCache::VerIterator, T> &a,
+                      const std::pair<pkgCache::VerIterator, U> &b)
+      {
+        return comparer(a, b) == 0;
+      }
+    };
+
+
+    /** \brief Custom hash on packages. */
+    class hash_pkgiterator
+    {
+    public:
+      std::size_t operator()(const pkgCache::PkgIterator &pkg) const
+      {
+        return pkg->ID;
+      }
+    };
+
+    /// \brief A helper object to generate columns from the result of
+    /// a search.
+    ///
+    /// \todo search_result_parameters currently acts as an empty
+    /// list; it should parse the match result and return the groups
+    /// it contains.
+    class search_result_column_parameters : public cwidget::config::column_parameters
+    {
+      cwidget::util::ref_ptr<aptitude::matching::structural_match> r;
+
+    public:
+      search_result_column_parameters(const cwidget::util::ref_ptr<aptitude::matching::structural_match> &_r)
+        : r(_r)
+      {
+      }
+
+      int param_count()
+      {
+        return 0;
+      }
+
+      std::wstring get_param(int n)
+      {
+        return std::wstring();
+      }
+    };
   }
 }
 

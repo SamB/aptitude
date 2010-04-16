@@ -10,27 +10,6 @@
 /** \file cmdline_search.h
  */
 
-/** \brief Represents the possible values of the "group-by-package"
- *  command-line option.
- */
-enum group_by_package_option
-  {
-    /** \brief Never group by package. */
-    group_by_package_never,
-
-    /** \brief Group by package unless there is exactly one pattern
-     *  AND that pattern matches a single package exactly by name.
-     *
-     *  This is the default value.  It means that
-     *  "aptitude versions foo" shows the versions of "foo" without
-     *  grouping, but a more complex search performs the grouping
-     *  automatically.
-     */
-    group_by_package_auto,
-
-    /** \brief Always group by package. */
-    group_by_package_always
-  };
 
 /** \brief Invoke the "search" and "versions" command-line actions.
  *
@@ -54,19 +33,9 @@ enum group_by_package_option
  *
  *  \param debug            \b true to print debugging information to stdout.
  *                          \todo  Should be handled by the logging subsystem.
- *
- *  \param search_versions  \b true to search for versions instead of packages.
- *
- *  \param group_by_package If search_versions is true, set this to \b true to
- *                          group the output by package.
- *
- *  \todo Can this perhaps be refactored a bit so that search_versions and
- *        search_packages can be passed in a more extensible way?  Probably
- *        requires refactoring at the level of aptitude::matching too.
  */
 int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   std::string display_format, std::string width, std::string sort,
-		   bool disable_columns, bool debug,
-                   bool search_versions, group_by_package_option group_by_package);
+		   bool disable_columns, bool debug);
 
 #endif // CMDLINE_SEARCH_H

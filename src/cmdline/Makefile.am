@@ -48,5 +48,7 @@ libcmdline_a_SOURCES=\
 	cmdline_user_tag.h \
 	cmdline_util.cc \
 	cmdline_util.h \
+	cmdline_versions.cc \
+	cmdline_versions.h \
 	cmdline_why.cc \
 	cmdline_why.h

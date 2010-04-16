@@ -66,6 +66,7 @@
 #include <cmdline/cmdline_show.h>
 #include <cmdline/cmdline_update.h>
 #include <cmdline/cmdline_user_tag.h>
+#include <cmdline/cmdline_versions.h>
 #include <cmdline/cmdline_why.h>
 
 #include <sigc++/functors/ptr_fun.h>
@@ -1054,16 +1055,15 @@ int main(int argc, char *argv[])
 				  package_display_format, width,
 				  sort_policy,
 				  disable_columns,
-				  debug_search,
-                                  false, group_by_package_mode);
+				  debug_search);
           else if(!strcasecmp(argv[optind], "versions"))
-            return cmdline_search(argc - optind, argv + optind,
-                                  status_fname,
-                                  version_display_format, width,
-                                  sort_policy,
-                                  disable_columns,
-                                  debug_search,
-                                  true, group_by_package_mode);
+            return cmdline_versions(argc - optind, argv + optind,
+                                    status_fname,
+                                    version_display_format, width,
+                                    sort_policy,
+                                    disable_columns,
+                                    debug_search,
+                                    group_by_package_mode);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose,
