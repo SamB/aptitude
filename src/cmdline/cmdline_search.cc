@@ -13,6 +13,7 @@
 #include <pkg_columnizer.h>
 #include <pkg_item.h>
 #include <pkg_sortpolicy.h>
+#include <pkg_ver_item.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/matching/match.h>
@@ -241,10 +242,10 @@ namespace
         it != output.end(); ++it)
       {
         boost::scoped_ptr<column_parameters> p(new search_result_parameters(it->second));
-        pkg_item::pkg_columnizer columnizer(it->first.ParentPkg(),
-                                            it->first,
-                                            columns,
-                                            0);
+        pkg_ver_columnizer columnizer(it->first,
+                                      false, // Could set this to true to show the package's name.
+                                      columns,
+                                      0);
         if(disable_columns)
           printf("%ls\n", aptitude::cmdline::de_columnize(columns, columnizer, *p).c_str());
         else
