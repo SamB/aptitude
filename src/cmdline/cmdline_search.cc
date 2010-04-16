@@ -332,6 +332,9 @@ namespace
         for(results_by_package_list::const_iterator it = by_packages_list.begin();
             it != by_packages_list.end(); ++it)
           {
+            if(it != by_packages_list.begin())
+              printf("\n");
+            printf("Package %s:\n", it->first.Name());
             // No need to sort the versions in this list since we
             // sorted them above.
             show_version_match_list(*it->second, columns, format_width, disable_columns);
