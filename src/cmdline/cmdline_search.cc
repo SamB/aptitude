@@ -180,7 +180,7 @@ namespace
 {
   int do_search_packages(const std::vector<ref_ptr<pattern> > &patterns,
                          pkg_sortpolicy *sort_policy,
-                         column_definition_list *columns,
+                         const column_definition_list &columns,
                          int format_width,
                          bool disable_columns,
                          bool debug)
@@ -214,10 +214,10 @@ namespace
           new search_result_parameters(it->second);
         pkg_item::pkg_columnizer columnizer(it->first,
                                             it->first.VersionList(),
-                                            *columns,
+                                            columns,
                                             0);
         if(disable_columns)
-          printf("%ls\n", aptitude::cmdline::de_columnize(*columns, columnizer, *p).c_str());
+          printf("%ls\n", aptitude::cmdline::de_columnize(columns, columnizer, *p).c_str());
         else
           printf("%ls\n",
                  columnizer.layout_columns(format_width == -1 ? screen_width : format_width,
@@ -228,14 +228,12 @@ namespace
         delete p;
       }
 
-    delete columns;
-
     return 0;
   }
 
   // Print the matches against a group of versions.
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, ref_ptr<structural_match> > > &output,
-                               column_definition_list *columns,
+                               const column_definition_list &columns,
                                int format_width,
                                bool disable_columns)
   {
@@ -245,10 +243,10 @@ namespace
         boost::scoped_ptr<column_parameters> p(new search_result_parameters(it->second));
         pkg_item::pkg_columnizer columnizer(it->first.ParentPkg(),
                                             it->first,
-                                            *columns,
+                                            columns,
                                             0);
         if(disable_columns)
-          printf("%ls\n", aptitude::cmdline::de_columnize(*columns, columnizer, *p).c_str());
+          printf("%ls\n", aptitude::cmdline::de_columnize(columns, columnizer, *p).c_str());
         else
           printf("%ls\n",
                  columnizer.layout_columns(format_width == -1 ? screen_width : format_width,
@@ -258,7 +256,7 @@ namespace
 
   int do_search_versions(const std::vector<ref_ptr<pattern> > &patterns,
                          pkg_sortpolicy *sort_policy,
-                         column_definition_list *columns,
+                         const column_definition_list &columns,
                          int format_width,
                          bool disable_columns,
                          group_by_package_option group_by_package,
@@ -341,8 +339,6 @@ namespace
     else
       show_version_match_list(output, columns, format_width, disable_columns);
 
-    delete columns;
-
     return 0;
   }
 }
@@ -394,13 +390,12 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  column_definition_list *columns;
+  boost::scoped_ptr<column_definition_list> columns;
+  columns.reset(parse_columns(wdisplay_format,
+                              pkg_item::pkg_columnizer::parse_column_type,
+                              pkg_item::pkg_columnizer::defaults));
 
-  columns = parse_columns(wdisplay_format,
-                          pkg_item::pkg_columnizer::parse_column_type,
-                          pkg_item::pkg_columnizer::defaults);
-
-  if(!columns)
+  if(columns.get() == NULL)
     {
       _error->DumpErrors();
       return -1;
@@ -409,7 +404,6 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   if(argc<=1)
     {
       fprintf(stderr, _("search: You must provide at least one search term\n"));
-      delete columns;
       return -1;
     }
 
@@ -420,7 +414,6 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   if(_error->PendingError())
     {
       _error->DumpErrors();
-      delete columns;
       return -1;
     }
 
@@ -445,7 +438,6 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
             {
               _error->DumpErrors();
 
-              delete columns;
               return -1;
             }
 
@@ -456,14 +448,14 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
   if(!search_versions)
     return do_search_packages(matchers,
                               s,
-                              columns,
+                              *columns,
                               real_width,
                               disable_columns,
                               debug);
   else
     return do_search_versions(matchers,
                               s,
-                              columns,
+                              *columns,
                               real_width,
                               disable_columns,
                               group_by_package,
