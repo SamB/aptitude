@@ -18,11 +18,13 @@ enum group_by_package_option
     /** \brief Never group by package. */
     group_by_package_never,
 
-    /** \brief Group by package automatically if there's more than one
-     *  package to display OR if the single package returned was not
-     *  chosen by exact name.
+    /** \brief Group by package unless there is exactly one pattern
+     *  AND that pattern matches a single package exactly by name.
      *
-     *  This is the default value.
+     *  This is the default value.  It means that
+     *  "aptitude versions foo" shows the versions of "foo" without
+     *  grouping, but a more complex search performs the grouping
+     *  automatically.
      */
     group_by_package_auto,
 

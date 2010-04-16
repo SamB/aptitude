@@ -570,7 +570,7 @@ int main(int argc, char *argv[])
   string package_display_format = aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Format", "%c%a%M %p# - %d#");
   string version_display_format = aptcfg->Find(PACKAGE "::CmdLine::Version-Display-Format", "%c%a%M %p# %t %i");
   string group_by_package_mode_string = aptcfg->Find(PACKAGE "::CmdLine::Versions-Group-By-Package", "auto");
-  string sort_policy="name";
+  string sort_policy="name,version";
   string width=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Width", "");
   // Set to a non-empty string to enable logging simplistically; set
   // to "-" to log to stdout.
