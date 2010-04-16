@@ -43,6 +43,16 @@ namespace aptitude
     return Logger::getLogger("aptitude.changelog.parse");
   }
 
+  LoggerPtr Loggers::getAptitudeCmdline()
+  {
+    return Logger::getLogger("aptitude.cmdline");
+  }
+
+  LoggerPtr Loggers::getAptitudeCmdlineSearch()
+  {
+    return Logger::getLogger("aptitude.cmdline.search");
+  }
+
   LoggerPtr Loggers::getAptitudeDownloadCache()
   {
     return Logger::getLogger("aptitude.downloadCache");

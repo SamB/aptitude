@@ -74,6 +74,22 @@ namespace aptitude
      */
     static log4cxx::LoggerPtr getAptitudeChangelogParse();
 
+    /** \brief The logger for events having to do with command-line
+     *  actions.
+     *
+     *  Includes both parsing and logic.
+     *
+     *  Name: aptitude.cmdline
+     */
+    static log4cxx::LoggerPtr getAptitudeCmdline();
+
+    /** \brief The logger for events having to do with the "search"
+     *  command-line action.
+     *
+     *  Name: aptitude.cmdline.search
+     */
+    static log4cxx::LoggerPtr getAptitudeCmdlineSearch();
+
     /** \brief The logger for events having to do with aptitude's
      *  caching of downloaded data (other than package lists and
      *  .debs).
