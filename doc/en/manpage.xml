@@ -94,6 +94,8 @@
       <arg choice='opt' rep='repeat'><replaceable>options</replaceable></arg>
 
       <group choice='req'>
+	<arg choice='plain'>build-dep</arg>
+	<arg choice='plain'>build-depends</arg>
 	<arg choice='plain'>changelog</arg>
 	<arg choice='plain'>download</arg>
 	<arg choice='plain'>forbid-version</arg>
@@ -106,8 +108,6 @@
 	<arg choice='plain'>show</arg>
 	<arg choice='plain'>unhold</arg>
 	<arg choice='plain'>unmarkauto</arg>
-	<arg choice='plain'>build-dep</arg>
-	<arg choice='plain'>build-depends</arg>
       </group>
 
       <arg choice='plain' rep='repeat'><replaceable>packages</replaceable></arg>
