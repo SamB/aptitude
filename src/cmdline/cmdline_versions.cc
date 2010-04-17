@@ -125,6 +125,28 @@ namespace
     }
   };
 
+  /** \brief Group versions by their archive(s). */
+  class version_group_by_archive : public version_group_by_policy
+  {
+  public:
+    void get_groups(const pkgCache::VerIterator &ver,
+                    const cw::util::ref_ptr<m::structural_match> &match,
+                    std::vector<std::string> &output)
+    {
+      for(pkgCache::VerFileIterator vf = ver.FileList();
+          !vf.end(); ++vf)
+        if(vf.File().Archive() != NULL)
+          output.push_back(vf.File().Archive());
+        else
+          output.push_back(_("<NULL>"));
+    }
+
+    std::string format_header(const std::string &group)
+    {
+      return (boost::format(_("Archive %s:")) % group).str();
+    }
+  };
+
   // Print the matches against a group of versions.
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > > &output,
                                const cw::config::column_definition_list &columns,
@@ -213,6 +235,12 @@ namespace
 
       case group_by_source_package:
         group_by_policy = new version_group_by_source_package;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
+        break;
+
+      case group_by_archive:
+        group_by_policy = new version_group_by_archive;
         package_names_should_auto_show =
           !arguments_select_exactly_one_package_by_exact_name;
         break;
@@ -342,12 +370,16 @@ group_by_option parse_group_by_option(const std::string &option)
   // Translators: if you add synonyms to the possible values here,
   // please also use the translations in your manpage and in the error
   // string below.
-  if(option == "auto" ||
+  if(option == "archive" ||
+     option == P_("--group-by|archive"))
+    return group_by_archive;
+
+  else if(option == "auto" ||
           option == P_("--group-by|auto"))
     return group_by_auto;
 
   else if(option == "none" ||
-     option == P_("--group-by|none"))
+          option == P_("--group-by|none"))
     return group_by_none;
 
   else if(option == "package" ||

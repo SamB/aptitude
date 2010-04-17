@@ -27,6 +27,9 @@
  */
 enum group_by_option
   {
+    /** \brief Group by archive ("stable", "unstable", etc). */
+    group_by_archive,
+
     /** \brief Group by package unless there is exactly one pattern
      *  AND that pattern matches a single package exactly by name, in
      *  which case don't group at all.

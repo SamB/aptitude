@@ -1349,6 +1349,17 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
           <itemizedlist>
             <listitem>
               <para>
+                <literal>archive</literal> to group packages by the
+                archive they occur in
+                (<quote><literal>stable</literal></quote>,
+                <quote><literal>unstable</literal></quote>, etc).  If
+                a package occurs in several archives, it will be
+                displayed in each of them.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
                 <literal>auto</literal> to group versions by their
                 package unless there is exactly one argument and it is
                 not a search pattern.
