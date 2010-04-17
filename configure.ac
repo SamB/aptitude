@@ -109,6 +109,7 @@ boost/optional.hpp dnl
 boost/preprocessor/repetition/enum_binary_params.hpp dnl
 boost/preprocessor/repetition/enum_params.hpp dnl
 boost/preprocessor/repetition/repeat.hpp dnl
+boost/random.hpp dnl
 boost/range.hpp dnl
 boost/ref.hpp dnl
 boost/scoped_array.hpp dnl
