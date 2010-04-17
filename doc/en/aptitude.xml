@@ -10678,6 +10678,23 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+            <seglistitem id='configCmdLine-Versions-Group-By'>
+              <seg><literal>Aptitude::CmdLine::Versions-Group-By</literal></seg>
+
+              <seg>
+                Set to <literal>auto</literal>,
+                <literal>none</literal>, <literal>package</literal>,
+                or <literal>source-package</literal> to control
+                whether and how the output of <link
+                linkend='cmdlineVersions'><literal>aptitude
+                versions</literal></link> is grouped.  Equivalent to
+                the command-line option <link
+                linkend='cmdlineGroupBy'><literal>--group-by</literal></link>
+                (see its documentation for more description of what
+                the values mean).
+              </seg>
+            </seglistitem>
+
 	    <seglistitem id='configCmdLine-Ignore-Trust-Violations'>
 	      <seg><literal>Aptitude::CmdLine::Ignore-Trust-Violations</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -10869,6 +10886,36 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<keycap>i</keycap> in a package list.
 	      </seg>
 	    </seglistitem>
+
+	    <seglistitem id='configCmdLine-Version-Display-Format'>
+	      <seg><literal>Aptitude::CmdLine::Version-Display-Format</literal></seg>
+	      <seg><literal>%c%a%M %p# %t %i</literal></seg>
+
+	      <seg>
+		This is a format string, as described in <xref
+		linkend='secDisplayFormat'/>, which is used to display
+		the output of <literal>aptitude versions</literal>.
+		This is equivalent to the <literal>-F</literal>
+		command-line option.
+	      </seg>
+	    </seglistitem>
+
+            <seglistitem id='configCmdLine-Versions-Show-Package-Names'>
+              <seg><literal>Aptitude::CmdLine::Versions-Show-Package-Names</literal></seg>
+
+              <seg>
+                Set to <literal>always</literal>,
+                <literal>auto</literal>, or <literal>never</literal>
+                to control when package names are displayed in the
+                output of <link
+                linkend='cmdlineVersions'><literal>aptitude
+                versions</literal></link>.  Equivalent to the
+                command-line option <link
+                linkend='cmdlineShowPackageNames'><literal>--show-package-names</literal></link>
+                (see its documentation for more description of what
+                the values mean).
+              </seg>
+            </seglistitem>
 
 	    <seglistitem id='configSafe-Resolver-Show-Resolver-Actions'>
 	      <seg><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></seg>

@@ -108,6 +108,7 @@
 	<arg choice='plain'>show</arg>
 	<arg choice='plain'>unhold</arg>
 	<arg choice='plain'>unmarkauto</arg>
+        <arg choice='plain'>versions</arg>
       </group>
 
       <arg choice='plain' rep='repeat'><replaceable>packages</replaceable></arg>
@@ -628,7 +629,7 @@
 	    like this:
 	  </para>
 
-	  <screen>i   apt                             - Advanced front-end for dpkg              
+	  <screen>i   apt                             - Advanced front-end for dpkg
 pi  apt-build                       - frontend to apt to build, optimize and in
 cp  apt-file                        - APT package searching utility -- command-
 ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
@@ -717,6 +718,96 @@ ihA raptor-utils                    - Raptor RDF Parser utilities</screen>
 	    once for each archive in which they are found.
 	  </para>
 	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineVersions'>
+        <term><literal>versions</literal></term>
+
+        <listitem>
+          <para>
+            Displays the versions of the packages listed on the
+            command-line.
+          </para>
+
+          <screen>$ aptitude versions wesnoth
+p   1:1.4.5-1                                                             100
+p   1:1.6.5-1                                    unstable                 500
+p   1:1.7.14-1                                   experimental             1</screen>
+
+          <para>
+            Each version is listed on a separate line.  The leftmost
+            three characters indicate the current state, planned state
+            (if any), and whether the package was automatically
+            installed; for more information on their meanings, see
+            <link linkend='cmdlineSearch'>the documentation of
+            <literal>aptitude search</literal></link>.  To the right
+            of the version number you can find the releases from which
+            the version is available, and the pin priority of the
+            version.
+          </para>
+
+          <para>
+            If a package name contains a tilde character
+            (<quote><literal>~</literal></quote>) or a question mark
+            (<quote><literal>?</literal></quote>), it will be treated
+            as a search pattern and all matching
+            <emphasis>versions</emphasis> will be displayed (see the
+            section <quote><link linkend='secSearchPatterns'>Search
+            Patterns</link></quote> in the &aptitude; reference
+            manual).  This means that, for instance, <literal>aptitude
+            versions '~i'</literal> will display all the versions that
+            are currently installed on the system and nothing else,
+            not even other versions of the same packages.
+          </para>
+
+          <screen>$ aptitude versions '~nexim4-daemon-light'
+Package exim4-daemon-light
+i   4.71-3                                                                100
+p   4.71-4                                       unstable                 500
+
+Package exim4-daemon-light-dbg
+p   4.71-4                                       unstable                 500</screen>
+
+          <para>
+            If the input is a search pattern, or if more than one
+            package's versions are to be displayed, &aptitude; will
+            automatically group the output by package, as shown above.
+            You can disable this via <literal><link
+            linkend='cmdlineGroupBy'>--group-by</link>=none</literal>,
+            in which case &aptitude; will display a single list of all
+            the versions that were found and automatically include the
+            package name in each output line:
+          </para>
+
+          <screen>$ aptitude versions --group-by=none '~nexim4-daemon-light'
+i   exim4-daemon-light 4.71-3                                             100
+p   exim4-daemon-light 4.71-4                    unstable                 500
+p   exim4-daemon-light-dbg 4.71-4                unstable                 500</screen>
+
+          <para>
+            To disable the package name, pass
+            <literal><link linkend='cmdlineShowPackageNames'>--show-package-names</link>=never</literal>:
+          </para>
+
+          <screen>$ aptitude versions --show-package-names=never --group-by=none '~nexim4-daemon-light'
+i   4.71-3                                                                100
+p   4.71-4                                       unstable                 500
+p   4.71-4                                       unstable                 500</screen>
+
+
+          <para>
+            In addition to the above options, the information printed
+            for each version can be controlled by the command-line
+            option <link
+            linkend='cmdlineOptionFormat'><literal>-F</literal></link>.
+            The order in which versions are displayed can be
+            controlled by the command-line option <link
+            linkend='cmdlineOptionSort'><literal>--sort</literal></link>.
+            To prevent &aptitude; from formatting the output into
+            columns, use <link
+            linkend='cmdlineOptionDisableColumns'><literal>--disable-columns</literal></link>.
+          </para>
+        </listitem>
       </varlistentry>
 
       <varlistentry id='cmdlineAddOrRemoveUserTags'>
@@ -1096,8 +1187,8 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    This option causes <literal>aptitude search</literal> to
-	    output its results without any special formatting.  In
+	    This option causes <literal>aptitude search</literal> and <literal>aptitude version</literal> to
+	    output their results without any special formatting.  In
 	    particular: normally &aptitude; will add whitespace or
 	    truncate search results in an attempt to fit its results
 	    into vertical <quote>columns</quote>.  With this flag,
@@ -1177,7 +1268,8 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	<listitem>
 	  <para>
 	    Specify the format which should be used to display
-	    output from the <literal>search</literal> command.
+	    output from the <literal>search</literal> and
+            <literal>version</literal> commands.
 	    For instance, passing <quote><literal>%p %V %v</literal></quote>
 	    for <replaceable>format</replaceable> will display a package's name,
 	    followed by its currently installed version and its
@@ -1191,7 +1283,9 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	  </para>
 
 	  <para>
-	    This corresponds to the configuration option <literal><link linkend='configCmdLine-Package-Display-Format'>Aptitude::CmdLine::Package-Display-Format</link></literal>.
+	    For <literal>search</literal>, this corresponds to the configuration option <literal><link linkend='configCmdLine-Package-Display-Format'>Aptitude::CmdLine::Package-Display-Format</link></literal>;
+            for <literal>versions</literal>, this corresponds to the
+            configuration option <literal><link linkend='configCmdLine-Version-Display-Format'>Aptitude::CmdLine::Version-Display-Format</link></literal>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1237,6 +1331,58 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    the <literal>--full-resolver</literal> option.
 	  </para>
 	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineGroupBy'>
+        <term>
+          <literal>--group-by</literal> <replaceable>grouping-mode</replaceable>
+        </term>
+
+        <listitem>
+          <para>
+            Control how the <link
+            linkend='cmdlineVersions'><literal>versions</literal></link>
+            command groups its output.  The following values are
+            recognized:
+          </para>
+
+          <itemizedlist>
+            <listitem>
+              <para>
+                <literal>auto</literal> to group versions by their
+                package unless there is exactly one argument and it is
+                not a search pattern.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                <literal>none</literal> to display all the versions in
+                a single list without any grouping.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                <literal>package</literal> to group versions by their
+                package.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                <literal>source-package</literal> to group versions by
+                their source package.
+              </para>
+            </listitem>
+          </itemizedlist>
+
+          <para>
+            This corresponds to the configuration option
+            <literal><link
+            linkend='configCmdLine-Versions-Group-By'>Aptitude::CmdLine::Versions-Group-By</link></literal>.
+          </para>
+        </listitem>
       </varlistentry>
 
       <varlistentry>
@@ -1484,11 +1630,15 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 
 	<listitem>
 	  <para>
-	    Specify the order in which output from the <link linkend='cmdlineSearch'><literal>search</literal></link>
-	    command should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
+	    Specify the order in which output from the <link linkend='cmdlineSearch'><literal>search</literal></link> and <link linkend='cmdlineVersions'><literal>versions</literal></link>
+	    commands should be displayed.  For instance, passing <quote><literal>installsize</literal></quote>
 	    for <replaceable>order</replaceable> will list packages in
 	    order according to their size when installed (see the section <quote><link linkend='secSortingPolicy'>Customizing how packages are sorted</link></quote> in the &aptitude; reference manual for more information).
 	  </para>
+
+          <para>
+            The default sort order is <literal>name,version</literal>.
+          </para>
 	</listitem>
       </varlistentry>
 
@@ -1738,6 +1888,50 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    installation.
 	  </para>
 	</listitem>
+      </varlistentry>
+
+      <varlistentry id='cmdlineShowPackageNames'>
+        <term><literal>--show-package-names</literal> <replaceable>when</replaceable></term>
+
+        <listitem>
+          <para>
+            Controls when the <link
+            linkend='cmdlineVersions'><literal>versions</literal></link>
+            command shows package names.  The following settings are
+            allowed:
+          </para>
+
+          <itemizedlist>
+            <listitem>
+              <para>
+                <literal>always</literal>: display package names every
+                time that <literal>aptitude versions</literal> runs.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                <literal>auto</literal>: display package names when
+                <literal>aptitude versions</literal> runs if the
+                output is not grouped by package, and either there is
+                a pattern-matching argument or there is more than one
+                argument.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                <literal>never</literal>: never display package names
+                in the output of <literal>aptitude versions</literal>.
+              </para>
+            </listitem>
+          </itemizedlist>
+
+          <para>
+            This option corresponds to the configuration item <link
+            linkend='configCmdLine-Versions-Show-Package-Names'><literal>Aptitude::CmdLine::Versions-Show-Package-Names</literal></link>.
+          </para>
+        </listitem>
       </varlistentry>
 
       <varlistentry id='cmdlineOptionShowResolverActions'>
