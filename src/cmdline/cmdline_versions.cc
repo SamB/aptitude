@@ -342,13 +342,13 @@ group_by_option parse_group_by_option(const std::string &option)
   // Translators: if you add synonyms to the possible values here,
   // please also use the translations in your manpage and in the error
   // string below.
-  if(option == "none" ||
-     option == P_("--group-by|none"))
-    return group_by_none;
-
-  else if(option == "auto" ||
+  if(option == "auto" ||
           option == P_("--group-by|auto"))
     return group_by_auto;
+
+  else if(option == "none" ||
+     option == P_("--group-by|none"))
+    return group_by_none;
 
   else if(option == "package" ||
           option == P_("--group-by|package"))
