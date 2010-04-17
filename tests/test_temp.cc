@@ -161,7 +161,7 @@ public:
 			   std::string(dirbase, 0, dirbase.size() - 6));
 
       CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
-			   std::string(base, 0, base.size() - 6));
+			   std::string(base, 0, 4));
 
       CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
       CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
@@ -227,7 +227,7 @@ public:
 			   std::string(dirbase, 0, dirbase.size() - 6));
 
       CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
-			   std::string(base, 0, base.size() - 6));
+			   std::string(base, 0, 4));
 
       CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
       CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
@@ -280,7 +280,7 @@ public:
 			   std::string(dirbase, 0, dirbase.size() - 6));
 
       CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
-			   std::string(base, 0, base.size() - 6));
+			   std::string(base, 0, 4));
     }
 
     CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
@@ -331,7 +331,7 @@ public:
 			   std::string(dirbase, 0, dirbase.size() - 6));
 
       CPPUNIT_ASSERT_EQUAL(std::string("tmpf"),
-			   std::string(base, 0, base.size() - 6));
+			   std::string(base, 0, 4));
 
       CPPUNIT_ASSERT(access(f.get_name().c_str(), F_OK) != 0);
       CPPUNIT_ASSERT_EQUAL(ENOENT, errno);
