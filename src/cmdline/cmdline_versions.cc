@@ -29,6 +29,7 @@
 
 #include <generic/apt/matching/parse.h>
 
+#include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
@@ -41,6 +42,7 @@
 namespace cw = cwidget;
 namespace m = aptitude::matching;
 
+using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::version_results_eq;
@@ -48,6 +50,54 @@ using aptitude::cmdline::version_results_lt;
 
 namespace
 {
+  /** \brief A rule for how to group version results.
+   *
+   * Converts versions to strings that are used as the unique name of
+   * the group they belong to (using strings is theoretically slower,
+   * but it insulates callers from the type of object that's actually
+   * doing the grouping).  Also, knows how to format the header of a
+   * group.
+   */
+  class version_group_by_policy
+  {
+  public:
+    /** \brief Get the groups of a match against the given version.
+     *
+     *  \param ver    The version that was matched.
+     *
+     *  \param match  How the given version was matched.
+     *
+     *  \param output A vector in which to store the groups of this
+     *                version.  Each version should get at least one
+     *                group, but some might get more than one.  If no
+     *                version is produced, the default group of
+     *                "<none>" will be used.
+     */
+    virtual void get_groups(const pkgCache::VerIterator &ver,
+                            const cw::util::ref_ptr<m::structural_match> &match,
+                            std::vector<std::string> &output) = 0;
+
+    /** \brief Format a header line for the given group. */
+    virtual std::string format_header(const std::string &group) = 0;
+  };
+
+  /** \brief Group versions by their package. */
+  class version_group_by_package : public version_group_by_policy
+  {
+  public:
+    void get_groups(const pkgCache::VerIterator &ver,
+                    const cw::util::ref_ptr<m::structural_match> &match,
+                    std::vector<std::string> &output)
+    {
+      output.push_back(ver.ParentPkg().Name());
+    }
+
+    std::string format_header(const std::string &group)
+    {
+      return (boost::format(_("Package %s")) % group).str();
+    }
+  };
+
   // Print the matches against a group of versions.
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > > &output,
                                const cw::config::column_definition_list &columns,
@@ -102,6 +152,12 @@ namespace
        !(patterns.size() == 1 &&
          patterns[0]->get_type() == m::pattern::exact_name));
 
+    // Decide how and whether to group the results.
+    version_group_by_policy *group_by_policy = NULL;
+
+    if(do_group_by_package)
+      group_by_policy = new version_group_by_package;
+
     _error->DumpErrors();
 
     // NB: sort the big list of results by version first so that we
@@ -112,45 +168,56 @@ namespace
     output.erase(std::unique(output.begin(), output.end(), version_results_eq(sort_policy)),
                  output.end());
 
-    if(do_group_by_package)
+    if(group_by_policy != NULL)
       {
-        typedef boost::unordered_map<pkgCache::PkgIterator, boost::shared_ptr<results_list>,
-                                     aptitude::cmdline::hash_pkgiterator>
-          results_by_package_map;
+        typedef boost::unordered_map<std::string, boost::shared_ptr<results_list> >
+          results_by_group_map;
 
-        results_by_package_map by_packages;
+        results_by_group_map by_groups;
 
-        for(results_list::const_iterator it = output.begin();
-            it != output.end(); ++it)
+        {
+          // Avoid excessively allocating lots of short vectors.
+          //
+          // Possibly an excessive optimization.  This could be moved
+          // to where groups.clear() happens.
+         std::vector<std::string> groups;
+         for(results_list::const_iterator results_it = output.begin();
+             results_it != output.end(); ++results_it)
+           {
+             groups.clear();
+             group_by_policy->get_groups(results_it->first, results_it->second, groups);
+
+             for(std::vector<std::string>::const_iterator groups_it =
+                   groups.begin(); groups_it != groups.end(); ++groups_it)
+               {
+                 const std::string &group = *groups_it;
+                 results_by_group_map::iterator found = by_groups.find(group);
+                 if(found == by_groups.end())
+                   {
+                     boost::shared_ptr<results_list> cell = boost::make_shared<results_list>();
+
+                     by_groups[group] = cell;
+                     cell->push_back(*results_it);
+                   }
+                 else
+                   found->second->push_back(*results_it);
+               }
+           }
+        }
+
+        typedef std::vector<std::pair<std::string, boost::shared_ptr<results_list> > >
+          results_by_group_list;
+
+        results_by_group_list by_groups_list(by_groups.begin(), by_groups.end());
+        std::sort(by_groups_list.begin(), by_groups_list.end(),
+                  lessthan_1st());
+
+        for(results_by_group_list::const_iterator it = by_groups_list.begin();
+            it != by_groups_list.end(); ++it)
           {
-            pkgCache::VerIterator ver = it->first;
-            pkgCache::PkgIterator pkg = ver.ParentPkg();
-
-            results_by_package_map::iterator found = by_packages.find(pkg);
-            if(found == by_packages.end())
-              {
-                boost::shared_ptr<results_list> cell = boost::make_shared<results_list>();
-
-                by_packages[pkg] = cell;
-                cell->push_back(*it);
-              }
-            else
-              found->second->push_back(*it);
-          }
-
-        typedef std::vector<std::pair<pkgCache::PkgIterator, boost::shared_ptr<results_list> > >
-          results_by_package_list;
-
-        results_by_package_list by_packages_list(by_packages.begin(), by_packages.end());
-        std::sort(by_packages_list.begin(), by_packages_list.end(),
-                  package_results_lt(sort_policy));
-
-        for(results_by_package_list::const_iterator it = by_packages_list.begin();
-            it != by_packages_list.end(); ++it)
-          {
-            if(it != by_packages_list.begin())
+            if(it != by_groups_list.begin())
               printf("\n");
-            printf("Package %s:\n", it->first.Name());
+            printf("%s\n", group_by_policy->format_header(it->first).c_str());
             // No need to sort the versions in this list since we
             // sorted them above.
             show_version_match_list(*it->second, columns, format_width, disable_columns);

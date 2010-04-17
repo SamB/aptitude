@@ -208,6 +208,34 @@ namespace aptitude
 			      cwidget::config::column_generator &columnizer,
 			      cwidget::config::column_parameters &p);
 
+    /** \brief Compare pairs according to their first element. */
+    class lessthan_1st
+    {
+    public:
+      lessthan_1st() { }
+
+      template<typename T1, typename T2, typename U1, typename U2>
+      bool operator()(const std::pair<T1, T2> &p1,
+                      const std::pair<U1, U2> &p2) const
+      {
+        return p1.first < p2.first;
+      }
+    };
+
+    /** \brief Compare pairs according to their first element. */
+    class equalto_1st
+    {
+    public:
+      equalto_1st() { }
+
+      template<typename T1, typename T2, typename U1, typename U2>
+      bool operator()(const std::pair<T1, T2> &p1,
+                      const std::pair<U1, U2> &p2) const
+      {
+        return p1.first == p2.first;
+      }
+    };
+
     /** Compare pairs whose first elements are package iterators,
      *  according to a sorting policy.
      *
