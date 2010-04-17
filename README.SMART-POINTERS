@@ -8,9 +8,78 @@ in favor of boost::shared_ptr, which is simpler, more flexible, and
 probably more efficient (although I haven't checked that).  New code
 should use shared_ptr and/or scoped_ptr.
 
+NEW STUFF:
 
+  The preferred convention for new code is to use boost's shared_ptr
+and scoped_ptr classes.  If you just have a private pointer that
+should never be "owned" by other code, you might consider scoped_ptr.
+Otherwise, shared_ptr is a better bet.  You should think twice before
+writing bare pointers.
 
+  shared_ptr is NOT MAGIC.  You can still get memory leaks and crashes
+if you misuse it; it is merely a tool to help you manage your object
+lifetimes.  The following notes will help.
 
+  * Do not write this code:
+
+      boost::shared_ptr<T> t = new T(...);
+
+    It is (potentially) exception-unsafe.  Instead of thinking hard
+    about whether it's safe or not, do this, which is both safe and
+    more efficient:
+
+      boost::shared_ptr<T> t = boost::make_shared<T>(...);
+
+  * Be very careful about creating circular chains of shared_ptrs.
+    These cannot be reclaimed by the shared_ptr mechanism and will
+    result in memory leaks.  Many of the notes below are just
+    ways of avoiding this.
+
+  * Although shared_ptr technically allows "sharing" of pointers, most
+    shared_ptr objects in aptitude should have a single owner at any
+    given time, just like bare pointers.  For instance, look at how
+    search patterns are normally handled.  pattern::create() might be
+    invoked from some subroutine.  It creates a pattern in a
+    shared_ptr and returns it, passing ownership to its caller.  Its
+    caller in turn invokes the constructor of another object, passing
+    the pattern's shared_ptr in.  The constructor takes ownership and
+    stores the pattern in a member variable for later use.
+
+    The difference between shared_ptr and bare pointers is that
+    violating the above pattern will at worst produce a memory leak
+    rather than a crash.
+
+  * For "leaf" objects that don't store smart pointers to anything
+    else, using shared_ptr to freely share references is reasonable.
+
+  * Objects that form an acyclic graph can be safely
+    reference-counted.  You can force the objects in a module to form
+    an acyclic graph by making their constructor(s) take pointers to
+    other objects, and by not providing a way to modify links after
+    the fact.  For instance, the match pattern objects and the (not
+    shared) fragment objects use this approach.  Be sure that you
+    don't have strong references to objects outside the module,
+    though, or you can still be bitten by this problem.
+
+  * Be very careful about embedding shared_ptrs into callbacks.  If
+    the type you're embedding can't contain strong references, this is
+    OK.  If it can, you can end up creating a hidden reference cycle
+    that will be hard to debug.  Consider using boost's weak_ptr
+    object, which automatically becomes invalid when its parent
+    shared_ptr is destroyed.
+
+    Callbacks passed to the main loop are a special case, since those
+    are normally not stored permanently anywhere (i.e., they have no
+    strong incoming references), and there may be lifetime issues that
+    make weak references unacceptable.  If you rely on this, be sure
+    to document it in comments and ensure that you really don't take a
+    strong reference to the callback.  It's better not to do this, but
+    I know there were a few places that I ran into where it was handy.
+
+  * Because there is a cost to using shared_ptr, don't use it
+    willy-nilly, particularly for low-level code.
+
+OLD DEPRECATED STUFF:
 
   aptitude uses smart pointers in a number of ways internally.  These
 techniques generally simplify the code and make it easy to program
