@@ -48,6 +48,29 @@ enum group_by_option
     group_by_source_package,
   };
 
+/** \brief Represents the possible values of the "show-package-names"
+ *  command-line option.
+ *
+ *  This controls whether versions are listed with their package name
+ *  or not.
+ */
+enum show_package_names_option
+  {
+    /** \brief Always show package names. */
+    show_package_names_always,
+
+    /** \brief Don't show package names if either there was only one
+     *  input pattern and it selected a package by name, or results
+     *  are being grouped by package; otherwise show them.
+     *
+     *  This is the default.
+     */
+    show_package_names_auto,
+
+    /** \brief Don't show package names. */
+    show_package_names_never,
+  };
+
 /** \brief Invoke the "versions" command-line action.
  *
  *  \param argc             The number of entries in argv.
@@ -72,10 +95,14 @@ enum group_by_option
  *                          \todo  Should be handled by the logging subsystem.
  *
  *  \param group_by         Controls how to group versions; see group_by_option.
+ *
+ *  \param show_package_names  Controls whether package names are displayed; see
+ *                             show_package_names_option.
  */
 int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      std::string display_format, std::string width,
                      std::string sort, bool disable_columns, bool debug,
-                     group_by_option group_by);
+                     group_by_option group_by,
+                     show_package_names_option show_package_names);
 
 #endif // CMDLINE_VERSIONS_H

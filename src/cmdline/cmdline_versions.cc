@@ -129,14 +129,15 @@ namespace
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > > &output,
                                const cw::config::column_definition_list &columns,
                                int format_width,
-                               bool disable_columns)
+                               bool disable_columns,
+                               bool show_package_names)
   {
     for(std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >::const_iterator it = output.begin();
         it != output.end(); ++it)
       {
         boost::scoped_ptr<cw::config::column_parameters> p(new search_result_column_parameters(it->second));
         pkg_ver_columnizer columnizer(it->first,
-                                      false, // Could set this to true to show the package's name.
+                                      show_package_names,
                                       columns,
                                       0);
         if(disable_columns)
@@ -154,6 +155,7 @@ namespace
                          int format_width,
                          bool disable_columns,
                          group_by_option group_by,
+                         show_package_names_option show_package_names,
                          bool debug)
   {
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
@@ -176,27 +178,72 @@ namespace
     // Decide how and whether to group the results.  Not initialized
     // so the compiler will check that we always assign a value.
     version_group_by_policy *group_by_policy;
+    // Tracks whether package names should appear in the list if the
+    // user wants us to automatically make that decision.
+    bool package_names_should_auto_show;
+
+    const bool arguments_select_exactly_one_package_by_exact_name =
+      (patterns.size() == 1 &&
+       patterns[0]->get_type() == m::pattern::exact_name);
 
     switch(group_by)
       {
       case group_by_auto:
-        if(!(patterns.size() == 1 &&
-             patterns[0]->get_type() == m::pattern::exact_name))
+        if(!arguments_select_exactly_one_package_by_exact_name)
           group_by_policy = new version_group_by_package;
         else
           group_by_policy = NULL;
+
+        // Note that in *both* cases, we don't need to show packages;
+        // either we're grouping by packages, or only one package can
+        // appear.
+        package_names_should_auto_show = false;
         break;
 
       case group_by_none:
         group_by_policy = NULL;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
         break;
 
       case group_by_package:
         group_by_policy = new version_group_by_package;
+        package_names_should_auto_show = false;
         break;
 
       case group_by_source_package:
         group_by_policy = new version_group_by_source_package;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
+        break;
+
+      default:
+        _error->Error("Internal error: bad group-by value.");
+        group_by_policy = NULL;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
+        break;
+      }
+
+    // Now decide whether to show package names.
+    bool do_show_package_names;
+    switch(show_package_names)
+      {
+      case show_package_names_always:
+        do_show_package_names = true;
+        break;
+
+      case show_package_names_auto:
+        do_show_package_names = package_names_should_auto_show;
+        break;
+
+      case show_package_names_never:
+        do_show_package_names = false;
+        break;
+
+      default:
+        _error->Error("Internal error: invalid show-package-names option.");
+        do_show_package_names = package_names_should_auto_show;
         break;
       }
 
@@ -266,11 +313,11 @@ namespace
             printf("%s\n", group_by_policy->format_header(it->first).c_str());
             // No need to sort the versions in this list since we
             // sorted them above.
-            show_version_match_list(*it->second, columns, format_width, disable_columns);
+            show_version_match_list(*it->second, columns, format_width, disable_columns, do_show_package_names);
           }
       }
     else
-      show_version_match_list(output, columns, format_width, disable_columns);
+      show_version_match_list(output, columns, format_width, disable_columns, do_show_package_names);
 
     return 0;
   }
@@ -279,7 +326,8 @@ namespace
 int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      std::string display_format, std::string width,
                      std::string sort, bool disable_columns, bool debug,
-                     group_by_option group_by)
+                     group_by_option group_by,
+                     show_package_names_option show_package_names)
 {
   int real_width=-1;
 
@@ -368,5 +416,6 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             real_width,
                             disable_columns,
                             group_by,
+                            show_package_names,
                             debug);
 }

@@ -257,7 +257,8 @@ enum {
   OPTION_SHOW_SUMMARY,
   OPTION_AUTOCLEAN_ON_STARTUP,
   OPTION_CLEAN_ON_STARTUP,
-  OPTION_GROUP_BY
+  OPTION_GROUP_BY,
+  OPTION_SHOW_PACKAGE_NAMES,
 };
 int getopt_result;
 
@@ -310,6 +311,7 @@ option opts[]={
   {"autoclean-on-startup", 0, &getopt_result, OPTION_AUTOCLEAN_ON_STARTUP},
   {"clean-on-startup", 0, &getopt_result, OPTION_CLEAN_ON_STARTUP},
   {"group-by", 1, &getopt_result, OPTION_GROUP_BY},
+  {"show-package-names", 1, &getopt_result, OPTION_SHOW_PACKAGE_NAMES},
   {0,0,0,0}
 };
 
@@ -571,6 +573,7 @@ int main(int argc, char *argv[])
   string package_display_format = aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Format", "%c%a%M %p# - %d#");
   string version_display_format = aptcfg->Find(PACKAGE "::CmdLine::Version-Display-Format", "%c%a%M %p# %t %i");
   string group_by_mode_string = aptcfg->Find(PACKAGE "::CmdLine::Versions-Group-By", "auto");
+  string show_package_names_mode_string = aptcfg->Find(PACKAGE "::CmdLine::Versions-Show-Package-Names", "auto");
   string sort_policy="name,version";
   string width=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Width", "");
   // Set to a non-empty string to enable logging simplistically; set
@@ -897,6 +900,10 @@ int main(int argc, char *argv[])
               group_by_mode_string = optarg;
               break;
 
+            case OPTION_SHOW_PACKAGE_NAMES:
+              show_package_names_mode_string = optarg;
+              break;
+
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -918,7 +925,7 @@ int main(int argc, char *argv[])
   // Translators: if you add synonyms to the possible values here,
   // please also use the translations in your manpage and in the error
   // string below.
-  group_by_option group_by_mode = group_by_auto;
+  group_by_option group_by_mode;
   if(group_by_mode_string == "none" ||
      group_by_mode_string == P_("--group-by|none"))
     group_by_mode = group_by_none;
@@ -932,11 +939,32 @@ int main(int argc, char *argv[])
           group_by_mode_string == P_("--group-by|source-package"))
     group_by_mode = group_by_source_package;
   else
-    // ForTranslators: --group-by-package is the argument name and
-    // shouldn't be translated.
-    _error->Error("%s",
-                  (boost::format(_("Invalid package grouping mode \"%s\" (should be \"never\", \"auto\", or \"always\")"))
-                   % group_by_mode_string).str().c_str());
+    {
+      // ForTranslators: --group-by-package is the argument name and
+      // shouldn't be translated.
+      _error->Error("%s",
+                    (boost::format(_("Invalid package grouping mode \"%s\" (should be \"never\", \"auto\", or \"always\")"))
+                     % group_by_mode_string).str().c_str());
+      group_by_mode = group_by_auto;
+    }
+
+  show_package_names_option show_package_names_mode;
+  if(show_package_names_mode_string == "never" ||
+     show_package_names_mode_string == P_("--show-package-names|never"))
+    show_package_names_mode = show_package_names_never;
+  else if(show_package_names_mode_string == "auto" ||
+          show_package_names_mode_string == P_("--show-package-names|auto"))
+    show_package_names_mode = show_package_names_auto;
+  else if(show_package_names_mode_string == "always" ||
+          show_package_names_mode_string == P_("--show-package-names|always"))
+    show_package_names_mode = show_package_names_always;
+  else
+    {
+      _error->Error("%s",
+                    (boost::format(_("Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or \"always\")."))
+                     % show_package_names_mode_string).str().c_str());
+      show_package_names_mode = show_package_names_auto;
+    }
 
   aptitude::why::roots_string_mode why_display_mode;
   if(show_why_summary_mode == "no-summary" || show_why_summary_mode == _("no-summary"))
@@ -1066,7 +1094,8 @@ int main(int argc, char *argv[])
                                     sort_policy,
                                     disable_columns,
                                     debug_search,
-                                    group_by_mode);
+                                    group_by_mode,
+                                    show_package_names_mode);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose,
