@@ -668,6 +668,7 @@ int main(int argc, char *argv[])
 	  break;
 	case 'F':
 	  package_display_format=optarg;
+          version_display_format = optarg;
 	  break;
 	case 'w':
 	  width=optarg;
