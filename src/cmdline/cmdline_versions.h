@@ -48,6 +48,30 @@ enum group_by_option
     group_by_source_package,
   };
 
+class GroupByParseException : public std::exception
+{
+  std::string msg;
+public:
+  GroupByParseException(const std::string &_msg);
+  ~GroupByParseException() throw ();
+
+  const char *what() const throw();
+};
+
+/** \brief Parse the argument to the "group-by" command-line option.
+ *
+ *  \note I do this instead of parsing all the way to the version
+ *  grouping policy because the actual value of this option matters in
+ *  multiple places in cmdline_versions(), in ways that I don't want
+ *  to hide behind an abstract interface.
+ *
+ *  \param option   The option value to parse.
+ *
+ *  \throw GroupByParseException if the given option value can't be
+ *  parsed.
+ */
+group_by_option parse_group_by_option(const std::string &option);
+
 /** \brief Represents the possible values of the "show-package-names"
  *  command-line option.
  *

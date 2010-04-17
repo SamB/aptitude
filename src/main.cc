@@ -921,31 +921,14 @@ int main(int argc, char *argv[])
 	}
     }
 
-  // Option parsing that's not relevant to other modes.
-  //
-  // Translators: if you add synonyms to the possible values here,
-  // please also use the translations in your manpage and in the error
-  // string below.
   group_by_option group_by_mode;
-  if(group_by_mode_string == "none" ||
-     group_by_mode_string == P_("--group-by|none"))
-    group_by_mode = group_by_none;
-  else if(group_by_mode_string == "auto" ||
-          group_by_mode_string == P_("--group-by|auto"))
-    group_by_mode = group_by_auto;
-  else if(group_by_mode_string == "package" ||
-          group_by_mode_string == P_("--group-by|package"))
-    group_by_mode = group_by_package;
-  else if(group_by_mode_string == "source-package" ||
-          group_by_mode_string == P_("--group-by|source-package"))
-    group_by_mode = group_by_source_package;
-  else
+  try
     {
-      // ForTranslators: --group-by-package is the argument name and
-      // shouldn't be translated.
-      _error->Error("%s",
-                    (boost::format(_("Invalid package grouping mode \"%s\" (should be \"never\", \"auto\", or \"always\")"))
-                     % group_by_mode_string).str().c_str());
+      group_by_mode = parse_group_by_option(group_by_mode_string);
+    }
+  catch(std::exception &ex)
+    {
+      _error->Error("%s", ex.what());
       group_by_mode = group_by_auto;
     }
 

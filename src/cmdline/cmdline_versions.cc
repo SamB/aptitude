@@ -323,6 +323,48 @@ namespace
   }
 }
 
+GroupByParseException::GroupByParseException(const std::string &_msg)
+  : msg(_msg)
+{
+}
+
+GroupByParseException::~GroupByParseException() throw ()
+{
+}
+
+const char *GroupByParseException::what() const throw ()
+{
+  return msg.c_str();
+}
+
+group_by_option parse_group_by_option(const std::string &option)
+{
+  // Translators: if you add synonyms to the possible values here,
+  // please also use the translations in your manpage and in the error
+  // string below.
+  if(option == "none" ||
+     option == P_("--group-by|none"))
+    return group_by_none;
+
+  else if(option == "auto" ||
+          option == P_("--group-by|auto"))
+    return group_by_auto;
+
+  else if(option == "package" ||
+          option == P_("--group-by|package"))
+    return group_by_package;
+
+  else if(option == "source-package" ||
+          option == P_("--group-by|source-package"))
+    return group_by_source_package;
+
+  else
+    // ForTranslators: --group-by-package is the argument name and
+    // shouldn't be translated.
+    throw GroupByParseException((boost::format(_("Invalid package grouping mode \"%s\" (should be \"never\", \"auto\", or \"always\")"))
+                                 % option).str());
+}
+
 int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      std::string display_format, std::string width,
                      std::string sort, bool disable_columns, bool debug,
