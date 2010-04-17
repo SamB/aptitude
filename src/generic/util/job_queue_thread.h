@@ -1,7 +1,7 @@
 /** \file job_queue.h */    // -*-c++-*-
 
 
-// Copyright (C) 2009 Daniel Burrows
+// Copyright (C) 2009-2010 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -127,6 +127,8 @@ namespace aptitude
       }
 
       /** \brief Stop the active thread if there is one.
+       *
+       *  The background thread will only be stopped between jobs.
        *
        *  Blocks until the thread exits.  Until start() is invoked, no
        *  jobs will be processed.
