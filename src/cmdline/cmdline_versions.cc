@@ -98,6 +98,33 @@ namespace
     }
   };
 
+  /** \brief Group versions by their source package. */
+  class version_group_by_source_package : public version_group_by_policy
+  {
+  public:
+    void get_groups(const pkgCache::VerIterator &ver,
+                    const cw::util::ref_ptr<m::structural_match> &match,
+                    std::vector<std::string> &output)
+    {
+      // I don't think FileList() *can* be invalid; this is just
+      // paranoia.
+      if(!ver.FileList().end())
+        {
+          std::string srcpkg = apt_package_records->Lookup(ver.FileList()).SourcePkg();
+
+          if(srcpkg.empty())
+            output.push_back(ver.ParentPkg().Name());
+          else
+            output.push_back(srcpkg);
+        }
+    }
+
+    std::string format_header(const std::string &group)
+    {
+      return (boost::format(_("Source package %s:")) % group).str();
+    }
+  };
+
   // Print the matches against a group of versions.
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > > &output,
                                const cw::config::column_definition_list &columns,
@@ -126,7 +153,7 @@ namespace
                          const cw::config::column_definition_list &columns,
                          int format_width,
                          bool disable_columns,
-                         group_by_package_option group_by_package,
+                         group_by_option group_by,
                          bool debug)
   {
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
@@ -146,17 +173,32 @@ namespace
                                             debug);
       }
 
-    const bool do_group_by_package =
-      group_by_package == group_by_package_always ||
-      (group_by_package == group_by_package_auto &&
-       !(patterns.size() == 1 &&
-         patterns[0]->get_type() == m::pattern::exact_name));
+    // Decide how and whether to group the results.  Not initialized
+    // so the compiler will check that we always assign a value.
+    version_group_by_policy *group_by_policy;
 
-    // Decide how and whether to group the results.
-    version_group_by_policy *group_by_policy = NULL;
+    switch(group_by)
+      {
+      case group_by_auto:
+        if(!(patterns.size() == 1 &&
+             patterns[0]->get_type() == m::pattern::exact_name))
+          group_by_policy = new version_group_by_package;
+        else
+          group_by_policy = NULL;
+        break;
 
-    if(do_group_by_package)
-      group_by_policy = new version_group_by_package;
+      case group_by_none:
+        group_by_policy = NULL;
+        break;
+
+      case group_by_package:
+        group_by_policy = new version_group_by_package;
+        break;
+
+      case group_by_source_package:
+        group_by_policy = new version_group_by_source_package;
+        break;
+      }
 
     _error->DumpErrors();
 
@@ -186,6 +228,10 @@ namespace
            {
              groups.clear();
              group_by_policy->get_groups(results_it->first, results_it->second, groups);
+             if(groups.empty())
+               // Shouldn't happen, but don't lose versions if it
+               // does.
+               groups.push_back("<none>");
 
              for(std::vector<std::string>::const_iterator groups_it =
                    groups.begin(); groups_it != groups.end(); ++groups_it)
@@ -233,7 +279,7 @@ namespace
 int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      std::string display_format, std::string width,
                      std::string sort, bool disable_columns, bool debug,
-                     group_by_package_option group_by_package)
+                     group_by_option group_by)
 {
   int real_width=-1;
 
@@ -321,6 +367,6 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             *columns,
                             real_width,
                             disable_columns,
-                            group_by_package,
+                            group_by,
                             debug);
 }

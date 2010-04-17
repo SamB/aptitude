@@ -257,7 +257,7 @@ enum {
   OPTION_SHOW_SUMMARY,
   OPTION_AUTOCLEAN_ON_STARTUP,
   OPTION_CLEAN_ON_STARTUP,
-  OPTION_GROUP_BY_PACKAGE
+  OPTION_GROUP_BY
 };
 int getopt_result;
 
@@ -309,7 +309,7 @@ option opts[]={
   {"show-summary", 2, &getopt_result, OPTION_SHOW_SUMMARY},
   {"autoclean-on-startup", 0, &getopt_result, OPTION_AUTOCLEAN_ON_STARTUP},
   {"clean-on-startup", 0, &getopt_result, OPTION_CLEAN_ON_STARTUP},
-  {"group-by-package", 1, &getopt_result, OPTION_GROUP_BY_PACKAGE},
+  {"group-by", 1, &getopt_result, OPTION_GROUP_BY},
   {0,0,0,0}
 };
 
@@ -570,7 +570,7 @@ int main(int argc, char *argv[])
   char *status_fname=NULL;
   string package_display_format = aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Format", "%c%a%M %p# - %d#");
   string version_display_format = aptcfg->Find(PACKAGE "::CmdLine::Version-Display-Format", "%c%a%M %p# %t %i");
-  string group_by_package_mode_string = aptcfg->Find(PACKAGE "::CmdLine::Versions-Group-By-Package", "auto");
+  string group_by_mode_string = aptcfg->Find(PACKAGE "::CmdLine::Versions-Group-By", "auto");
   string sort_policy="name,version";
   string width=aptcfg->Find(PACKAGE "::CmdLine::Package-Display-Width", "");
   // Set to a non-empty string to enable logging simplistically; set
@@ -893,8 +893,8 @@ int main(int argc, char *argv[])
 	      clean_only = true;
 	      break;
 
-            case OPTION_GROUP_BY_PACKAGE:
-              group_by_package_mode_string = optarg;
+            case OPTION_GROUP_BY:
+              group_by_mode_string = optarg;
               break;
 
 	    default:
@@ -918,22 +918,25 @@ int main(int argc, char *argv[])
   // Translators: if you add synonyms to the possible values here,
   // please also use the translations in your manpage and in the error
   // string below.
-  group_by_package_option group_by_package_mode = group_by_package_auto;
-  if(group_by_package_mode_string == "never" ||
-     group_by_package_mode_string == P_("--group-by-package|never"))
-    group_by_package_mode = group_by_package_never;
-  else if(group_by_package_mode_string == "auto" ||
-          group_by_package_mode_string == P_("--group-by-package|auto"))
-    group_by_package_mode = group_by_package_auto;
-  else if(group_by_package_mode_string == "always" ||
-          group_by_package_mode_string == P_("--group-by-package|always"))
-    group_by_package_mode = group_by_package_always;
+  group_by_option group_by_mode = group_by_auto;
+  if(group_by_mode_string == "none" ||
+     group_by_mode_string == P_("--group-by|none"))
+    group_by_mode = group_by_none;
+  else if(group_by_mode_string == "auto" ||
+          group_by_mode_string == P_("--group-by|auto"))
+    group_by_mode = group_by_auto;
+  else if(group_by_mode_string == "package" ||
+          group_by_mode_string == P_("--group-by|package"))
+    group_by_mode = group_by_package;
+  else if(group_by_mode_string == "source-package" ||
+          group_by_mode_string == P_("--group-by|source-package"))
+    group_by_mode = group_by_source_package;
   else
     // ForTranslators: --group-by-package is the argument name and
     // shouldn't be translated.
     _error->Error("%s",
                   (boost::format(_("Invalid package grouping mode \"%s\" (should be \"never\", \"auto\", or \"always\")"))
-                   % group_by_package_mode_string).str().c_str());
+                   % group_by_mode_string).str().c_str());
 
   aptitude::why::roots_string_mode why_display_mode;
   if(show_why_summary_mode == "no-summary" || show_why_summary_mode == _("no-summary"))
@@ -1063,7 +1066,7 @@ int main(int argc, char *argv[])
                                     sort_policy,
                                     disable_columns,
                                     debug_search,
-                                    group_by_package_mode);
+                                    group_by_mode);
 	  else if(!strcasecmp(argv[optind], "why"))
 	    return cmdline_why(argc - optind, argv + optind,
 			       status_fname, verbose,

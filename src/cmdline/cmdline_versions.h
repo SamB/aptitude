@@ -22,26 +22,30 @@
 
 #include <string>
 
-/** \brief Represents the possible values of the "group-by-package"
+/** \brief Represents the possible values of the "group-by"
  *  command-line option.
  */
-enum group_by_package_option
+enum group_by_option
   {
-    /** \brief Never group by package. */
-    group_by_package_never,
-
     /** \brief Group by package unless there is exactly one pattern
-     *  AND that pattern matches a single package exactly by name.
+     *  AND that pattern matches a single package exactly by name, in
+     *  which case don't group at all.
      *
      *  This is the default value.  It means that
      *  "aptitude versions foo" shows the versions of "foo" without
      *  grouping, but a more complex search performs the grouping
      *  automatically.
      */
-    group_by_package_auto,
+    group_by_auto,
 
-    /** \brief Always group by package. */
-    group_by_package_always
+    /** \brief No grouping. */
+    group_by_none,
+
+    /** \brief Group by package. */
+    group_by_package,
+
+    /** \brief Group by source package. */
+    group_by_source_package,
   };
 
 /** \brief Invoke the "versions" command-line action.
@@ -67,15 +71,11 @@ enum group_by_package_option
  *  \param debug            \b true to print debugging information to stdout.
  *                          \todo  Should be handled by the logging subsystem.
  *
- *  \param group_by_package Controls whether versions are grouped by
- *                          their package. \todo Support grouping by
- *                          source package too; make the values
- *                          "none", "package", "auto", and
- *                          "source-package".
+ *  \param group_by         Controls how to group versions; see group_by_option.
  */
 int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      std::string display_format, std::string width,
                      std::string sort, bool disable_columns, bool debug,
-                     group_by_package_option group_by_package);
+                     group_by_option group_by);
 
 #endif // CMDLINE_VERSIONS_H
