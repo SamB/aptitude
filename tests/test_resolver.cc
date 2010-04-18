@@ -95,7 +95,8 @@ UNIVERSE [ \
   DEP a v1 -> < b v2  b v3 > \
 ]";
 
-// Used to test breaking and hardening a soft dependency.
+// Used to test breaking and hardening a soft dependency, as well as
+// assigning costs to broken soft-deps.
 const char *dummy_universe_5 = "\
 UNIVERSE [ \
   PACKAGE a < v1 v2 > v1 \
@@ -1529,7 +1530,88 @@ private:
 
   void testBreakSoftDepCost()
   {
-    CPPUNIT_FAIL("TODO: this test needs to be implemented.");
+    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testBreakSoftDepCost"));
+
+    LOG_TRACE(logger, "Entering testBreakSoftDepCost.");
+
+    // Run two tests here, both with a large score-level penalty for
+    // installing b:v2.  First, verify that without the cost, we get
+    // the break-soft-dep solution (to avoid b:v2).  Second, verify
+    // that with the cost, we get the other one.
+    dummy_universe_ref u = parseUniverse(dummy_universe_5);
+    package a = u.find_package("a");
+    package b = u.find_package("b");
+
+    version av2 = a.version_from_name("v2");
+    version bv2 = b.version_from_name("v2");
+
+    dep av2d1 = *(av2.deps_begin());
+
+    // The solution where installing av2 leads to installing bv2.
+    choice_set install_bv2_solution;
+    install_bv2_solution.insert_or_narrow(choice::make_install_version(av2, 0));
+    install_bv2_solution.insert_or_narrow(choice::make_install_version(bv2, 1));
+
+    // The solution where installing av2 leads to breaking a -?> bv2.
+    choice_set break_av2d1_solution;
+    break_av2d1_solution.insert_or_narrow(choice::make_install_version(av2, 0));
+    break_av2d1_solution.insert_or_narrow(choice::make_break_soft_dep(av2d1, 1));
+
+    {
+      dummy_resolver r(10, -300, -100, 100000, 50000,
+                       cost_limits::minimum_cost,
+                       50,
+                       imm::map<dummy_universe::package, dummy_universe::version>(),
+                       u);
+
+      // Bias the resolver strongly against installing bv2.
+      r.set_version_score(bv2, -100000);
+
+      std::vector<solution> sols;
+      try
+        {
+          find_all_solutions(r, 50, NULL, sols);
+        }
+      catch(NoMoreTime)
+        {
+          CPPUNIT_FAIL("Ran out of time trying to solve a simple problem.");
+        }
+
+      CPPUNIT_ASSERT_EQUAL((std::size_t)2, sols.size());
+      assertSameEffect(break_av2d1_solution, sols[0].get_choices());
+      assertSameEffect(install_bv2_solution, sols[1].get_choices());
+
+      CPPUNIT_ASSERT_EQUAL(cost(), sols[0].get_cost());
+      CPPUNIT_ASSERT_EQUAL(cost(), sols[1].get_cost());
+    }
+
+    {
+      dummy_resolver r(10, -300, -100, 100000, 50000,
+                       cost::make_add_to_user_level(0, 1),
+                       50,
+                       imm::map<dummy_universe::package, dummy_universe::version>(),
+                       u);
+
+      // Bias the resolver strongly against installing bv2.
+      r.set_version_score(bv2, -100000);
+
+      std::vector<solution> sols;
+      try
+        {
+          find_all_solutions(r, 50, NULL, sols);
+        }
+      catch(NoMoreTime)
+        {
+          CPPUNIT_FAIL("Ran out of time trying to solve a simple problem.");
+        }
+
+      CPPUNIT_ASSERT_EQUAL((std::size_t)2, sols.size());
+      assertSameEffect(install_bv2_solution, sols[0].get_choices());
+      assertSameEffect(break_av2d1_solution, sols[1].get_choices());
+
+      CPPUNIT_ASSERT_EQUAL(cost(), sols[0].get_cost());
+      CPPUNIT_ASSERT_EQUAL(cost::make_add_to_user_level(0, 1), sols[1].get_cost());
+    }
   }
 };
 
