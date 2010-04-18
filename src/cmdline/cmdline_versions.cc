@@ -188,6 +188,8 @@ namespace
     for(std::vector<cw::util::ref_ptr<m::pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
+        std::size_t output_size = output.size();
+
         // Q: should I just wrap an ?or around them all?
         aptitude::matching::search_versions(*pIt,
                                             search_info,
@@ -195,6 +197,13 @@ namespace
                                             *apt_cache_file,
                                             *apt_package_records,
                                             debug);
+
+        // Warn the user if an exact name pattern didn't produce a
+        // result.
+        if(output_size == output.size() &&
+           (*pIt)->get_type() == m::pattern::exact_name)
+          _error->Error(_("No such package \"%s\"."),
+                        (*pIt)->get_exact_name_name().c_str());
       }
 
     // Decide how and whether to group the results.  Not initialized
