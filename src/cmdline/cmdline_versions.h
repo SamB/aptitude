@@ -49,6 +49,9 @@ enum group_by_option
 
     /** \brief Group by source package. */
     group_by_source_package,
+
+    /** \brief Group by source package and version. */
+    group_by_source_version,
   };
 
 class GroupByParseException : public std::exception

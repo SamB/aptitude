@@ -125,6 +125,45 @@ namespace
     }
   };
 
+  /** \brief Group versions by their source version. */
+  class version_group_by_source_version : public version_group_by_policy
+  {
+  public:
+    void get_groups(const pkgCache::VerIterator &ver,
+                    const cw::util::ref_ptr<m::structural_match> &match,
+                    std::vector<std::string> &output)
+    {
+      // I don't think FileList() *can* be invalid; this is just
+      // paranoia.
+      if(!ver.FileList().end())
+        {
+          pkgRecords::Parser &rec = apt_package_records->Lookup(ver.FileList());
+
+          std::string srcpkg = rec.SourcePkg();
+          std::string srcver = rec.SourceVer();
+
+          if(srcpkg.empty())
+            srcpkg = ver.ParentPkg().Name();
+
+          if(srcver.empty())
+            srcver = ver.VerStr();
+
+          std::string result;
+          result.reserve(srcpkg.size() + srcver.size() + 1);
+          result += srcpkg;
+          result += " ";
+          result += srcver;
+
+          output.push_back(result);
+        }
+    }
+
+    std::string format_header(const std::string &group)
+    {
+      return (boost::format(_("Source package %s:")) % group).str();
+    }
+  };
+
   /** \brief Group versions by their archive(s). */
   class version_group_by_archive : public version_group_by_policy
   {
@@ -254,6 +293,12 @@ namespace
 
       case group_by_source_package:
         group_by_policy = new version_group_by_source_package;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
+        break;
+
+      case group_by_source_version:
+        group_by_policy = new version_group_by_source_version;
         package_names_should_auto_show =
           !arguments_select_exactly_one_package_by_exact_name;
         break;
@@ -408,6 +453,10 @@ group_by_option parse_group_by_option(const std::string &option)
   else if(option == "source-package" ||
           option == P_("--group-by|source-package"))
     return group_by_source_package;
+
+  else if(option == "source-version" ||
+          option == P_("--group-by|source-version"))
+    return group_by_source_version;
 
   else
     // ForTranslators: --group-by-package is the argument name and
