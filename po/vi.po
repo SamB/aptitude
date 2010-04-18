@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.x\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-20 20:39-0800\n"
+"POT-Creation-Date: 2010-04-18 08:07-0700\n"
 "PO-Revision-Date: 2008-04-22 19:08+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
@@ -870,7 +870,7 @@ msgstr ""
 "%s không phải là gói Debian chính thức nên không thể hiển thị bản ghi các "
 "thay đổi (ChangeLog) của nó."
 
-#: src/cmdline/cmdline_changelog.cc:376
+#: src/cmdline/cmdline_changelog.cc:382
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "Không tìm thấy bản ghi các thay đổi cho « %s »"
@@ -925,7 +925,7 @@ msgstr ""
 "chọn « --full-resolver » (bộ tháo gỡ đầy đủ).\n"
 
 #: src/cmdline/cmdline_do_action.cc:349 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1111
+#: src/main.cc:1168
 #, c-format
 msgid "Abort.\n"
 msgstr "Hủy bỏ.\n"
@@ -1544,18 +1544,18 @@ msgstr ""
 "Cách thay đổi kích cỡ sẽ không được hiển thị.\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:973
+#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:989
 #: src/generic/apt/apt.cc:290
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "Không thể mở %s để ghi"
 
-#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:978
+#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:994
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "Gặp lỗi khi ghi tình trạng bộ tháo gỡ vào %s"
 
-#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:980
+#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:996
 msgid "Resolver state successfully written!"
 msgstr "Tình trạng bộ tháo gỡ đã được ghi."
 
@@ -1689,71 +1689,71 @@ msgstr "Không có gói « %s » như vậy"
 msgid "%s has no version named \"%s\""
 msgstr "%s không có phiên bản tên « %s »"
 
-#: src/cmdline/cmdline_resolver.cc:392
+#: src/cmdline/cmdline_resolver.cc:394
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "Đang cho phép việc gỡ bỏ %s"
 
-#: src/cmdline/cmdline_resolver.cc:395
+#: src/cmdline/cmdline_resolver.cc:397
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "Đang cho phép việc cài đặt %s phiên bản %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:405
+#: src/cmdline/cmdline_resolver.cc:407
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "Đang từ chối việc gỡ bỏ %s"
 
-#: src/cmdline/cmdline_resolver.cc:408
+#: src/cmdline/cmdline_resolver.cc:410
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "Đang từ chối việc cài đặt %s phiên bản %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:421
+#: src/cmdline/cmdline_resolver.cc:423
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "Không còn cần thiết lại việc gỡ bỏ %s"
 
-#: src/cmdline/cmdline_resolver.cc:424
+#: src/cmdline/cmdline_resolver.cc:426
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "Không còn cần thiết lại việc cài đặt %s phiên bản %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:433
+#: src/cmdline/cmdline_resolver.cc:435
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "Cần thiết việc gỡ bỏ %s"
 
-#: src/cmdline/cmdline_resolver.cc:436
+#: src/cmdline/cmdline_resolver.cc:438
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Cần thiết việc cài đặt %s phiên bản %s (%s)."
 
-#: src/cmdline/cmdline_resolver.cc:485
+#: src/cmdline/cmdline_resolver.cc:487
 #, fuzzy, c-format
 #| msgid "Leave the following recommendations unresolved:"
 msgid "Allowing this recommendation to be ignored: %s"
 msgstr "Để những sự khuyên sau lại chưa được tháo gỡ :"
 
-#: src/cmdline/cmdline_resolver.cc:491
+#: src/cmdline/cmdline_resolver.cc:493
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "Always obeying this recommendation: %s"
 msgstr "Kiểm tra sự ^Khuyên"
 
-#: src/cmdline/cmdline_resolver.cc:500
+#: src/cmdline/cmdline_resolver.cc:502
 #, fuzzy, c-format
 #| msgid "No longer requiring the removal of %s"
 msgid "No longer ignoring this recommendation: %s"
 msgstr "Không còn cần thiết lại việc gỡ bỏ %s"
 
-#: src/cmdline/cmdline_resolver.cc:506
+#: src/cmdline/cmdline_resolver.cc:508
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "Ignoring this recommendation: %s"
 msgstr "Kiểm tra sự ^Khuyên"
 
-#: src/cmdline/cmdline_resolver.cc:550
+#: src/cmdline/cmdline_resolver.cc:566
 #, fuzzy, c-format
 #| msgid "Actions"
 msgid "Action \"%s\""
@@ -1762,16 +1762,16 @@ msgstr "Hành vi"
 #. ForTranslators: the substitution is
 #. replaced in English with something
 #. like "Pkg1 depends upon Pkg2".
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:579
 #, c-format
 msgid "This action was selected because %ls."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:565
+#: src/cmdline/cmdline_resolver.cc:581
 msgid "This action is currently rejected; it will not appear in new solutions."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:566
+#: src/cmdline/cmdline_resolver.cc:582
 msgid ""
 "This action is currently approved; it will be selected whenever possible."
 msgstr ""
@@ -1781,7 +1781,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:573
+#: src/cmdline/cmdline_resolver.cc:589
 #, c-format
 msgid "Enter \"r %s\" to allow this action to appear in new solutions."
 msgstr ""
@@ -1791,7 +1791,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:579
+#: src/cmdline/cmdline_resolver.cc:595
 #, c-format
 msgid "Enter \"r %s\" to prevent this action from appearing in new solutions."
 msgstr ""
@@ -1801,7 +1801,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:585
+#: src/cmdline/cmdline_resolver.cc:601
 #, c-format
 msgid ""
 "Enter \"a %s\" to cease requiring that new solutions include this action if "
@@ -1813,18 +1813,18 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:591
+#: src/cmdline/cmdline_resolver.cc:607
 #, c-format
 msgid ""
 "Enter \"a %s\" to require that new solutions include this action if possible."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:763
+#: src/cmdline/cmdline_resolver.cc:779
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "mở: %zd; tắt: %zd; hoãn: %zd; xung đột: %zd"
 
-#: src/cmdline/cmdline_resolver.cc:786
+#: src/cmdline/cmdline_resolver.cc:802
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
@@ -1834,32 +1834,32 @@ msgstr ""
 "thuộc hiện thời bị tắt.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 
-#: src/cmdline/cmdline_resolver.cc:795
+#: src/cmdline/cmdline_resolver.cc:811
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 "Trình này có thể giải quyết quan hệ phụ thuộc, nhưng chưa tạo bộ giải quyết "
 "quan hệ phụ thuộc."
 
-#: src/cmdline/cmdline_resolver.cc:809 src/cmdline/cmdline_resolver.cc:1145
+#: src/cmdline/cmdline_resolver.cc:825 src/cmdline/cmdline_resolver.cc:1161
 #: src/gtk/resolver.cc:2056 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "Đang tháo gỡ các quan hệ phụ thuộc..."
 
-#: src/cmdline/cmdline_resolver.cc:868
+#: src/cmdline/cmdline_resolver.cc:884
 msgid "The following actions will resolve these dependencies:"
 msgstr "Những hành động sau sẽ tháo gỡ những quan hệ phụ thuộc này:"
 
-#: src/cmdline/cmdline_resolver.cc:887
+#: src/cmdline/cmdline_resolver.cc:903
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr ""
 "Chấp nhận giải pháp này không? [Y] có, [n] không, [q] hỏi, [?] trợ giúp "
 
-#: src/cmdline/cmdline_resolver.cc:914 src/cmdline/cmdline_resolver.cc:1048
+#: src/cmdline/cmdline_resolver.cc:930 src/cmdline/cmdline_resolver.cc:1064
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "Đang hủy bỏ mọi sự cố gắng tháo gỡ những quan hệ phụ thuộc này."
 
-#: src/cmdline/cmdline_resolver.cc:917
+#: src/cmdline/cmdline_resolver.cc:933
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
@@ -1867,37 +1867,37 @@ msgstr ""
 "Đang hủy bỏ chức năng tự động giải quyết quan hệ phụ thuộc và hoàn nguyên về "
 "chức năng giải quyết bằng tay."
 
-#: src/cmdline/cmdline_resolver.cc:950
+#: src/cmdline/cmdline_resolver.cc:966
 msgid "The following commands are available:"
 msgstr "Có sẵn những lệnh này:"
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:986
 msgid "File to write resolver state to: "
 msgstr "Tập tin vào đó cần ghi tình trạng tháo gỡ : "
 
-#: src/cmdline/cmdline_resolver.cc:1002
+#: src/cmdline/cmdline_resolver.cc:1018
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "Đáp ứng không hợp lệ: hãy nhập một của những lệnh này:"
 
-#: src/cmdline/cmdline_resolver.cc:1022
+#: src/cmdline/cmdline_resolver.cc:1038
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 "Không tìm thấy giải pháp trong thời gian đã gán. Cố tích cực hơn không? [Y] "
 "có, [n] không"
 
-#: src/cmdline/cmdline_resolver.cc:1051
+#: src/cmdline/cmdline_resolver.cc:1067
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "Đáp ứng không hợp lệ: hãy nhập « y » (có) hay « n » (không)."
 
-#: src/cmdline/cmdline_resolver.cc:1060
+#: src/cmdline/cmdline_resolver.cc:1076
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "Không thể tháo gỡ quan hệ phụ thuộc. Đang hủy bỏ..."
 
-#: src/cmdline/cmdline_resolver.cc:1066
+#: src/cmdline/cmdline_resolver.cc:1082
 msgid "*** No more solutions available ***"
 msgstr "••• Hết giải pháp  •••"
 
-#: src/cmdline/cmdline_resolver.cc:1085
+#: src/cmdline/cmdline_resolver.cc:1101
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
@@ -1905,31 +1905,36 @@ msgstr ""
 "*** LỖI: việc tìm bị hủy bỏ bởi ngoại lệ nghiệm trọng. Bạn vẫn còn có khả "
 "năng tiếp tục tìm, nhưng không thể tới một số phép giải riêng."
 
-#: src/cmdline/cmdline_resolver.cc:1161
+#: src/cmdline/cmdline_resolver.cc:1172
+#, c-format
 msgid ""
-"Unable to resolve dependencies for the upgrade (the resolver timed out)."
+"Unable to resolve dependencies for the upgrade because the resolver timed "
+"out.\n"
+"  You may be able to solve this problem by increasing\n"
+"  Aptitude::ProblemResolver::StepLimit (currently %d)."
 msgstr ""
-"Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (bộ giải "
-"quyết đã quá hạn)."
 
-#: src/cmdline/cmdline_resolver.cc:1167
-msgid "Unable to resolve dependencies for the upgrade (no solution found)."
+#: src/cmdline/cmdline_resolver.cc:1182
+#, fuzzy
+#| msgid "Unable to resolve dependencies for the upgrade (no solution found)."
+msgid "Unable to resolve dependencies for the upgrade: no solution found."
 msgstr ""
 "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (không "
 "tìm thấy giải pháp)."
 
-#: src/cmdline/cmdline_resolver.cc:1173
-#, c-format
-msgid "Unable to resolve dependencies for the upgrade (%s)."
+#: src/cmdline/cmdline_resolver.cc:1188
+#, fuzzy, c-format
+#| msgid "Unable to resolve dependencies for the upgrade (%s)."
+msgid "Unable to resolve dependencies for the upgrade: %s"
 msgstr ""
 "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (%s)."
 
-#: src/cmdline/cmdline_search.cc:126
+#: src/cmdline/cmdline_search.cc:145 src/cmdline/cmdline_versions.cc:500
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "việc iconv « %s » bị lỗi.\n"
 
-#: src/cmdline/cmdline_search.cc:143
+#: src/cmdline/cmdline_search.cc:162
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "tìm kiếm: bạn phải cung cấp ít nhất một từ tìm kiếm\n"
@@ -1977,7 +1982,8 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr "Những gói sau có quan hệ phụ thuộc chưa thỏa:\n"
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
+#: src/cmdline/cmdline_versions.cc:180 src/gtk/resolver.cc:1193
+#: src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<VÔ GIÁ TRỊ>"
 
@@ -2318,6 +2324,69 @@ msgstr[0] "Có %d gói mới trở thành quá cũ :"
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] "Có %d gói mới trở thành quá cũ :"
+
+#: src/cmdline/cmdline_versions.cc:97
+#, fuzzy, c-format
+#| msgid "Packages"
+msgid "Package %s:"
+msgstr "Gói"
+
+#: src/cmdline/cmdline_versions.cc:124 src/cmdline/cmdline_versions.cc:163
+#, fuzzy, c-format
+#| msgid "Source Package: "
+msgid "Source package %s:"
+msgstr "Gói nguồn: "
+
+#: src/cmdline/cmdline_versions.cc:185
+#, fuzzy, c-format
+#| msgid "Archive"
+msgid "Archive %s:"
+msgstr "Kho"
+
+#: src/cmdline/cmdline_versions.cc:250
+#, fuzzy, c-format
+#| msgid "No such package \"%s\".\n"
+msgid "No such package \"%s\"."
+msgstr "Không có gói « %s » như vậy.\n"
+
+#: src/cmdline/cmdline_versions.cc:438
+msgid "--group-by|archive"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:442
+msgid "--group-by|auto"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:446
+msgid "--group-by|none"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:450
+msgid "--group-by|package"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:454
+msgid "--group-by|source-package"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:458
+msgid "--group-by|source-version"
+msgstr ""
+
+#. ForTranslators: --group-by is the argument name and shouldn't
+#. be translated.
+#: src/cmdline/cmdline_versions.cc:464
+#, c-format
+msgid ""
+"Invalid package grouping mode \"%s\" (should be \"auto\", \"none\", \"package"
+"\", or \"source-package\")"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:517
+#, fuzzy, c-format
+#| msgid "search: You must provide at least one search term\n"
+msgid "versions: You must provide at least one package selector\n"
+msgstr "tìm kiếm: bạn phải cung cấp ít nhất một từ tìm kiếm\n"
 
 #: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
@@ -2710,90 +2779,66 @@ msgstr ""
 "đang cài đặt gói. Đang mở ở chế độ chỉ đọc: thay đổi nào bạn làm trong tình "
 "trạng gói sẽ KHÔNG được lưu."
 
-#: src/generic/apt/aptitude_resolver.cc:460
+#: src/generic/apt/aptitude_resolver.cc:473
 #, c-format
 msgid "Invalid hint \"%s\": expected an action, but found nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:482
+#: src/generic/apt/aptitude_resolver.cc:497
 #, c-format
-msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
+msgid ""
+"Invalid hint \"%s\": expected a component name and a number, but found "
+"nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:504
+#: src/generic/apt/aptitude_resolver.cc:516
+#, c-format
+msgid ""
+"Invalid hint \"%s\": expected the numeric value following the component "
+"name, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:536
+#, c-format
+msgid "Invalid hint \"%s\": the numeric component \"%s\" cannot be parsed."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:547
+#, c-format
+msgid "Invalid hint \"%s\": expected a level, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:569
 #, c-format
 msgid "Invalid hint \"%s\": expected a target, but found nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:531
+#: src/generic/apt/aptitude_resolver.cc:596
 #, c-format
 msgid "Invalid hint \"%s\": invalid target: %s"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:551
+#: src/generic/apt/aptitude_resolver.cc:616
 #, c-format
 msgid "Invalid hint \"%s\": trailing junk after the version."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:635
+#: src/generic/apt/aptitude_resolver.cc:704
 #, c-format
 msgid ""
 "Invalid hint \"%s\": the action \"%s\" should be \"approve\", \"reject\", or "
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:832
+#: src/generic/apt/aptitude_resolver_cost_settings.cc:130
 #, c-format
-msgid ""
-"Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
+msgid "Conflicting types for the cost component %s."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:876
-#, fuzzy
-#| msgid "Section"
-msgid "Safe actions"
-msgstr "Phần"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:877
-#, fuzzy
-#| msgid "Canc^el pending actions"
-msgid "Cancel all user actions"
-msgstr "^Thôi các hành động bị hoãn"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:878
-#, fuzzy
-#| msgid "'-' to remove packages"
-msgid "Remove packages"
-msgstr "« - » để gỡ bỏ gói"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:879
-#, fuzzy
-#| msgid "not a real package"
-msgid "Modify held packages"
-msgstr "không phải là gói thật"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:880
-msgid "Install versions from non-default sources"
-msgstr ""
-
-#: src/generic/apt/aptitude_resolver_universe.cc:881
-#, fuzzy
-#| msgid "Remove the following packages:"
-msgid "Remove essential packages"
-msgstr "Gỡ bỏ những gói sau :"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:914
+#: src/generic/apt/aptitude_resolver_universe.cc:817
 #, c-format
 msgid ""
-"The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
-"Tier entry."
-msgstr ""
-
-#: src/generic/apt/aptitude_resolver_universe.cc:918
-#, c-format
-msgid ""
-"The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
-"Name entry."
+"Invalid safety level \"%s\" (not \"maximum\", \"minimum\", or an integer)."
 msgstr ""
 
 #: src/generic/apt/download_install_manager.cc:60
@@ -3196,15 +3241,22 @@ msgstr "Gặp mục ghi sai (Gói=%s, Nhóm=%s) nên nhảy qua"
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr "Gặp nhiều mô tả cho nhóm %s nên bỏ qua một điều"
 
-#: src/generic/apt/resolver_manager.cc:484
+#: src/generic/apt/resolver_manager.cc:489
 #, c-format
 msgid "Unable to create the output file: child killed by signal %d."
 msgstr ""
 
-#: src/generic/apt/resolver_manager.cc:486
+#: src/generic/apt/resolver_manager.cc:491
 #, c-format
 msgid "Unable to create the output file: child exited with status %d."
 msgstr ""
+
+#: src/generic/apt/resolver_manager.cc:910
+#: src/generic/apt/resolver_manager.cc:912
+#, fuzzy, c-format
+#| msgid "Unable to parse pattern %s"
+msgid "Failed to parse the cost settings string: %s"
+msgstr "Không thể phân tích hình mẫu %s"
 
 #: src/generic/apt/tags.cc:218 src/generic/apt/tags.cc:225
 msgid "Building tag database"
@@ -3219,20 +3271,120 @@ msgstr "Không thể mở tập tin « /usr/share/tasksel/debian-tasks.desc »"
 msgid "Reading task descriptions"
 msgstr "Đang đọc các mô tả tác vụ"
 
-#: src/generic/util/temp.cc:110 src/generic/util/temp.cc:184
+#: src/generic/problemresolver/exceptions.h:105
+msgid "Cost increments must be strictly positive."
+msgstr ""
+
+#: src/generic/problemresolver/exceptions.h:114
+msgid "The maximum cost value was exceeded."
+msgstr ""
+
+#: src/generic/problemresolver/exceptions.h:124
+msgid "A single cost level was both added and lower-bounded."
+msgstr ""
+
+#: src/generic/util/parsers.h:735
+#, fuzzy, c-format
+#| msgid "Expected '%c', got '%c'."
+msgid "Expected '%s', but got EOF."
+msgstr "Đợi « %c », còn nhận « %c »."
+
+#: src/generic/util/parsers.h:737
+#, fuzzy, c-format
+#| msgid "Expected '%c', got '%c'."
+msgid "Expected '%s', but got '%s'."
+msgstr "Đợi « %c », còn nhận « %c »."
+
+#: src/generic/util/parsers.h:778
+#, fuzzy
+#| msgid "Expected a number after -q=, got %s\n"
+msgid "Expected any character, but got EOF."
+msgstr "Đợi một số nằm sau « -q= », còn nhận %s\n"
+
+#: src/generic/util/parsers.h:791
+#, fuzzy
+#| msgid "Bad action character '%c'\n"
+msgid "any character"
+msgstr "Ký tự hành động sai « %c »\n"
+
+#: src/generic/util/parsers.h:832
+#, fuzzy, c-format
+#| msgid "Expected '%c', got '%c'."
+msgid "Expected %s, but got EOF."
+msgstr "Đợi « %c », còn nhận « %c »."
+
+#: src/generic/util/parsers.h:843
+#, fuzzy, c-format
+#| msgid "Expected '%c', got '%c'."
+msgid "Expected %s, but got '%c'."
+msgstr "Đợi « %c », còn nhận « %c »."
+
+#: src/generic/util/parsers.h:1017
+#, fuzzy
+#| msgid "Expected policy identifier, got '%c'"
+msgid "Expected an integer, got EOF."
+msgstr "Đợi dấu nhận diện chính sách còn nhận « %c »"
+
+#: src/generic/util/parsers.h:1026
+#, fuzzy
+#| msgid "Expected ',' or ')' following '||', got '%s'"
+msgid "Expected an integer following '-', got EOF."
+msgstr "Đợi dấu phẩy « , » hoặc ngoặc đóng « ) » đi theo « || », còn nhận « %s »"
+
+#: src/generic/util/parsers.h:1032
+#, fuzzy, c-format
+#| msgid "Expected policy identifier, got '%c'"
+msgid "Expected an integer, got '%c'."
+msgstr "Đợi dấu nhận diện chính sách còn nhận « %c »"
+
+#: src/generic/util/parsers.h:1046 src/generic/util/parsers.h:1054
+#, fuzzy, c-format
+#| msgid "Invalid operation %s"
+msgid "Invalid integer: \"%s\"."
+msgstr "Thao tác không hợp lệ %s"
+
+#: src/generic/util/parsers.h:1077
+#, fuzzy, c-format
+#| msgid "Expected '%c', got '%c'."
+msgid "Expected EOF, got '%c'."
+msgstr "Đợi « %c », còn nhận « %c »."
+
+#: src/generic/util/parsers.h:1191
+msgid "anything"
+msgstr ""
+
+#. ForTranslators: this is used to generate an error
+#. message; a brief description of what we expected to see
+#. is inserted into it.
+#: src/generic/util/parsers.h:1941 src/generic/util/parsers.h:2034
+#: src/generic/util/parsers.h:2085
+#, fuzzy, c-format
+#| msgid "Unexpected ')'"
+msgid "Expected %s"
+msgstr "Dấu « ) » bất thường"
+
+#: src/generic/util/parsers.h:2007
+#, fuzzy
+#| msgid " or"
+msgid " or "
+msgstr " hoặc"
+
+#: src/generic/util/parsers.h:2762
+#, fuzzy, c-format
+#| msgid "Unexpected ')'"
+msgid "Unexpected %s"
+msgstr "Dấu « ) » bất thường"
+
+#: src/generic/util/temp.cc:201 src/generic/util/temp.cc:275
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr "Không thể tạo thư mục tạm từ mẫu « %s »: %s"
 
-#: src/generic/util/temp.cc:261 src/generic/util/temp.cc:278
+#: src/generic/util/temp.cc:342
 #, fuzzy, c-format
 #| msgid "Unable to create temporary directory from template \"%s\": %s"
-msgid "Unable to create temporary filename from template \"%s\": %s"
+msgid "Unable to create temporary filename from prefix \"%s\""
 msgstr "Không thể tạo thư mục tạm từ mẫu « %s »: %s"
-
-#: src/generic/util/temp.cc:270
-msgid "Unknown error"
-msgstr "Lỗi không rõ"
 
 #: src/generic/util/util.cc:346
 #, c-format
@@ -5029,10 +5181,11 @@ msgstr ""
 msgid "%u solutions."
 msgstr "Không có giải pháp nữa."
 
-#: src/gtk/resolver.cc:2108
-#, c-format
-msgid "Solution %s of %s (tier %s)."
-msgstr ""
+#: src/gtk/resolver.cc:2107
+#, fuzzy, c-format
+#| msgid "Could not open file \"%s\""
+msgid "Solution %s of %s."
+msgstr "Không thể mở tập tin « %s »"
 
 #: src/gtk/tab.cc:68
 #, fuzzy
@@ -5259,79 +5412,79 @@ msgstr "Có dấu « ( » riêng lẻ trong mô tả chính xác sắp xếp"
 msgid "Invalid sorting policy type '%s'"
 msgstr "Kiểu chính sách sắp xếp không hợp lệ « %s »"
 
-#: src/main.cc:108
+#: src/main.cc:111
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "Không thể giải mã chuỗi đa byte nằm sau « %ls »"
 
-#: src/main.cc:117
+#: src/main.cc:120
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "Không thể giải mã chuỗi ký tự rộng nằm sau « %s »"
 
-#: src/main.cc:125
+#: src/main.cc:128
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s được biên dịch vào %s %s\n"
 
-#: src/main.cc:128
+#: src/main.cc:131
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "Bộ biên dịch: g++ %s\n"
 
-#: src/main.cc:130
+#: src/main.cc:133
 msgid "Compiled against:\n"
 msgstr "Biên dịch so với:\n"
 
-#: src/main.cc:131
+#: src/main.cc:134
 #, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "  apt phiên bản %d.%d.%d\n"
 
-#: src/main.cc:134
+#: src/main.cc:137
 #, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr "  NCurses phiên bản: Không rõ\n"
 
-#: src/main.cc:136
+#: src/main.cc:139
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "  NCurses phiên bản: %s\n"
 
-#: src/main.cc:138
+#: src/main.cc:141
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "  libsigc++ phiên bản: %s\n"
 
-#: src/main.cc:140
+#: src/main.cc:143
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr "  Hỗ trợ Ept đã được bật.\n"
 
-#: src/main.cc:142
+#: src/main.cc:145
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr "  Hỗ trợ Ept bị tắt.\n"
 
-#: src/main.cc:145
+#: src/main.cc:148
 #, fuzzy, c-format
 #| msgid "  apt version %d.%d.%d\n"
 msgid "  Gtk+ version %d.%d.%d\n"
 msgstr "  apt phiên bản %d.%d.%d\n"
 
-#: src/main.cc:147
+#: src/main.cc:150
 #, fuzzy, c-format
 #| msgid "  apt version %d.%d.%d\n"
 msgid "  Gtk-- version %d.%d.%d\n"
 msgstr "  apt phiên bản %d.%d.%d\n"
 
-#: src/main.cc:150
+#: src/main.cc:153
 #, fuzzy, c-format
 #| msgid "  Ept support disabled.\n"
 msgid "  Gtk+ support disabled.\n"
 msgstr "  Hỗ trợ Ept bị tắt.\n"
 
-#: src/main.cc:153
+#: src/main.cc:156
 msgid ""
 "\n"
 "Current library versions:\n"
@@ -5339,32 +5492,32 @@ msgstr ""
 "\n"
 "Các phiên bản thư viện hiện thời:\n"
 
-#: src/main.cc:154
+#: src/main.cc:157
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "  NCurses phiên bản: %s\n"
 
-#: src/main.cc:155
+#: src/main.cc:158
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr "  cwidget phiên bản: %s\n"
 
-#: src/main.cc:156
+#: src/main.cc:159
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "  Apt phiên bản: %s\n"
 
-#: src/main.cc:162
+#: src/main.cc:165
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "Cách sử dụng: aptitude [-S tên_tập_tin] [-u|-i]"
 
-#: src/main.cc:164
+#: src/main.cc:167
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [tùy_chọn ...] <hành_động> ..."
 
-#: src/main.cc:166
+#: src/main.cc:169
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -5374,50 +5527,50 @@ msgstr ""
 "tương):\n"
 "\n"
 
-#: src/main.cc:167
+#: src/main.cc:170
 #, fuzzy, c-format
 #| msgid " install      - Install/upgrade packages\n"
 msgid " install      - Install/upgrade packages.\n"
 msgstr " install      _cài đặt_ / nâng cấp gói\n"
 
-#: src/main.cc:168
+#: src/main.cc:171
 #, fuzzy, c-format
 #| msgid " remove       - Remove packages\n"
 msgid " remove       - Remove packages.\n"
 msgstr " remove       _Gỡ bỏ_ gói\n"
 
-#: src/main.cc:169
+#: src/main.cc:172
 #, fuzzy, c-format
 #| msgid " purge        - Remove packages and their configuration files\n"
 msgid " purge        - Remove packages and their configuration files.\n"
 msgstr " purge        Gỡ bỏ gói và các tập tin cấu hình (_tẩy_)\n"
 
-#: src/main.cc:170
+#: src/main.cc:173
 #, fuzzy, c-format
 #| msgid " hold         - Place packages on hold\n"
 msgid " hold         - Place packages on hold.\n"
 msgstr " hold         _Giữ lại_ gói\n"
 
-#: src/main.cc:171
+#: src/main.cc:174
 #, fuzzy, c-format
 #| msgid " unhold       - Cancel a hold command for a package\n"
 msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr " unhold       Thôi lệnh « giữ lại » cho gói đó\n"
 
-#: src/main.cc:172
+#: src/main.cc:175
 #, fuzzy, c-format
 #| msgid ""
 #| " markauto     - Mark packages as having been automatically installed\n"
 msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr " markauto     _Đánh dấu_ gói như là được cài đặt _tự động_\n"
 
-#: src/main.cc:173
+#: src/main.cc:176
 #, fuzzy, c-format
 #| msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr " unmarkauto   Đánh dấu gói như là được cài đặt bằng tay\n"
 
-#: src/main.cc:174
+#: src/main.cc:177
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -5426,19 +5579,19 @@ msgstr ""
 " forbid-version  \t_Cấm_ trình aptitude nâng cấp lên một _phiên bản_ đã ghi "
 "rõ.\n"
 
-#: src/main.cc:175
+#: src/main.cc:178
 #, fuzzy, c-format
 #| msgid " update       - Download lists of new/upgradable packages\n"
 msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr " update       Tải về các danh sách gói mới / có thê _cập nhật_\n"
 
-#: src/main.cc:176
+#: src/main.cc:179
 #, fuzzy, c-format
 #| msgid " safe-upgrade - Perform a safe upgrade\n"
 msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr " safe-upgrade \tNâng cấp an toàn\n"
 
-#: src/main.cc:177
+#: src/main.cc:180
 #, fuzzy, c-format
 #| msgid ""
 #| " full-upgrade - Perform an upgrade, possibly installing and removing "
@@ -5448,55 +5601,55 @@ msgid ""
 "packages.\n"
 msgstr " full-upgrade\t\tNâng cấp, có thể cài đặt và gỡ bỏ gói\n"
 
-#: src/main.cc:178
+#: src/main.cc:181
 #, fuzzy, c-format
 #| msgid "'&BD' to install the build-dependencies of a package."
 msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "« &BD » để cài đặt các quan hệ phụ thuộc khi xây dựng gói."
 
-#: src/main.cc:179
+#: src/main.cc:182
 #, fuzzy, c-format
 #| msgid " forget-new   - Forget what packages are \"new\"\n"
 msgid " forget-new   - Forget what packages are \"new\".\n"
 msgstr " forget-new   \t_Quên_ gói nào là _« mới »_\n"
 
-#: src/main.cc:180
+#: src/main.cc:183
 #, fuzzy, c-format
 #| msgid " search       - Search for a package by name and/or expression\n"
 msgid " search       - Search for a package by name and/or expression.\n"
 msgstr " search       _Tìm kiếm_ gói theo tên và/hay biểu thức\n"
 
-#: src/main.cc:181
+#: src/main.cc:184
 #, fuzzy, c-format
 #| msgid " show         - Display detailed information about a package\n"
 msgid " show         - Display detailed information about a package.\n"
 msgstr " show         _Hiển thị_ thông tin chi tiết về gói\n"
 
-#: src/main.cc:182
+#: src/main.cc:185
 #, fuzzy, c-format
 #| msgid " clean        - Erase downloaded package files\n"
 msgid " clean        - Erase downloaded package files.\n"
 msgstr " clean        _Xóa_ các tập tin gói đã tải về\n"
 
-#: src/main.cc:183
+#: src/main.cc:186
 #, fuzzy, c-format
 #| msgid " autoclean    - Erase old downloaded package files\n"
 msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr " autoclean    _Xóa_ các tập tin gói cũ đã tải về (_tự động_)\n"
 
-#: src/main.cc:184
+#: src/main.cc:187
 #, fuzzy, c-format
 #| msgid " changelog    - View a package's changelog\n"
 msgid " changelog    - View a package's changelog.\n"
 msgstr " changelog    Xem _bản ghi thay đổi_ của gói\n"
 
-#: src/main.cc:185
+#: src/main.cc:188
 #, fuzzy, c-format
 #| msgid " download     - Download the .deb file for a package\n"
 msgid " download     - Download the .deb file for a package.\n"
 msgstr " download     _Tải về_ tập tin kiểu .deb cho gói\n"
 
-#: src/main.cc:186
+#: src/main.cc:189
 #, fuzzy, c-format
 #| msgid ""
 #| " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -5507,7 +5660,7 @@ msgid ""
 msgstr ""
 " reinstall    Tải về và (có thể) _cài đặt lại_ gói được cài đặt hiện thời\n"
 
-#: src/main.cc:187
+#: src/main.cc:190
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5517,7 +5670,7 @@ msgstr ""
 " why\t\tHiển thị các gói đã cài đặt bằng tay mà cần thiết một gói nào đó,\n"
 "\t\thoặc lý do một hay nhiều gói có thể cần thiết gói đã cho.\n"
 
-#: src/main.cc:189
+#: src/main.cc:192
 #, fuzzy, c-format
 #| msgid ""
 #| " why-not      - Show the manually installed packages that lead to a "
@@ -5536,46 +5689,46 @@ msgstr ""
 "\t\t\tmột hay nhiều gói (nếu được cài đặt) sẽ đưa tới\n"
 "\t\t\ttrường hợp này.\n"
 
-#: src/main.cc:193
+#: src/main.cc:196
 #, c-format
 msgid "  Options:\n"
 msgstr "  Tùy chọn:\n"
 
-#: src/main.cc:194
+#: src/main.cc:197
 #, fuzzy, c-format
 #| msgid " -h             This help text\n"
 msgid " -h             This help text.\n"
 msgstr " -h             _Trợ giúp_ này\n"
 
-#: src/main.cc:196
+#: src/main.cc:199
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:198
+#: src/main.cc:201
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:199
+#: src/main.cc:202
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             _Mô phỏng_ hành động còn không thật thực hiện\n"
 
-#: src/main.cc:200
+#: src/main.cc:203
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             Chỉ _tải về_ gói, không cài đặt hoặc gỡ bỏ gì.\n"
 
-#: src/main.cc:201
+#: src/main.cc:204
 #, fuzzy, c-format
 #| msgid " -P             Always prompt for confirmation or actions\n"
 msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr " -P             Luôn luôn _nhắc_ với sự xác nhận hoặc hành động\n"
 
-#: src/main.cc:202
+#: src/main.cc:205
 #, fuzzy, c-format
 #| msgid ""
 #| " -y             Assume that the answer to simple yes/no questions is "
@@ -5586,7 +5739,7 @@ msgstr ""
 " -y             Giả sử trả lời cho câu hỏi kiểu « có/không » đơn giản là _Có_ "
 "(yes)\n"
 
-#: src/main.cc:203
+#: src/main.cc:206
 #, fuzzy, c-format
 #| msgid ""
 #| " -F format      Specify a format for displaying search results; see the "
@@ -5597,7 +5750,7 @@ msgid ""
 msgstr ""
 " -F format      Ghi rõ _định dạng_ hiển thị kết quả tìm kiếm; xem sổ tay\n"
 
-#: src/main.cc:204
+#: src/main.cc:207
 #, fuzzy, c-format
 #| msgid ""
 #| " -O order       Specify how search results should be sorted; see the "
@@ -5609,7 +5762,7 @@ msgstr ""
 " -O order       Ghi rõ cách sắp xếp kết quả tìm kiếm; xem sổ tay (_thứ "
 "tự_).\n"
 
-#: src/main.cc:205
+#: src/main.cc:208
 #, fuzzy, c-format
 #| msgid ""
 #| " -w width       Specify the display width for formatting search results\n"
@@ -5617,17 +5770,17 @@ msgid ""
 " -w width       Specify the display width for formatting search results.\n"
 msgstr " -w width       Ghi rõ _độ rộng_ hiển thị kết quả tìm kiếm\n"
 
-#: src/main.cc:206
+#: src/main.cc:209
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Cố gắng _sửa chữa_ các gói bị hỏng một cách năng nổ.\n"
 
-#: src/main.cc:207
+#: src/main.cc:210
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             Hiển thị _phiên bản_ nào của gói sẽ được cài đặt.\n"
 
-#: src/main.cc:208
+#: src/main.cc:211
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
@@ -5635,12 +5788,12 @@ msgstr ""
 " -D             Hiển thị điều kiện _phụ thuộc_ của các gói đã thay đổi tự "
 "động.\n"
 
-#: src/main.cc:209
+#: src/main.cc:212
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Hiển thị hiệu số kích cỡ đã cài đặt của mỗi gói.\n"
 
-#: src/main.cc:210
+#: src/main.cc:213
 #, fuzzy, c-format
 #| msgid ""
 #| " -v             Display extra information. (may be supplied multiple "
@@ -5651,7 +5804,7 @@ msgid ""
 msgstr ""
 " -v        Hiển thị thông tin thêm (có lẽ cung cấp nhiều lần [_chi tiết_])\n"
 
-#: src/main.cc:211
+#: src/main.cc:214
 #, fuzzy, c-format
 #| msgid ""
 #| " -t [release]   Set the release from which packages should be installed\n"
@@ -5659,7 +5812,7 @@ msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [bản]   \tĐặt bản phát hành từ đó cần cài đặt gói\n"
 
-#: src/main.cc:212
+#: src/main.cc:215
 #, fuzzy, c-format
 #| msgid ""
 #| " -q             In command-line mode, suppress the incremental progress\n"
@@ -5669,7 +5822,7 @@ msgid ""
 "                indicators.\n"
 msgstr "  -q\t\tTrong chế độ dòng lệnh, thu hồi các cái chỉ tiến hành dần.\n"
 
-#: src/main.cc:214
+#: src/main.cc:217
 #, fuzzy, c-format
 #| msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
@@ -5677,7 +5830,7 @@ msgstr ""
 " -o key=giá_trị      Đặt trực tiếp _tùy chọn_ cấu hình có tên « key » (phím/"
 "khoá)\n"
 
-#: src/main.cc:215
+#: src/main.cc:218
 #, fuzzy, c-format
 #| msgid ""
 #| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -5689,29 +5842,29 @@ msgstr ""
 " --with(out)-recommends\tGhi rõ có nên xử lý gói đã khuyến khích (recommend) "
 "như là quan hệ phụ thuộc mạnh hay không (_[không] khuyến khích_).\n"
 
-#: src/main.cc:217
+#: src/main.cc:220
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 " -S tên_tập_tin: Đọc thông tin _trạng thái_ kéo dài aptitude từ tập tin "
 "này.\n"
 
-#: src/main.cc:218
+#: src/main.cc:221
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Tải về các danh sách gói mới khi khởi chạy.\n"
 
-#: src/main.cc:219 src/main.cc:221
+#: src/main.cc:222 src/main.cc:224
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:220
+#: src/main.cc:223
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Chạy lệnh _cài đặt_ (install) khi khởi chạy.\n"
 
-#: src/main.cc:223
+#: src/main.cc:226
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
@@ -5720,7 +5873,7 @@ msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:345
+#: src/main.cc:352
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5728,13 +5881,13 @@ msgstr "đúng"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:348
+#: src/main.cc:355
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:351
+#: src/main.cc:358
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5742,13 +5895,13 @@ msgstr "không"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:354
+#: src/main.cc:361
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:357
+#: src/main.cc:364
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5756,7 +5909,7 @@ msgstr "Lỗi "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:360
+#: src/main.cc:367
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5764,76 +5917,95 @@ msgstr "sai"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:363
+#: src/main.cc:370
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:433
+#: src/main.cc:440
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:446
+#: src/main.cc:453
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "Thao tác không hợp lệ %s"
 
-#: src/main.cc:690
+#: src/main.cc:701
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Đợi một số nằm sau « -q= »\n"
 
-#: src/main.cc:699
+#: src/main.cc:710
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Đợi một số nằm sau « -q= », còn nhận %s\n"
 
-#: src/main.cc:723
+#: src/main.cc:734
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "Tùy chọn « -o » cần thiết đối số dạng « key=giá_trị », còn nhân %s\n"
 
-#: src/main.cc:821
+#: src/main.cc:832
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Không có dấu phẩy đi theo tên thẻ « %s ».\n"
 
-#: src/main.cc:891 src/main.cc:900
+#: src/main.cc:910 src/main.cc:919
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "LẠ: nhận mã tùy chọn không rõ\n"
 
-#: src/main.cc:906
+#: src/main.cc:937
+msgid "--show-package-names|never"
+msgstr ""
+
+#: src/main.cc:940
+msgid "--show-package-names|auto"
+msgstr ""
+
+#: src/main.cc:943
+msgid "--show-package-names|always"
+msgstr ""
+
+#: src/main.cc:948
+#, c-format
+msgid ""
+"Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or "
+"\"always\")."
+msgstr ""
+
+#: src/main.cc:954
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:908
+#: src/main.cc:956
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Gói"
 
-#: src/main.cc:910
+#: src/main.cc:958
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:912
+#: src/main.cc:960
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Mọi gói"
 
-#: src/main.cc:914
+#: src/main.cc:962
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:920
+#: src/main.cc:968
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5841,7 +6013,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:972
+#: src/main.cc:1020
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -5849,7 +6021,7 @@ msgid ""
 "specified\n"
 msgstr "Có thể ghi rõ chỉ một của hai tùy chọn « -u »  và « -i »\n"
 
-#: src/main.cc:981
+#: src/main.cc:1029
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -5860,23 +6032,23 @@ msgstr ""
 "Không thể ghi rõ tùy chọn « -u » hay « -i » trong chế độ dòng lệnh (v.d. với "
 "lệnh 'install' (cài) đặt)."
 
-#: src/main.cc:1002
+#: src/main.cc:1050
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "Không thể ghi rõ tùy chọn « -u » hay « -i » với lệnh nào"
 
-#: src/main.cc:1104
+#: src/main.cc:1161
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Không rõ lệnh « %s »\n"
 
-#: src/main.cc:1116 src/main.cc:1184
+#: src/main.cc:1173 src/main.cc:1241
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Ngoại lệ chưa bắt: %s\n"
 
-#: src/main.cc:1120 src/main.cc:1188
+#: src/main.cc:1177 src/main.cc:1245
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -6968,12 +7140,6 @@ msgstr "%BHạ cấp%b những gói sau :%n"
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "Để những quan hệ phụ thuộc sau lại chưa được tháo gỡ :%n"
 
-#: src/solution_fragment.cc:505
-#, fuzzy, c-format
-#| msgid "i: %F"
-msgid "Tier: %s"
-msgstr "i: %F"
-
 #: src/solution_item.cc:97
 #, c-format
 msgid "Remove %F [%s (%s)]"
@@ -7943,21 +8109,60 @@ msgstr "Xem danh sách các thay đổi được làm trong gói Debian này."
 msgid "Preparing to download the changelog of %s"
 msgstr "Địa chỉ URL cần dùng để tải về các bản ghi thay đổi (ChangeLog)"
 
-#: src/view_changelog.cc:359
+#: src/view_changelog.cc:371
 #, fuzzy, c-format
 #| msgid "URL to use to download changelogs"
 msgid "Failed to download the changelog of %s: %s"
 msgstr "Địa chỉ URL cần dùng để tải về các bản ghi thay đổi (ChangeLog)"
 
-#: src/view_changelog.cc:370
+#: src/view_changelog.cc:382
 #, fuzzy, c-format
 #| msgid "Downloading Changelog"
 msgid "Downloading the changelog of %s"
 msgstr "Đang tải về Bản ghi đổi"
 
-#: src/view_changelog.cc:403
+#: src/view_changelog.cc:415
 msgid "You can only view changelogs of official Debian packages."
 msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính thức."
+
+#~ msgid ""
+#~ "Unable to resolve dependencies for the upgrade (the resolver timed out)."
+#~ msgstr ""
+#~ "Không thể giải quyết các quan hệ phụ thuộc cho tiến trình nâng cấp (bộ "
+#~ "giải quyết đã quá hạn)."
+
+#, fuzzy
+#~| msgid "Section"
+#~ msgid "Safe actions"
+#~ msgstr "Phần"
+
+#, fuzzy
+#~| msgid "Canc^el pending actions"
+#~ msgid "Cancel all user actions"
+#~ msgstr "^Thôi các hành động bị hoãn"
+
+#, fuzzy
+#~| msgid "'-' to remove packages"
+#~ msgid "Remove packages"
+#~ msgstr "« - » để gỡ bỏ gói"
+
+#, fuzzy
+#~| msgid "not a real package"
+#~ msgid "Modify held packages"
+#~ msgstr "không phải là gói thật"
+
+#, fuzzy
+#~| msgid "Remove the following packages:"
+#~ msgid "Remove essential packages"
+#~ msgstr "Gỡ bỏ những gói sau :"
+
+#~ msgid "Unknown error"
+#~ msgstr "Lỗi không rõ"
+
+#, fuzzy
+#~| msgid "i: %F"
+#~ msgid "Tier: %s"
+#~ msgstr "i: %F"
 
 #~ msgid "Downloading Changelog"
 #~ msgstr "Đang tải về Bản ghi đổi"
@@ -8183,11 +8388,6 @@ msgstr "Bạn chỉ có thể xem bản ghi đổi của gói Debian chính th�
 #~| msgid "No packages are broken."
 #~ msgid "%d packages to remove"
 #~ msgstr "Không có gói nào bị hỏng."
-
-#, fuzzy
-#~| msgid "Packages"
-#~ msgid "Packages:"
-#~ msgstr "Gói"
 
 #~ msgid "Yes"
 #~ msgstr "Có"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-01-20 20:39-0800\n"
+"POT-Creation-Date: 2010-04-18 08:07-0700\n"
 "PO-Revision-Date: 2008-09-01 16:03+0200\n"
 "Last-Translator: Erdal Ronahi <erdal.ronahi@gmail.com>\n"
 "Language-Team: Kurdish <ubuntu-l10n-kur@lists.ubuntu.com>\n"
@@ -732,7 +732,7 @@ msgstr ""
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 
-#: src/cmdline/cmdline_changelog.cc:376
+#: src/cmdline/cmdline_changelog.cc:382
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr ""
@@ -783,7 +783,7 @@ msgid ""
 msgstr ""
 
 #: src/cmdline/cmdline_do_action.cc:349 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1111
+#: src/main.cc:1168
 #, c-format
 msgid "Abort.\n"
 msgstr "Dev jê berde.\n"
@@ -1353,18 +1353,18 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:973
+#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:989
 #: src/generic/apt/apt.cc:290
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:978
+#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:994
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:980
+#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:996
 msgid "Resolver state successfully written!"
 msgstr ""
 
@@ -1475,68 +1475,68 @@ msgstr ""
 msgid "%s has no version named \"%s\""
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:392
+#: src/cmdline/cmdline_resolver.cc:394
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:395
+#: src/cmdline/cmdline_resolver.cc:397
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:405
+#: src/cmdline/cmdline_resolver.cc:407
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:408
+#: src/cmdline/cmdline_resolver.cc:410
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:421
+#: src/cmdline/cmdline_resolver.cc:423
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:424
+#: src/cmdline/cmdline_resolver.cc:426
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:433
+#: src/cmdline/cmdline_resolver.cc:435
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:436
+#: src/cmdline/cmdline_resolver.cc:438
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:485
+#: src/cmdline/cmdline_resolver.cc:487
 #, c-format
 msgid "Allowing this recommendation to be ignored: %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:491
+#: src/cmdline/cmdline_resolver.cc:493
 #, c-format
 msgid "Always obeying this recommendation: %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:500
+#: src/cmdline/cmdline_resolver.cc:502
 #, c-format
 msgid "No longer ignoring this recommendation: %s"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:506
+#: src/cmdline/cmdline_resolver.cc:508
 #, fuzzy, c-format
 #| msgid "Recommendations"
 msgid "Ignoring this recommendation: %s"
 msgstr "Tawsiye"
 
-#: src/cmdline/cmdline_resolver.cc:550
+#: src/cmdline/cmdline_resolver.cc:566
 #, fuzzy, c-format
 #| msgid "Actions"
 msgid "Action \"%s\""
@@ -1545,16 +1545,16 @@ msgstr "Çalakî"
 #. ForTranslators: the substitution is
 #. replaced in English with something
 #. like "Pkg1 depends upon Pkg2".
-#: src/cmdline/cmdline_resolver.cc:563
+#: src/cmdline/cmdline_resolver.cc:579
 #, c-format
 msgid "This action was selected because %ls."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:565
+#: src/cmdline/cmdline_resolver.cc:581
 msgid "This action is currently rejected; it will not appear in new solutions."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:566
+#: src/cmdline/cmdline_resolver.cc:582
 msgid ""
 "This action is currently approved; it will be selected whenever possible."
 msgstr ""
@@ -1564,7 +1564,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:573
+#: src/cmdline/cmdline_resolver.cc:589
 #, c-format
 msgid "Enter \"r %s\" to allow this action to appear in new solutions."
 msgstr ""
@@ -1574,7 +1574,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:579
+#: src/cmdline/cmdline_resolver.cc:595
 #, c-format
 msgid "Enter \"r %s\" to prevent this action from appearing in new solutions."
 msgstr ""
@@ -1584,7 +1584,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:585
+#: src/cmdline/cmdline_resolver.cc:601
 #, c-format
 msgid ""
 "Enter \"a %s\" to cease requiring that new solutions include this action if "
@@ -1596,106 +1596,110 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:591
+#: src/cmdline/cmdline_resolver.cc:607
 #, c-format
 msgid ""
 "Enter \"a %s\" to require that new solutions include this action if possible."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:763
+#: src/cmdline/cmdline_resolver.cc:779
 #, c-format
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:786
+#: src/cmdline/cmdline_resolver.cc:802
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:795
+#: src/cmdline/cmdline_resolver.cc:811
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:809 src/cmdline/cmdline_resolver.cc:1145
+#: src/cmdline/cmdline_resolver.cc:825 src/cmdline/cmdline_resolver.cc:1161
 #: src/gtk/resolver.cc:2056 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:868
+#: src/cmdline/cmdline_resolver.cc:884
 msgid "The following actions will resolve these dependencies:"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:887
+#: src/cmdline/cmdline_resolver.cc:903
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:914 src/cmdline/cmdline_resolver.cc:1048
+#: src/cmdline/cmdline_resolver.cc:930 src/cmdline/cmdline_resolver.cc:1064
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:917
+#: src/cmdline/cmdline_resolver.cc:933
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:950
+#: src/cmdline/cmdline_resolver.cc:966
 msgid "The following commands are available:"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:970
+#: src/cmdline/cmdline_resolver.cc:986
 msgid "File to write resolver state to: "
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1002
+#: src/cmdline/cmdline_resolver.cc:1018
 msgid "Invalid response; please enter one of the following commands:"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1022
+#: src/cmdline/cmdline_resolver.cc:1038
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1051
+#: src/cmdline/cmdline_resolver.cc:1067
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1060
+#: src/cmdline/cmdline_resolver.cc:1076
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1066
+#: src/cmdline/cmdline_resolver.cc:1082
 msgid "*** No more solutions available ***"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1085
+#: src/cmdline/cmdline_resolver.cc:1101
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1161
-msgid ""
-"Unable to resolve dependencies for the upgrade (the resolver timed out)."
-msgstr ""
-
-#: src/cmdline/cmdline_resolver.cc:1167
-msgid "Unable to resolve dependencies for the upgrade (no solution found)."
-msgstr ""
-
-#: src/cmdline/cmdline_resolver.cc:1173
+#: src/cmdline/cmdline_resolver.cc:1172
 #, c-format
-msgid "Unable to resolve dependencies for the upgrade (%s)."
+msgid ""
+"Unable to resolve dependencies for the upgrade because the resolver timed "
+"out.\n"
+"  You may be able to solve this problem by increasing\n"
+"  Aptitude::ProblemResolver::StepLimit (currently %d)."
 msgstr ""
 
-#: src/cmdline/cmdline_search.cc:126
+#: src/cmdline/cmdline_resolver.cc:1182
+msgid "Unable to resolve dependencies for the upgrade: no solution found."
+msgstr ""
+
+#: src/cmdline/cmdline_resolver.cc:1188
+#, c-format
+msgid "Unable to resolve dependencies for the upgrade: %s"
+msgstr ""
+
+#: src/cmdline/cmdline_search.cc:145 src/cmdline/cmdline_versions.cc:500
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_search.cc:143
+#: src/cmdline/cmdline_search.cc:162
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr ""
@@ -1743,7 +1747,8 @@ msgid "The following packages have unmet dependencies:\n"
 msgstr ""
 
 #: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/gtk/resolver.cc:1193 src/solution_fragment.cc:68
+#: src/cmdline/cmdline_versions.cc:180 src/gtk/resolver.cc:1193
+#: src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr ""
 
@@ -2086,6 +2091,68 @@ msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 msgstr[1] ""
+
+#: src/cmdline/cmdline_versions.cc:97
+#, fuzzy, c-format
+#| msgid "Packages"
+msgid "Package %s:"
+msgstr "Pakêt"
+
+#: src/cmdline/cmdline_versions.cc:124 src/cmdline/cmdline_versions.cc:163
+#, fuzzy, c-format
+#| msgid "Source Package: "
+msgid "Source package %s:"
+msgstr "Pakêta Çavkaniyê:"
+
+#: src/cmdline/cmdline_versions.cc:185
+#, fuzzy, c-format
+#| msgid "Archive"
+msgid "Archive %s:"
+msgstr "Arşîv"
+
+#: src/cmdline/cmdline_versions.cc:250
+#, fuzzy, c-format
+#| msgid "No such package \"%s\".\n"
+msgid "No such package \"%s\"."
+msgstr "Pakêteke wusa tune \"%s\".\n"
+
+#: src/cmdline/cmdline_versions.cc:438
+msgid "--group-by|archive"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:442
+msgid "--group-by|auto"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:446
+msgid "--group-by|none"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:450
+msgid "--group-by|package"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:454
+msgid "--group-by|source-package"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:458
+msgid "--group-by|source-version"
+msgstr ""
+
+#. ForTranslators: --group-by is the argument name and shouldn't
+#. be translated.
+#: src/cmdline/cmdline_versions.cc:464
+#, c-format
+msgid ""
+"Invalid package grouping mode \"%s\" (should be \"auto\", \"none\", \"package"
+"\", or \"source-package\")"
+msgstr ""
+
+#: src/cmdline/cmdline_versions.cc:517
+#, c-format
+msgid "versions: You must provide at least one package selector\n"
+msgstr ""
 
 #: src/cmdline/cmdline_why.cc:314
 msgid "dep_level"
@@ -2459,90 +2526,66 @@ msgid ""
 "you make to the states of packages will NOT be preserved!"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:460
+#: src/generic/apt/aptitude_resolver.cc:473
 #, c-format
 msgid "Invalid hint \"%s\": expected an action, but found nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:482
+#: src/generic/apt/aptitude_resolver.cc:497
 #, c-format
-msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
+msgid ""
+"Invalid hint \"%s\": expected a component name and a number, but found "
+"nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:504
+#: src/generic/apt/aptitude_resolver.cc:516
+#, c-format
+msgid ""
+"Invalid hint \"%s\": expected the numeric value following the component "
+"name, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:536
+#, c-format
+msgid "Invalid hint \"%s\": the numeric component \"%s\" cannot be parsed."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:547
+#, c-format
+msgid "Invalid hint \"%s\": expected a level, but found nothing."
+msgstr ""
+
+#: src/generic/apt/aptitude_resolver.cc:569
 #, c-format
 msgid "Invalid hint \"%s\": expected a target, but found nothing."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:531
+#: src/generic/apt/aptitude_resolver.cc:596
 #, c-format
 msgid "Invalid hint \"%s\": invalid target: %s"
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:551
+#: src/generic/apt/aptitude_resolver.cc:616
 #, c-format
 msgid "Invalid hint \"%s\": trailing junk after the version."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:635
+#: src/generic/apt/aptitude_resolver.cc:704
 #, c-format
 msgid ""
 "Invalid hint \"%s\": the action \"%s\" should be \"approve\", \"reject\", or "
 "a number."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:832
+#: src/generic/apt/aptitude_resolver_cost_settings.cc:130
 #, c-format
-msgid ""
-"Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
+msgid "Conflicting types for the cost component %s."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:876
-#, fuzzy
-#| msgid "Section: "
-msgid "Safe actions"
-msgstr "Beş "
-
-#: src/generic/apt/aptitude_resolver_universe.cc:877
-#, fuzzy
-#| msgid "Cancel the installation of %F"
-msgid "Cancel all user actions"
-msgstr "Sazkirina %F betal bike"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:878
-#, fuzzy
-#| msgid "No broken packages."
-msgid "Remove packages"
-msgstr "Pakêtên şikestî tune."
-
-#: src/generic/apt/aptitude_resolver_universe.cc:879
-#, fuzzy
-#| msgid "not a real package"
-msgid "Modify held packages"
-msgstr "pakêteke rastîn nîn e"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:880
-msgid "Install versions from non-default sources"
-msgstr ""
-
-#: src/generic/apt/aptitude_resolver_universe.cc:881
-#, fuzzy
-#| msgid "Remove the following packages:"
-msgid "Remove essential packages"
-msgstr "Ev paketan rake:"
-
-#: src/generic/apt/aptitude_resolver_universe.cc:914
+#: src/generic/apt/aptitude_resolver_universe.cc:817
 #, c-format
 msgid ""
-"The tier \"%s\", configured in %s::ProblemResolver::Tier-Names, is missing a "
-"Tier entry."
-msgstr ""
-
-#: src/generic/apt/aptitude_resolver_universe.cc:918
-#, c-format
-msgid ""
-"The tier %d, configured in %s::ProblemResolver::Tier-Names, is missing a "
-"Name entry."
+"Invalid safety level \"%s\" (not \"maximum\", \"minimum\", or an integer)."
 msgstr ""
 
 #: src/generic/apt/download_install_manager.cc:60
@@ -2915,15 +2958,22 @@ msgstr ""
 msgid "Multiple descriptions found for group %s, ignoring one"
 msgstr ""
 
-#: src/generic/apt/resolver_manager.cc:484
+#: src/generic/apt/resolver_manager.cc:489
 #, c-format
 msgid "Unable to create the output file: child killed by signal %d."
 msgstr ""
 
-#: src/generic/apt/resolver_manager.cc:486
+#: src/generic/apt/resolver_manager.cc:491
 #, c-format
 msgid "Unable to create the output file: child exited with status %d."
 msgstr ""
+
+#: src/generic/apt/resolver_manager.cc:910
+#: src/generic/apt/resolver_manager.cc:912
+#, fuzzy, c-format
+#| msgid "Downloading "
+msgid "Failed to parse the cost settings string: %s"
+msgstr "Tê daxistin "
 
 #: src/generic/apt/tags.cc:218 src/generic/apt/tags.cc:225
 msgid "Building tag database"
@@ -2938,18 +2988,102 @@ msgstr ""
 msgid "Reading task descriptions"
 msgstr ""
 
-#: src/generic/util/temp.cc:110 src/generic/util/temp.cc:184
+#: src/generic/problemresolver/exceptions.h:105
+msgid "Cost increments must be strictly positive."
+msgstr ""
+
+#: src/generic/problemresolver/exceptions.h:114
+msgid "The maximum cost value was exceeded."
+msgstr ""
+
+#: src/generic/problemresolver/exceptions.h:124
+msgid "A single cost level was both added and lower-bounded."
+msgstr ""
+
+#: src/generic/util/parsers.h:735
+#, c-format
+msgid "Expected '%s', but got EOF."
+msgstr ""
+
+#: src/generic/util/parsers.h:737
+#, c-format
+msgid "Expected '%s', but got '%s'."
+msgstr ""
+
+#: src/generic/util/parsers.h:778
+msgid "Expected any character, but got EOF."
+msgstr ""
+
+#: src/generic/util/parsers.h:791
+msgid "any character"
+msgstr ""
+
+#: src/generic/util/parsers.h:832
+#, c-format
+msgid "Expected %s, but got EOF."
+msgstr ""
+
+#: src/generic/util/parsers.h:843
+#, c-format
+msgid "Expected %s, but got '%c'."
+msgstr ""
+
+#: src/generic/util/parsers.h:1017
+msgid "Expected an integer, got EOF."
+msgstr ""
+
+#: src/generic/util/parsers.h:1026
+msgid "Expected an integer following '-', got EOF."
+msgstr ""
+
+#: src/generic/util/parsers.h:1032
+#, c-format
+msgid "Expected an integer, got '%c'."
+msgstr ""
+
+#: src/generic/util/parsers.h:1046 src/generic/util/parsers.h:1054
+#, c-format
+msgid "Invalid integer: \"%s\"."
+msgstr ""
+
+#: src/generic/util/parsers.h:1077
+#, c-format
+msgid "Expected EOF, got '%c'."
+msgstr ""
+
+#: src/generic/util/parsers.h:1191
+msgid "anything"
+msgstr ""
+
+#. ForTranslators: this is used to generate an error
+#. message; a brief description of what we expected to see
+#. is inserted into it.
+#: src/generic/util/parsers.h:1941 src/generic/util/parsers.h:2034
+#: src/generic/util/parsers.h:2085
+#, c-format
+msgid "Expected %s"
+msgstr ""
+
+#: src/generic/util/parsers.h:2007
+#, fuzzy
+#| msgid " or"
+msgid " or "
+msgstr " an"
+
+#: src/generic/util/parsers.h:2762
+#, fuzzy, c-format
+#| msgid "Upgrade"
+msgid "Unexpected %s"
+msgstr "Bilindkirin"
+
+#: src/generic/util/temp.cc:201 src/generic/util/temp.cc:275
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
 msgstr ""
 
-#: src/generic/util/temp.cc:261 src/generic/util/temp.cc:278
+#: src/generic/util/temp.cc:342
 #, c-format
-msgid "Unable to create temporary filename from template \"%s\": %s"
-msgstr ""
-
-#: src/generic/util/temp.cc:270
-msgid "Unknown error"
+msgid "Unable to create temporary filename from prefix \"%s\""
 msgstr ""
 
 #: src/generic/util/util.cc:346
@@ -4645,10 +4779,11 @@ msgstr ""
 msgid "%u solutions."
 msgstr "Çareserî nehat dîtin."
 
-#: src/gtk/resolver.cc:2108
-#, c-format
-msgid "Solution %s of %s (tier %s)."
-msgstr ""
+#: src/gtk/resolver.cc:2107
+#, fuzzy, c-format
+#| msgid "Versions of %s"
+msgid "Solution %s of %s."
+msgstr "Guhertoyên %s"
 
 #: src/gtk/tab.cc:68
 #, fuzzy
@@ -4865,224 +5000,224 @@ msgstr ""
 msgid "Invalid sorting policy type '%s'"
 msgstr ""
 
-#: src/main.cc:108
+#: src/main.cc:111
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr ""
 
-#: src/main.cc:117
+#: src/main.cc:120
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr ""
 
-#: src/main.cc:125
+#: src/main.cc:128
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr ""
 
-#: src/main.cc:128
+#: src/main.cc:131
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr ""
 
-#: src/main.cc:130
+#: src/main.cc:133
 msgid "Compiled against:\n"
-msgstr ""
-
-#: src/main.cc:131
-#, c-format
-msgid "  apt version %d.%d.%d\n"
 msgstr ""
 
 #: src/main.cc:134
 #, c-format
+msgid "  apt version %d.%d.%d\n"
+msgstr ""
+
+#: src/main.cc:137
+#, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr ""
 
-#: src/main.cc:136
+#: src/main.cc:139
 #, c-format
 msgid "  NCurses version %s\n"
 msgstr "Guhertoya NCurses %s\n"
 
-#: src/main.cc:138
+#: src/main.cc:141
 #, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr ""
 
-#: src/main.cc:140
+#: src/main.cc:143
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr ""
 
-#: src/main.cc:142
+#: src/main.cc:145
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr ""
 
-#: src/main.cc:145
+#: src/main.cc:148
 #, fuzzy, c-format
 #| msgid "  Apt version: %s\n"
 msgid "  Gtk+ version %d.%d.%d\n"
 msgstr "Guhertoya Apt: %s\n"
 
-#: src/main.cc:147
+#: src/main.cc:150
 #, fuzzy, c-format
 #| msgid "  Apt version: %s\n"
 msgid "  Gtk-- version %d.%d.%d\n"
 msgstr "Guhertoya Apt: %s\n"
 
-#: src/main.cc:150
+#: src/main.cc:153
 #, c-format
 msgid "  Gtk+ support disabled.\n"
 msgstr ""
 
-#: src/main.cc:153
+#: src/main.cc:156
 msgid ""
 "\n"
 "Current library versions:\n"
 msgstr ""
 
-#: src/main.cc:154
+#: src/main.cc:157
 #, c-format
 msgid "  NCurses version: %s\n"
 msgstr "Guhertoya NCurses: %s\n"
 
-#: src/main.cc:155
+#: src/main.cc:158
 #, c-format
 msgid "  cwidget version: %s\n"
 msgstr ""
 
-#: src/main.cc:156
+#: src/main.cc:159
 #, c-format
 msgid "  Apt version: %s\n"
 msgstr "Guhertoya Apt: %s\n"
 
-#: src/main.cc:162
+#: src/main.cc:165
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr ""
 
-#: src/main.cc:164
+#: src/main.cc:167
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr ""
 
-#: src/main.cc:166
+#: src/main.cc:169
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
 "\n"
 msgstr ""
 
-#: src/main.cc:167
+#: src/main.cc:170
 #, c-format
 msgid " install      - Install/upgrade packages.\n"
 msgstr ""
 
-#: src/main.cc:168
+#: src/main.cc:171
 #, fuzzy, c-format
 #| msgid "No broken packages."
 msgid " remove       - Remove packages.\n"
 msgstr "Pakêtên şikestî tune."
 
-#: src/main.cc:169
+#: src/main.cc:172
 #, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
 msgstr ""
 
-#: src/main.cc:170
+#: src/main.cc:173
 #, c-format
 msgid " hold         - Place packages on hold.\n"
 msgstr ""
 
-#: src/main.cc:171
+#: src/main.cc:174
 #, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr ""
 
-#: src/main.cc:172
+#: src/main.cc:175
 #, fuzzy, c-format
 #| msgid "Automatically Installed"
 msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr "Bixweber hatiye sazkirin"
 
-#: src/main.cc:173
+#: src/main.cc:176
 #, fuzzy, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr "Ev paketên NÛ dê werin sazkirin:"
 
-#: src/main.cc:174
+#: src/main.cc:177
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
 msgstr ""
 
-#: src/main.cc:175
+#: src/main.cc:178
 #, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr ""
 
-#: src/main.cc:176
+#: src/main.cc:179
 #, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr ""
 
-#: src/main.cc:177
+#: src/main.cc:180
 #, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
 msgstr ""
 
-#: src/main.cc:178
+#: src/main.cc:181
 #, c-format
 msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
-#: src/main.cc:179
+#: src/main.cc:182
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
 msgstr ""
 
-#: src/main.cc:180
+#: src/main.cc:183
 #, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
 msgstr ""
 
-#: src/main.cc:181
+#: src/main.cc:184
 #, c-format
 msgid " show         - Display detailed information about a package.\n"
 msgstr ""
 
-#: src/main.cc:182
+#: src/main.cc:185
 #, c-format
 msgid " clean        - Erase downloaded package files.\n"
 msgstr ""
 
-#: src/main.cc:183
+#: src/main.cc:186
 #, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr ""
 
-#: src/main.cc:184
+#: src/main.cc:187
 #, c-format
 msgid " changelog    - View a package's changelog.\n"
 msgstr ""
 
-#: src/main.cc:185
+#: src/main.cc:188
 #, c-format
 msgid " download     - Download the .deb file for a package.\n"
 msgstr ""
 
-#: src/main.cc:186
+#: src/main.cc:189
 #, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
 
-#: src/main.cc:187
+#: src/main.cc:190
 #, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5090,7 +5225,7 @@ msgid ""
 "                why one or more packages would require the given package\n"
 msgstr ""
 
-#: src/main.cc:189
+#: src/main.cc:192
 #, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -5099,150 +5234,150 @@ msgid ""
 "                lead to a conflict with the given package if installed.\n"
 msgstr ""
 
-#: src/main.cc:193
+#: src/main.cc:196
 #, c-format
 msgid "  Options:\n"
 msgstr ""
 
-#: src/main.cc:194
+#: src/main.cc:197
 #, c-format
 msgid " -h             This help text.\n"
 msgstr ""
 
-#: src/main.cc:196
+#: src/main.cc:199
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:198
+#: src/main.cc:201
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:199
+#: src/main.cc:202
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr ""
 
-#: src/main.cc:200
+#: src/main.cc:203
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 
-#: src/main.cc:201
+#: src/main.cc:204
 #, c-format
 msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr ""
 
-#: src/main.cc:202
+#: src/main.cc:205
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr ""
 
-#: src/main.cc:203
+#: src/main.cc:206
 #, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
 msgstr ""
 
-#: src/main.cc:204
+#: src/main.cc:207
 #, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
 msgstr ""
 
-#: src/main.cc:205
+#: src/main.cc:208
 #, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
 msgstr ""
 
-#: src/main.cc:206
+#: src/main.cc:209
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr ""
 
-#: src/main.cc:207
+#: src/main.cc:210
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr ""
 
-#: src/main.cc:208
+#: src/main.cc:211
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr ""
 
-#: src/main.cc:209
+#: src/main.cc:212
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr ""
 
-#: src/main.cc:210
+#: src/main.cc:213
 #, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
 msgstr ""
 
-#: src/main.cc:211
+#: src/main.cc:214
 #, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr ""
 
-#: src/main.cc:212
+#: src/main.cc:215
 #, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress.\n"
 "                indicators.\n"
 msgstr ""
 
-#: src/main.cc:214
+#: src/main.cc:217
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr ""
 
-#: src/main.cc:215
+#: src/main.cc:218
 #, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
 "                strong dependencies.\n"
 msgstr ""
 
-#: src/main.cc:217
+#: src/main.cc:220
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr ""
 
-#: src/main.cc:218
+#: src/main.cc:221
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr ""
 
-#: src/main.cc:219 src/main.cc:221
+#: src/main.cc:222 src/main.cc:224
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:220
+#: src/main.cc:223
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr ""
 
-#: src/main.cc:223
+#: src/main.cc:226
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:345
+#: src/main.cc:352
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -5250,13 +5385,13 @@ msgstr "rast"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:348
+#: src/main.cc:355
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:351
+#: src/main.cc:358
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5264,19 +5399,19 @@ msgstr "na"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:354
+#: src/main.cc:361
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:357
+#: src/main.cc:364
 msgid "error"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:360
+#: src/main.cc:367
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -5284,75 +5419,94 @@ msgstr "şaş"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:363
+#: src/main.cc:370
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:433
+#: src/main.cc:440
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:446
+#: src/main.cc:453
 #, c-format
 msgid "Invalid logger name \"%s\"."
 msgstr ""
 
-#: src/main.cc:690
+#: src/main.cc:701
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr ""
 
-#: src/main.cc:699
+#: src/main.cc:710
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr ""
 
-#: src/main.cc:723
+#: src/main.cc:734
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr ""
 
-#: src/main.cc:821
+#: src/main.cc:832
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:891 src/main.cc:900
+#: src/main.cc:910 src/main.cc:919
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr ""
 
-#: src/main.cc:906
+#: src/main.cc:937
+msgid "--show-package-names|never"
+msgstr ""
+
+#: src/main.cc:940
+msgid "--show-package-names|auto"
+msgstr ""
+
+#: src/main.cc:943
+msgid "--show-package-names|always"
+msgstr ""
+
+#: src/main.cc:948
+#, c-format
+msgid ""
+"Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or "
+"\"always\")."
+msgstr ""
+
+#: src/main.cc:954
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:908
+#: src/main.cc:956
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Pakêt"
 
-#: src/main.cc:910
+#: src/main.cc:958
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:912
+#: src/main.cc:960
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Hemû Pakêt"
 
-#: src/main.cc:914
+#: src/main.cc:962
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:920
+#: src/main.cc:968
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5360,33 +5514,33 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:972
+#: src/main.cc:1020
 msgid ""
 "Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be "
 "specified\n"
 msgstr ""
 
-#: src/main.cc:981
+#: src/main.cc:1029
 msgid ""
 "-u, -i, and --clean-on-startup may not be specified in command-line mode "
 "(eg, with 'install')"
 msgstr ""
 
-#: src/main.cc:1002
+#: src/main.cc:1050
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr ""
 
-#: src/main.cc:1104
+#: src/main.cc:1161
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr ""
 
-#: src/main.cc:1116 src/main.cc:1184
+#: src/main.cc:1173 src/main.cc:1241
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr ""
 
-#: src/main.cc:1120 src/main.cc:1188
+#: src/main.cc:1177 src/main.cc:1245
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -6416,11 +6570,6 @@ msgstr ""
 msgid "Leave the following dependencies unresolved:%n"
 msgstr ""
 
-#: src/solution_fragment.cc:505
-#, c-format
-msgid "Tier: %s"
-msgstr ""
-
 #: src/solution_item.cc:97
 #, c-format
 msgid "Remove %F [%s (%s)]"
@@ -7327,21 +7476,46 @@ msgstr ""
 msgid "Preparing to download the changelog of %s"
 msgstr "Tê daxistin "
 
-#: src/view_changelog.cc:359
+#: src/view_changelog.cc:371
 #, fuzzy, c-format
 #| msgid "Downloading "
 msgid "Failed to download the changelog of %s: %s"
 msgstr "Tê daxistin "
 
-#: src/view_changelog.cc:370
+#: src/view_changelog.cc:382
 #, fuzzy, c-format
 #| msgid "Downloading "
 msgid "Downloading the changelog of %s"
 msgstr "Tê daxistin "
 
-#: src/view_changelog.cc:403
+#: src/view_changelog.cc:415
 msgid "You can only view changelogs of official Debian packages."
 msgstr ""
+
+#, fuzzy
+#~| msgid "Section: "
+#~ msgid "Safe actions"
+#~ msgstr "Beş "
+
+#, fuzzy
+#~| msgid "Cancel the installation of %F"
+#~ msgid "Cancel all user actions"
+#~ msgstr "Sazkirina %F betal bike"
+
+#, fuzzy
+#~| msgid "No broken packages."
+#~ msgid "Remove packages"
+#~ msgstr "Pakêtên şikestî tune."
+
+#, fuzzy
+#~| msgid "not a real package"
+#~ msgid "Modify held packages"
+#~ msgstr "pakêteke rastîn nîn e"
+
+#, fuzzy
+#~| msgid "Remove the following packages:"
+#~ msgid "Remove essential packages"
+#~ msgstr "Ev paketan rake:"
 
 #, fuzzy
 #~| msgid "No resolution found."
@@ -7484,11 +7658,6 @@ msgstr ""
 #~| msgid "No packages are broken."
 #~ msgid "%d packages to remove"
 #~ msgstr "Pakêtên şikestî tune"
-
-#, fuzzy
-#~| msgid "Packages"
-#~ msgid "Packages:"
-#~ msgstr "Pakêt"
 
 #~ msgid "Yes"
 #~ msgstr "Erê"
