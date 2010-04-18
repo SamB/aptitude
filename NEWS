@@ -1,3 +1,97 @@
+[4/18/2010]
+Version 0.6.2                               "A costly proposition"
+
+- New features:
+
+  + [all] Resolver tiers are dead, long live resolver costs.
+
+          The resolver now supports a flexible system of multi-leveled
+          costs, in place of the fairly rigid tiers of previous
+          releases.  The default behavior emulates how tiers worked,
+          but the resolver can also be configured with custom cost
+          vectors by setting Aptitude::ProblemResolver::SolutionCost
+          to something like this:
+
+             canceled-actions + 2*removals, ignored-recommends, installs
+
+          That says to minimize the number of packages kept at their
+          current version plus twice the number of removals (i.e., a
+          removal counts for two keeps).  Within that group, ties are
+          broken by looking at the number of Recommends that were
+          ignored, and within that group, ties are broken by looking
+          at the number of new packages the resolver wants to install.
+
+          In addition to custom cost vectors, resolver hints can be
+          used to create completely custom costs.
+
+          See the reference manual for full details.
+
+          This is not optimized and I expect that pushing it to the
+          limits will show off all sorts of exponential explosions.
+          Have fun!
+
+  + [cmdline] Implemented an "aptitude versions" command that I've
+              been kicking around for a while, to display and search
+              for individual package versions.  Documented in the
+              manpage, but here are some highlights:
+
+                $ aptitude versions apt
+                i   0.7.25.3                         unstable     500
+                p   0.7.26~exp3                      experimental 1
+
+                $ aptitude versions '^apt$ ?installed'
+                Package apt
+                i   0.7.25.3                         unstable     500
+
+                $ aptitude versions xserver-xorg udev
+                Package udev:
+                i   151-2                                         100
+                p   151-3                            unstable     500
+
+                Package xserver-xorg:
+                i A 1:7.5+3                                       100
+                p A 1:7.5+5                          unstable     500
+
+                $ aptitude versions --group-by=source-package '?name(aptitude)'
+                Source package aptitude:
+                i   aptitude 0.6.1.5-2                            100
+                p   aptitude 0.6.1.5-3               unstable     500
+                i   aptitude-dbg 0.6.1.5-2                        100
+                p   aptitude-dbg 0.6.1.5-3           unstable     500
+                i   aptitude-doc-cs 0.6.1.5-2                     100
+                p   aptitude-doc-cs 0.6.1.5-3        unstable     500
+                (... many more lines of output snipped ...)
+
+- Crashes and serious errors:
+
+  + [cmdline] Don't crash if the user sets a rejection at the internal
+              command-line via package name and version rather than
+              using the new pick-by-numbers UI. (Closes: #567242)
+
+  + [cmdline] Don't crash if the user asks to see information about a
+              removal.
+
+  + [cmdline] Don't crash in "aptitude changelog" when the package
+              given on the command-line doesn't have a valid version
+              (Closes: #576318).  Thinks to Dmitry Semyonov for the
+              patch.
+
+- Cosmetic and UI bugs:
+
+  + [curses] Don't leave a download progress bar hanging around after
+             downloading a changelog. (Closes: #566205)
+
+  + 
+
+- Internal changes:
+
+  + [all] Replaced mktemp() with a custom function doing a similar
+          thing (albeit with slightly better randomness).  This
+          eliminates the spurious linker warning I've been ignoring
+          for five years: the linker has no way to know that I only
+          use mktemp() to create names in a mode 0700 directory, which
+          is about the only way to use it safely.
+
 [1/20/2010]
 Version 0.6.1.5                             "All around the dependency bush,
                                              the monkey chased the weasel..."
