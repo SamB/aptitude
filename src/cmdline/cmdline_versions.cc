@@ -459,8 +459,8 @@ group_by_option parse_group_by_option(const std::string &option)
     return group_by_source_version;
 
   else
-    // ForTranslators: --group-by-package is the argument name and
-    // shouldn't be translated.
+    // ForTranslators: --group-by is the argument name and shouldn't
+    // be translated.
     throw GroupByParseException((boost::format(_("Invalid package grouping mode \"%s\" (should be \"auto\", \"none\", \"package\", or \"source-package\")"))
                                  % option).str());
 }
