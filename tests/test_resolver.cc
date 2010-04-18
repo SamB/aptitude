@@ -225,6 +225,30 @@ private:
     return parse_universe(in);
   }
 
+  /** \brief Handle finding all the solutions a resolver can produce.
+   *
+   *  \throws NoMoreTime if the resolver runs out of time trying to
+   *                     find a solution.  Already-discovered
+   *                     solutions are available in "output".
+   */
+  static void find_all_solutions(dummy_resolver &r,
+                                 int num_steps,
+                                 std::set<package> *visited_packages,
+                                 std::vector<solution> &output)
+  {
+    while(1)
+      {
+        try
+          {
+            output.push_back(r.find_next_solution(num_steps, visited_packages));
+          }
+        catch(NoMoreSolutions)
+          {
+            break;
+          }
+      }
+  }
+
   // Check that the first set is a (perhaps) more general version of
   // the second, but that there are no missing items.
   static void assertSameEffect(const choice_set &s1, const choice_set &s2)
