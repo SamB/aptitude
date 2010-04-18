@@ -94,7 +94,7 @@ namespace
 
     std::string format_header(const std::string &group)
     {
-      return (boost::format(_("Package %s")) % group).str();
+      return (boost::format(_("Package %s:")) % group).str();
     }
   };
 
