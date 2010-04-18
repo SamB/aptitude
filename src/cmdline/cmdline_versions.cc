@@ -280,6 +280,12 @@ namespace
         package_names_should_auto_show = false;
         break;
 
+      case group_by_archive:
+        group_by_policy = new version_group_by_archive;
+        package_names_should_auto_show =
+          !arguments_select_exactly_one_package_by_exact_name;
+        break;
+
       case group_by_none:
         group_by_policy = NULL;
         package_names_should_auto_show =
@@ -299,12 +305,6 @@ namespace
 
       case group_by_source_version:
         group_by_policy = new version_group_by_source_version;
-        package_names_should_auto_show =
-          !arguments_select_exactly_one_package_by_exact_name;
-        break;
-
-      case group_by_archive:
-        group_by_policy = new version_group_by_archive;
         package_names_should_auto_show =
           !arguments_select_exactly_one_package_by_exact_name;
         break;
