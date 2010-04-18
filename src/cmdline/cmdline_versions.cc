@@ -180,6 +180,10 @@ namespace
                          show_package_names_option show_package_names,
                          bool debug)
   {
+    // Set to -1 if any exact-name matches fail.  Also set to -1 if
+    // there are no results at all.
+    int return_value = 0;
+
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
       results_list;
 
@@ -202,9 +206,15 @@ namespace
         // result.
         if(output_size == output.size() &&
            (*pIt)->get_type() == m::pattern::exact_name)
-          _error->Error(_("No such package \"%s\"."),
-                        (*pIt)->get_exact_name_name().c_str());
+          {
+            return_value = 1;
+            _error->Error(_("No such package \"%s\"."),
+                          (*pIt)->get_exact_name_name().c_str());
+          }
       }
+
+    if(output.empty())
+      return_value = 2;
 
     // Decide how and whether to group the results.  Not initialized
     // so the compiler will check that we always assign a value.
@@ -356,7 +366,7 @@ namespace
     else
       show_version_match_list(output, columns, format_width, disable_columns, do_show_package_names);
 
-    return 0;
+    return return_value;
   }
 }
 
