@@ -151,8 +151,16 @@ public:
 
     // Note that this will compute a somewhat inefficient validity
     // condition when applied across several expressions.
-    cwidget::util::ref_ptr<expression<bool> > new_valid =
-      and_e::create(p1_valid, p2_valid);
+    cwidget::util::ref_ptr<expression<bool> > new_valid;
+    if(p1_valid.valid())
+      {
+        if(p2_valid.valid())
+          new_valid = and_e::create(p1_valid, p2_valid);
+        else
+          new_valid = p1_valid;
+      }
+    else
+      new_valid = p2_valid;
 
     return generic_promotion(new_choices, new_cost, new_valid);
   }
