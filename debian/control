@@ -1,0 +1,134 @@
+Source: aptitude
+Section: admin
+Maintainer: Daniel Burrows <dburrows@debian.org>
+Build-Depends: libapt-pkg-dev (>= 0.7.0), debhelper (>= 5.0.0), libsigc++-2.0-dev, libcppunit-dev, libcwidget-dev (>= 0.5.6.1-2), libncursesw5-dev, gettext, g++ (>= 4:3.2.2-0), docbook-xsl, docbook-xml, xsltproc, elinks, po4a, libept-dev (>= 0.5), libgtkmm-2.4-dev, libvte-dev, libglademm-2.4-dev, liblog4cxx10-dev, librsvg2-bin, libboost-dev, libboost-serialization-dev, libboost-python-dev, libboost-iostreams-dev, libboost-test-dev
+Vcs-Hg: http://hg.debian.org/hg/aptitude/debian
+Vcs-Browser: http://hg.debian.org/hg/aptitude/debian
+Standards-Version: 3.8.3
+
+Package: aptitude
+Architecture: any
+Priority: important
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: aptitude-doc-en | aptitude-doc, sensible-utils, apt-xapian-index, libparse-debianchangelog-perl
+Suggests: tasksel, debtags
+Conflicts: ia32-apt-get
+Description: terminal-based package manager (terminal interface only)
+ aptitude is a package manager with a number of useful features,
+ including: a mutt-like syntax for matching packages in a flexible
+ manner, dselect-like persistence of user actions, the ability to
+ retrieve and display the Debian changelog of most packages, and a
+ command-line mode similar to that of apt-get.
+ .
+ aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
+ and housebroken.
+ .
+ This package contains a version of aptitude compiled with only the
+ classic terminal-based interface (using curses).  For an experimental
+ graphical interface, see the package aptitude-gtk.
+
+Package: aptitude-gtk
+Architecture: any
+Priority: optional
+Depends: aptitude (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Recommends: aptitude-doc-en | aptitude-doc, sensible-utils, apt-xapian-index
+Suggests: tasksel, debtags
+Description: terminal-based package manager (GUI and terminal interfaces)
+ aptitude is a package manager with a number of useful features,
+ including: a mutt-like syntax for matching packages in a flexible
+ manner, dselect-like persistence of user actions, the ability to
+ retrieve and display the Debian changelog of most packages, and a
+ command-line mode similar to that of apt-get.
+ .
+ aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
+ and housebroken.
+ .
+ This package contains an EXPERIMENTAL version of aptitude that
+ includes a GTK+-based graphical interface.  It is INCOMPLETE and may
+ not work properly.  If you do not need a GUI or prefer a more stable
+ interface, you can instead use the version of aptitude found in the
+ package "aptitude".
+
+Package: aptitude-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: aptitude (= ${binary:Version}) | aptitude-gtk (= ${binary:Version}), ${misc:Depends}
+Recommends: libcwidget3-dbg
+Description: Debug symbols for the aptitude package manager
+ aptitude is a terminal-based package manager with a number of useful
+ features, including: a mutt-like syntax for matching packages in a
+ flexible manner, dselect-like persistence of user actions, the
+ ability to retrieve and display the Debian changelog of most
+ packages, and a command-line mode similar to that of apt-get.
+ .
+ This package contains the debugging symbols for aptitude.  You only
+ need these if you want to generate debugging backtraces of aptitude;
+ if you do, you probably also want the debug package for the cwidget
+ library.
+
+Package: aptitude-doc-cs
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: Czech manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the Czech version of the aptitude user's manual in HTML format.
+
+Package: aptitude-doc-en
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: English manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the English version of the aptitude user's manual in HTML format.
+
+Package: aptitude-doc-es
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: Spanish manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the English version of the aptitude user's manual in HTML format.
+
+Package: aptitude-doc-fi
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: Finnish manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the Finnish version of the aptitude user's manual in HTML format.
+
+Package: aptitude-doc-fr
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: French manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the French version of the aptitude user's manual in HTML format.
+
+Package: aptitude-doc-ja
+Section: doc
+Priority: optional
+Architecture: all
+Provides: aptitude-doc
+Depends: ${misc:Depends}
+Suggests: aptitude
+Description: Japanese manual for aptitude, a terminal-based package manager
+ aptitude is a terminal-based package manager.  This package contains
+ the Japanese version of the aptitude user's manual in HTML format.

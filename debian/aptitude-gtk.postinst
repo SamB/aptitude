@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# aptitude needs the apt xapian index stuff now, so make sure it at
+# least exists.
+
+set -e
+
+if [ "$1" = "configure" ]
+then
+  update-alternatives --install /usr/bin/aptitude aptitude /usr/bin/aptitude-gtk 60
+fi
+
+#DEBHELPER#

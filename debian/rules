@@ -1,0 +1,145 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+  export CXXFLAGS=-g -O0 -fno-inline
+else
+  export CXXFLAGS=-g -O2
+endif
+
+build-gtk: build-stamp-gtk
+build-stamp-gtk:
+	-rm build-stamp-gtk
+	-rm build-stamp-curses
+
+	dh_testdir
+
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs
+	$(MAKE) -C src
+	# Run the unit tests, but protect against Boost.Test's flakiness.
+	$(MAKE) -C tests check || (cd tests && ./cppunit_test);
+	touch build-stamp-gtk
+
+build-curses: build-stamp-curses
+build-stamp-curses:
+	-rm build-stamp-gtk
+	-rm build-stamp-curses
+
+	dh_testdir
+
+	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-gtk
+	$(MAKE) -C src
+	# Run the unit tests, but protect against Boost.Test's flakiness.
+	$(MAKE) -C tests check || (cd tests && ./cppunit_test);
+
+	touch build-stamp-curses
+
+build:
+	# As per policy 4.9, do nothing.
+
+clean:
+	dh_testdir
+	dh_testroot
+	if [ -f build-stamp-gtk ]; then rm build-stamp-gtk; fi
+	if [ -f build-stamp-curses ]; then rm build-stamp-curses; fi
+	if [ -f build-indep-stamp ]; then rm build-indep-stamp; fi
+	rm -fr debian/html-docs
+
+	[ ! -f Makefile ] || $(MAKE) distclean
+	[ ! -f doc/Makefile ] || $(MAKE) -C doc distclean
+	[ ! -f src/gtk/Makefile ] || $(MAKE) -C src/gtk distclean
+
+	dh_clean
+
+install-gtk: build-gtk
+	dh_testdir
+	dh_testroot
+	-rm -fr debian/aptitude-gtk
+	dh_installdirs -paptitude-gtk
+
+	$(MAKE) install DESTDIR=`pwd`/debian/tmp gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
+	# Extract the bits of the package that we need for both builds. (ew)
+	dh_install -paptitude-gtk
+	cp debian/tmp/usr/bin/aptitude debian/aptitude-gtk/usr/bin/aptitude-gtk
+
+	ln -s ../../aptitude/README debian/aptitude-gtk/usr/share/doc/aptitude-gtk/README
+
+	ln -s ../../aptitude/NEWS debian/aptitude-gtk/usr/share/doc/aptitude-gtk/NEWS
+	ln -s ../common-licenses/GPL debian/aptitude-gtk/usr/share/doc/aptitude-gtk/COPYING
+
+
+install-curses: build-curses
+	dh_testdir
+	dh_testroot
+	-rm -fr debian/aptitude
+	dh_installdirs -paptitude
+	dh_installcron -paptitude
+
+	$(MAKE) install DESTDIR=`pwd`/debian/aptitude gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
+	mv debian/aptitude/usr/bin/aptitude debian/aptitude/usr/bin/aptitude-curses
+
+	cp debian/aptitude.reportbug debian/aptitude/usr/share/bug/aptitude
+	chmod +x debian/aptitude/usr/share/bug/aptitude
+
+	ln -s ../../aptitude/README debian/aptitude/usr/share/doc/aptitude/README
+
+	ln -s ../../aptitude/NEWS debian/aptitude/usr/share/doc/aptitude/NEWS
+	-rm debian/aptitude/usr/share/aptitude/COPYING
+	ln -s ../common-licenses/GPL debian/aptitude/usr/share/aptitude/COPYING
+
+	cp FAQ debian/aptitude/usr/share/aptitude/FAQ
+
+	mv debian/aptitude/usr/share/doc/aptitude/html debian/html-docs
+
+binary-arch: install-gtk install-curses
+	dh_testdir -a
+	dh_testroot -a
+	dh_installdocs -a
+	dh_installexamples -a src/generic/apt/pkg_hier.h src/generic/apt/pkg_hier.cc src/generic/apt/pkg_hier_dump.cc
+	dh_installmenu -a
+	dh_installman -a
+	dh_installlogrotate -a
+	dh_installchangelogs -a
+	dh_link -a
+	dh_strip -a --dbg-package=aptitude-dbg
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+# Unfortunately, it's not any easier to build arch-dependent files
+# than arch-independent ones :-(.  The problem is that we need to
+# build manpages -- if we could instead just build the manpages and
+# not the full documentation, that would help.
+binary-indep: binary-arch
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdirs -A -i usr/share/doc/aptitude/html
+
+	mv debian/html-docs/cs debian/aptitude-doc-cs/usr/share/doc/aptitude/html/
+	mv debian/html-docs/en debian/aptitude-doc-en/usr/share/doc/aptitude/html/
+	mv debian/html-docs/es debian/aptitude-doc-es/usr/share/doc/aptitude/html/
+	mv debian/html-docs/fi debian/aptitude-doc-fi/usr/share/doc/aptitude/html/
+	mv debian/html-docs/fr debian/aptitude-doc-fr/usr/share/doc/aptitude/html/
+	mv debian/html-docs/ja debian/aptitude-doc-ja/usr/share/doc/aptitude/html/
+
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installchangelogs ChangeLog -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install
