@@ -228,6 +228,12 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testIncrementalExpressionGetVarValue);
   CPPUNIT_TEST(testIncrementalExpressionSetVarValue);
   CPPUNIT_TEST(testIncrementalExpressionVarSignalChange);
+  // TODO: test comparisons?
+  // TODO: test conversions to string?
+
+  CPPUNIT_TEST(testIncrementalExpressionWeakRefDeref);
+  CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidLive);
+  CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidDead);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -268,5 +274,32 @@ public:
     v->set_value(10);
 
     CPPUNIT_ASSERT_EQUAL(expected_calls, c->get_calls());
+  }
+
+
+  void testIncrementalExpressionWeakRefDeref()
+  {
+    cw::util::ref_ptr<expression<int> > e = var_e<int>::create(5);
+    expression_weak_ref<expression<int> > e_ref = e;
+
+    CPPUNIT_ASSERT_EQUAL(e.unsafe_get_ref(), e_ref.get_value());
+  }
+
+  void testIncrementalExpressionWeakRefGetValidLive()
+  {
+    cw::util::ref_ptr<expression<int> > e = var_e<int>::create(5);
+    expression_weak_ref<expression<int> > e_ref = e;
+
+    CPPUNIT_ASSERT(e_ref.get_valid());
+  }
+
+  void testIncrementalExpressionWeakRefGetValidDead()
+  {
+    cw::util::ref_ptr<expression<int> > e = var_e<int>::create(5);
+    expression_weak_ref<expression<int> > e_ref = e;
+
+    e = cw::util::ref_ptr<expression<int> >();
+
+    CPPUNIT_ASSERT(!e_ref.get_valid());
   }
 };
