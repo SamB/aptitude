@@ -236,6 +236,11 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidLive);
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidDead);
 
+  CPPUNIT_TEST(testNotFalse);
+  CPPUNIT_TEST(testNotTrue);
+  CPPUNIT_TEST(testNotRaiseInput);
+  CPPUNIT_TEST(testNotLowerInput);
+
   CPPUNIT_TEST(testAndEmpty);
 
   CPPUNIT_TEST(testAndSingletonRaise);
@@ -336,6 +341,59 @@ public:
     e = cw::util::ref_ptr<expression<int> >();
 
     CPPUNIT_ASSERT(!e_ref.get_valid());
+  }
+
+
+  void testNotFalse()
+  {
+    cw::util::ref_ptr<expression<bool> > v = var_e<bool>::create(true);
+    cw::util::ref_ptr<expression<bool> > not_v = not_e::create(v);
+
+    CPPUNIT_ASSERT(!not_v->get_value());
+  }
+
+  void testNotTrue()
+  {
+    cw::util::ref_ptr<expression<bool> > v = var_e<bool>::create(false);
+    cw::util::ref_ptr<expression<bool> > not_v = not_e::create(v);
+
+    CPPUNIT_ASSERT(not_v->get_value());
+  }
+
+  void testNotRaiseInput()
+  {
+    cw::util::ref_ptr<var_e<bool> > v = var_e<bool>::create(false);
+    cw::util::ref_ptr<expression<bool> > not_v = not_e::create(v);
+
+    cw::util::ref_ptr<fake_container<bool> > not_v_wrap =
+      fake_container<bool>::create(not_v);
+
+    CPPUNIT_ASSERT(not_v->get_value());
+    v->set_value(true);
+    CPPUNIT_ASSERT(!not_v->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(not_v, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, not_v_wrap->get_calls());
+  }
+
+  void testNotLowerInput()
+  {
+    cw::util::ref_ptr<var_e<bool> > v = var_e<bool>::create(true);
+    cw::util::ref_ptr<expression<bool> > not_v = not_e::create(v);
+
+    cw::util::ref_ptr<fake_container<bool> > not_v_wrap =
+      fake_container<bool>::create(not_v);
+
+    CPPUNIT_ASSERT(!not_v->get_value());
+    v->set_value(false);
+    CPPUNIT_ASSERT(not_v->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(not_v, false, true));
+
+    CPPUNIT_ASSERT_EQUAL(expected, not_v_wrap->get_calls());
   }
 
 
