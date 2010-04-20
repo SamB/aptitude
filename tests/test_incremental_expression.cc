@@ -433,3 +433,5 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
 };
+
+CPPUNIT_TEST_SUITE_REGISTRATION(TestIncrementalExpression);
