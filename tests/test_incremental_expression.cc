@@ -240,6 +240,8 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testAndSingletonRaiseByRemoving);
   CPPUNIT_TEST(testAndSingletonLowerByAppending);
 
+  CPPUNIT_TEST(testAndDoubletonRaiseFirst);
+
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -396,6 +398,37 @@ public:
 
     std::vector<child_modified_call<bool> > expected;
     expected.push_back(child_modified_call<bool>(v1, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+private:
+  cw::util::ref_ptr<and_e> getAndDoubleton(const cw::util::ref_ptr<var_e<bool> > &v1,
+                                           const cw::util::ref_ptr<var_e<bool> > &v2)
+  {
+    cw::util::ref_ptr<expression<bool> > subexprs_begin[] = { v1, v2 };
+    cw::util::ref_ptr<expression<bool> > *subexprs_end =
+      subexprs_begin + sizeof(subexprs_begin) / sizeof(subexprs_begin[0]);
+
+    return and_e::create(subexprs_begin, subexprs_end);
+  }
+
+public:
+  void testAndDoubletonRaiseFirst()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2 = var_e<bool>::create(false);
+    cw::util::ref_ptr<and_e> e = getAndDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(!e->get_value());
+    v2->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, false, true));
 
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
