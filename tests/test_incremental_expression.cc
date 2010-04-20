@@ -78,7 +78,8 @@ namespace
   template<typename T>
   std::ostream &operator<<(std::ostream &out, const child_modified_call<T> &t)
   {
-    return out << "child_modified(old_value = " << t.get_old_value()
+    return out << "child_modified(child = " << t.get_child()
+               << ", old_value = " << t.get_old_value()
                << ", new_value = " << t.get_new_value() << ")";
   }
 
