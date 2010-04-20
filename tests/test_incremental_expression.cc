@@ -236,6 +236,8 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidLive);
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidDead);
 
+  CPPUNIT_TEST(testAndEmpty);
+
   CPPUNIT_TEST(testAndSingletonRaise);
   CPPUNIT_TEST(testAndSingletonLower);
   CPPUNIT_TEST(testAndSingletonRaiseByRemoving);
@@ -250,6 +252,23 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testAndDoubletonLowerSecond);
   CPPUNIT_TEST(testAndDoubletonLowerFirstNoEffect);
   CPPUNIT_TEST(testAndDoubletonLowerSecondNoEffect);
+
+  CPPUNIT_TEST(testOrEmpty);
+
+  CPPUNIT_TEST(testOrSingletonRaise);
+  CPPUNIT_TEST(testOrSingletonLower);
+  CPPUNIT_TEST(testOrSingletonLowerByRemoving);
+  CPPUNIT_TEST(testOrSingletonRaiseByAppending);
+
+  CPPUNIT_TEST(testOrDoubletonRaiseFirst);
+  CPPUNIT_TEST(testOrDoubletonRaiseSecond);
+  CPPUNIT_TEST(testOrDoubletonRaiseFirstNoEffect);
+  CPPUNIT_TEST(testOrDoubletonRaiseSecondNoEffect);
+
+  CPPUNIT_TEST(testOrDoubletonLowerFirst);
+  CPPUNIT_TEST(testOrDoubletonLowerSecond);
+  CPPUNIT_TEST(testOrDoubletonLowerFirstNoEffect);
+  CPPUNIT_TEST(testOrDoubletonLowerSecondNoEffect);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -567,6 +586,263 @@ public:
     CPPUNIT_ASSERT(!e->get_value());
     v2->set_value(false);
     CPPUNIT_ASSERT(!e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+
+
+
+  void testOrEmpty()
+  {
+    cw::util::ref_ptr<expression<bool> > empty[] = { };
+    cw::util::ref_ptr<expression<bool> > e = or_e::create(empty, empty);
+
+    CPPUNIT_ASSERT(!e->get_value());
+  }
+
+private:
+  cw::util::ref_ptr<or_e> getOrSingleton(cw::util::ref_ptr<var_e<bool> > v1)
+  {
+    cw::util::ref_ptr<expression<bool> > subexprs_begin[] = { v1 };
+    cw::util::ref_ptr<expression<bool> > *subexprs_end =
+      subexprs_begin + sizeof(subexprs_begin) / sizeof(subexprs_begin[0]);
+
+    return or_e::create(subexprs_begin, subexprs_end);
+  }
+
+public:
+  void testOrSingletonRaise()
+  {
+    cw::util::ref_ptr<var_e<bool> > v1 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrSingleton(v1);
+
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(!e->get_value());
+    v1->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, false, true));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrSingletonLower()
+  {
+    cw::util::ref_ptr<var_e<bool> > v1 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrSingleton(v1);
+
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v1->set_value(false);
+    CPPUNIT_ASSERT(!e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrSingletonLowerByRemoving()
+  {
+    cw::util::ref_ptr<var_e<bool> > v1 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrSingleton(v1);
+
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    e->remove_child(v1);
+    CPPUNIT_ASSERT(!e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrSingletonRaiseByAppending()
+  {
+    cw::util::ref_ptr<var_e<bool> > v1 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrSingleton(v1);
+
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(!e->get_value());
+    e->add_child(var_e<bool>::create(true));
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, false, true));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+private:
+  cw::util::ref_ptr<or_e> getOrDoubleton(const cw::util::ref_ptr<var_e<bool> > &v1,
+                                         const cw::util::ref_ptr<var_e<bool> > &v2)
+  {
+    cw::util::ref_ptr<expression<bool> > subexprs_begin[] = { v1, v2 };
+    cw::util::ref_ptr<expression<bool> > *subexprs_end =
+      subexprs_begin + sizeof(subexprs_begin) / sizeof(subexprs_begin[0]);
+
+    return or_e::create(subexprs_begin, subexprs_end);
+  }
+
+public:
+
+  void testOrDoubletonRaiseFirst()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(false),
+      v2 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(!e->get_value());
+    v1->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, false, true));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrDoubletonRaiseSecond()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(false),
+      v2 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(!e->get_value());
+    v2->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, false, true));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrDoubletonRaiseFirstNoEffect()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(false),
+      v2 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v1->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrDoubletonRaiseSecondNoEffect()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v2->set_value(true);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+
+  void testOrDoubletonLowerFirst()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2 = var_e<bool>::create(false);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v1->set_value(false);
+    CPPUNIT_ASSERT(!e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrDoubletonLowerSecond()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(false),
+      v2 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v2->set_value(false);
+    CPPUNIT_ASSERT(!e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+    expected.push_back(child_modified_call<bool>(e, true, false));
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+
+  void testOrDoubletonLowerFirstNoEffect()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v1->set_value(false);
+    CPPUNIT_ASSERT(e->get_value());
+
+    std::vector<child_modified_call<bool> > expected;
+
+    CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
+  }
+
+  void testOrDoubletonLowerSecondNoEffect()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2 = var_e<bool>::create(true);
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+    cw::util::ref_ptr<fake_container<bool> > e_wrap =
+      fake_container<bool>::create(e);
+
+    CPPUNIT_ASSERT(e->get_value());
+    v2->set_value(false);
+    CPPUNIT_ASSERT(e->get_value());
 
     std::vector<child_modified_call<bool> > expected;
 
