@@ -235,6 +235,11 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidLive);
   CPPUNIT_TEST(testIncrementalExpressionWeakRefGetValidDead);
 
+  CPPUNIT_TEST(testAndSingletonRaise);
+  CPPUNIT_TEST(testAndSingletonLower);
+  CPPUNIT_TEST(testAndSingletonRaiseByRemoving);
+  CPPUNIT_TEST(testAndSingletonLowerByAppending);
+
   CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -322,6 +327,7 @@ private:
     return and_e::create(subexprs_begin, subexprs_end);
   }
 
+public:
   void testAndSingletonRaise()
   {
     cw::util::ref_ptr<var_e<bool> > v1 = var_e<bool>::create(false);
