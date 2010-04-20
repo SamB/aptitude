@@ -4827,6 +4827,16 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </para>
 	    </listitem>
 
+            <listitem id='hintDiscard'>
+              <para>
+                <quote><literal>discard</literal></quote>: Discard
+                every solution containing the version.  Differs from
+                <quote><literal>reject</literal></quote> in that it is
+                not visible to the user and cannot be modified
+                interactively.
+              </para>
+            </listitem>
+
 	    <listitem>
 	      <para>
 		<quote><literal>increase-safety-cost-to
@@ -4848,6 +4858,17 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		Several special cost levels can be chosen by name:
 
 		<orderedlist>
+                  <listitem>
+                    <para>
+                      <literal>conflict</literal>,
+                      <literal>discard</literal>: instead of changing
+                      the safety cost, discard solutions containing
+                      the version as if the <quote><link
+                      linkend='hintDiscard'><literal>discard</literal></link></quote>
+                      hint had been applied.
+                    </para>
+                  </listitem>
+
 		  <listitem>
 		    <para>
 		      <literal>maximum</literal>: the highest safety
