@@ -344,7 +344,7 @@ public:
     CPPUNIT_ASSERT(e->get_value());
 
     std::vector<child_modified_call<bool> > expected;
-    expected.push_back(child_modified_call<bool>(v1, false, true));
+    expected.push_back(child_modified_call<bool>(e, false, true));
 
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
@@ -362,7 +362,7 @@ public:
     CPPUNIT_ASSERT(!e->get_value());
 
     std::vector<child_modified_call<bool> > expected;
-    expected.push_back(child_modified_call<bool>(v1, true, false));
+    expected.push_back(child_modified_call<bool>(e, true, false));
 
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
@@ -380,7 +380,7 @@ public:
     CPPUNIT_ASSERT(e->get_value());
 
     std::vector<child_modified_call<bool> > expected;
-    expected.push_back(child_modified_call<bool>(v1, false, true));
+    expected.push_back(child_modified_call<bool>(e, false, true));
 
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
@@ -398,7 +398,7 @@ public:
     CPPUNIT_ASSERT(!e->get_value());
 
     std::vector<child_modified_call<bool> > expected;
-    expected.push_back(child_modified_call<bool>(v1, true, false));
+    expected.push_back(child_modified_call<bool>(e, true, false));
 
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
