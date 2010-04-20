@@ -53,38 +53,30 @@ void counting_bool_e::child_modified(const cwidget::util::ref_ptr<expression<boo
 
 void counting_bool_e::add_child(const cwidget::util::ref_ptr<expression<bool> > &child)
 {
+  bool old_value = get_value();
+
+  expression_container_base<bool>::add_child(child);
   if(!child.valid() || child->get_value())
-    {
-      bool old_value = get_value();
+    ++num_true;
 
-      expression_container_base<bool>::add_child(child);
-      ++num_true;
+  bool new_value = get_value();
 
-      bool new_value = get_value();
-
-      if(old_value != new_value)
-	signal_value_changed(old_value, new_value);
-    }
-  else
-    expression_container_base<bool>::add_child(child);
+  if(old_value != new_value)
+    signal_value_changed(old_value, new_value);
 }
 
 void counting_bool_e::remove_child(const cwidget::util::ref_ptr<expression<bool> > &child)
 {
+  bool old_value = get_value();
+
+  expression_container_base<bool>::remove_child(child);
   if(!child.valid() || child->get_value())
-    {
-      bool old_value = get_value();
+    --num_true;
 
-      expression_container_base<bool>::remove_child(child);
-      --num_true;
+  bool new_value = get_value();
 
-      bool new_value = get_value();
-
-      if(old_value != new_value)
-	signal_value_changed(old_value, new_value);
-    }
-  else
-    expression_container_base<bool>::remove_child(child);
+  if(old_value != new_value)
+    signal_value_changed(old_value, new_value);
 }
 
 bool and_e::get_value()
