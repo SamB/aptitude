@@ -240,6 +240,7 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testNotTrue);
   CPPUNIT_TEST(testNotRaiseInput);
   CPPUNIT_TEST(testNotLowerInput);
+  CPPUNIT_TEST(testNotNull);
 
   CPPUNIT_TEST(testAndEmpty);
 
@@ -247,6 +248,11 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testAndSingletonLower);
   CPPUNIT_TEST(testAndSingletonRaiseByRemoving);
   CPPUNIT_TEST(testAndSingletonLowerByAppending);
+  CPPUNIT_TEST(testAndSingletonNull);
+
+  CPPUNIT_TEST(testAndDoubletonFirstNull);
+  CPPUNIT_TEST(testAndDoubletonSecondNull);
+  CPPUNIT_TEST(testAndDoubletonBothNull);
 
   CPPUNIT_TEST(testAndDoubletonRaiseFirst);
   CPPUNIT_TEST(testAndDoubletonRaiseSecond);
@@ -264,6 +270,11 @@ class TestIncrementalExpression : public CppUnit::TestFixture
   CPPUNIT_TEST(testOrSingletonLower);
   CPPUNIT_TEST(testOrSingletonLowerByRemoving);
   CPPUNIT_TEST(testOrSingletonRaiseByAppending);
+  CPPUNIT_TEST(testOrSingletonNull);
+
+  CPPUNIT_TEST(testOrDoubletonFirstNull);
+  CPPUNIT_TEST(testOrDoubletonSecondNull);
+  CPPUNIT_TEST(testOrDoubletonBothNull);
 
   CPPUNIT_TEST(testOrDoubletonRaiseFirst);
   CPPUNIT_TEST(testOrDoubletonRaiseSecond);
@@ -396,6 +407,13 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, not_v_wrap->get_calls());
   }
 
+  void testNotNull()
+  {
+    cw::util::ref_ptr<expression<bool> > not_null = not_e::create(cw::util::ref_ptr<expression<bool> >());
+
+    CPPUNIT_ASSERT(!not_null->get_value());
+  }
+
 
   void testAndEmpty()
   {
@@ -488,6 +506,13 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
 
+  void testAndSingletonNull()
+  {
+    cw::util::ref_ptr<and_e> e = getAndSingleton(cw::util::ref_ptr<var_e<bool> >());
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
 private:
   cw::util::ref_ptr<and_e> getAndDoubleton(const cw::util::ref_ptr<var_e<bool> > &v1,
                                            const cw::util::ref_ptr<var_e<bool> > &v2)
@@ -500,6 +525,39 @@ private:
   }
 
 public:
+  void testAndDoubletonFirstNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1,
+      v2 = var_e<bool>::create(true);
+
+    cw::util::ref_ptr<and_e> e = getAndDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
+  void testAndDoubletonSecondNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(true),
+      v2;
+
+    cw::util::ref_ptr<and_e> e = getAndDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
+  void testAndDoubletonBothNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1,
+      v2;
+
+    cw::util::ref_ptr<and_e> e = getAndDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
   void testAndDoubletonRaiseSecond()
   {
     cw::util::ref_ptr<var_e<bool> >
@@ -744,6 +802,13 @@ public:
     CPPUNIT_ASSERT_EQUAL(expected, e_wrap->get_calls());
   }
 
+  void testOrSingletonNull()
+  {
+    cw::util::ref_ptr<or_e> e = getOrSingleton(cw::util::ref_ptr<var_e<bool> >());
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
 private:
   cw::util::ref_ptr<or_e> getOrDoubleton(const cw::util::ref_ptr<var_e<bool> > &v1,
                                          const cw::util::ref_ptr<var_e<bool> > &v2)
@@ -756,6 +821,38 @@ private:
   }
 
 public:
+  void testOrDoubletonFirstNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1,
+      v2 = var_e<bool>::create(false);
+
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
+  void testOrDoubletonSecondNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1 = var_e<bool>::create(false),
+      v2;
+
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
+
+  void testOrDoubletonBothNull()
+  {
+    cw::util::ref_ptr<var_e<bool> >
+      v1,
+      v2;
+
+    cw::util::ref_ptr<or_e> e = getOrDoubleton(v1, v2);
+
+    CPPUNIT_ASSERT(e->get_value());
+  }
 
   void testOrDoubletonRaiseFirst()
   {
