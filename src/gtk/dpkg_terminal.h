@@ -2,7 +2,7 @@
 
 // dpkg_terminal.h
 //
-//  Copyright 2008-2009 Daniel Burrows
+//  Copyright 2008-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include <generic/util/safe_slot.h>
 #include <generic/util/temp.h>
 
-#include <log4cxx/logger.h>
+#include <loggers.h>
 
 struct sockaddr_un;
 
