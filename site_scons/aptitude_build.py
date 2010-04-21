@@ -110,15 +110,16 @@ def CheckForApt(context):
 def CheckForNCursesW(context):
     """Look for NCursesW in the system header directory."""
 
-    context.env.Append(LDFLAGS = "-lncursesw")
+    context.env.Append(LIBS = [ 'ncursesw' ])
 
-    return context.TryLink("""
-#include <ncursesw.h>
+    return context.TryLink('''
+#include <ncurses.h>
 
 int main(int argc, char **argv)
 {
-  initscr();
-}""", '$CXXFILESUFFIX')
+  wget_wch(0, 0);
+  return 0;
+}''', context.env['CXXFILESUFFIX'])
 
 @RegisterCheck
 def CheckForPo4A(context):
