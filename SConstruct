@@ -16,6 +16,7 @@ RequireCheck(programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include')
              "Can't find libncursesw -- please install libncursesw5-dev.")
 RequireCheck(programs_conf.CheckForApt(),
              "Can't find the APT libraries -- please install libapt-pkg-dev.")
+programs_conf.CheckForPo4A()
 
 programs_conf.Finish()
 

@@ -1,6 +1,9 @@
 from SCons import SConf
 from SCons.Script import *
 
+import os
+import os.path
+
 custom_tests = {}
 
 def Configure(env):
@@ -14,6 +17,12 @@ def RequireCheck(check, failure_message):
     if not check:
         print failure_message
         Exit(1)
+
+def RegisterCheck(f):
+    """Decorates a custom configure check by registering it in the
+    global dictionary of checks under its name."""
+
+    custom_tests[f.__name__] = f
 
 def ConfigureCheck(message):
     """Decorates a custom configure function by modifying its context
@@ -110,3 +119,22 @@ int main(int argc, char **argv)
 {
   initscr();
 }""", '$CXXFILESUFFIX')
+
+@RegisterCheck
+def CheckForPo4A(context):
+    """Look for po4a in $PO4APATH and set $PO4A accordingly.
+PO4APATH defaults to $PATH."""
+    context.Message("Checking for po4a...")
+
+    po4apath = context.env.get('PO4APATH', '$PATH')
+    for bindir in po4apath:
+        po4a = os.path.abspath(os.path.join(po4apath, po4a))
+        if os.access(po4a, os.X_OK):
+            context.Result("%s" % po4a)
+            context.env['PO4A'] = po4a
+            context.env['HAVE_PO4A'] = True
+            return True
+
+    context.Result("no")
+    context.env['HAVE_PO4A'] = False
+    return False
