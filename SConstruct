@@ -9,6 +9,7 @@ programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
 programs_conf = aptitude_build.Configure(programs_env)
 
 
+programs_conf.CheckCXX()
 programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
                                          TryInclude('/usr/include/ncursesw') ])
 programs_conf.CheckForApt()
