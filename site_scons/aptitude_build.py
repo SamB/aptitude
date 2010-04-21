@@ -127,6 +127,21 @@ int main(int argc, char **argv)
   return 0;
 }''', context.env['CXXFILESUFFIX'])
 
+@ConfigureCheck("Checking for libpthread")
+def CheckForPThread(context):
+    """Look for POSIX thread support."""
+
+    context.env.Append(LIBS = [ 'pthread' ])
+
+    return context.TryLink('''
+#include <pthread.h>
+
+int main(int argc, char **argv)
+{
+  pthread_mutex_init(0, 0);
+  return 0;
+}''', context.env['CXXFILESUFFIX'])
+
 @RegisterCheck
 def CheckForPo4A(context):
     """Look for po4a in $PO4APATH and set $PO4A accordingly.
