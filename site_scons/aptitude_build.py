@@ -101,10 +101,16 @@ def TryInclude(d):
 def CheckForApt(context):
     """Look for apt in the given directory."""
 
-    result = SConf.CheckLib(context,
-                            'apt-pkg',
-                            'apt-pkg/init.h',
-                            'pkgInitSystem(*_config, _system);')
+    context.env.Append(LIBS = [ 'apt-pkg' ])
+
+    return context.TryLink('''
+#include <apt-pkg/init.h>
+
+int main(int argc, char **argv)
+{
+  pkgInitSystem(*_config, _system);
+  return 0;
+}''', context.env['CXXFILESUFFIX'])
 
 @ConfigureCheck("Checking for libncursesw")
 def CheckForNCursesW(context):
