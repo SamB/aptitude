@@ -10,7 +10,6 @@ programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
 programs_conf = aptitude_build.Configure(programs_env)
 
 
-RequireCheck(programs_conf.CheckCXX(), 'No working C++ compiler found.')
 RequireCheck(programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
                                                       TryInclude('/usr/include/ncursesw') ]),
              "Can't find libncursesw -- please install libncursesw5-dev.")
