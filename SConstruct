@@ -1,6 +1,7 @@
 import aptitude_build
 import os
 
+from aptitude_build import RequireCheck
 from aptitude_build import TryInclude
 
 # A generic environment used to build all aptitude's programs.
