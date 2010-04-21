@@ -23,6 +23,12 @@
 
 #include <log4cxx/logger.h>
 
+// Rename the log4cxx namespace to remove explicit dependencies on it.
+//
+// At some point, we might want to replace log4cxx due to various
+// issues with it.  This will make it a little easier to do so.
+namespace logging = log4cxx;
+
 // Safe logging macros -- unlike the log4cxx macros, these expand to
 // statements needing a semicolon, so you can write them like function
 // calls with no surprises.  They also save a few keystrokes.
@@ -51,28 +57,28 @@ namespace aptitude
      *
      *  Name: aptitude.apt.globals
      */
-    static log4cxx::LoggerPtr getAptitudeAptGlobals();
+    static logging::LoggerPtr getAptitudeAptGlobals();
 
     /** \brief The logger for events having to do with aptitude's
      *  wrapper around the apt cache.
      *
      *  Name: aptitude.apt.cache
      */
-    static log4cxx::LoggerPtr getAptitudeAptCache();
+    static logging::LoggerPtr getAptitudeAptCache();
 
     /** \brief The logger for events having to do with aptitude's
      *  backend changelog download code.
      *
      *  Name: aptitude.changelog
      */
-    static log4cxx::LoggerPtr getAptitudeChangelog();
+    static logging::LoggerPtr getAptitudeChangelog();
 
     /** \brief The logger for events having to do with aptitude's
      *  backend changelog parser.
      *
      *  Name: aptitude.changelog.parse
      */
-    static log4cxx::LoggerPtr getAptitudeChangelogParse();
+    static logging::LoggerPtr getAptitudeChangelogParse();
 
     /** \brief The logger for events having to do with command-line
      *  actions.
@@ -81,211 +87,211 @@ namespace aptitude
      *
      *  Name: aptitude.cmdline
      */
-    static log4cxx::LoggerPtr getAptitudeCmdline();
+    static logging::LoggerPtr getAptitudeCmdline();
 
     /** \brief The logger for events having to do with the "search"
      *  command-line action.
      *
      *  Name: aptitude.cmdline.search
      */
-    static log4cxx::LoggerPtr getAptitudeCmdlineSearch();
+    static logging::LoggerPtr getAptitudeCmdlineSearch();
 
     /** \brief The logger for events having to do with aptitude's
      *  caching of downloaded data (other than package lists and
      *  .debs).
      */
-    static log4cxx::LoggerPtr getAptitudeDownloadCache();
+    static logging::LoggerPtr getAptitudeDownloadCache();
 
     /** \brief The logger for events having to do with aptitude's
      *  background download queue.
      */
-    static log4cxx::LoggerPtr getAptitudeDownloadQueue();
+    static logging::LoggerPtr getAptitudeDownloadQueue();
 
     /** \brief The logger for events having to do with how aptitude's
      *  background download queue checks the download cache.
      */
-    static log4cxx::LoggerPtr getAptitudeDownloadQueueCache();
+    static logging::LoggerPtr getAptitudeDownloadQueueCache();
 
     /** \brief The logger for events having to do with the dpkg
      *  status pipe.
      */
-    static log4cxx::LoggerPtr getAptitudeDpkgStatusPipe();
+    static logging::LoggerPtr getAptitudeDpkgStatusPipe();
 
     /** \brief The logger for events having to do with the dpkg
      *  terminal in the GTK+ frontend.
      */
-    static log4cxx::LoggerPtr getAptitudeDpkgTerminal();
+    static logging::LoggerPtr getAptitudeDpkgTerminal();
 
     /** \brief The logger for events having to do with the dpkg
      *  terminal and subprocess activity/inactivity in the GTK+
      *  frontend.
      */
-    static log4cxx::LoggerPtr getAptitudeDpkgTerminalInactivity();
+    static logging::LoggerPtr getAptitudeDpkgTerminalInactivity();
 
     /** \brief The logger for the GUI dashboard tab's upgrade
      *         resolver.
      *
      *  Name: aptitude.gtk.dashboard.upgrade.resolver
      */
-    static log4cxx::LoggerPtr getAptitudeGtkDashboardUpgradeResolver();
+    static logging::LoggerPtr getAptitudeGtkDashboardUpgradeResolver();
 
     /** \brief The logger for GUI changelog handling.
      *
      *  Name: aptitude.gtk.changelog
      */
-    static log4cxx::LoggerPtr getAptitudeGtkChangelog();
+    static logging::LoggerPtr getAptitudeGtkChangelog();
 
     /** \brief The logger for the GUI changelog cache thread.
      *
      *  Name: aptitude.gtk.changelog.cache
      */
-    static log4cxx::LoggerPtr getAptitudeGtkChangelogCache();
+    static logging::LoggerPtr getAptitudeGtkChangelogCache();
 
     /** \brief The logger for the GUI changelog parse thread.
      *
      *  Name: aptitude.gtk.changelog.parse
      */
-    static log4cxx::LoggerPtr getAptitudeGtkChangelogParse();
+    static logging::LoggerPtr getAptitudeGtkChangelogParse();
 
     /** \brief The logger for the GUI package view (PkgView).
      *
      *  Name: aptitude.gtk.pkgview
      */
-    static log4cxx::LoggerPtr getAptitudeGtkPkgView();
+    static logging::LoggerPtr getAptitudeGtkPkgView();
 
     /** \brief The logger for the GUI resolver tab.
      *
      *  Name: aptitude.gtk.resolver
      */
-    static log4cxx::LoggerPtr getAptitudeGtkResolver();
+    static logging::LoggerPtr getAptitudeGtkResolver();
 
     /** \brief The logger for events related to the screenshot cache
      *  in the GUI.
      *
      *  Name: aptitude.gtk.screenshot.cache
      */
-    static log4cxx::LoggerPtr getAptitudeGtkScreenshotCache();
+    static logging::LoggerPtr getAptitudeGtkScreenshotCache();
 
     /** \brief The logger for events related to the screenshot image
      *  object in the GUI.
      *
      *  Name: aptitude.gtk.screenshot.image
      */
-    static log4cxx::LoggerPtr getAptitudeGtkScreenshotImage();
+    static logging::LoggerPtr getAptitudeGtkScreenshotImage();
 
     /** \brief The logger for events related to GUI tabs.
      *
      *  Name: aptitude.gtk.tabs
      */
-    static log4cxx::LoggerPtr getAptitudeGtkTabs();
+    static logging::LoggerPtr getAptitudeGtkTabs();
 
     /** \brief The logger for events related to the top-level GTK+ UI.
      *
      *  Name: aptitude.gtk.toplevel
      */
-    static log4cxx::LoggerPtr getAptitudeGtkToplevel();
+    static logging::LoggerPtr getAptitudeGtkToplevel();
 
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver
      */
-    static log4cxx::LoggerPtr getAptitudeResolver();
+    static logging::LoggerPtr getAptitudeResolver();
 
     /** \brief The logger for the resolver cost settings.
      *
      *  Name: aptitude.resolver.costs
      */
-    static log4cxx::LoggerPtr getAptitudeResolverCosts();
+    static logging::LoggerPtr getAptitudeResolverCosts();
 
     /** \brief The logger for resolver hints.
      *
      *  Name: aptitude.resolver.hints
      */
-    static log4cxx::LoggerPtr getAptitudeResolverHints();
+    static logging::LoggerPtr getAptitudeResolverHints();
 
     /** \brief The logger for comparing resolver hints.
      *
      *  Name: aptitude.resolver.hints.compare
      */
-    static log4cxx::LoggerPtr getAptitudeResolverHintsCompare();
+    static logging::LoggerPtr getAptitudeResolverHintsCompare();
 
     /** \brief The logger for matching resolver hints against
      * packages.
      *
      *  Name: aptitude.resolver.hints.match
      */
-    static log4cxx::LoggerPtr getAptitudeResolverHintsMatch();
+    static logging::LoggerPtr getAptitudeResolverHintsMatch();
 
     /** \brief The logger for parsing resolver hints.
      *
      *  Name: aptitude.resolver.hints.parse
      */
-    static log4cxx::LoggerPtr getAptitudeResolverHintsParse();
+    static logging::LoggerPtr getAptitudeResolverHintsParse();
 
     /** \brief The logger for describing which packages are initially
      *  considered "manual".
      *
      *  Name: aptitude.resolver.initialManualFlags
      */
-    static log4cxx::LoggerPtr getAptitudeResolverInitialManualFlags();
+    static logging::LoggerPtr getAptitudeResolverInitialManualFlags();
 
     /** \brief The logger for the "upgrade/install only" logic in the
      *  dependency resolver.
      *
      *  Name: aptitude.resolver.safeResolver
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSafeResolver();
+    static logging::LoggerPtr getAptitudeResolverSafeResolver();
 
     /** \brief The logger for the setup routine for the safe resolver
      * logic.
      *
      *  Name: aptitude.resolver.safeResolver.setup
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSafeResolverSetup();
+    static logging::LoggerPtr getAptitudeResolverSafeResolverSetup();
 
     /** \brief The logger for setting up scores for the dependency
      *  resolver.
      *
      *  Name: aptitude.resolver.scores
      */
-    static log4cxx::LoggerPtr getAptitudeResolverScores();
+    static logging::LoggerPtr getAptitudeResolverScores();
 
     /** \brief The logger for the resolver's search logic.
      *
      *  Name: aptitude.resolver.search
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSearch();
+    static logging::LoggerPtr getAptitudeResolverSearch();
 
     /** \brief The logger for the resolver's search-graph maintenance.
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSearchGraph();
+    static logging::LoggerPtr getAptitudeResolverSearchGraph();
 
     /** \brief The logger for the cost component of the resolver's
      *  search logic.
      *
      *  Name: aptitude.resolver.search.costs
      */
-    static log4cxx::LoggerPtr getAptitudeResolverSearchCosts();
+    static logging::LoggerPtr getAptitudeResolverSearchCosts();
 
     /** \brief The logger for events related to setting up and running
      *  the background resolver thread.
      */
-    static log4cxx::LoggerPtr getAptitudeResolverThread();
+    static logging::LoggerPtr getAptitudeResolverThread();
 
     /** \brief The logger for messages related to temporary files. */
-    static log4cxx::LoggerPtr getAptitudeTemp();
+    static logging::LoggerPtr getAptitudeTemp();
 
     /** \brief The logger for the "why" command.
      *
      *  Name: aptitude.why
      */
-    static log4cxx::LoggerPtr getAptitudeWhy();
+    static logging::LoggerPtr getAptitudeWhy();
 
     /** \brief The logger for the GTK+ interface to the "why" command.
      *
      *  Name: aptitude.why
      */
-    static log4cxx::LoggerPtr getAptitudeWhyGtk();
+    static logging::LoggerPtr getAptitudeWhyGtk();
   };
 }
 

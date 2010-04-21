@@ -560,8 +560,8 @@ public:
   };
 
 private:
-  log4cxx::LoggerPtr logger;
-  log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
+  logging::LoggerPtr logger;
+  logging::AppenderPtr appender; // Used for the "default" appending behavior.
 
   search_graph graph;
 
@@ -1873,10 +1873,10 @@ private:
   class do_drop_deps_solved_by
   {
     step &s;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
-    do_drop_deps_solved_by(step &_s, const log4cxx::LoggerPtr &_logger)
+    do_drop_deps_solved_by(step &_s, const logging::LoggerPtr &_logger)
       : s(_s), logger(_logger)
     {
     }
@@ -1963,14 +1963,14 @@ private:
     const choice_set &reasons;
     search_graph &graph;
     generic_problem_resolver &resolver;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     do_strike_choice(step &_s,
 		     const choice_set &_reasons,
 		     search_graph &_graph,
 		     generic_problem_resolver &_resolver,
-		     const log4cxx::LoggerPtr &_logger)
+		     const logging::LoggerPtr &_logger)
       : s(_s),
 	reasons(_reasons),
 	graph(_graph),
@@ -3014,7 +3014,7 @@ private:
     const choice_set &new_choices;
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
     generic_problem_resolver &resolver;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     do_increase_solver_cost(step &_s,
@@ -3022,7 +3022,7 @@ private:
                             const choice_set &_new_choices,
                             const cwidget::util::ref_ptr<expression<bool> > &_valid_condition,
                             generic_problem_resolver &_resolver,
-                            const log4cxx::LoggerPtr &_logger)
+                            const logging::LoggerPtr &_logger)
       : s(_s),
 	new_cost(_new_cost),
 	new_choices(_new_choices),
@@ -3758,7 +3758,7 @@ public:
 			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolverSearch()),
-     appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     appender(new logging::ConsoleAppender(new logging::PatternLayout("%m%n"))),
      graph(promotions),
      initial_state(_initial_state, _universe.get_package_count()),
      weights(_step_score, _broken_score, _unfixed_soft_score,
@@ -3860,12 +3860,12 @@ public:
   {
     if(new_debug)
       {
-	logger->setLevel(log4cxx::Level::getTrace());
+	logger->setLevel(logging::Level::getTrace());
 	logger->addAppender(appender);
       }
     else
       {
-	logger->setLevel(log4cxx::Level::getOff());
+	logger->setLevel(logging::Level::getOff());
 	logger->removeAppender(appender);
       }
   }

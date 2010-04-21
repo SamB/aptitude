@@ -90,7 +90,7 @@ namespace gui
     class load_screenshot_thread : public job_queue_thread<load_screenshot_thread, load_screenshot_job>
     {
     public:
-      static log4cxx::LoggerPtr get_log_category()
+      static logging::LoggerPtr get_log_category()
       {
 	return Loggers::getAptitudeGtkScreenshotCache();
       }

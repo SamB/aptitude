@@ -497,7 +497,7 @@ namespace gui
     using namespace aptitude::matching;
     using cwidget::util::ref_ptr;
 
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
 
     LOG_TRACE(logger, "PkgView build thread: starting.");
 
@@ -584,7 +584,7 @@ namespace gui
 
   PkgViewBase::background_build_store::~background_build_store()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
     LOG_TRACE(logger, "Destroying background store builder.");
     cancel();
     for(std::set<cwidget::threads::thread *>::const_iterator it =
@@ -599,7 +599,7 @@ namespace gui
 						  const EntityColumns *columns,
 						  const cwidget::util::ref_ptr<aptitude::matching::pattern> &limit)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
 
     LOG_TRACE(logger, "Creating new build thread.");
     cancel();
@@ -649,7 +649,7 @@ namespace gui
 
   void PkgViewBase::background_build_store::cancel()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
     if(builder == NULL)
       LOG_TRACE(logger, "Would cancel the build thread, but it is NULL.");
     else
@@ -668,7 +668,7 @@ namespace gui
 
   void PkgViewBase::background_build_store::cancel_now()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
     LOG_TRACE(logger, "Canceling all threads and waiting for them to terminate.");
 
     cancel();
@@ -698,7 +698,7 @@ namespace gui
 
   void PkgViewBase::background_build_store::thread_stopped(cwidget::threads::thread *t)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
 
     LOG_DEBUG(logger, "Background PkgView build thread " << t << " has stopped, removing it from the active threads set.");
 
@@ -710,7 +710,7 @@ namespace gui
 
   void PkgViewBase::background_build_store::progress(int current, int total)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
 
     if(builder_progress.valid())
       {
@@ -731,7 +731,7 @@ namespace gui
 
   void PkgViewBase::background_build_store::rebuild_store_finished(Glib::RefPtr<Gtk::TreeModel> model)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkPkgView());
     LOG_TRACE(logger, "The package view store was successfully rebuilt.");
 
     // Clear out the background thread's structures and signal

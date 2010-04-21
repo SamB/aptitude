@@ -43,13 +43,13 @@ using cwidget::util::ssprintf;
 
 namespace
 {
-  log4cxx::LoggerPtr loggerHints(aptitude::Loggers::getAptitudeResolverHints());
-  log4cxx::LoggerPtr loggerHintsCompare(aptitude::Loggers::getAptitudeResolverHintsCompare());
-  log4cxx::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
-  log4cxx::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
-  log4cxx::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
-  log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
-  log4cxx::LoggerPtr loggerCosts(aptitude::Loggers::getAptitudeResolverCosts());
+  logging::LoggerPtr loggerHints(aptitude::Loggers::getAptitudeResolverHints());
+  logging::LoggerPtr loggerHintsCompare(aptitude::Loggers::getAptitudeResolverHintsCompare());
+  logging::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
+  logging::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
+  logging::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
+  logging::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
+  logging::LoggerPtr loggerCosts(aptitude::Loggers::getAptitudeResolverCosts());
 
   /** \brief If the given version is valid, find its maximum priority
    *  and return a raise-cost operation for that priority.

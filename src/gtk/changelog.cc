@@ -774,7 +774,7 @@ namespace gui
       // Set to true when the global signal handlers are connected up.
       static bool signals_connected;
     public:
-      static log4cxx::LoggerPtr get_log_category()
+      static logging::LoggerPtr get_log_category()
       {
 	return aptitude::Loggers::getAptitudeGtkChangelogCache();
       }
@@ -791,7 +791,7 @@ namespace gui
 
       void process_job(const check_cache_for_parsed_changelogs_job &job)
       {
-	log4cxx::LoggerPtr logger(get_log_category());
+	logging::LoggerPtr logger(get_log_category());
 
 	const boost::shared_ptr<preprocessed_changelog_job> &req = job.get_request();
 

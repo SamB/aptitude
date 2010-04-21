@@ -53,7 +53,7 @@ namespace gui
     // Used to suppress activity timeouts after dpkg finishes.
     bool subprocess_complete;
 
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     /** \brief How long (in seconds) we wait between messages from the
      *  install process before we claim that it's waiting for input.

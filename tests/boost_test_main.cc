@@ -31,10 +31,10 @@ int main(int argc, char **argv)
     }
 
   if(debug)
-    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getTrace());
+    logging::Logger::getRootLogger()->setLevel(logging::Level::getTrace());
   else
-    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
-  log4cxx::BasicConfigurator::configure();
+    logging::Logger::getRootLogger()->setLevel(logging::Level::getWarn());
+  logging::BasicConfigurator::configure();
 
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }
