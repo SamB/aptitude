@@ -6,6 +6,48 @@ import os.path
 
 custom_tests = {}
 
+languages = [
+    "ar",
+    "ast",
+    "bs",
+    "ca",
+    "cs",
+    "da",
+    "de",
+    "dz",
+    "el",
+    "es",
+    "eu",
+    "fi",
+    "fr",
+    "gl",
+    "hu",
+    "it",
+    "ja",
+    "km",
+    "ku",
+    "lt",
+    "mr",
+    "nb",
+    "ne",
+    "nl",
+    "nn",
+    "pl",
+    "pt",
+    "pt_BR",
+    "ro",
+    "ru",
+    "sk",
+    "sv",
+    "th",
+    "tl",
+    "tr",
+    "uk",
+    "vi",
+    "zh_CN",
+    "zh_TW",
+    ]
+
 def Configure(env):
     """Creates an aptitude-flavored configuration object targeting
 the given environment."""
