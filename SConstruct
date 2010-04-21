@@ -9,11 +9,12 @@ programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
 programs_conf = aptitude_build.Configure(programs_env)
 
 
-programs_conf.CheckCXX()
-programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
-                                         TryInclude('/usr/include/ncursesw') ])
-programs_conf.CheckForApt()
-
+RequireCheck(programs_conf.CheckCXX(), 'No working C++ compiler found.')
+RequireCheck(programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
+                                                      TryInclude('/usr/include/ncursesw') ]),
+             "Can't find libncursesw -- please install libncursesw5-dev.")
+RequireCheck(programs_conf.CheckForApt(),
+             "Can't find the APT libraries -- please install libapt-pkg-dev.")
 
 programs_conf.Finish()
 

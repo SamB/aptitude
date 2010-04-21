@@ -9,6 +9,12 @@ the given environment."""
 
     return SCons.Script.Configure(env, custom_tests)
 
+def RequireCheck(check, failure_message):
+    """If the given configure check fails, print a message and exit."""
+    if not check:
+        print failure_message
+        Exit(1)
+
 def ConfigureCheck(message):
     """Decorates a custom configure function by modifying its context
 as specified in kwargs before running it.  If the test succeeds
