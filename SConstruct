@@ -4,7 +4,8 @@ import os
 from aptitude_build import TryInclude
 
 # A generic environment used to build all aptitude's programs.
-programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] })
+programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
+                                  CPPPATH = [ '#', '#/src' ])
 programs_conf = aptitude_build.Configure(programs_env)
 
 
