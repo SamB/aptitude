@@ -51,7 +51,7 @@
 
 #include <cwidget/fragment.h>
 
-#include <../pkg_item.h>
+#include <pkg_item.h>
 
 #include <set>
 
