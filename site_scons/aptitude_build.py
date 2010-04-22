@@ -266,4 +266,5 @@ def FindGettext(configure):
 
     if result:
         configure.Define("ENABLE_NLS", 1)
-    return True
+
+    return result
