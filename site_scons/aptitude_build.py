@@ -310,3 +310,8 @@ def FindGettext(configure):
         configure.Define("ENABLE_NLS", 1)
 
     return result
+
+def NonHeaders(src):
+    """Filter out headers from the given list of source files."""
+
+    return [ f for f in src if not str(f).endswith('.h') ]
