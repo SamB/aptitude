@@ -52,7 +52,10 @@ def Configure(env):
     """Creates an aptitude-flavored configuration object targeting
 the given environment."""
 
-    return SCons.Script.Configure(env, custom_tests)
+    result = SCons.Script.Configure(env, custom_tests, config_h = 'config.h')
+    result.Define('PACKAGE', env['PACKAGE'])
+    result.Define('VERSION', env['VERSION'])
+    return result
 
 def RequireCheck(check, failure_message):
     """If the given configure check fails, print a message and exit."""

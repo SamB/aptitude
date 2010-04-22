@@ -1,3 +1,6 @@
+PACKAGE = 'aptitude'
+VERSION = '0.6.2'
+
 import aptitude_build
 import os
 
@@ -6,6 +9,8 @@ from aptitude_build import TryInclude
 
 # A generic environment used to build all aptitude's programs.
 programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
+                                  PACKAGE = PACKAGE,
+                                  VERSION = VERSION,
                                   CPPPATH = [ '#', '#/src' ])
 programs_conf = aptitude_build.Configure(programs_env)
 
