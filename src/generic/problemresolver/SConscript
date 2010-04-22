@@ -1,3 +1,5 @@
+from aptitude_build import NonHeaders
+
 srcs = map(File, [
     'choice.h',
     'choice_indexed_map.h',
@@ -22,6 +24,6 @@ srcs = map(File, [
 Import('programs_env')
 
 test = programs_env.Program(target = 'test',
-                            source = ['test.cc', srcs])
+                            source = ['test.cc', NonHeaders(srcs)])
 
 Return('srcs')
