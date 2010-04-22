@@ -1328,7 +1328,7 @@ public:
       std::string input("a34b15c999");
       std::string::const_iterator begin = input.begin(), end = input.end();
 
-      typedef boost::fusion::vector<char, int> charint_vector;
+      typedef tuple_p<boost::fusion::vector<anychar_p<char>, integer_p> >::result_type charint_vector;
       typedef std::vector<charint_vector> result_type;
       result_type expected;
       expected.push_back(charint_vector('a', 34));
