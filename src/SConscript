@@ -106,6 +106,6 @@ all_srcs = Flatten([toplevel_srcs, sub_srcs])
 aptitude = programs_env.Program(target = 'aptitude', source = NonHeaders(all_srcs))
 pkg_hier_dump = programs_env.Program(target = 'src/generic/apt/pkg_hier_dump',
                                      source = [
+                                         '#/src/generic/apt/pkg_hier.cc',
                                          '#/src/generic/apt/pkg_hier_dump.cc',
-                                         '#/src/generic/apt'
-                                         ]) #, '#/src/generic/util'])
+                                         ])
