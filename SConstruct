@@ -1,5 +1,5 @@
 PACKAGE = 'aptitude'
-VERSION = '0.6.2'
+VERSION = '0.6.2.1'
 
 import aptitude_build
 import os

@@ -1,3 +1,20 @@
+[4/21/2010]
+Version 0.6.2.1                             "I didn't know it was a
+                                             real zebra!"
+
+- Crashes and serious errors:
+
+  * Fix a crash caused by being insufficiently careful about NULL
+    pointers in the resolver. (Closes: #578344)
+
+- Backwards compatibility fixes:
+
+  * Restored the "conflict" safety level/tier.
+
+  * Fixed a bug that meant that the old configuration option names
+    (*-Tier instead of *-Level) could only be used to increase safety
+    levels, not to decrease them.
+
 [4/18/2010]
 Version 0.6.2                               "A costly proposition"
 
