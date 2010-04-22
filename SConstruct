@@ -41,6 +41,8 @@ RequireCheck(programs_conf.CheckForApt(),
              "Can't find the APT libraries -- please install libapt-pkg-dev.")
 RequireCheck(programs_conf.CheckForPThread(),
              "Can't find the POSIX thread libraries.")
+if programs_conf.CheckDDTP():
+    programs_conf.Define('HAVE_DDTP', 1)
 
 programs_conf.CheckForPo4A()
 aptitude_build.FindGettext(programs_conf)
