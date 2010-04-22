@@ -19,7 +19,7 @@ RequireCheck(programs_conf.CheckForPThread(),
              "Can't find the POSIX thread libraries.")
 
 programs_conf.CheckForPo4A()
-if programs_conf.CheckForGettext():
+if aptitude_build.FindGettext(programs_conf):
     programs_conf.Define('ENABLE_NLS')
 
 programs_conf.Finish()

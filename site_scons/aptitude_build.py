@@ -210,18 +210,11 @@ def CheckForPo4A(context):
 
     CheckForExecutable(context, 'po4a', 'PO4A')
 
-@ConfigureCheck("Checking for i18n utilities")
-def CheckForGettext(context):
-    """Look for gettext-related utilities."""
+@ConfigureCheck("Checking for libintl in libc")
+def CheckForLibintlInLibc(context):
+    """Check whether libintl is already included in libc."""
 
-    # Clear the message printed before we start.
-    context.Result("")
-
-    context.Message('Checking if libintl is available in libc...')
-
-    # Maybe gettext is available with no more flags.  Otherwise, we'll
-    # try to find it.
-    if not context.TryLink('''
+    if context.TryLink('''
 #include <libintl.h>
 
 int main(int argc, char **argv)
@@ -229,14 +222,43 @@ int main(int argc, char **argv)
   const char * const foo = gettext("Foo");
 }''', context.env['CXXFILESUFFIX']):
         # Actually, we won't.
-        Context.Result('no')
+        context.Result('no')
+        return False
+    else:
+        context.Result('yes')
+        return True
+
+@ConfigureCheck('Checking for setlocale in libintl.h')
+def CheckSetLocale(context):
+    if context.TryLink('''
+#include <locale.h>
+
+int main(int argc, char **argv)
+{
+  setlocale(0, 0);
+}''', context.env['CXXFILESUFFIX']):
+        context.Result('yes')
+        return True
+    else:
+        context.Result('no')
         return False
 
-    context.Result('yes')
+def FindGettext(configure):
+    """Look for gettext-related utilities."""
 
+    result = True
 
+    result = configure.CheckForLibintlInLibc() and result
+    result = configure.CheckForExecutable('gettext', 'GETTEXT') and result
+    result = configure.CheckForExecutable('msgmerge', 'MSGMERGE') and result
+    result = configure.CheckHeader('libintl.h') and result
+    result = configure.CheckHeader('locale.h') and result
 
-    CheckForExecutable(context, 'gettext', 'GETTEXT')
-    CheckForExecutable(context, 'msgmerge', 'MSGMERGE')
+    if configure.CheckSetLocale():
+        configure.Define("HAVE_SETLOCALE")
+    else:
+        result = False
 
+    if result:
+        configure.Define("ENABLE_NLS")
     return True
