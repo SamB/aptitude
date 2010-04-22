@@ -4,7 +4,7 @@ Version 0.6.2.1                             "I didn't know it was a
 
 - Crashes and serious errors:
 
-  * Fix a crash caused by being insufficiently careful about NULL
+  * Fixed a crash caused by being insufficiently careful about NULL
     pointers in the resolver. (Closes: #578344)
 
 - Backwards compatibility fixes:
@@ -14,6 +14,15 @@ Version 0.6.2.1                             "I didn't know it was a
   * Fixed a bug that meant that the old configuration option names
     (*-Tier instead of *-Level) could only be used to increase safety
     levels, not to decrease them.
+
+- Internal changes:
+
+  * Change the incremental_expression subsystem of the resolver to be
+    fully robust against NULL pointers and write unit tests for it.
+
+  * Reduced the number of explicit dependencies on log4cxx (using
+    indirection), in case I decide to resolve the random crashes it
+    causes by switching to some other framework or rolling my own.
 
 [4/18/2010]
 Version 0.6.2                               "A costly proposition"
