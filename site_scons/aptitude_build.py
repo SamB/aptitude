@@ -186,22 +186,17 @@ int main(int argc, char **argv)
 
 @RegisterCheck
 def CheckForPo4A(context):
-    """Look for po4a in $PO4APATH and set $PO4A accordingly.
-PO4APATH defaults to $PATH."""
+    """Look for po4a in $PATH and set $PO4A accordingly."""
     context.Message("Checking for po4a...")
-    context.Result("")
 
-    po4apath = context.env.get('PO4APATH',
-                               context.env['ENV']['PATH']).split(':')
-    for bindir in po4apath:
-        context.Message("  In %s..." % bindir)
-        po4a = os.path.abspath(os.path.join(bindir, 'po4a'))
-        if os.access(po4a, os.X_OK):
-            context.Result("yes")
-            context.env['PO4A'] = po4a
-            context.env['HAVE_PO4A'] = True
-            return True
+    po4a = context.env.get('PO4A', None)
+    if po4a is None:
+        po4a = context.env.WhereIs('po4a')
 
-    context.Result("no")
-    context.env['HAVE_PO4A'] = False
-    return False
+    if po4a is None:
+        context.Result('no')
+        return False
+    else:
+        context.env['PO4A'] = po4a
+        context.Result(po4a)
+        return True
