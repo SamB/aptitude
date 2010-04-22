@@ -226,12 +226,11 @@ int main(int argc, char **argv)
 {
   const char * const foo = gettext("Foo");
 }''', context.env['CXXFILESUFFIX']):
-        # Actually, we won't.
-        context.Result('no')
-        return False
-    else:
         context.Result('yes')
         return True
+    else:
+        context.Result('no')
+        return False
 
 @ConfigureCheck('Checking for setlocale in libintl.h')
 def CheckSetLocale(context):
