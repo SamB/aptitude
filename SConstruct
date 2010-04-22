@@ -26,6 +26,9 @@ RequireCheck(programs_conf.CheckForPThread(),
 programs_conf.CheckForPo4A()
 aptitude_build.FindGettext(programs_conf)
 
+programs_conf.Define('SIGC_VERSION',
+                     '"%s"' % os.popen('pkg-config --modversion sigc++-2.0').read().strip())
+
 programs_conf.Finish()
 
 pkgconfig_packages = [
