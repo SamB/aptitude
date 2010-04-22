@@ -1,6 +1,7 @@
+sub_srcs = SConscript(dirs = [
+    'apt',
+    'problemresolver',
+    'util',
+    ])
 
-# TODO: grab this source code.
-
-srcs = []
-
-Return('srcs')
+Return('sub_srcs')
