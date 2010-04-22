@@ -35,7 +35,10 @@ C++ code.  SConscript files can import the variable under the name
               default = default,
               help = help or 'set %s' % lowercase_key)
 
-    env.Replace(**{uppercase_key: GetOption(lowercase_key)})
+    if uppercase_key in ARGUMENTS:
+        env[uppercase_key] = ARGUMENTS[uppercase_key]
+    else:
+        env[uppercase_key] = GetOption(lowercase_key)
 
     def finish(configure):
         value = configure.env.subst('$%s' % uppercase_key)
