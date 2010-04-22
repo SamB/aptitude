@@ -65,6 +65,7 @@ def RegisterCheck(f):
     global dictionary of checks under its name."""
 
     custom_tests[f.__name__] = f
+    return f
 
 def ConfigureCheck(message):
     """Decorates a custom configure function by modifying its context
