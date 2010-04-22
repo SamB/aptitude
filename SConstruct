@@ -17,7 +17,10 @@ RequireCheck(programs_conf.CheckForApt(),
              "Can't find the APT libraries -- please install libapt-pkg-dev.")
 RequireCheck(programs_conf.CheckForPThread(),
              "Can't find the POSIX thread libraries.")
+
 programs_conf.CheckForPo4A()
+if programs_conf.CheckForGettext():
+    programs_conf.Define('ENABLE_NLS')
 
 programs_conf.Finish()
 

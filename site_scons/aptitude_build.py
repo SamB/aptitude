@@ -209,3 +209,34 @@ def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
 
     CheckForExecutable(context, 'po4a', 'PO4A')
+
+@ConfigureCheck("Checking for i18n utilities")
+def CheckForGettext(context):
+    """Look for gettext-related utilities."""
+
+    # Clear the message printed before we start.
+    context.Result("")
+
+    context.Message('Checking if libintl is available in libc...')
+
+    # Maybe gettext is available with no more flags.  Otherwise, we'll
+    # try to find it.
+    if not context.TryLink('''
+#include <libintl.h>
+
+int main(int argc, char **argv)
+{
+  const char * const foo = gettext("Foo");
+}''', context.env['CXXFILESUFFIX']):
+        # Actually, we won't.
+        Context.Result('no')
+        return False
+
+    context.Result('yes')
+
+
+
+    CheckForExecutable(context, 'gettext', 'GETTEXT')
+    CheckForExecutable(context, 'msgmerge', 'MSGMERGE')
+
+    return True
