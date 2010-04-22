@@ -1,3 +1,5 @@
+Import('programs_env')
+
 toplevel_srcs = map(File, [
     'acqprogress.cc',
     'acqprogress.h',
@@ -66,5 +68,11 @@ sub_srcs = SConscript(dirs = [
     ])
 
 srcs = (toplevel_srcs, sub_srcs)
+
+pkg_hier_dump = programs_env.Program(target = 'pkg_hier_dump',
+                                     source = [
+                                         'pkg_hier.cc',
+                                         'pkg_hier_dump.cc',
+                                         ])
 
 Return('srcs')
