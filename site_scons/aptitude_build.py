@@ -204,7 +204,7 @@ int main(int argc, char **argv)
   return 0;
 }''', context.env['CXXFILESUFFIX'])
 
-@RegisterCheck
+@ConfigureCheck
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
 
