@@ -47,6 +47,8 @@ RequireCheck(programs_conf.CheckForApt(),
              "Can't find the APT libraries -- please install libapt-pkg-dev.")
 RequireCheck(programs_conf.CheckForPThread(),
              "Can't find the POSIX thread libraries.")
+RequireCheck(programs_conf.CheckForBoostIOStreams(),
+             "Can't find Boost.IOStreams")
 if programs_conf.CheckDDTP():
     programs_conf.Define('HAVE_DDTP', 1)
 
