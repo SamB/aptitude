@@ -24,6 +24,8 @@ srcs = map(File, [
 Import('programs_env')
 
 test = programs_env.Program(target = 'test',
-                            source = ['test.cc', NonHeaders(srcs)])
+                            source = ['test.cc', NonHeaders(srcs),
+                                      '#/src/generic/util/refcounted_base.cc',
+                                      ])
 
 Return('srcs')
