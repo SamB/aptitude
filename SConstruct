@@ -44,9 +44,9 @@ programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
                                   DATADIR = GetOption('datadir'),
                                   LOCALEDIR = GetOption('localedir'))
 
-prefix = programs_env['PREFIX']
-datadir = programs_env['DATADIR']
-localedir = programs_env['LOCALEDIR']
+prefix = programs_env.subst('$PREFIX')
+datadir = programs_env.subst('$DATADIR')
+localedir = programs_env.subst('$LOCALEDIR')
 
 Export('prefix', 'datadir', 'localedir')
 
