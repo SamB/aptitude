@@ -13,7 +13,26 @@ AddOption('--prefix',
           type = 'string',
           action = 'store',
           metavar = 'DIR',
+          default = '/usr/local',
           help = 'installation prefix')
+
+AddOption('--datadir',
+          dest = 'datadir',
+          nargs = 1,
+          type = 'string',
+          action = 'store',
+          metavar = 'DIR',
+          default = '$PREFIX/share',
+          help = 'data installation prefix')
+
+AddOption('--localedir',
+          dest = 'localedir',
+          nargs = 1,
+          type = 'string',
+          action = 'store',
+          metavar = 'DIR',
+          default = '$DATADIR/locale',
+          help = 'installation prefix for locale files')
 
 # A generic environment used to build all aptitude's programs.
 programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
@@ -21,10 +40,15 @@ programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
                                   VERSION = VERSION,
                                   CPPPATH = [ '#', '#/src' ],
                                   CPPDEFINES = [ '_REENTRANT' ],
-                                  PREFIX = GetOption('prefix'))
+                                  PREFIX = GetOption('prefix'),
+                                  DATADIR = GetOption('datadir'),
+                                  LOCALEDIR = GetOption('localedir'))
 
 prefix = programs_env['PREFIX']
-Export('prefix')
+datadir = programs_env['DATADIR']
+localedir = programs_env['LOCALEDIR']
+
+Export('prefix', 'datadir', 'localedir')
 
 if 'LOCALEDIR' not in programs_env:
     programs_env['LOCALEDIR'] = '/usr/share/locale'
@@ -44,8 +68,9 @@ aptitude_build.FindGettext(programs_conf)
 
 programs_conf.Define('SIGC_VERSION',
                      '"%s"' % os.popen('pkg-config --modversion sigc++-2.0').read().strip())
-programs_conf.Define('LOCALEDIR', programs_env['LOCALEDIR'])
+programs_conf.Define('LOCALEDIR', localedir)
 programs_conf.Define('PREFIX', prefix)
+programs_conf.Define('DATADIR', datadir)
 
 programs_conf.Finish()
 
