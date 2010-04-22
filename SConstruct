@@ -31,6 +31,12 @@ programs_env.DefineDirectory('helpdir',
 programs_env.DefineDirectory('localedir',
                              default = '$DATADIR/locale',
                              help = 'installation prefix for locale files')
+programs_env.DefineDirectory('statedir',
+                             default = '/var/lib/$PACKAGE',
+                             help = 'the location in which aptitude should store its state (default /var/lib/$PACKAGE)')
+programs_env.DefineDirectory('lockfile',
+                             default = '/var/lock/$PACKAGE',
+                             help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
 
 programs_conf = aptitude_build.Configure(programs_env)
 
