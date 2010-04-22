@@ -1,3 +1,16 @@
+aptitude (0.6.2.1-1) unstable; urgency=low
+
+  * New upstream release.
+
+    - Fixes some backwards compatibility breakages in 0.6.2-2.
+
+  * Weaken the Conflict against ia32-apt-get to (<< 22), on advice from
+    Goswin von Bredrelow.  Apparently some people still use this package,
+    and the "feature" that broke aptitude is not present in recent
+    versions.
+
+ -- Daniel Burrows <dburrows@debian.org>  Wed, 21 Apr 2010 22:27:53 -0700
+
 aptitude (0.6.2-2) unstable; urgency=low
 
   * Backport upstream patch to fix crashes in the resolver. (Closes: #578344)

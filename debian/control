@@ -12,7 +12,7 @@ Priority: important
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: aptitude-doc-en | aptitude-doc, sensible-utils, apt-xapian-index, libparse-debianchangelog-perl
 Suggests: tasksel, debtags
-Conflicts: ia32-apt-get
+Conflicts: ia32-apt-get (<< 22)
 Description: terminal-based package manager (terminal interface only)
  aptitude is a package manager with a number of useful features,
  including: a mutt-like syntax for matching packages in a flexible
