@@ -6,6 +6,8 @@
 #include <log4cxx/level.h>
 #include <log4cxx/logger.h>
 
+#include <loggers.h>
+
 // One dummy test so that this can be dropped in before the actual
 // test suite is written.
 BOOST_AUTO_TEST_CASE(dummy)

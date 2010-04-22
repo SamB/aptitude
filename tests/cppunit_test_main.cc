@@ -24,6 +24,8 @@
 #include <log4cxx/level.h>
 #include <log4cxx/logger.h>
 
+#include <loggers.h>
+
 #include <stdio.h>
 #include <string.h>
 
