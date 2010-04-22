@@ -258,6 +258,21 @@ int main(int argc, char **argv)
         context.Result('no')
         return False
 
+@ConfigureCheck('Checking whether apt supports ddtp')
+def CheckDDTP(context):
+    if context.TryLink('''
+#include <apt-pkg/pkgcache.h>
+
+int main(int argc, char **argv)
+{
+  pkgCache::DescIterator d;
+}''', context.env['CXXFILESUFFIX']):
+        context.Result('yes')
+        return True
+    else:
+        context.Result('no')
+        return False
+
 def FindGettext(configure):
     """Look for gettext-related utilities."""
 

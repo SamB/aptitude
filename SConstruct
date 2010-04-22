@@ -31,6 +31,12 @@ programs_env.DefineDirectory('helpdir',
 programs_env.DefineDirectory('localedir',
                              default = '$DATADIR/locale',
                              help = 'installation prefix for locale files')
+programs_env.DefineDirectory('statedir',
+                             default = '/var/lib/$PACKAGE',
+                             help = 'the location in which aptitude should store its state (default /var/lib/$PACKAGE)')
+programs_env.DefineDirectory('lockfile',
+                             default = '/var/lock/$PACKAGE',
+                             help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
 
 programs_conf = aptitude_build.Configure(programs_env)
 
@@ -41,6 +47,8 @@ RequireCheck(programs_conf.CheckForApt(),
              "Can't find the APT libraries -- please install libapt-pkg-dev.")
 RequireCheck(programs_conf.CheckForPThread(),
              "Can't find the POSIX thread libraries.")
+if programs_conf.CheckDDTP():
+    programs_conf.Define('HAVE_DDTP', 1)
 
 programs_conf.CheckForPo4A()
 aptitude_build.FindGettext(programs_conf)

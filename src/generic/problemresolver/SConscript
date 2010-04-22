@@ -1,0 +1,27 @@
+srcs = map(File, [
+    'choice.h',
+    'choice_indexed_map.h',
+    'choice_set.h',
+    'cost.cc',
+    'cost.h',
+    'cost_limits.cc',
+    'cost_limits.h',
+    'dummy_universe.cc',
+    'dummy_universe.h',
+    'dump_universe.h',
+    'exceptions.h',
+    'incremental_expression.cc',
+    'incremental_expression.h',
+    'problemresolver.h',
+    'promotion_set.h',
+    'sanity_check_universe.h',
+    'search_graph.h',
+    'solution.h',
+    ])
+
+Import('programs_env')
+
+test = programs_env.Program(target = 'test',
+                            source = ['test.cc', srcs])
+
+Return('srcs')

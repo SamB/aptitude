@@ -59,6 +59,8 @@
 using namespace std;
 using aptitude::Loggers;
 
+namespace cw = cwidget;
+
 enum interesting_state {uncached = 0, uninteresting, interesting};
 static interesting_state *cached_deps_interesting = NULL;
 
