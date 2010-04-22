@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.4.11.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-04-18 08:07-0700\n"
+"POT-Creation-Date: 2010-04-21 21:19-0700\n"
 "PO-Revision-Date: 2009-04-26 17:44+0100\n"
 "Last-Translator: Marcos Alvarez Costales <marcos.alvarez.costales@gmail."
 "com>\n"
@@ -2779,12 +2779,12 @@ msgstr ""
 "llectura; ¡cualisquier cambéu que faigas a los estaos de los paquetes NUN "
 "sedrá remembrarán!"
 
-#: src/generic/apt/aptitude_resolver.cc:473
+#: src/generic/apt/aptitude_resolver.cc:477
 #, c-format
 msgid "Invalid hint \"%s\": expected an action, but found nothing."
 msgstr "Pista nun válida \"%s\": esperada una aición, pero na atopao."
 
-#: src/generic/apt/aptitude_resolver.cc:497
+#: src/generic/apt/aptitude_resolver.cc:502
 #, fuzzy, c-format
 #| msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
 msgid ""
@@ -2792,7 +2792,7 @@ msgid ""
 "nothing."
 msgstr "Pista nun válida \"%s\": esperáu un númberu de nivel, pero na atopao."
 
-#: src/generic/apt/aptitude_resolver.cc:516
+#: src/generic/apt/aptitude_resolver.cc:521
 #, fuzzy, c-format
 #| msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
 msgid ""
@@ -2800,33 +2800,33 @@ msgid ""
 "name, but found nothing."
 msgstr "Pista nun válida \"%s\": esperáu un númberu de nivel, pero na atopao."
 
-#: src/generic/apt/aptitude_resolver.cc:536
+#: src/generic/apt/aptitude_resolver.cc:541
 #, c-format
 msgid "Invalid hint \"%s\": the numeric component \"%s\" cannot be parsed."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver.cc:547
+#: src/generic/apt/aptitude_resolver.cc:552
 #, fuzzy, c-format
 #| msgid "Invalid hint \"%s\": expected a target, but found nothing."
 msgid "Invalid hint \"%s\": expected a level, but found nothing."
 msgstr "Pista nun válida \"%s\": esperada una meta, pero na atopao."
 
-#: src/generic/apt/aptitude_resolver.cc:569
+#: src/generic/apt/aptitude_resolver.cc:574
 #, c-format
 msgid "Invalid hint \"%s\": expected a target, but found nothing."
 msgstr "Pista nun válida \"%s\": esperada una meta, pero na atopao."
 
-#: src/generic/apt/aptitude_resolver.cc:596
+#: src/generic/apt/aptitude_resolver.cc:601
 #, c-format
 msgid "Invalid hint \"%s\": invalid target: %s"
 msgstr "Pista nun válida \"%s\": meta nun válida: %s"
 
-#: src/generic/apt/aptitude_resolver.cc:616
+#: src/generic/apt/aptitude_resolver.cc:621
 #, c-format
 msgid "Invalid hint \"%s\": trailing junk after the version."
 msgstr "Pista nun válida \"%s\": morralla tras la versión."
 
-#: src/generic/apt/aptitude_resolver.cc:704
+#: src/generic/apt/aptitude_resolver.cc:716
 #, c-format
 msgid ""
 "Invalid hint \"%s\": the action \"%s\" should be \"approve\", \"reject\", or "
@@ -2840,12 +2840,13 @@ msgstr ""
 msgid "Conflicting types for the cost component %s."
 msgstr ""
 
-#: src/generic/apt/aptitude_resolver_universe.cc:817
+#: src/generic/apt/aptitude_resolver_universe.cc:828
 #, fuzzy, c-format
 #| msgid ""
 #| "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
 msgid ""
-"Invalid safety level \"%s\" (not \"maximum\", \"minimum\", or an integer)."
+"Invalid safety level \"%s\" (not \"discard\", \"maximum\", \"minimum\", or "
+"an integer)."
 msgstr ""
 "Nivel de gueta nun válidu \"%s\" (non \"conflict\", \"minimum\", o un "
 "enteru)."
