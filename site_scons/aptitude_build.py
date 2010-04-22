@@ -53,8 +53,8 @@ def Configure(env):
 the given environment."""
 
     result = SCons.Script.Configure(env, custom_tests, config_h = 'config.h')
-    result.Define('PACKAGE', env['PACKAGE'])
-    result.Define('VERSION', env['VERSION'])
+    result.Define('PACKAGE', '"%s"' % env['PACKAGE'])
+    result.Define('VERSION', '"%s"' % env['VERSION'])
     # Need to inform the source code that we have a config.h file:
     env.MergeFlags(env.ParseFlags('-DHAVE_CONFIG_H'))
     return result
