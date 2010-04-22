@@ -1158,6 +1158,13 @@ public:
     }
   };
 
+  // Used to ensure we get a vector of the expected type (which is not
+  // what make_vector returns in this version of Boost).
+  boost::fusion::vector<int, int> makeVector2(int a, int b)
+  {
+    return boost::fusion::make_vector(a, b);
+  }
+
   void testApplySuccess()
   {
     // Unary test via apply().
@@ -1188,7 +1195,7 @@ public:
     {
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(makeIntPair(), (integer(), ch(',') >> integer())).parse(begin, end)));
+      CPPUNIT_ASSERT_EQUAL(makeVector2(123, 456), (apply(makeIntPair(), (integer(), ch(',') >> integer())).parse(begin, end)));
       CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
 
@@ -1196,8 +1203,8 @@ public:
     {
       std::string input("123,456");
       std::string::const_iterator begin = input.begin(), end = input.end();
-      CPPUNIT_ASSERT_EQUAL(boost::fusion::make_vector(123, 456), (apply(construct_f<boost::fusion::vector<int, int> >(),
-                                                                        (integer(), ch(',') >> integer())).parse(begin, end)));
+      CPPUNIT_ASSERT_EQUAL(makeVector2(123, 456), (apply(construct_f<boost::fusion::vector<int, int> >(),
+                                                         (integer(), ch(',') >> integer())).parse(begin, end)));
       CPPUNIT_ASSERT_EQUAL((iter_difftype)7, begin - input.begin());
     }
   }
