@@ -140,6 +140,25 @@ def TryInclude(d):
 
     return ("In %s" % d, { 'CPPPATH' : [ d ] })
 
+@RegisterCheck
+def CheckForExecutable(context, filename, var):
+    """Look for the given filename in $PATH.  If var is set in the
+environment, use its value; otherwise find the program and set var to
+its absolute path."""
+    context.Message("Checking for %s..." % filename)
+
+    location = context.env.get(var)
+    if location is None:
+        location = context.env.WhereIs(filename)
+
+    if location is None:
+        context.Result('no')
+        return False
+    else:
+        context.env[var] = location
+        context.Result(location)
+        return True
+
 @ConfigureCheck("Checking for apt")
 def CheckForApt(context):
     """Look for apt in the given directory."""
