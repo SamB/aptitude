@@ -39,5 +39,3 @@ for pkg in pkgconfig_packages:
 Export('programs_env')
 
 SConscript(['src/SConscript'])
-
-print programs_env
