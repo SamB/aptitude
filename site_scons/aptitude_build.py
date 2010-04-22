@@ -207,16 +207,5 @@ int main(int argc, char **argv)
 @RegisterCheck
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
-    context.Message("Checking for po4a...")
 
-    po4a = context.env.get('PO4A', None)
-    if po4a is None:
-        po4a = context.env.WhereIs('po4a')
-
-    if po4a is None:
-        context.Result('no')
-        return False
-    else:
-        context.env['PO4A'] = po4a
-        context.Result(po4a)
-        return True
+    CheckForExecutable(context, 'po4a', 'PO4A')
