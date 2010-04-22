@@ -7,6 +7,12 @@ Version 0.6.2.1                             "I didn't know it was a
   * Fixed a crash caused by being insufficiently careful about NULL
     pointers in the resolver. (Closes: #578344)
 
+  * Boost 1.42 changed the order of arguments to fusion::fold(),
+    breaking aptitude.  As an interim measure, I have modified
+    configure to require 1.42 or higher, and fixed the argument order.
+    The correct long-term fix here is to do a feature test to see
+    which order fold expects its arguments in.
+
 - Backwards compatibility fixes:
 
   * Restored the "conflict" safety level/tier.
