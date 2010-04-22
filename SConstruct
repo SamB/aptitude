@@ -7,13 +7,29 @@ import os
 from aptitude_build import RequireCheck
 from aptitude_build import TryInclude
 
+AddOption('--prefix',
+          dest = 'prefix',
+          nargs = 1,
+          type = 'string',
+          action = 'store',
+          metavar = 'DIR',
+          help = 'installation prefix')
+
 # A generic environment used to build all aptitude's programs.
 programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
                                   PACKAGE = PACKAGE,
                                   VERSION = VERSION,
-                                  CPPPATH = [ '#', '#/src' ])
-programs_conf = aptitude_build.Configure(programs_env)
+                                  CPPPATH = [ '#', '#/src' ],
+                                  CPPDEFINES = [ '_REENTRANT' ],
+                                  PREFIX = GetOption('prefix'))
 
+prefix = programs_env['PREFIX']
+Export('prefix')
+
+if 'LOCALEDIR' not in programs_env:
+    programs_env['LOCALEDIR'] = '/usr/share/locale'
+
+programs_conf = aptitude_build.Configure(programs_env)
 
 RequireCheck(programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
                                                       TryInclude('/usr/include/ncursesw') ]),
@@ -28,6 +44,8 @@ aptitude_build.FindGettext(programs_conf)
 
 programs_conf.Define('SIGC_VERSION',
                      '"%s"' % os.popen('pkg-config --modversion sigc++-2.0').read().strip())
+programs_conf.Define('LOCALEDIR', programs_env['LOCALEDIR'])
+programs_conf.Define('PREFIX', prefix)
 
 programs_conf.Finish()
 
