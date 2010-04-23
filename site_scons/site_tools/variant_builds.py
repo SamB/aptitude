@@ -292,7 +292,8 @@ to select the active variants.'''
               type = 'string',
               action = 'store',
               metavar = 'VARIANTS',
-              help = 'build variants')
+              help = 'build variants',
+              default = default)
     if 'VARIANTS' not in env:
         env['VARIANTS'] = GetOption('variants')
 
