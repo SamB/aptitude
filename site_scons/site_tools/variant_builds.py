@@ -123,6 +123,7 @@ second axis, and so on.'''
 of variant selections.'''
 
         specialized = env.Clone(VARIANT = str(self))
+        del specialized['VARIANTS']
         for v in self.selections:
             v.Prepare(specialized)
 
