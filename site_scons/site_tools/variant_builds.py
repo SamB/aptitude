@@ -127,8 +127,6 @@ of variant selections.'''
         for v in self.selections:
             v.Prepare(specialized)
 
-        specialized.VariantDir('#/build/%s' % self, '#')
-
         return specialized
 
     def __str__(self):
