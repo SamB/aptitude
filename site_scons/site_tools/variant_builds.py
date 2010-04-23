@@ -44,6 +44,7 @@ def generate(env):
     env.AddMethod(Variant)
     env.AddMethod(DefineVariants)
     env.AddMethod(AllVariantEnvs)
+    env.AddMethod(GetVariantName)
     env.AddMethod(IsVariantActive)
 
 class VariantAxis:
@@ -313,6 +314,14 @@ Returns one environment for each build variant, specialized for that variant.'''
     active_variants = ParseVariants(axes, variant_string)
 
     return [v.BuildEnv(env) for v in active_variants]
+
+def GetVariantName(env):
+    '''If env is a variant directory, return its variant name.'''
+
+    if 'VARIANT' not in env:
+        raise Exception('Not a variant environment')
+
+    return env['VARIANT']
 
 def IsVariantActive(env, variant_pattern):
     '''Return true if the given environment is specialized for a build
