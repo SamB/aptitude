@@ -1,3 +1,15 @@
+aptitude (0.6.2.1-2) unstable; urgency=low
+
+  * Tighten the dependency on libboost-dev to reflect the fact that
+    aptitude needs at least 1.42.
+
+    This caused actual build failures, so I'm surprised I didn't get bugs
+    about it.  I don't know if this will be a permanent state of affairs;
+    a configure test could take care of the one thing that's a serious
+    problem (a published API reversed the order of its arguments (!)).
+
+ -- Daniel Burrows <dburrows@debian.org>  Fri, 23 Apr 2010 07:09:34 -0700
+
 aptitude (0.6.2.1-1) unstable; urgency=low
 
   * New upstream release.
