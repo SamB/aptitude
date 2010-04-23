@@ -305,7 +305,7 @@ def AllVariantEnvs(env):
 
 Returns one environment for each build variant, specialized for that variant.'''
 
-    if 'VARIANTS' not in env or not hasattr(env, 'variant_axes'):
+    if 'VARIANTS' not in env or env['VARIANTS'] is None or not hasattr(env, 'variant_axes'):
         raise Exception('No variants defined -- call DefineVariants first.')
 
     axes = env.variant_axes
