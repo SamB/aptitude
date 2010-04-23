@@ -91,7 +91,7 @@ for its side-effects, if any (none by default).'''
 
     def Prepare(self, env):
         env.MergeFlags(self.flags)
-        env.Replace(self.vars)
+        env.Replace(**self.vars)
         self.initf(env)
 
     def __hash__(self):
