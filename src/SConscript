@@ -1,3 +1,5 @@
+from aptitude_build import NonHeaders
+
 Import('programs_env')
 
 
@@ -97,13 +99,8 @@ sub_srcs = SConscript(dirs = [
         'mine',
         ])
 
-all_srcs = (toplevel_srcs, sub_srcs)
+all_srcs = Flatten([toplevel_srcs, sub_srcs])
 
 # TODO: add nodes for all variants (debug vs release, gtk vs no-gtk),
 # in separate build directories.
-aptitude = programs_env.Program(target = 'aptitude', source = all_srcs)
-pkg_hier_dump = programs_env.Program(target = 'src/generic/apt/pkg_hier_dump',
-                                     source = [
-                                         '#/src/generic/apt/pkg_hier_dump.cc',
-                                         '#/src/generic/apt'
-                                         ]) #, '#/src/generic/util'])
+aptitude = programs_env.Program(target = 'aptitude', source = NonHeaders(all_srcs))

@@ -220,6 +220,23 @@ int main(int argc, char **argv)
   return 0;
 }''', context.env['CXXFILESUFFIX'])
 
+@ConfigureCheck("Checking for Boost.IOStreams")
+def CheckForBoostIOStreams(context):
+    """Look for Boost.IOStreams."""
+
+    context.env.Append(LIBS = [ 'boost_iostreams' ])
+
+    return context.TryLink('''
+#include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+
+int main(int argc, char **argv)
+{
+  boost::iostreams::file_sink devnull("/dev/null");
+  boost::iostreams::filtering_ostream compressed_devnull(boost::iostreams::zlib_compressor(9) | devnull);
+}''', context.env['CXXFILESUFFIX'])
+
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
@@ -293,3 +310,8 @@ def FindGettext(configure):
         configure.Define("ENABLE_NLS", 1)
 
     return result
+
+def NonHeaders(src):
+    """Filter out headers from the given list of source files."""
+
+    return [ f for f in src if not str(f).endswith('.h') ]
