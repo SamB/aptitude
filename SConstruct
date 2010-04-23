@@ -86,8 +86,6 @@ for pkg in pkgconfig_packages:
     programs_env.ParseConfig('pkg-config %s --cflags --libs' % pkg)
 
 
-
-
-Export('programs_env')
-
-SConscript(['src/SConscript'])
+for variant_env in programs_env.AllVariantEnvs():
+    Export(programs_env = variant_env)
+    SConscript(['src/SConscript'], variant_dir = 'build/%s' % variant_env.GetVariantName())
