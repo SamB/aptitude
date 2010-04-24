@@ -15,7 +15,7 @@ Returns the Node for the alias.'''
     else:
         test_target = 'test'
 
-    env.Program(target, *args, **kwargs)
-    return env.Alias(test_target, [result], result[0].abspath)
+    program = env.Program(target, *args, **kwargs)
+    return env.Alias(test_target, [program], program[0].abspath)
 
 
