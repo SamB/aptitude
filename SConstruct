@@ -1,11 +1,10 @@
 PACKAGE = 'aptitude'
 VERSION = '0.6.2.1'
 
-import aptitude_build
+import aptitude_configure
 import os
 
-from aptitude_build import RequireCheck
-from aptitude_build import TryInclude
+from aptitude_configure_utils import RequireCheck
 
 # A generic environment used to build all aptitude's programs.
 programs_env = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
@@ -50,29 +49,7 @@ programs_env.DefineDirectory('lockfile',
                              default = '/var/lock/$PACKAGE',
                              help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
 
-programs_conf = aptitude_build.Configure(programs_env)
-
-RequireCheck(programs_conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
-                                                      TryInclude('/usr/include/ncursesw') ]),
-             "Can't find libncursesw -- please install libncursesw5-dev.")
-RequireCheck(programs_conf.CheckForApt(),
-             "Can't find the APT libraries -- please install libapt-pkg-dev.")
-RequireCheck(programs_conf.CheckForPThread(),
-             "Can't find the POSIX thread libraries.")
-RequireCheck(programs_conf.CheckForBoostIOStreams(),
-             "Can't find Boost.IOStreams")
-if programs_conf.CheckDDTP():
-    programs_conf.Define('HAVE_DDTP', 1)
-
-programs_conf.CheckForPo4A()
-aptitude_build.FindGettext(programs_conf)
-
-programs_conf.Define('SIGC_VERSION',
-                     '"%s"' % os.popen('pkg-config --modversion sigc++-2.0').read().strip())
-
-aptitude_build.RunConfigureFinishHooks(programs_conf)
-
-programs_conf.Finish()
+aptitude_configure.DoConfigure(programs_env)
 
 pkgconfig_packages = [
     'cwidget',

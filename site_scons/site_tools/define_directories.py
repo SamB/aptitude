@@ -1,4 +1,4 @@
-import aptitude_build
+import aptitude_configure_utils
 
 from SCons.Script import *
 
@@ -45,4 +45,4 @@ C++ code.  SConscript files can import the variable under the name
         Export({lowercase_key : value})
         configure.Define(uppercase_key, '"%s"' % value)
 
-    aptitude_build.AddConfigureFinishHook(finish)
+    aptitude_configure_utils.AddConfigureFinishHook(finish)

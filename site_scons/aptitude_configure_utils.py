@@ -15,7 +15,27 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-def NonHeaders(src):
-    """Filter out headers from the given list of source files."""
+# Contains utility code dealing with writing and invoking configure
+# tests, plus some very generic configure tests.  Configure tests for
+# specific libraries are in aptitude_configure.py.
 
-    return [ f for f in src if not str(f).endswith('.h') ]
+from SCons import SConf
+
+# Used by submodules to stage code that should run at the end of the
+# configure step.  They're passed the configure object as a parameter.
+configure_finish_hooks = []
+
+def AddConfigureFinishHook(f):
+    configure_finish_hooks.append(f)
+
+def RunConfigureFinishHooks(configure):
+    for hook in configure_finish_hooks:
+        hook(configure)
+
+
+def RequireCheck(check, failure_message):
+    """If the given configure check fails, print a message and exit."""
+    if not check:
+        print failure_message
+        Exit(1)
+
