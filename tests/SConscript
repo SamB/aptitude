@@ -1,3 +1,5 @@
+from aptitude_build import CString
+
 Import('cppunit_tests_env')
 Import('boost_tests_env')
 
@@ -69,7 +71,7 @@ cppunit_test = cppunit_tests_env.Program('cppunit_test',
                                           cppunit_test_extra_deps))
 
 # The file cache test uses this to find its input data.
-boost_tests_env.Append(CPPDEFINES = ('SRCDIR', Dir('.').abspath))
+boost_tests_env.Append(CPPDEFINES = ('SRCDIR', CString(Dir('.').abspath)))
 
 boost_test = boost_tests_env.Program('boost_test',
                                      (boost_test_sources,
