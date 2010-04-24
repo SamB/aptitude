@@ -15,7 +15,43 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
+import re
+
 def NonHeaders(src):
     """Filter out headers from the given list of source files."""
 
     return [ f for f in src if not str(f).endswith('.h') ]
+
+# This searches for either the start of the string or a non-backslash,
+# followed by an even number of backslashes, and then a character that
+# should be escaped.
+toescapere = re.compile(r'(["\\\n\t\r\b])',
+                        re.MULTILINE)
+
+def CString(s):
+    """Represent \"s\" as a C string constant."""
+
+    def escapechar(c):
+        """Escape a single character for a C string."""
+        if c == '\n':
+            return '\\n'
+        elif c == '\t':
+            return '\\t'
+        elif c == '\r':
+            return '\\r'
+        elif c == '\b':
+            return '\\b'
+        else:
+            return '\\%s' % c
+
+    def processmatch(m):
+        return escapechar(m.group(1))
+
+    return '"%s"' % toescapere.sub(processmatch, s)
+
+# Poor man's unit tests
+assert(CString('abc') == '"abc"')
+assert(CString('"abc"') == '"\\"abc\\""')
+assert(CString('\\') == '"\\\\"')
+assert(CString('\\\\') == '"\\\\\\\\"')
+assert(CString('abc\ndef\\') == '"abc\\ndef\\\\"')
