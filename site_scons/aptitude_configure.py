@@ -68,8 +68,9 @@ languages = [
     "zh_TW",
     ]
 
-def DoConfigure(env):
-    """Configure the build environment 'env'."""
+def DoConfigureBuild(env):
+    """Configure the build environment 'env' with the libraries that
+all executable targets need."""
     conf = aptitude_configure_checks.Configure(env)
 
     RequireCheck(conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
@@ -93,3 +94,85 @@ def DoConfigure(env):
     aptitude_configure_utils.RunConfigureFinishHooks(conf)
 
     conf.Finish()
+
+def DoConfigureTests(env):
+    '''Configure the build environment "env" with the libraries that
+the unit tests need.'''
+
+    conf = aptitude_configure_checks.Configure(env)
+
+    RequireCheck(conf.CheckForBoostTest(),
+                 "Can't find Boost.Test")
+
+    conf.Finish()
+
+class ConfigureResult:
+    '''Holder for the result of Configure(); see its documentation for
+details.'''
+
+    def __init__(self, **kwargs):
+        for key, val in kwargs.iteritems():
+            setattr(self, key, val)
+
+def Configure(PACKAGE, VERSION):
+    '''Create the build environments needed for various parts of
+aptitude.
+
+Returns an object with the following fields:
+  - base: a bare environment with minimal customization
+  - programs: an environment for building programs
+  - tests: an environment for building unit tests
+'''
+
+    base = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
+                              PACKAGE = PACKAGE,
+                              VERSION = VERSION)
+
+    base.Tool('define_directories')
+    base.Tool('variant_builds')
+
+    base.DefineVariants(axes = [
+        base.VariantAxis('Compile flags',
+                         base.Variant('debug', flags = '-g -O0 -fno-inline'),
+                         base.Variant('optimized', flags = '-g -O2'),
+                         base.Variant('profiling', flags = '-g -O2 -pg')),
+        base.VariantAxis('Interface',
+                         base.Variant('curses', helptext = 'Command-line and curses only'),
+                         base.Variant('gtk', helptext = 'Command-line, curses, and gtk')),
+        ],
+        default = 'debug-gtk')
+
+    base.DefineDirectory('prefix',
+                         default = '/usr/local',
+                         help = 'installation prefix')
+    base.DefineDirectory('datadir',
+                         default = '$PREFIX/share',
+                         help = 'data installation prefix')
+    base.DefineDirectory('pkgdatadir',
+                         default = '$DATADIR/$PACKAGE',
+                         help = 'package-specific data installation prefix')
+    base.DefineDirectory('helpdir',
+                         default = '$PKGDATADIR',
+                         help = 'help file installation prefix')
+    base.DefineDirectory('localedir',
+                         default = '$DATADIR/locale',
+                         help = 'installation prefix for locale files')
+    base.DefineDirectory('statedir',
+                         default = '/var/lib/$PACKAGE',
+                         help = 'the location in which aptitude should store its state (default /var/lib/$PACKAGE)')
+    base.DefineDirectory('lockfile',
+                         default = '/var/lock/$PACKAGE',
+                         help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
+
+    all_build_envs = base.Clone(CPPPATH = [ '#', '#/src' ],
+                                CPPDEFINES = [ '_REENTRANT' ])
+    DoConfigureBuild(all_build_envs)
+
+    programs = all_build_envs.Clone()
+    tests = all_build_envs.Clone()
+
+    DoConfigureTests(tests)
+
+    return ConfigureResult(base = base,
+                           programs = programs,
+                           tests = tests)
