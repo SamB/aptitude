@@ -16,7 +16,6 @@
 # MA 02111-1307, USA.
 
 import SCons.Script
-import subprocess
 
 # Custom configure checks for aptitude and the code to register and
 # configure them.
@@ -264,20 +263,13 @@ int main(int argc, char **argv)
 }''', context.env['CXXFILESUFFIX'])
 
 @RegisterCheck
-def PkgConfig(context, pkg):
-    context.Message('Checking for %s' % pkg)
+def PkgConfig(context, *pkgs):
+    context.Message('Checking for %s' % pkgs)
 
-    pipe = subprocess.Popen(['pkg-config',
-                             '--cflags',
-                             '--libs',
-                             pkg],
-                            stdout = subprocess.PIPE)
+    flags = context.env.GetPkgConfigFlags(*pkgs)
 
-    output = pipe.stdout.read()
-    pipe.wait()
-
-    if pipe.returncode == 0:
-        context.env.MergeFlags(output)
+    if flags is not None:
+        context.env.MergeFlags(flags)
         result = True
     else:
         result = False
