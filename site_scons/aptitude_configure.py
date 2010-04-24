@@ -93,6 +93,20 @@ all executable targets need."""
 
     aptitude_configure_utils.RunConfigureFinishHooks(conf)
 
+
+    pkgconfig_packages = [
+        'cwidget',
+        'libept',
+        'liblog4cxx',
+        'sigc++-2.0',
+        'sqlite3',
+        'vte',
+        ]
+
+    for pkg in pkgconfig_packages:
+        RequireCheck(conf.PkgConfig(pkg),
+                     "Can't find %s" % pkg)
+
     conf.Finish()
 
 def DoConfigureBoostTests(env):
