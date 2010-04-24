@@ -76,8 +76,11 @@ cppunit_test = cppunit_tests_env.Test('cppunit_test',
                                       (cppunit_test_sources,
                                        cppunit_test_extra_deps))
 
-# The file cache test uses this to find its input data.
-boost_tests_env.Append(CPPDEFINES = ('SRCDIR', ShellEscape(CString(Dir('.').abspath))))
+# The file cache test uses this to find its input data.  It must be
+# the path of the parent of the file_caches directory, relative to the
+# path of the test executable.  Since those are the same directory,
+# "." is correct.
+boost_tests_env.Append(CPPDEFINES = ('SRCDIR', ShellEscape(CString('.'))))
 
 boost_test = boost_tests_env.Test('boost_test',
                                   (boost_test_sources,
