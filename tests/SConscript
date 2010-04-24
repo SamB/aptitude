@@ -21,20 +21,29 @@ cppunit_test_sources = [
     'test_wtree.cc',
     ]
 
+cppunit_test_extra_deps = [
+    '../src/generic/problemresolver/dummy_universe.cc'
+    ]
+
 boost_test_sources = [
     'boost_test_main.cc',
     'test_file_cache.cc',
     'test_sqlite.cc'
     ]
 
+boost_test_extra_deps = [
+    ]
+
 cppunit_test = cppunit_tests_env.Program('cppunit_test',
-                                         cppunit_test_sources)
+                                         (cppunit_test_sources,
+                                          cppunit_test_extra_deps))
 
 # The file cache test uses this to find its input data.
 boost_tests_env.Append(CPPDEFINES = { 'SRCDIR' : str(Dir('.')) })
 
 boost_test = boost_tests_env.Program('boost_test',
-                                     boost_test_sources)
+                                     (boost_test_sources,
+                                      boost_test_extra_deps))
 
 Alias('test', [cppunit_test], str(cppunit_test))
 test = Alias('test', [boost_test], str(boost_test))
