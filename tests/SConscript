@@ -30,6 +30,9 @@ boost_test_sources = [
 cppunit_test = cppunit_tests_env.Program('cppunit_test',
                                          cppunit_test_sources)
 
+# The file cache test uses this to find its input data.
+boost_tests_env.Append(CPPDEFINES = { 'SRCDIR' : str(Dir('.')) })
+
 boost_test = boost_tests_env.Program('boost_test',
                                      boost_test_sources)
 
