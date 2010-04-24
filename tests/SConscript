@@ -72,18 +72,13 @@ boost_test_extra_deps = [
     '../src/generic/util/util.o',
     ]
 
-cppunit_test = cppunit_tests_env.Program('cppunit_test',
-                                         (cppunit_test_sources,
-                                          cppunit_test_extra_deps))
+cppunit_test = cppunit_tests_env.Test('cppunit_test',
+                                      (cppunit_test_sources,
+                                       cppunit_test_extra_deps))
 
 # The file cache test uses this to find its input data.
 boost_tests_env.Append(CPPDEFINES = ('SRCDIR', ShellEscape(CString(Dir('.').abspath))))
 
-boost_test = boost_tests_env.Program('boost_test',
-                                     (boost_test_sources,
-                                      boost_test_extra_deps))
-
-Alias('test', [cppunit_test], str(cppunit_test))
-test = Alias('test', [boost_test], str(boost_test))
-
-Return('test')
+boost_test = boost_tests_env.Test('boost_test',
+                                  (boost_test_sources,
+                                   boost_test_extra_deps))
