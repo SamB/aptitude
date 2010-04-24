@@ -65,6 +65,11 @@ boost_test_sources = [
     ]
 
 boost_test_extra_deps = [
+    '../src/loggers.o',
+    '../src/generic/util/file_cache.o',
+    '../src/generic/util/sqlite.o',
+    '../src/generic/util/temp.o',
+    '../src/generic/util/util.o',
     ]
 
 cppunit_test = cppunit_tests_env.Program('cppunit_test',
