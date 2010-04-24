@@ -17,6 +17,7 @@
 
 
 # Contains the logic to configure aptitude.
+from SCons.Script import DefaultEnvironment
 from SCons import SConf
 import os
 
