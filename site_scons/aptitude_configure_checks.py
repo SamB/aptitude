@@ -221,6 +221,46 @@ int main(int argc, char **argv)
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }''', context.env['CXXFILESUFFIX'])
 
+@ConfigureCheck("Checking for CPPUnit")
+def CheckForCPPUnit(context):
+    """Look for CPPUnit."""
+
+    context.env.Append(LIBS = 'cppunit')
+
+    return context.TryLink('''
+#include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
+
+class FooTest : public CppUnit::TestFixture
+{
+  CPPUNIT_TEST_SUITE(FooTest);
+
+  CPPUNIT_TEST(testDummy);
+
+  CPPUNIT_TEST_SUITE_END();
+
+public:
+  void testDummy()
+  {
+  }
+};
+
+CPPUNIT_TEST_SUITE_REGISTRATION(FooTest);
+
+int main(int argc, char **argv)
+{
+  CppUnit::TextTestRunner runner;
+  CppUnit::TestFactoryRegistry &registry =
+    CppUnit::TestFactoryRegistry::getRegistry();
+
+  runner.addTest(registry.makeTest());
+
+  bool wasSuccessful = runner.run("", false);
+
+  return wasSuccessful ? 0 : -255;
+}''', context.env['CXXFILESUFFIX'])
+
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
