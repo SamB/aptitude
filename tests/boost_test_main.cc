@@ -1,4 +1,6 @@
+#ifndef BOOST_TEST_NO_MAIN
 #define BOOST_TEST_NO_MAIN
+#endif
 
 #include <boost/test/unit_test.hpp>
 
