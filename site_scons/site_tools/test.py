@@ -7,7 +7,7 @@ def generate(env):
 
 def Test(env, target, *args, **kwargs):
     '''Compile the given test and run it as part of the "test" target.
-Returns the Node for the program.'''
+Returns the Node for the alias.'''
 
     if 'test_target' in kwargs:
         test_target = kwargs['test_target']
@@ -15,8 +15,7 @@ Returns the Node for the program.'''
     else:
         test_target = 'test'
 
-    result = env.Program(target, *args, **kwargs)
-    env.Alias(test_target, [result], result[0].abspath)
-    return result
+    env.Program(target, *args, **kwargs)
+    return env.Alias(test_target, [result], result[0].abspath)
 
 
