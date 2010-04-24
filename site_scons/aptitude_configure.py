@@ -154,6 +154,7 @@ Returns an object with the following fields:
                               VERSION = VERSION)
 
     base.Tool('define_directories')
+    base.Tool('test')
     base.Tool('variant_builds')
 
     base.DefineVariants(axes = [
