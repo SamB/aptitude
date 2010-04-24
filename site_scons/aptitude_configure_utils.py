@@ -20,6 +20,7 @@
 # specific libraries are in aptitude_configure.py.
 
 from SCons import SConf
+import SCons.Script
 
 # Used by submodules to stage code that should run at the end of the
 # configure step.  They're passed the configure object as a parameter.
@@ -37,5 +38,5 @@ def RequireCheck(check, failure_message):
     """If the given configure check fails, print a message and exit."""
     if not check:
         print failure_message
-        Exit(1)
+        SCons.Script.Exit(1)
 
