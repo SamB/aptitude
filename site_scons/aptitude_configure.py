@@ -95,14 +95,25 @@ all executable targets need."""
 
     conf.Finish()
 
-def DoConfigureTests(env):
+def DoConfigureBoostTests(env):
     '''Configure the build environment "env" with the libraries that
-the unit tests need.'''
+the Boost unit tests need.'''
 
     conf = aptitude_configure_checks.Configure(env)
 
     RequireCheck(conf.CheckForBoostTest(),
                  "Can't find Boost.Test")
+
+    conf.Finish()
+
+def DoConfigureCppunitTests(env):
+    '''Configure the build environment "env" with the libraries that
+the CPPUnit unit tests need.'''
+
+    conf = aptitude_configure_checks.Configure(env)
+
+    RequireCheck(conf.CheckForCPPUnit(),
+                 "Can't find CPPUnit")
 
     conf.Finish()
 
@@ -169,10 +180,13 @@ Returns an object with the following fields:
     DoConfigureBuild(all_build_envs)
 
     programs = all_build_envs.Clone()
-    tests = all_build_envs.Clone()
+    boost_tests = all_build_envs.Clone()
+    cppunit_tests = all_build_envs.Clone()
 
-    DoConfigureTests(tests)
+    DoConfigureBoostTests(boost_tests)
+    DoConfigureCppunitTests(cppunit_tests)
 
     return ConfigureResult(base = base,
                            programs = programs,
-                           tests = tests)
+                           boost_tests = boost_tests,
+                           cppunit_tests = cppunit_tests)
