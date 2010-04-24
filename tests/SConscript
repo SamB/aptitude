@@ -85,3 +85,8 @@ boost_tests_env.Append(CPPDEFINES = ('SRCDIR', ShellEscape(CString('.'))))
 boost_test = boost_tests_env.Test('boost_test',
                                   (boost_test_sources,
                                    boost_test_extra_deps))
+
+# Ensure that the test file caches are copied to the build directory.
+boost_tests_env.Depends(boost_test, ['file_caches/ver2_cache.db',
+                                     'file_caches/ver3_cache.db'])
+
