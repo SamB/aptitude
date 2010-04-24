@@ -41,7 +41,7 @@ def RegisterCheck(f):
     return f
 
 
-def ConfigureCheck(message):
+def ConfigureCheck(message, register = True):
     """Decorates a custom configure function by modifying its context
 as specified in kwargs before running it.  If the test succeeds
 by returning a true value, the environment is preserved; if the test
@@ -99,10 +99,11 @@ This decorator also adds the test to the custom_tests dictionary."""
 
             return result
 
-        if f.__name__ in custom_tests:
-            raise Exception('Duplicate function name \"%s\".' % f)
-        else:
-            custom_tests[f.__name__] = check
+        if register:
+            if f.__name__ in custom_tests:
+                raise Exception('Duplicate function name \"%s\".' % f)
+            else:
+                custom_tests[f.__name__] = check
 
         check.__name__ = f.__name__
         return check
