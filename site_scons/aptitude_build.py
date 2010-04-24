@@ -25,8 +25,8 @@ def NonHeaders(src):
 # This searches for either the start of the string or a non-backslash,
 # followed by an even number of backslashes, and then a character that
 # should be escaped.
-toescapere = re.compile(r'(["\\\n\t\r\b])',
-                        re.MULTILINE)
+cstring_toescapere = re.compile(r'(["\\\n\t\r\b])',
+                                re.MULTILINE)
 
 def CString(s):
     """Represent \"s\" as a C string constant."""
@@ -47,7 +47,7 @@ def CString(s):
     def processmatch(m):
         return escapechar(m.group(1))
 
-    return '"%s"' % toescapere.sub(processmatch, s)
+    return '"%s"' % cstring_toescapere.sub(processmatch, s)
 
 # Poor man's unit tests
 assert(CString('abc') == '"abc"')
@@ -55,3 +55,16 @@ assert(CString('"abc"') == '"\\"abc\\""')
 assert(CString('\\') == '"\\\\"')
 assert(CString('\\\\') == '"\\\\\\\\"')
 assert(CString('abc\ndef\\') == '"abc\\ndef\\\\"')
+
+# This just backslash-escapes anything that isn't an alphanumeric
+# character.
+shellescape_toescapere = re.compile(r'([^a-zA-Z0-9])')
+
+def ShellEscape(s):
+    def processmatch(m):
+        return '\\%s' % m.group(1)
+
+    return shellescape_toescapere.sub(processmatch, s)
+
+assert(ShellEscape('\\') == '\\\\')
+assert(ShellEscape('"') == '\\"')
