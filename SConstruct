@@ -20,7 +20,8 @@ programs_env.Tool('variant_builds')
 programs_env.DefineVariants(axes = [
     programs_env.VariantAxis('Compile flags',
                              programs_env.Variant('debug', flags = '-g -O0 -fno-inline'),
-                             programs_env.Variant('optimized', flags = '-g -O2')),
+                             programs_env.Variant('optimized', flags = '-g -O2'),
+                             programs_env.Variant('profiling', flags = '-g -O2 -pg')),
     programs_env.VariantAxis('Interface',
                              programs_env.Variant('curses', helptext = 'Command-line and curses only'),
                              programs_env.Variant('gtk', helptext = 'Command-line, curses, and gtk')),
