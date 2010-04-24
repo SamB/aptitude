@@ -25,4 +25,14 @@ for pkg in pkgconfig_packages:
 
 for variant_env in envs.programs.AllVariantEnvs():
     Export(programs_env = variant_env)
-    SConscript(['src/SConscript'], variant_dir = 'build/%s' % variant_env.GetVariantName())
+    aptitude = SConscript(['src/SConscript'], variant_dir = 'build/build-%s' % variant_env.GetVariantName())
+    Default(aptitude)
+
+# NB: I know because of how the variant directories are set up that we
+# always have the same number of entries in the two lists.
+for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(), envs.boost_tests.AllVariantEnvs()):
+    Export(cppunit_tests_env = cppunit_tests_env, boost_tests_env = boost_tests_env)
+    test = SConscript(['tests/SConscript'], variant_dir = 'build/test-%s' % variant_env.GetVariantName())
+    AlwaysBuild(test)
+    # For convenience, make "scons check" the same as "make check".
+    Alias('check', test)

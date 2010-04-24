@@ -1,0 +1,39 @@
+Import('cppunit_tests_env')
+Import('boost_tests_env')
+
+cppunit_test_sources = [
+    'cppunit_test_main.cc',
+    'test_choice.cc',
+    'test_choice_set.cc',
+    'test_config_pusher.cc',
+    'test_dense_setset.cc',
+    'test_incremental_expression.cc',
+    'test_matching.cc',
+    'test_misc.cc',
+    'test_parsers.cc',
+    'test_promotion_set.cc',
+    'test_resolver.cc',
+    'test_resolver_costs.cc',
+    'test_resolver_hints.cc',
+    'test_setset.cc',
+    'test_tags.cc',
+    'test_temp.cc',
+    'test_wtree.cc',
+    ]
+
+boost_test_sources = [
+    'boost_test_main.cc',
+    'test_file_cache.cc',
+    'test_sqlite.cc'
+    ]
+
+cppunit_test = cppunit_tests_env.Program('cppunit_test',
+                                         cppunit_test_sources)
+
+boost_test = boost_tests_env.Program('boost_test',
+                                     boost_test_sources)
+
+Alias('test', [cppunit_test], str(cppunit_test))
+test = Alias('test', [boost_test], str(boost_test))
+
+Return('test')
