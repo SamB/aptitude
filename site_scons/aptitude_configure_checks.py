@@ -265,7 +265,7 @@ int main(int argc, char **argv)
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
 
-    CheckForExecutable(context, 'po4a', 'PO4A')
+    return CheckForExecutable(context, 'po4a', 'PO4A')
 
 @ConfigureCheck("Checking for libintl in libc")
 def CheckForLibintlInLibc(context):
