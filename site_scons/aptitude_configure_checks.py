@@ -16,6 +16,7 @@
 # MA 02111-1307, USA.
 
 import SCons.Script
+import subprocess
 
 # Custom configure checks for aptitude and the code to register and
 # configure them.
@@ -261,6 +262,28 @@ int main(int argc, char **argv)
 
   return wasSuccessful ? 0 : -255;
 }''', context.env['CXXFILESUFFIX'])
+
+@RegisterCheck
+def PkgConfig(context, pkg):
+    context.Message('Checking for %s' % pkg)
+
+    pipe = subprocess.Popen(['pkg-config',
+                             '--cflags',
+                             '--libs',
+                             pkg],
+                            stdout = subprocess.PIPE)
+
+    output = pipe.stdout.read()
+    pipe.wait()
+
+    if pipe.returncode == 0:
+        context.env.MergeFlags(output)
+        result = True
+    else:
+        result = False
+
+    context.Result(result)
+    return result
 
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):
