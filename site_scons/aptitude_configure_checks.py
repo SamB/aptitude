@@ -326,10 +326,13 @@ def CheckForLibintlInLibc(context):
 
     if context.TryLink('''
 #include <libintl.h>
+#include <stdio.h> // For printf.
 
 int main(int argc, char **argv)
 {
   const char * const foo = gettext("Foo");
+  printf("%s\\n", foo);
+  return 0;
 }''', context.env['CXXFILESUFFIX']):
         context.Result('yes')
         return True
