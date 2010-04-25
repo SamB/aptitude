@@ -75,4 +75,6 @@ pkg_hier_dump = programs_env.Program(target = 'pkg_hier_dump',
                                          'pkg_hier_dump.cc',
                                          ])
 
+programs_env.Alias('programs', pkg_hier_dump)
+
 Return('srcs')

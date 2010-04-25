@@ -121,4 +121,6 @@ if programs_env.IsVariantActive('gtk'):
                                           Copy('$TARGET', '$SOURCE'))
     programs_env.Requires(aptitude, aptitude_glade)
 
+programs_env.Alias('programs', aptitude)
+
 Return('aptitude')

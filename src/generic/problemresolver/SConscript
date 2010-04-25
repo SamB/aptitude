@@ -28,4 +28,6 @@ test = programs_env.Program(target = 'test',
                                       '../util/refcounted_base.cc',
                                       ])
 
+programs_env.Alias('programs', test)
+
 Return('srcs')
