@@ -156,7 +156,10 @@ Returns a list of targets, one for each entry in "suffixes".'''
         tested_dist_dir = env.Command(tested_dist_dir_stamp,
                                       dist_dir_pristine_copy,
                                       [ [ 'scons' ] + scons_args,
-                                        "echo ${SOURCE.get_csig()} > $TARGET" ],
+                                        # Need to use the abspath here
+                                        # since we've cd'd down into
+                                        # the distcheck directory.
+                                        "echo ${SOURCE.get_csig()} > ${TARGET.abspath}" ],
                                       chdir = Dir(dist_dir_pristine_copy_filename).abspath)
     else:
         # Pretend we tested it.
