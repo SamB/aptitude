@@ -11,16 +11,52 @@ from aptitude_configure_utils import RequireCheck
 
 envs = aptitude_configure.Configure(PACKAGE, VERSION)
 
+manpage_locales = [
+    'gl',
+    'it',
+    'pl'
+    ]
+
+tl_manpages = Glob('aptitude.??.8')
+tl_helptexts = [
+    'help.txt',
+    Glob('help-??.txt'),
+    Glob('help-??_??.txt')
+    ]
+tl_defaults = [
+    Glob('aptitude-defaults.??'),
+    Glob('aptitude-defaults.??_??')
+    ]
+
 # Put files from the top-level into the source distribution.
 envs.base.Dist(
+    'COPYING',
+    'ChangeLog.SVN',
+    'Doxyfile.in',
+    'FAQ',
+    'FAQ',
+    'NEWS',
+    'README.CWIDGET',
+    'README.SMART-POINTERS',
+    'README.THREADS',
+    'README.i18n',
     'SConstruct',
+    'aclocal.m4',
+    'aptitude-defaults',
+    'aptitude-hackers-guide.txt',
+    'check_boost.sh',
+    'function_groups',
+    'function_pkgs',
+    'section-descriptions',
+    tl_defaults,
+    tl_helptexts,
+    tl_manpages,
     )
 
 
 base_env = envs.base
 Export('base_env')
 SConscript(dirs = [ 'site_scons' ])
-
 
 
 
