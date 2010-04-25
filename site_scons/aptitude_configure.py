@@ -220,7 +220,7 @@ Returns an object with the following fields:
                          default = '/var/lock/$PACKAGE',
                          help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
     base.DefineDirectory('mandir',
-                         default = '/usr/share/man',
+                         default = '$PREFIX/man',
                          help = 'the location in which manpages should be installed (default /usr/share/man).')
 
     all_build_envs = base.Clone(CPPPATH = [ '#', '#/src' ],
