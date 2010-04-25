@@ -176,7 +176,11 @@ def CheckForPThread(context):
 
 int main(int argc, char **argv)
 {
-  pthread_mutex_init(0, 0);
+  pthread_mutex_t mutex;
+  pthread_mutexattr_t mutexattr;
+
+  pthread_mutexattr_init(&mutexattr);
+  pthread_mutex_init(&mutex, &mutexattr);
   return 0;
 }''', context.env['CXXFILESUFFIX'])
 
