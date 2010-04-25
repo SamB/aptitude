@@ -17,7 +17,7 @@
 
 
 # Contains the logic to configure aptitude.
-from SCons.Script import DefaultEnvironment
+from SCons.Script import ARGUMENTS, DefaultEnvironment, Exit
 from SCons import SConf
 import os
 
@@ -158,6 +158,15 @@ Returns an object with the following fields:
                               PACKAGE = PACKAGE,
                               VERSION = VERSION)
 
+    # Complain if the user passed command-line build variables;
+    # AddOption is much more modular, and so we prefer it everywhere,
+    # even for stuff that traditionally (under automake) was a build
+    # variable, like DESTDIR.
+    if len(ARGUMENTS) > 0:
+        print 'var=value arguments are not supported; see --help.'
+        Exit(1)
+
+    base.Tool('better_install')
     base.Tool('define_directories')
     base.Tool('distribute')
     base.Tool('pkg_config')
@@ -183,6 +192,9 @@ Returns an object with the following fields:
         default = 'debug-gtk',
         disabledf = DisableVariants)
 
+    base.DefineDirectory('destdir',
+                         default = '',
+                         help = 'path prepended to all install paths (e.g., for packaging)')
     base.DefineDirectory('prefix',
                          default = '/usr/local',
                          help = 'installation prefix')

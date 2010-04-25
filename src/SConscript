@@ -117,6 +117,10 @@ else:
     aptitude_srcs = Flatten([toplevel_srcs, sub_srcs])
 
 aptitude = programs_env.Program(target = 'aptitude', source = NonHeaders(aptitude_srcs))
+# Note that this will cause a build failure if you try to install with
+# several variants active.  This is as it should be!  If you want to
+# install aptitude, you need to pick a particular variant to install.
+programs_env.Install(aptitude)
 
 if programs_env.IsVariantActive('gtk'):
     # Force the .glade file to be copied to the build directory.  Note
@@ -126,6 +130,7 @@ if programs_env.IsVariantActive('gtk'):
     aptitude_glade = programs_env.Command('gtk/aptitude.glade',
                                           '#/src/gtk/aptitude.glade',
                                           Copy('$TARGET', '$SOURCE'))
+    programs_env.Install(programs_env['BINDIR'], 'gtk/aptitude.glade')
     programs_env.Requires(aptitude, aptitude_glade)
 
 programs_env.Alias('programs', aptitude)

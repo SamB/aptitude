@@ -59,6 +59,32 @@ Export('base_env')
 SConscript(dirs = [ 'site_scons' ])
 
 
+# Define everything that should be installed from the top-level.
+envs.base.Install(envs.base['PKGDATADIR'], [
+    'COPYING',
+    'FAQ',
+    'NEWS',
+    'aptitude-defaults',
+    'function_groups',
+    'function_pkgs',
+    'section-descriptions',
+    tl_defaults,
+    tl_helptexts,
+    ])
+
+envs.base.Install(envs.base['BINDIR'], [
+        'aptitude-create-state-bundle',
+        'aptitude-run-state-bundle'
+        ])
+
+for locale in manpage_locales:
+    envs.base.Install(os.path.join(envs.base['MANDIR'], locale, 'man8'),
+                      'aptitude.%s.8' % locale)
+
+# Create the state directory on "install".
+make_statedir = Command(envs.base['STATEDIR'], [],
+                        Mkdir('$TARGET'))
+envs.base.Alias('install', make_statedir)
 
 ############# Code to build source & tests in each variant #############
 for variant_env in envs.programs.AllVariantEnvs():
