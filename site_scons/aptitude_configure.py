@@ -151,7 +151,10 @@ Returns an object with the following fields:
 '''
 
     base = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
-                              CXXFLAGS = [ '-Wall', '-Werror' ],
+                              # We need -fno-strict-aliasing to avoid
+                              # compiler errors that I can't figure
+                              # out how to fix.
+                              CXXFLAGS = [ '-fno-strict-aliasing', '-Wall', '-Werror' ],
                               PACKAGE = PACKAGE,
                               VERSION = VERSION)
 
