@@ -186,6 +186,9 @@ Returns an object with the following fields:
     base.DefineDirectory('prefix',
                          default = '/usr/local',
                          help = 'installation prefix')
+    base.DefineDirectory('bindir',
+                         default = '$PREFIX/bin',
+                         help = 'installation prefix for executable files')
     base.DefineDirectory('datadir',
                          default = '$PREFIX/share',
                          help = 'data installation prefix')
@@ -204,6 +207,9 @@ Returns an object with the following fields:
     base.DefineDirectory('lockfile',
                          default = '/var/lock/$PACKAGE',
                          help = 'the file that aptitude should use to lock out other instances of itself (default /var/lock/$PACKAGE).')
+    base.DefineDirectory('mandir',
+                         default = '/usr/share/man',
+                         help = 'the location in which manpages should be installed (default /usr/share/man).')
 
     all_build_envs = base.Clone(CPPPATH = [ '#', '#/src' ],
                                 CPPDEFINES = [ '_REENTRANT' ])
