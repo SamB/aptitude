@@ -95,13 +95,30 @@ toplevel_srcs = [
 sub_srcs = SConscript(dirs = [
         'cmdline',
         'generic',
-        #'gtk',
         'mine',
         ])
 
-all_srcs = Flatten([toplevel_srcs, sub_srcs])
+# Note: always load the GTK+ sources (for dist, etc) even if we aren't
+# building that variant.
+gtk_srcs = SConscript(dirs = [
+    'gtk'
+    ])
 
-# TODO: add nodes for all variants (debug vs release, gtk vs no-gtk),
-# in separate build directories.
-aptitude = programs_env.Program(target = 'aptitude', source = NonHeaders(all_srcs))
+if programs_env.IsVariantActive('gtk'):
+    aptitude_srcs = Flatten([toplevel_srcs, gtk_srcs, sub_srcs])
+else:
+    aptitude_srcs = Flatten([toplevel_srcs, sub_srcs])
+
+aptitude = programs_env.Program(target = 'aptitude', source = NonHeaders(aptitude_srcs))
+
+if programs_env.IsVariantActive('gtk'):
+    # Force the .glade file to be copied to the build directory.  Note
+    # the use of Requires to ensure that the glade is available for
+    # aptitude, without forcing aptitude to be relinked because it
+    # changed.
+    aptitude_glade = programs_env.Command('gtk/aptitude.glade',
+                                          '#/src/gtk/aptitude.glade',
+                                          Copy('$TARGET', '$SOURCE'))
+    programs_env.Requires(aptitude, aptitude_glade)
+
 Return('aptitude')
