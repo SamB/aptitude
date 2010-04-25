@@ -15,7 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-from SCons.Script import Copy, Dir, Entry
+from SCons.Script import Copy, Delete, Dir, Entry
 
 import os.path
 
@@ -149,7 +149,8 @@ Returns a list of targets, one for each entry in "suffixes".'''
         dist_dir_pristine_copy_filename = Dir(os.path.join(distcheck_directory, archive_stem))
         dist_dir_pristine_copy = env.Command(dist_dir_pristine_copy_filename,
                                              dist_dir,
-                                             [ Copy("$TARGET", "$SOURCE") ])
+                                             [ Delete("$TARGET"),
+                                               Copy("$TARGET", "$SOURCE") ])
 
         tested_dist_dir_stamp = os.path.join(distcheck_directory, '%s.stamp' % archive_stem)
         tested_dist_dir = env.Command(tested_dist_dir_stamp,
