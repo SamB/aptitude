@@ -2,8 +2,10 @@ from aptitude_build import CString
 from aptitude_build import ShellEscape
 import os.path
 
+Import('base_env')
 Import('cppunit_tests_env')
 Import('boost_tests_env')
+base_env.Dist('Makefile.am', 'SConscript')
 
 cppunit_test_sources = [
     'cppunit_test_main.cc',
@@ -78,6 +80,8 @@ test_data_files = [
     'file_caches/ver3_cache.db',
     ]
 
+boost_tests_env.Dist(cppunit_test_sources, boost_test_sources, test_data_files)
+
 cppunit_test = cppunit_tests_env.Test('cppunit_test',
                                       (cppunit_test_sources,
                                        cppunit_test_extra_deps))
@@ -97,6 +101,5 @@ for test_input in test_data_files:
     test_file = boost_tests_env.Command(test_input,
                                         os.path.join('#', 'tests', test_input),
                                         Copy('$TARGET', '$SOURCE'))
-    boost_tests_env.Dist(test_input)
     boost_tests_env.Requires(boost_test, test_file)
 

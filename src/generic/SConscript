@@ -1,3 +1,6 @@
+Import('programs_env')
+programs_env.Dist('Makefile.am', 'SConscript')
+
 sub_srcs = SConscript(dirs = [
     'apt',
     'problemresolver',

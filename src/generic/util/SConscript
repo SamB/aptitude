@@ -1,3 +1,5 @@
+Import('programs_env')
+
 srcs = map(File, [
     'compare3.h',
     'dense_setset.h',
@@ -25,5 +27,7 @@ srcs = map(File, [
     'util.cc',
     'util.h',
     ])
+
+programs_env.Dist('Makefile.am', 'SConscript')
 
 Return('srcs')

@@ -1,0 +1,10 @@
+Import('base_env')
+
+base_env.Dist([
+        'SConscript',
+        'define_directories.py',
+        'distribute.py',
+        'pkg_config.py',
+        'test.py',
+        'variant_builds.py'
+        ])

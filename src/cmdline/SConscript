@@ -1,3 +1,4 @@
+Import('programs_env')
 
 src_filenames = [
     'cmdline_action.cc',
@@ -52,5 +53,7 @@ src_filenames = [
     ]
 
 srcs = map(File, src_filenames)
+
+programs_env.Dist('Makefile.am', 'SConscript')
 
 Return('srcs')

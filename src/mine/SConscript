@@ -11,4 +11,6 @@ helptexts = Glob('mine-help-??.txt') + Glob('mine-help-??_??.txt')
 
 programs_env.Dist(helptexts)
 
+programs_env.Dist('Makefile.am', 'SConscript')
+
 Return('srcs')

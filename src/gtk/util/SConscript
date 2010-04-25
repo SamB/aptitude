@@ -1,5 +1,9 @@
+Import('programs_env')
+
 srcs = map(File, [
     'property.h',
     ])
+
+programs_env.Dist('Makefile.am', 'SConscript')
 
 Return('srcs')

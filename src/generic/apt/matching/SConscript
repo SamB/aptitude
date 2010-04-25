@@ -1,3 +1,5 @@
+Import('programs_env')
+
 srcs = map(File, [
     'compare_patterns.cc',
     'compare_patterns.h',
@@ -10,5 +12,7 @@ srcs = map(File, [
     'serialize.cc',
     'serialize.h',
     ])
+
+programs_env.Dist('Makefile.am', 'SConscript')
 
 Return('srcs')

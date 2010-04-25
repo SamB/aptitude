@@ -17,6 +17,10 @@ envs.base.Dist(
     )
 
 
+base_env = envs.base
+Export('base_env')
+SConscript(dirs = [ 'site_scons' ])
+
 
 
 
@@ -43,5 +47,6 @@ for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(
 # without having to worry about infinite recurrence.
 if 'dist' in COMMAND_LINE_TARGETS:
     archives = envs.base.DistArchive(envs.base.subst('$PACKAGE-$VERSION'),
-                                     scons_args = [ '--variants=all', '.' ])
+                                     scons_args = [ '--variants=all', '.',
+                                                    '-j', GetOption('num_jobs') ])
     Alias('dist', archives)

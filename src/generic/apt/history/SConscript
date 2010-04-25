@@ -1,3 +1,6 @@
+Import('programs_env')
+programs_env.Dist('Makefile.am', 'SConscript')
+
 srcs = map(File, [
     'history_entry.cc',
     'history_entry.h',
