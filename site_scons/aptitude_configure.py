@@ -151,6 +151,7 @@ Returns an object with the following fields:
 '''
 
     base = DefaultEnvironment(ENV = { 'PATH' : os.environ['PATH'] },
+                              CXXFLAGS = [ '-Wall', '-Werror' ],
                               PACKAGE = PACKAGE,
                               VERSION = VERSION)
 
