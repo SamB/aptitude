@@ -84,6 +84,7 @@ all executable targets need."""
                  "Can't find Boost.IOStreams")
     if conf.CheckDDTP():
         conf.Define('HAVE_DDTP', 1)
+    conf.CheckGTK()
 
     conf.CheckForPo4A()
     aptitude_configure_checks.FindGettext(conf)
@@ -158,6 +159,12 @@ Returns an object with the following fields:
     base.Tool('test')
     base.Tool('variant_builds')
 
+    def DisableVariants(env):
+        if not env.get('HAVE_GTK', False):
+            return 'gtk'
+        else:
+            return None
+
     base.DefineVariants(axes = [
         base.VariantAxis('Compile flags',
                          base.Variant('debug', flags = '-g -O0 -fno-inline'),
@@ -165,9 +172,11 @@ Returns an object with the following fields:
                          base.Variant('profiling', flags = '-g -O2 -pg')),
         base.VariantAxis('Interface',
                          base.Variant('curses', helptext = 'Command-line and curses only'),
-                         base.Variant('gtk', helptext = 'Command-line, curses, and gtk')),
+                         base.Variant('gtk', helptext = 'Command-line, curses, and gtk',
+                                      flags = '$GTKFLAGS')),
         ],
-        default = 'debug-gtk')
+        default = 'debug-gtk',
+        disabledf = DisableVariants)
 
     base.DefineDirectory('prefix',
                          default = '/usr/local',

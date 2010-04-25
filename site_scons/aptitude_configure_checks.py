@@ -277,6 +277,39 @@ def PkgConfig(context, *pkgs):
     context.Result(result)
     return result
 
+@ConfigureCheck('Checking for GTK+ libraries')
+def CheckGTK(context):
+    '''If the necessary libraries for GTK+ support appear to be
+available, add the flags necessary to activate them to GTKFLAGS and
+set the variable HAVE_GTK to 1.  Also arrange for -DHAVE_GTK to be
+part of GTKFLAGS.'''
+
+    SCons.Script.AddOption('--disable-gtk',
+                           dest = 'disable_gtk',
+                           default = False,
+                           action = 'store_true')
+
+    if SCons.Script.GetOption('disable_gtk'):
+        context.Result(False)
+        print 'Disabling the GTK+ frontend at your request (--disable-gtk).'
+        return False
+
+    flags = context.env.GetPkgConfigFlags(
+        'glibmm-2.4',
+        'gthread-2.0',
+        'gtkmm-2.4',
+        'libglademm-2.4',
+        )
+
+    if flags is not None:
+        context.env.Replace(GTKFLAGS = '%s -DHAVE_GTK=1' % flags, HAVE_GTK = 1)
+        result = True
+    else:
+        result = False
+
+    context.Result(result)
+    return result
+
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
