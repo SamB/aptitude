@@ -353,6 +353,6 @@ variant matching the given variant_pattern.'''
     active_variants = ParseVariants(axes, active_variant)
     if len(active_variants) > 1:
         raise Exception('Exactly one variant should be active at a time.')
-    selected_variants = ParseVariants(axes, variant_string)
+    selected_variants = ParseVariants(axes, variant_pattern)
 
     return active_variants.issubset(selected_variants)
