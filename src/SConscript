@@ -104,6 +104,10 @@ gtk_srcs = SConscript(dirs = [
     'gtk'
     ])
 
+# Note: always distribute all the source, even if it's not being
+# built.
+programs_env.Dist(toplevel_srcs, gtk_srcs, sub_srcs)
+
 if programs_env.IsVariantActive('gtk'):
     aptitude_srcs = Flatten([toplevel_srcs, gtk_srcs, sub_srcs])
 else:

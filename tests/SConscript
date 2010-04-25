@@ -73,6 +73,11 @@ boost_test_extra_deps = [
     '../src/generic/util/util.o',
     ]
 
+test_data_files = [
+    'file_caches/ver2_cache.db',
+    'file_caches/ver3_cache.db',
+    ]
+
 cppunit_test = cppunit_tests_env.Test('cppunit_test',
                                       (cppunit_test_sources,
                                        cppunit_test_extra_deps))
@@ -88,9 +93,10 @@ boost_test = boost_tests_env.Test('boost_test',
                                    boost_test_extra_deps))
 
 # Ensure that the test file caches are copied to the build directory.
-for test_input in ['ver2_cache.db', 'ver3_cache.db']:
-    test_file = boost_tests_env.Command(os.path.join('file_caches', test_input),
-                                        os.path.join('#/tests/file_caches', test_input),
+for test_input in test_data_files:
+    test_file = boost_tests_env.Command(test_input,
+                                        os.path.join('#', 'tests', test_input),
                                         Copy('$TARGET', '$SOURCE'))
+    boost_tests_env.Dist(test_input)
     boost_tests_env.Requires(boost_test, test_file)
 

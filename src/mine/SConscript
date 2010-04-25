@@ -1,8 +1,14 @@
+Import('programs_env')
+
 srcs = map(File, [
     'cmine.cc',
     'cmine.h',
     'board.cc',
     'board.h',
     ])
+
+helptexts = Glob('mine-help-??.txt') + Glob('mine-help-??_??.txt')
+
+programs_env.Dist(helptexts)
 
 Return('srcs')

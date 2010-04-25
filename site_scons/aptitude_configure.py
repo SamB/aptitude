@@ -159,6 +159,7 @@ Returns an object with the following fields:
                               VERSION = VERSION)
 
     base.Tool('define_directories')
+    base.Tool('distribute')
     base.Tool('pkg_config')
     base.Tool('test')
     base.Tool('variant_builds')

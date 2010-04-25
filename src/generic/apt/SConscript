@@ -75,6 +75,12 @@ pkg_hier_dump = programs_env.Program(target = 'pkg_hier_dump',
                                          'pkg_hier_dump.cc',
                                          ])
 
+# This won't be distributed otherwise since it's not part of aptitude
+# proper:
+programs_env.Dist('pkg_hier_dump.cc')
 programs_env.Alias('programs', pkg_hier_dump)
+
+# Data to distribute:
+programs_env.Dist('README.hier')
 
 Return('srcs')

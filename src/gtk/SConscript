@@ -1,3 +1,5 @@
+Import('programs_env')
+
 toplevel_srcs = map(File, [
     'area.cc',
     'area.h',
@@ -53,5 +55,7 @@ toplevel_srcs = map(File, [
 sub_srcs = SConscript(dirs = [ 'util' ])
 
 srcs = (toplevel_srcs, sub_srcs)
+
+programs_env.Dist('aptitude.glade')
 
 Return('srcs')

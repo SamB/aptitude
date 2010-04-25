@@ -3,6 +3,7 @@ VERSION = '0.6.2.1'
 
 import aptitude_configure
 import os
+import os.path
 
 from aptitude_configure_utils import RequireCheck
 
@@ -10,6 +11,16 @@ from aptitude_configure_utils import RequireCheck
 
 envs = aptitude_configure.Configure(PACKAGE, VERSION)
 
+# Put files from the top-level into the source distribution.
+envs.base.Dist(
+    'SConstruct',
+    )
+
+
+
+
+
+############# Code to build source & tests in each variant #############
 for variant_env in envs.programs.AllVariantEnvs():
     Export(programs_env = variant_env)
     aptitude = SConscript(['src/SConscript'], variant_dir = 'build/%s/src' % variant_env.GetVariantName())
@@ -25,3 +36,12 @@ for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(
     AlwaysBuild('test')
     # For convenience, make "scons check" the same as "make check".
     Alias('check', 'test')
+
+
+# Don't generate the "dist" stuff unless it's been explicitly
+# requested.  This allows "dist" to build all targets with '.'
+# without having to worry about infinite recurrence.
+if 'dist' in COMMAND_LINE_TARGETS:
+    archives = envs.base.DistArchive(envs.base.subst('$PACKAGE-$VERSION'),
+                                     scons_args = [ '--variants=all', '.' ])
+    Alias('dist', archives)
