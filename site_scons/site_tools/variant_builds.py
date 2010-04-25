@@ -202,7 +202,11 @@ variant is the Variant object representing the chosen option.  axes
 is a list of VariantAxis objects.
 
 Returns a set of VariantChoices representing the variants that match
-the given configuration string.'''
+the given configuration string.  If the string is None, returns an
+empty set.'''
+
+    if variants is None:
+        return set()
 
     # Lame, lazy way of doing this: build a list of the Cartesian
     # product of all the lists first.  Each entry in this list is a
