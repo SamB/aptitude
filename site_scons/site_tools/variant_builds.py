@@ -244,7 +244,7 @@ empty set.'''
 
     return chosen_variants
 
-def DefineVariants(env, axes, default):
+def DefineVariants(env, axes, default, disabledf = None):
     '''Define the available variants and configure the build for the
 ones the user chose.
 
@@ -268,6 +268,11 @@ variants produced by each selector are built.  Variant selectors are
 hyphen-separated lists of one or more option names, e.g.:
 "lemon-debug" or "optimized-orange"; variants that match the selector
 on the axes implied by its options are chosen by that selector.
+
+disabledf is a function which takes an environment and returns a
+string identifying the variants to disable (in the same form as the
+argument to --variants).  An interface meant to be distributed would
+also support defining a static value for this.
 
 Once variants have been chosen, the caller should use ForEachVariant()
 to select the active variants.'''
@@ -304,6 +309,7 @@ to select the active variants.'''
 
     # Save the variant definitions for later use.
     env.variant_axes = axes
+    env.disabled_variants_f = disabledf
 
 def AllVariantEnvs(env):
     '''Create and the environment variants for the given environment.
@@ -314,10 +320,16 @@ Returns one environment for each build variant, specialized for that variant.'''
         raise Exception('No variants defined -- call DefineVariants first.')
 
     axes = env.variant_axes
-    variant_string = env['VARIANTS']
-    active_variants = ParseVariants(axes, variant_string)
+    active_variants_string = env['VARIANTS']
+    disabled_variants_string = env.disabled_variants_f(env)
 
-    return [v.BuildEnv(env) for v in active_variants]
+    active_variants = ParseVariants(axes, active_variants_string)
+    disabled_variants = ParseVariants(axes, disabled_variants_string)
+
+    for v in active_variants & disabled_variants:
+        print '*** The variant %s is disabled.' % v
+
+    return [v.BuildEnv(env) for v in active_variants - disabled_variants]
 
 def GetVariantName(env):
     '''If env is a variant directory, return its variant name.'''
