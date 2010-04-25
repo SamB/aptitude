@@ -19,7 +19,9 @@ for variant_env in envs.programs.AllVariantEnvs():
 # always have the same number of entries in the two lists.
 for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(), envs.boost_tests.AllVariantEnvs()):
     Export(cppunit_tests_env = cppunit_tests_env, boost_tests_env = boost_tests_env)
-    SConscript(['tests/SConscript'], variant_dir = 'build/%s/tests' % variant_env.GetVariantName())
+    # If this isn't true, something has gone horribly wrong:
+    assert(cppunit_tests_env['VARIANT'] == boost_tests_env['VARIANT'])
+    SConscript(['tests/SConscript'], variant_dir = 'build/%s/tests' % cppunit_tests_env.GetVariantName())
     AlwaysBuild('test')
     # For convenience, make "scons check" the same as "make check".
     Alias('check', 'test')
