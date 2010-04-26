@@ -138,6 +138,21 @@ its absolute path."""
         context.Result(location)
         return True
 
+def MakeCheckForExecutable(name):
+    """Register a configure method named CheckForName that checks for
+the given executable and sets NAME to its location."""
+    # This won't cover every case, but it will cut down on code
+    # duplication in a lot of them.
+
+    method_name = 'CheckFor%s' % name.capitalize()
+    var_name = name.upper()
+
+    def check(context):
+        """Look for %s in $PATH and set $%s to its location.""" % (name, var_name)
+
+        return CheckForExecutable(context, name, var_name)
+    RegisterCheck(check, name = method_name)
+    return check
 
 @ConfigureCheck("Checking for apt")
 def CheckForApt(context):
