@@ -239,7 +239,7 @@ to distribute.'''
         translated_mainfile = None
     else:
         translated_mainfile = env.Po4A('aptitude.xml',
-                                       '../en/aptitude.xml',
+                                       File('../en/aptitude.xml'),
                                        pofile,
                                        addendum = add,
                                        percent_translated = main_percent_translated,
@@ -250,7 +250,7 @@ to distribute.'''
         translated_manpage = None
     else:
         translated_manpage = env.Po4A('manpage.xml',
-                                      '../en/manpage.xml',
+                                      File('../en/manpage.xml'),
                                       pofile,
                                       percent_translated = manpage_percent_translated,
                                       master_charset = master_charset,
