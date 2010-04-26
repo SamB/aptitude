@@ -233,7 +233,7 @@ to distribute.'''
     if add is False:
         add = None
 
-    pofile = File('../po4a/po/%s' % lang)
+    pofile = File('../po4a/po/%s.po' % lang)
 
     if main_percent_translated is None:
         translated_mainfile = None
