@@ -17,7 +17,7 @@
 
 import errno
 import xml.parsers.expat
-from SCons.Script import Scanner
+from SCons.Script import File, Scanner
 
 def exists():
     return True
@@ -69,4 +69,7 @@ def DocbookXSLImports(node, env, path):
     return result
 
 DocbookXSLImportScanner = Scanner(function = DocbookXSLImports,
-                                  skeys = [ '.xsl' ])
+                                  skeys = [ '.xsl' ],
+                                  node_class = File,
+                                  recursive = True,
+                                  )

@@ -17,7 +17,7 @@
 
 import errno
 import xml.parsers.expat
-from SCons.Script import Scanner
+from SCons.Script import File, Scanner
 
 def exists():
     return True
@@ -72,4 +72,7 @@ def XMLExternalEntities(node, env, path):
     return result
 
 XMLExternalEntitiesScanner = Scanner(function = XMLExternalEntities,
-                                     skeys = [ '.xml' ])
+                                     skeys = [ '.xml' ],
+                                     node_class = File,
+                                     recursive = True,
+                                     )
