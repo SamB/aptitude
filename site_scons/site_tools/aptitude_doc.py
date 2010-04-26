@@ -159,12 +159,18 @@ build the HTML, text, and manpage documentation respectively.'''
         env.InstallAs('$PKGDOCDIR/html/%s' % lang, html)
         env.Alias('doc-html', html)
         outputs.append(html)
+        # Work around scons not scanning intermediate files to find
+        # out their dependencies.
+        env.Depends(html, manpage)
 
 
         # Build the text documentation:
         html_onepage = env.Docbook(File(os.path.join(temp_txt, 'index.html')),
                                    mainfile,
                                    stylesheet = aptitude_txt_xsl)
+        # Work around scons not scanning intermediate files to find
+        # out their dependencies.
+        env.Depends(html_onepage, manpage)
 
         text = env.Html2Text(output_txt, html_onepage)
         env.Install('$PKGDATADIR', text)
@@ -176,6 +182,9 @@ build the HTML, text, and manpage documentation respectively.'''
         manpage_out = env.Docbook(File(os.path.join(temp_man, 'aptitude.8')),
                                   mainfile,
                                   stylesheet = aptitude_man_xsl)
+        # Work around scons not scanning intermediate files to find
+        # out their dependencies.
+        env.Depends(manpage_out, manpage)
 
         man = env.Command(output_man, manpage_out,
                           [Copy('$TARGET', '$SOURCE')] + fixman)
