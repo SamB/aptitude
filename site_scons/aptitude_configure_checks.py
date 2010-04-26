@@ -43,7 +43,7 @@ def RegisterCheck(f, name = None):
     return f
 
 
-def ConfigureCheck(message, register = True):
+def ConfigureCheck(message, register = True, name = None):
     """Decorates a custom configure function by modifying its context
 as specified in kwargs before running it.  If the test succeeds
 by returning a true value, the environment is preserved; if the test
@@ -67,7 +67,7 @@ above example. "msg" would be "In /usr/include" or "In /usr/include/ncursesw".
 If "tries" is not present, one run is performed with the values in kwargs.
 
 This decorator also adds the test to the custom_tests dictionary."""
-    def decorator(f):
+    def decorator(f, name = name):
         def check(context, tries = None, *args, **kwargs):
             context.Message('%s...' % message)
 
@@ -101,13 +101,15 @@ This decorator also adds the test to the custom_tests dictionary."""
 
             return result
 
+        if name is None:
+            name = f.__name__
         if register:
-            if f.__name__ in custom_tests:
+            if name in custom_tests:
                 raise Exception('Duplicate function name \"%s\".' % f)
             else:
-                custom_tests[f.__name__] = check
+                custom_tests[name] = check
 
-        check.__name__ = f.__name__
+        check.__name__ = name
         return check
 
     return decorator
