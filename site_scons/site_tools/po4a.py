@@ -30,8 +30,13 @@ def Po4A(env, target, master, pofile,
     extra_args = []
     deps = [master, pofile]
     if addendum is not None:
-        extra_args += ['-a', addendum]
-        deps.append(addendum)
+        # This is what we should do, but the addendums were never used
+        # in the old system and they break the build!  Disabling them
+        # for now.
+        #
+        #extra_args += ['-a', addendum]
+        #deps.append(addendum)
+        pass
     return env.Command(target, deps,
                        [[
             'po4a-translate',
