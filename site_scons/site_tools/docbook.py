@@ -44,5 +44,5 @@ ending in "/" and leaving this parameter False.'''
         target_subst = '$TARGET'
 
     return env.Command(Entry(target), args,
-                       [['xsltproc', '-o', target_subst] + args])
+                       [['xsltproc', '-o', target_subst] + env.Flatten(args)])
 
