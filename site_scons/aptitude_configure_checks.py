@@ -345,7 +345,24 @@ part of GTKFLAGS.'''
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
 
-    return CheckForExecutable(context, 'po4a', 'PO4A')
+    has_po4a = CheckForExecutable(context, 'po4a', 'PO4A')
+    has_po4a_translate = CheckForExecutable(context, 'po4a-translate', 'PO4A_TRANSLATE')
+    return has_po4a and has_po4a_translate
+
+# The old Makefile defines both MSGFMT and GMSGFMT.  It's unclear what
+# the distinction is supposed to be; they get defined to the same
+# thing.
+MakeCheckForExecutable("msgfmt")
+MakeCheckForExecutable("xgettext")
+
+# TODO: the Makefile stored actual commands, MSGMERGE="msgmerge
+# --previous" and MSGMERGE_UPDATE="msgmerge --previous --update".
+# Presumably there should be configure checks for platforms where
+# msgmerge behaves differently.
+MakeCheckForExecutable("msgmerge")
+MakeCheckForExecutable("msginit")
+MakeCheckForExecutable("msgconv")
+MakeCheckForExecutable("msgfilter")
 
 @ConfigureCheck("Checking for libintl in libc")
 def CheckForLibintlInLibc(context):
@@ -404,8 +421,12 @@ def FindGettext(configure):
     result = True
 
     result = configure.CheckForLibintlInLibc() and result
-    result = configure.CheckForExecutable('gettext', 'GETTEXT') and result
-    result = configure.CheckForExecutable('msgmerge', 'MSGMERGE') and result
+    result = configure.CheckForMsgfmt() and result
+    result = configure.CheckForXgettext() and result
+    result = configure.CheckForMsgmerge() and result
+    result = configure.CheckForMsginit() and result
+    result = configure.CheckForMsgconv() and result
+    result = configure.CheckForMsgfilter() and result
     result = configure.CheckHeader('libintl.h') and result
     result = configure.CheckHeader('locale.h') and result
 
