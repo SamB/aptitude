@@ -106,8 +106,7 @@ build the HTML, text, and manpage documentation respectively.'''
             env.Dist(mainfile)
         if manpage is not None:
             env.Dist(manpage)
-    if images is not None:
-        env.Dist(images)
+    # Images are registered later on an individual basis.
 
     outputs = []
     fixman = []
@@ -141,13 +140,14 @@ build the HTML, text, and manpage documentation respectively.'''
                            stylesheet = aptitude_html_xsl)
         if images is not None:
             in_svgs = env.Glob("%s/*.svg" % images)
+            in_pngs = env.Glob("%s/*.png" % images)
+            env.Dist((in_svgs, in_pngs))
             out_svg_pngs = []
             for in_svg in in_svgs:
                 out_svg_png = File('%s.png' % str(in_svg)[:-4])
                 out_svg_pngs.append(env.Rsvg(out_svg_png, in_svg))
-            in_images = env.Glob("%s/*.png" % images) + env.Flatten(out_svg_pngs)
+            in_images = env.Flatten((in_pngs, out_svg_pngs))
             if len(in_images) > 0:
-                env.Dist(in_images)
                 # Note that the image directory is hardcoded to "images";
                 # this could be a parameter instead.
                 copy_images = env.Command(os.path.join(output_html, 'images'),
