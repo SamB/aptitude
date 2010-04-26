@@ -145,7 +145,7 @@ build the HTML, text, and manpage documentation respectively.'''
             for in_svg in in_svgs:
                 out_svg_png = File('%s.png' % str(in_svg)[:-4])
                 out_svg_pngs.append(env.Rsvg(out_svg_png, in_svg))
-            in_images = env.Glob("%s/*.png" % images) + out_svg_pngs
+            in_images = env.Glob("%s/*.png" % images) + env.Flatten(out_svg_pngs)
             # Note that the image directory is hardcoded to "images";
             # this could be a parameter instead.
             copy_images = env.Command(os.path.join(output_html, 'images'),
