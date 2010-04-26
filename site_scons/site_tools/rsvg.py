@@ -19,7 +19,7 @@ def exists():
     return True
 
 def generate(env):
-    env.AddMethod('Rsvg')
+    env.AddMethod(Rsvg)
 
 def Rsvg(env, target, source):
     return env.Command(target, source,
