@@ -343,6 +343,7 @@ part of GTKFLAGS.'''
     return result
 
 MakeCheckForExecutable("xsltproc")
+MakeCheckForExecutable("rsvg-convert", var_name = "RSVG_CONVERT")
 
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):

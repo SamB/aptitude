@@ -23,7 +23,7 @@ def generate(env):
 
 def Rsvg(env, target, source):
     return env.Command(target, source,
-                       [ [ 'rsvg-convert',
+                       [ [ env.get('RSVG', 'rsvg-convert'),
                            # TODO: support more output formats?
                            # Autoguess from the target suffix?
                            # Autogenerate the output file name?
