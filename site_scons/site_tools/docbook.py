@@ -15,7 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-from SCons.Script import Entry, File
+from SCons.Script import Delete, Entry, File
 import re
 
 def exists():
@@ -39,10 +39,19 @@ ending in "/" and leaving this parameter False.'''
         args = [File(xml)]
 
     if target_is_directory:
-        target_subst = '${TARGET}/'
+        target_subst = '%s/' % target
+        # Create a dummy target that gets the dependency, to avoid
+        # weirdness that happens when directories get into the
+        # dependency tree.
+        target_stamp = '%s.stamp' % target
+        result = env.Command(target_stamp, args,
+                             [Delete('${output_html}'),
+                              ['xsltproc', '-o', '${output_html}'] + env.Flatten(args),
+                              'echo ${output_html.get_csig()} > ${TARGET.abspath}'],
+                             output_html = env.Dir(target_subst))
     else:
         target_subst = '$TARGET'
+        result = env.Command(Entry(target), args,
+                             [['xsltproc', '-o', target_subst] + env.Flatten(args)])
 
-    return env.Command(Entry(target), args,
-                       [['xsltproc', '-o', target_subst] + env.Flatten(args)])
-
+    return result
