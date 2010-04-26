@@ -46,7 +46,7 @@ def XMLExternalEntities(node, env, path):
         raise Finished()
 
     try:
-        infile = file(node.path)
+        infile = file(node.srcnode().path)
     except EnvironmentError, e:
         if e.errno == errno.ENOENT:
             return []

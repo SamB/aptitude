@@ -46,7 +46,7 @@ def DocbookXSLImports(node, env, path):
 
 
     try:
-        infile = file(node.path)
+        infile = file(node.srcnode().path)
     except EnvironmentError, e:
         if e.errno == errno.ENOENT:
             return []
