@@ -15,6 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
+import errno
 import xml.parsers.expat
 from SCons.Script import Scanner
 
@@ -45,11 +46,19 @@ def XMLExternalEntities(node, env, path):
         raise Finished()
 
     try:
+        infile = file(node.path)
+    except EnvironmentError, e:
+        if e.errno == errno.ENOENT:
+            return []
+        else:
+            raise
+
+    try:
         parser = xml.parsers.expat.ParserCreate()
         parser.StartElementHandler = start_element
         parser.EntityDeclHandler = entity_decl
 
-        parser.ParseFile(file(node.path))
+        parser.ParseFile(infile)
     except Finished:
         pass
     except xml.parsers.expat.ExpatError, e:
@@ -57,6 +66,8 @@ def XMLExternalEntities(node, env, path):
         # Probably an XML syntax error -- don't blow up the scanner
         # for that!
         pass
+    finally:
+        infile.close()
 
     return result
 
