@@ -341,6 +341,8 @@ part of GTKFLAGS.'''
     context.Result(result)
     return result
 
+MakeCheckForExecutable("xsltproc")
+
 @ConfigureCheck("Checking for po4a")
 def CheckForPo4A(context):
     """Look for po4a in $PATH and set $PO4A accordingly."""
