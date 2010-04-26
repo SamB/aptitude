@@ -33,11 +33,13 @@ the given environment."""
     env.MergeFlags(env.ParseFlags('-DHAVE_CONFIG_H'))
     return result
 
-def RegisterCheck(f):
+def RegisterCheck(f, name = None):
     """Decorates a custom configure check by registering it in the
     global dictionary of checks under its name."""
 
-    custom_tests[f.__name__] = f
+    if name is None:
+        name = f.__name__
+    custom_tests[name] = f
     return f
 
 
