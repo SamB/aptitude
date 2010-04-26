@@ -167,7 +167,10 @@ build the HTML, text, and manpage documentation respectively.'''
                 copy_images = env.Command(os.path.join(output_html, 'images'),
                                           in_images,
                                           [ Delete('$TARGET') ] +
-                                          [ Copy('$TARGET', x) for x in in_images ])
+                                          [ Copy('$TARGET', x) for x in in_images ] +
+                                          [ Copy('$TARGET', fn)
+                                            for fn in [ 'caution.png', 'important.png', 'note.png', 'tip.png', 'warning.png',
+                                                        'home.gif', 'next.gif', 'prev.gif', 'up.gif'] ])
                 env.Alias('doc-html', copy_images)
         # Note the use of InstallAs to rename the directory!
         env.InstallAs('$PKGDOCDIR/html/%s' % lang, html)
