@@ -228,7 +228,7 @@ to distribute.'''
                                '../po4a/add_%s/addendum.1.%s'
                                % (lang, lang))
         if os.path.exists(testdir):
-            add = '../po4a/add_%s/addendum.1.%s' % (lang, lang)
+            add = File('../po4a/add_%s/addendum.1.%s' % (lang, lang))
 
     if add is False:
         add = None
@@ -238,7 +238,7 @@ to distribute.'''
     if main_percent_translated is None:
         translated_mainfile = None
     else:
-        translated_mainfile = env.Po4A('aptitude.xml',
+        translated_mainfile = env.Po4A(File('aptitude.xml'),
                                        File('../en/aptitude.xml'),
                                        pofile,
                                        addendum = add,
@@ -249,7 +249,7 @@ to distribute.'''
     if manpage_percent_translated is None:
         translated_manpage = None
     else:
-        translated_manpage = env.Po4A('manpage.xml',
+        translated_manpage = env.Po4A(File('manpage.xml'),
                                       File('../en/manpage.xml'),
                                       pofile,
                                       percent_translated = manpage_percent_translated,
