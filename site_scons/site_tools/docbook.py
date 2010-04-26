@@ -46,7 +46,7 @@ ending in "/" and leaving this parameter False.'''
         target_stamp = '%s.stamp' % target
         result = env.Command(target_stamp, args,
                              [Delete('${output_html}'),
-                              ['xsltproc', '-o', '${output_html}'] + env.Flatten(args),
+                              ['xsltproc', '-o', '${output_html}/'] + env.Flatten(args),
                               'echo ${output_html.get_csig()} > ${TARGET.abspath}'],
                              output_html = env.Dir(target_subst))
     else:
