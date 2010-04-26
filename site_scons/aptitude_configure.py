@@ -88,6 +88,7 @@ all executable targets need."""
 
     conf.CheckForXsltproc()
     conf.CheckForPo4A()
+    aptitude_configure_checks.FindGettextTools(conf)
     aptitude_configure_checks.FindGettext(conf)
 
     conf.Define('SIGC_VERSION',

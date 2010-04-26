@@ -417,18 +417,27 @@ int main(int argc, char **argv)
         return False
 
 
-def FindGettext(configure):
-    """Look for gettext-related utilities."""
+def FindGettextTools(configure):
+    """Look for utilities needed to process pofiles."""
 
     result = True
 
-    result = configure.CheckForLibintlInLibc() and result
     result = configure.CheckForMsgfmt() and result
     result = configure.CheckForXgettext() and result
     result = configure.CheckForMsgmerge() and result
     result = configure.CheckForMsginit() and result
     result = configure.CheckForMsgconv() and result
     result = configure.CheckForMsgfilter() and result
+
+    configure.env['HAVE_GETTEXT_UTILS'] = result
+    return result
+
+def FindGettext(configure):
+    """Look for gettext-related functions."""
+
+    result = True
+
+    result = configure.CheckForLibintlInLibc() and result
     result = configure.CheckHeader('libintl.h') and result
     result = configure.CheckHeader('locale.h') and result
 
