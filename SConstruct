@@ -107,7 +107,10 @@ for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(
 ###### Build the documentation in build/doc ######
 docs_env = envs.base
 Export('docs_env')
-SConscript(['doc/SConscript'], variant_dir = 'build/doc', duplicate = False)
+SConscript(['doc/SConscript'])
+# Disable this until I can get it working somehow...
+#
+#, variant_dir = 'build/doc', duplicate = False)
 Alias('docs', 'doc-html')
 Alias('docs', 'doc-text')
 Alias('docs', 'doc-man')
