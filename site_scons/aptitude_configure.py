@@ -228,6 +228,12 @@ Returns an object with the following fields:
     base.DefineDirectory('mandir',
                          default = '$PREFIX/man',
                          help = 'the location in which manpages should be installed (default /usr/share/man).')
+    base.DefineDirectory('docdir',
+                         default = '$DATADIR/doc',
+                         help = 'system prefix for documentation.')
+    base.DefineDirectory('pkgdocdir',
+                         default = '$DOCDIR/$PACKAGE',
+                         help = 'the location in which aptitude\'s documentation should be installed.')
 
     all_build_envs = base.Clone(CPPPATH = [ '#', '#/src' ],
                                 CPPDEFINES = [ '_REENTRANT' ])
