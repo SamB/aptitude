@@ -104,6 +104,15 @@ for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(
     Alias('check', 'test')
 
 
+###### Build the documentation in build/doc ######
+docs_env = envs.base
+Export('docs_env')
+SConscript(['doc/SConscript'], variant_dir = 'build/doc')
+Alias('docs', 'doc-html')
+Alias('docs', 'doc-text')
+Alias('docs', 'doc-man')
+
+
 # Don't generate the "dist" stuff unless it's been explicitly
 # requested.  This allows "dist" to build all targets with '.'
 # without having to worry about infinite recurrence.
