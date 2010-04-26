@@ -153,6 +153,7 @@ build the HTML, text, and manpage documentation respectively.'''
                                       in_images,
                                       [ Delete('$TARGET') ] +
                                       [ Copy('$TARGET', x) for x in in_images ])
+            env.Alias('doc-html', copy_images)
         # Note the use of InstallAs to rename the directory!
         env.InstallAs('$PKGDOCDIR/html/%s' % lang, html)
         env.Alias('doc-html', html)
