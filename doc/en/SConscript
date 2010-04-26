@@ -1,0 +1,10 @@
+Import('docs_env')
+
+docs_env.Dist(
+    'Makefile.am',
+    'SConscript',
+    )
+
+docs_env.AptitudeStandaloneDocs(
+    'en',
+    )
