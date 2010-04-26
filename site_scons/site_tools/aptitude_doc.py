@@ -143,7 +143,7 @@ build the HTML, text, and manpage documentation respectively.'''
             in_svgs = env.Glob("%s/*.svg" % images)
             out_svg_pngs = []
             for in_svg in in_svgs:
-                out_svg_png = '%s.png' % str(in_svg)[:-4]
+                out_svg_png = File('%s.png' % str(in_svg)[:-4])
                 out_svg_pngs.append(env.Rsvg(out_svg_png, in_svg))
             in_images = env.Glob("%s/*.png" % images) + out_svg_pngs
             # Note that the image directory is hardcoded to "images";
