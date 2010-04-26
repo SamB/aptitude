@@ -39,7 +39,7 @@ def Po4A(env, target, master, pofile,
         pass
     return env.Command(target, deps,
                        [[
-            'po4a-translate',
+            env.get('PO4A_TRANSLATE', 'po4a-translate'),
             '-k', str(percent_translated),
             '-M', master_charset,
             '-f', format,
