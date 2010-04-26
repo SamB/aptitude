@@ -39,7 +39,7 @@ def XMLExternalEntities(node, env, path):
                     publicId,
                     notationName):
         if value is None:
-            print entityName, is_parameter_entity, base, systemId, publicId, notationName
+            result.append(systemId)
 
     def start_element(name, attrs):
         raise Finished()
