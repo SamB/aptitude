@@ -166,12 +166,18 @@ Returns an object with the following fields:
         print 'var=value arguments are not supported; see --help.'
         Exit(1)
 
+    base.Tool('aptitude_doc')
     base.Tool('better_install')
     base.Tool('define_directories')
     base.Tool('distribute')
+    base.Tool('docbook')
+    base.Tool('docbook-xsl-import-scanner')
+    base.Tool('html2text')
     base.Tool('pkg_config')
+    base.Tool('po4a')
     base.Tool('test')
     base.Tool('variant_builds')
+    base.Tool('xml-external-entity-scanner')
 
     def DisableVariants(env):
         if not env.get('HAVE_GTK', False):
