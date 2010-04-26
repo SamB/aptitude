@@ -1,0 +1,8 @@
+Import('docs_env')
+
+import os.path
+
+docs_env.AptitudeStandaloneDocs(
+    'fi',
+    manpage_postprocess = lambda cwd: '/bin/bash %s' % os.path.join(cwd, 'fixman'),
+    )
