@@ -247,7 +247,7 @@ Returns an object with the following fields:
     DoConfigureBoostTests(boost_tests)
     DoConfigureCppunitTests(cppunit_tests)
 
-    return ConfigureResult(base = base,
+    return ConfigureResult(base = all_build_envs,
                            programs = programs,
                            boost_tests = boost_tests,
                            cppunit_tests = cppunit_tests)
