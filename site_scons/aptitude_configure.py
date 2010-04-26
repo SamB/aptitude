@@ -86,7 +86,7 @@ all executable targets need."""
         conf.Define('HAVE_DDTP', 1)
     conf.CheckGTK()
 
-    RequireCheck(conf.CheckForXsltproc())
+    conf.CheckForXsltproc()
     conf.CheckForPo4A()
     aptitude_configure_checks.FindGettext(conf)
 
