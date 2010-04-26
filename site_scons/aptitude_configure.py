@@ -175,6 +175,7 @@ Returns an object with the following fields:
     base.Tool('html2text')
     base.Tool('pkg_config')
     base.Tool('po4a')
+    base.Tool('rsvg')
     base.Tool('test')
     base.Tool('variant_builds')
     base.Tool('xml-external-entity-scanner')
