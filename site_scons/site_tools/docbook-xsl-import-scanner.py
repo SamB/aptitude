@@ -30,7 +30,7 @@ def DocbookXSLImports(node, env, path):
     result = []
 
     def start_element(name, attrs):
-        if name == 'xsl:import':
+        if name == 'xsl:import' or name == 'xsl:include':
             href = attrs.get('href', None)
             if href is None:
                 return
