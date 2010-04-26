@@ -46,6 +46,6 @@ ending in "/" and leaving this parameter False.'''
         target_node = File(target)
 
     result = env.Command(target_node, args,
-                         [['xsltproc', '-o', target_subst] + env.Flatten(args)])
+                         [[env.get('XSLTPROC', 'xsltproc'), '-o', target_subst] + env.Flatten(args)])
 
     return result
