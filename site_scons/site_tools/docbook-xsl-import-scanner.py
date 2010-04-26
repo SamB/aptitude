@@ -70,6 +70,5 @@ def DocbookXSLImports(node, env, path):
 
 DocbookXSLImportScanner = Scanner(function = DocbookXSLImports,
                                   skeys = [ '.xsl' ],
-                                  node_class = File,
                                   recursive = True,
                                   )

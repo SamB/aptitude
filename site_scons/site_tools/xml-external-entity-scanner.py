@@ -73,6 +73,5 @@ def XMLExternalEntities(node, env, path):
 
 XMLExternalEntitiesScanner = Scanner(function = XMLExternalEntities,
                                      skeys = [ '.xml' ],
-                                     node_class = File,
                                      recursive = True,
                                      )
