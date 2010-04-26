@@ -23,10 +23,10 @@ def generate(env):
 
 def Rsvg(env, target, source):
     return env.Command(target, source,
-                       [ 'rsvg-convert',
-                         # TODO: support more output formats?
-                         # Autoguess from the target suffix?
-                         # Autogenerate the output file name?
-                         '-f', 'png',
-                         '-o', target,
-                         source ])
+                       [ [ 'rsvg-convert',
+                           # TODO: support more output formats?
+                           # Autoguess from the target suffix?
+                           # Autogenerate the output file name?
+                           '-f', 'png',
+                           '-o', target,
+                           source ] ])
