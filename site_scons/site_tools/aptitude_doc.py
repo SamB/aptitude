@@ -146,14 +146,15 @@ build the HTML, text, and manpage documentation respectively.'''
                 out_svg_png = File('%s.png' % str(in_svg)[:-4])
                 out_svg_pngs.append(env.Rsvg(out_svg_png, in_svg))
             in_images = env.Glob("%s/*.png" % images) + env.Flatten(out_svg_pngs)
-            env.Dist(in_images)
-            # Note that the image directory is hardcoded to "images";
-            # this could be a parameter instead.
-            copy_images = env.Command(os.path.join(output_html, 'images'),
-                                      in_images,
-                                      [ Delete('$TARGET') ] +
-                                      [ Copy('$TARGET', x) for x in in_images ])
-            env.Alias('doc-html', copy_images)
+            if len(in_images) > 0:
+                env.Dist(in_images)
+                # Note that the image directory is hardcoded to "images";
+                # this could be a parameter instead.
+                copy_images = env.Command(os.path.join(output_html, 'images'),
+                                          in_images,
+                                          [ Delete('$TARGET') ] +
+                                          [ Copy('$TARGET', x) for x in in_images ])
+                env.Alias('doc-html', copy_images)
         # Note the use of InstallAs to rename the directory!
         env.InstallAs('$PKGDOCDIR/html/%s' % lang, html)
         env.Alias('doc-html', html)
