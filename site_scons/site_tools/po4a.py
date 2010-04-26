@@ -33,7 +33,7 @@ def Po4A(env, target, master, pofile,
         extra_args += ['-a', addendum]
         deps.append(addendum)
     return env.Command(target, deps,
-                       [
+                       [[
             'po4a-translate',
             '-k', str(percent_translated),
             '-M', master_charset,
@@ -41,4 +41,4 @@ def Po4A(env, target, master, pofile,
             '-m', master,
             '-p', pofile,
             '-l', '$TARGET'
-            ] + extra_args)
+            ] + extra_args])
