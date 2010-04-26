@@ -15,6 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
+from SCons.Script import AddOption, GetOption
 import SCons.Script
 
 # Custom configure checks for aptitude and the code to register and
@@ -120,13 +121,20 @@ def TryInclude(d):
     return ("In %s" % d, { 'CPPPATH' : [ d ] })
 
 @RegisterCheck
-def CheckForExecutable(context, filename, var):
+def CheckForExecutable(context, filename, var, help = None):
     """Look for the given filename in $PATH.  If var is set in the
 environment, use its value; otherwise find the program and set var to
 its absolute path."""
     context.Message("Checking for %s..." % filename)
 
-    location = context.env.get(var)
+    AddOption('--with-%s' % filename,
+              dest = 'check_for_%s' % filename,
+              nargs = 1,
+              type = 'string', action = 'store',
+              metavar = 'DIR',
+              default = context.env.get(var),
+              help = help or 'set the path to %s' % filename)
+    location = GetOption('check_for_%s' % filename)
     if location is None:
         location = context.env.WhereIs(filename)
 
