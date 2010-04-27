@@ -175,11 +175,14 @@ Returns an object with the following fields:
     base.Tool('docbook')
     base.Tool('docbook-xsl-import-scanner')
     base.Tool('html2text')
+    base.Tool('msgfmt')
+    base.Tool('msgmerge')
     base.Tool('pkg_config')
     base.Tool('po4a')
     base.Tool('rsvg')
     base.Tool('test')
     base.Tool('variant_builds')
+    base.Tool('xgettext')
     base.Tool('xml-external-entity-scanner')
 
     def DisableVariants(env):

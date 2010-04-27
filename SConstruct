@@ -102,6 +102,10 @@ for variant_env in envs.programs.AllVariantEnvs():
         Exit(1)
     Default(aptitude)
 
+# De-setify the list of sources.
+all_aptitude_srcs = list(all_aptitude_srcs)
+Export('all_aptitude_srcs')
+
 # NB: I know because of how the variant directories are set up that we
 # always have the same number of entries in the two lists.
 for cppunit_tests_env, boost_tests_env in zip(envs.cppunit_tests.AllVariantEnvs(), envs.boost_tests.AllVariantEnvs()):
@@ -122,6 +126,13 @@ Alias('docs', 'doc-html')
 Alias('docs', 'doc-text')
 Alias('docs', 'doc-man')
 
+###### Build the gettext translation files ######
+po_env = envs.base
+Export('po_env')
+# No variant_dir because the pofile workflow requires the outputs to
+# be in the source directory and in distributed archives.
+SConscript(['po/SConscript'])
+
 
 # Don't generate the "dist" stuff unless it's been explicitly
 # requested.  This allows "dist" to build all targets with '.'
@@ -131,3 +142,7 @@ if 'dist' in COMMAND_LINE_TARGETS:
                                      scons_args = [ '--variants=all', '.',
                                                     '-j', GetOption('num_jobs') ])
     Alias('dist', archives)
+
+    # Rebuild the pofiles *before* attempting to build the
+    # distribution archive.
+    po_env.Depends('dist', 'update-po')
