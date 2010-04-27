@@ -94,7 +94,7 @@ for variant_env in envs.programs.AllVariantEnvs():
     variant_dir = 'build/%s/src' % variant_env.GetVariantName()
     aptitude, all_aptitude_srcs_v = SConscript(['src/SConscript'],
                                                variant_dir = variant_dir)
-    all_aptitude_srcs_v = set(all_aptitude_srcs_v)
+    all_aptitude_srcs_v = set(Flatten(all_aptitude_srcs_v))
     if all_aptitude_srcs is None:
         all_aptitude_srcs = all_aptitude_srcs_v
     elif all_aptitude_srcs_v != all_aptitude_srcs:
