@@ -31,12 +31,12 @@ def generate(env):
 
 def Install(env, targetdir, *sources, **kwargs):
     def add_destdir(path):
-        '''Add DESTDIR to a path.
+        """Add DESTDIR to a path.
 
 os.path.join won't work because it doesn't join to absolute paths;
 join('a', '/b') returns '/b'.  And concatenation doesn't work right
 if DESTDIR lacks a trailing space.  This deals with both cases
-properly.'''
+properly."""
         destdir = env['DESTDIR']
         if destdir == '':
             return path
