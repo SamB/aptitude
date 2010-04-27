@@ -104,15 +104,19 @@ gtk_srcs = SConscript(dirs = [
     'gtk'
     ])
 
+# All the aptitude sources, including things that might not be built
+# in all variants:
+all_aptitude_srcs = Flatten((toplevel_srcs, gtk_srcs, sub_srcs))
+
 # Distribute the build files.
 programs_env.Dist('SConscript', 'Makefile.am')
 
 # Note: always distribute all the source, even if it's not being
 # built.
-programs_env.Dist(toplevel_srcs, gtk_srcs, sub_srcs)
+programs_env.Dist(all_aptitude_srcs)
 
 if programs_env.IsVariantActive('gtk'):
-    aptitude_srcs = Flatten([toplevel_srcs, gtk_srcs, sub_srcs])
+    aptitude_srcs = all_aptitude_srcs
 else:
     aptitude_srcs = Flatten([toplevel_srcs, sub_srcs])
 
@@ -135,4 +139,4 @@ if programs_env.IsVariantActive('gtk'):
 
 programs_env.Alias('programs', aptitude)
 
-Return('aptitude')
+Return('aptitude', 'all_aptitude_srcs')

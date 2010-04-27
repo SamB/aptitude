@@ -86,10 +86,20 @@ make_statedir = Command(envs.base['STATEDIR'], [],
                         Mkdir('$TARGET'))
 envs.base.Alias('install', make_statedir)
 
+all_aptitude_srcs = None
+
 ############# Code to build source & tests in each variant #############
 for variant_env in envs.programs.AllVariantEnvs():
     Export(programs_env = variant_env)
-    aptitude = SConscript(['src/SConscript'], variant_dir = 'build/%s/src' % variant_env.GetVariantName())
+    variant_dir = 'build/%s/src' % variant_env.GetVariantName()
+    aptitude, all_aptitude_srcs_v = SConscript(['src/SConscript'],
+                                               variant_dir = variant_dir)
+    all_aptitude_srcs_v = set(all_aptitude_srcs_v)
+    if all_aptitude_srcs is None:
+        all_aptitude_srcs = all_aptitude_srcs_v
+    elif all_aptitude_srcs_v != all_aptitude_srcs:
+        print 'Build script error: not all variants produced the same list of source files.'
+        Exit(1)
     Default(aptitude)
 
 # NB: I know because of how the variant directories are set up that we
