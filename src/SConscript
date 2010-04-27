@@ -3,7 +3,7 @@ from aptitude_build import NonHeaders
 Import('programs_env')
 
 
-toplevel_srcs = [
+toplevel_srcs = map(File, [
     'apt_config_treeitems.cc',
     'apt_config_treeitems.h',
     'apt_config_widgets.cc',
@@ -90,7 +90,7 @@ toplevel_srcs = [
     'ui_download_manager.h',
     'view_changelog.cc',
     'view_changelog.h',
-    ]
+    ])
 
 sub_srcs = SConscript(dirs = [
         'cmdline',
