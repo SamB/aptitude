@@ -29,7 +29,7 @@ def exists():
 def generate(env):
     env.AddMethod(Install)
 
-def Install(env, targetdir, *sources):
+def Install(env, targetdir, *sources, **kwargs):
     def add_destdir(path):
         '''Add DESTDIR to a path.
 
@@ -56,7 +56,8 @@ properly.'''
             output = add_destdir(os.path.join(targetdir, os.path.basename(Entry(source).path)))
             result.append(env.Command(output,
                                       source,
-                                      Copy('$TARGET', '$SOURCE')))
+                                      Copy('$TARGET', '$SOURCE'),
+                                      **kwargs))
 
         env.Alias('install', result)
 
