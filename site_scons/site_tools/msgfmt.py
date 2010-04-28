@@ -15,7 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-from SCons.Script import Builder
+from SCons.Script import Builder, Move
 import msgmerge
 
 def exists():
@@ -33,8 +33,9 @@ def generate(env):
 MsgfmtBuilder = Builder(
     action = [[
         '$MSGFMT', '-c', '--statistics',
-        '-o', '$TARGET',
+        '-o', '${TARGET}.new',
         '$SOURCE'
-        ]],
+        ],
+              Move('${TARGET}', '${TARGET}.new')],
     suffix = '.gmo',
     source_suffix = '.po')

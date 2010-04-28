@@ -15,7 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-from SCons.Script import AddOption, Builder, GetOption
+from SCons.Script import AddOption, Builder, GetOption, Move
 
 def exists():
     return True
@@ -39,6 +39,7 @@ XgettextBuilder = Builder(action = [['$XGETTEXT',
                                      '--add-comments=ForTranslators:',
                                      '--copyright-holder=Daniel Burrows <dburrows@debian.org>',
                                      '--msgid-bugs-address=aptitude@packages.debian.org',
-                                     '-o', '$TARGET',
-                                     '$SOURCES']],
+                                     '-o', '${TARGET}.new',
+                                     '$SOURCES'],
+                                    Move('$TARGET', '${TARGET}.new')],
                           suffix = '.pot')
