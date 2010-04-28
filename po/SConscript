@@ -59,7 +59,9 @@ pofile_languages = [
     'zh_TW',
     ]
 
-def BuildPoFile(env, lang, potfile = 'aptitude.pot'):
+def BuildPoFile(env, lang,
+                potfile = 'aptitude.pot',
+                potfile_sig = 'aptitude.pot.sig'):
     '''Build the po file for the given language, compile it to a mo
 file, and install the compiled form.  Also distribute *both* the po
 file and the mo file.'''
@@ -71,10 +73,28 @@ file and the mo file.'''
     po_env.Dist(po_file, mo_file)
     env.Install('$LOCALEDIR/$LANG/LC_MESSAGES', LANG = lang)
     env.Alias('update-po', mo_file)
+
+    # Arrange to build the pofile iff the potfile signature changes.
+    env.Depends(po_file, potfile_sig)
+    env.Ignore(po_file, potfile)
+
     return mo_file
 
 aptitude_pot = po_env.Xgettext('aptitude.pot', all_aptitude_srcs)
 po_env.Dist(aptitude_pot)
+
+# Reuse the clunky but functional POT-Creation-Date stripping script
+# from gettext.
+removepotdate = po_env.Command('remove-potcdate.sed',
+                               'remove-potcdate.sin',
+                               ["sed -e '/^#/d' $SOURCE > ${TARGET}.new",
+                                Move('${TARGET}', '${TARGET}.new')])
+
+aptitude_pot_sig = po_env.Command('aptitude.pot.sig',
+                                  aptitude_pot,
+                                  ['sed -f $REMOVEPOTDATE $SOURCE | sha512sum > ${TARGET}.new',
+                                   Move('${TARGET}', '${TARGET}.new')],
+                                  REMOVEPOTDATE = removepotdate)
 
 # I seriously considered making aptitude.pot a default target, but
 # that would pollute the version control history with a bunch of
@@ -84,4 +104,4 @@ po_env.Alias('update-po', aptitude_pot)
 
 # Rules relating to keeping the translations up-to-date.
 for lang in pofile_languages:
-    BuildPoFile(po_env, lang, aptitude_pot)
+    BuildPoFile(po_env, lang, aptitude_pot, aptitude_pot_sig)
