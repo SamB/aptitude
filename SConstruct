@@ -104,6 +104,9 @@ for variant_env in envs.programs.AllVariantEnvs():
 
 # De-setify the list of sources.
 all_aptitude_srcs = list(all_aptitude_srcs)
+# Sort it so we don't get spurious changes in order due to hashing
+# blips.
+all_aptitude_srcs.sort()
 Export('all_aptitude_srcs')
 
 # NB: I know because of how the variant directories are set up that we
