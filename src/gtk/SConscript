@@ -1,8 +1,6 @@
 Import('programs_env')
 
 toplevel_srcs = map(File, [
-    'area.cc',
-    'area.h',
     'changelog.cc',
     'changelog.h',
     'constants.h',
@@ -52,7 +50,7 @@ toplevel_srcs = map(File, [
     'treeview_cell_tooltips.h',
     ])
 
-sub_srcs = SConscript(dirs = [ 'util' ])
+sub_srcs = SConscript(dirs = [ 'toplevel', 'util' ])
 
 srcs = (toplevel_srcs, sub_srcs)
 

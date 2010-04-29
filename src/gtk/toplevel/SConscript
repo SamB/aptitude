@@ -1,0 +1,13 @@
+Import('programs_env')
+
+toplevel_srcs = map(File, [
+    'area.cc',
+    'area.h',
+    ])
+
+srcs = toplevel_srcs
+
+# Distribute the build files.
+programs_env.Dist('Makefile.am', 'SConscript')
+
+Return('srcs')

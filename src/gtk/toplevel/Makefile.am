@@ -1,0 +1,9 @@
+INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
+
+noinst_LIBRARIES=libgtk-toplevel.a
+
+EXTRA_DIST=README
+
+libgtk_toplevel_a_SOURCES = \
+	area.cc \
+	area.h

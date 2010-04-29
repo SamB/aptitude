@@ -1,6 +1,6 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 
-SUBDIRS=util
+SUBDIRS=toplevel util
 
 noinst_LIBRARIES=libgtk.a
 
@@ -11,8 +11,6 @@ pkgdata_DATA = aptitude.glade
 EXTRA_DIST = aptitude.glade
 
 libgtk_a_SOURCES=\
-	area.cc \
-	area.h \
 	changelog.cc \
 	changelog.h \
 	constants.h \
