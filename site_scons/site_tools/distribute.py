@@ -153,14 +153,16 @@ Returns a list of targets, one for each entry in "suffixes".'''
                                                Copy("$TARGET", "$SOURCE") ])
 
         tested_dist_dir_stamp = os.path.join(distcheck_directory, '%s.stamp' % archive_stem)
+        chdir_path = Dir(dist_dir_pristine_copy_filename).abspath
         tested_dist_dir = env.Command(tested_dist_dir_stamp,
                                       dist_dir_pristine_copy,
-                                      [ [ 'scons' ] + scons_args,
+                                      [ 'cd $COPY_DIR && scons $SCONS_ARGS',
                                         # Need to use the abspath here
                                         # since we've cd'd down into
                                         # the distcheck directory.
-                                        "echo ${SOURCE.get_csig()} > ${TARGET.abspath}" ],
-                                      chdir = Dir(dist_dir_pristine_copy_filename).abspath)
+                                        "cd $COPY_DIR && echo ${SOURCE.get_csig()} > ${TARGET.abspath}" ],
+                                      COPY_DIR = chdir_path,
+                                      SCONS_ARGS = scons_args)
     else:
         # Pretend we tested it.
         tested_dist_dir = dist_dir
