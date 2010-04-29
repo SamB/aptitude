@@ -15,7 +15,7 @@
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-from SCons.Script import File, Scanner
+from SCons.Script import File
 
 import re
 import os.path
@@ -185,14 +185,6 @@ def get_po4a_targets(env, source):
                     outputs.append(parts[1])
 
     return (extra_sources, outputs)
-
-Po4AConfigurationScanner = Scanner(function = Po4AConfigDeps,
-                                   name = 'PO4AConfigurationScanner',
-                                   path_function = path_function,
-                                   # Skip recursion because we
-                                   # shouldn't depend on the
-                                   # docbook-XML stuff.
-                                   recursive = False)
 
 # I use a wrapper around the builder to ensure that the various
 # SideEffect calls take place as required.
