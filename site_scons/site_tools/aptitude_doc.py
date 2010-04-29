@@ -121,8 +121,8 @@ build the HTML, text, and manpage documentation respectively.'''
                 return path
             else:
                 return os.path.join('.', path)
-        fixman_action.append(env.Action(relative(manpage_postprocess),
-                                        chdir = Dir('.').path))
+        fixman_action.append(env.Action('cd ${TARGET.dir} && %s'
+                                        % relative(manpage_postprocess)))
         fixman_dep.append(File(manpage_postprocess))
 
     # Make sure that the input XML files are File/Dir nodes.
