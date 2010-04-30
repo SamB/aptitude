@@ -36,9 +36,16 @@ BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorCurrent, fourNumbers)
   int_enum e3(numbers.begin() + 2, numbers.end());
   int_enum e4(numbers.begin() + 3, numbers.end());
 
+  BOOST_REQUIRE(e1.advance());
   BOOST_CHECK_EQUAL(e1.get_current(), 1);
+
+  BOOST_REQUIRE(e2.advance());
   BOOST_CHECK_EQUAL(e2.get_current(), 2);
+
+  BOOST_REQUIRE(e3.advance());
   BOOST_CHECK_EQUAL(e3.get_current(), 3);
+
+  BOOST_REQUIRE(e4.advance());
   BOOST_CHECK_EQUAL(e4.get_current(), 4);
 }
 
@@ -48,17 +55,24 @@ BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorAdvance, fourNumbers)
   int_enum e2(numbers.begin() + 1, numbers.end());
   int_enum e3(numbers.begin() + 2, numbers.end());
   int_enum e4(numbers.begin() + 3, numbers.end());
+  int_enum e_end(numbers.end(), numbers.end());
 
+  BOOST_REQUIRE(e1.advance());
   BOOST_REQUIRE(e1.advance());
   BOOST_CHECK_EQUAL(e1.get_current(), 2);
 
   BOOST_REQUIRE(e2.advance());
+  BOOST_REQUIRE(e2.advance());
   BOOST_CHECK_EQUAL(e2.get_current(), 3);
 
-  BOOST_REQUIRE(e2.advance());
+  BOOST_REQUIRE(e3.advance());
+  BOOST_REQUIRE(e3.advance());
   BOOST_CHECK_EQUAL(e3.get_current(), 4);
 
-  BOOST_CHECK(!e3.advance());
+  BOOST_REQUIRE(e4.advance());
+  BOOST_CHECK(!e4.advance());
+
+  BOOST_CHECK(!e_end.advance());
 }
 
 BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorKeepaliveCurrent, fourNumbers)
@@ -72,9 +86,13 @@ BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorKeepaliveCurrent, fourNumbers)
   int_keepalive_enum e4(numbersShared->begin() + 3, numbersShared->end(),
                         numbersShared);
 
+  BOOST_REQUIRE(e1.advance());
   BOOST_CHECK_EQUAL(e1.get_current(), 1);
+  BOOST_REQUIRE(e2.advance());
   BOOST_CHECK_EQUAL(e2.get_current(), 2);
+  BOOST_REQUIRE(e3.advance());
   BOOST_CHECK_EQUAL(e3.get_current(), 3);
+  BOOST_REQUIRE(e4.advance());
   BOOST_CHECK_EQUAL(e4.get_current(), 4);
 }
 
@@ -88,17 +106,25 @@ BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorKeepaliveAdvance, fourNumbers)
                         numbersShared);
   int_keepalive_enum e4(numbersShared->begin() + 3, numbersShared->end(),
                         numbersShared);
+  int_keepalive_enum e_end(numbersShared->end(), numbersShared->end(),
+                           numbersShared);
 
+  BOOST_REQUIRE(e1.advance());
   BOOST_REQUIRE(e1.advance());
   BOOST_CHECK_EQUAL(e1.get_current(), 2);
 
   BOOST_REQUIRE(e2.advance());
+  BOOST_REQUIRE(e2.advance());
   BOOST_CHECK_EQUAL(e2.get_current(), 3);
 
-  BOOST_REQUIRE(e2.advance());
+  BOOST_REQUIRE(e3.advance());
+  BOOST_REQUIRE(e3.advance());
   BOOST_CHECK_EQUAL(e3.get_current(), 4);
 
-  BOOST_CHECK(!e3.advance());
+  BOOST_REQUIRE(e4.advance());
+  BOOST_CHECK(!e4.advance());
+
+  BOOST_CHECK(!e_end.advance());
 }
 
 BOOST_FIXTURE_TEST_CASE(iteratorEnumeratorKeepalive, fourNumbers)
