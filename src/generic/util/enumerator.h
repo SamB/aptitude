@@ -74,7 +74,7 @@ namespace aptitude
       else
         ++begin;
 
-      return true;
+      return begin != end;
     }
 
     /** \brief An enumerator over an iterator range that holds a strong
