@@ -84,7 +84,7 @@ cw::column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerItera
     case archive:
       if(!ver.end())
 	{
-	  string buf = archives_text(ver, true);
+	  string buf = archives_text(ver, true, ",");
 	  return cw::column_disposition(buf,0);
 	}
       else

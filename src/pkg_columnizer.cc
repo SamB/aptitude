@@ -482,7 +482,7 @@ cw::column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::Pk
     case archive:
       if(!visible_ver.end())
 	{
-	  string buf = archives_text(visible_ver, true);
+	  string buf = archives_text(visible_ver, true, ",");
 	  return cw::column_disposition(buf,0);
 	}
       else

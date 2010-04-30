@@ -63,9 +63,11 @@ cwidget::fragment *solution_fragment_with_ids(const generic_solution<aptitude_un
  *  \param v   the version whose archives are to be returned.
  *  \param suppress_now  If \b true, the "now" archive will be
  *                       discarded from the list.
+ *  \param inter_archive_string   The string to place between archives.
  */
 std::string archives_text(const pkgCache::VerIterator &v,
-                          bool suppress_now = false);
+                          bool suppress_now = false,
+                          const std::string &inter_archive_string = ", ");
 
 /** \return a cwidget::fragment describing the given choice. */
 cwidget::fragment *choice_fragment(const generic_choice<aptitude_universe> &c);
