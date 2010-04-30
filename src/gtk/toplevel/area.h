@@ -20,6 +20,10 @@
 #ifndef AREA_H
 #define AREA_H
 
+#include <generic/util/dynamic_list.h>
+#include <generic/util/enumerator.h>
+#include <generic/util/progress_info.h>
+
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
@@ -55,87 +59,6 @@ namespace gui
   class tab_info;
 
 
-  /** \brief Data types related to progress information. */
-  // @{
-
-  /** \brief The type of progress information being stored.
-   */
-  enum progress_type
-  {
-    /** \brief There is no progress information. */
-    progress_type_none,
-    /** \brief There is only a progress pulse. */
-    progress_type_pulse,
-    /** \brief Full progress information is available. */
-    progress_type_bar
-  };
-
-  class progress_info
-  {
-    progress_type type;
-    double progress_fraction;
-    std::string progress_status;
-
-    progress_info(double _progress_fraction,
-		  std::string _progress_status)
-      : type(progress_type_bar),
-        progress_fraction(_progress_fraction),
-        progress_status(_progress_status)
-    {
-    }
-
-    progress_info(progress_type _type)
-      : type(_type), progress_fraction(0)
-    {
-    }
-
-  public:
-    static progress_info none()
-    {
-      return progress_info(progress_type_none);
-    }
-
-    static progress_info pulse()
-    {
-      return progress_info(progress_type_pulse);
-    }
-
-    static progress_info bar(double fraction,
-			     const std::string &status)
-    {
-      return progress_info(fraction, status);
-    }
-  };
-
-  // @}
-
-  /** \brief Utility class to allow generic iteration over a list.
-   *
-   *  Unlike an iterator, instantiations of this class can be used
-   *  without the definition of the concrete object being visible to
-   *  the user.  Like Java and .NET iterators, these iterators start
-   *  "before" the list being iterated over and must be advanced to
-   *  the first entry.
-   */
-  template<typename T>
-  class enumerator
-  {
-  public:
-    virtual ~enumerator() {}
-
-    typedef T value_type;
-
-    /** \brief Get the value at the current position. */
-    virtual T get_current() = 0;
-
-    /** \brief Advance to the next entry in the list.
-     *
-     *  \return \b true if there was another entry, or \b false if we
-     *  reached the end of the list.
-     */
-    virtual bool advance() = 0;
-  };
-
   /** \brief The abstract description of a static collection of areas.
    *
    *  It would be possible, and attractive from one point of view, to
@@ -153,7 +76,11 @@ namespace gui
 
     virtual int get_size() = 0;
 
-    virtual boost::shared_ptr<enumerator<boost::shared_ptr<area_info> > > get_areas() = 0;
+    typedef aptitude::util::enumerator<boost::shared_ptr<area_info> >
+    areas_enumerator;
+
+    /** \brief Enumerate the list areas contained in this list. */
+    virtual boost::shared_ptr<areas_enumerator> get_areas() = 0;
   };
 
   /** \brief Create an immutable area list from an STL vector of
@@ -178,62 +105,17 @@ namespace gui
     /** \brief Get the icon of this area. */
     virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
 
+  public:
+    typedef aptitude::util::dynamic_list<boost::shared_ptr<tab_info> >
+    tabs_list;
 
-    typedef enumerator<boost::shared_ptr<tab_info> > tab_enumerator;
+    typedef aptitude::util::dynamic_list<boost::shared_ptr<notification_info> >
+    notifications_list;
 
-    /** \brief Enumerate the tabs in this area.
-     *
-     *  To get a consistent picture of the tabs, the caller should
-     *  enumerate them before any other process adds or removes a tab.
-     *  Typically this means enumerating them in a tight loop.
-     */
-    virtual boost::shared_ptr<tab_enumerator> get_tabs() = 0;
-
-    /** \brief Append a tab to this area's tab list. */
-    virtual void append_tab(const boost::shared_ptr<tab_info> &tab) = 0;
-
-    /** \brief Remove a tab from this area's tab list. */
-    virtual void remove_tab(const boost::shared_ptr<tab_info> &tab) = 0;
-
-
-
-
-    typedef enumerator<boost::shared_ptr<notification_info> > notification_enumerator;
-
-    /** \brief Enumerate the notifications in this area.
-     *
-     *  To get a consistent picture of the notifications, the caller
-     *  should enumerate them before any other process adds or removes
-     *  a notification.  Typically this means enumerating them in a
-     *  tight loop.
-     */
-    virtual boost::shared_ptr<notification_enumerator> get_notifications() = 0;
-
-    /** \brief Append a notification to this area's notification list. */
-    virtual void append_notification(const boost::shared_ptr<notification_info> &notification) = 0;
-
-    /** \brief Remove a notification from this area's notification list. */
-    virtual void remove_notification(const boost::shared_ptr<notification_info> &notification) = 0;
-
-
-    /** \brief Signals */
-    // @{
-
-    /** \brief Emitted after a tab is appended to the area's tab list. */
-    sigc::signal<void, boost::shared_ptr<tab_info> > signal_tab_appended;
-
-    /** \brief Emitted after a tab is removed from the area's tab list. */
-    sigc::signal<void, boost::shared_ptr<tab_info> > signal_tab_removed;
-
-
-
-    /** \brief Emitted after a notification is appended to the area's notification list. */
-    sigc::signal<void, boost::shared_ptr<notification_info> > signal_notification_appended;
-
-    /** \brief Emitted after a notification is removed from the area's notification list. */
-    sigc::signal<void, boost::shared_ptr<notification_info> > signal_notification_removed;
-
-    // @}
+    /** \brief Get the tabs associated with this area. */
+    virtual boost::shared_ptr<tabs_list> get_tabs() = 0;
+    /** \brief Get the notifications associated with this area. */
+    virtual boost::shared_ptr<notifications_list> get_notifications() = 0;
   };
 
   boost::shared_ptr<area_info> create_area_info(const std::string &name,
@@ -280,13 +162,13 @@ namespace gui
     virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
 
     /** \brief Get any progress information associated with this tab. */
-    virtual progress_info get_progress() = 0;
+    virtual aptitude::util::progress_info get_progress() = 0;
 
     /** \brief Update the progress information associated with this tab.
      *
      *  Invokes signal_progress_changed() as a side-effect.
      */
-    virtual void set_progress(const progress_info &info) = 0;
+    virtual void set_progress(const aptitude::util::progress_info &info) = 0;
 
     /** \brief Get the main widget of this tab. */
     virtual Gtk::Widget *get_widget() = 0;
@@ -314,7 +196,7 @@ namespace gui
     sigc::signal<void, std::string, Gtk::Window *> signal_tooltip_changed;
 
     /** \brief Emitted when the progress information changes. */
-    sigc::signal<void, progress_info> signal_progress_changed;
+    sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
 
     /** \brief Emitted when the tab becomes active or inactive.
      *
@@ -362,14 +244,14 @@ namespace gui
     /** \brief Retrieve the progress display associated with this
      *  notification.
      */
-    virtual progress_info get_progress() = 0;
+    virtual aptitude::util::progress_info get_progress() = 0;
 
     /** \brief Update the progress display associated with this
      *	notification.
      *
      *  Invokes signal_progress_changed as a side-effect.
      */
-    virtual void set_progress(const progress_info &progress) = 0;
+    virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
 
 
     /** \brief Signals */
@@ -377,7 +259,7 @@ namespace gui
     // @{
 
     /** \brief Emitted when the progress information changes. */
-    sigc::signal<void, progress_info> signal_progress_changed;
+    sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
 
     /** \brief Emitted when the user clicks the notification. */
     sigc::signal<void> signal_clicked;

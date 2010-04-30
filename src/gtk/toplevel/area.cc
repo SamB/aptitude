@@ -19,74 +19,20 @@
 
 #include "area.h"
 
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/make_shared.hpp>
-
-#include <cwidget/generic/util/eassert.h>
-
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/hashed_index.hpp>
-#include <boost/multi_index/mem_fun.hpp>
-#include <boost/multi_index/sequenced_index.hpp>
+#include <generic/util/dynamic_list_impl.h>
 
 #include <gtkmm/window.h>
 
 using namespace boost::multi_index;
 
+using aptitude::util::dynamic_list;
+using aptitude::util::dynamic_list_impl;
+using aptitude::util::enumerator;
+using aptitude::util::iterator_enumerator_with_keepalive;
+using aptitude::util::progress_info;
+
 namespace gui
 {
-  /** \brief An enumerator over a range of STL iterators. */
-  template<typename ForwardIter>
-  class iterator_enumerator : public enumerator<typename ForwardIter::value_type>
-  {
-    ForwardIter begin, end;
-    bool first;
-
-  public:
-    iterator_enumerator(ForwardIter _begin, ForwardIter _end)
-      : begin(_begin), end(_end), first(true)
-    {
-    }
-
-    typename ForwardIter::value_type get_current()
-    {
-      eassert(!first);
-      eassert(begin != end);
-
-      return *begin;
-    }
-
-    bool advance()
-    {
-      if(begin == end)
-	return false;
-
-      if(first)
-	first = false;
-      else
-	++begin;
-
-      return true;
-    }
-  };
-
-  /** \brief An enumerator over an iterator range that holds a strong
-   *  shared reference to an object (presumably the one containing the
-   *  iterators).
-   */
-  template<typename ForwardIter, typename T>
-  class iterator_enumerator_with_keepalive : public iterator_enumerator<ForwardIter>
-  {
-    boost::shared_ptr<T> keptalive;
-
-  public:
-    iterator_enumerator_with_keepalive(ForwardIter begin, ForwardIter end,
-				       boost::shared_ptr<T> _keptalive)
-      : iterator_enumerator<ForwardIter>(begin, end),
-	keptalive(_keptalive)
-    {
-    }
-  };
 
   /** \brief Implements the static area list. */
   class area_list_impl : public area_list, public boost::enable_shared_from_this<area_list_impl>
@@ -104,11 +50,22 @@ namespace gui
       return static_cast<int>(areas.size());
     }
 
-    boost::shared_ptr<enumerator<boost::shared_ptr<area_info> > > get_areas()
-    {
-      return boost::make_shared<iterator_enumerator_with_keepalive<std::vector<boost::shared_ptr<area_info> >::const_iterator, area_list_impl> >(areas.begin(), areas.end(), shared_from_this());
-    }
+    typedef enumerator<boost::shared_ptr<area_info> >
+    area_enumerator;
+
+    boost::shared_ptr<area_enumerator> get_areas();
   };
+
+  boost::shared_ptr<area_list_impl::area_enumerator>
+  area_list_impl::get_areas()
+  {
+    typedef iterator_enumerator_with_keepalive<std::vector<
+      boost::shared_ptr<area_info> >::const_iterator, area_list_impl>
+      real_area_enumerator;
+
+    return boost::make_shared<real_area_enumerator>(areas.begin(), areas.end(), shared_from_this());
+  }
+
 
   boost::shared_ptr<area_list> create_area_list(const std::vector<boost::shared_ptr<area_info> > &areas)
   {
@@ -120,40 +77,12 @@ namespace gui
     std::string name;
     std::string description;
     Glib::RefPtr<Gdk::Pixbuf> icon;
-    // Note: I don't recall whether hash<> is defined for shared
-    // pointers -- if it is, I could just use identity<> below instead
-    // of mem_fun<>.
-    class tab_hash_tag;
-    class tab_list_tag;
-    typedef multi_index_container<
-      boost::shared_ptr<tab_info>,
-      indexed_by<
-	hashed_unique<tag<tab_hash_tag>,
-		      const_mem_fun<boost::shared_ptr<tab_info>, tab_info *,
-				    &boost::shared_ptr<tab_info>::get> >,
-	sequenced<tag<tab_list_tag> > >
-      > tab_collection;
 
-    typedef tab_collection::index<tab_hash_tag>::type tab_hash;
-    typedef tab_collection::index<tab_list_tag>::type tab_list;
+    typedef dynamic_list_impl<boost::shared_ptr<tab_info> > tabs_list_impl;
+    typedef dynamic_list_impl<boost::shared_ptr<notification_info> > notifications_list_impl;
 
-
-    class notification_hash_tag;
-    class notification_list_tag;
-    typedef multi_index_container<
-      boost::shared_ptr<notification_info>,
-      indexed_by<
-	hashed_unique<tag<notification_hash_tag>,
-		      const_mem_fun<boost::shared_ptr<notification_info>, notification_info *,
-				    &boost::shared_ptr<notification_info>::get> >,
-	sequenced<tag<notification_list_tag> > >
-      > notification_collection;
-
-    typedef notification_collection::index<notification_hash_tag>::type notification_hash;
-    typedef notification_collection::index<notification_list_tag>::type notification_list;
-
-    tab_collection tabs;
-    notification_collection notifications;
+    boost::shared_ptr<tabs_list> tabs;
+    boost::shared_ptr<notifications_list> notifications;
 
   public:
     area_info_impl(const std::string &_name,
@@ -161,82 +90,17 @@ namespace gui
 		   const Glib::RefPtr<Gdk::Pixbuf> &_icon)
       : name(_name),
 	description(_description),
-	icon(_icon)
+	icon(_icon),
+        tabs(tabs_list_impl::create()),
+        notifications(notifications_list_impl::create())
     {
     }
 
     std::string get_name() { return name; }
     std::string get_description() { return description; }
     Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
-
-    boost::shared_ptr<tab_enumerator> get_tabs()
-    {
-      const tab_list &tabs_ordered = tabs.get<tab_list_tag>();
-
-      return boost::make_shared<iterator_enumerator_with_keepalive<tab_list::const_iterator, area_info_impl> >(tabs_ordered.begin(), tabs_ordered.end(), shared_from_this());
-    }
-
-    void append_tab(const boost::shared_ptr<tab_info> &tab)
-    {
-      tab_hash &tabs_hashed = tabs.get<tab_hash_tag>();
-
-      if(tabs_hashed.find(tab.get()) == tabs_hashed.end())
-	{
-	  tab_list &tabs_ordered = tabs.get<tab_list_tag>();
-
-	  tabs_ordered.push_back(tab);
-	  signal_tab_appended(tab);
-	}
-    }
-
-    void remove_tab(const boost::shared_ptr<tab_info> &tab)
-    {
-      tab_hash &tabs_hashed = tabs.get<tab_hash_tag>();
-
-      tab_hash::iterator found = tabs_hashed.find(tab.get());
-
-      if(found != tabs_hashed.end())
-	{
-	  tabs_hashed.erase(found);
-	  signal_tab_removed(tab);
-	}
-    }
-
-
-
-
-    boost::shared_ptr<notification_enumerator> get_notifications()
-    {
-      const notification_list &notifications_ordered = notifications.get<notification_list_tag>();
-
-      return boost::make_shared<iterator_enumerator_with_keepalive<notification_list::const_iterator, area_info_impl> >(notifications_ordered.begin(), notifications_ordered.end(), shared_from_this());
-    }
-
-    void append_notification(const boost::shared_ptr<notification_info> &notification)
-    {
-      notification_hash &notifications_hashed = notifications.get<notification_hash_tag>();
-
-      if(notifications_hashed.find(notification.get()) == notifications_hashed.end())
-	{
-	  notification_list &notifications_ordered = notifications.get<notification_list_tag>();
-
-	  notifications_ordered.push_back(notification);
-	  signal_notification_appended(notification);
-	}
-    }
-
-    void remove_notification(const boost::shared_ptr<notification_info> &notification)
-    {
-      notification_hash &notifications_hashed = notifications.get<notification_hash_tag>();
-
-      notification_hash::iterator found = notifications_hashed.find(notification.get());
-
-      if(found != notifications_hashed.end())
-	{
-	  notifications_hashed.erase(found);
-	  signal_notification_removed(notification);
-	}
-    }
+    boost::shared_ptr<tabs_list> get_tabs() { return tabs; }
+    boost::shared_ptr<notifications_list> get_notifications() { return notifications; }
   };
 
   boost::shared_ptr<area_info> create_area_info(const std::string &name,

@@ -9,6 +9,9 @@ libgeneric_util_a_SOURCES = \
 	compare3.h \
 	dense_setset.h \
 	dirent_safe.h \
+	dynamic_list.h \
+	dynamic_list_impl.h \
+	enumerator.h \
 	file_cache.cc \
 	file_cache.h \
 	immlist.h \
@@ -18,6 +21,7 @@ libgeneric_util_a_SOURCES = \
 	mut_fun.h \
 	parsers.h \
         post_thunk.h        \
+	progress_info.h \
 	refcounted_base.cc \
 	refcounted_base.h \
 	refcounted_wrapper.h \
