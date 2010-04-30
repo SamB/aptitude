@@ -19,6 +19,7 @@ struct fourNumbers
                                              std::vector<int> > int_keepalive_enum;
 
   fourNumbers()
+    : numbersShared(new std::vector<int>)
   {
     for(int i = 1; i <= 4; ++i)
       {
