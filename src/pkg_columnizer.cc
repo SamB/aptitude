@@ -2,7 +2,7 @@
 //
 //  The pkg_columnizer class.
 //
-//  Copyright 1999-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008, 2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "aptitude.h"
 
 #include "pkg_columnizer.h"
+#include "solution_fragment.h" // For archives_text.
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -481,13 +482,7 @@ cw::column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::Pk
     case archive:
       if(!visible_ver.end())
 	{
-	  string buf;
-	  for(pkgCache::VerFileIterator verfile=visible_ver.FileList(); !verfile.end(); ++verfile)
-	    {
-	      pkgCache::PkgFileIterator pkgfile=verfile.File();
-	      if(pkgfile.Archive() && strcmp(pkgfile.Archive(), "now"))
-		buf+=string(buf.empty()?"":",")+pkgfile.Archive();
-	    }
+	  string buf = archives_text(visible_ver, true);
 	  return cw::column_disposition(buf,0);
 	}
       else

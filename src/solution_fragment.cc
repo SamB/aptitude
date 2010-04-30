@@ -49,7 +49,7 @@ typedef generic_choice_set<aptitude_universe> choice_set;
 using namespace std;
 namespace cw = cwidget;
 
-string archives_text(const pkgCache::VerIterator &ver)
+string archives_text(const pkgCache::VerIterator &ver, bool suppress_now)
 {
   string rval;
 
@@ -65,6 +65,9 @@ string archives_text(const pkgCache::VerIterator &ver)
       else
         archives.insert(_("<NULL>"));
     }
+
+  if(suppress_now)
+    archives.erase("now");
 
   for(std::set<std::string>::const_iterator it = archives.begin();
       it != archives.end(); ++it)

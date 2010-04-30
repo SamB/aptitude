@@ -1,6 +1,6 @@
 // pkg_ver_item.cc
 //
-//  Copyright 1999-2005, 2007-2008 Daniel Burrows
+//  Copyright 1999-2005, 2007-2008, 2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "pkg_subtree.h"
 #include "pkg_ver_item.h"
 #include "pkg_sortpolicy.h"
+#include "solution_fragment.h" // For archives_text.
 #include "ui.h"
 #include "view_changelog.h"
 #include "progress.h"
@@ -83,13 +84,7 @@ cw::column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerItera
     case archive:
       if(!ver.end())
 	{
-	  string buf;
-	  for(pkgCache::VerFileIterator verfile=ver.FileList(); !verfile.end(); ++verfile)
-	    {
-	      pkgCache::PkgFileIterator pkgfile=verfile.File();
-	      if(pkgfile.Archive() && strcmp(pkgfile.Archive(), "now"))
-		buf+=string(buf.empty()?"":",")+pkgfile.Archive();
-	    }
+	  string buf = archives_text(ver, true);
 	  return cw::column_disposition(buf,0);
 	}
       else
