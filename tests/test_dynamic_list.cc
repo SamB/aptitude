@@ -1,12 +1,15 @@
 #include <generic/util/dynamic_list.h>
+#include <generic/util/dynamic_list_collection.h>
 #include <generic/util/dynamic_list_impl.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/variant.hpp>
 
 using aptitude::util::dynamic_list;
+using aptitude::util::dynamic_list_collection;
 using aptitude::util::dynamic_list_impl;
 using aptitude::util::enumerator;
+using aptitude::util::writable_dynamic_list;
 
 namespace
 {
@@ -332,5 +335,67 @@ BOOST_FIXTURE_TEST_CASE(dynamicListRemove, list_test)
                                 values_vector.begin(), values_vector.end());
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+struct list_collection_test
+{
+  boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
+  boost::shared_ptr<dynamic_list_collection<int> > collection;
+
+  dynamic_list_signals<int> signals, expected;
+
+  typedef appended_call<int> app;
+  typedef removed_call<int> rem;
+
+  list_collection_test()
+    : list1(dynamic_list_impl<int>::create()),
+      list2(dynamic_list_impl<int>::create()),
+      list3(dynamic_list_impl<int>::create()),
+      collection(dynamic_list_collection<int>::create())
+  {
+    list1->append(1);
+    list1->append(2);
+    list1->append(3);
+
+    list2->append(5);
+
+    signals.attach(*collection);
+  }
+
+  static std::vector<int> as_vector(dynamic_list<int> &list)
+  {
+    std::vector<int> rval;
+
+    for(boost::shared_ptr<enumerator<int> > e = list.enumerate();
+        e->advance(); )
+      rval.push_back(e->get_current());
+
+    return rval;
+  }
+};
+
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAppendList, list_collection_test)
+{
+  collection->add_list(list2);
+  collection->add_list(list3);
+  collection->add_list(list1);
+
+  std::vector<int> expected_values;
+  expected_values.push_back(5);
+  expected_values.push_back(1);
+  expected_values.push_back(2);
+  expected_values.push_back(3);
+
+  expected.push_back(app(5));
+  expected.push_back(app(1));
+  expected.push_back(app(2));
+  expected.push_back(app(3));
+
+  std::vector<int> collection_vector = as_vector(*collection);
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());
 }

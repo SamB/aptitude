@@ -10,6 +10,7 @@ libgeneric_util_a_SOURCES = \
 	dense_setset.h \
 	dirent_safe.h \
 	dynamic_list.h \
+	dynamic_list_collection.h \
 	dynamic_list_impl.h \
 	enumerator.h \
 	file_cache.cc \
