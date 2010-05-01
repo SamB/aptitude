@@ -16,6 +16,11 @@ namespace aptitude
     /** \brief An abstract description of a dynamic collection of
      *  objects that only allows appending at the end.
      *
+     *  This interface is read-only because it supports both actual
+     *  lists, and synthetic views into lists for which modification
+     *  is poorly defined.  If clients should be able to modify a list
+     *  themselves, use writable_dynamic_list.
+     *
      *  In addition to the usual requirements of containers, T must
      *  provide equality comparison and a hash function.
      *
@@ -44,12 +49,6 @@ namespace aptitude
 
 
 
-      /** \brief Append a value to this list. */
-      virtual void append(const T &tab) = 0;
-
-      /** \brief Remove a value from this list. */
-      virtual void remove(const T &tab) = 0;
-
 
       /** \brief Signals */
       // @{
@@ -61,6 +60,19 @@ namespace aptitude
       sigc::signal<void, T> signal_removed;
 
       // @}
+    };
+
+    /** \brief An abstract description of a dynamic collection of
+     *  objects that allows client code to append and remove elements.
+     */
+    template<typename T>
+    class writable_dynamic_list : public dynamic_list<T>
+    {
+      /** \brief Append a value to this list. */
+      virtual void append(const T &tab) = 0;
+
+      /** \brief Remove a value from this list. */
+      virtual void remove(const T &tab) = 0;
     };
 
     template<typename T>

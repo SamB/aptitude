@@ -35,7 +35,7 @@ namespace aptitude
     /** \brief A basic implementation of the dynamic_list interface. */
     template<typename T>
     class dynamic_list_impl
-      : public dynamic_list<T>,
+      : public writable_dynamic_list<T>,
         public boost::enable_shared_from_this<dynamic_list_impl<T> >
     {
       // Uses multi_index_container to ensure that removals scale
