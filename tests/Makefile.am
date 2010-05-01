@@ -46,6 +46,7 @@ cppunit_test_SOURCES = \
 
 boost_test_SOURCES = \
 	boost_test_main.cc \
+	test_dynamic_list.cc \
 	test_enumerator.cc \
 	test_file_cache.cc \
 	test_sqlite.cc
