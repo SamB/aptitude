@@ -311,3 +311,25 @@ BOOST_FIXTURE_TEST_CASE(dynamicListAppend, list_test)
   BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
                                 signals.begin(), signals.end());
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicListRemove, list_test)
+{
+  values.remove(2); // New list: [1, 3], removed (2, 1)
+  values.remove(0); // New list: [1, 3], no change reported
+  values.remove(1); // New list: [3], removed (1, 0)
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.push_back(3);
+
+  expected_calls.push_back(removed_call<int>(2, 1));
+  expected_calls.push_back(removed_call<int>(1, 0));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
