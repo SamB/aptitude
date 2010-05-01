@@ -73,6 +73,7 @@ namespace aptitude
     template<typename T>
     class writable_dynamic_list : public dynamic_list<T>
     {
+    public:
       /** \brief Append a value to this list. */
       virtual void append(const T &value) = 0;
 
