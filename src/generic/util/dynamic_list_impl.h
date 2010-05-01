@@ -72,9 +72,6 @@ namespace aptitude
         return boost::make_shared<dynamic_list_impl>();
       }
 
-      sigc::signal<void, T> signal_appended;
-      sigc::signal<void, T> signal_removed;
-
       boost::shared_ptr<enumerator<T> > enumerate();
       void append(const T &t);
       void remove(const T &t);
