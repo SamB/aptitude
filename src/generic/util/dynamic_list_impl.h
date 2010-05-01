@@ -17,6 +17,9 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+#ifndef DYNAMIC_LIST_IMPL_H
+#define DYNAMIC_LIST_IMPL_H
+
 #include "dynamic_list.h"
 
 #include <boost/enable_shared_from_this.hpp>
@@ -95,3 +98,4 @@ namespace aptitude
   }
 }
 
+#endif // DYNAMIC_LIST_IMPL_H
