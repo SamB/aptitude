@@ -33,11 +33,12 @@ namespace aptitude
     public:
       virtual ~dynamic_list();
 
-      /** \brief Enumerate the tabs in this area.
+      /** \brief Enumerate the values in this list.
        *
-       *  To get a consistent picture of the tabs, the caller should
-       *  enumerate them before any other process adds or removes a tab.
-       *  Typically this means enumerating them in a tight loop.
+       *  To get a consistent picture of the values, the caller should
+       *  enumerate them before any other process adds or removes a
+       *  value.  Typically this means enumerating them in a tight
+       *  loop.
        *
        *  The returned enumerator will be valid indefinitely.  In
        *  order to provide this guarantee, it may hold a strong
@@ -69,10 +70,14 @@ namespace aptitude
     class writable_dynamic_list : public dynamic_list<T>
     {
       /** \brief Append a value to this list. */
-      virtual void append(const T &tab) = 0;
+      virtual void append(const T &value) = 0;
 
-      /** \brief Remove a value from this list. */
-      virtual void remove(const T &tab) = 0;
+      /** \brief Remove a value from this list.
+       *
+       *  An arbitrary matching element is removed if there are
+       *  duplicates.
+       */
+      virtual void remove(const T &value) = 0;
     };
 
     template<typename T>
