@@ -21,12 +21,9 @@
 
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/make_shared.hpp>
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/hashed_index.hpp>
-#include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/mem_fun.hpp>
-#include <boost/multi_index/random_access_index.hpp>
 #include <boost/shared_ptr.hpp>
+
+#include <vector>
 
 namespace aptitude
 {
@@ -38,27 +35,7 @@ namespace aptitude
       : public writable_dynamic_list<T>,
         public boost::enable_shared_from_this<dynamic_list_impl<T> >
     {
-      // Uses multi_index_container to ensure that removals scale
-      // reasonably well.
-
-      class hash_tag;
-      class list_tag;
-      typedef boost::multi_index::multi_index_container<
-        T,
-        boost::multi_index::indexed_by<
-          boost::multi_index::hashed_unique<
-            boost::multi_index::tag<hash_tag>,
-            boost::multi_index::identity<T>
-            >,
-          boost::multi_index::random_access<
-            boost::multi_index::tag<list_tag>
-            >
-          >
-        > collection;
-
-      typedef typename collection::template index<hash_tag>::type hash_index;
-      typedef typename collection::template index<list_tag>::type list_index;
-
+      typedef std::vector<T> collection;
       collection entries;
 
     public:
@@ -87,43 +64,32 @@ namespace aptitude
     template<typename T>
     boost::shared_ptr<enumerator<T> > dynamic_list_impl<T>::enumerate()
     {
-      list_index &list = entries.template get<list_tag>();
+      typedef iterator_enumerator_with_keepalive<typename collection::const_iterator, dynamic_list_impl> Tenum;
 
-      typedef iterator_enumerator_with_keepalive<typename list_index::const_iterator, dynamic_list_impl> Tenum;
-
-      return boost::make_shared<Tenum>(list.begin(), list.end(),
+      return boost::make_shared<Tenum>(entries.begin(), entries.end(),
                                        this->shared_from_this());
     }
 
     template<typename T>
     void dynamic_list_impl<T>::append(const T &t)
     {
-      hash_index &hashed = entries.template get<hash_tag>();
-      if(hashed.find(t) == hashed.end())
-        {
-          list_index &list = entries.template get<list_tag>();
-
-          list.push_back(t);
-          signal_appended(t);
-        }
+      entries.push_back(t);
+      signal_appended(t);
     }
 
     template<typename T>
     void dynamic_list_impl<T>::remove(const T &t)
     {
-      hash_index &hashed = entries.template get<hash_tag>();
-      typename hash_index::iterator found = hashed.find(t);
+      typename collection::iterator found =
+        std::find(entries.begin(), entries.end(), t);
 
-      if(found != hashed.end())
+      if(found != entries.end())
         {
-          const list_index &list = entries.template get<list_tag>();
-          const typename list_index::const_iterator found_list =
-            entries.template project<list_tag>(found);
+          const std::size_t idx = found - entries.begin();
 
-          const std::size_t idx = found_list - list.begin();
-
-          hashed.erase(found);
-          signal_removed(*found, idx);
+          T val = *found;
+          entries.erase(found);
+          signal_removed(val, idx);
         }
     }
   }

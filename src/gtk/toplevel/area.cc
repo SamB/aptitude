@@ -23,8 +23,6 @@
 
 #include <gtkmm/window.h>
 
-using namespace boost::multi_index;
-
 using aptitude::util::dynamic_list;
 using aptitude::util::dynamic_list_impl;
 using aptitude::util::enumerator;
