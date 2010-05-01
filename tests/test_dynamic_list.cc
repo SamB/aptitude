@@ -321,6 +321,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicListRemove, list_test)
   std::vector<int> values_vector = as_vector();
   dynamic_list_signals<int> expected_calls;
 
+  expected.clear();
   expected.push_back(3);
 
   expected_calls.push_back(removed_call<int>(2, 1));
