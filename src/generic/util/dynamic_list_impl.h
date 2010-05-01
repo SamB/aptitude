@@ -62,20 +62,27 @@ namespace aptitude
       collection entries;
 
     public:
-      dynamic_list_impl()
-      {
-      }
+      dynamic_list_impl();
 
       /** \brief Create an empty list. */
-      static boost::shared_ptr<dynamic_list_impl> create()
-      {
-        return boost::make_shared<dynamic_list_impl>();
-      }
+      static boost::shared_ptr<dynamic_list_impl> create();
 
       boost::shared_ptr<enumerator<T> > enumerate();
       void append(const T &t);
       void remove(const T &t);
     };
+
+    template<typename T>
+    dynamic_list_impl<T>::dynamic_list_impl()
+    {
+    }
+
+    template<typename T>
+    boost::shared_ptr<dynamic_list_impl<T> >
+    dynamic_list_impl<T>::create()
+    {
+      return boost::make_shared<dynamic_list_impl>();
+    }
 
     template<typename T>
     boost::shared_ptr<enumerator<T> > dynamic_list_impl<T>::enumerate()
