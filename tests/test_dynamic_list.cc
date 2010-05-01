@@ -44,21 +44,23 @@ namespace
   class removed_call
   {
     T value;
+    std::size_t idx;
 
   public:
-    removed_call(const T &_value)
-      : value(_value)
+    removed_call(const T &_value, std::size_t _idx)
+      : value(_value), idx(_idx)
     {
     }
 
     const T get_value() const { return value; }
+    std::size_t get_idx() const { return idx; }
     bool operator==(const removed_call &other) const
     {
-      return value == other.value;
+      return value == other.value && idx == other.idx;
     }
     bool operator!=(const removed_call &other) const
     {
-      return value != other.value;
+      return value != other.value && idx != other.idx;
     }
   };
 
@@ -66,7 +68,8 @@ namespace
   std::ostream &operator<<(std::ostream &out,
                            const removed_call<T> &call)
   {
-    return out << "removed(" << call.get_value() << ")";
+    return out << "removed(" << call.get_value() << ", "
+               << call.get_idx() << ")";
   }
 
   template<typename T>
@@ -123,9 +126,9 @@ namespace
       calls.push_back(appended_call<T>(value));
     }
 
-    void removed(const T &value)
+    void removed(const T &value, int idx)
     {
-      calls.push_back(removed_call<T>(value));
+      calls.push_back(removed_call<T>(value, idx));
     }
 
     dynamic_list_signals(const dynamic_list_signals &);
@@ -233,7 +236,7 @@ BOOST_AUTO_TEST_CASE(listSignals)
   signals1.push_back(app(3));
 
   signals2.push_back(app(1));
-  signals2.push_back(rem(2));
+  signals2.push_back(rem(2, 5));
   signals2.push_back(app(3));
 
   signals3.push_back(app(1));
@@ -264,13 +267,13 @@ BOOST_AUTO_TEST_CASE(listSignalsAttach)
 
   expected.push_back(app(5));
   expected.push_back(app(2));
-  expected.push_back(rem(5));
+  expected.push_back(rem(5, 0));
 
   // Note: call the signals directly so we test the attachment and not
   // the dynamic list.
   list.signal_appended(5);
   list.signal_appended(2);
-  list.signal_removed(5);
+  list.signal_removed(5, 0);
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());

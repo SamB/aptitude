@@ -57,8 +57,12 @@ namespace aptitude
       /** \brief Emitted after a value is added to the list. */
       sigc::signal<void, T> signal_appended;
 
-      /** \brief Emitted after a value is removed from the area's tab list. */
-      sigc::signal<void, T> signal_removed;
+      /** \brief Emitted after a value is removed from the list.
+       *
+       *  The arguments are the item, and its position within the
+       *  list.
+       */
+      sigc::signal<void, T, std::size_t> signal_removed;
 
       // @}
     };

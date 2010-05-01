@@ -25,7 +25,7 @@
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/mem_fun.hpp>
-#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/random_access_index.hpp>
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
@@ -50,7 +50,7 @@ namespace aptitude
             boost::multi_index::tag<hash_tag>,
             boost::multi_index::identity<T>
             >,
-          boost::multi_index::sequenced<
+          boost::multi_index::random_access<
             boost::multi_index::tag<list_tag>
             >
           >
@@ -116,8 +116,14 @@ namespace aptitude
 
       if(found != hashed.end())
         {
+          const list_index &list = entries.template get<list_tag>();
+          const typename list_index::const_iterator found_list =
+            entries.template project<list_tag>(found);
+
+          const std::size_t idx = found_list - list.begin();
+
           hashed.erase(found);
-          signal_removed(*found);
+          signal_removed(*found, idx);
         }
     }
   }
