@@ -145,6 +145,11 @@ namespace
     {
     }
 
+    void clear()
+    {
+      calls.clear();
+    }
+
     void attach(dynamic_list<T> &list)
     {
       list.signal_appended.connect(sigc::mem_fun(*this, &dynamic_list_signals::appended));
@@ -392,6 +397,34 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAppendList, list_collection_test)
   expected.push_back(app(2));
   expected.push_back(app(3));
 
+  std::vector<int> collection_vector = as_vector(*collection);
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
+{
+  collection->add_list(list1);
+  collection->add_list(list2);
+  collection->add_list(list3);
+
+  // Clear the current list of signals, since for the purposes of this
+  // test, we don't care about the ones emitted by add_list() above.
+  signals.clear();
+
+  collection->remove_list(list3);
+  collection->remove_list(list2);
+  collection->remove_list(list1);
+
+  expected.push_back(rem(5, 3));
+  expected.push_back(rem(1, 0));
+  expected.push_back(rem(2, 0));
+  expected.push_back(rem(3, 0));
+
+  std::vector<int> expected_values;
   std::vector<int> collection_vector = as_vector(*collection);
   BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
                                 collection_vector.begin(), collection_vector.end());
