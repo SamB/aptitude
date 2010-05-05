@@ -511,6 +511,197 @@ BOOST_FIXTURE_TEST_CASE(dynamicListRemoveLast, list_test)
                                 signals.begin(), signals.end());
 }
 
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveLastToFront, list_test)
+{
+  values.move(2, 0);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(3);
+  expected.push_back(1);
+  expected.push_back(2);
+
+  expected_calls.push_back(moved_call<int>(3, 2, 0));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveMiddleToFront, list_test)
+{
+  values.move(1, 0);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(2);
+  expected.push_back(1);
+  expected.push_back(3);
+
+  expected_calls.push_back(moved_call<int>(2, 1, 0));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveFrontToFront, list_test)
+{
+  values.move(0, 0);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(2);
+  expected.push_back(3);
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveLastToMiddle, list_test)
+{
+  values.move(2, 1);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(3);
+  expected.push_back(2);
+
+  expected_calls.push_back(moved_call<int>(3, 2, 1));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveMiddleToMiddle, list_test)
+{
+  values.move(1, 1);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(2);
+  expected.push_back(3);
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveFrontToMiddle, list_test)
+{
+  values.move(0, 1);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(2);
+  expected.push_back(1);
+  expected.push_back(3);
+
+  expected_calls.push_back(moved_call<int>(1, 0, 1));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveLastToLast, list_test)
+{
+  values.move(2, 2);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(2);
+  expected.push_back(3);
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveMiddleToLast, list_test)
+{
+  values.move(1, 2);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(3);
+  expected.push_back(2);
+
+  expected_calls.push_back(moved_call<int>(2, 1, 2));
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListMoveFrontToLast, list_test)
+{
+  values.move(0, 2);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+
+  expected.clear();
+  expected.push_back(2);
+  expected.push_back(3);
+  expected.push_back(1);
+
+  expected_calls.push_back(moved_call<int>(1, 0, 2));
+
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
 // struct list_collection_test
 // {
 //   boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
