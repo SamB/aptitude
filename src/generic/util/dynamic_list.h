@@ -103,7 +103,19 @@ namespace aptitude
 
       /** \brief Move an object to a new location.
        *
-       *  signal_moved is invoked after the object is moved.
+       *  If from == to, nothing happens and signal_moved is NOT
+       *  emitted.
+       *
+       *  If from < to, then the intervening elements (between from+1
+       *  and to, inclusive) are moved towards the beginning of the
+       *  list to compensate.
+       *
+       *  If from > to, then the intervening elements (between to and
+       *  from-1, inclusive) are moved towards the end of the list to
+       *  compensate.
+       *
+       *  signal_moved is invoked after the element is moved, if from
+       *  != to.
        */
       virtual void move(std::size_t from, std::size_t to) = 0;
     };
