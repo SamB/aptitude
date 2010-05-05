@@ -106,13 +106,25 @@ namespace aptitude
     template<typename T>
     void dynamic_list_impl<T>::move(std::size_t from, std::size_t to)
     {
+      // Don't do anything at all, don't even emit a signal, if a
+      // value is being moved to the same location that it already
+      // occupies.
+      if(from == to)
+        return;
+
       // Simple approach: insert the value at its new location, then
       // delete it from its old location.
 
       // Defensive copy in case inserting into a vector from itself
       // does anything weird.  Pure paranoia.
       T val = entries[from];
-      entries.insert(entries.begin() + to, val);
+
+      // If from < to, then we need to insert one entry farther than
+      // the target location, since the entry will shift left when we
+      // remove its old location.
+      const std::size_t idx_to_insert = from < to  ? to + 1  :  to;
+
+      entries.insert(entries.begin() + idx_to_insert, val);
       // Note that if to < from, we just changed the index of the
       // source of the move!  Fix it up.
       const std::size_t idx_to_delete = to < from  ?  from + 1  :  from;
