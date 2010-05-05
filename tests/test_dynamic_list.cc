@@ -1,46 +1,54 @@
 #include <generic/util/dynamic_list.h>
-#include <generic/util/dynamic_list_collection.h>
+//#include <generic/util/dynamic_list_collection.h>
 #include <generic/util/dynamic_list_impl.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/variant.hpp>
 
 using aptitude::util::dynamic_list;
-using aptitude::util::dynamic_list_collection;
+//using aptitude::util::dynamic_list_collection;
 using aptitude::util::dynamic_list_impl;
-using aptitude::util::enumerator;
 using aptitude::util::writable_dynamic_list;
 
 namespace
 {
   template<typename T>
-  class appended_call
+  class inserted_call
   {
     T value;
+    std::size_t position;
 
   public:
-    appended_call(const T &_value)
-      : value(_value)
+    inserted_call(const T &_value,
+                  const std::size_t _position)
+      : value(_value),
+        position(_position)
     {
     }
 
-    const T get_value() const { return value; }
-    bool operator==(const appended_call &other) const
+    std::size_t get_value() const { return value; }
+    const T get_position() const { return position; }
+    bool operator==(const inserted_call &other) const
     {
-      return value == other.value;
+      return
+        value == other.value &&
+        position == other.position;
     }
 
-    bool operator!=(const appended_call &other) const
+    bool operator!=(const inserted_call &other) const
     {
-      return value != other.value;
+      return !(*this == other);
     }
   };
 
   template<typename T>
   std::ostream &operator<<(std::ostream &out,
-                           const appended_call<T> &call)
+                           const inserted_call<T> &call)
   {
-    return out << "appended(" << call.get_value() << ")";
+    return out << "inserted(value = "
+               << call.get_value()
+               << ", position = "
+               << call.get_position() << ")";
   }
 
   template<typename T>
@@ -63,7 +71,7 @@ namespace
     }
     bool operator!=(const removed_call &other) const
     {
-      return value != other.value && idx != other.idx;
+      return !(*this == other);
     }
   };
 
@@ -71,26 +79,78 @@ namespace
   std::ostream &operator<<(std::ostream &out,
                            const removed_call<T> &call)
   {
-    return out << "removed(" << call.get_value() << ", "
+    return out << "removed(value = "
+               << call.get_value()
+               << ", idx = "
                << call.get_idx() << ")";
+  }
+
+  template<typename T>
+  class moved_call
+  {
+    T value;
+    std::size_t from, to;
+
+  public:
+    moved_call(const T &_value, std::size_t _from, std::size_t _to)
+      : value(_value), from(_from), to(_to)
+    {
+    }
+
+    const T get_value() const { return value; }
+    std::size_t get_from() const { return from; }
+    std::size_t get_to() const { return to; }
+
+    bool operator==(const moved_call &other) const
+    {
+      return
+        value == other.value &&
+        from == other.from &&
+        to == other.to;
+    }
+
+    bool operator!=(const moved_call &other) const
+    {
+      return !(*this == other);
+    }
+  };
+
+  template<typename T>
+  std::ostream &operator<<(std::ostream &out,
+                           const moved_call<T> &call)
+  {
+    return out << "moved(value = "
+               << call.get_value()
+               << ", from = "
+               << call.get_from()
+               << ", to = "
+               << call.get_to()
+               << ")";
   }
 
   template<typename T>
   class list_signal
   {
   public:
-    typedef boost::variant<appended_call<T>, removed_call<T> > value_type;
+    typedef boost::variant<inserted_call<T>,
+                           removed_call<T>,
+                           moved_call<T> > value_type;
 
   private:
     value_type value;
 
   public:
-    list_signal(const appended_call<T> &_value)
+    list_signal(const inserted_call<T> &_value)
       : value(_value)
     {
     }
 
     list_signal(const removed_call<T> &_value)
+      : value(_value)
+    {
+    }
+
+    list_signal(const moved_call<T> &_value)
       : value(_value)
     {
     }
@@ -124,14 +184,19 @@ namespace
   {
     std::vector<list_signal<T> > calls;
 
-    void appended(const T &value)
+    void inserted(const T &value, std::size_t position)
     {
-      calls.push_back(appended_call<T>(value));
+      calls.push_back(inserted_call<T>(value, position));
     }
 
-    void removed(const T &value, int idx)
+    void removed(const T &value, std::size_t position)
     {
-      calls.push_back(removed_call<T>(value, idx));
+      calls.push_back(removed_call<T>(value, position));
+    }
+
+    void moved(const T &value, std::size_t from, std::size_t to)
+    {
+      calls.push_back(moved_call<T>(value, from, to));
     }
 
     dynamic_list_signals(const dynamic_list_signals &);
@@ -152,10 +217,11 @@ namespace
 
     void attach(dynamic_list<T> &list)
     {
-      list.signal_appended.connect(sigc::mem_fun(*this, &dynamic_list_signals::appended));
+      list.signal_inserted.connect(sigc::mem_fun(*this, &dynamic_list_signals::inserted));
       list.signal_removed.connect(sigc::mem_fun(*this, &dynamic_list_signals::removed));
+      list.signal_moved.connect(sigc::mem_fun(*this, &dynamic_list_signals::moved));
 
-      BOOST_REQUIRE(list.signal_appended.size() > 0);
+      BOOST_REQUIRE(list.signal_inserted.size() > 0);
     }
 
     /** \brief To be used only by test code. */
@@ -210,9 +276,9 @@ namespace
         values(*valuesPtr),
         signals()
     {
-      values.append(1);
-      values.append(2);
-      values.append(3);
+      values.insert(1, 0);
+      values.insert(2, 1);
+      values.insert(3, 2);
       signals.attach(values);
 
       expected.push_back(1);
@@ -223,9 +289,8 @@ namespace
     std::vector<int> as_vector() const
     {
       std::vector<int> rval;
-      boost::shared_ptr<enumerator<int> > e = values.enumerate();
-      while(e->advance())
-        rval.push_back(e->get_current());
+      for(std::size_t i = 0; i < values.size(); ++i)
+        rval.push_back(values.get_at(i));
 
       return rval;
     }
@@ -236,20 +301,20 @@ BOOST_AUTO_TEST_CASE(listSignals)
 {
   dynamic_list_signals<int> signals1, signals2, signals3;
 
-  typedef appended_call<int> app;
+  typedef inserted_call<int> ins;
   typedef removed_call<int> rem;
 
-  signals1.push_back(app(1));
-  signals1.push_back(app(2));
-  signals1.push_back(app(3));
+  signals1.push_back(ins(1, 0));
+  signals1.push_back(ins(2, 1));
+  signals1.push_back(ins(3, 2));
 
-  signals2.push_back(app(1));
+  signals2.push_back(ins(1, 0));
   signals2.push_back(rem(2, 5));
-  signals2.push_back(app(3));
+  signals2.push_back(ins(3, 2));
 
-  signals3.push_back(app(1));
-  signals3.push_back(app(2));
-  signals3.push_back(app(3));
+  signals3.push_back(ins(1, 0));
+  signals3.push_back(ins(2, 1));
+  signals3.push_back(ins(3, 2));
 
   BOOST_CHECK_EQUAL(signals1, signals3);
   BOOST_CHECK_EQUAL(signals3, signals1);
@@ -270,48 +335,63 @@ BOOST_AUTO_TEST_CASE(listSignalsAttach)
   dynamic_list_impl<int> list;
   signals.attach(list);
 
-  typedef appended_call<int> app;
+  typedef inserted_call<int> ins;
   typedef removed_call<int> rem;
+  typedef moved_call<int> mov;
 
-  expected.push_back(app(5));
-  expected.push_back(app(2));
-  expected.push_back(rem(5, 0));
+  expected.push_back(ins(5, 0));
+  expected.push_back(mov(5, 0, 1));
+  expected.push_back(rem(5, 1));
 
   // Note: call the signals directly so we test the attachment and not
   // the dynamic list.
-  list.signal_appended(5);
-  list.signal_appended(2);
-  list.signal_removed(5, 0);
+  list.signal_inserted(5, 0);
+  list.signal_moved(5, 0, 1);
+  list.signal_removed(5, 1);
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicListEnumerate, list_test)
+// Tests that a few operations change the size as expected.
+BOOST_AUTO_TEST_CASE(dynamicListSize)
 {
-  // Enumerate over the entries of the list and ensure that they're
-  // all accounted for.
+  boost::shared_ptr<writable_dynamic_list<int> > list = dynamic_list_impl<int>::create();
 
-  std::vector<int> values_vector = as_vector();
-  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
-                                values_vector.begin(), values_vector.end());
+  BOOST_CHECK_EQUAL(0, list->size());
+
+  list->insert(5, 0);
+
+  BOOST_CHECK_EQUAL(1, list->size());
+
+  list->insert(13, 1);
+
+  BOOST_CHECK_EQUAL(2, list->size());
+
+  list->move(0, 1);
+
+  BOOST_CHECK_EQUAL(2, list->size());
+
+  list->remove(0);
+
+  BOOST_CHECK_EQUAL(1, list->size());
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicListAppend, list_test)
+BOOST_FIXTURE_TEST_CASE(dynamicListGetAt, list_test)
 {
-  // Append some values, check that the proper signals were emitted,
-  // and check that the values are visible in the list.
-  values.append(4);
-  values.append(5);
-  values.append(6);
+  BOOST_CHECK_EQUAL(1, values.get_at(0));
+  BOOST_CHECK_EQUAL(2, values.get_at(1));
+  BOOST_CHECK_EQUAL(3, values.get_at(2));
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListInsertFirst, list_test)
+{
+  values.insert(99, 0);
+  expected.insert(expected.begin(), 99);
 
   std::vector<int> values_vector = as_vector();
   dynamic_list_signals<int> expected_calls;
-  for(int i = 4; i <= 6; ++i)
-    {
-      expected.push_back(i);
-      expected_calls.push_back(appended_call<int>(i));
-    }
+  expected_calls.push_back(inserted_call<int>(99, 0));
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 values_vector.begin(), values_vector.end());
@@ -320,19 +400,65 @@ BOOST_FIXTURE_TEST_CASE(dynamicListAppend, list_test)
                                 signals.begin(), signals.end());
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicListRemove, list_test)
+BOOST_FIXTURE_TEST_CASE(dynamicListInsertMiddle, list_test)
 {
-  values.remove(2); // New list: [1, 3], removed (2, 1)
-  values.remove(0); // New list: [1, 3], no change reported
-  values.remove(1); // New list: [3], removed (1, 0)
+  values.insert(99, 1);
+  expected.insert(expected.begin() + 1, 99);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+  expected_calls.push_back(inserted_call<int>(99, 1));
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListInsertBeforeEnd, list_test)
+{
+  values.insert(99, 2);
+  expected.insert(expected.begin() + 2, 99);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+  expected_calls.push_back(inserted_call<int>(99, 2));
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListInsertAfterEnd, list_test)
+{
+  values.insert(99, 3);
+  expected.push_back(99);
+
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
+  expected_calls.push_back(inserted_call<int>(99, 3));
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
+                                signals.begin(), signals.end());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicListRemoveFirst, list_test)
+{
+  values.remove(0);
 
   std::vector<int> values_vector = as_vector();
   dynamic_list_signals<int> expected_calls;
 
   expected.clear();
+  expected.push_back(2);
   expected.push_back(3);
 
-  expected_calls.push_back(removed_call<int>(2, 1));
   expected_calls.push_back(removed_call<int>(1, 0));
 
 
@@ -343,92 +469,133 @@ BOOST_FIXTURE_TEST_CASE(dynamicListRemove, list_test)
                                 signals.begin(), signals.end());
 }
 
-struct list_collection_test
+BOOST_FIXTURE_TEST_CASE(dynamicListRemoveMiddle, list_test)
 {
-  boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
-  boost::shared_ptr<dynamic_list_collection<int> > collection;
+  values.remove(1);
 
-  dynamic_list_signals<int> signals, expected;
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
 
-  typedef appended_call<int> app;
-  typedef removed_call<int> rem;
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(3);
 
-  list_collection_test()
-    : list1(dynamic_list_impl<int>::create()),
-      list2(dynamic_list_impl<int>::create()),
-      list3(dynamic_list_impl<int>::create()),
-      collection(dynamic_list_collection<int>::create())
-  {
-    list1->append(1);
-    list1->append(2);
-    list1->append(3);
+  expected_calls.push_back(removed_call<int>(2, 1));
 
-    list2->append(5);
-
-    signals.attach(*collection);
-  }
-
-  static std::vector<int> as_vector(dynamic_list<int> &list)
-  {
-    std::vector<int> rval;
-
-    for(boost::shared_ptr<enumerator<int> > e = list.enumerate();
-        e->advance(); )
-      rval.push_back(e->get_current());
-
-    return rval;
-  }
-};
-
-BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAppendList, list_collection_test)
-{
-  collection->add_list(list2);
-  collection->add_list(list3);
-  collection->add_list(list1);
-
-  std::vector<int> expected_values;
-  expected_values.push_back(5);
-  expected_values.push_back(1);
-  expected_values.push_back(2);
-  expected_values.push_back(3);
-
-  expected.push_back(app(5));
-  expected.push_back(app(1));
-  expected.push_back(app(2));
-  expected.push_back(app(3));
-
-  std::vector<int> collection_vector = as_vector(*collection);
-  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-                                collection_vector.begin(), collection_vector.end());
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
                                 signals.begin(), signals.end());
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
+BOOST_FIXTURE_TEST_CASE(dynamicListRemoveLast, list_test)
 {
-  collection->add_list(list1);
-  collection->add_list(list2);
-  collection->add_list(list3);
+  values.remove(2);
 
-  // Clear the current list of signals, since for the purposes of this
-  // test, we don't care about the ones emitted by add_list() above.
-  signals.clear();
+  std::vector<int> values_vector = as_vector();
+  dynamic_list_signals<int> expected_calls;
 
-  collection->remove_list(list3);
-  collection->remove_list(list2);
-  collection->remove_list(list1);
+  expected.clear();
+  expected.push_back(1);
+  expected.push_back(2);
 
-  expected.push_back(rem(5, 3));
-  expected.push_back(rem(1, 0));
-  expected.push_back(rem(2, 0));
-  expected.push_back(rem(3, 0));
+  expected_calls.push_back(removed_call<int>(3, 2));
 
-  std::vector<int> expected_values;
-  std::vector<int> collection_vector = as_vector(*collection);
-  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-                                collection_vector.begin(), collection_vector.end());
 
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                values_vector.begin(), values_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_calls.begin(), expected_calls.end(),
                                 signals.begin(), signals.end());
 }
+
+// struct list_collection_test
+// {
+//   boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
+//   boost::shared_ptr<dynamic_list_collection<int> > collection;
+
+//   dynamic_list_signals<int> signals, expected;
+
+//   typedef appended_call<int> app;
+//   typedef removed_call<int> rem;
+
+//   list_collection_test()
+//     : list1(dynamic_list_impl<int>::create()),
+//       list2(dynamic_list_impl<int>::create()),
+//       list3(dynamic_list_impl<int>::create()),
+//       collection(dynamic_list_collection<int>::create())
+//   {
+//     list1->append(1);
+//     list1->append(2);
+//     list1->append(3);
+
+//     list2->append(5);
+
+//     signals.attach(*collection);
+//   }
+
+//   static std::vector<int> as_vector(dynamic_list<int> &list)
+//   {
+//     std::vector<int> rval;
+
+//     for(std::size_t i = 0; i < values.size(); ++i)
+//       rval.push_back(values.get_at(i));
+
+//     return rval;
+//   }
+// };
+
+// BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAppendList, list_collection_test)
+// {
+//   collection->add_list(list2);
+//   collection->add_list(list3);
+//   collection->add_list(list1);
+
+//   std::vector<int> expected_values;
+//   expected_values.push_back(5);
+//   expected_values.push_back(1);
+//   expected_values.push_back(2);
+//   expected_values.push_back(3);
+
+//   expected.push_back(app(5));
+//   expected.push_back(app(1));
+//   expected.push_back(app(2));
+//   expected.push_back(app(3));
+
+//   std::vector<int> collection_vector = as_vector(*collection);
+//   BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+//                                 collection_vector.begin(), collection_vector.end());
+
+//   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+//                                 signals.begin(), signals.end());
+// }
+
+// BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
+// {
+//   collection->add_list(list1);
+//   collection->add_list(list2);
+//   collection->add_list(list3);
+
+//   // Clear the current list of signals, since for the purposes of this
+//   // test, we don't care about the ones emitted by add_list() above.
+//   signals.clear();
+
+//   collection->remove_list(list3);
+//   collection->remove_list(list2);
+//   collection->remove_list(list1);
+
+//   expected.push_back(rem(5, 3));
+//   expected.push_back(rem(1, 0));
+//   expected.push_back(rem(2, 0));
+//   expected.push_back(rem(3, 0));
+
+//   std::vector<int> expected_values;
+//   std::vector<int> collection_vector = as_vector(*collection);
+//   BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+//                                 collection_vector.begin(), collection_vector.end());
+
+//   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+//                                 signals.begin(), signals.end());
+// }

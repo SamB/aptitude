@@ -44,12 +44,24 @@ namespace aptitude
     public:
       dynamic_list_impl();
 
+      /** \brief Retrieve the size of this list. */
+      std::size_t size();
+
+      /** \brief Get the idxth element of this list.
+       *
+       *  \param idx A nonnegative integer less than size(), giving
+       *             the index within this list of the desired
+       *             element.
+       */
+      T get_at(std::size_t idx);
+
       /** \brief Create an empty list. */
       static boost::shared_ptr<dynamic_list_impl> create();
 
       boost::shared_ptr<enumerator<T> > enumerate();
-      void append(const T &t);
-      void remove(const T &t);
+      void insert(const T &t, std::size_t position);
+      void remove(std::size_t position);
+      void move(std::size_t from, std::size_t to);
     };
 
     template<typename T>
@@ -65,35 +77,48 @@ namespace aptitude
     }
 
     template<typename T>
-    boost::shared_ptr<enumerator<T> > dynamic_list_impl<T>::enumerate()
+    std::size_t dynamic_list_impl<T>::size()
     {
-      typedef iterator_enumerator_with_keepalive<typename collection::const_iterator, dynamic_list_impl> Tenum;
-
-      return boost::make_shared<Tenum>(entries.begin(), entries.end(),
-                                       this->shared_from_this());
+      return entries.size();
     }
 
     template<typename T>
-    void dynamic_list_impl<T>::append(const T &t)
+    T dynamic_list_impl<T>::get_at(std::size_t idx)
     {
-      entries.push_back(t);
-      signal_appended(t);
+      return entries[idx];
     }
 
     template<typename T>
-    void dynamic_list_impl<T>::remove(const T &t)
+    void dynamic_list_impl<T>::insert(const T &t, std::size_t position)
     {
-      typename collection::iterator found =
-        std::find(entries.begin(), entries.end(), t);
+      entries.insert(entries.begin() + position, t);
+      signal_inserted(t, position);
+    }
 
-      if(found != entries.end())
-        {
-          const std::size_t idx = found - entries.begin();
+    template<typename T>
+    void dynamic_list_impl<T>::remove(std::size_t position)
+    {
+      T val = entries[position];
+      entries.erase(entries.begin() + position);
+      signal_removed(val, position);
+    }
 
-          T val = *found;
-          entries.erase(found);
-          signal_removed(val, idx);
-        }
+    template<typename T>
+    void dynamic_list_impl<T>::move(std::size_t from, std::size_t to)
+    {
+      // Simple approach: insert the value at its new location, then
+      // delete it from its old location.
+
+      // Defensive copy in case inserting into a vector from itself
+      // does anything weird.  Pure paranoia.
+      T val = entries[from];
+      entries.insert(entries.begin() + to, val);
+      // Note that if to < from, we just changed the index of the
+      // source of the move!  Fix it up.
+      const std::size_t idx_to_delete = to < from  ?  from + 1  :  from;
+      entries.erase(entries.begin() + idx_to_delete);
+
+      signal_moved(val, from, to);
     }
   }
 }
