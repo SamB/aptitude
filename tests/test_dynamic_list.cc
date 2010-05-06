@@ -833,3 +833,34 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionInsertIntoSublist, list_collection_
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveFromSublist, list_collection_test)
+{
+  list1->insert(4, 3);
+  collection->add_list(list1);
+  collection->add_list(list2);
+
+  signals.clear();
+
+  // Now [1, 2, 3, 4, 5].
+  list1->remove(2); // Now [1, 2, 4, 5]
+  list2->remove(0); // Now [1, 2, 4]
+  list1->remove(0); // Now [2, 4]
+  list1->remove(1); // Now [2]
+  list1->remove(0); // Now []
+
+  expected.push_back(rem(3, 2));
+  expected.push_back(rem(5, 3));
+  expected.push_back(rem(1, 0));
+  expected.push_back(rem(4, 1));
+  expected.push_back(rem(2, 0));
+
+  std::vector<int> expected_values;
+  std::vector<int> collection_vector = as_vector(*collection);
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
