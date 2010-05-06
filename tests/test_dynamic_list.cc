@@ -1,12 +1,13 @@
 #include <generic/util/dynamic_list.h>
-//#include <generic/util/dynamic_list_collection.h>
+#include <generic/util/dynamic_list_collection.h>
+
 #include <generic/util/dynamic_list_impl.h>
 
 #include <boost/test/unit_test.hpp>
 #include <boost/variant.hpp>
 
 using aptitude::util::dynamic_list;
-//using aptitude::util::dynamic_list_collection;
+using aptitude::util::dynamic_list_collection;
 using aptitude::util::dynamic_list_impl;
 using aptitude::util::writable_dynamic_list;
 
@@ -702,91 +703,97 @@ BOOST_FIXTURE_TEST_CASE(dynamicListMoveFrontToLast, list_test)
                                 signals.begin(), signals.end());
 }
 
-// struct list_collection_test
-// {
-//   boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
-//   boost::shared_ptr<dynamic_list_collection<int> > collection;
+struct list_collection_test
+{
+  boost::shared_ptr<writable_dynamic_list<int> > list1, list2, list3;
+  boost::shared_ptr<dynamic_list_collection<int> > collection;
 
-//   dynamic_list_signals<int> signals, expected;
+  dynamic_list_signals<int> signals, expected;
 
-//   typedef appended_call<int> app;
-//   typedef removed_call<int> rem;
+  typedef inserted_call<int> ins;
+  typedef removed_call<int> rem;
+  typedef moved_call<int> mov;
 
-//   list_collection_test()
-//     : list1(dynamic_list_impl<int>::create()),
-//       list2(dynamic_list_impl<int>::create()),
-//       list3(dynamic_list_impl<int>::create()),
-//       collection(dynamic_list_collection<int>::create())
-//   {
-//     list1->append(1);
-//     list1->append(2);
-//     list1->append(3);
+  list_collection_test()
+    : list1(dynamic_list_impl<int>::create()),
+      list2(dynamic_list_impl<int>::create()),
+      list3(dynamic_list_impl<int>::create()),
+      collection(dynamic_list_collection<int>::create())
+  {
+    list1->insert(1, 0);
+    list1->insert(2, 1);
+    list1->insert(3, 2);
 
-//     list2->append(5);
+    list2->insert(5, 0);
 
-//     signals.attach(*collection);
-//   }
+    signals.attach(*collection);
+  }
 
-//   static std::vector<int> as_vector(dynamic_list<int> &list)
-//   {
-//     std::vector<int> rval;
+  std::vector<int> as_vector(dynamic_list<int> &list)
+  {
+    std::vector<int> rval;
 
-//     for(std::size_t i = 0; i < values.size(); ++i)
-//       rval.push_back(values.get_at(i));
+    for(std::size_t i = 0; i < collection->size(); ++i)
+      rval.push_back(collection->get_at(i));
 
-//     return rval;
-//   }
-// };
+    return rval;
+  }
+};
 
-// BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAppendList, list_collection_test)
-// {
-//   collection->add_list(list2);
-//   collection->add_list(list3);
-//   collection->add_list(list1);
 
-//   std::vector<int> expected_values;
-//   expected_values.push_back(5);
-//   expected_values.push_back(1);
-//   expected_values.push_back(2);
-//   expected_values.push_back(3);
 
-//   expected.push_back(app(5));
-//   expected.push_back(app(1));
-//   expected.push_back(app(2));
-//   expected.push_back(app(3));
 
-//   std::vector<int> collection_vector = as_vector(*collection);
-//   BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-//                                 collection_vector.begin(), collection_vector.end());
+// Note: the list collection tests magically know the order that the
+// list collection puts its sub-items in.
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionAddList, list_collection_test)
+{
+  collection->add_list(list2);
+  collection->add_list(list3);
+  collection->add_list(list1);
 
-//   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
-//                                 signals.begin(), signals.end());
-// }
+  std::vector<int> expected_values;
+  expected_values.push_back(5);
+  expected_values.push_back(1);
+  expected_values.push_back(2);
+  expected_values.push_back(3);
 
-// BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
-// {
-//   collection->add_list(list1);
-//   collection->add_list(list2);
-//   collection->add_list(list3);
+  expected.push_back(ins(5, 0));
+  expected.push_back(ins(1, 1));
+  expected.push_back(ins(2, 2));
+  expected.push_back(ins(3, 3));
 
-//   // Clear the current list of signals, since for the purposes of this
-//   // test, we don't care about the ones emitted by add_list() above.
-//   signals.clear();
+  std::vector<int> collection_vector = as_vector(*collection);
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
 
-//   collection->remove_list(list3);
-//   collection->remove_list(list2);
-//   collection->remove_list(list1);
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
 
-//   expected.push_back(rem(5, 3));
-//   expected.push_back(rem(1, 0));
-//   expected.push_back(rem(2, 0));
-//   expected.push_back(rem(3, 0));
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
+{
+  collection->add_list(list1);
+  collection->add_list(list2);
+  collection->add_list(list3);
 
-//   std::vector<int> expected_values;
-//   std::vector<int> collection_vector = as_vector(*collection);
-//   BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-//                                 collection_vector.begin(), collection_vector.end());
+  // Clear the current list of signals, since for the purposes of this
+  // test, we don't care about the ones emitted by add_list() above.
+  signals.clear();
 
-//   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
-//                                 signals.begin(), signals.end());
-// }
+  collection->remove_list(list3);
+  collection->remove_list(list2);
+  collection->remove_list(list1);
+
+  expected.push_back(rem(5, 3));
+  expected.push_back(rem(1, 0));
+  expected.push_back(rem(2, 0));
+  expected.push_back(rem(3, 0));
+
+  std::vector<int> expected_values;
+  std::vector<int> collection_vector = as_vector(*collection);
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
