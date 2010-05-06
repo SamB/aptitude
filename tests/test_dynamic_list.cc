@@ -810,7 +810,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionInsertIntoSublist, list_collection_
   list2->insert(9, 0); // Now [1, 2, 3, 9, 5]
   list1->insert(4, 3); // Now [1, 2, 3, 9, 5, 4]
   list1->insert(0, 0); // Now [0, 1, 2, 3, 9, 5, 4]
-  list3->insert(0, 6); // Now [0, 1, 2, 3, 9, 5, 4, 6]
+  list3->insert(6, 0); // Now [0, 1, 2, 3, 9, 5, 4, 6]
   list2->insert(8, 1); // Now [0, 1, 2, 3, 9, 8, 5, 4, 6]
 
   expected.push_back(ins(9, 3));
