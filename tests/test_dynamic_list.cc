@@ -802,6 +802,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionInsertIntoSublist, list_collection_
 {
   collection->add_list(list1);
   collection->add_list(list2);
+  collection->add_list(list3);
 
   signals.clear();
 
@@ -809,14 +810,16 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionInsertIntoSublist, list_collection_
   list2->insert(9, 0); // Now [1, 2, 3, 9, 5]
   list1->insert(4, 3); // Now [1, 2, 3, 9, 5, 4]
   list1->insert(0, 0); // Now [0, 1, 2, 3, 9, 5, 4]
-  list2->insert(8, 1); // Now [0, 1, 2, 3, 9, 8, 5, 4]
+  list3->insert(0, 6); // Now [0, 1, 2, 3, 9, 5, 4, 6]
+  list2->insert(8, 1); // Now [0, 1, 2, 3, 9, 8, 5, 4, 6]
 
   expected.push_back(ins(9, 3));
   expected.push_back(ins(4, 5));
   expected.push_back(ins(0, 0));
+  expected.push_back(ins(6, 7));
   expected.push_back(ins(8, 5));
 
-  const int expected_values_begin[] = { 0, 1, 2, 3, 9, 8, 5, 4 };
+  const int expected_values_begin[] = { 0, 1, 2, 3, 9, 8, 5, 4, 6 };
   const int expected_values_size =
     sizeof(expected_values_begin) / sizeof(expected_values_begin[0]);
   const int * const expected_values_end =
