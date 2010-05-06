@@ -241,7 +241,7 @@ Returns an object with the following fields:
                          default = '$DOCDIR/$PACKAGE',
                          help = 'the location in which aptitude\'s documentation should be installed.')
 
-    all_build_envs = base.Clone(CPPPATH = [ '#', '#/src' ],
+    all_build_envs = base.Clone(CPPPATH = [ '#/src' ],
                                 CPPDEFINES = [ '_REENTRANT' ])
     DoConfigureBuild(all_build_envs)
 
