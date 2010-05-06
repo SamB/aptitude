@@ -797,3 +797,36 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveList, list_collection_test)
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionInsertIntoSublist, list_collection_test)
+{
+  collection->add_list(list1);
+  collection->add_list(list2);
+
+  signals.clear();
+
+  // Now [1, 2, 3, 5]
+  list2->insert(9, 0); // Now [1, 2, 3, 9, 5]
+  list1->insert(4, 3); // Now [1, 2, 3, 9, 5, 4]
+  list1->insert(0, 0); // Now [0, 1, 2, 3, 9, 5, 4]
+  list2->insert(8, 1); // Now [0, 1, 2, 3, 9, 8, 5, 4]
+
+  expected.push_back(ins(9, 3));
+  expected.push_back(ins(4, 5));
+  expected.push_back(ins(0, 0));
+  expected.push_back(ins(8, 5));
+
+  const int expected_values_begin[] = { 0, 1, 2, 3, 9, 8, 5, 4 };
+  const int expected_values_size =
+    sizeof(expected_values_begin) / sizeof(expected_values_begin[0]);
+  const int * const expected_values_end =
+    expected_values_begin + expected_values_size;
+
+  std::vector<int> collection_vector = as_vector(*collection);
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values_begin, expected_values_end,
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
