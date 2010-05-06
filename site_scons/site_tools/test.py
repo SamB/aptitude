@@ -24,7 +24,7 @@ def generate(env):
     env.AddMethod(Test)
 
 
-def Test(env, target, test_inputs = [], *args, **kwargs):
+def Test(env, target, *args, **kwargs):
     '''Compile the given test and run it as part of the "test" target.
 Returns the Node for the alias.'''
 
@@ -37,7 +37,7 @@ Returns the Node for the alias.'''
     program = env.Program(target, *args, **kwargs)
     stampfile = File('%s.stamp' % target)
     program_stamp = env.Command(stampfile,
-                                [program] + test_inputs,
+                                [program],
                                 [ program[0].abspath,
                                   ['touch', stampfile.abspath] ])
     return env.Alias(test_target, program_stamp)
