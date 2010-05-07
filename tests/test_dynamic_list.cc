@@ -864,3 +864,41 @@ BOOST_FIXTURE_TEST_CASE(dynamicListCollectionRemoveFromSublist, list_collection_
   BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
                                 signals.begin(), signals.end());
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicListCollectionMoveInSublist, list_collection_test)
+{
+  collection->add_list(list2);
+  collection->add_list(list1);
+  list2->insert(4, 1);
+
+  signals.clear();
+
+  // Note that it's not possible to move an element to the end of its
+  // list.  I wonder if this behavior is ideal?  In the current case
+  // where we'll use this, it doesn't matter so much, but eventually
+  // it could.
+  //
+  // Now [5, 1, 2, 3, 4]
+  list1->move(0, 2); // Now [5, 2, 3, 1, 4]
+  list2->move(1, 0); // Now [4, 5, 2, 3, 1]
+  list1->move(1, 2); // Now [4, 5, 2, 1, 3]
+
+  // TODO: check each intermediate step?
+  expected.push_back(mov(1, 1, 3));
+  expected.push_back(mov(4, 4, 0));
+  expected.push_back(mov(3, 3, 4));
+
+  std::vector<int> expected_values;
+  expected_values.push_back(4);
+  expected_values.push_back(5);
+  expected_values.push_back(2);
+  expected_values.push_back(1);
+  expected_values.push_back(3);
+  std::vector<int> collection_vector = as_vector(*collection);
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+                                collection_vector.begin(), collection_vector.end());
+
+  BOOST_CHECK_EQUAL_COLLECTIONS(expected.begin(), expected.end(),
+                                signals.begin(), signals.end());
+}
