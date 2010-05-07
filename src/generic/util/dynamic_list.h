@@ -103,6 +103,9 @@ namespace aptitude
 
       /** \brief Move an object to a new location.
        *
+       *  from and to must be integers between 0 and size() - 1,
+       *  inclusive.
+       *
        *  If from == to, nothing happens and signal_moved is NOT
        *  emitted.
        *
