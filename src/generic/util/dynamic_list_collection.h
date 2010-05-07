@@ -353,8 +353,7 @@ namespace aptitude
         by_parent_list.equal_range(list);
 
       // 2.a. Prepare locations to store the from and to locations.
-      //      The "from" location should exist, but "to" can be missing,
-      //      in which case we move to the end.
+      //      Note that both locations should exist!
       typename concrete_view_index::iterator
         from_location = concrete_view.end(),
         to_location = concrete_view.end();
