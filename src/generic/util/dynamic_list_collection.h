@@ -401,6 +401,18 @@ namespace aptitude
       const std::size_t
         from_idx = from_location - concrete_view.begin(),
         to_idx   = to_location - concrete_view.begin();
+
+      // If we're moving an element to the right, we need to relocate
+      // just past the target, since relocate() inserts the entry
+      // being moved just *before* the target iterator.  If we're
+      // moving to the left, on the other hand, the behavior is
+      // exactly correct.
+      typename concrete_view_index::iterator relocate_target;
+      if(to_idx > from_idx)
+        relocate_target = to_location + 1;
+      else
+        relocate_target = to_location;
+
       concrete_view.relocate(to_location, from_location);
       signal_moved(value, from_idx, to_idx);
     }
