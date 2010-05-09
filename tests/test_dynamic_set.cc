@@ -24,7 +24,9 @@
 #include <generic/util/dynamic_set_union.h>
 
 #include <boost/test/unit_test.hpp>
+#include <boost/unordered_set.hpp>
 #include <boost/variant.hpp>
+#include <boost/weak_ptr.hpp>
 
 #include <vector>
 
@@ -33,6 +35,11 @@ using aptitude::util::dynamic_set_impl;
 using aptitude::util::dynamic_set_union;
 using aptitude::util::enumerator;
 using aptitude::util::writable_dynamic_set;
+
+using boost::shared_ptr;
+using boost::unordered_set;
+using boost::variant;
+using boost::weak_ptr;
 
 namespace
 {
@@ -102,8 +109,8 @@ namespace
   class set_signal
   {
   public:
-    typedef boost::variant<inserted_call<T>,
-                           removed_call<T> > value_type;
+    typedef variant<inserted_call<T>,
+                    removed_call<T> > value_type;
 
   private:
     value_type value;
@@ -222,9 +229,9 @@ namespace
 
   struct set_test
   {
-    boost::shared_ptr<writable_dynamic_set<int> > valuesPtr;
+    shared_ptr<writable_dynamic_set<int> > valuesPtr;
     writable_dynamic_set<int> &values;
-    dynamic_set_signals<int> signals;
+    dynamic_set_signals<int> signals, expected_signals;
 
     std::vector<int> expected;
 
@@ -235,6 +242,11 @@ namespace
       : valuesPtr(dynamic_set_impl<int>::create()),
         values(*valuesPtr)
     {
+      signals.attach(values);
+    }
+
+    void setup123()
+    {
       values.insert(1);
       values.insert(2);
       values.insert(3);
@@ -244,7 +256,7 @@ namespace
     {
       std::vector<int> rval;
 
-      for(boost::shared_ptr<enumerator<int> > e = values.enumerate();
+      for(shared_ptr<enumerator<int> > e = values.enumerate();
           e->advance(); )
         {
           rval.push_back(e->get_current());
@@ -254,6 +266,68 @@ namespace
     }
   };
 }
+
+// Some helper code to make CHECK_EQUAL_SETS work.
+//
+// For s general library this wouldn't be enough, but I only need to
+// cover a few cases.
+std::vector<int> to_vector(const std::vector<int> &v)
+{
+  return v;
+}
+
+std::vector<int> to_vector(const unordered_set<int> &s)
+{
+  return std::vector<int>(s.begin(), s.end());
+}
+
+std::vector<int> to_vector(dynamic_set<int> &s)
+{
+  std::vector<int> rval;
+  rval.reserve(s.size());
+
+  for(shared_ptr<enumerator<int> > e = s.enumerate();
+      e->advance(); )
+    {
+      rval.push_back(e->get_current());
+    }
+
+  return rval;
+}
+
+std::vector<int> to_vector(const shared_ptr<dynamic_set<int> > &s)
+{
+  return to_vector(*s);
+}
+
+
+
+#define CHECK_EQUAL_SETS(c1, c2)                                \
+  do                                                            \
+    {                                                           \
+      std::vector<int> __c1 = to_vector(c1);                    \
+      std::vector<int> __c2 = to_vector(c2);                    \
+                                                                \
+      std::sort(__c1.begin(), __c1.end());                      \
+      std::sort(__c2.begin(), __c2.end());                      \
+                                                                \
+                                                                \
+      BOOST_CHECK_EQUAL_COLLECTIONS(__c1.begin(), __c1.end(),   \
+                                    __c2.begin(), __c2.end());  \
+    }                                                           \
+  while(0)
+
+#define FINISH_SET_TEST()                                     \
+  do                                                          \
+    {                                                         \
+      BOOST_CHECK_EQUAL(expected.size(), values.size());      \
+      CHECK_EQUAL_SETS(expected, values);                     \
+      BOOST_CHECK_EQUAL_COLLECTIONS(expected_signals.begin(), \
+                                    expected_signals.end(),   \
+                                    signals.begin(),          \
+                                    signals.end());           \
+    }                                                         \
+  while(0)
 
 BOOST_AUTO_TEST_CASE(dynamicSetSignals)
 {
@@ -286,4 +360,57 @@ BOOST_AUTO_TEST_CASE(dynamicSetSignals)
   BOOST_CHECK_NE(signals2, signals1);
   BOOST_CHECK_NE(signals2, signals3);
   BOOST_CHECK_NE(signals3, signals2);
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetEmptySize, set_test)
+{
+  BOOST_CHECK_EQUAL(0, values.size());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetEmptyNoElements, set_test)
+{
+  BOOST_CHECK( !values.enumerate()->advance() );
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetEnumeratorKeepsSetAlive, set_test)
+{
+  // An enumerator that's finished could theoretically cause the set
+  // to die, so we need one element.
+  values.insert(5);
+
+  weak_ptr<dynamic_set<int> > valuesWeak(valuesPtr);
+  shared_ptr<enumerator<int> > valuesEnum(values.enumerate());
+
+  BOOST_CHECK(!valuesWeak.expired());
+
+  valuesPtr.reset();
+
+  BOOST_CHECK(!valuesWeak.expired());
+
+  valuesEnum.reset();
+
+  BOOST_CHECK(valuesWeak.expired());
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertEmpty, set_test)
+{
+  values.insert(5);
+
+  expected.push_back(5);
+
+  expected_signals.push_back(ins(5));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertTwice, set_test)
+{
+  values.insert(5);
+  values.insert(5);
+
+  expected.push_back(5);
+
+  expected_signals.push_back(ins(5));
+
+  FINISH_SET_TEST();
 }
