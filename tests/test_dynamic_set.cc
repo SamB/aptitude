@@ -414,3 +414,84 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetInsertTwice, set_test)
 
   FINISH_SET_TEST();
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertSeveral, set_test)
+{
+  values.insert(6);
+  values.insert(2);
+  values.insert(1);
+  values.insert(9);
+
+  expected.push_back(1);
+  expected.push_back(2);
+  expected.push_back(6);
+  expected.push_back(9);
+
+  expected_signals.push_back(ins(6));
+  expected_signals.push_back(ins(2));
+  expected_signals.push_back(ins(1));
+  expected_signals.push_back(ins(9));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveOne, set_test)
+{
+  setup123();
+  signals.clear();
+
+  values.remove(2);
+
+  expected.push_back(3);
+  expected.push_back(1);
+
+  expected_signals.push_back(rem(2));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveAll, set_test)
+{
+  setup123();
+  signals.clear();
+
+  values.remove(1);
+  values.remove(3);
+  values.remove(2);
+
+  expected_signals.push_back(rem(1));
+  expected_signals.push_back(rem(3));
+  expected_signals.push_back(rem(2));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveNotPresent, set_test)
+{
+  setup123();
+  signals.clear();
+
+  values.remove(9);
+
+  expected.push_back(1);
+  expected.push_back(2);
+  expected.push_back(3);
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveTwice, set_test)
+{
+  setup123();
+  signals.clear();
+
+  values.remove(3);
+  values.remove(3);
+
+  expected.push_back(1);
+  expected.push_back(2);
+
+  expected_signals.push_back(rem(3));
+
+  FINISH_SET_TEST();
+}
