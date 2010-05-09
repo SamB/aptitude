@@ -66,6 +66,11 @@ namespace aptitude
       virtual sigc::connection connect_removed(const sigc::slot<void, T> &slot) = 0;
     };
 
+    template<typename T>
+    dynamic_set<T>::~dynamic_set()
+    {
+    }
+
     /** \brief An abstract interface for an unordered collection of
      *  objects that reports changes via signals and that can be
      *  modified.
