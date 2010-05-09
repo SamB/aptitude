@@ -48,8 +48,8 @@ namespace
     {
     }
 
-    std::size_t get_value() const { return value; }
-    const T get_position() const { return position; }
+    T get_value() const { return value; }
+    std::size_t get_position() const { return position; }
     bool operator==(const inserted_call &other) const
     {
       return
@@ -119,7 +119,7 @@ namespace
     {
     }
 
-    const T get_value() const { return value; }
+    T get_value() const { return value; }
     std::size_t get_from() const { return from; }
     std::size_t get_to() const { return to; }
 
