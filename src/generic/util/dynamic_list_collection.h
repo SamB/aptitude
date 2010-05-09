@@ -411,7 +411,7 @@ namespace aptitude
       else
         relocate_target = to_location;
 
-      concrete_view.relocate(to_location, from_location);
+      concrete_view.relocate(relocate_target, from_location);
       signal_moved(value, from_idx, to_idx);
     }
 
