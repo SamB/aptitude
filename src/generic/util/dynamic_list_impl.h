@@ -58,7 +58,6 @@ namespace aptitude
       /** \brief Create an empty list. */
       static boost::shared_ptr<dynamic_list_impl> create();
 
-      boost::shared_ptr<enumerator<T> > enumerate();
       void insert(const T &t, std::size_t position);
       void remove(std::size_t position);
       void move(std::size_t from, std::size_t to);

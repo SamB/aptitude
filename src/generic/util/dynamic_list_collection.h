@@ -148,8 +148,6 @@ namespace aptitude
       void remove_list(const boost::shared_ptr<dynamic_list<T> > &lst);
 
       static boost::shared_ptr<dynamic_list_collection> create();
-
-      boost::shared_ptr<enumerator<T> > enumerate();
     };
 
     template<typename T>

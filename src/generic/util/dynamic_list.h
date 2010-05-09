@@ -3,8 +3,6 @@
 #ifndef TOPLEVEL_DYNAMIC_LIST_H
 #define TOPLEVEL_DYNAMIC_LIST_H
 
-#include "enumerator.h"
-
 #include <boost/shared_ptr.hpp>
 
 #include <sigc++/signal.h>
