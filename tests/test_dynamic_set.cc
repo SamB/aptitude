@@ -772,7 +772,22 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertIntoSubsetWhenAlreadyPresent, set_u
   FINISH_SET_TEST();
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveShadowed, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveOne, set_union_test)
+{
+  set1->insert(34);
+  set2->insert(45);
+
+  addSets();
+  clear();
+
+  set2->remove(45);
+  expected.push_back(34);
+  expected_signals.push_back(rem(45));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveShadowed, set_union_test)
 {
   set1->insert(11);
   set2->insert(11);
