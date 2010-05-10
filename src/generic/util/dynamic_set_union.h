@@ -98,7 +98,7 @@ namespace aptitude
       if(insert_result.second)
         {
           for(boost::shared_ptr<enumerator<T> > e = set->enumerate();
-              e.advance(); )
+              e->advance(); )
             handle_inserted(e->get_current());
         }
     }
