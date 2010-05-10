@@ -495,3 +495,56 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveTwice, set_test)
 
   FINISH_SET_TEST();
 }
+
+
+
+struct set_union_test
+{
+  shared_ptr<writable_dynamic_set<int> > set1, set2, set3;
+  shared_ptr<dynamic_set_union<int> > valuesPtr;
+  dynamic_set_union<int> &values;
+  dynamic_set_signals<int> signals, expected_signals;
+
+  std::vector<int> expected;
+
+  typedef inserted_call<int> ins;
+  typedef removed_call<int> rem;
+
+  set_union_test()
+    : set1(dynamic_set_impl<int>::create()),
+      set2(dynamic_set_impl<int>::create()),
+      set3(dynamic_set_impl<int>::create()),
+      valuesPtr(dynamic_set_union<int>::create()),
+      values(*valuesPtr)
+  {
+    signals.attach(values);
+  }
+
+  // Adds the sets in order (set1, then set2, then set3)
+  void addSets()
+  {
+    values.insert_set(set1);
+    values.insert_set(set2);
+    values.insert_set(set3);
+  }
+
+  std::vector<int> as_vector() const
+  {
+    std::vector<int> rval;
+
+    for(shared_ptr<enumerator<int> > e = values.enumerate();
+        e->advance(); )
+      {
+        rval.push_back(e->get_current());
+      }
+
+    return rval;
+  }
+};
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertEmptySets, set_union_test)
+{
+  addSets();
+
+  FINISH_SET_TEST();
+}
