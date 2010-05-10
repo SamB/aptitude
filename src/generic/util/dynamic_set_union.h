@@ -115,7 +115,7 @@ namespace aptitude
       if(num_erased > 0)
         {
           for(boost::shared_ptr<enumerator<T> > e = set->enumerate();
-              e.advance(); )
+              e->advance(); )
             handle_removed(e->get_current());
         }
     }
