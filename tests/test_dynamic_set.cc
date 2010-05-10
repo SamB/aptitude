@@ -65,6 +65,11 @@ namespace
     {
       return !(*this == other);
     }
+
+    bool operator<(const inserted_call &other) const
+    {
+      return value < other.value;
+    }
   };
 
   template<typename T>
@@ -95,6 +100,11 @@ namespace
     bool operator!=(const removed_call &other) const
     {
       return !(*this == other);
+    }
+
+    bool operator<(const removed_call &other) const
+    {
+      return value < other.value;
     }
   };
 
@@ -144,6 +154,11 @@ namespace
     bool operator!=(const set_signal &other) const
     {
       return !(*this == other);
+    }
+
+    bool operator<(const set_signal &other) const
+    {
+      return value < other.value;
     }
   };
 
@@ -271,19 +286,22 @@ namespace
 //
 // For a general library this wouldn't be enough, but I only need to
 // cover a few cases.
-std::vector<int> to_vector(const std::vector<int> &v)
+template<typename T>
+std::vector<T> to_vector(const std::vector<T> &v)
 {
   return v;
 }
 
-std::vector<int> to_vector(const unordered_set<int> &s)
+template<typename T>
+std::vector<T> to_vector(const unordered_set<T> &s)
 {
-  return std::vector<int>(s.begin(), s.end());
+  return std::vector<T>(s.begin(), s.end());
 }
 
-std::vector<int> to_vector(dynamic_set<int> &s)
+template<typename T>
+std::vector<T> to_vector(dynamic_set<T> &s)
 {
-  std::vector<int> rval;
+  std::vector<T> rval;
   rval.reserve(s.size());
 
   for(shared_ptr<enumerator<int> > e = s.enumerate();
@@ -295,18 +313,25 @@ std::vector<int> to_vector(dynamic_set<int> &s)
   return rval;
 }
 
-std::vector<int> to_vector(const shared_ptr<dynamic_set<int> > &s)
+template<typename T>
+std::vector<T> to_vector(const shared_ptr<dynamic_set<T> > &s)
 {
   return to_vector(*s);
 }
 
+template<typename T>
+std::vector<set_signal<T> > to_vector(const dynamic_set_signals<T> &s)
+{
+  return std::vector<set_signal<T> >(s.begin(), s.end());
+}
 
 
-#define CHECK_EQUAL_SETS(c1, c2)                                \
+
+#define CHECK_EQUAL_SETS(c1, c2, T)                             \
   do                                                            \
     {                                                           \
-      std::vector<int> __c1 = to_vector(c1);                    \
-      std::vector<int> __c2 = to_vector(c2);                    \
+      std::vector<T> __c1 = to_vector(c1);                      \
+      std::vector<T> __c2 = to_vector(c2);                      \
                                                                 \
       std::sort(__c1.begin(), __c1.end());                      \
       std::sort(__c2.begin(), __c2.end());                      \
@@ -321,7 +346,7 @@ std::vector<int> to_vector(const shared_ptr<dynamic_set<int> > &s)
   do                                                          \
     {                                                         \
       BOOST_CHECK_EQUAL(expected.size(), values.size());      \
-      CHECK_EQUAL_SETS(expected, values);                     \
+      CHECK_EQUAL_SETS(expected, values, int);                \
       BOOST_CHECK_EQUAL_COLLECTIONS(expected_signals.begin(), \
                                     expected_signals.end(),   \
                                     signals.begin(),          \
