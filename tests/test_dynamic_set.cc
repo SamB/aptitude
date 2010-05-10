@@ -644,3 +644,13 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
   set1.reset();
   BOOST_CHECK(set1_weak.expired());
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveEmptySets, set_union_test)
+{
+  addSets();
+  values.remove_set(set3);
+  values.remove_set(set2);
+  values.remove_set(set1);
+
+  FINISH_SET_TEST();
+}
