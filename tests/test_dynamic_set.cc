@@ -609,6 +609,8 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertNonEmptySets, set_union_test)
 
 BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
 {
+  weak_ptr<dynamic_set<int> > set1_weak(set1);
+
   set1->insert(4);
   set1->insert(2);
   set1->insert(6);
@@ -637,4 +639,8 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
 
   CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
   CHECK_EQUAL_SETS(expected, values, int);
+
+  BOOST_CHECK(!set1_weak.expired());
+  set1.reset();
+  BOOST_CHECK(set1_weak.expired());
 }
