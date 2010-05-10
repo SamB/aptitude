@@ -722,6 +722,17 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNotPresentSet, set_union_test)
   CHECK_EQUAL_SETS(expected, values, int);
 }
 
+BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveStopsSignals, set_union_test)
+{
+  // Check that removing a set from the union means that changes to it
+  // no longer affect the union.
+  addSets();
+  values.remove_set(set1);
+  set1->insert(100);
+
+  FINISH_SET_TEST();
+}
+
 BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenEmpty, set_union_test)
 {
   addSets();
