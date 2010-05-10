@@ -269,7 +269,7 @@ namespace
 
 // Some helper code to make CHECK_EQUAL_SETS work.
 //
-// For s general library this wouldn't be enough, but I only need to
+// For a general library this wouldn't be enough, but I only need to
 // cover a few cases.
 std::vector<int> to_vector(const std::vector<int> &v)
 {
