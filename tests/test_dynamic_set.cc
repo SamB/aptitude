@@ -661,3 +661,42 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveEmptySets, set_union_test)
 
   FINISH_SET_TEST();
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNonEmptySets, set_union_test)
+{
+  // Create some semi-overlapping sets and remove them one at a time.
+  set1->insert(1);
+  set2->insert(2);
+  set2->insert(3);
+  set3->insert(3);
+
+  addSets();
+  clear();
+
+  values.remove_set(set1);
+
+  expected.push_back(2);
+  expected.push_back(3);
+  expected_signals.push_back(rem(1));
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+  clear();
+
+
+  values.remove_set(set3);
+  expected.push_back(2);
+  expected.push_back(3);
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+  clear();
+
+
+  values.remove_set(set2);
+  expected_signals.push_back(rem(2));
+  expected_signals.push_back(rem(3));
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+}
