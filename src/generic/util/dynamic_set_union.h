@@ -23,7 +23,6 @@
 
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/unordered_map.hpp>
-#include <boost/unordered_set.hpp>
 
 #include <sigc++/signal.h>
 
@@ -47,7 +46,10 @@ namespace aptitude
       // the element.
       value_counts_t value_counts;
 
-      typedef boost::unordered_set<boost::shared_ptr<dynamic_set<T> > >
+      // Keeps sets contained in this union alive, and also stores the
+      // connections binding each set to this object's handlers.
+      typedef boost::unordered_multimap<boost::shared_ptr<dynamic_set<T> >,
+                                        sigc::connection>
       contained_sets_t;
 
       // Maintains pointers to the individual sets this contains.
@@ -91,18 +93,19 @@ namespace aptitude
     template<typename T>
     void dynamic_set_union<T>::insert_set(const boost::shared_ptr<dynamic_set<T> > &set)
     {
-      const std::pair<typename contained_sets_t::iterator, bool>
-        insert_result = contained_sets.insert(set);
-      // insert_result.second will be true if a new value was actually
-      // inserted:
-      if(insert_result.second)
+      if(contained_sets.find(set) == contained_sets.end())
         {
           for(boost::shared_ptr<enumerator<T> > e = set->enumerate();
               e->advance(); )
             handle_inserted(e->get_current());
 
-          set->connect_inserted(sigc::mem_fun(*this, &dynamic_set_union::handle_inserted));
-          set->connect_removed(sigc::mem_fun(*this, &dynamic_set_union::handle_removed));
+          sigc::connection inserted_connection =
+            set->connect_inserted(sigc::mem_fun(*this, &dynamic_set_union::handle_inserted));
+          sigc::connection removed_connection =
+            set->connect_removed(sigc::mem_fun(*this, &dynamic_set_union::handle_removed));
+
+          contained_sets.insert(std::make_pair(set, inserted_connection));
+          contained_sets.insert(std::make_pair(set, removed_connection));
         }
     }
 
@@ -114,12 +117,20 @@ namespace aptitude
       // impossible).
       const boost::shared_ptr<dynamic_set<T> > set_copy = set;
 
-      const std::size_t num_erased = contained_sets.erase(set);
-      if(num_erased > 0)
+      typedef typename contained_sets_t::iterator contained_iterator;
+      const std::pair<contained_iterator, contained_iterator> found
+        = contained_sets.equal_range(set);
+
+      if(found.first != found.second)
         {
           for(boost::shared_ptr<enumerator<T> > e = set->enumerate();
               e->advance(); )
             handle_removed(e->get_current());
+
+          for(contained_iterator it = found.first; it != found.second; ++it)
+            it->second.disconnect();
+
+          contained_sets.erase(found.first, found.second);
         }
     }
 
