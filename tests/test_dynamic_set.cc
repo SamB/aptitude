@@ -721,3 +721,42 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNotPresentSet, set_union_test)
   CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
   CHECK_EQUAL_SETS(expected, values, int);
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenEmpty, set_union_test)
+{
+  addSets();
+
+  set1->insert(99);
+  expected.push_back(99);
+  expected_signals.push_back(ins(99));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenNonEmpty, set_union_test)
+{
+  set1->insert(55);
+
+  addSets();
+  clear();
+
+  set1->insert(66);
+  expected.push_back(55);
+  expected.push_back(66);
+  expected_signals.push_back(ins(66));
+
+  FINISH_SET_TEST();
+}
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenAlreadyPresent, set_union_test)
+{
+  set1->insert(55);
+
+  addSets();
+  clear();
+
+  set2->insert(55);
+  expected.push_back(55);
+
+  FINISH_SET_TEST();
+}
