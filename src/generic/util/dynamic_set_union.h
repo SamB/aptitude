@@ -223,7 +223,7 @@ namespace aptitude
     template<typename T>
     T dynamic_set_union<T>::set_enumerator::get_current()
     {
-      return *begin;
+      return begin->first;
     }
 
     template<typename T>
