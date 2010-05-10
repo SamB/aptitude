@@ -201,7 +201,7 @@ namespace aptitude
       bool is_first;
 
     public:
-      set_enumerator(boost::shared_ptr<dynamic_set<T> > &_parent,
+      set_enumerator(const boost::shared_ptr<dynamic_set<T> > &_parent,
                      const values_iterator &_begin,
                      const values_iterator &_end);
 
@@ -210,7 +210,7 @@ namespace aptitude
     };
 
     template<typename T>
-    dynamic_set_union<T>::set_enumerator::set_enumerator(boost::shared_ptr<dynamic_set<T> > &_parent,
+    dynamic_set_union<T>::set_enumerator::set_enumerator(const boost::shared_ptr<dynamic_set<T> > &_parent,
                                                          const values_iterator &_begin,
                                                          const values_iterator &_end)
       : parent(_parent),
