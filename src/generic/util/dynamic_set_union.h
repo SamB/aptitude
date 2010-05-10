@@ -190,9 +190,13 @@ namespace aptitude
     class dynamic_set_union<T>::set_enumerator
       : public enumerator<T>
     {
-      boost::shared_ptr<dynamic_set<T> > parent;
-      typedef typename boost::unordered_map<T, int>::const_iterator values_iterator;
+    public:
+      typedef
+      typename dynamic_set_union<T>::value_counts_t::const_iterator
+      values_iterator;
 
+    private:
+      boost::shared_ptr<dynamic_set<T> > parent;
       values_iterator begin, end;
       bool is_first;
 
