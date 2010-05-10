@@ -700,3 +700,24 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNonEmptySets, set_union_test)
   CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
   CHECK_EQUAL_SETS(expected, values, int);
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNotPresentSet, set_union_test)
+{
+  // Check that removing a set which isn't in the union has no effect.
+  for(int i = 1; i <= 3; ++i)
+    {
+      set1->insert(i);
+      set2->insert(i);
+    }
+
+  values.insert_set(set1);
+  clear();
+
+  values.remove_set(set2);
+
+  for(int i = 1; i <= 3; ++i)
+    expected.push_back(i);
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+}
