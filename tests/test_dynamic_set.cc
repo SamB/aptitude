@@ -722,7 +722,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveNotPresentSet, set_union_test)
   CHECK_EQUAL_SETS(expected, values, int);
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveStopsSignals, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveStopsSignals, set_union_test)
 {
   // Check that removing a set from the union means that changes to it
   // no longer affect the union.
@@ -733,7 +733,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveStopsSignals, set_union_test)
   FINISH_SET_TEST();
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenEmpty, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertIntoSubsetWhenEmpty, set_union_test)
 {
   addSets();
 
@@ -744,7 +744,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenEmpty, set_union_test)
   FINISH_SET_TEST();
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenNonEmpty, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertIntoSubsetWhenNonEmpty, set_union_test)
 {
   set1->insert(55);
 
@@ -759,7 +759,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenNonEmpty, set_union_test)
   FINISH_SET_TEST();
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetInsertIntoSubsetWhenAlreadyPresent, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertIntoSubsetWhenAlreadyPresent, set_union_test)
 {
   set1->insert(55);
 
@@ -786,7 +786,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveShadowed, set_union_test)
   FINISH_SET_TEST();
 }
 
-BOOST_FIXTURE_TEST_CASE(dynamicSetRemoveAllCopies, set_union_test)
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveAllCopies, set_union_test)
 {
   set1->insert(11);
   set2->insert(11);
