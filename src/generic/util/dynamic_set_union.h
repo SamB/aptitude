@@ -100,6 +100,9 @@ namespace aptitude
           for(boost::shared_ptr<enumerator<T> > e = set->enumerate();
               e->advance(); )
             handle_inserted(e->get_current());
+
+          set->connect_inserted(sigc::mem_fun(*this, &dynamic_set_union::handle_inserted));
+          set->connect_removed(sigc::mem_fun(*this, &dynamic_set_union::handle_removed));
         }
     }
 
