@@ -553,6 +553,14 @@ struct set_union_test
     values.insert_set(set3);
   }
 
+  // Drops recorded signal information and expected values.
+  void clear()
+  {
+    signals.clear();
+    expected.clear();
+    expected_signals.clear();
+  }
+
   std::vector<int> as_vector() const
   {
     std::vector<int> rval;
@@ -627,9 +635,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
 
   CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
   CHECK_EQUAL_SETS(expected, values, int);
-  expected_signals.clear();
-  expected.clear();
-  signals.clear();
+  clear();
 
 
   values.remove_set(set1);
@@ -648,6 +654,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
 BOOST_FIXTURE_TEST_CASE(dynamicSetUnionRemoveEmptySets, set_union_test)
 {
   addSets();
+  clear();
   values.remove_set(set3);
   values.remove_set(set2);
   values.remove_set(set1);
