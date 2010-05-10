@@ -626,6 +626,7 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertSetTwice, set_union_test)
   CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
   CHECK_EQUAL_SETS(expected, values, int);
   expected_signals.clear();
+  expected.clear();
   signals.clear();
 
 
