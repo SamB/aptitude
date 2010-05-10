@@ -573,3 +573,36 @@ BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertEmptySets, set_union_test)
 
   FINISH_SET_TEST();
 }
+
+BOOST_FIXTURE_TEST_CASE(dynamicSetUnionInsertNonEmptySets, set_union_test)
+{
+  set1->insert(4);
+  set1->insert(2);
+  set1->insert(6);
+
+  values.insert_set(set1);
+
+  expected_signals.push_back(ins(4));
+  expected_signals.push_back(ins(2));
+  expected_signals.push_back(ins(6));
+  expected.push_back(4);
+  expected.push_back(2);
+  expected.push_back(6);
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+  expected_signals.clear();
+  signals.clear();
+
+
+  set2->insert(4);
+  set2->insert(3);
+
+  values.insert_set(set2);
+
+  expected_signals.push_back(ins(3));
+  expected.push_back(3);
+
+  CHECK_EQUAL_SETS(expected_signals, signals, set_signal<int>);
+  CHECK_EQUAL_SETS(expected, values, int);
+}
