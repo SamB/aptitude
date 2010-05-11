@@ -302,6 +302,12 @@ namespace gui
   {
   };
 
+  /** \brief Create a new tab_info.
+   *
+   *  \param name   The name to display in the tab.
+   *  \param icon   The icon to display for the tab.
+   *  \param widget The main widget of the tab.
+   */
   boost::shared_ptr<tab_info> create_tab(const std::string &name,
 					 const Glib::RefPtr<Gdk::Pixbuf> &icon,
 					 Gtk::Widget *widget);
