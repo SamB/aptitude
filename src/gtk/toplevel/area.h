@@ -51,6 +51,16 @@
 //
 // Below, the "view implementation" refers to the code that displays
 // the areas, tabs and so on.
+//
+// Some views take ownership of the widgets of the tabs they display.
+// Exactly one of these views should be attached to any given tab at
+// any time.  These views are generally intended to be the "main" view
+// of the program (e.g., tabs_notebook) and are responsible for
+// destroying the tab's widget when it is removed from the area's set.
+//
+// \todo the above paragraph is a description of how things are, but
+// it's a pretty hideous design.  Can we do better within the bounds
+// of gtk--?
 
 namespace gui
 {
@@ -203,6 +213,17 @@ namespace gui
     virtual sigc::connection
     connect_activate_tab(const sigc::slot<void> &slot) = 0;
 
+    /** \brief Register a slot to be invoked when the tab is to be
+     *  closed.
+     *
+     *  If the receiver owns the tab, it should destroy the tab's
+     *  widget as a side-effect.  Otherwise, it should not assume that
+     *  the tab's widget is valid, since the owner might already have
+     *  destroyed it.
+     */
+    virtual sigc::connection
+    connect_closed(const sigc::slot<void> &slot) = 0;
+
     // @}
   };
 
@@ -264,7 +285,10 @@ namespace gui
      *
      *  If any slot connected to request_close returns "false", then
      *  the close is canceled.  Otherwise (e.g., if nothing attaches
-     *  here), the tab will be closed and its widget destroyed.
+     *  here), signal_closed will be invoked; that signal should
+     *  remove the tab from its enclosing area, which in turn will
+     *  cause views to remove it.  Once that happens, the widget
+     *  associated with the tab is most likely destroyed.
      */
     virtual sigc::connection
     connect_request_close(const sigc::slot<bool> &slot) = 0;

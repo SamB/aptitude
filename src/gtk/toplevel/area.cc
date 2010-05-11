@@ -19,6 +19,8 @@
 
 #include "area.h"
 
+#include <cwidget/generic/util/bool_accumulate.h>
+
 #include <generic/util/dynamic_set_impl.h>
 
 #include <gtkmm/window.h>
@@ -130,7 +132,8 @@ namespace gui
     sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
     sigc::signal<void> signal_activate_tab;
     sigc::signal<void, bool> signal_active_changed;
-    sigc::signal<bool> signal_request_close;
+    sigc::signal<bool>::accumulated<cwidget::util::accumulate_and> signal_request_close;
+    sigc::signal<void> signal_closed;
 
   public:
     tab_info_impl(const std::string &_name,
@@ -221,6 +224,11 @@ namespace gui
       return signal_activate_tab.connect(slot);
     }
 
+    sigc::connection connect_closed(const sigc::slot<void> &slot)
+    {
+      return signal_closed.connect(slot);
+    }
+
     sigc::connection
     connect_active_changed(const sigc::slot<void, bool> &
                            slot)
@@ -241,7 +249,8 @@ namespace gui
 
     void request_close()
     {
-      signal_request_close();
+      if(signal_request_close())
+        signal_closed();
     }
   };
 
