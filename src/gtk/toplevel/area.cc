@@ -19,12 +19,12 @@
 
 #include "area.h"
 
-#include <generic/util/dynamic_list_impl.h>
+#include <generic/util/dynamic_set_impl.h>
 
 #include <gtkmm/window.h>
 
-using aptitude::util::dynamic_list;
-using aptitude::util::dynamic_list_impl;
+using aptitude::util::dynamic_set;
+using aptitude::util::dynamic_set_impl;
 using aptitude::util::enumerator;
 using aptitude::util::iterator_enumerator_with_keepalive;
 using aptitude::util::progress_info;
@@ -76,11 +76,11 @@ namespace gui
     std::string description;
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
-    typedef dynamic_list_impl<boost::shared_ptr<tab_info> > tabs_list_impl;
-    typedef dynamic_list_impl<boost::shared_ptr<notification_info> > notifications_list_impl;
+    typedef dynamic_set_impl<boost::shared_ptr<tab_info> > tabs_set_impl;
+    typedef dynamic_set_impl<boost::shared_ptr<notification_info> > notifications_set_impl;
 
-    boost::shared_ptr<tabs_list> tabs;
-    boost::shared_ptr<notifications_list> notifications;
+    boost::shared_ptr<tabs_set> tabs;
+    boost::shared_ptr<notifications_set> notifications;
 
   public:
     area_info_impl(const std::string &_name,
@@ -89,16 +89,16 @@ namespace gui
       : name(_name),
 	description(_description),
 	icon(_icon),
-        tabs(tabs_list_impl::create()),
-        notifications(notifications_list_impl::create())
+        tabs(tabs_set_impl::create()),
+        notifications(notifications_set_impl::create())
     {
     }
 
     std::string get_name() { return name; }
     std::string get_description() { return description; }
     Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
-    boost::shared_ptr<tabs_list> get_tabs() { return tabs; }
-    boost::shared_ptr<notifications_list> get_notifications() { return notifications; }
+    boost::shared_ptr<tabs_set> get_tabs() { return tabs; }
+    boost::shared_ptr<notifications_set> get_notifications() { return notifications; }
   };
 
   boost::shared_ptr<area_info> create_area_info(const std::string &name,
@@ -121,6 +121,12 @@ namespace gui
     progress_info progress;
 
     bool active;
+
+    sigc::signal<void, std::string, Gtk::Window *> signal_tooltip_changed;
+    sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
+    sigc::signal<void> signal_activate_tab;
+    sigc::signal<void, bool> signal_active_changed;
+    sigc::signal<bool> signal_request_close;
 
   public:
     tab_info_impl(const std::string &_name,
@@ -189,6 +195,50 @@ namespace gui
 	  signal_active_changed(active);
 	}
     }
+
+    sigc::connection
+    connect_tooltip_changed(const sigc::slot<void, std::string, Gtk::Window *> &
+                            slot)
+    {
+      return signal_tooltip_changed.connect(slot);
+    }
+
+    sigc::connection
+    connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &
+                             slot)
+    {
+      return signal_progress_changed.connect(slot);
+    }
+
+    sigc::connection
+    connect_activate_tab(const sigc::slot<void> &
+                         slot)
+    {
+      return signal_activate_tab.connect(slot);
+    }
+
+    sigc::connection
+    connect_active_changed(const sigc::slot<void, bool> &
+                           slot)
+    {
+      return signal_active_changed.connect(slot);
+    }
+
+    sigc::connection
+    connect_request_close(const sigc::slot<bool> &slot)
+    {
+      return signal_request_close.connect(slot);
+    }
+
+    void activate()
+    {
+      signal_activate_tab();
+    }
+
+    void request_close()
+    {
+      signal_request_close();
+    }
   };
 
   boost::shared_ptr<tab_info> create_tab(const std::string &name,
@@ -204,6 +254,9 @@ namespace gui
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
     progress_info progress;
+
+    sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
+    sigc::signal<void> signal_clicked;
 
   public:
     notification_info_impl(const std::string &_name,
@@ -225,6 +278,19 @@ namespace gui
     {
       progress = new_progress;
       signal_progress_changed(progress);
+    }
+
+    sigc::connection
+    connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &
+                             slot)
+    {
+      return signal_progress_changed.connect(slot);
+    }
+
+    sigc::connection
+    connect_clicked(const sigc::slot<void> &slot)
+    {
+      return signal_clicked.connect(slot);
     }
   };
 
