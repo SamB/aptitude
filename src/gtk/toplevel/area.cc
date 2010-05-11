@@ -31,6 +31,10 @@ using aptitude::util::progress_info;
 
 namespace gui
 {
+  // None of the connect_* methods in this file should be given slots
+  // with outgoing strong references: doing so will likely result in a
+  // reference loop.
+
 
   /** \brief Implements the static area list. */
   class area_list_impl : public area_list, public boost::enable_shared_from_this<area_list_impl>
