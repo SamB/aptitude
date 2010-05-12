@@ -31,7 +31,7 @@
 
 #include <gtkmm/image.h>
 
-#include <sigc++/signal.h>
+#include <sigc++/slot.h>
 
 // "areas" are the broad functional categories that tabs are grouped
 // into.  Each area contains one or more "tabs" (views the user can
