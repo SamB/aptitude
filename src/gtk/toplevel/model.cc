@@ -32,6 +32,7 @@ using aptitude::util::dynamic_set_impl;
 using aptitude::util::enumerator;
 using aptitude::util::iterator_enumerator_with_keepalive;
 using aptitude::util::progress_info;
+using aptitude::util::writable_dynamic_set;
 
 namespace gui
 {
@@ -87,8 +88,25 @@ namespace gui
     typedef dynamic_set_impl<boost::shared_ptr<tab_info> > tabs_set_impl;
     typedef dynamic_set_impl<boost::shared_ptr<notification_info> > notifications_set_impl;
 
-    boost::shared_ptr<tabs_set> tabs;
+    // We need to write to the tab set so that we can remove each tab
+    // from this area when it's closed.
+    typedef writable_dynamic_set<boost::shared_ptr<tab_info> > writable_tabs_set;
+
+    boost::shared_ptr<writable_tabs_set> tabs;
     boost::shared_ptr<notifications_set> notifications;
+
+    void tab_inserted(const boost::shared_ptr<tab_info> &tab)
+    {
+      // Arrange for the tab to be dropped from the set when it's
+      // closed.
+
+      tab->connect_closed(sigc::mem_fun(*this, &area_info_impl::tab_closed));
+    }
+
+    void tab_closed(const boost::shared_ptr<tab_info> &tab)
+    {
+      tabs->remove(tab);
+    }
 
   public:
     area_info_impl(const std::string &_name,
@@ -100,6 +118,8 @@ namespace gui
         tabs(tabs_set_impl::create()),
         notifications(notifications_set_impl::create())
     {
+      tabs->connect_inserted(sigc::mem_fun(*this,
+                                           &area_info_impl::tab_inserted));
     }
 
     std::string get_name() { return name; }
