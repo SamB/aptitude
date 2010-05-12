@@ -17,8 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef AREA_H
-#define AREA_H
+#ifndef APTITUDE_GTK_TOPLEVEL_MODEL_H
+#define APTITUDE_GTK_TOPLEVEL_MODEL_H
 
 #include <generic/util/dynamic_set.h>
 #include <generic/util/enumerator.h>
@@ -384,5 +384,5 @@ namespace gui
 		      const Glib::RefPtr<Gdk::Pixbuf> &icon);
 }
 
-#endif // AREA_H
+#endif // APTITUDE_GTK_TOPLEVEL_MODEL_H
 

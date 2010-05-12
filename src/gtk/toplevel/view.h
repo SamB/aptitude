@@ -21,6 +21,17 @@
 #ifndef APTITUDE_GTK_TOPLEVEL_VIEW_H
 #define APTITUDE_GTK_TOPLEVEL_VIEW_H
 
+#include "model.h"
+
+#include <boost/shared_ptr.hpp>
+
+#include <sigc++/slot.h>
+
+namespace Gtk
+{
+  class Widget;
+}
+
 namespace gui
 {
   namespace toplevel

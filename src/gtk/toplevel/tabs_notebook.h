@@ -21,7 +21,7 @@
 #ifndef TOPLEVEL_TABS_NOTEBOOK_H
 #define TOPLEVEL_TABS_NOTEBOOK_H
 
-#include "area.h"
+#include "model.h"
 #include "view.h"
 
 #include <boost/shared_ptr.hpp>
