@@ -21,6 +21,8 @@
 
 #include <cwidget/generic/util/bool_accumulate.h>
 
+#include <boost/enable_shared_from_this.hpp>
+
 #include <generic/util/dynamic_set_impl.h>
 
 #include <gtkmm/window.h>
@@ -114,7 +116,8 @@ namespace gui
     return boost::make_shared<area_info_impl>(name, description, icon);
   }
 
-  class tab_info_impl : public tab_info
+  class tab_info_impl : public tab_info,
+                        public boost::enable_shared_from_this<tab_info_impl>
   {
     std::string name;
     Glib::RefPtr<Gdk::Pixbuf> icon;
@@ -128,12 +131,12 @@ namespace gui
 
     bool active;
 
-    sigc::signal<void, std::string, Gtk::Window *> signal_tooltip_changed;
-    sigc::signal<void, aptitude::util::progress_info> signal_progress_changed;
-    sigc::signal<void> signal_activate_tab;
+    sigc::signal<void, boost::shared_ptr<tab_info>, std::string, Gtk::Window *> signal_tooltip_changed;
+    sigc::signal<void, boost::shared_ptr<tab_info>, aptitude::util::progress_info> signal_progress_changed;
+    sigc::signal<void, boost::shared_ptr<tab_info> > signal_activate_tab;
     sigc::signal<void, bool> signal_active_changed;
     sigc::signal<bool>::accumulated<cwidget::util::accumulate_and> signal_request_close;
-    sigc::signal<void> signal_closed;
+    sigc::signal<void, boost::shared_ptr<tab_info> > signal_closed;
 
   public:
     tab_info_impl(const std::string &_name,
@@ -164,21 +167,25 @@ namespace gui
 
     void set_tooltip(const std::string &new_tooltip_text)
     {
+      const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
+
       delete tooltip_window;
       tooltip_window = NULL;
 
       tooltip_text = new_tooltip_text;
-      signal_tooltip_changed(tooltip_text, tooltip_window);
+      signal_tooltip_changed(this_ptr, tooltip_text, tooltip_window);
     }
 
     void set_tooltip(Gtk::Window *new_tooltip_window)
     {
+      const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
+
       tooltip_text.clear();
 
       delete tooltip_window;
       tooltip_window = new_tooltip_window;
 
-      signal_tooltip_changed(tooltip_text, tooltip_window);
+      signal_tooltip_changed(this_ptr, tooltip_text, tooltip_window);
     }
 
     Glib::RefPtr<Gdk::Pixbuf> get_icon() { return icon; }
@@ -187,8 +194,10 @@ namespace gui
 
     void set_progress(const progress_info &info)
     {
+      const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
+
       progress = info;
-      signal_progress_changed(progress);
+      signal_progress_changed(this_ptr, progress);
     }
 
     Gtk::Widget *get_widget() { return tab; }
@@ -204,27 +213,30 @@ namespace gui
     }
 
     sigc::connection
-    connect_tooltip_changed(const sigc::slot<void, std::string, Gtk::Window *> &
+    connect_tooltip_changed(const sigc::slot<void, boost::shared_ptr<tab_info>,
+                                             std::string, Gtk::Window *> &
                             slot)
     {
       return signal_tooltip_changed.connect(slot);
     }
 
     sigc::connection
-    connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &
+    connect_progress_changed(const sigc::slot<void,
+                                              boost::shared_ptr<tab_info>,
+                                              aptitude::util::progress_info> &
                              slot)
     {
       return signal_progress_changed.connect(slot);
     }
 
     sigc::connection
-    connect_activate_tab(const sigc::slot<void> &
+    connect_activate_tab(const sigc::slot<void, boost::shared_ptr<tab_info> > &
                          slot)
     {
       return signal_activate_tab.connect(slot);
     }
 
-    sigc::connection connect_closed(const sigc::slot<void> &slot)
+    sigc::connection connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot)
     {
       return signal_closed.connect(slot);
     }
@@ -244,13 +256,18 @@ namespace gui
 
     void activate()
     {
-      signal_activate_tab();
+      const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
+      signal_activate_tab(this_ptr);
     }
 
     void request_close()
     {
+      // Give the pointer an explicit scope to avoid surprises in case
+      // it ends up being the last reference.
+      const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
+
       if(signal_request_close())
-        signal_closed();
+        signal_closed(this_ptr);
     }
   };
 

@@ -197,21 +197,21 @@ namespace gui
      *  information changes.
      */
     virtual sigc::connection
-    connect_tooltip_changed(const sigc::slot<void, std::string, Gtk::Window *> &
+    connect_tooltip_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, std::string, Gtk::Window *> &
                             slot) = 0;
 
     /** \brief Register a slot to be invoked when the progress
      *  information changes.
      */
     virtual sigc::connection
-    connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &
+    connect_progress_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, aptitude::util::progress_info> &
                              slot) = 0;
 
     /** \brief Register a slot to be invoked when something asks for a
      *  tab to be made the currently visible tab by invoking activate().
      */
     virtual sigc::connection
-    connect_activate_tab(const sigc::slot<void> &slot) = 0;
+    connect_activate_tab(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
 
     /** \brief Register a slot to be invoked when the tab is to be
      *  closed.
@@ -222,7 +222,7 @@ namespace gui
      *  destroyed it.
      */
     virtual sigc::connection
-    connect_closed(const sigc::slot<void> &slot) = 0;
+    connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
 
     // @}
   };
