@@ -230,19 +230,6 @@ namespace gui
     virtual sigc::connection
     connect_activate_tab(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
 
-    /** \brief Register a slot to be invoked when the tab is to be
-     *  closed.
-     *
-     *  The code that manages the set of tabs should catch this and
-     *  remove the tab from the set.  That removal is the signal to
-     *  other parts of the code that the tab is officially dead.  The
-     *  set removal is used rather than using this signal to kill the
-     *  tab because while both options have issues, this one seems
-     *  conceptually cleaner to me and a bit less error-prone.
-     */
-    virtual sigc::connection
-    connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
-
     // @}
   };
 
@@ -319,6 +306,18 @@ namespace gui
    */
   class tab_info : public tab_display_info, public tab_controller_info
   {
+    /** \brief Register a slot to be invoked when the tab is to be
+     *  closed.
+     *
+     *  The code that manages the set of tabs should catch this and
+     *  remove the tab from the set.  That removal is the signal to
+     *  other parts of the code that the tab is officially dead.  The
+     *  set removal is used rather than using this signal to kill the
+     *  tab because while both options have issues, this one seems
+     *  conceptually cleaner to me and a bit less error-prone.
+     */
+    virtual sigc::connection
+    connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
   };
 
   /** \brief Create a new tab_info.
