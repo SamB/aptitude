@@ -191,6 +191,13 @@ namespace aptitude
      */
     static logging::LoggerPtr getAptitudeGtkToplevel();
 
+    /** \brief The logger for events related to a collection of tabs
+     *  in the top-level GTK+ UI.
+     *
+     *  Name: aptitude.gtk.toplevel.tabs
+     */
+    static logging::LoggerPtr getAptitudeGtkToplevelTabs();
+
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver

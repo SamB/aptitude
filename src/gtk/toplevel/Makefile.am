@@ -8,4 +8,5 @@ libgtk_toplevel_a_SOURCES = \
 	area.cc \
 	area.h \
 	sidebar.h \
+	tabs_notebook.cc \
 	tabs_notebook.h

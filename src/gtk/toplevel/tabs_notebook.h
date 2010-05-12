@@ -21,19 +21,26 @@
 #ifndef TOPLEVEL_TABS_NOTEBOOK_H
 #define TOPLEVEL_TABS_NOTEBOOK_H
 
+#include "area.h"
+
+#include <boost/shared_ptr.hpp>
+
 namespace gui
 {
   namespace toplevel
   {
-    /** \brief Display a collection of tabs as a notebook widget. */
-    class tabs
-    {
-    public:
-      /** \brief Create a new notebook displaying the given area.
-       */
-      tabs(const boost::shared_ptr<area_info> &area);
-    };
+    /** \brief Display a collection of tabs as a notebook widget.
+     *
+     *  The notebook owns the tabs that it contains, and destroys
+     *  their widgets when they are removed from the given set.  It
+     *  assumes that they have a floating reference and sinks that
+     *  reference using manage().
+     */
+    Gtk::Widget *create_tabs_notebook(const boost::shared_ptr<
+                                        aptitude::util::dynamic_set<
+                                          boost::shared_ptr<
+                                            tab_display_info> > > &tabs);
   }
 }
 
-#endif TOPLEVEL_TABS_H
+#endif // TOPLEVEL_TABS_H
