@@ -306,6 +306,7 @@ namespace gui
    */
   class tab_info : public tab_display_info, public tab_controller_info
   {
+  public:
     /** \brief Register a slot to be invoked when the tab is to be
      *  closed.
      *
