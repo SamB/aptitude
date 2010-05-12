@@ -24,6 +24,7 @@
 #include <loggers.h>
 #include <gtk/util/property.h>
 
+#include <boost/make_shared.hpp>
 #include <boost/weak_ptr.hpp>
 
 #include <gtkmm.h>
@@ -31,6 +32,7 @@
 using aptitude::Loggers;
 using aptitude::util::dynamic_set;
 using aptitude::util::enumerator;
+using boost::make_shared;
 using boost::shared_ptr;
 using boost::weak_ptr;
 
@@ -68,14 +70,16 @@ namespace gui
         // switch.
         shared_ptr<tab_display_info> last_active_tab;
 
-        /** \brief Get the tab of the currently selected page, or NULL
-         *  if nothing is selected (or if the selected page has no
-         *  tab, but that should be impossible).
-         */
-        shared_ptr<tab_display_info> get_current_tab();
+        sigc::signal<void, shared_ptr<tab_display_info> > signal_active_tab_changed;
 
       public:
         tabs_notebook();
+
+        /** \brief Register a slot to be invoked when the currently
+         *  displayed tab changes.
+         */
+        sigc::connection
+        connect_active_tab_changed(const sigc::slot<void, shared_ptr<tab_display_info> > &slot);
 
         /** \brief Set the tabs shown by this tab object.
          *
@@ -83,6 +87,12 @@ namespace gui
          *  ones.
          */
         void set_tabs(const shared_ptr<dynamic_set<shared_ptr<tab_display_info> > > &tabs);
+
+        /** \brief Get the tab of the currently selected page, or NULL
+         *  if nothing is selected (or if the selected page has no
+         *  tab, but that should be impossible).
+         */
+        shared_ptr<tab_display_info> get_current_tab();
 
       private:
         void handle_inserted(const shared_ptr<tab_display_info> &tab);
@@ -269,15 +279,43 @@ namespace gui
 
         last_active_tab = new_tab;
         new_tab->set_active(true);
+        signal_active_tab_changed(new_tab);
+      }
+
+      sigc::connection
+      tabs_notebook::connect_active_tab_changed(const sigc::slot<void, shared_ptr<tab_display_info> > &slot)
+      {
+        return signal_active_tab_changed.connect(slot);
       }
     }
 
-    Gtk::Widget *
+    class tabs_notebook_view : public view
+    {
+      // Awkwardly, this could be zapped at any time.  Any better way
+      // to do this?
+      tabs_notebook *notebook;
+
+    public:
+      tabs_notebook_view(tabs_notebook *_notebook)
+        : notebook(_notebook)
+      {
+      }
+
+      Gtk::Widget *get_widget() { return notebook; }
+      shared_ptr<tab_display_info> get_active_tab() { return notebook->get_current_tab(); }
+      sigc::connection
+      connect_active_tab_changed(const sigc::slot<void, shared_ptr<tab_display_info> > &slot)
+      {
+        return notebook->connect_active_tab_changed(slot);
+      }
+    };
+
+    shared_ptr<view>
     create_tabs_notebook(const shared_ptr<dynamic_set<shared_ptr<tab_display_info> > > &tabs)
     {
       tabs_notebook *rval = new tabs_notebook;
       rval->set_tabs(tabs);
-      return rval;
+      return make_shared<tabs_notebook_view>(rval);
     }
   }
 }

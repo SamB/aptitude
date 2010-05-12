@@ -22,6 +22,7 @@
 #define TOPLEVEL_TABS_NOTEBOOK_H
 
 #include "area.h"
+#include "view.h"
 
 #include <boost/shared_ptr.hpp>
 
@@ -36,10 +37,11 @@ namespace gui
      *  assumes that they have a floating reference and sinks that
      *  reference using manage().
      */
-    Gtk::Widget *create_tabs_notebook(const boost::shared_ptr<
-                                        aptitude::util::dynamic_set<
-                                          boost::shared_ptr<
-                                            tab_display_info> > > &tabs);
+    boost::shared_ptr<view>
+    create_tabs_notebook(const boost::shared_ptr<
+                           aptitude::util::dynamic_set<
+                             boost::shared_ptr<
+                               tab_display_info> > > &tabs);
   }
 }
 
