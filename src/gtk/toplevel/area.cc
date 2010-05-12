@@ -201,6 +201,7 @@ namespace gui
     }
 
     Gtk::Widget *get_widget() { return tab; }
+    void reset_widget() { tab = NULL; }
 
     bool get_active() { return active; }
     void set_active(bool new_active)
@@ -262,12 +263,17 @@ namespace gui
 
     void request_close()
     {
+      if(signal_request_close())
+        force_close();
+    }
+
+    void force_close()
+    {
       // Give the pointer an explicit scope to avoid surprises in case
       // it ends up being the last reference.
       const boost::shared_ptr<tab_info> this_ptr = shared_from_this();
 
-      if(signal_request_close())
-        signal_closed(this_ptr);
+      signal_closed(this_ptr);
     }
   };
 

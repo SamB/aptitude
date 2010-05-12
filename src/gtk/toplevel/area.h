@@ -180,7 +180,10 @@ namespace gui
     /** \brief Get any progress information associated with this tab. */
     virtual aptitude::util::progress_info get_progress() = 0;
 
-    /** \brief Get the main widget of this tab. */
+    /** \brief Get the main widget of this tab.
+     *
+     *  Returns NULL if the widget has already been destroyed.
+     */
     virtual Gtk::Widget *get_widget() = 0;
 
     /** \brief Set whether the tab is currently visible.
@@ -189,6 +192,20 @@ namespace gui
      *  including for changes arising from the "activate_tab" signal.
      */
     virtual void set_active(bool visible) = 0;
+
+    /** \brief Set the widget to NULL to indicate that it has been
+     *  destroyed.
+     *
+     *  The caller is responsible for actually destroying it.
+     */
+    virtual void reset_widget() = 0;
+
+    /** \brief Forcibly close a tab.
+     *
+     *  This bypasses the first-chance check that first_close provides
+     *  and is provided only as a way for the view to destroy itself.
+     */
+    virtual void force_close() = 0;
 
     /** \brief Signals */
     // @{
@@ -216,10 +233,12 @@ namespace gui
     /** \brief Register a slot to be invoked when the tab is to be
      *  closed.
      *
-     *  If the receiver owns the tab, it should destroy the tab's
-     *  widget as a side-effect.  Otherwise, it should not assume that
-     *  the tab's widget is valid, since the owner might already have
-     *  destroyed it.
+     *  The code that manages the set of tabs should catch this and
+     *  remove the tab from the set.  That removal is the signal to
+     *  other parts of the code that the tab is officially dead.  The
+     *  set removal is used rather than using this signal to kill the
+     *  tab because while both options have issues, this one seems
+     *  conceptually cleaner to me and a bit less error-prone.
      */
     virtual sigc::connection
     connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
