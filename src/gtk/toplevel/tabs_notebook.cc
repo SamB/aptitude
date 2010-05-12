@@ -40,7 +40,7 @@ namespace gui
   {
     namespace
     {
-      std::string safe_get_name(const boost::shared_ptr<tab_display_info> &tab)
+      std::string safe_get_name(const shared_ptr<tab_display_info> &tab)
       {
         if(tab.get() == NULL)
           return "(null)";
