@@ -21,7 +21,10 @@
 #ifndef DYNAMIC_SET_UNION_H
 #define DYNAMIC_SET_UNION_H
 
+#include "dynamic_set.h"
+
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/unordered_map.hpp>
 
 #include <sigc++/signal.h>
