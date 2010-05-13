@@ -12,6 +12,9 @@ libgeneric_util_a_SOURCES = \
 	dynamic_list.h \
 	dynamic_list_collection.h \
 	dynamic_list_impl.h \
+	dynamic_set.h \
+	dynamic_set_transform.h \
+	dynamic_set_union.h \
 	enumerator.h \
 	file_cache.cc \
 	file_cache.h \
