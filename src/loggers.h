@@ -153,6 +153,12 @@ namespace aptitude
      */
     static logging::LoggerPtr getAptitudeGtkChangelogParse();
 
+    /** \brief The logger for the GTK+ main window.
+     *
+     *  Name: aptitude.gtk.mainwindow
+     */
+    static logging::LoggerPtr getAptitudeGtkMainWindow();
+
     /** \brief The logger for the GUI package view (PkgView).
      *
      *  Name: aptitude.gtk.pkgview

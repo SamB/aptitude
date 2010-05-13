@@ -36,6 +36,8 @@ libgtk_a_SOURCES=\
 	hyperlink.h \
 	info.cc \
 	info.h \
+	mainwindow.cc \
+	mainwindow.h \
 	notify.cc \
 	notify.h \
 	packageinformation.cc \
