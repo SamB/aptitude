@@ -64,325 +64,328 @@
 
 namespace gui
 {
-  class area_info;
-  class notification_info;
-  class tab_info;
-
-
-  /** \brief The abstract description of a static collection of areas.
-   *
-   *  It would be possible, and attractive from one point of view, to
-   *  use a TreeModel here.  It would also make life way harder for
-   *  consumers of the class, given that the list of areas is static.
-   *
-   *  (arguably it's overkill to have a generic interface this, but
-   *   OTOH it avoids trouble if we, e.g., move to a mutable area list
-   *   and change the representation)
-   */
-  class area_list : public sigc::trackable
+  namespace toplevel
   {
-  public:
-    virtual ~area_list() {}
+    class area_info;
+    class notification_info;
+    class tab_info;
 
-    virtual int get_size() = 0;
 
-    typedef aptitude::util::enumerator<boost::shared_ptr<area_info> >
-    areas_enumerator;
-
-    /** \brief Enumerate the list areas contained in this list. */
-    virtual boost::shared_ptr<areas_enumerator> get_areas() = 0;
-  };
-
-  /** \brief Create an immutable area list from an STL vector of
-   *  areas.
-   */
-  boost::shared_ptr<area_list> create_area_list(const std::vector<boost::shared_ptr<area_info> > &areas);
-
-  /** \brief The abstract description of an area. */
-  class area_info : public sigc::trackable
-  {
-  public:
-    virtual ~area_info() {}
-
-    /** \brief Get the name of this area (e.g., "Upgrade" or
-     *	"Search").
-     */
-    virtual std::string get_name() = 0;
-
-    /** \brief Get a description of this area. */
-    virtual std::string get_description() = 0;
-
-    /** \brief Get the icon of this area. */
-    virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
-
-  public:
-    typedef aptitude::util::dynamic_set<boost::shared_ptr<tab_info> >
-    tabs_set;
-
-    typedef aptitude::util::dynamic_set<boost::shared_ptr<notification_info> >
-    notifications_set;
-
-    /** \brief Get the tabs associated with this area. */
-    virtual boost::shared_ptr<tabs_set> get_tabs() = 0;
-    /** \brief Get the notifications associated with this area. */
-    virtual boost::shared_ptr<notifications_set> get_notifications() = 0;
-  };
-
-  boost::shared_ptr<area_info> create_area_info(const std::string &name,
-						const std::string &description,
-						const Glib::RefPtr<Gdk::Pixbuf> icon);
-
-  /** \brief The interface that both the view and the tab
-   *  implementation require from a tab.
-   */
-  class tab_info_base : public sigc::trackable
-  {
-  public:
-    /** \brief Indicate that the user wants to close a tab.
+    /** \brief The abstract description of a static collection of areas.
      *
-     *  For instance, perhaps the "close" button was clicked, or the
-     *  user said "yes" when asked whether to close the tab.  Causes
-     *  the "request_close" signal to be emitted.
-     */
-    virtual void request_close() = 0;
-  };
-
-  /** \brief The interface the view requires from a tab.
-   *
-   *  Split out from tab_info for clarity, and to keep the view
-   *  honest.
-   */
-  class tab_display_info : virtual public tab_info_base
-  {
-  public:
-    virtual ~tab_display_info() {}
-
-    /** \brief Get the name of this tab. */
-    virtual std::string get_name() = 0;
-
-    /** \brief Get tooltip information for this tab.
+     *  It would be possible, and attractive from one point of view, to
+     *  use a TreeModel here.  It would also make life way harder for
+     *  consumers of the class, given that the list of areas is static.
      *
-     *  \param tooltip_text A location in which to store the text of the
-     *                      tooltip.
-     *  \param tooltip_window A location in which to store a pointer to
-     *                        a window that should be used to display
-     *                        the tooltip.
+     *  (arguably it's overkill to have a generic interface this, but
+     *   OTOH it avoids trouble if we, e.g., move to a mutable area list
+     *   and change the representation)
+     */
+    class area_list : public sigc::trackable
+    {
+    public:
+      virtual ~area_list() {}
+
+      virtual int get_size() = 0;
+
+      typedef aptitude::util::enumerator<boost::shared_ptr<area_info> >
+      areas_enumerator;
+
+      /** \brief Enumerate the list areas contained in this list. */
+      virtual boost::shared_ptr<areas_enumerator> get_areas() = 0;
+    };
+
+    /** \brief Create an immutable area list from an STL vector of
+     *  areas.
+     */
+    boost::shared_ptr<area_list> create_area_list(const std::vector<boost::shared_ptr<area_info> > &areas);
+
+    /** \brief The abstract description of an area. */
+    class area_info : public sigc::trackable
+    {
+    public:
+      virtual ~area_info() {}
+
+      /** \brief Get the name of this area (e.g., "Upgrade" or
+       *	"Search").
+       */
+      virtual std::string get_name() = 0;
+
+      /** \brief Get a description of this area. */
+      virtual std::string get_description() = 0;
+
+      /** \brief Get the icon of this area. */
+      virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
+
+    public:
+      typedef aptitude::util::dynamic_set<boost::shared_ptr<tab_info> >
+      tabs_set;
+
+      typedef aptitude::util::dynamic_set<boost::shared_ptr<notification_info> >
+      notifications_set;
+
+      /** \brief Get the tabs associated with this area. */
+      virtual boost::shared_ptr<tabs_set> get_tabs() = 0;
+      /** \brief Get the notifications associated with this area. */
+      virtual boost::shared_ptr<notifications_set> get_notifications() = 0;
+    };
+
+    boost::shared_ptr<area_info> create_area_info(const std::string &name,
+                                                  const std::string &description,
+                                                  const Glib::RefPtr<Gdk::Pixbuf> icon);
+
+    /** \brief The interface that both the view and the tab
+     *  implementation require from a tab.
+     */
+    class tab_info_base : public sigc::trackable
+    {
+    public:
+      /** \brief Indicate that the user wants to close a tab.
+       *
+       *  For instance, perhaps the "close" button was clicked, or the
+       *  user said "yes" when asked whether to close the tab.  Causes
+       *  the "request_close" signal to be emitted.
+       */
+      virtual void request_close() = 0;
+    };
+
+    /** \brief The interface the view requires from a tab.
      *
-     *  tooltip_text is empty if there is no text; tooltip_window is
-     *  NULL if there is no window.
+     *  Split out from tab_info for clarity, and to keep the view
+     *  honest.
      */
-    virtual void get_tooltip(std::string &tooltip_text,
-			     Gtk::Window * &tooltip_window) = 0;
+    class tab_display_info : virtual public tab_info_base
+    {
+    public:
+      virtual ~tab_display_info() {}
 
-    /** \brief Get the icon of this tab. */
-    virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
+      /** \brief Get the name of this tab. */
+      virtual std::string get_name() = 0;
 
-    /** \brief Get any progress information associated with this tab. */
-    virtual aptitude::util::progress_info get_progress() = 0;
+      /** \brief Get tooltip information for this tab.
+       *
+       *  \param tooltip_text A location in which to store the text of the
+       *                      tooltip.
+       *  \param tooltip_window A location in which to store a pointer to
+       *                        a window that should be used to display
+       *                        the tooltip.
+       *
+       *  tooltip_text is empty if there is no text; tooltip_window is
+       *  NULL if there is no window.
+       */
+      virtual void get_tooltip(std::string &tooltip_text,
+                               Gtk::Window * &tooltip_window) = 0;
 
-    /** \brief Get the main widget of this tab.
-     *
-     *  Returns NULL if the widget has already been destroyed.
-     */
-    virtual Gtk::Widget *get_widget() = 0;
+      /** \brief Get the icon of this tab. */
+      virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
 
-    /** \brief Set whether the tab is currently visible.
-     *
-     *  Invoked by the view when it changes the currently active tab,
-     *  including for changes arising from the "activate_tab" signal.
-     */
-    virtual void set_active(bool visible) = 0;
+      /** \brief Get any progress information associated with this tab. */
+      virtual aptitude::util::progress_info get_progress() = 0;
 
-    /** \brief Set the widget to NULL to indicate that it has been
-     *  destroyed.
-     *
-     *  The caller is responsible for actually destroying it.
-     */
-    virtual void reset_widget() = 0;
+      /** \brief Get the main widget of this tab.
+       *
+       *  Returns NULL if the widget has already been destroyed.
+       */
+      virtual Gtk::Widget *get_widget() = 0;
 
-    /** \brief Forcibly close a tab.
-     *
-     *  This bypasses the first-chance check that first_close provides
-     *  and is provided only as a way for the view to destroy itself.
-     */
-    virtual void force_close() = 0;
+      /** \brief Set whether the tab is currently visible.
+       *
+       *  Invoked by the view when it changes the currently active tab,
+       *  including for changes arising from the "activate_tab" signal.
+       */
+      virtual void set_active(bool visible) = 0;
 
-    /** \brief Signals */
-    // @{
+      /** \brief Set the widget to NULL to indicate that it has been
+       *  destroyed.
+       *
+       *  The caller is responsible for actually destroying it.
+       */
+      virtual void reset_widget() = 0;
 
-    /** \brief Register a slot to be invoked when the tooltip
-     *  information changes.
-     */
-    virtual sigc::connection
-    connect_tooltip_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, std::string, Gtk::Window *> &
-                            slot) = 0;
+      /** \brief Forcibly close a tab.
+       *
+       *  This bypasses the first-chance check that first_close provides
+       *  and is provided only as a way for the view to destroy itself.
+       */
+      virtual void force_close() = 0;
 
-    /** \brief Register a slot to be invoked when the progress
-     *  information changes.
-     */
-    virtual sigc::connection
-    connect_progress_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, aptitude::util::progress_info> &
+      /** \brief Signals */
+      // @{
+
+      /** \brief Register a slot to be invoked when the tooltip
+       *  information changes.
+       */
+      virtual sigc::connection
+      connect_tooltip_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, std::string, Gtk::Window *> &
+                              slot) = 0;
+
+      /** \brief Register a slot to be invoked when the progress
+       *  information changes.
+       */
+      virtual sigc::connection
+      connect_progress_changed(const sigc::slot<void, boost::shared_ptr<tab_info>, aptitude::util::progress_info> &
+                               slot) = 0;
+
+      /** \brief Register a slot to be invoked when something asks for a
+       *  tab to be made the currently visible tab by invoking activate().
+       */
+      virtual sigc::connection
+      connect_activate_tab(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
+
+      // @}
+    };
+
+    /** \brief The tab information interface exposed to implementations. */
+    class tab_controller_info : virtual public tab_info_base
+    {
+    public:
+      virtual ~tab_controller_info() {}
+
+      /** \brief Set the tooltip text for this tab.
+       *
+       *  Automatically deletes and clears the tooltip window.
+       */
+      virtual void set_tooltip(const std::string &tooltip_text) = 0;
+
+      /** \brief Set the tooltip window for this tab.
+       *
+       *  As a side effect, deletes any old tooltip window and clears
+       *  the old text.
+       */
+      virtual void set_tooltip(Gtk::Window *tooltip_window) = 0;
+
+      /** \brief Update the progress information associated with this tab.
+       *
+       *  Invokes signal_progress_changed() as a side-effect.
+       */
+      virtual void set_progress(const aptitude::util::progress_info &info) = 0;
+
+
+      /** \return \b true if this tab is currently visible.
+       *
+       *  This property is maintained by the view and read by the tab's
+       *  implementation.  Note that it is \e not automatically
+       *  maintained by set_active_tab(), because that routine lacks the
+       *  information necessary to determine which tab is visible;
+       *  normally an implementation of the view will hook into
+       *  signal_active_tab_changed and emit this as appropriate.
+       */
+      virtual bool get_active() = 0;
+
+      /** \brief Request that this tab be made the currently active tab.
+       *
+       *  Causes the activate_tab signal to be emitted.
+       */
+      virtual void activate() = 0;
+
+      /** \brief Signals */
+      // @{
+
+      /** \brief Register a slot to be invoked when the tab becomes
+       *  active or inactive.
+       */
+      virtual sigc::connection
+      connect_active_changed(const sigc::slot<void, bool> &
                              slot) = 0;
 
-    /** \brief Register a slot to be invoked when something asks for a
-     *  tab to be made the currently visible tab by invoking activate().
+      /** \brief Register a slot to be invoked when the tab is going to
+       *  be closed.
+       *
+       *  If any slot connected to request_close returns "false", then
+       *  the close is canceled.  Otherwise (e.g., if nothing attaches
+       *  here), signal_closed will be invoked; that signal should
+       *  remove the tab from its enclosing area, which in turn will
+       *  cause views to remove it.  Once that happens, the widget
+       *  associated with the tab is most likely destroyed.
+       */
+      virtual sigc::connection
+      connect_request_close(const sigc::slot<bool> &slot) = 0;
+
+      // @}
+    };
+
+    /** \brief The abstract description of a tab.
      */
-    virtual sigc::connection
-    connect_activate_tab(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
+    class tab_info : public tab_display_info, public tab_controller_info
+    {
+    public:
+      /** \brief Register a slot to be invoked when the tab is to be
+       *  closed.
+       *
+       *  The code that manages the set of tabs should catch this and
+       *  remove the tab from the set.  That removal is the signal to
+       *  other parts of the code that the tab is officially dead.  The
+       *  set removal is used rather than using this signal to kill the
+       *  tab because while both options have issues, this one seems
+       *  conceptually cleaner to me and a bit less error-prone.
+       */
+      virtual sigc::connection
+      connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
+    };
 
-    // @}
-  };
-
-  /** \brief The tab information interface exposed to implementations. */
-  class tab_controller_info : virtual public tab_info_base
-  {
-  public:
-    virtual ~tab_controller_info() {}
-
-    /** \brief Set the tooltip text for this tab.
+    /** \brief Create a new tab_info.
      *
-     *  Automatically deletes and clears the tooltip window.
+     *  \param name   The name to display in the tab.
+     *  \param icon   The icon to display for the tab.
+     *  \param widget The main widget of the tab.
      */
-    virtual void set_tooltip(const std::string &tooltip_text) = 0;
+    boost::shared_ptr<tab_info> create_tab(const std::string &name,
+                                           const Glib::RefPtr<Gdk::Pixbuf> &icon,
+                                           Gtk::Widget *widget);
 
-    /** \brief Set the tooltip window for this tab.
-     *
-     *  As a side effect, deletes any old tooltip window and clears
-     *  the old text.
-     */
-    virtual void set_tooltip(Gtk::Window *tooltip_window) = 0;
+    /** \brief The abstract description of a notification. */
+    class notification_info : public sigc::trackable
+    {
+    public:
+      virtual ~notification_info() {}
 
-    /** \brief Update the progress information associated with this tab.
-     *
-     *  Invokes signal_progress_changed() as a side-effect.
-     */
-    virtual void set_progress(const aptitude::util::progress_info &info) = 0;
+      /** \brief Get the name of this notification. */
+      virtual std::string get_name() = 0;
 
+      /** \brief Get a longer description of this notification. */
+      virtual std::string get_description() = 0;
 
-    /** \return \b true if this tab is currently visible.
-     *
-     *  This property is maintained by the view and read by the tab's
-     *  implementation.  Note that it is \e not automatically
-     *  maintained by set_active_tab(), because that routine lacks the
-     *  information necessary to determine which tab is visible;
-     *  normally an implementation of the view will hook into
-     *  signal_active_tab_changed and emit this as appropriate.
-     */
-    virtual bool get_active() = 0;
-
-    /** \brief Request that this tab be made the currently active tab.
-     *
-     *  Causes the activate_tab signal to be emitted.
-     */
-    virtual void activate() = 0;
-
-    /** \brief Signals */
-    // @{
-
-    /** \brief Register a slot to be invoked when the tab becomes
-     *  active or inactive.
-     */
-    virtual sigc::connection
-    connect_active_changed(const sigc::slot<void, bool> &
-                           slot) = 0;
-
-    /** \brief Register a slot to be invoked when the tab is going to
-     *  be closed.
-     *
-     *  If any slot connected to request_close returns "false", then
-     *  the close is canceled.  Otherwise (e.g., if nothing attaches
-     *  here), signal_closed will be invoked; that signal should
-     *  remove the tab from its enclosing area, which in turn will
-     *  cause views to remove it.  Once that happens, the widget
-     *  associated with the tab is most likely destroyed.
-     */
-    virtual sigc::connection
-    connect_request_close(const sigc::slot<bool> &slot) = 0;
-
-    // @}
-  };
-
-  /** \brief The abstract description of a tab.
-   */
-  class tab_info : public tab_display_info, public tab_controller_info
-  {
-  public:
-    /** \brief Register a slot to be invoked when the tab is to be
-     *  closed.
-     *
-     *  The code that manages the set of tabs should catch this and
-     *  remove the tab from the set.  That removal is the signal to
-     *  other parts of the code that the tab is officially dead.  The
-     *  set removal is used rather than using this signal to kill the
-     *  tab because while both options have issues, this one seems
-     *  conceptually cleaner to me and a bit less error-prone.
-     */
-    virtual sigc::connection
-    connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
-  };
-
-  /** \brief Create a new tab_info.
-   *
-   *  \param name   The name to display in the tab.
-   *  \param icon   The icon to display for the tab.
-   *  \param widget The main widget of the tab.
-   */
-  boost::shared_ptr<tab_info> create_tab(const std::string &name,
-					 const Glib::RefPtr<Gdk::Pixbuf> &icon,
-					 Gtk::Widget *widget);
-
-  /** \brief The abstract description of a notification. */
-  class notification_info : public sigc::trackable
-  {
-  public:
-    virtual ~notification_info() {}
-
-    /** \brief Get the name of this notification. */
-    virtual std::string get_name() = 0;
-
-    /** \brief Get a longer description of this notification. */
-    virtual std::string get_description() = 0;
-
-    /** \brief Get the icon of this notification. */
-    virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
+      /** \brief Get the icon of this notification. */
+      virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
 
 
-    /** \brief Retrieve the progress display associated with this
-     *  notification.
-     */
-    virtual aptitude::util::progress_info get_progress() = 0;
+      /** \brief Retrieve the progress display associated with this
+       *  notification.
+       */
+      virtual aptitude::util::progress_info get_progress() = 0;
 
-    /** \brief Update the progress display associated with this
-     *	notification.
-     *
-     *  Invokes signal_progress_changed as a side-effect.
-     */
-    virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
+      /** \brief Update the progress display associated with this
+       *	notification.
+       *
+       *  Invokes signal_progress_changed as a side-effect.
+       */
+      virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
 
 
-    /** \brief Signals */
+      /** \brief Signals */
 
-    // @{
+      // @{
 
-    /** \brief Register a slot to be invoked when the progress
-     *  information changes.
-     */
-    virtual sigc::connection
-    connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &slot) = 0;
+      /** \brief Register a slot to be invoked when the progress
+       *  information changes.
+       */
+      virtual sigc::connection
+      connect_progress_changed(const sigc::slot<void, aptitude::util::progress_info> &slot) = 0;
 
-    /** \brief Register a slot to be invoked when the user clicks the
-     *  notification.
-     */
-    virtual sigc::connection
-    connect_clicked(const sigc::slot<void> &slot) = 0;
+      /** \brief Register a slot to be invoked when the user clicks the
+       *  notification.
+       */
+      virtual sigc::connection
+      connect_clicked(const sigc::slot<void> &slot) = 0;
 
-    // @}
-  };
+      // @}
+    };
 
-  boost::shared_ptr<notification_info>
-  create_notification(const std::string &name,
-		      const std::string &description,
-		      const Glib::RefPtr<Gdk::Pixbuf> &icon);
+    boost::shared_ptr<notification_info>
+    create_notification(const std::string &name,
+                        const std::string &description,
+                        const Glib::RefPtr<Gdk::Pixbuf> &icon);
+  }
 }
 
 #endif // APTITUDE_GTK_TOPLEVEL_MODEL_H
