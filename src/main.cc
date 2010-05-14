@@ -911,7 +911,9 @@ int main(int argc, char *argv[])
               break;
 
             case OPTION_NEW_GUI:
+#ifdef HAVE_GTK
               use_new_gui = true;
+#endif
               break;
 
 	    default:
