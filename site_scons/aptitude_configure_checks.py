@@ -254,6 +254,53 @@ int main(int argc, char **argv)
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }''', context.env['CXXFILESUFFIX'])
 
+@RegisterCheck
+def CheckBoostFusionFoldArgumentOrder(context, value_is_first):
+    """Figure out the order of arguments that boost::fusion::fold uses
+when invoking the function it was passed."""
+
+    def get_code():
+        code_template = '''
+    #include <boost/fusion/algorithm/iteration/fold.hpp>
+#include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/include/fold.hpp>
+#include <boost/fusion/include/vector.hpp>
+
+struct T
+{
+};
+
+struct F
+{
+  T operator()(%s) const
+  {
+    return T();
+  }
+  typedef T result_type;
+};
+
+int main(int argc, char **argv)
+{
+  boost::fusion::vector<int, int, int> v(5, 3, 1);
+  boost::fusion::fold(v, T(), F());
+}'''
+        if value_is_first:
+            return code_template % 'int n, const T &t'
+        else:
+            return code_template % 'const T &t, int n'
+
+    if value_is_first:
+        order_desc = 'value first, then state'
+    else:
+        order_desc = 'state first, then value'
+
+    context.Message('Checking whether boost::fusion::fold sends %s...'
+                    % order_desc)
+
+    rval = context.TryCompile(get_code(), context.env['CXXFILESUFFIX'])
+    context.Result(rval)
+    return rval
+
 @ConfigureCheck("Checking for CPPUnit")
 def CheckForCPPUnit(context):
     """Look for CPPUnit."""

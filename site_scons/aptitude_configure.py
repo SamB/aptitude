@@ -121,6 +121,14 @@ the Boost unit tests need.'''
     RequireCheck(conf.CheckForBoostTest(),
                  "Can't find Boost.Test")
 
+    if conf.CheckBoostFusionFoldArgumentOrder(True):
+        pass
+    elif conf.CheckBoostFusionFoldArgumentOrder(False):
+        conf.Define('BOOST_FUSION_FOLD_STATE_BEFORE_VALUE')
+    else:
+        print "Can't figure out how to invoke boost::fusion::fold"
+        Exit(1)
+
     conf.Finish()
 
 def DoConfigureCppunitTests(env):

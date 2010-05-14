@@ -124,8 +124,77 @@ boost/weak_ptr.hpp dnl
                   , []
                   , [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
 
-AX_BOOST_BASE(1.42)
+AX_BOOST_BASE()
 AX_BOOST_IOSTREAMS
+
+AC_MSG_CHECKING([the calling convertion of boost::fusion::fold])
+# Test the order of arguments to the function passed into fold; this
+# was randomly changed in Boost version 1.42 (because no-one needs a
+# stable API, or something).
+#
+# For the test to work at compile-time, the types of the arguments to
+# fold must be incompatible; the actual operations performed are
+# irrelevant.  My fold operator takes an int and a class, and returns
+# the empty string.
+AC_COMPILE_IFELSE([
+#include <boost/fusion/algorithm/iteration/fold.hpp>
+#include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/include/fold.hpp>
+#include <boost/fusion/include/vector.hpp>
+
+struct T
+{
+};
+
+struct F
+{
+  T operator()(const T &t, int n) const
+  {
+    return T();
+  }
+  typedef T result_type;
+};
+
+int main(int argc, char **argv)
+{
+  boost::fusion::vector<int, int, int> v(5, 3, 1);
+  boost::fusion::fold(v, T(), F());
+}],
+                 [
+                   AC_MSG_RESULT([State first, then value])
+                   AC_DEFINE([BOOST_FUSION_FOLD_STATE_BEFORE_VALUE], [],
+                             [Define if boost::fusion::fold passes the state as the first argument to the fold function.])
+                 ],
+                 [
+                   AC_COMPILE_IFELSE([
+#include <boost/fusion/algorithm/iteration/fold.hpp>
+#include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/include/fold.hpp>
+#include <boost/fusion/include/vector.hpp>
+
+struct T
+{
+};
+
+struct F
+{
+  T operator()(int n, const T &t) const
+  {
+    return T();
+  }
+  typedef T result_type;
+};
+
+int main(int argc, char **argv)
+{
+  boost::fusion::vector<int, int, int> v(5, 3, 1);
+  boost::fusion::fold(v, T(), F());
+}
+                   ],
+                   [AC_MSG_RESULT([Value first, then state])],
+                   [AC_MSG_ERROR([Can't figure out how to invoke boost::fusion::fold])])
+                 ])
+
 
 PKG_CHECK_MODULES(SQLITE3, sqlite3)
 
