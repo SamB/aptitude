@@ -47,8 +47,8 @@ namespace aptitude
       boost::shared_ptr<dynamic_set<From> > wrapped_set;
       boost::function<To (From)> f;
 
-      sigc::signal<To> signal_inserted;
-      sigc::signal<To> signal_removed;
+      sigc::signal<void, To> signal_inserted;
+      sigc::signal<void, To> signal_removed;
 
       void handle_inserted(const From &from);
       void handle_removed(const From &from);

@@ -30,12 +30,16 @@ libgtk_a_SOURCES=\
 	errortab.h \
 	filesview.cc \
 	filesview.h \
+	globals.cc \
+	globals.h \
 	gui.cc \
 	gui.h \
 	hyperlink.cc \
 	hyperlink.h \
 	info.cc \
 	info.h \
+	init.cc \
+	init.h \
 	mainwindow.cc \
 	mainwindow.h \
 	notify.cc \
@@ -46,6 +50,8 @@ libgtk_a_SOURCES=\
 	packagestab.h \
 	pkgview.cc \
 	pkgview.h \
+	post_event.cc \
+	post_event.h \
 	previewtab.cc \
 	previewtab.h \
 	progress.cc \

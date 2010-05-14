@@ -153,6 +153,12 @@ namespace aptitude
      */
     static logging::LoggerPtr getAptitudeGtkChangelogParse();
 
+    /** \brief The logger for the module of globals.
+     *
+     *  Name: aptitude.gtk.globals
+     */
+    static logging::LoggerPtr getAptitudeGtkGlobals();
+
     /** \brief The logger for the GTK+ main window.
      *
      *  Name: aptitude.gtk.mainwindow

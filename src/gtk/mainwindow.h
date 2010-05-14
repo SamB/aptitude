@@ -22,8 +22,8 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/window.h>
+#include <libglademm/xml.h>
 
 namespace gui
 {

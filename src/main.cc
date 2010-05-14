@@ -86,6 +86,7 @@
 
 #ifdef HAVE_GTK
 #include "gtk/gui.h"
+#include "gtk/init.h"
 #endif
 
 #include "loggers.h"
@@ -259,6 +260,7 @@ enum {
   OPTION_CLEAN_ON_STARTUP,
   OPTION_GROUP_BY,
   OPTION_SHOW_PACKAGE_NAMES,
+  OPTION_NEW_GUI,
 };
 int getopt_result;
 
@@ -312,6 +314,7 @@ option opts[]={
   {"clean-on-startup", 0, &getopt_result, OPTION_CLEAN_ON_STARTUP},
   {"group-by", 1, &getopt_result, OPTION_GROUP_BY},
   {"show-package-names", 1, &getopt_result, OPTION_SHOW_PACKAGE_NAMES},
+  {"new-gui", 0, &getopt_result, OPTION_NEW_GUI},
   {0,0,0,0}
 };
 
@@ -626,6 +629,8 @@ int main(int argc, char *argv[])
 #ifdef HAVE_GTK
   // TODO: this should be a configuration option.
   bool gui = aptcfg->FindB(PACKAGE "::Start-Gui", true);
+  // Use the in-progress new GUI harness instead of the old code.
+  bool use_new_gui = false;
 #endif
 
   int curopt;
@@ -905,6 +910,10 @@ int main(int argc, char *argv[])
               show_package_names_mode_string = optarg;
               break;
 
+            case OPTION_NEW_GUI:
+              use_new_gui = true;
+              break;
+
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -914,6 +923,7 @@ int main(int argc, char *argv[])
 	  getopt_result=0;
 
 	  break;
+
 	default:
 	  fprintf(stderr, "%s",
 		  _("WEIRDNESS: unknown option code received\n"));
@@ -1182,7 +1192,12 @@ int main(int argc, char *argv[])
 #ifdef HAVE_GTK
   if(gui)
     {
-      if(gui::main(argc, argv))
+      if(use_new_gui)
+        {
+          if(gui::init(argc, argv))
+            return 0;
+        }
+      else if(gui::main(argc, argv))
 	return 0;
       // Otherwise, fall back to trying to start a curses interface
       // (assume that we can't contact the X server, or maybe that we

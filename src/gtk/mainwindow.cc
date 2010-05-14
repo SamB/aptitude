@@ -68,7 +68,7 @@ namespace gui
                                  const boost::shared_ptr<toplevel::view> &view)
   {
     main_window *rval;
-    glade->get_widget_derived("main_window", rval);
+    glade->get_widget_derived("main_window_2", rval);
     rval->set_view(view);
 
     return rval;
