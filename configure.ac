@@ -93,7 +93,9 @@ boost/iostreams/seek.hpp dnl
 boost/iostreams/stream.hpp dnl
 boost/iostreams/write.hpp dnl
 boost/lambda/bind.hpp dnl
-boost/lambda/construct.hpp dnl
+dnl Can't check this because of bugs in Boost, left here to fool my
+dnl sanity-check of the config file:
+dnl boost/lambda/construct.hpp dnl
 boost/lambda/lambda.hpp dnl
 boost/lexical_cast.hpp dnl
 boost/make_shared.hpp dnl
