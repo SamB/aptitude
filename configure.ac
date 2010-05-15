@@ -56,6 +56,7 @@ dnl Check for Boost headers.  Place each one on a line by itself and
 dnl write "dnl" at the end: the "dnl" deletes the newline, and without
 dnl it you'll get an error when you run the configure script.
 AC_CHECK_HEADERS( dnl
+boost/array.hpp dnl
 boost/compressed_pair.hpp dnl
 boost/enable_shared_from_this.hpp dnl
 boost/flyweight/hashed_factory.hpp dnl
@@ -92,6 +93,8 @@ boost/iostreams/seek.hpp dnl
 boost/iostreams/stream.hpp dnl
 boost/iostreams/write.hpp dnl
 boost/lambda/bind.hpp dnl
+boost/lambda/construct.hpp dnl
+boost/lambda/lambda.hpp dnl
 boost/lexical_cast.hpp dnl
 boost/make_shared.hpp dnl
 boost/mpl/begin.hpp dnl
