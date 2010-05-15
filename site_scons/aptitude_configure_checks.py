@@ -27,7 +27,7 @@ def Configure(env):
     """Creates an aptitude-flavored configuration object targeting
 the given environment."""
 
-    result = SCons.Script.Configure(env, custom_tests, config_h = 'src/config.h')
+    result = SCons.Script.Configure(env, custom_tests, config_h = 'build/config/config.h')
     result.Define('PACKAGE', '"%s"' % env['PACKAGE'])
     result.Define('VERSION', '"%s"' % env['VERSION'])
     # Need to inform the source code that we have a config.h file:
