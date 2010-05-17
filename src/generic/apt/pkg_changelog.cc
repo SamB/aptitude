@@ -422,14 +422,14 @@ namespace aptitude
 	    }
 	}
 
-	static log4cxx::LoggerPtr get_log_category()
+	static logging::LoggerPtr get_log_category()
 	{
 	  return Loggers::getAptitudeChangelog();
 	}
 
 	void process_job(const preprocess_changelogs_request &req)
 	{
-	  log4cxx::LoggerPtr logger(get_log_category());
+	  logging::LoggerPtr logger(get_log_category());
 
 	  const changelog_info &info = *req.get_info();
 	  changelog_download &download = *req.get_download();

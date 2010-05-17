@@ -90,6 +90,10 @@ public:
 	 *  cost tuple should have a number added to it.
 	 */
 	add_to_cost_component,
+        /** \brief A hint indicating that the target should be
+         *  discarded.
+         */
+        discard,
 	/** \brief A hint indicating that a named component of the
 	 *  cost tuple should be increased to an upper bound.
 	 */
@@ -316,6 +320,13 @@ public:
     {
       return hint(add_to_cost_component, amt,
 		  target, selection, component_name);
+    }
+
+    /** \brief Create a hint that discards solutions containing the target. */
+    static hint make_discard(const cwidget::util::ref_ptr<aptitude::matching::pattern> &target,
+                             const version_selection &selection)
+    {
+      return hint(discard, 0, target, selection, "");
     }
 
     /** \brief Create a hint that increases a single component of the

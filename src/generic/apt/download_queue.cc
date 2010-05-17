@@ -529,7 +529,7 @@ namespace aptitude
       {
 	static bool signals_connected;
       public:
-	static log4cxx::LoggerPtr get_log_category()
+	static logging::LoggerPtr get_log_category()
 	{
 	  return Loggers::getAptitudeDownloadQueueCache();
 	}

@@ -2443,14 +2443,14 @@ namespace parsers
       struct result;
 
       template<typename Element, typename ResultIn>
-      struct result<do_do_parse(const Element &, const ResultIn &)>
+      struct result<do_do_parse(const ResultIn &, const Element &)>
       {
         typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type type;
       };
 
       template<typename Element, typename ResultIn>
       typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type
-      operator()(const Element &e, const ResultIn &result) const
+      operator()(const ResultIn &result, const Element &e) const
       {
         return boost::fusion::push_back(result, e.parse(input));
       }

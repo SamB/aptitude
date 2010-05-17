@@ -31,6 +31,7 @@ cppunit_test_SOURCES = \
 	test_choice_set.cc \
 	test_config_pusher.cc \
 	test_dense_setset.cc \
+	test_incremental_expression.cc \
 	test_matching.cc \
 	test_misc.cc \
 	test_parsers.cc \

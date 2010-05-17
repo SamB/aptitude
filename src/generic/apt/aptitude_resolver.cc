@@ -43,13 +43,13 @@ using cwidget::util::ssprintf;
 
 namespace
 {
-  log4cxx::LoggerPtr loggerHints(aptitude::Loggers::getAptitudeResolverHints());
-  log4cxx::LoggerPtr loggerHintsCompare(aptitude::Loggers::getAptitudeResolverHintsCompare());
-  log4cxx::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
-  log4cxx::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
-  log4cxx::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
-  log4cxx::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
-  log4cxx::LoggerPtr loggerCosts(aptitude::Loggers::getAptitudeResolverCosts());
+  logging::LoggerPtr loggerHints(aptitude::Loggers::getAptitudeResolverHints());
+  logging::LoggerPtr loggerHintsCompare(aptitude::Loggers::getAptitudeResolverHintsCompare());
+  logging::LoggerPtr loggerHintsMatch(aptitude::Loggers::getAptitudeResolverHintsMatch());
+  logging::LoggerPtr loggerHintsParse(aptitude::Loggers::getAptitudeResolverHintsParse());
+  logging::LoggerPtr loggerInitialManualFlags(aptitude::Loggers::getAptitudeResolverInitialManualFlags());
+  logging::LoggerPtr loggerScores(aptitude::Loggers::getAptitudeResolverScores());
+  logging::LoggerPtr loggerCosts(aptitude::Loggers::getAptitudeResolverCosts());
 
   /** \brief If the given version is valid, find its maximum priority
    *  and return a raise-cost operation for that priority.
@@ -205,6 +205,10 @@ std::ostream &operator<<(std::ostream &out, const aptitude_resolver::hint &hint)
 
     case aptitude_resolver::hint::raise_cost_component:
       out << "raise-cost-component " << hint.get_component_name() << " " << hint.get_amt();
+      break;
+
+    case aptitude_resolver::hint::discard:
+      out << "discard " << hint.get_component_name();
       break;
 
     default:
@@ -413,12 +417,12 @@ int aptitude_resolver::hint::compare(const hint &other) const
       TRACE_HINTS_INEQUAL(1, "[type]");
       return 1;
     }
-  else if(amt < other.amt)
+  else if(type != discard && amt < other.amt)
     {
       TRACE_HINTS_INEQUAL(-1, "[amt]");
       return -1;
     }
-  else if(amt > other.amt)
+  else if(type != discard && amt > other.amt)
     {
       TRACE_HINTS_INEQUAL(1, "[amt]");
       return 1;
@@ -486,6 +490,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
     ++start;
 
   int amt = -1;
+  cfg_level safety_level;
   std::string component_name;
   if(action == "add-to-cost-component" ||
      action == "raise-cost-component")
@@ -559,7 +564,7 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
       while(start != hint.end() && isspace(*start))
 	++start;
 
-      amt = aptitude_universe::parse_level(level_number);
+      safety_level = aptitude_universe::parse_level(level_number);
     }
 
   if(start == hint.end())
@@ -688,11 +693,18 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
   else if(action == "approve")
     out = make_mandate(target, selection);
   else if(action == "increase-tier-to" || action == "increase-safety-cost-to")
-    out = make_raise_cost_component(target, selection, "safety", amt);
+    {
+      if(safety_level.get_is_discard())
+        out = make_discard(target, selection);
+      else
+        out = make_raise_cost_component(target, selection, "safety", safety_level.get_level());
+    }
   else if(action == "add-to-cost-component")
     out = make_add_to_cost_component(target, selection, component_name, amt);
   else if(action == "raise-cost-component")
     out = make_raise_cost_component(target, selection, component_name, amt);
+  else if(action == "discard")
+    out = make_discard(target, selection);
   else
     {
       unsigned long score_tweak = 0;
@@ -716,6 +728,20 @@ bool aptitude_resolver::hint::parse(const std::string &hint, aptitude_resolver::
 
 aptitude_resolver::hint::~hint()
 {
+}
+
+namespace
+{
+  inline
+  cost apply_cfg_level(const cfg_level &level,
+                       aptitude_resolver_cost_settings &cost_settings,
+                       const aptitude_resolver_cost_settings::component &safety_component)
+  {
+    if(level.get_is_discard())
+      return cost_limits::conflict_cost;
+    else
+      return cost_settings.raise_cost(safety_component, level.get_level());
+  }
 }
 
 aptitude_resolver::aptitude_resolver(int step_score,
@@ -748,8 +774,8 @@ aptitude_resolver::aptitude_resolver(int step_score,
   aptitude_resolver_cost_settings::component safety_component =
     cost_settings.get_or_create_component("safety", aptitude_resolver_cost_settings::maximized);
 
-  int keep_all_level(aptitude_universe::get_keep_all_level());
-  cost keep_all_cost(cost_settings.raise_cost(safety_component, keep_all_level));
+  cfg_level keep_all_level(aptitude_universe::get_keep_all_level());
+  cost keep_all_cost(apply_cfg_level(keep_all_level, cost_settings, safety_component));
 
   for(pkgCache::PkgIterator i = cache->PkgBegin(); !i.end(); ++i)
     {
@@ -1178,12 +1204,12 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 					  const std::map<package, bool> &initial_state_manual_flags,
 					  const std::vector<hint> &hints)
 {
-  int safe_level(aptitude_universe::get_safe_level());
-  int keep_all_level(aptitude_universe::get_keep_all_level());
-  int remove_level(aptitude_universe::get_remove_level());
-  int break_hold_level(aptitude_universe::get_break_hold_level());
-  int non_default_level(aptitude_universe::get_non_default_level());
-  int remove_essential_level(aptitude_universe::get_remove_essential_level());
+  cfg_level safe_level(aptitude_universe::get_safe_level());
+  cfg_level keep_all_level(aptitude_universe::get_keep_all_level());
+  cfg_level remove_level(aptitude_universe::get_remove_level());
+  cfg_level break_hold_level(aptitude_universe::get_break_hold_level());
+  cfg_level non_default_level(aptitude_universe::get_non_default_level());
+  cfg_level remove_essential_level(aptitude_universe::get_remove_essential_level());
 
   LOG_TRACE(loggerScores, "Setting up action scores; score parameters: preserver_score = " << preserve_score
 	    << ", auto_score = " << auto_score << ", remove_score = " << remove_score
@@ -1358,6 +1384,11 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
                   modify_version_cost(v, cost_settings.add_to_cost(component, h.get_amt()));
                   break;
 
+                case hint::discard:
+                  LOG_DEBUG(loggerScores, "** Discarding " << v);
+                  modify_version_cost(v, cost_limits::conflict_cost);
+                  break;
+
 		case hint::raise_cost_component:
                   LOG_DEBUG(loggerScores, "** Raising the cost component \"" << h.get_component_name() << "\" to " << h.get_amt() << " for " << v);
                   modify_version_cost(v, cost_settings.raise_cost(component, h.get_amt()));
@@ -1433,7 +1464,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		}
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, safe_level)
+                                  apply_cfg_level(safe_level, cost_settings, safety_component)
                                   + cost_settings.add_to_cost(canceled_actions_component, 1));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << safe_level << " for " << v
@@ -1453,7 +1484,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		}
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, remove_level)
+                                  apply_cfg_level(remove_level, cost_settings, safety_component)
                                   + cost_settings.add_to_cost(removals_component, 1));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << remove_level << " for " << v
@@ -1483,7 +1514,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		}
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, safe_level));
+                                  apply_cfg_level(safe_level, cost_settings, safety_component));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << safe_level << " for " << v
 			<< " because it is the default install version of a package (" PACKAGE "::ProblemResolver::Safe-Level).");
@@ -1503,7 +1534,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      add_version_score(v, non_default_score);
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, non_default_level)
+                                  apply_cfg_level(non_default_level, cost_settings, safety_component)
                                   + cost_settings.add_to_cost(non_default_versions_component, 1));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << non_default_level << " for " << v
@@ -1527,7 +1558,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 		}
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, break_hold_level)
+                                  apply_cfg_level(break_hold_level, cost_settings, safety_component)
                                   + cost_settings.add_to_cost(broken_holds_component, 1));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << break_hold_level << " for " << v
@@ -1550,7 +1581,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 	      reject_version(v);
 
               modify_version_cost(v,
-                                  cost_settings.raise_cost(safety_component, remove_essential_level));
+                                  apply_cfg_level(remove_essential_level, cost_settings, safety_component));
 	      LOG_DEBUG(loggerCosts,
 			"** Safety level raised to at least " << remove_essential_level << " for " << v
 			<< " because it represents removing an essential package.");

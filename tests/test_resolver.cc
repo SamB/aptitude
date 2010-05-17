@@ -431,7 +431,7 @@ private:
   // version to be chosen.
   void testMandateDepTarget()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testMandateDepTarget"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testMandateDepTarget"));
 
     LOG_TRACE(logger, "Entering testMandateDepTarget.");
 
@@ -522,7 +522,7 @@ private:
   // that version to be chosen.
   void testMandateDepSource()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testMandateDepSource"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testMandateDepSource"));
 
     LOG_TRACE(logger, "Entering testMandateDepSource.");
 
@@ -611,7 +611,7 @@ private:
   // Check that hardening a soft dependency forces it to be solved.
   void testHardenDependency()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testHardenDependency"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testHardenDependency"));
 
     LOG_TRACE(logger, "Entering testHardenDependency.");
 
@@ -662,7 +662,7 @@ private:
   // unsolved.
   void testApproveBreak()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testApproveBreak"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testApproveBreak"));
 
     LOG_TRACE(logger, "Entering testApproveBreak.");
 
@@ -712,7 +712,7 @@ private:
   // Test that excluding dependencies from the set to solve works.
   void testInitialSetExclusion()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testInitialSetExclusion"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testInitialSetExclusion"));
 
     LOG_TRACE(logger, "Entering testInitialSetExclusion.");
 
@@ -759,7 +759,7 @@ private:
 
   void testSimpleResolution()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testSimpleResolution"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testSimpleResolution"));
 
     LOG_TRACE(logger, "Entering testSimpleResolution");
 
@@ -813,7 +813,7 @@ private:
 
   void testSimpleBreakSoftDep()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testSimpleBreakSoftDep"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testSimpleBreakSoftDep"));
 
     LOG_TRACE(logger, "Entering testSimpleBreakSoftDep");
 
@@ -868,7 +868,7 @@ private:
 
   void testCostEffects()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testCostEffects"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testCostEffects"));
     LOG_TRACE(logger, "Entering testCostEffects");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
@@ -1008,7 +1008,7 @@ private:
 
   void doTestCostOperations()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testCostOperations"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testCostOperations"));
     LOG_TRACE(logger, "Entering testCostOperations");
 
     LOG_TRACE(logger, "Testing basic above-or-equal relationships.");
@@ -1296,7 +1296,7 @@ private:
   // Check that initial states work.
   void testInitialState()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testInitialState"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testInitialState"));
     LOG_TRACE(logger, "Entering testInitialState");
 
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
@@ -1530,7 +1530,7 @@ private:
 
   void testBreakSoftDepCost()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.resolver.testBreakSoftDepCost"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.resolver.testBreakSoftDepCost"));
 
     LOG_TRACE(logger, "Entering testBreakSoftDepCost.");
 
