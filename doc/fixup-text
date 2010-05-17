@@ -1,0 +1,9 @@
+#!/bin/sh
+
+exec sed -e 's/&#8212/--/g
+s/&#8594/->/g
+s/&#955/lambda/g
+
+# These seem to be for Finnish:
+s/&#381;/Zh/g
+s/&#353;/sh/g'

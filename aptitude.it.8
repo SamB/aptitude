@@ -1,0 +1,441 @@
+.\" This file was generated with po4a. Translate the source file.
+.\" 
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH APTITUDE 8 2004-04-24  
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NOME
+aptitude \- interfaccia di alto livello per il gestore di pacchetti
+.SH SINTASSI
+.ad l
+\fBaptitude [\fR \fIopzioni\fR \fB] [ update | upgrade | forget\-new | clean | 
+autoclean ]\fR
+
+\fBaptitude [\fR \fIopzioni\fR \fB] [ remove | hold | purge | markauto | unmarkauto 
+| forbid\-upgrade | dist\-upgrade | reinstall ]\fR \fIpacchetti...\fR
+
+.B aptitude [\fR \fIopzioni\fR \fB] [ download | show ]\fR \fIpacchetti...
+
+.B aptitude [\fR \fIopzioni\fR \fB] search\fR \fImodelli di ricerca...
+
+.B aptitude [ \-S\fR \fInomefile\fR \fB] [ \-u | \-i ]
+
+.SH DESCRIZIONE
+.ad b
+
+
+\fBaptitude\fR è un'interfaccia testuale per il sistema di gestione pacchetti 
+di Debian GNU/Linux.
+
+Permette all'utente di visualizzare l'elenco dei pacchetti e di effettuare 
+operazioni di gestione quali l'installazione, l'aggiornamento o la rimozione 
+dei pacchetti. È possibile compiere tali azioni dalla riga di comando oppure 
+tramite un'interfaccia visuale.
+
+.SH "AZIONI DISPONIBILI DALLA RIGA DI COMANDO"
+
+
+Il primo argomento che non inizia con un trattino («\-») indica l'azione che 
+il programma deve compiere. Se non viene specificata nessuna azione dalla 
+riga di comando, aptitude si avvia in modalità visuale.
+
+Sono disponibili le seguenti azioni:
+
+.TP
+.B install
+Installa uno o più pacchetti, elencati dopo il comando «install»; se il nome 
+del pacchetto contiene una «~» viene interpretato come un modello di 
+ricerca: verrà quindi installato ogni pacchetto che corrisponde al modello 
+(vedere anche «SEARCHING, etc» in \fB/usr/share/doc/aptitude/README\fR).
+
+Per selezionare una determinata versione di un pacchetto è sufficiente 
+aggiungere "=<versione>" al nome del pacchetto: ad esempio, 
+«aptitude install apt=0.3.1». Analogamente, per scegliere un pacchetto da un 
+determinato archivio, basta aggiungere "/<archivio>" al nome del 
+pacchetto: ad esempio, «aptitude install apt/experimental».
+
+Aggiungere «-», «+», «_» o «=» dopo il nome del pacchetto farà in modo che 
+quest'ultimo venga rispettivamente rimosso, installato, eliminato o 
+bloccato. In questo modo è possibile compiere più azioni con una sola riga 
+di comando.
+
+Fa eccezione «install» senza argomenti, che indica di portare a termine le 
+azioni in sospeso e/o pianificate.
+
+NOTA: Il comando «install» modifica le informazioni memorizzate da aptitude 
+che indicano le azioni da eseguire. Di conseguenza, se si fornisce (ad 
+esempio) il comando «aptitude install pippo pluto» e si interrompe 
+l'installazione, è necessario eseguire «aptitude remove pippo pluto» per 
+annullare l'ordine dato.
+
+.TP
+.B remove, purge, hold
+Questi comandi sono simili a «install» ma applicano ai pacchetti l'azione 
+indicata (rispettivamente rimuovere, eliminare o bloccare), a meno che non 
+venga specificato altrimenti.
+
+Ad esempio, «aptitude remove '~ndeity'» rimuove tutti i pacchetti il cui 
+nome contiene «deity».
+
+.TP
+.B markauto, unmarkauto
+Segna i pacchetti come installati automaticamente o 
+manualmente,rispettivamente. Per indicare i pacchetti si usa la stessa 
+sintassi dei comandi precedenti, compresa la possibilità di specificare 
+l'azione da compiere; ad esempio, «aptitude markauto '~slibs'» segna tutti i 
+pacchetti nella sezione «libs» come installati automaticamente.
+
+.TP
+.B forbid\-version
+Impedisce che un pacchetto venga aggiornato automaticamente a una 
+determinata versione; ciò fa sì che aptitude non aggiorni automaticamente a 
+questa versione, permettendo però aggiornamenti automatici a versioni 
+successive. È possibile specificare la versione da proibire aggiungendo  "=<versione>" al nome del pacchetto (ad esempio, «aptitude 
+forbid\-version vim=1.2.3.broken-4»), altrimenti aptitude sceglie in modo 
+predefinito la versione alla quale il pacchetto dovrebbe essere normalmente 
+aggiornato.
+
+Questo comando è utile per evitare che venga installata una versione 
+difettosa di un pacchetto senza che si debba bloccare e sbloccare il 
+pacchetto a mano. Se si decide in seguito di installare la versione 
+proibita, è possibile rimuovere il divieto con il comando «install».
+
+.TP
+.B reinstall
+Reinstalla uno o più pacchetti alla versione attualmente installata.
+
+.TP
+.B update
+Aggiorna l'elenco dei pacchetti disponibili dalle sorgenti APT. Equivale a 
+«apt-get update».
+
+.TP
+.B upgrade
+Aggiorna i pacchetti installati alla versione più recente. I pacchetti 
+installati non vengono rimossi a meno che non siano inutilizzati (vedere 
+anche «TRACKING UNUSED PACKAGES» in \fB/usr/share/doc/aptitude/README\fR); non 
+vengono installati pacchetti che non siano attualmente installati.
+
+Se un pacchetto non può essere aggiornato sottostando a questi vincoli, esso 
+viene bloccato.
+
+.TP
+.B forget\-new
+Dimentica quali pacchetti sono «nuovi» (equivale a premere «f» nella 
+modalità visuale).
+
+.TP
+.B search
+Cerca i pacchetti che corrispondono a una o più espressioni, elencate dopo 
+il comando «search». Vengono mostrati tutti i pacchetti corrispondenti 
+all'espressione data, che può essere come al solito una qualsiasi 
+espressione di ricerca; ad esempio, «aptitude search '~N'» elenca tutti i 
+pacchetti «nuovi». Le espressioni di ricerca sono spiegate dettagliatamente 
+in \fB/usr/share/doc/aptitude/README\fR.
+
+.TP
+.B show
+Mostra informazioni dettagliate riguardo a uno o più pacchetti, elencati 
+dopo il comando «show».
+
+.TP
+.B clean
+Rimuove tutti i pacchetti scaricati e conservati nella cache.
+
+.TP
+.B autoclean
+Rimuove dalla cache tutti i pacchetti che non si possono più scaricare. In 
+tal modo è possibile mantenere una cache dei pacchetti per lungo tempo, 
+evitando che cresca in maniera incontrollata.
+
+.TP
+.B download
+Scarica il file .deb della versione più recente del pacchetto specificato e 
+lo salva nella directory corrente.
+
+.P
+
+
+I seguenti argomenti sono interpretati come azioni da compiere nella 
+modalità visuale. Sono pensati per uso interno e, generalmente, non c'è 
+bisogno di utilizzarli.
+
+.TP
+.B \-S \fInomefile\fR
+Carica le informazioni sullo stato esteso da \fInomefile\fR.
+.TP
+.B \-u
+Aggiorna l'elenco dei pacchetti all'avvio del programma. Non è permesso 
+usare questa opzione e \fB\-i\fR allo stesso tempo.
+.TP
+.B \-i
+Mostra la schermata di installazione all'avvio (equivale ad avviare il 
+programma e premere «g»). Non è permesso usare questa opzione e \fB\-u\fR allo 
+stesso tempo.
+
+.SH OPZIONI
+
+
+Le seguenti opzioni possono essere specificate per modificare il 
+comportamento dei comandi sopracitati. Non tutti i comandi prestano 
+attenzione a ogni opzione, dato che molte di esse non hanno senso se 
+combinate a determinati comandi.
+
+Molte di queste opzioni sono associate a una direttiva del file di 
+configurazione; se tale direttiva è presente in \fB/etc/apt/apt.conf\fR o in 
+\fB~/.aptitude/config\fR, aptitude si comporterà come se fosse stata fornita la 
+relativa opzione.
+
+.TP
+.B \-h, \-\-help
+Mostra un breve messaggio di aiuto.
+
+.TP
+.B \-\-version
+Mostra la versione di aptitude e qualche informazione riguardo all'ambiente 
+nel quale il programma è stato compilato.
+
+.TP
+.B \-s, \-\-simulate
+Elenca le azioni da compiere, ma senza eseguirle realmente; pertanto, non 
+sono richiesti i privilegi di root.
+
+Direttiva di configurazione: Aptitude::CmdLine::Simulate
+
+.TP
+.B \-d, \-\-download\-only
+Si limita a scaricare i pacchetti, senza installarli o rimuoverli.
+
+Direttiva di configurazione: Aptitude::CmdLine::Download\-Only
+
+.TP
+.B \-P, \-\-prompt
+Chiede sempre conferma, anche se non deve essere intrapresa nessun'altra 
+azione.
+
+Direttiva di configurazione: Aptitude::CmdLine::Always\-Prompt
+
+.TP
+.B \-y, \-\-assume\-yes
+Suppone che la risposta alle domande sì/no sia sempre «sì», tranne nel caso 
+di conferme per azioni particolarmente pericolose, come la rimozione di 
+pacchetti Essenziali. Ha la precedenza su \-P.
+
+Direttiva di configurazione: Aptitude::CmdLine::Assume\-Yes
+
+.TP
+.BI \-F\  formato ,\ \-\-display\-format\  formato
+Specifica il formato da usare per mostrare i risultati del comando 
+\fBsearch\fR; ad esempio, «%p %V %v» mostra il nome del pacchetto, seguito 
+dalla sua versione attualmente installata e la sua versione disponibile 
+(vedere anche la sezione «COLUMNS» in \fB/usr/share/doc/aptitude/README\fR per 
+maggiori informazioni).
+
+Direttiva di configurazione: Aptitude::CmdLine::Package\-Display\-Format
+
+.TP
+.BI \-O\  ordine ,\ \-\-sort\  ordine
+Specifica in quale ordine mostrare i risultati del comando \fBsearch\fR; ad 
+esempio, «installsize» ordina i pacchetti in ordine crescente rispetto alla 
+dimensione del pacchetto installato (vedere anche la sezione «SORTING 
+CONFIGURATION» in \fB/usr/share/doc/aptitude/README\fR per maggiori 
+informazioni).
+
+.TP
+.BI \-w\  larghezza ,\ \-\-width\  larghezza
+Specifica la larghezza da usare per mostrare i risultati del comando 
+\fBsearch\fR (la larghezza del terminale viene usata come valore predefinito).
+
+Direttiva di configurazione: Aptitude::CmdLine::Package\-Display\-Width
+
+.TP
+.B \-f
+Prova in tutti i modi a correggere le dipendenze dei pacchetti difettosi.
+
+Direttiva di configurazione: Aptitude::CmdLine::Fix\-Broken
+
+.TP
+.B \-r, \-\-with\-recommends
+Considera Raccomanda come una dipendenza quando installa nuovi pacchetti (ha 
+la precedenza sulle impostazioni in \fB/etc/apt/apt.conf\fR e 
+\fB~/.aptitude/config\fR).
+
+Direttiva di configurazione: Aptitude::Recommends\-Important
+
+.TP
+.B \-R, \-\-without\-recommends
+Non considera Raccomanda come una dipendenza quando installa nuovi 
+pacchetti.
+
+.TP
+.BI \-t\  release ,\ \-\-target\-release\  release
+Imposta la release da cui installare i pacchetti; ad esempio, «aptitude \-t 
+unstable ...» fa sì che aptitude prediliga la distribuzione «unstable» nel 
+prelevare i pacchetti.
+
+Direttiva di configurazione: APT::Default\-Release
+
+.TP
+.B \-V, \-\-show\-versions
+Mostra quali versioni dei pacchetti si sta per installare.
+
+Direttiva di configurazione: Aptitude::CmdLine::Show\-Versions
+
+.TP
+.B \-D, \-\-show\-deps
+Mostra le dipendenze dei pacchetti cambiati automaticamente.
+
+Direttiva di configurazione: Aptitude::CmdLine::Show\-Deps
+
+.TP
+.B \-Z
+Mostra i cambiamenti nella dimensione occupata da ogni pacchetto.
+
+Direttiva di configurazione: Aptitude::CmdLine::Show\-Size\-Changes
+
+.TP
+.B \-v, \-\-verbose
+Mostra informazioni extra (può essere fornita più volte).
+
+Direttiva di configurazione: Aptitude::CmdLine::Verbose
+
+.SH "UTILIZZO INTERATTIVO"
+
+
+Nella modalità visuale, i seguenti tasti e comandi sono disponibili in 
+aptitude:
+.TP
+.B q
+Esce dal contesto attuale.
+.TP
+.B f
+Cancella l'elenco dei pacchetti «nuovi».
+.TP
+.B ?
+Mostra una schermata di aiuto online.
+
+.TP
+.B Su, j
+Sposta la selezione in su di un elemento.
+.TP
+.B Giù, k
+Sposta la selezione in giù di un elemento.
+.TP
+.B ^
+Sposta la selezione al livello superiore rispetto all'elemento corrente.
+.TP
+.B Invio
+Espande o comprime un gruppo di pacchetti.
+.TP
+.B [
+Espande un intero albero di pacchetti.
+.TP
+.B ]
+Comprime un intero albero di pacchetti.
+
+.TP
+.B Invio
+Mostra le informazioni sul pacchetto selezionato.
+.TP
+.B C
+Visualizza il changelog di un pacchetto.
+.TP
+.B +
+Annulla la rimozione di un pacchetto o richiede che venga installato o 
+aggiornato.
+.TP
+.B \-
+Annulla l'installazione di un pacchetto o richiede che venga rimosso.
+.TP
+.B =
+Blocca un pacchetto o rimuove lo stato di «bloccato» da un pacchetto 
+bloccato non aggiornabile.
+.TP
+.B _
+Richiede l'eliminazione di un pacchetto e di tutti i suoi file di 
+configurazione.
+.TP
+.B L
+Reinstalla un pacchetto.
+.TP
+.B M
+Segna un pacchetto come installato automaticamente.
+.TP
+.B m
+Segna un pacchetto come installato manualmente.
+.TP
+.B F
+Impedisce che un pacchetto venga aggiornato automaticamente ad una 
+determinata versione; le versioni successive verranno installate 
+automaticamente.
+
+.TP
+.B u
+Aggiorna l'elenco dei pacchetti disponibili.
+.TP
+.B U
+Aggiorna tutti i pacchetti che è possibile aggiornare.
+.TP
+.B g
+Procede con l'installazione, la rimozione e l'aggiornamento.
+
+.TP
+.B Ctrl-u
+Annulla l'ultima azione o gruppo di azioni.
+.TP
+.B /
+Effettua una ricerca.
+.TP
+.B n, \e
+Ripete l'ultima ricerca.
+
+.TP
+.B v
+Mostra le versioni disponibili di un pacchetto.
+.TP
+.B d
+Mostra le dipendenze di un pacchetto.
+.TP
+.B r
+Mostra i pacchetti che dipendono dal pacchetto selezionato.
+
+.TP
+.B D
+Mostra o nasconde l'area delle informazioni sui pacchetti.
+.TP
+.B a
+Scorre verso l'alto nell'area delle informazioni sui pacchetti.
+.TP
+.B z
+Scorre verso il basso nell'area delle informazioni sui pacchetti.
+.TP
+.B i
+Cambia il tipo di informazioni visualizzate sui pacchetti.
+
+.SH "VEDERE ANCHE"
+
+
+\fBapt\-get\fR(8), \fBapt\fR(8), \fB/usr/share/doc/aptitude/README\fR.
+
+.SH AUTORE
+
+
+Questa pagina di manuale è stata scritta da Daniel Burrows 
+<dburrows@debian.org>.
+
+Traduzione di Danilo Piazzalunga <danilopiazza@libero.it>.
+
+.\" [Translated from: aptitude.1 | r2309 | 2004-04-23 04:07:55 +0200]
