@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.6.2)
+AC_INIT(aptitude, 0.6.2.1)
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -124,7 +124,7 @@ boost/weak_ptr.hpp dnl
                   , []
                   , [AC_MSG_FAILURE([Boost install not found, too old, or incomplete; install libboost-dev.])])
 
-AX_BOOST_BASE()
+AX_BOOST_BASE(1.42)
 AX_BOOST_IOSTREAMS
 
 PKG_CHECK_MODULES(SQLITE3, sqlite3)

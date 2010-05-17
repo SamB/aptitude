@@ -571,7 +571,7 @@ namespace gui
       // The fractional progress that was displayed before the child was suspended.
       double child_suspended_fraction;
 
-      log4cxx::LoggerPtr logger, logger_backgrounding;
+      logging::LoggerPtr logger, logger_backgrounding;
 
       static Gdk::Color mix_colors(const Gdk::Color &c1, const Gdk::Color &c2)
       {

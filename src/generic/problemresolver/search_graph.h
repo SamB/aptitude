@@ -1052,7 +1052,7 @@ private:
    */
   static const unsigned int max_propagated_promotions = 0;
 
-  log4cxx::LoggerPtr logger;
+  logging::LoggerPtr logger;
 
   // We keep a reference to the promotions set so that we can stuff
   // new promotions in during backpropagation.

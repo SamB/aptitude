@@ -1043,6 +1043,55 @@ bool aptitude_resolver_dep::broken_under(const InstallationType &I) const
     }
 }
 
+/** \brief Representation of a level value as stored in the
+ *  configuration.
+ *
+ *  All levels are integers ... except for the special level "discard"
+ *  (formerly "conflict"), which is a separate entity.
+ */
+class cfg_level
+{
+  int level;
+  bool is_discard;
+
+  cfg_level(int _level, bool _is_discard)
+    : level(_level), is_discard(_is_discard)
+  {
+  }
+
+public:
+  /** \brief Create a cfg_level that has no effect. */
+  cfg_level()
+    : level(INT_MIN), is_discard(false)
+  {
+  }
+
+  static cfg_level make_level(int level)
+  {
+    return cfg_level(level, false);
+  }
+
+  static cfg_level make_conflict()
+  {
+    return cfg_level(INT_MAX, true);
+  }
+
+  bool get_is_discard() const { return is_discard; }
+  int get_level() const { return level; }
+
+  bool operator<(const cfg_level &other) const
+  {
+    if(is_discard)
+      return false;
+    else if(other.is_discard)
+      return true;
+    else
+      return level < other.level;
+  }
+};
+
+std::ostream &operator<<(std::ostream &out, const cfg_level &level);
+
 /** \brief This class translates an APT package system into the
  *  abstract package system as described in \ref abstract_universe.
  *
@@ -1299,15 +1348,25 @@ public:
   }
 
   // Configuration helper -- should this be somewhere better?
-  static int parse_level(const std::string &s);
+  static cfg_level parse_level(const std::string &s);
+  /** \brief Parse two level strings and combine them.
+   *
+   *   - If neither is set, the given default level is used.
+   *   - If only one is set, its value is used.
+   *   - If both are set, the higher value is used (where "conflict"
+   *     is taken to be higher than any numeric level).
+   */
+  static cfg_level parse_levels(const std::string &level1,
+                                const std::string &level2,
+                                cfg_level default_level);
 
   // Configuration fetchers.
-  static int get_safe_level();
-  static int get_keep_all_level();
-  static int get_remove_level();
-  static int get_break_hold_level();
-  static int get_non_default_level();
-  static int get_remove_essential_level();
+  static cfg_level get_safe_level();
+  static cfg_level get_keep_all_level();
+  static cfg_level get_remove_level();
+  static cfg_level get_break_hold_level();
+  static cfg_level get_non_default_level();
+  static cfg_level get_remove_essential_level();
 };
 
 /** \brief Write an aptitude_resolver_package to the given stream. */

@@ -648,7 +648,7 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
 void aptitudeDepCache::get_upgradable(bool ignore_removed,
 				      std::set<pkgCache::PkgIterator> &upgradable)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
 
   LOG_TRACE(logger, "Fetching the list of upgradable packages.");
 
@@ -1632,7 +1632,7 @@ namespace
   void remove_reverse_current_versions(std::set<pkgCache::PkgIterator> &reinstated,
 				       pkgCache::VerIterator bad_ver)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+    logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
     LOG_TRACE(logger, "Removing reverse dependencies of "
 	      << bad_ver.ParentPkg().Name() << " "
 	      << bad_ver.VerStr() << " from the reinstate set.");
@@ -1708,7 +1708,7 @@ namespace
 			  pkgDepCache &cache,
 			  std::set<pkgCache::PkgIterator> &not_orphaned)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+    logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
 
     if(not_orphaned.find(notOrphan) != not_orphaned.end())
       {
@@ -1787,7 +1787,7 @@ namespace
 			 pkgDepCache &cache,
 			 std::set<pkgCache::PkgIterator> &not_orphaned)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+    logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
 
     // Sanity-check.
     if(maybeOrphan->CurrentState == pkgCache::State::NotInstalled ||
@@ -1839,7 +1839,7 @@ void aptitudeDepCache::sweep()
   if(!aptcfg->FindB(PACKAGE "::Delete-Unused", true))
     return;
 
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
   // "reinstated" holds packages that should be reinstated, and
   // "reinstated_bad" holds packages that *shouldn't* be reinstated
   // because they conflict with an installed package.
@@ -2023,7 +2023,7 @@ void aptitudeDepCache::restore_apt_state(const apt_state_snapshot *snapshot)
 void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> &realSol,
 				      undo_group *undo)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptCache());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
 
   // Make a local copy so we don't crash when applying the solution:
   // applying the solution might trigger a callback that causes

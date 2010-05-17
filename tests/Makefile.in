@@ -67,11 +67,12 @@ boost_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
 am_cppunit_test_OBJECTS = cppunit_test_main.$(OBJEXT) \
 	test_choice.$(OBJEXT) test_choice_set.$(OBJEXT) \
 	test_config_pusher.$(OBJEXT) test_dense_setset.$(OBJEXT) \
-	test_matching.$(OBJEXT) test_misc.$(OBJEXT) \
-	test_parsers.$(OBJEXT) test_promotion_set.$(OBJEXT) \
-	test_resolver.$(OBJEXT) test_resolver_costs.$(OBJEXT) \
-	test_resolver_hints.$(OBJEXT) test_setset.$(OBJEXT) \
-	test_tags.$(OBJEXT) test_temp.$(OBJEXT) test_wtree.$(OBJEXT)
+	test_incremental_expression.$(OBJEXT) test_matching.$(OBJEXT) \
+	test_misc.$(OBJEXT) test_parsers.$(OBJEXT) \
+	test_promotion_set.$(OBJEXT) test_resolver.$(OBJEXT) \
+	test_resolver_costs.$(OBJEXT) test_resolver_hints.$(OBJEXT) \
+	test_setset.$(OBJEXT) test_tags.$(OBJEXT) test_temp.$(OBJEXT) \
+	test_wtree.$(OBJEXT)
 cppunit_test_OBJECTS = $(am_cppunit_test_OBJECTS)
 cppunit_test_LDADD = $(LDADD)
 cppunit_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
@@ -266,6 +267,7 @@ cppunit_test_SOURCES = \
 	test_choice_set.cc \
 	test_config_pusher.cc \
 	test_dense_setset.cc \
+	test_incremental_expression.cc \
 	test_matching.cc \
 	test_misc.cc \
 	test_parsers.cc \
@@ -346,6 +348,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_config_pusher.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_dense_setset.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_file_cache.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_incremental_expression.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_matching.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_misc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_parsers.Po@am__quote@

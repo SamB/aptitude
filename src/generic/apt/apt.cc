@@ -127,7 +127,7 @@ bool get_apt_knows_about_rootdir()
 
 void apt_preinit(const char *rootdir)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
@@ -344,7 +344,7 @@ void apt_init(OpProgress *progress_bar, bool do_initselections,
 
 void apt_close_cache()
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   LOG_INFO(logger, "Closing apt cache.");
 
@@ -405,7 +405,7 @@ void apt_close_cache()
 void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 		    const char * status_fname)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   if(apt_cache_file != NULL)
     {
