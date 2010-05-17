@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# This is just a layer of indirection so the html-to-text utility can
+# be changed in a central location.
+
+exec elinks -dump -no-references -no-numbering "$@"
