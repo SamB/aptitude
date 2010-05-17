@@ -78,9 +78,9 @@ public:
 
     CPPUNIT_ASSERT(S2.find_subset(t1) == S2.end());
 
-    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+    LOG_TRACE(logging::Logger::getLogger("test.setset.subsetSearch"),
 	      "Searching for " << t2 << " in " << S2);
-    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+    LOG_TRACE(logging::Logger::getLogger("test.setset.subsetSearch"),
 	      "Search complete");
 
     CPPUNIT_ASSERT(S2.find_subset(t2) != S2.end());
@@ -91,10 +91,10 @@ public:
 
     CPPUNIT_ASSERT(S1.find_subset(t1) == S1.end());
 
-    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+    LOG_TRACE(logging::Logger::getLogger("test.setset.subsetSearch"),
 	      "Searching for " << t2 << " in " << S1);
     CPPUNIT_ASSERT(S1.find_subset(t2) != S1.end());
-    LOG_TRACE(log4cxx::Logger::getLogger("test.setset.subsetSearch"),
+    LOG_TRACE(logging::Logger::getLogger("test.setset.subsetSearch"),
 	      "Search complete");
 
     S1.insert(s3);

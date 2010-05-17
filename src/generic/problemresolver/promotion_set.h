@@ -151,8 +151,16 @@ public:
 
     // Note that this will compute a somewhat inefficient validity
     // condition when applied across several expressions.
-    cwidget::util::ref_ptr<expression<bool> > new_valid =
-      and_e::create(p1_valid, p2_valid);
+    cwidget::util::ref_ptr<expression<bool> > new_valid;
+    if(p1_valid.valid())
+      {
+        if(p2_valid.valid())
+          new_valid = and_e::create(p1_valid, p2_valid);
+        else
+          new_valid = p1_valid;
+      }
+    else
+      new_valid = p2_valid;
 
     return generic_promotion(new_choices, new_cost, new_valid);
   }
@@ -295,7 +303,7 @@ public:
   typedef generic_promotion<PackageUniverse> promotion;
 
 private:
-  log4cxx::LoggerPtr logger;
+  logging::LoggerPtr logger;
   promotion_set_callbacks<PackageUniverse> &callbacks;
 
   struct entry;
@@ -840,9 +848,9 @@ private:
   // counts.
   struct increment_entry_count_op
   {
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
-    increment_entry_count_op(const log4cxx::LoggerPtr &_logger)
+    increment_entry_count_op(const logging::LoggerPtr &_logger)
       : logger(_logger)
     {
     }
@@ -878,10 +886,10 @@ private:
     // The cost to return.
     mutable cost rval_cost;
 
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
-    find_entry_subset_op(const log4cxx::LoggerPtr &_logger)
+    find_entry_subset_op(const logging::LoggerPtr &_logger)
       : logger(_logger)
     {
     }
@@ -957,7 +965,7 @@ private:
     // costs smaller than or equal to this limit are not
     // returned:
     cost maximum_cost;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     /** \brief Create a find-supersets operation.
@@ -976,7 +984,7 @@ private:
     find_entry_supersets_op(std::vector<entry_ref> &_output_entries,
 			    unsigned int _required_hits,
 			    const cost &_maximum_cost,
-			    const log4cxx::LoggerPtr &_logger)
+			    const logging::LoggerPtr &_logger)
       : output_entries(_output_entries),
 	required_hits(_required_hits),
 	maximum_cost(_maximum_cost),
@@ -1127,13 +1135,13 @@ public:
     const generic_choice_indexed_map<PackageUniverse, T> &output_domain;
     boost::unordered_map<choice, promotion> &output_incipient;
     maybe<promotion> &output_non_incipient;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     find_incipient_entry_subset_op(const generic_choice_indexed_map<PackageUniverse, T> &_output_domain,
 				   boost::unordered_map<choice, promotion> &_output_incipient,
 				   maybe<promotion> &_output_non_incipient,
-				   const log4cxx::LoggerPtr &_logger)
+				   const logging::LoggerPtr &_logger)
       : output_domain(_output_domain),
 	output_incipient(_output_incipient),
 	output_non_incipient(_output_non_incipient),
@@ -1302,11 +1310,11 @@ private:
     // Stores the set of broken soft dependencies.
     boost::unordered_set<dep> &broken_soft_deps;
 
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     build_local_indices(boost::unordered_map<version, choice> &_choices_by_install_version,
 			boost::unordered_set<dep> &_broken_soft_deps,
-			const log4cxx::LoggerPtr &_logger)
+			const logging::LoggerPtr &_logger)
       : choices_by_install_version(_choices_by_install_version),
 	broken_soft_deps(_broken_soft_deps),
 	logger(_logger)
@@ -1366,11 +1374,11 @@ private:
     // Stores the set of broken soft dependencies.
     const boost::unordered_set<dep> &broken_soft_deps;
 
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     check_choices_in_local_indices(const boost::unordered_map<version, choice> &_choices_by_install_version,
 				   const boost::unordered_set<dep> &_broken_soft_deps,
-				   const log4cxx::LoggerPtr &_logger,
+				   const logging::LoggerPtr &_logger,
 				   int &_num_mismatches,
 				   bool &_rval)
       : rval(_rval),
@@ -1652,7 +1660,7 @@ private:
   static void collect_indexers(const choice &c,
 			       boost::unordered_set<version> &installed_versions,
 			       boost::unordered_set<dep> &broken_soft_deps,
-			       const log4cxx::LoggerPtr &logger)
+			       const logging::LoggerPtr &logger)
   {
     switch(c.get_type())
       {
@@ -1679,11 +1687,11 @@ private:
   {
     boost::unordered_set<version> &installed_versions;
     boost::unordered_set<dep> &broken_soft_deps;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     do_collect_indexers(boost::unordered_set<version> &_installed_versions,
 			boost::unordered_set<dep> &_broken_soft_deps,
-			const log4cxx::LoggerPtr &_logger)
+			const logging::LoggerPtr &_logger)
       : installed_versions(_installed_versions),
 	broken_soft_deps(_broken_soft_deps),
 	logger(_logger)
@@ -1703,7 +1711,7 @@ private:
   static void collect_indexers(const entry &e,
 			       boost::unordered_set<version> &installed_versions,
 			       boost::unordered_set<dep> &broken_soft_deps,
-			       const log4cxx::LoggerPtr &logger)
+			       const logging::LoggerPtr &logger)
   {
     e.p.get_choices().for_each(do_collect_indexers(installed_versions,
 						   broken_soft_deps,
@@ -1716,7 +1724,7 @@ private:
   static void collect_indexers(const std::list<entry> &cost_entries,
 			       boost::unordered_set<version> &installed_versions,
 			       boost::unordered_set<dep> &broken_soft_deps,
-			       const log4cxx::LoggerPtr &logger)
+			       const logging::LoggerPtr &logger)
   {
     for(typename std::list<entry>::const_iterator it = cost_entries.begin();
 	it != cost_entries.end(); ++it)
@@ -1728,7 +1736,7 @@ private:
    */
   template<typename Pred>
   static void erase_vector_entries(std::vector<entry_ref> &entries,
-				   const log4cxx::LoggerPtr &logger,
+				   const logging::LoggerPtr &logger,
 				   const Pred &pred)
   {
     if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
@@ -1830,12 +1838,12 @@ private:
     entry_ref new_entry;
     install_version_index_entry **install_version_index;
     boost::unordered_map<dep, break_soft_dep_index_entry> &break_soft_dep_index;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     make_index_entries(entry_ref _new_entry,
 		       install_version_index_entry **_install_version_index,
 		       boost::unordered_map<dep, break_soft_dep_index_entry> &_break_soft_dep_index,
-		       const log4cxx::LoggerPtr &_logger)
+		       const logging::LoggerPtr &_logger)
       : new_entry(_new_entry),
 	install_version_index(_install_version_index),
 	break_soft_dep_index(_break_soft_dep_index),

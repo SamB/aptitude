@@ -45,7 +45,7 @@
 
 namespace cw = cwidget;
 
-using log4cxx::LoggerPtr;
+using logging::LoggerPtr;
 using aptitude::Loggers;
 
 namespace gui
@@ -68,9 +68,9 @@ namespace gui
       int fd;
       safe_slot1<void, aptitude::apt::dpkg_status_message> report_message;
       aptitude::apt::dpkg_status_parser parser;
-      log4cxx::LoggerPtr logger;
+      logging::LoggerPtr logger;
 
-      static void delete_socket_data_processor(log4cxx::LoggerPtr logger,
+      static void delete_socket_data_processor(logging::LoggerPtr logger,
 					       dpkg_socket_data_processor *processor)
       {
 	LOG_TRACE(logger, "Deleting dpkg socket data processor " << processor << ".");

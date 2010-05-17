@@ -331,9 +331,9 @@ namespace
 
   class log_level_map
   {
-    std::map<std::string, log4cxx::LevelPtr> levels;
+    std::map<std::string, logging::LevelPtr> levels;
 
-    void add_level(const std::string &s, log4cxx::LevelPtr level)
+    void add_level(const std::string &s, logging::LevelPtr level)
     {
       std::string tmp;
       for(std::string::const_iterator it = s.begin(); it != s.end(); ++it)
@@ -386,7 +386,7 @@ namespace
 	}
     }
 
-    typedef std::map<std::string, log4cxx::LevelPtr>::const_iterator const_iterator;
+    typedef std::map<std::string, logging::LevelPtr>::const_iterator const_iterator;
 
     const_iterator find(const std::string &s) const
     {
@@ -489,12 +489,12 @@ namespace
   }
 }
 
-class NullAppender : public log4cxx::AppenderSkeleton
+class NullAppender : public logging::AppenderSkeleton
 {
 public:
   void close() { }
-  void append(const log4cxx::spi::LoggingEventPtr &,
-	      log4cxx::helpers::Pool &)
+  void append(const logging::spi::LoggingEventPtr &,
+	      logging::helpers::Pool &)
   {
   }
 

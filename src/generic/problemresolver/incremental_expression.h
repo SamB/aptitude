@@ -1,6 +1,6 @@
 /** \file incremental_expression.h */   // -*-c++-*-
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -367,7 +367,7 @@ public:
 
   expression_wrapper &operator=(const expression_wrapper &other)
   {
-    set_child(other.get_child);
+    set_child(other.get_child());
     return *this;
   }
 
@@ -403,7 +403,8 @@ public:
   {
     for(typename std::vector<cwidget::util::ref_ptr<expression<T> > >::const_iterator
 	  it = get_children().begin(); it != get_children().end(); ++it)
-      (*it)->add_parent(this);
+      if(it->valid())
+        (*it)->add_parent(this);
   }
 
   const std::vector<cwidget::util::ref_ptr<expression<T> > > &get_children() const
@@ -417,14 +418,17 @@ public:
     children.push_back(new_child);
   }
 
-  /** \brief Remove a child from this container. */
+  /** \brief Remove one copy of a child from this container. */
   virtual void remove_child(const cwidget::util::ref_ptr<expression<T> > &child)
   {
-    typename std::vector<cwidget::util::ref_ptr<expression<T> > >::iterator
-      new_end = std::remove(children.begin(), children.end(), child);
+    if(child.valid())
+      child->remove_parent(this);
 
-    child->remove_parent(this);
-    children.erase(new_end, children.end());
+    typename std::vector<cwidget::util::ref_ptr<expression<T> > >::iterator
+      found = std::find(children.begin(), children.end(), child);
+
+    if(found != children.end())
+      children.erase(found);
   }
 
   virtual std::string get_name() = 0;
@@ -438,7 +442,10 @@ public:
 	if(it != get_children().begin())
 	  out << ", ";
 
-	(*it)->dump(out);
+        if(it->valid())
+          (*it)->dump(out);
+        else
+          out << "(null)";
       }
     out << ")";
   }

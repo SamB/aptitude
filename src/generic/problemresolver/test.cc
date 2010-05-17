@@ -42,24 +42,24 @@ namespace cw = cwidget;
 
 // This is a gross hack; without defining this here, we'd have to
 // somehow link in a higher-level library.
-log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolver()
+logging::LoggerPtr aptitude::Loggers::getAptitudeResolver()
 {
-  return log4cxx::Logger::getLogger("aptitude.resolver");
+  return logging::Logger::getLogger("aptitude.resolver");
 }
 
-log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearch()
+logging::LoggerPtr aptitude::Loggers::getAptitudeResolverSearch()
 {
-  return log4cxx::Logger::getLogger("aptitude.resolver.search");
+  return logging::Logger::getLogger("aptitude.resolver.search");
 }
 
-log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchGraph()
+logging::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchGraph()
 {
-  return log4cxx::Logger::getLogger("aptitude.resolver.search.graph");
+  return logging::Logger::getLogger("aptitude.resolver.search.graph");
 }
 
-log4cxx::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchCosts()
+logging::LoggerPtr aptitude::Loggers::getAptitudeResolverSearchCosts()
 {
-  return log4cxx::Logger::getLogger("aptitude.resolver.search.costs");
+  return logging::Logger::getLogger("aptitude.resolver.search.costs");
 }
 
 // To make things easier, the tests are specified as plaintext files.

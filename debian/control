@@ -1,7 +1,7 @@
 Source: aptitude
 Section: admin
 Maintainer: Daniel Burrows <dburrows@debian.org>
-Build-Depends: libapt-pkg-dev (>= 0.7.0), debhelper (>= 5.0.0), libsigc++-2.0-dev, libcppunit-dev, libcwidget-dev (>= 0.5.6.1-2), libncursesw5-dev, gettext, g++ (>= 4:3.2.2-0), docbook-xsl, docbook-xml, xsltproc, elinks, po4a, libept-dev (>= 0.5), libgtkmm-2.4-dev, libvte-dev, libglademm-2.4-dev, liblog4cxx10-dev, librsvg2-bin, libboost-dev, libboost-serialization-dev, libboost-python-dev, libboost-iostreams-dev, libboost-test-dev
+Build-Depends: libapt-pkg-dev (>= 0.7.0), debhelper (>= 5.0.0), libsigc++-2.0-dev, libcppunit-dev, libcwidget-dev (>= 0.5.6.1-2), libncursesw5-dev, gettext, g++ (>= 4:3.2.2-0), docbook-xsl, docbook-xml, xsltproc, elinks, po4a, libept-dev (>= 0.5), libgtkmm-2.4-dev, libvte-dev, libglademm-2.4-dev, liblog4cxx10-dev, librsvg2-bin, libboost-dev (>= 1.42), libboost-serialization-dev, libboost-python-dev, libboost-iostreams-dev, libboost-test-dev
 Vcs-Hg: http://hg.debian.org/hg/aptitude/debian
 Vcs-Browser: http://hg.debian.org/hg/aptitude/debian
 Standards-Version: 3.8.3
@@ -12,7 +12,7 @@ Priority: important
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: aptitude-doc-en | aptitude-doc, sensible-utils, apt-xapian-index, libparse-debianchangelog-perl
 Suggests: tasksel, debtags
-Conflicts: ia32-apt-get
+Conflicts: ia32-apt-get (<< 22)
 Description: terminal-based package manager (terminal interface only)
  aptitude is a package manager with a number of useful features,
  including: a mutt-like syntax for matching packages in a flexible

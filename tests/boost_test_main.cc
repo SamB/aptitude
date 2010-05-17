@@ -6,6 +6,8 @@
 #include <log4cxx/level.h>
 #include <log4cxx/logger.h>
 
+#include <loggers.h>
+
 // One dummy test so that this can be dropped in before the actual
 // test suite is written.
 BOOST_AUTO_TEST_CASE(dummy)
@@ -31,10 +33,10 @@ int main(int argc, char **argv)
     }
 
   if(debug)
-    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getTrace());
+    logging::Logger::getRootLogger()->setLevel(logging::Level::getTrace());
   else
-    log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn());
-  log4cxx::BasicConfigurator::configure();
+    logging::Logger::getRootLogger()->setLevel(logging::Level::getWarn());
+  logging::BasicConfigurator::configure();
 
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }

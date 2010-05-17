@@ -1,7 +1,7 @@
 /** \file incremental_expression.cc */   // -*-c++-*-
 
 
-//   Copyright (C) 2009 Daniel Burrows
+//   Copyright (C) 2009-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -27,7 +27,7 @@ void counting_bool_e::init_num_true()
   num_true = 0;
   for(std::vector<cwidget::util::ref_ptr<expression<bool> > >::const_iterator
 	it = children.begin(); it != children.end(); ++it)
-    if((*it)->get_value())
+    if(!it->valid() || (*it)->get_value())
       ++num_true;
 }
 
@@ -53,38 +53,30 @@ void counting_bool_e::child_modified(const cwidget::util::ref_ptr<expression<boo
 
 void counting_bool_e::add_child(const cwidget::util::ref_ptr<expression<bool> > &child)
 {
-  if(child->get_value())
-    {
-      bool old_value = get_value();
+  bool old_value = get_value();
 
-      expression_container_base<bool>::add_child(child);
-      ++num_true;
+  expression_container_base<bool>::add_child(child);
+  if(!child.valid() || child->get_value())
+    ++num_true;
 
-      bool new_value = get_value();
+  bool new_value = get_value();
 
-      if(old_value != new_value)
-	signal_value_changed(old_value, new_value);
-    }
-  else
-    expression_container_base<bool>::add_child(child);
+  if(old_value != new_value)
+    signal_value_changed(old_value, new_value);
 }
 
 void counting_bool_e::remove_child(const cwidget::util::ref_ptr<expression<bool> > &child)
 {
-  if(child->get_value())
-    {
-      bool old_value = get_value();
+  bool old_value = get_value();
 
-      expression_container_base<bool>::remove_child(child);
-      --num_true;
+  expression_container_base<bool>::remove_child(child);
+  if(!child.valid() || child->get_value())
+    --num_true;
 
-      bool new_value = get_value();
+  bool new_value = get_value();
 
-      if(old_value != new_value)
-	signal_value_changed(old_value, new_value);
-    }
-  else
-    expression_container_base<bool>::remove_child(child);
+  if(old_value != new_value)
+    signal_value_changed(old_value, new_value);
 }
 
 bool and_e::get_value()
@@ -116,7 +108,11 @@ void not_e::child_modified(const cwidget::util::ref_ptr<expression<bool> > &chil
 
 bool not_e::get_value()
 {
-  return !get_child()->get_value();
+  if(get_child().valid())
+    return !get_child()->get_value();
+  else
+    // NULL pointers count as "true".
+    return false;
 }
 
 void not_e::dump(std::ostream &out)
