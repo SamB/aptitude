@@ -132,7 +132,7 @@ namespace gui
 
     boost::shared_ptr<area_info> create_area_info(const std::string &name,
                                                   const std::string &description,
-                                                  const Glib::RefPtr<Gdk::Pixbuf> icon);
+                                                  const Glib::RefPtr<Gdk::Pixbuf> &icon);
 
     /** \brief The interface that both the view and the tab
      *  implementation require from a tab.
