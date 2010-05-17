@@ -22,8 +22,20 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <gtkmm/window.h>
-#include <libglademm/xml.h>
+#include <glibmm/refptr.h>
+
+namespace Gtk
+{
+  class Window;
+}
+
+namespace Gnome
+{
+  namespace Glade
+  {
+    class Xml;
+  }
+}
 
 namespace gui
 {
@@ -32,8 +44,37 @@ namespace gui
     class view;
   }
 
-  Gtk::Window *create_mainwindow(const Glib::RefPtr<Gnome::Glade::Xml> &glade,
-                                 const boost::shared_ptr<toplevel::view> &view);
+  class areas;
+
+  /** \brief Abstracted interface to the main window.
+   *
+   *  Decouples code that needs to access the main window from the
+   *  class definition of the main window.
+   */
+  class main_window
+  {
+  public:
+    virtual ~main_window();
+
+    /** \brief Retrieve the main window's GTK+ object. */
+    virtual Gtk::Window *get_window() = 0;
+
+    /** \brief Retrieve the window's model. */
+    virtual boost::shared_ptr<areas> get_areas() = 0;
+  };
+
+  /** \brief Create a main-window object.
+   *
+   *  \param glade   The glade file to load the main window from.
+   *  \param view    The view to display as the top-level widget.
+   *  \param areas   The model of this main window.  Should not be
+   *                 shared with any other main window; should be
+   *                 shared with the view.
+   */
+  boost::shared_ptr<main_window>
+  create_mainwindow(const Glib::RefPtr<Gnome::Glade::Xml> &glade,
+                    const boost::shared_ptr<toplevel::view> &view,
+                    const boost::shared_ptr<areas> &areas);
 }
 
 #endif // APTITUDE_MAINWINDOW_H

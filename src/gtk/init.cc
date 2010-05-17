@@ -20,6 +20,7 @@
 
 #include "init.h"
 
+#include "areas.h"
 #include "globals.h"
 #include "mainwindow.h"
 #include "post_event.h"
@@ -70,12 +71,6 @@ namespace gui
                              "  ythickness = 0"
                              "}"
                              "widget \"*.notebook_close_button\" style \"tiny-button-style\"");
-    }
-
-    shared_ptr<area_list> init_areas()
-    {
-      std::vector<shared_ptr<area_info> > areas;
-      return create_area_list(areas);
     }
 
     shared_ptr<view> create_main_view(const shared_ptr<area_list> &areas)
@@ -163,12 +158,12 @@ namespace gui
     Glib::signal_idle().connect(sigc::bind_return(sigc::ptr_fun(&do_apt_init),
 						  false));
 
-    shared_ptr<area_list> areas = init_areas();
+    shared_ptr<areas> all_areas = create_areas();
 
-    shared_ptr<view> main_win_view = create_main_view(areas);
-    Gtk::Window *main = create_mainwindow(glade, main_win_view);
-    main->signal_unmap().connect(sigc::ptr_fun(&globals::main_quit));
-    main->show();
+    shared_ptr<view> main_win_view = create_main_view(all_areas->get_areas());
+    shared_ptr<main_window> main = create_mainwindow(glade, main_win_view, all_areas);
+    main->get_window()->signal_unmap().connect(sigc::ptr_fun(&globals::main_quit));
+    main->get_window()->show();
 
     // Run the main loop, exiting when main_win is closed:
     globals::run_main_loop();
