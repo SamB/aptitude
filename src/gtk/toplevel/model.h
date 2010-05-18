@@ -118,10 +118,10 @@ namespace gui
       virtual Glib::RefPtr<Gdk::Pixbuf> get_icon() = 0;
 
     public:
-      typedef aptitude::util::dynamic_set<boost::shared_ptr<tab_info> >
+      typedef aptitude::util::writable_dynamic_set<boost::shared_ptr<tab_info> >
       tabs_set;
 
-      typedef aptitude::util::dynamic_set<boost::shared_ptr<notification_info> >
+      typedef aptitude::util::writable_dynamic_set<boost::shared_ptr<notification_info> >
       notifications_set;
 
       /** \brief Get the tabs associated with this area. */
