@@ -69,8 +69,7 @@ namespace gui
       }
     };
 
-    // The implementation of the main window's interface; it ended up
-    // being easier to do it this way:
+    // The implementation of the main window's interface.
     class main_window_impl : public main_window
     {
       Gtk::Window *w;
