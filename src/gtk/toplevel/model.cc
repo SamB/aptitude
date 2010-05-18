@@ -19,14 +19,18 @@
 
 #include "model.h"
 
+#include <loggers.h>
+
 #include <cwidget/generic/util/bool_accumulate.h>
 
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/weak_ptr.hpp>
 
 #include <generic/util/dynamic_set_impl.h>
 
 #include <gtkmm/window.h>
 
+using aptitude::Loggers;
 using aptitude::util::dynamic_set;
 using aptitude::util::dynamic_set_impl;
 using aptitude::util::enumerator;
@@ -101,8 +105,14 @@ namespace gui
       {
         // Arrange for the tab to be dropped from the set when it's
         // closed.
-
         tab->connect_closed(sigc::mem_fun(*this, &area_info_impl::tab_closed));
+
+        tab->set_parent_area(shared_from_this());
+      }
+
+      void tab_removed(const boost::shared_ptr<tab_info> &tab)
+      {
+        tab->set_parent_area(boost::shared_ptr<area_info>());
       }
 
       void tab_closed(const boost::shared_ptr<tab_info> &tab)
@@ -122,6 +132,9 @@ namespace gui
       {
         tabs->connect_inserted(sigc::mem_fun(*this,
                                              &area_info_impl::tab_inserted));
+
+        tabs->connect_removed(sigc::mem_fun(*this,
+                                            &area_info_impl::tab_removed));
       }
 
       std::string get_name() { return name; }
@@ -153,6 +166,8 @@ namespace gui
 
       bool active;
 
+      boost::weak_ptr<area_info> parent_area_weak;
+
       sigc::signal<void, boost::shared_ptr<tab_info>, std::string, Gtk::Window *> signal_tooltip_changed;
       sigc::signal<void, boost::shared_ptr<tab_info>, aptitude::util::progress_info> signal_progress_changed;
       sigc::signal<void, boost::shared_ptr<tab_info> > signal_activate_tab;
@@ -176,6 +191,27 @@ namespace gui
       ~tab_info_impl()
       {
         delete tooltip_window;
+      }
+
+      void set_parent_area(const boost::shared_ptr<area_info> &parent_area)
+      {
+        if(parent_area_weak.lock().get() != NULL &&
+           parent_area.get() != NULL)
+          LOG_ERROR(Loggers::getAptitudeGtkToplevel(),
+                    "Parent area for the tab " << name << " set twice.");
+        else
+          parent_area_weak = parent_area;
+      }
+
+      void add_sibling(const boost::shared_ptr<tab_info> &sibling)
+      {
+        boost::shared_ptr<area_info> parent_area = parent_area_weak.lock();
+
+        if(parent_area.get() != NULL)
+          parent_area->get_tabs()->insert(sibling);
+        else
+          LOG_ERROR(Loggers::getAptitudeGtkToplevel(),
+                    "Can't add a sibling to a tab with no parent.");
       }
 
       std::string get_name() { return name; }

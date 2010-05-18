@@ -278,6 +278,12 @@ namespace gui
        */
       virtual void activate() = 0;
 
+      /** \brief Add the given tab to the same area as this tab.
+       *
+       *  If no parent area is stored, logs an error and does nothing.
+       */
+      virtual void add_sibling(const boost::shared_ptr<tab_info> &sibling) = 0;
+
       /** \brief Signals */
       // @{
 
@@ -321,6 +327,14 @@ namespace gui
        */
       virtual sigc::connection
       connect_closed(const sigc::slot<void, boost::shared_ptr<tab_info> > &slot) = 0;
+
+      /** \brief Set the area that this tab is stored in.
+       *
+       *  Should only be invoked by area_info.  If the area is set to
+       *  a non-NULL value when it already has a non-NULL value, the
+       *  new setting is discarded and an error is logged.
+       */
+      virtual void set_parent_area(const boost::shared_ptr<area_info> &area) = 0;
     };
 
     /** \brief Create a new tab_info.
