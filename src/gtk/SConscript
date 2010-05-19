@@ -60,7 +60,13 @@ toplevel_srcs = map(File, [
     'treeview_cell_tooltips.h',
     ])
 
-sub_srcs = SConscript(dirs = [ 'toplevel', 'util' ])
+sub_srcs = SConscript(dirs = [
+    'controllers',
+    'toplevel',
+    'util',
+    'view-impls',
+    'views',
+    ])
 
 srcs = (toplevel_srcs, sub_srcs)
 

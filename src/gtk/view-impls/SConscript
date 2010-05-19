@@ -1,0 +1,10 @@
+Import('programs_env')
+
+srcs = map(File, [
+    'search_input_entry.cc',
+    'search_input_entry.h',
+    ])
+
+programs_env.Dist('Makefile.am', 'README', 'SConscript')
+
+Return('srcs')

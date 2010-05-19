@@ -1,6 +1,11 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 
-SUBDIRS=toplevel util
+SUBDIRS = \
+	controllers \
+	toplevel \
+	util \
+	views \
+	view-impls
 
 noinst_LIBRARIES=libgtk.a
 
