@@ -82,6 +82,15 @@ all executable targets need."""
                  "Can't find the POSIX thread libraries.")
     RequireCheck(conf.CheckForBoostIOStreams(),
                  "Can't find Boost.IOStreams")
+
+    if conf.CheckBoostFusionFoldArgumentOrder(True):
+        pass
+    elif conf.CheckBoostFusionFoldArgumentOrder(False):
+        conf.Define('BOOST_FUSION_FOLD_STATE_BEFORE_VALUE')
+    else:
+        print "Can't figure out how to invoke boost::fusion::fold"
+        Exit(1)
+
     if conf.CheckDDTP():
         conf.Define('HAVE_DDTP', 1)
     conf.CheckGTK()
@@ -120,14 +129,6 @@ the Boost unit tests need.'''
 
     RequireCheck(conf.CheckForBoostTest(),
                  "Can't find Boost.Test")
-
-    if conf.CheckBoostFusionFoldArgumentOrder(True):
-        pass
-    elif conf.CheckBoostFusionFoldArgumentOrder(False):
-        conf.Define('BOOST_FUSION_FOLD_STATE_BEFORE_VALUE')
-    else:
-        print "Can't figure out how to invoke boost::fusion::fold"
-        Exit(1)
 
     conf.Finish()
 
