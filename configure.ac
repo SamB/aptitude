@@ -201,6 +201,48 @@ int main(int argc, char **argv)
                  ])
 
 
+AC_MSG_CHECKING([the name of the runtime library for Boost.Test])
+
+
+##### Boost.Test check #####
+OLDLIBS="$LIBS"
+for libname in boost_unit_test_framework-mt boost_unit_test_framework
+do
+  LIBS="$LIBS -l$libname"
+
+  AC_LINK_IFELSE([
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_NO_MAIN
+
+#include <boost/test/unit_test.hpp>
+
+bool init_unit_test()
+{
+  return true;
+}
+
+int main(int argc, char **argv)
+{
+  return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
+}
+],
+        BOOST_UNIT_TEST_LIBS="-l$libname")
+
+  LIBS="$OLDLIBS"
+done
+
+if test -z "$BOOST_UNIT_TEST_LIBS"
+then
+  # TODO: just disable the unit tests?
+  AC_MSG_FAILURE([Can't find the Boost unit test library; install libboost-test-dev.])
+else
+  AC_MSG_RESULT(["$BOOST_UNIT_TEST_LIBS"])
+fi
+
+AC_SUBST(BOOST_UNIT_TEST_LIBS)
+
+##### End Boost.Test check #####
+
 PKG_CHECK_MODULES(SQLITE3, sqlite3)
 
 HAVE_GTK=1

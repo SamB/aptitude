@@ -1,13 +1,14 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
+BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
 AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
 LDADD = $(top_builddir)/src/loggers.o			       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
-$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit -lboost_unit_test_framework
+$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit $(BOOST_TEST_LDFLAGS)
 
 check_PROGRAMS = cppunit_test boost_test
 
