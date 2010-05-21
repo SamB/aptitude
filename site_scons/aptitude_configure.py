@@ -23,7 +23,7 @@ import os
 
 import aptitude_configure_checks
 import aptitude_configure_utils
-from aptitude_configure_checks import TryInclude
+from aptitude_configure_checks import TryInclude, TryLibrary
 from aptitude_configure_utils import RequireCheck
 
 languages = [
@@ -127,7 +127,9 @@ the Boost unit tests need.'''
 
     conf = aptitude_configure_checks.Configure(env)
 
-    RequireCheck(conf.CheckForBoostTest(),
+    RequireCheck(conf.CheckForBoostTest(tries = [
+        TryLibrary('boost_unit_test_framework-mt'),
+        TryLibrary('boost_unit_test_framework') ]),
                  "Can't find Boost.Test")
 
     conf.Finish()

@@ -120,6 +120,13 @@ def TryInclude(d):
 
     return ("In %s" % d, { 'CPPPATH' : [ d ] })
 
+def TryLibrary(*libs):
+    """Generate a single entry in 'tries' that tries to link against the named library or libraries."""
+
+    return ("Using %s" % ' '.join(['-l%s' % lib
+                                   for lib in libs]),
+            { 'LIBS' : libs })
+
 @RegisterCheck
 def CheckForExecutable(context, filename, var, help = None):
     """Look for the given filename in $PATH.  If var is set in the
@@ -233,8 +240,7 @@ int main(int argc, char **argv)
 def CheckForBoostTest(context):
     """Look for Boost.Test."""
 
-    context.env.Append(LIBS = [ 'boost_unit_test_framework' ],
-                       CPPDEFINES = [ 'BOOST_TEST_DYN_LINK',
+    context.env.Append(CPPDEFINES = [ 'BOOST_TEST_DYN_LINK',
                                       'BOOST_TEST_NO_MAIN' ])
 
     return context.TryLink('''
