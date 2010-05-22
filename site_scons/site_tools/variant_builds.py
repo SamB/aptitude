@@ -93,6 +93,8 @@ for its side-effects, if any (none by default).'''
     def Prepare(self, env):
         env.Replace(**self.vars)
         env.MergeFlags(env.subst(self.flags))
+        if '-pg' in self.flags.split() and '-pg' not in env['LINKFLAGS']:
+            env.Append( LINKFLAGS = [ '-pg' ] )
         self.initf(env)
 
     def __hash__(self):
