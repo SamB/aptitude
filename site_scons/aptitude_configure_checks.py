@@ -236,6 +236,33 @@ int main(int argc, char **argv)
   boost::iostreams::filtering_ostream compressed_devnull(boost::iostreams::zlib_compressor(9) | devnull);
 }''', context.env['CXXFILESUFFIX'])
 
+@ConfigureCheck("Checking for google-mock")
+def CheckForGoogleMock(context):
+    """Look for gmock (headers and library).
+
+Brings gtest along for the ride, because otherwise gmock won't link."""
+
+    context.env.Append(LIBS = [ 'gmock', 'gtest' ])
+
+    return context.TryLink('''
+#include <gmock/gmock.h>
+
+class FooMock
+{
+public:
+    MOCK_METHOD1(foo, void(int));
+};
+
+int main(int argc, char **argv)
+{
+    ::testing::GTEST_FLAG(throw_on_failure) = true;
+    ::testing::InitGoogleMock(&argc, argv);
+
+    FooMock mock;
+    mock.foo(4);
+}''', context.env['CXXFILESUFFIX'])
+
+
 @ConfigureCheck("Checking for Boost.Test")
 def CheckForBoostTest(context):
     """Look for Boost.Test."""

@@ -132,6 +132,9 @@ the Boost unit tests need.'''
         TryLibrary('boost_unit_test_framework') ]),
                  "Can't find Boost.Test")
 
+    RequireCheck(conf.CheckForGoogleMock(),
+                 "Can't find google-mock")
+
     conf.Finish()
 
 def DoConfigureCppunitTests(env):

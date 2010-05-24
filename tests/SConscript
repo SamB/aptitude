@@ -67,15 +67,43 @@ boost_test_sources = [
     'test_dynamic_set.cc',
     'test_enumerator.cc',
     'test_file_cache.cc',
+    'test_search_input_controller.cc',
     'test_sqlite.cc'
     ]
 
 boost_test_extra_deps = [
     '../src/loggers.o',
+    '../src/generic/apt/apt.o',
+    '../src/generic/apt/aptcache.o',
+    '../src/generic/apt/aptitude_resolver.o',
+    '../src/generic/apt/aptitude_resolver_cost_settings.o',
+    '../src/generic/apt/aptitude_resolver_cost_syntax.o',
+    '../src/generic/apt/aptitude_resolver_cost_types.o',
+    '../src/generic/apt/aptitude_resolver_universe.o',
+    '../src/generic/apt/aptitudepolicy.o',
+    '../src/generic/apt/config_signal.o',
+    '../src/generic/apt/download_queue.o',
+    '../src/generic/apt/dump_packages.o',
+    '../src/generic/apt/matching/compare_patterns.o',
+    '../src/generic/apt/matching/match.o',
+    '../src/generic/apt/matching/parse.o',
+    '../src/generic/apt/matching/pattern.o',
+    '../src/generic/apt/matching/serialize.o',
+    '../src/generic/apt/pkg_hier.o',
+    '../src/generic/apt/resolver_manager.o',
+    '../src/generic/apt/tags.o',
+    '../src/generic/apt/tasks.o',
+    '../src/generic/problemresolver/cost.o',
+    '../src/generic/problemresolver/cost_limits.o',
+    '../src/generic/problemresolver/incremental_expression.o',
     '../src/generic/util/file_cache.o',
+    '../src/generic/util/refcounted_base.o',
     '../src/generic/util/sqlite.o',
     '../src/generic/util/temp.o',
+    '../src/generic/util/undo.o',
     '../src/generic/util/util.o',
+    '../src/gtk/controllers/search_input.o',
+    '../src/gtk/views/search_input.o',
     ]
 
 test_data_files = [

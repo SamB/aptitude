@@ -4,6 +4,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <gmock/gmock.h>
+
 #include <log4cxx/basicconfigurator.h>
 #include <log4cxx/level.h>
 #include <log4cxx/logger.h>
@@ -26,6 +28,15 @@ char *argv0 = NULL;
 int main(int argc, char **argv)
 {
   argv0 = argv[0];
+
+  // TODO: setting throw_on_failure is a hack; instead, we should
+  // configure the mock framework to emit Boost.Test errors.
+  // Unfortunately, I can't access the documentation (for the Google
+  // Test event listener API) that would tell me how to do this
+  // without a network connection.  I hate libraries without offline
+  // documentation.
+  ::testing::GTEST_FLAG(throw_on_failure) = true;
+  ::testing::InitGoogleMock(&argc, argv);
 
   bool debug = false;
   for(int i = 1; i < argc; ++i)
