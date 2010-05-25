@@ -17,6 +17,7 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/pkg_acqfile.h>
+#include <generic/apt/text_progress.h>
 
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/error.h>
@@ -24,6 +25,9 @@
 #include <apt-pkg/sourcelist.h>
 
 #include <stdio.h>
+
+using aptitude::apt::make_text_progress;
+using boost::shared_ptr;
 
 // Download stuff to the current directory
 int cmdline_download(int argc, char *argv[])
@@ -36,8 +40,8 @@ int cmdline_download(int argc, char *argv[])
 
   _error->DumpErrors();
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
-  apt_init(&progress, false);
+  shared_ptr<OpProgress> progress = make_text_progress(false);
+  apt_init(progress.get(), false);
 
   pkgSourceList list;
   if(!list.ReadMainList())

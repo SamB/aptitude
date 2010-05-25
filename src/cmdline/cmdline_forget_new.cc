@@ -8,12 +8,16 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
+#include <generic/apt/text_progress.h>
 
 #include <apt-pkg/error.h>
 
 #include <stdio.h>
 
 using namespace std;
+
+using aptitude::apt::make_text_progress;
+using boost::shared_ptr;
 
 int cmdline_forget_new(int argc, char *argv[],
 		       const char *status_fname, bool simulate)
@@ -28,9 +32,9 @@ int cmdline_forget_new(int argc, char *argv[],
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false);
 
-  apt_init(&progress, false, status_fname);
+  apt_init(progress.get(), false, status_fname);
 
   if(_error->PendingError())
     {
@@ -56,7 +60,7 @@ int cmdline_forget_new(int argc, char *argv[],
     {
       (*apt_cache_file)->forget_new(NULL);
 
-      (*apt_cache_file)->save_selection_list(progress);
+      (*apt_cache_file)->save_selection_list(*progress);
 
       if(_error->PendingError())
 	{

@@ -15,6 +15,7 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
+#include <generic/apt/text_progress.h>
 
 #include <aptitude.h>
 
@@ -26,6 +27,8 @@
 #include <stdio.h>
 
 using namespace std;
+
+using boost::shared_ptr;
 
 namespace
 {
@@ -136,7 +139,7 @@ int cmdline_do_action(int argc, char *argv[],
   if(resolver_mode == resolver_mode_default)
     resolver_mode = resolver_mode_full;
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = aptitude::apt::make_text_progress(false);
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
 
@@ -145,8 +148,9 @@ int cmdline_do_action(int argc, char *argv[],
   //
   // This way, "aptitude install" will just perform any pending
   // installations.
-  apt_init(&progress, (argc==1 && default_action==cmdline_install &&
-		       upgrade_mode == no_upgrade), status_fname);
+  apt_init(progress.get(),
+           (argc==1 && default_action==cmdline_install &&
+            upgrade_mode == no_upgrade), status_fname);
 
   if(_error->PendingError())
     {
@@ -329,7 +333,7 @@ int cmdline_do_action(int argc, char *argv[],
     {
       aptitude::cmdline::apply_user_tags(user_tags);
 
-      if(!(*apt_cache_file)->save_selection_list(progress))
+      if(!(*apt_cache_file)->save_selection_list(*progress))
 	{
 	  _error->DumpErrors();
 	  return -1;

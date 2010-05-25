@@ -8,6 +8,7 @@
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
+#include <generic/apt/text_progress.h>
 
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/clean.h>
@@ -21,6 +22,9 @@
 
 using namespace std;
 
+using aptitude::apt::make_text_progress;
+using boost::shared_ptr;
+
 int cmdline_clean(int argc, char *argv[], bool simulate)
 {
   _error->DumpErrors();
@@ -31,9 +35,9 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false);
 
-  apt_init(&progress, false);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {
@@ -113,9 +117,9 @@ int cmdline_autoclean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false);
 
-  apt_init(&progress, false);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {

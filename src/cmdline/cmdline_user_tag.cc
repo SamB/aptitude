@@ -30,9 +30,13 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/text_progress.h>
 
 #include <stdio.h>
 #include <string.h>
+
+using aptitude::apt::make_text_progress;
+using boost::shared_ptr;
 
 namespace aptitude
 {
@@ -150,8 +154,8 @@ namespace aptitude
 	    }
 	}
 
-      OpTextProgress text_progress;
-      if(!(*apt_cache_file)->save_selection_list(text_progress))
+      shared_ptr<OpProgress> text_progress = make_text_progress(false);
+      if(!(*apt_cache_file)->save_selection_list(*text_progress))
 	return 1;
 
       if(!all_ok)

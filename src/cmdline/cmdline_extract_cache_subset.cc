@@ -1,6 +1,6 @@
 // cmdline_extract_cache_subset.cc
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -28,11 +28,14 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/text_progress.h>
 
 #include <stdio.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/progress.h>
+
+using aptitude::apt::make_text_progress;
 
 namespace aptitude
 {
@@ -48,9 +51,9 @@ namespace aptitude
 
       std::string out_dir = argv[1];
 
-      OpTextProgress progress;
+      boost::shared_ptr<OpProgress> progress = make_text_progress(false);
 
-      apt_init(&progress, true);
+      apt_init(progress.get(), true);
       if(_error->PendingError())
 	{
 	  _error->DumpErrors();

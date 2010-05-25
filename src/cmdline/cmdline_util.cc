@@ -19,6 +19,7 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/text_progress.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
@@ -37,6 +38,9 @@
 #include <algorithm>
 
 namespace cw = cwidget;
+
+using aptitude::apt::make_text_progress;
+using boost::shared_ptr;
 
 namespace
 {
@@ -393,7 +397,7 @@ download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose)
 {
   stats initial_stats(0, 0, 0, std::set<std::string>());
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false);
 
   if(aptcfg->FindI("Quiet", 0) == 0)
     {
@@ -413,7 +417,7 @@ download_manager::result cmdline_do_download(download_manager *m,
   // and think something failed.
   _error->DumpErrors();
 
-  if(!m->prepare(progress, *log.get(), log.get()))
+  if(!m->prepare(*progress, *log.get(), log.get()))
     return download_manager::failure;
 
   download_manager::result finish_res;
@@ -421,7 +425,7 @@ download_manager::result cmdline_do_download(download_manager *m,
   do
     {
       pkgAcquire::RunResult download_res = m->do_download();
-      m->finish(download_res, &progress,
+      m->finish(download_res, progress.get(),
 		sigc::bind(sigc::ptr_fun(&assign<download_manager::result>),
 			   &finish_res));
     }
