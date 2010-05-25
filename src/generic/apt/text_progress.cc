@@ -138,8 +138,14 @@ namespace aptitude
               }
             else
               {
+                int percent_int = (int)Percent;
+                if(percent_int < 0)
+                  percent_int = 0;
+                if(percent_int > 100)
+                  percent_int = 100;
+
                 Clear();
-                Display((format("%s... %d%%") % Op % Percent).str());
+                Display((format("%s... %d%%") % Op % percent_int).str());
                 last_op = Op;
               }
           }
