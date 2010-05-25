@@ -71,7 +71,9 @@ libgeneric_apt_a_SOURCES = \
         tags.cc             \
         tags.h              \
         tasks.cc            \
-        tasks.h
+        tasks.h	            \
+	text_progress.cc    \
+	text_progress.h
 
 pkg_hier_dump_SOURCES = pkg_hier_dump.cc
 pkg_hier_dump_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a libgeneric-apt.a
