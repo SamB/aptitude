@@ -65,6 +65,8 @@ namespace aptitude
       class Logger;
       typedef boost::shared_ptr<Logger> LoggerPtr;
 
+      class LoggingSystem;
+
       /** \brief A logger is used to log messages in a particular
        *  category in conjunction with the LOG_*() macros below.
        */
@@ -78,9 +80,9 @@ namespace aptitude
         log_level effectiveLevel;
 
         class Impl;
-        class LoggingSystem;
 
         Logger(log_level _effectiveLevel);
+        Logger(const Logger &);
 
         // Logger is really just an interface to the hidden
         // LoggingSystem singleton.  For organizational reasons and to
@@ -193,6 +195,43 @@ namespace aptitude
 #define LOG_WARN(logger, msg) LOG_LEVEL(::aptitude::util::logging::WARN_LEVEL, msg)
 #define LOG_ERROR(logger, msg) LOG_LEVEL(::aptitude::util::logging::ERROR_LEVEL, msg)
 #define LOG_FATAL(logger, msg) LOG_LEVEL(::aptitude::util::logging::FATAL_LEVEL, msg)
+
+      /** \brief Represents the entire logging system.
+       *
+       *  This class is exposed primarily for use with tests: to test
+       *  the logging system itself, you really need to be able to
+       *  create a local one that no-one else will mess with.
+       *
+       *  That said, this is a representation of an entire logging
+       *  system.  It keeps track of which loggers are available and
+       *  provides a routine for creating them that's equivalent to
+       *  Logger::getLogger.
+       */
+      class LoggingSystem
+      {
+        class Impl;
+        friend class Logger;
+
+        LoggingSystem();
+        LoggingSystem(const LoggingSystem &);
+
+        friend boost::shared_ptr<LoggingSystem> createLoggingSystem();
+
+      public:
+        virtual ~LoggingSystem();
+
+        /** \brief Retrieve a logger for the given category.
+         *
+         *  The returned logger is the only logger for that category
+         *  within this logging system, but will be distinct from
+         *  loggers created in any other logging system (including the
+         *  global one managed by Logger::getLogger).
+         */
+        virtual LoggerPtr getLogger(const std::string &category) = 0;
+      };
+
+      /** \brief Create a new, local logging system. */
+      boost::shared_ptr<LoggingSystem> createLoggingSystem();
     }
   }
 }
