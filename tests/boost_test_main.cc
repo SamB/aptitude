@@ -18,6 +18,27 @@ BOOST_AUTO_TEST_CASE(dummy)
 {
 }
 
+// The Google mock library emits Google Test failures; we need to be
+// able to convert those to Boost.Test failures.
+class gtest_to_boost_adaptor : public testing::EmptyTestEventListener
+{
+  void OnTestPartResult(const testing::TestPartResult &test_part_result)
+  {
+    if(test_part_result.nonfatally_failed())
+      BOOST_ERROR(test_part_result.file_name()
+                  << ":"
+                  << test_part_result.line_number()
+                  << ": "
+                  << test_part_result.summary());
+    else if(test_part_result.fatally_failed())
+      BOOST_FAIL(test_part_result.file_name()
+                 << ":"
+                 << test_part_result.line_number()
+                 << ": "
+                 << test_part_result.summary());
+  }
+};
+
 bool init_unit_test()
 {
   return true;
@@ -29,14 +50,12 @@ int main(int argc, char **argv)
 {
   argv0 = argv[0];
 
-  // TODO: setting throw_on_failure is a hack; instead, we should
-  // configure the mock framework to emit Boost.Test errors.
-  // Unfortunately, I can't access the documentation (for the Google
-  // Test event listener API) that would tell me how to do this
-  // without a network connection.  I hate libraries without offline
-  // documentation.
-  ::testing::GTEST_FLAG(throw_on_failure) = true;
   ::testing::InitGoogleMock(&argc, argv);
+  {
+    ::testing::TestEventListeners &listeners =
+      ::testing::UnitTest::GetInstance()->listeners();
+    listeners.Append(new gtest_to_boost_adaptor);
+  }
 
   bool debug = false;
   for(int i = 1; i < argc; ++i)
