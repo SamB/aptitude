@@ -20,8 +20,8 @@
 
 #include "text_progress.h"
 
-#include "apt.h"
-#include "config_signal.h"
+#include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
 
 #include <aptitude.h>
 
@@ -44,7 +44,7 @@ using cw::util::transcode;
 
 namespace aptitude
 {
-  namespace apt
+  namespace cmdline
   {
     namespace
     {

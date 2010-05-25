@@ -27,7 +27,7 @@
 
 namespace aptitude
 {
-  namespace apt
+  namespace cmdline
   {
     /** \brief Create a customized text spinner that's similar to
      *  apt's spinner, but "cleans up" after itself if stdout appears

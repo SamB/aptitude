@@ -7,6 +7,7 @@
 #include "cmdline_common.h"
 #include "cmdline_progress.h"
 #include "cmdline_show.h" // For operator<<
+#include "text_progress.h"
 
 #include <aptitude.h>
 #include <ui.h>
@@ -19,7 +20,6 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
-#include <generic/apt/text_progress.h>
 
 #include <cwidget/fragment.h>
 #include <cwidget/toplevel.h>
@@ -39,7 +39,7 @@
 
 namespace cw = cwidget;
 
-using aptitude::apt::make_text_progress;
+using aptitude::cmdline::make_text_progress;
 using boost::shared_ptr;
 
 namespace

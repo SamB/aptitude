@@ -7,6 +7,7 @@
 #include "cmdline_common.h"
 #include "cmdline_progress.h"
 #include "cmdline_util.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 
@@ -17,7 +18,6 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/pkg_acqfile.h>
-#include <generic/apt/text_progress.h>
 
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/error.h>
@@ -26,7 +26,7 @@
 
 #include <stdio.h>
 
-using aptitude::apt::make_text_progress;
+using aptitude::cmdline::make_text_progress;
 using boost::shared_ptr;
 
 // Download stuff to the current directory

@@ -51,4 +51,6 @@ libcmdline_a_SOURCES=\
 	cmdline_versions.cc \
 	cmdline_versions.h \
 	cmdline_why.cc \
-	cmdline_why.h
+	cmdline_why.h \
+	text_progress.cc \
+	text_progress.h

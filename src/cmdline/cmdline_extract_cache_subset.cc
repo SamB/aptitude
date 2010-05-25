@@ -20,6 +20,7 @@
 #include "cmdline_extract_cache_subset.h"
 
 #include "cmdline_util.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 
@@ -28,14 +29,13 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
-#include <generic/apt/text_progress.h>
 
 #include <stdio.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/progress.h>
 
-using aptitude::apt::make_text_progress;
+using aptitude::cmdline::make_text_progress;
 
 namespace aptitude
 {

@@ -11,11 +11,11 @@
 #include "cmdline_show_broken.h"
 #include "cmdline_simulate.h"
 #include "cmdline_util.h"
+#include "text_progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_install_manager.h>
-#include <generic/apt/text_progress.h>
 
 #include <aptitude.h>
 
@@ -28,6 +28,7 @@
 
 using namespace std;
 
+using aptitude::cmdline::make_text_progress;
 using boost::shared_ptr;
 
 namespace
@@ -139,7 +140,7 @@ int cmdline_do_action(int argc, char *argv[],
   if(resolver_mode == resolver_mode_default)
     resolver_mode = resolver_mode_full;
 
-  shared_ptr<OpProgress> progress = aptitude::apt::make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false);
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
 
