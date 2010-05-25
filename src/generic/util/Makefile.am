@@ -21,6 +21,8 @@ libgeneric_util_a_SOURCES = \
 	immlist.h \
 	immset.h \
 	job_queue_thread.h \
+	logging.cc \
+	logging.h \
 	maybe.h \
 	mut_fun.h \
 	parsers.h \
