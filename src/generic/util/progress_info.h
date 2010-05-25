@@ -35,7 +35,7 @@ namespace aptitude
       {
         /** \brief There is no progress information. */
         progress_type_none,
-        /** \brief There is only a progress pulse. */
+        /** \brief There is only a progress pulse and an optional status string. */
         progress_type_pulse,
         /** \brief Full progress information is available. */
         progress_type_bar
@@ -66,9 +66,9 @@ namespace aptitude
         return progress_info(progress_type_none);
       }
 
-      static progress_info pulse()
+      static progress_info pulse(const std::string &status)
       {
-        return progress_info(progress_type_pulse);
+        return progress_info(progress_type_pulse, status);
       }
 
       static progress_info bar(double fraction,
@@ -76,6 +76,11 @@ namespace aptitude
       {
         return progress_info(fraction, status);
       }
+
+
+      progress_type get_type() const { return type; }
+      double get_progress_fraction() const { return progress_fraction; }
+      const std::string &get_progress_status() const { return progress_status; }
     };
 
     // @}
