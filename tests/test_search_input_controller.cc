@@ -34,8 +34,11 @@ using aptitude::matching::pattern;
 using boost::make_shared;
 using boost::shared_ptr;
 using cwidget::util::ref_ptr;
+using testing::AnyNumber;
+using testing::Expectation;
 using testing::InSequence;
 using testing::NiceMock;
+using testing::Return;
 using testing::StrictMock;
 
 namespace
@@ -120,12 +123,23 @@ BOOST_FIXTURE_TEST_CASE(testEnteringCorrectTextSearches, SearchInputTest)
   ref_ptr<pattern> p = pattern::make_installed();
   Glib::ustring p_text = "?installed";
 
+  // The controller isn't required to call set_error_message(), but it
+  // should set it to "" if it does.
+  EXPECT_CALL(*view, set_error_message(Glib::ustring())).Times(AnyNumber());
+
+  Expectation set_search_text;
   {
     InSequence dummy;
 
-    EXPECT_CALL(*view, set_search_text(p_text));
+    set_search_text = EXPECT_CALL(*view, set_search_text(p_text));
     EXPECT_CALL(callbacks, activated(p_text, PatternsEqual(p)));
   }
+
+  // After setting the search text, get_search_text() will return the
+  // new text.
+  EXPECT_CALL(*view, get_search_text())
+    .After(set_search_text)
+    .WillRepeatedly(Return(p_text));
 
   get_controller()->enter_text(p_text);
 }
