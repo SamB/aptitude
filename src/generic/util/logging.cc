@@ -326,6 +326,10 @@ namespace aptitude
       {
       }
 
+      Logger::~Logger()
+      {
+      }
+
       LoggerPtr Logger::getLogger(const std::string &category)
       {
         return LoggingSystem::get().getLogger(category);

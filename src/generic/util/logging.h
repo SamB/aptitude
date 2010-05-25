@@ -92,6 +92,8 @@ namespace aptitude
         friend class LoggingSystem;
 
       public:
+        virtual ~Logger();
+
         /** \brief Return \b true if messages logged at the given
          *  level will appear.
          *
