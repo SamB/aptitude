@@ -90,7 +90,6 @@ namespace aptitude
         // are just to hide the implementation, not to provide
         // polymorphism.
         friend class LoggingSystem;
-        friend class Impl;
 
       public:
         /** \brief Return \b true if messages logged at the given
