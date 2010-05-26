@@ -66,7 +66,6 @@ namespace aptitude
         std::cout << '\r';
 
         last_line_len = 0;
-        last_line.clear();
       }
 
       void transient_message_impl::set_text(const std::string &line)
@@ -75,8 +74,6 @@ namespace aptitude
           // Don't clutter the terminal stream if there's nothing to
           // do.
           return;
-
-        last_line = line;
 
         update_screen_width();
 
@@ -107,6 +104,7 @@ namespace aptitude
         clear_last_line();
         std::cout << transcode(display) << std::flush;
         last_line_len = display_width;
+        last_line = line;
       }
     }
 
