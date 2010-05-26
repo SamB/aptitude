@@ -63,7 +63,7 @@ namespace aptitude
         std::cout << '\r';
         for(std::size_t i = 0; i < last_line_len; ++i)
           std::cout << ' ';
-        std::cout << '\r' << std::flush;
+        std::cout << '\r';
 
         last_line_len = 0;
         last_line.clear();
