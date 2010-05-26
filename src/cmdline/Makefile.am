@@ -53,4 +53,6 @@ libcmdline_a_SOURCES=\
 	cmdline_why.cc \
 	cmdline_why.h \
 	text_progress.cc \
-	text_progress.h
+	text_progress.h \
+	transient_message.cc \
+	transient_message.h

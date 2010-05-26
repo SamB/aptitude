@@ -20,7 +20,7 @@
 
 #include "text_progress.h"
 
-#include "cmdline_common.h"
+#include "transient_message.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -33,8 +33,6 @@
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 
-#include <cwidget/generic/util/transcode.h>
-
 #include <iostream>
 
 namespace cw = cwidget;
@@ -42,7 +40,6 @@ namespace cw = cwidget;
 using boost::format;
 using boost::make_shared;
 using boost::shared_ptr;
-using cw::util::transcode;
 
 namespace aptitude
 {
@@ -56,67 +53,22 @@ namespace aptitude
         // and use terminal-based trickery.
         bool use_tty_decorations;
 
-        // The length of the last line we displayed.
-        std::size_t last_line_len;
-
         // The last operation we were displaying; used to output an
         // indicator when the operation finishes.
         std::string last_op;
 
-        /** \brief Clear the currently displayed progress indicator. */
-        void Clear();
-
-        /** \brief Display the given line without a newline and remember its length
-         *  so it can be cleared with Clear().
-         */
-        void Display(const std::string &line);
+        shared_ptr<transient_message> message;
 
       public:
         text_progress(bool _use_tty_decorations)
           : use_tty_decorations(_use_tty_decorations),
-            last_line_len(0)
+            message(create_transient_message())
         {
         }
 
         void Done();
         void Update();
       };
-
-      void text_progress::Clear()
-      {
-        std::cout << '\r';
-        for(std::size_t i = 0; i < last_line_len; ++i)
-          std::cout << ' ';
-        std::cout << '\r' << std::flush;
-
-        last_line_len = 0;
-      }
-
-      void text_progress::Display(const std::string &line)
-      {
-        update_screen_width();
-
-        const std::wstring line_w = transcode(line);
-        std::wstring::const_iterator display_end = line_w.begin();
-        int display_width = 0;
-        {
-          while(display_end != line_w.end() && display_width < screen_width)
-          {
-            const wchar_t next = *display_end;
-            const int next_width = wcwidth(next);
-
-            if(next_width > screen_width)
-              break;
-
-            ++display_end;
-            display_width += next_width;
-          }
-        }
-        const std::wstring display(line_w.begin(), display_end);
-
-        std::cout << transcode(display) << std::flush;
-        last_line_len = display_width;
-      }
 
       void text_progress::Done()
       {
@@ -125,13 +77,10 @@ namespace aptitude
           {
             if(!last_op.empty())
               {
-                Clear();
+                message->set_text("");
 
                 if(_error->PendingError() == true)
-                  {
-                    std::cout << (format(_("%s... Error!")) % last_op) << std::endl;
-                    last_line_len = 0;
-                  }
+                  std::cout << (format(_("%s... Error!")) % last_op) << std::endl;
               }
           }
         else if(!last_op.empty())
@@ -164,8 +113,7 @@ namespace aptitude
                 if(percent_int > 100)
                   percent_int = 100;
 
-                Clear();
-                Display((format("%s... %d%%") % Op % percent_int).str());
+                message->set_text((format("%s... %d%%") % Op % percent_int).str());
                 last_op = Op;
               }
           }
