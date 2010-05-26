@@ -19,9 +19,12 @@
 
 #include "match.h"
 
+#include <aptitude.h>
+
 #include <generic/apt/apt.h>
 #include <generic/apt/tags.h>
 #include <generic/apt/tasks.h>
+#include <generic/util/progress_info.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
@@ -39,6 +42,7 @@
 
 #include "serialize.h"
 
+using aptitude::util::progress_info;
 using cwidget::util::transcode;
 using cwidget::util::ref_ptr;
 
@@ -2801,10 +2805,13 @@ namespace aptitude
 		std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > > &matches,
 		aptitudeDepCache &cache,
 		pkgRecords &records,
-		bool debug)
+                bool debug,
+                const sigc::slot<void, progress_info> &progress_slot)
     {
       try
 	{
+          progress_slot(progress_info::pulse(_("Accessing index")));
+
 	  eassert(p.valid());
 	  eassert(search_info.valid());
 
@@ -2813,12 +2820,16 @@ namespace aptitude
 
 	  const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
 
+          const std::string filter_msg = _("Filtering packages");
 	  if(!xapian_results.get_matched_packages_valid())
 	    {
 	      if(debug)
 		std::cout << "Failed to build a Xapian query for this search." << std::endl
 			  << "Falling back to testing each package." << std::endl;
 
+              progress_slot(progress_info::bar(0, filter_msg));
+
+              int i = 0;
 	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
 		  !pkg.end(); ++pkg)
 		{
@@ -2840,10 +2851,18 @@ namespace aptitude
 
 		  if(m.valid())
 		    matches.push_back(std::make_pair(pkg, m));
+
+                  ++i;
+                  progress_slot(progress_info::bar( ((double)i) / ((double)cache.Head().PackageCount),
+                                                    filter_msg ));
 		}
 	    }
 	  else
 	    {
+              // Xapian doesn't allow us to present meaningful
+              // progress information.
+              progress_slot(progress_info::pulse(filter_msg));
+
 	      Xapian::MSet mset(xapian_results.get_xapian_match());
 	      for(Xapian::MSetIterator it = mset.begin();
 		  it != mset.end(); ++it)
@@ -2874,6 +2893,8 @@ namespace aptitude
 		    }
 		}
 	    }
+
+          progress_slot(progress_info::none());
 	}
       catch(cwidget::util::Exception &e)
 	{
@@ -2894,7 +2915,8 @@ namespace aptitude
                          std::vector<std::pair<pkgCache::VerIterator, ref_ptr<structural_match> > > &matches,
                          aptitudeDepCache &cache,
                          pkgRecords &records,
-                         bool debug)
+                         bool debug,
+                         const sigc::slot<void, progress_info> &progress_slot)
     {
       // It's a bit ugly that this is separate from search(), but it's
       // not obvious how to merge them given their different looping
@@ -2904,10 +2926,14 @@ namespace aptitude
 	  eassert(p.valid());
 	  eassert(search_info.valid());
 
+          progress_slot(progress_info::pulse(_("Accessing index")));
+
 	  const ref_ptr<search_cache::implementation> info = search_info.dyn_downcast<search_cache::implementation>();
 	  eassert(info.valid());
 
 	  const xapian_info &xapian_results(info->get_toplevel_xapian_info(p, debug));
+
+          const std::string filter_msg = _("Filtering packages");
 
 	  if(!xapian_results.get_matched_packages_valid())
 	    {
@@ -2915,24 +2941,35 @@ namespace aptitude
 		std::cout << "Failed to build a Xapian query for this search." << std::endl
 			  << "Falling back to testing each package." << std::endl;
 
+              int i = 0;
 	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
 		  !pkg.end(); ++pkg)
-                for(pkgCache::VerIterator ver = pkg.VersionList();
-                    !ver.end(); ++ver)
-                  {
-                    ref_ptr<structural_match> m(get_match(p,
-                                                          pkg, ver,
-                                                          info,
-                                                          cache,
-                                                          records,
-                                                          debug));
+                {
+                  for(pkgCache::VerIterator ver = pkg.VersionList();
+                      !ver.end(); ++ver)
+                    {
+                      ref_ptr<structural_match> m(get_match(p,
+                                                            pkg, ver,
+                                                            info,
+                                                            cache,
+                                                            records,
+                                                            debug));
 
-                    if(m.valid())
-                      matches.push_back(std::make_pair(ver, m));
-                  }
+                      if(m.valid())
+                        matches.push_back(std::make_pair(ver, m));
+                    }
+
+                  ++i;
+                  progress_slot(progress_info::bar( ((double)i) / ((double)cache.Head().PackageCount),
+                                                    filter_msg ));
+                }
 	    }
 	  else
 	    {
+              // Xapian doesn't allow us to present meaningful
+              // progress information.
+              progress_slot(progress_info::pulse(filter_msg));
+
 	      Xapian::MSet mset(xapian_results.get_xapian_match());
 	      for(Xapian::MSetIterator it = mset.begin();
 		  it != mset.end(); ++it)
@@ -2966,6 +3003,8 @@ namespace aptitude
                       }
 		}
 	    }
+
+          progress_slot(progress_info::none());
 	}
       catch(cwidget::util::Exception &e)
 	{
