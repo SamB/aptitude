@@ -9,6 +9,7 @@
 
 #include "cmdline_common.h"
 #include "cmdline_util.h"
+#include "text_progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -30,6 +31,8 @@
 #include <iostream>
 
 namespace cw = cwidget;
+using aptitude::cmdline::make_text_progress;
+using boost::shared_ptr;
 using cwidget::fragf;
 using cwidget::fragment;
 using namespace std;
@@ -586,8 +589,8 @@ int cmdline_show(int argc, char *argv[], int verbose)
 {
   _error->DumpErrors();
 
-  OpProgress progress;
-  apt_init(&progress, false);
+  shared_ptr<OpProgress> progress = make_text_progress(true);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {
