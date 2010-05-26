@@ -20,6 +20,7 @@
 #ifndef APTITUDE_CMDLINE_PROGRESS_DISPLAY_H
 #define APTITUDE_CMDLINE_PROGRESS_DISPLAY_H
 
+// System includes:
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
@@ -31,6 +32,10 @@ namespace aptitude
 
   namespace cmdline
   {
+    class terminal;
+    class terminal_locale;
+    class transient_message;
+
     /** \brief A general class for displaying a single line of
      *  progress information.
      *
@@ -60,7 +65,17 @@ namespace aptitude
     };
 
     /** \brief Create a blank progress display. */
-    boost::shared_ptr<progress_display> create_progress_display();
+    boost::shared_ptr<progress_display>
+    create_progress_display(const boost::shared_ptr<transient_message> &message);
+
+    /** \brief Create a blank progress display.
+     *
+     *  This is a convenience routine, equivalent to creating a new
+     *  transient message with the given terminal objects.
+     */
+    boost::shared_ptr<progress_display>
+    create_progress_display(const boost::shared_ptr<terminal> &term,
+                            const boost::shared_ptr<terminal_locale> &term_locale);
   }
 }
 

@@ -23,8 +23,11 @@
 #include "cmdline_search.h"
 
 #include "cmdline_common.h"
+#include "cmdline_progress_display.h"
+#include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 #include <load_sortpolicy.h>
@@ -37,6 +40,8 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/matching/serialize.h>
+#include <generic/util/progress_info.h>
 
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
@@ -46,15 +51,30 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
+#include <boost/format.hpp>
 #include <boost/scoped_ptr.hpp>
+
+#include <sigc++/bind.h>
 
 #include <algorithm>
 
 using namespace std;
 namespace cw = cwidget;
 using aptitude::Loggers;
+using aptitude::cmdline::create_progress_display;
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::progress_display;
+using aptitude::cmdline::search_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using aptitude::matching::serialize_pattern;
+using aptitude::util::progress_info;
+using aptitude::util::progress_type_bar;
+using aptitude::util::progress_type_none;
+using aptitude::util::progress_type_pulse;
+using boost::format;
 using boost::shared_ptr;
 using cwidget::util::ref_ptr;
 using cwidget::util::transcode;
@@ -69,10 +89,15 @@ namespace
                          int format_width,
                          const unsigned int screen_width,
                          bool disable_columns,
-                         bool debug)
+                         bool debug,
+                         const shared_ptr<terminal> &term,
+                         const shared_ptr<terminal_locale> &term_locale)
   {
     typedef std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >
       results_list;
+
+    const shared_ptr<progress_display> search_progress_display =
+      create_progress_display(term, term_locale);
 
     results_list output;
     ref_ptr<search_cache> search_info(search_cache::create());
@@ -85,8 +110,13 @@ namespace
                                    output,
                                    *apt_cache_file,
                                    *apt_package_records,
-                                   debug);
+                                   debug,
+                                   sigc::bind(sigc::ptr_fun(&search_progress),
+                                              search_progress_display,
+                                              serialize_pattern(*pIt)));
       }
+
+    search_progress_display->set_progress(progress_info::none(), true);
 
     _error->DumpErrors();
 
@@ -126,6 +156,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   bool disable_columns, bool debug)
 {
   shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
   int real_width=-1;
 
@@ -175,9 +206,10 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  OpProgress progress;
+  shared_ptr<OpProgress> progress =
+    make_text_progress(true, term, term_locale);
 
-  apt_init(&progress, true, status_fname);
+  apt_init(progress.get(), true, status_fname);
 
   if(_error->PendingError())
     {
@@ -208,5 +240,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
                             real_width,
                             screen_width,
                             disable_columns,
-                            debug);
+                            debug,
+                            term,
+                            term_locale);
 }

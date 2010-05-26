@@ -21,6 +21,8 @@
 // Local includes:
 #include "cmdline_versions.h"
 
+#include "cmdline_progress_display.h"
+#include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
 
@@ -29,6 +31,9 @@
 #include <load_sortpolicy.h>
 
 #include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
+#include <generic/apt/matching/serialize.h>
+#include <generic/util/progress_info.h>
 
 
 // System includes:
@@ -40,6 +45,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
 
+#include <sigc++/bind.h>
+
 #include <cwidget/generic/util/ref_ptr.h>
 
 #include <vector>
@@ -47,13 +54,20 @@
 namespace cw = cwidget;
 namespace m = aptitude::matching;
 
+using aptitude::cmdline::create_progress_display;
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
+using aptitude::cmdline::progress_display;
+using aptitude::cmdline::search_progress;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
+using aptitude::matching::serialize_pattern;
+using aptitude::util::progress_info;
 using boost::shared_ptr;
 
 namespace
@@ -227,7 +241,9 @@ namespace
                          bool disable_columns,
                          group_by_option group_by,
                          show_package_names_option show_package_names,
-                         bool debug)
+                         bool debug,
+                         const shared_ptr<terminal> &term,
+                         const shared_ptr<terminal_locale> &term_locale)
   {
     // Set to -1 if any exact-name matches fail.  Also set to -1 if
     // there are no results at all.
@@ -235,6 +251,9 @@ namespace
 
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
       results_list;
+
+    const shared_ptr<progress_display> search_progress_display =
+      create_progress_display(term, term_locale);
 
     results_list output;
     cw::util::ref_ptr<m::search_cache> search_info(m::search_cache::create());
@@ -249,7 +268,10 @@ namespace
                                             output,
                                             *apt_cache_file,
                                             *apt_package_records,
-                                            debug);
+                                            debug,
+                                            sigc::bind(sigc::ptr_fun(&search_progress),
+                                                       search_progress_display,
+                                                       serialize_pattern(*pIt)));
 
         // Warn the user if an exact name pattern didn't produce a
         // result.
@@ -261,6 +283,8 @@ namespace
                           (*pIt)->get_exact_name_name().c_str());
           }
       }
+
+    search_progress_display->set_progress(progress_info::none(), true);
 
     if(output.empty())
       return_value = 2;
@@ -492,6 +516,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      show_package_names_option show_package_names)
 {
   shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
   int real_width=-1;
 
@@ -583,5 +608,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             disable_columns,
                             group_by,
                             show_package_names,
-                            debug);
+                            debug,
+                            term,
+                            term_locale);
 }

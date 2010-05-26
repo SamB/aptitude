@@ -17,15 +17,19 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "cmdline_progress_display.h"
 
 #include "transient_message.h"
 
 #include <generic/util/progress_info.h>
 
+
+// System includes:
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 
+#include <cwidget/generic/util/transcode.h>
 
 #include <sys/time.h>
 
@@ -33,9 +37,10 @@ using aptitude::util::progress_info;
 using aptitude::util::progress_type_bar;
 using aptitude::util::progress_type_none;
 using aptitude::util::progress_type_pulse;
-using boost::format;
 using boost::make_shared;
 using boost::shared_ptr;
+using boost::wformat;
+using cwidget::util::transcode;
 
 namespace aptitude
 {
@@ -63,15 +68,15 @@ namespace aptitude
         bool should_update(const progress_info &progress) const;
 
       public:
-        progress_display_impl();
+        progress_display_impl(const shared_ptr<transient_message> &_message);
 
         void set_progress(const progress_info &progress,
                           bool force_update);
       };
 
-      progress_display_impl::progress_display_impl()
+      progress_display_impl::progress_display_impl(const shared_ptr<transient_message> &_message)
         : last_progress(progress_info::none()),
-          message(create_transient_message())
+          message(_message)
       {
       }
 
@@ -103,22 +108,22 @@ namespace aptitude
             switch(progress.get_type())
               {
               case progress_type_none:
-                message->set_text("");
+                message->set_text(L"");
                 break;
 
               case progress_type_pulse:
-                message->set_text( (format("      %s")
-                                    % progress.get_progress_status()).str() );
+                message->set_text( (wformat(L"      %s")
+                                    % transcode(progress.get_progress_status())).str() );
                 break;
 
               case progress_type_bar:
-                message->set_text( (format("[%3d%%] %s")
+                message->set_text( (wformat(L"[%3d%%] %s")
                                     % progress.get_progress_percent_int()
-                                    % progress.get_progress_status()).str() );
+                                    % transcode(progress.get_progress_status())).str() );
                 break;
 
               default:
-                message->set_text("INTERNAL ERROR");
+                message->set_text(L"INTERNAL ERROR");
                 break;
               }
 
@@ -132,9 +137,20 @@ namespace aptitude
     {
     }
 
-    shared_ptr<progress_display> create_progress_display()
+    shared_ptr<progress_display>
+    create_progress_display(const shared_ptr<transient_message> &message)
     {
-      return make_shared<progress_display_impl>();
+      return make_shared<progress_display_impl>(message);
+    }
+
+    shared_ptr<progress_display>
+    create_progress_display(const shared_ptr<terminal> &term,
+                            const shared_ptr<terminal_locale> &term_locale)
+    {
+      const shared_ptr<transient_message> message =
+        create_transient_message(term, term_locale);
+
+      return create_progress_display(message);
     }
   }
 }
