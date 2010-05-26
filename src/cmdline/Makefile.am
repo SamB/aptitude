@@ -38,6 +38,8 @@ libcmdline_a_SOURCES=\
 	cmdline_resolver.h \
 	cmdline_search.cc \
 	cmdline_search.h \
+	cmdline_search_progress.cc \
+	cmdline_search_progress.h \
 	cmdline_show.cc \
 	cmdline_show.h \
 	cmdline_show_broken.cc \
