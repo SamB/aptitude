@@ -80,6 +80,17 @@ namespace aptitude
 
       progress_type get_type() const { return type; }
       double get_progress_fraction() const { return progress_fraction; }
+      int get_progress_percent_int() const
+      {
+        int rval = (int) (100 * progress_fraction);
+
+        if(rval < 0)
+          return 0;
+        else if(rval > 100)
+          return 100;
+        else
+          return rval;
+      }
       const std::string &get_progress_status() const { return progress_status; }
     };
 
