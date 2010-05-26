@@ -178,10 +178,8 @@ namespace aptitude
       bool hide_tty_decorations = false;
       bool hidden = false;
 
-      if(!isatty(1))
-        hide_tty_decorations = true;
-
-      if(aptcfg->FindI("Quiet", 0))
+      if(!isatty(1) ||
+         aptcfg->FindI("Quiet", 0))
         hide_tty_decorations = true;
 
       if(require_tty_decorations && hide_tty_decorations)
