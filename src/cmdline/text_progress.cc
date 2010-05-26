@@ -20,6 +20,8 @@
 
 #include "text_progress.h"
 
+#include "cmdline_common.h"
+
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
@@ -92,10 +94,28 @@ namespace aptitude
 
       void text_progress::Display(const std::string &line)
       {
-        std::cout << line << std::flush;
+        update_screen_width();
 
-        std::wstring line_w = transcode(line);
-        last_line_len = wcslen(line_w.c_str());
+        const std::wstring line_w = transcode(line);
+        std::wstring::const_iterator display_end = line_w.begin();
+        int display_width = 0;
+        {
+          while(display_end != line_w.end() && display_width < screen_width)
+          {
+            const wchar_t next = *display_end;
+            const int next_width = wcwidth(next);
+
+            if(next_width > screen_width)
+              break;
+
+            ++display_end;
+            display_width += next_width;
+          }
+        }
+        const std::wstring display(line_w.begin(), display_end);
+
+        std::cout << transcode(display) << std::flush;
+        last_line_len = display_width;
       }
 
       void text_progress::Done()
