@@ -115,6 +115,10 @@ all executable targets need."""
         'vte',
         ]
 
+    # ept is no longer optional, but some parts of the code still rely
+    # on this symbol being defined.
+    conf.Define('HAVE_EPT')
+
     for pkg in pkgconfig_packages:
         RequireCheck(conf.PkgConfig(pkg),
                      "Can't find %s" % pkg)
