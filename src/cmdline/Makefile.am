@@ -30,6 +30,8 @@ libcmdline_a_SOURCES=\
 	cmdline_moo.h \
 	cmdline_progress.cc \
 	cmdline_progress.h \
+	cmdline_progress_display.cc \
+	cmdline_progress_display.h \
 	cmdline_prompt.cc \
 	cmdline_prompt.h \
 	cmdline_resolver.cc \
