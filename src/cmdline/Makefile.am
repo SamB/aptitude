@@ -32,6 +32,8 @@ libcmdline_a_SOURCES=\
 	cmdline_progress.h \
 	cmdline_progress_display.cc \
 	cmdline_progress_display.h \
+	cmdline_progress_throttle.cc \
+	cmdline_progress_throttle.h \
 	cmdline_prompt.cc \
 	cmdline_prompt.h \
 	cmdline_resolver.cc \

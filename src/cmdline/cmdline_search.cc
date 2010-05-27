@@ -24,6 +24,7 @@
 
 #include "cmdline_common.h"
 #include "cmdline_progress_display.h"
+#include "cmdline_progress_throttle.h"
 #include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
@@ -62,10 +63,12 @@ using namespace std;
 namespace cw = cwidget;
 using aptitude::Loggers;
 using aptitude::cmdline::create_progress_display;
+using aptitude::cmdline::create_progress_throttle;
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::progress_display;
+using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::search_progress;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
@@ -98,6 +101,8 @@ namespace
 
     const shared_ptr<progress_display> search_progress_display =
       create_progress_display(term, term_locale);
+    const shared_ptr<progress_throttle> search_progress_throttle =
+      create_progress_throttle();
 
     results_list output;
     ref_ptr<search_cache> search_info(search_cache::create());
@@ -113,6 +118,7 @@ namespace
                                    debug,
                                    sigc::bind(sigc::ptr_fun(&search_progress),
                                               search_progress_display,
+                                              search_progress_throttle,
                                               serialize_pattern(*pIt)));
       }
 

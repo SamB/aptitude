@@ -81,6 +81,11 @@ namespace aptitude
      */
     static logging::LoggerPtr getAptitudeCmdlineSearch();
 
+    /** \brief The logger for events having to do with the progress
+     *  display throttler in aptitude's command-line code.
+     */
+    static logging::LoggerPtr getAptitudeCmdlineThrottle();
+
     /** \brief The logger for events having to do with aptitude's
      *  caching of downloaded data (other than package lists and
      *  .debs).

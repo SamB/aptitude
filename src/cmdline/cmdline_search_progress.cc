@@ -22,6 +22,7 @@
 #include "cmdline_search_progress.h"
 
 #include "cmdline_progress_display.h"
+#include "cmdline_progress_throttle.h"
 
 #include <generic/util/progress_info.h>
 
@@ -44,8 +45,12 @@ namespace aptitude
   {
     void search_progress(const progress_info &info,
                          const shared_ptr<progress_display> &progress_msg,
+                         const shared_ptr<progress_throttle> &throttle,
                          const std::string &pattern)
     {
+      if(!throttle->update_required())
+        return;
+
       // We interpret the progress_info to add a prefix to its message
       // if it has one.
       switch(info.get_type())
@@ -71,6 +76,8 @@ namespace aptitude
                                      false);
           break;
         }
+
+      throttle->reset_timer();
     }
   }
 }

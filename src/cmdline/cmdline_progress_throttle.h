@@ -1,4 +1,4 @@
-/** \file cmdline_search_progress.h */  // -*-c++-*-
+/** \file cmdline_progress_throttle.h */   // -*-c++-*-
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -17,30 +17,36 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef APTITUDE_CMDLINE_SEARCH_PROGRESS_H
-#define APTITUDE_CMDLINE_SEARCH_PROGRESS_H
+#ifndef CMDLINE_PROGRESS_THROTTLE_H
+#define CMDLINE_PROGRESS_THROTTLE_H
 
-#include <string>
-
+// System includes:
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
 {
-  namespace util
-  {
-    class progress_info;
-  }
-
   namespace cmdline
   {
-    class progress_display;
-    class progress_throttle;
+    /** \brief Used to check whether enough time has passed that a
+     *  progress display should be updated.
+     */
+    class progress_throttle
+    {
+    public:
+      virtual ~progress_throttle() = 0;
 
-    void search_progress(const aptitude::util::progress_info &info,
-                         const boost::shared_ptr<progress_display> &progress_msg,
-                         const boost::shared_ptr<progress_throttle> &throttle,
-                         const std::string &pattern);
+      /** \return \b true if the progress display should be updated. */
+      virtual bool update_required() = 0;
+
+      /** \brief Reset the timer that controls when the display is
+       *  updated.
+       */
+      virtual void reset_timer() = 0;
+    };
+
+    /** \brief Create a progress_throttle object. */
+    boost::shared_ptr<progress_throttle> create_progress_throttle();
   }
 }
 
-#endif // APTITUDE_CMDLINE_SEARCH_PROGRESS_H
+#endif // CMDLINE_PROGRESS_THROTTLE_H

@@ -54,6 +54,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.cmdline.search");
   }
 
+  LoggerPtr Loggers::getAptitudeCmdlineThrottle()
+  {
+    return Logger::getLogger("aptitude.cmdline.throttle");
+  }
+
   LoggerPtr Loggers::getAptitudeDownloadCache()
   {
     return Logger::getLogger("aptitude.downloadCache");

@@ -44,10 +44,6 @@ namespace aptitude
      *  erased.  A "pulse" mode progress_info displays a message with
      *  no percent indicator.  And a "bar" mode progress_info displays
      *  a message with a percent indicator.
-     *
-     *  This object will automatically avoid updating its display too
-     *  frequently.  Specifically, it will update itself only if some
-     *  time interval has passed.
      */
     class progress_display
     {

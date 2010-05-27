@@ -53,10 +53,6 @@ namespace aptitude
 
       class progress_display_impl : public progress_display
       {
-        // The last time that we updated; initially set to the
-        // beginning of the epoch.
-        struct timeval last_update_time;
-
         // The last progress that was displayed; we always update the
         // display if the mode or the message changed.
         progress_info last_progress;
@@ -88,16 +84,7 @@ namespace aptitude
         if(progress.get_progress_status() != last_progress.get_progress_status())
           return true;
 
-
-        // Time checking code shamelessly stolen from apt, since we
-        // know theirs works.
-        struct timeval now;
-        gettimeofday(&now, 0);
-        double diff =
-          now.tv_sec - last_update_time.tv_sec +
-          (now.tv_usec - last_update_time.tv_usec)/1000000.0;
-
-        return diff < progress_update_interval;
+        return false;
       }
 
       void progress_display_impl::set_progress(const progress_info &progress,
@@ -128,7 +115,6 @@ namespace aptitude
               }
 
             last_progress = progress;
-            gettimeofday(&last_update_time, 0);
           }
       }
     }

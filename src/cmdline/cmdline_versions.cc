@@ -22,6 +22,7 @@
 #include "cmdline_versions.h"
 
 #include "cmdline_progress_display.h"
+#include "cmdline_progress_throttle.h"
 #include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
@@ -55,12 +56,16 @@ namespace cw = cwidget;
 namespace m = aptitude::matching;
 
 using aptitude::cmdline::create_progress_display;
+using aptitude::cmdline::create_progress_throttle;
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
 using aptitude::cmdline::progress_display;
+using aptitude::cmdline::progress_display;
+using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::search_progress;
+using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
@@ -254,6 +259,8 @@ namespace
 
     const shared_ptr<progress_display> search_progress_display =
       create_progress_display(term, term_locale);
+    const shared_ptr<progress_throttle> search_progress_throttle =
+      create_progress_throttle();
 
     results_list output;
     cw::util::ref_ptr<m::search_cache> search_info(m::search_cache::create());
@@ -271,6 +278,7 @@ namespace
                                             debug,
                                             sigc::bind(sigc::ptr_fun(&search_progress),
                                                        search_progress_display,
+                                                       search_progress_throttle,
                                                        serialize_pattern(*pIt)));
 
         // Warn the user if an exact name pattern didn't produce a
