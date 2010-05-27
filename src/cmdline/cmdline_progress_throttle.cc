@@ -92,7 +92,7 @@ namespace aptitude
                   now.tv_sec - last_update_time.tv_sec +
                   (now.tv_usec - last_update_time.tv_usec)/1000000.0;
 
-                bool rval = diff < update_interval;
+                bool rval = diff >= update_interval;
 
                 return rval;
               }
