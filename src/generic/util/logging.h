@@ -104,6 +104,9 @@ namespace aptitude
          */
         bool isEnabledFor(log_level l) const { return effectiveLevel >= l; }
 
+        /** \brief Retrieve the effective log level of this logger. */
+        log_level getEffectiveLevel() const { return effectiveLevel; }
+
         /** \brief Log a message to this logger. */
         virtual void log(const char *sourceFilename,
                          int sourceLineNumber,
