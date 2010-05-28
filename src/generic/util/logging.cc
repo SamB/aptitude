@@ -129,11 +129,26 @@ namespace aptitude
                              log_level logLevel,
                              const std::string &msg)
       {
-        signal_message_logged(sourceFilename,
-                              sourceLineNumber,
-                              logLevel,
-                              shared_from_this(),
-                              msg);
+        // \note shared_from_this() could be costly; it would be more
+        // efficient to receive the logger as a parameter, but that
+        // would clutter the interface.
+
+
+        // We emit this log message at each level of the hierarchy,
+        // but the logger passed along always refers to where the
+        // message started.
+        const boost::shared_ptr<Impl> self = shared_from_this();
+        boost::shared_ptr<Impl> logger = self;
+        while(logger.get() != NULL)
+          {
+            logger->signal_message_logged(sourceFilename,
+                                          sourceLineNumber,
+                                          logLevel,
+                                          self,
+                                          msg);
+
+            logger = logger->parent;
+          }
       }
 
       const std::string &Logger::Impl::getCategory() const
