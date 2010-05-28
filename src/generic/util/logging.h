@@ -189,12 +189,12 @@ namespace aptitude
             }                                                           \
         } while(0)                                                      \
 
-#define LOG_TRACE(logger, msg) LOG_LEVEL(::aptitude::util::logging::TRACE_LEVEL, msg)
-#define LOG_DEBUG(logger, msg) LOG_LEVEL(::aptitude::util::logging::DEBUG_LEVEL, msg)
-#define LOG_INFO(logger, msg) LOG_LEVEL(::aptitude::util::logging::INFO_LEVEL, msg)
-#define LOG_WARN(logger, msg) LOG_LEVEL(::aptitude::util::logging::WARN_LEVEL, msg)
-#define LOG_ERROR(logger, msg) LOG_LEVEL(::aptitude::util::logging::ERROR_LEVEL, msg)
-#define LOG_FATAL(logger, msg) LOG_LEVEL(::aptitude::util::logging::FATAL_LEVEL, msg)
+#define LOG_TRACE(logger, msg) LOG_LEVEL(::aptitude::util::logging::TRACE_LEVEL, logger, msg)
+#define LOG_DEBUG(logger, msg) LOG_LEVEL(::aptitude::util::logging::DEBUG_LEVEL, logger, msg)
+#define LOG_INFO(logger, msg) LOG_LEVEL(::aptitude::util::logging::INFO_LEVEL, logger, msg)
+#define LOG_WARN(logger, msg) LOG_LEVEL(::aptitude::util::logging::WARN_LEVEL, logger, msg)
+#define LOG_ERROR(logger, msg) LOG_LEVEL(::aptitude::util::logging::ERROR_LEVEL, logger, msg)
+#define LOG_FATAL(logger, msg) LOG_LEVEL(::aptitude::util::logging::FATAL_LEVEL, logger, msg)
 
       /** \brief Represents the entire logging system.
        *
