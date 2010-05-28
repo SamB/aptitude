@@ -291,7 +291,7 @@ BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwardsMultipleTimes, LoggingTest)
   connect(receiverA, a);
   connect(receiverABC, abc);
 
-  log1(abc, FATAL_LEVEL);
+  log2(abc, FATAL_LEVEL);
 }
 
 BOOST_FIXTURE_TEST_CASE(testLoggingDoesNotPropagateDownwards, LoggingTest)
