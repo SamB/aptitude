@@ -5,6 +5,7 @@ import os.path
 Import('base_env')
 Import('cppunit_tests_env')
 Import('boost_tests_env')
+Import('gtest_tests_env')
 base_env.Dist('Makefile.am', 'SConscript')
 
 cppunit_test_sources = [
@@ -67,7 +68,6 @@ boost_test_sources = [
     'test_dynamic_set.cc',
     'test_enumerator.cc',
     'test_file_cache.cc',
-    'test_logging.cc',
     'test_search_input_controller.cc',
     'test_sqlite.cc'
     ]
@@ -98,7 +98,6 @@ boost_test_extra_deps = [
     '../src/generic/problemresolver/cost_limits.o',
     '../src/generic/problemresolver/incremental_expression.o',
     '../src/generic/util/file_cache.o',
-    '../src/generic/util/logging.o',
     '../src/generic/util/refcounted_base.o',
     '../src/generic/util/sqlite.o',
     '../src/generic/util/temp.o',
@@ -108,12 +107,24 @@ boost_test_extra_deps = [
     '../src/gtk/views/search_input.o',
     ]
 
+gtest_test_sources = [
+    'gtest_test_main.cc',
+    'test_logging.cc',
+    ]
+
+gtest_test_extra_deps = [
+    '../src/generic/util/logging.o',
+    ]
+
 test_data_files = [
     'file_caches/ver2_cache.db',
     'file_caches/ver3_cache.db',
     ]
 
-boost_tests_env.Dist(cppunit_test_sources, boost_test_sources, test_data_files)
+boost_tests_env.Dist(boost_test_sources,
+                     cppunit_test_sources,
+                     gtest_test_sources,
+                     test_data_files)
 
 cppunit_test = cppunit_tests_env.Test('cppunit_test',
                                       (cppunit_test_sources,
@@ -128,6 +139,10 @@ boost_tests_env.Append(CPPDEFINES = ('SRCDIR', ShellEscape(CString('.'))))
 boost_test = boost_tests_env.Test('boost_test',
                                   (boost_test_sources,
                                    boost_test_extra_deps))
+
+gtest_test = gtest_tests_env.Test('gtest_test',
+                                  (gtest_test_sources,
+                                   gtest_test_extra_deps))
 
 # Ensure that the test file caches are copied to the build directory.
 for test_input in test_data_files:

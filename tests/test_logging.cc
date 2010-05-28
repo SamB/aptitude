@@ -22,8 +22,8 @@
 #include <generic/util/logging.h>
 
 // System includes:
-#include <boost/test/unit_test.hpp>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 using aptitude::util::logging::DEBUG_LEVEL;
 using aptitude::util::logging::ERROR_LEVEL;
@@ -39,6 +39,7 @@ using boost::shared_ptr;
 using testing::Exactly;
 using testing::InSequence;
 using testing::StrictMock;
+using testing::Test;
 using testing::_;
 
 // Enable dumping of loggers in tests.
@@ -63,7 +64,7 @@ namespace
     MOCK_METHOD5(message_logged, void(const char *, int, log_level, LoggerPtr, std::string));
   };
 
-  struct LoggingTest
+  struct LoggingTest : public Test
   {
     shared_ptr<LoggingSystem> loggingSystem;
 
@@ -144,41 +145,41 @@ namespace
                      msg2));                    \
   } while(0)
 
-BOOST_FIXTURE_TEST_CASE(testGetRootLogger, LoggingTest)
+TEST_F(LoggingTest, testGetRootLogger)
 {
-  BOOST_CHECK(loggingSystem->getLogger("").get() != NULL);
+  EXPECT_TRUE(loggingSystem->getLogger("").get() != NULL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testGetNonRootLogger, LoggingTest)
+TEST_F(LoggingTest, testGetNonRootLogger)
 {
-  BOOST_CHECK(loggingSystem->getLogger("a.b.c").get() != NULL);
+  EXPECT_TRUE(loggingSystem->getLogger("a.b.c").get() != NULL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testGetRootLoggerTwice, LoggingTest)
+TEST_F(LoggingTest, testGetRootLoggerTwice)
 {
   LoggerPtr
     l1 = loggingSystem->getLogger(""),
     l2 = loggingSystem->getLogger("");
 
-  BOOST_CHECK_EQUAL(l1, l2);
+  EXPECT_EQ(l1, l2);
 }
 
-BOOST_FIXTURE_TEST_CASE(testGetNonRootLoggerTwice, LoggingTest)
+TEST_F(LoggingTest, testGetNonRootLoggerTwice)
 {
   LoggerPtr
     l1 = loggingSystem->getLogger("a.b.c"),
     l2 = loggingSystem->getLogger("a.b.c");
 
-  BOOST_CHECK_EQUAL(l1, l2);
+  EXPECT_EQ(l1, l2);
 }
 
-BOOST_FIXTURE_TEST_CASE(testGetDifferentLoggers, LoggingTest)
+TEST_F(LoggingTest, testGetDifferentLoggers)
 {
   LoggerPtr
     l1 = loggingSystem->getLogger("a.b.c"),
     l2 = loggingSystem->getLogger("x.y.z");
 
-  BOOST_CHECK_NE(l1, l2);
+  EXPECT_NE(l1, l2);
 }
 
 // I test the individual methods of the logger extensively, then do
@@ -188,33 +189,33 @@ BOOST_FIXTURE_TEST_CASE(testGetDifferentLoggers, LoggingTest)
 // ERROR and FATAL are enabled by default, and that other levels
 // aren't.  Other behavior is really more a test that setLevel does
 // the right thing.
-BOOST_FIXTURE_TEST_CASE(testLoggerIsEnabledForDefaults, LoggingTest)
+TEST_F(LoggingTest, testLoggerIsEnabledForDefaults)
 {
   LoggerPtr l = loggingSystem->getLogger("a.b.c");
 
-  BOOST_CHECK_EQUAL(ERROR_LEVEL, l->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, l->getEffectiveLevel());
 
-  BOOST_CHECK(  l->isEnabledFor(FATAL_LEVEL) );
-  BOOST_CHECK(  l->isEnabledFor(ERROR_LEVEL) );
-  BOOST_CHECK( !l->isEnabledFor(WARN_LEVEL)  );
-  BOOST_CHECK( !l->isEnabledFor(INFO_LEVEL)  );
-  BOOST_CHECK( !l->isEnabledFor(DEBUG_LEVEL) );
-  BOOST_CHECK( !l->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE(  l->isEnabledFor(FATAL_LEVEL) );
+  EXPECT_TRUE(  l->isEnabledFor(ERROR_LEVEL) );
+  EXPECT_TRUE( !l->isEnabledFor(WARN_LEVEL)  );
+  EXPECT_TRUE( !l->isEnabledFor(INFO_LEVEL)  );
+  EXPECT_TRUE( !l->isEnabledFor(DEBUG_LEVEL) );
+  EXPECT_TRUE( !l->isEnabledFor(TRACE_LEVEL) );
 }
 
-BOOST_FIXTURE_TEST_CASE(testRootLogCategory, LoggingTest)
+TEST_F(LoggingTest, testRootLogCategory)
 {
   const LoggerPtr root = loggingSystem->getLogger("");
-  BOOST_CHECK_EQUAL("", root->getCategory());
+  EXPECT_EQ("", root->getCategory());
 }
 
-BOOST_FIXTURE_TEST_CASE(testSubcategoryLogCategory, LoggingTest)
+TEST_F(LoggingTest, testSubcategoryLogCategory)
 {
   const LoggerPtr abc = loggingSystem->getLogger("a.b.c");
-  BOOST_CHECK_EQUAL("a.b.c", abc->getCategory());
+  EXPECT_EQ("a.b.c", abc->getCategory());
 }
 
-BOOST_FIXTURE_TEST_CASE(testSubcategoryParentLogCategory, LoggingTest)
+TEST_F(LoggingTest, testSubcategoryParentLogCategory)
 {
   // Checks that subcategories have the right category member no
   // matter how they get created.  Checks for possible bugs caused by
@@ -222,10 +223,10 @@ BOOST_FIXTURE_TEST_CASE(testSubcategoryParentLogCategory, LoggingTest)
   const LoggerPtr abc = loggingSystem->getLogger("a.b.c");
   const LoggerPtr ab = loggingSystem->getLogger("a.b");
 
-  BOOST_CHECK_EQUAL("a.b", ab->getCategory());
+  EXPECT_EQ("a.b", ab->getCategory());
 }
 
-BOOST_FIXTURE_TEST_CASE(testLogAtRoot, LoggingTest)
+TEST_F(LoggingTest, testLogAtRoot)
 {
   LoggerPtr root = loggingSystem->getLogger("");
   LoggingReceiver receiver;
@@ -238,7 +239,7 @@ BOOST_FIXTURE_TEST_CASE(testLogAtRoot, LoggingTest)
   log1(root, INFO_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testLogAtSubcategory, LoggingTest)
+TEST_F(LoggingTest, testLogAtSubcategory)
 {
   LoggerPtr l = loggingSystem->getLogger("a.b.c");
   LoggingReceiver receiver;
@@ -250,7 +251,7 @@ BOOST_FIXTURE_TEST_CASE(testLogAtSubcategory, LoggingTest)
   log2(l, ERROR_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwards, LoggingTest)
+TEST_F(LoggingTest, testLoggingPropagatesUpwards)
 {
   LoggerPtr l = loggingSystem->getLogger("a.b.c");
   LoggerPtr root = loggingSystem->getLogger("");
@@ -263,7 +264,7 @@ BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwards, LoggingTest)
   log1(l, FATAL_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwardsRegardlessOfCreationOrder, LoggingTest)
+TEST_F(LoggingTest, testLoggingPropagatesUpwardsRegardlessOfCreationOrder)
 {
   LoggerPtr root = loggingSystem->getLogger("");
   LoggerPtr l = loggingSystem->getLogger("a.b.c");
@@ -276,7 +277,7 @@ BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwardsRegardlessOfCreationOrder, L
   log1(l, FATAL_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwardsMultipleTimes, LoggingTest)
+TEST_F(LoggingTest, testLoggingPropagatesUpwardsMultipleTimes)
 {
   LoggerPtr root = loggingSystem->getLogger("");
   LoggerPtr a = loggingSystem->getLogger("a");
@@ -294,7 +295,7 @@ BOOST_FIXTURE_TEST_CASE(testLoggingPropagatesUpwardsMultipleTimes, LoggingTest)
   log2(abc, FATAL_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testLoggingDoesNotPropagateDownwards, LoggingTest)
+TEST_F(LoggingTest, testLoggingDoesNotPropagateDownwards)
 {
   LoggerPtr root = loggingSystem->getLogger("");
   LoggerPtr a = loggingSystem->getLogger("a");
@@ -310,116 +311,116 @@ BOOST_FIXTURE_TEST_CASE(testLoggingDoesNotPropagateDownwards, LoggingTest)
   log2(root, FATAL_LEVEL);
 }
 
-BOOST_FIXTURE_TEST_CASE(testSetLevelOnRoot, LoggingTest)
+TEST_F(LoggingTest, testSetLevelOnRoot)
 {
   LoggerPtr root = getLogger("");
   root->setLevel(INFO_LEVEL);
 
-  BOOST_CHECK_EQUAL(INFO_LEVEL, root->getEffectiveLevel());
+  EXPECT_EQ(INFO_LEVEL, root->getEffectiveLevel());
 
-  BOOST_CHECK(  root->isEnabledFor(FATAL_LEVEL) );
-  BOOST_CHECK(  root->isEnabledFor(ERROR_LEVEL) );
-  BOOST_CHECK(  root->isEnabledFor(WARN_LEVEL)  );
-  BOOST_CHECK(  root->isEnabledFor(INFO_LEVEL)  );
-  BOOST_CHECK( !root->isEnabledFor(DEBUG_LEVEL) );
-  BOOST_CHECK( !root->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(FATAL_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(ERROR_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(WARN_LEVEL)  );
+  EXPECT_TRUE(  root->isEnabledFor(INFO_LEVEL)  );
+  EXPECT_TRUE( !root->isEnabledFor(DEBUG_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(TRACE_LEVEL) );
 }
 
-BOOST_FIXTURE_TEST_CASE(testSetLevelOnRootPropagatesDownward, LoggingTest)
+TEST_F(LoggingTest, testSetLevelOnRootPropagatesDownward)
 {
   LoggerPtr root = getLogger("");
   LoggerPtr l = getLogger("x.y.z");
   root->setLevel(INFO_LEVEL);
 
-  BOOST_CHECK_EQUAL(INFO_LEVEL, l->getEffectiveLevel());
+  EXPECT_EQ(INFO_LEVEL, l->getEffectiveLevel());
 }
 
-BOOST_FIXTURE_TEST_CASE(testSetLevelOnRootPropagatesDownwardRegardlessOfCreationOrder, LoggingTest)
+TEST_F(LoggingTest, testSetLevelOnRootPropagatesDownwardRegardlessOfCreationOrder)
 {
   LoggerPtr root = getLogger("");
   root->setLevel(INFO_LEVEL);
   LoggerPtr l = getLogger("x.y.z");
 
-  BOOST_CHECK_EQUAL(INFO_LEVEL, l->getEffectiveLevel());
+  EXPECT_EQ(INFO_LEVEL, l->getEffectiveLevel());
 }
 
-BOOST_FIXTURE_TEST_CASE(testSetLevelDoesNotPropagateUpwards, LoggingTest)
+TEST_F(LoggingTest, testSetLevelDoesNotPropagateUpwards)
 {
   LoggerPtr a = getLogger("a");
   LoggerPtr ab = getLogger("ab");
 
   ab->setLevel(DEBUG_LEVEL);
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, a->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, a->getEffectiveLevel());
 }
 
-BOOST_FIXTURE_TEST_CASE(testSetLevelDoesNotPropagatePastShadowedNode, LoggingTest)
+TEST_F(LoggingTest, testSetLevelDoesNotPropagatePastShadowedNode)
 {
   LoggerPtr root = getLogger("");
   LoggerPtr fluffy = getLogger("fluffy");
   LoggerPtr fluffyBunnies = getLogger("fluffy.bunnies");
 
-  BOOST_CHECK_EQUAL(ERROR_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, fluffyBunnies->getEffectiveLevel());
 
   // Shadow the level at "fluffy".
   fluffy->setLevel(DEBUG_LEVEL);
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
 
   // Verify that setting the root logger doesn't modify the level of
   // fluffyBunnies.
   root->setLevel(INFO_LEVEL);
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
 }
 
-BOOST_FIXTURE_TEST_CASE(testShadowingOverridesPropagatedValue, LoggingTest)
+TEST_F(LoggingTest, testShadowingOverridesPropagatedValue)
 {
   LoggerPtr root = getLogger("");
   LoggerPtr fluffy = getLogger("fluffy");
   LoggerPtr fluffyBunnies = getLogger("fluffy.bunnies");
 
-  BOOST_CHECK_EQUAL(ERROR_LEVEL, fluffyBunnies->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(ERROR_LEVEL, fluffy->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, fluffy->getEffectiveLevel());
 
   // Shadow the level at "fluffy".
   fluffy->setLevel(DEBUG_LEVEL);
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffy->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffy->getEffectiveLevel());
 
   // Verify that setting the root logger doesn't modify the level of
   // fluffy *or* fluffyBunnies.
   root->setLevel(INFO_LEVEL);
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fluffy->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffyBunnies->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fluffy->getEffectiveLevel());
 }
 
 // Same test, except that we set levels in the opposite order.
-BOOST_FIXTURE_TEST_CASE(testSetLevelOverridesPropagatedValue, LoggingTest)
+TEST_F(LoggingTest, testSetLevelOverridesPropagatedValue)
 {
   LoggerPtr root = getLogger("");
   LoggerPtr fish = getLogger("fish");
   LoggerPtr fishChips = getLogger("fish.chips");
 
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fish->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(DEBUG_LEVEL, fishChips->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fish->getEffectiveLevel());
+  EXPECT_EQ(DEBUG_LEVEL, fishChips->getEffectiveLevel());
 
   root->setLevel(TRACE_LEVEL);
 
-  BOOST_CHECK_EQUAL(TRACE_LEVEL, fish->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(TRACE_LEVEL, fishChips->getEffectiveLevel());
+  EXPECT_EQ(TRACE_LEVEL, fish->getEffectiveLevel());
+  EXPECT_EQ(TRACE_LEVEL, fishChips->getEffectiveLevel());
 
   fish->setLevel(WARN_LEVEL);
 
-  BOOST_CHECK_EQUAL(WARN_LEVEL, fish->getEffectiveLevel());
-  BOOST_CHECK_EQUAL(WARN_LEVEL, fishChips->getEffectiveLevel());
+  EXPECT_EQ(WARN_LEVEL, fish->getEffectiveLevel());
+  EXPECT_EQ(WARN_LEVEL, fishChips->getEffectiveLevel());
 }
 
 // The one specific test for connect() is that its return value
 // is a reference to the new connection:
-BOOST_FIXTURE_TEST_CASE(testConnectMessageLoggedCanBeDisconnected, LoggingTest)
+TEST_F(LoggingTest, testConnectMessageLoggedCanBeDisconnected)
 {
   LoggerPtr root = getLogger("");
   LoggingReceiver receiver;
@@ -437,7 +438,7 @@ BOOST_FIXTURE_TEST_CASE(testConnectMessageLoggedCanBeDisconnected, LoggingTest)
 // that each test uses msg1 for a log that should get through, and
 // msg2 for a log that shouldn't.
 
-BOOST_FIXTURE_TEST_CASE(testLogTrace, LoggingTest)
+TEST_F(LoggingTest, testLogTrace)
 {
   LoggerPtr root = getLogger("");
   LoggingReceiver receiver;

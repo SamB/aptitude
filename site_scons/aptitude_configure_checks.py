@@ -262,6 +262,27 @@ int main(int argc, char **argv)
     mock.foo(4);
 }''', context.env['CXXFILESUFFIX'])
 
+@ConfigureCheck("Checking for google-test")
+def CheckForGoogleTest(context):
+    """Look for gtest (headers and library)."""
+
+    context.env.Append(LIBS = [ 'gtest' ])
+
+    return context.TryLink('''
+#include <gmock/gmock.h>
+
+TEST(DummyCase, Dummy)
+{
+  ASSERT_EQ(2, 2);
+}
+
+int main(int argc, char **argv)
+{
+    ::testing::InitGoogleTest(&argc, argv);
+
+    return RUN_ALL_TESTS();
+}''', context.env['CXXFILESUFFIX'])
+
 
 @ConfigureCheck("Checking for Boost.Test")
 def CheckForBoostTest(context):

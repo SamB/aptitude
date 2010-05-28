@@ -152,6 +152,20 @@ the CPPUnit unit tests need.'''
 
     conf.Finish()
 
+def DoConfigureGTestTests(env):
+    '''Configure the build environment "env" with the libraries that
+the GTest unit tests need.'''
+
+    conf = aptitude_configure_checks.Configure(env)
+
+    RequireCheck(conf.CheckForGoogleTest(),
+                 "Can't find google-test")
+
+    RequireCheck(conf.CheckForGoogleMock(),
+                 "Can't find google-mock")
+
+    conf.Finish()
+
 class ConfigureResult:
     '''Holder for the result of Configure(); see its documentation for
 details.'''
@@ -266,11 +280,14 @@ Returns an object with the following fields:
     programs = all_build_envs.Clone()
     boost_tests = all_build_envs.Clone()
     cppunit_tests = all_build_envs.Clone()
+    gtest_tests = all_build_envs.Clone()
 
     DoConfigureBoostTests(boost_tests)
     DoConfigureCppunitTests(cppunit_tests)
+    DoConfigureGTestTests(gtest_tests)
 
     return ConfigureResult(base = all_build_envs,
                            programs = programs,
                            boost_tests = boost_tests,
-                           cppunit_tests = cppunit_tests)
+                           cppunit_tests = cppunit_tests,
+                           gtest_tests = gtest_tests)
