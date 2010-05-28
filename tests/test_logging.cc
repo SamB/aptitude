@@ -31,6 +31,7 @@ using aptitude::util::logging::FATAL_LEVEL;
 using aptitude::util::logging::INFO_LEVEL;
 using aptitude::util::logging::LoggerPtr;
 using aptitude::util::logging::LoggingSystem;
+using aptitude::util::logging::OFF_LEVEL;
 using aptitude::util::logging::TRACE_LEVEL;
 using aptitude::util::logging::WARN_LEVEL;
 using aptitude::util::logging::createLoggingSystem;
@@ -201,6 +202,7 @@ TEST_F(LoggingTest, testLoggerIsEnabledForDefaults)
   EXPECT_TRUE( !l->isEnabledFor(INFO_LEVEL)  );
   EXPECT_TRUE( !l->isEnabledFor(DEBUG_LEVEL) );
   EXPECT_TRUE( !l->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE( !l->isEnabledFor(OFF_LEVEL)   );
 }
 
 TEST_F(LoggingTest, testRootLogCategory)
@@ -324,6 +326,23 @@ TEST_F(LoggingTest, testSetLevelOnRoot)
   EXPECT_TRUE(  root->isEnabledFor(INFO_LEVEL)  );
   EXPECT_TRUE( !root->isEnabledFor(DEBUG_LEVEL) );
   EXPECT_TRUE( !root->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(OFF_LEVEL)   );
+}
+
+TEST_F(LoggingTest, testIsEnabledOff)
+{
+  const LoggerPtr root = getLogger("");
+  root->setLevel(OFF_LEVEL);
+
+  EXPECT_EQ(OFF_LEVEL, root->getEffectiveLevel());
+
+  EXPECT_TRUE(  root->isEnabledFor(FATAL_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(ERROR_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(WARN_LEVEL)  );
+  EXPECT_TRUE(  root->isEnabledFor(INFO_LEVEL)  );
+  EXPECT_TRUE(  root->isEnabledFor(DEBUG_LEVEL) );
+  EXPECT_TRUE(  root->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(OFF_LEVEL)   );
 }
 
 TEST_F(LoggingTest, testSetLevelOnRootPropagatesDownward)

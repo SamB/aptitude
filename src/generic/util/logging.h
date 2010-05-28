@@ -28,6 +28,8 @@
 
 #include <sstream>
 
+#include <limits.h> // For INT_MIN
+
 namespace aptitude
 {
   namespace util
@@ -54,6 +56,11 @@ namespace aptitude
           WARN_LEVEL = 3,
           ERROR_LEVEL = 4,
           FATAL_LEVEL = 5,
+          /** \brief The OFF level is special: messages logged at it
+           *  are never seen, even if the logger has been configured
+           *  to show them.
+           */
+          OFF_LEVEL = INT_MIN
         };
 
       /** \brief Get a string corresponding to a log level.
@@ -102,7 +109,12 @@ namespace aptitude
          *  Useful because this lets us suppress the (potentially
          *  expensive) generation of log messages if they're disabled.
          */
-        bool isEnabledFor(log_level l) const { return l >= effectiveLevel; }
+        bool isEnabledFor(log_level l) const
+        {
+          return
+            l != OFF_LEVEL &&
+            l >= effectiveLevel;
+        }
 
         /** \brief Retrieve the effective log level of this logger. */
         log_level getEffectiveLevel() const { return effectiveLevel; }
