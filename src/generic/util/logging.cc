@@ -232,7 +232,12 @@ namespace aptitude
             find_children(logger);
 
           for(child_iterator it = children.first; it != children.second; ++it)
-            recursiveSetEffectiveLevel(*it, effectiveLevel);
+            {
+              const boost::shared_ptr<Logger::Impl> child = *it;
+
+              if(!child->configuredLevel)
+                recursiveSetEffectiveLevel(child, effectiveLevel);
+            }
         }
 
         Impl(const Impl &);
