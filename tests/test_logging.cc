@@ -41,6 +41,15 @@ using testing::InSequence;
 using testing::StrictMock;
 using testing::_;
 
+// Enable dumping of loggers in tests.
+std::ostream &operator<<(std::ostream &out,
+                         const LoggerPtr &logger)
+{
+  return out << "Logger("
+             << logger->getCategory()
+             << ")";
+}
+
 // Test of the logging code in src/generic/util/logging.{cc,h}.
 
 namespace
