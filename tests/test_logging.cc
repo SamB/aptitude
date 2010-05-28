@@ -193,6 +193,29 @@ BOOST_FIXTURE_TEST_CASE(testLoggerIsEnabledForDefaults, LoggingTest)
   BOOST_CHECK( !l->isEnabledFor(TRACE_LEVEL) );
 }
 
+BOOST_FIXTURE_TEST_CASE(testRootLogCategory, LoggingTest)
+{
+  const LoggerPtr root = loggingSystem->getLogger("");
+  BOOST_CHECK_EQUAL("", root->getCategory());
+}
+
+BOOST_FIXTURE_TEST_CASE(testSubcategoryLogCategory, LoggingTest)
+{
+  const LoggerPtr abc = loggingSystem->getLogger("a.b.c");
+  BOOST_CHECK_EQUAL("a.b.c", abc->getCategory());
+}
+
+BOOST_FIXTURE_TEST_CASE(testSubcategoryParentLogCategory, LoggingTest)
+{
+  // Checks that subcategories have the right category member no
+  // matter how they get created.  Checks for possible bugs caused by
+  // parents being created implicitly when their children are created.
+  const LoggerPtr abc = loggingSystem->getLogger("a.b.c");
+  const LoggerPtr ab = loggingSystem->getLogger("a.b");
+
+  BOOST_CHECK_EQUAL("a.b", ab->getCategory());
+}
+
 BOOST_FIXTURE_TEST_CASE(testLogAtRoot, LoggingTest)
 {
   LoggerPtr root = loggingSystem->getLogger("");
