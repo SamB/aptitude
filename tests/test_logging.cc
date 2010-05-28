@@ -349,9 +349,11 @@ TEST_F(LoggingTest, testSetLevelDoesNotPropagateUpwards)
   LoggerPtr a = getLogger("a");
   LoggerPtr ab = getLogger("ab");
 
+  EXPECT_EQ(ERROR_LEVEL, a->getEffectiveLevel());
+
   ab->setLevel(DEBUG_LEVEL);
 
-  EXPECT_EQ(DEBUG_LEVEL, a->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, a->getEffectiveLevel());
 }
 
 TEST_F(LoggingTest, testSetLevelDoesNotPropagatePastShadowedNode)
