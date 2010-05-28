@@ -102,7 +102,7 @@ namespace aptitude
          *  Useful because this lets us suppress the (potentially
          *  expensive) generation of log messages if they're disabled.
          */
-        bool isEnabledFor(log_level l) const { return effectiveLevel >= l; }
+        bool isEnabledFor(log_level l) const { return l >= effectiveLevel; }
 
         /** \brief Retrieve the effective log level of this logger. */
         log_level getEffectiveLevel() const { return effectiveLevel; }
