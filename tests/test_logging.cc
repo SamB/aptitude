@@ -37,8 +37,8 @@ using aptitude::util::logging::createLoggingSystem;
 using aptitude::util::logging::log_level;
 using boost::shared_ptr;
 using testing::Exactly;
-using testing::StrictMock;
 using testing::InSequence;
+using testing::StrictMock;
 using testing::_;
 
 // Test of the logging code in src/generic/util/logging.{cc,h}.
