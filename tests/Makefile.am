@@ -55,5 +55,6 @@ boost_test_SOURCES = \
 	test_dynamic_set.cc \
 	test_enumerator.cc \
 	test_file_cache.cc \
+	test_logging.cc \
 	test_search_input_controller.cc \
 	test_sqlite.cc

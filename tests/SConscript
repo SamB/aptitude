@@ -67,6 +67,7 @@ boost_test_sources = [
     'test_dynamic_set.cc',
     'test_enumerator.cc',
     'test_file_cache.cc',
+    'test_logging.cc',
     'test_search_input_controller.cc',
     'test_sqlite.cc'
     ]
@@ -97,6 +98,7 @@ boost_test_extra_deps = [
     '../src/generic/problemresolver/cost_limits.o',
     '../src/generic/problemresolver/incremental_expression.o',
     '../src/generic/util/file_cache.o',
+    '../src/generic/util/logging.o',
     '../src/generic/util/refcounted_base.o',
     '../src/generic/util/sqlite.o',
     '../src/generic/util/temp.o',
