@@ -406,8 +406,8 @@ TEST_F(LoggingTest, testSetLevelOverridesPropagatedValue)
   LoggerPtr fish = getLogger("fish");
   LoggerPtr fishChips = getLogger("fish.chips");
 
-  EXPECT_EQ(DEBUG_LEVEL, fish->getEffectiveLevel());
-  EXPECT_EQ(DEBUG_LEVEL, fishChips->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, fish->getEffectiveLevel());
+  EXPECT_EQ(ERROR_LEVEL, fishChips->getEffectiveLevel());
 
   root->setLevel(TRACE_LEVEL);
 
