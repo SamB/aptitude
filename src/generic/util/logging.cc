@@ -266,9 +266,18 @@ namespace aptitude
         /** \brief Get the implicit global logging system. */
         static Impl &get()
         {
-          static boost::shared_ptr<Impl> system = boost::make_shared<Impl>();
+          // We deliberately leak this to avoid unpleasant surprises.
+          // Otherwise, the system would be destroyed when global
+          // destructors ran, which has all sorts of nasty
+          // possibilities.
+          //
+          // Needs to be a shared_ptr so enable_shared_from_this()
+          // works (which allows loggers to take weak references to
+          // the logging system).
+          static shared_ptr<Impl> *system =
+            new shared_ptr<Impl>(make_shared<Impl>());
 
-          return *system;
+          return **system;
         }
 
         /** \brief Create a new logging system. */
