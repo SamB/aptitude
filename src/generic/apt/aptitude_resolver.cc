@@ -852,7 +852,7 @@ bool aptitude_resolver::is_break_hold(const aptitude_resolver::version &v) const
     }
   else
     {
-      if(LOG4CXX_UNLIKELY(loggerScores->isTraceEnabled()))
+      if(loggerScores->isEnabledFor(logging::TRACE_LEVEL))
 	{
 	  if(held_back && forbidden)
 	    LOG_TRACE(loggerScores, v << " breaks a hold and a forbid.");

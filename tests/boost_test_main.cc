@@ -6,11 +6,17 @@
 
 #include <gmock/gmock.h>
 
-#include <log4cxx/basicconfigurator.h>
-#include <log4cxx/level.h>
-#include <log4cxx/logger.h>
-
 #include <loggers.h>
+
+#include <iostream>
+
+using logging::TRACE_LEVEL;
+using logging::WARN_LEVEL;
+
+using logging::Logger;
+using logging::LoggerPtr;
+using logging::describe_log_level;
+using logging::log_level;
 
 // One dummy test so that this can be dropped in before the actual
 // test suite is written.
@@ -46,6 +52,21 @@ bool init_unit_test()
 
 char *argv0 = NULL;
 
+namespace
+{
+  void log_to_stdout(const char *sourceFilename,
+                     int sourceLineNumber,
+                     log_level level,
+                     LoggerPtr logger,
+                     const std::string &msg)
+  {
+    std::cout << sourceFilename
+              << ":" << sourceLineNumber
+              << " " << describe_log_level(level)
+              << " - " << msg << std::endl << std::flush;
+  }
+}
+
 int main(int argc, char **argv)
 {
   argv0 = argv[0];
@@ -65,10 +86,10 @@ int main(int argc, char **argv)
     }
 
   if(debug)
-    logging::Logger::getRootLogger()->setLevel(logging::Level::getTrace());
+    Logger::getLogger("")->setLevel(TRACE_LEVEL);
   else
-    logging::Logger::getRootLogger()->setLevel(logging::Level::getWarn());
-  logging::BasicConfigurator::configure();
+    Logger::getLogger("")->setLevel(WARN_LEVEL);
+  Logger::getLogger("")->connect_message_logged(sigc::ptr_fun(&log_to_stdout));
 
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }

@@ -40,6 +40,7 @@
 
 #include <generic/problemresolver/exceptions.h>
 
+#include <generic/util/logging.h>
 #include <generic/util/temp.h>
 
 #ifdef HAVE_GTK
@@ -74,20 +75,14 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/init.h>
 
-#include <log4cxx/basicconfigurator.h>
-#include <log4cxx/consoleappender.h>
-#include <log4cxx/fileappender.h>
-#include <log4cxx/logger.h>
-#include <log4cxx/patternlayout.h>
-#include <log4cxx/propertyconfigurator.h>
-#include <log4cxx/simplelayout.h>
-
 #include <boost/format.hpp>
 
 #ifdef HAVE_GTK
 #include "gtk/gui.h"
 #include "gtk/init.h"
 #endif
+
+#include <fstream>
 
 #include "loggers.h"
 #include "progress.h"
@@ -97,6 +92,20 @@
 #include "ui.h"
 
 namespace cw = cwidget;
+
+using aptitude::Loggers;
+
+using logging::DEBUG_LEVEL;
+using logging::ERROR_LEVEL;
+using logging::FATAL_LEVEL;
+using logging::INFO_LEVEL;
+using logging::OFF_LEVEL;
+using logging::WARN_LEVEL;
+using logging::TRACE_LEVEL;
+
+using logging::Logger;
+using logging::LoggerPtr;
+using logging::log_level;
 
 #if 0
 // These are commented out so as to not punish users unduly for coding
@@ -334,9 +343,9 @@ namespace
 
   class log_level_map
   {
-    std::map<std::string, logging::LevelPtr> levels;
+    std::map<std::string, log_level> levels;
 
-    void add_level(const std::string &s, logging::LevelPtr level)
+    void add_level(const std::string &s, log_level level)
     {
       std::string tmp;
       for(std::string::const_iterator it = s.begin(); it != s.end(); ++it)
@@ -348,40 +357,40 @@ namespace
   public:
     log_level_map()
     {
-      using namespace log4cxx;
+      using namespace logging;
 
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("trace"), Level::getTrace());
+      add_level(N_("trace"), TRACE_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("debug"), Level::getDebug());
+      add_level(N_("debug"), DEBUG_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("info"), Level::getInfo());
+      add_level(N_("info"), INFO_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("warn"), Level::getWarn());
+      add_level(N_("warn"), WARN_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("error"), Level::getError());
+      add_level(N_("error"), ERROR_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("fatal"), Level::getFatal());
+      add_level(N_("fatal"), FATAL_LEVEL);
       // ForTranslators: This is a log level that the user can pass on
       // the command-line or set in the configuration file.
-      add_level(N_("off"), Level::getOff());
+      add_level(N_("off"), OFF_LEVEL);
 
-      std::vector<std::pair<std::string, LevelPtr> >
+      std::vector<std::pair<std::string, log_level> >
 	tmp(levels.begin(), levels.end());
 
-      for(std::vector<std::pair<std::string, LevelPtr> >::const_iterator
+      for(std::vector<std::pair<std::string, log_level> >::const_iterator
 	    it = tmp.begin(); it != tmp.end(); ++it)
 	{
 	  // Make sure that the untranslated entries always override
 	  // the translated ones so that instructions in English
 	  // always work.
-	  std::map<std::string, LevelPtr>::const_iterator found =
+	  std::map<std::string, log_level>::const_iterator found =
 	    levels.find(it->first);
 
 	  if(found == levels.end())
@@ -389,7 +398,7 @@ namespace
 	}
     }
 
-    typedef std::map<std::string, logging::LevelPtr>::const_iterator const_iterator;
+    typedef std::map<std::string, log_level>::const_iterator const_iterator;
 
     const_iterator find(const std::string &s) const
     {
@@ -415,8 +424,6 @@ namespace
    */
   void apply_logging_level(const std::string &s)
   {
-    using namespace log4cxx;
-
     std::string::size_type colon_loc = s.rfind(':');
     std::string level_name;
     std::string logger_name;
@@ -429,7 +436,7 @@ namespace
 	logger_name = std::string(s, 0, colon_loc);
       }
 
-    LevelPtr level;
+    log_level level;
 
     log_level_map::const_iterator found =
       log_levels.find(level_name);
@@ -445,11 +452,7 @@ namespace
 	return;
       }
 
-    LoggerPtr targetLogger;
-    if(logger_name.empty())
-      targetLogger = Logger::getRootLogger();
-    else
-      targetLogger = Logger::getLogger(logger_name);
+    LoggerPtr targetLogger = Logger::getLogger(logger_name);
 
     if(!targetLogger)
       {
@@ -481,28 +484,10 @@ namespace
    */
   void enable_resolver_log()
   {
-    using aptitude::Loggers;
-    using namespace log4cxx;
-
-    LevelPtr trace = Level::getTrace();
-    LevelPtr info = Level::getInfo();
-
-    Loggers::getAptitudeResolverSearch()->setLevel(trace);
-    Loggers::getAptitudeResolverSearchCosts()->setLevel(info);
+    Loggers::getAptitudeResolverSearch()->setLevel(TRACE_LEVEL);
+    Loggers::getAptitudeResolverSearchCosts()->setLevel(INFO_LEVEL);
   }
 }
-
-class NullAppender : public logging::AppenderSkeleton
-{
-public:
-  void close() { }
-  void append(const logging::spi::LoggingEventPtr &,
-	      logging::helpers::Pool &)
-  {
-  }
-
-  bool requiresLayout() const { return false; }
-};
 
 // Ensure that the cache is always closed when main() exits.  Without
 // this, there might be dangling flyweights hanging around, and those
@@ -525,6 +510,48 @@ struct close_cache_on_exit
   }
 };
 
+void do_message_logged(std::ostream &out,
+                       const char *sourceFilename,
+                       int sourceLineNumber,
+                       log_level level,
+                       LoggerPtr logger,
+                       const std::string &msg)
+{
+  out << sourceFilename << ":" << sourceLineNumber
+      << " " << describe_log_level(level)
+      << " " << logger->getCategory()
+      << " - " << msg << std::endl << std::flush;
+}
+
+void handle_message_logged(const char *sourceFilename,
+                           int sourceLineNumber,
+                           log_level level,
+                           LoggerPtr logger,
+                           const std::string &msg,
+                           const std::string &filename)
+{
+  if(filename == "-")
+    do_message_logged(std::cout,
+                      sourceFilename,
+                      sourceLineNumber,
+                      level,
+                      logger,
+                      msg);
+  else
+    {
+      std::ofstream f(filename.c_str(), std::ios::app);
+      if(f)
+        do_message_logged(f,
+                          sourceFilename,
+                          sourceLineNumber,
+                          level,
+                          logger,
+                          msg);
+      // Since logging is just for debugging, I don't do anything if
+      // the log file can't be opened.
+    }
+}
+
 int main(int argc, char *argv[])
 {
   // Block signals that we want to sigwait() on by default and put the
@@ -534,10 +561,10 @@ int main(int argc, char *argv[])
   // all signals, is troublesome: we would have to ensure that fatal
   // signals and other things that shouldn't be blocked get removed)
   //
-  // In particular, as of this writing, log4cxx doesn't ensure that
-  // its threads block signals, so cwidget won't be able to sigwait()
-  // on SIGWINCH.  (cwidget is guilty of the same thing, but that
-  // doesn't cause problems for aptitude)
+  // When aptitude used log4cxx, we ran into the fact that it doesn't
+  // ensure that its threads don't block signals, so cwidget wasn't
+  // able to sigwait() on SIGWINCH without this.  (cwidget is guilty
+  // of the same thing, but that doesn't cause problems for aptitude)
   {
     sigset_t mask;
 
@@ -549,8 +576,6 @@ int main(int argc, char *argv[])
   }
 
   srandom(time(0));
-
-  using namespace log4cxx;
 
   // See earlier note
   //
@@ -582,9 +607,6 @@ int main(int argc, char *argv[])
   // Set to a non-empty string to enable logging simplistically; set
   // to "-" to log to stdout.
   string log_file = aptcfg->Find(PACKAGE "::Logging::File", "");
-  // Set to a non-empty string to read a log4cxx config file to enable
-  // logging.
-  string log_config_file = aptcfg->Find(PACKAGE "::Logging::Config-File", "/etc/apt/aptitude-log.conf");
   bool simulate = aptcfg->FindB(PACKAGE "::CmdLine::Simulate", false) ||
     aptcfg->FindB(PACKAGE "::Simulate", false);
   bool download_only=aptcfg->FindB(PACKAGE "::CmdLine::Download-Only", false);;
@@ -652,7 +674,7 @@ int main(int argc, char *argv[])
     aptcfg->Set(PACKAGE "::Delete-Unused-Pattern", "");
 
   // By default don't log anything below WARN.
-  Logger::getRootLogger()->setLevel(Level::getWarn());
+  Logger::getLogger("")->setLevel(WARN_LEVEL);
 
   // Read the arguments:
   while((curopt=getopt_long(argc, argv, "DVZWvhS:uiF:w:sO:fdyPt:q::Rro:", opts, NULL))!=-1)
@@ -981,25 +1003,11 @@ int main(int argc, char *argv[])
 		    show_why_summary_mode.c_str());
       why_display_mode = aptitude::why::no_summary;
     }
-  if(!log_config_file.empty())
-    PropertyConfigurator::configureAndWatch(log_config_file);
-  else
-  {
-    BasicConfigurator::configure();
-    Logger::getRootLogger()->removeAllAppenders();
-  }
-
-  // Make log4cxx shut up about not having a root logger.
-  Logger::getRootLogger()->addAppender(new NullAppender);
 
   if(!log_file.empty())
-    {
-      if(log_file == "-")
-	Logger::getRootLogger()->addAppender(new ConsoleAppender(new PatternLayout("%-5p %c - %m%n")));
-      else
-	Logger::getRootLogger()->addAppender(new FileAppender(new PatternLayout("%-5p %c - %m%n"),
-							      log_file));
-    }
+    Logger::getLogger("")
+      ->connect_message_logged(sigc::bind(sigc::ptr_fun(&handle_message_logged),
+                                          log_file));
 
   temp::initialize("aptitude");
 

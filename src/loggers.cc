@@ -19,7 +19,8 @@
 
 #include "loggers.h"
 
-using namespace log4cxx;
+using logging::Logger;
+using logging::LoggerPtr;
 
 namespace aptitude
 {

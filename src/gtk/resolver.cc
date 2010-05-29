@@ -2083,7 +2083,7 @@ namespace gui
       }
     else if(force_update || new_solution != displayed_solution)
       {
-	if(LOG4CXX_UNLIKELY(Loggers::getAptitudeGtkResolver()->isDebugEnabled()))
+	if(Loggers::getAptitudeGtkResolver()->isEnabledFor(logging::DEBUG_LEVEL))
 	  {
 	    if(new_solution != displayed_solution)
 	      LOG_DEBUG(Loggers::getAptitudeGtkResolver(),

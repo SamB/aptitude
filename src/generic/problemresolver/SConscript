@@ -22,12 +22,19 @@ srcs = map(File, [
     'solution.h',
     ])
 
+test_extra_deps = [
+    '../util/logging.o',
+    '../util/refcounted_base.o',
+    ]
+
 Import('programs_env')
 
 test = programs_env.Program(target = 'test',
-                            source = ['test.cc', NonHeaders(srcs),
-                                      '../util/refcounted_base.cc',
-                                      ])
+                            source = [
+                                'test.cc',
+                                NonHeaders(srcs),
+                                test_extra_deps,
+                                ])
 
 
 # This won't be distributed otherwise since it's not part of aptitude:

@@ -1,6 +1,6 @@
 // dpkg_terminal.cc
 //
-//  Copyright 2008-2009 Daniel Burrows
+//  Copyright 2008-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -548,7 +548,7 @@ namespace gui
 
     pkgPackageManager::OrderResult result = f.get_slot()(dpkg_sock->get_fd());
 
-    LOG4CXX_TRACE(logger, "Subprocess finished, result is " << result << ".");
+    LOG_TRACE(logger, "Subprocess finished, result is " << result << ".");
 
     // Make sure errors appear somewhere (we really ought to push
     // them down the FIFO).
@@ -653,7 +653,7 @@ namespace gui
 
   void DpkgTerminal::inject_yes()
   {
-    LOG4CXX_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'y' to the dpkg process.");
+    LOG_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'y' to the dpkg process.");
 
     VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 
@@ -662,7 +662,7 @@ namespace gui
 
   void DpkgTerminal::inject_no()
   {
-    LOG4CXX_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'n' to the dpkg process.");
+    LOG_TRACE(Loggers::getAptitudeDpkgTerminal(), "Sending 'n' to the dpkg process.");
 
     VteTerminal *vte = VTE_TERMINAL(terminal->gobj());
 

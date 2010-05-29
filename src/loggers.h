@@ -21,23 +21,9 @@
 #ifndef LOGGERS_H
 #define LOGGERS_H
 
-#include <log4cxx/logger.h>
+#include <generic/util/logging.h>
 
-// Rename the log4cxx namespace to remove explicit dependencies on it.
-//
-// At some point, we might want to replace log4cxx due to various
-// issues with it.  This will make it a little easier to do so.
-namespace logging = log4cxx;
-
-// Safe logging macros -- unlike the log4cxx macros, these expand to
-// statements needing a semicolon, so you can write them like function
-// calls with no surprises.  They also save a few keystrokes.
-#define LOG_TRACE(logger, args) do { LOG4CXX_TRACE(logger, args); } while(0)
-#define LOG_DEBUG(logger, args) do { LOG4CXX_DEBUG(logger, args); } while(0)
-#define LOG_INFO(logger, args) do { LOG4CXX_INFO(logger, args); } while(0)
-#define LOG_WARN(logger, args) do { LOG4CXX_WARN(logger, args); } while(0)
-#define LOG_ERROR(logger, args) do { LOG4CXX_ERROR(logger, args); } while(0)
-#define LOG_FATAL(logger, args) do { LOG4CXX_FATAL(logger, args); } while(0)
+namespace logging = aptitude::util::logging;
 
 namespace aptitude
 {
@@ -45,8 +31,7 @@ namespace aptitude
    *  The sole purpose of this file is to keep that information in one
    *  place.
    *
-   *  It would be nicer if we could enforce that somehow, but that's
-   *  not compatible with the design of log4cxx.
+   *  It would be nicer if we could enforce that somehow.
    */
   class Loggers
   {

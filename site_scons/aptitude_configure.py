@@ -109,7 +109,6 @@ all executable targets need."""
     pkgconfig_packages = [
         'cwidget',
         'libept',
-        'liblog4cxx',
         'sigc++-2.0',
         'sqlite3',
         'vte',

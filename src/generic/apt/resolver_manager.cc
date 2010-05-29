@@ -541,7 +541,7 @@ void resolver_manager::background_thread_execution()
       while((background_thread_suspend_count > 0 || resolver_null || pending_jobs.empty()) &&
 	    !background_thread_killed)
 	{
-	  if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+	  if(logger->isEnabledFor(logging::TRACE_LEVEL))
 	    {
 	      std::vector<std::string> why_suspended;
 	      if(background_thread_suspend_count > 0)
@@ -1988,7 +1988,7 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	      aptitude_resolver_version p_v =
 		aptitude_resolver_version::make_install(v, *cache_file);
 
-	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
+	      if(logger->isEnabledFor(logging::DEBUG_LEVEL))
 		{
 		  if(v_is_a_non_default_version)
 		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a non-default version).");
