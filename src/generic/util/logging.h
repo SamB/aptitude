@@ -194,8 +194,8 @@ namespace aptitude
 #define LOG_LEVEL(level, logger, msg)                                   \
       do                                                                \
         {                                                               \
-          log_level __aptitude_util_logging_level = (level);            \
-          LoggerPtr __aptitude_util_logging_logger = (logger);          \
+          ::aptitude::util::logging::log_level __aptitude_util_logging_level = (level); \
+          ::aptitude::util::logging::LoggerPtr __aptitude_util_logging_logger = (logger); \
           if(__aptitude_util_logging_logger->isEnabledFor(__aptitude_util_logging_level)) \
             {                                                           \
               std::ostringstream __aptitude_util_logging_stream;        \
