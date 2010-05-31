@@ -2827,7 +2827,8 @@ namespace aptitude
 		std::cout << "Failed to build a Xapian query for this search." << std::endl
 			  << "Falling back to testing each package." << std::endl;
 
-              progress_slot(progress_info::bar(0, filter_msg));
+              progress_info progress = progress_info::bar(0, filter_msg);
+              progress_slot(progress);
 
               int i = 0;
 	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
@@ -2853,8 +2854,8 @@ namespace aptitude
 		    matches.push_back(std::make_pair(pkg, m));
 
                   ++i;
-                  progress_slot(progress_info::bar( ((double)i) / ((double)cache.Head().PackageCount),
-                                                    filter_msg ));
+                  progress.set_progress_fraction(((double)i) / ((double)cache.Head().PackageCount));
+                  progress_slot(progress);
 		}
 	    }
 	  else
@@ -2941,6 +2942,10 @@ namespace aptitude
 		std::cout << "Failed to build a Xapian query for this search." << std::endl
 			  << "Falling back to testing each package." << std::endl;
 
+              progress_info progress = progress_info::bar(0, filter_msg);
+              progress_slot(progress);
+
+
               int i = 0;
 	      for(pkgCache::PkgIterator pkg = cache.PkgBegin();
 		  !pkg.end(); ++pkg)
@@ -2960,8 +2965,8 @@ namespace aptitude
                     }
 
                   ++i;
-                  progress_slot(progress_info::bar( ((double)i) / ((double)cache.Head().PackageCount),
-                                                    filter_msg ));
+                  progress.set_progress_fraction(((double)i) / ((double)cache.Head().PackageCount));
+                  progress_slot(progress);
                 }
 	    }
 	  else
