@@ -80,6 +80,22 @@ namespace aptitude
 
       progress_type get_type() const { return type; }
       double get_progress_fraction() const { return progress_fraction; }
+      /** \brief Set the current progress of the operation.
+       *
+       *  This value is meaningful only when the type is "bar"; this
+       *  method has no effect for other types of progress_info
+       *  objects.
+       *
+       *  \param new_fraction   How close to completion the operation
+       *                        is, on a scale of 0 (not started) to 1
+       *                        (finished).
+       */
+      void set_progress_fraction(double new_fraction)
+      {
+        if(type == progress_type_bar)
+          progress_fraction = new_fraction;
+      }
+
       int get_progress_percent_int() const
       {
         int rval = (int) (100 * progress_fraction);
@@ -91,7 +107,13 @@ namespace aptitude
         else
           return rval;
       }
+
       const std::string &get_progress_status() const { return progress_status; }
+      /** \brief Set the status message. */
+      void set_progress_status(const std::string &msg)
+      {
+        progress_status = msg;
+      }
     };
 
     // @}
