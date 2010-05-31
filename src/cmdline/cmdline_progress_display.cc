@@ -80,6 +80,10 @@ namespace aptitude
         if(progress.get_type() != last_progress.get_type())
           return true;
 
+        if(progress.get_type() == progress_type_bar &&
+           progress.get_progress_percent_int() != last_progress.get_progress_percent_int())
+          return true;
+
         if(progress.get_progress_status() != last_progress.get_progress_status())
           return true;
 
