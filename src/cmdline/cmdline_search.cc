@@ -120,12 +120,11 @@ namespace
                                    *apt_cache_file,
                                    *apt_package_records,
                                    debug,
-                                   sigc::bind(sigc::mem_fun(*search_progress,
-                                                            &progress_display::set_progress),
-                                              false));
+                                   sigc::mem_fun(*search_progress,
+                                                 &progress_display::set_progress));
       }
 
-    search_progress_display->set_progress(progress_info::none(), true);
+    search_progress_display->set_progress(progress_info::none());
 
     _error->DumpErrors();
 

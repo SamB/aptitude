@@ -66,8 +66,7 @@ namespace aptitude
       public:
         progress_display_impl(const shared_ptr<transient_message> &_message);
 
-        void set_progress(const progress_info &progress,
-                          bool force_update);
+        void set_progress(const progress_info &progress);
       };
 
       progress_display_impl::progress_display_impl(const shared_ptr<transient_message> &_message)
@@ -87,10 +86,9 @@ namespace aptitude
         return false;
       }
 
-      void progress_display_impl::set_progress(const progress_info &progress,
-                                               bool force_update)
+      void progress_display_impl::set_progress(const progress_info &progress)
       {
-        if(force_update || should_update(progress))
+        if(should_update(progress))
           {
             switch(progress.get_type())
               {

@@ -278,9 +278,8 @@ namespace
                                             *apt_cache_file,
                                             *apt_package_records,
                                             debug,
-                                            sigc::bind(sigc::mem_fun(search_progress.get(),
-                                                                     &progress_display::set_progress),
-                                                       false));
+                                            sigc::mem_fun(search_progress.get(),
+                                                          &progress_display::set_progress));
 
         // Warn the user if an exact name pattern didn't produce a
         // result.
@@ -293,7 +292,7 @@ namespace
           }
       }
 
-    search_progress_display->set_progress(progress_info::none(), true);
+    search_progress_display->set_progress(progress_info::none());
 
     if(output.empty())
       return_value = 2;

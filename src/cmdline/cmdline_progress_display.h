@@ -53,11 +53,8 @@ namespace aptitude
       /** \brief Set the currently displayed progress.
        *
        *  \param progress      The new progress information to display.
-       *  \param force_update  If \b true, the output will be updated even if
-       *                       it doesn't appear to be necessary.
        */
-      virtual void set_progress(const aptitude::util::progress_info &progress,
-                                bool force_update) = 0;
+      virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
     };
 
     /** \brief Create a blank progress display. */

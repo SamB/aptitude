@@ -63,18 +63,11 @@ namespace aptitude
         {
         }
 
-        void set_progress(const progress_info &info, bool force);
+        void set_progress(const progress_info &info);
       };
 
-      void search_progress::set_progress(const progress_info &info,
-                                         bool force)
+      void search_progress::set_progress(const progress_info &info)
       {
-        if(force)
-          {
-            display->set_progress(info, force);
-            return;
-          }
-
         // This is why the throttling happens at this layer rather than
         // below: we can avoid some expensive string formatting with an
         // up-front check.
@@ -86,15 +79,14 @@ namespace aptitude
         switch(info.get_type())
           {
           case progress_type_none:
-            display->set_progress(info, false);
+            display->set_progress(info);
             break;
 
           case progress_type_pulse:
             display->set_progress(progress_info::pulse( (format("%s: %s")
                                                          % pattern
                                                          % info.get_progress_status())
-                                                        .str()),
-                                       false);
+                                                        .str()));
             break;
 
           case progress_type_bar:
@@ -102,8 +94,7 @@ namespace aptitude
                                                      (format("%s: %s")
                                                       % pattern
                                                       % info.get_progress_status())
-                                                     .str()),
-                                       false);
+                                                     .str()));
             break;
           }
 
