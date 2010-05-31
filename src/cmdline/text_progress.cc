@@ -21,12 +21,13 @@
 // Local includes:
 #include "text_progress.h"
 
-#include "transient_message.h"
+#include "cmdline_progress_display.h"
 
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
+#include <generic/util/progress_info.h>
 
 
 // System includes:
@@ -41,6 +42,7 @@
 
 namespace cw = cwidget;
 
+using aptitude::util::progress_info;
 using boost::format;
 using boost::make_shared;
 using boost::shared_ptr;
@@ -63,13 +65,13 @@ namespace aptitude
         // indicator when the operation finishes.
         std::string last_op;
 
-        shared_ptr<transient_message> message;
+        shared_ptr<progress_display> display;
 
       public:
         text_progress(bool _use_tty_decorations,
-                      const shared_ptr<transient_message> &_message)
+                      const shared_ptr<progress_display> &_display)
           : use_tty_decorations(_use_tty_decorations),
-            message(_message)
+            display(_display)
         {
         }
 
@@ -84,10 +86,13 @@ namespace aptitude
           {
             if(!last_op.empty())
               {
-                message->set_text(L"");
+                display->set_progress(progress_info::none());
 
                 if(_error->PendingError() == true)
-                  std::cout << (format(_("%s... Error!")) % last_op) << std::endl;
+                  // ForTranslators: the text between [] should be
+                  // exactly 4 character cells wide; "ERR" is short
+                  // for "ERROR".
+                  std::cout << (format(_("[ ERR] %s")) % last_op) << std::endl;
               }
           }
         else if(!last_op.empty())
@@ -114,13 +119,9 @@ namespace aptitude
               }
             else
               {
-                int percent_int = (int)Percent;
-                if(percent_int < 0)
-                  percent_int = 0;
-                if(percent_int > 100)
-                  percent_int = 100;
+                progress_info info = progress_info::bar(Percent, Op);
+                display->set_progress(info);
 
-                message->set_text(transcode((format("%s... %d%%") % Op % percent_int).str()));
                 last_op = Op;
               }
           }
@@ -129,7 +130,7 @@ namespace aptitude
 
     shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const shared_ptr<transient_message> &msg)
+                       const shared_ptr<progress_display> &display)
     {
       bool hide_tty_decorations = false;
       bool hidden = false;
@@ -144,7 +145,7 @@ namespace aptitude
       if(hidden)
         return make_shared<OpProgress>();
       else
-        return make_shared<text_progress>(!hide_tty_decorations, msg);
+        return make_shared<text_progress>(!hide_tty_decorations, display);
     }
 
     shared_ptr<OpProgress>
@@ -153,7 +154,7 @@ namespace aptitude
                        const shared_ptr<terminal_locale> &term_locale)
     {
       return make_text_progress(require_tty_decorations,
-                                create_transient_message(term, term_locale));
+                                create_progress_display(term, term_locale));
     }
   }
 }
