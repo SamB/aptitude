@@ -20,26 +20,30 @@
 #ifndef APTITUDE_CMDLINE_SEARCH_PROGRESS_H
 #define APTITUDE_CMDLINE_SEARCH_PROGRESS_H
 
-#include <string>
-
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
 {
-  namespace util
-  {
-    class progress_info;
-  }
-
   namespace cmdline
   {
     class progress_display;
     class progress_throttle;
 
-    void search_progress(const aptitude::util::progress_info &info,
-                         const boost::shared_ptr<progress_display> &progress_msg,
-                         const boost::shared_ptr<progress_throttle> &throttle,
-                         const std::string &pattern);
+    /** \brief Create a progress-display object specialized for
+     *  showing the progress of a search.
+     *
+     *  \param pattern  The search pattern that is currently being
+     *                  processed; used to generate messages.
+     *
+     *  \param display  Used to show progress messages from the new object.
+     *
+     *  \param throttle Used to determine when the new object should
+     *                  display messages.
+     */
+    boost::shared_ptr<progress_display>
+    create_search_progress(const std::string &pattern,
+                           const boost::shared_ptr<progress_display> &display,
+                           const boost::shared_ptr<progress_throttle> &throttle);
   }
 }
 

@@ -69,7 +69,6 @@ using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::progress_display;
 using aptitude::cmdline::progress_throttle;
-using aptitude::cmdline::search_progress;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
 using aptitude::matching::serialize_pattern;
@@ -109,6 +108,11 @@ namespace
     for(std::vector<ref_ptr<pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
+        const shared_ptr<progress_display> search_progress =
+          create_search_progress(serialize_pattern(*pIt),
+                                 search_progress_display,
+                                 search_progress_throttle);
+
         // Q: should I just wrap an ?or around them all?
         aptitude::matching::search(*pIt,
                                    search_info,
@@ -116,10 +120,9 @@ namespace
                                    *apt_cache_file,
                                    *apt_package_records,
                                    debug,
-                                   sigc::bind(sigc::ptr_fun(&search_progress),
-                                              search_progress_display,
-                                              search_progress_throttle,
-                                              serialize_pattern(*pIt)));
+                                   sigc::bind(sigc::mem_fun(*search_progress,
+                                                            &progress_display::set_progress),
+                                              false));
       }
 
     search_progress_display->set_progress(progress_info::none(), true);

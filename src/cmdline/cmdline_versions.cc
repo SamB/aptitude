@@ -62,10 +62,7 @@ using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
 using aptitude::cmdline::progress_display;
-using aptitude::cmdline::progress_display;
 using aptitude::cmdline::progress_throttle;
-using aptitude::cmdline::search_progress;
-using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
@@ -267,6 +264,11 @@ namespace
     for(std::vector<cw::util::ref_ptr<m::pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
+        const shared_ptr<progress_display> search_progress =
+          create_search_progress(serialize_pattern(*pIt),
+                                 search_progress_display,
+                                 search_progress_throttle);
+
         std::size_t output_size = output.size();
 
         // Q: should I just wrap an ?or around them all?
@@ -276,10 +278,9 @@ namespace
                                             *apt_cache_file,
                                             *apt_package_records,
                                             debug,
-                                            sigc::bind(sigc::ptr_fun(&search_progress),
-                                                       search_progress_display,
-                                                       search_progress_throttle,
-                                                       serialize_pattern(*pIt)));
+                                            sigc::bind(sigc::mem_fun(search_progress.get(),
+                                                                     &progress_display::set_progress),
+                                                       false));
 
         // Warn the user if an exact name pattern didn't produce a
         // result.

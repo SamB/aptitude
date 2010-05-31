@@ -28,6 +28,7 @@
 
 
 #include <boost/format.hpp>
+#include <boost/make_shared.hpp>
 
 #include <cwidget/generic/util/ref_ptr.h>
 
@@ -36,6 +37,7 @@ using aptitude::util::progress_type_bar;
 using aptitude::util::progress_type_none;
 using aptitude::util::progress_type_pulse;
 using boost::format;
+using boost::make_shared;
 using boost::shared_ptr;
 using cwidget::util::ref_ptr;
 
@@ -43,41 +45,80 @@ namespace aptitude
 {
   namespace cmdline
   {
-    void search_progress(const progress_info &info,
-                         const shared_ptr<progress_display> &progress_msg,
-                         const shared_ptr<progress_throttle> &throttle,
-                         const std::string &pattern)
+    namespace
     {
-      if(!throttle->update_required())
-        return;
+      class search_progress : public progress_display
+      {
+        shared_ptr<progress_display> display;
+        shared_ptr<progress_throttle> throttle;
+        std::string pattern;
 
-      // We interpret the progress_info to add a prefix to its message
-      // if it has one.
-      switch(info.get_type())
+      public:
+        search_progress(const shared_ptr<progress_display> &_display,
+                        const shared_ptr<progress_throttle> &_throttle,
+                        const std::string &_pattern)
+          : display(_display),
+            throttle(_throttle),
+            pattern(_pattern)
         {
-        case progress_type_none:
-          progress_msg->set_progress(info, false);
-          break;
+        }
 
-        case progress_type_pulse:
-          progress_msg->set_progress(progress_info::pulse( (format("%s: %s")
-                                                            % pattern
-                                                            % info.get_progress_status())
-                                                           .str()),
-                                     false);
-          break;
+        void set_progress(const progress_info &info, bool force);
+      };
 
-        case progress_type_bar:
-          progress_msg->set_progress(progress_info::bar(info.get_progress_fraction(),
-                                                        (format("%s: %s")
+      void search_progress::set_progress(const progress_info &info,
+                                         bool force)
+      {
+        if(force)
+          {
+            display->set_progress(info, force);
+            return;
+          }
+
+        // This is why the throttling happens at this layer rather than
+        // below: we can avoid some expensive string formatting with an
+        // up-front check.
+        if(!throttle->update_required())
+          return;
+
+        // We interpret the progress_info to add a prefix to its message
+        // if it has one.
+        switch(info.get_type())
+          {
+          case progress_type_none:
+            display->set_progress(info, false);
+            break;
+
+          case progress_type_pulse:
+            display->set_progress(progress_info::pulse( (format("%s: %s")
                                                          % pattern
                                                          % info.get_progress_status())
                                                         .str()),
-                                     false);
-          break;
-        }
+                                       false);
+            break;
 
-      throttle->reset_timer();
+          case progress_type_bar:
+            display->set_progress(progress_info::bar(info.get_progress_fraction(),
+                                                     (format("%s: %s")
+                                                      % pattern
+                                                      % info.get_progress_status())
+                                                     .str()),
+                                       false);
+            break;
+          }
+
+        throttle->reset_timer();
+      }
+    }
+
+    shared_ptr<progress_display>
+    create_search_progress(const std::string &pattern,
+                           const shared_ptr<progress_display> &display,
+                           const shared_ptr<progress_throttle> &throttle)
+    {
+      return make_shared<search_progress>(display,
+                                          throttle,
+                                          pattern);
     }
   }
 }
