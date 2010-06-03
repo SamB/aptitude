@@ -7,6 +7,7 @@
 #include "cmdline_common.h"
 #include "cmdline_progress.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 #include "text_progress.h"
 
 #include <aptitude.h>
@@ -26,12 +27,16 @@
 
 #include <stdio.h>
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 // Download stuff to the current directory
 int cmdline_download(int argc, char *argv[])
 {
+  shared_ptr<terminal> term = create_terminal();
+
   if(argc<=1)
     {
       printf(_("download: you must specify at least one package to download\n"));
@@ -40,7 +45,7 @@ int cmdline_download(int argc, char *argv[])
 
   _error->DumpErrors();
 
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
   apt_init(progress.get(), false);
 
   pkgSourceList list;
@@ -51,7 +56,7 @@ int cmdline_download(int argc, char *argv[])
       _error->DumpErrors();
       return -1;
     }
-  pkgAcquire fetcher(gen_cmdline_download_progress());
+  pkgAcquire fetcher(gen_cmdline_download_progress(term));
   string filenames[(*apt_cache_file)->Head().PackageCount];
   string default_release = aptcfg->Find("APT::Default-Release");
 

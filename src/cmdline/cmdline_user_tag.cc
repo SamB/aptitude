@@ -20,6 +20,7 @@
 #include "cmdline_user_tag.h"
 
 #include "cmdline_util.h"
+#include "terminal.h"
 #include "text_progress.h"
 
 #include <aptitude.h>
@@ -35,7 +36,9 @@
 #include <stdio.h>
 #include <string.h>
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 namespace aptitude
@@ -77,6 +80,8 @@ namespace aptitude
 
     int cmdline_user_tag(int argc, char *argv[], int quiet, int verbose)
     {
+      const shared_ptr<terminal> term = create_terminal();
+
       user_tag_action action = (user_tag_action)-1;
 
       if(strcmp(argv[0], "add-user-tag") == 0)
@@ -154,7 +159,7 @@ namespace aptitude
 	    }
 	}
 
-      shared_ptr<OpProgress> text_progress = make_text_progress(false);
+      shared_ptr<OpProgress> text_progress = make_text_progress(false, term);
       if(!(*apt_cache_file)->save_selection_list(*text_progress))
 	return 1;
 

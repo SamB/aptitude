@@ -29,6 +29,9 @@ namespace aptitude
 {
   namespace cmdline
   {
+    class terminal;
+    class transient_message;
+
     /** \brief Create a customized text spinner that's similar to
      *  apt's spinner, but "cleans up" after itself if stdout appears
      *  to be a terminal.
@@ -41,8 +44,23 @@ namespace aptitude
      *                                 spinner at all.  Useful for
      *                                 ensuring that the progress
      *                                 display is self-disposing.
+     *
+     *  \param message A transient_message object used to display
+     *                 output from this progress meter.
      */
-    boost::shared_ptr<OpProgress> make_text_progress(bool require_tty_decorations);
+    boost::shared_ptr<OpProgress>
+    make_text_progress(bool require_tty_decorations,
+                       const boost::shared_ptr<transient_message> &message);
+
+    /** \brief Convenience routine to create a default text-progress
+     *  object.
+     *
+     *  Equivalent to constructing a standard transient message on the
+     *  given terminal and passing it to make_text_progress().
+     */
+    boost::shared_ptr<OpProgress>
+    make_text_progress(bool require_tty_decorations,
+                       const boost::shared_ptr<terminal> &term);
   }
 }
 

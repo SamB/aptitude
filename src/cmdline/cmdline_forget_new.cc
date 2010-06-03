@@ -1,9 +1,10 @@
 // cmdline_forget_new.cc
 //
-//   Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #include "cmdline_forget_new.h"
 
+#include "terminal.h"
 #include "text_progress.h"
 
 #include <aptitude.h>
@@ -17,12 +18,16 @@
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 int cmdline_forget_new(int argc, char *argv[],
 		       const char *status_fname, bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   // NB: perhaps we should allow forgetting the new state of just
@@ -33,7 +38,7 @@ int cmdline_forget_new(int argc, char *argv[],
       return -1;
     }  
 
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
   apt_init(progress.get(), false, status_fname);
 

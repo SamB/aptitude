@@ -1,9 +1,11 @@
 // cmdline_show.h                                      -*-c++-*-
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #ifndef CMDLINE_SHOW_H
 #define CMDLINE_SHOW_H
+
+#include <boost/shared_ptr.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -19,6 +21,14 @@ namespace cwidget
   class fragment_contents;
 }
 
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+  }
+}
+
 /** \brief Render the description of a single version as found in a
  *  particular index file.
  *
@@ -31,7 +41,8 @@ cwidget::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 					 int verbose);
 
 /** Run the "show" operation on a single argument, presented as a string. */
-bool do_cmdline_show(std::string s, int verbose);
+bool do_cmdline_show(std::string s, int verbose,
+                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** The "show" user command. */
 int cmdline_show(int argc, char *argv[], int verbose);

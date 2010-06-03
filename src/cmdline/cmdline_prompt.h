@@ -7,6 +7,9 @@
 
 #include "cmdline_common.h"
 
+#include "terminal.h"
+
+#include <boost/shared_ptr.hpp>
 #include <cwidget/generic/util/exception.h>
 
 /** \file cmdline_prompt.h
@@ -51,6 +54,7 @@ public:
  *  \param arch_only if \b true, when the user asks to have build-dependencies
  *  for a package installed, only the architecture-dependent dependencies
  *  will be considered.
+ *  \param term   The terminal on which to display prompts and receive input.
  *
  *  \throws StdinEOFException
  */
@@ -68,13 +72,15 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool assume_yes,
 		       bool force_no_change,
 		       pkgPolicy &policy,
-		       bool arch_only);
+		       bool arch_only,
+                       const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 			  pkgset &to_hold, pkgset &to_remove,
 			  bool showvers, bool showdeps,
 			  bool showsize, bool showwhy,
-			  int verbose);
+			  int verbose,
+                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** Prompt for a single line of input from the user.
  *

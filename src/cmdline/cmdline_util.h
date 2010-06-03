@@ -1,6 +1,6 @@
 // cmdline_util.h                                   -*-c++-*-
 //
-//   Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #ifndef CMDLINE_UTIL_H
 #define CMDLINE_UTIL_H
@@ -22,11 +22,23 @@
 
 #include <apt-pkg/srcrecords.h>
 
+#include <boost/shared_ptr.hpp>
+
 /** \file cmdline_util.h
  */
 
-void cmdline_show_pkglist(pkgvector &items);
-void cmdline_show_stringlist(strvector &items);
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+  }
+}
+
+void cmdline_show_pkglist(pkgvector &items,
+                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+void cmdline_show_stringlist(strvector &items,
+                             const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** Finds a candidate version for the package using the given source.
  */
@@ -68,12 +80,15 @@ bool cmdline_parse_source(const string &input,
  *  \param m        the download process to run.
  *  \param verbose  the verbosity level; controls how many
  *                  stats are printed when the run completes.
+ *  \param term     the terminal object to use for printing
+ *                  the download progress.
  *
  *  \return the success status of the post-download commands, or
  *  failure if the process failed before they could be run.
  */
 download_manager::result cmdline_do_download(download_manager *m,
-					     int verbose);
+					     int verbose,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 namespace aptitude
 {

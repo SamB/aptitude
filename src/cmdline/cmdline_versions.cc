@@ -20,6 +20,7 @@
 #include "cmdline_versions.h"
 
 #include "cmdline_util.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 #include <pkg_ver_item.h>
@@ -42,11 +43,14 @@
 namespace cw = cwidget;
 namespace m = aptitude::matching;
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
 using aptitude::cmdline::search_result_column_parameters;
+using aptitude::cmdline::terminal;
 using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
+using boost::shared_ptr;
 
 namespace
 {
@@ -190,6 +194,7 @@ namespace
   void show_version_match_list(const std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > > &output,
                                const cw::config::column_definition_list &columns,
                                int format_width,
+                               const unsigned int screen_width,
                                bool disable_columns,
                                bool show_package_names)
   {
@@ -214,6 +219,7 @@ namespace
                          pkg_sortpolicy *sort_policy,
                          const cw::config::column_definition_list &columns,
                          int format_width,
+                         const unsigned int screen_width,
                          bool disable_columns,
                          group_by_option group_by,
                          show_package_names_option show_package_names,
@@ -405,11 +411,21 @@ namespace
             printf("%s\n", group_by_policy->format_header(it->first).c_str());
             // No need to sort the versions in this list since we
             // sorted them above.
-            show_version_match_list(*it->second, columns, format_width, disable_columns, do_show_package_names);
+            show_version_match_list(*it->second,
+                                    columns,
+                                    format_width,
+                                    screen_width,
+                                    disable_columns,
+                                    do_show_package_names);
           }
       }
     else
-      show_version_match_list(output, columns, format_width, disable_columns, do_show_package_names);
+      show_version_match_list(output,
+                              columns,
+                              format_width,
+                              screen_width,
+                              disable_columns,
+                              do_show_package_names);
 
     return return_value;
   }
@@ -471,6 +487,8 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      group_by_option group_by,
                      show_package_names_option show_package_names)
 {
+  shared_ptr<terminal> term = create_terminal();
+
   int real_width=-1;
 
   pkg_item::pkg_columnizer::setup_columns();
@@ -485,6 +503,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
 
   _error->DumpErrors();
 
+  const unsigned int screen_width = term->get_screen_width();
   if(!width.empty())
     {
       unsigned long tmp = screen_width;
@@ -556,6 +575,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             sort_policy,
                             *columns,
                             real_width,
+                            screen_width,
                             disable_columns,
                             group_by,
                             show_package_names,

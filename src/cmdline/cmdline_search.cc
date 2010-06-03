@@ -22,6 +22,7 @@
 
 #include "cmdline_common.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 #include <load_sortpolicy.h>
@@ -48,6 +49,9 @@
 using namespace std;
 namespace cw = cwidget;
 using aptitude::Loggers;
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
 using cwidget::util::ref_ptr;
 using cwidget::util::transcode;
 using namespace aptitude::matching;
@@ -59,6 +63,7 @@ namespace
                          pkg_sortpolicy *sort_policy,
                          const column_definition_list &columns,
                          int format_width,
+                         const unsigned int screen_width,
                          bool disable_columns,
                          bool debug)
   {
@@ -116,6 +121,8 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
 		   bool disable_columns, bool debug)
 {
+  shared_ptr<terminal> term = create_terminal();
+
   int real_width=-1;
 
   pkg_item::pkg_columnizer::setup_columns();
@@ -130,6 +137,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 
   _error->DumpErrors();
 
+  const unsigned int screen_width = term->get_screen_width();
   if(!width.empty())
     {
       unsigned long tmp=screen_width;
@@ -194,6 +202,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
                             s,
                             *columns,
                             real_width,
+                            screen_width,
                             disable_columns,
                             debug);
 }

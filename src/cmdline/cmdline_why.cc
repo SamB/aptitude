@@ -26,6 +26,7 @@
 #include "cmdline_common.h"
 #include "cmdline_show.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 
@@ -51,11 +52,19 @@
 
 #include <cwidget/fragment.h>
 
+#include <boost/make_shared.hpp>
+
 #include <pkg_item.h>
 
 #include <set>
 
 namespace cw = cwidget;
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::terminal;
+using aptitude::why::make_cmdline_why_callbacks;
+using aptitude::why::why_callbacks;
+using boost::make_shared;
+using boost::shared_ptr;
 using cwidget::fragf;
 using cwidget::fragment;
 
@@ -63,6 +72,22 @@ using namespace aptitude::matching;
 
 namespace
 {
+  cw::fragment *print_dep(pkgCache::DepIterator dep)
+  {
+    if(dep.TargetVer() != NULL)
+      return cw::fragf("%s %s %s (%s %s)",
+		   dep.ParentPkg().Name(),
+		   dep.DepType(),
+		   dep.TargetPkg().Name(),
+		   dep.CompType(),
+		   dep.TargetVer());
+    else
+      return cw::fragf("%s %s %s",
+		   dep.ParentPkg().Name(),
+		   dep.DepType(),
+		   dep.TargetPkg().Name());
+  }
+
   struct compare_pkgs
   {
     bool operator()(const pkgCache::PkgIterator &p1,
@@ -170,9 +195,10 @@ namespace aptitude
       // like it makes more sense to have the smarts in here)
       void generate_successors(std::deque<justification> &output,
 			       const search_params &params,
-			       int verbosity) const
+			       int verbosity,
+                               const shared_ptr<why_callbacks> &callbacks) const
       {
-	the_target.generate_successors(*this, output, params, verbosity);
+	the_target.generate_successors(*this, output, params, verbosity, callbacks);
       }
 
       // Build a successor of this node.
@@ -364,10 +390,11 @@ namespace aptitude
       return rval;
     }
 
-    cw::fragment *justification::description() const
+    cw::fragment *justification_description(const target &t,
+                                            const imm::set<action> &actions)
     {
       std::vector<cw::fragment *> rval;
-      rval.push_back(cw::fragf("%F\n", the_target.description()));
+      rval.push_back(cw::fragf("%F\n", t.description()));
       std::vector<cw::fragment *> col1_entries, col2_entries, col3_entries;
       for(imm::set<action>::const_iterator it = actions.begin();
 	  it != actions.end(); ++it)
@@ -389,21 +416,10 @@ namespace aptitude
       return cw::sequence_fragment(rval);
     }
 
-  cw::fragment *print_dep(pkgCache::DepIterator dep)
-  {
-    if(dep.TargetVer() != NULL)
-      return cw::fragf("%s %s %s (%s %s)",
-		   dep.ParentPkg().Name(),
-		   dep.DepType(),
-		   dep.TargetPkg().Name(),
-		   dep.CompType(),
-		   dep.TargetVer());
-    else
-      return cw::fragf("%s %s %s",
-		   dep.ParentPkg().Name(),
-		   dep.DepType(),
-		   dep.TargetPkg().Name());
-  }
+    cw::fragment *justification::description() const
+    {
+      return justification_description(the_target, actions);
+    }
 
   cw::fragment *target::description() const
   {
@@ -431,8 +447,11 @@ namespace aptitude
   void target::generate_successors(const justification &parent,
 				   std::deque<justification> &output,
 				   const search_params &params,
-				   int verbosity) const
+				   int verbosity,
+                                   const shared_ptr<why_callbacks> &callbacks) const
   {
+    why_callbacks * const callbacks_bare = callbacks.get();
+
     // The reverse successors of an install node are all the revdeps
     // of the package, minus conflicts and deps from versions that
     // aren't selected by the params, plus paths passing through
@@ -476,19 +495,16 @@ namespace aptitude
 	    }
 	}
 
-	if(verbosity > 1)
-	  {
-	    std::auto_ptr<cw::fragment> tmp(cw::fragf(_("    ++ Examining %F\n"), print_dep(dep)));
-	    std::cout << tmp->layout(screen_width, screen_width, cw::style());
-	  }
+	if(callbacks_bare != NULL)
+          callbacks_bare->examining_dep(dep);
 
 	if(is_remove())
 	  {
 	    // Remove, ProvidesRemove nodes take this.
 	    if(!is_conflict(dep->Type))
 	      {
-		if(verbosity > 1)
-		  std::cout << _("    ++   --> skipping, not a conflict\n");
+                if(callbacks_bare != NULL)
+                  callbacks_bare->skip_because_not_a_conflict(dep);
 		continue;
 	      }
 	  }
@@ -497,23 +513,23 @@ namespace aptitude
 	    // Install, ProvidesInstall nodes take this.
 	    if(is_conflict(dep->Type))
 	      {
-		if(verbosity > 1)
-		  std::cout << _("    ++   --> skipping conflict\n");
+                if(callbacks_bare != NULL)
+                  callbacks_bare->skip_because_is_a_conflict(dep);
 		continue;
 	      }
 	  }
 
 	if(!params.should_follow_dep(dep))
 	  {
-	    if(verbosity > 1)
-	      std::cout << _("    ++   --> skipping, not relevant according to params\n");
+            if(callbacks_bare != NULL)
+              callbacks_bare->skip_according_to_parameters(dep);
 	    continue;
 	  }
 
 	if(dep.ParentVer() != params.selected_version(dep.ParentPkg()))
 	  {
-	    if(verbosity > 1)
-	      std::cout << _("    ++   --> skipping, parent is not the selected version\n");
+            if(callbacks_bare != NULL)
+              callbacks_bare->skip_because_not_from_selected_version(dep);
 	    continue;
 	  }
 
@@ -559,8 +575,8 @@ namespace aptitude
 
 	    if(satisfied_by_current)
 	      {
-		if(verbosity > 1)
-		  std::cout << _("    ++   --> skipping, the dep is satisfied by the current version\n");
+                if(callbacks_bare != NULL)
+                  callbacks_bare->skip_because_satisfied_by_current_version(dep);
 		continue;
 	      }
 	  }
@@ -592,15 +608,15 @@ namespace aptitude
 				  dep->CompareOp,
 				  dep.TargetVer())))
 	  {
-	    if(verbosity > 1)
-	      std::cout << _("    ++   --> ENQUEUING\n");
+            if(callbacks_bare != NULL)
+              callbacks_bare->enqueued(dep.ParentPkg());
 	    target the_target(Install(dep.ParentPkg()));
 	    output.push_back(parent.successor(the_target, dep));
 	  }
 	else
 	  {
-	    if(verbosity > 1)
-	      std::cout << _("    ++   --> skipping, version check failed\n");
+            if(callbacks_bare != NULL)
+              callbacks_bare->skip_because_version_check_failed(dep);
 	  }
       }
 
@@ -617,10 +633,8 @@ namespace aptitude
 	  {
 	    for(pkgCache::PrvIterator prv = ver.ProvidesList(); !prv.end(); ++prv)
 	      {
-		if(verbosity > 1)
-		  std::cout << ssprintf(_("    ++   --> ENQUEUING %s Provides %s\n"),
-					prv.OwnerPkg().Name(),
-					prv.ParentPkg().Name());
+                if(callbacks_bare != NULL)
+                  callbacks_bare->enqueued(prv);
 		target the_target(Provide(prv.ParentPkg(), prv, is_remove()));
 		output.push_back(parent.successor(the_target, prv));
 	      }
@@ -734,10 +748,17 @@ namespace aptitude
      *                performed).  If no justification is found,
      *                output will be set to an empty list.
      *
+     *  \param callbacks  Callbacks to invoke as the search progresses,
+     *                    or \b null to invoke nothing.
+     *
      *  \return true if a justification was found, false otherwise.
      */
-    bool next(std::vector<action> &output)
+    bool next(std::vector<action> &output,
+              const boost::shared_ptr<why_callbacks> &callbacks)
     {
+      why_callbacks * const callbacks_bare = callbacks.get();
+
+
       std::vector<action> tmp;
       bool reached_leaf = false;
 
@@ -751,9 +772,8 @@ namespace aptitude
 
       if(first_iteration)
 	{
-	  if(verbosity > 1)
-	    std::cout << ssprintf(_("Starting search with parameters %ls\n"),
-				  params.description().c_str());
+          if(callbacks_bare != NULL)
+            callbacks_bare->begin(params);
 	  first_iteration = false;
 	}
 
@@ -767,15 +787,9 @@ namespace aptitude
 	  q.pop_front();
 
 
-	  if(verbosity > 1)
-	    {
-	      std::auto_ptr<cw::fragment> f(cw::fragf("Search for %F\n",
-					      front.description()));
-	      std::cout << f->layout(screen_width,
-				     screen_width,
-				     cw::style());
-	    }
-
+          if(callbacks_bare != NULL)
+            callbacks_bare->start_target(front.get_target(),
+                                         front.get_actions());
 
 	  // If we visited this package already, skip it.  Otherwise,
 	  // flag it as visited.
@@ -818,7 +832,10 @@ namespace aptitude
 	  else
 	    // Since this isn't a leaf, stick its successors on the
 	    // queue and carry on.
-	    front.generate_successors(q, params, verbosity);
+	    front.generate_successors(q,
+                                      params,
+                                      verbosity,
+                                      callbacks);
 	}
 
       output.swap(tmp);
@@ -831,6 +848,7 @@ namespace aptitude
 			    const std::vector<cwidget::util::ref_ptr<pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
+                            const boost::shared_ptr<why_callbacks> &callbacks,
 			    std::vector<std::vector<action> > &output)
     {
       justification_search search(leaves, target, params, 0);
@@ -840,7 +858,7 @@ namespace aptitude
 
       int i = 0;
 
-      while((i == 0 || find_all) && search.next(tmp))
+      while((i == 0 || find_all) && search.next(tmp, callbacks))
 	{
 	  rval.push_back(std::vector<action>());
 	  rval.back().swap(tmp);
@@ -860,6 +878,7 @@ namespace aptitude
 				 const target &goal,
 				 bool find_all,
 				 int verbosity,
+                                 const shared_ptr<why_callbacks> &callbacks,
 				 std::vector<std::vector<action> > &output)
     {
       std::vector<search_params> searches;
@@ -965,12 +984,12 @@ namespace aptitude
 
 	  justification_search search(leaves, goal, *it, verbosity);
 
-	  while(search.next(results))
+	  while(search.next(results, callbacks))
 	    {
 	      if(seen_results.find(results) != seen_results.end())
 		{
-		  if(verbosity > 1)
-		    std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
+                  if(callbacks.get() != NULL)
+                    callbacks->skip_because_already_seen(results);
 		}
 	      else
 		{
@@ -1073,11 +1092,135 @@ namespace aptitude
   }
 }
 
+namespace aptitude
+{
+  namespace why
+  {
+    why_callbacks::~why_callbacks()
+    {
+    }
+
+    namespace
+    {
+      class cmdline_why_callbacks : public why_callbacks
+      {
+        const shared_ptr<terminal> term;
+        const int verbosity;
+        const unsigned int screen_width;
+
+      public:
+        cmdline_why_callbacks(const shared_ptr<terminal> &_term,
+                              const int _verbosity)
+          : term(_term),
+            verbosity(_verbosity),
+            screen_width(_term->get_screen_width())
+        {
+        }
+
+        void examining_dep(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            {
+              std::auto_ptr<cw::fragment> tmp(cw::fragf(_("    ++ Examining %F\n"), print_dep(dep)));
+              std::cout << tmp->layout(screen_width, screen_width, cw::style());
+            }
+        }
+
+        void skip_because_not_a_conflict(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping, not a conflict\n");
+        }
+
+        void skip_because_is_a_conflict(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping conflict\n");
+        }
+
+        void skip_according_to_parameters(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping, not relevant according to params\n");
+        }
+
+        void skip_because_not_from_selected_version(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping, parent is not the selected version\n");
+        }
+
+        void skip_because_satisfied_by_current_version(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping, the dep is satisfied by the current version\n");
+        }
+
+        void skip_because_already_seen(const std::vector<action> &results)
+        {
+          if(verbosity > 1)
+            std::cout << ssprintf(_("Skipping this solution, I've already seen it.\n"));
+        }
+
+        void skip_because_version_check_failed(const pkgCache::DepIterator &dep)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> skipping, version check failed\n");
+        }
+
+        void enqueued(const pkgCache::PkgIterator &pkg)
+        {
+          if(verbosity > 1)
+            std::cout << _("    ++   --> ENQUEUING\n");
+        }
+
+        void enqueued(const pkgCache::PrvIterator &prv)
+        {
+          if(verbosity > 1)
+            std::cout << ssprintf(_("    ++   --> ENQUEUING %s Provides %s\n"),
+                                  const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+                                  const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
+        }
+
+        void begin(const search_params &params)
+        {
+          if(verbosity > 1)
+            std::cout << ssprintf(_("Starting search with parameters %ls\n"),
+                                  params.description().c_str());
+        }
+
+        void start_target(const target &target,
+                          const imm::set<action> &actions)
+        {
+          if(verbosity > 1)
+            {
+              std::auto_ptr<cw::fragment> desc(justification_description(target, actions));
+
+              std::auto_ptr<cw::fragment> f(cw::fragf("Search for %F\n",
+                                                      desc.release()));
+              std::cout << f->layout(screen_width,
+                                     screen_width,
+                                     cw::style());
+            }
+        }
+      };
+    }
+
+    shared_ptr<why_callbacks>
+    make_cmdline_why_callbacks(const int verbosity,
+                               const shared_ptr<terminal> &term)
+    {
+      return make_shared<cmdline_why_callbacks>(term, verbosity);
+    }
+  }
+}
+
 cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 		 const pkgCache::PkgIterator &root,
 		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
+                     const shared_ptr<why_callbacks> &callbacks,
 		 bool &success)
 {
   using namespace aptitude::why;
@@ -1090,6 +1233,7 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
   find_best_justification(leaves, goal,
 			  verbosity >= 1,
 			  verbosity,
+                          callbacks,
 			  solutions);
 
   if(solutions.empty())
@@ -1153,13 +1297,17 @@ int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 	   const pkgCache::PkgIterator &root,
 	   aptitude::why::roots_string_mode display_mode,
 	   int verbosity,
-	   bool root_is_removal)
+	   bool root_is_removal,
+           const shared_ptr<terminal> &term)
 {
   bool success = false;
+  const shared_ptr<why_callbacks> callbacks =
+    make_cmdline_why_callbacks(verbosity, term);
   std::auto_ptr<cw::fragment> f(do_why(leaves, root, display_mode,
 				       verbosity, root_is_removal,
-				       success));
-  update_screen_width();
+				       callbacks,
+                                       success));
+  const unsigned int screen_width = term->get_screen_width();
   // TODO: display each result as we find it.
   std::cout << f->layout(screen_width, screen_width, cw::style());
 
@@ -1171,10 +1319,17 @@ cw::fragment *do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves
 		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
+                     const shared_ptr<why_callbacks> &callbacks,
 		 bool &success)
 {
   const int verbosity = find_all ? 1 : 0;
-  return do_why(leaves, root, display_mode, verbosity, root_is_removal, success);
+  return do_why(leaves,
+                root,
+                display_mode,
+                verbosity,
+                root_is_removal,
+                callbacks,
+                success);
 }
 
 bool interpret_why_args(const std::vector<std::string> &args,
@@ -1212,6 +1367,7 @@ cw::fragment *do_why(const std::vector<std::string> &arguments,
 		     aptitude::why::roots_string_mode display_mode,
 		 int verbosity,
 		 bool root_is_removal,
+                     const shared_ptr<why_callbacks> &callbacks,
 		 bool &success)
 {
   success = false;
@@ -1225,7 +1381,9 @@ cw::fragment *do_why(const std::vector<std::string> &arguments,
     return cw::text_fragment(_("Unable to parse some match patterns."));
 
   cw::fragment *rval = do_why(matchers, pkg, display_mode,
-			      verbosity, root_is_removal, success);
+			      verbosity, root_is_removal,
+                              callbacks,
+                              success);
 
   return rval;
 }
@@ -1235,10 +1393,13 @@ cw::fragment *do_why(const std::vector<std::string> &leaves,
 		     aptitude::why::roots_string_mode display_mode,
 		 bool find_all,
 		 bool root_is_removal,
+                     const shared_ptr<why_callbacks> &callbacks,
 		 bool &success)
 {
   return do_why(leaves, root, display_mode, find_all ? 1 : 0,
-		root_is_removal, success);
+		root_is_removal,
+                callbacks,
+                success);
 }
 
 int cmdline_why(int argc, char *argv[],
@@ -1246,6 +1407,8 @@ int cmdline_why(int argc, char *argv[],
 		aptitude::why::roots_string_mode display_mode,
 		bool is_why_not)
 {
+  const shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   if(argc < 2)
@@ -1264,8 +1427,6 @@ int cmdline_why(int argc, char *argv[],
       _error->DumpErrors();
       return -1;
     }
-
-  update_screen_width();
 
   // Keep track of whether any argument couldn't be parsed, but
   // don't bail until we finish parsing, so we can display all
@@ -1307,7 +1468,12 @@ int cmdline_why(int argc, char *argv[],
   if(parsing_arguments_failed)
     rval = -1;
   else
-    rval = do_why(matchers, pkg, display_mode, verbosity, is_removal);
+    rval = do_why(matchers,
+                  pkg,
+                  display_mode,
+                  verbosity,
+                  is_removal,
+                  term);
 
   return rval;
 }

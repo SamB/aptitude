@@ -1,10 +1,11 @@
 // cmdline_clean.cc
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #include "cmdline_clean.h"
 
 #include "text_progress.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 
@@ -23,11 +24,15 @@
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 int cmdline_clean(int argc, char *argv[], bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   if(argc != 1)
@@ -36,7 +41,7 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
   apt_init(progress.get(), false);
 
@@ -110,6 +115,8 @@ public:
 
 int cmdline_autoclean(int argc, char *argv[], bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   if(argc != 1)
@@ -118,7 +125,7 @@ int cmdline_autoclean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
   apt_init(progress.get(), false);
 

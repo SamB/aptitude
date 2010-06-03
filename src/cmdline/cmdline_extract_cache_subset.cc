@@ -20,6 +20,7 @@
 #include "cmdline_extract_cache_subset.h"
 
 #include "cmdline_util.h"
+#include "terminal.h"
 #include "text_progress.h"
 
 #include <aptitude.h>
@@ -35,7 +36,10 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/progress.h>
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
 
 namespace aptitude
 {
@@ -49,9 +53,11 @@ namespace aptitude
 	  return -1;
 	}
 
+      const shared_ptr<terminal> term = create_terminal();
+
       std::string out_dir = argv[1];
 
-      boost::shared_ptr<OpProgress> progress = make_text_progress(false);
+      boost::shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
       apt_init(progress.get(), true);
       if(_error->PendingError())

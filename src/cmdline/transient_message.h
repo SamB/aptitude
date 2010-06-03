@@ -43,8 +43,10 @@ namespace aptitude
       virtual void set_text(const std::string &text) = 0;
     };
 
+    class terminal;
+
     boost::shared_ptr<transient_message>
-    create_transient_message();
+    create_transient_message(const boost::shared_ptr<terminal> &term);
   }
 }
 

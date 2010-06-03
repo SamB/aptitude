@@ -60,9 +60,10 @@ namespace aptitude
         shared_ptr<transient_message> message;
 
       public:
-        text_progress(bool _use_tty_decorations)
+        text_progress(bool _use_tty_decorations,
+                      const shared_ptr<transient_message> &_message)
           : use_tty_decorations(_use_tty_decorations),
-            message(create_transient_message())
+            message(_message)
         {
         }
 
@@ -121,7 +122,8 @@ namespace aptitude
     }
 
     shared_ptr<OpProgress>
-    make_text_progress(bool require_tty_decorations)
+    make_text_progress(bool require_tty_decorations,
+                       const shared_ptr<transient_message> &msg)
     {
       bool hide_tty_decorations = false;
       bool hidden = false;
@@ -136,7 +138,15 @@ namespace aptitude
       if(hidden)
         return make_shared<OpProgress>();
       else
-        return make_shared<text_progress>(!hide_tty_decorations);
+        return make_shared<text_progress>(!hide_tty_decorations, msg);
+    }
+
+    shared_ptr<OpProgress>
+    make_text_progress(bool require_tty_decorations,
+                       const shared_ptr<terminal> &term)
+    {
+      return make_text_progress(require_tty_decorations,
+                                create_transient_message(term));
     }
   }
 }

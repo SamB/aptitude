@@ -1,6 +1,6 @@
 // cmdline_do_action.cc
 //
-//  Copyright 2004 Daniel Burrows
+//  Copyright (C) 2004, 2010 Daniel Burrows
 
 #include "cmdline_do_action.h"
 
@@ -11,6 +11,7 @@
 #include "cmdline_show_broken.h"
 #include "cmdline_simulate.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 #include "text_progress.h"
 
 #include <generic/apt/apt.h>
@@ -28,7 +29,9 @@
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 namespace
@@ -77,6 +80,8 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool arch_only,
 		      bool queue_only, int verbose)
 {
+  shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   cmdline_pkgaction_type default_action=cmdline_install;
@@ -140,7 +145,7 @@ int cmdline_do_action(int argc, char *argv[],
   if(resolver_mode == resolver_mode_default)
     resolver_mode = resolver_mode_full;
 
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
 
@@ -302,7 +307,8 @@ int cmdline_do_action(int argc, char *argv[],
 	    {
 	      cmdline_applyaction(it->second, seen_virtual_packages, it->first,
 				  to_install, to_hold, to_remove, to_purge,
-				  verbose, policy, arch_only, pass > 0);
+				  verbose, policy, arch_only, pass > 0,
+                                  term);
 	    }
 	}
     }
@@ -310,7 +316,11 @@ int cmdline_do_action(int argc, char *argv[],
 
   if(resolver_mode == resolver_mode_safe)
     {
-      if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades, safe_resolver_show_actions))
+      if(!aptitude::cmdline::safe_resolve_deps(verbose,
+                                               no_new_installs,
+                                               no_new_upgrades,
+                                               safe_resolver_show_actions,
+                                               term))
 	{
 	  fprintf(stderr, _("Unable to safely resolve dependencies, try running with --full-resolver.\n"));
 	  return -1;
@@ -329,7 +339,8 @@ int cmdline_do_action(int argc, char *argv[],
 			    showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
-			    policy, arch_only);
+			    policy, arch_only,
+                            term);
   else if(queue_only)
     {
       aptitude::cmdline::apply_user_tags(user_tags);
@@ -349,7 +360,7 @@ int cmdline_do_action(int argc, char *argv[],
 			    showvers, showdeps, showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
-			    policy, arch_only))
+			    policy, arch_only, term))
 	{
 	  printf(_("Abort.\n"));
 	  return 0;
@@ -361,7 +372,7 @@ int cmdline_do_action(int argc, char *argv[],
 				 sigc::ptr_fun(&run_dpkg_directly));
 
       int rval =
-	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
+	(cmdline_do_download(&m, verbose, term) == download_manager::success ? 0 : -1);
 
       if(_error->PendingError())
 	rval = -1;

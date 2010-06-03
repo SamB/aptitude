@@ -1,6 +1,6 @@
 // cmdline_resolver.h                              -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -26,6 +26,7 @@
 //#include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/problemresolver/solution.h>
 
+#include <boost/shared_ptr.hpp>
 /** \file cmdline_resolver.h
  */
 
@@ -36,6 +37,8 @@ namespace aptitude
 {
   namespace cmdline
   {
+    class terminal;
+
     /** \brief Represents the termination state of the
      *  command-line resolver.
      */
@@ -66,6 +69,8 @@ namespace aptitude
  *  This is used by safe-upgrade to suppress the message on subsequent
  *  resolver runs.
  *
+ *  \param term  The terminal object to use for I/O.
+ *
  * \return the resolver manager's current solution; if it needs to be
  *          calculated first, run the calculation in the background
  *          and display a spinner in the foreground.
@@ -82,7 +87,8 @@ namespace aptitude
  *  \throw Exception if the background thread aborted with an exception.
  */
 
-generic_solution<aptitude_universe> calculate_current_solution(bool print_resolving_dependencies);
+generic_solution<aptitude_universe> calculate_current_solution(bool print_resolving_dependencies,
+                                                               const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** \brief Write the resolver state to a file as appropriate.
  *
@@ -127,7 +133,8 @@ cmdline_resolve_deps(pkgset &to_install,
 		     bool force_no_change,
 		     int verbose,
 		     pkgPolicy &policy,
-		     bool arch_only);
+		     bool arch_only,
+                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 namespace aptitude
 {
@@ -152,7 +159,8 @@ namespace aptitude
     bool safe_resolve_deps(int verbose,
 			   bool no_new_installs,
 			   bool no_new_upgrades,
-			   bool show_story);
+			   bool show_story,
+                           const boost::shared_ptr<terminal> &term);
   }
 }
 

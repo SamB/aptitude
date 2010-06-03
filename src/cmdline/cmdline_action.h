@@ -1,16 +1,25 @@
 // cmdline_action.h                                   -*-c++-*-
 //
-//   Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #ifndef CMDLINE_ACTION_H
 #define CMDLINE_ACTION_H
 
 #include "cmdline_common.h"
 
+#include <boost/shared_ptr.hpp>
 /** \file cmdline_action.h
  */
 
 class pkgPolicy;
+
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+  }
+}
 
 /// \todo The command-line state should probably be encapsulated
 /// as an object.
@@ -81,7 +90,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 const string &sourcestr,
 			 pkgPolicy &policy,
 			 bool arch_only,
-			 bool allow_auto);
+			 bool allow_auto,
+                         const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** \brief Apply the given command-line action to the given package,
  *  updating the command-line state appropriately.
@@ -141,7 +151,8 @@ bool cmdline_applyaction(string s,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
 			 pkgPolicy &policy, bool arch_only,
-			 bool allow_auto);
+			 bool allow_auto,
+                         const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** \brief Parses a list of actions and executes them.
  *
@@ -197,6 +208,7 @@ void cmdline_parse_action(string s,
 			  pkgset &to_remove, pkgset &to_purge,
 			  int verbose,
 			  pkgPolicy &policy, bool arch_only,
-			  bool allow_auto);
+			  bool allow_auto,
+                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 #endif // CMDLINE_ACTION_H

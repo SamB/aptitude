@@ -1060,10 +1060,6 @@ int main(int argc, char *argv[])
 	  // command-line.
 	  consume_errors.connect(sigc::mem_fun(_error, &GlobalError::DumpErrors));
 
-	  // Read the terminal width and set up its update function.
-	  signal(SIGWINCH, update_screen_width);
-	  update_screen_width();
-
 	  if(update_only || install_only || autoclean_only || clean_only)
 	    {
 	      fprintf(stderr, "%s\n",

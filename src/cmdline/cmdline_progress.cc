@@ -1,5 +1,6 @@
 #include "cmdline_progress.h"
 
+#include "terminal.h"
 #include <sys/ioctl.h>
 
 #include <generic/apt/acqprogress.h>
@@ -11,21 +12,8 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
-unsigned int screen_width=80;
-
-void update_screen_width(int foo=0)
-{
-  // Ripped from apt-get, which ripped it from GNU ls
-  winsize ws;
-
-  if (ioctl(1, TIOCGWINSZ, &ws) != -1 && ws.ws_col >= 5)
-
-    // NB: originally this set things to ws_col-1, which (a) seems
-    // wrong, and (b) produced incorrect results in everything except
-    // the progress bar.  I suspect the progress bar has off-by-one
-    // errors...
-    screen_width = ws.ws_col;
-}
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
 
 static void dl_complete(download_signal_log &manager,
 			AcqTextStatus *acqprogress)
@@ -33,8 +21,31 @@ static void dl_complete(download_signal_log &manager,
   delete acqprogress;
 }
 
-download_signal_log *gen_cmdline_download_progress()
+namespace
 {
+  void do_update_screen_width(pkgAcquire *,
+                              download_signal_log &,
+                              const sigc::slot1<void, bool> &,
+                              unsigned int &screen_width,
+                              const shared_ptr<terminal> &term)
+  {
+    screen_width = term->get_screen_width();
+    // Note that we don't call the continuation; we assume that
+    // another slot invoked by the same signal will do that.
+  }
+}
+
+download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal> &term)
+{
+  // The terminal expects a reference to a variable that will be
+  // updated in-place to contain the current screen width.
+  //
+  // \todo Instead of doing this, rewrite the progress display to use
+  // the terminal object directly -- will require either moving it
+  // into cmdline/ (preferred?) or moving the terminal into generic/.
+  static unsigned int screen_width;
+  screen_width = term->get_screen_width();
+
   download_signal_log *m=new download_signal_log;
 
   AcqTextStatus *acqprogress=new AcqTextStatus(screen_width, aptcfg->FindI("Quiet", 0));
@@ -44,6 +55,9 @@ download_signal_log *gen_cmdline_download_progress()
   m->Fetch_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Fetch));
   m->Done_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Done));
   m->Fail_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Fail));
+  m->Pulse_sig.connect(sigc::bind(sigc::ptr_fun(&do_update_screen_width),
+                                  sigc::ref(screen_width),
+                                  term));
   m->Pulse_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Pulse));
   m->Start_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Start));
   m->Stop_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Stop));

@@ -1,6 +1,6 @@
 // cmdline_util.cc
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #include "cmdline_util.h"
 
@@ -8,6 +8,7 @@
 #include "cmdline_progress.h"
 #include "cmdline_show.h" // For operator<<
 #include "text_progress.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 #include <ui.h>
@@ -40,6 +41,7 @@
 namespace cw = cwidget;
 
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 
 namespace
@@ -86,8 +88,11 @@ void ui_solution_screen()
   exit(0);
 }
 
-void cmdline_show_stringlist(strvector &items)
+void cmdline_show_stringlist(strvector &items,
+                             const shared_ptr<terminal> &term)
 {
+  const unsigned int screen_width = term->get_screen_width();
+
   int loc=2;
 
   printf("  ");
@@ -107,14 +112,15 @@ void cmdline_show_stringlist(strvector &items)
   printf("\n");
 }
 
-void cmdline_show_pkglist(pkgvector &items)
+void cmdline_show_pkglist(pkgvector &items,
+                          const shared_ptr<terminal> &term)
 {
   strvector tmp;
 
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
     tmp.push_back(i->Name());
 
-  cmdline_show_stringlist(tmp);
+  cmdline_show_stringlist(tmp, term);
 }
 
 pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
@@ -292,7 +298,8 @@ namespace
 
   void show_stats_change(stats initial, stats final,
 			 bool show_all,
-			 bool show_unchanged)
+			 bool show_unchanged,
+                         const shared_ptr<terminal> &term)
   {
     using cw::fragf;
     using cw::util::ssprintf;
@@ -377,7 +384,7 @@ namespace
       {
 	cw::fragment *f = join_fragments(output_fragments, L"\n");
 
-	update_screen_width();
+        const unsigned int screen_width = term->get_screen_width();
 	std::cout << f->layout(screen_width, screen_width, cw::style());
 	delete f;
       }
@@ -394,10 +401,11 @@ namespace
 }
 
 download_manager::result cmdline_do_download(download_manager *m,
-					     int verbose)
+					     int verbose,
+                                             const shared_ptr<terminal> &term)
 {
   stats initial_stats(0, 0, 0, std::set<std::string>());
-  shared_ptr<OpProgress> progress = make_text_progress(false);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term);
 
   if(aptcfg->FindI("Quiet", 0) == 0)
     {
@@ -411,7 +419,7 @@ download_manager::result cmdline_do_download(download_manager *m,
       initial_stats = compute_apt_stats();
     }
 
-  std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress());
+  std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress(term));
 
   // Dump errors here because prepare() might check for pending errors
   // and think something failed.
@@ -438,7 +446,8 @@ download_manager::result cmdline_do_download(download_manager *m,
       apt_load_cache(&tmpProgress, false, NULL);
       final_stats = compute_apt_stats();
       show_stats_change(initial_stats, final_stats,
-			verbose >= 1, verbose >= 2);
+			verbose >= 1, verbose >= 2,
+                        term);
     }
 
   return finish_res;

@@ -19,6 +19,8 @@
 
 #include "cmdline_util.h"
 
+#include "terminal.h"
+
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
@@ -29,6 +31,11 @@
 
 #include <stdio.h>
 
+
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
+
 void print_autoclean_msg()
 {
   printf(_("Deleting obsolete downloaded files\n"));
@@ -36,6 +43,8 @@ void print_autoclean_msg()
 
 int cmdline_update(int argc, char *argv[], int verbose)
 {
+  shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   if(argc!=1)
@@ -52,7 +61,7 @@ int cmdline_update(int argc, char *argv[], int verbose)
   download_update_manager m;
   m.pre_autoclean_hook.connect(sigc::ptr_fun(print_autoclean_msg));
   int rval =
-    (cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
+    (cmdline_do_download(&m, verbose, term) == download_manager::success ? 0 : -1);
 
   if(_error->PendingError())
     rval = -1;

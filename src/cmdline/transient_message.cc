@@ -17,10 +17,15 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "transient_message.h"
 
 #include "cmdline_common.h"
+#include "terminal.h"
 
+
+// System includes:
 #include <boost/make_shared.hpp>
 
 #include <cwidget/generic/util/transcode.h>
@@ -51,9 +56,18 @@ namespace aptitude
         // The last string we displayed.
         std::string last_line;
 
+        // The terminal used to output text.
+        shared_ptr<terminal> term;
+
         void clear_last_line();
 
       public:
+        transient_message_impl(const shared_ptr<terminal> &_term)
+          : last_line_len(0),
+            term(_term)
+        {
+        }
+
         void set_text(const std::string &line);
       };
 
@@ -75,7 +89,7 @@ namespace aptitude
           // do.
           return;
 
-        update_screen_width();
+        const unsigned int screen_width = term->get_screen_width();
 
 
         // Display the message on a single line of the terminal.
@@ -85,14 +99,14 @@ namespace aptitude
         // possible to do that in a sane way?
         const std::wstring line_w = transcode(line);
         std::wstring::const_iterator display_end = line_w.begin();
-        int display_width = 0;
+        unsigned int display_width = 0;
         {
           while(display_end != line_w.end() && display_width < screen_width)
             {
               const wchar_t next = *display_end;
               const int next_width = wcwidth(next);
 
-              if(next_width > screen_width)
+              if(static_cast<unsigned int>(next_width) > screen_width)
                 break;
 
               ++display_end;
@@ -108,9 +122,10 @@ namespace aptitude
       }
     }
 
-    shared_ptr<transient_message> create_transient_message()
+    shared_ptr<transient_message>
+    create_transient_message(const shared_ptr<terminal> &term)
     {
-      return make_shared<transient_message_impl>();
+      return make_shared<transient_message_impl>(term);
     }
   }
 }

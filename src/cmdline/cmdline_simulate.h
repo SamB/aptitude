@@ -1,16 +1,26 @@
 // cmdline_simulate.h               -*-c++-*-
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
 
 #ifndef CMDLINE_SIMULATE_H
 #define CMDLINE_SIMULATE_H
 
 #include "cmdline_common.h"
 
+#include <boost/shared_ptr.hpp>
+
 /** \file cmdline_simulate.h
  */
 
 class pkgPolicy;
+
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+  }
+}
 
 /** Simulate an install run.  to_install and friends are meant to be
  *  the sets the user explicitly selected (so the prompt can be
@@ -44,7 +54,8 @@ int cmdline_simulate(bool as_upgrade,
 		     bool showsize, bool showwhy,
 		     bool always_prompt, int verbose,
 		     bool assume_yes, bool force_no_change,
-		     pkgPolicy &policy, bool arch_only);
+		     pkgPolicy &policy, bool arch_only,
+                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 
 #endif // CMDLINE_SIMULATE_H

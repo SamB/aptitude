@@ -1,6 +1,6 @@
 // cmdline_spinner.cc                               -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -20,11 +20,18 @@
 #include "cmdline_spinner.h"
 
 #include "cmdline_common.h"
+#include "terminal.h"
 
 #include <iostream>
 
-cmdline_spinner::cmdline_spinner(int _quiet_level)
-  : count(0), quiet_level(_quiet_level)
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
+
+cmdline_spinner::cmdline_spinner(int _quiet_level,
+                                 const shared_ptr<terminal> &_term)
+  : count(0),
+    quiet_level(_quiet_level),
+    term(_term)
 {
 }
 
@@ -50,7 +57,7 @@ void cmdline_spinner::display() const
   if(quiet_level > 0)
     return;
 
-  update_screen_width();
+  const unsigned int screen_width = term->get_screen_width();
 
   // Build the string to output.
   std::string out(msg, 0, screen_width - 2);
