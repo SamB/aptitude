@@ -86,6 +86,10 @@ namespace aptitude
 
       /** \brief Retrieve the current screen width.
        *
+       *  This might make system calls and return a different result
+       *  each time, so don't call it in a tight loop -- cache the
+       *  value up-front.
+       *
        *  A default value is returned if the output doesn't appear to
        *  be a tty.
        */
