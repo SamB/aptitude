@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_show.h"
 
 #include <aptitude.h>
@@ -33,6 +35,8 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
+
+// System includes:
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
 

@@ -17,11 +17,14 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "cmdline_spinner.h"
 
 #include "cmdline_common.h"
 #include "terminal.h"
 
+
+// System includes:
 #include <iostream>
 
 using aptitude::cmdline::terminal;

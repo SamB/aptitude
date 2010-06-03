@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_clean.h"
 
 #include "text_progress.h"
@@ -27,6 +29,8 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
+
+// System includes:
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/error.h>

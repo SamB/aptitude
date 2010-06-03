@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_simulate.h"
 
 #include "cmdline_common.h"
@@ -27,6 +29,8 @@
 
 #include <generic/apt/apt.h>
 
+
+// System includes:
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
 

@@ -18,6 +18,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_search.h"
 
 #include "cmdline_common.h"
@@ -39,12 +41,14 @@
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
 
+
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
-#include <algorithm>
-
 #include <boost/scoped_ptr.hpp>
+
+#include <algorithm>
 
 using namespace std;
 namespace cw = cwidget;

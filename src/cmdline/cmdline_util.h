@@ -20,24 +20,27 @@
 #ifndef CMDLINE_UTIL_H
 #define CMDLINE_UTIL_H
 
+// Local includes:
 #include "cmdline_common.h"
 
 #include <pkg_sortpolicy.h>
-
-// Ew: for column_definition_list.
-#include <cwidget/config/column_definition.h>
-#include <cwidget/generic/util/ref_ptr.h>
 
 // For download_manager::result
 #include <generic/apt/download_manager.h>
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/match.h> // For structural_match.
 
-#include <string>
 
+// System includes:
 #include <apt-pkg/srcrecords.h>
 
 #include <boost/shared_ptr.hpp>
+
+// Ew: for column_definition_list.
+#include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/ref_ptr.h>
+
+#include <string>
 
 /** \file cmdline_util.h
  */

@@ -17,16 +17,20 @@
 // along with this program; see the file COPYING.  If not, write to
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
+
+
+// Local includes:
 #include "cmdline_progress.h"
 
 #include "terminal.h"
-#include <sys/ioctl.h>
 
 #include <generic/apt/acqprogress.h>
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
 
+
+// System includes:
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>

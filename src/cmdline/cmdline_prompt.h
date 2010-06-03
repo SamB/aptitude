@@ -20,11 +20,14 @@
 #ifndef CMDLINE_PROMPT_H
 #define CMDLINE_PROMPT_H
 
+// Local includes:
 #include "cmdline_common.h"
 
 #include "terminal.h"
 
+// System includes:
 #include <boost/shared_ptr.hpp>
+
 #include <cwidget/generic/util/exception.h>
 
 /** \file cmdline_prompt.h

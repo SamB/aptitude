@@ -21,6 +21,8 @@
 // downgrade it to a non-error.
 #pragma GCC diagnostic warning "-Wuninitialized"
 
+
+// Local includes:
 #include "cmdline_why.h"
 
 #include "cmdline_common.h"
@@ -29,18 +31,9 @@
 #include "terminal.h"
 
 #include <aptitude.h>
-
+#include <pkg_item.h>
 #include <pkg_ver_item.h> // For column formats.
 #include <solution_fragment.h> // For dep_targets()
-
-#include <algorithm>
-#include <deque>
-
-#include <apt-pkg/depcache.h>
-#include <apt-pkg/error.h>
-#include <apt-pkg/pkgcache.h>
-#include <apt-pkg/pkgsystem.h>
-#include <apt-pkg/version.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/matching/match.h>
@@ -50,12 +43,19 @@
 #include <generic/util/immset.h>
 #include <generic/util/util.h>
 
-#include <cwidget/fragment.h>
+// System includes:
+#include <apt-pkg/depcache.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/pkgcache.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/version.h>
 
 #include <boost/make_shared.hpp>
 
-#include <pkg_item.h>
+#include <cwidget/fragment.h>
 
+#include <algorithm>
+#include <deque>
 #include <set>
 
 namespace cw = cwidget;

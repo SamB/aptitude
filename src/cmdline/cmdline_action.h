@@ -20,9 +20,14 @@
 #ifndef CMDLINE_ACTION_H
 #define CMDLINE_ACTION_H
 
+// Local includes:
 #include "cmdline_common.h"
 
+
+// System includes:
 #include <boost/shared_ptr.hpp>
+
+
 /** \file cmdline_action.h
  */
 

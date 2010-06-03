@@ -20,13 +20,17 @@
 #ifndef CMDLINE_RESOLVER_H
 #define CMDLINE_RESOLVER_H
 
+// Local includes:
 #include "cmdline_common.h"
 
 // We need these two to declare get_current_solution().
 //#include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/problemresolver/solution.h>
 
+
+// System includes:
 #include <boost/shared_ptr.hpp>
+
 /** \file cmdline_resolver.h
  */
 

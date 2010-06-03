@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_versions.h"
 
 #include "cmdline_util.h"
@@ -26,9 +28,11 @@
 #include <pkg_ver_item.h>
 #include <load_sortpolicy.h>
 
-#include <cwidget/generic/util/ref_ptr.h>
-
 #include <generic/apt/matching/parse.h>
+
+
+// System includes:
+#include <apt-pkg/error.h>
 
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
@@ -36,9 +40,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/unordered_map.hpp>
 
-#include <vector>
+#include <cwidget/generic/util/ref_ptr.h>
 
-#include <apt-pkg/error.h>
+#include <vector>
 
 namespace cw = cwidget;
 namespace m = aptitude::matching;

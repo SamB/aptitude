@@ -17,6 +17,7 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "cmdline_changelog.h"
 
 #include "cmdline_common.h"
@@ -32,6 +33,7 @@
 #include <generic/apt/download_queue.h>
 #include <generic/apt/pkg_changelog.h>
 
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/metaindex.h>
 #include <apt-pkg/progress.h>

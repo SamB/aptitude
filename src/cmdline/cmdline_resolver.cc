@@ -17,6 +17,8 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_resolver.h"
 
 #include "cmdline_action.h"
@@ -31,19 +33,20 @@
 #include <aptitude.h>
 #include <solution_fragment.h>
 
-#include <boost/lexical_cast.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/ref.hpp>
-
 #include <generic/apt/aptcache.h>
 #include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/resolver_manager.h>
-
 #include <generic/problemresolver/exceptions.h>
 #include <generic/problemresolver/solution.h>
-
 #include <generic/util/util.h>
+
+
+// System includes:
+#include <boost/lexical_cast.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/ref.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/ssprintf.h>

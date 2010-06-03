@@ -19,6 +19,8 @@
 //
 //   Handles the preview and prompt that's displayed from the command-line.
 
+
+// Local includes:
 #include "cmdline_prompt.h"
 
 #include "cmdline_action.h"
@@ -41,15 +43,16 @@
 
 #include <generic/util/util.h>
 
-#include <cwidget/fragment.h>
-#include <cwidget/generic/util/transcode.h>
-#include <cwidget/toplevel.h>
-
+// System includes:
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/dpkgpm.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/strutl.h>
+
+#include <cwidget/fragment.h>
+#include <cwidget/generic/util/transcode.h>
+#include <cwidget/toplevel.h>
 
 #include <algorithm>
 

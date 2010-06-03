@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_util.h"
 
 #include "cmdline_common.h"
@@ -37,19 +39,21 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
-#include <cwidget/fragment.h>
-#include <cwidget/toplevel.h>
-#include <cwidget/generic/util/ssprintf.h>
 
-#include <sigc++/bind.h>
-#include <sigc++/functors/ptr_fun.h>
-
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/indexfile.h>
 #include <apt-pkg/metaindex.h>
 #include <apt-pkg/pkgsystem.h>
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/version.h>
+
+#include <cwidget/fragment.h>
+#include <cwidget/toplevel.h>
+#include <cwidget/generic/util/ssprintf.h>
+
+#include <sigc++/bind.h>
+#include <sigc++/functors/ptr_fun.h>
 
 #include <algorithm>
 

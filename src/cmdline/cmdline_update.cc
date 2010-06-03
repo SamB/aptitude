@@ -17,6 +17,7 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "cmdline_util.h"
 
 #include "terminal.h"
@@ -27,6 +28,8 @@
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_update_manager.h>
 
+
+// System includes:
 #include <apt-pkg/error.h>
 
 #include <stdio.h>

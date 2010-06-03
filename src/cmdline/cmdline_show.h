@@ -20,12 +20,13 @@
 #ifndef CMDLINE_SHOW_H
 #define CMDLINE_SHOW_H
 
+// System includes:
+#include <apt-pkg/pkgcache.h>
+
 #include <boost/shared_ptr.hpp>
 
 #include <iosfwd>
 #include <string>
-
-#include <apt-pkg/pkgcache.h>
 
 /** \file cmdline_show.h
  */

@@ -20,23 +20,26 @@
 #ifndef CMDLINE_WHY_H
 #define CMDLINE_WHY_H
 
-#include <deque>
-#include <string>
-#include <vector>
-
+// Local includes:
 #include <aptitude.h>
-
-#include <apt-pkg/depcache.h>
-#include <apt-pkg/error.h>
-#include <apt-pkg/pkgcache.h>
-
-#include <cwidget/fragment.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptcache.h>
 #include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
+
+
+// System includes:
+#include <apt-pkg/depcache.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/pkgcache.h>
+
+#include <cwidget/fragment.h>
+
+#include <deque>
+#include <string>
+#include <vector>
 
 /** \file cmdline_why.h
  */

@@ -17,6 +17,8 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_extract_cache_subset.h"
 
 #include "cmdline_util.h"
@@ -31,10 +33,12 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
-#include <stdio.h>
 
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/progress.h>
+
+#include <stdio.h>
 
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
