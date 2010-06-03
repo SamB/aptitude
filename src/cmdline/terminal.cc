@@ -45,6 +45,10 @@ namespace aptitude
   {
     namespace
     {
+      // \todo Consider using a signal handler to catch window resizes
+      // -- watch out for what happens if the curses UI starts up,
+      // we'll have to tear down the handler, and be sure to handle
+      // memory barriers.
       class terminal_impl : public terminal
       {
       public:
