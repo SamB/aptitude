@@ -1,3 +1,6 @@
+/** \file cmdline_progress.cc */    // -*-c++-*-
+
+
 // Copyright (C) 2010 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
