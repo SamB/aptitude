@@ -1,8 +1,7 @@
 Import('programs_env')
 
+# No sources because then scons tries to link them into the program!
 srcs = map(File, [
-    'terminal.cc',
-    'terminal.h',
     ])
 
 programs_env.Dist('Makefile.am', 'SConscript')

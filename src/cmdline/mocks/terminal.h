@@ -36,27 +36,16 @@ namespace aptitude
     {
       /** \brief A mock terminal object.
        *
-       *  This combines calls to write_text() and provides a mocked
-       *  output() method that is invoked when the terminal would
-       *  normally flush its output.  write_text() is also provided as
-       *  a mock, but normally client code will use output().
-       *
-       *  Calls to move_to_beginning_of_line() are rewritten to place
-       *  '\r' on the output stream instead.  This is done so that
-       *  client code can easily verify that the
-       *  move_to_beginning_of_line() occurs in the right place
-       *  relative to calls to write_to_text().
+       *  This object doesn't have any special behavior; it can be
+       *  used to test other mocks that extend the terminal's behavior
+       *  (such as the teletype mock).  To get a terminal that
+       *  interprets calls to write_text(), use
+       *  create_combining_terminal().
        */
       class terminal : public aptitude::cmdline::terminal
       {
-        // The implementation is hidden so that its machinery doesn't
-        // have to leak into the header.  It just sets the default
-        // behavior of write_text() to generate appropriate calls to
-        // output().
-        class impl;
-        friend boost::shared_ptr<terminal> create_terminal();
-
-        terminal();
+        class combining_impl;
+        friend boost::shared_ptr<terminal> create_combining_terminal();
 
       public:
         MOCK_METHOD0(output_is_a_terminal, bool());
@@ -73,10 +62,22 @@ namespace aptitude
         // If the terminal would flush, but there's no text to flush,
         // this isn't invoked.
         MOCK_METHOD1(output, void(const std::string &));
+
+        /** \brief Create a terminal object. */
+        static boost::shared_ptr<terminal> create();
       };
 
-      /** \brief Create a mock terminal. */
-      boost::shared_ptr<terminal> create_terminal();
+      /** \brief Create a mock terminal that interprets calls to
+       *  write_text() and flush(), invoking output() when
+       *  appropriate.
+       *
+       *  Calls to move_to_beginning_of_line() are rewritten to place
+       *  '\r' on the output stream instead.  This is done so that
+       *  client code can easily verify that the
+       *  move_to_beginning_of_line() occurs in the right place
+       *  relative to calls to write_to_text().
+       */
+      boost::shared_ptr<terminal> create_combining_terminal();
     }
   }
 }

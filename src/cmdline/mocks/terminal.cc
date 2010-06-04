@@ -36,11 +36,12 @@ namespace aptitude
   {
     namespace mocks
     {
-      terminal::terminal()
+      shared_ptr<terminal> terminal::create()
       {
+        return make_shared<terminal>();
       }
 
-      class terminal::impl : public terminal
+      class terminal::combining_impl : public terminal
       {
         std::string pending_writes;
 
@@ -75,13 +76,13 @@ namespace aptitude
         }
 
       public:
-        impl()
+        combining_impl()
         {
           ON_CALL(*this, write_text(_))
-            .WillByDefault(Invoke(this, &impl::do_write_text));
+            .WillByDefault(Invoke(this, &combining_impl::do_write_text));
 
           ON_CALL(*this, move_to_beginning_of_line())
-            .WillByDefault(Invoke(this, &impl::do_move_to_beginning_of_line));
+            .WillByDefault(Invoke(this, &combining_impl::do_move_to_beginning_of_line));
 
           EXPECT_CALL(*this, write_text(_))
             .Times(AnyNumber());
@@ -101,9 +102,9 @@ namespace aptitude
         }
       };
 
-      shared_ptr<terminal> create_terminal()
+      shared_ptr<terminal> create_combining_terminal()
       {
-        return make_shared<terminal::impl>();
+        return make_shared<terminal::combining_impl>();
       }
     }
   }

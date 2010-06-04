@@ -37,7 +37,7 @@ namespace
 
   public:
     TerminalMock()
-      : terminal(mocks::create_terminal())
+      : terminal(mocks::create_combining_terminal())
     {
     }
   };
