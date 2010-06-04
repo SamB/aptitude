@@ -58,7 +58,13 @@ src_filenames = [
     'transient_message.h',
     ]
 
-srcs = map(File, src_filenames)
+local_srcs = map(File, src_filenames)
+
+sub_srcs = SConscript(dirs = [
+    'mocks'
+    ])
+
+srcs = (local_srcs, sub_srcs)
 
 programs_env.Dist('Makefile.am', 'SConscript')
 

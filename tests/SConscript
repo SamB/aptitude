@@ -112,9 +112,12 @@ boost_test_extra_deps = [
 gtest_test_sources = [
     'gtest_test_main.cc',
     'test_logging.cc',
+    'test_terminal_mock.cc',
     ]
 
 gtest_test_extra_deps = [
+    '../src/cmdline/mocks/terminal.o',
+    '../src/cmdline/terminal.o',
     '../src/generic/util/logging.o',
     ]
 

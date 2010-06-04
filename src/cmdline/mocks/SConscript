@@ -1,0 +1,10 @@
+Import('programs_env')
+
+srcs = map(File, [
+    'terminal.cc',
+    'terminal.h',
+    ])
+
+programs_env.Dist('Makefile.am', 'SConscript')
+
+Return('srcs')

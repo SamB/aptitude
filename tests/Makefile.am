@@ -11,7 +11,10 @@ $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
-$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit \
+$(top_builddir)/src/generic/util/libgeneric-util.a \
+$(top_builddir)/src/cmdline/mocks/libcmdline-mocks.a \
+$(top_builddir)/src/cmdline/libcmdline.a \
+-lcppunit \
 $(BOOST_TEST_LDFLAGS) $(GMOCK_LDFLAGS)
 
 check_PROGRAMS = cppunit_test boost_test gtest_test
@@ -61,4 +64,5 @@ boost_test_SOURCES = \
 
 gtest_test_SOURCES = \
 	gtest_test_main.cc \
-	test_logging.cc
+	test_logging.cc \
+	test_terminal_mock.cc
