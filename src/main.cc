@@ -69,6 +69,7 @@
 #include <cmdline/cmdline_user_tag.h>
 #include <cmdline/cmdline_versions.h>
 #include <cmdline/cmdline_why.h>
+#include <cmdline/terminal.h>
 
 #include <sigc++/functors/ptr_fun.h>
 

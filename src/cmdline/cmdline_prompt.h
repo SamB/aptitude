@@ -35,15 +35,6 @@
 
 class pkgPolicy;
 
-/** Thrown when we get EOF on stdin.  Should never be thrown
- *  to the cwidget::toplevel.
- */
-class StdinEOFException : public cwidget::util::Exception
-{
-public:
-  std::string errmsg() const;
-};
-
 /** The main preview-prompt-adjust-preview loop for the command-line
  *  interface.  Displays a preview of what will happen, then allows
  *  the user to confirm, cancel, or perform a number of other actions.

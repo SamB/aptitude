@@ -24,8 +24,7 @@
 
 #include "terminal.h"
 
-#include "cmdline_prompt.h" // For StdinEOFException.  \todo move that
-                            // into terminal.h.
+#include <aptitude.h>
 
 // System includes:
 
@@ -38,6 +37,11 @@
 
 using boost::make_shared;
 using boost::shared_ptr;
+
+std::string StdinEOFException::errmsg() const
+{
+  return _("Unexpected end-of-file on standard input");
+}
 
 namespace aptitude
 {

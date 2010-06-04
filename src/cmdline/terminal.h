@@ -22,8 +22,21 @@
 #define APTITUDE_CMDLINE_SCREEN_WIDTH_H
 
 #include <boost/shared_ptr.hpp>
+#include <cwidget/generic/util/exception.h>
 
 #include <iosfwd>
+
+/** Thrown when we get EOF on stdin.  Should never be thrown
+ *  to the cwidget::toplevel.
+ *
+ *  \todo It would be nice if this was a std::exception; watch out for
+ *  places that just catch cw::util::Exception, though.
+ */
+class StdinEOFException : public cwidget::util::Exception
+{
+public:
+  std::string errmsg() const;
+};
 
 namespace aptitude
 {

@@ -64,11 +64,6 @@ using aptitude::why::make_cmdline_why_callbacks;
 using aptitude::why::why_callbacks;
 using boost::shared_ptr;
 
-string StdinEOFException::errmsg() const
-{
-  return _("Unexpected end-of-file on standard input");
-}
-
 struct fetchinfo
 {
   double FetchBytes, FetchPBytes, DebBytes;
