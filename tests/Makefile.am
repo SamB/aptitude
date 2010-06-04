@@ -14,11 +14,11 @@ $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
 $(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit \
 $(BOOST_TEST_LDFLAGS) $(GMOCK_LDFLAGS)
 
-check_PROGRAMS = cppunit_test boost_test
+check_PROGRAMS = cppunit_test boost_test gtest_test
 
 noinst_PROGRAMS = interactive_set_test
 
-TESTS = cppunit_test boost_test
+TESTS = cppunit_test boost_test gtest_test
 
 EXTRA_DIST = file_caches
 
@@ -58,3 +58,7 @@ boost_test_SOURCES = \
 	test_logging.cc \
 	test_search_input_controller.cc \
 	test_sqlite.cc
+
+gtest_test_SOURCES = \
+	gtest_test_main.cc \
+	test_logging.cc
