@@ -21,6 +21,7 @@
 #define APTITUDE_CMDLINE_MOCKS_TELETYPE_H
 
 // System includes:
+#include <boost/algorithm/string.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <gmock/gmock.h>
@@ -32,6 +33,20 @@ namespace aptitude
     namespace mocks
     {
       class terminal;
+
+      // Defined here because it's meant for use with this class.
+      MATCHER_P(StrTrimmedEq, str, "is equal after trimming to %(str)s")
+      {
+        // Support both C++ strings and C strings by instantiating a
+        // local string object:
+        std::string str_trimmed = str;
+        std::string arg_trimmed = arg;
+
+        boost::trim(str_trimmed);
+        boost::trim(arg_trimmed);
+
+        return str_trimmed == arg_trimmed;
+      }
 
       /** \brief An adapter to assist testing the output sent to a
        *  terminal in terms of its effect on a hypothetical line-based

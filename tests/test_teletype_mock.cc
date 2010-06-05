@@ -29,6 +29,7 @@
 
 namespace mocks = aptitude::cmdline::mocks;
 
+using aptitude::cmdline::mocks::StrTrimmedEq;
 using boost::shared_ptr;
 using testing::InSequence;
 using testing::Return;
@@ -162,4 +163,44 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
   term->output("12345");
   term->move_to_beginning_of_line();
   term->output("abcdefghij");
+}
+
+TEST(TrimmedEqTest, testTrimmedEqExact)
+{
+  EXPECT_THAT("abc", StrTrimmedEq("abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqFirstLeftPadded)
+{
+  EXPECT_THAT("  abc", StrTrimmedEq("abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqFirstRightPadded)
+{
+  EXPECT_THAT("abc  ", StrTrimmedEq("abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqFirstBothPadded)
+{
+  EXPECT_THAT("  abc  ", StrTrimmedEq("abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqSecondLeftPadded)
+{
+  EXPECT_THAT("abc", StrTrimmedEq("  abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqSecondRightPadded)
+{
+  EXPECT_THAT("abc", StrTrimmedEq("abc  "));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqSecondBothPadded)
+{
+  EXPECT_THAT("abc", StrTrimmedEq("  abc  "));
+}
+
+TEST(TrimmedEqTest, testTrimmedEqBothBothPadded)
+{
+  EXPECT_THAT(" abc  ", StrTrimmedEq("   abc    "));
 }
