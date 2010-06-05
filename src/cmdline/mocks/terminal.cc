@@ -60,6 +60,11 @@ namespace aptitude
           pending_writes.append(s, start, s.npos);
         }
 
+        void do_move_to_beginning_of_line()
+        {
+          do_write_text("\r");
+        }
+
         void do_flush()
         {
           if(!pending_writes.empty())
@@ -75,7 +80,13 @@ namespace aptitude
           ON_CALL(*this, write_text(_))
             .WillByDefault(Invoke(this, &impl::do_write_text));
 
+          ON_CALL(*this, move_to_beginning_of_line())
+            .WillByDefault(Invoke(this, &impl::do_move_to_beginning_of_line));
+
           EXPECT_CALL(*this, write_text(_))
+            .Times(AnyNumber());
+
+          EXPECT_CALL(*this, move_to_beginning_of_line())
             .Times(AnyNumber());
         }
 

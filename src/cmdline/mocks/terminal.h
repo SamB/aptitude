@@ -40,6 +40,12 @@ namespace aptitude
        *  output() method that is invoked when the terminal would
        *  normally flush its output.  write_text() is also provided as
        *  a mock, but normally client code will use output().
+       *
+       *  Calls to move_to_beginning_of_line() are rewritten to place
+       *  '\r' on the output stream instead.  This is done so that
+       *  client code can easily verify that the
+       *  move_to_beginning_of_line() occurs in the right place
+       *  relative to calls to write_to_text().
        */
       class terminal : public aptitude::cmdline::terminal
       {

@@ -70,6 +70,14 @@ TEST_F(TerminalMock, WritesMustBeFlushed)
   terminal->write_text("abc");
 }
 
+TEST_F(TerminalMock, MoveToBeginningOfLineMustBeFlushed)
+{
+  EXPECT_CALL(*terminal, output(_))
+    .Times(0);
+
+  terminal->move_to_beginning_of_line();
+}
+
 TEST_F(TerminalMock, WriteAndFlush)
 {
   {
@@ -80,6 +88,19 @@ TEST_F(TerminalMock, WriteAndFlush)
   }
 
   terminal->write_text("abc");
+  terminal->flush();
+}
+
+TEST_F(TerminalMock, MoveToBeginningOfLineAndFlush)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*terminal, output("\r"));
+    EXPECT_CALL(*terminal, flush());
+  }
+
+  terminal->move_to_beginning_of_line();
   terminal->flush();
 }
 
@@ -167,6 +188,21 @@ TEST_F(TerminalMock, FlushCombinesWrites)
   terminal->flush();
 }
 
+TEST_F(TerminalMock, FlushCombinesWritesWithMoveToBeginningOfLine)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*terminal, output("abc\rdef"));
+    EXPECT_CALL(*terminal, flush());
+  }
+
+  terminal->write_text("abc");
+  terminal->move_to_beginning_of_line();
+  terminal->write_text("def");
+  terminal->flush();
+}
+
 TEST_F(TerminalMock, NewlineCombinesWrites)
 {
   EXPECT_CALL(*terminal, flush())
@@ -178,6 +214,18 @@ TEST_F(TerminalMock, NewlineCombinesWrites)
   terminal->write_text("zy\n");
 }
 
+TEST_F(TerminalMock, newlineCombinesWritesWithMoveToBeginningOfLine)
+{
+  EXPECT_CALL(*terminal, output("abc\rdef\n"));
+  EXPECT_CALL(*terminal, flush())
+    .Times(0);
+
+  terminal->write_text("abc");
+  terminal->move_to_beginning_of_line();
+  terminal->write_text("def");
+  terminal->write_text("\n");
+}
+
 // Check that there's no weirdness when you need to combine and split
 // at the same time.
 TEST_F(TerminalMock, CombineAndSplit)
@@ -186,7 +234,7 @@ TEST_F(TerminalMock, CombineAndSplit)
     InSequence dummy;
 
     EXPECT_CALL(*terminal, output("ab\n"));
-    EXPECT_CALL(*terminal, output("defg\n"));
+    EXPECT_CALL(*terminal, output("de\rfg\n"));
     EXPECT_CALL(*terminal, output("hijklmn\n"));
     EXPECT_CALL(*terminal, output("op"));
     EXPECT_CALL(*terminal, flush());
@@ -194,6 +242,7 @@ TEST_F(TerminalMock, CombineAndSplit)
 
   terminal->write_text("a");
   terminal->write_text("b\nde");
+  terminal->move_to_beginning_of_line();
   terminal->write_text("fg\nhijk");
   terminal->write_text("lmn\nop");
   terminal->flush();
