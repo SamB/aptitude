@@ -74,10 +74,12 @@ namespace aptitude
 
       void transient_message_impl::clear_last_line()
       {
-        std::cout << '\r';
+        static const std::string blank(" ");
+
+        term->move_to_beginning_of_line();
         for(std::size_t i = 0; i < last_line_len; ++i)
-          std::cout << ' ';
-        std::cout << '\r';
+          term->write_text(blank);
+        term->move_to_beginning_of_line();
 
         last_line_len = 0;
       }
@@ -116,7 +118,8 @@ namespace aptitude
         const std::wstring display(line_w.begin(), display_end);
 
         clear_last_line();
-        std::cout << transcode(display) << std::flush;
+        term->write_text(transcode(display));
+        term->flush();
         last_line_len = display_width;
         last_line = line;
       }
