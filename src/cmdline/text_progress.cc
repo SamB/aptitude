@@ -18,16 +18,18 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "text_progress.h"
 
 #include "transient_message.h"
 
+#include <aptitude.h>
+
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
-#include <aptitude.h>
 
-
+// System includes:
 #include <apt-pkg/error.h>
 
 #include <boost/format.hpp>
