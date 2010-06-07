@@ -59,12 +59,17 @@ namespace aptitude
         // The terminal used to output text.
         shared_ptr<terminal> term;
 
+        // The locale to be used with that terminal.
+        shared_ptr<terminal_locale> term_locale;
+
         void clear_last_line();
 
       public:
-        transient_message_impl(const shared_ptr<terminal> &_term)
+        transient_message_impl(const shared_ptr<terminal> &_term,
+                               const shared_ptr<terminal_locale> &_term_locale)
           : last_line_len(0),
-            term(_term)
+            term(_term),
+            term_locale(_term_locale)
         {
         }
 
@@ -105,7 +110,7 @@ namespace aptitude
           while(display_end != line.end() && display_width < screen_width)
             {
               const wchar_t next = *display_end;
-              const int next_width = wcwidth(next);
+              const int next_width = term_locale->wcwidth(next);
 
               if(static_cast<unsigned int>(next_width) > screen_width)
                 break;
@@ -125,9 +130,10 @@ namespace aptitude
     }
 
     shared_ptr<transient_message>
-    create_transient_message(const shared_ptr<terminal> &term)
+    create_transient_message(const shared_ptr<terminal> &term,
+                             const shared_ptr<terminal_locale> &term_locale)
     {
-      return make_shared<transient_message_impl>(term);
+      return make_shared<transient_message_impl>(term, term_locale);
     }
   }
 }

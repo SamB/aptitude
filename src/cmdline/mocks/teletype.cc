@@ -37,19 +37,6 @@ namespace aptitude
   {
     namespace mocks
     {
-      namespace
-      {
-        // Convenience routine to treat negative widths as 0.
-        int safe_wcwidth(wchar_t c)
-        {
-          const int rval = wcwidth(c);
-          if(rval < 0)
-            return 0;
-          else
-            return rval;
-        }
-      }
-
       teletype::~teletype()
       {
       }
@@ -65,17 +52,32 @@ namespace aptitude
           unsigned int cursor_position;
 
           const shared_ptr<terminal> term;
+          const shared_ptr<terminal_locale> term_locale;
 
           void scroll_line();
 
           void handle_output(const std::wstring &output);
           void handle_move_to_beginning_of_line();
 
+          /** \brief Return the column width of the given character,
+           *  or 0 if it's not printable (instead of -1).
+           */
+          int safe_wcwidth(wchar_t c)
+          {
+            const int rval = term_locale->wcwidth(c);
+            if(rval < 0)
+              return 0;
+            else
+              return rval;
+          }
+
         public:
-          teletype_with_terminal(const shared_ptr<terminal> &_term)
+          teletype_with_terminal(const shared_ptr<terminal> &_term,
+                                 const shared_ptr<terminal_locale> &_term_locale)
             : cursor_idx(0),
               cursor_position(0),
-              term(_term)
+              term(_term),
+              term_locale(_term_locale)
           {
             ON_CALL(*term, output(_))
               .WillByDefault(Invoke(this, &teletype_with_terminal::handle_output));
@@ -228,9 +230,10 @@ namespace aptitude
       }
 
       shared_ptr<teletype>
-      create_teletype(const boost::shared_ptr<terminal> &term)
+      create_teletype(const boost::shared_ptr<terminal> &term,
+                      const boost::shared_ptr<terminal_locale> &term_locale)
       {
-        return make_shared<teletype_with_terminal>(term);
+        return make_shared<teletype_with_terminal>(term, term_locale);
       }
     }
   }

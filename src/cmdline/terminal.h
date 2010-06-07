@@ -109,10 +109,34 @@ namespace aptitude
       virtual unsigned int get_screen_width() = 0;
     };
 
+    /** \brief Locale functionality related to the terminal (thus,
+     *  primarily LC_CTYPE).
+     *
+     *  This is wrapped up so that the unit tests can verify the
+     *  code's output behavior without depending on the value of the
+     *  system locale or the set of locale definitions that are
+     *  installed on the system.
+     */
+    class terminal_locale
+    {
+    public:
+      virtual ~terminal_locale();
+
+      /** \brief Return the number of terminal columns occupied by a
+       *  wide character.
+       */
+      virtual int wcwidth(wchar_t ch) = 0;
+    };
+
     /** \brief Create a terminal object attached to the standard I/O
         streams.
      */
     boost::shared_ptr<terminal> create_terminal();
+
+    /** \brief Create a terminal locale object using the system locale
+     *  definitions.
+     */
+    boost::shared_ptr<terminal_locale> create_terminal_locale();
   }
 }
 

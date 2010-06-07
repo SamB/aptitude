@@ -149,10 +149,11 @@ namespace aptitude
 
     shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const shared_ptr<terminal> &term)
+                       const shared_ptr<terminal> &term,
+                       const shared_ptr<terminal_locale> &term_locale)
     {
       return make_text_progress(require_tty_decorations,
-                                create_transient_message(term));
+                                create_transient_message(term, term_locale));
     }
   }
 }

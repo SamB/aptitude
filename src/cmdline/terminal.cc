@@ -120,15 +120,35 @@ namespace aptitude
           // terminal size" and "read a tiny terminal size"?
           return 80;
       }
+
+      class terminal_locale_impl : public terminal_locale
+      {
+      public:
+        int wcwidth(wchar_t ch);
+      };
+
+      int terminal_locale_impl::wcwidth(wchar_t ch)
+      {
+        return ::wcwidth(ch);
+      }
     }
 
     terminal::~terminal()
     {
     }
 
+    terminal_locale::~terminal_locale()
+    {
+    }
+
     shared_ptr<terminal> create_terminal()
     {
       return make_shared<terminal_impl>();
+    }
+
+    shared_ptr<terminal_locale> create_terminal_locale()
+    {
+      return make_shared<terminal_locale_impl>();
     }
   }
 }

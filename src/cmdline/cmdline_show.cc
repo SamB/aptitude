@@ -52,8 +52,10 @@
 
 namespace cw = cwidget;
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 using cwidget::fragf;
 using cwidget::fragment;
@@ -626,10 +628,11 @@ bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
 int cmdline_show(int argc, char *argv[], int verbose)
 {
   shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
   _error->DumpErrors();
 
-  shared_ptr<OpProgress> progress = make_text_progress(true, term);
+  shared_ptr<OpProgress> progress = make_text_progress(true, term, term_locale);
   apt_init(progress.get(), false);
 
   if(_error->PendingError())

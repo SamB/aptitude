@@ -33,6 +33,7 @@ namespace aptitude
     namespace mocks
     {
       class terminal;
+      class terminal_locale;
 
       inline std::string make_str(const char *s)
       {
@@ -85,7 +86,8 @@ namespace aptitude
        *  to output() and flush(), so they don't generate errors.
        */
       boost::shared_ptr<teletype>
-      create_teletype(const boost::shared_ptr<terminal> &term);
+      create_teletype(const boost::shared_ptr<terminal> &term,
+                      const boost::shared_ptr<terminal_locale> &term_locale);
     }
   }
 }

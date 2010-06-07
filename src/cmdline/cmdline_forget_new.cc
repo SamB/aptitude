@@ -38,14 +38,17 @@
 using namespace std;
 
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 
 int cmdline_forget_new(int argc, char *argv[],
 		       const char *status_fname, bool simulate)
 {
   const shared_ptr<terminal> term = create_terminal();
+  const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
   _error->DumpErrors();
 
@@ -57,7 +60,7 @@ int cmdline_forget_new(int argc, char *argv[],
       return -1;
     }  
 
-  shared_ptr<OpProgress> progress = make_text_progress(false, term);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
   apt_init(progress.get(), false, status_fname);
 

@@ -39,8 +39,10 @@
 #include <string.h>
 
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 
 namespace aptitude
@@ -83,6 +85,7 @@ namespace aptitude
     int cmdline_user_tag(int argc, char *argv[], int quiet, int verbose)
     {
       const shared_ptr<terminal> term = create_terminal();
+      const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
       user_tag_action action = (user_tag_action)-1;
 
@@ -161,7 +164,7 @@ namespace aptitude
 	    }
 	}
 
-      shared_ptr<OpProgress> text_progress = make_text_progress(false, term);
+      shared_ptr<OpProgress> text_progress = make_text_progress(false, term, term_locale);
       if(!(*apt_cache_file)->save_selection_list(*text_progress))
 	return 1;
 

@@ -28,6 +28,11 @@
 
 #include <gmock/gmock.h>
 
+namespace boost
+{
+  template<typename T> boost::shared_ptr<T> make_shared();
+}
+
 namespace aptitude
 {
   namespace cmdline
@@ -65,6 +70,24 @@ namespace aptitude
 
         /** \brief Create a terminal object. */
         static boost::shared_ptr<terminal> create();
+      };
+
+      /** \brief A mock for the terminal locale routines.
+       *
+       *  By default, returns 1 from every call to wcwidth() and marks
+       *  those calls as expected.
+       */
+      class terminal_locale : public aptitude::cmdline::terminal_locale
+      {
+        friend boost::shared_ptr<terminal_locale>
+        boost::make_shared<terminal_locale>();
+
+        terminal_locale();
+
+      public:
+        MOCK_METHOD1(wcwidth, int(wchar_t));
+
+        static boost::shared_ptr<terminal_locale> create();
       };
 
       /** \brief Create a mock terminal that interprets calls to

@@ -61,6 +61,7 @@ namespace cw = cwidget;
 
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 
 namespace
@@ -421,10 +422,11 @@ namespace
 
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose,
-                                             const shared_ptr<terminal> &term)
+                                             const shared_ptr<terminal> &term,
+                                             const shared_ptr<terminal_locale> &term_locale)
 {
   stats initial_stats(0, 0, 0, std::set<std::string>());
-  shared_ptr<OpProgress> progress = make_text_progress(false, term);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
   if(aptcfg->FindI("Quiet", 0) == 0)
     {

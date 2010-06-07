@@ -50,6 +50,7 @@ namespace aptitude
   namespace cmdline
   {
     class terminal;
+    class terminal_locale;
   }
 }
 
@@ -100,13 +101,15 @@ bool cmdline_parse_source(const string &input,
  *                  stats are printed when the run completes.
  *  \param term     the terminal object to use for printing
  *                  the download progress.
+ *  \param term_locale  the locale used for output to the terminal.
  *
  *  \return the success status of the post-download commands, or
  *  failure if the process failed before they could be run.
  */
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose,
-                                             const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                                             const boost::shared_ptr<aptitude::cmdline::terminal> &term,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_locale> &term_locale);
 
 namespace aptitude
 {

@@ -30,6 +30,7 @@ namespace aptitude
   namespace cmdline
   {
     class terminal;
+    class terminal_locale;
     class transient_message;
 
     /** \brief Create a customized text spinner that's similar to
@@ -60,7 +61,8 @@ namespace aptitude
      */
     boost::shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const boost::shared_ptr<terminal> &term);
+                       const boost::shared_ptr<terminal> &term,
+                       const boost::shared_ptr<terminal_locale> &term_locale);
   }
 }
 

@@ -42,7 +42,10 @@ using testing::Test;
 
 namespace
 {
-  const wchar_t two_column_char = L'\uff01';
+  // Note that I use a character that is *never* multi-column under
+  // normal circumstances, to verify that the locale object is
+  // actually being used.
+  const wchar_t two_column_char = L'Z';
 
   struct TeletypeTest : public Test
   {
@@ -61,6 +64,7 @@ namespace
     std::string previous_lc_ctype;
 
     shared_ptr<mocks::terminal> term;
+    shared_ptr<mocks::terminal_locale> term_locale;
     shared_ptr<mocks::teletype> teletype;
 
     static std::string safe_string(const char *c)
@@ -88,31 +92,25 @@ namespace
     TeletypeTest()
       : widechar(1, two_column_char),
         term(mocks::create_combining_terminal()),
-        teletype(mocks::create_teletype(term))
+        term_locale(mocks::terminal_locale::create()),
+        teletype(mocks::create_teletype(term, term_locale))
     {
       EXPECT_CALL(*term, get_screen_width())
         .WillRepeatedly(Return(80));
+
+      EXPECT_CALL(*term_locale, wcwidth(two_column_char))
+        .WillRepeatedly(Return(2));
     }
 
     void SetUp()
     {
-      previous_lc_ctype = safe_string(setlocale(LC_CTYPE, NULL));
-      setlocale(LC_CTYPE, "zh_CN.UTF-8");
-
       // Sanity-check the widechar string.
       EXPECT_EQ(1, widechar.size());
       if(widechar.size() >= 0)
         {
           EXPECT_EQ(two_column_char, widechar[0]);
-          EXPECT_TRUE(iswprint(widechar[0]));
+          EXPECT_EQ(2, term_locale->wcwidth(widechar[0]));
         }
-      EXPECT_EQ(1, wcslen(widechar.c_str()));
-      EXPECT_EQ(2, wcswidth(widechar.c_str(), widechar.size()));
-    }
-
-    void TearDown()
-    {
-      setlocale(LC_CTYPE, previous_lc_ctype.c_str());
     }
   };
 }

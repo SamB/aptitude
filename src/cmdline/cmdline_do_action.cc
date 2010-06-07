@@ -49,8 +49,10 @@
 using namespace std;
 
 using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 
 namespace
@@ -100,6 +102,7 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool queue_only, int verbose)
 {
   shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
 
   _error->DumpErrors();
 
@@ -164,7 +167,7 @@ int cmdline_do_action(int argc, char *argv[],
   if(resolver_mode == resolver_mode_default)
     resolver_mode = resolver_mode_full;
 
-  shared_ptr<OpProgress> progress = make_text_progress(false, term);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
 
@@ -391,7 +394,8 @@ int cmdline_do_action(int argc, char *argv[],
 				 sigc::ptr_fun(&run_dpkg_directly));
 
       int rval =
-	(cmdline_do_download(&m, verbose, term) == download_manager::success ? 0 : -1);
+	(cmdline_do_download(&m, verbose, term, term_locale)
+         == download_manager::success ? 0 : -1);
 
       if(_error->PendingError())
 	rval = -1;

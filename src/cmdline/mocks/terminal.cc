@@ -28,6 +28,7 @@ using boost::make_shared;
 using boost::shared_ptr;
 using testing::AnyNumber;
 using testing::Invoke;
+using testing::Return;
 using testing::_;
 
 namespace aptitude
@@ -39,6 +40,11 @@ namespace aptitude
       shared_ptr<terminal> terminal::create()
       {
         return make_shared<terminal>();
+      }
+
+      shared_ptr<terminal_locale> terminal_locale::create()
+      {
+        return make_shared<terminal_locale>();
       }
 
       class terminal::combining_impl : public terminal
@@ -105,6 +111,12 @@ namespace aptitude
       shared_ptr<terminal> create_combining_terminal()
       {
         return make_shared<terminal::combining_impl>();
+      }
+
+      terminal_locale::terminal_locale()
+      {
+        EXPECT_CALL(*this, wcwidth(_))
+          .WillRepeatedly(Return(1));
       }
     }
   }
