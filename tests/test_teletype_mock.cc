@@ -37,6 +37,7 @@ using aptitude::cmdline::mocks::StrTrimmedEq;
 using boost::shared_ptr;
 using testing::InSequence;
 using testing::Return;
+using testing::StrEq;
 using testing::Test;
 
 namespace
@@ -48,7 +49,7 @@ namespace
     // An arbitrary Unicode codepoint that I happen to know will take
     // two columns.  (TODO: does this make the test locale-dependent?
     // Although using some sort of locale mock is kind of a scary idea)
-    const std::string widechar;
+    const std::wstring widechar;
 
     // Stores the previous value of LC_CTYPE before we modified it for
     // the test.
@@ -85,7 +86,7 @@ namespace
     }
 
     TeletypeTest()
-      : widechar(transcode(std::wstring(1, two_column_char))),
+      : widechar(1, two_column_char),
         term(mocks::create_combining_terminal()),
         teletype(mocks::create_teletype(term))
     {
@@ -99,24 +100,28 @@ namespace
       setlocale(LC_CTYPE, "zh_CN.UTF-8");
 
       // Sanity-check the widechar string.
-      const std::wstring widechar_w = transcode(widechar);
-      EXPECT_EQ(1, widechar_w.size());
-      if(widechar_w.size() >= 0)
+      EXPECT_EQ(1, widechar.size());
+      if(widechar.size() >= 0)
         {
-          EXPECT_EQ(two_column_char, widechar_w[0]);
-          EXPECT_TRUE(iswprint(widechar_w[0]));
+          EXPECT_EQ(two_column_char, widechar[0]);
+          EXPECT_TRUE(iswprint(widechar[0]));
         }
-      EXPECT_EQ(1, wcslen(widechar_w.c_str()));
-      EXPECT_EQ(2, wcswidth(widechar_w.c_str(), widechar_w.size()));
+      EXPECT_EQ(1, wcslen(widechar.c_str()));
+      EXPECT_EQ(2, wcswidth(widechar.c_str(), widechar.size()));
+    }
+
+    void TearDown()
+    {
+      setlocale(LC_CTYPE, previous_lc_ctype.c_str());
     }
   };
 }
 
 TEST_F(TeletypeTest, testOutputPartialLine)
 {
-  EXPECT_CALL(*teletype, set_last_line("abc"));
+  EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
 
-  term->output("abc");
+  term->output(L"abc");
 }
 
 TEST_F(TeletypeTest, testOutputLine)
@@ -124,12 +129,12 @@ TEST_F(TeletypeTest, testOutputLine)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("abc"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
     EXPECT_CALL(*teletype, newline());
   }
 
 
-  term->output("abc\n");
+  term->output(L"abc\n");
   term->flush();
 }
 
@@ -138,23 +143,23 @@ TEST_F(TeletypeTest, testOverwriteOneCharAtATime)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("abc"));
-    EXPECT_CALL(*teletype, set_last_line("xbc"));
-    EXPECT_CALL(*teletype, set_last_line("xyc"));
-    EXPECT_CALL(*teletype, set_last_line("xyz"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xbc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output("abc");
+  term->output(L"abc");
   term->move_to_beginning_of_line();
   term->flush();
 
-  term->output("x");
+  term->output(L"x");
   term->flush();
 
-  term->output("y");
+  term->output(L"y");
   term->flush();
 
-  term->output("z");
+  term->output(L"z");
   term->flush();
 }
 
@@ -162,11 +167,11 @@ TEST_F(TeletypeTest, OverwriteNarrowCharWithWideChar)
 {
   {
     InSequence dummy;
-    EXPECT_CALL(*teletype, set_last_line("abc"));
-    EXPECT_CALL(*teletype, set_last_line(widechar + "c"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"c")));
   }
 
-  term->output("abc");
+  term->output(L"abc");
   term->move_to_beginning_of_line();
   term->flush();
 
@@ -178,21 +183,21 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChar)
 {
   {
     InSequence dummy;
-    EXPECT_CALL(*teletype, set_last_line(widechar + "c"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"c")));
     // NB: this behavior isn't quite what a real terminal will do, but
     // it's close enough for testing. (the terminal would have a blank
     // space without an actual character, but it would be too
     // complicated to simulate that, and it doesn't really matter from
     // the point of view of seeing what the output looks like, which
     // is what this is for)
-    EXPECT_CALL(*teletype, set_last_line("a c"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"a c")));
   }
 
-  term->output(widechar + "c");
+  term->output(widechar + L"c");
   term->move_to_beginning_of_line();
   term->flush();
 
-  term->output("a");
+  term->output(L"a");
   term->flush();
 }
 
@@ -200,15 +205,15 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChars)
 {
   {
     InSequence dummy;
-    EXPECT_CALL(*teletype, set_last_line(widechar + "c"));
-    EXPECT_CALL(*teletype, set_last_line("abc"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"c")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
   }
 
-  term->output(widechar + "c");
+  term->output(widechar + L"c");
   term->move_to_beginning_of_line();
   term->flush();
 
-  term->output("ab");
+  term->output(L"ab");
   term->flush();
 }
 
@@ -217,14 +222,14 @@ TEST_F(TeletypeTest, overwriteEverything)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("abc"));
-    EXPECT_CALL(*teletype, set_last_line("xyz"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output("abc");
+  term->output(L"abc");
   term->move_to_beginning_of_line();
   term->flush();
-  term->output("xyz");
+  term->output(L"xyz");
   term->flush();
 }
 
@@ -233,14 +238,14 @@ TEST_F(TeletypeTest, overwritePastEverything)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("abc"));
-    EXPECT_CALL(*teletype, set_last_line("xyzw"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyzw")));
   }
 
-  term->output("abc");
+  term->output(L"abc");
   term->move_to_beginning_of_line();
   term->flush();
-  term->output("xyzw");
+  term->output(L"xyzw");
   term->flush();
 }
 
@@ -252,12 +257,12 @@ TEST_F(TeletypeTest, testWritePastEOL)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("abcde"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcde")));
     EXPECT_CALL(*teletype, newline());
-    EXPECT_CALL(*teletype, set_last_line("fghij"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"fghij")));
   }
 
-  term->output("abcdefghij");
+  term->output(L"abcdefghij");
 }
 
 TEST_F(TeletypeTest, WritePastEOLAfterWideChar)
@@ -268,12 +273,12 @@ TEST_F(TeletypeTest, WritePastEOLAfterWideChar)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line(widechar + "bc"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"bc")));
     EXPECT_CALL(*teletype, newline());
-    EXPECT_CALL(*teletype, set_last_line("def"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"def")));
   }
 
-  term->output(widechar + "bcdef");
+  term->output(widechar + L"bcdef");
 }
 
 TEST_F(TeletypeTest, WriteWideCharPastEOL)
@@ -284,9 +289,9 @@ TEST_F(TeletypeTest, WriteWideCharPastEOL)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line(widechar + widechar));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + widechar)));
     EXPECT_CALL(*teletype, newline());
-    EXPECT_CALL(*teletype, set_last_line(widechar));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar)));
   }
 
   term->output(widechar + widechar + widechar);
@@ -299,12 +304,12 @@ TEST_F(TeletypeTest, WriteWideCharPastEOLWithSplit)
 
   {
     InSequence dummy;
-    EXPECT_CALL(*teletype, set_last_line("a" + widechar));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"a" + widechar)));
     EXPECT_CALL(*teletype, newline());
-    EXPECT_CALL(*teletype, set_last_line(widechar + "a"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"a")));
   }
 
-  term->output("a" + widechar + widechar + "a");
+  term->output(L"a" + widechar + widechar + L"a");
 }
 
 TEST_F(TeletypeTest, testOverwritePastEOL)
@@ -315,15 +320,15 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*teletype, set_last_line("12345"));
-    EXPECT_CALL(*teletype, set_last_line("abcde"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"12345")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcde")));
     EXPECT_CALL(*teletype, newline());
-    EXPECT_CALL(*teletype, set_last_line("fghij"));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"fghij")));
   }
 
-  term->output("12345");
+  term->output(L"12345");
   term->move_to_beginning_of_line();
-  term->output("abcdefghij");
+  term->output(L"abcdefghij");
 }
 
 TEST(TrimmedEqTest, testTrimmedEqExact)
@@ -364,4 +369,14 @@ TEST(TrimmedEqTest, testTrimmedEqSecondBothPadded)
 TEST(TrimmedEqTest, testTrimmedEqBothBothPadded)
 {
   EXPECT_THAT(" abc  ", StrTrimmedEq("   abc    "));
+}
+
+TEST(TrimmedEqTest, TrimmedEqWide)
+{
+  EXPECT_THAT(L" abc  ", StrTrimmedEq(L"   abc     "));
+}
+
+TEST(TrimmedEqTest, TrimmedEqWideAndNarrow)
+{
+  EXPECT_THAT(" abc  ", StrTrimmedEq(L"   abc     "));
 }

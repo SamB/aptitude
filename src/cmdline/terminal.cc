@@ -31,12 +31,15 @@
 #include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <cwidget/generic/util/transcode.h>
+
 #include <iostream>
 
 #include <sys/ioctl.h>
 
 using boost::make_shared;
 using boost::shared_ptr;
+using cwidget::util::transcode;
 
 std::string StdinEOFException::errmsg() const
 {
@@ -57,10 +60,10 @@ namespace aptitude
       {
       public:
         bool output_is_a_terminal();
-        void write_text(const std::string &msg);
+        void write_text(const std::wstring &msg);
         void move_to_beginning_of_line();
         void flush();
-        std::string prompt_for_input(const std::string &msg);
+        std::wstring prompt_for_input(const std::wstring &msg);
         unsigned int get_screen_width();
       };
 
@@ -69,9 +72,9 @@ namespace aptitude
         return isatty(1);
       }
 
-      void terminal_impl::write_text(const std::string &msg)
+      void terminal_impl::write_text(const std::wstring &msg)
       {
-        std::cout << msg;
+        std::cout << transcode(msg);
       }
 
       void terminal_impl::move_to_beginning_of_line()
@@ -84,9 +87,9 @@ namespace aptitude
         std::cout << std::flush;
       }
 
-      std::string terminal_impl::prompt_for_input(const std::string &msg)
+      std::wstring terminal_impl::prompt_for_input(const std::wstring &msg)
       {
-        std::cout << msg << std::flush;
+        std::cout << transcode(msg) << std::flush;
 
         std::string rval;
         char buf[1024];
@@ -102,7 +105,7 @@ namespace aptitude
         if(!std::cin)
           throw StdinEOFException();
 
-        return rval;
+        return transcode(rval);
       }
 
       unsigned int terminal_impl::get_screen_width()

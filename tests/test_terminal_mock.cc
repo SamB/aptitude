@@ -26,6 +26,7 @@ namespace mocks = aptitude::cmdline::mocks;
 using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 using testing::InSequence;
+using testing::StrEq;
 using testing::Test;
 using testing::_;
 
@@ -55,7 +56,7 @@ TEST_F(TerminalMock, WriteEmptyStringDoesNotOutput)
     .Times(0);
   EXPECT_CALL(*terminal, flush());
 
-  terminal->write_text("");
+  terminal->write_text(L"");
   terminal->flush();
 }
 
@@ -67,7 +68,7 @@ TEST_F(TerminalMock, WritesMustBeFlushed)
     .Times(0);
 
   // Nothing should be called by this:
-  terminal->write_text("abc");
+  terminal->write_text(L"abc");
 }
 
 TEST_F(TerminalMock, MoveToBeginningOfLineMustBeFlushed)
@@ -83,11 +84,11 @@ TEST_F(TerminalMock, WriteAndFlush)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("abc"));
+    EXPECT_CALL(*terminal, output(StrEq(L"abc")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("abc");
+  terminal->write_text(L"abc");
   terminal->flush();
 }
 
@@ -96,7 +97,7 @@ TEST_F(TerminalMock, MoveToBeginningOfLineAndFlush)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("\r"));
+    EXPECT_CALL(*terminal, output(StrEq(L"\r")));
     EXPECT_CALL(*terminal, flush());
   }
 
@@ -106,11 +107,11 @@ TEST_F(TerminalMock, MoveToBeginningOfLineAndFlush)
 
 TEST_F(TerminalMock, NewlineIsImplicitFlush)
 {
-  EXPECT_CALL(*terminal, output("abc\n"));
+  EXPECT_CALL(*terminal, output(StrEq(L"abc\n")));
   EXPECT_CALL(*terminal, flush())
     .Times(0);
 
-  terminal->write_text("abc\n");
+  terminal->write_text(L"abc\n");
 }
 
 TEST_F(TerminalMock, DoubleFlushDoesNotOutput)
@@ -118,12 +119,12 @@ TEST_F(TerminalMock, DoubleFlushDoesNotOutput)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("def"));
+    EXPECT_CALL(*terminal, output(StrEq(L"def")));
     EXPECT_CALL(*terminal, flush());
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("def");
+  terminal->write_text(L"def");
   terminal->flush();
   terminal->flush();
 }
@@ -136,11 +137,11 @@ TEST_F(TerminalMock, DoubleNewlineOutputsTwice)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("def\n"));
-    EXPECT_CALL(*terminal, output("\n"));
+    EXPECT_CALL(*terminal, output(StrEq(L"def\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"\n")));
   }
 
-  terminal->write_text("def\n\n");
+  terminal->write_text(L"def\n\n");
 }
 
 TEST_F(TerminalMock, MultipleNewlines)
@@ -148,14 +149,14 @@ TEST_F(TerminalMock, MultipleNewlines)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("abc\n"));
-    EXPECT_CALL(*terminal, output("I like\n"));
-    EXPECT_CALL(*terminal, output("bunnies!\n"));
-    EXPECT_CALL(*terminal, output(" -- Burble"));
+    EXPECT_CALL(*terminal, output(StrEq(L"abc\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"I like\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"bunnies!\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L" -- Burble")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("abc\nI like\nbunnies!\n -- Burble");
+  terminal->write_text(L"abc\nI like\nbunnies!\n -- Burble");
   terminal->flush();
 }
 
@@ -164,11 +165,11 @@ TEST_F(TerminalMock, FlushAfterNewlineDoesNotOutput)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("xyz\n"));
+    EXPECT_CALL(*terminal, output(StrEq(L"xyz\n")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("xyz\n");
+  terminal->write_text(L"xyz\n");
   terminal->flush();
 }
 
@@ -179,12 +180,12 @@ TEST_F(TerminalMock, FlushCombinesWrites)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("abcdef"));
+    EXPECT_CALL(*terminal, output(StrEq(L"abcdef")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("abc");
-  terminal->write_text("def");
+  terminal->write_text(L"abc");
+  terminal->write_text(L"def");
   terminal->flush();
 }
 
@@ -193,13 +194,13 @@ TEST_F(TerminalMock, FlushCombinesWritesWithMoveToBeginningOfLine)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("abc\rdef"));
+    EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("abc");
+  terminal->write_text(L"abc");
   terminal->move_to_beginning_of_line();
-  terminal->write_text("def");
+  terminal->write_text(L"def");
   terminal->flush();
 }
 
@@ -208,22 +209,22 @@ TEST_F(TerminalMock, NewlineCombinesWrites)
   EXPECT_CALL(*terminal, flush())
     .Times(0);
 
-  EXPECT_CALL(*terminal, output("xyzzy\n"));
+  EXPECT_CALL(*terminal, output(StrEq(L"xyzzy\n")));
 
-  terminal->write_text("xyz");
-  terminal->write_text("zy\n");
+  terminal->write_text(L"xyz");
+  terminal->write_text(L"zy\n");
 }
 
 TEST_F(TerminalMock, newlineCombinesWritesWithMoveToBeginningOfLine)
 {
-  EXPECT_CALL(*terminal, output("abc\rdef\n"));
+  EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef\n")));
   EXPECT_CALL(*terminal, flush())
     .Times(0);
 
-  terminal->write_text("abc");
+  terminal->write_text(L"abc");
   terminal->move_to_beginning_of_line();
-  terminal->write_text("def");
-  terminal->write_text("\n");
+  terminal->write_text(L"def");
+  terminal->write_text(L"\n");
 }
 
 // Check that there's no weirdness when you need to combine and split
@@ -233,17 +234,17 @@ TEST_F(TerminalMock, CombineAndSplit)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output("ab\n"));
-    EXPECT_CALL(*terminal, output("de\rfg\n"));
-    EXPECT_CALL(*terminal, output("hijklmn\n"));
-    EXPECT_CALL(*terminal, output("op"));
+    EXPECT_CALL(*terminal, output(StrEq(L"ab\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"de\rfg\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"hijklmn\n")));
+    EXPECT_CALL(*terminal, output(StrEq(L"op")));
     EXPECT_CALL(*terminal, flush());
   }
 
-  terminal->write_text("a");
-  terminal->write_text("b\nde");
+  terminal->write_text(L"a");
+  terminal->write_text(L"b\nde");
   terminal->move_to_beginning_of_line();
-  terminal->write_text("fg\nhijk");
-  terminal->write_text("lmn\nop");
+  terminal->write_text(L"fg\nhijk");
+  terminal->write_text(L"lmn\nop");
   terminal->flush();
 }

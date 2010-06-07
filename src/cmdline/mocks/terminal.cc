@@ -43,12 +43,12 @@ namespace aptitude
 
       class terminal::combining_impl : public terminal
       {
-        std::string pending_writes;
+        std::wstring pending_writes;
 
-        void do_write_text(const std::string &s)
+        void do_write_text(const std::wstring &s)
         {
-          std::string::size_type start = 0;
-          for(std::string::size_type nl = s.find('\n', start);
+          std::wstring::size_type start = 0;
+          for(std::wstring::size_type nl = s.find('\n', start);
               nl != s.npos; nl = s.find('\n', start))
             {
               pending_writes.append(s, start, (nl - start) + 1);
@@ -63,7 +63,7 @@ namespace aptitude
 
         void do_move_to_beginning_of_line()
         {
-          do_write_text("\r");
+          do_write_text(L"\r");
         }
 
         void do_flush()

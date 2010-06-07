@@ -33,6 +33,8 @@
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 
+#include <cwidget/generic/util/transcode.h>
+
 #include <iostream>
 
 namespace cw = cwidget;
@@ -40,6 +42,8 @@ namespace cw = cwidget;
 using boost::format;
 using boost::make_shared;
 using boost::shared_ptr;
+using boost::wformat;
+using cwidget::util::transcode;
 
 namespace aptitude
 {
@@ -78,7 +82,7 @@ namespace aptitude
           {
             if(!last_op.empty())
               {
-                message->set_text("");
+                message->set_text(L"");
 
                 if(_error->PendingError() == true)
                   std::cout << (format(_("%s... Error!")) % last_op) << std::endl;
@@ -114,7 +118,7 @@ namespace aptitude
                 if(percent_int > 100)
                   percent_int = 100;
 
-                message->set_text((format("%s... %d%%") % Op % percent_int).str());
+                message->set_text(transcode((format("%s... %d%%") % Op % percent_int).str()));
                 last_op = Op;
               }
           }

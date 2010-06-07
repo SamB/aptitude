@@ -49,10 +49,10 @@ namespace aptitude
 
       public:
         MOCK_METHOD0(output_is_a_terminal, bool());
-        MOCK_METHOD1(write_text, void(const std::string &));
+        MOCK_METHOD1(write_text, void(const std::wstring &));
         MOCK_METHOD0(move_to_beginning_of_line, void());
         MOCK_METHOD0(flush, void());
-        MOCK_METHOD1(prompt_for_input, std::string(const std::string &));
+        MOCK_METHOD1(prompt_for_input, std::wstring(const std::wstring &));
         MOCK_METHOD0(get_screen_width, unsigned int());
 
         // This method is invoked when the terminal would flush its
@@ -61,7 +61,7 @@ namespace aptitude
         //
         // If the terminal would flush, but there's no text to flush,
         // this isn't invoked.
-        MOCK_METHOD1(output, void(const std::string &));
+        MOCK_METHOD1(output, void(const std::wstring &));
 
         /** \brief Create a terminal object. */
         static boost::shared_ptr<terminal> create();

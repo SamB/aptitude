@@ -61,7 +61,7 @@ namespace aptitude
       virtual bool output_is_a_terminal() = 0;
 
       /** \brief Write some text to the terminal. */
-      virtual void write_text(const std::string &msg) = 0;
+      virtual void write_text(const std::wstring &msg) = 0;
 
       /** \brief Return the cursor to the beginning of the current
        *  line.
@@ -95,7 +95,7 @@ namespace aptitude
        *  until it reaches main(), which prints an appropriate message
        *  and aborts the program.
        */
-      virtual std::string prompt_for_input(const std::string &msg) = 0;
+      virtual std::wstring prompt_for_input(const std::wstring &msg) = 0;
 
       /** \brief Retrieve the current screen width.
        *

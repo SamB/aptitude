@@ -54,7 +54,7 @@ namespace aptitude
         std::size_t last_line_len;
 
         // The last string we displayed.
-        std::string last_line;
+        std::wstring last_line;
 
         // The terminal used to output text.
         shared_ptr<terminal> term;
@@ -68,13 +68,13 @@ namespace aptitude
         {
         }
 
-        void set_text(const std::string &line);
+        void set_text(const std::wstring &line);
       };
 
 
       void transient_message_impl::clear_last_line()
       {
-        static const std::string blank(" ");
+        static const std::wstring blank(L" ");
 
         term->move_to_beginning_of_line();
         for(std::size_t i = 0; i < last_line_len; ++i)
@@ -84,7 +84,7 @@ namespace aptitude
         last_line_len = 0;
       }
 
-      void transient_message_impl::set_text(const std::string &line)
+      void transient_message_impl::set_text(const std::wstring &line)
       {
         if(last_line == line)
           // Don't clutter the terminal stream if there's nothing to
@@ -99,11 +99,10 @@ namespace aptitude
         // TODO: it would be nice to be able to properly wrap
         // multi-line messages and then clean them up.  Is it
         // possible to do that in a sane way?
-        const std::wstring line_w = transcode(line);
-        std::wstring::const_iterator display_end = line_w.begin();
+        std::wstring::const_iterator display_end = line.begin();
         unsigned int display_width = 0;
         {
-          while(display_end != line_w.end() && display_width < screen_width)
+          while(display_end != line.end() && display_width < screen_width)
             {
               const wchar_t next = *display_end;
               const int next_width = wcwidth(next);
@@ -115,10 +114,10 @@ namespace aptitude
               display_width += next_width;
             }
         }
-        const std::wstring display(line_w.begin(), display_end);
+        const std::wstring display(line.begin(), display_end);
 
         clear_last_line();
-        term->write_text(transcode(display));
+        term->write_text(display);
         term->flush();
         last_line_len = display_width;
         last_line = line;

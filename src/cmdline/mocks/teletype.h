@@ -34,18 +34,27 @@ namespace aptitude
     {
       class terminal;
 
+      inline std::string make_str(const char *s)
+      {
+        return std::string(s);
+      }
+
+      inline std::wstring make_str(const wchar_t *s)
+      {
+        return std::wstring(s);
+      }
+
+      template<typename T>
+      inline T make_str(const T &t)
+      {
+        return t;
+      }
+
       // Defined here because it's meant for use with this class.
       MATCHER_P(StrTrimmedEq, str, "is equal after trimming to %(str)s")
       {
-        // Support both C++ strings and C strings by instantiating a
-        // local string object:
-        std::string str_trimmed = str;
-        std::string arg_trimmed = arg;
-
-        boost::trim(str_trimmed);
-        boost::trim(arg_trimmed);
-
-        return str_trimmed == arg_trimmed;
+        return boost::equals(boost::trim_copy(make_str(str)),
+                             boost::trim_copy(make_str(arg)));
       }
 
       /** \brief An adapter to assist testing the output sent to a
@@ -59,7 +68,7 @@ namespace aptitude
         virtual ~teletype();
 
         /** \brief Invoked when the active line of text is modified. */
-        MOCK_METHOD1(set_last_line, void(const std::string &));
+        MOCK_METHOD1(set_last_line, void(const std::wstring &));
 
         /** \brief Invoked when the active line of text is advanced.
          *

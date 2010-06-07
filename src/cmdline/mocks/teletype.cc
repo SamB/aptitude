@@ -45,14 +45,14 @@ namespace aptitude
       {
         class teletype_with_terminal : public teletype
         {
-          std::string last_line;
+          std::wstring last_line;
           unsigned int cursor_position;
 
           const shared_ptr<terminal> term;
 
           void scroll_line();
 
-          void handle_output(const std::string &output);
+          void handle_output(const std::wstring &output);
           void handle_move_to_beginning_of_line();
 
         public:
@@ -86,7 +86,7 @@ namespace aptitude
           newline();
         }
 
-        void teletype_with_terminal::handle_output(const std::string &output)
+        void teletype_with_terminal::handle_output(const std::wstring &output)
         {
           // This is a minor hack to avoid generating an empty
           // set_last_line() call after newline().  It's set to true
@@ -95,7 +95,7 @@ namespace aptitude
           bool suppress_set_last_line = false;
           const unsigned int screen_width = term->get_screen_width();
 
-          for(std::string::const_iterator it = output.begin();
+          for(std::wstring::const_iterator it = output.begin();
               it != output.end(); ++it)
             {
               const char c = *it;

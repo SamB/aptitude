@@ -40,7 +40,7 @@ namespace aptitude
        *
        *  Updates the currently displayed text immediately.
        */
-      virtual void set_text(const std::string &text) = 0;
+      virtual void set_text(const std::wstring &text) = 0;
     };
 
     class terminal;
