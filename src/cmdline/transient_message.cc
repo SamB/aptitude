@@ -112,11 +112,18 @@ namespace aptitude
               const wchar_t next = *display_end;
               const int next_width = term_locale->wcwidth(next);
 
-              if(static_cast<unsigned int>(next_width) > screen_width)
-                break;
+              if(next_width >= 0)
+                {
+                  const unsigned int new_display_width =
+                    display_width + static_cast<unsigned int>(next_width);
+
+                  if(new_display_width > screen_width)
+                    break;
+
+                  display_width = new_display_width;
+                }
 
               ++display_end;
-              display_width += next_width;
             }
         }
         const std::wstring display(line.begin(), display_end);
