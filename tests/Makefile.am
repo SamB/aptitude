@@ -66,4 +66,5 @@ gtest_test_SOURCES = \
 	gtest_test_main.cc \
 	test_logging.cc \
 	test_teletype_mock.cc \
-	test_terminal_mock.cc
+	test_terminal_mock.cc \
+	test_transient_message.cc

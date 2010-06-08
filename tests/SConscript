@@ -114,12 +114,14 @@ gtest_test_sources = [
     'test_logging.cc',
     'test_teletype_mock.cc',
     'test_terminal_mock.cc',
+    'test_transient_message.o',
     ]
 
 gtest_test_extra_deps = [
     '../src/cmdline/mocks/teletype.o',
     '../src/cmdline/mocks/terminal.o',
     '../src/cmdline/terminal.o',
+    '../src/cmdline/transient_message.o',
     '../src/generic/util/logging.o',
     ]
 
