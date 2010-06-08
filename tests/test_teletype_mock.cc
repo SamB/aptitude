@@ -138,6 +138,23 @@ TEST_F(TeletypeTest, testOutputLine)
   term->flush();
 }
 
+// Imitates what the transient message does, to be sure that it will
+// behave as expected if it outputs the right thing.
+TEST_F(TeletypeTest, OverwriteABCWithA)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"a  ")));
+  }
+
+  term->output(L"abc");
+  term->flush();
+  term->output(L"\r   \ra");
+  term->flush();
+}
+
 TEST_F(TeletypeTest, testOverwriteOneCharAtATime)
 {
   {
