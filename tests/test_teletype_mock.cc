@@ -93,7 +93,7 @@ namespace
 
     TeletypeTest()
       : widechar(1, two_column_char),
-        term(mocks::create_combining_terminal()),
+        term(mocks::terminal::create()),
         term_locale(mocks::terminal_locale::create()),
         teletype(mocks::create_teletype(term, term_locale))
     {
@@ -149,8 +149,7 @@ TEST_F(TeletypeTest, testOverwriteOneCharAtATime)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output(L"abc");
-  term->move_to_beginning_of_line();
+  term->output(L"abc\r");
   term->flush();
 
   term->output(L"x");
@@ -171,8 +170,7 @@ TEST_F(TeletypeTest, OverwriteNarrowCharWithWideChar)
     EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"c")));
   }
 
-  term->output(L"abc");
-  term->move_to_beginning_of_line();
+  term->output(L"abc\r");
   term->flush();
 
   term->output(widechar);
@@ -193,8 +191,7 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChar)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"a c")));
   }
 
-  term->output(widechar + L"c");
-  term->move_to_beginning_of_line();
+  term->output(widechar + L"c\r");
   term->flush();
 
   term->output(L"a");
@@ -209,8 +206,7 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChars)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
   }
 
-  term->output(widechar + L"c");
-  term->move_to_beginning_of_line();
+  term->output(widechar + L"c\r");
   term->flush();
 
   term->output(L"ab");
@@ -226,8 +222,7 @@ TEST_F(TeletypeTest, overwriteEverything)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output(L"abc");
-  term->move_to_beginning_of_line();
+  term->output(L"abc\r");
   term->flush();
   term->output(L"xyz");
   term->flush();
@@ -242,8 +237,7 @@ TEST_F(TeletypeTest, overwritePastEverything)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyzw")));
   }
 
-  term->output(L"abc");
-  term->move_to_beginning_of_line();
+  term->output(L"abc\r");
   term->flush();
   term->output(L"xyzw");
   term->flush();
@@ -327,8 +321,7 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
   }
 
   term->output(L"12345");
-  term->move_to_beginning_of_line();
-  term->output(L"abcdefghij");
+  term->output(L"\rabcdefghij");
 }
 
 TEST(TrimmedEqTest, testTrimmedEqExact)
