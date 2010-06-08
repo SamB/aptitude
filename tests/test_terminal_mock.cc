@@ -250,3 +250,25 @@ TEST_F(TerminalMock, CombineAndSplit)
   terminal->write_text(L"lmn\nop");
   terminal->flush();
 }
+
+// Check that the transient message will work properly.
+TEST_F(TerminalMock, SimulatedTransientMessage)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*terminal, output(StrEq(L"\r\rabc")));
+    EXPECT_CALL(*terminal, output(StrEq(L"\r   \ra")));
+  }
+
+  terminal->move_to_beginning_of_line();
+  terminal->move_to_beginning_of_line();
+  terminal->write_text(L"abc");
+  terminal->flush();
+
+  terminal->move_to_beginning_of_line();
+  terminal->write_text(L"   ");
+  terminal->move_to_beginning_of_line();
+  terminal->write_text(L"a");
+  terminal->flush();
+}
