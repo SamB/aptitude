@@ -84,17 +84,18 @@ namespace aptitude
       public:
         combining_impl()
         {
-          ON_CALL(*this, write_text(_))
-            .WillByDefault(Invoke(this, &combining_impl::do_write_text));
+        }
 
-          ON_CALL(*this, move_to_beginning_of_line())
-            .WillByDefault(Invoke(this, &combining_impl::do_move_to_beginning_of_line));
+        void write_text(const std::wstring &s)
+        {
+          do_write_text(s);
+          terminal::write_text(s);
+        }
 
-          EXPECT_CALL(*this, write_text(_))
-            .Times(AnyNumber());
-
-          EXPECT_CALL(*this, move_to_beginning_of_line())
-            .Times(AnyNumber());
+        void move_to_beginning_of_line()
+        {
+          do_move_to_beginning_of_line();
+          terminal::move_to_beginning_of_line();
         }
 
         // This is overridden (rather than relying on ON_CALL) to
