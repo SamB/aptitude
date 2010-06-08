@@ -58,6 +58,13 @@ namespace aptitude
                              boost::trim_copy(make_str(arg)));
       }
 
+      // Defined here because it's meant for use with this class.
+      MATCHER_P(StrTrimmedRightEq, str, "is equal after trimming on the right")
+      {
+        return boost::equals(boost::trim_right_copy(make_str(str)),
+                             boost::trim_right_copy(make_str(arg)));
+      }
+
       /** \brief An adapter to assist testing the output sent to a
        *  terminal in terms of its effect on a hypothetical line-based
        *  output device that allows overwrites.

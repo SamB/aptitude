@@ -34,8 +34,10 @@
 namespace mocks = aptitude::cmdline::mocks;
 
 using aptitude::cmdline::mocks::StrTrimmedEq;
+using aptitude::cmdline::mocks::StrTrimmedRightEq;
 using boost::shared_ptr;
 using testing::InSequence;
+using testing::Not;
 using testing::Return;
 using testing::StrEq;
 using testing::Test;
@@ -377,4 +379,58 @@ TEST(TrimmedEqTest, TrimmedEqWide)
 TEST(TrimmedEqTest, TrimmedEqWideAndNarrow)
 {
   EXPECT_THAT(" abc  ", StrTrimmedEq(L"   abc     "));
+}
+
+
+
+
+
+TEST(TrimmedEqTest, testTrimmedRightEqExact)
+{
+  EXPECT_THAT(" abc", StrTrimmedRightEq(" abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqFirstLeftPadded)
+{
+  EXPECT_THAT("  abc", Not(StrTrimmedRightEq("abc")));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqFirstRightPadded)
+{
+  EXPECT_THAT("abc  ", StrTrimmedRightEq("abc"));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqFirstBothPadded)
+{
+  EXPECT_THAT("  abc  ", Not(StrTrimmedRightEq("abc")));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqSecondLeftPadded)
+{
+  EXPECT_THAT("abc", Not(StrTrimmedRightEq("  abc")));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqSecondRightPadded)
+{
+  EXPECT_THAT("abc", StrTrimmedRightEq("abc  "));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqSecondBothPadded)
+{
+  EXPECT_THAT("abc", Not(StrTrimmedRightEq("  abc  ")));
+}
+
+TEST(TrimmedEqTest, testTrimmedRightEqBothBothPadded)
+{
+  EXPECT_THAT(" abc  ", Not(StrTrimmedRightEq("   abc    ")));
+}
+
+TEST(TrimmedEqTest, TrimmedRightEqWide)
+{
+  EXPECT_THAT(L" abc  ", Not(StrTrimmedRightEq(L"   abc     ")));
+}
+
+TEST(TrimmedEqTest, TrimmedRightEqWideAndNarrow)
+{
+  EXPECT_THAT(" abc  ", Not(StrTrimmedRightEq(L"   abc     ")));
 }
