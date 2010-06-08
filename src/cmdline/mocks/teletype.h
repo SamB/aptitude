@@ -52,7 +52,7 @@ namespace aptitude
       }
 
       // Defined here because it's meant for use with this class.
-      MATCHER_P(StrTrimmedEq, str, "is equal after trimming to %(str)s")
+      MATCHER_P(StrTrimmedEq, str, "is equal after trimming")
       {
         return boost::equals(boost::trim_copy(make_str(str)),
                              boost::trim_copy(make_str(arg)));
