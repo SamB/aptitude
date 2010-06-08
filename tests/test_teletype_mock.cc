@@ -341,6 +341,31 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
   term->output(L"\rabcdefghij");
 }
 
+TEST_F(TeletypeTest, TeletypeDoesNotBreakTerminalMock)
+{
+  shared_ptr<mocks::terminal> term = mocks::create_combining_terminal();
+  shared_ptr<mocks::teletype> teletype = mocks::create_teletype(term, term_locale);
+
+  EXPECT_CALL(*term, get_screen_width())
+    .WillRepeatedly(Return(80));
+
+  {
+    InSequence dummy;
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"a  ")));
+  }
+
+  term->write_text(L"abc");
+  term->flush();
+
+  term->move_to_beginning_of_line();
+  term->write_text(L"   ");
+  term->move_to_beginning_of_line();
+  term->write_text(L"a");
+  term->flush();
+}
+
+
 TEST(TrimmedEqTest, testTrimmedEqExact)
 {
   EXPECT_THAT("abc", StrTrimmedEq("abc"));
