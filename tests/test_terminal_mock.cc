@@ -194,13 +194,15 @@ TEST_F(TerminalMock, FlushCombinesWritesWithMoveToBeginningOfLine)
   {
     InSequence dummy;
 
-    EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef")));
+    EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef\rghi")));
     EXPECT_CALL(*terminal, flush());
   }
 
   terminal->write_text(L"abc");
   terminal->move_to_beginning_of_line();
   terminal->write_text(L"def");
+  terminal->move_to_beginning_of_line();
+  terminal->write_text(L"ghi");
   terminal->flush();
 }
 
