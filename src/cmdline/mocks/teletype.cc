@@ -86,9 +86,13 @@ namespace aptitude
             ON_CALL(*term, move_to_beginning_of_line())
               .WillByDefault(Invoke(this, &teletype_with_terminal::handle_move_to_beginning_of_line));
 
-            // Normally code using this interface will ignore output()
-            // and flush, so set that as the default behavior.
+            // Normally code using this interface will ignore calls to
+            // functions on the terminal, so set that as the default
+            // behavior.
             EXPECT_CALL(*term, output(_))
+              .Times(AnyNumber());
+
+            EXPECT_CALL(*term, write_text(_))
               .Times(AnyNumber());
 
             EXPECT_CALL(*term, flush())
