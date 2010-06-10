@@ -3,6 +3,8 @@ INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/i
 noinst_LIBRARIES = libcmdline-mocks.a
 
 libcmdline_mocks_a_SOURCES = \
+	cmdline_progress_display.h \
+	cmdline_progress_throttle.h \
 	teletype.cc \
 	teletype.h \
 	terminal.cc \

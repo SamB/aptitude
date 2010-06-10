@@ -5,6 +5,8 @@ srcs = map(File, [
     ])
 
 programs_env.Dist(
+    'cmdline_progress_display.h',
+    'cmdline_progress_throttle.h',
     'teletype.cc',
     'teletype.h',
     'terminal.cc',
