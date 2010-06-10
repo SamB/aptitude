@@ -20,6 +20,8 @@
 #ifndef PROGRESS_INFO_H
 #define PROGRESS_INFO_H
 
+#include <math.h>
+
 #include <string>
 
 namespace aptitude
@@ -105,7 +107,7 @@ namespace aptitude
 
       int get_progress_percent_int() const
       {
-        int rval = (int) (100 * progress_fraction);
+        int rval = (int)round(100 * progress_fraction);
 
         if(rval < 0)
           return 0;
