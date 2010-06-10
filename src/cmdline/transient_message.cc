@@ -46,6 +46,17 @@ namespace aptitude
 
     namespace
     {
+      /** \brief Transient message implementation that makes all
+       *  methods into NOPs.
+       */
+      class dummy_transient_message : public transient_message
+      {
+      public:
+        void set_text(const std::wstring &msg)
+        {
+        }
+      };
+
       class transient_message_impl : public transient_message
       {
         // The length of the last line we displayed.  Not
@@ -140,7 +151,10 @@ namespace aptitude
     create_transient_message(const shared_ptr<terminal> &term,
                              const shared_ptr<terminal_locale> &term_locale)
     {
-      return make_shared<transient_message_impl>(term, term_locale);
+      if(!term->output_is_a_terminal())
+        return make_shared<dummy_transient_message>();
+      else
+        return make_shared<transient_message_impl>(term, term_locale);
     }
   }
 }

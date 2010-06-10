@@ -52,16 +52,29 @@ namespace
     shared_ptr<transient_message> message;
     std::wstring widechar;
 
+    // I need to set up expectations on the terminal during member
+    // initialization, since some of the other member initializers
+    // cause methods to be invoked on it.
+    static shared_ptr<mocks::terminal> create_terminal()
+    {
+      shared_ptr<mocks::terminal> rval = mocks::create_combining_terminal();
+
+      EXPECT_CALL(*rval, output_is_a_terminal())
+        .WillRepeatedly(Return(true));
+
+      EXPECT_CALL(*rval, get_screen_width())
+        .WillRepeatedly(Return(80));
+
+      return rval;
+    }
+
     TransientMessage()
-      : term(mocks::create_combining_terminal()),
+      : term(create_terminal()),
         term_locale(mocks::terminal_locale::create()),
         teletype(mocks::create_teletype(term, term_locale)),
         message(create_transient_message(term, term_locale)),
         widechar(1, two_column_char)
     {
-      EXPECT_CALL(*term, get_screen_width())
-        .WillRepeatedly(Return(80));
-
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
         .WillRepeatedly(Return(2));
 
@@ -207,4 +220,38 @@ TEST_F(TransientMessage, ReplaceTruncatedWideCharLine)
 
   message->set_text(widechar + widechar + L"abcdef");
   message->set_text(L"z");
+}
+
+TEST_F(TransientMessage, RequireTtyDecorationsWithTty)
+{
+  EXPECT_CALL(*term, output_is_a_terminal())
+    .WillRepeatedly(Return(true));
+
+  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+
+  // Need to create a new message object since it reads and caches the
+  // value of output_is_a_terminal() when it's created.
+  const shared_ptr<transient_message> requiring_message =
+    create_transient_message(term, term_locale);
+
+  requiring_message->set_text(L"abc");
+  requiring_message->set_text(L"xyz");
+}
+
+TEST_F(TransientMessage, RequireTtyDecorationsWithoutTty)
+{
+  EXPECT_CALL(*term, output_is_a_terminal())
+    .WillRepeatedly(Return(false));
+
+  EXPECT_CALL(*teletype, set_last_line(_))
+    .Times(0);
+
+  // Need to create a new message object since it reads and caches the
+  // value of output_is_a_terminal() when it's created.
+  const shared_ptr<transient_message> requiring_message =
+    create_transient_message(term, term_locale);
+
+  requiring_message->set_text(L"abc");
+  requiring_message->set_text(L"xyz");
 }

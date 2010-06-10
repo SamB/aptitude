@@ -48,6 +48,9 @@ namespace aptitude
 
     /** \brief Create a new transient message object.
      *
+     *  If the given terminal is not a tty when this function is
+     *  invoked, no output will be generated.
+     *
      *  \param term        The terminal to use for output.
      *  \param term_locale Locale information for the given terminal.
      */
