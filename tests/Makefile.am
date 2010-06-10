@@ -64,6 +64,7 @@ boost_test_SOURCES = \
 
 gtest_test_SOURCES = \
 	gtest_test_main.cc \
+	test_cmdline_progress_display.cc \
 	test_logging.cc \
 	test_teletype_mock.cc \
 	test_terminal_mock.cc \

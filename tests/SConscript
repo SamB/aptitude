@@ -111,6 +111,7 @@ boost_test_extra_deps = [
 
 gtest_test_sources = [
     'gtest_test_main.cc',
+    'test_cmdline_progress_display.cc',
     'test_logging.cc',
     'test_teletype_mock.cc',
     'test_terminal_mock.cc',
@@ -118,8 +119,10 @@ gtest_test_sources = [
     ]
 
 gtest_test_extra_deps = [
+    '../src/cmdline/cmdline_progress_display.o',
     '../src/cmdline/mocks/teletype.o',
     '../src/cmdline/mocks/terminal.o',
+    '../src/cmdline/mocks/transient_message.o',
     '../src/cmdline/terminal.o',
     '../src/cmdline/transient_message.o',
     '../src/generic/util/logging.o',
