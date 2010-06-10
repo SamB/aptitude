@@ -48,7 +48,7 @@ namespace aptitude
       std::string progress_status;
 
       progress_info(double _progress_fraction,
-                    std::string _progress_status)
+                    const std::string &_progress_status)
         : type(progress_type_bar),
           progress_fraction(_progress_fraction),
           progress_status(_progress_status)
