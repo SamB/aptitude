@@ -55,6 +55,13 @@ namespace aptitude
       {
       }
 
+      progress_info(const std::string &_progress_status)
+        : type(progress_type_pulse),
+          progress_fraction(0),
+          progress_status(_progress_status)
+      {
+      }
+
       progress_info(progress_type _type)
         : type(_type), progress_fraction(0)
       {
@@ -68,7 +75,7 @@ namespace aptitude
 
       static progress_info pulse(const std::string &status)
       {
-        return progress_info(progress_type_pulse, status);
+        return progress_info(status);
       }
 
       static progress_info bar(double fraction,
