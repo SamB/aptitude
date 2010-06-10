@@ -6,6 +6,7 @@ libcmdline_mocks_a_SOURCES = \
 	teletype.cc \
 	teletype.h \
 	terminal.cc \
-	terminal.h
+	terminal.h \
+	transient_message.h
 
 EXTRA_DIST = SConscript

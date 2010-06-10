@@ -4,6 +4,14 @@ Import('programs_env')
 srcs = map(File, [
     ])
 
+programs_env.Dist(
+    'teletype.cc',
+    'teletype.h',
+    'terminal.cc',
+    'terminal.h',
+    'transient_message.h',
+    )
+
 programs_env.Dist('Makefile.am', 'SConscript')
 
 Return('srcs')
