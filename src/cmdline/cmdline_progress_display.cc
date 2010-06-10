@@ -101,7 +101,7 @@ namespace aptitude
                 break;
 
               case progress_type_pulse:
-                message->set_text( (wformat(L"      %s")
+                message->set_text( (wformat(L"[----] %s")
                                     % transcode(progress.get_progress_status())).str() );
                 break;
 
