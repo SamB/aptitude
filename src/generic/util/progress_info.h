@@ -22,6 +22,7 @@
 
 #include <math.h>
 
+#include <iostream>
 #include <string>
 
 namespace aptitude
@@ -123,7 +124,11 @@ namespace aptitude
       {
         progress_status = msg;
       }
+
+      bool operator==(const progress_info &other) const;
     };
+
+    std::ostream &operator<<(std::ostream &out, const progress_info &info);
 
     // @}
   }

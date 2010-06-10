@@ -27,6 +27,7 @@ libgeneric_util_a_SOURCES = \
 	mut_fun.h \
 	parsers.h \
         post_thunk.h        \
+	progress_info.cc \
 	progress_info.h \
 	refcounted_base.cc \
 	refcounted_base.h \
