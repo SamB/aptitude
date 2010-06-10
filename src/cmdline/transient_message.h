@@ -46,6 +46,11 @@ namespace aptitude
     class terminal;
     class terminal_locale;
 
+    /** \brief Create a new transient message object.
+     *
+     *  \param term        The terminal to use for output.
+     *  \param term_locale Locale information for the given terminal.
+     */
     boost::shared_ptr<transient_message>
     create_transient_message(const boost::shared_ptr<terminal> &term,
                              const boost::shared_ptr<terminal_locale> &term_locale);
