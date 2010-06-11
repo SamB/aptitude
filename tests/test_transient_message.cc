@@ -105,10 +105,15 @@ TEST_F(TransientMessage, PreserveAndAdvance)
   message->set_text(L"pigeon");
   message->preserve_and_advance();
 }
+
 TEST_F(TransientMessage, ClearText)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abc")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("")));
+  }
 
   message->set_text(L"abc");
   message->set_text(L"");
@@ -116,8 +121,12 @@ TEST_F(TransientMessage, ClearText)
 
 TEST_F(TransientMessage, ReplaceTextWithShorter)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"a")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"a")));
+  }
 
   message->set_text(L"abc");
   message->set_text(L"a");
@@ -125,8 +134,12 @@ TEST_F(TransientMessage, ReplaceTextWithShorter)
 
 TEST_F(TransientMessage, ReplaceTextWithSameLength)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  }
 
   message->set_text(L"abc");
   message->set_text(L"xyz");
@@ -134,8 +147,12 @@ TEST_F(TransientMessage, ReplaceTextWithSameLength)
 
 TEST_F(TransientMessage, ReplaceTextWithLonger)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyzw")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyzw")));
+  }
 
   message->set_text(L"abc");
   message->set_text(L"xyzw");
@@ -143,8 +160,12 @@ TEST_F(TransientMessage, ReplaceTextWithLonger)
 
 TEST_F(TransientMessage, ReplaceWideCharTextWithShorter)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar + widechar)));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar + widechar)));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  }
 
   message->set_text(widechar + widechar + widechar);
   message->set_text(L"xyz");
@@ -152,8 +173,12 @@ TEST_F(TransientMessage, ReplaceWideCharTextWithShorter)
 
 TEST_F(TransientMessage, ReplaceWideCharTextWithSameLength)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar)));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abcd")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar)));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abcd")));
+  }
 
   message->set_text(widechar + widechar);
   message->set_text(L"abcd");
@@ -161,8 +186,12 @@ TEST_F(TransientMessage, ReplaceWideCharTextWithSameLength)
 
 TEST_F(TransientMessage, ReplaceWideCharTextWithLonger)
 {
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar)));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar)));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+  }
 
   message->set_text(widechar);
   message->set_text(L"abc");
@@ -183,8 +212,12 @@ TEST_F(TransientMessage, ReplaceTruncatedLongLineWithNonTruncated)
   EXPECT_CALL(*term, get_screen_width())
     .WillRepeatedly(Return(4));
 
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abcd")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("xyz")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abcd")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("xyz")));
+  }
 
   message->set_text(L"abcdefghijklmnopqrstuvwxyz");
   message->set_text(L"xyz");
@@ -195,8 +228,12 @@ TEST_F(TransientMessage, ReplaceTruncatedLongLineWithTruncated)
   EXPECT_CALL(*term, get_screen_width())
     .WillRepeatedly(Return(4));
 
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abcd")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("zyxw")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abcd")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("zyxw")));
+  }
 
   message->set_text(L"abcdefghijklmnopqrstuvwxyz");
   message->set_text(L"zyxwvuts");
@@ -227,8 +264,12 @@ TEST_F(TransientMessage, ReplaceTruncatedWideCharLine)
   EXPECT_CALL(*term, get_screen_width())
     .WillRepeatedly(Return(4));
 
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar)));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"z")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(widechar + widechar)));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"z")));
+  }
 
   message->set_text(widechar + widechar + L"abcdef");
   message->set_text(L"z");
@@ -239,8 +280,12 @@ TEST_F(TransientMessage, RequireTtyDecorationsWithTty)
   EXPECT_CALL(*term, output_is_a_terminal())
     .WillRepeatedly(Return(true));
 
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
-  EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyz")));
+  }
 
   // Need to create a new message object since it reads and caches the
   // value of output_is_a_terminal() when it's created.
