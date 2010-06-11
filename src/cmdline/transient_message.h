@@ -41,6 +41,11 @@ namespace aptitude
        *  Updates the currently displayed text immediately.
        */
       virtual void set_text(const std::wstring &text) = 0;
+
+      /** \brief Save the current message and advance to the next
+       *  line.
+       */
+      virtual void preserve_and_advance() = 0;
     };
 
     class terminal;

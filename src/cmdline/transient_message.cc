@@ -55,6 +55,10 @@ namespace aptitude
         void set_text(const std::wstring &msg)
         {
         }
+
+        void preserve_and_advance()
+        {
+        }
       };
 
       class transient_message_impl : public transient_message
@@ -85,6 +89,7 @@ namespace aptitude
         }
 
         void set_text(const std::wstring &line);
+        void preserve_and_advance();
       };
 
 
@@ -144,6 +149,14 @@ namespace aptitude
         term->flush();
         last_line_len = display_width;
         last_line = line;
+      }
+
+      void transient_message_impl::preserve_and_advance()
+      {
+        // As in set_text(), assume that the current message is
+        // already displayed.
+        term->write_text(L"\n");
+        term->flush();
       }
     }
 
