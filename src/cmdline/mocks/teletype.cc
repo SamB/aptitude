@@ -54,7 +54,8 @@ namespace aptitude
           const shared_ptr<terminal> term;
           const shared_ptr<terminal_locale> term_locale;
 
-          void scroll_line();
+          void scroll_line(std::wstring &new_last_line);
+          void do_set_last_line(const std::wstring &new_last_line);
 
           void handle_output(const std::wstring &output);
           void handle_move_to_beginning_of_line();
@@ -103,21 +104,29 @@ namespace aptitude
           }
         };
 
-        void teletype_with_terminal::scroll_line()
+        void teletype_with_terminal::scroll_line(std::wstring &new_last_line)
         {
+          do_set_last_line(new_last_line);
+
           last_line.clear();
+          new_last_line.clear();
           cursor_idx = 0;
           cursor_position = 0;
           newline();
         }
 
+        void teletype_with_terminal::do_set_last_line(const std::wstring &new_last_line)
+        {
+          if(new_last_line != last_line)
+            {
+              last_line = new_last_line;
+              set_last_line(new_last_line);
+            }
+        }
+
         void teletype_with_terminal::handle_output(const std::wstring &output)
         {
-          // This is a minor hack to avoid generating an empty
-          // set_last_line() call after newline().  It's set to true
-          // when we emit a newline and to false when we see any
-          // character that's not \r or \n.
-          bool suppress_set_last_line = false;
+          std::wstring new_last_line = last_line;
           const unsigned int screen_width = term->get_screen_width();
 
           for(std::wstring::const_iterator it = output.begin();
@@ -128,10 +137,7 @@ namespace aptitude
               switch(c)
                 {
                 case '\n':
-                  if(!suppress_set_last_line)
-                    set_last_line(last_line);
-                  scroll_line();
-                  suppress_set_last_line = true;
+                  scroll_line(new_last_line);
                   break;
 
                 case '\r':
@@ -145,27 +151,19 @@ namespace aptitude
 
                     if(cursor_position + c_width > screen_width)
                       {
-                        if(!suppress_set_last_line)
-                          set_last_line(last_line);
-                        scroll_line();
-                        // Don't suppress the last line, since we're
-                        // about to output a character (making it
-                        // nonempty).
-                        suppress_set_last_line = false;
+                        scroll_line(new_last_line);
 
                         // Now that we've moved to the next line, we
                         // still need to output the character that
                         // caused the scroll.  This breaks if the screen
                         // width is 0 -- don't do that.
-                        last_line.push_back(c);
+                        new_last_line.push_back(c);
                         cursor_position += c_width;
                         ++cursor_idx;
                       }
                     else
                       {
-                        suppress_set_last_line = false;
-
-                        if(cursor_idx < last_line.size())
+                        if(cursor_idx < new_last_line.size())
                           {
                             // This is an overwrite.  Find the character
                             // or characters that were overwritten and
@@ -187,7 +185,7 @@ namespace aptitude
                                 const int replace_idx =
                                   cursor_idx + chars_to_replace;
                                 const int previous_width =
-                                  safe_wcwidth(last_line[replace_idx]);
+                                  safe_wcwidth(new_last_line[replace_idx]);
 
                                 ++chars_to_replace;
                                 replaced_width += previous_width;
@@ -200,19 +198,19 @@ namespace aptitude
                               new_text.push_back(L' ');
 
 
-                            last_line.replace(cursor_idx,
-                                              chars_to_replace,
-                                              new_text);
+                            new_last_line.replace(cursor_idx,
+                                                  chars_to_replace,
+                                                  new_text);
                           }
                         else
                           {
                             // Note that cursor_idx should be at
                             // most last_line.size() + 1; this is just
                             // for safety's sake.
-                            while(last_line.size() + 1 < cursor_idx)
-                              last_line.push_back(' ');
+                            while(new_last_line.size() + 1 < cursor_idx)
+                              new_last_line.push_back(' ');
 
-                            last_line.push_back(c);
+                            new_last_line.push_back(c);
                           }
 
                         cursor_position += c_width;
@@ -222,8 +220,7 @@ namespace aptitude
                 }
             }
 
-          if(!suppress_set_last_line)
-            set_last_line(last_line);
+          do_set_last_line(new_last_line);
         }
 
         void teletype_with_terminal::handle_move_to_beginning_of_line()
