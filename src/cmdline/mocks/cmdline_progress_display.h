@@ -38,6 +38,8 @@ namespace aptitude
       {
       public:
         MOCK_METHOD1(set_progress, void(const aptitude::util::progress_info &));
+
+        MOCK_METHOD0(done, void());
       };
     }
   }

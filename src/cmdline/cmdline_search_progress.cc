@@ -64,6 +64,7 @@ namespace aptitude
         }
 
         void set_progress(const progress_info &info);
+        void done();
       };
 
       void search_progress::set_progress(const progress_info &info)
@@ -99,6 +100,11 @@ namespace aptitude
           }
 
         throttle->reset_timer();
+      }
+
+      void search_progress::done()
+      {
+        display->done();
       }
     }
 

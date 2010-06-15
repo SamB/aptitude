@@ -216,3 +216,20 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
 
   search_progress->set_progress(info);
 }
+
+TEST_F(CmdlineSearchProgressTest, Done)
+{
+  never_throttle();
+  EXPECT_CALL(*progress_display, done());
+
+  search_progress->done();
+}
+
+// Test that Done ignores throttling.
+TEST_F(CmdlineSearchProgressTest, DoneThrottled)
+{
+  always_throttle();
+  EXPECT_CALL(*progress_display, done());
+
+  search_progress->done();
+}

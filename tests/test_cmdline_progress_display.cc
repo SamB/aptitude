@@ -38,24 +38,78 @@ using aptitude::cmdline::progress_display;
 using aptitude::util::progress_info;
 using boost::make_shared;
 using boost::shared_ptr;
+using testing::AnyNumber;
+using testing::AtMost;
+using testing::Expectation;
+using testing::HasSubstr;
 using testing::StrEq;
 using testing::StrNe;
-using testing::Test;
+using testing::TestWithParam;
+using testing::Values;
 using testing::_;
 
 namespace mocks = aptitude::cmdline::mocks;
 
 namespace
 {
-  struct CmdlineProgressDisplayTest : public Test
+  class CmdlineProgressDisplayParams
+  {
+    bool old_style_percentage;
+    bool retain_completed;
+
+  public:
+    CmdlineProgressDisplayParams(bool _old_style_percentage,
+                                 bool _retain_completed)
+      : old_style_percentage(_old_style_percentage),
+        retain_completed(_retain_completed)
+    {
+    }
+
+    bool get_old_style_percentage() const { return old_style_percentage; }
+    bool get_retain_completed() const { return retain_completed; }
+  };
+
+  std::ostream &operator<<(std::ostream &out,
+                           const CmdlineProgressDisplayParams &params)
+  {
+    return out << "("
+               << "old_style_percentage = "
+               << (params.get_old_style_percentage() ? "true" : "false")
+               << ", "
+               << "retain_completed = "
+               << (params.get_retain_completed() ? "true" : "false")
+               << ")";
+  }
+
+  struct CmdlineProgressDisplayTest
+    : public TestWithParam<CmdlineProgressDisplayParams>
   {
     shared_ptr<mocks::transient_message> msg;
     shared_ptr<progress_display> progress;
 
-    CmdlineProgressDisplayTest()
-      : msg(make_shared<mocks::transient_message>()),
-        progress(create_progress_display(msg))
+    bool get_old_style_percentage() const
     {
+      return GetParam().get_old_style_percentage();
+    }
+
+    bool get_retain_completed() const
+    {
+      return GetParam().get_retain_completed();
+    }
+
+    CmdlineProgressDisplayTest()
+      : msg(make_shared<mocks::transient_message>())
+    {
+    }
+
+    // It's not documented anywhere, but from the examples and my
+    // intuition about how TEST_P is probably implemented, I bet that
+    // we can't access GetParm() until SetUp:
+    void SetUp()
+    {
+      progress = create_progress_display(msg,
+                                         get_old_style_percentage(),
+                                         get_retain_completed());
     }
 
     // Define shorter names for the progress_info constructors.
@@ -76,16 +130,30 @@ namespace
   };
 }
 
-TEST_F(CmdlineProgressDisplayTest, InitialShowNoneHasNoEffect)
+#define EXPECT_NO_RETAIN_COMPLETED()            \
+  EXPECT_CALL(*msg, preserve_and_advance()).Times(0)
+
+#define MAYBE_EXPECT_RETAIN_COMPLETED()     \
+  EXPECT_CALL(*msg, preserve_and_advance()) \
+  .Times(get_retain_completed() ? 1 : 0)
+
+#define MAYBE_EXPECT_CLEAR_COMPLETED()    \
+  EXPECT_CALL(*msg, set_text(StrEq(L""))) \
+  .Times(get_retain_completed() ? 0 : 1)
+
+TEST_P(CmdlineProgressDisplayTest, InitialShowNoneHasNoEffect)
 {
   EXPECT_CALL(*msg, set_text(_))
     .Times(0);
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowNoneAfterPulse)
+TEST_P(CmdlineProgressDisplayTest, ShowNoneAfterPulse)
 {
+  EXPECT_NO_RETAIN_COMPLETED();
+
   EXPECT_CALL(*msg, set_text(StrNe(L"")));
   EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
@@ -93,188 +161,500 @@ TEST_F(CmdlineProgressDisplayTest, ShowNoneAfterPulse)
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowPulse)
+TEST_P(CmdlineProgressDisplayTest, ShowPulse)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Hello world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Hello world...")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[----] Hello world")));
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(pulse("Hello world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarNegative)
+TEST_P(CmdlineProgressDisplayTest, ShowBarNegative)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Before the beginning of the world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Before the beginning of the world... 0%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Before the beginning of the world")));
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(-1, "Before the beginning of the world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarZero)
+TEST_P(CmdlineProgressDisplayTest, ShowBarZero)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Beginning world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Beginning world... 0%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Beginning world")));
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0, "Beginning world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarRoundUp)
+TEST_P(CmdlineProgressDisplayTest, ShowBarRoundUp)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Almost middle world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Almost middle world... 50%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Almost middle world")));
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.499, "Almost middle world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarRoundUpInMiddle)
+TEST_P(CmdlineProgressDisplayTest, ShowBarRoundUpInMiddle)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Almost middle world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Almost middle world... 50%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Almost middle world")));
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.495, "Almost middle world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarMiddleExact)
+TEST_P(CmdlineProgressDisplayTest, ShowBarMiddleExact)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Middle world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Middle world... 50%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Middle world")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.50, "Middle world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarRoundDown)
+TEST_P(CmdlineProgressDisplayTest, ShowBarRoundDown)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Just past middle world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Just past middle world... 50%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 50%] Just past middle world")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.501, "Just past middle world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, ShowBarComplete)
+TEST_P(CmdlineProgressDisplayTest, ShowBarComplete)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[100%] Finished world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Finished world... 100%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[100%] Finished world")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(1, "Finished world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, FractionTooLarge)
+TEST_P(CmdlineProgressDisplayTest, FractionTooLarge)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[100%] Past the end of the world")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Past the end of the world... 100%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[100%] Past the end of the world")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(100, "Past the end of the world"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, SuppressDuplicateNones)
+TEST_P(CmdlineProgressDisplayTest, SuppressDuplicateNones)
 {
   EXPECT_CALL(*msg, set_text(StrNe(L"")));
   EXPECT_CALL(*msg, set_text(StrEq(L"")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(pulse("Irrelevant data"));
   progress->set_progress(none());
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, PulseSuppressesDuplicateMessage)
+TEST_P(CmdlineProgressDisplayTest, PulseSuppressesDuplicateMessage)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Some message")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Some message...")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[----] Some message")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(pulse("Some message"));
   progress->set_progress(pulse("Some message"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, BarSuppressesDuplicateSettings)
+TEST_P(CmdlineProgressDisplayTest, BarSuppressesDuplicateSettings)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 66%] Some message")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Some message... 66%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 66%] Some message")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.66, "Some message"));
   progress->set_progress(bar(0.66, "Some message"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, BarSuppressesAlmostDuplicateSettings)
+TEST_P(CmdlineProgressDisplayTest, BarSuppressesAlmostDuplicateSettings)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 66%] Some message")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Some message... 66%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 66%] Some message")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.661, "Some message"));
   progress->set_progress(bar(0.662, "Some message"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNoneToPulse)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNoneToPulse)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Pulse")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Pulse...")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[----] Pulse")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(none());
   progress->set_progress(pulse("Pulse"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNoneToEmptyBar)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNoneToEmptyBar)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] ")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"... 0%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] ")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(none());
   progress->set_progress(bar(0, ""));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNoneToNonEmptyBar)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNoneToNonEmptyBar)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 33%] Pelagic argosy")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Pelagic argosy... 33%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 33%] Pelagic argosy")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(none());
   progress->set_progress(bar(0.33, "Pelagic argosy"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromPulseToNone)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromPulseToNone)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Beware the leopard")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Beware the leopard...")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[----] Beware the leopard")));
   EXPECT_CALL(*msg, set_text(StrEq(L"")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(pulse("Beware the leopard"));
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromPulseToZeroBar)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromPulseToZeroBar)
 {
   // Check that it doesn't get confused and think that the second
   // setting is identical to the first.
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Wobbly Weasel"))); // Future Ubuntu codename?
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Wobbly Weasel")));
+  if(get_old_style_percentage())
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"Wobbly Weasel...")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"Wobbly Weasel... 0%")));
+    }
+  else
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"[----] Wobbly Weasel")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Wobbly Weasel")));
+    }
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(pulse("Wobbly Weasel"));
   progress->set_progress(bar(0, "Wobbly Weasel"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromZeroBarToNone)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromZeroBarToNone)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Bar None")));
-  EXPECT_CALL(*msg, set_text(StrEq(L"")));
+  if(get_old_style_percentage())
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"Bar None... 0%")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"")));
+    }
+  else
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] Bar None")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"")));
+    }
+
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0, "Bar None"));
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToNone)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToNone)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 21%] Albatross")));
+  if(get_old_style_percentage())
+    EXPECT_CALL(*msg, set_text(StrEq(L"Albatross... 21%")));
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"[ 21%] Albatross")));
+
   EXPECT_CALL(*msg, set_text(StrEq(L"")));
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.21, "Albatross"));
   progress->set_progress(none());
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromZeroBarToPulse)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromZeroBarToPulse)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] All I've got is this bloody albatross")));
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] All I've got is this bloody albatross")));
+  if(get_old_style_percentage())
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"All I've got is this bloody albatross... 0%")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"All I've got is this bloody albatross...")));
+    }
+  else
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"[  0%] All I've got is this bloody albatross")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"[----] All I've got is this bloody albatross")));
+    }
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0, "All I've got is this bloody albatross"));
   progress->set_progress(pulse("All I've got is this bloody albatross"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToPulse)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToPulse)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 11%] Bop")));
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Bop")));
+  if(get_old_style_percentage())
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"Bop... 11%")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"Bop...")));
+    }
+  else
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"[ 11%] Bop")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"[----] Bop")));
+    }
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.11, "Bop"));
   progress->set_progress(pulse("Bop"));
 }
 
-TEST_F(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToDifferentPulse)
+TEST_P(CmdlineProgressDisplayTest, CanSwitchFromNonZeroBarToDifferentPulse)
 {
-  EXPECT_CALL(*msg, set_text(StrEq(L"[ 11%] Zip")));
-  EXPECT_CALL(*msg, set_text(StrEq(L"[----] Bop")));
+  if(get_old_style_percentage())
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"Zip... 11%")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"Bop...")));
+    }
+  else
+    {
+      EXPECT_CALL(*msg, set_text(StrEq(L"[ 11%] Zip")));
+      EXPECT_CALL(*msg, set_text(StrEq(L"[----] Bop")));
+    }
+  EXPECT_NO_RETAIN_COMPLETED();
 
   progress->set_progress(bar(0.11, "Zip"));
   progress->set_progress(pulse("Bop"));
 }
+
+TEST_P(CmdlineProgressDisplayTest, DoneAfterNoneHasNoEffect)
+{
+  // This behavior is tested elsewhere:
+  EXPECT_CALL(*msg, set_text(StrEq(L"")))
+    .Times(AtMost(1));
+
+  EXPECT_NO_RETAIN_COMPLETED();
+
+  progress->set_progress(none());
+  progress->done();
+  // Test multiple done()s too.
+  progress->done();
+  progress->done();
+}
+
+TEST_P(CmdlineProgressDisplayTest, DoneAfterPulse)
+{
+  // Expect one call to set_text() up-front, to set up the pre-done
+  // display.
+  Expectation text_set;
+  if(get_old_style_percentage())
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey...")));
+  else
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"[----] Marvelous Monkey")));
+
+  Expectation maybe_done = text_set;
+
+  // First, we should get a Done if we're retaining completed tasks.
+  if(get_retain_completed())
+    {
+      if(get_old_style_percentage())
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          .After(text_set);
+      else
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          .After(text_set);
+    }
+
+  // Next, we should get a call to preserve_and_advance(), or a call
+  // to clear the message if that's disabled.
+  MAYBE_EXPECT_RETAIN_COMPLETED()
+    .After(text_set);
+  MAYBE_EXPECT_CLEAR_COMPLETED()
+    .After(text_set);
+
+  progress->set_progress(pulse("Marvelous Monkey"));
+  progress->done();
+}
+
+TEST_P(CmdlineProgressDisplayTest, DoneAfterBar)
+{
+  // Expect one call to set_text() up-front, to set up the pre-done display.
+  Expectation text_set;
+
+  if(get_old_style_percentage())
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"Ack... 98%")));
+  else
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"[ 98%] Ack")));
+
+  Expectation maybe_done = text_set;
+
+  // First, we should get a Done if we're retaining completed tasks.
+  if(get_retain_completed())
+    {
+      if(get_old_style_percentage())
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"Ack... Done")))
+          .After(text_set);
+      else
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Ack")))
+          .After(text_set);
+    }
+
+  // Next, we should get a call to preserve_and_advance(), or a call
+  // to clear the message if that's disabled.
+  MAYBE_EXPECT_RETAIN_COMPLETED()
+    .After(maybe_done);
+  MAYBE_EXPECT_CLEAR_COMPLETED()
+    .After(maybe_done);
+
+  progress->set_progress(bar(0.98, "Ack"));
+  progress->done();
+}
+
+TEST_P(CmdlineProgressDisplayTest, DoneAfterDone)
+{
+  // This test is exactly identical to the pulse() test, except that
+  // we invoke done() twice.  The point is that the second done() has
+  // no effect.
+
+
+  // Expect one call to set_text() up-front, to set up the pre-done
+  // display.
+  Expectation text_set;
+  if(get_old_style_percentage())
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey...")));
+  else
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"[----] Marvelous Monkey")));
+
+  Expectation maybe_done = text_set;
+
+  // First, we should get a Done if we're retaining completed tasks.
+  if(get_retain_completed())
+    {
+      if(get_old_style_percentage())
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          .After(text_set);
+      else
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          .After(text_set);
+    }
+
+  // Next, we should get a call to preserve_and_advance(), or a call
+  // to clear the message if that's disabled.
+  MAYBE_EXPECT_RETAIN_COMPLETED()
+    .After(text_set);
+  MAYBE_EXPECT_CLEAR_COMPLETED()
+    .After(text_set);
+
+  progress->set_progress(pulse("Marvelous Monkey"));
+  progress->done();
+  progress->done();
+}
+
+TEST_P(CmdlineProgressDisplayTest, NoneAfterDone)
+{
+  // This test is exactly identical to the pulse() test, except that
+  // we send none() after invoking done().  The point is that the
+  // none() has no effect even though the previously set progress
+  // value was not none().
+
+
+  // Expect one call to set_text() up-front, to set up the pre-done
+  // display.
+  Expectation text_set;
+  if(get_old_style_percentage())
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey...")));
+  else
+    text_set = EXPECT_CALL(*msg, set_text(StrEq(L"[----] Marvelous Monkey")));
+
+  Expectation maybe_done = text_set;
+
+  // First, we should get a Done if we're retaining completed tasks.
+  if(get_retain_completed())
+    {
+      if(get_old_style_percentage())
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          .After(text_set);
+      else
+        maybe_done =
+          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          .After(text_set);
+    }
+
+  // Next, we should get a call to preserve_and_advance(), or a call
+  // to clear the message if that's disabled.
+  MAYBE_EXPECT_RETAIN_COMPLETED()
+    .After(text_set);
+  MAYBE_EXPECT_CLEAR_COMPLETED()
+    .After(text_set);
+
+  progress->set_progress(pulse("Marvelous Monkey"));
+  progress->done();
+  progress->set_progress(none());
+  // See what happens if a few more none()s are set.
+  progress->set_progress(none());
+  progress->set_progress(none());
+}
+
+INSTANTIATE_TEST_CASE_P(CmdlineProgressDisplayTestOldStyleAndRetainCompleted,
+                        CmdlineProgressDisplayTest,
+                        Values(CmdlineProgressDisplayParams(true, true)));
+
+INSTANTIATE_TEST_CASE_P(CmdlineProgressDisplayTestOldStyleAndNoRetainCompleted,
+                        CmdlineProgressDisplayTest,
+                        Values(CmdlineProgressDisplayParams(true, false)));
+
+INSTANTIATE_TEST_CASE_P(CmdlineProgressDisplayTestNewStyleAndRetainCompleted,
+                        CmdlineProgressDisplayTest,
+                        Values(CmdlineProgressDisplayParams(false, true)));
+
+INSTANTIATE_TEST_CASE_P(CmdlineProgressDisplayTestNewStyleAndNoRetainCompleted,
+                        CmdlineProgressDisplayTest,
+                        Values(CmdlineProgressDisplayParams(false, false)));

@@ -55,11 +55,31 @@ namespace aptitude
        *  \param progress      The new progress information to display.
        */
       virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
+
+      /** \brief Mark the currently displayed progress as done.
+       *
+       *  Depending on the current configuration, this will either
+       *  blank the output line or display a "done" message and
+       *  advance to the next line.
+       */
+      virtual void done() = 0;
     };
 
-    /** \brief Create a blank progress display. */
+    /** \brief Create a blank progress display.
+     *
+     *  \param message The message object used to display the progress
+     *                 message.
+     *
+     *  \param old_style_percentage The output mode.  Either "[NNN%] msg"
+     *                              (new) or "msg... NNN%" (old).
+     *
+     *  \param retain_completed If \b true, completed messages will be
+     *                          retained instead of being deleted.
+     */
     boost::shared_ptr<progress_display>
-    create_progress_display(const boost::shared_ptr<transient_message> &message);
+    create_progress_display(const boost::shared_ptr<transient_message> &message,
+                            bool old_style_percentage,
+                            bool retain_completed);
 
     /** \brief Create a blank progress display.
      *

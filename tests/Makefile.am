@@ -8,6 +8,7 @@ LDADD = $(top_builddir)/src/loggers.o			       \
 $(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
 $(top_builddir)/src/gtk/views/libgtk-views.a \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+$(top_builddir)/src/cmdline/libcmdline.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \

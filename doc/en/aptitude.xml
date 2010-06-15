@@ -10754,6 +10754,31 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+            <seglistitem id='configCmdLine-Progress-Percent-On-Right'>
+              <seg><literal>Aptitude::CmdLine::Progress::Percent-On-Right</literal></seg>
+              <seg><literal>false</literal></seg>
+              <seg>
+                This option controls whether command-line progress
+                indicators display the percentage on the left-hand
+                side of the screen, in the same style as &apt-get;, or
+                on the right-hand side (the default).  This option
+                does not affect download progress indicators.
+              </seg>
+            </seglistitem>
+
+            <seglistitem id='configCmdLine-Progress-Retain-Completed'>
+              <seg><literal>Aptitude::CmdLine::Progress::Retain-Completed</literal></seg>
+              <seg><literal>false</literal></seg>
+              <seg>
+                If this value is <literal>false</literal>, then
+                command-line progress indicators will be deleted and
+                overwritten once the task they represent is completed.
+                If it is <literal>true</literal>, then they will be
+                left on the terminal.  This option does not affect
+                download progress indicators.
+              </seg>
+            </seglistitem>
+
 	    <seglistitem id='configCmdLine-Request-Strictness'>
 	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
 	      <seg><literal>10000</literal></seg>
