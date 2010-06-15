@@ -292,7 +292,7 @@ namespace
           }
       }
 
-    search_progress_display->set_progress(progress_info::none());
+    search_progress_display->done();
 
     if(output.empty())
       return_value = 2;

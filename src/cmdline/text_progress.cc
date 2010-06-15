@@ -86,7 +86,7 @@ namespace aptitude
           {
             if(!last_op.empty())
               {
-                display->set_progress(progress_info::none());
+                display->done();
 
                 if(_error->PendingError() == true)
                   // ForTranslators: the text between [] should be

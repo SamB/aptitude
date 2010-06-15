@@ -124,7 +124,7 @@ namespace
                                                  &progress_display::set_progress));
       }
 
-    search_progress_display->set_progress(progress_info::none());
+    search_progress_display->done();
 
     _error->DumpErrors();
 
