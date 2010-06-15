@@ -96,22 +96,14 @@ namespace
         .Times(AnyNumber());
     }
 
-    void disable_throttle_once()
+    void always_throttle()
     {
-      Expectation e1 = EXPECT_CALL(*progress_throttle, update_required())
-        .WillOnce(Return(false))
-        .RetiresOnSaturation();
-
+      EXPECT_CALL(*progress_throttle, update_required())
+        .WillRepeatedly(Return(false));
       // No call to reset_timer() expected since it's throttled --
       // calling it would, in fact, be wrong.
-
-      EXPECT_CALL(*progress_throttle, update_required())
-        .After(e1)
-        .WillRepeatedly(Return(true));
-
       EXPECT_CALL(*progress_throttle, reset_timer())
-        .Times(AnyNumber())
-        .After(e1);
+        .Times(0);
     }
   };
 }
@@ -152,7 +144,7 @@ TEST_F(CmdlineSearchProgressTest, SetProgressBar)
 
 TEST_F(CmdlineSearchProgressTest, ThrottledProgressNone)
 {
-  disable_throttle_once();
+  always_throttle();
 
   EXPECT_CALL(*progress_display, set_progress(_))
     .Times(0);
@@ -162,7 +154,10 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressNone)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
+  Mock::VerifyAndClearExpectations(progress_throttle.get());
   Mock::VerifyAndClearExpectations(progress_display.get());
+
+  never_throttle();
 
   EXPECT_CALL(*progress_display, set_progress(none()));
 
@@ -174,7 +169,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressPulse)
   const std::string msg = "The caged whale knows not the mighty deeps";
   const progress_info info = pulse(msg);
 
-  disable_throttle_once();
+  always_throttle();
 
   EXPECT_CALL(*progress_display, set_progress(_))
     .Times(0);
@@ -184,7 +179,10 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressPulse)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
+  Mock::VerifyAndClearExpectations(progress_throttle.get());
   Mock::VerifyAndClearExpectations(progress_display.get());
+
+  never_throttle();
 
   EXPECT_CALL(*progress_display,
               set_progress(pulse(search_pattern + ": " + msg)));
@@ -198,7 +196,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
   const double fraction = 0.8;
   const progress_info info = bar(fraction, msg);
 
-  disable_throttle_once();
+  always_throttle();
 
   EXPECT_CALL(*progress_display, set_progress(_))
     .Times(0);
@@ -208,7 +206,10 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
+  Mock::VerifyAndClearExpectations(progress_throttle.get());
   Mock::VerifyAndClearExpectations(progress_display.get());
+
+  never_throttle();
 
   EXPECT_CALL(*progress_display,
               set_progress(bar(fraction, search_pattern + ": " + msg)));
