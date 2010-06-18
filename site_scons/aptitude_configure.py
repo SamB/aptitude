@@ -22,6 +22,7 @@ from SCons import SConf
 import os
 
 import aptitude_configure_checks
+import aptitude_configure_ept_checks
 import aptitude_configure_utils
 from aptitude_configure_checks import TryInclude, TryLibrary
 from aptitude_configure_utils import RequireCheck
@@ -68,10 +69,57 @@ languages = [
     "zh_TW",
     ]
 
+def DoConfigureEpt(conf, env):
+    """Test for features of ept."""
+
+    debtags_ok = False
+    if conf.CheckForDebtagsTag():
+        conf.Define('HAVE_EPT_DEBTAGS_TAG')
+        debtags_ok = True
+
+    if conf.CheckDebtagsGetTagsOfItemReturnsStrings():
+        conf.Define('EPT_DEBTAGS_GETTAGSOFITEM_RETURNS_STRINGS')
+        debtags_ok = True
+
+    if not debtags_ok:
+        print "Can't figure out how to access the ept debtags database."
+        Exit(1)
+
+    if conf.CheckForDebtagsFacet():
+        conf.Define('HAVE_EPT_DEBTAGS_FACET')
+
+    textsearch_ok = False
+    if conf.CheckTextsearch():
+        conf.Define('HAVE_EPT_TEXTSEARCH')
+        textsearch_ok = True
+
+    if conf.CheckEptAxi():
+        conf.Define('HAVE_EPT_AXI')
+        textsearch_ok = True
+
+    if not textsearch_ok:
+        print "Can't figure out how to access the ept Xapian database."
+        Exit(1)
+
+    if conf.CheckEptDebtagsVocabularyTagData():
+        conf.Define('HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA')
+
+    if conf.CheckEptDebtagsVocabularyFacetData():
+        conf.Define('HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA')
+
+    if conf.CheckEptDebtagsTagFullName():
+        conf.Define('HAVE_EPT_DEBTAGS_TAG_FULLNAME')
+
+    if conf.CheckEptDebtagsFacetDescription():
+        conf.Define('HAVE_EPT_DEBTAGS_FACET_DESCRIPTION')
+
+    if conf.CheckEptDebtagsTagDescription():
+        conf.Define('HAVE_EPT_DEBTAGS_TAG_DESCRIPTION')
+
 def DoConfigureBuild(env):
     """Configure the build environment 'env' with the libraries that
 all executable targets need."""
-    conf = aptitude_configure_checks.Configure(env)
+    conf = aptitude_configure_utils.Configure(env)
 
     RequireCheck(conf.CheckForNCursesW(tries = [ TryInclude('/usr/include'),
                                                  TryInclude('/usr/include/ncursesw') ]),
@@ -122,13 +170,15 @@ all executable targets need."""
         RequireCheck(conf.PkgConfig(pkg),
                      "Can't find %s" % pkg)
 
+    DoConfigureEpt(conf, env)
+
     conf.Finish()
 
 def DoConfigureBoostTests(env):
     '''Configure the build environment "env" with the libraries that
 the Boost unit tests need.'''
 
-    conf = aptitude_configure_checks.Configure(env)
+    conf = aptitude_configure_utils.Configure(env)
 
     RequireCheck(conf.CheckForBoostTest(tries = [
         TryLibrary('boost_unit_test_framework-mt'),
@@ -144,7 +194,7 @@ def DoConfigureCppunitTests(env):
     '''Configure the build environment "env" with the libraries that
 the CPPUnit unit tests need.'''
 
-    conf = aptitude_configure_checks.Configure(env)
+    conf = aptitude_configure_utils.Configure(env)
 
     RequireCheck(conf.CheckForCPPUnit(),
                  "Can't find CPPUnit")
@@ -155,7 +205,7 @@ def DoConfigureGTestTests(env):
     '''Configure the build environment "env" with the libraries that
 the GTest unit tests need.'''
 
-    conf = aptitude_configure_checks.Configure(env)
+    conf = aptitude_configure_utils.Configure(env)
 
     RequireCheck(conf.CheckForGoogleTest(),
                  "Can't find google-test")
