@@ -18,11 +18,11 @@ $(top_builddir)/src/generic/util/libgeneric-util.a \
 -lcppunit \
 $(BOOST_TEST_LDFLAGS) $(GMOCK_LDFLAGS)
 
-check_PROGRAMS = gtest_test # cppunit_test boost_test gtest_test
+check_PROGRAMS = gtest_test cppunit_test boost_test gtest_test
 
 noinst_PROGRAMS = interactive_set_test
 
-TESTS = gtest_test #cppunit_test boost_test gtest_test
+TESTS = gtest_test cppunit_test boost_test gtest_test
 
 EXTRA_DIST = file_caches
 
