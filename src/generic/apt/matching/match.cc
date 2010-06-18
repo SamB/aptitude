@@ -33,7 +33,16 @@
 
 #include <cwidget/generic/util/transcode.h>
 
+#ifdef HAVE_EPT_TEXTSEARCH
 #include <ept/textsearch/textsearch.h>
+#else
+#ifdef HAVE_EPT_AXI
+#include <ept/axi/axi.h>
+#else
+#error "Don't know how to use the debtags Xapian database."
+#endif
+#endif
+
 #include <xapian/enquire.h>
 
 #include <algorithm>
@@ -52,6 +61,42 @@ namespace aptitude
   {
     namespace
     {
+#ifdef HAVE_EPT_TEXTSEARCH
+      typedef ept::textsearch::TextSearch debtags_db;
+
+      const Xapian::docid get_docid_by_name(const debtags_db &db,
+                                            const char *name)
+      {
+        return db.docidByName(name);
+      }
+
+      const Xapian::Database &get_xapian_db(const debtags_db &db)
+      {
+        return db.db();
+      }
+#endif
+
+#ifdef HAVE_EPT_AXI
+      typedef Xapian::Database debtags_db;
+
+      const Xapian::docid get_docid_by_name(const debtags_db &db,
+                                            const char *name)
+      {
+        std::string term = "XP";
+        term += name;
+
+        Xapian::PostingIterator i = db.postlist_begin(term);
+        if(i == db.postlist_end(term))
+          return Xapian::docid();
+        else
+          return *i;
+      }
+
+      const Xapian::Database &get_xapian_db(const debtags_db &db)
+      {
+        return db;
+      }
+#endif
 
       /** \brief Evaluate any regular expression-based pattern.
        *
@@ -150,14 +195,14 @@ namespace aptitude
 	 *  matched by this pattern.
 	 */
 	bool maybe_contains_package(const pkgCache::PkgIterator &pkg,
-				    const boost::scoped_ptr<ept::textsearch::TextSearch> &db) const
+				    const boost::scoped_ptr<debtags_db> &db) const
 	{
 	  if(!matched_packages_valid || !db)
 	    return true;
 	  else
 	    return std::binary_search(matched_packages.begin(),
 				      matched_packages.end(),
-				      db->docidByName(pkg.Name()));
+				      get_docid_by_name(*db, pkg.Name()));
 	}
 
 	xapian_info()
@@ -277,9 +322,9 @@ namespace aptitude
 	}
       };
 
-      // Either a pointer to the TextSearch object, or NULL if it
+      // Either a pointer to the debtags database, or NULL if it
       // couldn't be initialized.
-      boost::scoped_ptr<ept::textsearch::TextSearch> db;
+      boost::scoped_ptr<debtags_db> db;
 
       // Maps "top-level" patterns to their Xapian information (that
       // is, the corresponding query and/or query results).  Term hit
@@ -300,7 +345,15 @@ namespace aptitude
       {
 	try
 	  {
+#ifdef HAVE_EPT_TEXTSEARCH
 	    db.reset(new ept::textsearch::TextSearch);
+#else
+#ifdef HAVE_EPT_AXI
+            db.reset(new Xapian::Database(ept::axi::path_db()));
+#else
+#error "Can't figure out how to create the debtags database."
+#endif
+#endif
 	  }
 	catch(...)
 	  {
@@ -308,7 +361,7 @@ namespace aptitude
 	  }
       }
 
-      const boost::scoped_ptr<ept::textsearch::TextSearch> &get_db() const
+      const boost::scoped_ptr<debtags_db> &get_db() const
       {
 	return db;
       }
@@ -347,8 +400,8 @@ namespace aptitude
 	if(debug)
 	  std::cout << "Searching for " << prefix << " as a term pefix." << std::endl;
 
-	Xapian::docid pkg_docid(db->docidByName(pkg.Name()));
-	const Xapian::Database xapian_db(db->db());
+	Xapian::docid pkg_docid(get_docid_by_name(*db, pkg.Name()));
+	const Xapian::Database xapian_db(get_xapian_db(*db));
 
 
 	const std::map<std::string, std::vector<Xapian::docid> >::iterator
@@ -414,7 +467,7 @@ namespace aptitude
 			const std::string &term,
 			bool debug)
       {
-	Xapian::docid pkg_docid(db->docidByName(pkg.Name()));
+	Xapian::docid pkg_docid(get_docid_by_name(*db, pkg.Name()));
 
 	const std::map<std::string, std::vector<Xapian::docid> >::iterator
 	  found = matched_terms.find(term);
@@ -441,7 +494,7 @@ namespace aptitude
 	      {
 		const std::string &currTerm(**termIt);
 
-		Xapian::Database xapian_db(db->db());
+		Xapian::Database xapian_db(get_xapian_db(*db));
 
 		Xapian::PostingIterator
 		  postingsBegin = xapian_db.postlist_begin(currTerm),
@@ -480,7 +533,7 @@ namespace aptitude
 
 	    xapian_info &rval(inserted->second);
 	    if(db.get() != NULL)
-	      rval.setup(db->db(), toplevel, debug);
+	      rval.setup(get_xapian_db(*db), toplevel, debug);
 
 	    return rval;
 	  }
@@ -1377,8 +1430,9 @@ namespace aptitude
 	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
 
 #ifdef HAVE_EPT
-	      typedef ept::debtags::Tag tag;
+              using aptitude::apt::get_fullname;
 	      using aptitude::apt::get_tags;
+              using aptitude::apt::tag;
 #endif
 
 #ifdef HAVE_EPT
@@ -1394,7 +1448,7 @@ namespace aptitude
 	      for(std::set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
 		{
 #ifdef HAVE_EPT
-		  std::string name(i->fullname());
+		  std::string name(get_fullname(*i));
 #else
 		  const std::string name = i->str().c_str();
 #endif
