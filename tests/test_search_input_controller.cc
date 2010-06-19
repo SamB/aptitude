@@ -25,6 +25,9 @@
 #include <boost/make_shared.hpp>
 #include <boost/test/unit_test.hpp>
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 namespace ctrls = gui::controllers;
 namespace views = gui::views;
 namespace mocks = gui::views::mocks;
