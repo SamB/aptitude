@@ -24,6 +24,7 @@
 #include <cwidget/generic/util/bool_accumulate.h>
 
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/weak_ptr.hpp>
 
 #include <generic/util/dynamic_set_impl.h>
