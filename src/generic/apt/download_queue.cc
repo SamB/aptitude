@@ -1,7 +1,7 @@
 /** \file download_queue.cc */
 
 
-// Copyright (C) 2009 Daniel Burrows
+// Copyright (C) 2009-2010 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -529,7 +529,7 @@ namespace aptitude
       {
 	static bool signals_connected;
       public:
-	static log4cxx::LoggerPtr get_log_category()
+	static logging::LoggerPtr get_log_category()
 	{
 	  return Loggers::getAptitudeDownloadQueueCache();
 	}
@@ -840,8 +840,10 @@ namespace aptitude
        *
        *  We need to do this because otherwise, the objects in the
        *  queue might be destroyed when global destructors are called,
-       *  and some of them access things (like log4cxx) that are
-       *  destroyed at the same time.
+       *  and some of them access things that might be destroyed at
+       *  the same time. (log4cxx used to be a problem here; I haven't
+       *  checked whether anything else is.  Deterministic destruction
+       *  is a good idea anyway, though)
        */
       static void shutdown()
       {

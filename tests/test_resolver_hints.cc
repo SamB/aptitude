@@ -88,6 +88,12 @@ namespace
 					   hint::version_selection::make_inst(),
 					   "safety",
 					   INT_MAX)),
+      test("increase-tier-to conflict xroach",
+	   hint::make_discard(pattern::make_exact_name("xroach"),
+                              hint::version_selection::make_inst())),
+      test("increase-tier-to discard bob",
+	   hint::make_discard(pattern::make_exact_name("bob"),
+                              hint::version_selection::make_inst())),
       test("increase-tier-to 800 xroach",
 	   hint::make_raise_cost_component(pattern::make_exact_name("xroach"),
 					   hint::version_selection::make_inst(),
@@ -105,6 +111,12 @@ namespace
 					   hint::version_selection::make_inst(),
 					   "albertComponent",
 					   299)),
+      test("discard albert",
+           hint::make_discard(pattern::make_exact_name("albert"),
+                              hint::version_selection::make_inst())),
+      test("discard xyzzy /unstable",
+           hint::make_discard(pattern::make_exact_name("xyzzy"),
+                              hint::version_selection::make_archive("unstable"))),
     };
   const int num_resolver_tests =
     sizeof(resolver_tests) / sizeof(resolver_tests[0]);

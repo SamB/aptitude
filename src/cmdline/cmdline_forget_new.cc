@@ -1,23 +1,55 @@
 // cmdline_forget_new.cc
 //
-//   Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_forget_new.h"
+
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
+
+// System includes:
 #include <apt-pkg/error.h>
 
 #include <stdio.h>
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
+
 int cmdline_forget_new(int argc, char *argv[],
 		       const char *status_fname, bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+  const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   _error->DumpErrors();
 
   // NB: perhaps we should allow forgetting the new state of just
@@ -28,9 +60,9 @@ int cmdline_forget_new(int argc, char *argv[],
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
-  apt_init(&progress, false, status_fname);
+  apt_init(progress.get(), false, status_fname);
 
   if(_error->PendingError())
     {
@@ -56,7 +88,7 @@ int cmdline_forget_new(int argc, char *argv[],
     {
       (*apt_cache_file)->forget_new(NULL);
 
-      (*apt_cache_file)->save_selection_list(progress);
+      (*apt_cache_file)->save_selection_list(*progress);
 
       if(_error->PendingError())
 	{

@@ -2,7 +2,7 @@
 
 // dpkg_terminal.h
 //
-//  Copyright 2008-2009 Daniel Burrows
+//  Copyright 2008-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include <generic/util/safe_slot.h>
 #include <generic/util/temp.h>
 
-#include <log4cxx/logger.h>
+#include <loggers.h>
 
 struct sockaddr_un;
 
@@ -53,7 +53,7 @@ namespace gui
     // Used to suppress activity timeouts after dpkg finishes.
     bool subprocess_complete;
 
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
     /** \brief How long (in seconds) we wait between messages from the
      *  install process before we claim that it's waiting for input.

@@ -1,3 +1,116 @@
+[6/18/2010]
+Version 0.6.3                               "Sunlight, moonshadow"
+
+  This version of aptitude fixes some crashes that occurred when
+  exiting the program and overhauls how progress is displayed from the
+  command-line.
+
+  aptitude now requires google-test and google-mock; it will work with
+  newer versions of libept and older versions of boost; it no longer
+  requires log4cxx.
+
+- New features:
+
+  * [cmdline] Modified the command-line progress counters so that
+              they're erased when they complete instead of leaving
+              cruft behind.
+
+              The old behavior and appearance can be recovered by
+              Aptitude::CmdLine::Progress::Retain-Completed and
+              Aptitude::CmdLine::Progress::Percent-On-Right to "true".
+
+- Crashes and serious errors:
+
+  * [all] Ditching log4cxx will hopefully fix some of the crashes on
+          exit that people were seeing.
+
+- Cosmetic and UI bugs:
+
+  * [cmdline, curses] Fixed the display of the archives associated
+                      with a version so that duplicated archive names
+                      are never displayed.
+
+- Internal changes:
+
+  * [gtk] Started working on a redesign of the GTK+ interface, both
+          internal and external.  The internal half involves
+          refactoring the code to better separate logic and
+          presentation and to improve testability and code reuse.  The
+          external half adds the groundwork for a redesign of how the
+          UI is arranged at the top level.
+
+          This code is very incomplete and currently disabled by
+          default.
+
+  * [cmdline] The progress changes noted above included some
+              refactoring to make the command-line interface easier to
+              unit test.  In particular, I created a terminal
+              abstraction that could be stubbed out for the purposes
+              of testing.  Currently this is only used for the
+              progress code, but it's likely to become more widely
+              used as time goes on.
+
+- Changes for build dependencies:
+
+  * [all] Stopped using log4cxx in favor of a homegrown module.
+
+          We're really only using it for debug output, so its most
+          powerful features aren't useful for aptitude.  At the same
+          time, it appears to be behind some of the crashes on exit
+          that users have reported, and it's never really integrated
+          well into the program (the initialization process has always
+          been a hack).  The new code is much better suited to
+          aptitude's requirements.
+
+  * [all] Added appropriate configure checks and conditionalization to
+          support building against either the current ept release or
+          the upcoming release. (Closes: #581009)
+
+  * [all] Write a proper configure check to detect the calling
+          convention used by boost::fusion::fold(); don't require
+          Boost 1.42 any more.
+
+- Build system changes:
+
+  * [all] Added a build system based on scons.  scons supports fully
+          parallel builds and variant builds without reconfiguration,
+          which should speed up the build process significantly on
+          multi-core machines.
+
+  * [all] Switch from automake 1.9 to automake 1.11.
+
+[4/21/2010]
+Version 0.6.2.1                             "I didn't know it was a
+                                             real zebra!"
+
+- Crashes and serious errors:
+
+  * Fixed a crash caused by being insufficiently careful about NULL
+    pointers in the resolver. (Closes: #578344)
+
+  * Boost 1.42 changed the order of arguments to fusion::fold(),
+    breaking aptitude.  As an interim measure, I have modified
+    configure to require 1.42 or higher, and fixed the argument order.
+    The correct long-term fix here is to do a feature test to see
+    which order fold expects its arguments in.
+
+- Backwards compatibility fixes:
+
+  * Restored the "conflict" safety level/tier.
+
+  * Fixed a bug that meant that the old configuration option names
+    (*-Tier instead of *-Level) could only be used to increase safety
+    levels, not to decrease them.
+
+- Internal changes:
+
+  * Change the incremental_expression subsystem of the resolver to be
+    fully robust against NULL pointers and write unit tests for it.
+
+  * Reduced the number of explicit dependencies on log4cxx (using
+    indirection), in case I decide to resolve the random crashes it
+    causes by switching to some other framework or rolling my own.
+
 [4/18/2010]
 Version 0.6.2                               "A costly proposition"
 

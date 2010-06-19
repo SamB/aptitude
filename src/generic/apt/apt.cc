@@ -59,6 +59,8 @@
 using namespace std;
 using aptitude::Loggers;
 
+namespace cw = cwidget;
+
 enum interesting_state {uncached = 0, uninteresting, interesting};
 static interesting_state *cached_deps_interesting = NULL;
 
@@ -66,18 +68,11 @@ static interesting_state *cached_deps_interesting = NULL;
 // pointer in the following table is set to 1 when a result is cached:
 static pkgCache::Dependency **cached_surrounding_or = NULL;
 
-aptitudeCacheFile *apt_cache_file=NULL;
-signalling_config *aptcfg=NULL;
-pkgRecords *apt_package_records=NULL;
-pkgSourceList *apt_source_list=NULL;
-undo_list *apt_undos=NULL;
 pkg_hier *user_pkg_hier=NULL;
-resolver_manager *resman = NULL;
 
 string *pendingerr=NULL;
 bool erroriswarning=false;
 
-boost::shared_ptr<aptitude::util::file_cache> download_cache;
 
 // Set to "true" if we have a version of the apt library with
 // support for overriding configuration settings via RootDir.
@@ -127,7 +122,7 @@ bool get_apt_knows_about_rootdir()
 
 void apt_preinit(const char *rootdir)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   // The old name for the recommends-should-be-automatically-installed
   // setting and the new one.
@@ -344,7 +339,7 @@ void apt_init(OpProgress *progress_bar, bool do_initselections,
 
 void apt_close_cache()
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   LOG_INFO(logger, "Closing apt cache.");
 
@@ -405,7 +400,7 @@ void apt_close_cache()
 void apt_load_cache(OpProgress *progress_bar, bool do_initselections,
 		    const char * status_fname)
 {
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
+  logging::LoggerPtr logger(Loggers::getAptitudeAptGlobals());
 
   if(apt_cache_file != NULL)
     {

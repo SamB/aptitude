@@ -282,7 +282,7 @@ public:
   // Test searching for the highest promotion contained in a 
   void testFindHighestPromotion()
   {
-    log4cxx::LoggerPtr logger(log4cxx::Logger::getLogger("test.promotion_set.testFindHighestPromotion"));
+    logging::LoggerPtr logger(logging::Logger::getLogger("test.promotion_set.testFindHighestPromotion"));
     LOG_TRACE(logger, "Entering testFindHighestPromotion.");
 
     dummy_universe_ref u(parseUniverse(dummy_universe_1));

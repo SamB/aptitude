@@ -1,6 +1,6 @@
 // tags.cc
 //
-//   Copyright (C) 2005, 2007-2008 Daniel Burrows
+//   Copyright (C) 2005, 2007-2008, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -313,8 +313,19 @@ string tag_description(const std::string &tag)
 
 #else // HAVE_EPT
 
+#if defined(HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA) || defined(HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA)
+#define USE_VOCABULARY 1
+#endif
+
 #include <ept/debtags/debtags.h>
+#ifdef USE_VOCABULARY
+#include <ept/debtags/vocabulary.h>
+#endif
 #include "apt.h"
+
+#include <aptitude.h>
+
+#include <boost/format.hpp>
 
 namespace aptitude
 {
@@ -322,10 +333,19 @@ namespace aptitude
   {
     const ept::debtags::Debtags *debtagsDB;
 
+#ifdef USE_VOCABULARY
+    const ept::debtags::Vocabulary *debtagsVocabulary;
+#endif
+
     void reset_tags()
     {
       delete debtagsDB;
       debtagsDB = NULL;
+
+#ifdef USE_VOCABULARY
+      delete debtagsVocabulary;
+      debtagsVocabulary = NULL;
+#endif
     }
 
     bool initialized_reset_signal;
@@ -341,19 +361,25 @@ namespace aptitude
       try
 	{
 	  debtagsDB = new ept::debtags::Debtags;
+#ifdef USE_VOCABULARY
+          debtagsVocabulary = new ept::debtags::Vocabulary;
+#endif
 	}
       catch(std::exception &ex)
 	{
 	  // If debtags failed to initialize, just leave it
 	  // uninitialized.
 	  debtagsDB = NULL;
+#ifdef USE_VOCABULARY
+          debtagsVocabulary = NULL;
+#endif
 	}
     }
 
-    const std::set<ept::debtags::Tag> get_tags(const pkgCache::PkgIterator &pkg)
+    const std::set<tag> get_tags(const pkgCache::PkgIterator &pkg)
     {
       if(!apt_cache_file || !debtagsDB)
-	return std::set<ept::debtags::Tag>();
+	return std::set<tag>();
 
       // TODO: handle !hasData() here.
       try
@@ -362,9 +388,121 @@ namespace aptitude
 	}
       catch(std::exception &ex)
 	{
-	  return std::set<ept::debtags::Tag>();
+	  return std::set<tag>();
 	}
     }
+
+    std::string get_facet_name(const tag &t)
+    {
+      const std::string name = get_fullname(t);
+      std::size_t split_pos = name.find("::");
+      if(split_pos == std::string::npos)
+        return _("legacy");
+      else
+        return std::string(name, 0, split_pos);
+    }
+
+    std::string get_tag_name(const tag &t)
+    {
+      const std::string name = get_fullname(t);
+      std::size_t split_pos = name.find("::");
+      if(split_pos == std::string::npos)
+        return name;
+      else
+        return std::string(name, split_pos + 2);
+    }
+
+#ifdef HAVE_EPT_DEBTAGS_FACET_DESCRIPTION
+    std::string get_facet_long_description(const tag &t)
+    {
+      return t.facet().longDescription();
+    }
+
+    std::string get_facet_short_description(const tag &t)
+    {
+      return t.facet().shortDescription();
+    }
+#else
+#ifdef HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA
+    std::string get_facet_long_description(const tag &t)
+    {
+      if(debtagsVocabulary == NULL)
+        return _("No tag descriptions are available.");
+
+      const ept::debtags::voc::FacetData * const fd =
+        debtagsVocabulary->facetData(get_facet_name(t));
+
+      if(fd == NULL)
+        return (boost::format(_("No description available for %s."))
+                % get_facet_name(t)).str();
+      else
+        return fd->longDescription();
+    }
+
+    std::string get_facet_short_description(const tag &t)
+    {
+      if(debtagsVocabulary == NULL)
+        return _("No tag descriptions are available.");
+
+      const ept::debtags::voc::FacetData * const fd =
+        debtagsVocabulary->facetData(get_facet_name(t));
+
+      if(fd == NULL)
+        return (boost::format(_("No description available for %s."))
+                % get_facet_name(t)).str();
+      else
+        return fd->shortDescription();
+    }
+#else
+#error "Don't know how to retrieve facet descriptions."
+#endif
+#endif
+
+#ifdef HAVE_EPT_DEBTAGS_TAG_DESCRIPTION
+    std::string get_tag_long_description(const tag &t)
+    {
+      return t.longDescription();
+    }
+
+    std::string get_tag_short_description(const tag &t)
+    {
+      return t.shortDescription();
+    }
+#else
+#ifdef HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA
+    std::string get_tag_long_description(const tag &t)
+    {
+      if(debtagsVocabulary == NULL)
+        return _("No tag descriptions are available.");
+
+      const ept::debtags::voc::TagData * const td =
+        debtagsVocabulary->tagData(t);
+
+      if(td == NULL)
+        return (boost::format(_("No description available for %s."))
+                % get_fullname(t)).str();
+      else
+        return td->longDescription();
+    }
+
+    std::string get_tag_short_description(const tag &t)
+    {
+      if(debtagsVocabulary == NULL)
+        return _("No tag descriptions are available.");
+
+      const ept::debtags::voc::TagData * const td =
+        debtagsVocabulary->tagData(get_fullname(t));
+
+      if(td == NULL)
+        return (boost::format(_("No description available for %s."))
+                % get_fullname(t)).str();
+      else
+        return td->shortDescription();
+    }
+#else
+#error "Don't know how to retrieve tag descriptions."
+#endif
+#endif
   }
 }
 

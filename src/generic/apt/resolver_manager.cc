@@ -529,7 +529,7 @@ namespace
 // interactively)
 void resolver_manager::background_thread_execution()
 {
-  log4cxx::LoggerPtr logger = Loggers::getAptitudeResolverThread();
+  logging::LoggerPtr logger = Loggers::getAptitudeResolverThread();
   LOG_TRACE(logger, "Resolver thread: starting.");
   std::set<aptitude_resolver_package> visited_packages;
 
@@ -541,7 +541,7 @@ void resolver_manager::background_thread_execution()
       while((background_thread_suspend_count > 0 || resolver_null || pending_jobs.empty()) &&
 	    !background_thread_killed)
 	{
-	  if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+	  if(logger->isEnabledFor(logging::TRACE_LEVEL))
 	    {
 	      std::vector<std::string> why_suspended;
 	      if(background_thread_suspend_count > 0)
@@ -1754,7 +1754,7 @@ public:
 
   void success(const generic_solution<aptitude_universe> &sol)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     LOG_TRACE(logger, "safe_resolve_deps: got intermediate solution: " << sol);
 
@@ -1847,7 +1847,7 @@ public:
 
   void no_more_solutions()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     if(last_sol.valid())
       {
@@ -1871,7 +1871,7 @@ public:
 
   void no_more_time()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     if(last_sol.valid())
       {
@@ -1895,7 +1895,7 @@ public:
 
   void interrupted()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     // Should never happen.  In fact, no code calls interrupted() --
     // is that a vestigial function?
@@ -1904,7 +1904,7 @@ public:
 
   void aborted(const std::string &errmsg)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolver());
 
     // Should we try to return the current solution if there is one?
     LOG_FATAL(logger, "safe_resolve_deps: aborted by exception: " << errmsg);
@@ -1919,7 +1919,7 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 {
   eassert(resolver_exists());
 
-  log4cxx::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolverSetup());
+  logging::LoggerPtr logger(Loggers::getAptitudeResolverSafeResolverSetup());
 
   LOG_TRACE(logger,
 	    "setup_safe_resolver: Setting up the resolver state for safe dependency resolution.");
@@ -1988,7 +1988,7 @@ void resolver_manager::setup_safe_resolver(bool no_new_installs, bool no_new_upg
 	      aptitude_resolver_version p_v =
 		aptitude_resolver_version::make_install(v, *cache_file);
 
-	      if(LOG4CXX_UNLIKELY(logger->isDebugEnabled()))
+	      if(logger->isEnabledFor(logging::DEBUG_LEVEL))
 		{
 		  if(v_is_a_non_default_version)
 		    LOG_DEBUG(logger, "setup_safe_resolver: Rejecting " << p_v << " (it is a non-default version).");

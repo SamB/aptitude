@@ -1,19 +1,28 @@
 MAINTAINERCLEANFILES = Makefile.in
 
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
+BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
+GMOCK_LDFLAGS = -lgmock -lgtest
 AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
 LDADD = $(top_builddir)/src/loggers.o			       \
+$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+$(top_builddir)/src/gtk/views/libgtk-views.a \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+$(top_builddir)/src/cmdline/libcmdline.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
-$(top_builddir)/src/generic/util/libgeneric-util.a -lcppunit -lboost_unit_test_framework
+$(top_builddir)/src/cmdline/mocks/libcmdline-mocks.a \
+$(top_builddir)/src/cmdline/libcmdline.a \
+$(top_builddir)/src/generic/util/libgeneric-util.a \
+-lcppunit \
+$(BOOST_TEST_LDFLAGS) $(GMOCK_LDFLAGS)
 
-check_PROGRAMS = cppunit_test boost_test
+check_PROGRAMS = gtest_test cppunit_test boost_test gtest_test
 
 noinst_PROGRAMS = interactive_set_test
 
-TESTS = cppunit_test boost_test
+TESTS = gtest_test cppunit_test boost_test gtest_test
 
 EXTRA_DIST = file_caches
 
@@ -31,6 +40,7 @@ cppunit_test_SOURCES = \
 	test_choice_set.cc \
 	test_config_pusher.cc \
 	test_dense_setset.cc \
+	test_incremental_expression.cc \
 	test_matching.cc \
 	test_misc.cc \
 	test_parsers.cc \
@@ -45,5 +55,19 @@ cppunit_test_SOURCES = \
 
 boost_test_SOURCES = \
 	boost_test_main.cc \
+	test_dynamic_list.cc \
+	test_dynamic_set.cc \
+	test_enumerator.cc \
 	test_file_cache.cc \
+	test_logging.cc \
+	test_search_input_controller.cc \
 	test_sqlite.cc
+
+gtest_test_SOURCES = \
+	gtest_test_main.cc \
+	test_cmdline_progress_display.cc \
+	test_cmdline_search_progress.cc \
+	test_logging.cc \
+	test_teletype_mock.cc \
+	test_terminal_mock.cc \
+	test_transient_message.cc

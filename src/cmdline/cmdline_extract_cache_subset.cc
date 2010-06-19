@@ -1,6 +1,6 @@
 // cmdline_extract_cache_subset.cc
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,9 +17,13 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_extract_cache_subset.h"
 
 #include "cmdline_util.h"
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 
@@ -29,10 +33,19 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
-#include <stdio.h>
 
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/progress.h>
+
+#include <stdio.h>
+
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
 
 namespace aptitude
 {
@@ -46,11 +59,14 @@ namespace aptitude
 	  return -1;
 	}
 
+      const shared_ptr<terminal> term = create_terminal();
+      const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
       std::string out_dir = argv[1];
 
-      OpTextProgress progress;
+      boost::shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
-      apt_init(&progress, true);
+      apt_init(progress.get(), true);
       if(_error->PendingError())
 	{
 	  _error->DumpErrors();

@@ -1,6 +1,6 @@
 // cmdline_spinner.h                             -*-c++-*-
 //
-//   Copyright (C) 2005 Daniel Burrows
+//   Copyright (C) 2005, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -21,12 +21,22 @@
 #ifndef CMDLINE_SPINNER_H
 #define CMDLINE_SPINNER_H
 
+#include <boost/shared_ptr.hpp>
+
 #include <string>
 
 /** \brief A generic spinner (for use with the background resolver)
  * 
  *  \file cmdline_spinner.h
  */
+
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+  }
+}
 
 /** A spinner for command-line output. */
 class cmdline_spinner
@@ -38,8 +48,12 @@ class cmdline_spinner
 
   /** The quietness of this spinner. */
   int quiet_level;
+
+  boost::shared_ptr<aptitude::cmdline::terminal> term;
+
 public:
-  cmdline_spinner(int _quiet_level);
+  cmdline_spinner(int _quiet_level,
+                  const boost::shared_ptr<aptitude::cmdline::terminal> &_term);
 
   /** Display the current spinner state, overwriting the current
    *  terminal line.

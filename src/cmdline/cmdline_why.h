@@ -1,6 +1,6 @@
 // cmdline_why.h                            -*-c++-*-
 //
-//   Copyright (C) 2007-2009 Daniel Burrows
+//   Copyright (C) 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -20,23 +20,26 @@
 #ifndef CMDLINE_WHY_H
 #define CMDLINE_WHY_H
 
-#include <deque>
-#include <string>
-#include <vector>
-
+// Local includes:
 #include <aptitude.h>
-
-#include <apt-pkg/depcache.h>
-#include <apt-pkg/error.h>
-#include <apt-pkg/pkgcache.h>
-
-#include <cwidget/fragment.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/aptcache.h>
 #include <generic/apt/matching/pattern.h>
 
 #include <generic/util/immset.h>
+
+
+// System includes:
+#include <apt-pkg/depcache.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/pkgcache.h>
+
+#include <cwidget/fragment.h>
+
+#include <deque>
+#include <string>
+#include <vector>
 
 /** \file cmdline_why.h
  */
@@ -103,8 +106,15 @@ namespace cwidget
 }
 namespace aptitude
 {
+  namespace cmdline
+  {
+    class terminal;
+  }
+
   namespace why
   {
+    class why_callbacks;
+
     class justification;
 
     class search_params
@@ -346,11 +356,15 @@ namespace aptitude
        *  \param output the queue onto which the successors should be loaded.
        *  \param params the parameters of the search (these control
        *                which dependencies get followed).
+       *  \param callbacks  an object used to inform the caller about the
+       *                    progress of the "why" algorithm.  If NULL, no
+       *                    callbacks will be invoked.
        */
       void generate_successors(const justification &parent,
 			       std::deque<justification> &output,
 			       const search_params &params,
-			       int verbosity) const;
+			       int verbosity,
+                               const boost::shared_ptr<why_callbacks> &callbacks) const;
     };
 
     /** \brief Represents one step in an explanation formed by the
@@ -406,12 +420,93 @@ namespace aptitude
       bool operator<(const action &other) const;
     };
 
+    /** \brief Collects the callbacks that are used to trace out the
+     *  progress of a "why" search.
+     *
+     *  \note This was introduced specifically so that the
+     *  command-line-specific code could be factored out of "why";
+     *  without this I could end up forcing all the other code that
+     *  uses "why" to take dependencies on command-line-specific stuff
+     *  (like the terminal interface).  I don't like this design much.
+     */
+    class why_callbacks
+    {
+    public:
+      virtual ~why_callbacks();
+
+      /** \brief Invoked when "why" begins examining a dependency. */
+      virtual void examining_dep(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because it's
+       *  not a conflict and we're only looking at conflicts.
+       */
+      virtual void skip_because_not_a_conflict(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because it's a
+       *  conflict and we're not looking at conflicts.
+       */
+      virtual void skip_because_is_a_conflict(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because the
+       *  current parameters say not to follow it.
+       */
+      virtual void skip_according_to_parameters(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because the
+       *  source version isn't the version the parameters say to
+       *  examine.
+       */
+      virtual void skip_because_not_from_selected_version(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because it is
+       *  satisfied by the current version.
+       */
+      virtual void skip_because_satisfied_by_current_version(const pkgCache::DepIterator &dep) = 0;
+
+      virtual void skip_because_already_seen(const std::vector<action> &results) = 0;
+
+      /** \brief Invoked when "why" skips a dependency because the
+       *  version check failed.
+       */
+      virtual void skip_because_version_check_failed(const pkgCache::DepIterator &dep) = 0;
+
+      /** \brief Invoked when "why" enqueues a new node for the given package. */
+      virtual void enqueued(const pkgCache::PkgIterator &pkg) = 0;
+
+      /** \brief Invoked when "why" enqueues a new node to follow a Provides. */
+      virtual void enqueued(const pkgCache::PrvIterator &prv) = 0;
+
+      /** \brief Invoked when "why" starts working. */
+      virtual void begin(const search_params &params) = 0;
+
+      /** \brief Invoked when "why" starts trying to justify a single
+       *  target.
+       */
+      virtual void start_target(const target &t,
+                                const imm::set<action> &actions) = 0;
+    };
+
+    /** \brief Create a why_callbacks object suitable for use in the
+     *  command-line front-end.
+     *
+     *  \param verbosity   The current verbosity; used to determine
+     *                     which output is generated.
+     *
+     *  \param term        The terminal to which the debug output
+     *                     should be directed.
+     */
+    boost::shared_ptr<why_callbacks>
+    make_cmdline_why_callbacks(const int verbosity,
+                               const boost::shared_ptr<cmdline::terminal> &term);
+
     /** \brief Search for a justification for an action.
      *
      *  \param target    the action to justify.
      *  \param leaves    patterns selecting the packages to build a
      *                   justification from.
      *  \param params    the parameters of the search.
+     *  \param callbacks  A collection of callbacks to invoke as the search
+     *                    progresses, or \b NULL to not use callbacks.
      *  \param output    where the justification is stored.
      *
      *  \return \b true if a justification could be constructed,
@@ -421,6 +516,7 @@ namespace aptitude
 			    const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > leaves,
 			    const search_params &params,
 			    bool find_all,
+                            const boost::shared_ptr<why_callbacks> &callbacks,
 			    std::vector<std::vector<action> > &output);
 
     /** \brief Find the shortest strongest justification for the given
@@ -434,12 +530,15 @@ namespace aptitude
      *                    greater than zero, various trace information will be
 
      *                    written to standard output).
+     *  \param callbacks  A collection of callbacks to invoke as the search
+     *                    progresses, or \b NULL to not use callbacks.
      *  \param output     A vector in which to store the results of the search.
      */
     void find_best_justification(const std::vector<cwidget::util::ref_ptr<aptitude::matching::pattern> > &leaves,
 				 const target &goal,
 				 bool find_all,
 				 int verbosity,
+                                 const boost::shared_ptr<why_callbacks> &callbacks,
 				 std::vector<std::vector<action> > &output);
   }
 }
@@ -449,6 +548,7 @@ cwidget::fragment *do_why(const std::vector<cwidget::util::ref_ptr<aptitude::mat
 			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
+                          const boost::shared_ptr<aptitude::why::why_callbacks> &callbacks,
 			  bool &success);
 
 // Parses the leaves as if they were command-line arguments.
@@ -457,6 +557,7 @@ cwidget::fragment *do_why(const std::vector<std::string> &arguments,
 			  aptitude::why::roots_string_mode display_mode,
 			  bool find_all,
 			  bool root_is_removal,
+                          const boost::shared_ptr<aptitude::why::why_callbacks> &callbacks,
 			  bool &success);
 
 namespace aptitude

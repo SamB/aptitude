@@ -2,7 +2,7 @@ MAINTAINERCLEANFILES=Makefile.in
 
 if BUILD_GTK
   MAYBE_GTK = gtk
-  MAYBE_LIBGTK = gtk/libgtk.a
+  MAYBE_LIBGTK = gtk/libgtk.a gtk/toplevel/libgtk-toplevel.a
 endif
 
 SUBDIRS=generic $(MAYBE_GTK) cmdline mine

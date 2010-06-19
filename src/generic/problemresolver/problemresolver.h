@@ -60,12 +60,6 @@
 #include "cost.h"
 #include "cost_limits.h"
 
-#include "log4cxx/consoleappender.h"
-#include "log4cxx/logger.h"
-#include "log4cxx/patternlayout.h"
-
-#include <loggers.h>
-
 #include <cwidget/generic/threads/threads.h>
 #include <cwidget/generic/util/eassert.h>
 
@@ -560,8 +554,8 @@ public:
   };
 
 private:
-  log4cxx::LoggerPtr logger;
-  log4cxx::AppenderPtr appender; // Used for the "default" appending behavior.
+  logging::LoggerPtr logger;
+  bool debug;
 
   search_graph graph;
 
@@ -1873,10 +1867,10 @@ private:
   class do_drop_deps_solved_by
   {
     step &s;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
-    do_drop_deps_solved_by(step &_s, const log4cxx::LoggerPtr &_logger)
+    do_drop_deps_solved_by(step &_s, const logging::LoggerPtr &_logger)
       : s(_s), logger(_logger)
     {
     }
@@ -1963,14 +1957,14 @@ private:
     const choice_set &reasons;
     search_graph &graph;
     generic_problem_resolver &resolver;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     do_strike_choice(step &_s,
 		     const choice_set &_reasons,
 		     search_graph &_graph,
 		     generic_problem_resolver &_resolver,
-		     const log4cxx::LoggerPtr &_logger)
+		     const logging::LoggerPtr &_logger)
       : s(_s),
 	reasons(_reasons),
 	graph(_graph),
@@ -2162,7 +2156,7 @@ private:
       user_approved_or_rejected_versions.find(v);
 
     if(found == user_approved_or_rejected_versions.end())
-      found = user_approved_or_rejected_versions.insert(std::make_pair(v, approved_or_rejected_info(v, logger->isTraceEnabled()))).first;
+      found = user_approved_or_rejected_versions.insert(std::make_pair(v, approved_or_rejected_info(v, logger->isEnabledFor(logging::TRACE_LEVEL)))).first;
 
     return found->second;
   }
@@ -2173,7 +2167,7 @@ private:
       user_approved_or_rejected_broken_deps.find(d);
 
     if(found == user_approved_or_rejected_broken_deps.end())
-      found = user_approved_or_rejected_broken_deps.insert(std::make_pair(d, approved_or_rejected_info(d, logger->isTraceEnabled()))).first;
+      found = user_approved_or_rejected_broken_deps.insert(std::make_pair(d, approved_or_rejected_info(d, logger->isEnabledFor(logging::TRACE_LEVEL)))).first;
 
     return found->second;
   }
@@ -3014,7 +3008,7 @@ private:
     const choice_set &new_choices;
     const cwidget::util::ref_ptr<expression<bool> > &valid_condition;
     generic_problem_resolver &resolver;
-    log4cxx::LoggerPtr logger;
+    logging::LoggerPtr logger;
 
   public:
     do_increase_solver_cost(step &_s,
@@ -3022,7 +3016,7 @@ private:
                             const choice_set &_new_choices,
                             const cwidget::util::ref_ptr<expression<bool> > &_valid_condition,
                             generic_problem_resolver &_resolver,
-                            const log4cxx::LoggerPtr &_logger)
+                            const logging::LoggerPtr &_logger)
       : s(_s),
 	new_cost(_new_cost),
 	new_choices(_new_choices),
@@ -3730,6 +3724,16 @@ private:
     bestDepSolvers.for_each_solver(generate_successor_f);
   }
 
+  void do_log(const char *sourceName,
+              int sourceLine,
+              logging::log_level level,
+              logging::LoggerPtr logger,
+              const std::string &msg)
+  {
+    if(debug)
+      std::cout << msg << std::endl;
+  }
+
 public:
 
   /** Construct a new generic_problem_resolver.
@@ -3758,7 +3762,7 @@ public:
 			   const imm::map<package, version> &_initial_state,
 			   const PackageUniverse &_universe)
     :logger(aptitude::Loggers::getAptitudeResolverSearch()),
-     appender(new log4cxx::ConsoleAppender(new log4cxx::PatternLayout("%m%n"))),
+     debug(false),
      graph(promotions),
      initial_state(_initial_state, _universe.get_package_count()),
      weights(_step_score, _broken_score, _unfixed_soft_score,
@@ -3777,6 +3781,8 @@ public:
      promotion_queue_tail(new promotion_queue_entry(0, 0)),
      version_costs(new cost[_universe.get_version_count()])
   {
+    logger->connect_message_logged(sigc::mem_fun(*this, &generic_problem_resolver::do_log));
+
     LOG_DEBUG(logger, "Creating new problem resolver: step_score = " << _step_score
 	      << ", broken_score = " << _broken_score
 	      << ", unfixed_soft_score = " << _unfixed_soft_score
@@ -3799,7 +3805,7 @@ public:
 	if(!universe.is_candidate_for_initial_set(d))
 	  {
 	    // This test is slow and only used for logging:
-	    if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+	    if(logger->isEnabledFor(logging::TRACE_LEVEL))
 	      {
 		if(!d.broken_under(initial_state))
 		  LOG_TRACE(logger, "Not using " << d
@@ -3852,22 +3858,18 @@ public:
    *  disabled.
    *
    *  This is a backwards-compatibility hook; in the future, the
-   *  log4cxx framework should be used to enable debugging.  This
+   *  logging framework should be used to enable debugging.  This
    *  function enables all possible debug messages by setting the
    *  level for all resolver domains to TRACE.
    */
   void set_debug(bool new_debug)
   {
     if(new_debug)
-      {
-	logger->setLevel(log4cxx::Level::getTrace());
-	logger->addAppender(appender);
-      }
+      logger->setLevel(logging::TRACE_LEVEL);
     else
-      {
-	logger->setLevel(log4cxx::Level::getOff());
-	logger->removeAppender(appender);
-      }
+      logger->setLevel(logging::OFF_LEVEL);
+
+    debug = new_debug;
   }
 
   /** Clears all the internal state of the solver, discards solutions,
@@ -4670,7 +4672,7 @@ public:
 	process_pending_promotions();
       }
 
-    if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+    if(logger->isEnabledFor(logging::TRACE_LEVEL))
       {
 	if(most_future_solution_steps > future_horizon)
 	  LOG_TRACE(logger, "Done examining future steps for a better solution.");

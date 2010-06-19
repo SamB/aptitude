@@ -1,7 +1,24 @@
 // cmdline_do_action.cc
 //
-//  Copyright 2004 Daniel Burrows
+//  Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_do_action.h"
 
 #include "cmdline_action.h"
@@ -11,6 +28,8 @@
 #include "cmdline_show_broken.h"
 #include "cmdline_simulate.h"
 #include "cmdline_util.h"
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -18,6 +37,8 @@
 
 #include <aptitude.h>
 
+
+// System includes:
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/policy.h>
@@ -26,6 +47,13 @@
 #include <stdio.h>
 
 using namespace std;
+
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
 
 namespace
 {
@@ -73,6 +101,9 @@ int cmdline_do_action(int argc, char *argv[],
 		      bool arch_only,
 		      bool queue_only, int verbose)
 {
+  shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   _error->DumpErrors();
 
   cmdline_pkgaction_type default_action=cmdline_install;
@@ -136,7 +167,7 @@ int cmdline_do_action(int argc, char *argv[],
   if(resolver_mode == resolver_mode_default)
     resolver_mode = resolver_mode_full;
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
   aptcfg->SetNoUser(PACKAGE "::Auto-Upgrade", "false");
 
@@ -145,8 +176,9 @@ int cmdline_do_action(int argc, char *argv[],
   //
   // This way, "aptitude install" will just perform any pending
   // installations.
-  apt_init(&progress, (argc==1 && default_action==cmdline_install &&
-		       upgrade_mode == no_upgrade), status_fname);
+  apt_init(progress.get(),
+           (argc==1 && default_action==cmdline_install &&
+            upgrade_mode == no_upgrade), status_fname);
 
   if(_error->PendingError())
     {
@@ -297,7 +329,8 @@ int cmdline_do_action(int argc, char *argv[],
 	    {
 	      cmdline_applyaction(it->second, seen_virtual_packages, it->first,
 				  to_install, to_hold, to_remove, to_purge,
-				  verbose, policy, arch_only, pass > 0);
+				  verbose, policy, arch_only, pass > 0,
+                                  term);
 	    }
 	}
     }
@@ -305,7 +338,11 @@ int cmdline_do_action(int argc, char *argv[],
 
   if(resolver_mode == resolver_mode_safe)
     {
-      if(!aptitude::cmdline::safe_resolve_deps(verbose, no_new_installs, no_new_upgrades, safe_resolver_show_actions))
+      if(!aptitude::cmdline::safe_resolve_deps(verbose,
+                                               no_new_installs,
+                                               no_new_upgrades,
+                                               safe_resolver_show_actions,
+                                               term))
 	{
 	  fprintf(stderr, _("Unable to safely resolve dependencies, try running with --full-resolver.\n"));
 	  return -1;
@@ -324,12 +361,13 @@ int cmdline_do_action(int argc, char *argv[],
 			    showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
-			    policy, arch_only);
+			    policy, arch_only,
+                            term);
   else if(queue_only)
     {
       aptitude::cmdline::apply_user_tags(user_tags);
 
-      if(!(*apt_cache_file)->save_selection_list(progress))
+      if(!(*apt_cache_file)->save_selection_list(*progress))
 	{
 	  _error->DumpErrors();
 	  return -1;
@@ -344,7 +382,7 @@ int cmdline_do_action(int argc, char *argv[],
 			    showvers, showdeps, showsize, showwhy,
 			    always_prompt, verbose, assume_yes,
 			    !fix_broken,
-			    policy, arch_only))
+			    policy, arch_only, term))
 	{
 	  printf(_("Abort.\n"));
 	  return 0;
@@ -356,7 +394,8 @@ int cmdline_do_action(int argc, char *argv[],
 				 sigc::ptr_fun(&run_dpkg_directly));
 
       int rval =
-	(cmdline_do_download(&m, verbose) == download_manager::success ? 0 : -1);
+	(cmdline_do_download(&m, verbose, term, term_locale)
+         == download_manager::success ? 0 : -1);
 
       if(_error->PendingError())
 	rval = -1;

@@ -81,7 +81,7 @@ namespace gui
 {
   void DashboardTab::fixing_upgrade_info::handle_fixing_upgrade_tab_closed()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     LOG_TRACE(logger, "The resolver tab for manually fixing the upgrade was closed.");
 
@@ -92,7 +92,7 @@ namespace gui
 
   void DashboardTab::fixing_upgrade_info::create_resolver(const generic_solution<aptitude_universe> &sol)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     if(sol.valid())
       LOG_DEBUG(logger, "Manually fixing the remaining upgrades from the solution " << sol);
@@ -174,7 +174,7 @@ namespace gui
 
   void DashboardTab::fixing_upgrade_info::discard_resolver()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     LOG_TRACE(logger, "Discarding the resolver for manual upgrade fixing.");
 
@@ -187,7 +187,7 @@ namespace gui
 
   void DashboardTab::fixing_upgrade_info::pulse()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     LOG_TRACE(logger, "Pulsing the progress bar in the tab for manually fixing the upgrade.");
 
@@ -197,7 +197,7 @@ namespace gui
 
   void DashboardTab::fixing_upgrade_info::solution_calculated(const generic_solution<aptitude_universe> &sol)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     if(fixing_upgrade_tab != NULL)
       create_resolver(sol);
@@ -209,7 +209,7 @@ namespace gui
   {
     if(fixing_upgrade_tab == NULL)
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 	LOG_TRACE(logger, "Creating new resolver tab to manually fix the upgrade.");
 
 	fixing_upgrade_tab = new ResolverTab(_("Resolve Upgrade Manually"));
@@ -227,7 +227,7 @@ namespace gui
 
   void DashboardTab::do_fix_manually()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     if(upgrade_resolver == NULL)
       // Should never happen.
@@ -471,7 +471,7 @@ namespace gui
 
   bool DashboardTab::pulse_progress_timeout()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     LOG_TRACE(logger, "Pulsing the upgrade resolver's progress bar.");
 
@@ -482,7 +482,7 @@ namespace gui
 
   void DashboardTab::make_resolver()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     if(apt_cache_file == NULL)
       {
@@ -551,7 +551,7 @@ namespace gui
 
   void DashboardTab::discard_resolver()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     LOG_TRACE(logger, "Discarding the dashboard tab's internal resolver.");
 
@@ -576,7 +576,7 @@ namespace gui
 
   void DashboardTab::upgrade_resolver_success(generic_solution<aptitude_universe> sol)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
 
     pulse_progress_connection.disconnect();
 
@@ -679,7 +679,7 @@ namespace gui
 
   void DashboardTab::upgrade_resolver_no_more_solutions()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
     LOG_TRACE(logger, "The upgrade resolver was unable to calculate a solution.");
 
     pulse_progress_connection.disconnect();
@@ -698,7 +698,7 @@ namespace gui
 
   void DashboardTab::upgrade_resolver_aborted(std::string errmsg)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkDashboardUpgradeResolver());
     LOG_ERROR(logger, "The upgrade resolver aborted with an error: " << errmsg);
 
     pulse_progress_connection.disconnect();

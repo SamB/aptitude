@@ -1415,45 +1415,6 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
-      <varlistentry id='cmdlineOptionLogConfigFile'>
-	<term>
-	  <literal>--log-config-file=<replaceable>file</replaceable></literal>
-	</term>
-
-	<listitem>
-	  <para>
-	    Read logging configuration from the given
-	    <replaceable>file</replaceable>.  The logging
-	    configuration is in the file format used by <ulink
-	    linkend='http://logging.apahce.org/log4cxx/'><literal>log4cxx</literal></ulink>;
-	    the file will be re-read periodically to see whether any
-	    settings have been changed.  If this option appears
-	    multiple times, the last occurrence is the only one that
-	    will take effect.
-	  </para>
-
-	  <para>
-	    This does not affect the log of installations that
-	    aptitude has performed
-	    (<filename>/var/log/aptitude</filename>); the log messages
-	    written using this configuration include internal program
-	    events, errors, and debugging messages.  See the
-	    command-line options <link
-	    linkend='cmdlineOptionLogFile'><literal>--log-file</literal></link>
-	    and <link
-	    linkend='cmdlineOptionLogLevel'><literal>--log-level</literal></link> for a
-	    simpler, but less flexible, way to configure logging at
-	    the command-line; they override any settings made in this
-	    configuration file.
-	  </para>
-
-	  <para>
-	    This corresponds to the configuration option <link
-	    linkend='configLoggingConfigFile'><literal>Aptitude::Logging::Config-File</literal></link>.
-	  </para>
-	</listitem>
-      </varlistentry>
-
       <varlistentry id='cmdlineOptionLogFile'>
 	<term>
 	  <literal>--log-file=<replaceable>file</replaceable></literal>
@@ -1478,14 +1439,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    events, errors, and debugging messages.  See the
 	    command-line option <link
 	    linkend='cmdlineOptionLogLevel'><literal>--log-level</literal></link>
-	    to get more control over what gets logged, and the
-	    command-line option <link
-	    linkend='cmdlineOptionLogConfigFile'><literal>--log-config-file</literal></link>
-	    for a more flexible, but also more complex, way to
-	    configure logging.  <literal>--log-file</literal> will
-	    cause messages to be sent to the given log-file in
-	    addition to any other files configured by
-	    <literal>--log-config-file</literal>.
+	    to get more control over what gets logged.
 	  </para>
 
 	  <para>
@@ -1547,13 +1501,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    events, errors, and debugging messages.  See the
 	    command-line option <link
 	    linkend='cmdlineOptionLogLevel'><literal>--log-file</literal></link>
-	    to change where log messages go, and the command-line
-	    option <link
-	    linkend='cmdlineOptionLogConfigFile'><literal>--log-config-file</literal></link>
-	    for a more flexible, but also more complex, way to
-	    configure logging.  <literal>--log-level</literal> will
-	    override any log levels configured by
-	    <literal>--log-config-file</literal>.
+	    to change where log messages go.
 	  </para>
 
 	  <para>

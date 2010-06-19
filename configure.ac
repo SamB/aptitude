@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.6.2)
+AC_INIT(aptitude, 0.6.3)
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -44,11 +44,247 @@ AM_GNU_GETTEXT([external])
 PKG_CHECK_MODULES(ept, libept, [], [AC_MSG_ERROR([Can't find the ept library -- please install libept-dev])])
 AC_DEFINE([HAVE_EPT], [], [Backwards compatibility symbol; must always be defined.])
 
+############################ CHECKS FOR EPT ############################
+
+OLD_CXXFLAGS="$CXXFLAGS"
+
+CXXFLAGS="$CXXFLAGS $ept_CFLAGS"
+
+dnl Newer versions of libept use strings instead of various old ept
+dnl data structures.  Test for each one individually.
+DEBTAGS_OK=0
+
+AC_MSG_CHECKING([whether ept::debtags::Tag exists])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Tag t;
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT(yes)
+        AC_DEFINE([HAVE_EPT_DEBTAGS_TAG], [], [Define if ept::debtags::Tag exists.])
+        DEBTAGS_OK=1
+        ],
+        [AC_MSG_RESULT(no)])
+
+AC_MSG_CHECKING([whether ept::debtags::Facet exists])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Facet f;
+
+  return 0;
+}],
+        [
+        AC_DEFINE([HAVE_EPT_DEBTAGS_FACET], [], [Define if ept::debtags::Facet exists])
+        AC_MSG_RESULT([yes])
+        ],
+        [AC_MSG_RESULT([no])])
+
+AC_MSG_CHECKING([whether ept::debtags::getTagsOfItem returns a set of strings.])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/debtags.h>
+
+int main(int argc, char **argv)
+{
+  // This would always crash, but we only care if it type-checks.
+  ept::debtags::Debtags DB;
+  std::set<std::string> result = DB.getTagsOfItem("foo");
+
+  return 0;
+}
+],
+        [
+        AC_MSG_RESULT(yes)
+        AC_DEFINE([EPT_DEBTAGS_GETTAGSOFITEM_RETURNS_STRINGS], [], [Define if ept::debtags::Debtags::getTagsOfItem returns a set of strings])
+        DEBTAGS_OK=1
+        ],
+        [
+        AC_MSG_RESULT(no)
+        ])
+
+if test x$DEBTAGS_OK = x0
+then
+  AC_MSG_FAILURE([Can't figure out how to access the ept debtags database.])
+fi
+
+TEXTSEARCH_OK=0
+
+dnl Newer versions of ept got rid of the whole textsearch header and
+dnl instead just include the Xapian database directly.  See which
+dnl version we're dealing with.
+AC_MSG_CHECKING([whether ept::textsearch exists])
+AC_COMPILE_IFELSE([
+#include <ept/textsearch/textsearch.h>
+
+int main(int argc, char **argv)
+{
+  ept::textsearch::TextSearch db;
+
+  db.docidByName("foo");
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT(yes)
+        AC_DEFINE([HAVE_EPT_TEXTSEARCH], [], [Define if ept::textsearch exists])
+        TEXTSEARCH_OK=1
+        ],
+        [
+        AC_MSG_RESULT(no)
+        ])
+
+dnl Now look in the new location:
+AC_MSG_CHECKING([whether ept/axi exists])
+AC_COMPILE_IFELSE([
+#include <ept/axi/axi.h>
+
+int main(int argc, char **argv)
+{
+  Xapian::Database db(ept::axi::path_db());
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_AXI], [], [Define if ept/axi/axi.h can provide docids.])
+        TEXTSEARCH_OK=1
+        ],
+        [AC_MSG_RESULT([no])])
+
+if test x$TEXTSEARCH_OK = x0
+then
+  AC_MSG_FAILURE([Can't figure out how to access the ept Xapian database.])
+fi
+
+AC_MSG_CHECKING([whether ept::debtags::Vocabulary::tagData exists and returns ept::debtags::voc::TagData *])
+
+AC_COMPILE_IFELSE([
+#include <ept/debtags/vocabulary.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Vocabulary vocabulary;
+  const ept::debtags::voc::TagData *td = vocabulary.tagData("foo");
+
+  // Use td so the compiler doesn't complain:
+  return td == NULL ? 1 : 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA], [], [Define if the ept debtags vocabulary object exists and supports tagData()])
+        ],
+        [AC_MSG_RESULT([no])])
+
+
+AC_MSG_CHECKING([whether ept::debtags::Vocabulary::facetData exists and returns ept::debtags::voc::FacetData *])
+
+AC_COMPILE_IFELSE([
+#include <ept/debtags/vocabulary.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Vocabulary vocabulary;
+  const ept::debtags::voc::FacetData *fd = vocabulary.facetData("foo");
+
+  // Use fd so the compiler doesn't complain:
+  return fd == NULL ? 1 : 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA], [], [Define if the ept debtags vocabulary object exists and supports facetData()])
+        ],
+        [AC_MSG_RESULT([no])])
+
+AC_MSG_CHECKING([whether ept::debtags::Tag::fullname() exists])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Tag t;
+
+  std::string s = t.fullname();
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_TAG_FULLNAME], [], [Define if ept::debtags::Tag exists and has a fullname() method])
+        ],
+        [AC_MSG_RESULT([no])])
+
+
+AC_MSG_CHECKING([whether ept::debtags::Facet exists and supports name()])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Facet f;
+
+  const std::string name = f.name();
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_FACET_NAME], [], [Define if ept::debtags::Facet exists and supports description retrieval.])
+        ],
+        [AC_MSG_RESULT([no])])
+
+
+AC_MSG_CHECKING([whether ept::debtags::Facet exists and supports description retrieval])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Facet f;
+
+  const std::string longDesc = f.longDescription();
+  const std::string shortDesc = f.shortDescription();
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_FACET_DESCRIPTION], [], [Define if ept::debtags::Facet exists and supports description retrieval.])
+        ],
+        [AC_MSG_RESULT([no])])
+
+AC_MSG_CHECKING([whether ept::debtags::Tag exists and supports description retrieval])
+AC_COMPILE_IFELSE([
+#include <ept/debtags/tag.h>
+
+int main(int argc, char **argv)
+{
+  ept::debtags::Tag t;
+
+  const std::string longDesc = t.longDescription();
+  const std::string shortDesc = t.shortDescription();
+
+  return 0;
+}],
+        [
+        AC_MSG_RESULT([yes])
+        AC_DEFINE([HAVE_EPT_DEBTAGS_TAG_DESCRIPTION], [], [Define if ept::debtags::Tag exists and supports description retrieval.])
+        ],
+        [AC_MSG_RESULT([no])])
+
+CXXFLAGS="$OLD_CXXFLAGS"
+
+########################################################################
+
 PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
-
-PKG_CHECK_MODULES(LOG4CXX, liblog4cxx)
 
 PKG_CHECK_MODULES(VTE, vte)
 
@@ -56,6 +292,8 @@ dnl Check for Boost headers.  Place each one on a line by itself and
 dnl write "dnl" at the end: the "dnl" deletes the newline, and without
 dnl it you'll get an error when you run the configure script.
 AC_CHECK_HEADERS( dnl
+boost/algorithm/string.hpp dnl
+boost/array.hpp dnl
 boost/compressed_pair.hpp dnl
 boost/enable_shared_from_this.hpp dnl
 boost/flyweight/hashed_factory.hpp dnl
@@ -92,6 +330,10 @@ boost/iostreams/seek.hpp dnl
 boost/iostreams/stream.hpp dnl
 boost/iostreams/write.hpp dnl
 boost/lambda/bind.hpp dnl
+dnl Can't check this because of bugs in Boost, left here to fool my
+dnl sanity-check of the config file:
+dnl boost/lambda/construct.hpp dnl
+boost/lambda/lambda.hpp dnl
 boost/lexical_cast.hpp dnl
 boost/make_shared.hpp dnl
 boost/mpl/begin.hpp dnl
@@ -126,6 +368,117 @@ boost/weak_ptr.hpp dnl
 
 AX_BOOST_BASE()
 AX_BOOST_IOSTREAMS
+
+AC_MSG_CHECKING([the calling convertion of boost::fusion::fold])
+# Test the order of arguments to the function passed into fold; this
+# was randomly changed in Boost version 1.42 (because no-one needs a
+# stable API, or something).
+#
+# For the test to work at compile-time, the types of the arguments to
+# fold must be incompatible; the actual operations performed are
+# irrelevant.  My fold operator takes an int and a class, and returns
+# the empty string.
+AC_COMPILE_IFELSE([
+#include <boost/fusion/algorithm/iteration/fold.hpp>
+#include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/include/fold.hpp>
+#include <boost/fusion/include/vector.hpp>
+
+struct T
+{
+};
+
+struct F
+{
+  T operator()(const T &t, int n) const
+  {
+    return T();
+  }
+  typedef T result_type;
+};
+
+int main(int argc, char **argv)
+{
+  boost::fusion::vector<int, int, int> v(5, 3, 1);
+  boost::fusion::fold(v, T(), F());
+}],
+                 [
+                   AC_MSG_RESULT([State first, then value])
+                   AC_DEFINE([BOOST_FUSION_FOLD_STATE_BEFORE_VALUE], [],
+                             [Define if boost::fusion::fold passes the state as the first argument to the fold function.])
+                 ],
+                 [
+                   AC_COMPILE_IFELSE([
+#include <boost/fusion/algorithm/iteration/fold.hpp>
+#include <boost/fusion/container/vector.hpp>
+#include <boost/fusion/include/fold.hpp>
+#include <boost/fusion/include/vector.hpp>
+
+struct T
+{
+};
+
+struct F
+{
+  T operator()(int n, const T &t) const
+  {
+    return T();
+  }
+  typedef T result_type;
+};
+
+int main(int argc, char **argv)
+{
+  boost::fusion::vector<int, int, int> v(5, 3, 1);
+  boost::fusion::fold(v, T(), F());
+}
+                   ],
+                   [AC_MSG_RESULT([Value first, then state])],
+                   [AC_MSG_ERROR([Can't figure out how to invoke boost::fusion::fold])])
+                 ])
+
+
+AC_MSG_CHECKING([the name of the runtime library for Boost.Test])
+
+
+##### Boost.Test check #####
+OLDLIBS="$LIBS"
+for libname in boost_unit_test_framework-mt boost_unit_test_framework
+do
+  LIBS="$LIBS -l$libname"
+
+  AC_LINK_IFELSE([
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_NO_MAIN
+
+#include <boost/test/unit_test.hpp>
+
+bool init_unit_test()
+{
+  return true;
+}
+
+int main(int argc, char **argv)
+{
+  return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
+}
+],
+        BOOST_UNIT_TEST_LIBS="-l$libname")
+
+  LIBS="$OLDLIBS"
+done
+
+if test -z "$BOOST_UNIT_TEST_LIBS"
+then
+  # TODO: just disable the unit tests?
+  AC_MSG_FAILURE([Can't find the Boost unit test library; install libboost-test-dev.])
+else
+  AC_MSG_RESULT(["$BOOST_UNIT_TEST_LIBS"])
+fi
+
+AC_SUBST(BOOST_UNIT_TEST_LIBS)
+
+##### End Boost.Test check #####
 
 PKG_CHECK_MODULES(SQLITE3, sqlite3)
 
@@ -171,8 +524,8 @@ then
   AC_DEFINE([HAVE_GTK], [], [Define if the GTK+ frontend is included in the build.])
 fi
 
-CXXFLAGS="$CXXFLAGS $LOG4CXX_CFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS $SQLITE3_CFLAGS"
-LIBS="$LIBS $LOG4CXX_LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS $SQLITE3_LIBS $BOOST_IOSTREAMS_LIB"
+CXXFLAGS="$CXXFLAGS $SIGC_CFLAGS $CWIDGET_CFLAGS $ept_CFLAGS $SQLITE3_CFLAGS"
+LIBS="$LIBS $SIGC_LIBS $CWIDGET_LIBS $ept_LIBS $SQLITE3_LIBS $BOOST_IOSTREAMS_LIB"
 CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
 LDFLAGS="$LDFLAGS $BOOST_LDFLAGS"
 
@@ -464,8 +817,14 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 	src/Makefile
 	src/gtk/Makefile
+        src/gtk/controllers/Makefile
+        src/gtk/toplevel/Makefile
 	src/gtk/util/Makefile
+        src/gtk/views/Makefile
+        src/gtk/views/mocks/Makefile
+        src/gtk/view-impls/Makefile
 	src/cmdline/Makefile
+        src/cmdline/mocks/Makefile
 	src/generic/Makefile
 	src/generic/apt/Makefile
 	src/generic/apt/history/Makefile

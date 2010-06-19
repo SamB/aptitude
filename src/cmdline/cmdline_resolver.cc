@@ -17,6 +17,8 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_resolver.h"
 
 #include "cmdline_action.h"
@@ -26,23 +28,25 @@
 #include "cmdline_show_broken.h"
 #include "cmdline_spinner.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 #include <solution_fragment.h>
-
-#include <boost/lexical_cast.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/ref.hpp>
 
 #include <generic/apt/aptcache.h>
 #include <generic/apt/aptitude_resolver_universe.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/resolver_manager.h>
-
 #include <generic/problemresolver/exceptions.h>
 #include <generic/problemresolver/solution.h>
-
 #include <generic/util/util.h>
+
+
+// System includes:
+#include <boost/lexical_cast.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/ref.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/ssprintf.h>
@@ -57,6 +61,9 @@
 #include <algorithm>
 
 using namespace std;
+
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
 
 typedef generic_solution<aptitude_universe> aptitude_solution;
 typedef generic_choice<aptitude_universe> choice;
@@ -208,7 +215,8 @@ static inline cw::fragment *flowindentbox(int i1, int irest, cw::fragment *f)
   return indentbox(i1, irest, flowbox(f));
 }
 
-static void resolver_help(ostream &out)
+static void resolver_help(ostream &out,
+                          const shared_ptr<terminal> &term)
 {
   cw::fragment *f=indentbox(2, 2,
 			cw::fragf(_("y: %F"
@@ -274,6 +282,7 @@ static void resolver_help(ostream &out)
 			      flowindentbox(0, 3,
 					    cw::fragf(_("Adjustments will cause the current solution to be discarded and recalculated as necessary.")))));
 
+  const unsigned int screen_width = term->get_screen_width();
   out << f->layout(screen_width, screen_width, cwidget::style());
   delete f;
 }
@@ -517,7 +526,8 @@ static void reject_or_mandate_version(const string &s,
 }
 
 void cmdline_resolver_show_choice(const choice &c,
-				  const std::string &tag)
+				  const std::string &tag,
+                                  const shared_ptr<terminal> &term)
 {
   cw::fragment *info_fragment = NULL;
   bool is_rejected = false;
@@ -606,6 +616,7 @@ void cmdline_resolver_show_choice(const choice &c,
 				// aren't translated.
                                             : cw::fragf(_("Enter \"a %s\" to require that new solutions include this action if possible."), tag.c_str()))));
 
+  const unsigned int screen_width = term->get_screen_width();
   cwidget::fragment_contents lines = f->layout(screen_width, screen_width, cwidget::style());
 
   delete f;
@@ -794,7 +805,8 @@ static aptitude_solution wait_for_solution(cwidget::threads::box<cmdline_resolve
     return res.sol;
 }
 
-aptitude_solution calculate_current_solution(bool suppress_message)
+aptitude_solution calculate_current_solution(bool suppress_message,
+                                             const shared_ptr<terminal> &term)
 {
   const int step_limit = aptcfg->FindI(PACKAGE "::ProblemResolver::StepLimit", 5000);
   if(step_limit <= 0)
@@ -819,7 +831,7 @@ aptitude_solution calculate_current_solution(bool suppress_message)
     return resman->get_solution(resman->get_selected_solution(), 0);
 
 
-  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
+  cmdline_spinner spin(aptcfg->FindI("Quiet", 0), term);
 
   if(!suppress_message)
     std::cout << _("Resolving dependencies...") << std::endl;
@@ -843,7 +855,8 @@ cmdline_resolve_deps(pkgset &to_install,
 		     bool force_no_change,
 		     int verbose,
 		     pkgPolicy &policy,
-		     bool arch_only)
+		     bool arch_only,
+                     const shared_ptr<terminal> &term)
 {
   bool story_is_default = aptcfg->FindB(PACKAGE "::CmdLine::Resolver-Show-Steps", false);
 
@@ -871,7 +884,7 @@ cmdline_resolve_deps(pkgset &to_install,
 	  {
 	    try
 	      {
-		aptitude_solution sol = calculate_current_solution(true);
+		aptitude_solution sol = calculate_current_solution(true, term);
 
 		if(_error->PendingError())
 		  _error->DumpErrors();
@@ -888,8 +901,7 @@ cmdline_resolve_deps(pkgset &to_install,
 						    : solution_fragment_with_ids(sol, ids),
 						  NULL);
 
-		    update_screen_width();
-
+                    const unsigned int screen_width = term->get_screen_width();
 		    cwidget::fragment_contents lines=f->layout(screen_width, screen_width, cwidget::style());
 
 		    delete f;
@@ -914,7 +926,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		switch(toupper(response[loc]))
 		  {
 		  case 'Y':
-		    (*apt_cache_file)->apply_solution(calculate_current_solution(true), NULL);
+		    (*apt_cache_file)->apply_solution(calculate_current_solution(true, term), NULL);
 		    modified_pkgs=true;
 		    break;
 		  case 'N':
@@ -939,7 +951,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		      cw::fragment *f = story_is_default
 			? solution_story(sol, &ids)
 			: solution_fragment_with_ids(sol, ids);
-		      update_screen_width();
+                      const unsigned int screen_width = term->get_screen_width();
 		      cout << f->layout(screen_width, screen_width,
 					cwidget::style()) << endl;
 		      delete f;
@@ -964,7 +976,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		    break;
 		  case '?':
 		    cout << _("The following commands are available:") << endl;
-		    resolver_help(cout);
+		    resolver_help(cout, term);
 		    break;
 		  case '+':
 		  case '-':
@@ -976,7 +988,8 @@ cmdline_resolve_deps(pkgset &to_install,
 		      cmdline_parse_action(response, seen_virtual_packages,
 					   to_install, to_hold,
 					   to_remove, to_purge, verbose,
-					   policy, arch_only, false);
+					   policy, arch_only, false,
+                                           term);
 		      modified_pkgs=true;
 		    }
 		    break;
@@ -1016,12 +1029,12 @@ cmdline_resolve_deps(pkgset &to_install,
 		      if(found == ids.end())
 			{
 			  cout << _("Invalid response; please enter one of the following commands:") << endl;
-			  resolver_help(cout);
+			  resolver_help(cout, term);
 			}
 		      else
 			{
 			  const choice &c = found->second;
-			  cmdline_resolver_show_choice(c, first_word);
+			  cmdline_resolver_show_choice(c, first_word, term);
 			}
 		    }
 		    break;
@@ -1051,7 +1064,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		      case 'Y':
 			try
 			  {
-			    calculate_current_solution(false);
+			    calculate_current_solution(false, term);
 			    done=true;
 			  }
 			catch(NoMoreTime)
@@ -1126,7 +1139,8 @@ namespace aptitude
   namespace cmdline
   {
     // Implements the --show-resolver-actions command-line parameters.
-    void show_resolver_actions(const generic_solution<aptitude_universe> &solution)
+    void show_resolver_actions(const generic_solution<aptitude_universe> &solution,
+                               const shared_ptr<terminal> &term)
     {
       if(solution.get_choices().size() > 0)
 	{
@@ -1134,13 +1148,18 @@ namespace aptitude
 	  // separate the solution from this message..
 	  std::cout << std::endl;
 	  std::auto_ptr<cw::fragment> story(solution_story(solution, NULL));
+          const unsigned int screen_width = term->get_screen_width();
 	  std::cout << story->layout(screen_width, screen_width, cwidget::style());
 	}
     }
 
     // Take the first solution we can compute, returning false if we
     // failed to find a solution.
-    bool safe_resolve_deps(int verbose, bool no_new_installs, bool no_new_upgrades, bool show_story)
+    bool safe_resolve_deps(int verbose,
+                           bool no_new_installs,
+                           bool no_new_upgrades,
+                           bool show_story,
+                           const shared_ptr<terminal> &term)
     {
       if(!resman->resolver_exists())
 	return true;
@@ -1155,14 +1174,14 @@ namespace aptitude
 					       boost::make_shared<cmdline_resolver_continuation>(boost::ref(retbox)),
 					       cmdline_resolver_trampoline);
 
-	  cmdline_spinner spin(aptcfg->FindI("Quiet", 0));
+	  cmdline_spinner spin(aptcfg->FindI("Quiet", 0), term);
 	  // TODO: maybe we should say "calculating upgrade" if we're
 	  // running safe-upgrade?
 	  std::cout << _("Resolving dependencies...") << std::endl;
 	  generic_solution<aptitude_universe> sol = wait_for_solution(retbox, spin);
 
 	  if(show_story)
-	    show_resolver_actions(sol);
+	    show_resolver_actions(sol, term);
 
 	  (*apt_cache_file)->apply_solution(sol, NULL);
 	}

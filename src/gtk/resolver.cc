@@ -22,6 +22,7 @@
 #include "resolver.h"
 #include "aptitude.h"
 
+#include "gui.h"
 #include "treeview_cell_tooltips.h"
 
 #undef OK
@@ -39,8 +40,6 @@
 #include <generic/apt/apt_undo_group.h>
 #include <generic/problemresolver/exceptions.h>
 #include <generic/problemresolver/solution.h>
-
-#include <gui.h>
 
 #include <cwidget/generic/util/ssprintf.h>
 
@@ -84,7 +83,7 @@ namespace gui
 
       void success(const aptitude_solution &sol)
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 
 	LOG_TRACE(logger, "Resolver tab: got solution: " << sol);
 
@@ -96,7 +95,7 @@ namespace gui
 
       void no_more_solutions()
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 
 	LOG_TRACE(logger, "Resolver tab: ran out of solutions.");
 
@@ -107,7 +106,7 @@ namespace gui
 
       void no_more_time()
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 
 	LOG_TRACE(logger, "Resolver tab: ran out of time, restarting the calculation.");
 
@@ -116,7 +115,7 @@ namespace gui
 
       void interrupted()
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 
 	LOG_TRACE(logger, "Resolver tab: interrupted.");
 
@@ -127,7 +126,7 @@ namespace gui
 
       void aborted(const std::string &errmsg)
       {
-	log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+	logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 	LOG_TRACE(logger, "Resolver tab: aborted by exception: " << errmsg);
 
 	sigc::slot0<void> do_error_slot =
@@ -765,7 +764,7 @@ namespace gui
 
   void ResolverTab::setup_resolver_connections()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
 
     if(get_resolver() == NULL)
       {
@@ -1071,7 +1070,7 @@ namespace gui
 
   void ResolverTab::reject_button_toggled()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
     if(toggle_signals_suppressed ||
        get_resolver() == NULL ||
        !get_resolver()->resolver_exists())
@@ -1107,7 +1106,7 @@ namespace gui
 
   void ResolverTab::no_preference_button_toggled()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
     if(toggle_signals_suppressed ||
        get_resolver() == NULL ||
        !get_resolver()->resolver_exists())
@@ -1142,7 +1141,7 @@ namespace gui
 
   void ResolverTab::accept_button_toggled()
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
     if(toggle_signals_suppressed ||
        get_resolver() == NULL ||
        !get_resolver()->resolver_exists())
@@ -1947,7 +1946,7 @@ namespace gui
   void ResolverTab::update_from_state(const resolver_manager::state &state,
 				      bool force_update)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
     LOG_TRACE(logger, "Updating the resolver tab (" << (force_update ? "forced" : "not forced") << ")");
     // Maybe I should log more information about the resolver state as
     // we log it?
@@ -2084,7 +2083,7 @@ namespace gui
       }
     else if(force_update || new_solution != displayed_solution)
       {
-	if(LOG4CXX_UNLIKELY(Loggers::getAptitudeGtkResolver()->isDebugEnabled()))
+	if(Loggers::getAptitudeGtkResolver()->isEnabledFor(logging::DEBUG_LEVEL))
 	  {
 	    if(new_solution != displayed_solution)
 	      LOG_DEBUG(Loggers::getAptitudeGtkResolver(),
@@ -2199,7 +2198,7 @@ namespace gui
 
   void ResolverTab::set_fix_upgrade_resolver(resolver_manager *manager)
   {
-    log4cxx::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
+    logging::LoggerPtr logger(Loggers::getAptitudeGtkResolver());
     LOG_TRACE(logger, "Setting the resolver manager to " << manager);
 
     resolver_state_changed_connection.disconnect();

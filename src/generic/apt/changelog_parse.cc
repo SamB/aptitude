@@ -440,7 +440,7 @@ namespace aptitude
 
       public:
 	// Tell the job_queue_thread what our log category is.
-	static log4cxx::LoggerPtr get_log_category()
+	static logging::LoggerPtr get_log_category()
 	{
 	  return aptitude::Loggers::getAptitudeChangelogParse();
 	}

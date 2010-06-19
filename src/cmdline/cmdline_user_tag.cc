@@ -17,9 +17,13 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_user_tag.h"
 
 #include "cmdline_util.h"
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 
@@ -33,6 +37,13 @@
 
 #include <stdio.h>
 #include <string.h>
+
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
 
 namespace aptitude
 {
@@ -73,6 +84,9 @@ namespace aptitude
 
     int cmdline_user_tag(int argc, char *argv[], int quiet, int verbose)
     {
+      const shared_ptr<terminal> term = create_terminal();
+      const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
       user_tag_action action = (user_tag_action)-1;
 
       if(strcmp(argv[0], "add-user-tag") == 0)
@@ -150,8 +164,8 @@ namespace aptitude
 	    }
 	}
 
-      OpTextProgress text_progress;
-      if(!(*apt_cache_file)->save_selection_list(text_progress))
+      shared_ptr<OpProgress> text_progress = make_text_progress(false, term, term_locale);
+      if(!(*apt_cache_file)->save_selection_list(*text_progress))
 	return 1;
 
       if(!all_ok)

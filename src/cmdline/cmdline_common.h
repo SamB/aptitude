@@ -17,9 +17,6 @@
  *  \file cmdline_common.h
  */
 
-extern int screen_width;
-void update_screen_width(int foo=0);
-
 typedef std::vector<pkgCache::PkgIterator> pkgvector;
 typedef std::vector<pkgCache::PrvIterator> prvvector;
 typedef std::set<pkgCache::PkgIterator> pkgset;
