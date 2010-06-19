@@ -5,10 +5,17 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+# Temporary hack to ensure that aptitude builds on s390.  As of this
+# writing, g++ on s390 miscompiles some of the parsing code unless
+# -fno-gcse is enabled.  See Debian bug #580085.
+ifeq (s390,$(DEB_BUILD_ARCH_CPU))
+  ARCH_CXXFLAGS=-fno-gcse
+endif
+
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-  export CXXFLAGS=-g -O0 -fno-inline
+  export CXXFLAGS=-g -O0 -fno-inline $(ARCH_CXXFLAGS)
 else
-  export CXXFLAGS=-g -O2
+  export CXXFLAGS=-g -O2 $(ARCH_CXXFLAGS)
 endif
 
 CURSES_BUILD_DIR=build-curses

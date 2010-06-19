@@ -18,6 +18,9 @@ aptitude (0.6.3-1~prerelease) unstable; urgency=low
   * aptitude now requries gtest and google-mock for its test suite;
     added build dependencies.
 
+  * Add the compile flag -fno-gcse on s390; current g++ miscompiles some
+    of aptitude's parse code without this. (Closes: #580085)
+
  -- Daniel Burrows <dburrows@debian.org>  Fri, 18 Jun 2010 23:40:26 -0700
 
 aptitude (0.6.2.1-2) unstable; urgency=low
