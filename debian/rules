@@ -34,7 +34,7 @@ build-stamp-gtk:
 
 	mkdir -p $(GTK_BUILD_DIR)
 	(cd $(GTK_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs)
-	$(MAKE) -C $(GTK_BUILD_DIR)/src)
+	$(MAKE) -C $(GTK_BUILD_DIR)/src
 	# Run the unit tests, but protect against Boost.Test's flakiness.
 	(cd $(GTK_BUILD_DIR) && $(MAKE) -C tests check || (cd tests && ./cppunit_test))
 	touch build-stamp-gtk
