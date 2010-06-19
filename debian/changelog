@@ -2,6 +2,22 @@ aptitude (0.6.3-1~prerelease) unstable; urgency=low
 
   * New upstream release.
 
+    - aptitude no longer requires log4cxx; dropped that build dependency.
+
+      I hope this will solve some of the random crashes, particularly
+      on exit, that have been reported, but since they're unreproducible
+      it's hard to know.
+
+    - aptitude should build correctly against either the current ept
+      release or the upcoming release (in experimental).
+      (Closes: #581009)
+
+  * Weakened the build dependency on libboost-dev, since this upstream
+    release no longer requires 1.42.
+
+  * aptitude now requries gtest and google-mock for its test suite;
+    added build dependencies.
+
  -- Daniel Burrows <dburrows@debian.org>  Fri, 18 Jun 2010 23:40:26 -0700
 
 aptitude (0.6.2.1-2) unstable; urgency=low
