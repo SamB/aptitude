@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_po_km\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2010-04-21 21:19-0700\n"
+"POT-Creation-Date: 2010-06-18 19:06-0700\n"
 "PO-Revision-Date: 2006-10-06 11:24+0700\n"
 "Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
 "Language-Team: Khmer <support@khmeros.info>\n"
@@ -525,8 +525,8 @@ msgstr ""
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] កំពុង​ដោះស្រាយ​ភាព​អាស្រ័យ"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1292
-#: src/gtk/resolver.cc:1460 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1291
+#: src/gtk/resolver.cc:1459 src/solution_dialog.cc:140
 #: src/solution_screen.cc:569
 msgid "Internal error: unexpected null solution."
 msgstr "កំហុស​ខាង​ក្នុង ៖ មិន​រំពឹង​ថា​មាន​ដំណោះស្រាយ​ទទេ ។"
@@ -579,17 +579,17 @@ msgstr[1] ""
 msgid "Suggest %F"
 msgstr "ស្នើ %F"
 
-#: src/cmdline/cmdline_action.cc:51
+#: src/cmdline/cmdline_action.cc:55
 #, fuzzy, c-format
 msgid "Unable to find the source package for \"%s\".\n"
 msgstr "មិន​អាច​រកឃើញ​ប័ណ្ណសារ \"%s\" សម្រាប់​កញ្ចប់ \"%s\" ឡើយ\n"
 
-#: src/cmdline/cmdline_action.cc:206
+#: src/cmdline/cmdline_action.cc:212
 #, fuzzy, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
 msgstr "មិន​អាច​រាយ​ឯកសារ​ក្នុង \"%s\" បាន​ឡើយ"
 
-#: src/cmdline/cmdline_action.cc:242
+#: src/cmdline/cmdline_action.cc:249
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -598,7 +598,7 @@ msgstr ""
 "ចំណាំ ៖ \"%s\" ដែល​ផ្ដល់​កញ្ចប់​និម្មិត\n"
 "      \"%s\", ត្រូវ​បាន​ដំឡើង​រួច​ហើយ ។\n"
 
-#: src/cmdline/cmdline_action.cc:249
+#: src/cmdline/cmdline_action.cc:256
 #, c-format
 msgid ""
 "Note: \"%s\", providing the virtual package\n"
@@ -607,7 +607,7 @@ msgstr ""
 "ចំណាំ ៖ \"%s\" ដែល​ផ្ដល់​កញ្ចប់​និម្មិត\n"
 "      \"%s\", កំពុង​តែ​ត្រូវ​បាន​ដំឡើង ។\n"
 
-#: src/cmdline/cmdline_action.cc:271
+#: src/cmdline/cmdline_action.cc:278
 #, c-format
 msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
@@ -616,17 +616,17 @@ msgstr ""
 "មាន \"%s\" រួច​ហើយ​នៅ​ក្នុង​មូលដ្ឋានទិន្នន័យ​កញ្ចប់\n"
 "ប៉ុន្តែ​វា​មិន​មែន​ជា​កញ្ចប់​ពិត​ឡើយ ហើយ​ក៏​មិន​មាន​កញ្ចប់​ណា​ផ្ដល់​វា​ដែរ ។\n"
 
-#: src/cmdline/cmdline_action.cc:279
+#: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
 msgstr "\"%s\" ជា​កញ្ចប់​និម្មិត  ​ដែល​បាន​ផ្ដល់​ដោយ ៖\n"
 
-#: src/cmdline/cmdline_action.cc:282
+#: src/cmdline/cmdline_action.cc:289
 #, c-format
 msgid "You must choose one to install.\n"
 msgstr "អ្នក​ត្រូវ​តែ​ជ្រើស​កញ្ចប់​មួយ ដើម្បី​ដំឡើង ។\n"
 
-#: src/cmdline/cmdline_action.cc:290
+#: src/cmdline/cmdline_action.cc:297
 #, c-format
 msgid ""
 "Note: selecting \"%s\" instead of the\n"
@@ -635,50 +635,50 @@ msgstr ""
 "ចំណាំ ៖ ជ្រើស \"%s\" ជំនួស​ឲ្យ\n"
 "      កញ្ចប់​និម្មិត \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:311
+#: src/cmdline/cmdline_action.cc:318
 #, c-format
 msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s បានដំឡើងរួច​ហើយ​នៅ​កំណែ​ដែលបានស្នើ​ (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:321
+#: src/cmdline/cmdline_action.cc:328
 #, fuzzy, c-format
 #| msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "បច្ចុប្បន្ន %s មិនត្រូវបានដំឡើង​ឡើយ ដូច្នេះ​វានឹងមិនត្រូវបាន​ដំឡើង​ម្ដងទៀតឡើយ ។\n"
 
-#: src/cmdline/cmdline_action.cc:324
+#: src/cmdline/cmdline_action.cc:331
 #, fuzzy, c-format
 #| msgid "%s is already installed at the requested version (%s)\n"
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded."
 msgstr "%s បានដំឡើងរួច​ហើយ​នៅ​កំណែ​ដែលបានស្នើ​ (%s)\n"
 
-#: src/cmdline/cmdline_action.cc:329
+#: src/cmdline/cmdline_action.cc:336
 #, c-format
 msgid "%s is not currently installed, so it will not be reinstalled.\n"
 msgstr "បច្ចុប្បន្ន %s មិនត្រូវបានដំឡើង​ឡើយ ដូច្នេះ​វានឹងមិនត្រូវបាន​ដំឡើង​ម្ដងទៀតឡើយ ។\n"
 
-#: src/cmdline/cmdline_action.cc:336 src/cmdline/cmdline_action.cc:342
+#: src/cmdline/cmdline_action.cc:343 src/cmdline/cmdline_action.cc:349
 #, c-format
 msgid "Package %s is not installed, so it will not be removed\n"
 msgstr "កញ្ចប់ %s មិន​ត្រូវ​បាន​ដំឡើង​ឡើយ ដូច្នេះ​វា​នឹង​មិន​ត្រូវ​បាន​យក​ចេញ​ឡើយ\n"
 
-#: src/cmdline/cmdline_action.cc:360
+#: src/cmdline/cmdline_action.cc:367
 #, c-format
 msgid "Package %s is not installed, cannot forbid an upgrade\n"
 msgstr "កញ្ចប់ %s មិន​ត្រូវ​បាន​ដំឡើង​ឡើយ ដូច្នេះ​មិន​អាច​ហាម​កុំ​ឲ្យ​ធ្វើ​ឲ្យ​ប្រសើរ​បាន​ឡើយ\n"
 
-#: src/cmdline/cmdline_action.cc:362
+#: src/cmdline/cmdline_action.cc:369
 #, c-format
 msgid "Package %s is not upgradable, cannot forbid an upgrade\n"
 msgstr "កញ្ចប់ %s មិន​អាច​ធ្វើ​ឲ្យ​ប្រសើរ​បាន​ឡើយ ដូច្នេះ​មិន​អាច​ហាម​កុំ​ឲ្យ​ធ្វើ​ឲ្យ​ប្រសើរ​បាន​ឡើយ\n"
 
-#: src/cmdline/cmdline_action.cc:461
+#: src/cmdline/cmdline_action.cc:470
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
 msgstr "ចំណាំ ៖ ជ្រើស​ភារកិច្ច​​ \"%s ៖ %s\" សម្រាប់​ការ​ដំឡើង​\n"
 
-#: src/cmdline/cmdline_action.cc:495
+#: src/cmdline/cmdline_action.cc:505
 #, c-format
 msgid ""
 "You can only specify a package version with an 'install' command or a "
@@ -686,12 +686,12 @@ msgid ""
 msgstr ""
 "អ្នក​អាច​បញ្ជាក់​តែ​កំណែ​កញ្ចប់ ដោយ​ប្រើ​ពាក្យបញ្ជា 'install' ឬ 'forbid-version' ប៉ុណ្ណោះ ។\n"
 
-#: src/cmdline/cmdline_action.cc:504
+#: src/cmdline/cmdline_action.cc:514
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
 msgstr "អ្នក​អាច​បញ្ជាក់​តែ​ប័ណ្ណសារ​កញ្ចប់ ដោយ​ប្រើ​ពាក្យបញ្ជា 'install' ប៉ុណ្ណោះ ។\n"
 
-#: src/cmdline/cmdline_action.cc:541
+#: src/cmdline/cmdline_action.cc:552
 #, c-format
 msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
@@ -700,7 +700,7 @@ msgstr ""
 "មិន​អាច​រកក​ញ្ចប់​ \"%s\" ឃើញ​ឡើយ ហើយ​មាន​កញ្ចប់​ជាង ៤០\n"
 "ដែល​មាន \"%s\" នៅ​ក្នុង​ឈ្មោះ​របស់​ពួក​វា ។\n"
 
-#: src/cmdline/cmdline_action.cc:544
+#: src/cmdline/cmdline_action.cc:555
 #, c-format
 msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
@@ -709,12 +709,12 @@ msgstr ""
 "មិន​អាច​រក​កញ្ចប់​ \"%s\" ឃើញ​ឡើយ ។ ទោះ​យ៉ាង​ណា\n"
 "កញ្ចប់​ខាង​ក្រោម​មាន \"%s\" នៅ​ក្នុង​ឈ្មោះ​របស់​ពួក​វា ៖\n"
 
-#: src/cmdline/cmdline_action.cc:566
+#: src/cmdline/cmdline_action.cc:577
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
 msgstr "មិន​អាច​រកឃើញ​កញ្ចប់ ដែល​ឈ្មោះ ឬ សេចក្ដីពណ៌នា​របស់​វា​ដូច \"%s\"\n"
 
-#: src/cmdline/cmdline_action.cc:568
+#: src/cmdline/cmdline_action.cc:579
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
@@ -723,7 +723,7 @@ msgstr ""
 "មិន​អាច​រកឃើញ​កញ្ចប់​ដែល​ដូច \"%s\" ឡើយ ហើយ​មាន​កញ្ចប់\n"
 "ច្រើន​ជាង ៤០ មាន \"%s\" នៅ​ក្នុង​សេចក្ដី​ពណ៌នា​របស់​ពួកវា ។\n"
 
-#: src/cmdline/cmdline_action.cc:571
+#: src/cmdline/cmdline_action.cc:582
 #, c-format
 msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
@@ -732,108 +732,108 @@ msgstr ""
 "មិន​អាច​រក​កញ្ចប់​ដូច \"%s\" ឡើយ ។ ទោះ​យ៉ាង​ណា កញ្ចប់​ខាង​ក្រោម\n"
 "មាន \"%s\" នៅ​ក្នុង​ការ​ពិពណ៌នា​របស់​ពួក​វា ៖\n"
 
-#: src/cmdline/cmdline_action.cc:710
+#: src/cmdline/cmdline_action.cc:724
 #, c-format
 msgid "Bad action character '%c'\n"
 msgstr "តួអក្សរ​អំពើ '%c' មិន​ត្រឹមត្រូវ\n"
 
-#: src/cmdline/cmdline_changelog.cc:105 src/generic/apt/acqprogress.cc:89
+#: src/cmdline/cmdline_changelog.cc:135 src/generic/apt/acqprogress.cc:89
 msgid "Get:"
 msgstr "យក​ ៖"
 
-#: src/cmdline/cmdline_changelog.cc:113 src/generic/apt/acqprogress.cc:124
+#: src/cmdline/cmdline_changelog.cc:145 src/generic/apt/acqprogress.cc:124
 msgid "Err "
 msgstr "Err "
 
-#: src/cmdline/cmdline_changelog.cc:144
+#: src/cmdline/cmdline_changelog.cc:178
 #, fuzzy, c-format
 #| msgid "ChangeLog of %s"
 msgid "Changelog download failed: %s"
 msgstr "កំណត់ហេតុ​ការ​ផ្លាស់ប្ដូរ​របស់ %s"
 
-#: src/cmdline/cmdline_changelog.cc:242
+#: src/cmdline/cmdline_changelog.cc:282
 msgid "Can't execute sensible-pager, is this a working Debian system?"
 msgstr ""
 "មិន​អាច​ប្រតិបត្តិ sensible-pager បាន​ឡើយ ។ តើ​នេះ​គឺ​ជា​ប្រព័ន្ធ​ដេបៀន ដែល​កំពុង​តែ​ដំណើរការ​ឬ ?"
 
-#: src/cmdline/cmdline_changelog.cc:300
+#: src/cmdline/cmdline_changelog.cc:340
 #, c-format
 msgid "%s is not an official Debian package, cannot display its changelog."
 msgstr ""
 "%s ​មិន​មែន​ជាកញ្ចប់​ដេបៀន​ផ្លូវការ​ឡើយ ដូច្នេះ​មិន​អាច​បង្ហាញ​កំណត់ហេតុ​ការ​ផ្លាស់ប្ដូរ​របស់​វា​បាន​ឡើយ ។"
 
-#: src/cmdline/cmdline_changelog.cc:382
+#: src/cmdline/cmdline_changelog.cc:424
 #, c-format
 msgid "Couldn't find a changelog for %s"
 msgstr "មិនអាចរក​ឃើញកំណត់​ហេតុ​ការផ្លាស់ប្ដូរ​សម្រាប់ %s"
 
-#: src/cmdline/cmdline_clean.cc:30
+#: src/cmdline/cmdline_clean.cc:62
 #, fuzzy, c-format
 msgid "E: The clean command takes no arguments\n"
 msgstr "E ៖ ពាក្យបញ្ជា update មិន​ត្រូវការ​អាគុយម៉ង់​ឡើយ\n"
 
-#: src/cmdline/cmdline_clean.cc:59
+#: src/cmdline/cmdline_clean.cc:91
 #, c-format
 msgid "Del %s* %spartial/*\n"
 msgstr "Del %s* %spartial/*\n"
 
-#: src/cmdline/cmdline_clean.cc:87
+#: src/cmdline/cmdline_clean.cc:119
 #, c-format
 msgid "Del %s %s [%sB]\n"
 msgstr "Del %s %s [%sB]\n"
 
-#: src/cmdline/cmdline_clean.cc:112
+#: src/cmdline/cmdline_clean.cc:147
 #, fuzzy, c-format
 msgid "E: The autoclean command takes no arguments\n"
 msgstr "E ៖ ពាក្យបញ្ជា update មិន​ត្រូវការ​អាគុយម៉ង់​ឡើយ\n"
 
-#: src/cmdline/cmdline_clean.cc:149
+#: src/cmdline/cmdline_clean.cc:184
 #, c-format
 msgid "Would free %sB of disk space\n"
 msgstr "អាច​នឹង​ធ្វើ​ឲ្យ​ថាស​ទំនេរ​បាន %s បៃ\n"
 
-#: src/cmdline/cmdline_clean.cc:152
+#: src/cmdline/cmdline_clean.cc:187
 #, c-format
 msgid "Freed %sB of disk space\n"
 msgstr "បាន​ធ្វើ​ឲ្យ​ថាស​ទំនេរ %s បៃ\n"
 
-#: src/cmdline/cmdline_do_action.cc:131
+#: src/cmdline/cmdline_do_action.cc:162
 #, c-format
 msgid "Invalid operation %s"
 msgstr "ប្រតិបត្តិការ %s មិន​ត្រឹមត្រូវ"
 
-#: src/cmdline/cmdline_do_action.cc:203
+#: src/cmdline/cmdline_do_action.cc:235
 msgid "Unexpected pattern argument following \"keep-all\""
 msgstr "មិន​បាន​ឃើញ​អាគុយម៉ង់​លំនាំ​នៅ​បន្ទាប់​ពី \"keep-all\" ឡើយ"
 
-#: src/cmdline/cmdline_do_action.cc:310
+#: src/cmdline/cmdline_do_action.cc:347
 #, fuzzy, c-format
 msgid ""
 "Unable to safely resolve dependencies, try running with --full-resolver.\n"
 msgstr "មិនអាច​ដោះស្រាយ​​ភាពអាស្រ័យ​បានឡើយ​ ។"
 
-#: src/cmdline/cmdline_do_action.cc:349 src/cmdline/cmdline_simulate.cc:35
-#: src/main.cc:1168
+#: src/cmdline/cmdline_do_action.cc:387 src/cmdline/cmdline_simulate.cc:60
+#: src/main.cc:1185
 #, c-format
 msgid "Abort.\n"
 msgstr "បោះបង់ ។\n"
 
-#: src/cmdline/cmdline_download.cc:33
+#: src/cmdline/cmdline_download.cc:45
 #, c-format
 msgid "download: you must specify at least one package to download\n"
 msgstr "ទាញយក​ ៖ អ្នក​ត្រូវ​តែ​បញ្ជាក់​កញ្ចប់​យ៉ាងតិច​មួយ​ដើម្បី​ទាញ​យក\n"
 
-#: src/cmdline/cmdline_download.cc:45
+#: src/cmdline/cmdline_download.cc:57
 #: src/generic/apt/download_install_manager.cc:87
 msgid "Couldn't read source list"
 msgstr "មិន​អាច​អាន​បញ្ជី​ប្រភព"
 
-#: src/cmdline/cmdline_download.cc:74
+#: src/cmdline/cmdline_download.cc:86
 #, c-format
 msgid "Can't find a package named \"%s\""
 msgstr "មិន​អាច​រក​កញ្ចប់​​​មួយ​ដែល​​មាន​ឈ្មោះ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_download.cc:118
+#: src/cmdline/cmdline_download.cc:130
 #, c-format
 msgid ""
 "No downloadable files for %s version %s; perhaps it is a local or obsolete "
@@ -842,30 +842,30 @@ msgstr ""
 "មិន​មាន​ឯកសារ​ដែល​អាច​ទាញយក​បាន​ឡើយ សម្រាប់ %s កំណែ %s ។ ប្រហែល​ជា​វា​គឺ​ជា​កញ្ចប់​មូលដ្ឋាន ឬ កញ្ចប់​"
 "ដែល​លែង​ប្រើ​ហើយ​មើល​ទៅ ?"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:45
+#: src/cmdline/cmdline_extract_cache_subset.cc:58
 #, c-format
 msgid ""
 "extract-cache-entries: at least one argument is required (the directory\n"
 "to which to write files).\n"
 msgstr ""
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:79
-#: src/cmdline/cmdline_user_tag.cc:119
+#: src/cmdline/cmdline_extract_cache_subset.cc:95
+#: src/cmdline/cmdline_user_tag.cc:133
 #, fuzzy, c-format
 msgid "No such package \"%s\".\n"
 msgstr "មិន​មាន​កញ្ចប់ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_extract_cache_subset.cc:119
+#: src/cmdline/cmdline_extract_cache_subset.cc:135
 #, c-format
 msgid "No packages were selected by the given search pattern; nothing to do.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_forget_new.cc:27
+#: src/cmdline/cmdline_forget_new.cc:59
 #, fuzzy, c-format
 msgid "E: The forget-new command takes no arguments\n"
 msgstr "E ៖ ពាក្យបញ្ជា update មិន​ត្រូវការ​អាគុយម៉ង់​ឡើយ\n"
 
-#: src/cmdline/cmdline_forget_new.cc:54
+#: src/cmdline/cmdline_forget_new.cc:86
 #, c-format
 msgid "Would forget what packages are new\n"
 msgstr "នឹង​ភ្លេច​មា​ន​កញ្ចប់​អ្វី​ខ្លះ​ដែល​ថ្មី​\n"
@@ -907,79 +907,85 @@ msgstr "ឥឡូវ​អ្នក​ឈ្នះ​ហើយ ។\n"
 msgid "What is it?  It's an elephant being eaten by a snake, of course.\n"
 msgstr "ស្អី​គេ​ហ្នឹង ? ពស់​ស៊ី​ដំរី ?\n"
 
-#: src/cmdline/cmdline_prompt.cc:44
-msgid "Unexpected end-of-file on standard input"
-msgstr "មិន​រំពឹង​ថា​មាន​ចុង​ឯកសារ នៅ​លើ​ព័ត៌មាន​ខ្នាតគំរូ"
+#: src/cmdline/cmdline_progress_display.cc:167 src/gtk/download.cc:204
+#, fuzzy
+#| msgid "none"
+msgid "Done"
+msgstr "គ្មាន"
 
-#: src/cmdline/cmdline_prompt.cc:68
+#: src/cmdline/cmdline_progress_display.cc:172
+msgid "DONE"
+msgstr ""
+
+#: src/cmdline/cmdline_prompt.cc:88
 msgid "Couldn't read list of sources"
 msgstr "មិន​អាច​អាន​បញ្ជី​ប្រភព​បាន​ឡើយ"
 
-#: src/cmdline/cmdline_prompt.cc:319
+#: src/cmdline/cmdline_prompt.cc:344
 #, fuzzy
 msgid "Config files"
 msgstr "ឯកសារកំណត់រចនាសម្ព័ន្ធ"
 
-#: src/cmdline/cmdline_prompt.cc:370
+#: src/cmdline/cmdline_prompt.cc:395
 msgid "The following packages are BROKEN:"
 msgstr "កញ្ចប់​ខាងក្រោម​ខូច​ហើយ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:371
+#: src/cmdline/cmdline_prompt.cc:396
 msgid "The following packages are unused and will be REMOVED:"
 msgstr "កញ្ចប់​ខាង​ក្រោម​មិន​ត្រូវ​បាន​ប្រើ​ឡើយ ហើយ​នឹង​ត្រូវ​បាន​យកចេញ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:372
+#: src/cmdline/cmdline_prompt.cc:397
 msgid "The following packages have been automatically kept back:"
 msgstr "កញ្ចប់​ខាង​ក្រោម ត្រូវ​បាន​រក្សា​នៅ​ដដែល​ដោយ​ស្វ័យប្រវត្តិ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:373
+#: src/cmdline/cmdline_prompt.cc:398
 msgid "The following NEW packages will be automatically installed:"
 msgstr "កញ្ចប់​ថ្មី​ខាង​ក្រោម ​នឹង​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:374
+#: src/cmdline/cmdline_prompt.cc:399
 msgid "The following packages will be automatically REMOVED:"
 msgstr "កញ្ចប់​ខាង​ក្រោម ​នឹង​ត្រូវ​បាន​យក​ចេញ​ដោយ​ស្វ័យប្រវត្តិ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:375
+#: src/cmdline/cmdline_prompt.cc:400
 msgid "The following packages will be DOWNGRADED:"
 msgstr "កញ្ចប់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​បន្ទាប ៖"
 
-#: src/cmdline/cmdline_prompt.cc:376
+#: src/cmdline/cmdline_prompt.cc:401
 msgid "The following packages have been kept back:"
 msgstr "កញ្ចប់​ខាង​ក្រោម ត្រូវ​បាន​រក្សា​នៅ​ដដែល ៖"
 
-#: src/cmdline/cmdline_prompt.cc:377
+#: src/cmdline/cmdline_prompt.cc:402
 msgid "The following packages will be REINSTALLED:"
 msgstr "កញ្ចប់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​ដំឡើង​ឡើង​វិញ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:378
+#: src/cmdline/cmdline_prompt.cc:403
 msgid "The following NEW packages will be installed:"
 msgstr "កញ្ចប់​ថ្មី​ខាង​ក្រោម នឹង​ត្រូវ​បាន​ដំឡើង ៖"
 
-#: src/cmdline/cmdline_prompt.cc:379
+#: src/cmdline/cmdline_prompt.cc:404
 msgid "The following packages will be REMOVED:"
 msgstr "កញ្ចប់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​យកចេញ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:380
+#: src/cmdline/cmdline_prompt.cc:405
 msgid "The following packages will be upgraded:"
 msgstr "កញ្ចប់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រសើរ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:381
+#: src/cmdline/cmdline_prompt.cc:406
 #, fuzzy
 msgid "The following partially installed packages will be configured:"
 msgstr "កញ្ចប់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រសើរ ៖"
 
-#: src/cmdline/cmdline_prompt.cc:436 src/ui.cc:1514
+#: src/cmdline/cmdline_prompt.cc:461 src/ui.cc:1514
 #, c-format
 msgid "The following ESSENTIAL packages will be REMOVED!\n"
 msgstr "កញ្ចប់​ចាំបាច់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​យកចេញ !\n"
 
-#: src/cmdline/cmdline_prompt.cc:445 src/ui.cc:1529
+#: src/cmdline/cmdline_prompt.cc:470 src/ui.cc:1529
 #, c-format
 msgid "The following ESSENTIAL packages will be BROKEN by this action:\n"
 msgstr "កញ្ចប់​ចាំបាច់​ខាង​ក្រោម នឹង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ខូច​ដោយ​សកម្មភាព​នេះ ៖\n"
 
-#: src/cmdline/cmdline_prompt.cc:455 src/ui.cc:1542
+#: src/cmdline/cmdline_prompt.cc:480 src/ui.cc:1542
 #, c-format
 msgid ""
 "WARNING: Performing this action will probably cause your system to break!\n"
@@ -988,16 +994,16 @@ msgstr ""
 "ព្រមាន ៖ ការ​អនុវត្ត​សកម្មភាព​នេះ នឹង​អាច​ធ្វើ​ឲ្យ​ប្រព័ន្ធ​របស់​អ្នក​ខូច !\n"
 "         សូម​កុំ​បន្ត​ឲ្យ​សោះ លុះត្រា​តែ​អ្នក​ដឹង​ច្បាស់​ថា​អ្នក​កំពុង​តែ​ធ្វើ​អ្វី !\n"
 
-#: src/cmdline/cmdline_prompt.cc:457
+#: src/cmdline/cmdline_prompt.cc:482
 msgid "I am aware that this is a very bad idea"
 msgstr "ខ្ញុំ​ដឹង​ហើយ​ថា នេះ​គឺ​ជា​គំនិត​ដ៏​អាក្រក់​បំផុត"
 
-#: src/cmdline/cmdline_prompt.cc:461 src/ui.cc:1543
+#: src/cmdline/cmdline_prompt.cc:486 src/ui.cc:1543
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
 msgstr "ដើម្បី​បន្ត សូម​វាយ​ឃ្លា \"%s\" ៖\n"
 
-#: src/cmdline/cmdline_prompt.cc:503
+#: src/cmdline/cmdline_prompt.cc:528
 #, c-format
 msgid ""
 "WARNING: untrusted versions of the following packages will be installed!\n"
@@ -1014,7 +1020,7 @@ msgstr ""
 "អ្នក​នឹង​ធ្វើ​អ្វី​ប៉ុណ្ណោះ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:515
+#: src/cmdline/cmdline_prompt.cc:540
 #, c-format
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1023,7 +1029,7 @@ msgstr ""
 "*** ព្រមាន ***   កំពុង​តែ​មិន​អើពើ​ការ​បំពាន​សេចក្ដី​ទុកចិត្ត​ទាំងនេះ ព្រោះ\n"
 "                  %s::CmdLine::Ignore-Trust-Violations ស្មើ 'true' !\n"
 
-#: src/cmdline/cmdline_prompt.cc:524
+#: src/cmdline/cmdline_prompt.cc:549
 #, fuzzy
 msgid ""
 "*** WARNING ***   Ignoring these trust violations because\n"
@@ -1037,7 +1043,7 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:535
+#: src/cmdline/cmdline_prompt.cc:560
 msgid "Go ahead and ignore the warning|Yes"
 msgstr ""
 
@@ -1046,202 +1052,202 @@ msgstr ""
 #. input methods.  Please include nothing but ASCII characters.
 #. The text preceding the pipe character (|) will be ignored and
 #. can be removed from your translation.
-#: src/cmdline/cmdline_prompt.cc:541
+#: src/cmdline/cmdline_prompt.cc:566
 msgid "Abort instead of overriding the warning|No"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:552
+#: src/cmdline/cmdline_prompt.cc:577
 #, c-format
 msgid "Do you want to ignore this warning and proceed anyway?\n"
 msgstr "តើ​អ្នកចង់​មិន​អើពើ​ការព្រមាន​នេះ ហើយ​បន្ត​ទៅ​ទៀត​ឬ ?\n"
 
-#: src/cmdline/cmdline_prompt.cc:553
+#: src/cmdline/cmdline_prompt.cc:578
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
 msgstr "ដើម្បី​បន្ត សូម​វាយ \"%s\" ។ ដើម្បី​បញ្ឈប់ សូម​វាយ \"%s\" ៖ "
 
-#: src/cmdline/cmdline_prompt.cc:570
+#: src/cmdline/cmdline_prompt.cc:595
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
 msgstr "មិន​ស្គាល់​ការ​បញ្ចូល ។ សូម​បញ្ចូល \"%s\" ឬ \"%s\" ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:682
+#: src/cmdline/cmdline_prompt.cc:709
 #, c-format
 msgid "The following packages are RECOMMENDED but will NOT be installed:\n"
 msgstr "កញ្ចប់​ខាង​ក្រោម ត្រូវ​បាន​ផ្ដល់អនុសាសន៍ ប៉ុន្តែ​នឹង​មិន​ត្រូវ​បាន​ដំឡើង​ឡើយ ៖\n"
 
-#: src/cmdline/cmdline_prompt.cc:688
+#: src/cmdline/cmdline_prompt.cc:715
 #, c-format
 msgid "The following packages are SUGGESTED but will NOT be installed:\n"
 msgstr "កញ្ចប់​ខាង​ក្រោម ត្រូវ​បាន​ស្នើ ប៉ុន្តែ​នឹង​មិន​ត្រូវ​បាន​ដំឡើង​ឡើយ ៖\n"
 
-#: src/cmdline/cmdline_prompt.cc:694
+#: src/cmdline/cmdline_prompt.cc:721
 #, c-format
 msgid "No packages will be installed, upgraded, or removed.\n"
 msgstr "មិន​មាន​កញ្ចប់​ត្រូវ​បាន​ដំឡើង ធ្វើ​ឲ្យ​ប្រសើរ ឬ​ក៏​យក​ចេញ​ឡើយ ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:696
+#: src/cmdline/cmdline_prompt.cc:723
 #, c-format
 msgid "%lu packages upgraded, %lu newly installed, "
 msgstr "បាន​ធ្វើ​ឲ្យ​កញ្ចប់​ប្រសើរ​ចំនួន %lu, បាន​ដំឡើង​ថ្មី​ចំនួន %lu, "
 
-#: src/cmdline/cmdline_prompt.cc:700
+#: src/cmdline/cmdline_prompt.cc:727
 #, c-format
 msgid "%lu reinstalled, "
 msgstr "%lu ត្រូវ​បាន​ដំឡើង​ឡើង​វិញ "
 
-#: src/cmdline/cmdline_prompt.cc:702
+#: src/cmdline/cmdline_prompt.cc:729
 #, c-format
 msgid "%lu downgraded, "
 msgstr "%lu ​ត្រូវបាន​បន្ទាប"
 
-#: src/cmdline/cmdline_prompt.cc:704
+#: src/cmdline/cmdline_prompt.cc:731
 #, c-format
 msgid "%lu to remove and %lu not upgraded.\n"
 msgstr "%lu ត្រូវ​យកចេញ ហើយ %lu មិន​បាន​ធ្វើ​ឲ្យ​ប្រសើរ ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:711
+#: src/cmdline/cmdline_prompt.cc:738
 #, c-format
 msgid "Need to get %sB/%sB of archives. "
 msgstr "ត្រូវការ​យក %sបៃ/%sបៃ នៃ​ប័ណ្ណសារ ។ "
 
-#: src/cmdline/cmdline_prompt.cc:714
+#: src/cmdline/cmdline_prompt.cc:741
 #, c-format
 msgid "Need to get %sB of archives. "
 msgstr "ត្រូវការ​យក %sបៃ នៃ​ប័ណ្ណសារ ។ "
 
-#: src/cmdline/cmdline_prompt.cc:721
+#: src/cmdline/cmdline_prompt.cc:748
 #, c-format
 msgid "After unpacking %sB will be used.\n"
 msgstr "បន្ទាប់​ពី​ពន្លា​រួច %s បៃ នឹង​ត្រូវ​បាន​ប្រើ ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:724
+#: src/cmdline/cmdline_prompt.cc:751
 #, c-format
 msgid "After unpacking %sB will be freed.\n"
 msgstr "បន្ទាប់​ពី​ពន្លា​រួច %s បៃ នឹង​ត្រូវ​បាន​ស្រាយ​ចេញ ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:745
+#: src/cmdline/cmdline_prompt.cc:773
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "មិន​មាន​កញ្ចប់​ដើម្បី​បង្ហាញ​ឡើយ -- សូមបញ្ចូល​ឈ្មោះ​កញ្ចប់ នៅ​បន្ទាប់​ពី 'i' ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:751
+#: src/cmdline/cmdline_prompt.cc:779
 msgid "Press Return to continue."
 msgstr "ចុចគ្រាប់ចុច បញ្ចូល ដើម្បី​បន្ត ។"
 
-#: src/cmdline/cmdline_prompt.cc:762
+#: src/cmdline/cmdline_prompt.cc:790
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "រក​មិន​ឃើញ​កញ្ចប់​ឡើយ -- សូមបញ្ចូល​ឈ្មោះ​កញ្ចប់ នៅ​បន្ទាប់​ពី 'c' ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:766
+#: src/cmdline/cmdline_prompt.cc:794
 msgid "Press Return to continue"
 msgstr "ចុចគ្រាប់ចុច បញ្ចូល ដើម្បី​បន្ត ។"
 
-#: src/cmdline/cmdline_prompt.cc:776
+#: src/cmdline/cmdline_prompt.cc:805
 #, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:801
+#: src/cmdline/cmdline_prompt.cc:838
 #, c-format
 msgid "y: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:803
+#: src/cmdline/cmdline_prompt.cc:840
 msgid "continue with the installation"
 msgstr "បន្ត​ការដំឡើង​"
 
-#: src/cmdline/cmdline_prompt.cc:805
+#: src/cmdline/cmdline_prompt.cc:842
 #, c-format
 msgid "n: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:807
+#: src/cmdline/cmdline_prompt.cc:844
 msgid "abort and quit"
 msgstr "បញ្ឈប់ ហើយ​ចេញ"
 
-#: src/cmdline/cmdline_prompt.cc:809
+#: src/cmdline/cmdline_prompt.cc:846
 #, c-format
 msgid "i: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:811
+#: src/cmdline/cmdline_prompt.cc:848
 msgid ""
 "show information about one or more packages; the package names should follow "
 "the 'i'"
 msgstr "បង្ហាញ​ព័ត៌មាន​អំពី​កញ្ចប់មួយ​ ឬ ច្រើន ។ ឈ្មោះ​កញ្ចប់​គួរ​តែ​នៅ​បន្ត​ពី 'i'"
 
-#: src/cmdline/cmdline_prompt.cc:813
+#: src/cmdline/cmdline_prompt.cc:850
 #, c-format
 msgid "c: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:815
+#: src/cmdline/cmdline_prompt.cc:852
 msgid ""
 "show the Debian changelogs of one or more packages; the package names should "
 "follow the 'c'"
 msgstr "បង្ហាញ​កំណត់ហេតុ​ការ​ផ្លាស់ប្ដូរ​ដេបៀន​របស់​កញ្ចប់​មួយ ឬ ច្រើន ។ ឈ្មោះ​កញ្ចប់​គួរ​តែ​នៅ​បន្ទាប់​ពី 'c'"
 
-#: src/cmdline/cmdline_prompt.cc:817
+#: src/cmdline/cmdline_prompt.cc:854
 #, c-format
 msgid "d: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:819
+#: src/cmdline/cmdline_prompt.cc:856
 msgid "toggle the display of dependency information"
 msgstr "បិទបើក ការ​បង្ហាញ​អំពី​ព័ត៌មាន​ភាព​អាស្រ័យ"
 
-#: src/cmdline/cmdline_prompt.cc:821
+#: src/cmdline/cmdline_prompt.cc:858
 #, c-format
 msgid "s: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:823
+#: src/cmdline/cmdline_prompt.cc:860
 msgid "toggle the display of changes in package sizes"
 msgstr "បិទបើក ការ​បង្ហាញ​អំពី​ការ​ផ្លាស់ប្ដូរ​នៅ​ក្នុង​ទំហំ​កញ្ចប់"
 
-#: src/cmdline/cmdline_prompt.cc:825
+#: src/cmdline/cmdline_prompt.cc:862
 #, c-format
 msgid "v: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:827
+#: src/cmdline/cmdline_prompt.cc:864
 msgid "toggle the display of version numbers"
 msgstr "បិទបើក ការ​បង្ហាញ​លេខ​កំណែ"
 
-#: src/cmdline/cmdline_prompt.cc:829
+#: src/cmdline/cmdline_prompt.cc:866
 #, c-format
 msgid "w: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:831
+#: src/cmdline/cmdline_prompt.cc:868
 msgid ""
 "try to find a reason for installing a single package, or explain why "
 "installing one package should lead to installing another package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:834
+#: src/cmdline/cmdline_prompt.cc:871
 #, c-format
 msgid "r: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:836
+#: src/cmdline/cmdline_prompt.cc:873
 msgid "run the automatic dependency resolver to fix the broken dependencies."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:838
+#: src/cmdline/cmdline_prompt.cc:875
 #, c-format
 msgid "e: %F"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:840
+#: src/cmdline/cmdline_prompt.cc:877
 msgid "enter the full visual interface"
 msgstr "បញ្ចូល​​ចំណុច​ប្រទាក់​និម្មិត​ពេញលេញ"
 
-#: src/cmdline/cmdline_prompt.cc:843
+#: src/cmdline/cmdline_prompt.cc:880
 msgid ""
 "You may also specify modification to the actions which will be taken.  To do "
 "so, type an action character followed by one or more package names (or "
@@ -1252,45 +1258,45 @@ msgstr ""
 "កញ្ចប់(ឬ លំនាំ) មួយ ឬ ច្រើន ។ អំពើ​នឹង​ត្រូវ​បាន​អនុវត្ត​ចំពោះ​កញ្ចប់​ទាំងអស់ ដែល​អ្នក​រាយ ។ មាន​អំពើ​ដូច​ខាង​"
 "ក្រោម ៖"
 
-#: src/cmdline/cmdline_prompt.cc:850 src/cmdline/cmdline_resolver.cc:259
+#: src/cmdline/cmdline_prompt.cc:887 src/cmdline/cmdline_resolver.cc:267
 msgid "'+' to install packages"
 msgstr "'+' ដើម្បី​ដំឡើង​កញ្ចប់​"
 
-#: src/cmdline/cmdline_prompt.cc:853 src/cmdline/cmdline_resolver.cc:261
+#: src/cmdline/cmdline_prompt.cc:890 src/cmdline/cmdline_resolver.cc:269
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr "'+M' ដើម្បី​ដំឡើង​កញ្ចប់ ហើយ​បោះទង់សម្គាល់​ពួក​វា​ភ្លាមៗ​ថា បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#: src/cmdline/cmdline_prompt.cc:855 src/cmdline/cmdline_resolver.cc:263
+#: src/cmdline/cmdline_prompt.cc:892 src/cmdline/cmdline_resolver.cc:271
 msgid "'-' to remove packages"
 msgstr "'-' ដើម្បី​យក​កញ្ចប់​ចេញ"
 
-#: src/cmdline/cmdline_prompt.cc:857 src/cmdline/cmdline_resolver.cc:265
+#: src/cmdline/cmdline_prompt.cc:894 src/cmdline/cmdline_resolver.cc:273
 msgid "'_' to purge packages"
 msgstr "'_' ដើម្បី​លុបបំបាត់​កញ្ចប់​"
 
-#: src/cmdline/cmdline_prompt.cc:859 src/cmdline/cmdline_resolver.cc:267
+#: src/cmdline/cmdline_prompt.cc:896 src/cmdline/cmdline_resolver.cc:275
 msgid "'=' to place packages on hold"
 msgstr "'=' ដាក់​កញ្ចប់​នៅ​ក្នុង​ស្ថានភាព​រង់ចាំ"
 
-#: src/cmdline/cmdline_prompt.cc:861 src/cmdline/cmdline_resolver.cc:269
+#: src/cmdline/cmdline_prompt.cc:898 src/cmdline/cmdline_resolver.cc:277
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
 msgstr "':' ដើម្បី​រក្សា​កញ្ចប់​នៅ​ដដែល ដោយ​មិន​ដាក់​ពួក​វា​ក្នុង​ស្ថានភាព​រង់ចាំ"
 
-#: src/cmdline/cmdline_prompt.cc:863 src/cmdline/cmdline_resolver.cc:271
+#: src/cmdline/cmdline_prompt.cc:900 src/cmdline/cmdline_resolver.cc:279
 msgid "'&M' to mark packages as automatically installed"
 msgstr "'&M' ដើម្បី​សម្គាល់​កញ្ចប់​ថា​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#: src/cmdline/cmdline_prompt.cc:865 src/cmdline/cmdline_resolver.cc:273
+#: src/cmdline/cmdline_prompt.cc:902 src/cmdline/cmdline_resolver.cc:281
 msgid "'&m' to mark packages as manually installed"
 msgstr "'&m' ដើម្បី​សម្គាល់​កញ្ចប់​ថា​បាន​ដំឡើង​ដោយ​ដៃ"
 
-#: src/cmdline/cmdline_prompt.cc:867
+#: src/cmdline/cmdline_prompt.cc:904
 msgid "'&BD' to install the build-dependencies of a package."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:870
+#: src/cmdline/cmdline_prompt.cc:907
 msgid ""
 "In the list of actions to be performed, some packages will be followed by "
 "one or more characters enclosed in braces; for instance: \"aptitude{u}\".  "
@@ -1298,54 +1304,54 @@ msgid ""
 "can include any combination of the following:"
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:874
+#: src/cmdline/cmdline_prompt.cc:911
 #, fuzzy
 #| msgid "'&M' to mark packages as automatically installed"
 msgid "'a': the package was automatically installed or removed."
 msgstr "'&M' ដើម្បី​សម្គាល់​កញ្ចប់​ថា​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#: src/cmdline/cmdline_prompt.cc:876
+#: src/cmdline/cmdline_prompt.cc:913
 msgid ""
 "'b': some of the package's dependencies are violated by the proposed changes."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:878
+#: src/cmdline/cmdline_prompt.cc:915
 msgid "'p': the package will be purged in addition to being removed."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:880
+#: src/cmdline/cmdline_prompt.cc:917
 msgid "'u': the package is being removed because it is unused."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:884
+#: src/cmdline/cmdline_prompt.cc:922
 msgid "Commands:"
 msgstr "ពាក្យ​បញ្ជា:"
 
-#: src/cmdline/cmdline_prompt.cc:997
+#: src/cmdline/cmdline_prompt.cc:1038
 msgid ""
 "aptitude failed to find a solution to these dependencies.  You can solve "
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1015
+#: src/cmdline/cmdline_prompt.cc:1057
 msgid "Do you want to continue? [Y/n/?] "
 msgstr "តើ​អ្នក​ចង់​បន្ត​ឬ ? [Y/n/?] "
 
-#: src/cmdline/cmdline_prompt.cc:1016
+#: src/cmdline/cmdline_prompt.cc:1058
 msgid "Resolve these dependencies by hand? [N/+/-/_/:/?] "
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1034
+#: src/cmdline/cmdline_prompt.cc:1076
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
 msgstr "ចម្លើយតប​មិន​ត្រឹមត្រូវ​ឡើយ ។ សូម​បញ្ចូល​ពាក្យបញ្ជា​ត្រឹមត្រូវ​មួយ ឬ '?' ដើម្បី​មើល​ជំនួយ ។\n"
 
-#: src/cmdline/cmdline_prompt.cc:1040
+#: src/cmdline/cmdline_prompt.cc:1082
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
 
-#: src/cmdline/cmdline_prompt.cc:1071
+#: src/cmdline/cmdline_prompt.cc:1114
 #, c-format
 msgid ""
 "\n"
@@ -1356,7 +1362,7 @@ msgstr ""
 "ព័ត៌មាន​អំពី​ភាពអាស្រ័យ ​នឹង​ត្រូវ​បាន​បង្ហាញ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1073
+#: src/cmdline/cmdline_prompt.cc:1116
 #, c-format
 msgid ""
 "\n"
@@ -1367,7 +1373,7 @@ msgstr ""
 "ព័ត៌មាន​អំពី​ភាព​អាស្រ័យ នឹង​មិន​ត្រូវ​បាន​ដំឡើង​ឡើយ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1079
+#: src/cmdline/cmdline_prompt.cc:1122
 #, c-format
 msgid ""
 "\n"
@@ -1378,7 +1384,7 @@ msgstr ""
 "កំណែ​នឹង​ត្រូវ​បាន​បង្ហាញ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1081
+#: src/cmdline/cmdline_prompt.cc:1124
 #, c-format
 msgid ""
 "\n"
@@ -1389,7 +1395,7 @@ msgstr ""
 "កំណែ​នឹង​មិន​ត្រូវ​បាន​បង្ហាញ​ឡើយ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1086
+#: src/cmdline/cmdline_prompt.cc:1129
 #, c-format
 msgid ""
 "\n"
@@ -1400,7 +1406,7 @@ msgstr ""
 "ការ​ផ្លាស់ប្ដូរ​ទំហំ នឹង​ត្រូវ​បាន​បង្ហាញ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_prompt.cc:1088
+#: src/cmdline/cmdline_prompt.cc:1131
 #, c-format
 msgid ""
 "\n"
@@ -1411,22 +1417,22 @@ msgstr ""
 "ការ​ផ្លាស់ប្ដូរ​ទំហំ នឹង​មិន​ត្រូវ​បាន​បង្ហាញ​ឡើយ ។\n"
 "\n"
 
-#: src/cmdline/cmdline_resolver.cc:142 src/cmdline/cmdline_resolver.cc:989
-#: src/generic/apt/apt.cc:290
+#: src/cmdline/cmdline_resolver.cc:149 src/cmdline/cmdline_resolver.cc:1002
+#: src/generic/apt/apt.cc:285
 #, c-format
 msgid "Unable to open %s for writing"
 msgstr "មិន​អាច​បើក​ %s ដើម្បី​សរសេរ​បាន​ឡើយ"
 
-#: src/cmdline/cmdline_resolver.cc:148 src/cmdline/cmdline_resolver.cc:994
+#: src/cmdline/cmdline_resolver.cc:155 src/cmdline/cmdline_resolver.cc:1007
 #, c-format
 msgid "Error writing resolver state to %s"
 msgstr "កំហុស​ពេល​សរសេរ​សភាព​កម្មវិធី​អ្នក​ដោះស្រាយ​ទៅ %s"
 
-#: src/cmdline/cmdline_resolver.cc:150 src/cmdline/cmdline_resolver.cc:996
+#: src/cmdline/cmdline_resolver.cc:157 src/cmdline/cmdline_resolver.cc:1009
 msgid "Resolver state successfully written!"
 msgstr "បាន​សរសេរ​សភាព​កម្មវិធី​ដោះស្រាយ​ដោយ​ជោគជ័យ !"
 
-#: src/cmdline/cmdline_resolver.cc:214
+#: src/cmdline/cmdline_resolver.cc:222
 #, fuzzy, c-format
 msgid ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
@@ -1435,42 +1441,42 @@ msgstr ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fr pkg ver ...: %F%na pkg ver ...: %F%"
 "n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 
-#: src/cmdline/cmdline_resolver.cc:235
+#: src/cmdline/cmdline_resolver.cc:243
 msgid "accept the proposed changes"
 msgstr "ព្រមទទួល​ការ​ផ្លាស់ប្ដូរ​ដែល​បាន​ស្នើ"
 
-#: src/cmdline/cmdline_resolver.cc:237
+#: src/cmdline/cmdline_resolver.cc:245
 msgid "reject the proposed changes and search for another solution"
 msgstr "បដិសេធ​ការ​ផ្លាស់ប្ដូរ​ដែល​បាន​ស្នើ ហើយ​ស្វែងរក​ដំណោះស្រាយ​ផ្សេង​ទៀត"
 
-#: src/cmdline/cmdline_resolver.cc:239
+#: src/cmdline/cmdline_resolver.cc:247
 msgid "give up and quit the program"
 msgstr "បោះបង់ចោល​​ ហើយ​បិទ​កម្ម​វិធី"
 
-#: src/cmdline/cmdline_resolver.cc:241
+#: src/cmdline/cmdline_resolver.cc:249
 msgid "move to the next solution"
 msgstr "ផ្លាស់ទី​ទៅកាន់​ដំណោះស្រាយ​បន្ទាប់​"
 
-#: src/cmdline/cmdline_resolver.cc:243
+#: src/cmdline/cmdline_resolver.cc:251
 msgid "move to the previous solution"
 msgstr "ផ្លាស់ទី​ទៅកាន់​ដំណោះស្រាយ​មុន"
 
-#: src/cmdline/cmdline_resolver.cc:245
+#: src/cmdline/cmdline_resolver.cc:253
 msgid ""
 "toggle between the contents of the solution and an explanation of the "
 "solution"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:247
+#: src/cmdline/cmdline_resolver.cc:255
 msgid "examine the solution in the visual user interface"
 msgstr "ត្រួតពិនិត្យ​ដំណោះស្រាយ​នៅ​ក្នុង​ចំណុចប្រទាក់អ្នកប្រើ​និម្មិត"
 
-#: src/cmdline/cmdline_resolver.cc:249
+#: src/cmdline/cmdline_resolver.cc:257
 msgid ""
 "abort automatic dependency resolution; resolve dependencies by hand instead"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:251
+#: src/cmdline/cmdline_resolver.cc:259
 #, fuzzy
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
@@ -1478,7 +1484,7 @@ msgid ""
 "ID is the integer printed to the left of the action."
 msgstr "បដិសេធ​កំណែ​កញ្ចប់​ដែល​បាន​ផ្ដល់​។ កុំ​បង្ហាញ​ដំណោះស្រាយ​អ្វី​ទាំងអស់ ។ា​ ។"
 
-#: src/cmdline/cmdline_resolver.cc:253
+#: src/cmdline/cmdline_resolver.cc:261
 #, fuzzy
 msgid ""
 "accept the given package versions; display only solutions in which they "
@@ -1486,122 +1492,122 @@ msgid ""
 "ID is the integer printed to the left of the action."
 msgstr "ព្រមទទួល​កំណែ​កញ្ចប់​ដែល​បាន​ផ្ដល់ ។ បង្ហាញ​តែ​ដំណោះស្រាយ ដែល​កើតឡើង​នៅ​ក្នុង​ប៉ុណ្ណោះ ។"
 
-#: src/cmdline/cmdline_resolver.cc:255
+#: src/cmdline/cmdline_resolver.cc:263
 msgid ""
 "display information about the action labeled ID from the solution.  The "
 "label is the integer printed to the left of the action."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:257
+#: src/cmdline/cmdline_resolver.cc:265
 msgid "adjust the state of the listed packages, where ACTION is one of:"
 msgstr "លៃតម្រូវ​ស្ថានភាព​របស់​កញ្ចប់​ដែល​បាន​រាយ ដែល​សកម្មភាព​ស្ថិត​នៅ​ក្នុង​ចំណោម ៖"
 
-#: src/cmdline/cmdline_resolver.cc:275
+#: src/cmdline/cmdline_resolver.cc:283
 msgid ""
 "Adjustments will cause the current solution to be discarded and recalculated "
 "as necessary."
 msgstr "ការ​លៃតម្រូវ​នឹង​បណ្ដាល​ឲ្យ​បោះបង់​ដំណោះស្រាយ​បច្ចុប្បន្ន ហើយ​គណនា​ឡើង​វិញ បើ​ចាំបាច់ ។"
 
-#: src/cmdline/cmdline_resolver.cc:289
+#: src/cmdline/cmdline_resolver.cc:298
 #, c-format
 msgid "The version %s is available in the following archives:"
 msgstr "មាន​កំណែ %s នៅ​ក្នុង​ប័ណ្ណសារ​ខាង​ក្រោម ៖"
 
-#: src/cmdline/cmdline_resolver.cc:297
+#: src/cmdline/cmdline_resolver.cc:306
 #, c-format
 msgid "Select the version of %s that should be used: "
 msgstr "ជ្រើស​កំណែ %s ដែល​គួរ​ត្រូវ​បាន​ប្រើ ៖ "
 
-#: src/cmdline/cmdline_resolver.cc:304
+#: src/cmdline/cmdline_resolver.cc:313
 #, c-format
 msgid "Invalid response.  Please enter an integer between 1 and %d."
 msgstr "ចម្លើយតប​មិន​ត្រឹមត្រូវ​ឡើយ ។ សូម​បញ្ចូល​ចំនួន​គត់​ចន្លោះ​ពី 1 ដល់ %d ។"
 
-#: src/cmdline/cmdline_resolver.cc:320
+#: src/cmdline/cmdline_resolver.cc:329
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
 msgstr "បាន​រំពឹង​យ៉ាង​ហោច​ណាស់​គូ​កញ្ចប់ ឬ គូ​កំណែ​មួយ នៅ​បន្ត​ពី '%c'"
 
-#: src/cmdline/cmdline_resolver.cc:342
+#: src/cmdline/cmdline_resolver.cc:351
 #, fuzzy, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
 msgstr "បាន​រំពឹង​កំណែ​នៅ​បន្ទាប់​ពី \"%s\""
 
-#: src/cmdline/cmdline_resolver.cc:352
+#: src/cmdline/cmdline_resolver.cc:361
 #, c-format
 msgid "No such package \"%s\""
 msgstr "មិន​មាន​កញ្ចប់ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_resolver.cc:368
+#: src/cmdline/cmdline_resolver.cc:377
 #, c-format
 msgid "%s has no version named \"%s\""
 msgstr "%s មិន​មាន​កំណែ​ឈ្មោះ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_resolver.cc:394
+#: src/cmdline/cmdline_resolver.cc:403
 #, c-format
 msgid "Allowing the removal of %s"
 msgstr "អនុញ្ញាត​ឲ្យ​យក %s ចេញ"
 
-#: src/cmdline/cmdline_resolver.cc:397
+#: src/cmdline/cmdline_resolver.cc:406
 #, c-format
 msgid "Allowing the installation of %s version %s (%s)"
 msgstr "កំពុង​អនុញ្ញាត​ឲ្យ​ដំឡើង %s កំណែ %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:407
+#: src/cmdline/cmdline_resolver.cc:416
 #, c-format
 msgid "Rejecting the removal of %s"
 msgstr "បដិសេធ​មិន​ឲ្យ​យក %s ចេញ"
 
-#: src/cmdline/cmdline_resolver.cc:410
+#: src/cmdline/cmdline_resolver.cc:419
 #, c-format
 msgid "Rejecting the installation of %s version %s (%s)"
 msgstr "​បដិសេធ​មិន​ឲ្យ​ដំឡើង %s កំណែ %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:423
+#: src/cmdline/cmdline_resolver.cc:432
 #, c-format
 msgid "No longer requiring the removal of %s"
 msgstr "លែង​ទាមទារឲ្យ​យក %s ចេញ​ទៀត​ហើយ"
 
-#: src/cmdline/cmdline_resolver.cc:426
+#: src/cmdline/cmdline_resolver.cc:435
 #, c-format
 msgid "No longer requiring the installation of %s version %s (%s)"
 msgstr "លែង​ទាមទារ​ឲ្យ​ដំឡើង %s កំណែ %s (%s) ទៀត​ហើយ"
 
-#: src/cmdline/cmdline_resolver.cc:435
+#: src/cmdline/cmdline_resolver.cc:444
 #, c-format
 msgid "Requiring the removal of %s"
 msgstr "ទាមទារ​ឲ្យ​យក %s ចេញ"
 
-#: src/cmdline/cmdline_resolver.cc:438
+#: src/cmdline/cmdline_resolver.cc:447
 #, c-format
 msgid "Requiring the installation of %s version %s (%s)"
 msgstr "ទាមទារ​ឲ្យ​ដំឡើង %s កំណែ %s (%s)"
 
-#: src/cmdline/cmdline_resolver.cc:487
+#: src/cmdline/cmdline_resolver.cc:496
 #, fuzzy, c-format
 #| msgid "Leave the following recommendations unresolved:"
 msgid "Allowing this recommendation to be ignored: %s"
 msgstr "មិន​បាច់​ដោះស្រាយ​ការ​ផ្ដល់​អនុសាសន៍​ខាង​ក្រោម ៖"
 
-#: src/cmdline/cmdline_resolver.cc:493
+#: src/cmdline/cmdline_resolver.cc:502
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "Always obeying this recommendation: %s"
 msgstr "ពិនិត្យ​ការ​ផ្ដល់​អនុសាសន៍"
 
-#: src/cmdline/cmdline_resolver.cc:502
+#: src/cmdline/cmdline_resolver.cc:511
 #, fuzzy, c-format
 #| msgid "No longer requiring the removal of %s"
 msgid "No longer ignoring this recommendation: %s"
 msgstr "លែង​ទាមទារឲ្យ​យក %s ចេញ​ទៀត​ហើយ"
 
-#: src/cmdline/cmdline_resolver.cc:508
+#: src/cmdline/cmdline_resolver.cc:517
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "Ignoring this recommendation: %s"
 msgstr "ពិនិត្យ​ការ​ផ្ដល់​អនុសាសន៍"
 
-#: src/cmdline/cmdline_resolver.cc:566
+#: src/cmdline/cmdline_resolver.cc:576
 #, fuzzy, c-format
 #| msgid "Actions"
 msgid "Action \"%s\""
@@ -1610,16 +1616,16 @@ msgstr "សកម្មភាព​"
 #. ForTranslators: the substitution is
 #. replaced in English with something
 #. like "Pkg1 depends upon Pkg2".
-#: src/cmdline/cmdline_resolver.cc:579
+#: src/cmdline/cmdline_resolver.cc:589
 #, c-format
 msgid "This action was selected because %ls."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:581
+#: src/cmdline/cmdline_resolver.cc:591
 msgid "This action is currently rejected; it will not appear in new solutions."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:582
+#: src/cmdline/cmdline_resolver.cc:592
 msgid ""
 "This action is currently approved; it will be selected whenever possible."
 msgstr ""
@@ -1629,7 +1635,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:589
+#: src/cmdline/cmdline_resolver.cc:599
 #, c-format
 msgid "Enter \"r %s\" to allow this action to appear in new solutions."
 msgstr ""
@@ -1639,7 +1645,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:595
+#: src/cmdline/cmdline_resolver.cc:605
 #, c-format
 msgid "Enter \"r %s\" to prevent this action from appearing in new solutions."
 msgstr ""
@@ -1649,7 +1655,7 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:601
+#: src/cmdline/cmdline_resolver.cc:611
 #, c-format
 msgid ""
 "Enter \"a %s\" to cease requiring that new solutions include this action if "
@@ -1661,88 +1667,88 @@ msgstr ""
 #. translated since the commands in
 #. aptitude's internal command-line
 #. aren't translated.
-#: src/cmdline/cmdline_resolver.cc:607
+#: src/cmdline/cmdline_resolver.cc:617
 #, c-format
 msgid ""
 "Enter \"a %s\" to require that new solutions include this action if possible."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:779
+#: src/cmdline/cmdline_resolver.cc:790
 #, fuzzy, c-format
 #| msgid "open: %d; closed: %d; defer: %d; conflict: %d"
 msgid "open: %zd; closed: %zd; defer: %zd; conflict: %zd"
 msgstr "បើក ៖ %d; បិទ ៖ %d; ពន្យារពេល ៖ %d; ប៉ះទង្គិច ៖ %d"
 
-#: src/cmdline/cmdline_resolver.cc:802
+#: src/cmdline/cmdline_resolver.cc:814
 #, c-format
 msgid ""
 "Would resolve dependencies, but dependency resolution is disabled.\n"
 "   (%s::ProblemResolver::StepLimit = 0)\n"
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:811
+#: src/cmdline/cmdline_resolver.cc:823
 msgid "I want to resolve dependencies, but no dependency resolver was created."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:825 src/cmdline/cmdline_resolver.cc:1161
-#: src/gtk/resolver.cc:2056 src/solution_dialog.cc:127
+#: src/cmdline/cmdline_resolver.cc:837 src/cmdline/cmdline_resolver.cc:1180
+#: src/gtk/resolver.cc:2055 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "កំពុង​ដោះស្រាយ​ភាព​អាស្រ័យ..."
 
-#: src/cmdline/cmdline_resolver.cc:884
+#: src/cmdline/cmdline_resolver.cc:897
 msgid "The following actions will resolve these dependencies:"
 msgstr "សកម្មភាព​ដូចតទៅ​​នឹងដោះស្រាយ​ភាព​អាស្រ័យ​ទាំងអស់​នេះ ៖"
 
-#: src/cmdline/cmdline_resolver.cc:903
+#: src/cmdline/cmdline_resolver.cc:915
 msgid "Accept this solution? [Y/n/q/?] "
 msgstr "ព្រមទទួល​ដំណោះស្រាយ​នេះ ? [Y/n/q/?] "
 
-#: src/cmdline/cmdline_resolver.cc:930 src/cmdline/cmdline_resolver.cc:1064
+#: src/cmdline/cmdline_resolver.cc:942 src/cmdline/cmdline_resolver.cc:1077
 msgid "Abandoning all efforts to resolve these dependencies."
 msgstr "កំពុង​បោះបង់​ចោល​កិច្ចប្រឹងប្រែង​ដោះស្រាយ​ភាព​អាស្រ័យ​ទាំងនេះ "
 
-#: src/cmdline/cmdline_resolver.cc:933
+#: src/cmdline/cmdline_resolver.cc:945
 msgid ""
 "Abandoning automatic dependency resolution and reverting to manual "
 "resolution."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:966
+#: src/cmdline/cmdline_resolver.cc:978
 msgid "The following commands are available:"
 msgstr "ពាក្យ​បញ្ជា​ទាំងអស់​នេះ​អាច​ប្រើ​បាន​ ៖"
 
-#: src/cmdline/cmdline_resolver.cc:986
+#: src/cmdline/cmdline_resolver.cc:999
 msgid "File to write resolver state to: "
 msgstr "ឯកសារ​ដែល​ត្រូវ​សរសេរ​សភាព​របស់​កម្មវិធី​ដោះស្រាយ​ទៅ​កាន់ ៖ "
 
-#: src/cmdline/cmdline_resolver.cc:1018
+#: src/cmdline/cmdline_resolver.cc:1031
 msgid "Invalid response; please enter one of the following commands:"
 msgstr "ចម្លើយតប​មិន​ត្រឹមត្រូវ ។ សូម​បញ្ចូល​ពាក្យបញ្ជា​មួយ​ក្នុង​ចំណោម​ខាង​ក្រោម ៖"
 
-#: src/cmdline/cmdline_resolver.cc:1038
+#: src/cmdline/cmdline_resolver.cc:1051
 msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgstr "រក​មិន​ឃើញ​ដំណោះស្រាយ​ឡើយ កំឡុងពេល​បែងចែក ។ ព្យាយាម​ឲ្យ​ខ្លាំង​ជាង​មុន​ទៀត ? [Y/n]"
 
-#: src/cmdline/cmdline_resolver.cc:1067
+#: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
 msgstr "ចម្លើយតប​មិន​ត្រឹមត្រូវ​ឡើយ ។ សូម​បញ្ចូល 'y' ឬ 'n' ។"
 
-#: src/cmdline/cmdline_resolver.cc:1076
+#: src/cmdline/cmdline_resolver.cc:1089
 msgid "Unable to resolve dependencies!  Giving up..."
 msgstr "មិន​អាច​ដោះស្រាយ​ភាព​អាស្រ័យ​បាន​ឡើយ ​!  កំពុង​បោះបង់ចោល​..."
 
-#: src/cmdline/cmdline_resolver.cc:1082
+#: src/cmdline/cmdline_resolver.cc:1095
 msgid "*** No more solutions available ***"
 msgstr "*** គ្មាន​ដំណោះស្រាយ​ផ្សេង​ទៀត​ឡើយ ***"
 
-#: src/cmdline/cmdline_resolver.cc:1101
+#: src/cmdline/cmdline_resolver.cc:1114
 msgid ""
 "*** ERROR: search aborted by fatal exception.  You may continue\n"
 "           searching, but some solutions will be unreachable."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1172
+#: src/cmdline/cmdline_resolver.cc:1191
 #, c-format
 msgid ""
 "Unable to resolve dependencies for the upgrade because the resolver timed "
@@ -1751,22 +1757,22 @@ msgid ""
 "  Aptitude::ProblemResolver::StepLimit (currently %d)."
 msgstr ""
 
-#: src/cmdline/cmdline_resolver.cc:1182
+#: src/cmdline/cmdline_resolver.cc:1201
 #, fuzzy
 msgid "Unable to resolve dependencies for the upgrade: no solution found."
 msgstr "មិន​អាច​ដោះស្រាយ​ភាព​អាស្រ័យ​បាន​ឡើយ ​!  កំពុង​បោះបង់ចោល​..."
 
-#: src/cmdline/cmdline_resolver.cc:1188
+#: src/cmdline/cmdline_resolver.cc:1207
 #, fuzzy, c-format
 msgid "Unable to resolve dependencies for the upgrade: %s"
 msgstr "មិនអាច​ដោះស្រាយ​​ភាពអាស្រ័យ​បានឡើយ​ ។"
 
-#: src/cmdline/cmdline_search.cc:145 src/cmdline/cmdline_versions.cc:500
+#: src/cmdline/cmdline_search.cc:196 src/cmdline/cmdline_versions.cc:556
 #, c-format
 msgid "iconv of %s failed.\n"
 msgstr "iconv របស់ %s បាន​បរាជ័យ​ហើយ ។\n"
 
-#: src/cmdline/cmdline_search.cc:162
+#: src/cmdline/cmdline_search.cc:213
 #, c-format
 msgid "search: You must provide at least one search term\n"
 msgstr "ស្វែងរក​ ៖ អ្នក​ត្រូវ​តែ​ផ្ដល់​យ៉ាង​ហោច​ណាស់​ពាក្យស្វែងរក​មួយ ។\n"
@@ -1813,562 +1819,575 @@ msgstr " ឬ"
 msgid "The following packages have unmet dependencies:\n"
 msgstr "កញ្ចប់​ខាង​ក្រោម មាន​ភាព​អាស្រ័យ​ខុសឆ្គង ៖\n"
 
-#: src/cmdline/cmdline_show.cc:172 src/cmdline/cmdline_show.cc:416
-#: src/cmdline/cmdline_versions.cc:180 src/gtk/resolver.cc:1193
+#: src/cmdline/cmdline_show.cc:199 src/cmdline/cmdline_show.cc:445
+#: src/cmdline/cmdline_versions.cc:204 src/gtk/resolver.cc:1192
 #: src/solution_fragment.cc:68
 msgid "<NULL>"
 msgstr "<ទទេ>"
 
-#: src/cmdline/cmdline_show.cc:189 src/cmdline/cmdline_show.cc:194
+#: src/cmdline/cmdline_show.cc:216 src/cmdline/cmdline_show.cc:221
 msgid "not installed"
 msgstr "ពុំ​បាន​ដំឡើង​"
 
-#: src/cmdline/cmdline_show.cc:196 src/pkg_columnizer.cc:249
-#: src/pkg_ver_item.cc:232
+#: src/cmdline/cmdline_show.cc:223 src/pkg_columnizer.cc:250
+#: src/pkg_ver_item.cc:227
 msgid "unpacked"
 msgstr "មិន​បាន​ខ្ចប់"
 
-#: src/cmdline/cmdline_show.cc:198
+#: src/cmdline/cmdline_show.cc:225
 msgid "partially configured"
 msgstr "បាន​កំណត់​រចនាសម្ព័ន្ធ​ផ្នែក​ខ្លះ"
 
-#: src/cmdline/cmdline_show.cc:200
+#: src/cmdline/cmdline_show.cc:227
 msgid "partially installed"
 msgstr "បាន​ដំឡើង​ផ្នែក​ខ្លះ"
 
-#: src/cmdline/cmdline_show.cc:202
+#: src/cmdline/cmdline_show.cc:229
 msgid "not installed (configuration files remain)"
 msgstr "មិន​បាន​ដំឡើង (នៅសល់​ឯកសារ​កំណត់រចនាសម្ព័ន្ធ)"
 
-#: src/cmdline/cmdline_show.cc:205
+#: src/cmdline/cmdline_show.cc:232
 msgid "awaiting trigger processing by other package(s)"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:207
+#: src/cmdline/cmdline_show.cc:234
 msgid "awaiting trigger processing"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:210 src/pkg_columnizer.cc:257
-#: src/pkg_ver_item.cc:240
+#: src/cmdline/cmdline_show.cc:237 src/pkg_columnizer.cc:258
+#: src/pkg_ver_item.cc:235
 msgid "installed"
 msgstr "បាន​ដំឡើង​"
 
-#: src/cmdline/cmdline_show.cc:233
+#: src/cmdline/cmdline_show.cc:260
 #, c-format
 msgid "%s; will be purged because nothing depends on it"
 msgstr "%s; នឹង​ត្រូវ​បាន​លុបបំបាត់ ព្រោះ​មិន​មាន​អ្វី​ពឹងផ្អែក​វា​ឡើយ"
 
-#: src/cmdline/cmdline_show.cc:235 src/cmdline/cmdline_show.cc:331
+#: src/cmdline/cmdline_show.cc:262 src/cmdline/cmdline_show.cc:358
 #, c-format
 msgid "%s; will be purged"
 msgstr "%s; នឹង​ត្រូវ​បាន​លុបបំបាត់"
 
-#: src/cmdline/cmdline_show.cc:240
+#: src/cmdline/cmdline_show.cc:267
 #, c-format
 msgid "%s; will be removed because nothing depends on it"
 msgstr "%s; នឹង​ត្រូវ​បាន​យកចេញ ព្រោះ​មិន​មាន​អ្វី​ពឹងផ្អែក​វា​ឡើយ"
 
-#: src/cmdline/cmdline_show.cc:242
+#: src/cmdline/cmdline_show.cc:269
 #, c-format
 msgid "%s; will be removed"
 msgstr "%s; នឹង​ត្រូវ​បាន​យកចេញ"
 
-#: src/cmdline/cmdline_show.cc:260
+#: src/cmdline/cmdline_show.cc:287
 #, c-format
 msgid "%s%s; will be downgraded [%s -> %s]"
 msgstr "%s%s; នឹង​ត្រូវ​បាន​បន្ទាប [ពី %s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:263
+#: src/cmdline/cmdline_show.cc:290
 #, c-format
 msgid "%s%s; will be upgraded [%s -> %s]"
 msgstr "%s%s; នឹង​ត្រូវ​បាន​ធ្វើ​ឲ្យ​ប្រសើរ [ពី %s -> %s]"
 
-#: src/cmdline/cmdline_show.cc:272
+#: src/cmdline/cmdline_show.cc:299
 msgid "not a real package"
 msgstr "មិន​មែន​ជា​កញ្ចប់​ពិត​ប្រាកដ"
 
-#: src/cmdline/cmdline_show.cc:285
+#: src/cmdline/cmdline_show.cc:312
 msgid " [held]"
 msgstr " [បាន​រង់ចាំ]"
 
-#: src/cmdline/cmdline_show.cc:299
+#: src/cmdline/cmdline_show.cc:326
 #, fuzzy, c-format
 #| msgid "%s; will be installed"
 msgid "%s%s; will be installed"
 msgstr "%s; នឹង​ត្រូវ​បាន​ដំឡើង"
 
-#: src/cmdline/cmdline_show.cc:301
+#: src/cmdline/cmdline_show.cc:328
 #, fuzzy, c-format
 #| msgid "%s; will be installed automatically"
 msgid "%s%s; will be installed automatically"
 msgstr "%s; នឹង​ត្រូវបាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#: src/cmdline/cmdline_show.cc:321
+#: src/cmdline/cmdline_show.cc:348
 #, c-format
 msgid "%s; version %s will be installed"
 msgstr "%s; កំណែ %s នឹង​ត្រូវ​បាន​ដំឡើង"
 
-#: src/cmdline/cmdline_show.cc:325
+#: src/cmdline/cmdline_show.cc:352
 #, c-format
 msgid "%s; version %s will be installed automatically"
 msgstr "%s; កំណែ​ %s នឹង​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#: src/cmdline/cmdline_show.cc:350 src/cmdline/cmdline_show.cc:372
+#: src/cmdline/cmdline_show.cc:378 src/cmdline/cmdline_show.cc:401
 msgid "Package: "
 msgstr "កញ្ចប់ ៖ "
 
-#: src/cmdline/cmdline_show.cc:351 src/cmdline/cmdline_show.cc:380
-#: src/pkg_columnizer.cc:91
+#: src/cmdline/cmdline_show.cc:379 src/cmdline/cmdline_show.cc:409
+#: src/pkg_columnizer.cc:92
 msgid "State"
 msgstr "ស្ថាន​​ភាព"
 
-#: src/cmdline/cmdline_show.cc:352 src/cmdline/cmdline_show.cc:438
+#: src/cmdline/cmdline_show.cc:380 src/cmdline/cmdline_show.cc:467
 msgid "Provided by"
 msgstr "ផ្ដល់ដោយ"
 
-#: src/cmdline/cmdline_show.cc:374 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:403 src/pkg_info_screen.cc:120
 msgid "Essential: "
 msgstr "ចាំបាច់ ៖ "
 
-#: src/cmdline/cmdline_show.cc:374 src/cmdline/cmdline_show.cc:378
-#: src/cmdline/cmdline_show.cc:389 src/pkg_info_screen.cc:120
+#: src/cmdline/cmdline_show.cc:403 src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:418 src/pkg_info_screen.cc:120
 msgid "yes"
 msgstr "បាទ"
 
-#: src/cmdline/cmdline_show.cc:378
+#: src/cmdline/cmdline_show.cc:407
 msgid "New"
 msgstr "ថ្មី​"
 
-#: src/cmdline/cmdline_show.cc:383 src/gtk/gui.cc:98
+#: src/cmdline/cmdline_show.cc:412 src/gtk/gui.cc:98
 msgid "Forbidden version"
 msgstr "កំណែ​ហាមឃាត់"
 
-#: src/cmdline/cmdline_show.cc:387
+#: src/cmdline/cmdline_show.cc:416
 msgid "Automatically installed"
 msgstr "បាន​ដំឡើង​ដោយ​ស្វ័យ​ប្រវត្តិ"
 
-#: src/cmdline/cmdline_show.cc:389
+#: src/cmdline/cmdline_show.cc:418
 msgid "no"
 msgstr "ទេ"
 
-#: src/cmdline/cmdline_show.cc:391 src/gtk/entitysummary.cc:359
+#: src/cmdline/cmdline_show.cc:420 src/gtk/entitysummary.cc:359
 #: src/gtk/previewtab.cc:230
 msgid "Version: "
 msgstr "កំណែ ៖ "
 
-#: src/cmdline/cmdline_show.cc:392 src/pkg_info_screen.cc:128
+#: src/cmdline/cmdline_show.cc:421 src/pkg_info_screen.cc:128
 msgid "Priority: "
 msgstr "អាទិភាព ៖ "
 
-#: src/cmdline/cmdline_show.cc:393 src/cmdline/cmdline_show.cc:395
-#: src/cmdline/cmdline_show.cc:404
+#: src/cmdline/cmdline_show.cc:422 src/cmdline/cmdline_show.cc:424
+#: src/cmdline/cmdline_show.cc:433
 msgid "N/A"
 msgstr "មិន​មាន​"
 
-#: src/cmdline/cmdline_show.cc:394 src/pkg_info_screen.cc:129
+#: src/cmdline/cmdline_show.cc:423 src/pkg_info_screen.cc:129
 msgid "Section: "
 msgstr "ផ្នែក ៖ "
 
-#: src/cmdline/cmdline_show.cc:396 src/pkg_info_screen.cc:130
+#: src/cmdline/cmdline_show.cc:425 src/pkg_info_screen.cc:130
 msgid "Maintainer: "
 msgstr "អ្នក​ថែទាំ ៖ "
 
-#: src/cmdline/cmdline_show.cc:399
+#: src/cmdline/cmdline_show.cc:428
 msgid "Uncompressed Size: "
 msgstr "ទំហំ​មិន​បាន​បង្ហាប់ ៖ "
 
-#: src/cmdline/cmdline_show.cc:403
+#: src/cmdline/cmdline_show.cc:432
 msgid "Architecture: "
 msgstr "ស្ថាបត្យកម្ម ៖ "
 
-#: src/cmdline/cmdline_show.cc:405
+#: src/cmdline/cmdline_show.cc:434
 msgid "Compressed Size: "
 msgstr "ទំហំ​បង្ហាប់​រួច ៖ "
 
-#: src/cmdline/cmdline_show.cc:407
+#: src/cmdline/cmdline_show.cc:436
 msgid "Filename: "
 msgstr "ឈ្មោះឯកសារ ៖ "
 
-#: src/cmdline/cmdline_show.cc:409
+#: src/cmdline/cmdline_show.cc:438
 msgid "MD5sum: "
 msgstr "ផលបូក MD5 ៖ "
 
-#: src/cmdline/cmdline_show.cc:413 src/cmdline/cmdline_show.cc:416
+#: src/cmdline/cmdline_show.cc:442 src/cmdline/cmdline_show.cc:445
 #: src/gtk/entityview.cc:606
 msgid "Archive"
 msgstr "ប័ណ្ណសារ"
 
-#: src/cmdline/cmdline_show.cc:421
+#: src/cmdline/cmdline_show.cc:450
 msgid "Depends"
 msgstr "ផ្អែកលើ"
 
-#: src/cmdline/cmdline_show.cc:423
+#: src/cmdline/cmdline_show.cc:452
 msgid "PreDepends"
 msgstr "ផ្អែកលើ​ជា​ស្រេច"
 
-#: src/cmdline/cmdline_show.cc:425 src/cmdline/cmdline_why.cc:323
+#: src/cmdline/cmdline_show.cc:454 src/cmdline/cmdline_why.cc:349
 msgid "Recommends"
 msgstr "ផ្តល់​អនុសាសន៍​"
 
-#: src/cmdline/cmdline_show.cc:427 src/cmdline/cmdline_why.cc:326
+#: src/cmdline/cmdline_show.cc:456 src/cmdline/cmdline_why.cc:352
 msgid "Suggests"
 msgstr "ស្នើ"
 
-#: src/cmdline/cmdline_show.cc:429
+#: src/cmdline/cmdline_show.cc:458
 msgid "Conflicts"
 msgstr "ប៉ះទង្គិច​"
 
-#: src/cmdline/cmdline_show.cc:431
+#: src/cmdline/cmdline_show.cc:460
 msgid "Breaks"
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:433
+#: src/cmdline/cmdline_show.cc:462
 msgid "Replaces"
 msgstr "ជំនួស​"
 
-#: src/cmdline/cmdline_show.cc:435
+#: src/cmdline/cmdline_show.cc:464
 msgid "Obsoletes"
 msgstr "លែង​ប្រើ​"
 
-#: src/cmdline/cmdline_show.cc:437 src/cmdline/cmdline_why.cc:254
-#: src/cmdline/cmdline_why.cc:1516 src/gtk/dependency_chains_tab.cc:205
+#: src/cmdline/cmdline_show.cc:466 src/cmdline/cmdline_why.cc:280
+#: src/cmdline/cmdline_why.cc:1682 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "ផ្តល់​ឲ្យ​"
 
-#: src/cmdline/cmdline_show.cc:441 src/gtk/entitysummary.cc:367
+#: src/cmdline/cmdline_show.cc:470 src/gtk/entitysummary.cc:367
 #: src/gtk/info.cc:716 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "សេចក្ដីពណ៌នា ៖ "
 
-#: src/cmdline/cmdline_show.cc:447 src/pkg_info_screen.cc:107
-#: src/pkg_view.cc:256
+#: src/cmdline/cmdline_show.cc:476 src/pkg_info_screen.cc:107
+#: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr ""
 
-#: src/cmdline/cmdline_show.cc:544
+#: src/cmdline/cmdline_show.cc:577
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "មិន​អាច​រកទីតាំង​កញ្ចប់ %s"
 
-#: src/cmdline/cmdline_show.cc:560
+#: src/cmdline/cmdline_show.cc:598
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "មិន​អាច​ញែក​លំនាំ %s"
 
-#: src/cmdline/cmdline_simulate.cc:41
+#: src/cmdline/cmdline_simulate.cc:66
 #, c-format
 msgid "Would download/install/remove packages.\n"
 msgstr "នឹង​ទាញយក/ដំឡើង/យក​កញ្ចប់​ចេញ ។\n"
 
-#: src/cmdline/cmdline_simulate.cc:52
+#: src/cmdline/cmdline_simulate.cc:77
 msgid "Internal Error, Ordering didn't finish"
 msgstr "មាន​កំហុស​ខាង​ក្នុង ។ ការ​រៀប​លំដាប់​មិន​បាន​បញ្ចប់​ឡើយ"
 
-#: src/cmdline/cmdline_update.cc:34
+#: src/cmdline/cmdline_update.cc:46
 #, c-format
 msgid "Deleting obsolete downloaded files\n"
 msgstr "កំពុង​លុប​ឯកសារ​ដែល​បាន​ទាញយក ហើយ​លែងប្រើ\n"
 
-#: src/cmdline/cmdline_update.cc:43
+#: src/cmdline/cmdline_update.cc:58
 #, c-format
 msgid "E: The update command takes no arguments\n"
 msgstr "E ៖ ពាក្យបញ្ជា update មិន​ត្រូវការ​អាគុយម៉ង់​ឡើយ\n"
 
-#: src/cmdline/cmdline_user_tag.cc:55
+#: src/cmdline/cmdline_user_tag.cc:66
 #, fuzzy, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
 msgstr "មិន​អាច​រកឃើញ​កំណែ \"%s\" សម្រាប់​កញ្ចប់ \"%s\" ឡើយ\n"
 
-#: src/cmdline/cmdline_user_tag.cc:62
+#: src/cmdline/cmdline_user_tag.cc:73
 #, fuzzy, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
 msgstr "មិន​អាច​រកឃើញ​កំណែ \"%s\" សម្រាប់​កញ្ចប់ \"%s\" ឡើយ\n"
 
-#: src/cmdline/cmdline_user_tag.cc:92
+#: src/cmdline/cmdline_user_tag.cc:106
 #, c-format
 msgid "%s: too few arguments; expected at least a tag name and a package.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:133
+#: src/cmdline/cmdline_util.cc:163
 #, c-format
 msgid "No candidate version found for %s\n"
 msgstr "រក​មិន​ឃើញ​កំណែ​សាកល្បង​សម្រាប់​ %s ឡើយ\n"
 
-#: src/cmdline/cmdline_util.cc:135
+#: src/cmdline/cmdline_util.cc:165
 #, c-format
 msgid "No current or candidate version found for %s\n"
 msgstr "រកមិន​ឃើញ​កំណែ​បច្ចុប្បន្ន ឬ​កំណែ​សាកល្បង​សម្រាប់ %s\n"
 
-#: src/cmdline/cmdline_util.cc:159
+#: src/cmdline/cmdline_util.cc:189
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
 msgstr "មិន​អាច​រកឃើញ​ប័ណ្ណសារ \"%s\" សម្រាប់​កញ្ចប់ \"%s\" ឡើយ\n"
 
-#: src/cmdline/cmdline_util.cc:169
+#: src/cmdline/cmdline_util.cc:199
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
 msgstr "មិន​អាច​រកឃើញ​កំណែ \"%s\" សម្រាប់​កញ្ចប់ \"%s\" ឡើយ\n"
 
-#: src/cmdline/cmdline_util.cc:175
+#: src/cmdline/cmdline_util.cc:205
 #, c-format
 msgid "Internal error: invalid value %i passed to cmdline_find_ver!\n"
 msgstr "កំហុស​ខាង​ក្នុង ៖ បាន​ហុច​តម្លៃ %i មិន​ត្រឹមត្រូវ ទៅ​ឲ្យ cmdline_find_ver !\n"
 
-#: src/cmdline/cmdline_util.cc:205
+#: src/cmdline/cmdline_util.cc:235
 #, c-format
 msgid "You cannot specify both an archive and a version for a package\n"
 msgstr "អ្នក​មិន​អាច​បញ្ជាក់​ទាំង​ប័ណ្ណសារ និង ទាំង​កំណែ​សម្រាប់​កញ្ចប់​មួយ​បាន​ឡើយ ។\n"
 
-#: src/cmdline/cmdline_util.cc:303
+#: src/cmdline/cmdline_util.cc:334
 #, c-format
 msgid "%d broken [%+d]"
 msgid_plural "%d broken [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:317
+#: src/cmdline/cmdline_util.cc:348
 #, c-format
 msgid "%d update [%+d]"
 msgid_plural "%d updates [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:331
+#: src/cmdline/cmdline_util.cc:362
 #, c-format
 msgid "%d new [%+d]"
 msgid_plural "%d new [%+d]"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:342
+#: src/cmdline/cmdline_util.cc:373
 #, c-format
 msgid "Current status: %F."
 msgstr ""
 
-#: src/cmdline/cmdline_util.cc:353
+#: src/cmdline/cmdline_util.cc:384
 #, c-format
 msgid "There is %d newly obsolete package."
 msgid_plural "There are %d newly obsolete packages."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_util.cc:365
+#: src/cmdline/cmdline_util.cc:396
 #, c-format
 msgid "There is %d newly obsolete package: "
 msgid_plural "There are %d newly obsolete packages: "
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cmdline/cmdline_versions.cc:97
+#: src/cmdline/cmdline_versions.cc:121
 #, fuzzy, c-format
 #| msgid "Packages"
 msgid "Package %s:"
 msgstr "កញ្ចប់​"
 
-#: src/cmdline/cmdline_versions.cc:124 src/cmdline/cmdline_versions.cc:163
+#: src/cmdline/cmdline_versions.cc:148 src/cmdline/cmdline_versions.cc:187
 #, fuzzy, c-format
 #| msgid "Source Package: "
 msgid "Source package %s:"
 msgstr "កញ្ចប់​ប្រភព ៖ "
 
-#: src/cmdline/cmdline_versions.cc:185
+#: src/cmdline/cmdline_versions.cc:209
 #, fuzzy, c-format
 #| msgid "Archive"
 msgid "Archive %s:"
 msgstr "ប័ណ្ណសារ"
 
-#: src/cmdline/cmdline_versions.cc:250
+#: src/cmdline/cmdline_versions.cc:290
 #, fuzzy, c-format
 msgid "No such package \"%s\"."
 msgstr "មិន​មាន​កញ្ចប់ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_versions.cc:438
+#: src/cmdline/cmdline_versions.cc:490
 msgid "--group-by|archive"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:442
+#: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|auto"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:446
+#: src/cmdline/cmdline_versions.cc:498
 msgid "--group-by|none"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:450
+#: src/cmdline/cmdline_versions.cc:502
 msgid "--group-by|package"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:454
+#: src/cmdline/cmdline_versions.cc:506
 msgid "--group-by|source-package"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:458
+#: src/cmdline/cmdline_versions.cc:510
 msgid "--group-by|source-version"
 msgstr ""
 
 #. ForTranslators: --group-by is the argument name and shouldn't
 #. be translated.
-#: src/cmdline/cmdline_versions.cc:464
+#: src/cmdline/cmdline_versions.cc:516
 #, c-format
 msgid ""
 "Invalid package grouping mode \"%s\" (should be \"auto\", \"none\", \"package"
 "\", or \"source-package\")"
 msgstr ""
 
-#: src/cmdline/cmdline_versions.cc:517
+#: src/cmdline/cmdline_versions.cc:573
 #, fuzzy, c-format
 #| msgid "search: You must provide at least one search term\n"
 msgid "versions: You must provide at least one package selector\n"
 msgstr "ស្វែងរក​ ៖ អ្នក​ត្រូវ​តែ​ផ្ដល់​យ៉ាង​ហោច​ណាស់​ពាក្យស្វែងរក​មួយ ។\n"
 
-#: src/cmdline/cmdline_why.cc:314
+#: src/cmdline/cmdline_why.cc:340
 #, fuzzy
 msgid "dep_level"
 msgstr "លុប"
 
-#: src/cmdline/cmdline_why.cc:320
+#: src/cmdline/cmdline_why.cc:346
 #, fuzzy
 msgid "DependsOnly"
 msgstr "ផ្អែកលើ"
 
-#: src/cmdline/cmdline_why.cc:334
+#: src/cmdline/cmdline_why.cc:360
 msgid "version_selection"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:339
+#: src/cmdline/cmdline_why.cc:365
 msgid "Current"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:342
+#: src/cmdline/cmdline_why.cc:368
 #, fuzzy
 msgid "Candidate"
 msgstr "កំណែសាកល្បង"
 
-#: src/cmdline/cmdline_why.cc:345 src/gtk/gui.cc:91 src/gtk/gui.cc:1421
+#: src/cmdline/cmdline_why.cc:371 src/gtk/gui.cc:91 src/gtk/gui.cc:1422
 msgid "Install"
 msgstr "ដំឡើង"
 
-#: src/cmdline/cmdline_why.cc:348
+#: src/cmdline/cmdline_why.cc:374
 #, fuzzy
 msgid "InstallNotCurrent"
 msgstr "បាន​ដំឡើង"
 
-#: src/cmdline/cmdline_why.cc:356
+#: src/cmdline/cmdline_why.cc:382
 msgid "allow_choices"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:359
+#: src/cmdline/cmdline_why.cc:385
 msgid "true"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:361
+#: src/cmdline/cmdline_why.cc:387
 #, fuzzy
 msgid "false"
 msgstr "បិទ​"
 
-#: src/cmdline/cmdline_why.cc:415
+#: src/cmdline/cmdline_why.cc:431
 #, fuzzy, c-format
 msgid "Install(%s)"
 msgstr "ដំឡើង"
 
-#: src/cmdline/cmdline_why.cc:417
+#: src/cmdline/cmdline_why.cc:433
 #, fuzzy, c-format
 msgid "Remove(%s)"
 msgstr "យក​ចេញ"
 
-#: src/cmdline/cmdline_why.cc:419
+#: src/cmdline/cmdline_why.cc:435
 #, fuzzy, c-format
 msgid "Install(%s provides %s)"
 msgstr "កំពុង​ដំឡើង %s %s (%s)"
 
-#: src/cmdline/cmdline_why.cc:423
+#: src/cmdline/cmdline_why.cc:439
 #, fuzzy, c-format
 msgid "Remove(%s provides %s)"
 msgstr "យក %F ចេញ [%s (%s)]"
 
-#: src/cmdline/cmdline_why.cc:481
+#: src/cmdline/cmdline_why.cc:1124
 #, c-format
 msgid "    ++ Examining %F\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:491
+#: src/cmdline/cmdline_why.cc:1132
 msgid "    ++   --> skipping, not a conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:501
+#: src/cmdline/cmdline_why.cc:1138
 msgid "    ++   --> skipping conflict\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:509
+#: src/cmdline/cmdline_why.cc:1144
 msgid "    ++   --> skipping, not relevant according to params\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:516
+#: src/cmdline/cmdline_why.cc:1150
 msgid "    ++   --> skipping, parent is not the selected version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:563
+#: src/cmdline/cmdline_why.cc:1156
 msgid "    ++   --> skipping, the dep is satisfied by the current version\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:596
-msgid "    ++   --> ENQUEUING\n"
+#: src/cmdline/cmdline_why.cc:1162
+msgid "Skipping this solution, I've already seen it.\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:603
+#: src/cmdline/cmdline_why.cc:1168
 msgid "    ++   --> skipping, version check failed\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:621
+#: src/cmdline/cmdline_why.cc:1174
+msgid "    ++   --> ENQUEUING\n"
+msgstr ""
+
+#: src/cmdline/cmdline_why.cc:1180
 #, c-format
 msgid "    ++   --> ENQUEUING %s Provides %s\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:755
+#: src/cmdline/cmdline_why.cc:1188
 #, c-format
 msgid "Starting search with parameters %ls\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.cc:973
-msgid "Skipping this solution, I've already seen it.\n"
-msgstr ""
-
-#: src/cmdline/cmdline_why.cc:1100
+#: src/cmdline/cmdline_why.cc:1244
 #, fuzzy, c-format
 msgid "Unable to find a reason to remove %s.\n"
 msgstr "មិន​អាច​រក​ដំណោះស្រាយ​ដើម្បី​អនុវត្ត​បាន​ឡើយ ។"
 
-#: src/cmdline/cmdline_why.cc:1102
+#: src/cmdline/cmdline_why.cc:1246
 #, fuzzy, c-format
 msgid "Unable to find a reason to install %s.\n"
 msgstr "មិន​អាច​រក​ដំណោះស្រាយ​ដើម្បី​អនុវត្ត​បាន​ឡើយ ។"
 
-#: src/cmdline/cmdline_why.cc:1141
+#: src/cmdline/cmdline_why.cc:1285
 #, fuzzy, c-format
 #| msgid "Packages depending on %s"
 msgid "Packages requiring %s:"
 msgstr "កញ្ចប់​ដែល​ផ្អែក​លើ %s"
 
-#: src/cmdline/cmdline_why.cc:1194 src/cmdline/cmdline_why.cc:1221
-#: src/cmdline/cmdline_why.cc:1280
+#: src/cmdline/cmdline_why.cc:1349 src/cmdline/cmdline_why.cc:1377
+#: src/cmdline/cmdline_why.cc:1441
 #, fuzzy, c-format
 msgid "No package named \"%s\" exists."
 msgstr "មិន​អាច​រក​កញ្ចប់​​​មួយ​ដែល​​មាន​ឈ្មោះ \"%s\" ឡើយ"
 
-#: src/cmdline/cmdline_why.cc:1225
+#: src/cmdline/cmdline_why.cc:1381
 #, fuzzy
 msgid "Unable to parse some match patterns."
 msgstr "មិន​អាច​ញែក​លំនាំ %s"
 
-#: src/cmdline/cmdline_why.cc:1253
+#: src/cmdline/cmdline_why.cc:1416
 #, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
 msgstr ""
 
-#: src/cmdline/cmdline_why.h:202
+#: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
+
+#: src/cmdline/terminal.cc:46
+msgid "Unexpected end-of-file on standard input"
+msgstr "មិន​រំពឹង​ថា​មាន​ចុង​ឯកសារ នៅ​លើ​ព័ត៌មាន​ខ្នាតគំរូ"
+
+#. ForTranslators: the text between [] should be
+#. exactly 4 character cells wide; "ERR" is short
+#. for "ERROR".
+#: src/cmdline/text_progress.cc:95
+#, fuzzy, c-format
+#| msgid "[ERROR]"
+msgid "[ ERR] %s"
+msgstr "[កំហុស​]"
 
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
@@ -2378,11 +2397,11 @@ msgstr "មិនពេញចិត្ត"
 msgid "UNAVAILABLE"
 msgstr "មិនមាន"
 
-#: src/desc_render.cc:133 src/gtk/aptitude.glade:1060
+#: src/desc_render.cc:134 src/gtk/aptitude.glade:1060
 msgid "Tags"
 msgstr "ស្លាក"
 
-#: src/desc_render.cc:153
+#: src/desc_render.cc:154
 #, fuzzy
 msgid "User Tags"
 msgstr "ស្លាក"
@@ -2581,21 +2600,21 @@ msgstr "អ្នក​ប្រហែល​ជា​ត្រូវ​ធ្វ
 #. indicated by translating "Localized defaults|" below to
 #. "aptitude-defaults.ww".  If you use this mechanism, you should
 #. also add your defaults file to pkgdata_DATA in Makefile.am.
-#: src/generic/apt/apt.cc:189
+#: src/generic/apt/apt.cc:184
 msgid "Localized defaults|"
 msgstr ""
 
-#: src/generic/apt/apt.cc:262
+#: src/generic/apt/apt.cc:257
 #, c-format
 msgid "%s is readable but not writable; unable to write configuration file."
 msgstr "%s គឺ​អាច​អាន​បាន ប៉ុន្តែ​មិន​អាច​សរសេរ​បាន ។ មិន​អាច​សរសេរ​ឯកសារ​កំណត់រចនាសម្ព័ន្ធ​បាន​ឡើយ ។"
 
-#: src/generic/apt/apt.cc:307
+#: src/generic/apt/apt.cc:302
 #, c-format
 msgid "Unable to replace %s with new configuration file"
 msgstr "មិន​អាច​ជំនួស %s ដោយ​ឯកសារ​កំណត់​រចនាសម្ព័ន្ធ​ថ្មី​បាន​ឡើយ"
 
-#: src/generic/apt/apt.cc:458
+#: src/generic/apt/apt.cc:453
 #, fuzzy
 msgid ""
 "Could not lock the cache file; this usually means that dpkg or another apt "
@@ -2900,6 +2919,18 @@ msgstr ""
 "\n"
 "ចុះកំណត់ហេតុ​ចប់​សព្វគ្រប់ ។\n"
 
+#: src/generic/apt/matching/match.cc:2867
+#: src/generic/apt/matching/match.cc:2984
+msgid "Accessing index"
+msgstr ""
+
+#: src/generic/apt/matching/match.cc:2877
+#: src/generic/apt/matching/match.cc:2991
+#, fuzzy
+#| msgid "Downloading packages"
+msgid "Filtering packages"
+msgstr "កំពុង​ទាញ​យក​កញ្ចប់​"
+
 #: src/generic/apt/matching/parse.cc:307
 #, c-format
 msgid "Unknown action type: %s"
@@ -3072,6 +3103,24 @@ msgstr "មិន​អាច​ញែក​លំនាំ %s"
 msgid "Building tag database"
 msgstr "កំពុង​បង្កើត​មូលដ្ឋាន​ទិន្នន័យ​ស្លាក"
 
+#: src/generic/apt/tags.cc:400
+msgid "legacy"
+msgstr ""
+
+#: src/generic/apt/tags.cc:430 src/generic/apt/tags.cc:445
+#: src/generic/apt/tags.cc:476 src/generic/apt/tags.cc:491
+#, fuzzy
+#| msgid "Not Installed"
+msgid "No tag descriptions are available."
+msgstr "មិន​បានដំឡើង​"
+
+#: src/generic/apt/tags.cc:436 src/generic/apt/tags.cc:451
+#: src/generic/apt/tags.cc:482 src/generic/apt/tags.cc:497
+#, fuzzy, c-format
+#| msgid "Not Installed"
+msgid "No description available for %s."
+msgstr "មិន​បានដំឡើង​"
+
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
 msgstr "មិន​អាច​បើក /usr/share/tasksel/debian-tasks.desc បាន​ឡើយ"
@@ -3173,7 +3222,7 @@ msgstr "មិន​រំពឹង​ថា​មាន ')'"
 msgid " or "
 msgstr " ឬ"
 
-#: src/generic/util/parsers.h:2762
+#: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
 #| msgid "Unexpected ')'"
 msgid "Unexpected %s"
@@ -3215,52 +3264,53 @@ msgstr "បរាជ័យ​ក្នុង​ការ​បិទ​ថត \"
 msgid "Unable to remove directory \"%s\""
 msgstr "មិន​អាច​យក \"%s\" ចេញ​បាន​ឡើយ"
 
-#: src/gtk/aptitude.glade:6
+#: src/gtk/aptitude.glade:6 src/gtk/aptitude.glade:2260
 msgid "Aptitude Package Manager"
 msgstr ""
 
-#: src/gtk/aptitude.glade:19
+#: src/gtk/aptitude.glade:19 src/gtk/aptitude.glade:2273
 #, fuzzy
 msgid "_File"
 msgstr "បិទ​"
 
-#: src/gtk/aptitude.glade:28 src/ui.cc:2263
+#: src/gtk/aptitude.glade:28 src/gtk/aptitude.glade:2283 src/ui.cc:2263
 msgid "Perform all pending installs and removals"
 msgstr "អនុវត្ត​ការ​ដំឡើង និង ការ​យកចេញ​ទាំងអស់ ដែល​មិន​ទាន់​សម្រេច"
 
-#: src/gtk/aptitude.glade:38 src/ui.cc:2266
+#: src/gtk/aptitude.glade:38 src/gtk/aptitude.glade:2294 src/ui.cc:2266
 msgid "Check for new versions of packages"
 msgstr "ពិនិត្យរក​កំណែ​ថ្មី​របស់​កញ្ចប់"
 
-#: src/gtk/aptitude.glade:53 src/ui.cc:2271
+#: src/gtk/aptitude.glade:53 src/gtk/aptitude.glade:2310 src/ui.cc:2271
 msgid "Mark all upgradable packages which are not held for upgrade"
 msgstr "សម្គាល់​កញ្ចប់​ទាំងអស់​ដែល​អាច​ធ្វើ​ឲ្យ​ប្រសើរ​បាន"
 
-#: src/gtk/aptitude.glade:63 src/ui.cc:2276
+#: src/gtk/aptitude.glade:63 src/gtk/aptitude.glade:2321 src/ui.cc:2276
 msgid "Forget which packages are \"new\""
 msgstr "បំភ្លេច​កញ្ចប់​ដែល \"ថ្មី\""
 
-#: src/gtk/aptitude.glade:72 src/ui.cc:2280
+#: src/gtk/aptitude.glade:72 src/gtk/aptitude.glade:2331 src/ui.cc:2280
 msgid "Cancel all pending installations, removals, holds, and upgrades."
 msgstr "បោះបង់​ការ​ដំឡើង ការ​យកចេញ ការ​ទុក និង ធ្វើ​ឲ្យ​ប្រសើរ​ដែល​មិន​ទាន់​សម្រេច ។"
 
-#: src/gtk/aptitude.glade:81 src/ui.cc:2284
+#: src/gtk/aptitude.glade:81 src/gtk/aptitude.glade:2341 src/ui.cc:2284
 msgid "Delete package files which were previously downloaded"
 msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​ត្រូវ​បាន​ទាញយក​ពី​មុន"
 
-#: src/gtk/aptitude.glade:90 src/ui.cc:2288
+#: src/gtk/aptitude.glade:90 src/gtk/aptitude.glade:2351 src/ui.cc:2288
 msgid "Delete package files which can no longer be downloaded"
 msgstr "លុប​ឯកសារ​កញ្ចប់ ដែល​លែង​ទាញយក"
 
-#: src/gtk/aptitude.glade:104 src/ui.cc:2295
+#: src/gtk/aptitude.glade:104 src/gtk/aptitude.glade:2366 src/ui.cc:2295
 msgid "Reload the package cache"
 msgstr "ផ្ទុក​ឃ្លាំងសម្ងាត់​កញ្ចប់​ឡើង​វិញ"
 
-#: src/gtk/aptitude.glade:113 src/ui.cc:1710 src/ui.cc:2300
+#: src/gtk/aptitude.glade:113 src/gtk/aptitude.glade:2376 src/ui.cc:1710
+#: src/ui.cc:2300
 msgid "Waste time trying to find mines"
 msgstr "ចំណាយពេល​រាវ​មីន"
 
-#: src/gtk/aptitude.glade:127 src/ui.cc:2305
+#: src/gtk/aptitude.glade:127 src/gtk/aptitude.glade:2391 src/ui.cc:2305
 msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
@@ -3268,77 +3318,78 @@ msgstr ""
 "រត់ 'su' ដើម្បី​ក្លាយជា root ។ បន្ទាប់​មក​កម្មវិធី​នឹង​ត្រូវ​បាន​ចាប់ផ្ដើម​ឡើង​វិញ ប៉ុន្តែ​ការ​កំណត់​របស់​អ្នក​នឹង​"
 "ត្រូវ​បាន​ការពារ"
 
-#: src/gtk/aptitude.glade:136 src/ui.cc:2308
+#: src/gtk/aptitude.glade:136 src/gtk/aptitude.glade:2401 src/ui.cc:2308
 msgid "Exit the program"
 msgstr "ចេញពី​កម្មវិធី​"
 
-#: src/gtk/aptitude.glade:148
+#: src/gtk/aptitude.glade:148 src/gtk/aptitude.glade:2413
 msgid "E_dit"
 msgstr ""
 
-#: src/gtk/aptitude.glade:157 src/ui.cc:2315
+#: src/gtk/aptitude.glade:157 src/gtk/aptitude.glade:2423 src/ui.cc:2315
 msgid "Undo the last package operation or group of operations"
 msgstr "មិន​ធ្វើ​ប្រតិបត្តិការ​ ឬ ក្រុម​ប្រតិបត្តិការ​ចុងក្រោយ ដែល​ទាក់ទង​នឹង​កញ្ចប់"
 
-#: src/gtk/aptitude.glade:206
+#: src/gtk/aptitude.glade:206 src/gtk/aptitude.glade:2472
 #, fuzzy
 #| msgid "Package"
 msgid "_Package"
 msgstr "កញ្ចប់​"
 
-#: src/gtk/aptitude.glade:218
+#: src/gtk/aptitude.glade:218 src/gtk/aptitude.glade:2484
 #, fuzzy
 #| msgid "Views"
 msgid "_View"
 msgstr "មើល​"
 
-#: src/gtk/aptitude.glade:227
+#: src/gtk/aptitude.glade:227 src/gtk/aptitude.glade:2494
 msgid "Change which columns are visible in the currently active view."
 msgstr ""
 
-#: src/gtk/aptitude.glade:241
+#: src/gtk/aptitude.glade:241 src/gtk/aptitude.glade:2509
 msgid ""
 "View errors that have occurred in the apt system since the program was "
 "started."
 msgstr ""
 
-#: src/gtk/aptitude.glade:250
+#: src/gtk/aptitude.glade:250 src/gtk/aptitude.glade:2519
 msgid "Find chains of dependencies linking one package to another."
 msgstr ""
 
-#: src/gtk/aptitude.glade:297
+#: src/gtk/aptitude.glade:297 src/gtk/aptitude.glade:2566
 #, fuzzy
 #| msgid "Help"
 msgid "_Help"
 msgstr "ជំនួយ"
 
-#: src/gtk/aptitude.glade:326 src/gtk/dashboardtab.cc:754 src/gtk/gui.cc:1610
-#: src/gtk/gui.cc:1808
+#: src/gtk/aptitude.glade:326 src/gtk/aptitude.glade:2595
+#: src/gtk/dashboardtab.cc:754 src/gtk/gui.cc:1611 src/gtk/gui.cc:1809
 msgid "Dashboard"
 msgstr ""
 
-#: src/gtk/aptitude.glade:345
+#: src/gtk/aptitude.glade:345 src/gtk/aptitude.glade:2614
 #, fuzzy
 #| msgid "List Update"
 msgid "Update"
 msgstr "ធ្វើ​ឲ្យ​បញ្ជី​ទាន់សម័យ"
 
-#: src/gtk/aptitude.glade:356 src/gtk/gui.cc:1322 src/ui.cc:840 src/ui.cc:842
-#: src/ui.cc:887 src/ui.cc:889 src/ui.cc:915 src/ui.cc:917 src/ui.cc:938
-#: src/ui.cc:940
+#: src/gtk/aptitude.glade:356 src/gtk/aptitude.glade:2625 src/gtk/gui.cc:1323
+#: src/ui.cc:840 src/ui.cc:842 src/ui.cc:887 src/ui.cc:889 src/ui.cc:915
+#: src/ui.cc:917 src/ui.cc:938 src/ui.cc:940
 msgid "Packages"
 msgstr "កញ្ចប់​"
 
-#: src/gtk/aptitude.glade:367 src/gtk/gui.cc:1033 src/gtk/previewtab.cc:118
-#: src/ui.cc:1340
+#: src/gtk/aptitude.glade:367 src/gtk/aptitude.glade:2636 src/gtk/gui.cc:1033
+#: src/gtk/previewtab.cc:118 src/ui.cc:1340
 msgid "Preview"
 msgstr "មើល​ជា​​​មុន"
 
-#: src/gtk/aptitude.glade:378 src/gtk/gui.cc:1028 src/ui.cc:2699
+#: src/gtk/aptitude.glade:378 src/gtk/aptitude.glade:2647 src/gtk/gui.cc:1028
+#: src/ui.cc:2699
 msgid "Resolver"
 msgstr "កម្មវិធី​ដោះស្រាយ"
 
-#: src/gtk/aptitude.glade:389
+#: src/gtk/aptitude.glade:389 src/gtk/aptitude.glade:2658
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Remove"
@@ -3538,7 +3589,8 @@ msgstr ""
 msgid "Fix Manually"
 msgstr "ដោយ​ដៃ"
 
-#: src/gtk/aptitude.glade:1665 src/gtk/gui.cc:93 src/gtk/gui.cc:1412
+#: src/gtk/aptitude.glade:1665 src/gtk/areas.cc:72 src/gtk/gui.cc:93
+#: src/gtk/gui.cc:1413
 msgid "Upgrade"
 msgstr "ធ្វើ​ឲ្យ​ប្រសើរ"
 
@@ -3573,6 +3625,53 @@ msgstr ""
 msgid ""
 "Do you want to apply these changes?\n"
 "You can also modify the files by hand, then click \"No\"."
+msgstr ""
+
+#: src/gtk/areas.cc:73
+msgid "Keep your computer up-to-date."
+msgstr ""
+
+#: src/gtk/areas.cc:75
+#, fuzzy
+#| msgid "Broken"
+msgid "Browse"
+msgstr "ខូច​"
+
+#: src/gtk/areas.cc:76
+#, fuzzy
+#| msgid "Unable to correct for unavailable packages"
+msgid "Explore the available packages."
+msgstr "មិន​អាច​កែ​កញ្ចប់​ដែល​មិន​មាន​បាន​ឡើយ"
+
+#: src/gtk/areas.cc:78
+#, fuzzy
+#| msgid "^Find"
+msgid "Find"
+msgstr "រក​"
+
+#: src/gtk/areas.cc:79
+#, fuzzy
+#| msgid "Search for: "
+msgid "Search for packages."
+msgstr "ស្វែងរក ៖ "
+
+#: src/gtk/areas.cc:81
+#, fuzzy
+#| msgid "Got "
+msgid "Go"
+msgstr "បាន "
+
+#: src/gtk/areas.cc:82
+msgid "Finalize and apply your changes to the system."
+msgstr ""
+
+#: src/gtk/areas.cc:84 src/ui.cc:699 src/ui.cc:701
+#, fuzzy
+msgid "Preferences"
+msgstr "ផ្អែកលើ​ជា​ស្រេច"
+
+#: src/gtk/areas.cc:85
+msgid "Configure aptitude."
 msgstr ""
 
 #: src/gtk/changelog.cc:283
@@ -3629,6 +3728,10 @@ msgstr "​​ទាញយក​កំណត់​ហេតុ​ផ្លាស
 #| msgid "URL to use to download changelogs"
 msgid "Preparing to download the changelog of %s version %s."
 msgstr "URL ដែលត្រូវប្រើ​​ដើម្បី​ទាញ​យក​កំណត់​ហេតុ​ការ​ផ្លាស់ប្ដូរ"
+
+#: src/gtk/controllers/search_input.cc:102 src/gtk/packagestab.cc:60
+msgid "Parse error"
+msgstr ""
 
 #: src/gtk/dashboardtab.cc:215
 msgid "Resolve Upgrade Manually"
@@ -3719,7 +3822,7 @@ msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ
 msgid "Select one or more starting packages and an ending package to search."
 msgstr ""
 
-#: src/gtk/dependency_chains_tab.cc:281
+#: src/gtk/dependency_chains_tab.cc:282
 #, fuzzy
 msgid "No dependency chain found."
 msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ"
@@ -3739,14 +3842,8 @@ msgstr "បិទ​"
 msgid "Already downloaded"
 msgstr "កំពុង​លុបឯកសារ​ដែល​បានទាញ​យក​"
 
-#: src/gtk/download.cc:204
-#, fuzzy
-#| msgid "none"
-msgid "Done"
-msgstr "គ្មាន"
-
-#: src/gtk/download.cc:248 src/gtk/entityview.cc:397 src/pkg_columnizer.cc:93
-#: src/pkg_view.cc:672
+#: src/gtk/download.cc:248 src/gtk/entityview.cc:397 src/pkg_columnizer.cc:94
+#: src/pkg_view.cc:675
 msgid "Description"
 msgstr "ពិពណ៌​នា​"
 
@@ -3989,7 +4086,7 @@ msgstr "បដិសេធ​មិន​ឲ្យ​យក %s ចេញ"
 msgid "Icons showing the current and future status of this package."
 msgstr ""
 
-#: src/gtk/entityview.cc:564 src/pkg_columnizer.cc:102
+#: src/gtk/entityview.cc:564 src/pkg_columnizer.cc:103
 msgid "Auto"
 msgstr "ស្វ័យ​ប្រវត្តិ"
 
@@ -4082,11 +4179,11 @@ msgstr "បាន​ដំឡើង"
 msgid "Reinstall"
 msgstr "ដំឡើង​ឡើង​វិញ​"
 
-#: src/gtk/gui.cc:94 src/gtk/gui.cc:1418
+#: src/gtk/gui.cc:94 src/gtk/gui.cc:1419
 msgid "Downgrade"
 msgstr "បន្ទាប​"
 
-#: src/gtk/gui.cc:95 src/gtk/gui.cc:1428
+#: src/gtk/gui.cc:95 src/gtk/gui.cc:1429
 msgid "Remove"
 msgstr "យក​ចេញ"
 
@@ -4263,56 +4360,56 @@ msgstr[1] "បរាជ័យ​ក្នុង​ការ​យក %s ចេ�
 msgid "Download size: %sB."
 msgstr "ទំហំទាញយក"
 
-#: src/gtk/gui.cc:1288
+#: src/gtk/gui.cc:1289
 #, c-format
 msgid "Tags of %s:\n"
 msgstr ""
 
-#: src/gtk/gui.cc:1349
+#: src/gtk/gui.cc:1350
 msgid "This feature is not implemented, yet."
 msgstr ""
 
-#: src/gtk/gui.cc:1355
+#: src/gtk/gui.cc:1356
 #, fuzzy
 #| msgid "not installed"
 msgid "Not implemented"
 msgstr "ពុំ​បាន​ដំឡើង​"
 
-#: src/gtk/gui.cc:1407 src/gtk/gui.cc:1426
+#: src/gtk/gui.cc:1408 src/gtk/gui.cc:1427
 #, fuzzy
 #| msgid "Installed"
 msgid "Install/Upgrade"
 msgstr "បាន​ដំឡើង"
 
-#: src/gtk/gui.cc:1433
+#: src/gtk/gui.cc:1434
 #, fuzzy
 #| msgid "^Purge"
 msgid "Purge"
 msgstr "លុប​បំបាត់"
 
-#: src/gtk/gui.cc:1438
+#: src/gtk/gui.cc:1439
 msgid "Keep"
 msgstr "រក្សា"
 
-#: src/gtk/gui.cc:1443
+#: src/gtk/gui.cc:1444
 msgid "Hold"
 msgstr "រង់ចាំ"
 
-#: src/gtk/gui.cc:1449
+#: src/gtk/gui.cc:1450
 msgid "Set as automatic"
 msgstr ""
 
-#: src/gtk/gui.cc:1454
+#: src/gtk/gui.cc:1455
 #, fuzzy
 #| msgid "User's Manual"
 msgid "Set as manual"
 msgstr "របៀបប្រើ"
 
-#: src/gtk/gui.cc:1459
+#: src/gtk/gui.cc:1460
 msgid "Toggle automatic status"
 msgstr ""
 
-#: src/gtk/gui.cc:1787
+#: src/gtk/gui.cc:1788 src/gtk/init.cc:144
 #, c-format
 msgid "Unable to load the user interface definition file %s/aptitude.glade."
 msgstr ""
@@ -4352,16 +4449,12 @@ msgid "Info"
 msgstr "ទេ"
 
 #: src/gtk/packageinformation.cc:104 src/gtk/packageinformation.cc:106
-#: src/pkg_columnizer.cc:353 src/pkg_columnizer.cc:374
-#: src/pkg_columnizer.cc:381 src/pkg_grouppolicy.cc:270
+#: src/pkg_columnizer.cc:354 src/pkg_columnizer.cc:375
+#: src/pkg_columnizer.cc:382 src/pkg_grouppolicy.cc:270
 #: src/pkg_info_screen.cc:128 src/pkg_info_screen.cc:129
-#: src/pkg_ver_item.cc:350 src/pkg_ver_item.cc:384
+#: src/pkg_ver_item.cc:345 src/pkg_ver_item.cc:379
 msgid "Unknown"
 msgstr "មិន​ស្គាល់"
-
-#: src/gtk/packagestab.cc:60
-msgid "Parse error"
-msgstr ""
 
 #: src/gtk/packagestab.cc:203
 #, fuzzy, c-format
@@ -4548,13 +4641,13 @@ msgstr ""
 msgid "Preview: "
 msgstr "មើល​ជា​​​មុន"
 
-#: src/gtk/resolver.cc:69
+#: src/gtk/resolver.cc:68
 #, fuzzy, c-format
 #| msgid "Error while dumping resolver state"
 msgid "Error in dependency resolver: %s"
 msgstr "មាន​កំហុស ខណៈពេល​បោះចោល​ស្ថានភាព​របស់​កម្មវិធី​ដោះស្រាយ"
 
-#: src/gtk/resolver.cc:72
+#: src/gtk/resolver.cc:71
 #, c-format
 msgid ""
 "Fatal error in dependency resolver.  You can continue searching, but some "
@@ -4563,122 +4656,122 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/gtk/resolver.cc:213
+#: src/gtk/resolver.cc:212
 #, fuzzy
 #| msgid "Package"
 msgid "Virtual package"
 msgstr "កញ្ចប់​"
 
-#: src/gtk/resolver.cc:247 src/solution_fragment.cc:438
+#: src/gtk/resolver.cc:246 src/solution_fragment.cc:452
 msgid "Not Installed"
 msgstr "មិន​បានដំឡើង​"
 
-#: src/gtk/resolver.cc:378
+#: src/gtk/resolver.cc:377
 #, fuzzy, c-format
 #| msgid "Removing %s"
 msgid "Removing %s is rejected."
 msgstr "កំពុង​យក %s ចេញ"
 
-#: src/gtk/resolver.cc:383
+#: src/gtk/resolver.cc:382
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Canceling the installation of %s is rejected."
 msgstr "បោះបង់ការដំឡើង​នៃ​ %F"
 
-#: src/gtk/resolver.cc:392
+#: src/gtk/resolver.cc:391
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Canceling the removal of %s is rejected."
 msgstr "បោះបង់​ការយកចេញ​នៃ​ %F"
 
-#: src/gtk/resolver.cc:395
+#: src/gtk/resolver.cc:394
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keeping %s at version %s is rejected."
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/gtk/resolver.cc:402
+#: src/gtk/resolver.cc:401
 #, fuzzy, c-format
 msgid "Installing %s version %s is rejected."
 msgstr "កំពុង​ដំឡើង %s %s (%s)"
 
-#: src/gtk/resolver.cc:408
+#: src/gtk/resolver.cc:407
 #, fuzzy, c-format
 msgid "Downgrading %s to version %s is rejected."
 msgstr "libsigc++ កំណែ ៖ %s\n"
 
-#: src/gtk/resolver.cc:414
+#: src/gtk/resolver.cc:413
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "Upgrading %s to version %s is rejected."
 msgstr "%s កំណែ"
 
-#: src/gtk/resolver.cc:431
+#: src/gtk/resolver.cc:430
 #, c-format
 msgid "Removing %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:436
+#: src/gtk/resolver.cc:435
 #, c-format
 msgid ""
 "Canceling the installation of %s is preferred over all un-accepted "
 "alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:445
+#: src/gtk/resolver.cc:444
 #, c-format
 msgid ""
 "Canceling the removal of %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:448
+#: src/gtk/resolver.cc:447
 #, c-format
 msgid ""
 "Keeping %s at version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:455
+#: src/gtk/resolver.cc:454
 #, c-format
 msgid ""
 "Installing %s version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:461
+#: src/gtk/resolver.cc:460
 #, c-format
 msgid ""
 "Downgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:467
+#: src/gtk/resolver.cc:466
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid ""
 "Upgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr "%s កំណែ"
 
-#: src/gtk/resolver.cc:485
+#: src/gtk/resolver.cc:484
 #, c-format
 msgid "Leaving %ls unresolved is rejected."
 msgstr ""
 
-#: src/gtk/resolver.cc:491
+#: src/gtk/resolver.cc:490
 #, c-format
 msgid "Leaving %ls unresolved is preferred over all un-accepted alternatives."
 msgstr ""
 
-#: src/gtk/resolver.cc:909
+#: src/gtk/resolver.cc:908
 msgid "How to treat the selected action"
 msgid_plural "How to treat the selected actions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:913
+#: src/gtk/resolver.cc:912
 msgid "Ignore solutions containing this action."
 msgid_plural "Ignore solutions containing these actions."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:917
+#: src/gtk/resolver.cc:916
 msgid ""
 "Allow solutions containing this action, but do not prefer them to other "
 "solutions."
@@ -4688,7 +4781,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:921
+#: src/gtk/resolver.cc:920
 msgid ""
 "Always prefer this action over alternatives that have not been accepted."
 msgid_plural ""
@@ -4696,200 +4789,200 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1241 src/solution_fragment.cc:116
+#: src/gtk/resolver.cc:1240 src/solution_fragment.cc:130
 #, c-format
 msgid "%s depends upon %s"
 msgstr "%s អាស្រ័យតាម %s"
 
-#: src/gtk/resolver.cc:1244 src/solution_fragment.cc:119
+#: src/gtk/resolver.cc:1243 src/solution_fragment.cc:133
 #, c-format
 msgid "%s pre-depends upon %s"
 msgstr "%s អាស្រ័យ​ជាស្រេច​តាម %s"
 
-#: src/gtk/resolver.cc:1247 src/solution_fragment.cc:122
+#: src/gtk/resolver.cc:1246 src/solution_fragment.cc:136
 #, c-format
 msgid "%s suggests %s"
 msgstr "%s ស្នើ %s"
 
-#: src/gtk/resolver.cc:1250 src/solution_fragment.cc:125
+#: src/gtk/resolver.cc:1249 src/solution_fragment.cc:139
 #: src/solution_item.cc:603
 #, c-format
 msgid "%s recommends %s"
 msgstr "%s ផ្ដល់​អនុសាសន៍ %s"
 
-#: src/gtk/resolver.cc:1253 src/solution_fragment.cc:128
+#: src/gtk/resolver.cc:1252 src/solution_fragment.cc:142
 #, c-format
 msgid "%s conflicts with %s"
 msgstr "%s ប៉ះទង្គិច​ជាមួយ​ %s"
 
-#: src/gtk/resolver.cc:1256 src/solution_fragment.cc:131
+#: src/gtk/resolver.cc:1255 src/solution_fragment.cc:145
 #, fuzzy, c-format
 msgid "%s breaks %s"
 msgstr "%s ជំនួស %s"
 
-#: src/gtk/resolver.cc:1259 src/solution_fragment.cc:134
+#: src/gtk/resolver.cc:1258 src/solution_fragment.cc:148
 #, c-format
 msgid "%s replaces %s"
 msgstr "%s ជំនួស %s"
 
-#: src/gtk/resolver.cc:1262 src/solution_fragment.cc:137
+#: src/gtk/resolver.cc:1261 src/solution_fragment.cc:151
 #, c-format
 msgid "%s obsoletes %s"
 msgstr "%s លែង​ប្រើ %s"
 
-#: src/gtk/resolver.cc:1374 src/gtk/resolver.cc:1839
+#: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1838
 #: src/solution_screen.cc:272
 msgid "Remove the following packages:"
 msgstr "យក​កញ្ចប់​ខាង​ក្រោម​ចេញ ៖"
 
-#: src/gtk/resolver.cc:1388 src/gtk/resolver.cc:1851
+#: src/gtk/resolver.cc:1387 src/gtk/resolver.cc:1850
 #: src/solution_screen.cc:296
 msgid "Install the following packages:"
 msgstr "ដំឡើង​កញ្ចប់​ខាងក្រោម ៖"
 
-#: src/gtk/resolver.cc:1401 src/gtk/resolver.cc:1863
+#: src/gtk/resolver.cc:1400 src/gtk/resolver.cc:1862
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "យក​កញ្ចប់​ខាង​ក្រោម​ចេញ ៖"
 
-#: src/gtk/resolver.cc:1414 src/gtk/resolver.cc:1875
+#: src/gtk/resolver.cc:1413 src/gtk/resolver.cc:1874
 #: src/solution_screen.cc:308
 msgid "Upgrade the following packages:"
 msgstr "ធ្វើ​ឲ្យ​កញ្ចប់​ខាង​ក្រោម​ប្រសើរ ៖"
 
-#: src/gtk/resolver.cc:1427 src/gtk/resolver.cc:1888
+#: src/gtk/resolver.cc:1426 src/gtk/resolver.cc:1887
 #: src/solution_screen.cc:320
 msgid "Downgrade the following packages:"
 msgstr "បន្ទាប​កញ្ចប់​ដូចខាងក្រោម​នេះ ៖"
 
-#: src/gtk/resolver.cc:1440 src/gtk/resolver.cc:1901
+#: src/gtk/resolver.cc:1439 src/gtk/resolver.cc:1900
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "មិន​បាច់​ដោះស្រាយ​ភាព​អាស្រ័យ​ដូច​តទៅ​នេះ ៖ %n"
 
-#: src/gtk/resolver.cc:1517
+#: src/gtk/resolver.cc:1516
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "យក %F ចេញ [%s (%s)]"
 
-#: src/gtk/resolver.cc:1524
+#: src/gtk/resolver.cc:1523
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "ដំឡើង %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1532
+#: src/gtk/resolver.cc:1531
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "បោះបង់ការដំឡើង​នៃ​ %F"
 
-#: src/gtk/resolver.cc:1535
+#: src/gtk/resolver.cc:1534
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "បោះបង់​ការយកចេញ​នៃ​ %F"
 
-#: src/gtk/resolver.cc:1538
+#: src/gtk/resolver.cc:1537
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/gtk/resolver.cc:1545
+#: src/gtk/resolver.cc:1544
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "ធ្វើ​ឲ្យ %F ប្រសើរ [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1554
+#: src/gtk/resolver.cc:1553
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "បន្ទាប %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1613
+#: src/gtk/resolver.cc:1612
 #, fuzzy, c-format
 msgid "<b>Remove</b> %s"
 msgstr "យក​ចេញ"
 
-#: src/gtk/resolver.cc:1613
+#: src/gtk/resolver.cc:1612
 #, fuzzy, c-format
 msgid "<b>remove</b> %s"
 msgstr "យក​ចេញ"
 
-#: src/gtk/resolver.cc:1622
+#: src/gtk/resolver.cc:1621
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/gtk/resolver.cc:1622
+#: src/gtk/resolver.cc:1621
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/gtk/resolver.cc:1630
+#: src/gtk/resolver.cc:1629
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>Cancel</b> the installation of %s"
 msgstr "បោះបង់ការដំឡើង​នៃ​ %F"
 
-#: src/gtk/resolver.cc:1630
+#: src/gtk/resolver.cc:1629
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>cancel</b> the installation of %s"
 msgstr "បោះបង់ការដំឡើង​នៃ​ %F"
 
-#: src/gtk/resolver.cc:1637
+#: src/gtk/resolver.cc:1636
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "ដំឡើង %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1637
+#: src/gtk/resolver.cc:1636
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "ដំឡើង %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1646
+#: src/gtk/resolver.cc:1645
 #, fuzzy, c-format
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "libsigc++ កំណែ ៖ %s\n"
 
-#: src/gtk/resolver.cc:1646
+#: src/gtk/resolver.cc:1645
 #, fuzzy, c-format
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "libsigc++ កំណែ ៖ %s\n"
 
-#: src/gtk/resolver.cc:1655
+#: src/gtk/resolver.cc:1654
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s កំណែ"
 
-#: src/gtk/resolver.cc:1655
+#: src/gtk/resolver.cc:1654
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s កំណែ"
 
-#: src/gtk/resolver.cc:1668
+#: src/gtk/resolver.cc:1667
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1668
+#: src/gtk/resolver.cc:1667
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1736
+#: src/gtk/resolver.cc:1735
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -4898,7 +4991,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d ដំឡើង"
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1741
+#: src/gtk/resolver.cc:1740
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -4907,7 +5000,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d ​យក​ចេញ"
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1747
+#: src/gtk/resolver.cc:1746
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -4916,7 +5009,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d រក្សា​ទុក"
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1753
+#: src/gtk/resolver.cc:1752
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -4925,7 +5018,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d ធ្វើ​ឲ្យ​ប្រសើរ"
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1759
+#: src/gtk/resolver.cc:1758
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -4934,7 +5027,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d បន្ទាប"
 msgstr[1] ""
 
-#: src/gtk/resolver.cc:1765
+#: src/gtk/resolver.cc:1764
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -4942,34 +5035,34 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "ពិនិត្យ​ការ​ផ្ដល់​អនុសាសន៍"
 msgstr[1] "ពិនិត្យ​ការ​ផ្ដល់​អនុសាសន៍"
 
-#: src/gtk/resolver.cc:2057
+#: src/gtk/resolver.cc:2056
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "មិន​មាន​ដំណោះស្រាយ​ផ្សេង​ឡើយ ។"
 
-#: src/gtk/resolver.cc:2064
+#: src/gtk/resolver.cc:2063
 #, fuzzy
 msgid "No dependency solution was found."
 msgstr "ការ​ដោះស្រាយ​ភាព​អាស្រ័យ"
 
-#: src/gtk/resolver.cc:2065
+#: src/gtk/resolver.cc:2064
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "មិន​មាន​ដំណោះស្រាយ​ផ្សេង​ឡើយ ។"
 
-#: src/gtk/resolver.cc:2076
+#: src/gtk/resolver.cc:2075
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:2077
+#: src/gtk/resolver.cc:2076
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "មិន​មាន​ដំណោះស្រាយ​ផ្សេង​ឡើយ ។"
 
-#: src/gtk/resolver.cc:2107
+#: src/gtk/resolver.cc:2106
 #, fuzzy, c-format
 #| msgid "Could not open file \"%s\""
 msgid "Solution %s of %s."
@@ -5192,81 +5285,81 @@ msgstr "មិន​ផ្គូផ្គង '(' នៅ​ក្នុង​ស�
 msgid "Invalid sorting policy type '%s'"
 msgstr "គោលការណ៍​តម្រៀប​ប្រភេទ '%s' មិន​ត្រឹមត្រូវ​ឡើយ"
 
-#: src/main.cc:111
+#: src/main.cc:122
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
 msgstr "មិន​អាច​ឌិកូដ​ខ្សែអក្សរ​ច្រើន​បៃ ដែល​នៅ​បន្ទាប់ \"%ls\" បាន​ឡើយ"
 
-#: src/main.cc:120
+#: src/main.cc:131
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr "មិន​អាច​ឌិកូដ​ខ្សែអក្សរ​តួអក្សរ​វែង ដែល​នៅ​បន្ទាប់ \"%s\" បាន​ឡើយ"
 
-#: src/main.cc:128
+#: src/main.cc:139
 #, c-format
 msgid "%s %s compiled at %s %s\n"
 msgstr "%s %s បាន​ចងក្រង​នៅ​ត្រង់ %s %s\n"
 
-#: src/main.cc:131
+#: src/main.cc:142
 #, c-format
 msgid "Compiler: g++ %s\n"
 msgstr "កម្មវិធី​ចងក្រង ៖ g++ %s\n"
 
-#: src/main.cc:133
+#: src/main.cc:144
 #, fuzzy
 msgid "Compiled against:\n"
 msgstr "កម្មវិធី​ចងក្រង ៖ g++ %s\n"
 
-#: src/main.cc:134
+#: src/main.cc:145
 #, fuzzy, c-format
 msgid "  apt version %d.%d.%d\n"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/main.cc:137
+#: src/main.cc:148
 #, fuzzy, c-format
 msgid "  NCurses version: Unknown\n"
 msgstr ""
 "\n"
 "NCurses កំណែ ៖ %s\n"
 
-#: src/main.cc:139
+#: src/main.cc:150
 #, fuzzy, c-format
 msgid "  NCurses version %s\n"
 msgstr ""
 "\n"
 "NCurses កំណែ ៖ %s\n"
 
-#: src/main.cc:141
+#: src/main.cc:152
 #, fuzzy, c-format
 msgid "  libsigc++ version: %s\n"
 msgstr "libsigc++ កំណែ ៖ %s\n"
 
-#: src/main.cc:143
+#: src/main.cc:154
 #, c-format
 msgid "  Ept support enabled.\n"
 msgstr ""
 
-#: src/main.cc:145
+#: src/main.cc:156
 #, c-format
 msgid "  Ept support disabled.\n"
 msgstr ""
 
-#: src/main.cc:148
+#: src/main.cc:159
 #, fuzzy, c-format
 msgid "  Gtk+ version %d.%d.%d\n"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/main.cc:150
+#: src/main.cc:161
 #, fuzzy, c-format
 msgid "  Gtk-- version %d.%d.%d\n"
 msgstr "រក្សា %F ត្រឹម​កំណែ %s (%s)"
 
-#: src/main.cc:153
+#: src/main.cc:164
 #, c-format
 msgid "  Gtk+ support disabled.\n"
 msgstr ""
 
-#: src/main.cc:156
+#: src/main.cc:167
 #, fuzzy
 msgid ""
 "\n"
@@ -5275,36 +5368,36 @@ msgstr ""
 "\n"
 "Curses កំណែ ៖ %s\n"
 
-#: src/main.cc:157
+#: src/main.cc:168
 #, fuzzy, c-format
 msgid "  NCurses version: %s\n"
 msgstr ""
 "\n"
 "NCurses កំណែ ៖ %s\n"
 
-#: src/main.cc:158
+#: src/main.cc:169
 #, fuzzy, c-format
 msgid "  cwidget version: %s\n"
 msgstr "libsigc++ កំណែ ៖ %s\n"
 
-#: src/main.cc:159
+#: src/main.cc:170
 #, fuzzy, c-format
 msgid "  Apt version: %s\n"
 msgstr ""
 "\n"
 "Curses កំណែ ៖ %s\n"
 
-#: src/main.cc:165
+#: src/main.cc:176
 #, c-format
 msgid "Usage: aptitude [-S fname] [-u|-i]"
 msgstr "របៀបប្រើប្រាស់ ៖ aptitude [-S fname] [-u|-i]"
 
-#: src/main.cc:167
+#: src/main.cc:178
 #, c-format
 msgid "       aptitude [options] <action> ..."
 msgstr "       aptitude [ជម្រើស] <សកម្មភាព> ..."
 
-#: src/main.cc:169
+#: src/main.cc:180
 #, c-format
 msgid ""
 "  Actions (if none is specified, aptitude will enter interactive mode):\n"
@@ -5313,50 +5406,50 @@ msgstr ""
 "  សកម្មភាព (បើ​មិន​បាន​បញ្ជាក់​ទេ aptitude នឹង​ចូល​ទៅ​ក្នុង​របៀប​អន្តរកម្ម) ៖\n"
 "\n"
 
-#: src/main.cc:170
+#: src/main.cc:181
 #, fuzzy, c-format
 #| msgid " install      - Install/upgrade packages\n"
 msgid " install      - Install/upgrade packages.\n"
 msgstr " install      - ដំឡើង ឬ ធ្វើ​ឲ្យ​កញ្ចប់​ទាន់សម័យ\n"
 
-#: src/main.cc:171
+#: src/main.cc:182
 #, fuzzy, c-format
 #| msgid " remove       - Remove packages\n"
 msgid " remove       - Remove packages.\n"
 msgstr " remove       - យក​កញ្ចប់​ចេញ\n"
 
-#: src/main.cc:172
+#: src/main.cc:183
 #, fuzzy, c-format
 #| msgid " purge        - Remove packages and their configuration files\n"
 msgid " purge        - Remove packages and their configuration files.\n"
 msgstr " purge        - យក​កញ្ចប់ និង ឯកសារ​កំណត់​រចនាសម្ព័ន្ធ​របស់​ពួក​វា​ចេញ\n"
 
-#: src/main.cc:173
+#: src/main.cc:184
 #, fuzzy, c-format
 #| msgid " hold         - Place packages on hold\n"
 msgid " hold         - Place packages on hold.\n"
 msgstr " hold         - ដាក់​កញ្ចប់​នៅ​ក្នុង​ស្ថានភាព​រង់ចាំ\n"
 
-#: src/main.cc:174
+#: src/main.cc:185
 #, fuzzy, c-format
 #| msgid " unhold       - Cancel a hold command for a package\n"
 msgid " unhold       - Cancel a hold command for a package.\n"
 msgstr " unhold       - បោះបង់​ពាក្យបញ្ជា hold សម្រាប់​កញ្ចប់​មួយ\n"
 
-#: src/main.cc:175
+#: src/main.cc:186
 #, fuzzy, c-format
 #| msgid ""
 #| " markauto     - Mark packages as having been automatically installed\n"
 msgid " markauto     - Mark packages as having been automatically installed.\n"
 msgstr " markauto     - សម្គាល់​កញ្ចប់​ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ\n"
 
-#: src/main.cc:176
+#: src/main.cc:187
 #, fuzzy, c-format
 #| msgid " unmarkauto   - Mark packages as having been manually installed\n"
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
 msgstr " unmarkauto   - សម្គាល់​កញ្ចប់​ថា​ត្រូវ​បាន​ដំឡើង​ដោយ​ដៃ\n"
 
-#: src/main.cc:177
+#: src/main.cc:188
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
@@ -5364,72 +5457,72 @@ msgid ""
 msgstr ""
 " forbid-version - ហាម​មិន​ឲ្យ aptitude ធ្វើ​ឲ្យ​ប្រសើរ​ទៅ​កាន់​កំណែ​កញ្ចប់​ជាក់លាក់​ណា​មួយ ។\n"
 
-#: src/main.cc:178
+#: src/main.cc:189
 #, fuzzy, c-format
 #| msgid " update       - Download lists of new/upgradable packages\n"
 msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr " update       - ទាញយក​បញ្ជី​កញ្ចប់​ថ្មី/អាច​ធ្វើ​ឲ្យ​ទាន់សម័យ​បាន\n"
 
-#: src/main.cc:179
+#: src/main.cc:190
 #, fuzzy, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr " upgrade      - អនុវត្ត​ការ​ធ្វើ​ឲ្យ​ប្រសើរ​ដ៏​មាន​សុវត្ថិភាព\n"
 
-#: src/main.cc:180
+#: src/main.cc:191
 #, fuzzy, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
 msgstr " dist-upgrade - អនុវត្ត​ការ​ធ្វើ​ឲ្យ​ប្រសើរ ។ ប្រហែល​ជា​ត្រូវ​ដំឡើង ឬ យក​កញ្ចប់​ខ្លះ​ចេញ ។\n"
 
-#: src/main.cc:181
+#: src/main.cc:192
 #, c-format
 msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
-#: src/main.cc:182
+#: src/main.cc:193
 #, fuzzy, c-format
 #| msgid " forget-new   - Forget what packages are \"new\"\n"
 msgid " forget-new   - Forget what packages are \"new\".\n"
 msgstr " forget-new   - បំភ្លេច​កញ្ចប់​ដែល \"ថ្មី\"\n"
 
-#: src/main.cc:183
+#: src/main.cc:194
 #, fuzzy, c-format
 #| msgid " search       - Search for a package by name and/or expression\n"
 msgid " search       - Search for a package by name and/or expression.\n"
 msgstr " search       - ស្វែងរក​កញ្ចប់​មួយ​តាម​រយៈ​ឈ្មោះ និង/ឬ កន្សោម\n"
 
-#: src/main.cc:184
+#: src/main.cc:195
 #, fuzzy, c-format
 #| msgid " show         - Display detailed information about a package\n"
 msgid " show         - Display detailed information about a package.\n"
 msgstr " show         - បង្ហាញ​ព័ត៌មាន​លម្អិត​អំពី​កញ្ចប់​មួយ\n"
 
-#: src/main.cc:185
+#: src/main.cc:196
 #, fuzzy, c-format
 #| msgid " clean        - Erase downloaded package files\n"
 msgid " clean        - Erase downloaded package files.\n"
 msgstr " clean        - លុប​ឯកសារ​កញ្ចប់​ដែល​បាន​ទាញយក\n"
 
-#: src/main.cc:186
+#: src/main.cc:197
 #, fuzzy, c-format
 #| msgid " autoclean    - Erase old downloaded package files\n"
 msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr " autoclean    - លុប​ឯកសារ​កញ្ចប់​ចាស់ៗ​ដែល​បាន​ទាញយក\n"
 
-#: src/main.cc:187
+#: src/main.cc:198
 #, fuzzy, c-format
 #| msgid " changelog    - View a package's changelog\n"
 msgid " changelog    - View a package's changelog.\n"
 msgstr " changelog    - មើល​កំណត់ហេតុ​ការ​ផ្លាស់ប្ដូរ​របស់​កញ្ចប់​មួយ\n"
 
-#: src/main.cc:188
+#: src/main.cc:199
 #, fuzzy, c-format
 #| msgid " download     - Download the .deb file for a package\n"
 msgid " download     - Download the .deb file for a package.\n"
 msgstr " download     - ទាញយក​ឯកសារ .deb របស់​កញ្ចប់​មួយ\n"
 
-#: src/main.cc:189
+#: src/main.cc:200
 #, fuzzy, c-format
 #| msgid ""
 #| " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -5439,7 +5532,7 @@ msgid ""
 "package.\n"
 msgstr " reinstall    - ទាញយក និង (បើ​អាច) ដំឡើង​ឡើងវិញ​នូវ​កញ្ចប់​ដែល​បាន​ដំឡើង​បច្ចុប្បន្ន\n"
 
-#: src/main.cc:190
+#: src/main.cc:201
 #, fuzzy, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
@@ -5447,7 +5540,7 @@ msgid ""
 "                why one or more packages would require the given package\n"
 msgstr " -Z\t\t    បង្ហាញ​ការ​ផ្លាស់ប្ដូរ​នៅ​ក្នុង​ទំហំ​ដែល​បាន​ដំឡើង របស់​កញ្ចប់​នីមួយៗ ។\n"
 
-#: src/main.cc:192
+#: src/main.cc:203
 #, fuzzy, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
@@ -5456,46 +5549,46 @@ msgid ""
 "                lead to a conflict with the given package if installed.\n"
 msgstr " -Z\t\t    បង្ហាញ​ការ​ផ្លាស់ប្ដូរ​នៅ​ក្នុង​ទំហំ​ដែល​បាន​ដំឡើង របស់​កញ្ចប់​នីមួយៗ ។\n"
 
-#: src/main.cc:196
+#: src/main.cc:207
 #, c-format
 msgid "  Options:\n"
 msgstr "  ជម្រើស ៖\n"
 
-#: src/main.cc:197
+#: src/main.cc:208
 #, fuzzy, c-format
 #| msgid " -h             This help text\n"
 msgid " -h             This help text.\n"
 msgstr " -h             អត្ថបទ​ជំនួយ​នេះ\n"
 
-#: src/main.cc:199
+#: src/main.cc:210
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:201
+#: src/main.cc:212
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:202
+#: src/main.cc:213
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             ក្លែង​ធ្វើ​សកម្មភាព​ណា​មួយ ប៉ុន្តែ​មិន​អនុវត្ត​ពិត​ឡើយ\n"
 
-#: src/main.cc:203
+#: src/main.cc:214
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr " -d             គ្រាន់​តែ​ទាញយក​កញ្ចប់​ប៉ុណ្ណោះ ដោយ​មិន​ដំឡើង ឬ យក​អ្វី​ចេញ​ទាំងអស់ ។\n"
 
-#: src/main.cc:204
+#: src/main.cc:215
 #, fuzzy, c-format
 #| msgid " -P             Always prompt for confirmation or actions\n"
 msgid " -P             Always prompt for confirmation or actions.\n"
 msgstr " -P             សាកសួរ​ជានិច្ច មុន​នឹង​ធ្វើ​អ្វី​មួយ\n"
 
-#: src/main.cc:205
+#: src/main.cc:216
 #, fuzzy, c-format
 #| msgid ""
 #| " -y             Assume that the answer to simple yes/no questions is "
@@ -5504,7 +5597,7 @@ msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr " -y             សន្មត​ថា​ចម្លើយ​របស់​សំណួរ បាទ/ចាស ឬ ទេ ធម្មតាៗ​គឺ​ជា 'បាទ/ចាស'\n"
 
-#: src/main.cc:206
+#: src/main.cc:217
 #, fuzzy, c-format
 #| msgid ""
 #| " -F format      Specify a format for displaying search results; see the "
@@ -5514,7 +5607,7 @@ msgid ""
 "manual.\n"
 msgstr " -F ទ្រង់ទ្រាយ      បញ្ជាក់​ទ្រង់ទ្រាយ​មួយ ដើម្បី​បង្ហាញ​លទ្ធផល​ស្វែងរក ។ សូម​មើល​សៀវភៅ​ដៃ\n"
 
-#: src/main.cc:207
+#: src/main.cc:218
 #, fuzzy, c-format
 #| msgid ""
 #| " -O order       Specify how search results should be sorted; see the "
@@ -5524,7 +5617,7 @@ msgid ""
 "manual.\n"
 msgstr " -O លំដាប់       បញ្ជាក់​របៀប​តម្រៀប​លទ្ធផល​ស្វែងរក ។ សូម​មើល​សៀវភៅ​ដៃ\n"
 
-#: src/main.cc:208
+#: src/main.cc:219
 #, fuzzy, c-format
 #| msgid ""
 #| " -w width       Specify the display width for formatting search results\n"
@@ -5532,28 +5625,28 @@ msgid ""
 " -w width       Specify the display width for formatting search results.\n"
 msgstr " -w ទទឹង       បញ្ជាក់ទទឹងដើម្បី​ធ្វើ​ទ្រង់ទ្រាយ​លទ្ធផល​ស្វែងរក\n"
 
-#: src/main.cc:209
+#: src/main.cc:220
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             ខំ​ព្យាយាម​ជួសជុល​កញ្ចប់​ដែល​ខូច ។\n"
 
-#: src/main.cc:210
+#: src/main.cc:221
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr " -V             បង្ហាញ​កំណែ​នៃ​កញ្ចប់ ដែល​នឹង​ត្រូវ​ដំឡើង ។\n"
 
-#: src/main.cc:211
+#: src/main.cc:222
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             បង្ហាញ​ភាព​អាស្រ័យ​នៃ​កញ្ចប់​ដែល​បាន​ផ្លាស់ប្ដូរ​ដោយ​ស្វ័យប្រវត្តិ ។\n"
 
-#: src/main.cc:212
+#: src/main.cc:223
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    បង្ហាញ​ការ​ផ្លាស់ប្ដូរ​នៅ​ក្នុង​ទំហំ​ដែល​បាន​ដំឡើង របស់​កញ្ចប់​នីមួយៗ ។\n"
 
-#: src/main.cc:213
+#: src/main.cc:224
 #, fuzzy, c-format
 #| msgid ""
 #| " -v             Display extra information. (may be supplied multiple "
@@ -5563,7 +5656,7 @@ msgid ""
 "times).\n"
 msgstr " -v             បង្ហាញ​ព័ត៌មាន​បន្ថែម​ទៀត ។ (ប្រហែល​ជា​ផ្ដល់​ច្រើន​ដង)\n"
 
-#: src/main.cc:214
+#: src/main.cc:225
 #, fuzzy, c-format
 #| msgid ""
 #| " -t [release]   Set the release from which packages should be installed\n"
@@ -5571,20 +5664,20 @@ msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [ការចេញផ្សាយ]   កំណត់​ការ​ចេញផ្សាយ ដែល​គួរ​ដំឡើង​កញ្ចប់​ពី\n"
 
-#: src/main.cc:215
+#: src/main.cc:226
 #, fuzzy, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress.\n"
 "                indicators.\n"
 msgstr " -q             នៅ​ក្នុង​របៀប​បន្ទាត់​ពាក្យបញ្ជា ទប់ស្កាត់​ទ្រនិច​បង្ហាញ​វឌ្ឍនភាព ។\n"
 
-#: src/main.cc:217
+#: src/main.cc:228
 #, fuzzy, c-format
 #| msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr " -o កូនសោ=តម្លៃ     កំណត់​ដោយ​ផ្ទាល់​នូវ​ជម្រើស​ការ​កំណត់​រចនាសម្ព័ន្ធ ដែល​មាន​ឈ្មោះ 'កូនសោ'\n"
 
-#: src/main.cc:218
+#: src/main.cc:229
 #, fuzzy, c-format
 #| msgid ""
 #| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
@@ -5596,34 +5689,34 @@ msgstr ""
 " --with(out)-recommends\tបញ្ជាក់​ថា​តើ​ត្រូវ​ចាត់​ទុក​ការ​ផ្ដល់​អនុសាសន៍​ជា\n"
 "                ភាព​អាស្រ័យ​ខ្លាំងក្លា​ឬ​ទេ\n"
 
-#: src/main.cc:220
+#: src/main.cc:231
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S ឈ្មោះឯកសារ ៖ អានព័ត៌មាន​ស្ថានភាព​បន្ថែម​ទៀត​របស់ aptitude ពី ឈ្មោះ​ឯកសារ ។\n"
 
-#: src/main.cc:221
+#: src/main.cc:232
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u      ៖ ទាញយក​បញ្ជី​កញ្ចប់​ថ្មី​នៅ​ពេល​ចាប់​ផ្ដើម ។\n"
 
-#: src/main.cc:222 src/main.cc:224
+#: src/main.cc:233 src/main.cc:235
 #, c-format
 msgid "                  (terminal interface only)"
 msgstr ""
 
-#: src/main.cc:223
+#: src/main.cc:234
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i       ៖ រត់​ការ​ដំឡើង​មួយ នៅ​ពេល​ចាប់ផ្ដើម ។\n"
 
-#: src/main.cc:226
+#: src/main.cc:237
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  aptitude នេះ​មិន​មាន Super Cow Powers ​ទេ​ ។\n"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:352
+#: src/main.cc:365
 #, fuzzy
 #| msgid "replaces"
 msgid "trace"
@@ -5631,13 +5724,13 @@ msgstr "ជំនួស​"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:355
+#: src/main.cc:368
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:358
+#: src/main.cc:371
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -5645,13 +5738,13 @@ msgstr "ទេ"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:361
+#: src/main.cc:374
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:364
+#: src/main.cc:377
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -5659,102 +5752,102 @@ msgstr "Err "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:367
+#: src/main.cc:380
 #, fuzzy
 msgid "fatal"
 msgstr "បិទ​"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:370
+#: src/main.cc:383
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:440
+#: src/main.cc:451
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:453
+#: src/main.cc:460
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "ប្រតិបត្តិការ %s មិន​ត្រឹមត្រូវ"
 
-#: src/main.cc:701
+#: src/main.cc:729
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "បាន​រំពឹង​តម្លៃ​លេខ នៅ​បន្ទាប់​ពី -q=\n"
 
-#: src/main.cc:710
+#: src/main.cc:738
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "បាន​រំពឹង​តម្លៃ​លេខ នៅ​បន្ទាប់​ពី -q=, ប៉ុន្តែ​បែរ​ជា​ជួប %s ទៅ​វិញ\n"
 
-#: src/main.cc:734
+#: src/main.cc:762
 #, fuzzy, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o ទាមទារ​អាគុយម៉ង់​មួយ ដែល​មាន​ទម្រង់​ជា កូនសោ=តម្លៃ, តែ​បែរ​ជា​ទទួល​បាន %s ទៅ​វិញ"
 
-#: src/main.cc:832
+#: src/main.cc:860
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr ""
 
-#: src/main.cc:910 src/main.cc:919
+#: src/main.cc:944 src/main.cc:954
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "ចម្លែក​មែនទែន ៖ បាន​ទទួល​កូដ​ជម្រើស​ដែល​មិន​ស្គាល់\n"
 
-#: src/main.cc:937
+#: src/main.cc:972
 msgid "--show-package-names|never"
 msgstr ""
 
-#: src/main.cc:940
+#: src/main.cc:975
 msgid "--show-package-names|auto"
 msgstr ""
 
-#: src/main.cc:943
+#: src/main.cc:978
 msgid "--show-package-names|always"
 msgstr ""
 
-#: src/main.cc:948
+#: src/main.cc:983
 #, c-format
 msgid ""
 "Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or "
 "\"always\")."
 msgstr ""
 
-#: src/main.cc:954
+#: src/main.cc:989
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:956
+#: src/main.cc:991
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "កញ្ចប់​"
 
-#: src/main.cc:958
+#: src/main.cc:993
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:960
+#: src/main.cc:995
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "កញ្ចប់​ទាំង​អស់"
 
-#: src/main.cc:962
+#: src/main.cc:997
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:968
+#: src/main.cc:1003
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -5762,7 +5855,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:1020
+#: src/main.cc:1041
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -5770,7 +5863,7 @@ msgid ""
 "specified\n"
 msgstr "អាច​បញ្ជាក់​តែ​មួយ​ប៉ុណ្ណោះ​ក្នុង​ចំណោម -u និង -i\n"
 
-#: src/main.cc:1029
+#: src/main.cc:1050
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -5779,23 +5872,23 @@ msgid ""
 "(eg, with 'install')"
 msgstr "មិន​គួរ​បញ្ជាក់ -u និង -i នៅ​ក្នុងរបៀប​បន្ទាត់​ពាក្យបញ្ជា​ឡើយ (ឧ. ជាមួយ 'install')"
 
-#: src/main.cc:1050
+#: src/main.cc:1067
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "មិន​គួរ​បញ្ជាក់ -u និង -i ជាមួយ​ពាក្យបញ្ជា​ឡើយ"
 
-#: src/main.cc:1161
+#: src/main.cc:1178
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "មិន​ស្គាល់​ពាក្យ​បញ្ជា \"%s\"\n"
 
-#: src/main.cc:1173 src/main.cc:1241
+#: src/main.cc:1190 src/main.cc:1263
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "ករណីលើកលែង​ដែល​មិន​បាន​ចាប់ ៖ %s\n"
 
-#: src/main.cc:1177 src/main.cc:1245
+#: src/main.cc:1194 src/main.cc:1267
 #, fuzzy, c-format
 msgid ""
 "Backtrace:\n"
@@ -6016,221 +6109,221 @@ msgstr "mine-help.txt"
 msgid "Encoding of mine-help.txt|UTF-8"
 msgstr "សំណុំតួអក្សរ​របស់ mine-help.txt|UTF-8"
 
-#: src/pkg_columnizer.cc:85
+#: src/pkg_columnizer.cc:86
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 msgstr "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
 
-#: src/pkg_columnizer.cc:88 src/ui.cc:2698
+#: src/pkg_columnizer.cc:89 src/ui.cc:2698
 msgid "Package"
 msgstr "កញ្ចប់​"
 
-#: src/pkg_columnizer.cc:89
+#: src/pkg_columnizer.cc:90
 msgid "InstSz"
 msgstr "ទំហំដំឡើង"
 
-#: src/pkg_columnizer.cc:90
+#: src/pkg_columnizer.cc:91
 msgid "DebSz"
 msgstr "ទំហំ Deb"
 
-#: src/pkg_columnizer.cc:92
+#: src/pkg_columnizer.cc:93
 msgid "Action"
 msgstr "អំពើ​"
 
-#: src/pkg_columnizer.cc:94
+#: src/pkg_columnizer.cc:95
 msgid "InstVer"
 msgstr "កំណែដំឡើង"
 
-#: src/pkg_columnizer.cc:95
+#: src/pkg_columnizer.cc:96
 msgid "CandVer"
 msgstr "កំណែសាកល្បង"
 
-#: src/pkg_columnizer.cc:96
+#: src/pkg_columnizer.cc:97
 msgid "LongState"
 msgstr "ស្ថានភាពលម្អិត"
 
-#: src/pkg_columnizer.cc:97
+#: src/pkg_columnizer.cc:98
 msgid "LongAction"
 msgstr "អំពើលម្អិត"
 
-#: src/pkg_columnizer.cc:98
+#: src/pkg_columnizer.cc:99
 msgid "Maintainer"
 msgstr "អ្នក​ថែទាំ"
 
-#: src/pkg_columnizer.cc:99
+#: src/pkg_columnizer.cc:100
 msgid "Priority"
 msgstr "អាទិភាព"
 
-#: src/pkg_columnizer.cc:100
+#: src/pkg_columnizer.cc:101
 msgid "Section"
 msgstr "ភាគ"
 
-#: src/pkg_columnizer.cc:101
+#: src/pkg_columnizer.cc:102
 msgid "RC"
 msgstr "RC"
 
-#: src/pkg_columnizer.cc:103
+#: src/pkg_columnizer.cc:104
 msgid "Tag"
 msgstr "​ស្លាក"
 
-#: src/pkg_columnizer.cc:106
+#: src/pkg_columnizer.cc:107
 msgid "ProgName"
 msgstr "ឈ្មោះកម្មវិធី"
 
-#: src/pkg_columnizer.cc:107
+#: src/pkg_columnizer.cc:108
 msgid "ProgVer"
 msgstr "កំណែកម្មវិធី"
 
-#: src/pkg_columnizer.cc:108
+#: src/pkg_columnizer.cc:109
 msgid "#Broken"
 msgstr "#ខូច"
 
-#: src/pkg_columnizer.cc:109
+#: src/pkg_columnizer.cc:110
 msgid "DiskUsage"
 msgstr "ការ​ប្រើប្រាស់​ថាស"
 
-#: src/pkg_columnizer.cc:110
+#: src/pkg_columnizer.cc:111
 msgid "DownloadSize"
 msgstr "ទំហំទាញយក"
 
-#: src/pkg_columnizer.cc:138 src/pkg_columnizer.cc:150 src/pkg_ver_item.cc:104
-#: src/pkg_ver_item.cc:169
+#: src/pkg_columnizer.cc:139 src/pkg_columnizer.cc:151 src/pkg_ver_item.cc:99
+#: src/pkg_ver_item.cc:164
 msgid "<N/A>"
 msgstr "<មិនមាន>"
 
-#: src/pkg_columnizer.cc:180 src/pkg_columnizer.cc:191
+#: src/pkg_columnizer.cc:181 src/pkg_columnizer.cc:192
 msgid "<none>"
 msgstr "<គ្មាន>"
 
-#: src/pkg_columnizer.cc:237 src/pkg_grouppolicy.cc:264
+#: src/pkg_columnizer.cc:238 src/pkg_grouppolicy.cc:264
 msgid "virtual"
 msgstr "និម្មិត​"
 
-#: src/pkg_columnizer.cc:244 src/pkg_ver_item.cc:219 src/pkg_ver_item.cc:227
+#: src/pkg_columnizer.cc:245 src/pkg_ver_item.cc:214 src/pkg_ver_item.cc:222
 msgid "purged"
 msgstr "បានលុបបំបាត់"
 
-#: src/pkg_columnizer.cc:251 src/pkg_ver_item.cc:234
+#: src/pkg_columnizer.cc:252 src/pkg_ver_item.cc:229
 msgid "half-config"
 msgstr "កំណត់រចនាសម្ព័ន្ធ-ពាក់កណ្ដាល"
 
-#: src/pkg_columnizer.cc:253 src/pkg_ver_item.cc:236
+#: src/pkg_columnizer.cc:254 src/pkg_ver_item.cc:231
 msgid "half-install"
 msgstr "ដំឡើងពាក់កណ្ដាល"
 
-#: src/pkg_columnizer.cc:255 src/pkg_ver_item.cc:238
+#: src/pkg_columnizer.cc:256 src/pkg_ver_item.cc:233
 msgid "config-files"
 msgstr "ឯកសារកំណត់រចនាសម្ព័ន្ធ"
 
-#: src/pkg_columnizer.cc:260
+#: src/pkg_columnizer.cc:261
 msgid "triggers-awaited"
 msgstr ""
 
-#: src/pkg_columnizer.cc:262
+#: src/pkg_columnizer.cc:263
 msgid "triggers-pending"
 msgstr ""
 
-#: src/pkg_columnizer.cc:265 src/pkg_columnizer.cc:551 src/pkg_ver_item.cc:242
+#: src/pkg_columnizer.cc:266 src/pkg_columnizer.cc:546 src/pkg_ver_item.cc:237
 msgid "ERROR"
 msgstr "កំហុស​"
 
-#: src/pkg_columnizer.cc:312 src/pkg_ver_item.cc:300
+#: src/pkg_columnizer.cc:313 src/pkg_ver_item.cc:295
 msgid "hold"
 msgstr "រង់ចាំ"
 
-#: src/pkg_columnizer.cc:315
+#: src/pkg_columnizer.cc:316
 msgid "forbidden upgrade"
 msgstr "ហាម​មិន​ឲ្យ​ធ្វើ​ឲ្យ​ប្រសើរ"
 
-#: src/pkg_columnizer.cc:317
+#: src/pkg_columnizer.cc:318
 msgid "purge"
 msgstr "លុបបំបាត់"
 
-#: src/pkg_columnizer.cc:317 src/pkg_ver_item.cc:324
+#: src/pkg_columnizer.cc:318 src/pkg_ver_item.cc:319
 msgid "delete"
 msgstr "លុប"
 
-#: src/pkg_columnizer.cc:319 src/pkg_ver_item.cc:222 src/pkg_ver_item.cc:306
+#: src/pkg_columnizer.cc:320 src/pkg_ver_item.cc:217 src/pkg_ver_item.cc:301
 msgid "broken"
 msgstr "ខូច"
 
-#: src/pkg_columnizer.cc:321 src/pkg_ver_item.cc:310 src/pkg_ver_item.cc:317
-#: src/pkg_ver_item.cc:326
+#: src/pkg_columnizer.cc:322 src/pkg_ver_item.cc:305 src/pkg_ver_item.cc:312
+#: src/pkg_ver_item.cc:321
 msgid "install"
 msgstr "ដំឡើង"
 
-#: src/pkg_columnizer.cc:323
+#: src/pkg_columnizer.cc:324
 msgid "reinstall"
 msgstr "ដំឡើងឡើងវិញ"
 
-#: src/pkg_columnizer.cc:325
+#: src/pkg_columnizer.cc:326
 msgid "upgrade"
 msgstr "ធ្វើឲ្យប្រសើរ"
 
-#: src/pkg_columnizer.cc:327 src/pkg_columnizer.cc:329 src/pkg_ver_item.cc:312
-#: src/pkg_ver_item.cc:319 src/pkg_ver_item.cc:328 src/pkg_ver_item.cc:331
+#: src/pkg_columnizer.cc:328 src/pkg_columnizer.cc:330 src/pkg_ver_item.cc:307
+#: src/pkg_ver_item.cc:314 src/pkg_ver_item.cc:323 src/pkg_ver_item.cc:326
 msgid "none"
 msgstr "គ្មាន"
 
 #. ForTranslators: Imp = Important
-#: src/pkg_columnizer.cc:361 src/pkg_ver_item.cc:359
+#: src/pkg_columnizer.cc:362 src/pkg_ver_item.cc:354
 msgid "Imp"
 msgstr "Imp"
 
 #. ForTranslators: Req = Required
-#: src/pkg_columnizer.cc:363 src/pkg_ver_item.cc:362
+#: src/pkg_columnizer.cc:364 src/pkg_ver_item.cc:357
 msgid "Req"
 msgstr "ទាមទារ"
 
 #. ForTranslators: Std = Standard
-#: src/pkg_columnizer.cc:365 src/pkg_ver_item.cc:365
+#: src/pkg_columnizer.cc:366 src/pkg_ver_item.cc:360
 msgid "Std"
 msgstr "ខ្នាតគំរូ"
 
 #. ForTranslators: Opt = Optional
-#: src/pkg_columnizer.cc:367 src/pkg_ver_item.cc:368
+#: src/pkg_columnizer.cc:368 src/pkg_ver_item.cc:363
 msgid "Opt"
 msgstr "ស្រេចចិត្ត"
 
 #. ForTranslators: Xtr = Extra
-#: src/pkg_columnizer.cc:369 src/pkg_ver_item.cc:371
+#: src/pkg_columnizer.cc:370 src/pkg_ver_item.cc:366
 msgid "Xtr"
 msgstr "Xtr"
 
-#: src/pkg_columnizer.cc:371 src/pkg_ver_item.cc:373
+#: src/pkg_columnizer.cc:372 src/pkg_ver_item.cc:368
 msgid "ERR"
 msgstr "កំហុស"
 
-#: src/pkg_columnizer.cc:393
+#: src/pkg_columnizer.cc:394
 #, c-format
 msgid "#Broken: %ld"
 msgstr "#ខូច ៖ %ld"
 
-#: src/pkg_columnizer.cc:408
+#: src/pkg_columnizer.cc:409
 #, c-format
 msgid "Will use %sB of disk space"
 msgstr "នឹង​ប្រើ​ថាស​ទំហំ %s បៃ"
 
-#: src/pkg_columnizer.cc:416
+#: src/pkg_columnizer.cc:417
 #, c-format
 msgid "Will free %sB of disk space"
 msgstr "នឹង​ធ្វើ​ឲ្យ​ថាស​ទំនេរ %s បៃ"
 
-#: src/pkg_columnizer.cc:430
+#: src/pkg_columnizer.cc:431
 #, c-format
 msgid "DL Size: %sB"
 msgstr "ទំហំ​ទាញយក ៖ %sបៃ"
 
 #. ForTranslators: Hostname
-#: src/pkg_columnizer.cc:503
+#: src/pkg_columnizer.cc:498
 msgid "HN too long"
 msgstr "HN វែង​ពេក​ហើយ"
 
-#: src/pkg_columnizer.cc:675 src/pkg_columnizer.cc:684
+#: src/pkg_columnizer.cc:670 src/pkg_columnizer.cc:679
 #, fuzzy, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr "មិន​អាច​បម្លែង​ទ្រង់ទ្រាយ​បង្ហាញ​កញ្ចប់ នៅ​បន្ទាប់ \"%ls\" ឡើយ"
 
-#: src/pkg_columnizer.cc:691
+#: src/pkg_columnizer.cc:686
 msgid "Internal error: Default column string is unparsable"
 msgstr "កំហុស​ខាង​ក្នុង ៖ ខ្សែអក្សរ​ជួរឈរ​លំនាំដើម គឺ​មិន​អាច​ញែក​បាន​ឡើយ"
 
@@ -6391,18 +6484,18 @@ msgstr "សន្ទស្សន៍​ផ្គូផ្គង​ត្រូវ
 msgid "Match index %ls is too large; available groups are (%s)"
 msgstr "សន្ទស្សន៍​ផ្គូផ្គង %ls ធំពេក​ហើយ ។ មាន​ក្រុម​ដូចជា (%s)"
 
-#: src/pkg_grouppolicy.cc:1512
+#: src/pkg_grouppolicy.cc:1510
 msgid "TAGLESS PACKAGES"
 msgstr "កញ្ចប់​គ្មាន​ស្លាក"
 
-#: src/pkg_grouppolicy.cc:1513
+#: src/pkg_grouppolicy.cc:1511
 msgid ""
 "\n"
 " These packages have not yet been classified in debtags, or the debtags "
 "database is not present (installing debtags may correct this problem)."
 msgstr ""
 
-#: src/pkg_grouppolicy.cc:1547
+#: src/pkg_grouppolicy.cc:1551
 msgid "MISSING TAG"
 msgstr "ស្លាក​ដែល​បាត់"
 
@@ -6440,12 +6533,12 @@ msgid ""
 "s' if you are."
 msgstr "%s គឺ​ជា​កញ្ចប់​ចាំបាច់ !%n%nតើ​អ្នក​ពិត​ជា​ចង់​យក​វា​ចេញ​ឬ ?%nវាយ '%s' បើ​អ្នក​ប្រាកដ ។"
 
-#: src/pkg_item.cc:235 src/pkg_ver_item.cc:683 src/solution_item.cc:299
+#: src/pkg_item.cc:235 src/pkg_ver_item.cc:678 src/solution_item.cc:299
 #, c-format
 msgid "Information about %s"
 msgstr "ព័ត៌មាន​អំពី %s"
 
-#: src/pkg_item.cc:237 src/pkg_ver_item.cc:685 src/solution_item.cc:297
+#: src/pkg_item.cc:237 src/pkg_ver_item.cc:680 src/solution_item.cc:297
 #, c-format
 msgid "%s info"
 msgstr "%s ព័ត៌មាន"
@@ -6460,27 +6553,27 @@ msgstr "កំណែ​ដែល​មាន​របស់ %s"
 msgid "%s versions"
 msgstr "%s កំណែ"
 
-#: src/pkg_item.cc:348 src/pkg_ver_item.cc:713
+#: src/pkg_item.cc:348 src/pkg_ver_item.cc:708
 #, c-format
 msgid "Dependencies of %s"
 msgstr "ភាព​អាស្រ័យ​របស់ %s"
 
-#: src/pkg_item.cc:350 src/pkg_ver_item.cc:715
+#: src/pkg_item.cc:350 src/pkg_ver_item.cc:710
 #, c-format
 msgid "%s deps"
 msgstr "%s ភាពអាស្រ័យ"
 
-#: src/pkg_item.cc:361 src/pkg_ver_item.cc:725
+#: src/pkg_item.cc:361 src/pkg_ver_item.cc:720
 #, c-format
 msgid "Packages depending on %s"
 msgstr "កញ្ចប់​ដែល​ផ្អែក​លើ %s"
 
-#: src/pkg_item.cc:363 src/pkg_ver_item.cc:727
+#: src/pkg_item.cc:363 src/pkg_ver_item.cc:722
 #, c-format
 msgid "%s reverse deps"
 msgstr "%s ភាពអាស្រ័យ​បញ្ច្រាស"
 
-#: src/pkg_item.cc:413 src/pkg_ver_item.cc:775
+#: src/pkg_item.cc:413 src/pkg_ver_item.cc:770
 #, c-format
 msgid "Reporting a bug in %s:\n"
 msgstr "កំពុង​រាយ​ការណ៍​កំហុស​ក្នុង​ %s ៖\n"
@@ -6507,7 +6600,7 @@ msgstr "ចុច​គ្រាប់ចុច​បញ្ចូល ដើម�
 msgid "Hierarchy editor"
 msgstr "កម្មវិធី​និពន្ធឋានានុក្រម"
 
-#: src/pkg_item.cc:468 src/pkg_view.cc:670
+#: src/pkg_item.cc:468 src/pkg_view.cc:673
 msgid "Hierarchy Editor"
 msgstr "កម្មវិធី​និពន្ធ​ឋានានុក្រម"
 
@@ -6539,46 +6632,46 @@ msgstr "បញ្ចូល​យន្តការ​ថ្មី​ដើម្
 msgid "Enter the new package sorting mechanism for this display: "
 msgstr "បញ្ចូល​យន្តការ​ថ្មី​ដើម្បី​តម្រៀប​កញ្ចប់ សម្រាប់​ការ​បង្ហាញ​នេះ ៖ "
 
-#: src/pkg_view.cc:163
+#: src/pkg_view.cc:165
 #, fuzzy
 msgid "Couldn't cw::util::transcode column definition"
 msgstr "មិន​អាច​បម្លែង​អត្ថន័យ​ជួរឈរ​បាន​ឡើយ"
 
-#: src/pkg_view.cc:170
+#: src/pkg_view.cc:172
 msgid "Couldn't parse column definition"
 msgstr "មិន​អាច​ញែក​អត្ថន័យ​ជួរឈរ​បាន​ឡើយ"
 
-#: src/pkg_view.cc:220
+#: src/pkg_view.cc:223
 #, fuzzy
 msgid ""
 "If you select a package, an explanation of why it should be installed or "
 "removed will appear in this space."
 msgstr "បើ​អ្នក​ជ្រើស​កញ្ចប់​មួយ សេចក្ដីពន្យល់​នៃ​ស្ថានភាព​បច្ចុប្បន្ន​របស់​វា នឹង​លេចឡើង​ត្រង់​នេះ ។"
 
-#: src/pkg_view.cc:572
+#: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr "make_package_view ៖ កំហុស​ក្នុង​អាគុយម៉ង់ -- ធាតុ​ក្រាហ្វិក​ចម្បង​ពីរ ??"
 
-#: src/pkg_view.cc:578
+#: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr "make_package_view ៖ កំហុស​នៅ​ក្នុង​អាគុយម៉ង់ -- បញ្ជី​ជួរឈរ​មិន​ត្រឹមត្រូវ សម្រាប់​ធាតុ​ថេរ"
 
-#: src/pkg_view.cc:675
+#: src/pkg_view.cc:678
 #, fuzzy
 msgid "Related Dependencies"
 msgstr "ដោះស្រាយ​ភាពអាស្រ័យ​"
 
-#: src/pkg_view.cc:678
+#: src/pkg_view.cc:681
 #, fuzzy
 msgid "Why Installed"
 msgstr "បាន​ដំឡើង"
 
-#: src/pkg_view.cc:697
+#: src/pkg_view.cc:700
 msgid "make_package_view: bad argument!"
 msgstr "make_package_view ៖ អាគុយម៉ង់​មិន​ល្អ"
 
-#: src/pkg_view.cc:749
+#: src/pkg_view.cc:752
 msgid "make_package_view: no main widget found"
 msgstr "make_package_view ៖ រក​មិន​ឃើញ​ធាតុ​ក្រាហ្វិក​ចម្បង"
 
@@ -6814,47 +6907,47 @@ msgstr "អនុវត្ត"
 msgid "Close"
 msgstr "បិទ​"
 
-#: src/solution_fragment.cc:150
+#: src/solution_fragment.cc:164
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s ប៉ះទង្គិច​ជាមួយ %s [ផ្ដល់​ដោយ %s %s]"
 
-#: src/solution_fragment.cc:163
+#: src/solution_fragment.cc:177
 #, c-format
 msgid "Removing %s"
 msgstr "កំពុង​យក %s ចេញ"
 
-#: src/solution_fragment.cc:165
+#: src/solution_fragment.cc:179
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "កំពុង​ដំឡើង %s %s (%s)"
 
-#: src/solution_fragment.cc:170
+#: src/solution_fragment.cc:184
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:396
+#: src/solution_fragment.cc:410
 msgid "%BRemove%b the following packages:%n"
 msgstr "%BRemove%b កញ្ចប់​ដូច​តទៅ​នេះ ៖%n"
 
-#: src/solution_fragment.cc:411
+#: src/solution_fragment.cc:425
 msgid "%BInstall%b the following packages:%n"
 msgstr "%BInstall%b កញ្ចប់​ដូច​តទៅ​នេះ ៖ %n"
 
-#: src/solution_fragment.cc:429
+#: src/solution_fragment.cc:443
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BKeep%b កញ្ចប់​ដូច​តទៅ​នេះ នៅ​ត្រឹម​កំណែ​បច្ចុប្បន្ន​ដដែល ៖%n"
 
-#: src/solution_fragment.cc:453
+#: src/solution_fragment.cc:467
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%BUpgrade%b កញ្ចប់​ដូច​តទៅនេះ ៖ %n"
 
-#: src/solution_fragment.cc:473
+#: src/solution_fragment.cc:487
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BDowngrade%b កញ្ចប់​ដូច​តទៅ​នេះ ៖ %n"
 
-#: src/solution_fragment.cc:494
+#: src/solution_fragment.cc:508
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "មិន​បាច់​ដោះស្រាយ​ភាព​អាស្រ័យ​ដូច​តទៅ​នេះ ៖ %n"
@@ -7003,11 +7096,6 @@ msgstr "កំពុង​ផ្ទុកឃ្លាំងសម្ងាត់
 #: src/ui.cc:646
 msgid "Really quit Aptitude?"
 msgstr "ពិត​ជា​ចេញ​ពី Aptitude ?"
-
-#: src/ui.cc:699 src/ui.cc:701
-#, fuzzy
-msgid "Preferences"
-msgstr "ផ្អែកលើ​ជា​ស្រេច"
 
 #: src/ui.cc:700 src/ui.cc:2461
 msgid "Change the behavior of aptitude"
@@ -8080,9 +8168,6 @@ msgstr "អ្នក​អាច​មើល​តែ​កំណត់ហេត
 #~ msgid "Automatically Installed"
 #~ msgstr "បាន​ដំឡើង​ដោយ​ស្វ័យប្រវត្តិ"
 
-#~ msgid "Broken"
-#~ msgstr "ខូច​"
-
 #~ msgid "Unchanged"
 #~ msgstr "មិន​បាន​ផ្លាស់ប្ដូរ"
 
@@ -8136,9 +8221,6 @@ msgstr "អ្នក​អាច​មើល​តែ​កំណត់ហេត
 
 #~ msgid "Downloading "
 #~ msgstr "កំពុង​ទាញយក "
-
-#~ msgid "Got "
-#~ msgstr "បាន "
 
 #~ msgid "Downloaded %sB in %ss (%sB/s)."
 #~ msgstr "បាន​ទាញយក %s បៃ ក្នុង​រយៈពេល %ss (%s បៃ/វិ.) ។"
