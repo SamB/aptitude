@@ -821,6 +821,7 @@ AC_CONFIG_FILES([
         src/gtk/toplevel/Makefile
 	src/gtk/util/Makefile
         src/gtk/views/Makefile
+        src/gtk/views/mocks/Makefile
         src/gtk/view-impls/Makefile
 	src/cmdline/Makefile
         src/cmdline/mocks/Makefile
