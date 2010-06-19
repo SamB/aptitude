@@ -11,30 +11,33 @@ else
   export CXXFLAGS=-g -O2
 endif
 
+CURSES_BUILD_DIR=build-curses
+GTK_BUILD_DIR=build-gtk
+
 build-gtk: build-stamp-gtk
 build-stamp-gtk:
 	-rm build-stamp-gtk
-	-rm build-stamp-curses
 
 	dh_testdir
 
-	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs
-	$(MAKE) -C src
+	mkdir -p $(GTK_BUILD_DIR)
+	(cd $(GTK_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs)
+	$(MAKE) -C $(GTK_BUILD_DIR)/src)
 	# Run the unit tests, but protect against Boost.Test's flakiness.
-	$(MAKE) -C tests check || (cd tests && ./cppunit_test);
+	(cd $(GTK_BUILD_DIR) && $(MAKE) -C tests check || (cd tests && ./cppunit_test))
 	touch build-stamp-gtk
 
 build-curses: build-stamp-curses
 build-stamp-curses:
-	-rm build-stamp-gtk
 	-rm build-stamp-curses
 
 	dh_testdir
 
-	./configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-gtk
-	$(MAKE) -C src
+	mkdir -p $(CURSES_BUILD_DIR)
+	(cd $(CURSES_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-gtk)
+	$(MAKE) -C $(CURSES_BUILD_DIR)/src
 	# Run the unit tests, but protect against Boost.Test's flakiness.
-	$(MAKE) -C tests check || (cd tests && ./cppunit_test);
+	(cd $(CURSES_BUILD_DIR) && $(MAKE) -C tests check || (cd tests && ./cppunit_test))
 
 	touch build-stamp-curses
 
@@ -48,6 +51,8 @@ clean:
 	if [ -f build-stamp-curses ]; then rm build-stamp-curses; fi
 	if [ -f build-indep-stamp ]; then rm build-indep-stamp; fi
 	rm -fr debian/html-docs
+	if [ -d $(GTK_BUILD_DIR)]; then rm -r $(GTK_BUILD_DIR); fi
+	if [ -d $(CURSES_BUILD_DIR)]; then rm -r $(CURSES_BUILD_DIR); fi
 
 	[ ! -f Makefile ] || $(MAKE) distclean
 	[ ! -f doc/Makefile ] || $(MAKE) -C doc distclean
@@ -61,7 +66,7 @@ install-gtk: build-gtk
 	-rm -fr debian/aptitude-gtk
 	dh_installdirs -paptitude-gtk
 
-	$(MAKE) install DESTDIR=`pwd`/debian/tmp gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
+	$(MAKE) -C $(GTK_BUILD_DIR) install DESTDIR=`pwd`/debian/tmp gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
 	# Extract the bits of the package that we need for both builds. (ew)
 	dh_install -paptitude-gtk
 	cp debian/tmp/usr/bin/aptitude debian/aptitude-gtk/usr/bin/aptitude-gtk
@@ -79,7 +84,7 @@ install-curses: build-curses
 	dh_installdirs -paptitude
 	dh_installcron -paptitude
 
-	$(MAKE) install DESTDIR=`pwd`/debian/aptitude gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
+	$(MAKE) -C $(CURSES_BUILD_DIR) install DESTDIR=`pwd`/debian/aptitude gnulocaledir=`pwd`/debian/aptitude/usr/share/locale
 	mv debian/aptitude/usr/bin/aptitude debian/aptitude/usr/bin/aptitude-curses
 
 	cp debian/aptitude.reportbug debian/aptitude/usr/share/bug/aptitude
