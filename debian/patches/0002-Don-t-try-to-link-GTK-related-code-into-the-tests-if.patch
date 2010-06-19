@@ -1,0 +1,92 @@
+From: Daniel Burrows <dburrows@debian.org>
+Date: Sat, 19 Jun 2010 13:55:31 -0700
+Subject: [PATCH] Don't try to link GTK+-related code into the tests if the GTK+ frontend isn't being built.
+
+---
+ tests/Makefile.am |    7 +++++--
+ tests/Makefile.in |   16 ++++++----------
+ 2 files changed, 11 insertions(+), 12 deletions(-)
+
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 2155609..5cca3a7 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -1,12 +1,15 @@
+ MAINTAINERCLEANFILES = Makefile.in
+ 
++if BUILD_GTK
++  MAYBE_LIBGTK = $(top_builddir)/src/gtk/views/libgtk-views.a $(top_builddir)/src/gtk/controllers/libgtk-controllers.a
++endif
++
+ INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
+ BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
+ GMOCK_LDFLAGS = -lgmock -lgtest
+ AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
+ LDADD = $(top_builddir)/src/loggers.o			       \
+-$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-$(top_builddir)/src/gtk/views/libgtk-views.a \
++$(MAYBE_LIBGTK)                                                \
+ $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ $(top_builddir)/src/cmdline/libcmdline.a \
+ $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
+diff --git a/tests/Makefile.in b/tests/Makefile.in
+index bed7f0a..f719073 100644
+--- a/tests/Makefile.in
++++ b/tests/Makefile.in
+@@ -65,8 +65,7 @@ boost_test_OBJECTS = $(am_boost_test_OBJECTS)
+ boost_test_LDADD = $(LDADD)
+ am__DEPENDENCIES_1 =
+ boost_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
+-	$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-	$(top_builddir)/src/gtk/views/libgtk-views.a \
++	$(MAYBE_LIBGTK) \
+ 	$(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ 	$(top_builddir)/src/cmdline/libcmdline.a \
+ 	$(top_builddir)/src/generic/apt/libgeneric-apt.a \
+@@ -88,8 +87,7 @@ am_cppunit_test_OBJECTS = cppunit_test_main.$(OBJEXT) \
+ cppunit_test_OBJECTS = $(am_cppunit_test_OBJECTS)
+ cppunit_test_LDADD = $(LDADD)
+ cppunit_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
+-	$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-	$(top_builddir)/src/gtk/views/libgtk-views.a \
++	$(MAYBE_LIBGTK) \
+ 	$(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ 	$(top_builddir)/src/cmdline/libcmdline.a \
+ 	$(top_builddir)/src/generic/apt/libgeneric-apt.a \
+@@ -107,8 +105,7 @@ am_gtest_test_OBJECTS = gtest_test_main.$(OBJEXT) \
+ gtest_test_OBJECTS = $(am_gtest_test_OBJECTS)
+ gtest_test_LDADD = $(LDADD)
+ gtest_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
+-	$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-	$(top_builddir)/src/gtk/views/libgtk-views.a \
++	$(MAYBE_LIBGTK) \
+ 	$(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ 	$(top_builddir)/src/cmdline/libcmdline.a \
+ 	$(top_builddir)/src/generic/apt/libgeneric-apt.a \
+@@ -122,8 +119,7 @@ am_interactive_set_test_OBJECTS = interactive_set_test.$(OBJEXT)
+ interactive_set_test_OBJECTS = $(am_interactive_set_test_OBJECTS)
+ interactive_set_test_LDADD = $(LDADD)
+ interactive_set_test_DEPENDENCIES = $(top_builddir)/src/loggers.o \
+-	$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-	$(top_builddir)/src/gtk/views/libgtk-views.a \
++	$(MAYBE_LIBGTK) \
+ 	$(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ 	$(top_builddir)/src/cmdline/libcmdline.a \
+ 	$(top_builddir)/src/generic/apt/libgeneric-apt.a \
+@@ -291,13 +287,13 @@ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ MAINTAINERCLEANFILES = Makefile.in
++@BUILD_GTK_TRUE@MAYBE_LIBGTK = $(top_builddir)/src/gtk/views/libgtk-views.a $(top_builddir)/src/gtk/controllers/libgtk-controllers.a
+ INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
+ BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
+ GMOCK_LDFLAGS = -lgmock -lgtest
+ AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
+ LDADD = $(top_builddir)/src/loggers.o			       \
+-$(top_builddir)/src/gtk/controllers/libgtk-controllers.a \
+-$(top_builddir)/src/gtk/views/libgtk-views.a \
++$(MAYBE_LIBGTK)                                                \
+ $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+ $(top_builddir)/src/cmdline/libcmdline.a \
+ $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
+-- 
