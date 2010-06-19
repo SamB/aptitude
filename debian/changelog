@@ -1,4 +1,4 @@
-aptitude (0.6.3-1~prerelease) unstable; urgency=low
+aptitude (0.6.3-1) unstable; urgency=low
 
   * New upstream release.
 
@@ -11,6 +11,9 @@ aptitude (0.6.3-1~prerelease) unstable; urgency=low
     - aptitude should build correctly against either the current ept
       release or the upcoming release (in experimental).
       (Closes: #581009)
+
+  * Applied upstream patches to make the tests build when GTK+ is
+    disabled.
 
   * Weakened the build dependency on libboost-dev, since this upstream
     release no longer requires 1.42.
