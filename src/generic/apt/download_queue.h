@@ -1,7 +1,7 @@
 /** \file download_queue.h */     // -*-c++-*-
 
 
-// Copyright (C) 2009 Daniel Burrows
+// Copyright (C) 2009-2010 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -132,8 +132,8 @@ namespace aptitude
    *
    *  We need to do this because otherwise, the objects in the queue
    *  might be destroyed when global destructors are called, and some
-   *  of them access things (like log4cxx) that are destroyed at the
-   *  same time, causing crashes and other bad behavior.
+   *  of them access things that are destroyed at the same time,
+   *  causing crashes and other bad behavior.
    *
    *  This function blocks until the queue is fully shut down.
    */

@@ -6,6 +6,10 @@
 /* Set to true if apt supports dpkg trigger states */
 #undef APT_HAS_TRIGGERS
 
+/* Define if boost::fusion::fold passes the state as the first argument to the
+   fold function. */
+#undef BOOST_FUSION_FOLD_STATE_BEFORE_VALUE
+
 /* Define to disable the use of a .glade file found relative to the current
    working directory. */
 #undef DISABLE_PRIVATE_GLADE_FILE
@@ -21,12 +25,21 @@
 /* Enable expensive internal sanity-checks in the dependency resolver. */
 #undef ENABLE_RESOLVER_SANITY_CHECKS
 
+/* Define if ept::debtags::Debtags::getTagsOfItem returns a set of strings */
+#undef EPT_DEBTAGS_GETTAGSOFITEM_RETURNS_STRINGS
+
 /* If a hash header is available, define to the namespace in which the hash
    class resides */
 #undef HASH_NAMESPACE
 
 /* define if the Boost library is available */
 #undef HAVE_BOOST
+
+/* Define to 1 if you have the <boost/algorithm/string.hpp> header file. */
+#undef HAVE_BOOST_ALGORITHM_STRING_HPP
+
+/* Define to 1 if you have the <boost/array.hpp> header file. */
+#undef HAVE_BOOST_ARRAY_HPP
 
 /* Define to 1 if you have the <boost/compressed_pair.hpp> header file. */
 #undef HAVE_BOOST_COMPRESSED_PAIR_HPP
@@ -159,6 +172,9 @@
 /* Define to 1 if you have the <boost/lambda/bind.hpp> header file. */
 #undef HAVE_BOOST_LAMBDA_BIND_HPP
 
+/* Define to 1 if you have the <boost/lambda/lambda.hpp> header file. */
+#undef HAVE_BOOST_LAMBDA_LAMBDA_HPP
+
 /* Define to 1 if you have the <boost/lexical_cast.hpp> header file. */
 #undef HAVE_BOOST_LEXICAL_CAST_HPP
 
@@ -271,6 +287,38 @@
 
 /* Backwards compatibility symbol; must always be defined. */
 #undef HAVE_EPT
+
+/* Define if ept/axi/axi.h can provide docids. */
+#undef HAVE_EPT_AXI
+
+/* Define if ept::debtags::Facet exists */
+#undef HAVE_EPT_DEBTAGS_FACET
+
+/* Define if ept::debtags::Facet exists and supports description retrieval. */
+#undef HAVE_EPT_DEBTAGS_FACET_DESCRIPTION
+
+/* Define if ept::debtags::Facet exists and supports description retrieval. */
+#undef HAVE_EPT_DEBTAGS_FACET_NAME
+
+/* Define if ept::debtags::Tag exists. */
+#undef HAVE_EPT_DEBTAGS_TAG
+
+/* Define if ept::debtags::Tag exists and supports description retrieval. */
+#undef HAVE_EPT_DEBTAGS_TAG_DESCRIPTION
+
+/* Define if ept::debtags::Tag exists and has a fullname() method */
+#undef HAVE_EPT_DEBTAGS_TAG_FULLNAME
+
+/* Define if the ept debtags vocabulary object exists and supports facetData()
+   */
+#undef HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA
+
+/* Define if the ept debtags vocabulary object exists and supports tagData()
+   */
+#undef HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA
+
+/* Define if ept::textsearch exists */
+#undef HAVE_EPT_TEXTSEARCH
 
 /* Define if the execinfo file (for self-backtracing) is available */
 #undef HAVE_EXECINFO_H

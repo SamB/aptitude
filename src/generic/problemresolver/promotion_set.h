@@ -1739,7 +1739,7 @@ private:
 				   const logging::LoggerPtr &logger,
 				   const Pred &pred)
   {
-    if(LOG4CXX_UNLIKELY(logger->isTraceEnabled()))
+    if(logger->isEnabledFor(logging::TRACE_LEVEL))
       {
 	for(typename std::vector<entry_ref>::const_iterator it =
 	      entries.begin(); it != entries.end(); ++it)

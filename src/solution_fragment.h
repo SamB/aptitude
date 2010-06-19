@@ -56,8 +56,18 @@ cwidget::fragment *solution_fragment_with_ids(const generic_solution<aptitude_un
 
 /** \return a list of the archives to which a version
  *  belongs in the form "archive1,archive2,..."
+ *
+ *  The output will be sorted and contain each archive name at most
+ *  once.
+ *
+ *  \param v   the version whose archives are to be returned.
+ *  \param suppress_now  If \b true, the "now" archive will be
+ *                       discarded from the list.
+ *  \param inter_archive_string   The string to place between archives.
  */
-std::string archives_text(const pkgCache::VerIterator &v);
+std::string archives_text(const pkgCache::VerIterator &v,
+                          bool suppress_now = false,
+                          const std::string &inter_archive_string = ", ");
 
 /** \return a cwidget::fragment describing the given choice. */
 cwidget::fragment *choice_fragment(const generic_choice<aptitude_universe> &c);

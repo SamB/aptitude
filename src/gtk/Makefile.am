@@ -1,6 +1,11 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 
-SUBDIRS=util
+SUBDIRS = \
+	controllers \
+	toplevel \
+	util \
+	views \
+	view-impls
 
 noinst_LIBRARIES=libgtk.a
 
@@ -11,8 +16,8 @@ pkgdata_DATA = aptitude.glade
 EXTRA_DIST = aptitude.glade
 
 libgtk_a_SOURCES=\
-	area.cc \
-	area.h \
+	areas.cc \
+	areas.h \
 	changelog.cc \
 	changelog.h \
 	constants.h \
@@ -32,12 +37,18 @@ libgtk_a_SOURCES=\
 	errortab.h \
 	filesview.cc \
 	filesview.h \
+	globals.cc \
+	globals.h \
 	gui.cc \
 	gui.h \
 	hyperlink.cc \
 	hyperlink.h \
 	info.cc \
 	info.h \
+	init.cc \
+	init.h \
+	mainwindow.cc \
+	mainwindow.h \
 	notify.cc \
 	notify.h \
 	packageinformation.cc \
@@ -46,6 +57,8 @@ libgtk_a_SOURCES=\
 	packagestab.h \
 	pkgview.cc \
 	pkgview.h \
+	post_event.cc \
+	post_event.h \
 	previewtab.cc \
 	previewtab.h \
 	progress.cc \

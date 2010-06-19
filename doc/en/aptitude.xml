@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.6.2.1'>
+  <!ENTITY VERSION '0.6.3'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -10754,6 +10754,31 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
+            <seglistitem id='configCmdLine-Progress-Percent-On-Right'>
+              <seg><literal>Aptitude::CmdLine::Progress::Percent-On-Right</literal></seg>
+              <seg><literal>false</literal></seg>
+              <seg>
+                This option controls whether command-line progress
+                indicators display the percentage on the left-hand
+                side of the screen, in the same style as &apt-get;, or
+                on the right-hand side (the default).  This option
+                does not affect download progress indicators.
+              </seg>
+            </seglistitem>
+
+            <seglistitem id='configCmdLine-Progress-Retain-Completed'>
+              <seg><literal>Aptitude::CmdLine::Progress::Retain-Completed</literal></seg>
+              <seg><literal>false</literal></seg>
+              <seg>
+                If this value is <literal>false</literal>, then
+                command-line progress indicators will be deleted and
+                overwritten once the task they represent is completed.
+                If it is <literal>true</literal>, then they will be
+                left on the terminal.  This option does not affect
+                download progress indicators.
+              </seg>
+            </seglistitem>
+
 	    <seglistitem id='configCmdLine-Request-Strictness'>
 	      <seg><literal>Aptitude::CmdLine::Request-Strictness</literal></seg>
 	      <seg><literal>10000</literal></seg>
@@ -11276,39 +11301,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configLoggingConfigFile'>
-	      <seg><literal>Aptitude::Logging::Config-File</literal></seg>
-	      <seg><filename>/etc/apt/aptitude-log.conf</filename></seg>
-	      <seg>
-		<!-- TODO: the logging system needs its own
-		     configuration section, with documentation of the
-		     file format, not a link to the library's home
-		     page.
-		-->
-		If this is set to a nonempty string, &aptitude; will
-		read it to configure the logging system; it should be
-		a file in the format of <ulink
-		linkend='http://logging.apache.org/log4cxx/'><literal>log4cxx</literal></ulink>.
-		&aptitude; will periodically re-read the file to see
-		whether any settings have been changed.  This differs
-		from the setting <link
-		linkend='configLog'><literal>Aptitude::Log</literal></link>:
-		that file is used to log installations and removals,
-		whereas the logging configured by this file is used to
-		log program events, errors, and debugging messages.
-		This option is equivalent to the command-line argument
-		<link
-		linkend='cmdlineOptionLogConfigFile'><literal>--log-config-file</literal></link>.
-		The options <link
-		linkend='configLoggingFile'><literal>Aptitude::Logging::File</literal></link>
-		and <link
-		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
-		provide a simpler, but less flexible, way of
-		configuring logging; they override any settings made
-		in this configuration file.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configLoggingFile'>
 	      <seg><literal>Aptitude::Logging::File</literal></seg>
 	      <seg><filename></filename></seg>
@@ -11327,9 +11319,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<link
 		linkend='cmdlineOptionLogFile'><literal>--log-file</literal></link>.
 		See also <link
-		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>
-		and <link
-		linkend='configLoggingConfigFile'><literal>Aptitude::Logging::Config-File</literal></link>.
+		linkend='configLoggingLevels'><literal>Aptitude::Logging::Levels</literal></link>.
 	      </seg>
 	    </seglistitem>
 

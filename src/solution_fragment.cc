@@ -49,23 +49,37 @@ typedef generic_choice_set<aptitude_universe> choice_set;
 using namespace std;
 namespace cw = cwidget;
 
-string archives_text(const pkgCache::VerIterator &ver)
+string archives_text(const pkgCache::VerIterator &ver,
+                     bool suppress_now,
+                     const std::string &inter_archive_string)
 {
   string rval;
 
   bool is_first = true;
 
+  // Uniquify and sort the archives.
+  std::set<std::string> archives;
+
   for(pkgCache::VerFileIterator vf=ver.FileList(); !vf.end(); ++vf)
+    {
+      if(vf.File().Archive())
+        archives.insert(vf.File().Archive());
+      else
+        archives.insert(_("<NULL>"));
+    }
+
+  if(suppress_now)
+    archives.erase("now");
+
+  for(std::set<std::string>::const_iterator it = archives.begin();
+      it != archives.end(); ++it)
     {
       if(is_first)
 	is_first = false;
       else
-	rval += ", ";
+	rval += inter_archive_string;
 
-      if(vf.File().Archive())
-	rval += vf.File().Archive();
-      else
-	rval += _("<NULL>");
+      rval += *it;
     }
 
   return rval;

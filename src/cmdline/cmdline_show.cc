@@ -1,7 +1,24 @@
 // cmdline_show.cc                               -*-c++-*-
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_show.h"
 
 #include <aptitude.h>
@@ -9,6 +26,8 @@
 
 #include "cmdline_common.h"
 #include "cmdline_util.h"
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
@@ -16,6 +35,8 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
+
+// System includes:
 #include <cwidget/fragment.h>
 #include <cwidget/generic/util/transcode.h>
 
@@ -30,6 +51,12 @@
 #include <iostream>
 
 namespace cw = cwidget;
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
 using cwidget::fragf;
 using cwidget::fragment;
 using namespace std;
@@ -343,7 +370,8 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 }
 
 /** \brief Shows information about a package. */
-static void show_package(pkgCache::PkgIterator pkg, int verbose)
+static void show_package(pkgCache::PkgIterator pkg, int verbose,
+                         const shared_ptr<terminal> &term)
 {
   vector<cw::fragment *> fragments;
 
@@ -353,6 +381,7 @@ static void show_package(pkgCache::PkgIterator pkg, int verbose)
 
   cw::fragment *f=cw::sequence_fragment(fragments);
 
+  const unsigned int screen_width = term->get_screen_width();
   cout << f->layout(screen_width, screen_width, cwidget::style());
 
   delete f;
@@ -455,12 +484,14 @@ cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
   return cw::sequence_fragment(fragments);
 }
 
-static void show_version(pkgCache::VerIterator ver, int verbose)
+static void show_version(pkgCache::VerIterator ver, int verbose,
+                         const shared_ptr<terminal> &term)
 {
   if(ver.FileList().end())
     {
       cw::fragment *f=version_file_fragment(ver, ver.FileList(), verbose);
 
+      const unsigned int screen_width = term->get_screen_width();
       cout << f->layout(screen_width, screen_width, cwidget::style());
 
       delete f;
@@ -471,6 +502,7 @@ static void show_version(pkgCache::VerIterator ver, int verbose)
 	{
 	  cw::fragment *f=version_file_fragment(ver, vf, verbose);
 
+          const unsigned int screen_width = term->get_screen_width();
 	  cout << f->layout(screen_width, screen_width, cwidget::style()) << endl;
 
 	  delete f;
@@ -487,7 +519,8 @@ bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 			    cmdline_version_source source,
 			    const string &sourcestr,
 			    int verbose,
-			    bool has_explicit_source)
+			    bool has_explicit_source,
+                            const shared_ptr<terminal> &term)
 {
   if(verbose == 0 || has_explicit_source)
     {
@@ -501,20 +534,20 @@ bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 	ver = pkg.VersionList();
 
       if(!ver.end())
-	show_version(ver, verbose);
+	show_version(ver, verbose, term);
       else
-	show_package(pkg, verbose);
+	show_package(pkg, verbose, term);
     }
   else if(!pkg.VersionList().end())
     for(pkgCache::VerIterator ver=pkg.VersionList(); !ver.end(); ++ver)
-      show_version(ver, verbose);
+      show_version(ver, verbose, term);
   else
-    show_package(pkg, verbose);
+    show_package(pkg, verbose, term);
 
   return true;
 }
 
-bool do_cmdline_show(string s, int verbose)
+bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
 {
   cmdline_version_source source;
   string name, sourcestr;
@@ -547,7 +580,12 @@ bool do_cmdline_show(string s, int verbose)
     }
 
   if(!is_pattern && !pkg.end())
-    return do_cmdline_show_target(pkg, source, sourcestr, verbose, has_explicit_source);
+    return do_cmdline_show_target(pkg,
+                                  source,
+                                  sourcestr,
+                                  verbose,
+                                  has_explicit_source,
+                                  term);
   else if(is_pattern)
     {
       using namespace aptitude::matching;
@@ -571,7 +609,12 @@ bool do_cmdline_show(string s, int verbose)
       for(std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >::const_iterator
 	    it = matches.begin(); it != matches.end(); ++it)
 	{
-	  if(!do_cmdline_show_target(it->first, source, sourcestr, verbose, has_explicit_source))
+	  if(!do_cmdline_show_target(it->first,
+                                     source,
+                                     sourcestr,
+                                     verbose,
+                                     has_explicit_source,
+                                     term))
 	    return false;
 	}
     }
@@ -584,10 +627,13 @@ bool do_cmdline_show(string s, int verbose)
 
 int cmdline_show(int argc, char *argv[], int verbose)
 {
+  shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   _error->DumpErrors();
 
-  OpProgress progress;
-  apt_init(&progress, false);
+  shared_ptr<OpProgress> progress = make_text_progress(true, term, term_locale);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {
@@ -596,7 +642,7 @@ int cmdline_show(int argc, char *argv[], int verbose)
     }
 
   for(int i=1; i<argc; ++i)
-    if(!do_cmdline_show(argv[i], verbose))
+    if(!do_cmdline_show(argv[i], verbose, term))
       {
 	_error->DumpErrors();
 	return -1;

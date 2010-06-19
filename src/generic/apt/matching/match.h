@@ -26,6 +26,8 @@
 
 #include <apt-pkg/pkgcache.h>
 
+#include <sigc++/slot.h>
+
 #include <vector>
 
 #include <regex.h>
@@ -38,6 +40,11 @@ class pkgRecords;
 
 namespace aptitude
 {
+  namespace util
+  {
+    class progress_info;
+  }
+
   namespace matching
   {
     /** \brief Represents the atomic values that are selected by search
@@ -681,13 +688,16 @@ namespace aptitude
      *  \param records      The package records in which to perform the match.
      *  \param debug        If \b true, information about the search
      *                      process will be printed to standard output.
+     *  \param progress_slot A slot used to report the progress of the search.
      */
     void search(const cwidget::util::ref_ptr<pattern> &p,
 		const cwidget::util::ref_ptr<search_cache> &search_info,
 		std::vector<std::pair<pkgCache::PkgIterator, cwidget::util::ref_ptr<structural_match> > > &matches,
 		aptitudeDepCache &cache,
 		pkgRecords &records,
-		bool debug = false);
+		bool debug = false,
+                const sigc::slot<void, aptitude::util::progress_info> &progress_slot
+                  = sigc::slot<void, aptitude::util::progress_info>());
 
     /** \brief Retrieve all the package versions matching the given pattern.
      *
@@ -702,13 +712,16 @@ namespace aptitude
      *  \param records      The package records in which to perform the match.
      *  \param debug        If \b true, information about the search
      *                      process will be printed to standard output.
+     *  \param progress_slot A slot used to report the progress of the search.
      */
     void search_versions(const cwidget::util::ref_ptr<pattern> &p,
                          const cwidget::util::ref_ptr<search_cache> &search_info,
                          std::vector<std::pair<pkgCache::VerIterator, cwidget::util::ref_ptr<structural_match> > > &matches,
                          aptitudeDepCache &cache,
                          pkgRecords &records,
-                         bool debug = false);
+                         bool debug = false,
+                         const sigc::slot<void, aptitude::util::progress_info> &progress_slot =
+                           sigc::slot<void, aptitude::util::progress_info>());
   }
 }
 

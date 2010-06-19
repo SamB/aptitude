@@ -19,7 +19,8 @@
 
 #include "loggers.h"
 
-using namespace log4cxx;
+using logging::Logger;
+using logging::LoggerPtr;
 
 namespace aptitude
 {
@@ -51,6 +52,11 @@ namespace aptitude
   LoggerPtr Loggers::getAptitudeCmdlineSearch()
   {
     return Logger::getLogger("aptitude.cmdline.search");
+  }
+
+  LoggerPtr Loggers::getAptitudeCmdlineThrottle()
+  {
+    return Logger::getLogger("aptitude.cmdline.throttle");
   }
 
   LoggerPtr Loggers::getAptitudeDownloadCache()
@@ -103,6 +109,16 @@ namespace aptitude
     return Logger::getLogger("aptitude.gtk.dashboard.upgrade.resolver");
   }
 
+  LoggerPtr Loggers::getAptitudeGtkGlobals()
+  {
+    return Logger::getLogger("aptitude.gtk.globals");
+  }
+
+  LoggerPtr Loggers::getAptitudeGtkMainWindow()
+  {
+    return Logger::getLogger("aptitude.gtk.mainwindow");
+  }
+
   LoggerPtr Loggers::getAptitudeGtkPkgView()
   {
     return Logger::getLogger("aptitude.gtk.pkgview");
@@ -131,6 +147,11 @@ namespace aptitude
   LoggerPtr Loggers::getAptitudeGtkToplevel()
   {
     return Logger::getLogger("aptitude.gtk.toplevel");
+  }
+
+  LoggerPtr Loggers::getAptitudeGtkToplevelTabs()
+  {
+    return Logger::getLogger("aptitude.gtk.toplevel.tabs");
   }
 
   LoggerPtr Loggers::getAptitudeResolver()

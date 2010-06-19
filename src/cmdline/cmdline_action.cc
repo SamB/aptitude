@@ -28,6 +28,9 @@
 
 namespace cw = cwidget;
 
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
+
 namespace
 {
   bool cmdline_do_build_depends(const string &pkg,
@@ -39,7 +42,8 @@ namespace
 				pkgset &to_install, pkgset &to_hold,
 				pkgset &to_remove, pkgset &to_purge,
 				int verbose,
-				bool allow_auto)
+				bool allow_auto,
+                                const shared_ptr<terminal> &term)
   {
     aptitude::cmdline::source_package sourcepkg =
       aptitude::cmdline::find_source_package(pkg,
@@ -142,7 +146,8 @@ namespace
 						best_ver.VerStr(),
 						policy,
 						arch_only,
-						allow_auto);
+						allow_auto,
+                                                term);
 			    satisfied = true;
 			  }
 		      }
@@ -176,7 +181,8 @@ namespace
 					    std::string(),
 					    policy,
 					    arch_only,
-					    allow_auto);
+					    allow_auto,
+                                            term);
 		      }
 		  }
 	      }
@@ -222,7 +228,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 const string &sourcestr,
 			 pkgPolicy &policy,
 			 bool arch_only,
-			 bool allow_auto)
+			 bool allow_auto,
+                         const shared_ptr<terminal> &term)
 {
   // Handle virtual packages.
   if(!pkg.ProvidesList().end())
@@ -278,7 +285,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 		{
 		  printf(_("\"%s\" is a virtual package provided by:\n"),
 			 pkg.Name());
-		  cmdline_show_pkglist(cands);
+		  cmdline_show_pkglist(cands, term);
 		  printf(_("You must choose one to install.\n"));
 		}
 	      return false;
@@ -427,7 +434,8 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 				      to_install, to_hold,
 				      to_remove, to_purge,
 				      verbose,
-				      allow_auto);
+				      allow_auto,
+                                      term);
     default:
       fprintf(stderr, "Internal error: impossible pkgaction type\n");
       abort();
@@ -443,7 +451,8 @@ bool cmdline_applyaction(string s,
 			 pkgset &to_remove, pkgset &to_purge,
 			 int verbose,
 			 pkgPolicy &policy, bool arch_only,
-			 bool allow_auto)
+			 bool allow_auto,
+                         const shared_ptr<terminal> &term)
 {
   using namespace aptitude::matching;
 
@@ -475,7 +484,8 @@ bool cmdline_applyaction(string s,
 				       verbose, source,
 				       sourcestr,
 				       policy, arch_only,
-				       allow_auto) && rval;
+				       allow_auto,
+                                       term) && rval;
 	}
 
       // break out.
@@ -521,7 +531,8 @@ bool cmdline_applyaction(string s,
 					    to_install, to_hold,
 					    to_remove, to_purge,
 					    verbose,
-					    allow_auto);
+					    allow_auto,
+                                            term);
 
 	  // Maybe they misspelled the package name?
 	  pkgvector possible;
@@ -542,7 +553,7 @@ bool cmdline_applyaction(string s,
 	      else
 		{
 		  printf(_("Couldn't find package \"%s\".  However, the following\npackages contain \"%s\" in their name:\n"), package.c_str(), package.c_str());
-		  cmdline_show_pkglist(possible);
+		  cmdline_show_pkglist(possible, term);
 		}
 	    }
 	  else
@@ -569,7 +580,7 @@ bool cmdline_applyaction(string s,
 	      else
 		{
 		  printf(_("Couldn't find any package matching \"%s\".  However, the following\npackages contain \"%s\" in their description:\n"), package.c_str(), package.c_str());
-		  cmdline_show_pkglist(possible);
+		  cmdline_show_pkglist(possible, term);
 		}
 	    }
 
@@ -580,7 +591,8 @@ bool cmdline_applyaction(string s,
 				 seen_virtual_packages,
 				 to_install, to_hold, to_remove, to_purge,
 				 verbose, source,
-				 sourcestr, policy, arch_only, allow_auto);
+				 sourcestr, policy, arch_only, allow_auto,
+                                 term);
     }
   else
     {
@@ -605,7 +617,8 @@ bool cmdline_applyaction(string s,
 				  verbose, source,
 				  sourcestr,
 				  policy, arch_only,
-				  allow_auto))
+				  allow_auto,
+                                  term))
 	    rval = false;
 	}
     }
@@ -693,7 +706,8 @@ void cmdline_parse_action(string s,
 			  pkgset &to_remove, pkgset &to_purge,
 			  int verbose,
 			  pkgPolicy &policy, bool arch_only,
-			  bool allow_auto)
+			  bool allow_auto,
+                          const boost::shared_ptr<aptitude::cmdline::terminal> &term)
 {
   string::size_type loc=0;
 
@@ -730,7 +744,8 @@ void cmdline_parse_action(string s,
 				      to_install, to_hold,
 				      to_remove, to_purge,
 				      verbose, policy,
-				      arch_only, allow_auto))
+				      arch_only, allow_auto,
+                                      term))
 		return;
 	    }
 	}

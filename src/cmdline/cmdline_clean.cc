@@ -1,14 +1,36 @@
 // cmdline_clean.cc
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_clean.h"
+
+#include "text_progress.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 
+
+// System includes:
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/error.h>
@@ -21,8 +43,18 @@
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
+
 int cmdline_clean(int argc, char *argv[], bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+  const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   _error->DumpErrors();
 
   if(argc != 1)
@@ -31,9 +63,9 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
-  apt_init(&progress, false);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {
@@ -105,6 +137,9 @@ public:
 
 int cmdline_autoclean(int argc, char *argv[], bool simulate)
 {
+  const shared_ptr<terminal> term = create_terminal();
+  const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   _error->DumpErrors();
 
   if(argc != 1)
@@ -113,9 +148,9 @@ int cmdline_autoclean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
-  apt_init(&progress, false);
+  apt_init(progress.get(), false);
 
   if(_error->PendingError())
     {

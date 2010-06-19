@@ -1,32 +1,63 @@
 // cmdline_util.h                                   -*-c++-*-
 //
-//   Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
 #ifndef CMDLINE_UTIL_H
 #define CMDLINE_UTIL_H
 
+// Local includes:
 #include "cmdline_common.h"
 
 #include <pkg_sortpolicy.h>
-
-// Ew: for column_definition_list.
-#include <cwidget/config/column_definition.h>
-#include <cwidget/generic/util/ref_ptr.h>
 
 // For download_manager::result
 #include <generic/apt/download_manager.h>
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/match.h> // For structural_match.
 
-#include <string>
 
+// System includes:
 #include <apt-pkg/srcrecords.h>
+
+#include <boost/shared_ptr.hpp>
+
+// Ew: for column_definition_list.
+#include <cwidget/config/column_definition.h>
+#include <cwidget/generic/util/ref_ptr.h>
+
+#include <string>
 
 /** \file cmdline_util.h
  */
 
-void cmdline_show_pkglist(pkgvector &items);
-void cmdline_show_stringlist(strvector &items);
+namespace aptitude
+{
+  namespace cmdline
+  {
+    class terminal;
+    class terminal_locale;
+  }
+}
+
+void cmdline_show_pkglist(pkgvector &items,
+                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+void cmdline_show_stringlist(strvector &items,
+                             const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 /** Finds a candidate version for the package using the given source.
  */
@@ -68,12 +99,17 @@ bool cmdline_parse_source(const string &input,
  *  \param m        the download process to run.
  *  \param verbose  the verbosity level; controls how many
  *                  stats are printed when the run completes.
+ *  \param term     the terminal object to use for printing
+ *                  the download progress.
+ *  \param term_locale  the locale used for output to the terminal.
  *
  *  \return the success status of the post-download commands, or
  *  failure if the process failed before they could be run.
  */
 download_manager::result cmdline_do_download(download_manager *m,
-					     int verbose);
+					     int verbose,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal> &term,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_locale> &term_locale);
 
 namespace aptitude
 {

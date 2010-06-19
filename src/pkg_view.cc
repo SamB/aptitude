@@ -1,6 +1,6 @@
 // pkg_view.cc
 //
-//  Copyright 2000-2005, 2007-2009 Daniel Burrows
+//  Copyright 2000-2005, 2007-2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -67,6 +67,8 @@ namespace cwidget
 }
 
 namespace matching = aptitude::matching;
+using aptitude::why::why_callbacks;
+using boost::shared_ptr;
 using cw::util::ref_ptr;
 
 class pkg_handling_label:public cw::label
@@ -207,6 +209,7 @@ public:
 			    aptitude::why::no_summary,
 			    false,
 			    false,
+                            shared_ptr<why_callbacks>(),
 			    success));
       }
     catch(...)

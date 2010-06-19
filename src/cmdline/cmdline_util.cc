@@ -1,12 +1,31 @@
 // cmdline_util.cc
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_util.h"
 
 #include "cmdline_common.h"
 #include "cmdline_progress.h"
 #include "cmdline_show.h" // For operator<<
+#include "text_progress.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 #include <ui.h>
@@ -20,13 +39,8 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
-#include <cwidget/fragment.h>
-#include <cwidget/toplevel.h>
-#include <cwidget/generic/util/ssprintf.h>
 
-#include <sigc++/bind.h>
-#include <sigc++/functors/ptr_fun.h>
-
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/indexfile.h>
 #include <apt-pkg/metaindex.h>
@@ -34,9 +48,21 @@
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/version.h>
 
+#include <cwidget/fragment.h>
+#include <cwidget/toplevel.h>
+#include <cwidget/generic/util/ssprintf.h>
+
+#include <sigc++/bind.h>
+#include <sigc++/functors/ptr_fun.h>
+
 #include <algorithm>
 
 namespace cw = cwidget;
+
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using boost::shared_ptr;
 
 namespace
 {
@@ -82,8 +108,11 @@ void ui_solution_screen()
   exit(0);
 }
 
-void cmdline_show_stringlist(strvector &items)
+void cmdline_show_stringlist(strvector &items,
+                             const shared_ptr<terminal> &term)
 {
+  const unsigned int screen_width = term->get_screen_width();
+
   int loc=2;
 
   printf("  ");
@@ -103,14 +132,15 @@ void cmdline_show_stringlist(strvector &items)
   printf("\n");
 }
 
-void cmdline_show_pkglist(pkgvector &items)
+void cmdline_show_pkglist(pkgvector &items,
+                          const shared_ptr<terminal> &term)
 {
   strvector tmp;
 
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
     tmp.push_back(i->Name());
 
-  cmdline_show_stringlist(tmp);
+  cmdline_show_stringlist(tmp, term);
 }
 
 pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
@@ -288,7 +318,8 @@ namespace
 
   void show_stats_change(stats initial, stats final,
 			 bool show_all,
-			 bool show_unchanged)
+			 bool show_unchanged,
+                         const shared_ptr<terminal> &term)
   {
     using cw::fragf;
     using cw::util::ssprintf;
@@ -373,7 +404,7 @@ namespace
       {
 	cw::fragment *f = join_fragments(output_fragments, L"\n");
 
-	update_screen_width();
+        const unsigned int screen_width = term->get_screen_width();
 	std::cout << f->layout(screen_width, screen_width, cw::style());
 	delete f;
       }
@@ -390,10 +421,12 @@ namespace
 }
 
 download_manager::result cmdline_do_download(download_manager *m,
-					     int verbose)
+					     int verbose,
+                                             const shared_ptr<terminal> &term,
+                                             const shared_ptr<terminal_locale> &term_locale)
 {
   stats initial_stats(0, 0, 0, std::set<std::string>());
-  OpTextProgress progress(aptcfg->FindI("Quiet", 0));
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
 
   if(aptcfg->FindI("Quiet", 0) == 0)
     {
@@ -407,13 +440,13 @@ download_manager::result cmdline_do_download(download_manager *m,
       initial_stats = compute_apt_stats();
     }
 
-  std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress());
+  std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress(term));
 
   // Dump errors here because prepare() might check for pending errors
   // and think something failed.
   _error->DumpErrors();
 
-  if(!m->prepare(progress, *log.get(), log.get()))
+  if(!m->prepare(*progress, *log.get(), log.get()))
     return download_manager::failure;
 
   download_manager::result finish_res;
@@ -421,7 +454,7 @@ download_manager::result cmdline_do_download(download_manager *m,
   do
     {
       pkgAcquire::RunResult download_res = m->do_download();
-      m->finish(download_res, &progress,
+      m->finish(download_res, progress.get(),
 		sigc::bind(sigc::ptr_fun(&assign<download_manager::result>),
 			   &finish_res));
     }
@@ -434,7 +467,8 @@ download_manager::result cmdline_do_download(download_manager *m,
       apt_load_cache(&tmpProgress, false, NULL);
       final_stats = compute_apt_stats();
       show_stats_change(initial_stats, final_stats,
-			verbose >= 1, verbose >= 2);
+			verbose >= 1, verbose >= 2,
+                        term);
     }
 
   return finish_res;

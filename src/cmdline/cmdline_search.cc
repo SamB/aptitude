@@ -18,10 +18,17 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+
+// Local includes:
 #include "cmdline_search.h"
 
 #include "cmdline_common.h"
+#include "cmdline_progress_display.h"
+#include "cmdline_progress_throttle.h"
+#include "cmdline_search_progress.h"
 #include "cmdline_util.h"
+#include "terminal.h"
+#include "text_progress.h"
 
 #include <aptitude.h>
 #include <load_sortpolicy.h>
@@ -34,20 +41,43 @@
 #include <generic/apt/matching/match.h>
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
+#include <generic/apt/matching/serialize.h>
+#include <generic/util/progress_info.h>
 
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
 
+
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
-#include <algorithm>
-
+#include <boost/format.hpp>
 #include <boost/scoped_ptr.hpp>
+
+#include <sigc++/bind.h>
+
+#include <algorithm>
 
 using namespace std;
 namespace cw = cwidget;
 using aptitude::Loggers;
+using aptitude::cmdline::create_progress_display;
+using aptitude::cmdline::create_progress_throttle;
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::create_terminal_locale;
+using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::progress_display;
+using aptitude::cmdline::progress_throttle;
+using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_locale;
+using aptitude::matching::serialize_pattern;
+using aptitude::util::progress_info;
+using aptitude::util::progress_type_bar;
+using aptitude::util::progress_type_none;
+using aptitude::util::progress_type_pulse;
+using boost::format;
+using boost::shared_ptr;
 using cwidget::util::ref_ptr;
 using cwidget::util::transcode;
 using namespace aptitude::matching;
@@ -59,25 +89,42 @@ namespace
                          pkg_sortpolicy *sort_policy,
                          const column_definition_list &columns,
                          int format_width,
+                         const unsigned int screen_width,
                          bool disable_columns,
-                         bool debug)
+                         bool debug,
+                         const shared_ptr<terminal> &term,
+                         const shared_ptr<terminal_locale> &term_locale)
   {
     typedef std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >
       results_list;
+
+    const shared_ptr<progress_display> search_progress_display =
+      create_progress_display(term, term_locale);
+    const shared_ptr<progress_throttle> search_progress_throttle =
+      create_progress_throttle();
 
     results_list output;
     ref_ptr<search_cache> search_info(search_cache::create());
     for(std::vector<ref_ptr<pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
+        const shared_ptr<progress_display> search_progress =
+          create_search_progress(serialize_pattern(*pIt),
+                                 search_progress_display,
+                                 search_progress_throttle);
+
         // Q: should I just wrap an ?or around them all?
         aptitude::matching::search(*pIt,
                                    search_info,
                                    output,
                                    *apt_cache_file,
                                    *apt_package_records,
-                                   debug);
+                                   debug,
+                                   sigc::mem_fun(*search_progress,
+                                                 &progress_display::set_progress));
       }
+
+    search_progress_display->done();
 
     _error->DumpErrors();
 
@@ -116,6 +163,9 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
 		   bool disable_columns, bool debug)
 {
+  shared_ptr<terminal> term = create_terminal();
+  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+
   int real_width=-1;
 
   pkg_item::pkg_columnizer::setup_columns();
@@ -130,6 +180,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 
   _error->DumpErrors();
 
+  const unsigned int screen_width = term->get_screen_width();
   if(!width.empty())
     {
       unsigned long tmp=screen_width;
@@ -163,9 +214,10 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
       return -1;
     }
 
-  OpProgress progress;
+  shared_ptr<OpProgress> progress =
+    make_text_progress(true, term, term_locale);
 
-  apt_init(&progress, true, status_fname);
+  apt_init(progress.get(), true, status_fname);
 
   if(_error->PendingError())
     {
@@ -194,6 +246,9 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
                             s,
                             *columns,
                             real_width,
+                            screen_width,
                             disable_columns,
-                            debug);
+                            debug,
+                            term,
+                            term_locale);
 }

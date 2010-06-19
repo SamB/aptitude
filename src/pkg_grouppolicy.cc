@@ -1,6 +1,6 @@
 // pkg_grouppolicy.cc
 //
-//  Copyright 1999-2005, 2007-2009 Daniel Burrows
+//  Copyright 1999-2005, 2007-2010 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1334,15 +1334,15 @@ class pkg_grouppolicy_tag : public pkg_grouppolicy
 {
   pkg_grouppolicy_factory *chain;
 
-  string facet;
+  string match_facet;
 
   typedef std::map<string, pair<pkg_grouppolicy *, pkg_subtree *> > childmap;
 
   childmap children;
 public:
-  pkg_grouppolicy_tag(const string &_facet, pkg_grouppolicy_factory *_chain,
+  pkg_grouppolicy_tag(const string &_match_facet, pkg_grouppolicy_factory *_chain,
 		      pkg_signal *sig, desc_signal *desc_sig)
-    :pkg_grouppolicy(sig, desc_sig), chain(_chain), facet(_facet)
+    :pkg_grouppolicy(sig, desc_sig), chain(_chain), match_facet(_match_facet)
   {
   }
 
@@ -1350,8 +1350,12 @@ public:
 			   pkg_subtree *root)
   {
 #ifdef HAVE_EPT
-    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_facet_name;
+    using aptitude::apt::get_tag_long_description;
+    using aptitude::apt::get_tag_name;
+    using aptitude::apt::get_tag_short_description;
     using aptitude::apt::get_tags;
+    using aptitude::apt::tag;
 #endif
 
 #ifdef HAVE_EPT
@@ -1368,18 +1372,15 @@ public:
 	ti != tags->end(); ++ti)
       {
 #ifdef HAVE_EPT
-	const ept::debtags::Facet f = ti->facet();
-
-	const std::string thisfacet(f.name());
+        const std::string thisfacet = get_facet_name(*ti);
 
 	// Don't create items for tags that aren't in our facet.
-	if(f.name() != facet)
+	if(thisfacet != match_facet)
 	  return;
 
 	// TODO: split up by sub-facet or whatever the debtags guys
 	// call it?
-	std::string tagname;
-	ti->name(tagname);
+	std::string tagname = get_tag_name(*ti);
 
 #else // HAVE_EPT
 	tag::const_iterator j = ti->begin();
@@ -1388,7 +1389,7 @@ public:
 
 	string thisfacet = *j;
 
-	if(thisfacet != facet)
+	if(thisfacet != match_facet)
 	  continue;
 
 	++j;
@@ -1407,11 +1408,8 @@ public:
 	if(found == children.end())
 	  {
 #ifdef HAVE_EPT
-	    std::string desc;
-	    ti->longDescription(desc);
-
-	    std::string shortdesc;
-	    ti->shortDescription(shortdesc);
+	    const std::string desc = get_tag_long_description(*ti);
+	    const std::string shortdesc = get_tag_short_description(*ti);
 #else // HAVE_EPT
 	    string desc = tag_description(ti->str());
 	    string shortdesc(desc, 0, desc.find('\n'));
@@ -1491,8 +1489,8 @@ public:
 			   pkg_subtree *root)
   {
 #ifdef HAVE_EPT
-    typedef ept::debtags::Tag tag;
     using aptitude::apt::get_tags;
+    using aptitude::apt::tag;
 #endif
 
 #ifdef HAVE_EPT
@@ -1528,9 +1526,15 @@ public:
 	ti != tags->end(); ++ti)
       {
 #ifdef HAVE_EPT
-	const ept::debtags::Facet f(ti->facet());
-	std::string thisfacet(f.name());
-	std::string thistag(ti->name());
+        using aptitude::apt::get_facet_long_description;
+        using aptitude::apt::get_facet_name;
+        using aptitude::apt::get_facet_short_description;
+        using aptitude::apt::get_tag_long_description;
+        using aptitude::apt::get_tag_name;
+        using aptitude::apt::get_tag_short_description;
+
+	std::string thisfacet(get_facet_name(*ti));
+	std::string thistag(get_tag_name(*ti));
 #else // HAVE_EPT
 	tag::const_iterator j = ti->begin();
 
@@ -1558,10 +1562,10 @@ public:
 	if(facetfound == children.end())
 	  {
 #ifdef HAVE_EPT
-	    string desc(f.longDescription());
-	    string shortdesc(f.shortDescription());
+	    string desc(get_facet_long_description(*ti));
+	    string shortdesc(get_facet_short_description(*ti));
 #else // HAVE_EPT
-	    string desc = facet_description(thisfacet);
+	    string desc = get_facet_description(*ti);
 	    string shortdesc(desc, 0, desc.find('\n'));
 #endif
 
@@ -1596,8 +1600,8 @@ public:
 	if(tagfound == tagchildren->end())
 	  {
 #ifdef HAVE_EPT
-	    string desc(ti->longDescription());
-	    string shortdesc(ti->shortDescription());
+	    string desc(get_tag_long_description(*ti));
+	    string shortdesc(get_tag_short_description(*ti));
 #else // HAVE_EPT
 	    string desc = tag_description(ti->str());
 	    string shortdesc(desc, 0, desc.find('\n'));

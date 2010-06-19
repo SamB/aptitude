@@ -1,6 +1,6 @@
 // tags.h                                            -*-c++-*-
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -233,10 +233,54 @@ namespace aptitude
 {
   namespace apt
   {
-    const std::set<ept::debtags::Tag> get_tags(const pkgCache::PkgIterator &pkg);
+#ifdef HAVE_EPT_DEBTAGS_TAG
+    typedef ept::debtags::Tag tag;
+    inline std::string get_fullname(const tag &t)
+    {
+      return t.fullname();
+    }
+#else
+#ifdef EPT_DEBTAGS_GETTAGSOFITEM_RETURNS_STRINGS
+    typedef std::string tag;
+    inline std::string get_fullname(const std::string &t)
+    {
+      return t;
+    }
+#else
+    // Probably means a new version of libept does something the
+    // configure checks can't recognize.
+#error "Don't know how to represent a debtags tag."
+#endif
+#endif
+
+    const std::set<tag> get_tags(const pkgCache::PkgIterator &pkg);
 
     /** \brief Initialize the cache of debtags information. */
     void load_tags();
+
+    /** \brief Get the name of the facet corresponding to a tag. */
+    std::string get_facet_name(const tag &t);
+
+    /** \brief Get the name of a tag (the full name minus the facet). */
+    std::string get_tag_name(const tag &t);
+
+    /** \brief Get the short description of a tag. */
+    std::string get_tag_short_description(const tag &t);
+
+    /** \brief Get the long description of a tag. */
+    std::string get_tag_long_description(const tag &t);
+
+    // \note This interface could be more efficient if it just used
+    // facet names like libept does.  Using tags is a concession to
+    // backwards compatibility (it's hard to implement one interface
+    // that covers both cases without a lot of cruft).  In any event,
+    // this shouldn't be called enough to matter.
+
+    /** \brief Get the short description of the facet corresponding to a tag. */
+    std::string get_facet_short_description(const tag &t);
+
+    /** \brief Get the long description of the facet corresponding to a tag. */
+    std::string get_facet_long_description(const tag &t);
   }
 }
 

@@ -59,6 +59,8 @@
 using namespace std;
 using aptitude::Loggers;
 
+namespace cw = cwidget;
+
 enum interesting_state {uncached = 0, uninteresting, interesting};
 static interesting_state *cached_deps_interesting = NULL;
 
@@ -66,18 +68,11 @@ static interesting_state *cached_deps_interesting = NULL;
 // pointer in the following table is set to 1 when a result is cached:
 static pkgCache::Dependency **cached_surrounding_or = NULL;
 
-aptitudeCacheFile *apt_cache_file=NULL;
-signalling_config *aptcfg=NULL;
-pkgRecords *apt_package_records=NULL;
-pkgSourceList *apt_source_list=NULL;
-undo_list *apt_undos=NULL;
 pkg_hier *user_pkg_hier=NULL;
-resolver_manager *resman = NULL;
 
 string *pendingerr=NULL;
 bool erroriswarning=false;
 
-boost::shared_ptr<aptitude::util::file_cache> download_cache;
 
 // Set to "true" if we have a version of the apt library with
 // support for overriding configuration settings via RootDir.

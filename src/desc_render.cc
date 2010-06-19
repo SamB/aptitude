@@ -1,6 +1,6 @@
 // desc_parse.cc
 //
-//  Copyright 2004-2008 Daniel Burrows
+//  Copyright 2004-2008, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -104,8 +104,9 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
     return NULL;
 
 #ifdef HAVE_EPT
-  typedef ept::debtags::Tag tag;
+  using aptitude::apt::get_fullname;
   using aptitude::apt::get_tags;
+  using aptitude::apt::tag;
 #endif
 
 #ifdef HAVE_EPT
@@ -122,7 +123,7 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
       for(set<tag>::const_iterator i = s->begin(); i != s->end(); ++i)
 	{
 #ifdef HAVE_EPT
-	  std::string name(i->fullname());
+	  std::string name(get_fullname(*i));
 #else
 	  const std::string name(i->str());
 #endif

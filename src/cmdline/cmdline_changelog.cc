@@ -1,13 +1,30 @@
 // cmdline_changelog.cc
 //
-//  Copyright 2004 Daniel Burrows
+// Copyright (C) 2004, 2010 Daniel Burrows
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 2 of the
+// License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; see the file COPYING.  If not, write to
+// the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+// Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "cmdline_changelog.h"
 
 #include "cmdline_common.h"
 #include "cmdline_main_loop.h"
 #include "cmdline_progress.h"
 #include "cmdline_util.h"
+#include "terminal.h"
 
 #include <aptitude.h>
 
@@ -16,6 +33,7 @@
 #include <generic/apt/download_queue.h>
 #include <generic/apt/pkg_changelog.h>
 
+// System includes:
 #include <apt-pkg/error.h>
 #include <apt-pkg/metaindex.h>
 #include <apt-pkg/progress.h>
@@ -35,6 +53,10 @@
 
 using namespace std;
 
+using aptitude::cmdline::create_terminal;
+using aptitude::cmdline::terminal;
+using boost::shared_ptr;
+
 namespace
 {
 
@@ -52,11 +74,15 @@ void set_name(temp::name n, temp::name *target)
   {
     std::string description;
     bool quiet;
+    shared_ptr<terminal> term;
 
   public:
     single_download_progress(const std::string &_description,
-			     bool _quiet)
-      : description(_description), quiet(_quiet)
+			     bool _quiet,
+                             const shared_ptr<terminal> &_term)
+      : description(_description),
+        quiet(_quiet),
+        term(_term)
     {
     }
 
@@ -68,6 +94,8 @@ void set_name(temp::name n, temp::name *target)
 
       if (quiet)
 	return;
+
+      const int screen_width = term->get_screen_width();
 
       unsigned long TotalBytes = totalSize;
       unsigned long CurrentBytes = currentSize;
@@ -100,7 +128,9 @@ void set_name(temp::name n, temp::name *target)
     void success(const temp::name &filename)
     {
       if(!quiet)
-	std::cout << "\r" << std::string(screen_width, ' ') << "\r";
+	std::cout << "\r"
+                  << std::string(term->get_screen_width(), ' ')
+                  << "\r";
 
       std::cout << _("Get:") << " " << description << std::endl;
     }
@@ -108,7 +138,9 @@ void set_name(temp::name n, temp::name *target)
     void failure(const std::string &msg)
     {
       if(!quiet)
-	std::cout << "\r" << std::string(screen_width, ' ') << "\r";
+	std::cout << "\r"
+                  << std::string(term->get_screen_width(), ' ')
+                  << "\r";
 
       std::cout << _("Err ") << description << std::endl;
     }
@@ -121,9 +153,11 @@ void set_name(temp::name n, temp::name *target)
 
   public:
     changelog_download_callbacks(temp::name &_out_changelog_file,
-				 const std::string &short_description)
+				 const std::string &short_description,
+                                 const shared_ptr<terminal> &term)
       : single_download_progress(short_description,
-				 aptcfg->FindI("Quiet", 0) > 0),
+				 aptcfg->FindI("Quiet", 0) > 0,
+                                 term),
 	out_changelog_file(_out_changelog_file)
     {
     }
@@ -150,14 +184,16 @@ void set_name(temp::name n, temp::name *target)
   };
 
   void get_changelog(const pkgCache::VerIterator &ver,
-		     temp::name &out_changelog_file)
+		     temp::name &out_changelog_file,
+                     const shared_ptr<terminal> &term)
   {
     const std::string short_description =
       (boost::format("Changelog of %s") % ver.ParentPkg().Name()).str();
 
     boost::shared_ptr<changelog_download_callbacks>
       callbacks = boost::make_shared<changelog_download_callbacks>(boost::ref(out_changelog_file),
-								   short_description);
+								   short_description,
+                                                                   term);
 
     get_changelog(aptitude::apt::changelog_info::create(ver),
 		  callbacks,
@@ -182,14 +218,16 @@ void set_name(temp::name n, temp::name *target)
 				 const std::string &ver,
 				 const std::string &section,
 				 const std::string &name,
-				 temp::name &out_changelog_file)
+				 temp::name &out_changelog_file,
+                                 const shared_ptr<terminal> &term)
   {
     const std::string short_description =
       (boost::format("Changelog of %s") % name).str();
 
     boost::shared_ptr<changelog_download_callbacks>
       callbacks = boost::make_shared<changelog_download_callbacks>(boost::ref(out_changelog_file),
-								   short_description);
+								   short_description,
+                                                                   term);
 
     boost::shared_ptr<aptitude::apt::changelog_info>
       info = aptitude::apt::changelog_info::create(srcpkg, ver, section, name);
@@ -207,7 +245,8 @@ void set_name(temp::name n, temp::name *target)
  *  no changelog could be found.
  */
 temp::name changelog_by_version(const std::string &pkg,
-				const std::string &ver)
+				const std::string &ver,
+                                const shared_ptr<terminal> &term)
 {
   // Try forcing the particular version that was
   // selected, using various sections.  FIXME: relies
@@ -217,23 +256,24 @@ temp::name changelog_by_version(const std::string &pkg,
 
   temp::name rval;
 
-  get_changelog_from_source(pkg, ver, "", pkg, rval);
+  get_changelog_from_source(pkg, ver, "", pkg, rval, term);
 
   if(!rval.valid())
     {
-      get_changelog_from_source(pkg, ver, "contrib/foo", pkg, rval);
+      get_changelog_from_source(pkg, ver, "contrib/foo", pkg, rval, term);
     }
 
   if(!rval.valid())
     {
-      get_changelog_from_source(pkg, ver, "non-free/foo", pkg, rval);
+      get_changelog_from_source(pkg, ver, "non-free/foo", pkg, rval, term);
     }
 
   return rval;
 }
 }
 
-void do_cmdline_changelog(const vector<string> &packages)
+void do_cmdline_changelog(const vector<string> &packages,
+                          const shared_ptr<terminal> &term)
 {
   const char *pager="/usr/bin/sensible-pager";
 
@@ -315,7 +355,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 					p.get_version(),
 					p.get_section(),
 					pkg.Name(),
-					filename);
+					filename,
+                                        term);
 	    }
 	  else
 	    {
@@ -324,13 +365,13 @@ void do_cmdline_changelog(const vector<string> &packages)
 	      if(ver.end())
                 {
                   if(source == cmdline_version_version)
-                    filename = changelog_by_version(package, sourcestr);
+                    filename = changelog_by_version(package, sourcestr, term);
                   // If we don't even have a version string, leave
                   // filename blank; we'll fail below.
                 }
 	      else
 		{
-		  get_changelog(ver, filename);
+		  get_changelog(ver, filename, term);
 		}
 	    }
 	}
@@ -347,7 +388,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 					p.get_version(),
 					p.get_section(),
 					p.get_package(),
-					filename);
+					filename,
+                                        term);
 	    }
 	  else
 	    {
@@ -372,7 +414,7 @@ void do_cmdline_changelog(const vector<string> &packages)
 		  break;
 
 		case cmdline_version_version:
-		  filename = changelog_by_version(package, sourcestr);
+		  filename = changelog_by_version(package, sourcestr, term);
 		  break;
 		}
 	    }
@@ -391,6 +433,8 @@ void do_cmdline_changelog(const vector<string> &packages)
 // TODO: fetch them all in one go.
 int cmdline_changelog(int argc, char *argv[])
 {
+  shared_ptr<terminal> term = create_terminal();
+
   _error->DumpErrors();
 
   OpProgress progress;
@@ -406,7 +450,7 @@ int cmdline_changelog(int argc, char *argv[])
   for(int i=1; i<argc; ++i)
     packages.push_back(argv[i]);
 
-  do_cmdline_changelog(packages);
+  do_cmdline_changelog(packages, term);
 
   _error->DumpErrors();
 

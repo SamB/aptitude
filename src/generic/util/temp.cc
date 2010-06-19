@@ -220,8 +220,8 @@ namespace temp
 
   void shutdown()
   {
-    // No log statements because this might run after log4cxx's global
-    // destructors.
+    // No log statements because this ran after log4cxx's global
+    // destructors when we used log4cxx.
     cw::threads::mutex::lock l(*temp_state_mutex);
 
     if(temp_base == NULL)

@@ -51,6 +51,7 @@ libgeneric_apt_a_SOURCES = \
 	download_signal_log.h  \
 	dump_packages.cc    \
 	dump_packages.h     \
+	globals.cc          \
         infer_reason.cc     \
         infer_reason.h      \
 	log.cc		    \

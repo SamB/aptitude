@@ -1272,8 +1272,9 @@ namespace gui
       return where;
 
 #ifdef HAVE_EPT
-    typedef ept::debtags::Tag tag;
+    using aptitude::apt::get_fullname;
     using aptitude::apt::get_tags;
+    using aptitude::apt::tag;
 
     const std::set<tag> realS(get_tags(pkg));
     const std::set<tag> * const s(&realS);
@@ -1292,7 +1293,7 @@ namespace gui
 	    it != s->end(); ++it)
 	  {
 #ifdef HAVE_EPT
-	    const std::string name(it->fullname());
+	    const std::string name(get_fullname(*it));
 #else
 	    const std::string name(it->str());
 #endif

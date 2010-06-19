@@ -1,6 +1,6 @@
 // download.cc
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2010 Daniel Burrows
 //  Copyright 2008 Obey Arthur Liu
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,11 +28,11 @@
 #include <generic/apt/config_signal.h>
 #include <generic/util/util.h>
 
-#include <gui.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/acquire-worker.h>
 
+#include "gui.h"
 #include "notify.h"
 
 namespace cw = cwidget;

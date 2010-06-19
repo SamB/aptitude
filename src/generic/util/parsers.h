@@ -2443,14 +2443,22 @@ namespace parsers
       struct result;
 
       template<typename Element, typename ResultIn>
+#ifdef BOOST_FUSION_FOLD_STATE_BEFORE_VALUE
       struct result<do_do_parse(const ResultIn &, const Element &)>
+#else
+      struct result<do_do_parse(const Element &, const ResultIn &)>
+#endif
       {
         typedef typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type type;
       };
 
       template<typename Element, typename ResultIn>
       typename boost::fusion::result_of::push_back<const ResultIn, typename Element::result_type>::type
+#ifdef BOOST_FUSION_FOLD_STATE_BEFORE_VALUE
       operator()(const ResultIn &result, const Element &e) const
+#else
+      operator()(const Element &e, const ResultIn &result) const
+#endif
       {
         return boost::fusion::push_back(result, e.parse(input));
       }

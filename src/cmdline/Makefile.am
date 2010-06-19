@@ -1,5 +1,7 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 
+SUBDIRS = mocks
+
 noinst_LIBRARIES=libcmdline.a
 
 libcmdline_a_SOURCES=\
@@ -28,12 +30,18 @@ libcmdline_a_SOURCES=\
 	cmdline_moo.h \
 	cmdline_progress.cc \
 	cmdline_progress.h \
+	cmdline_progress_display.cc \
+	cmdline_progress_display.h \
+	cmdline_progress_throttle.cc \
+	cmdline_progress_throttle.h \
 	cmdline_prompt.cc \
 	cmdline_prompt.h \
 	cmdline_resolver.cc \
 	cmdline_resolver.h \
 	cmdline_search.cc \
 	cmdline_search.h \
+	cmdline_search_progress.cc \
+	cmdline_search_progress.h \
 	cmdline_show.cc \
 	cmdline_show.h \
 	cmdline_show_broken.cc \
@@ -51,4 +59,10 @@ libcmdline_a_SOURCES=\
 	cmdline_versions.cc \
 	cmdline_versions.h \
 	cmdline_why.cc \
-	cmdline_why.h
+	cmdline_why.h \
+	terminal.cc \
+	terminal.h \
+	text_progress.cc \
+	text_progress.h \
+	transient_message.cc \
+	transient_message.h
