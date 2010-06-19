@@ -17,6 +17,8 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
+#ifdef HAVE_GTK
+
 #include <generic/apt/matching/compare_patterns.h>
 #include <generic/apt/matching/pattern.h>
 #include <gtk/controllers/search_input.h>
@@ -146,3 +148,5 @@ BOOST_FIXTURE_TEST_CASE(testEnteringCorrectTextSearches, SearchInputTest)
 
   get_controller()->enter_text(p_text);
 }
+
+#endif // HAVE_GTK
