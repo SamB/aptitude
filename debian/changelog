@@ -1,3 +1,10 @@
+aptitude (0.6.3-2) unstable; urgency=low
+
+  * Cherry-pick an upstream patch that fixes the Makefiles so that files
+    named using $(wildcard) get installed. (Closes: #586508, #586511)
+
+ -- Daniel Burrows <dburrows@debian.org>  Sun, 20 Jun 2010 14:58:47 -0700
+
 aptitude (0.6.3-1) unstable; urgency=low
 
   * New upstream release.
