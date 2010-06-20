@@ -14,7 +14,7 @@ MANPAGE_LOCALES=gl it pl
 
 TLMANPAGES = $(wildcard $(srcdir)/aptitude.??.8)
 TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/help-??_??.txt)
-TLDEFAULTS = $(wildcard aptitude-defaults.??) $(wildcard aptitude-defaults.??_??)
+TLDEFAULTS = $(wildcard $(srcdir)/aptitude-defaults.??) $(wildcard $(srcdir)/aptitude-defaults.??_??)
 EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.CWIDGET aptitude-hackers-guide.txt aclocal.m4 \
 	function_groups function_pkgs aptitude-defaults \
 	section-descriptions \
