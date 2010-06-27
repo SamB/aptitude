@@ -175,14 +175,18 @@ void AcqTextStatus::Pulse(pkgAcquire *Owner, download_signal_log &manager,
    
    enum {Long = 0,Medium,Short} Mode = Long;
    
-   char Buffer[1024];
+   char Buffer[buffer_size];
    char *End = Buffer + sizeof(Buffer);
    char *S = Buffer;
-   if (ScreenWidth >= sizeof(Buffer))
-      ScreenWidth = sizeof(Buffer)-1;
+   // Save the current screen width in case it's updated underneath us
+   // for whatever reason.
+   const unsigned int ScreenWidth =
+     (this->ScreenWidth >= sizeof(Buffer))
+     ? sizeof(Buffer) - 1
+     : this->ScreenWidth;
 
    // Put in the percent done
-   snprintf(S,1024,"%ld%%",long(double((CurrentBytes + CurrentItems)*100.0)/double(TotalBytes+TotalItems)));
+   snprintf(S, buffer_size,"%ld%%",long(double((CurrentBytes + CurrentItems)*100.0)/double(TotalBytes+TotalItems)));
 
    bool Shown = false;
    for (pkgAcquire::Worker *I = Owner->WorkersBegin(); I != 0;

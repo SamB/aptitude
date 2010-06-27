@@ -20,7 +20,8 @@ class download_signal_log;
 class AcqTextStatus : public sigc::trackable
 {
    unsigned int &ScreenWidth;
-   char BlankLine[300];
+   static const int buffer_size = 1024;
+   char BlankLine[buffer_size];
    unsigned long ID;
    unsigned long Quiet;
    
