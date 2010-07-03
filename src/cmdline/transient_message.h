@@ -46,6 +46,12 @@ namespace aptitude
        *  line.
        */
       virtual void preserve_and_advance() = 0;
+
+      /** \brief Replace the currently displayed text with the given
+       *  message, which will not be clipped if it exceeds the terminal
+       *  width, and advance to the next line.
+       */
+      virtual void display_and_advance(const std::wstring &text) = 0;
     };
 
     class terminal;

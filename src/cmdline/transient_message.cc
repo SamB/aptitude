@@ -59,6 +59,15 @@ namespace aptitude
         void preserve_and_advance()
         {
         }
+
+        void display_and_advance(const std::wstring &msg)
+        {
+          // I could generate output here, but the messages passed to
+          // display_and_advance might be inappropriate for
+          // non-terminal output; this layer of the code doesn't have
+          // the necessary information to decide whether they should
+          // be displayed.
+        }
       };
 
       class transient_message_impl : public transient_message
@@ -90,6 +99,7 @@ namespace aptitude
 
         void set_text(const std::wstring &line);
         void preserve_and_advance();
+        void display_and_advance(const std::wstring &line);
       };
 
 
@@ -157,6 +167,16 @@ namespace aptitude
         // already displayed.
         term->write_text(L"\n");
         term->flush();
+      }
+
+      void transient_message_impl::display_and_advance(const std::wstring &msg)
+      {
+        clear_last_line();
+        term->write_text(msg);
+        term->write_text(L"\n");
+
+        last_line_len = 0;
+        last_line.clear();
       }
     }
 

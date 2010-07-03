@@ -36,6 +36,7 @@ using aptitude::cmdline::transient_message;
 using boost::shared_ptr;
 using testing::InSequence;
 using testing::Return;
+using testing::StrEq;
 using testing::Test;
 using testing::_;
 
@@ -104,6 +105,51 @@ TEST_F(TransientMessage, PreserveAndAdvance)
 
   message->set_text(L"pigeon");
   message->preserve_and_advance();
+}
+
+TEST_F(TransientMessage, DisplayAndAdvanceBasic)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcdefghi")));
+    EXPECT_CALL(*teletype, newline());
+  }
+
+  message->display_and_advance(L"abcdefghi");
+}
+
+TEST_F(TransientMessage, DisplayAndAdvanceWrapping)
+{
+  EXPECT_CALL(*term, get_screen_width())
+    .WillRepeatedly(Return(4));
+
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcd")));
+    EXPECT_CALL(*teletype, newline());
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"efgh")));
+    EXPECT_CALL(*teletype, newline());
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"ij")));
+    EXPECT_CALL(*teletype, newline());
+  }
+
+  message->display_and_advance(L"abcdefghij");
+}
+
+TEST_F(TransientMessage, DisplayAndAdvanceClearsExistingText)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"xyzw")));
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcd")));
+    EXPECT_CALL(*teletype, newline());
+  }
+
+  message->set_text(L"xyzw");
+  message->display_and_advance(L"abcd");
 }
 
 TEST_F(TransientMessage, ClearText)

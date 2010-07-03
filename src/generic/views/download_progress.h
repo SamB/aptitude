@@ -22,6 +22,7 @@
 
 // System includes:
 #include <boost/optional.hpp>
+#include <boost/variant.hpp>
 
 #include <sigc++/slot.h>
 
