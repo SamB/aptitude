@@ -94,19 +94,6 @@ TEST_F(TransientMessage, SetText)
   message->set_text(L"abc");
 }
 
-TEST_F(TransientMessage, PreserveAndAdvance)
-{
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"pigeon")));
-    EXPECT_CALL(*teletype, newline());
-  }
-
-  message->set_text(L"pigeon");
-  message->preserve_and_advance();
-}
-
 TEST_F(TransientMessage, DisplayAndAdvanceBasic)
 {
   {

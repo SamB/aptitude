@@ -56,10 +56,6 @@ namespace aptitude
         {
         }
 
-        void preserve_and_advance()
-        {
-        }
-
         void display_and_advance(const std::wstring &msg)
         {
           // I could generate output here, but the messages passed to
@@ -98,7 +94,6 @@ namespace aptitude
         }
 
         void set_text(const std::wstring &line);
-        void preserve_and_advance();
         void display_and_advance(const std::wstring &line);
       };
 
@@ -159,14 +154,6 @@ namespace aptitude
         term->flush();
         last_line_len = display_width;
         last_line = line;
-      }
-
-      void transient_message_impl::preserve_and_advance()
-      {
-        // As in set_text(), assume that the current message is
-        // already displayed.
-        term->write_text(L"\n");
-        term->flush();
       }
 
       void transient_message_impl::display_and_advance(const std::wstring &msg)

@@ -37,7 +37,6 @@ namespace aptitude
       {
       public:
         MOCK_METHOD1(set_text, void(const std::wstring &));
-        MOCK_METHOD0(preserve_and_advance, void());
         MOCK_METHOD1(display_and_advance, void(const std::wstring &));
       };
     }
