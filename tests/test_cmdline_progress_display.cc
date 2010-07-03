@@ -131,15 +131,7 @@ namespace
 }
 
 #define EXPECT_NO_RETAIN_COMPLETED()            \
-  EXPECT_CALL(*msg, preserve_and_advance()).Times(0)
-
-#define MAYBE_EXPECT_RETAIN_COMPLETED()     \
-  EXPECT_CALL(*msg, preserve_and_advance()) \
-  .Times(get_retain_completed() ? 1 : 0)
-
-#define MAYBE_EXPECT_CLEAR_COMPLETED()    \
-  EXPECT_CALL(*msg, set_text(StrEq(L""))) \
-  .Times(get_retain_completed() ? 0 : 1)
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0)
 
 TEST_P(CmdlineProgressDisplayTest, InitialShowNoneHasNoEffect)
 {
@@ -500,20 +492,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterPulse)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();
@@ -536,20 +523,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterBar)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Ack... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Ack... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Ack")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Ack")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(maybe_done);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(maybe_done);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(bar(0.98, "Ack"));
   progress->done();
@@ -577,20 +559,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterDone)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();
@@ -620,20 +597,15 @@ TEST_P(CmdlineProgressDisplayTest, NoneAfterDone)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();

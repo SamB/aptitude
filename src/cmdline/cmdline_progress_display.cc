@@ -162,17 +162,15 @@ namespace aptitude
                 const std::wstring msg =
                   transcode(last_progress.get_progress_status());
                 if(old_style_percentage)
-                  message->set_text( (wformat(L"%s... %s")
-                                      % msg
-                                      % transcode(_("Done"))).str() );
+                  message->display_and_advance( (wformat(L"%s... %s")
+                                                 % msg
+                                                 % transcode(_("Done"))).str() );
                 else
                   // ForTranslators: the string replacing "DONE" will
                   // be truncated or padded to 4 characters.
-                  message->set_text( (wformat(L"[%4s] %s")
-                                      % transcode(_("DONE"))
-                                      % msg).str() );
-
-                message->preserve_and_advance();
+                  message->display_and_advance( (wformat(L"[%4s] %s")
+                                                 % transcode(_("DONE"))
+                                                 % msg).str() );
               }
             else
               message->set_text(L"");
