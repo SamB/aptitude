@@ -25,6 +25,7 @@
 #include "cmdline_progress_throttle.h"
 
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 
 #include <boost/format.hpp>
@@ -47,14 +48,14 @@ namespace aptitude
   {
     namespace
     {
-      class search_progress : public progress_display
+      class search_progress : public views::progress
       {
-        shared_ptr<progress_display> display;
+        shared_ptr<views::progress> display;
         shared_ptr<progress_throttle> throttle;
         std::string pattern;
 
       public:
-        search_progress(const shared_ptr<progress_display> &_display,
+        search_progress(const shared_ptr<views::progress> &_display,
                         const shared_ptr<progress_throttle> &_throttle,
                         const std::string &_pattern)
           : display(_display),
@@ -108,9 +109,9 @@ namespace aptitude
       }
     }
 
-    shared_ptr<progress_display>
+    shared_ptr<views::progress>
     create_search_progress(const std::string &pattern,
-                           const shared_ptr<progress_display> &display,
+                           const shared_ptr<views::progress> &display,
                            const shared_ptr<progress_throttle> &throttle)
     {
       return make_shared<search_progress>(display,

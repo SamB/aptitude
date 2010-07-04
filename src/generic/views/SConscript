@@ -9,4 +9,6 @@ srcs = map(File, [
 
 programs_env.Dist('Makefile.am', 'README', 'SConscript')
 
+SConscript(dirs = [ 'mocks' ])
+
 Return('srcs')

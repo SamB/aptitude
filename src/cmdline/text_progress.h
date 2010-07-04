@@ -27,9 +27,13 @@
 
 namespace aptitude
 {
+  namespace views
+  {
+    class progress;
+  }
+
   namespace cmdline
   {
-    class progress_display;
     class terminal;
     class terminal_locale;
 
@@ -51,7 +55,7 @@ namespace aptitude
      */
     boost::shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const boost::shared_ptr<progress_display> &display);
+                       const boost::shared_ptr<views::progress> &display);
 
     /** \brief Convenience routine to create a default text-progress
      *  object.

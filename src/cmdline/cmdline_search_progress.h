@@ -24,9 +24,13 @@
 
 namespace aptitude
 {
+  namespace views
+  {
+    class progress;
+  }
+
   namespace cmdline
   {
-    class progress_display;
     class progress_throttle;
 
     /** \brief Create a progress-display object specialized for
@@ -40,9 +44,9 @@ namespace aptitude
      *  \param throttle Used to determine when the new object should
      *                  display messages.
      */
-    boost::shared_ptr<progress_display>
+    boost::shared_ptr<views::progress>
     create_search_progress(const std::string &pattern,
-                           const boost::shared_ptr<progress_display> &display,
+                           const boost::shared_ptr<views::progress> &display,
                            const boost::shared_ptr<progress_throttle> &throttle);
   }
 }

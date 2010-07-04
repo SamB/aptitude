@@ -28,6 +28,7 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 
 // System includes:
@@ -65,11 +66,11 @@ namespace aptitude
         // indicator when the operation finishes.
         std::string last_op;
 
-        shared_ptr<progress_display> display;
+        shared_ptr<views::progress> display;
 
       public:
         text_progress(bool _use_tty_decorations,
-                      const shared_ptr<progress_display> &_display)
+                      const shared_ptr<views::progress> &_display)
           : use_tty_decorations(_use_tty_decorations),
             display(_display)
         {
@@ -130,7 +131,7 @@ namespace aptitude
 
     shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const shared_ptr<progress_display> &display)
+                       const shared_ptr<views::progress> &display)
     {
       bool hide_tty_decorations = false;
       bool hidden = false;

@@ -43,6 +43,7 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 #include <cwidget/config/column_definition.h>
 #include <cwidget/generic/util/transcode.h>
@@ -62,12 +63,10 @@
 using namespace std;
 namespace cw = cwidget;
 using aptitude::Loggers;
-using aptitude::cmdline::create_progress_display;
 using aptitude::cmdline::create_progress_throttle;
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
-using aptitude::cmdline::progress_display;
 using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
@@ -76,6 +75,7 @@ using aptitude::util::progress_info;
 using aptitude::util::progress_type_bar;
 using aptitude::util::progress_type_none;
 using aptitude::util::progress_type_pulse;
+using aptitude::views::progress;
 using boost::format;
 using boost::shared_ptr;
 using cwidget::util::ref_ptr;
@@ -98,7 +98,7 @@ namespace
     typedef std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >
       results_list;
 
-    const shared_ptr<progress_display> search_progress_display =
+    const shared_ptr<progress> search_progress_display =
       create_progress_display(term, term_locale);
     const shared_ptr<progress_throttle> search_progress_throttle =
       create_progress_throttle();
@@ -108,7 +108,7 @@ namespace
     for(std::vector<ref_ptr<pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
-        const shared_ptr<progress_display> search_progress =
+        const shared_ptr<progress> search_progress =
           create_search_progress(serialize_pattern(*pIt),
                                  search_progress_display,
                                  search_progress_throttle);
@@ -121,7 +121,7 @@ namespace
                                    *apt_package_records,
                                    debug,
                                    sigc::mem_fun(*search_progress,
-                                                 &progress_display::set_progress));
+                                                 &progress::set_progress));
       }
 
     search_progress_display->done();

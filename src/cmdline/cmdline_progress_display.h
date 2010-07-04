@@ -25,9 +25,9 @@
 
 namespace aptitude
 {
-  namespace util
+  namespace views
   {
-    class progress_info;
+    class progress;
   }
 
   namespace cmdline
@@ -35,35 +35,6 @@ namespace aptitude
     class terminal;
     class terminal_locale;
     class transient_message;
-
-    /** \brief A general class for displaying a single line of
-     *  progress information.
-     *
-     *  The progress information is delivered as a progress_info
-     *  object.  A blank progress_info causes the display to be
-     *  erased.  A "pulse" mode progress_info displays a message with
-     *  no percent indicator.  And a "bar" mode progress_info displays
-     *  a message with a percent indicator.
-     */
-    class progress_display
-    {
-    public:
-      virtual ~progress_display();
-
-      /** \brief Set the currently displayed progress.
-       *
-       *  \param progress      The new progress information to display.
-       */
-      virtual void set_progress(const aptitude::util::progress_info &progress) = 0;
-
-      /** \brief Mark the currently displayed progress as done.
-       *
-       *  Depending on the current configuration, this will either
-       *  blank the output line or display a "done" message and
-       *  advance to the next line.
-       */
-      virtual void done() = 0;
-    };
 
     /** \brief Create a blank progress display.
      *
@@ -76,7 +47,7 @@ namespace aptitude
      *  \param retain_completed If \b true, completed messages will be
      *                          retained instead of being deleted.
      */
-    boost::shared_ptr<progress_display>
+    boost::shared_ptr<views::progress>
     create_progress_display(const boost::shared_ptr<transient_message> &message,
                             bool old_style_percentage,
                             bool retain_completed);
@@ -86,7 +57,7 @@ namespace aptitude
      *  This is a convenience routine, equivalent to creating a new
      *  transient message with the given terminal objects.
      */
-    boost::shared_ptr<progress_display>
+    boost::shared_ptr<views::progress>
     create_progress_display(const boost::shared_ptr<terminal> &term,
                             const boost::shared_ptr<terminal_locale> &term_locale);
   }

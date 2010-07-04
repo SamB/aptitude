@@ -22,10 +22,10 @@
 
 // Local includes:
 #include <cmdline/cmdline_search_progress.h>
-#include <cmdline/mocks/cmdline_progress_display.h>
 #include <cmdline/mocks/cmdline_progress_throttle.h>
 
 #include <generic/util/progress_info.h>
+#include <generic/views/mocks/progress.h>
 
 // System includes:
 #include <boost/make_shared.hpp>
@@ -35,7 +35,6 @@
 #include <gtest/gtest.h>
 
 using aptitude::cmdline::create_search_progress;
-using aptitude::cmdline::progress_display;
 using aptitude::util::progress_info;
 using boost::make_shared;
 using boost::shared_ptr;
@@ -47,27 +46,33 @@ using testing::Sequence;
 using testing::Test;
 using testing::_;
 
-namespace mocks = aptitude::cmdline::mocks;
+namespace mocks
+{
+  using namespace aptitude::cmdline::mocks;
+  using namespace aptitude::views::mocks;
+}
+
+namespace views = aptitude::views;
 
 namespace
 {
   struct CmdlineSearchProgressTest : public Test
   {
-    const shared_ptr<mocks::progress_display> progress_display;
+    const shared_ptr<mocks::progress> progress;
     const shared_ptr<mocks::progress_throttle> progress_throttle;
 
     /** \brief The search pattern string used to create the search
      *  progress object.
      */
     const std::string search_pattern;
-    const shared_ptr<aptitude::cmdline::progress_display> search_progress;
+    const shared_ptr<views::progress> search_progress;
 
     CmdlineSearchProgressTest()
-      : progress_display(make_shared<mocks::progress_display>()),
+      : progress(make_shared<mocks::progress>()),
         progress_throttle(make_shared<mocks::progress_throttle>()),
         search_pattern("?name(aptitude)"),
         search_progress(create_search_progress(search_pattern,
-                                               progress_display,
+                                               progress,
                                                progress_throttle))
     {
     }
@@ -112,7 +117,7 @@ TEST_F(CmdlineSearchProgressTest, SetProgressNone)
 {
   never_throttle();
 
-  EXPECT_CALL(*progress_display, set_progress(none()));
+  EXPECT_CALL(*progress, set_progress(none()));
 
   search_progress->set_progress(none());
 }
@@ -124,7 +129,7 @@ TEST_F(CmdlineSearchProgressTest, SetProgressPulse)
   const std::string msg = "Blip";
   const progress_info info = pulse(search_pattern + ": " + msg);
 
-  EXPECT_CALL(*progress_display, set_progress(info));
+  EXPECT_CALL(*progress, set_progress(info));
 
   search_progress->set_progress(pulse(msg));
 }
@@ -137,7 +142,7 @@ TEST_F(CmdlineSearchProgressTest, SetProgressBar)
   const std::string msg = "Blorp";
   const progress_info info = bar(fraction, search_pattern + ": " + msg);
 
-  EXPECT_CALL(*progress_display, set_progress(info));
+  EXPECT_CALL(*progress, set_progress(info));
 
   search_progress->set_progress(bar(fraction, msg));
 }
@@ -146,7 +151,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressNone)
 {
   always_throttle();
 
-  EXPECT_CALL(*progress_display, set_progress(_))
+  EXPECT_CALL(*progress, set_progress(_))
     .Times(0);
 
   search_progress->set_progress(none());
@@ -155,11 +160,11 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressNone)
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
   Mock::VerifyAndClearExpectations(progress_throttle.get());
-  Mock::VerifyAndClearExpectations(progress_display.get());
+  Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
 
-  EXPECT_CALL(*progress_display, set_progress(none()));
+  EXPECT_CALL(*progress, set_progress(none()));
 
   search_progress->set_progress(none());
 }
@@ -171,7 +176,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressPulse)
 
   always_throttle();
 
-  EXPECT_CALL(*progress_display, set_progress(_))
+  EXPECT_CALL(*progress, set_progress(_))
     .Times(0);
 
   search_progress->set_progress(info);
@@ -180,11 +185,11 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressPulse)
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
   Mock::VerifyAndClearExpectations(progress_throttle.get());
-  Mock::VerifyAndClearExpectations(progress_display.get());
+  Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
 
-  EXPECT_CALL(*progress_display,
+  EXPECT_CALL(*progress,
               set_progress(pulse(search_pattern + ": " + msg)));
 
   search_progress->set_progress(info);
@@ -198,7 +203,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
 
   always_throttle();
 
-  EXPECT_CALL(*progress_display, set_progress(_))
+  EXPECT_CALL(*progress, set_progress(_))
     .Times(0);
 
   search_progress->set_progress(info);
@@ -207,11 +212,11 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
   Mock::VerifyAndClearExpectations(progress_throttle.get());
-  Mock::VerifyAndClearExpectations(progress_display.get());
+  Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
 
-  EXPECT_CALL(*progress_display,
+  EXPECT_CALL(*progress,
               set_progress(bar(fraction, search_pattern + ": " + msg)));
 
   search_progress->set_progress(info);
@@ -220,7 +225,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
 TEST_F(CmdlineSearchProgressTest, Done)
 {
   never_throttle();
-  EXPECT_CALL(*progress_display, done());
+  EXPECT_CALL(*progress, done());
 
   search_progress->done();
 }
@@ -229,7 +234,7 @@ TEST_F(CmdlineSearchProgressTest, Done)
 TEST_F(CmdlineSearchProgressTest, DoneThrottled)
 {
   always_throttle();
-  EXPECT_CALL(*progress_display, done());
+  EXPECT_CALL(*progress, done());
 
   search_progress->done();
 }

@@ -35,6 +35,7 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 
 // System includes:
@@ -61,7 +62,6 @@ using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
-using aptitude::cmdline::progress_display;
 using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::terminal;
@@ -70,6 +70,7 @@ using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
 using aptitude::matching::serialize_pattern;
 using aptitude::util::progress_info;
+using aptitude::views::progress;
 using boost::shared_ptr;
 
 namespace
@@ -254,7 +255,7 @@ namespace
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
       results_list;
 
-    const shared_ptr<progress_display> search_progress_display =
+    const shared_ptr<progress> search_progress_display =
       create_progress_display(term, term_locale);
     const shared_ptr<progress_throttle> search_progress_throttle =
       create_progress_throttle();
@@ -264,7 +265,7 @@ namespace
     for(std::vector<cw::util::ref_ptr<m::pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
-        const shared_ptr<progress_display> search_progress =
+        const shared_ptr<progress> search_progress =
           create_search_progress(serialize_pattern(*pIt),
                                  search_progress_display,
                                  search_progress_throttle);
@@ -279,7 +280,7 @@ namespace
                                             *apt_package_records,
                                             debug,
                                             sigc::mem_fun(search_progress.get(),
-                                                          &progress_display::set_progress));
+                                                          &progress::set_progress));
 
         // Warn the user if an exact name pattern didn't produce a
         // result.

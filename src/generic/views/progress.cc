@@ -1,5 +1,4 @@
-/** \file cmdline_progress_display.h */    // -*-c++-*-
-
+/** \file cmdline_progress_display.cc */
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -18,31 +17,15 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef CMDLINE_PROGRESS_DISPLAY_H
-#define CMDLINE_PROGRESS_DISPLAY_H
-
 // Local includes:
-#include <cmdline/cmdline_progress_display.h>
-
-// System includes:
-#include <gmock/gmock.h>
+#include "progress.h"
 
 namespace aptitude
 {
-  namespace cmdline
+  namespace views
   {
-    namespace mocks
+    progress::~progress()
     {
-      /** \brief Mock implementation of cmdline::progress_display */
-      class progress_display : public aptitude::cmdline::progress_display
-      {
-      public:
-        MOCK_METHOD1(set_progress, void(const aptitude::util::progress_info &));
-
-        MOCK_METHOD0(done, void());
-      };
     }
   }
 }
-
-#endif // CMDLINE_PROGRESS_DISPLAY_H
