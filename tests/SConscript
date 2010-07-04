@@ -102,6 +102,7 @@ gtest_test_sources = [
     ]
 
 gtest_test_extra_deps = [
+    '../src/cmdline/cmdline_download_progress_display.o',
     '../src/cmdline/cmdline_progress_display.o',
     '../src/cmdline/cmdline_progress_throttle.o',
     '../src/cmdline/cmdline_search_progress.o',
@@ -113,6 +114,7 @@ gtest_test_extra_deps = [
     '../src/generic/util/logging.o',
     '../src/generic/util/progress_info.o',
     '../src/generic/util/util.o',
+    '../src/generic/views/download_progress.o',
     '../src/loggers.o',
     ]
 

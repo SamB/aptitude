@@ -3,6 +3,8 @@ Import('programs_env')
 srcs = map(File, [
     'download_progress.cc',
     'download_progress.h',
+    'progress.cc',
+    'progress.h',
     ])
 
 programs_env.Dist('Makefile.am', 'README', 'SConscript')
