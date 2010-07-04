@@ -34,6 +34,8 @@ srcs = map(File, [
     'sqlite.h',
     'temp.cc',
     'temp.h',
+    'throttle.cc',
+    'throttle.h',
     'undo.cc',
     'undo.h',
     'util.cc',
@@ -41,5 +43,7 @@ srcs = map(File, [
     ])
 
 programs_env.Dist('Makefile.am', 'SConscript')
+
+SConscript(dirs = [ 'mocks' ])
 
 Return('srcs')

@@ -22,9 +22,9 @@
 #include "cmdline_search_progress.h"
 
 #include "cmdline_progress_display.h"
-#include "cmdline_progress_throttle.h"
 
 #include <generic/util/progress_info.h>
+#include <generic/util/throttle.h>
 #include <generic/views/progress.h>
 
 
@@ -42,6 +42,8 @@ using boost::make_shared;
 using boost::shared_ptr;
 using cwidget::util::ref_ptr;
 
+namespace util = aptitude::util;
+
 namespace aptitude
 {
   namespace cmdline
@@ -51,12 +53,12 @@ namespace aptitude
       class search_progress : public views::progress
       {
         shared_ptr<views::progress> display;
-        shared_ptr<progress_throttle> throttle;
+        shared_ptr<util::throttle> throttle;
         std::string pattern;
 
       public:
         search_progress(const shared_ptr<views::progress> &_display,
-                        const shared_ptr<progress_throttle> &_throttle,
+                        const shared_ptr<util::throttle> &_throttle,
                         const std::string &_pattern)
           : display(_display),
             throttle(_throttle),
@@ -112,7 +114,7 @@ namespace aptitude
     shared_ptr<views::progress>
     create_search_progress(const std::string &pattern,
                            const shared_ptr<views::progress> &display,
-                           const shared_ptr<progress_throttle> &throttle)
+                           const shared_ptr<util::throttle> &throttle)
     {
       return make_shared<search_progress>(display,
                                           throttle,

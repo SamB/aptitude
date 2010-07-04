@@ -1,4 +1,4 @@
-/** \file cmdline_progress_throttle.h */   // -*-c++-*-
+/** \file throttle.h */   // -*-c++-*-
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -17,25 +17,28 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef CMDLINE_PROGRESS_THROTTLE_H
-#define CMDLINE_PROGRESS_THROTTLE_H
+#ifndef APTITUDE_UTIL_THROTTLE_H
+#define APTITUDE_UTIL_THROTTLE_H
 
 // System includes:
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
 {
-  namespace cmdline
+  namespace util
   {
-    /** \brief Used to check whether enough time has passed that a
-     *  progress display should be updated.
+    /** \brief Used to ensure that an expensive operation (such as
+     *  updating a progress indicator) doesn't run too often.
+     *
+     *  To test code that uses this class, use the mock that's
+     *  available in mocks/.
      */
-    class progress_throttle
+    class throttle
     {
     public:
-      virtual ~progress_throttle() = 0;
+      virtual ~throttle() = 0;
 
-      /** \return \b true if the progress display should be updated. */
+      /** \return \b true if the timer has expired. */
       virtual bool update_required() = 0;
 
       /** \brief Reset the timer that controls when the display is
@@ -44,9 +47,13 @@ namespace aptitude
       virtual void reset_timer() = 0;
     };
 
-    /** \brief Create a progress_throttle object. */
-    boost::shared_ptr<progress_throttle> create_progress_throttle();
+    /** \brief Create a throttle object.
+     *
+     *  \todo This should take an argument giving the update interval
+     *  in seconds.
+     */
+    boost::shared_ptr<throttle> create_throttle();
   }
 }
 
-#endif // CMDLINE_PROGRESS_THROTTLE_H
+#endif // APTITUDE_UTIL_THROTTLE_H

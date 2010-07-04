@@ -22,7 +22,6 @@
 #include "cmdline_versions.h"
 
 #include "cmdline_progress_display.h"
-#include "cmdline_progress_throttle.h"
 #include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
@@ -35,6 +34,7 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 #include <generic/util/progress_info.h>
+#include <generic/util/throttle.h>
 #include <generic/views/progress.h>
 
 
@@ -57,19 +57,20 @@ namespace cw = cwidget;
 namespace m = aptitude::matching;
 
 using aptitude::cmdline::create_progress_display;
-using aptitude::cmdline::create_progress_throttle;
+using aptitude::cmdline::create_search_progress;
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
-using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::search_result_column_parameters;
 using aptitude::cmdline::terminal;
 using aptitude::cmdline::terminal_locale;
 using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
 using aptitude::matching::serialize_pattern;
+using aptitude::util::create_throttle;
 using aptitude::util::progress_info;
+using aptitude::util::throttle;
 using aptitude::views::progress;
 using boost::shared_ptr;
 
@@ -257,8 +258,8 @@ namespace
 
     const shared_ptr<progress> search_progress_display =
       create_progress_display(term, term_locale);
-    const shared_ptr<progress_throttle> search_progress_throttle =
-      create_progress_throttle();
+    const shared_ptr<throttle> search_progress_throttle =
+      create_throttle();
 
     results_list output;
     cw::util::ref_ptr<m::search_cache> search_info(m::search_cache::create());

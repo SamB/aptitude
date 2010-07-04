@@ -1,6 +1,6 @@
-/** \file cmdline_progress_throttle.cc */   // -*-c++-*-
+/** \file throttle.cc */   // -*-c++-*-
 
-#include "cmdline_progress_throttle.h"
+#include "throttle.h"
 
 // Local includes:
 #include <loggers.h>
@@ -22,11 +22,11 @@ using logging::LoggerPtr;
 
 namespace aptitude
 {
-  namespace cmdline
+  namespace util
   {
     namespace
     {
-      class progress_throttle_impl : public progress_throttle
+      class throttle_impl : public throttle
       {
         boost::optional<struct timeval> last_update;
 
@@ -41,9 +41,9 @@ namespace aptitude
         void write_time_error(int errnum);
 
       public:
-        progress_throttle_impl();
+        throttle_impl();
 
-        /** \return \b true if the progress display should be updated. */
+        /** \return \b true if the timer has expired. */
         bool update_required();
 
         /** \brief Reset the timer that controls when the display is
@@ -52,9 +52,9 @@ namespace aptitude
         void reset_timer();
       };
 
-      const double progress_throttle_impl::update_interval;
+      const double throttle_impl::update_interval;
 
-      void progress_throttle_impl::write_time_error(int errnum)
+      void throttle_impl::write_time_error(int errnum)
       {
         if(!wrote_time_error)
           {
@@ -65,13 +65,13 @@ namespace aptitude
           }
       }
 
-      progress_throttle_impl::progress_throttle_impl()
+      throttle_impl::throttle_impl()
         : logger(Loggers::getAptitudeCmdlineThrottle()),
           wrote_time_error(false)
       {
       }
 
-      bool progress_throttle_impl::update_required()
+      bool throttle_impl::update_required()
       {
         if(!last_update)
           return true;
@@ -99,7 +99,7 @@ namespace aptitude
           }
       }
 
-      void progress_throttle_impl::reset_timer()
+      void throttle_impl::reset_timer()
       {
         LOG_TRACE(logger, "Resetting the update timer.");
 
@@ -111,13 +111,13 @@ namespace aptitude
       }
     }
 
-    progress_throttle::~progress_throttle()
+    throttle::~throttle()
     {
     }
 
-    shared_ptr<progress_throttle> create_progress_throttle()
+    shared_ptr<throttle> create_throttle()
     {
-      return make_shared<progress_throttle_impl>();
+      return make_shared<throttle_impl>();
     }
   }
 }

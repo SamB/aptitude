@@ -1,4 +1,4 @@
-/** \file cmdline_progress_throttle.h */  // -*-c++-*-
+/** \file throttle.h */  // -*-c++-*-
 
 
 // Copyright (C) 2010 Daniel Burrows
@@ -18,23 +18,23 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef CMDLINE_PROGRESS_THROTTLE
-#define CMDLINE_PROGRESS_THROTTLE
+#ifndef APTITUDE_UTIL_MOCKS_THROTTLE_H
+#define APTITUDE_UTIL_MOCKS_THROTTLE_H
 
 // Local includes:
-#include <cmdline/cmdline_progress_throttle.h>
+#include <generic/util/throttle.h>
 
 // System includes:
 #include <gmock/gmock.h>
 
 namespace aptitude
 {
-  namespace cmdline
+  namespace util
   {
     namespace mocks
     {
-      /** \brief Mock implementation of cmdline::progress_throttle. */
-      class progress_throttle : public aptitude::cmdline::progress_throttle
+      /** \brief Mock implementation of aptitude::util::throttle. */
+      class throttle : public aptitude::util::throttle
       {
       public:
         MOCK_METHOD0(update_required, bool());
@@ -44,4 +44,4 @@ namespace aptitude
   }
 }
 
-#endif // CMDLINE_PROGRESS_THROTTLE
+#endif // APTITUDE_UTIL_MOCKS_THROTTLE_H

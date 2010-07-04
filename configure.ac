@@ -831,6 +831,7 @@ AC_CONFIG_FILES([
 	src/generic/apt/matching/Makefile
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
+        src/generic/util/mocks/Makefile
         src/generic/views/Makefile
         src/generic/views/mocks/Makefile
 	src/mine/Makefile

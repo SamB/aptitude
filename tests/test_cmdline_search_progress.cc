@@ -22,9 +22,9 @@
 
 // Local includes:
 #include <cmdline/cmdline_search_progress.h>
-#include <cmdline/mocks/cmdline_progress_throttle.h>
 
 #include <generic/util/progress_info.h>
+#include <generic/util/mocks/throttle.h>
 #include <generic/views/mocks/progress.h>
 
 // System includes:
@@ -48,7 +48,7 @@ using testing::_;
 
 namespace mocks
 {
-  using namespace aptitude::cmdline::mocks;
+  using namespace aptitude::util::mocks;
   using namespace aptitude::views::mocks;
 }
 
@@ -59,7 +59,7 @@ namespace
   struct CmdlineSearchProgressTest : public Test
   {
     const shared_ptr<mocks::progress> progress;
-    const shared_ptr<mocks::progress_throttle> progress_throttle;
+    const shared_ptr<mocks::throttle> throttle;
 
     /** \brief The search pattern string used to create the search
      *  progress object.
@@ -69,11 +69,11 @@ namespace
 
     CmdlineSearchProgressTest()
       : progress(make_shared<mocks::progress>()),
-        progress_throttle(make_shared<mocks::progress_throttle>()),
+        throttle(make_shared<mocks::throttle>()),
         search_pattern("?name(aptitude)"),
         search_progress(create_search_progress(search_pattern,
                                                progress,
-                                               progress_throttle))
+                                               throttle))
     {
     }
 
@@ -95,19 +95,19 @@ namespace
 
     void never_throttle()
     {
-      EXPECT_CALL(*progress_throttle, update_required())
+      EXPECT_CALL(*throttle, update_required())
         .WillRepeatedly(Return(true));
-      EXPECT_CALL(*progress_throttle, reset_timer())
+      EXPECT_CALL(*throttle, reset_timer())
         .Times(AnyNumber());
     }
 
     void always_throttle()
     {
-      EXPECT_CALL(*progress_throttle, update_required())
+      EXPECT_CALL(*throttle, update_required())
         .WillRepeatedly(Return(false));
       // No call to reset_timer() expected since it's throttled --
       // calling it would, in fact, be wrong.
-      EXPECT_CALL(*progress_throttle, reset_timer())
+      EXPECT_CALL(*throttle, reset_timer())
         .Times(0);
     }
   };
@@ -159,7 +159,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressNone)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
-  Mock::VerifyAndClearExpectations(progress_throttle.get());
+  Mock::VerifyAndClearExpectations(throttle.get());
   Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
@@ -184,7 +184,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressPulse)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
-  Mock::VerifyAndClearExpectations(progress_throttle.get());
+  Mock::VerifyAndClearExpectations(throttle.get());
   Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
@@ -211,7 +211,7 @@ TEST_F(CmdlineSearchProgressTest, ThrottledProgressBar)
 
   // Check that a second set_progress() call goes through, since
   // throttling is no longer enabled:
-  Mock::VerifyAndClearExpectations(progress_throttle.get());
+  Mock::VerifyAndClearExpectations(throttle.get());
   Mock::VerifyAndClearExpectations(progress.get());
 
   never_throttle();
