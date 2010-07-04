@@ -61,11 +61,9 @@ toplevel_srcs = map(File, [
     ])
 
 sub_srcs = SConscript(dirs = [
-    'controllers',
     'toplevel',
     'util',
     'view-impls',
-    'views',
     ])
 
 srcs = (toplevel_srcs, sub_srcs)

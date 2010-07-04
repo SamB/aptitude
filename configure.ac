@@ -817,11 +817,8 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 	src/Makefile
 	src/gtk/Makefile
-        src/gtk/controllers/Makefile
         src/gtk/toplevel/Makefile
 	src/gtk/util/Makefile
-        src/gtk/views/Makefile
-        src/gtk/views/mocks/Makefile
         src/gtk/view-impls/Makefile
 	src/cmdline/Makefile
         src/cmdline/mocks/Makefile
@@ -829,6 +826,7 @@ AC_CONFIG_FILES([
 	src/generic/apt/Makefile
 	src/generic/apt/history/Makefile
 	src/generic/apt/matching/Makefile
+        src/generic/controllers/Makefile
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
         src/generic/util/mocks/Makefile

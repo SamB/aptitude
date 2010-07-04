@@ -17,13 +17,16 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef APTITUDE_GTK_VIEWS_MOCKS_SEARCH_INPUT_H
-#define APTITUDE_GTK_VIEWS_MOCKS_SEARCH_INPUT_H
+#ifndef APTITUDE_VIEWS_MOCKS_SEARCH_INPUT_H
+#define APTITUDE_VIEWS_MOCKS_SEARCH_INPUT_H
 
+// Local includes:
+#include <generic/views/search_input.h>
+
+// System includes:
 #include <gmock/gmock.h>
-#include <gtk/views/search_input.h>
 
-namespace gui
+namespace aptitude
 {
   namespace views
   {
@@ -38,9 +41,9 @@ namespace gui
       class search_input : public views::search_input
       {
       public:
-        MOCK_METHOD0(get_search_text, Glib::ustring());
-        MOCK_METHOD1(set_search_text, void(const Glib::ustring &));
-        MOCK_METHOD1(set_error_message, void(const Glib::ustring &));
+        MOCK_METHOD0(get_search_text, std::wstring());
+        MOCK_METHOD1(set_search_text, void(const std::wstring &));
+        MOCK_METHOD1(set_error_message, void(const std::wstring &));
         MOCK_METHOD1(set_input_validity, void(bool));
         MOCK_METHOD1(set_find_sensitivity, void(bool));
         MOCK_METHOD1(connect_search_text_changed, sigc::connection(const sigc::slot<void> &));
@@ -67,4 +70,4 @@ namespace gui
   }
 }
 
-#endif // APTITUDE_GTK_VIEWS_MOCKS_SEARCH_INPUT_H
+#endif // APTITUDE_VIEWS_MOCKS_SEARCH_INPUT_H

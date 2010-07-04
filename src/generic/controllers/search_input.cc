@@ -18,6 +18,7 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "search_input.h"
 
 #include <aptitude.h>
@@ -25,12 +26,19 @@
 #include <generic/apt/matching/parse.h>
 #include <generic/apt/matching/pattern.h>
 
-#include <gtk/views/search_input.h>
+#include <generic/views/search_input.h>
 
+// System includes:
 #include <boost/format.hpp>
 #include <boost/make_shared.hpp>
 
-namespace gui
+#include <cwidget/generic/util/transcode.h>
+
+using cwidget::util::transcode;
+
+namespace views = aptitude::views;
+
+namespace aptitude
 {
   namespace controllers
   {
@@ -48,7 +56,7 @@ namespace gui
         void search_input_changed();
 
         /** \brief A signal emitted when the user searches for a package. */
-        sigc::signal<void, Glib::ustring, cwidget::util::ref_ptr<aptitude::matching::pattern> > signal_activated;
+        sigc::signal<void, std::wstring, cwidget::util::ref_ptr<aptitude::matching::pattern> > signal_activated;
 
       public:
         // Only public for make_shared.
@@ -64,15 +72,15 @@ namespace gui
         static boost::shared_ptr<search_input_impl>
         create(const boost::shared_ptr<views::search_input> &view);
 
-        Glib::ustring get_text() const;
+        std::wstring get_text() const;
 
         /** \brief Set the text of the view and emit a search
          *  immediately.
          */
-        void enter_text(const Glib::ustring &text);
+        void enter_text(const std::wstring &text);
 
         sigc::connection
-        connect_activated(const sigc::slot<void, Glib::ustring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &slot);
+        connect_activated(const sigc::slot<void, std::wstring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &slot);
       };
 
       search_input_impl::search_input_impl(const boost::shared_ptr<views::search_input> &_view)
@@ -89,8 +97,8 @@ namespace gui
 
       void search_input_impl::do_search()
       {
-        Glib::ustring search_term_u(view->get_search_text());
-        std::string search_term(search_term_u);
+        const std::wstring search_term_w(view->get_search_text());
+        const std::string search_term(transcode(search_term_w));
         cwidget::util::ref_ptr<aptitude::matching::pattern> p;
         try
           {
@@ -101,21 +109,21 @@ namespace gui
             std::string msg = (boost::format("%s: %s")
                                % _("Parse error")
                                % ex.errmsg()).str();
-            view->set_error_message(msg);
+            view->set_error_message(transcode(msg));
             return;
           }
 
-        view->set_error_message("");
-        signal_activated(search_term_u, p);
+        view->set_error_message(std::wstring());
+        signal_activated(search_term_w, p);
       }
 
       void search_input_impl::search_input_changed()
       {
-        const Glib::ustring limit(view->get_search_text());
+        const std::wstring limit(view->get_search_text());
         bool valid;
         try
           {
-            aptitude::matching::parse_with_errors(limit);
+            aptitude::matching::parse_with_errors(transcode(limit));
             valid = true;
           }
         catch(aptitude::matching::MatchingException &)
@@ -126,14 +134,14 @@ namespace gui
         view->set_input_validity(valid);
       }
 
-      void search_input_impl::enter_text(const Glib::ustring &text)
+      void search_input_impl::enter_text(const std::wstring &text)
       {
         view->set_search_text(text);
         do_search();
       }
 
       sigc::connection
-      search_input_impl::connect_activated(const sigc::slot<void, Glib::ustring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &slot)
+      search_input_impl::connect_activated(const sigc::slot<void, std::wstring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &slot)
       {
         return signal_activated.connect(slot);
       }

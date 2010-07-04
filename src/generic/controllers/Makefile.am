@@ -1,10 +1,9 @@
 INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
-SUBDIRS = mocks
 
-noinst_LIBRARIES = libgtk-views.a
+noinst_LIBRARIES = libgeneric-controllers.a
 
-libgtk_views_a_SOURCES = \
+libgeneric_controllers_a_SOURCES = \
 	search_input.cc \
 	search_input.h
 
-EXTRA_DIST = README SConscript
+EXTRA_DEST = README SConscript

@@ -26,13 +26,16 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 
-namespace gui
+namespace aptitude
 {
   namespace views
   {
     class search_input;
   }
+}
 
+namespace gui
+{
   namespace view_impls
   {
     /** \brief Create a search input view based on a text entry
@@ -42,7 +45,7 @@ namespace gui
      *  \param error_label                The label in which to display error messages.
      *  \param find_button                A button that the user can use to perform a search.
      */
-    boost::shared_ptr<views::search_input>
+    boost::shared_ptr<aptitude::views::search_input>
     create_search_input_entry(Gtk::Entry *search_entry,
                               Gtk::Label *error_label,
                               Gtk::Button *find_button);

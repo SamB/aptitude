@@ -17,16 +17,16 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#ifndef APTITUDE_GTK_VIEWS_SEARCH_INPUT_H
-#define APTITUDE_GTK_VIEWS_SEARCH_INPUT_H
-
-#include <glibmm/ustring.h>
+#ifndef APTITUDE_GENERIC_VIEWS_SEARCH_INPUT_H
+#define APTITUDE_GENERIC_VIEWS_SEARCH_INPUT_H
 
 #include <sigc++/connection.h>
 #include <sigc++/slot.h>
 #include <sigc++/trackable.h>
 
-namespace gui
+#include <string>
+
+namespace aptitude
 {
   namespace views
   {
@@ -36,7 +36,7 @@ namespace gui
       virtual ~search_input();
 
       /** \brief Retrieve the input. */
-      virtual Glib::ustring get_search_text() = 0;
+      virtual std::wstring get_search_text() = 0;
 
       /** \brief Set the input.
        *
@@ -45,13 +45,13 @@ namespace gui
        *
        *  Should trigger the text_changed signal as a side-effect.
        */
-      virtual void set_search_text(const Glib::ustring &text) = 0;
+      virtual void set_search_text(const std::wstring &text) = 0;
 
       /** \brief Set the currently displayed error message.
        *
        *  \param msg   The new message (blank to display no message).
        */
-      virtual void set_error_message(const Glib::ustring &msg) = 0;
+      virtual void set_error_message(const std::wstring &msg) = 0;
 
       /** \brief Indicate visually whether the current text is valid,
        *  without necessarily displaying an error message.
@@ -86,4 +86,4 @@ namespace gui
   }
 }
 
-#endif // APTITUDE_GTK_VIEWS_SEARCH_INPUT_H
+#endif // APTITUDE_GENERIC_VIEWS_SEARCH_INPUT_H

@@ -18,14 +18,12 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 
-#ifndef APTITUDE_GTK_CONTROLLERS_SEARCH_INPUT_H
-#define APTITUDE_GTK_CONTROLLERS_SEARCH_INPUT_H
+#ifndef APTITUDE_CONTROLLERS_SEARCH_INPUT_H
+#define APTITUDE_CONTROLLERS_SEARCH_INPUT_H
 
 #include <boost/shared_ptr.hpp>
 
 #include <cwidget/generic/util/ref_ptr.h>
-
-#include <glibmm/ustring.h>
 
 #include <sigc++/connection.h>
 #include <sigc++/slot.h>
@@ -37,10 +35,7 @@ namespace aptitude
   {
     class pattern;
   }
-}
 
-namespace gui
-{
   namespace views
   {
     class search_input;
@@ -66,7 +61,7 @@ namespace gui
        *  tabs.  It might be better to incorporate it into
        *  create_search_input().
        */
-      virtual void enter_text(const Glib::ustring &text) = 0;
+      virtual void enter_text(const std::wstring &text) = 0;
 
       /** \brief Register a slot to be invoked when a search should be
        *         performed.
@@ -75,7 +70,7 @@ namespace gui
        *  user and a search pattern parsed from that text.
        */
       virtual sigc::connection
-      connect_activated(const sigc::slot<void, Glib::ustring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &
+      connect_activated(const sigc::slot<void, std::wstring, cwidget::util::ref_ptr<aptitude::matching::pattern> > &
                         slot) = 0;
     };
 
@@ -88,8 +83,8 @@ namespace gui
      *  \return A search input controller attached to the given view.
      */
     boost::shared_ptr<search_input>
-    create_search_input(const boost::shared_ptr<views::search_input> &view);
+    create_search_input(const boost::shared_ptr<aptitude::views::search_input> &view);
   }
 }
 
-#endif // APTITUDE_GTK_SEARCH_INPUT_H
+#endif // APTITUDE_CONTROLLERS_SEARCH_INPUT_H

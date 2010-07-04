@@ -1,3 +1,3 @@
 MAINTAINERCLEANFILES=Makefile.in
 
-SUBDIRS = util problemresolver apt views
+SUBDIRS = apt controllers problemresolver util views

@@ -1,19 +1,16 @@
 MAINTAINERCLEANFILES = Makefile.in
 
-if BUILD_GTK
-  MAYBE_LIBGTK = $(top_builddir)/src/gtk/views/libgtk-views.a $(top_builddir)/src/gtk/controllers/libgtk-controllers.a
-endif
-
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
 BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
 GMOCK_LDFLAGS = -lgmock -lgtest
 AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
 LDADD = $(top_builddir)/src/loggers.o			       \
-$(MAYBE_LIBGTK)                                                \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
 $(top_builddir)/src/cmdline/libcmdline.a \
 $(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
+$(top_builddir)/src/generic/controllers/libgeneric-controllers.a \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
+$(top_builddir)/src/generic/apt/libgeneric-apt.a	       \
 $(top_builddir)/src/generic/problemresolver/libgeneric-problemresolver.a   \
 $(top_builddir)/src/cmdline/mocks/libcmdline-mocks.a \
 $(top_builddir)/src/cmdline/libcmdline.a \

@@ -20,7 +20,7 @@
 
 #include "search_input.h"
 
-namespace gui
+namespace aptitude
 {
   namespace views
   {

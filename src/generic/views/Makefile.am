@@ -5,4 +5,6 @@ libgeneric_views_a_SOURCES = \
 	download_progress.cc \
 	download_progress.h \
 	progress.cc \
-	progress.h
+	progress.h \
+	search_input.cc \
+	search_input.h

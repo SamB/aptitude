@@ -20,12 +20,17 @@ creating new widget types has several benefits:
      GUI via an abstract interface, and the unit test could provide an
      implementation of this interface that is entirely non-interactive.
 
+This directory, being in the generic section of the aptitude source
+code, should not contain references to any UI-level objects.
+
 For at least some of aptitude's code, 4) will require refactoring,
 which should be done opportunistically as usual.
 
 Controllers might provide an interface to the outside world; if so,
 they should declare that interface as an abstract class in their
-header file, deriving from sigc::trackable.
+header file, deriving from sigc::trackable.  This reduces compile-time
+build dependencies and allows the controller to be mocked out for
+testing.
 
 Unlike views, controllers are implemented in this directory.  This is
 because controllers are less likely to have multiple implementations,
