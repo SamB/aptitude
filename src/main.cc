@@ -47,6 +47,10 @@
 #include <gtkmm.h>
 #endif
 
+#ifdef HAVE_QT
+#include <QtCore/qglobal.h> // To get the Qt version number
+#endif
+
 #include <cwidget/config/keybindings.h>
 #include <cwidget/generic/util/transcode.h>
 #include <cwidget/toplevel.h>
@@ -81,6 +85,10 @@
 #ifdef HAVE_GTK
 #include "gtk/gui.h"
 #include "gtk/init.h"
+#endif
+
+#ifdef HAVE_QT
+#include "qt/qt_main.h"
 #endif
 
 #include <fstream>
@@ -163,7 +171,12 @@ static void show_version()
 #else
   printf(_("  Gtk+ support disabled.\n"));
 #endif
-
+#ifdef HAVE_QT
+  printf(_("  Compiled with Qt 4.6.2 %s\n"), QT_VERSION_STR);
+  printf(_("  Running on Qt 4.6.2 %s\n"), qVersion());
+#else
+  printf(_("  Qt support disabled.\n"));
+#endif
   printf("%s", _("\nCurrent library versions:\n"));
   printf(_("  NCurses version: %s\n"), curses_version());
   printf(_("  cwidget version: %s\n"), cwidget::version().c_str());
@@ -210,6 +223,10 @@ static void usage()
   printf(_(" --gui          Use the GTK GUI even if disabled in the configuration.\n"));
 #endif
   printf(_(" --no-gui       Do not use the GTK GUI even if available.\n"));
+#ifdef HAVE_QT
+  printf(_(" --qt           Use the Qt GUI.\n"));
+  printf(_(" --no-qt        Do not use the Qt GUI even if enabled in the configuration.\n"));
+#endif
   printf(_(" -s             Simulate actions, but do not actually perform them.\n"));
   printf(_(" -d             Only download packages, do not install or remove anything.\n"));
   printf(_(" -P             Always prompt for confirmation or actions.\n"));
@@ -261,6 +278,8 @@ enum {
   OPTION_DISABLE_COLUMNS,
   OPTION_GUI,
   OPTION_NO_GUI,
+  OPTION_QT_GUI,
+  OPTION_NO_QT_GUI,
   OPTION_LOG_LEVEL,
   OPTION_LOG_FILE,
   OPTION_LOG_CONFIG_FILE,
@@ -315,6 +334,10 @@ option opts[]={
   {"gui", 0, &getopt_result, OPTION_GUI},
 #endif
   {"no-gui", 0, &getopt_result, OPTION_NO_GUI},
+#ifdef HAVE_QT
+  {"qt", 0, &getopt_result, OPTION_QT_GUI},
+  {"no-qt", 0, &getopt_result, OPTION_NO_QT_GUI},
+#endif
   {"log-level", 1, &getopt_result, OPTION_LOG_LEVEL},
   {"log-file", 1, &getopt_result, OPTION_LOG_FILE},
   {"log-config-file", 1, &getopt_result, OPTION_LOG_CONFIG_FILE},
@@ -651,9 +674,14 @@ int main(int argc, char *argv[])
 
 #ifdef HAVE_GTK
   // TODO: this should be a configuration option.
-  bool gui = aptcfg->FindB(PACKAGE "::Start-Gui", true);
+  bool use_gtk_gui = aptcfg->FindB(PACKAGE "::Start-Gui", true);
   // Use the in-progress new GUI harness instead of the old code.
-  bool use_new_gui = false;
+  bool use_new_gtk_gui = false;
+#endif
+
+#ifdef HAVE_QT
+  // Use Qt frontend.
+  bool use_qt_gui = false;
 #endif
 
   int curopt;
@@ -890,10 +918,10 @@ int main(int argc, char *argv[])
 	      break;
 #ifdef HAVE_GTK
 	    case OPTION_GUI:
-	      gui = true;
+	      use_gtk_gui = true;
 	      break;
 	    case OPTION_NO_GUI:
-	      gui = false;
+	      use_gtk_gui = false;
 	      break;
 #else
 	    case OPTION_NO_GUI:
@@ -935,10 +963,18 @@ int main(int argc, char *argv[])
 
             case OPTION_NEW_GUI:
 #ifdef HAVE_GTK
-              use_new_gui = true;
+              use_new_gtk_gui = true;
 #endif
               break;
+#ifdef HAVE_QT
+	    case OPTION_QT_GUI:
+	      use_qt_gui = true;
+	      break;
 
+	    case OPTION_NO_QT_GUI:
+	      use_qt_gui = false;
+	      break;
+#endif
 	    default:
 	      fprintf(stderr, "%s",
 		      _("WEIRDNESS: unknown option code received\n"));
@@ -1196,10 +1232,22 @@ int main(int argc, char *argv[])
 	}
     }
 
-#ifdef HAVE_GTK
-  if(gui)
+#ifdef HAVE_QT
+  if(use_qt_gui)
     {
-      if(use_new_gui)
+      if(aptitude::gui::qt::main(argc, argv))
+        return 0;
+
+      // Otherwise, fall back to trying to start a curses interface
+      // (assume that we can't contact the X server, or maybe that we
+      // can't load the UI definition)
+    }
+#endif
+
+#ifdef HAVE_GTK
+  if(use_gtk_gui)
+    {
+      if(use_new_gtk_gui)
         {
           if(gui::init(argc, argv))
             return 0;

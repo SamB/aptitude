@@ -5,7 +5,12 @@ if BUILD_GTK
   MAYBE_LIBGTK = gtk/libgtk.a gtk/toplevel/libgtk-toplevel.a
 endif
 
-SUBDIRS=generic $(MAYBE_GTK) cmdline mine
+if BUILD_QT
+  MAYBE_QT = qt
+  MAYBE_LIBQT = qt/libqt.a
+endif
+
+SUBDIRS=generic $(MAYBE_GTK) $(MAYBE_QT) cmdline mine
 
 localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
@@ -13,7 +18,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 bin_PROGRAMS=aptitude
 
-LDADD=@LIBINTL@ $(MAYBE_LIBGTK) cmdline/libcmdline.a mine/libcmine.a \
+LDADD=@LIBINTL@ $(MAYBE_LIBGTK) $(MAYBE_LIBQT) cmdline/libcmdline.a mine/libcmine.a \
 	generic/apt/libgeneric-apt.a generic/util/libgeneric-util.a \
 	generic/apt/matching/libgeneric-matching.a \
 	generic/controllers/libgeneric-controllers.a \
