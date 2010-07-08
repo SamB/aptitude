@@ -41,10 +41,8 @@
 #include <stdio.h>
 
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
-using aptitude::cmdline::terminal;
-using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_io;
 using boost::shared_ptr;
 
 namespace aptitude
@@ -59,12 +57,11 @@ namespace aptitude
 	  return -1;
 	}
 
-      const shared_ptr<terminal> term = create_terminal();
-      const shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+      const shared_ptr<terminal_io> term = create_terminal();
 
       std::string out_dir = argv[1];
 
-      boost::shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
+      boost::shared_ptr<OpProgress> progress = make_text_progress(false, term, term, term);
 
       apt_init(progress.get(), true);
       if(_error->PendingError())

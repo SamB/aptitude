@@ -47,8 +47,9 @@ namespace
 
   struct TransientMessage : public Test
   {
-    shared_ptr<mocks::terminal> term;
     shared_ptr<mocks::terminal_locale> term_locale;
+    shared_ptr<mocks::terminal_metrics> term_metrics;
+    shared_ptr<mocks::combining_terminal_output> term_output;
     shared_ptr<mocks::teletype> teletype;
     shared_ptr<transient_message> message;
     std::wstring widechar;
@@ -56,12 +57,21 @@ namespace
     // I need to set up expectations on the terminal during member
     // initialization, since some of the other member initializers
     // cause methods to be invoked on it.
-    static shared_ptr<mocks::terminal> create_terminal()
+    static shared_ptr<mocks::combining_terminal_output> create_terminal_output()
     {
-      shared_ptr<mocks::terminal> rval = mocks::create_combining_terminal();
+      shared_ptr<mocks::combining_terminal_output> rval =
+        mocks::combining_terminal_output::create();
 
       EXPECT_CALL(*rval, output_is_a_terminal())
         .WillRepeatedly(Return(true));
+
+      return rval;
+    }
+
+    static shared_ptr<mocks::terminal_metrics> create_terminal_metrics()
+    {
+      shared_ptr<mocks::terminal_metrics> rval =
+        mocks::terminal_metrics::create();
 
       EXPECT_CALL(*rval, get_screen_width())
         .WillRepeatedly(Return(80));
@@ -70,10 +80,11 @@ namespace
     }
 
     TransientMessage()
-      : term(create_terminal()),
-        term_locale(mocks::terminal_locale::create()),
-        teletype(mocks::create_teletype(term, term_locale)),
-        message(create_transient_message(term, term_locale)),
+      : term_locale(mocks::terminal_locale::create()),
+        term_metrics(create_terminal_metrics()),
+        term_output(create_terminal_output()),
+        teletype(mocks::create_teletype(term_locale, term_metrics, term_output)),
+        message(create_transient_message(term_locale, term_metrics, term_output)),
         widechar(1, two_column_char)
     {
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
@@ -108,7 +119,7 @@ TEST_F(TransientMessage, DisplayAndAdvanceBasic)
 
 TEST_F(TransientMessage, DisplayAndAdvanceWrapping)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -232,7 +243,7 @@ TEST_F(TransientMessage, ReplaceWideCharTextWithLonger)
 
 TEST_F(TransientMessage, TruncateLongLine)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq("abcd")));
@@ -242,7 +253,7 @@ TEST_F(TransientMessage, TruncateLongLine)
 
 TEST_F(TransientMessage, ReplaceTruncatedLongLineWithNonTruncated)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -258,7 +269,7 @@ TEST_F(TransientMessage, ReplaceTruncatedLongLineWithNonTruncated)
 
 TEST_F(TransientMessage, ReplaceTruncatedLongLineWithTruncated)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -274,7 +285,7 @@ TEST_F(TransientMessage, ReplaceTruncatedLongLineWithTruncated)
 
 TEST_F(TransientMessage, TruncateWideCharLine)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"ab" + widechar)));
@@ -284,7 +295,7 @@ TEST_F(TransientMessage, TruncateWideCharLine)
 
 TEST_F(TransientMessage, TruncateWideCharLineWithSplit)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   EXPECT_CALL(*teletype, set_last_line(StrTrimmedRightEq(L"abc")));
@@ -294,7 +305,7 @@ TEST_F(TransientMessage, TruncateWideCharLineWithSplit)
 
 TEST_F(TransientMessage, ReplaceTruncatedWideCharLine)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -310,7 +321,7 @@ TEST_F(TransientMessage, ReplaceTruncatedWideCharLine)
 
 TEST_F(TransientMessage, RequireTtyDecorationsWithTty)
 {
-  EXPECT_CALL(*term, output_is_a_terminal())
+  EXPECT_CALL(*term_output, output_is_a_terminal())
     .WillRepeatedly(Return(true));
 
   {
@@ -323,7 +334,7 @@ TEST_F(TransientMessage, RequireTtyDecorationsWithTty)
   // Need to create a new message object since it reads and caches the
   // value of output_is_a_terminal() when it's created.
   const shared_ptr<transient_message> requiring_message =
-    create_transient_message(term, term_locale);
+    create_transient_message(term_locale, term_metrics, term_output);
 
   requiring_message->set_text(L"abc");
   requiring_message->set_text(L"xyz");
@@ -331,7 +342,7 @@ TEST_F(TransientMessage, RequireTtyDecorationsWithTty)
 
 TEST_F(TransientMessage, RequireTtyDecorationsWithoutTty)
 {
-  EXPECT_CALL(*term, output_is_a_terminal())
+  EXPECT_CALL(*term_output, output_is_a_terminal())
     .WillRepeatedly(Return(false));
 
   EXPECT_CALL(*teletype, set_last_line(_))
@@ -340,7 +351,7 @@ TEST_F(TransientMessage, RequireTtyDecorationsWithoutTty)
   // Need to create a new message object since it reads and caches the
   // value of output_is_a_terminal() when it's created.
   const shared_ptr<transient_message> requiring_message =
-    create_transient_message(term, term_locale);
+    create_transient_message(term_locale, term_metrics, term_output);
 
   requiring_message->set_text(L"abc");
   requiring_message->set_text(L"xyz");

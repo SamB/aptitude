@@ -32,8 +32,9 @@ namespace aptitude
   {
     namespace mocks
     {
-      class terminal;
       class terminal_locale;
+      class terminal_metrics;
+      class terminal_with_combined_output;
 
       inline std::string make_str(const char *s)
       {
@@ -88,13 +89,11 @@ namespace aptitude
 
       /** \brief Create a teletype mock specialized to process the
        *  output from the given terminal.
-       *
-       *  Also adds expectations on the terminal to ignore all calls
-       *  to output() and flush(), so they don't generate errors.
        */
       boost::shared_ptr<teletype>
-      create_teletype(const boost::shared_ptr<terminal> &term,
-                      const boost::shared_ptr<terminal_locale> &term_locale);
+      create_teletype(const boost::shared_ptr<terminal_locale> &term_locale,
+                      const boost::shared_ptr<terminal_metrics> &term_metrics,
+                      const boost::shared_ptr<terminal_with_combined_output> &term_output);
     }
   }
 }

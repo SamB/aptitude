@@ -59,12 +59,13 @@ namespace m = aptitude::matching;
 using aptitude::cmdline::create_progress_display;
 using aptitude::cmdline::create_search_progress;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
 using aptitude::cmdline::search_result_column_parameters;
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_io;
 using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_metrics;
+using aptitude::cmdline::terminal_output;
 using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
 using aptitude::matching::serialize_pattern;
@@ -246,8 +247,9 @@ namespace
                          group_by_option group_by,
                          show_package_names_option show_package_names,
                          bool debug,
-                         const shared_ptr<terminal> &term,
-                         const shared_ptr<terminal_locale> &term_locale)
+                         const shared_ptr<terminal_locale> &term_locale,
+                         const shared_ptr<terminal_metrics> &term_metrics,
+                         const shared_ptr<terminal_output> &term_output)
   {
     // Set to -1 if any exact-name matches fail.  Also set to -1 if
     // there are no results at all.
@@ -257,7 +259,7 @@ namespace
       results_list;
 
     const shared_ptr<progress> search_progress_display =
-      create_progress_display(term, term_locale);
+      create_progress_display(term_locale, term_metrics, term_output);
     const shared_ptr<throttle> search_progress_throttle =
       create_throttle();
 
@@ -525,8 +527,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      group_by_option group_by,
                      show_package_names_option show_package_names)
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   int real_width=-1;
 
@@ -620,5 +621,6 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             show_package_names,
                             debug,
                             term,
-                            term_locale);
+                            term,
+                            term);
 }

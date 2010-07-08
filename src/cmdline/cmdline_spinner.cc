@@ -27,14 +27,14 @@
 // System includes:
 #include <iostream>
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_metrics;
 using boost::shared_ptr;
 
 cmdline_spinner::cmdline_spinner(int _quiet_level,
-                                 const shared_ptr<terminal> &_term)
+                                 const shared_ptr<terminal_metrics> &_term_metrics)
   : count(0),
     quiet_level(_quiet_level),
-    term(_term)
+    term_metrics(_term_metrics)
 {
 }
 
@@ -60,7 +60,7 @@ void cmdline_spinner::display() const
   if(quiet_level > 0)
     return;
 
-  const unsigned int screen_width = term->get_screen_width();
+  const unsigned int screen_width = term_metrics->get_screen_width();
 
   // Build the string to output.
   std::string out(msg, 0, screen_width - 2);

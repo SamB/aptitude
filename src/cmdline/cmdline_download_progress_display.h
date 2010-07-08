@@ -32,8 +32,8 @@ namespace aptitude
 
   namespace cmdline
   {
-    class terminal;
     class terminal_locale;
+    class terminal_metrics;
     class transient_message;
 
     /**
@@ -47,8 +47,8 @@ namespace aptitude
      */
     boost::shared_ptr<views::download_progress>
     create_download_progress_display(const boost::shared_ptr<transient_message> &message,
-                                     const boost::shared_ptr<terminal> &term,
-                                     const boost::shared_ptr<terminal_locale> &term_locale);
+                                     const boost::shared_ptr<terminal_locale> &term_locale,
+                                     const boost::shared_ptr<terminal_metrics> &term_metrics);
   }
 }
 

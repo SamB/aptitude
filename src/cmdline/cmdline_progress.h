@@ -33,11 +33,11 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
 download_signal_log *
-gen_cmdline_download_progress(const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+gen_cmdline_download_progress(const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 #endif // CMDLINE_PROGRESS_H

@@ -36,7 +36,7 @@
 
 #include <stdio.h>
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_metrics;
 using boost::shared_ptr;
 
 int cmdline_simulate(bool as_upgrade,
@@ -47,7 +47,7 @@ int cmdline_simulate(bool as_upgrade,
 		     bool always_prompt, int verbose,
 		     bool assume_yes, bool force_no_change,
 		     pkgPolicy &policy, bool arch_only,
-                     const shared_ptr<terminal> &term)
+                     const shared_ptr<terminal_metrics> &term_metrics)
 {
   if(!cmdline_do_prompt(as_upgrade,
 			to_install, to_hold, to_remove, to_purge,
@@ -55,7 +55,7 @@ int cmdline_simulate(bool as_upgrade,
 			always_prompt, verbose,
 			assume_yes, force_no_change,
 			policy, arch_only,
-                        term))
+                        term_metrics))
     {
       printf(_("Abort.\n"));
       return 0;

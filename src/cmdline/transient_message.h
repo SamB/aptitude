@@ -49,20 +49,23 @@ namespace aptitude
       virtual void display_and_advance(const std::wstring &text) = 0;
     };
 
-    class terminal;
     class terminal_locale;
+    class terminal_metrics;
+    class terminal_output;
 
     /** \brief Create a new transient message object.
      *
      *  If the given terminal is not a tty when this function is
      *  invoked, no output will be generated.
      *
-     *  \param term        The terminal to use for output.
-     *  \param term_locale Locale information for the given terminal.
+     *  \param term_locale  Locale information for the given terminal.
+     *  \param term_metrics The terminal metrics object to use.
+     *  \param term_output  The terminal output object to use.
      */
     boost::shared_ptr<transient_message>
-    create_transient_message(const boost::shared_ptr<terminal> &term,
-                             const boost::shared_ptr<terminal_locale> &term_locale);
+    create_transient_message(const boost::shared_ptr<terminal_locale> &term_locale,
+                             const boost::shared_ptr<terminal_metrics> &term_metrics,
+                             const boost::shared_ptr<terminal_output> &term_output);
   }
 }
 

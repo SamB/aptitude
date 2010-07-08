@@ -60,7 +60,8 @@
 
 namespace cw = cwidget;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_io;
+using aptitude::cmdline::terminal_metrics;
 using aptitude::why::make_cmdline_why_callbacks;
 using aptitude::why::why_callbacks;
 using boost::make_shared;
@@ -1104,16 +1105,16 @@ namespace aptitude
     {
       class cmdline_why_callbacks : public why_callbacks
       {
-        const shared_ptr<terminal> term;
+        const shared_ptr<terminal_metrics> term_metrics;
         const int verbosity;
         const unsigned int screen_width;
 
       public:
-        cmdline_why_callbacks(const shared_ptr<terminal> &_term,
+        cmdline_why_callbacks(const shared_ptr<terminal_metrics> &_term_metrics,
                               const int _verbosity)
-          : term(_term),
+          : term_metrics(_term_metrics),
             verbosity(_verbosity),
-            screen_width(_term->get_screen_width())
+            screen_width(_term_metrics->get_screen_width())
         {
         }
 
@@ -1208,9 +1209,9 @@ namespace aptitude
 
     shared_ptr<why_callbacks>
     make_cmdline_why_callbacks(const int verbosity,
-                               const shared_ptr<terminal> &term)
+                               const shared_ptr<terminal_metrics> &term_metrics)
     {
-      return make_shared<cmdline_why_callbacks>(term, verbosity);
+      return make_shared<cmdline_why_callbacks>(term_metrics, verbosity);
     }
   }
 }
@@ -1298,16 +1299,16 @@ int do_why(const std::vector<cwidget::util::ref_ptr<pattern> > &leaves,
 	   aptitude::why::roots_string_mode display_mode,
 	   int verbosity,
 	   bool root_is_removal,
-           const shared_ptr<terminal> &term)
+           const shared_ptr<terminal_metrics> &term_metrics)
 {
   bool success = false;
   const shared_ptr<why_callbacks> callbacks =
-    make_cmdline_why_callbacks(verbosity, term);
+    make_cmdline_why_callbacks(verbosity, term_metrics);
   std::auto_ptr<cw::fragment> f(do_why(leaves, root, display_mode,
 				       verbosity, root_is_removal,
 				       callbacks,
                                        success));
-  const unsigned int screen_width = term->get_screen_width();
+  const unsigned int screen_width = term_metrics->get_screen_width();
   // TODO: display each result as we find it.
   std::cout << f->layout(screen_width, screen_width, cw::style());
 
@@ -1407,7 +1408,7 @@ int cmdline_why(int argc, char *argv[],
 		aptitude::why::roots_string_mode display_mode,
 		bool is_why_not)
 {
-  const shared_ptr<terminal> term = create_terminal();
+  const shared_ptr<terminal_io> term = create_terminal();
 
   _error->DumpErrors();
 

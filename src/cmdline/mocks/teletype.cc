@@ -51,8 +51,9 @@ namespace aptitude
           // The character cell containing the cursor:
           unsigned int cursor_position;
 
-          const shared_ptr<terminal> term;
           const shared_ptr<terminal_locale> term_locale;
+          const shared_ptr<terminal_metrics> term_metrics;
+          const shared_ptr<terminal_with_combined_output> term_output;
 
           void scroll_line(std::wstring &new_last_line);
           void do_set_last_line(const std::wstring &new_last_line);
@@ -73,34 +74,17 @@ namespace aptitude
           }
 
         public:
-          teletype_with_terminal(const shared_ptr<terminal> &_term,
-                                 const shared_ptr<terminal_locale> &_term_locale)
+          teletype_with_terminal(const shared_ptr<terminal_locale> &_term_locale,
+                                 const shared_ptr<terminal_metrics> &_term_metrics,
+                                 const shared_ptr<terminal_with_combined_output> &_term_output)
             : cursor_idx(0),
               cursor_position(0),
-              term(_term),
-              term_locale(_term_locale)
+              term_locale(_term_locale),
+              term_metrics(_term_metrics),
+              term_output(_term_output)
           {
-            ON_CALL(*term, output(_))
+            ON_CALL(*term_output, output(_))
               .WillByDefault(Invoke(this, &teletype_with_terminal::handle_output));
-
-            // TODO: need to defer this until flush() is called!
-            ON_CALL(*term, move_to_beginning_of_line())
-              .WillByDefault(Invoke(this, &teletype_with_terminal::handle_move_to_beginning_of_line));
-
-            // Normally code using this interface will ignore calls to
-            // functions on the terminal, so set that as the default
-            // behavior.
-            EXPECT_CALL(*term, output(_))
-              .Times(AnyNumber());
-
-            EXPECT_CALL(*term, write_text(_))
-              .Times(AnyNumber());
-
-            EXPECT_CALL(*term, flush())
-              .Times(AnyNumber());
-
-            EXPECT_CALL(*term, move_to_beginning_of_line())
-              .Times(AnyNumber());
           }
         };
 
@@ -127,7 +111,7 @@ namespace aptitude
         void teletype_with_terminal::handle_output(const std::wstring &output)
         {
           std::wstring new_last_line = last_line;
-          const unsigned int screen_width = term->get_screen_width();
+          const unsigned int screen_width = term_metrics->get_screen_width();
 
           for(std::wstring::const_iterator it = output.begin();
               it != output.end(); ++it)
@@ -222,19 +206,16 @@ namespace aptitude
 
           do_set_last_line(new_last_line);
         }
-
-        void teletype_with_terminal::handle_move_to_beginning_of_line()
-        {
-          cursor_position = 0;
-          cursor_idx = 0;
-        }
       }
 
       shared_ptr<teletype>
-      create_teletype(const boost::shared_ptr<terminal> &term,
-                      const boost::shared_ptr<terminal_locale> &term_locale)
+      create_teletype(const shared_ptr<terminal_locale> &term_locale,
+                      const shared_ptr<terminal_metrics> &term_metrics,
+                      const boost::shared_ptr<terminal_with_combined_output> &term_output)
       {
-        return make_shared<teletype_with_terminal>(term, term_locale);
+        return make_shared<teletype_with_terminal>(term_locale,
+                                                   term_metrics,
+                                                   term_output);
       }
     }
   }

@@ -193,11 +193,12 @@ namespace aptitude
     }
 
     shared_ptr<views::progress>
-    create_progress_display(const shared_ptr<terminal> &term,
-                            const shared_ptr<terminal_locale> &term_locale)
+    create_progress_display(const shared_ptr<terminal_locale> &term_locale,
+                            const shared_ptr<terminal_metrics> &term_metrics,
+                            const shared_ptr<terminal_output> &term_output)
     {
       const shared_ptr<transient_message> message =
-        create_transient_message(term, term_locale);
+        create_transient_message(term_locale, term_metrics, term_output);
 
       const bool old_style_percentage =
         aptcfg->FindB(PACKAGE "::CmdLine::Progress::Percent-On-Right", false);

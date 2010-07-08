@@ -49,15 +49,16 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
     class terminal_locale;
+    class terminal_metrics;
+    class terminal_output;
   }
 }
 
 void cmdline_show_pkglist(pkgvector &items,
-                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                          const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 void cmdline_show_stringlist(strvector &items,
-                             const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                             const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 /** Finds a candidate version for the package using the given source.
  */
@@ -99,8 +100,8 @@ bool cmdline_parse_source(const string &input,
  *  \param m        the download process to run.
  *  \param verbose  the verbosity level; controls how many
  *                  stats are printed when the run completes.
- *  \param term     the terminal object to use for printing
- *                  the download progress.
+ *  \param term_metrics the object from which to read the terminal
+ *                      dimensions.
  *  \param term_locale  the locale used for output to the terminal.
  *
  *  \return the success status of the post-download commands, or
@@ -108,8 +109,9 @@ bool cmdline_parse_source(const string &input,
  */
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose,
-                                             const boost::shared_ptr<aptitude::cmdline::terminal> &term,
-                                             const boost::shared_ptr<aptitude::cmdline::terminal_locale> &term_locale);
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_locale> &term_locale,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_output> &term_output);
 
 namespace aptitude
 {

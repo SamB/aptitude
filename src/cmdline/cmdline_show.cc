@@ -52,10 +52,9 @@
 
 namespace cw = cwidget;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
-using aptitude::cmdline::terminal;
-using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_io;
+using aptitude::cmdline::terminal_metrics;
 using boost::shared_ptr;
 using cwidget::fragf;
 using cwidget::fragment;
@@ -371,7 +370,7 @@ static cwidget::fragment *state_fragment(pkgCache::PkgIterator pkg, pkgCache::Ve
 
 /** \brief Shows information about a package. */
 static void show_package(pkgCache::PkgIterator pkg, int verbose,
-                         const shared_ptr<terminal> &term)
+                         const shared_ptr<terminal_metrics> &term_metrics)
 {
   vector<cw::fragment *> fragments;
 
@@ -381,7 +380,7 @@ static void show_package(pkgCache::PkgIterator pkg, int verbose,
 
   cw::fragment *f=cw::sequence_fragment(fragments);
 
-  const unsigned int screen_width = term->get_screen_width();
+  const unsigned int screen_width = term_metrics->get_screen_width();
   cout << f->layout(screen_width, screen_width, cwidget::style());
 
   delete f;
@@ -485,13 +484,13 @@ cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 }
 
 static void show_version(pkgCache::VerIterator ver, int verbose,
-                         const shared_ptr<terminal> &term)
+                         const shared_ptr<terminal_metrics> &term_metrics)
 {
   if(ver.FileList().end())
     {
       cw::fragment *f=version_file_fragment(ver, ver.FileList(), verbose);
 
-      const unsigned int screen_width = term->get_screen_width();
+      const unsigned int screen_width = term_metrics->get_screen_width();
       cout << f->layout(screen_width, screen_width, cwidget::style());
 
       delete f;
@@ -502,7 +501,7 @@ static void show_version(pkgCache::VerIterator ver, int verbose,
 	{
 	  cw::fragment *f=version_file_fragment(ver, vf, verbose);
 
-          const unsigned int screen_width = term->get_screen_width();
+          const unsigned int screen_width = term_metrics->get_screen_width();
 	  cout << f->layout(screen_width, screen_width, cwidget::style()) << endl;
 
 	  delete f;
@@ -520,7 +519,7 @@ bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 			    const string &sourcestr,
 			    int verbose,
 			    bool has_explicit_source,
-                            const shared_ptr<terminal> &term)
+                            const shared_ptr<terminal_metrics> &term_metrics)
 {
   if(verbose == 0 || has_explicit_source)
     {
@@ -534,20 +533,20 @@ bool do_cmdline_show_target(const pkgCache::PkgIterator &pkg,
 	ver = pkg.VersionList();
 
       if(!ver.end())
-	show_version(ver, verbose, term);
+	show_version(ver, verbose, term_metrics);
       else
-	show_package(pkg, verbose, term);
+	show_package(pkg, verbose, term_metrics);
     }
   else if(!pkg.VersionList().end())
     for(pkgCache::VerIterator ver=pkg.VersionList(); !ver.end(); ++ver)
-      show_version(ver, verbose, term);
+      show_version(ver, verbose, term_metrics);
   else
-    show_package(pkg, verbose, term);
+    show_package(pkg, verbose, term_metrics);
 
   return true;
 }
 
-bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
+bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal_metrics> &term_metrics)
 {
   cmdline_version_source source;
   string name, sourcestr;
@@ -585,7 +584,7 @@ bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
                                   sourcestr,
                                   verbose,
                                   has_explicit_source,
-                                  term);
+                                  term_metrics);
   else if(is_pattern)
     {
       using namespace aptitude::matching;
@@ -614,7 +613,7 @@ bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
                                      sourcestr,
                                      verbose,
                                      has_explicit_source,
-                                     term))
+                                     term_metrics))
 	    return false;
 	}
     }
@@ -627,12 +626,11 @@ bool do_cmdline_show(string s, int verbose, const shared_ptr<terminal> &term)
 
 int cmdline_show(int argc, char *argv[], int verbose)
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   _error->DumpErrors();
 
-  shared_ptr<OpProgress> progress = make_text_progress(true, term, term_locale);
+  shared_ptr<OpProgress> progress = make_text_progress(true, term, term, term);
   apt_init(progress.get(), false);
 
   if(_error->PendingError())

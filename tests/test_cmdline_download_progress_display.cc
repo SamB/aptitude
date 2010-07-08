@@ -49,52 +49,27 @@ namespace
   struct CmdlineDownloadProgressDisplayTest : public Test
   {
     shared_ptr<mocks::transient_message> msg;
-    shared_ptr<mocks::terminal> term;
     shared_ptr<mocks::terminal_locale> term_locale;
+    shared_ptr<mocks::terminal_metrics> term_metrics;
 
     shared_ptr<download_progress> progress;
 
     CmdlineDownloadProgressDisplayTest()
       : msg(make_shared<mocks::transient_message>()),
-        term(mocks::terminal::create()),
         term_locale(mocks::terminal_locale::create()),
-        progress(create_download_progress_display(msg, term, term_locale))
+        term_metrics(mocks::terminal_metrics::create()),
+        progress(create_download_progress_display(msg, term_locale, term_metrics))
     {
-      // Expect no occurrences of the terminal routines other than
-      // get_screen_width() (normally they would be invoked by the
-      // message, but that's a mock in this case).
-
-      // TODO: is there a way to ask the mock to always reject
-      // unexpected calls?
-      EXPECT_CALL(*term, output_is_a_terminal())
-        .Times(0);
-
-      EXPECT_CALL(*term, write_text(_))
-        .Times(0);
-
-      EXPECT_CALL(*term, move_to_beginning_of_line())
-        .Times(0);
-
-      EXPECT_CALL(*term, flush())
-        .Times(0);
-
-      EXPECT_CALL(*term, prompt_for_input(_))
-        .Times(0);
-
-      EXPECT_CALL(*term, output(_))
-        .Times(0);
-
-      // Make the terminal 20 characters wide by default (the progress
-      // display always outputs messages that are as wide as the
-      // terminal, so too wide a value would be a pain).
-      EXPECT_CALL(*term, get_screen_width())
-        .WillRepeatedly(Return(80));
-
-
       // Set up the locale to claim that the two-column character
       // occupies two columns.
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
         .WillRepeatedly(Return(2));
+
+      // Make the terminal 20 characters wide by default (the progress
+      // display always outputs messages that are as wide as the
+      // terminal, so too wide a value would be a pain).
+      EXPECT_CALL(*term_metrics, get_screen_width())
+        .WillRepeatedly(Return(80));
     }
   };
 }

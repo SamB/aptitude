@@ -108,7 +108,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 
   namespace why
@@ -497,7 +497,7 @@ namespace aptitude
      */
     boost::shared_ptr<why_callbacks>
     make_cmdline_why_callbacks(const int verbosity,
-                               const boost::shared_ptr<cmdline::terminal> &term);
+                               const boost::shared_ptr<cmdline::terminal_metrics> &term_metrics);
 
     /** \brief Search for a justification for an action.
      *

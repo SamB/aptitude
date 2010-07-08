@@ -65,8 +65,9 @@ namespace
     // value of CTYPE.
     std::string previous_lc_ctype;
 
-    shared_ptr<mocks::terminal> term;
     shared_ptr<mocks::terminal_locale> term_locale;
+    shared_ptr<mocks::terminal_metrics> term_metrics;
+    shared_ptr<mocks::terminal_with_combined_output> term_output;
     shared_ptr<mocks::teletype> teletype;
 
     static std::string safe_string(const char *c)
@@ -93,15 +94,16 @@ namespace
 
     TeletypeTest()
       : widechar(1, two_column_char),
-        term(mocks::terminal::create()),
         term_locale(mocks::terminal_locale::create()),
-        teletype(mocks::create_teletype(term, term_locale))
+        term_metrics(mocks::terminal_metrics::create()),
+        term_output(mocks::terminal_with_combined_output::create()),
+        teletype(mocks::create_teletype(term_locale, term_metrics, term_output))
     {
-      EXPECT_CALL(*term, get_screen_width())
-        .WillRepeatedly(Return(80));
-
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
         .WillRepeatedly(Return(2));
+
+      EXPECT_CALL(*term_metrics, get_screen_width())
+        .WillRepeatedly(Return(80));
     }
 
     void SetUp()
@@ -121,7 +123,7 @@ TEST_F(TeletypeTest, testOutputPartialLine)
 {
   EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
 
-  term->output(L"abc");
+  term_output->output(L"abc");
 }
 
 TEST_F(TeletypeTest, testOutputLine)
@@ -134,8 +136,7 @@ TEST_F(TeletypeTest, testOutputLine)
   }
 
 
-  term->output(L"abc\n");
-  term->flush();
+  term_output->output(L"abc\n");
 }
 
 TEST_F(TeletypeTest, NewlineAfterFlush)
@@ -147,17 +148,17 @@ TEST_F(TeletypeTest, NewlineAfterFlush)
     EXPECT_CALL(*teletype, newline());
   }
 
-  term->output(L"abc");
-  term->output(L"\n");
+  term_output->output(L"abc");
+  term_output->output(L"\n");
 }
 
 TEST_F(TeletypeTest, SuppressDuplicateWrites)
 {
   EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
 
-  term->output(L"abc");
-  term->move_to_beginning_of_line();
-  term->output(L"abc");
+  term_output->output(L"abc");
+  term_output->output(L"\r");
+  term_output->output(L"abc");
 }
 
 // Imitates what the transient message does, to be sure that it will
@@ -171,10 +172,8 @@ TEST_F(TeletypeTest, OverwriteABCWithA)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"a  ")));
   }
 
-  term->output(L"abc");
-  term->flush();
-  term->output(L"\r   \ra");
-  term->flush();
+  term_output->output(L"abc");
+  term_output->output(L"\r   \ra");
 }
 
 TEST_F(TeletypeTest, testOverwriteOneCharAtATime)
@@ -188,17 +187,10 @@ TEST_F(TeletypeTest, testOverwriteOneCharAtATime)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output(L"abc\r");
-  term->flush();
-
-  term->output(L"x");
-  term->flush();
-
-  term->output(L"y");
-  term->flush();
-
-  term->output(L"z");
-  term->flush();
+  term_output->output(L"abc\r");
+  term_output->output(L"x");
+  term_output->output(L"y");
+  term_output->output(L"z");
 }
 
 TEST_F(TeletypeTest, OverwriteNarrowCharWithWideChar)
@@ -209,11 +201,8 @@ TEST_F(TeletypeTest, OverwriteNarrowCharWithWideChar)
     EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"c")));
   }
 
-  term->output(L"abc\r");
-  term->flush();
-
-  term->output(widechar);
-  term->flush();
+  term_output->output(L"abc\r");
+  term_output->output(widechar);
 }
 
 TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChar)
@@ -230,11 +219,8 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChar)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"a c")));
   }
 
-  term->output(widechar + L"c\r");
-  term->flush();
-
-  term->output(L"a");
-  term->flush();
+  term_output->output(widechar + L"c\r");
+  term_output->output(L"a");
 }
 
 TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChars)
@@ -245,11 +231,8 @@ TEST_F(TeletypeTest, OverwriteWideCharWithNarrowChars)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"abc")));
   }
 
-  term->output(widechar + L"c\r");
-  term->flush();
-
-  term->output(L"ab");
-  term->flush();
+  term_output->output(widechar + L"c\r");
+  term_output->output(L"ab");
 }
 
 TEST_F(TeletypeTest, overwriteEverything)
@@ -261,10 +244,8 @@ TEST_F(TeletypeTest, overwriteEverything)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyz")));
   }
 
-  term->output(L"abc\r");
-  term->flush();
-  term->output(L"xyz");
-  term->flush();
+  term_output->output(L"abc\r");
+  term_output->output(L"xyz");
 }
 
 TEST_F(TeletypeTest, overwritePastEverything)
@@ -276,15 +257,13 @@ TEST_F(TeletypeTest, overwritePastEverything)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyzw")));
   }
 
-  term->output(L"abc\r");
-  term->flush();
-  term->output(L"xyzw");
-  term->flush();
+  term_output->output(L"abc\r");
+  term_output->output(L"xyzw");
 }
 
 TEST_F(TeletypeTest, testWritePastEOL)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(5));
 
   {
@@ -295,12 +274,12 @@ TEST_F(TeletypeTest, testWritePastEOL)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"fghij")));
   }
 
-  term->output(L"abcdefghij");
+  term_output->output(L"abcdefghij");
 }
 
 TEST_F(TeletypeTest, WritePastEOLAfterWideChar)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -311,12 +290,12 @@ TEST_F(TeletypeTest, WritePastEOLAfterWideChar)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"def")));
   }
 
-  term->output(widechar + L"bcdef");
+  term_output->output(widechar + L"bcdef");
 }
 
 TEST_F(TeletypeTest, WriteWideCharPastEOL)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -327,12 +306,12 @@ TEST_F(TeletypeTest, WriteWideCharPastEOL)
     EXPECT_CALL(*teletype, set_last_line(StrEq(widechar)));
   }
 
-  term->output(widechar + widechar + widechar);
+  term_output->output(widechar + widechar + widechar);
 }
 
 TEST_F(TeletypeTest, WriteWideCharPastEOLWithSplit)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(4));
 
   {
@@ -342,12 +321,12 @@ TEST_F(TeletypeTest, WriteWideCharPastEOLWithSplit)
     EXPECT_CALL(*teletype, set_last_line(StrEq(widechar + L"a")));
   }
 
-  term->output(L"a" + widechar + widechar + L"a");
+  term_output->output(L"a" + widechar + widechar + L"a");
 }
 
 TEST_F(TeletypeTest, testOverwritePastEOL)
 {
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(5));
 
   {
@@ -359,16 +338,18 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"fghij")));
   }
 
-  term->output(L"12345");
-  term->output(L"\rabcdefghij");
+  term_output->output(L"12345");
+  term_output->output(L"\rabcdefghij");
 }
 
 TEST_F(TeletypeTest, TeletypeDoesNotBreakTerminalMock)
 {
-  shared_ptr<mocks::terminal> term = mocks::create_combining_terminal();
-  shared_ptr<mocks::teletype> teletype = mocks::create_teletype(term, term_locale);
+  shared_ptr<mocks::combining_terminal_output> real_term_output =
+    mocks::combining_terminal_output::create();
+  shared_ptr<mocks::teletype> teletype =
+    mocks::create_teletype(term_locale, term_metrics, real_term_output);
 
-  EXPECT_CALL(*term, get_screen_width())
+  EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(80));
 
   {
@@ -377,14 +358,14 @@ TEST_F(TeletypeTest, TeletypeDoesNotBreakTerminalMock)
     EXPECT_CALL(*teletype, set_last_line(StrEq(L"a  ")));
   }
 
-  term->write_text(L"abc");
-  term->flush();
+  real_term_output->write_text(L"abc");
+  real_term_output->flush();
 
-  term->move_to_beginning_of_line();
-  term->write_text(L"   ");
-  term->move_to_beginning_of_line();
-  term->write_text(L"a");
-  term->flush();
+  real_term_output->move_to_beginning_of_line();
+  real_term_output->write_text(L"   ");
+  real_term_output->move_to_beginning_of_line();
+  real_term_output->write_text(L"a");
+  real_term_output->flush();
 }
 
 

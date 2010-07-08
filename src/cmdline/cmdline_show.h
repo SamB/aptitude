@@ -41,7 +41,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
@@ -58,7 +58,7 @@ cwidget::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 
 /** Run the "show" operation on a single argument, presented as a string. */
 bool do_cmdline_show(std::string s, int verbose,
-                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                     const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 /** The "show" user command. */
 int cmdline_show(int argc, char *argv[], int verbose);

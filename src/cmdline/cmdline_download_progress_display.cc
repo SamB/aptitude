@@ -37,16 +37,16 @@ namespace aptitude
       class download_progress : public views::download_progress
       {
         shared_ptr<transient_message> message;
-        shared_ptr<terminal> term;
         shared_ptr<terminal_locale> term_locale;
+        shared_ptr<terminal_metrics> term_metrics;
 
         download_progress(const shared_ptr<transient_message> &_message,
-                          const shared_ptr<terminal> &_term,
-                          const shared_ptr<terminal_locale> &_term_locale);
+                          const shared_ptr<terminal_locale> &_term_locale,
+                          const shared_ptr<terminal_metrics> &_term_metrics);
         friend shared_ptr<download_progress>
         make_shared<download_progress>(const shared_ptr<transient_message> &,
-                                       const shared_ptr<terminal> &,
-                                       const shared_ptr<terminal_locale> &);
+                                       const shared_ptr<terminal_locale> &,
+                                       const shared_ptr<terminal_metrics> &);
 
       public:
         bool update_progress(const status &current_status);
@@ -74,11 +74,11 @@ namespace aptitude
       };
 
       download_progress::download_progress(const shared_ptr<transient_message> &_message,
-                                           const shared_ptr<terminal> &_term,
-                                           const shared_ptr<terminal_locale> &_term_locale)
+                                           const shared_ptr<terminal_locale> &_term_locale,
+                                           const shared_ptr<terminal_metrics> &_term_metrics)
         : message(_message),
-          term(_term),
-          term_locale(_term_locale)
+          term_locale(_term_locale),
+          term_metrics(_term_metrics)
       {
       }
 
@@ -122,10 +122,10 @@ namespace aptitude
 
     shared_ptr<views::download_progress>
     create_download_progress_display(const boost::shared_ptr<transient_message> &message,
-                                     const boost::shared_ptr<terminal> &term,
-                                     const boost::shared_ptr<terminal_locale> &term_locale)
+                                     const boost::shared_ptr<terminal_locale> &term_locale,
+                                     const boost::shared_ptr<terminal_metrics> &term_metrics)
     {
-      return make_shared<download_progress>(message, term, term_locale);
+      return make_shared<download_progress>(message, term_locale, term_metrics);
     }
   }
 }

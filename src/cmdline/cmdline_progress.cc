@@ -35,7 +35,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_metrics;
 using boost::shared_ptr;
 
 static void dl_complete(download_signal_log &manager,
@@ -50,15 +50,15 @@ namespace
                               download_signal_log &,
                               const sigc::slot1<void, bool> &,
                               unsigned int &screen_width,
-                              const shared_ptr<terminal> &term)
+                              const shared_ptr<terminal_metrics> &term_metrics)
   {
-    screen_width = term->get_screen_width();
+    screen_width = term_metrics->get_screen_width();
     // Note that we don't call the continuation; we assume that
     // another slot invoked by the same signal will do that.
   }
 }
 
-download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal> &term)
+download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal_metrics> &term_metrics)
 {
   // The terminal expects a reference to a variable that will be
   // updated in-place to contain the current screen width.
@@ -67,7 +67,7 @@ download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal> &t
   // the terminal object directly -- will require either moving it
   // into cmdline/ (preferred?) or moving the terminal into generic/.
   static unsigned int screen_width;
-  screen_width = term->get_screen_width();
+  screen_width = term_metrics->get_screen_width();
 
   download_signal_log *m=new download_signal_log;
 
@@ -80,7 +80,7 @@ download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal> &t
   m->Fail_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Fail));
   m->Pulse_sig.connect(sigc::bind(sigc::ptr_fun(&do_update_screen_width),
                                   sigc::ref(screen_width),
-                                  term));
+                                  term_metrics));
   m->Pulse_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Pulse));
   m->Start_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Start));
   m->Stop_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Stop));

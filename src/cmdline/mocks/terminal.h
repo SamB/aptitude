@@ -45,31 +45,48 @@ namespace aptitude
        *  used to test other mocks that extend the terminal's behavior
        *  (such as the teletype mock).  To get a terminal that
        *  interprets calls to write_text(), use
-       *  create_combining_terminal().
+       *  combining_terminal_output.
        */
-      class terminal : public aptitude::cmdline::terminal
+      class terminal_output : public aptitude::cmdline::terminal_output
       {
-        class combining_impl;
-        friend boost::shared_ptr<terminal> create_combining_terminal();
+        friend boost::shared_ptr<terminal_output>
+        boost::make_shared<terminal_output>();
+
+        terminal_output();
 
       public:
         MOCK_METHOD0(output_is_a_terminal, bool());
         MOCK_METHOD1(write_text, void(const std::wstring &));
         MOCK_METHOD0(move_to_beginning_of_line, void());
         MOCK_METHOD0(flush, void());
+
+        static boost::shared_ptr<terminal_output> create();
+      };
+
+      class terminal_input : public aptitude::cmdline::terminal_input
+      {
+        friend boost::shared_ptr<terminal_input>
+        boost::make_shared<terminal_input>();
+
+        terminal_input();
+
+      public:
         MOCK_METHOD1(prompt_for_input, std::wstring(const std::wstring &));
+
+        static boost::shared_ptr<terminal_input> create();
+      };
+
+      class terminal_metrics : public aptitude::cmdline::terminal_metrics
+      {
+        friend boost::shared_ptr<terminal_metrics>
+        boost::make_shared<terminal_metrics>();
+
+        terminal_metrics();
+
+      public:
         MOCK_METHOD0(get_screen_width, unsigned int());
 
-        // This method is invoked when the terminal would flush its
-        // output: specifically, for each newline that's written and
-        // for each call to flush().
-        //
-        // If the terminal would flush, but there's no text to flush,
-        // this isn't invoked.
-        MOCK_METHOD1(output, void(const std::wstring &));
-
-        /** \brief Create a terminal object. */
-        static boost::shared_ptr<terminal> create();
+        static boost::shared_ptr<terminal_metrics> create();
       };
 
       /** \brief A mock for the terminal locale routines.
@@ -90,9 +107,35 @@ namespace aptitude
         static boost::shared_ptr<terminal_locale> create();
       };
 
-      /** \brief Create a mock terminal that interprets calls to
-       *  write_text() and flush(), invoking output() when
-       *  appropriate.
+      /** \brief Interface for objects that emit terminal output as a
+       *  sequence of string writes.
+       */
+      class terminal_with_combined_output
+      {
+        terminal_with_combined_output();
+
+        friend class combining_terminal_output;
+
+        friend boost::shared_ptr<terminal_with_combined_output>
+        boost::make_shared<terminal_with_combined_output>();
+
+      public:
+        virtual ~terminal_with_combined_output();
+
+        // This method is invoked when the terminal would flush its
+        // output: specifically, for each newline that's written and
+        // for each call to flush().
+        //
+        // If the terminal would flush, but there's no text to flush,
+        // this isn't invoked.
+        MOCK_METHOD1(output, void(const std::wstring &));
+
+        static boost::shared_ptr<terminal_with_combined_output> create();
+      };
+
+      /** \brief Interface for objects that can receive calls to
+       *  terminal_output and emit calls as a
+       *  terminal_with_combined_output.
        *
        *  Calls to move_to_beginning_of_line() are rewritten to place
        *  '\r' on the output stream instead.  This is done so that
@@ -100,7 +143,23 @@ namespace aptitude
        *  move_to_beginning_of_line() occurs in the right place
        *  relative to calls to write_to_text().
        */
-      boost::shared_ptr<terminal> create_combining_terminal();
+      class combining_terminal_output : public aptitude::cmdline::terminal_output,
+                                        public terminal_with_combined_output
+      {
+        class impl;
+        friend class impl;
+
+        friend boost::shared_ptr<combining_terminal_output>
+        create_combining_terminal_output();
+
+        combining_terminal_output();
+
+      public:
+        // Mocked because tests might want to override its behavior:
+        MOCK_METHOD0(output_is_a_terminal, bool());
+
+        static boost::shared_ptr<combining_terminal_output> create();
+      };
     }
   }
 }

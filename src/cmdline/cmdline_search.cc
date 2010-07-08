@@ -65,10 +65,11 @@ namespace cw = cwidget;
 using aptitude::Loggers;
 using aptitude::cmdline::create_search_progress;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_io;
 using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_metrics;
+using aptitude::cmdline::terminal_output;
 using aptitude::matching::serialize_pattern;
 using aptitude::util::create_throttle;
 using aptitude::util::progress_info;
@@ -93,14 +94,15 @@ namespace
                          const unsigned int screen_width,
                          bool disable_columns,
                          bool debug,
-                         const shared_ptr<terminal> &term,
-                         const shared_ptr<terminal_locale> &term_locale)
+                         const shared_ptr<terminal_locale> &term_locale,
+                         const shared_ptr<terminal_metrics> &term_metrics,
+                         const shared_ptr<terminal_output> &term_output)
   {
     typedef std::vector<std::pair<pkgCache::PkgIterator, ref_ptr<structural_match> > >
       results_list;
 
     const shared_ptr<progress> search_progress_display =
-      create_progress_display(term, term_locale);
+      create_progress_display(term_locale, term_metrics, term_output);
     const shared_ptr<throttle> search_progress_throttle =
       create_throttle();
 
@@ -164,8 +166,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
 		   string display_format, string width, string sort,
 		   bool disable_columns, bool debug)
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   int real_width=-1;
 
@@ -216,7 +217,7 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
     }
 
   shared_ptr<OpProgress> progress =
-    make_text_progress(true, term, term_locale);
+    make_text_progress(true, term, term, term);
 
   apt_init(progress.get(), true, status_fname);
 
@@ -251,5 +252,6 @@ int cmdline_search(int argc, char *argv[], const char *status_fname,
                             disable_columns,
                             debug,
                             term,
-                            term_locale);
+                            term,
+                            term);
 }

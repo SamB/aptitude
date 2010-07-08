@@ -32,8 +32,9 @@ namespace aptitude
 
   namespace cmdline
   {
-    class terminal;
     class terminal_locale;
+    class terminal_metrics;
+    class terminal_output;
     class transient_message;
 
     /** \brief Create a blank progress display.
@@ -58,8 +59,9 @@ namespace aptitude
      *  transient message with the given terminal objects.
      */
     boost::shared_ptr<views::progress>
-    create_progress_display(const boost::shared_ptr<terminal> &term,
-                            const boost::shared_ptr<terminal_locale> &term_locale);
+    create_progress_display(const boost::shared_ptr<terminal_locale> &term_locale,
+                            const boost::shared_ptr<terminal_metrics> &term_metrics,
+                            const boost::shared_ptr<terminal_output> &term_output);
   }
 }
 
