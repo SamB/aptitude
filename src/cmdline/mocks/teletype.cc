@@ -83,8 +83,8 @@ namespace aptitude
               term_metrics(_term_metrics),
               term_output(_term_output)
           {
-            ON_CALL(*term_output, output(_))
-              .WillByDefault(Invoke(this, &teletype_with_terminal::handle_output));
+            EXPECT_CALL(*term_output, output(_))
+              .WillRepeatedly(Invoke(this, &teletype_with_terminal::handle_output));
           }
         };
 
