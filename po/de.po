@@ -3,14 +3,14 @@
 # Copyright (c) 2002 Erich Schubert <erich@debian.org>
 # Copyright (c) 2004 Sebastian Kapfer <sebastian_kapfer@gmx.net>
 # Copyright (c) 2004 Dennis Stampfer <seppy@debian.org>
-# Copyright (c) 2006, 2008 Jens Seidel <jensseidel@users.sf.net>
+# Copyright (c) 2006, 2008, 2010 Jens Seidel <jensseidel@users.sf.net>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aptitude 0.2.15.5\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2010-06-18 19:06-0700\n"
-"PO-Revision-Date: 2008-10-02 15:13+0200\n"
+"PO-Revision-Date: 2010-07-09 11:41+0200\n"
 "Last-Translator: Jens Seidel <jensseidel@users.sf.net>\n"
 "Language-Team: Debian German <debian-l10n-german@lists.debian.org>\n"
 "MIME-Version: 1.0\n"
@@ -270,16 +270,12 @@ msgid "Display flat view instead of default view on startup"
 msgstr ""
 
 #: src/apt_options.cc:241
-#, fuzzy
-#| msgid ""
-#| "If this option is enabled, the menu bar will only appear when it has been "
-#| "activated by pressing the menu key."
 msgid ""
 "If this option is enabled, then the first view displayed on startup will be "
 "a flat view instead of the default view."
 msgstr ""
-"Falls diese Option aktiviert ist, wird die Menüzeile nur erscheinen, wenn "
-"sie durch Drücken der Menü-Taste aktiviert wurde."
+"Falls diese Option aktiviert ist, wird die erste beim Start angezeigte "
+"Ansicht eine flache Ansicht anstatt der Standardansicht sein."
 
 #: src/apt_options.cc:245
 msgid "The default grouping method for package views"
@@ -713,10 +709,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Kann das Quellpaket zu »%s« nicht finden.\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Kann die Bauabhängigkeiten nicht auflösen: %s."
+msgstr "Kann die Bauabhängigkeiten nicht auflösen: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -770,19 +765,17 @@ msgid "%s is already installed at the requested version (%s)\n"
 msgstr "»%s« ist bereits in der angeforderten Version (%s) installiert\n"
 
 #: src/cmdline/cmdline_action.cc:328
-#, fuzzy, c-format
-#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
+#, c-format
 msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr ""
-"%s ist momentan nicht installiert und wird folglich nicht erneut "
-"installiert.\n"
+"%s ist momentan nicht installiert und wird folglich nicht aktualisiert.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid "%s is already installed at the requested version (%s)\n"
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded."
-msgstr "»%s« ist bereits in der angeforderten Version (%s) installiert\n"
+msgstr "%s ist bereits in der neuesten Version installiert und wird folglich "
+"nicht aktualisiert."
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -884,10 +877,9 @@ msgid "Err "
 msgstr "Feh "
 
 #: src/cmdline/cmdline_changelog.cc:178
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog download failed: %s"
-msgstr "ChangeLog für %s"
+msgstr "Download des Changelog schlug fehl: %s"
 
 #: src/cmdline/cmdline_changelog.cc:282
 msgid "Can't execute sensible-pager, is this a working Debian system?"
@@ -1058,11 +1050,10 @@ msgstr ""
 "Was das ist? Natürlich ein Elefant, der von einer Schlange gefressen wurde.\n"
 
 #: src/cmdline/cmdline_progress_display.cc:167 src/gtk/download.cc:204
-#, fuzzy
-#| msgid "none"
 msgid "Done"
-msgstr "nichts"
+msgstr "Erledigt"
 
+# FIXME: translator comment missing!?
 #: src/cmdline/cmdline_progress_display.cc:172
 msgid "DONE"
 msgstr ""
