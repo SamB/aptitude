@@ -204,6 +204,9 @@ sigc::signal1<void, bool> update_finished;
 const char *default_pkgstatusdisplay="%d";
 const char *default_pkgheaderdisplay="%N %n #%B %u %o";
 const char *default_grpstr="task,status,section(subdirs,passthrough),section(topdir)";
+// ForTranslators: This string is a confirmation message, which users
+// (especially CJK users) should be able to input without input
+// methods.  Please include nothing but ASCII characters.
 const char *confirm_delete_essential_str=N_("Yes, I am aware this is a very bad idea");
 
 
