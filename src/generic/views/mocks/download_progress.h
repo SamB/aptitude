@@ -21,6 +21,7 @@
 #define APTITUDE_GENERIC_VIEWS_MOCKS_DOWNLOAD_PROGRESS_H
 
 // Local includes:
+#include <generic/util/mocks/mock_util.h>
 #include <generic/views/download_progress.h>
 
 // System includes:
@@ -34,10 +35,12 @@ namespace aptitude
   {
     namespace mocks
     {
-      class download_progress : public aptitude::views::download_progress
+      class download_progress : public aptitude::views::download_progress,
+                                public aptitude::util::mocks::Mock<download_progress>
       {
         download_progress();
         friend boost::shared_ptr<download_progress> boost::make_shared<download_progress>();
+        MOCK_FRIENDS();
 
       public:
         MOCK_METHOD1(update_progress, bool(const status &));
@@ -53,12 +56,23 @@ namespace aptitude
         MOCK_METHOD3(file_finished, void(const std::string &,
                                          const boost::optional<unsigned long> &,
                                          const status &));
-        MOCK_METHOD0(done, void());
+        MOCK_METHOD3(done, void(double, unsigned long, double));
         MOCK_METHOD3(media_change, void(const std::string &,
                                         const std::string &,
                                         const sigc::slot1<void, bool> &));
+      };
 
-        boost::shared_ptr<download_progress> create();
+      class download_status_display : public aptitude::views::download_status_display,
+                                      public aptitude::util::mocks::Mock<download_status_display>
+      {
+        download_status_display();
+        friend boost::shared_ptr<download_status_display>
+        boost::make_shared<download_status_display>();
+
+        MOCK_FRIENDS();
+
+      public:
+        MOCK_METHOD1(display_status, void(const download_progress::status &));
       };
     }
   }

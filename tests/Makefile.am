@@ -16,6 +16,7 @@ $(top_builddir)/src/cmdline/mocks/libcmdline-mocks.a \
 $(top_builddir)/src/cmdline/libcmdline.a \
 $(top_builddir)/src/generic/util/libgeneric-util.a \
 $(top_builddir)/src/generic/views/libgeneric-views.a \
+$(top_builddir)/src/generic/views/mocks/libgeneric-views-mocks.a \
 -lcppunit \
 $(BOOST_TEST_LDFLAGS) $(GMOCK_LDFLAGS)
 
@@ -67,6 +68,7 @@ boost_test_SOURCES = \
 gtest_test_SOURCES = \
 	gtest_test_main.cc \
 	test_cmdline_download_progress_display.cc \
+	test_cmdline_download_status_display.cc \
 	test_cmdline_progress_display.cc \
 	test_cmdline_search_progress.cc \
 	test_logging.cc \

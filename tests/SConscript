@@ -93,6 +93,7 @@ boost_test_extra_deps = [
 gtest_test_sources = [
     'gtest_test_main.cc',
     'test_cmdline_download_progress_display.cc',
+    'test_cmdline_download_status_display.cc',
     'test_cmdline_progress_display.cc',
     'test_cmdline_search_progress.cc',
     'test_logging.cc',
@@ -115,6 +116,7 @@ gtest_test_extra_deps = [
     '../src/generic/util/throttle.o',
     '../src/generic/util/util.o',
     '../src/generic/views/download_progress.o',
+    '../src/generic/views/mocks/download_progress.o',
     '../src/generic/views/progress.o',
     '../src/loggers.o',
     ]

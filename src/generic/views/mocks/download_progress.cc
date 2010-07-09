@@ -34,9 +34,8 @@ namespace aptitude
       {
       }
 
-      shared_ptr<download_progress> download_progress::create()
+      download_status_display::download_status_display()
       {
-        return make_shared<download_progress>();
       }
     }
   }

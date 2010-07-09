@@ -48,22 +48,28 @@ namespace aptitude
       /** \brief Represents the download progress of a single file. */
       class file_progress
       {
-        const unsigned long current_size;
-        const unsigned long total_size;
+        unsigned long current_size;
+        unsigned long total_size;
 
-        const std::wstring description;
-        const boost::optional<unsigned long> id;
+        bool complete;
+        std::string description;
+        boost::optional<unsigned long> id;
+        std::string mode;
 
       public:
         file_progress(unsigned long _current_size,
                       unsigned long _total_size,
-                      const std::wstring &_description,
-                      const boost::optional<unsigned long> &_id)
+                      bool _complete,
+                      const std::string &_description,
+                      const boost::optional<unsigned long> &_id,
+                      const std::string &_mode)
           : current_size(_current_size),
             total_size(_total_size),
 
+            complete(_complete),
             description(_description),
-            id(_id)
+            id(_id),
+            mode(_mode)
         {
         }
 
@@ -73,31 +79,52 @@ namespace aptitude
         /** \brief Get the total size of the file. */
         unsigned long get_total_size() const { return total_size; }
 
+        /** \return \b true if the file has been successfully fetched
+         *  according to the download backend.
+         */
+        bool get_complete() const { return complete; }
+
         /** \brief Get a brief description of this file. */
-        const std::wstring &get_description() const { return description; }
+        const std::string &get_description() const { return description; }
 
         /** \brief Get an integer that identifies this item.
          *
          *  May be unset if the item doesn't have an ID yet.
          */
         const boost::optional<unsigned long> &get_id() const { return id; }
+
+        /** \brief Retrieve the current mode string for the file.
+         *
+         *  If there is no mode, this will be an empty string.
+         */
+        const std::string &get_mode() const { return mode; }
+
+        bool operator==(const file_progress &other) const;
+        bool operator!=(const file_progress &other) const
+        {
+          return ! (*this == other);
+        }
       };
 
       /** \brief Represents the current progress of a download. */
       class status
       {
+      public:
+        typedef boost::variant<file_progress, std::string> worker_status;
+
+      private:
         const double download_rate;
-        const std::vector<file_progress> files;
+        const std::vector<worker_status> active_downloads;
         const double fraction_complete;
         const unsigned long time_remaining;
 
       public:
         status(const double _download_rate,
-               const std::vector<file_progress> &_files,
+               const std::vector<worker_status> &_active_downloads,
                const double _fraction_complete,
                const unsigned long _time_remaining)
           : download_rate(_download_rate),
-            files(_files),
+            active_downloads(_active_downloads),
             fraction_complete(_fraction_complete),
             time_remaining(_time_remaining)
         {
@@ -106,8 +133,11 @@ namespace aptitude
         /** \brief Get the current download speed in bytes per second. */
         double get_download_rate() const { return download_rate; }
 
-        /** \brief Get the status of the files currently being downloaded. */
-        const std::vector<file_progress> &get_files() const { return files; }
+        /** \brief Get the currently active download processes. */
+        const std::vector<worker_status> &get_active_downloads() const
+        {
+          return active_downloads;
+        }
 
         /** \brief Get the proportional completion of the download (scale
          *  of 0 to 1).
@@ -118,6 +148,12 @@ namespace aptitude
          *  completes.
          */
         unsigned long get_time_remaining() const { return time_remaining; }
+
+        bool operator==(const status &other) const;
+        bool operator!=(const status &other) const
+        {
+          return ! (*this == other);
+        }
       };
 
       /** \brief Update the download progress indicator.
@@ -177,15 +213,18 @@ namespace aptitude
 
       /** \brief Invoked when the download is complete.
        *
-       *  \param k              A continuation that should be invoked
-       *                        when it's OK to start any post-download
-       *                        events (such as installing packages).
-       *                        This continuation should always be invoked;
-       *                        if some of the post-download events need
-       *                        to be canceled, that should be handled by
-       *                        higher-level code.
+       *  \param fetched_bytes  The number of bytes that were downloaded.
+       *
+       *  \param elapsed_time   How long (in seconds) the download lasted.
+       *
+       *  \param latest_download_rate  The final estimated download rate.
+       *
+       * \todo Should the parameters be incorporated into a status
+       * snapshot so that can be used instead?
        */
-      virtual void done() = 0;
+      virtual void done(double fetched_bytes,
+                        unsigned long elapsed_time,
+                        double latest_download_rate) = 0;
 
       /** \brief Invoked when the install media should be replaced.
        *
@@ -201,6 +240,29 @@ namespace aptitude
       virtual void media_change(const std::string &media,
                                 const std::string &drive,
                                 const sigc::slot1<void, bool> &k) = 0;
+    };
+
+    std::ostream &operator<<(std::ostream &out,
+                             const download_progress::file_progress &progress);
+
+    std::ostream &operator<<(std::ostream &out,
+                             const download_progress::status &status);
+
+    /** \brief Interface for objects that can display the current status
+     *  of a download.
+     *
+     *  Instances of this are typically used as helpers to
+     *  download_progress implementations.  Separating this code
+     *  lets us write much cleaner and simpler test cases for
+     *  download_progress.
+     */
+    class download_status_display
+    {
+    public:
+      virtual ~download_status_display();
+
+      /** \brief Display the current progress of a download. */
+      virtual void display_status(const download_progress::status &status) = 0;
     };
   }
 }
