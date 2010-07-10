@@ -37,8 +37,8 @@ namespace aptitude
      *  a download.
      *
      *  Operates at a higher level and more cleanly than AcqProgress.
-     *  See src/generic/apt/acqprogress.cc for a bridge between the
-     *  two worlds.
+     *  See src/generic/controllers/acquire_download_progress.h for a
+     *  bridge between the two worlds.
      */
     class download_progress
     {
