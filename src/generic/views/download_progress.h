@@ -211,7 +211,11 @@ namespace aptitude
                                  const boost::optional<unsigned long> &id,
                                  const status &current_status) = 0;
 
-      /** \brief Invoked when the download is complete.
+      /** \brief Invoked when each stage of the download is complete.
+       *
+       *  The whole download process might not be done; for instance,
+       *  we might need to change to a new CD.  complete() is invoked
+       *  after the entire download finishes.
        *
        *  \param fetched_bytes  The number of bytes that were downloaded.
        *
@@ -240,6 +244,18 @@ namespace aptitude
       virtual void media_change(const std::string &media,
                                 const std::string &drive,
                                 const sigc::slot1<void, bool> &k) = 0;
+
+      /** \brief Invoked when the whole download finishes.
+       *
+       *  \param fetched_bytes  The number of bytes that were downloaded.
+       *
+       *  \param elapsed_time   How long (in seconds) the download lasted.
+       *
+       *  \param latest_download_rate  The final estimated download rate.
+       */
+      virtual void complete(double fetched_bytes,
+                            unsigned long elapsed_time,
+                            double latest_download_rate) = 0;
     };
 
     std::ostream &operator<<(std::ostream &out,

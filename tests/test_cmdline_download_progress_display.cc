@@ -630,6 +630,11 @@ TEST_P(CmdlineDownloadProgressDisplayTest, MediaChangeEOF)
                          sigc::mem_fun(callback, &MockMediaChangeCallback::media_change));
 }
 
+TEST_P(CmdlineDownloadProgressDisplayTest, CompleteDoesNothing)
+{
+  progress->complete(4, 100, 3);
+}
+
 INSTANTIATE_TEST_CASE_P(WithMessages,
                         CmdlineDownloadProgressDisplayTest,
                         Values(true));

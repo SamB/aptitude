@@ -94,6 +94,10 @@ namespace aptitude
         void media_change(const std::string &media,
                           const std::string &drive,
                           const sigc::slot1<void, bool> &k);
+
+        virtual void complete(double fetched_bytes,
+                              unsigned long elapsed_time,
+                              double latest_download_rate);
       };
 
       download_progress::download_progress(bool _display_messages,
@@ -221,6 +225,12 @@ namespace aptitude
           }
         // Now say it's OK to continue.
         k(true);
+      }
+
+      void download_progress::complete(double fetched_bytes,
+                                       unsigned long elapsed_time,
+                                       double latest_download_rate)
+      {
       }
 
       class dummy_status_display : public views::download_status_display
