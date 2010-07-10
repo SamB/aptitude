@@ -83,7 +83,7 @@ namespace
       : term_locale(mocks::terminal_locale::create_strict()),
         term_metrics(create_terminal_metrics()),
         term_output(create_terminal_output()),
-        teletype(mocks::create_teletype(term_locale, term_metrics, term_output)),
+        teletype(mocks::create_strict_teletype(term_locale, term_metrics, term_output)),
         message(create_transient_message(term_locale, term_metrics, term_output)),
         widechar(1, two_column_char)
     {

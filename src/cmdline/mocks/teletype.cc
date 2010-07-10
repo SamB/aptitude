@@ -29,6 +29,8 @@ using boost::make_shared;
 using boost::shared_ptr;
 using testing::AnyNumber;
 using testing::Invoke;
+using testing::NiceMock;
+using testing::StrictMock;
 using testing::_;
 
 namespace aptitude
@@ -209,13 +211,33 @@ namespace aptitude
       }
 
       shared_ptr<teletype>
-      create_teletype(const shared_ptr<terminal_locale> &term_locale,
-                      const shared_ptr<terminal_metrics> &term_metrics,
-                      const boost::shared_ptr<terminal_with_combined_output> &term_output)
+      create_default_teletype(const shared_ptr<terminal_locale> &term_locale,
+                              const shared_ptr<terminal_metrics> &term_metrics,
+                              const boost::shared_ptr<terminal_with_combined_output> &term_output)
       {
         return make_shared<teletype_with_terminal>(term_locale,
                                                    term_metrics,
                                                    term_output);
+      }
+
+      shared_ptr<teletype>
+      create_nice_teletype(const shared_ptr<terminal_locale> &term_locale,
+                           const shared_ptr<terminal_metrics> &term_metrics,
+                           const boost::shared_ptr<terminal_with_combined_output> &term_output)
+      {
+        return make_shared<NiceMock<teletype_with_terminal> >(term_locale,
+                                                              term_metrics,
+                                                              term_output);
+      }
+
+      shared_ptr<teletype>
+      create_strict_teletype(const shared_ptr<terminal_locale> &term_locale,
+                             const shared_ptr<terminal_metrics> &term_metrics,
+                             const boost::shared_ptr<terminal_with_combined_output> &term_output)
+      {
+        return make_shared<StrictMock<teletype_with_terminal> >(term_locale,
+                                                                term_metrics,
+                                                                term_output);
       }
     }
   }

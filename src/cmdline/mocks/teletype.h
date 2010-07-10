@@ -20,6 +20,9 @@
 #ifndef APTITUDE_CMDLINE_MOCKS_TELETYPE_H
 #define APTITUDE_CMDLINE_MOCKS_TELETYPE_H
 
+// Local includes:
+#include <generic/util/mocks/mock_util.h>
+
 // System includes:
 #include <boost/algorithm/string.hpp>
 #include <boost/shared_ptr.hpp>
@@ -87,13 +90,29 @@ namespace aptitude
         MOCK_METHOD0(newline, void());
       };
 
-      /** \brief Create a teletype mock specialized to process the
-       *  output from the given terminal.
+      /** \brief Create a default teletype mock specialized to process
+       *  the output from the given terminal.
        */
       boost::shared_ptr<teletype>
-      create_teletype(const boost::shared_ptr<terminal_locale> &term_locale,
-                      const boost::shared_ptr<terminal_metrics> &term_metrics,
-                      const boost::shared_ptr<terminal_with_combined_output> &term_output);
+      create_default_teletype(const boost::shared_ptr<terminal_locale> &term_locale,
+                              const boost::shared_ptr<terminal_metrics> &term_metrics,
+                              const boost::shared_ptr<terminal_with_combined_output> &term_output);
+
+      /** \brief Create a strict teletype mock specialized to process
+       *  the output from the given terminal.
+       */
+      boost::shared_ptr<teletype>
+      create_strict_teletype(const boost::shared_ptr<terminal_locale> &term_locale,
+                             const boost::shared_ptr<terminal_metrics> &term_metrics,
+                             const boost::shared_ptr<terminal_with_combined_output> &term_output);
+
+      /** \brief Create a nice teletype mock specialized to process
+       *  the output from the given terminal.
+       */
+      boost::shared_ptr<teletype>
+      create_nice_teletype(const boost::shared_ptr<terminal_locale> &term_locale,
+                           const boost::shared_ptr<terminal_metrics> &term_metrics,
+                           const boost::shared_ptr<terminal_with_combined_output> &term_output);
     }
   }
 }

@@ -97,7 +97,7 @@ namespace
         term_locale(mocks::terminal_locale::create_strict()),
         term_metrics(mocks::terminal_metrics::create_strict()),
         term_output(mocks::terminal_with_combined_output::create_strict()),
-        teletype(mocks::create_teletype(term_locale, term_metrics, term_output))
+        teletype(mocks::create_strict_teletype(term_locale, term_metrics, term_output))
     {
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
         .WillRepeatedly(Return(2));
@@ -347,7 +347,7 @@ TEST_F(TeletypeTest, TeletypeDoesNotBreakTerminalMock)
   shared_ptr<mocks::combining_terminal_output> real_term_output =
     mocks::combining_terminal_output::create_strict();
   shared_ptr<mocks::teletype> teletype =
-    mocks::create_teletype(term_locale, term_metrics, real_term_output);
+    mocks::create_strict_teletype(term_locale, term_metrics, real_term_output);
 
   EXPECT_CALL(*term_metrics, get_screen_width())
     .WillRepeatedly(Return(80));
