@@ -49,6 +49,7 @@ namespace aptitude
 {
   namespace cmdline
   {
+    class terminal_input;
     class terminal_locale;
     class terminal_metrics;
     class terminal_output;
@@ -100,15 +101,18 @@ bool cmdline_parse_source(const string &input,
  *  \param m        the download process to run.
  *  \param verbose  the verbosity level; controls how many
  *                  stats are printed when the run completes.
+ *  \param term_input   the object used to read from the terminal.
  *  \param term_metrics the object from which to read the terminal
  *                      dimensions.
  *  \param term_locale  the locale used for output to the terminal.
+ *  \param term_output  the object used to write to the terminal.
  *
  *  \return the success status of the post-download commands, or
  *  failure if the process failed before they could be run.
  */
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose,
+                                             const boost::shared_ptr<aptitude::cmdline::terminal_input> &term_input,
                                              const boost::shared_ptr<aptitude::cmdline::terminal_locale> &term_locale,
                                              const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics,
                                              const boost::shared_ptr<aptitude::cmdline::terminal_output> &term_output);

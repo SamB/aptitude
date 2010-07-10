@@ -13,8 +13,6 @@ noinst_LIBRARIES = libgeneric-apt.a
 noinst_PROGRAMS  = pkg_hier_dump
 
 libgeneric_apt_a_SOURCES = \
-        acqprogress.cc      \
-        acqprogress.h       \
         aptcache.cc         \
         aptcache.h          \
         apt.cc              \

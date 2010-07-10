@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 
+using aptitude::controllers::acquire_download_progress;
+using aptitude::cmdline::create_cmdline_download_progress;
 using aptitude::cmdline::create_terminal;
 using aptitude::cmdline::make_text_progress;
 using aptitude::cmdline::terminal_io;
@@ -57,7 +59,11 @@ int cmdline_download(int argc, char *argv[])
       _error->DumpErrors();
       return -1;
     }
-  pkgAcquire fetcher(gen_cmdline_download_progress(term));
+
+  std::pair<download_signal_log *, boost::shared_ptr<acquire_download_progress> >
+    progress_display = create_cmdline_download_progress(term, term, term, term);
+
+  pkgAcquire fetcher(progress_display.first);
   string filenames[(*apt_cache_file)->Head().PackageCount];
   string default_release = aptcfg->Find("APT::Default-Release");
 

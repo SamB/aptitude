@@ -391,7 +391,7 @@ int cmdline_do_action(int argc, char *argv[],
 				 sigc::ptr_fun(&run_dpkg_directly));
 
       int rval =
-	(cmdline_do_download(&m, verbose, term, term, term)
+	(cmdline_do_download(&m, verbose, term, term, term, term)
          == download_manager::success ? 0 : -1);
 
       if(_error->PendingError())

@@ -59,10 +59,13 @@
 
 namespace cw = cwidget;
 
+using aptitude::cmdline::create_cmdline_download_progress;
 using aptitude::cmdline::make_text_progress;
+using aptitude::cmdline::terminal_input;
 using aptitude::cmdline::terminal_locale;
 using aptitude::cmdline::terminal_metrics;
 using aptitude::cmdline::terminal_output;
+using aptitude::controllers::acquire_download_progress;
 using boost::shared_ptr;
 
 namespace
@@ -423,6 +426,7 @@ namespace
 
 download_manager::result cmdline_do_download(download_manager *m,
 					     int verbose,
+                                             const shared_ptr<terminal_input> &term_input,
                                              const shared_ptr<terminal_locale> &term_locale,
                                              const shared_ptr<terminal_metrics> &term_metrics,
                                              const shared_ptr<terminal_output> &term_output)
@@ -442,7 +446,13 @@ download_manager::result cmdline_do_download(download_manager *m,
       initial_stats = compute_apt_stats();
     }
 
-  std::auto_ptr<download_signal_log> log(gen_cmdline_download_progress(term_metrics));
+  std::pair<download_signal_log *, boost::shared_ptr<acquire_download_progress> >
+    progress_display = create_cmdline_download_progress(term_input,
+                                                        term_locale,
+                                                        term_metrics,
+                                                        term_output);
+
+  std::auto_ptr<download_signal_log> log(progress_display.first);
 
   // Dump errors here because prepare() might check for pending errors
   // and think something failed.
