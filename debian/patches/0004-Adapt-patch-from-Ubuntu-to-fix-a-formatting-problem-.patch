@@ -1,0 +1,53 @@
+From: Daniel Burrows <dburrows@debian.org>
+Date: Sun, 27 Jun 2010 10:03:36 -0700
+Subject: [PATCH] Adapt patch from Ubuntu to fix a formatting problem in the progress code on large terminals. (Closes: #586470)
+ This module needs a broader overhaul, but the patch is quick and easy to
+ apply and will fix the immediate problem.
+
+---
+ src/generic/apt/acqprogress.cc |   12 ++++++++----
+ src/generic/apt/acqprogress.h  |    3 ++-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/src/generic/apt/acqprogress.cc b/src/generic/apt/acqprogress.cc
+index 556c64e..889b6e2 100644
+--- a/src/generic/apt/acqprogress.cc
++++ b/src/generic/apt/acqprogress.cc
+@@ -175,14 +175,18 @@ void AcqTextStatus::Pulse(pkgAcquire *Owner, download_signal_log &manager,
+    
+    enum {Long = 0,Medium,Short} Mode = Long;
+    
+-   char Buffer[1024];
++   char Buffer[buffer_size];
+    char *End = Buffer + sizeof(Buffer);
+    char *S = Buffer;
+-   if (ScreenWidth >= sizeof(Buffer))
+-      ScreenWidth = sizeof(Buffer)-1;
++   // Save the current screen width in case it's updated underneath us
++   // for whatever reason.
++   const unsigned int ScreenWidth =
++     (this->ScreenWidth >= sizeof(Buffer))
++     ? sizeof(Buffer) - 1
++     : this->ScreenWidth;
+ 
+    // Put in the percent done
+-   snprintf(S,1024,"%ld%%",long(double((CurrentBytes + CurrentItems)*100.0)/double(TotalBytes+TotalItems)));
++   snprintf(S, buffer_size,"%ld%%",long(double((CurrentBytes + CurrentItems)*100.0)/double(TotalBytes+TotalItems)));
+ 
+    bool Shown = false;
+    for (pkgAcquire::Worker *I = Owner->WorkersBegin(); I != 0;
+diff --git a/src/generic/apt/acqprogress.h b/src/generic/apt/acqprogress.h
+index 5130deb..b70972d 100644
+--- a/src/generic/apt/acqprogress.h
++++ b/src/generic/apt/acqprogress.h
+@@ -20,7 +20,8 @@ class download_signal_log;
+ class AcqTextStatus : public sigc::trackable
+ {
+    unsigned int &ScreenWidth;
+-   char BlankLine[300];
++   static const int buffer_size = 1024;
++   char BlankLine[buffer_size];
+    unsigned long ID;
+    unsigned long Quiet;
+    
+-- 
