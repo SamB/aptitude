@@ -37,9 +37,12 @@ namespace aptitude
   {
     namespace mocks
     {
-
       terminal_input::terminal_input()
       {
+        // Make sure the program doesn't abort if there's an
+        // unexpected invocation of prompt_for_input().
+        ON_CALL(*this, prompt_for_input(_))
+          .WillByDefault(Return(std::wstring()));
       }
 
       shared_ptr<terminal_input> terminal_input::create()
