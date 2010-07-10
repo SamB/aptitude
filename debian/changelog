@@ -1,9 +1,14 @@
-aptitude (0.6.3-3~UNRELEASED) unstable; urgency=low
+aptitude (0.6.3-3) unstable; urgency=low
 
   * Apply patch from Nobuhiro Iwamatsu to fix compilation on sh, which
     has the same problem as s390. (Closes: #586861)
 
- -- Daniel Burrows <dburrows@debian.org>  Wed, 23 Jun 2010 09:30:30 -0700
+  * Apply patch from Michael Vogt to update Vcs links in debian/control.
+
+  * Cherry-pick an Ubuntu patch that was merged upstream to fix the
+    progress code on large terminals. (Closes: #586470)
+
+ -- Daniel Burrows <dburrows@debian.org>  Sat, 10 Jul 2010 13:44:48 -0700
 
 aptitude (0.6.3-2) unstable; urgency=low
 
