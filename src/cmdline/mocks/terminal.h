@@ -164,7 +164,14 @@ namespace aptitude
         // Mocked because tests might want to override its behavior:
         MOCK_METHOD0(output_is_a_terminal, bool());
 
-        static boost::shared_ptr<combining_terminal_output> create();
+        /** \brief Create a default-style mock. */
+        static boost::shared_ptr<combining_terminal_output> create_default();
+
+        /** \brief Create a nice mock. */
+        static boost::shared_ptr<combining_terminal_output> create_nice();
+
+        /** \brief Create a strict mock. */
+        static boost::shared_ptr<combining_terminal_output> create_strict();
       };
     }
   }

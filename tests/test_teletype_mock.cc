@@ -345,7 +345,7 @@ TEST_F(TeletypeTest, testOverwritePastEOL)
 TEST_F(TeletypeTest, TeletypeDoesNotBreakTerminalMock)
 {
   shared_ptr<mocks::combining_terminal_output> real_term_output =
-    mocks::combining_terminal_output::create();
+    mocks::combining_terminal_output::create_strict();
   shared_ptr<mocks::teletype> teletype =
     mocks::create_teletype(term_locale, term_metrics, real_term_output);
 

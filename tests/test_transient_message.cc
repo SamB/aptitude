@@ -60,7 +60,7 @@ namespace
     static shared_ptr<mocks::combining_terminal_output> create_terminal_output()
     {
       shared_ptr<mocks::combining_terminal_output> rval =
-        mocks::combining_terminal_output::create();
+        mocks::combining_terminal_output::create_strict();
 
       EXPECT_CALL(*rval, output_is_a_terminal())
         .WillRepeatedly(Return(true));

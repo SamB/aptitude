@@ -28,7 +28,9 @@ using boost::make_shared;
 using boost::shared_ptr;
 using testing::AnyNumber;
 using testing::Invoke;
+using testing::NiceMock;
 using testing::Return;
+using testing::StrictMock;
 using testing::_;
 
 namespace aptitude
@@ -68,12 +70,17 @@ namespace aptitude
 
         void do_write_text(const std::wstring &s);
 
+        friend class testing::NiceMock<impl>;
+        friend class testing::StrictMock<impl>;
+
       public:
         void write_text(const std::wstring &s);
         void move_to_beginning_of_line();
         void flush();
 
-        static shared_ptr<impl> create();
+        static shared_ptr<impl> create_default();
+        static shared_ptr<impl> create_nice();
+        static shared_ptr<impl> create_strict();
       };
 
       combining_terminal_output::impl::impl()
@@ -127,14 +134,34 @@ namespace aptitude
       {
       }
 
-      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create()
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_default()
       {
         return make_shared<combining_terminal_output::impl>();
       }
 
-      shared_ptr<combining_terminal_output> combining_terminal_output::create()
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_nice()
       {
-        return impl::create();
+        return make_shared<NiceMock<combining_terminal_output::impl> >();
+      }
+
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_strict()
+      {
+        return make_shared<StrictMock<combining_terminal_output::impl> >();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_default()
+      {
+        return impl::create_default();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_nice()
+      {
+        return impl::create_nice();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_strict()
+      {
+        return impl::create_strict();
       }
     }
   }
