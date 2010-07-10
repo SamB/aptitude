@@ -55,11 +55,6 @@ namespace aptitude
       {
       }
 
-      shared_ptr<terminal_metrics> terminal_metrics::create()
-      {
-        return make_shared<terminal_metrics>();
-      }
-
       terminal_output::terminal_output()
       {
       }

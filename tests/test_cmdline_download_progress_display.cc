@@ -57,7 +57,7 @@ namespace
     CmdlineDownloadProgressDisplayTest()
       : msg(make_shared<mocks::transient_message>()),
         term_locale(mocks::terminal_locale::create_strict()),
-        term_metrics(mocks::terminal_metrics::create()),
+        term_metrics(mocks::terminal_metrics::create_strict()),
         progress(create_download_progress_display(msg, term_locale, term_metrics))
     {
       // Set up the locale to claim that the two-column character

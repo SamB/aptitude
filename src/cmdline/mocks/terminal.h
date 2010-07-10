@@ -80,17 +80,18 @@ namespace aptitude
         MOCK_METHOD1(prompt_for_input, std::wstring(const std::wstring &));
       };
 
-      class terminal_metrics : public aptitude::cmdline::terminal_metrics
+      class terminal_metrics : public aptitude::cmdline::terminal_metrics,
+                               public aptitude::util::mocks::Mock<terminal_metrics>
       {
         friend boost::shared_ptr<terminal_metrics>
         boost::make_shared<terminal_metrics>();
+
+        MOCK_FRIENDS();
 
         terminal_metrics();
 
       public:
         MOCK_METHOD0(get_screen_width, unsigned int());
-
-        static boost::shared_ptr<terminal_metrics> create();
       };
 
       /** \brief A mock for the terminal locale routines.

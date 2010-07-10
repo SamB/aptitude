@@ -71,7 +71,7 @@ namespace
     static shared_ptr<mocks::terminal_metrics> create_terminal_metrics()
     {
       shared_ptr<mocks::terminal_metrics> rval =
-        mocks::terminal_metrics::create();
+        mocks::terminal_metrics::create_strict();
 
       EXPECT_CALL(*rval, get_screen_width())
         .WillRepeatedly(Return(80));

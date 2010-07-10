@@ -95,7 +95,7 @@ namespace
     TeletypeTest()
       : widechar(1, two_column_char),
         term_locale(mocks::terminal_locale::create_strict()),
-        term_metrics(mocks::terminal_metrics::create()),
+        term_metrics(mocks::terminal_metrics::create_strict()),
         term_output(mocks::terminal_with_combined_output::create()),
         teletype(mocks::create_teletype(term_locale, term_metrics, term_output))
     {
