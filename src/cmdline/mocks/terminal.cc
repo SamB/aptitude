@@ -123,11 +123,6 @@ namespace aptitude
       {
       }
 
-      shared_ptr<terminal_with_combined_output> terminal_with_combined_output::create()
-      {
-        return make_shared<terminal_with_combined_output>();
-      }
-
       combining_terminal_output::combining_terminal_output()
       {
       }

@@ -96,7 +96,7 @@ namespace
       : widechar(1, two_column_char),
         term_locale(mocks::terminal_locale::create_strict()),
         term_metrics(mocks::terminal_metrics::create_strict()),
-        term_output(mocks::terminal_with_combined_output::create()),
+        term_output(mocks::terminal_with_combined_output::create_strict()),
         teletype(mocks::create_teletype(term_locale, term_metrics, term_output))
     {
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))

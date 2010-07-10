@@ -116,7 +116,7 @@ namespace aptitude
       /** \brief Interface for objects that emit terminal output as a
        *  sequence of string writes.
        */
-      class terminal_with_combined_output
+      class terminal_with_combined_output : public aptitude::util::mocks::Mock<terminal_with_combined_output>
       {
         terminal_with_combined_output();
 
@@ -124,6 +124,8 @@ namespace aptitude
 
         friend boost::shared_ptr<terminal_with_combined_output>
         boost::make_shared<terminal_with_combined_output>();
+
+        MOCK_FRIENDS();
 
       public:
         virtual ~terminal_with_combined_output();
@@ -135,8 +137,6 @@ namespace aptitude
         // If the terminal would flush, but there's no text to flush,
         // this isn't invoked.
         MOCK_METHOD1(output, void(const std::wstring &));
-
-        static boost::shared_ptr<terminal_with_combined_output> create();
       };
 
       /** \brief Interface for objects that can receive calls to
