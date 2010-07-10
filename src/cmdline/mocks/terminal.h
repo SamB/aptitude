@@ -66,17 +66,18 @@ namespace aptitude
         MOCK_METHOD0(flush, void());
       };
 
-      class terminal_input : public aptitude::cmdline::terminal_input
+      class terminal_input : public aptitude::cmdline::terminal_input,
+                             public aptitude::util::mocks::Mock<terminal_input>
       {
         friend boost::shared_ptr<terminal_input>
         boost::make_shared<terminal_input>();
+
+        MOCK_FRIENDS();
 
         terminal_input();
 
       public:
         MOCK_METHOD1(prompt_for_input, std::wstring(const std::wstring &));
-
-        static boost::shared_ptr<terminal_input> create();
       };
 
       class terminal_metrics : public aptitude::cmdline::terminal_metrics

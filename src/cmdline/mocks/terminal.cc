@@ -45,11 +45,6 @@ namespace aptitude
           .WillByDefault(Return(std::wstring()));
       }
 
-      shared_ptr<terminal_input> terminal_input::create()
-      {
-        return make_shared<terminal_input>();
-      }
-
       terminal_locale::terminal_locale()
       {
         EXPECT_CALL(*this, wcwidth(_))
