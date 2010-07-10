@@ -321,6 +321,68 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdWithFileSize)
 }
 
 
+
+TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoNameWithFileSize)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_MSG(L"Hit 4 [100B]");
+    EXPECT_CALL(*status_display, display_status(status1));
+  }
+
+  progress->file_already_downloaded("", 4, 100, status1);
+}
+
+TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdNoFileSize)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_MSG(L"Hit somefile");
+    EXPECT_CALL(*status_display, display_status(status2));
+  }
+
+  progress->file_already_downloaded("somefile", optional<unsigned long>(), optional<unsigned long>(), status2);
+}
+
+TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoFileSize)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_MSG(L"Hit 0 filename");
+    EXPECT_CALL(*status_display, display_status(status1));
+  }
+
+  progress->file_already_downloaded("filename", optional<unsigned long>(0), optional<unsigned long>(), status1);
+}
+
+TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdWithFileSize)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_MSG(L"Hit thefile [210B]");
+    EXPECT_CALL(*status_display, display_status(status2));
+  }
+
+  progress->file_already_downloaded("thefile", optional<unsigned long>(), 210, status2);
+}
+
+TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdWithFileSize)
+{
+  {
+    InSequence dummy;
+
+    EXPECT_MSG(L"Hit 6 another file [210B]");
+    EXPECT_CALL(*status_display, display_status(status1));
+  }
+
+  progress->file_already_downloaded("another file", 6, 210, status1);
+}
+
+
 // Test what happens with ignored errors.  There are lots of cases
 // here, but they boil down to "we ignore all the parameters except
 // description" (and of course ignored).

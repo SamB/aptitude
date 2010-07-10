@@ -179,6 +179,22 @@ namespace aptitude
                                 const boost::optional<unsigned long> &file_size,
                                 const status &current_status) = 0;
 
+      /** \brief Invoked when a file isn't even started because it was
+       *  already downloaded.
+       *
+       *  \param description    A brief description of the file.
+       *  \param id             An integer identifying this file, or
+       *                        unset if it hasn't been assigned yet.
+       *  \param file_size      The size of the file; invalid if the
+       *                        file size isn't known.
+       *  \param current_status The download status after starting to
+       *                        download the file.
+       */
+      virtual void file_already_downloaded(const std::string &description,
+                                           const boost::optional<unsigned long> &id,
+                                           const boost::optional<unsigned long> &file_size,
+                                           const status &current_status) = 0;
+
       /** \brief Invoked when a file fails to download.
        *
        *  \param ignored        True if the file was successfully fetched

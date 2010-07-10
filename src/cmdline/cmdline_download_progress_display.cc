@@ -77,6 +77,11 @@ namespace aptitude
                           const boost::optional<unsigned long> &file_size,
                           const status &current_status);
 
+        void file_already_downloaded(const std::string &description,
+                                     const boost::optional<unsigned long> &id,
+                                     const boost::optional<unsigned long> &file_size,
+                                     const status &current_status);
+
         void error(bool ignored,
                    const std::string &error,
                    const std::string &description,
@@ -129,6 +134,31 @@ namespace aptitude
             std::vector<std::string> entries;
 
             entries.push_back(_("Get:"));
+
+            if(id)
+              entries.push_back( (format("%d") % *id).str() );
+
+            if(!description.empty())
+              entries.push_back(description);
+
+            if(file_size)
+              entries.push_back( (format("[%sB]") % SizeToStr(*file_size)).str() );
+
+            message->display_and_advance(transcode(join(entries, " ")));
+          }
+        status_display->display_status(current_status);
+      }
+
+      void download_progress::file_already_downloaded(const std::string &description,
+                                                      const boost::optional<unsigned long> &id,
+                                                      const boost::optional<unsigned long> &file_size,
+                                                      const status &current_status)
+      {
+        if(display_messages)
+          {
+            std::vector<std::string> entries;
+
+            entries.push_back(_("Hit"));
 
             if(id)
               entries.push_back( (format("%d") % *id).str() );
