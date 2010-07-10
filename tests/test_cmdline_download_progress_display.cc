@@ -260,17 +260,6 @@ TEST_P(CmdlineDownloadProgressDisplayTest, UpdateProgress2)
   EXPECT_TRUE(progress->update_progress(status2));
 }
 
-// The various file_started(), file_finished(), etc routines don't
-// exhaustively verify that the status is displayed correctly; the
-// assumption is that it gets displayed by the same routine that backs
-// update_progress().  I test a few different status values to
-// sanity-check this assumption, but that's all.
-//
-// (I could factor the actual display code into a separate routine
-//  behind another interface, exhaustively test it in its own unit
-//  test, and just verify here that the status is passed through when
-//  expected.  Probably not worth the trouble)
-
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoNameWithFileSize)
 {
   {
