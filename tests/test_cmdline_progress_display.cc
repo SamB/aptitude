@@ -99,7 +99,7 @@ namespace
     }
 
     CmdlineProgressDisplayTest()
-      : msg(make_shared<mocks::transient_message>())
+      : msg(mocks::transient_message::create_strict())
     {
     }
 

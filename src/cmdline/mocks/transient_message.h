@@ -24,6 +24,8 @@
 // Local includes:
 #include <cmdline/transient_message.h>
 
+#include <generic/util/mocks/mock_util.h>
+
 // System includes:
 #include <gmock/gmock.h>
 
@@ -33,8 +35,14 @@ namespace aptitude
   {
     namespace mocks
     {
-      class transient_message : public cmdline::transient_message
+      class transient_message : public cmdline::transient_message,
+                                public aptitude::util::mocks::Mock<transient_message>
       {
+        friend boost::shared_ptr<transient_message>
+        boost::make_shared<transient_message>();
+
+        MOCK_FRIENDS();
+
       public:
         MOCK_METHOD1(set_text, void(const std::wstring &));
         MOCK_METHOD1(display_and_advance, void(const std::wstring &));
