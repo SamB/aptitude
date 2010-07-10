@@ -98,17 +98,18 @@ namespace aptitude
        *  By default, returns 1 from every call to wcwidth() and marks
        *  those calls as expected.
        */
-      class terminal_locale : public aptitude::cmdline::terminal_locale
+      class terminal_locale : public aptitude::cmdline::terminal_locale,
+                              public aptitude::util::mocks::Mock<terminal_locale>
       {
         friend boost::shared_ptr<terminal_locale>
         boost::make_shared<terminal_locale>();
+
+        MOCK_FRIENDS();
 
         terminal_locale();
 
       public:
         MOCK_METHOD1(wcwidth, int(wchar_t));
-
-        static boost::shared_ptr<terminal_locale> create();
       };
 
       /** \brief Interface for objects that emit terminal output as a

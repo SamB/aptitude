@@ -80,7 +80,7 @@ namespace
     }
 
     TransientMessage()
-      : term_locale(mocks::terminal_locale::create()),
+      : term_locale(mocks::terminal_locale::create_strict()),
         term_metrics(create_terminal_metrics()),
         term_output(create_terminal_output()),
         teletype(mocks::create_teletype(term_locale, term_metrics, term_output)),

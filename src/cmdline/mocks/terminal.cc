@@ -51,11 +51,6 @@ namespace aptitude
           .WillRepeatedly(Return(1));
       }
 
-      shared_ptr<terminal_locale> terminal_locale::create()
-      {
-        return make_shared<terminal_locale>();
-      }
-
       terminal_metrics::terminal_metrics()
       {
       }
