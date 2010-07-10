@@ -23,6 +23,8 @@
 // Local includes:
 #include <cmdline/terminal.h>
 
+#include <generic/util/mocks/mock_util.h>
+
 // System includes:
 #include <boost/shared_ptr.hpp>
 
@@ -47,10 +49,13 @@ namespace aptitude
        *  interprets calls to write_text(), use
        *  combining_terminal_output.
        */
-      class terminal_output : public aptitude::cmdline::terminal_output
+      class terminal_output : public aptitude::cmdline::terminal_output,
+                              public aptitude::util::mocks::Mock<terminal_output>
       {
         friend boost::shared_ptr<terminal_output>
         boost::make_shared<terminal_output>();
+
+        MOCK_FRIENDS();
 
         terminal_output();
 
@@ -59,8 +64,6 @@ namespace aptitude
         MOCK_METHOD1(write_text, void(const std::wstring &));
         MOCK_METHOD0(move_to_beginning_of_line, void());
         MOCK_METHOD0(flush, void());
-
-        static boost::shared_ptr<terminal_output> create();
       };
 
       class terminal_input : public aptitude::cmdline::terminal_input

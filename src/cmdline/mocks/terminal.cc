@@ -74,11 +74,6 @@ namespace aptitude
       {
       }
 
-      shared_ptr<terminal_output> terminal_output::create()
-      {
-        return make_shared<terminal_output>();
-      }
-
       class combining_terminal_output::impl : public combining_terminal_output
       {
         friend shared_ptr<impl> make_shared<impl>();
