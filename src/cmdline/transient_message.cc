@@ -46,23 +46,28 @@ namespace aptitude
 
     namespace
     {
-      /** \brief Transient message implementation that makes all
-       *  methods into NOPs.
+      /** \brief Transient message implementation for non-terminal
+       *  output.
        */
       class dummy_transient_message : public transient_message
       {
+        shared_ptr<terminal_output> term_output;
+
       public:
+        explicit dummy_transient_message(const shared_ptr<terminal_output> &_term_output)
+          : term_output(_term_output)
+        {
+        }
+
         void set_text(const std::wstring &msg)
         {
         }
 
         void display_and_advance(const std::wstring &msg)
         {
-          // I could generate output here, but the messages passed to
-          // display_and_advance might be inappropriate for
-          // non-terminal output; this layer of the code doesn't have
-          // the necessary information to decide whether they should
-          // be displayed.
+          term_output->write_text(msg);
+          term_output->write_text(L"\n");
+          term_output->flush();
         }
       };
 
@@ -178,7 +183,7 @@ namespace aptitude
                              const shared_ptr<terminal_output> &term_output)
     {
       if(!term_output->output_is_a_terminal())
-        return make_shared<dummy_transient_message>();
+        return make_shared<dummy_transient_message>(term_output);
       else
         return make_shared<transient_message_impl>(term_locale, term_metrics, term_output);
     }

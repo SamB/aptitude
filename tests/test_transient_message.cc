@@ -145,6 +145,30 @@ TEST_F(TransientMessage, DisplayAndAdvanceClearsExistingText)
   message->display_and_advance(L"abcd");
 }
 
+TEST_F(TransientMessage, DisplayAndAdvanceWithoutTerminal)
+{
+  EXPECT_CALL(*term_output, output_is_a_terminal())
+    .WillRepeatedly(Return(false));
+  EXPECT_CALL(*term_metrics, get_screen_width())
+    .WillRepeatedly(Return(4));
+
+  {
+    InSequence dummy;
+
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"xyzw")));
+    EXPECT_CALL(*teletype, newline());
+    EXPECT_CALL(*teletype, set_last_line(StrEq(L"abcd")));
+    EXPECT_CALL(*teletype, newline());
+  }
+
+  // Need to create a new message object since it reads and caches the
+  // value of output_is_a_terminal() when it's created.
+  const shared_ptr<transient_message> requiring_message =
+    create_transient_message(term_locale, term_metrics, term_output);
+
+  requiring_message->display_and_advance(L"xyzwabcd");
+}
+
 TEST_F(TransientMessage, ClearText)
 {
   {
