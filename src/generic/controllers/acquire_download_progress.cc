@@ -208,6 +208,8 @@ namespace aptitude
       view->file_started(item.Description,
                          if_not_zero(item.Owner->ID),
                          if_not_zero(item.Owner->FileSize));
+
+      manager.set_update(true);
     }
 
     void acquire_download_progress::impl::done(pkgAcquire::ItemDesc &item, download_signal_log &manager)
