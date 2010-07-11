@@ -89,11 +89,6 @@ namespace
     {
       EXPECT_CALL(*term_locale, wcwidth(two_column_char))
         .WillRepeatedly(Return(2));
-
-      // The tests should never scroll past the first line (that's the
-      // whole point of the transient message object, after all).
-      EXPECT_CALL(*teletype, newline())
-        .Times(0);
     }
   };
 }
