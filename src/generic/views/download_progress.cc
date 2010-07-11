@@ -33,10 +33,6 @@ namespace aptitude
     {
     }
 
-    download_status_display::~download_status_display()
-    {
-    }
-
     bool download_progress::file_progress::operator==(const file_progress &other) const
     {
       return current_size == other.current_size

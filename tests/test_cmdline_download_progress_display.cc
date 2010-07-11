@@ -20,6 +20,7 @@
 
 // Local includes:
 #include <cmdline/cmdline_download_progress_display.h>
+#include <cmdline/mocks/download_status_display.h>
 #include <cmdline/mocks/terminal.h>
 #include <cmdline/mocks/transient_message.h>
 
@@ -35,7 +36,6 @@
 
 using aptitude::cmdline::create_download_progress_display;
 using aptitude::views::download_progress;
-using aptitude::views::download_status_display;
 using boost::make_shared;
 using boost::optional;
 using boost::shared_ptr;
@@ -262,124 +262,74 @@ TEST_P(CmdlineDownloadProgressDisplayTest, UpdateProgress2)
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoNameWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Get: 4 [100B]");
 
-    EXPECT_MSG(L"Get: 4 [100B]");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_started("", 4, 100, status1);
+  progress->file_started("", 4, 100);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedNoIdNoFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Get: somefile");
 
-    EXPECT_MSG(L"Get: somefile");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->file_started("somefile", optional<unsigned long>(), optional<unsigned long>(), status2);
+  progress->file_started("somefile", optional<unsigned long>(), optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Get: 0 filename");
 
-    EXPECT_MSG(L"Get: 0 filename");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_started("filename", optional<unsigned long>(0), optional<unsigned long>(), status1);
+  progress->file_started("filename", optional<unsigned long>(0), optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedNoIdWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Get: thefile [210B]");
 
-    EXPECT_MSG(L"Get: thefile [210B]");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->file_started("thefile", optional<unsigned long>(), 210, status2);
+  progress->file_started("thefile", optional<unsigned long>(), 210);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Get: 6 another file [210B]");
 
-    EXPECT_MSG(L"Get: 6 another file [210B]");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_started("another file", 6, 210, status1);
+  progress->file_started("another file", 6, 210);
 }
 
 
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoNameWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Hit 4 [100B]");
 
-    EXPECT_MSG(L"Hit 4 [100B]");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_already_downloaded("", 4, 100, status1);
+  progress->file_already_downloaded("", 4, 100);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdNoFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Hit somefile");
 
-    EXPECT_MSG(L"Hit somefile");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->file_already_downloaded("somefile", optional<unsigned long>(), optional<unsigned long>(), status2);
+  progress->file_already_downloaded("somefile", optional<unsigned long>(), optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Hit 0 filename");
 
-    EXPECT_MSG(L"Hit 0 filename");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_already_downloaded("filename", optional<unsigned long>(0), optional<unsigned long>(), status1);
+  progress->file_already_downloaded("filename", optional<unsigned long>(0), optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Hit thefile [210B]");
 
-    EXPECT_MSG(L"Hit thefile [210B]");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->file_already_downloaded("thefile", optional<unsigned long>(), 210, status2);
+  progress->file_already_downloaded("thefile", optional<unsigned long>(), 210);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdWithFileSize)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Hit 6 another file [210B]");
 
-    EXPECT_MSG(L"Hit 6 another file [210B]");
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_already_downloaded("another file", 6, 210, status1);
+  progress->file_already_downloaded("another file", 6, 210);
 }
 
 
@@ -388,124 +338,74 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdWithFileSi
 // description" (and of course ignored).
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredNoIdNoErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign");
 
-    EXPECT_MSG(L"Ign");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "", "", optional<unsigned long>(), status2);
+  progress->error(true, "", "", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredWithIdNoErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign");
 
-    EXPECT_MSG(L"Ign");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "", "", optional<unsigned long>(4), status2);
+  progress->error(true, "", "", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredNoIdWithErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign");
 
-    EXPECT_MSG(L"Ign");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "error message", "", optional<unsigned long>(), status2);
+  progress->error(true, "error message", "", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredWithIdWithErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign");
 
-    EXPECT_MSG(L"Ign");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "error message", "", optional<unsigned long>(4), status2);
+  progress->error(true, "error message", "", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredNoIdNoErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign description");
 
-    EXPECT_MSG(L"Ign description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "", "description", optional<unsigned long>(), status2);
+  progress->error(true, "", "description", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredWithIdNoErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign description");
 
-    EXPECT_MSG(L"Ign description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "", "description", optional<unsigned long>(4), status2);
+  progress->error(true, "", "description", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredNoIdWithErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign description");
 
-    EXPECT_MSG(L"Ign description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "error message", "description", optional<unsigned long>(), status2);
+  progress->error(true, "error message", "description", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorIgnoredWithIdWithErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Ign description");
 
-    EXPECT_MSG(L"Ign description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(true, "error message", "description", optional<unsigned long>(4), status2);
+  progress->error(true, "error message", "description", optional<unsigned long>(4));
 }
 
 
 // Test what happens with non-ignored errors.
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdNoErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Err");
 
-    EXPECT_MSG(L"Err");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(false, "", "", optional<unsigned long>(), status2);
+  progress->error(false, "", "", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdNoErrorNoDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Err");
 
-    EXPECT_MSG(L"Err");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(false, "", "", optional<unsigned long>(4), status2);
+  progress->error(false, "", "", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdWithErrorNoDescription)
@@ -515,10 +415,9 @@ TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdWithErrorNoDescrip
 
     EXPECT_MSG(L"Err");
     EXPECT_MSG(L"  error message");
-    EXPECT_CALL(*status_display, display_status(status2));
   }
 
-  progress->error(false, "error message", "", optional<unsigned long>(), status2);
+  progress->error(false, "error message", "", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdWithErrorNoDescription)
@@ -528,34 +427,23 @@ TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdWithErrorNoDescr
 
     EXPECT_MSG(L"Err");
     EXPECT_MSG(L"  error message 2");
-    EXPECT_CALL(*status_display, display_status(status2));
   }
 
-  progress->error(false, "error message 2", "", optional<unsigned long>(4), status2);
+  progress->error(false, "error message 2", "", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdNoErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Err description");
 
-    EXPECT_MSG(L"Err description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(false, "", "description", optional<unsigned long>(), status2);
+  progress->error(false, "", "description", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdNoErrorWithDescription)
 {
-  {
-    InSequence dummy;
+  EXPECT_MSG(L"Err description");
 
-    EXPECT_MSG(L"Err description");
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
-
-  progress->error(false, "", "description", optional<unsigned long>(4), status2);
+  progress->error(false, "", "description", optional<unsigned long>(4));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdWithErrorWithDescription)
@@ -565,10 +453,9 @@ TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredNoIdWithErrorWithDescr
 
     EXPECT_MSG(L"Err description");
     EXPECT_MSG(L"  error message");
-    EXPECT_CALL(*status_display, display_status(status2));
   }
 
-  progress->error(false, "error message", "description", optional<unsigned long>(), status2);
+  progress->error(false, "error message", "description", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdWithErrorWithDescription)
@@ -578,56 +465,38 @@ TEST_P(CmdlineDownloadProgressDisplayTest, ErrorNotIgnoredWithIdWithErrorWithDes
 
     EXPECT_MSG(L"Err description");
     EXPECT_MSG(L"  error message");
-    EXPECT_CALL(*status_display, display_status(status2));
   }
 
-  progress->error(false, "error message", "description", optional<unsigned long>(4), status2);
+  progress->error(false, "error message", "description", optional<unsigned long>(4));
 }
 
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileFinishedNoDescriptionNoId)
 {
-  {
-    InSequence dummy;
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
 
-    EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
-
-  progress->file_finished("", optional<unsigned long>(), status1);
+  progress->file_finished("", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileFinishedWithDescriptionNoId)
 {
-  {
-    InSequence dummy;
-    EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
 
-  progress->file_finished("medusa cascade", optional<unsigned long>(), status2);
+  progress->file_finished("medusa cascade", optional<unsigned long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileFinishedNoDescriptionWithId)
 {
-  {
-    InSequence dummy;
-    EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
-    EXPECT_CALL(*status_display, display_status(status1));
-  }
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
 
-  progress->file_finished("", optional<unsigned long>(5), status1);
+  progress->file_finished("", optional<unsigned long>(5));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileFinishedWithDescriptionWithId)
 {
-  {
-    InSequence dummy;
-    EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
-    EXPECT_CALL(*status_display, display_status(status2));
-  }
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0);
 
-  progress->file_finished("medusa cascade", optional<unsigned long>(5), status2);
+  progress->file_finished("medusa cascade", optional<unsigned long>(5));
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, Done)

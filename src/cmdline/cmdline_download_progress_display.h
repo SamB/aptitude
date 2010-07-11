@@ -20,23 +20,37 @@
 #ifndef CMDLINE_DOWNLOAD_PROGRESS_DISPLAY
 #define CMDLINE_DOWNLOAD_PROGRESS_DISPLAY
 
+// Local includes:
+#include <generic/views/download_progress.h>
+
 // System includes:
 #include <boost/shared_ptr.hpp>
 
 namespace aptitude
 {
-  namespace views
-  {
-    class download_progress;
-    class download_status_display;
-  }
-
   namespace cmdline
   {
     class terminal_input;
     class terminal_locale;
     class terminal_metrics;
     class transient_message;
+
+    /** \brief Used to display the current status of a command-line download.
+     *
+     *  This class exists for purely pragmatic reasons.
+     *
+     *  Splitting it out reduces the number of cases I need to check
+     *  in the unit tests (display_messages and hide_status can be
+     *  tested separately instead of having to test all four variants
+     *  of them).
+     */
+    class download_status_display
+    {
+    public:
+      virtual ~download_status_display();
+
+      virtual void display_status(const views::download_progress::status &status) = 0;
+    };
 
     /**
      * Create a new command-line download progress display.
@@ -49,7 +63,7 @@ namespace aptitude
      */
     boost::shared_ptr<views::download_progress>
     create_download_progress_display(const boost::shared_ptr<transient_message> &message,
-                                     const boost::shared_ptr<views::download_status_display> &status_display,
+                                     const boost::shared_ptr<download_status_display> &status_display,
                                      const boost::shared_ptr<terminal_input> &term_input,
                                      bool display_messages);
 
@@ -68,7 +82,7 @@ namespace aptitude
      *        it makes testing more effective; the callers of this code aren't
      *        currently testable.
      */
-    boost::shared_ptr<views::download_status_display>
+    boost::shared_ptr<download_status_display>
     create_cmdline_download_status_display(const boost::shared_ptr<transient_message> &message,
                                            const boost::shared_ptr<terminal_locale> &term_locale,
                                            const boost::shared_ptr<terminal_metrics> &term_metrics,

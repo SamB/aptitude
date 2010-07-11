@@ -55,18 +55,18 @@ namespace aptitude
       {
         bool display_messages;
         shared_ptr<transient_message> message;
-        shared_ptr<views::download_status_display> status_display;
+        shared_ptr<download_status_display> status_display;
         shared_ptr<terminal_input> term_input;
 
         download_progress(bool _display_messages,
                           const shared_ptr<transient_message> &_message,
-                          const shared_ptr<views::download_status_display> &_status_display,
+                          const shared_ptr<download_status_display> &_status_display,
                           const shared_ptr<terminal_input> &_term_input);
 
         friend shared_ptr<download_progress>
         make_shared<download_progress>(const bool &,
                                        const shared_ptr<transient_message> &,
-                                       const shared_ptr<views::download_status_display> &,
+                                       const shared_ptr<download_status_display> &,
                                        const shared_ptr<terminal_input> &);
 
       public:
@@ -74,23 +74,19 @@ namespace aptitude
 
         void file_started(const std::string &description,
                           const boost::optional<unsigned long> &id,
-                          const boost::optional<unsigned long> &file_size,
-                          const status &current_status);
+                          const boost::optional<unsigned long> &file_size);
 
         void file_already_downloaded(const std::string &description,
                                      const boost::optional<unsigned long> &id,
-                                     const boost::optional<unsigned long> &file_size,
-                                     const status &current_status);
+                                     const boost::optional<unsigned long> &file_size);
 
         void error(bool ignored,
                    const std::string &error,
                    const std::string &description,
-                   const boost::optional<unsigned long> &id,
-                   const status &current_status);
+                   const boost::optional<unsigned long> &id);
 
         void file_finished(const std::string &description,
-                           const boost::optional<unsigned long> &id,
-                           const status &current_status);
+                           const boost::optional<unsigned long> &id);
 
         void done(double fetched_bytes,
                   unsigned long elapsed_time,
@@ -107,7 +103,7 @@ namespace aptitude
 
       download_progress::download_progress(bool _display_messages,
                                            const shared_ptr<transient_message> &_message,
-                                           const shared_ptr<views::download_status_display> &_status_display,
+                                           const shared_ptr<download_status_display> &_status_display,
                                            const shared_ptr<terminal_input> &_term_input)
         : display_messages(_display_messages),
           message(_message),
@@ -126,8 +122,7 @@ namespace aptitude
 
       void download_progress::file_started(const std::string &description,
                                            const boost::optional<unsigned long> &id,
-                                           const boost::optional<unsigned long> &file_size,
-                                           const status &current_status)
+                                           const boost::optional<unsigned long> &file_size)
       {
         if(display_messages)
           {
@@ -146,13 +141,11 @@ namespace aptitude
 
             message->display_and_advance(transcode(join(entries, " ")));
           }
-        status_display->display_status(current_status);
       }
 
       void download_progress::file_already_downloaded(const std::string &description,
                                                       const boost::optional<unsigned long> &id,
-                                                      const boost::optional<unsigned long> &file_size,
-                                                      const status &current_status)
+                                                      const boost::optional<unsigned long> &file_size)
       {
         if(display_messages)
           {
@@ -171,14 +164,12 @@ namespace aptitude
 
             message->display_and_advance(transcode(join(entries, " ")));
           }
-        status_display->display_status(current_status);
       }
 
       void download_progress::error(bool ignored,
                                     const std::string &error,
                                     const std::string &description,
-                                    const boost::optional<unsigned long> &id,
-                                    const status &current_status)
+                                    const boost::optional<unsigned long> &id)
       {
         if(display_messages)
           {
@@ -201,15 +192,11 @@ namespace aptitude
             if(!ignored && !error.empty())
               message->display_and_advance(transcode("  " + error));
           }
-
-        status_display->display_status(current_status);
       }
 
       void download_progress::file_finished(const std::string &description,
-                                            const boost::optional<unsigned long> &id,
-                                            const status &current_status)
+                                            const boost::optional<unsigned long> &id)
       {
-        status_display->display_status(current_status);
       }
 
       void download_progress::done(double fetched_bytes,
@@ -263,7 +250,7 @@ namespace aptitude
       {
       }
 
-      class dummy_status_display : public views::download_status_display
+      class dummy_status_display : public download_status_display
       {
         dummy_status_display();
 
@@ -282,28 +269,28 @@ namespace aptitude
       {
       }
 
-      class download_status_display : public views::download_status_display
+      class download_status_display_impl : public download_status_display
       {
         shared_ptr<transient_message> message;
         shared_ptr<terminal_locale> term_locale;
         shared_ptr<terminal_metrics> term_metrics;
 
-        download_status_display(const shared_ptr<transient_message> &_message,
-                                const shared_ptr<terminal_locale> &_term_locale,
-                                const shared_ptr<terminal_metrics> &_term_metrics);
+        download_status_display_impl(const shared_ptr<transient_message> &_message,
+                                     const shared_ptr<terminal_locale> &_term_locale,
+                                     const shared_ptr<terminal_metrics> &_term_metrics);
 
-        friend shared_ptr<download_status_display>
-        make_shared<download_status_display>(const shared_ptr<transient_message> &,
-                                             const shared_ptr<terminal_locale> &,
-                                             const shared_ptr<terminal_metrics> &);
+        friend shared_ptr<download_status_display_impl>
+        make_shared<download_status_display_impl>(const shared_ptr<transient_message> &,
+                                                  const shared_ptr<terminal_locale> &,
+                                                  const shared_ptr<terminal_metrics> &);
 
       public:
         void display_status(const download_progress::status &status);
       };
 
-      download_status_display::download_status_display(const shared_ptr<transient_message> &_message,
-                                                       const shared_ptr<terminal_locale> &_term_locale,
-                                                       const shared_ptr<terminal_metrics> &_term_metrics)
+      download_status_display_impl::download_status_display_impl(const shared_ptr<transient_message> &_message,
+                                                                 const shared_ptr<terminal_locale> &_term_locale,
+                                                                 const shared_ptr<terminal_metrics> &_term_metrics)
         : message(_message),
           term_locale(_term_locale),
           term_metrics(_term_metrics)
@@ -429,7 +416,7 @@ namespace aptitude
           }
       }
 
-      void download_status_display::display_status(const download_progress::status &status)
+      void download_status_display_impl::display_status(const download_progress::status &status)
       {
         typedef views::download_progress::status::worker_status worker_status;
         const double download_rate = status.get_download_rate();
@@ -535,9 +522,13 @@ namespace aptitude
       }
     }
 
+    download_status_display::~download_status_display()
+    {
+    }
+
     shared_ptr<views::download_progress>
     create_download_progress_display(const boost::shared_ptr<transient_message> &message,
-                                     const boost::shared_ptr<views::download_status_display> &status_display,
+                                     const boost::shared_ptr<download_status_display> &status_display,
                                      const boost::shared_ptr<terminal_input> &term_input,
                                      bool display_messages)
     {
@@ -547,7 +538,7 @@ namespace aptitude
                                             term_input);
     }
 
-    shared_ptr<views::download_status_display>
+    shared_ptr<download_status_display>
     create_cmdline_download_status_display(const shared_ptr<transient_message> &message,
                                            const shared_ptr<terminal_locale> &term_locale,
                                            const shared_ptr<terminal_metrics> &term_metrics,
@@ -556,9 +547,9 @@ namespace aptitude
       if(hide_status)
         return make_shared<dummy_status_display>();
       else
-        return make_shared<download_status_display>(message,
-                                                    term_locale,
-                                                    term_metrics);
+        return make_shared<download_status_display_impl>(message,
+                                                         term_locale,
+                                                         term_metrics);
     }
   }
 }

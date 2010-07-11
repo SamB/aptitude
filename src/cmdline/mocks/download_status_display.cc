@@ -1,5 +1,4 @@
-/** \file download_progress.cc */
-
+/** \file download_status_display.cc */
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -19,18 +18,15 @@
 // Boston, MA 02111-1307, USA.
 
 // Local includes:
-#include "download_progress.h"
-
-using boost::make_shared;
-using boost::shared_ptr;
+#include "download_status_display.h"
 
 namespace aptitude
 {
-  namespace views
+  namespace cmdline
   {
     namespace mocks
     {
-      download_progress::download_progress()
+      download_status_display::download_status_display()
       {
       }
     }

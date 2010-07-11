@@ -171,13 +171,10 @@ namespace aptitude
        *                        unset if it hasn't been assigned yet.
        *  \param file_size      The size of the file; invalid if the
        *                        file size isn't known.
-       *  \param current_status The download status after starting to
-       *                        download the file.
        */
       virtual void file_started(const std::string &description,
                                 const boost::optional<unsigned long> &id,
-                                const boost::optional<unsigned long> &file_size,
-                                const status &current_status) = 0;
+                                const boost::optional<unsigned long> &file_size) = 0;
 
       /** \brief Invoked when a file isn't even started because it was
        *  already downloaded.
@@ -187,13 +184,10 @@ namespace aptitude
        *                        unset if it hasn't been assigned yet.
        *  \param file_size      The size of the file; invalid if the
        *                        file size isn't known.
-       *  \param current_status The download status after starting to
-       *                        download the file.
        */
       virtual void file_already_downloaded(const std::string &description,
                                            const boost::optional<unsigned long> &id,
-                                           const boost::optional<unsigned long> &file_size,
-                                           const status &current_status) = 0;
+                                           const boost::optional<unsigned long> &file_size) = 0;
 
       /** \brief Invoked when a file fails to download.
        *
@@ -206,26 +200,20 @@ namespace aptitude
        *  \param description    A brief description of the file.
        *  \param id             An integer identifying this file, or
        *                        unset if it hasn't been assigned yet.
-       *  \param current_status The download status after the error
-       *                        occurred.
        */
       virtual void error(bool ignored,
                          const std::string &error,
                          const std::string &description,
-                         const boost::optional<unsigned long> &id,
-                         const status &current_status) = 0;
+                         const boost::optional<unsigned long> &id) = 0;
 
       /** \brief Invoked when something is done being downloaded.
        *
        *  \param description    A brief description of the file.
        *  \param id             An integer identifying this file, or
        *                        unset if it hasn't been assigned yet.
-       *  \param current_status The download status after the file
-       *                        finished downloading.
        */
       virtual void file_finished(const std::string &description,
-                                 const boost::optional<unsigned long> &id,
-                                 const status &current_status) = 0;
+                                 const boost::optional<unsigned long> &id) = 0;
 
       /** \brief Invoked when each stage of the download is complete.
        *
@@ -279,23 +267,6 @@ namespace aptitude
 
     std::ostream &operator<<(std::ostream &out,
                              const download_progress::status &status);
-
-    /** \brief Interface for objects that can display the current status
-     *  of a download.
-     *
-     *  Instances of this are typically used as helpers to
-     *  download_progress implementations.  Separating this code
-     *  lets us write much cleaner and simpler test cases for
-     *  download_progress.
-     */
-    class download_status_display
-    {
-    public:
-      virtual ~download_status_display();
-
-      /** \brief Display the current progress of a download. */
-      virtual void display_status(const download_progress::status &status) = 0;
-    };
   }
 }
 

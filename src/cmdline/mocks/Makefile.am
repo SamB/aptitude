@@ -5,6 +5,8 @@ noinst_LIBRARIES = libcmdline-mocks.a
 libcmdline_mocks_a_SOURCES = \
 	cmdline_progress_display.h \
 	cmdline_progress_throttle.h \
+	download_status_display.cc \
+	download_status_display.h \
 	teletype.cc \
 	teletype.h \
 	terminal.cc \

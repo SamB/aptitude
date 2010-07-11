@@ -38,6 +38,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
+using aptitude::cmdline::download_status_display;
 using aptitude::controllers::acquire_download_progress;
 using aptitude::controllers::create_acquire_download_progress;
 using boost::shared_ptr;
@@ -61,7 +62,7 @@ namespace aptitude
       const shared_ptr<transient_message> message =
         create_transient_message(term_locale, term_metrics, term_output);
 
-      const shared_ptr<views::download_status_display> download_status =
+      const shared_ptr<download_status_display> download_status =
         create_cmdline_download_status_display(message,
                                                term_locale,
                                                term_metrics,

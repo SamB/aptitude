@@ -1,5 +1,4 @@
-/** \file download_progress.cc */
-
+/** \file download_status_display.h */ // -*-c++-*-
 
 // Copyright (C) 2010 Daniel Burrows
 //
@@ -18,21 +17,34 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-// Local includes:
-#include "download_progress.h"
+#ifndef APTITUDE_CMDLINE_MOCKS_DOWNLOAD_STATUS_DISPLAY_H
+#define APTITUDE_CMDLINE_MOCKS_DOWNLOAD_STATUS_DISPLAY_H
 
-using boost::make_shared;
-using boost::shared_ptr;
+// Local includes:
+#include <cmdline/cmdline_download_progress_display.h>
+
+#include <generic/util/mocks/mock_util.h>
 
 namespace aptitude
 {
-  namespace views
+  namespace cmdline
   {
     namespace mocks
     {
-      download_progress::download_progress()
+      class download_status_display : public cmdline::download_status_display,
+                                      public util::mocks::Mock<download_status_display>
       {
-      }
+        download_status_display();
+        friend boost::shared_ptr<download_status_display>
+        boost::make_shared<download_status_display>();
+
+        MOCK_FRIENDS();
+
+      public:
+        MOCK_METHOD1(display_status, void(const views::download_progress::status &));
+      };
     }
   }
 }
+
+#endif // APTITUDE_CMDLINE_MOCKS_DOWNLOAD_STATUS_DISPLAY_H

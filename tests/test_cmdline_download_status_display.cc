@@ -34,8 +34,8 @@
 #include <gtest/gtest.h>
 
 using aptitude::cmdline::create_cmdline_download_status_display;
+using aptitude::cmdline::download_status_display;
 using aptitude::views::download_progress;
-using aptitude::views::download_status_display;
 using boost::make_shared;
 using boost::optional;
 using boost::shared_ptr;

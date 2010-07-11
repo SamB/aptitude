@@ -76,15 +76,6 @@ namespace aptitude
       // Keeps track of the next ID to assign to a download item.
       unsigned long id;
 
-      // The last status we displayed in Update(); cached so that we
-      // can remind the view what the current status is after it
-      // displays a message.
-      //
-      // (the alternative would be to save a link to the owner and
-      // update the status whenever one of these routines is called,
-      // which is a little creepy)
-      shared_ptr<views::download_progress::status> last_status;
-
       shared_ptr<views::download_progress> view;
 
       shared_ptr<views::download_progress::status>
@@ -98,7 +89,6 @@ namespace aptitude
     acquire_download_progress::impl::impl(download_signal_log *log,
                                           const shared_ptr<views::download_progress> &_view)
       : id(1),
-        last_status(make_shared<views::download_progress::status>(0, std::vector<views::download_progress::status::worker_status>(), 0, 0)),
         view(_view)
     {
       log->MediaChange_sig.connect(sigc::mem_fun(*this, &impl::media_change));
@@ -201,8 +191,7 @@ namespace aptitude
     {
       view->file_already_downloaded(item.Description,
                                     if_not_zero(item.Owner->ID),
-                                    if_not_zero(item.Owner->FileSize),
-                                    *last_status);
+                                    if_not_zero(item.Owner->FileSize));
 
       manager.set_update(true);
     }
@@ -218,15 +207,13 @@ namespace aptitude
 
       view->file_started(item.Description,
                          if_not_zero(item.Owner->ID),
-                         if_not_zero(item.Owner->FileSize),
-                         *last_status);
+                         if_not_zero(item.Owner->FileSize));
     }
 
     void acquire_download_progress::impl::done(pkgAcquire::ItemDesc &item, download_signal_log &manager)
     {
       view->file_finished(item.Description,
-                          if_not_zero(item.Owner->ID),
-                          *last_status);
+                          if_not_zero(item.Owner->ID));
 
       manager.set_update(true);
     }
@@ -241,8 +228,7 @@ namespace aptitude
       view->error(item.Owner->Status == pkgAcquire::Item::StatDone,
                   item.Owner->ErrorText,
                   item.Description,
-                  if_not_zero(item.Owner->ID),
-                  *last_status);
+                  if_not_zero(item.Owner->ID));
 
       manager.set_update(true);
     }
@@ -272,11 +258,12 @@ namespace aptitude
                                                 download_signal_log &manager,
                                                 const sigc::slot1<void, bool> &k)
     {
-      last_status = get_current_status(owner, manager);
+      const shared_ptr<views::download_progress::status> status =
+        get_current_status(owner, manager);
 
       manager.set_update(false);
 
-      k(view->update_progress(*last_status));
+      k(view->update_progress(*status));
     }
 
     acquire_download_progress::acquire_download_progress()

@@ -44,35 +44,19 @@ namespace aptitude
 
       public:
         MOCK_METHOD1(update_progress, bool(const status &));
-        MOCK_METHOD4(file_started, void(const std::string &,
+        MOCK_METHOD3(file_started, void(const std::string &,
                                         const boost::optional<unsigned long> &,
-                                        const boost::optional<unsigned long> &,
-                                        const status &));
-        MOCK_METHOD5(error, void(bool,
+                                        const boost::optional<unsigned long> &));
+        MOCK_METHOD4(error, void(bool,
                                  const std::string &,
                                  const std::string &,
-                                 const boost::optional<unsigned long> &,
-                                 const status &));
-        MOCK_METHOD3(file_finished, void(const std::string &,
-                                         const boost::optional<unsigned long> &,
-                                         const status &));
+                                 const boost::optional<unsigned long> &));
+        MOCK_METHOD2(file_finished, void(const std::string &,
+                                         const boost::optional<unsigned long> &));
         MOCK_METHOD3(done, void(double, unsigned long, double));
         MOCK_METHOD3(media_change, void(const std::string &,
                                         const std::string &,
                                         const sigc::slot1<void, bool> &));
-      };
-
-      class download_status_display : public aptitude::views::download_status_display,
-                                      public aptitude::util::mocks::Mock<download_status_display>
-      {
-        download_status_display();
-        friend boost::shared_ptr<download_status_display>
-        boost::make_shared<download_status_display>();
-
-        MOCK_FRIENDS();
-
-      public:
-        MOCK_METHOD1(display_status, void(const download_progress::status &));
       };
     }
   }
