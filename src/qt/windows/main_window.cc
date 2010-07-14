@@ -19,6 +19,7 @@
 
 // Local includes
 #include "main_window.h"
+#include "tabs_manager.h"
 
 #include "widgets/status_widget.h"
 #include "widgets/tab_widget.h"
@@ -44,6 +45,8 @@ namespace aptitude
         create_actions();
         create_menus();
         create_gui();
+
+	tabs_manager::get_instance()->open_packages_tab(this);
 
         // TODO: Find a good default size. Add a way to save the
         // current window size on shutdown and restore it on startup.

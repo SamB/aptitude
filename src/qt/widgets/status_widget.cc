@@ -20,6 +20,8 @@
 // Local includes
 #include "status_widget.h"
 
+#include "../tabs_manager.h"
+
 // System includes
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
@@ -108,6 +110,7 @@ namespace aptitude
 
       void status_widget::apply_changes_button_clicked()
       {
+	tabs_manager::get_instance()->open_perform_changes_tab(this);
       }
 
       void status_widget::cancel_button_clicked()
@@ -116,10 +119,12 @@ namespace aptitude
 
       void status_widget::resolve_dependencies_button_clicked()
       {
+	tabs_manager::get_instance()->open_resolver_tab(this);
       }
 
       void status_widget::show_changes_button_clicked()
       {
+	tabs_manager::get_instance()->open_changes_preview_tab(this);
       }
 
       // TODO: add proper logic hear

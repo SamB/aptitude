@@ -53,19 +53,19 @@ namespace aptitude
 	 *  of a tab.
 	 *
 	 *  The signal is propagated via tab_deletion_request.
-         *
-         *  \param index The zero-based index of the affected tab in
-         *  the list of active tabs.
+	 *
+	 *  \param index The zero-based index of the affected tab in
+	 *  the list of active tabs.
 	 */
 	void tab_deletion_requested(int index);
 
 	/** \brief Slot invoked when the currently active tab has
-         *  changed.
+	 *  changed.
 	 *
 	 *  This signal is propagated via current_tab_changed.
-         *
-         *  \param index The zero-based index of the newly selected
-         *  tab in the list of active tabs.
+	 *
+	 *  \param index The zero-based index of the newly selected
+	 *  tab in the list of active tabs.
 	 */
 	void on_tab_change(int index);
 
@@ -82,25 +82,20 @@ namespace aptitude
 	/** \brief Slot invoked when the user types a shortcut.
 	 *
 	 *  If the given key corresponds to a shortcut recognized by
-         *  this widget, then the appropriate action is taken and
-         *  handled is set to \b true.
+	 *  this widget, then the appropriate action is taken and
+	 *  handled is set to \b true.
 	 */
 	void key_pressed(QKeyEvent *e, bool &handled);
 
       Q_SIGNALS:
 	/** \brief Signal emitted when the current tab has changed.
-         *
+	 *
 	 *  \param tab_type the type of the newly activated tab.
 	 */
 	void current_tab_changed(tab::tab_type);
 
-	/** \brief Signal emitted when user asks to close a tab.
-	 *
-	 *  When the force parameter is true, the object is about to
-	 *  be destroyed, because the tab_widget itself is about to be
-	 *  destroyed.
-	 */
-	void tab_deletion_request(tab *, bool force);
+	/** \brief Signal emitted when user asks to close a tab. */
+	void tab_deletion_request(tab *);
       };
     }
   }

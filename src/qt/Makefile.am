@@ -15,7 +15,8 @@ libqt_a_MOC = \
    widgets/status_widget.moc \
    widgets/tab.moc \
    widgets/tab_widget.moc \
-   windows/main_window.moc
+   windows/main_window.moc \
+   tabs_manager.mocc
 
 libqt_a_SOURCES= \
    widgets/changes_preview_tab.cc \
@@ -37,6 +38,8 @@ libqt_a_SOURCES= \
    windows/main_window.cc \
    windows/main_window.h \
    qt_main.cc \
-   qt_main.h
+   qt_main.h \
+   tabs_manager.cc \
+   tabs_manager.h
 
 BUILT_SOURCES = $(libqt_a_MOC)
