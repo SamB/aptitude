@@ -19,9 +19,15 @@
 // the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 // Boston, MA 02111-1307, USA.
 
-#include <signal.h>
-
+// Local includes
 #include "qt_main.h"
+
+#include "windows/main_window.h"
+
+// System includes
+#include <QtGui/QApplication>
+
+#include <signal.h>
 
 namespace aptitude
 {
@@ -31,10 +37,16 @@ namespace aptitude
     {
       bool main(int argc, char **argv)
       {
-        // Don't crash if a subprocess breaks a pipe.
-        signal(SIGPIPE, SIG_IGN);
+	// Don't crash if a subprocess breaks a pipe.
+	signal(SIGPIPE, SIG_IGN);
 
-        return true;
+	QApplication app(argc,argv);
+
+	main_window *main = new main_window;
+	main->show();
+
+	app.exec();
+	return true;
       }
     }
   }

@@ -12,7 +12,10 @@ libqt_a_MOC = \
    widgets/packages_tab.moc \
    widgets/perform_changes_tab.moc \
    widgets/resolver_tab.moc \
-   widgets/tab.moc
+   widgets/status_widget.moc \
+   widgets/tab.moc \
+   widgets/tab_widget.moc \
+   windows/main_window.moc
 
 libqt_a_SOURCES= \
    widgets/changes_preview_tab.cc \
@@ -25,8 +28,14 @@ libqt_a_SOURCES= \
    widgets/perform_changes_tab.h \
    widgets/resolver_tab.cc \
    widgets/resolver_tab.h \
+   widgets/status_widget.cc \
+   widgets/status_widget.h \
    widgets/tab.cc \
    widgets/tab.h \
+   widgets/tab_widget.cc \
+   widgets/tab_widget.h \
+   windows/main_window.cc \
+   windows/main_window.h \
    qt_main.cc \
    qt_main.h
 
