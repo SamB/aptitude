@@ -33,7 +33,7 @@ namespace aptitude
        *
        *
        *  Every tab has a name, which will be displayed in the UI, and a type,
-       * indicating which of the UI pages it implements
+       *  indicating which of the UI pages it implements
        */
       class tab : public QWidget
       {
