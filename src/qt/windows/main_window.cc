@@ -26,6 +26,7 @@
 
 #include "aptitude.h"
 
+#include <generic/apt/apt.h>
 // System includes
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -47,6 +48,8 @@ namespace aptitude
         create_gui();
 
 	tabs_manager::get_instance()->open_packages_tab(this);
+
+        initialize_apt();
 
         // TODO: Find a good default size. Add a way to save the
         // current window size on shutdown and restore it on startup.
@@ -114,6 +117,13 @@ namespace aptitude
       tab_widget *main_window::get_tab_widget()
       {
 	return tabs;
+      }
+      
+      void main_window::initialize_apt()
+      {
+	// The progress should be displayed by status_widget
+	OpProgress p;
+	apt_init(&p, true, NULL);
       }
     }
   }

@@ -77,6 +77,9 @@ namespace aptitude
 	/** \brief Create a packages menu in main menu. */
 	void create_packages_menu();
 
+	/** \brief Initialize required apt structures. */
+	void initialize_apt();
+
       public:
 	/** \brief Create a new main_window. */
 	explicit main_window();
