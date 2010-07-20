@@ -45,8 +45,8 @@ namespace aptitude
         create_menus();
         create_gui();
 
-        // TODO: Find a proper size. Add possibility do save user defined to config file.
-        // on the second run window should restore previous settings
+        // TODO: Find a good default size. Add a way to save the
+        // current window size on shutdown and restore it on startup.
         setGeometry(0, 0, 640, 480);
       }
 
