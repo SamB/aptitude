@@ -42,22 +42,22 @@ namespace aptitude
       public:
 	/** \brief Indicates tab type */
 	enum tab_type
-	{
-	  tab_packages,
-	  tab_info,
-	  tab_preview,
-	  tab_resolver,
-	  tab_perform
-	};
+          {
+            tab_packages,
+            tab_info,
+            tab_preview,
+            tab_resolver,
+            tab_perform
+          };
 
 	/** \brief What to do when the tab is closed. */
 	enum closing_policy
-	{
-	  /** Destroy the tab when it's closed. */
-	  closing_policy_destroy,
-	  /** Hide the tab when it's closed. */
-	  closing_policy_hide,
-	};
+          {
+            /** Destroy the tab when it's closed. */
+            closing_policy_destroy,
+            /** Hide the tab when it's closed. */
+            closing_policy_hide,
+          };
 
 	const QString name;
 

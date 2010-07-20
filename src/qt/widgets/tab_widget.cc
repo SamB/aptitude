@@ -41,15 +41,14 @@ namespace aptitude
       tab_widget::~tab_widget()
       {
 	for(int i=0; i<count(); ++i)
-	{
-	  tab *tab_at_index = qobject_cast<tab *>(widget(i));
+          {
+            tab *tab_at_index = qobject_cast<tab *>(widget(i));
 
-	  if(!tab_at_index)
-	    return;
+            if(!tab_at_index)
+              return;
 
-	 Q_EMIT(tab_deletion_request(tab_at_index, true));
-
-	}
+            Q_EMIT(tab_deletion_request(tab_at_index, true));
+          }
       }
 
       void tab_widget::tab_deletion_requested(int index)
