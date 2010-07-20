@@ -39,6 +39,8 @@ libqt_a_SOURCES= \
    windows/main_window.h \
    package.cc \
    package.h \
+   package_pool.cc \
+   package_pool.h \
    qt_main.cc \
    qt_main.h \
    tabs_manager.cc \
