@@ -30,20 +30,23 @@ namespace aptitude
       class status_widget;
       class tab_widget;
 
-      /** \brief Widget representing main window of the program.
+      /** \brief Widget representing the main window of the program.
        *
-       *  main_window is a central point of program. It is splitted
-       *  into tree main parts: menu bar, tab widget and status widget
+       *  main_window is the central widget of the program.  It is
+       *  visually divided into tree parts: the menu bar, the tab
+       *  widget, and the status widget.
        *
-       *  menu bar is splitted into 3 parts and contains the most common
-       *  program's actions
+       *  menu bar is split into 3 areas and contains the most common
+       *  actions the user will invoke.
        *
-       *  Tab widget contains tabs. Each tab is responsible for one particular
-       *  functionality of the program e.g. searching of packages or resolving
-       *  conflicts
+       *  The tab widget manages the currently open views, displaying
+       *  them as a tabbed notebook (see the tab class). Each tab is
+       *  responsible for one particular function of the program,
+       *  such as searching of packages or resolving conflicts.
        *
-       *  Status widget shows state of the program (e.g. number of requested
-       *  changes) and progress of active tasks
+       *  The status widget shows the current state of the program
+       *  (e.g. the number of requested changes) and the progress of
+       *  any active tasks.
        */
       class main_window : public QMainWindow
       {
@@ -56,7 +59,7 @@ namespace aptitude
 	QMenu *packages_menu;
 	QMenu *help_menu;
 
-	/** \brief Create actions used in main menu and contexts menus. */
+	/** \brief Create actions used in the main menu and in context menus. */
 	void create_actions();
 
 	/** \brief Create layouts and widgets. */
@@ -75,7 +78,7 @@ namespace aptitude
 	void create_packages_menu();
 
       public:
-	/** \brief Create a new main_window object. */
+	/** \brief Create a new main_window. */
 	explicit main_window();
 
 	virtual ~main_window();

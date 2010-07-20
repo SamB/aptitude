@@ -32,68 +32,73 @@ namespace aptitude
   {
     namespace qt
     {
-      /** \brief Widget containing program's tabs.
+      /** \brief A widget to manage the active views of the program.
        *
-       *  This widget is a central part of main program's window
-       *
-       *  It is responsible for propagating signals about changing
-       *  his state and responsing for user input (e.g. shortcuts or
-       *  requests for closing tabs)
+       *  This widget is the central part of the main program window.
+       *  Client code can receive events when a new tab is selected or
+       *  when the user asks to close a tab.
        */
       class tab_widget : public QTabWidget
       {
 	Q_OBJECT
 
-	/** \brief Switches active tab to next tab on the left. */
+	/** \brief Activates the tab to the left of the active tab. */
 	void switch_tab_left();
 
-	/** \brief Switches active tab to next tab on the right. */
+	/** \brief Activates the tab to the right of the active tab. */
 	void switch_tab_right();
 
       private Q_SLOTS:
-	/** \brief Slot invoked when user clicked on close button on
-	 *  tab with given index.
+	/** \brief Slot invoked when user clicks on the close button
+	 *  of a tab.
 	 *
-	 *  Received signal is translated and propageted to the
-	 *  tabs_manager
+	 *  The signal is propagated via tab_deletion_request.
+         *
+         *  \param index The zero-based index of the affected tab in
+         *  the list of active tabs.
 	 */
 	void tab_deletion_requested(int index);
 
-	/** \brief Slot invoked when active tabs has changed
+	/** \brief Slot invoked when the currently active tab has
+         *  changed.
 	 *
-	 *  Received signal is translated and propageted
+	 *  This signal is propagated via current_tab_changed.
+         *
+         *  \param index The zero-based index of the newly selected
+         *  tab in the list of active tabs.
 	 */
 	void on_tab_change(int index);
 
       public:
-	/** \brief Create new tab widget with the given parent */
+	/** \brief Create a new tab widget with the given parent. */
 	explicit tab_widget(QWidget *parent = 0);
 
 	virtual ~tab_widget();
 
-	/** \brief Enable or disable close button on the given tab */
+	/** \brief Enable or disable the close button on the given tab. */
 	void set_tab_closable(tab *closable_tab, bool enabled);
 
       public Q_SLOTS:
-	/** \brief Slot invoked when user typed a shortcut
+	/** \brief Slot invoked when the user types a shortcut.
 	 *
-	 *  This slots translates key event to shortcut and checks
-	 *  if given shortcut is registered for this widget.
-	 *  If yes handled argument is set to true
+	 *  If the given key corresponds to a shortcut recognized by
+         *  this widget, then the appropriate action is taken and
+         *  handled is set to \b true.
 	 */
 	void key_pressed(QKeyEvent *e, bool &handled);
 
       Q_SIGNALS:
 	/** \brief Signal emitted when the current tab has changed.
-	 *  tab_type is a type of newly activated tab
+         *
+	 *  \param tab_type the type of the newly activated tab.
 	 */
 	void current_tab_changed(tab::tab_type);
 
-	/** \brief Signal emitted when user has requested closing
-	 *   closing given tab
+	/** \brief Signal emitted when user asks to close a tab.
 	 *
-	 *  When the force parameter is true, the object has to be destroyed
-	 *  (this is true when tab_widget is going to be destroyed)
+	 *  When the force parameter is true, the object is about to
+	 *  be destroyed, because the tab_widget itself is about to be
+	 *  destroyed.
 	 */
 	void tab_deletion_request(tab *, bool force);
       };

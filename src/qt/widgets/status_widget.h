@@ -40,13 +40,10 @@ namespace aptitude
        *
        *  This widget is always displayed at the bottom of the main window and
        *  is divided into two parts.
-       *  The first part shows infromations about requested changes of package
-       *  state, and the second part shows progress of currently running program's
-       *  activites. At the top of the widget, name of the last finished activity
+       *  The first part shows information about requested changes to package
+       *  states, and the second part shows the progress of any currently running process'
+       *  activities. At the top of the widget, a description of the last activity to complete
        *  is displayed.
-       *
-       *  Widgets are placed in QStackedWidget, so only one of those widgets can be shown
-       *  at the same time
        */
       class status_widget : public QWidget
       {
@@ -73,37 +70,39 @@ namespace aptitude
 	/** \brief Create layout and widget of progress widget. */
 	void create_progress_widget();
 
-	/** \brief Update an information about requested changes in package cache. */
+	/** \brief Update information about the current staged changes. */
 	void update_changes_summary();
 
       private Q_SLOTS:
 	/** \brief Slot triggered when the Show Changes button has been clicked
-	 *  by the user
+	 *  by the user.
 	 *
-	 *  This slot creates new (or make active if tab is already present)
-	 *  Changes Preview tab
+	 *  This slot activates the changes preview tab, creating a
+	 *  new one if it doesn't exist yet.
 	 */
 	void show_changes_button_clicked();
 
 	/** \brief Slot triggered when the Apply Changes button has been clicked
-	 *  by the user
+	 *  by the user.
 	 *
-	 *  This slots starts a process of appling changes
+	 *  This slots starts applying the current changes in the
+	 *  background.
 	 */
 	void apply_changes_button_clicked();
 
 	/** \brief Slot triggered when the Resolve Dependencies button has been clicked
-	 *  by the user
+	 *  by the user.
 	 *
-	 *  This slot creates new (or make active if tab is already present)
-	 *  Resolver tab
+         *  This slot activates the resolver tab, creating a new one
+         *  if it doesn't exist yet.
 	 */
 	void resolve_dependencies_button_clicked();
 
 	/** \brief Slot triggered when the Cancel button has been clicked
-	 *  by the user
+	 *  by the user.
 	 *
-	 *  This slot aborts curranly running task
+	 *  This slot aborts the most recently started background
+	 *  task.
 	 */
 	void cancel_button_clicked();
 
@@ -111,16 +110,17 @@ namespace aptitude
 	/** \brief Create a new status_widget object. */
 	explicit status_widget(QWidget *parent = 0);
 
-	/** \brief Destroy a status_widget object. */
 	virtual ~status_widget();
 
       public Q_SLOTS:
-	/** \brief Slot triggered when the current tab has changed
-	 *  on the main tab_widget
+	/** \brief Slot triggered when the main tab_widget is switched
+         *  to a new tab.
 	 *
-	 *  The slot is responsible for enabling and disabling widget's buttons.
-	 *  For example when Changes Preview tab is active, Show Changes button should
-	 *  be disabled to not confuse the user
+	 *  This slot is responsible for ensuring that the correct
+	 *  buttons are enabled for the newly selected tab.  For
+	 *  example, when the Changes Preview tab is active, Show
+	 *  Changes button should be disabled in order to not confuse
+	 *  the user.
 	 */
 	void current_tab_changed(tab::tab_type type);
       };
