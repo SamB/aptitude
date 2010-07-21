@@ -362,6 +362,7 @@ boost/test/unit_test.hpp dnl
 boost/type_traits/is_same.hpp dnl
 boost/unordered_map.hpp dnl
 boost/unordered_set.hpp dnl
+boost/utility.hpp dnl
 boost/variant.hpp dnl
 boost/weak_ptr.hpp dnl
                   , []
