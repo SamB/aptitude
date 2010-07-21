@@ -198,17 +198,17 @@ namespace aptitude
       template<typename TabType>
       void tabs_manager::tabs_manager_impl::create_or_display(TabType *output, tab_widget *tabs, const char *name)
       {
-       if(output == NULL)
-       {
-	 connect_tab_widget_signals(tabs);
+        if(output == NULL)
+          {
+            connect_tab_widget_signals(tabs);
 
-	 output = new TabType;
-	 connect(output, SIGNAL(destroyed()), this, SLOT(tab_destroyed()));
+            output = new TabType;
+            connect(output, SIGNAL(destroyed()), this, SLOT(tab_destroyed()));
 
-	 tabs->addTab(output, name);
-       }
+            tabs->addTab(output, name);
+          }
 
-       activate_tab(output);
+        activate_tab(output);
       }
 
       void tabs_manager::tabs_manager_impl::open_changes_preview_tab(QWidget *tab_context)
