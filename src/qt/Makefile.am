@@ -37,9 +37,13 @@ libqt_a_SOURCES= \
    widgets/tab_widget.h \
    windows/main_window.cc \
    windows/main_window.h \
+   package.cc \
+   package.h \
    qt_main.cc \
    qt_main.h \
    tabs_manager.cc \
-   tabs_manager.h
+   tabs_manager.h \
+   version.cc \
+   version.h
 
 BUILT_SOURCES = $(libqt_a_MOC)
