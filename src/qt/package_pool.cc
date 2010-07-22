@@ -90,8 +90,8 @@ namespace aptitude
 
       package_pool::package_pool_impl::package_pool_impl()
       {
-	cache_closed.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_closed)),
-          cache_reloaded.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_reloaded));
+	cache_closed.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_closed));
+        cache_reloaded.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_reloaded));
 
 	handle_cache_reloaded();
       }
