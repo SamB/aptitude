@@ -91,7 +91,7 @@ namespace aptitude
       package_pool::package_pool_impl::package_pool_impl()
       {
 	cache_closed.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_closed)),
-	cache_reloaded.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_reloaded));
+          cache_reloaded.connect(sigc::mem_fun(*this, &package_pool::package_pool_impl::handle_cache_reloaded));
 
 	handle_cache_reloaded();
       }
@@ -110,13 +110,13 @@ namespace aptitude
 	packages.reserve((*apt_cache_file)->Head().PackageCount);
 
 	for(pkgCache::PkgIterator pkg = (*apt_cache_file)->PkgBegin(); !pkg.end(); ++pkg)
-	{
-	  // Filter useless packages up-front.
-	  if(pkg.VersionList().end() && pkg.ProvidesList().end())
-	    continue;
+          {
+            // Filter useless packages up-front.
+            if(pkg.VersionList().end() && pkg.ProvidesList().end())
+              continue;
 
-	  packages.push_back(package::create(pkg));
-	}
+            packages.push_back(package::create(pkg));
+          }
 
 	cache_reloaded_signal();
       }
@@ -147,19 +147,19 @@ namespace aptitude
       }
 
       sigc::connection
-	  package_pool::package_pool_impl::connect_cache_reloaded(const sigc::slot<void> &slot)
+      package_pool::package_pool_impl::connect_cache_reloaded(const sigc::slot<void> &slot)
       {
 	return cache_reloaded_signal.connect(slot);
       }
 
       sigc::connection
-	  package_pool::package_pool_impl::connect_cache_closed(const sigc::slot<void> &slot)
+      package_pool::package_pool_impl::connect_cache_closed(const sigc::slot<void> &slot)
       {
 	return cache_closed_signal.connect(slot);
       }
 
       sigc::connection
-	  package_pool::package_pool_impl::connect_cache_state_changed(const sigc::slot<void, std::vector<package_ptr> > &slot)
+      package_pool::package_pool_impl::connect_cache_state_changed(const sigc::slot<void, std::vector<package_ptr> > &slot)
       {
 	return cache_state_changed_signal.connect(slot);
       }
