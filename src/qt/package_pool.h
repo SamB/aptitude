@@ -37,13 +37,14 @@ namespace aptitude
       class package;
       typedef boost::shared_ptr<package> package_ptr;
 
-      /** \brief Class containig pointers to all used packages from cache.
+      /** \brief A global pool of package objects.
        *
-       *  This class is responsible for responsing to cache events. It creates
-       *  local container containing pointers to all package class objects, which
-       *  for example are later used by packages_model class.
+       *  The pool is filled when the object is created or when the
+       *  cache is (re)loaded, and it is emptied when the cache is
+       *  closed.
        *
-       *  This class also propagates information about changing cache state
+       *  This pool also interprets signals for the benefit of its
+       *  client code.
        */
       class package_pool
       {
@@ -57,19 +58,41 @@ namespace aptitude
 	/** \brief Return the globally unique instance of package_pool. */
 	static package_pool *get_instance();
 
-	/** \brief Retrieve package count. */
+	/** \brief Retrieve the number of packages in this pool.
+         *
+         *  \return the number of package objects in this pool -- may
+         *  not be equal to the PackageCount of the apt cache file,
+         *  because some packages could be discarded in the pool.
+         */
 	virtual int get_packages_count() = 0;
 
-	/** \brief Retrieve a pointer to package at given index. */
+	/** \brief Retrieve a pointer to the package at given index.
+         *
+         *  \param index The zero-based index of the package.  This is
+         *                \e not equal to Pkg->ID.
+         *
+         *  \return the package at index if index is between 0 and
+         *  get_packages_count() - 1, and an invalid pointer otherwise.
+         */
 	virtual package_ptr get_package_at_index(unsigned int index) = 0;
 
-	/** \brief Register a slot to be invoked when the apt cache is reloaded. */
+	/** \brief Register a slot to be invoked when the apt cache is reloaded.
+         *
+         *  The slot is guaranteed to be invoked after the pool has
+         *  been initialized from the new apt cache.
+         */
 	virtual sigc::connection connect_cache_reloaded(const sigc::slot<void> &slot) = 0;
 
-	/** \brief Register a slot to be invoked when the apt cache is closed. */
+	/** \brief Register a slot to be invoked when the apt cache is closed.
+         *
+         *  The signal is guaranteed to be invoked before the pool of
+         *  packages is emptied.
+         */
 	virtual sigc::connection connect_cache_closed(const sigc::slot<void> &slot) = 0;
 
-	/** \brief Register a slot to be invoked when the state of packages changes. */
+	/** \brief Register a slot to be invoked when the state of one
+         *  or more packages changes.
+         */
 	virtual sigc::connection connect_cache_state_changed(const sigc::slot<void, std::vector<package_ptr> > &slot) = 0;
       };
     }
