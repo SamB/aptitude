@@ -33,7 +33,8 @@ namespace aptitude
   {
     namespace qt
     {
-      class package_pool::package_pool_impl : public package_pool
+      class package_pool::package_pool_impl : public package_pool,
+                                              public sigc::trackable
       {
 	std::vector<package_ptr> packages;
 
