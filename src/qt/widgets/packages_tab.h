@@ -20,7 +20,14 @@
 #ifndef APTITUDE_QT_PACKAGES_TAB_H
 #define APTITUDE_QT_PACKAGES_TAB_H
 
+// Local includes
 #include "tab.h"
+
+class QComboBox;
+class QLineEdit;
+class QListView;
+class QPushButton;
+class QTreeView;
 
 namespace aptitude
 {
@@ -33,13 +40,36 @@ namespace aptitude
        */
       class packages_tab : public tab
       {
-        Q_OBJECT
+	Q_OBJECT
+
+	QComboBox *show_combobox;
+	QListView *filters_view;
+	QPushButton *manage_filters_button;
+
+	QComboBox *search_by_combobox;
+	QLineEdit *search_edit;
+	QTreeView *packages_view;
+
+	/** \brief Create layouts and widgets. */
+	void create_gui();
+
+	/** \brief Create left widget. */
+	QWidget *create_left_widget();
+
+	/** \brief Create right widget. */
+	QWidget *create_right_widget();
+
+      private Q_SLOTS:
+	/** \brief Slot invoked when user clicked on Manage Filters button
+	 *
+	 *  \todo This slot should open Manage Filters window
+	 */
+	void manage_filters_cliked();
 
       public:
 	/** \brief Create a new packages_tab object. */
 	explicit packages_tab(QWidget *parent = 0);
 
-	/** \brief Destroy a packages_tab object. */
 	virtual ~packages_tab();
       };
     }
