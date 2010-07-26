@@ -35,6 +35,8 @@
 
 #include <signal.h>
 
+using logging::LoggerPtr;
+
 namespace aptitude
 {
   namespace gui
@@ -43,11 +45,24 @@ namespace aptitude
     {
       void qt_consume_errors()
       {
-        _error->Discard();
+        LoggerPtr logger = Loggers::getAptitudeQtInit();
+
+        while(!_error->empty())
+          {
+            std::string msg;
+            if(_error->PopMessage(msg))
+              LOG_ERROR(logger, "E: " << msg);
+            else
+              LOG_WARN(logger, "W: " << msg);
+          }
       }
 
       bool main(int argc, char **argv)
       {
+        LoggerPtr logger = Loggers::getAptitudeQtInit();
+
+        LOG_TRACE(logger, "Qt frontend starting.");
+
 	// Don't crash if a subprocess breaks a pipe.
 	signal(SIGPIPE, SIG_IGN);
 
@@ -55,12 +70,21 @@ namespace aptitude
         // saves the errors and displays them in the UI.
         consume_errors.connect(sigc::ptr_fun(&qt_consume_errors));
 
+        LOG_TRACE(logger, "Creating QApplication");
+
 	QApplication app(argc,argv);
+
+        LOG_TRACE(logger, "Displaying main window");
 
 	main_window *main = new main_window;
 	main->show();
 
+        LOG_INFO(logger, "Entering main loop");
+
 	app.exec();
+
+        LOG_TRACE(logger, "Main loop complete");
+
 	return true;
       }
     }
