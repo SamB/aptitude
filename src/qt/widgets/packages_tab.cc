@@ -122,7 +122,7 @@ namespace aptitude
 	return right_widget;
       }
 
-      void packages_tab::manage_filters_cliked()
+      void packages_tab::manage_filters_clicked()
       {
 
       }

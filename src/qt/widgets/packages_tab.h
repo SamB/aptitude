@@ -36,7 +36,7 @@ namespace aptitude
     namespace qt
     {
       /** \brief Tab containing widgets which allow searching and
-       *  browsing packages list.
+       *  browsing a list of packages.
        */
       class packages_tab : public tab
       {
@@ -60,11 +60,12 @@ namespace aptitude
 	QWidget *create_right_widget();
 
       private Q_SLOTS:
-	/** \brief Slot invoked when user clicked on Manage Filters button
+	/** \brief Slot invoked when the user clicked on the Manage
+         *  Filters button.
 	 *
 	 *  \todo This slot should open Manage Filters window
 	 */
-	void manage_filters_cliked();
+	void manage_filters_clicked();
 
       public:
 	/** \brief Create a new packages_tab object. */
