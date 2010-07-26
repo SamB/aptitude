@@ -48,4 +48,4 @@ libqt_a_SOURCES= \
    version.cc \
    version.h
 
-BUILT_SOURCES = $(libqt_a_MOC)
+BUILT_SOURCES = $(addprefix $(srcdir)/,$(libqt_a_MOC))
