@@ -24,7 +24,13 @@
 
 #include "windows/main_window.h"
 
+#include <generic/apt/apt.h>
+
+#include <loggers.h>
+
 // System includes
+#include <apt-pkg/error.h>
+
 #include <QtGui/QApplication>
 
 #include <signal.h>
@@ -35,10 +41,19 @@ namespace aptitude
   {
     namespace qt
     {
+      void qt_consume_errors()
+      {
+        _error->Discard();
+      }
+
       bool main(int argc, char **argv)
       {
 	// Don't crash if a subprocess breaks a pipe.
 	signal(SIGPIPE, SIG_IGN);
+
+        // TODO: this should be connected to something that properly
+        // saves the errors and displays them in the UI.
+        consume_errors.connect(sigc::ptr_fun(&qt_consume_errors));
 
 	QApplication app(argc,argv);
 
