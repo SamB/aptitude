@@ -82,7 +82,7 @@ namespace aptitude
 	filters_view->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Expanding));
 
 	manage_filters_button = new QPushButton(_("Manage Filters"));
-	connect(manage_filters_button, SIGNAL(clicked()), this, SLOT(manage_filters_cliked()));
+	connect(manage_filters_button, SIGNAL(clicked()), this, SLOT(manage_filters_clicked()));
 
 	left_layout->addWidget(show_widget);
 	left_layout->addWidget(filters_view);
