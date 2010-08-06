@@ -29,6 +29,7 @@
 /** \file util.h
  */
 
+struct timeval;
 struct tm;
 
 /** \brief Backslash-escape anything in the given string that is not a
@@ -94,6 +95,10 @@ namespace aptitude
 {
   namespace util
   {
+    /** \brief Return the difference between two timevals as a timeval. */
+    struct timeval subtract_timevals(const struct timeval &a,
+                                     const struct timeval &b);
+
     /** Remove the given file/directory and all its children.  Behaves
      *  like rm -fr.
      *
