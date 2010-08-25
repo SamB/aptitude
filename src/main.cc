@@ -81,6 +81,7 @@
 #include <apt-pkg/init.h>
 
 #include <boost/format.hpp>
+#include <boost/optional.hpp>
 
 #ifdef HAVE_GTK
 #include "gtk/gui.h"
@@ -103,6 +104,8 @@
 namespace cw = cwidget;
 
 using aptitude::Loggers;
+
+using boost::optional;
 
 using logging::DEBUG_LEVEL;
 using logging::ERROR_LEVEL;
@@ -460,7 +463,7 @@ namespace
 	logger_name = std::string(s, 0, colon_loc);
       }
 
-    log_level level;
+    optional<log_level> level;
 
     log_level_map::const_iterator found =
       log_levels.find(level_name);
@@ -485,7 +488,7 @@ namespace
 	return;
       }
 
-    targetLogger->setLevel(level);
+    targetLogger->setLevel(*level);
   }
 
   /** \brief Apply logging levels from the configuration file. */
