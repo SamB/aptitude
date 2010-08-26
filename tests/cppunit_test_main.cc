@@ -22,8 +22,6 @@
 
 #include <loggers.h>
 
-#include <loggers.h>
-
 #include <stdio.h>
 #include <string.h>
 
