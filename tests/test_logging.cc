@@ -336,12 +336,12 @@ TEST_F(LoggingTest, testIsEnabledOff)
 
   EXPECT_EQ(OFF_LEVEL, root->getEffectiveLevel());
 
-  EXPECT_TRUE(  root->isEnabledFor(FATAL_LEVEL) );
-  EXPECT_TRUE(  root->isEnabledFor(ERROR_LEVEL) );
-  EXPECT_TRUE(  root->isEnabledFor(WARN_LEVEL)  );
-  EXPECT_TRUE(  root->isEnabledFor(INFO_LEVEL)  );
-  EXPECT_TRUE(  root->isEnabledFor(DEBUG_LEVEL) );
-  EXPECT_TRUE(  root->isEnabledFor(TRACE_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(FATAL_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(ERROR_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(WARN_LEVEL)  );
+  EXPECT_TRUE( !root->isEnabledFor(INFO_LEVEL)  );
+  EXPECT_TRUE( !root->isEnabledFor(DEBUG_LEVEL) );
+  EXPECT_TRUE( !root->isEnabledFor(TRACE_LEVEL) );
   EXPECT_TRUE( !root->isEnabledFor(OFF_LEVEL)   );
 }
 
@@ -458,6 +458,24 @@ TEST_F(LoggingTest, testConnectMessageLoggedCanBeDisconnected)
 // Spot checks that the log-level macros do the "right thing".  Note
 // that each test uses msg1 for a log that should get through, and
 // msg2 for a log that shouldn't.
+
+TEST_F(LoggingTest, testOffMeansOff)
+{
+  LoggerPtr root = getLogger("");
+  LoggingReceiver receiver;
+
+  EXPECT_NO_LOGS(receiver);
+
+  connect(receiver, root);
+  root->setLevel(OFF_LEVEL);
+
+  LOG_TRACE(root, "trace");
+  LOG_DEBUG(root, "debug");
+  LOG_INFO(root, "info");
+  LOG_WARN(root, "warn");
+  LOG_ERROR(root, "error");
+  LOG_FATAL(root, "fatal");
+}
 
 TEST_F(LoggingTest, testLogTrace)
 {
