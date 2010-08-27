@@ -42,6 +42,7 @@
 
 #include <generic/util/logging.h>
 #include <generic/util/temp.h>
+#include <generic/util/util.h>
 
 #ifdef HAVE_GTK
 #include <gtkmm.h>
@@ -544,7 +545,15 @@ void do_message_logged(std::ostream &out,
                        LoggerPtr logger,
                        const std::string &msg)
 {
-  out << sourceFilename << ":" << sourceLineNumber
+  time_t current_time = 0;
+  struct tm local_current_time;
+
+  time(&current_time);
+  localtime_r(&current_time, &local_current_time);
+
+  out << sstrftime("%F %T", &local_current_time)
+      << " [" << pthread_self() << "] "
+      << sourceFilename << ":" << sourceLineNumber
       << " " << describe_log_level(level)
       << " " << logger->getCategory()
       << " - " << msg << std::endl << std::flush;
