@@ -18,8 +18,6 @@ using logging::LoggerPtr;
 using logging::describe_log_level;
 using logging::log_level;
 
-#include <loggers.h>
-
 // One dummy test so that this can be dropped in before the actual
 // test suite is written.
 BOOST_AUTO_TEST_CASE(dummy)
