@@ -76,7 +76,7 @@ namespace
 
         if(apt_priority > INT_MIN)
           return settings.raise_cost(priority_component,
-                                     apt_priority);
+                                     -apt_priority);
         else
           return cost_limits::minimum_cost;
       }
