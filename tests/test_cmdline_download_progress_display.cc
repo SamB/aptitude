@@ -262,7 +262,7 @@ TEST_P(CmdlineDownloadProgressDisplayTest, UpdateProgress2)
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoNameWithFileSize)
 {
-  EXPECT_MSG(L"Get: 4 [100B]");
+  EXPECT_MSG(L"Get: 4 [100 B]");
 
   progress->file_started("", 4, 100);
 }
@@ -283,14 +283,14 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoFileSize)
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedNoIdWithFileSize)
 {
-  EXPECT_MSG(L"Get: thefile [210B]");
+  EXPECT_MSG(L"Get: thefile [210 B]");
 
   progress->file_started("thefile", optional<unsigned long>(), 210);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdWithFileSize)
 {
-  EXPECT_MSG(L"Get: 6 another file [210B]");
+  EXPECT_MSG(L"Get: 6 another file [210 B]");
 
   progress->file_started("another file", 6, 210);
 }
@@ -299,7 +299,7 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdWithFileSize)
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoNameWithFileSize)
 {
-  EXPECT_MSG(L"Hit 4 [100B]");
+  EXPECT_MSG(L"Hit 4 [100 B]");
 
   progress->file_already_downloaded("", 4, 100);
 }
@@ -320,14 +320,14 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoFileSize
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdWithFileSize)
 {
-  EXPECT_MSG(L"Hit thefile [210B]");
+  EXPECT_MSG(L"Hit thefile [210 B]");
 
   progress->file_already_downloaded("thefile", optional<unsigned long>(), 210);
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdWithFileSize)
 {
-  EXPECT_MSG(L"Hit 6 another file [210B]");
+  EXPECT_MSG(L"Hit 6 another file [210 B]");
 
   progress->file_already_downloaded("another file", 6, 210);
 }
@@ -501,7 +501,7 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileFinishedWithDescriptionWithId)
 
 TEST_P(CmdlineDownloadProgressDisplayTest, Done)
 {
-  EXPECT_MSG(L"Fetched 100B in 5s (20B/s)");
+  EXPECT_MSG(L"Fetched 100 B in 5s (20 B/s)");
 
   progress->done(100, 5, 20);
 }

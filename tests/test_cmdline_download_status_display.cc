@@ -1,6 +1,6 @@
 /** \file test_cmdline_download_status_display.cc */
 
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -270,7 +270,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, NoCpsNoFilesOvercompleteProgressNoTimeE
 // download rate indicator and no time estimate.
 TEST_P(CmdlineDownloadStatusDisplayTest, HasCpsNoFilesNoProgressNoTimeEstimate)
 {
-  EXPECT_MSG(L"0% [Working]                 20.0kB/s 0s");
+  EXPECT_MSG(L"0% [Working]                20.0 kB/s 0s");
 
   status_display->display_status(status(20 * 1000,
                                         make_files(),
@@ -306,7 +306,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, NoCpsNoFilesNoProgressHasTimeEstimate)
 // time estimate and a download rate indicator.
 TEST_P(CmdlineDownloadStatusDisplayTest, HasCpsNoFilesNoProgressHasTimeEstimate)
 {
-  EXPECT_MSG(L"0% [Working]                40.0kB/s 30s");
+  EXPECT_MSG(L"0% [Working]               40.0 kB/s 30s");
 
   status_display->display_status(status(40 * 1000,
                                         make_files(),
@@ -318,7 +318,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, HasCpsNoFilesNoProgressHasTimeEstimate)
 // file at 0%.
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileWithNoProgress)
 {
-  EXPECT_MSG(L"0% [no progress 0/10B 0%]");
+  EXPECT_MSG(L"0% [no progress 0/10 B 0%]");
 
   status_display->display_status(status(0, make_files(no_progress), 0, 0));
 }
@@ -327,7 +327,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileWithNoProgress)
 // file at 45.4%.
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileAlmostHalfCompleteRoundDown)
 {
-  EXPECT_MSG(L"0% [1 round down 454/1000B 45%]");
+  EXPECT_MSG(L"0% [1 round down 454/1000 B 45%]");
 
   status_display->display_status(status(0, make_files(almost_half_complete_round_down), 0, 0));
 }
@@ -345,7 +345,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileAlmostHalfCompleteRoundDownWithC
 // file at 45.5%.
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileAlmostHalfCompleteRoundUp)
 {
-  EXPECT_MSG(L"0% [2 round up 455/1000B 46%]");
+  EXPECT_MSG(L"0% [2 round up 455/1000 B 46%]");
 
   status_display->display_status(status(0, make_files(almost_half_complete_round_up), 0, 0));
 }
@@ -354,7 +354,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileAlmostHalfCompleteRoundUp)
 // one file at 100%.
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileFullyComplete)
 {
-  EXPECT_MSG(L"0% [4 complete 10/10B 100%]");
+  EXPECT_MSG(L"0% [4 complete 10/10 B 100%]");
 
   status_display->display_status(status(0, make_files(full_progress), 0, 0));
 }
@@ -391,7 +391,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileWithProgressZeroSizeWithComplete
 // one file above 100%.
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileOvercomplete)
 {
-  EXPECT_MSG(L"0% [6 overcomplete progress 15/10B 100%]");
+  EXPECT_MSG(L"0% [6 overcomplete progress 15/10 B 100%]");
 
   status_display->display_status(status(0, make_files(overcomplete_progress), 0, 0));
 }
@@ -399,28 +399,28 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileOvercomplete)
 // Various tests of cases involving the mode string:
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileNoProgressWithModeNoIdNoDescription)
 {
-  EXPECT_MSG(L"0% [the mode 0/10B 0%]");
+  EXPECT_MSG(L"0% [the mode 0/10 B 0%]");
 
   status_display->display_status(status(0, make_files(no_progress_with_mode_no_id_no_description), 0, 0));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileNoProgressWithModeWithIdNoDescription)
 {
-  EXPECT_MSG(L"0% [5 the mode 0/10B 0%]");
+  EXPECT_MSG(L"0% [5 the mode 0/10 B 0%]");
 
   status_display->display_status(status(0, make_files(no_progress_with_mode_with_id_no_description), 0, 0));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileNoProgressWithModeNoIdWithDescription)
 {
-  EXPECT_MSG(L"0% [no progress the mode 0/10B 0%]");
+  EXPECT_MSG(L"0% [no progress the mode 0/10 B 0%]");
 
   status_display->display_status(status(0, make_files(no_progress_with_mode_no_id_with_description), 0, 0));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, OneFileNoProgressWithModeWithIdWithDescription)
 {
-  EXPECT_MSG(L"0% [5 no progress the mode 0/10B 0%]");
+  EXPECT_MSG(L"0% [5 no progress the mode 0/10 B 0%]");
 
   status_display->display_status(status(0, make_files(no_progress_with_mode_with_id_with_description), 0, 0));
 }
@@ -436,7 +436,7 @@ TEST_P(CmdlineDownloadStatusDisplayTest, OneFileNoProgressOutOfZeroWithMode)
 // Test that displaying two files works as expected.
 TEST_P(CmdlineDownloadStatusDisplayTest, TwoFiles)
 {
-  EXPECT_MSG(L"0% [no progress 0/10B 0%] [3 half complete 5/10B 50%]");
+  EXPECT_MSG(L"0% [no progress 0/10 B 0%] [3 half complete 5/10 B 50%]");
 
   status_display->display_status(status(0, make_files(no_progress, half_complete), 0, 0));
 }
@@ -454,9 +454,9 @@ TEST_P(CmdlineDownloadStatusDisplayTest, ClipOverwideDisplayWithDownloadRateIndi
 {
   set_screen_width(17);
 
-  EXPECT_MSG(L"0% [Wor 300B/s 0s");
+  EXPECT_MSG(L"0% [Wor 30 B/s 0s");
 
-  status_display->display_status(status(300, make_files(), 0, 0));
+  status_display->display_status(status(30, make_files(), 0, 0));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, ClipOverwideDisplayWithTimeRemainingAndWideCharOverlapped)
@@ -509,18 +509,18 @@ TEST_P(CmdlineDownloadStatusDisplayTest, ClipOverwideDisplayWithDownloadRateIndi
 {
   set_screen_width(14);
 
-  EXPECT_MSG(L"0%  300B/s 20s");
+  EXPECT_MSG(L"0%  30 B/s 20s");
 
-  status_display->display_status(status(300, make_files(), 0, 20));
+  status_display->display_status(status(30, make_files(), 0, 20));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, ClipOverwideDisplayWithDownloadRateIndicatorAndTimeRemainingTooNarrow)
 {
   set_screen_width(9);
 
-  EXPECT_MSG(L" 300B/s 20s");
+  EXPECT_MSG(L" 30 B/s 20s");
 
-  status_display->display_status(status(300, make_files(), 0, 20));
+  status_display->display_status(status(30, make_files(), 0, 20));
 }
 
 TEST_P(CmdlineDownloadStatusDisplayTest, ZeroTerminalWidth)
