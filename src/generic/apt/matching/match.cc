@@ -1,6 +1,6 @@
 // match.cc
 //
-//   Copyright (C) 2008-2010 Daniel Burrows
+//   Copyright (C) 2008-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -1443,7 +1443,7 @@ namespace aptitude
 #endif
 
 	      if(tags == NULL)
-		return false;
+		return NULL;
 
 	      for(std::set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
 		{
