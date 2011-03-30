@@ -1,6 +1,6 @@
 // changelog_parse.cc
 //
-//   Copyright (C) 2005, 2008-2009 Daniel Burrows
+//   Copyright (C) 2005, 2008-2009, 2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -66,9 +66,9 @@ namespace aptitude
 	could_parse_date(false),
 	date(0)
     {
-      // I use StrToTime instead of strptime because strptime is
-      // locale-dependent.
-      could_parse_date = StrToTime(date_str, date);
+      // I use RFC1123StrToTime instead of strptime because strptime
+      // is locale-dependent.
+      could_parse_date = RFC1123StrToTime(date_str.c_str(), date);
     }
 
     // Skips over whitespace in a text element, spilling elements as

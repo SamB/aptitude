@@ -1,6 +1,6 @@
 // main.cc  (neé testscr.cc)
 //
-//  Copyright 1999-2010 Daniel Burrows
+//  Copyright 1999-2011 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1107,7 +1107,7 @@ int main(int argc, char *argv[])
 	{
 	  // Connect up the "please consume errors" routine for the
 	  // command-line.
-	  consume_errors.connect(sigc::mem_fun(_error, &GlobalError::DumpErrors));
+	  consume_errors.connect(sigc::mem_fun(_error, (void (GlobalError::*)()) &GlobalError::DumpErrors));
 
 	  if(update_only || install_only || autoclean_only || clean_only)
 	    {

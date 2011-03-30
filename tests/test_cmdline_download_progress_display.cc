@@ -1,6 +1,6 @@
 /** \file test_cmdline_download_progress_display.cc */
 
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -271,14 +271,14 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedNoIdNoFileSize)
 {
   EXPECT_MSG(L"Get: somefile");
 
-  progress->file_started("somefile", optional<unsigned long>(), optional<unsigned long>());
+  progress->file_started("somefile", optional<unsigned long>(), optional<unsigned long long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedWithIdNoFileSize)
 {
   EXPECT_MSG(L"Get: 0 filename");
 
-  progress->file_started("filename", optional<unsigned long>(0), optional<unsigned long>());
+  progress->file_started("filename", optional<unsigned long>(0), optional<unsigned long long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileStartedNoIdWithFileSize)
@@ -308,14 +308,14 @@ TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdNoFileSize)
 {
   EXPECT_MSG(L"Hit somefile");
 
-  progress->file_already_downloaded("somefile", optional<unsigned long>(), optional<unsigned long>());
+  progress->file_already_downloaded("somefile", optional<unsigned long>(), optional<unsigned long long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedWithIdNoFileSize)
 {
   EXPECT_MSG(L"Hit 0 filename");
 
-  progress->file_already_downloaded("filename", optional<unsigned long>(0), optional<unsigned long>());
+  progress->file_already_downloaded("filename", optional<unsigned long>(0), optional<unsigned long long>());
 }
 
 TEST_P(CmdlineDownloadProgressDisplayTest, FileAlreadyDownloadedNoIdWithFileSize)

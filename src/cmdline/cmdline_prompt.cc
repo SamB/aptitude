@@ -1,6 +1,6 @@
 // cmdline_prompt.cc
 //
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -82,7 +82,8 @@ static bool pkg_byname_compare(const pkgCache::PkgIterator &a, const pkgCache::P
 static bool get_fetchinfo(fetchinfo &f)
 {
   download_signal_log m;
-  pkgAcquire fetcher(&m);
+  pkgAcquire fetcher;
+  fetcher.Setup(&m);
   pkgSourceList l;
   if(!l.ReadMainList())
     return _error->Error(_("Couldn't read list of sources"));

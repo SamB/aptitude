@@ -1,6 +1,6 @@
 /** \file cmdline_download_progress_display.cc */
 
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -74,11 +74,11 @@ namespace aptitude
 
         void file_started(const std::string &description,
                           const boost::optional<unsigned long> &id,
-                          const boost::optional<unsigned long> &file_size);
+                          const boost::optional<unsigned long long> &file_size);
 
         void file_already_downloaded(const std::string &description,
                                      const boost::optional<unsigned long> &id,
-                                     const boost::optional<unsigned long> &file_size);
+                                     const boost::optional<unsigned long long> &file_size);
 
         void error(bool ignored,
                    const std::string &error,
@@ -122,7 +122,7 @@ namespace aptitude
 
       void download_progress::file_started(const std::string &description,
                                            const boost::optional<unsigned long> &id,
-                                           const boost::optional<unsigned long> &file_size)
+                                           const boost::optional<unsigned long long> &file_size)
       {
         if(display_messages)
           {
@@ -145,7 +145,7 @@ namespace aptitude
 
       void download_progress::file_already_downloaded(const std::string &description,
                                                       const boost::optional<unsigned long> &id,
-                                                      const boost::optional<unsigned long> &file_size)
+                                                      const boost::optional<unsigned long long> &file_size)
       {
         if(display_messages)
           {

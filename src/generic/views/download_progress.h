@@ -1,6 +1,6 @@
 /** \file download_progress.h */    // -*-c++-*-
 
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -174,7 +174,7 @@ namespace aptitude
        */
       virtual void file_started(const std::string &description,
                                 const boost::optional<unsigned long> &id,
-                                const boost::optional<unsigned long> &file_size) = 0;
+                                const boost::optional<unsigned long long> &file_size) = 0;
 
       /** \brief Invoked when a file isn't even started because it was
        *  already downloaded.
@@ -185,9 +185,10 @@ namespace aptitude
        *  \param file_size      The size of the file; invalid if the
        *                        file size isn't known.
        */
+
       virtual void file_already_downloaded(const std::string &description,
                                            const boost::optional<unsigned long> &id,
-                                           const boost::optional<unsigned long> &file_size) = 0;
+                                           const boost::optional<unsigned long long> &file_size) = 0;
 
       /** \brief Invoked when a file fails to download.
        *

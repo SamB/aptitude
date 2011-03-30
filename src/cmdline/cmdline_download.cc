@@ -63,7 +63,8 @@ int cmdline_download(int argc, char *argv[])
   std::pair<download_signal_log *, boost::shared_ptr<acquire_download_progress> >
     progress_display = create_cmdline_download_progress(term, term, term, term);
 
-  pkgAcquire fetcher(progress_display.first);
+  pkgAcquire fetcher;
+  fetcher.Setup(progress_display.first);
   string filenames[(*apt_cache_file)->Head().PackageCount];
   string default_release = aptcfg->Find("APT::Default-Release");
 

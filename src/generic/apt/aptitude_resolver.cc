@@ -1,6 +1,6 @@
 // aptitude_resolver.cc
 //
-//   Copyright (C) 2005, 2008-2010 Daniel Burrows
+//   Copyright (C) 2005, 2008-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -86,42 +86,6 @@ namespace
 }
 
 // Logging operators.
-std::ostream &operator<<(std::ostream &out, const pkgCache::DepIterator &dep)
-{
-  pkgCache::DepIterator d = dep;
-  bool first = true;
-
-  while(true)
-    {
-      if(first)
-	first = false;
-      else
-	out << " | ";
-
-      out << const_cast<pkgCache::DepIterator &>(dep).ParentPkg().Name()
-	  << " " << const_cast<pkgCache::DepIterator &>(dep).ParentVer().VerStr()
-	  << " " << const_cast<pkgCache::DepIterator &>(dep).DepType()
-	  << " " << const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
-
-      if((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp &&
-	 dep.TargetVer() != NULL)
-	{
-	  out << " (" << const_cast<pkgCache::DepIterator &>(dep).CompType()
-	      << " " << dep.TargetVer()
-	      << ")";
-	}
-
-      if((d->CompareOp & pkgCache::Dep::Or) == 0)
-	break;
-
-      ++d;
-
-      if(d.end())
-	break; // Shouldn't happen.
-    }
-
-  return out;
-}
 
 // Should version selections be logged the way they're written?
 // That's a little awkward since the syntax is hairy and some of them
