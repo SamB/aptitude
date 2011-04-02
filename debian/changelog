@@ -1,3 +1,15 @@
+aptitude (0.6.3-3.1) unstable; urgency=low
+
+  * Non-maintainer upload to fix FTBFS (closes: 594199).
+  * Add patch by Michael Vogt to use sigc::mem_fun0 instead of sigc::mem_fun,
+    fixing an error with apt 0.8.
+  * Comment out our operator<< for pkgCache::DepIterator, libapt-pkg has one
+    now and this caused conflicts.  Build-Depend on new libapt-pkg-dev
+    accordingly.
+  * Don't build with -Werror to avoid more FTBFS.
+
+ -- Julien Cristau <jcristau@debian.org>  Thu, 26 Aug 2010 20:00:57 +0200
+
 aptitude (0.6.3-3) unstable; urgency=low
 
   * Apply patch from Nobuhiro Iwamatsu to fix compilation on sh, which
