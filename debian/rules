@@ -33,7 +33,7 @@ build-stamp-gtk:
 	dh_testdir
 
 	mkdir -p $(GTK_BUILD_DIR)
-	(cd $(GTK_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs)
+	(cd $(GTK_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-private-glade-file --disable-docs --disable-werror)
 	$(MAKE) -C $(GTK_BUILD_DIR)/src
 	# Run the unit tests, but protect against Boost.Test's flakiness.
 	(cd $(GTK_BUILD_DIR) && $(MAKE) -C tests check || (cd tests && ./cppunit_test))
@@ -46,7 +46,7 @@ build-stamp-curses:
 	dh_testdir
 
 	mkdir -p $(CURSES_BUILD_DIR)
-	(cd $(CURSES_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-gtk)
+	(cd $(CURSES_BUILD_DIR) && ../configure --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-gtk --disable-werror)
 	$(MAKE) -C $(CURSES_BUILD_DIR)/src
 	# Run the unit tests, but protect against Boost.Test's flakiness.
 	(cd $(CURSES_BUILD_DIR) && $(MAKE) -C tests check || (cd tests && ./cppunit_test))

@@ -1,0 +1,13 @@
+Index: aptitude-0.6.3/src/main.cc
+===================================================================
+--- aptitude-0.6.3.orig/src/main.cc	2010-07-29 14:57:47.065075001 +0200
++++ aptitude-0.6.3/src/main.cc	2010-07-29 14:57:54.675075001 +0200
+@@ -1059,7 +1059,7 @@
+ 	{
+ 	  // Connect up the "please consume errors" routine for the
+ 	  // command-line.
+-	  consume_errors.connect(sigc::mem_fun(_error, &GlobalError::DumpErrors));
++	  consume_errors.connect(sigc::mem_fun0(_error, &GlobalError::DumpErrors));
+ 
+ 	  if(update_only || install_only || autoclean_only || clean_only)
+ 	    {
