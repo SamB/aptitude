@@ -1,0 +1,48 @@
+Description: Support preferences.d directory.
+Author: Tim Retout <diocles@debian.org>
+Bug-Debian: http://bugs.debian.org/557580
+
+--- aptitude-0.6.3.orig/src/cmdline/cmdline_do_action.cc
++++ aptitude-0.6.3/src/cmdline/cmdline_do_action.cc
+@@ -200,6 +200,7 @@ int cmdline_do_action(int argc, char *ar
+ 
+   pkgPolicy policy(&(*apt_cache_file)->GetCache());
+   ReadPinFile(policy);
++  ReadPinDir(policy);
+ 
+   pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
+ 
+--- aptitude-0.6.3.orig/src/generic/apt/aptcache.cc
++++ aptitude-0.6.3/src/generic/apt/aptcache.cc
+@@ -2179,7 +2179,7 @@ bool aptitudeCacheFile::Open(OpProgress
+   Policy=new aptitudePolicy(Cache);
+   if(_error->PendingError())
+     return false;
+-  if(!ReadPinFile(*Policy))
++  if(ReadPinFile(*Policy) == false || ReadPinDir(*Policy) == false)
+     return false;
+ 
+   DCache=new aptitudeDepCache(Cache, Policy);
+--- aptitude-0.6.3.orig/src/generic/apt/dump_packages.cc
++++ aptitude-0.6.3/src/generic/apt/dump_packages.cc
+@@ -744,6 +744,7 @@ namespace aptitude
+     //   $(Dir::Etc::main)
+     //   $(Dir::Etc::parts)/*
+     //   $(Dir::Etc::preferences)
++    //   $(Dir::Etc::preferencesparts)/*
+     //
+     // Dir::State::* are truncated copies; the others are copied
+     // literally.
+@@ -837,6 +838,12 @@ namespace aptitude
+ 	  copy_truncated(preferences, outDir + "/" + preferences,
+ 			 visited_packages);
+       }
++
++      {
++	const std::string preferencesParts = _config->FindDir("Dir::Etc::preferencesparts");
++	if(!preferencesParts.empty())
++	  recursive_copy_dir(preferencesParts, outDir + "/" + preferencesParts);
++      }
+     }
+ 
+     void dump_truncated_packages(const std::set<pkgCache::PkgIterator> &packages,
