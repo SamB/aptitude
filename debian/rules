@@ -63,8 +63,8 @@ clean:
 	if [ -f build-stamp-curses ]; then rm build-stamp-curses; fi
 	if [ -f build-indep-stamp ]; then rm build-indep-stamp; fi
 	rm -fr debian/html-docs
-	if [ -d $(GTK_BUILD_DIR)]; then rm -r $(GTK_BUILD_DIR); fi
-	if [ -d $(CURSES_BUILD_DIR)]; then rm -r $(CURSES_BUILD_DIR); fi
+	if [ -d $(GTK_BUILD_DIR) ]; then rm -r $(GTK_BUILD_DIR); fi
+	if [ -d $(CURSES_BUILD_DIR) ]; then rm -r $(CURSES_BUILD_DIR); fi
 
 	[ ! -f Makefile ] || $(MAKE) distclean
 	[ ! -f doc/Makefile ] || $(MAKE) -C doc distclean
