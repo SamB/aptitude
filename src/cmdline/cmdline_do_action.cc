@@ -197,6 +197,7 @@ int cmdline_do_action(int argc, char *argv[],
 
   pkgPolicy policy(&(*apt_cache_file)->GetCache());
   ReadPinFile(policy);
+  ReadPinDir(policy);
 
   pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
 

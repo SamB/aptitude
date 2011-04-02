@@ -2179,7 +2179,7 @@ bool aptitudeCacheFile::Open(OpProgress &Progress, bool do_initselections,
   Policy=new aptitudePolicy(Cache);
   if(_error->PendingError())
     return false;
-  if(!ReadPinFile(*Policy))
+  if(ReadPinFile(*Policy) == false || ReadPinDir(*Policy) == false)
     return false;
 
   DCache=new aptitudeDepCache(Cache, Policy);
