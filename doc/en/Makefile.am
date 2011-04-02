@@ -19,7 +19,7 @@ man_MANS=aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 all-local: doc-stamp
 
 clean-local:
-	-rm -fr output-html/ output-txt/ output-man/
+	-rm -fr output-fo/ output-html/ output-txt/ output-man/
 	-rm -f doc-stamp doc-css-stamp doc-html-stamp doc-txt-stamp man-stamp
 	-rm -fr aptitude.8 aptitude-create-state-bundle.1 aptitude-run-state-bundle.1
 	-rm -fr $(README)
@@ -34,7 +34,7 @@ install-data-hook:
 doc-stamp: doc-html-stamp doc-css-stamp $(README) man-stamp
 	touch doc-stamp
 
-db2latex: doc-db2latex-stamp
+fo: doc-fo-stamp
 
 man-stamp: $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
@@ -49,17 +49,17 @@ $(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-tx
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
 	$(HTML2TEXT) output-txt/index.html | $(srcdir)/../fixup-text > $(README)
 
-doc-db2latex-stamp: output-db2latex/aptitude.tex $(IMAGES)
-	ln -s ../images output-db2latex/images
-# Run pdflatex 3 times just to be extra sure that it converges.
-	cd output-db2latex && pdflatex -interaction nonstopmode aptitude.tex && pdflatex -interaction nonstopmode aptitude.tex && pdflatex -interaction nonstopmode aptitude.tex
-	touch doc-db2latex-stamp
+doc-fo-stamp: output-fo/aptitude.fo $(IMAGES)
+	-rm -fr output-fo/
+	xsltproc -o output-fo/aptitude.fo $(srcdir)/../aptitude-fo.xsl $(srcdir)/aptitude.xml
 
-output-db2latex/aptitude.tex: aptitude.xml manpage.xml $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/../aptitude-common.xsl
-	-rm -fr output-db2latex
-	mkdir output-db2latex
-	xsltproc -o output-db2latex/aptitude.tex $(srcdir)/../aptitude-db2latex.xsl $(srcdir)/aptitude.xml
+	mkdir output-fo/images/
+	ln -f $(srcdir)/images/* output-fo/images/
+	for x in caution draft important note tip warning; do ln -s /usr/share/xml/docbook/stylesheet/nwalsh/images/$$x.png output-fo/images/; done
+	touch doc-fo-stamp
 
+doc-pdf: doc-fo-stamp
+	fop output-fo/aptitude.fo -pdf output-fo/aptitude.pdf
 
 doc-css-stamp: doc-html-stamp $(srcdir)/../aptitude.css
 	rm -f output-html/aptitude.css
