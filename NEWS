@@ -1,3 +1,58 @@
+[4/2/2011]
+Version 0.6.4                               "Spring is sprung"
+
+This version of aptitude requires apt 0.8 and will not build against
+earlier releases.
+
+- Security fixes:
+
+  * [curses]: Fixed an arbitrary overwrite triggered by saving changes
+              in the hierarchy editor, if the current user's home
+              directory couldn't be determined. (Closes: #612034)
+
+- Internal changes:
+
+  * [all]: Include the current time and thread ID in all debug log
+           messages.
+
+  * [cmdline]: Refactor terminal handling to simplify some of the
+               tests.
+
+  * [qt]: Added the beginning of a Qt frontend, thanks to SoC 2010
+          student Piotr Galiszewski.  Not really in a usable state
+          yet.
+
+- Minor bugs:
+
+  * [all]: Fixed the debug logging code to output TRACE-level
+           messages.
+
+  * [all]: Fixed the debug logging code to properly allow log levels
+           to be disabled.
+
+- Cosmetic and UI bugs:
+
+  * [cmdline]: Overhaul how download progress is displayed at the
+               command-line.  Fixes problems on large terminals and
+               should provide less glitchy behavior in general.
+
+- Build system changes:
+
+  * [all] Use $(srcdir) whenever $(wildcard) is used, so wildcarded
+          files get picked up even when the build directory is not the
+          source directory.
+
+  * [all] Build src/generic/util before src/generic/apt (which depends
+          on it).
+
+  * [all] Multiple fixes to get VPATH builds working properly.
+
+  * [doc]: Added a doc-fo target that builds (very rough) PDF
+           documentation if you have fop installed.
+
+  * [gtk] If the GTK+ frontend isn't built, don't try to build tests
+          that require it.
+
 [6/18/2010]
 Version 0.6.3                               "Sunlight, moonshadow"
 
