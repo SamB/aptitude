@@ -1466,6 +1466,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 				<< std::noshowpos << " for " << v
 				<< " because it is a new install (" PACKAGE "::ProblemResolver::InstallScore).");
 		      add_version_score(v, install_score);
+                      modify_version_cost(v, cost_settings.add_to_cost(installs_component, 1));
 		    }
 		  else
 		    {
@@ -1474,6 +1475,7 @@ void aptitude_resolver::add_action_scores(int preserve_score, int auto_score,
 				<< std::noshowpos << " for " << v
 				<< " because it is an upgrade (" PACKAGE "::ProblemResolver::UpgradeScore).");
 		      add_version_score(v, upgrade_score);
+                      modify_version_cost(v, cost_settings.add_to_cost(upgrades_component, 1));
 		    }
 		}
 
