@@ -1,6 +1,6 @@
 // test_matching.cc
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2009, 2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -797,6 +797,12 @@ namespace
 
     { "?widen(?false)", "?widen(?false)",
       pattern::make_widen(pattern::make_false()) },
+
+    { "~", "?name(\"~\")",
+      pattern::make_name("~") },
+
+    { "abc", "?name(\"abc\")",
+      pattern::make_name("abc") },
   };
 
   const int num_test_patterns = sizeof(test_patterns) / sizeof(test_patterns[0]);
