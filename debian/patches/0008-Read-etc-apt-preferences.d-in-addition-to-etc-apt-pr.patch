@@ -1,10 +1,18 @@
-Description: Support preferences.d directory.
-Author: Tim Retout <diocles@debian.org>
-Bug-Debian: http://bugs.debian.org/557580
+From: Daniel Burrows <dburrows@debian.org>
+Date: Tue, 5 Apr 2011 19:34:29 -0700
+Subject: Read /etc/apt/preferences.d in addition to /etc/apt/preferences.
 
---- aptitude-0.6.3.orig/src/cmdline/cmdline_do_action.cc
-+++ aptitude-0.6.3/src/cmdline/cmdline_do_action.cc
-@@ -200,6 +200,7 @@ int cmdline_do_action(int argc, char *ar
+---
+ src/cmdline/cmdline_do_action.cc |    1 +
+ src/generic/apt/aptcache.cc      |    2 +-
+ src/generic/apt/dump_packages.cc |    7 +++++++
+ 3 files changed, 9 insertions(+), 1 deletions(-)
+
+diff --git a/src/cmdline/cmdline_do_action.cc b/src/cmdline/cmdline_do_action.cc
+index fc79124..c2ebf6f 100644
+--- a/src/cmdline/cmdline_do_action.cc
++++ b/src/cmdline/cmdline_do_action.cc
+@@ -200,6 +200,7 @@ int cmdline_do_action(int argc, char *argv[],
  
    pkgPolicy policy(&(*apt_cache_file)->GetCache());
    ReadPinFile(policy);
@@ -12,9 +20,11 @@ Bug-Debian: http://bugs.debian.org/557580
  
    pkgset to_upgrade, to_install, to_hold, to_remove, to_purge;
  
---- aptitude-0.6.3.orig/src/generic/apt/aptcache.cc
-+++ aptitude-0.6.3/src/generic/apt/aptcache.cc
-@@ -2179,7 +2179,7 @@ bool aptitudeCacheFile::Open(OpProgress
+diff --git a/src/generic/apt/aptcache.cc b/src/generic/apt/aptcache.cc
+index 4fef650..913084d 100644
+--- a/src/generic/apt/aptcache.cc
++++ b/src/generic/apt/aptcache.cc
+@@ -2179,7 +2179,7 @@ bool aptitudeCacheFile::Open(OpProgress &Progress, bool do_initselections,
    Policy=new aptitudePolicy(Cache);
    if(_error->PendingError())
      return false;
@@ -23,8 +33,10 @@ Bug-Debian: http://bugs.debian.org/557580
      return false;
  
    DCache=new aptitudeDepCache(Cache, Policy);
---- aptitude-0.6.3.orig/src/generic/apt/dump_packages.cc
-+++ aptitude-0.6.3/src/generic/apt/dump_packages.cc
+diff --git a/src/generic/apt/dump_packages.cc b/src/generic/apt/dump_packages.cc
+index 289dfc8..a5ca826 100644
+--- a/src/generic/apt/dump_packages.cc
++++ b/src/generic/apt/dump_packages.cc
 @@ -744,6 +744,7 @@ namespace aptitude
      //   $(Dir::Etc::main)
      //   $(Dir::Etc::parts)/*
@@ -46,3 +58,4 @@ Bug-Debian: http://bugs.debian.org/557580
      }
  
      void dump_truncated_packages(const std::set<pkgCache::PkgIterator> &packages,
+-- 

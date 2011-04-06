@@ -1,8 +1,6 @@
 From: Daniel_Burrows@alumni.brown.edu <Daniel_Burrows@alumni.brown.edu>
 Date: Sat, 19 Jun 2010 11:22:05 -0700
-Subject: [PATCH] Don't try to test the search input controller if the GTK+ frontend wasn't built.
- If the GTK+ frontend isn't built, neither is the controller,
- so the test won't build.
+Subject: Don't try to test the search input controller if the GTK+ frontend wasn't built. If the GTK+ frontend isn't built, neither is the controller, so the test won't build.
 
 ---
  tests/test_search_input_controller.cc |    4 ++++

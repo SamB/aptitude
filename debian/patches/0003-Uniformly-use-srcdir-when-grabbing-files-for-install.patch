@@ -1,8 +1,6 @@
 From: Daniel Burrows <dburrows@debian.org>
 Date: Sun, 20 Jun 2010 14:53:38 -0700
-Subject: [PATCH] Uniformly use $(srcdir) when grabbing files for install using $(wildcard), so wildcarded files get picked up even if the build directory isn't the source directory.
- Most importantly, this means that translated defaults are available
- again. (Closes: #586508, #586511)
+Subject: Uniformly use $(srcdir) when grabbing files for install using $(wildcard), so wildcarded files get picked up even if the build directory isn't the source directory. Most importantly, this means that translated defaults are available again. (Closes: #586508, #586511)
 
 ---
  Makefile.am        |    2 +-

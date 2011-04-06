@@ -1,0 +1,36 @@
+From: Daniel Burrows <dburrows@debian.org>
+Date: Tue, 5 Apr 2011 19:38:04 -0700
+Subject: Add missing includes of loggers.h.
+
+---
+ tests/boost_test_main.cc   |    2 ++
+ tests/cppunit_test_main.cc |    2 ++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/tests/boost_test_main.cc b/tests/boost_test_main.cc
+index 2423b10..b54541c 100644
+--- a/tests/boost_test_main.cc
++++ b/tests/boost_test_main.cc
+@@ -18,6 +18,8 @@ using logging::LoggerPtr;
+ using logging::describe_log_level;
+ using logging::log_level;
+ 
++#include <loggers.h>
++
+ // One dummy test so that this can be dropped in before the actual
+ // test suite is written.
+ BOOST_AUTO_TEST_CASE(dummy)
+diff --git a/tests/cppunit_test_main.cc b/tests/cppunit_test_main.cc
+index 583be9b..b539b29 100644
+--- a/tests/cppunit_test_main.cc
++++ b/tests/cppunit_test_main.cc
+@@ -22,6 +22,8 @@
+ 
+ #include <loggers.h>
+ 
++#include <loggers.h>
++
+ #include <stdio.h>
+ #include <string.h>
+ 
+-- 

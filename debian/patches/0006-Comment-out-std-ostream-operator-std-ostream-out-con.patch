@@ -1,7 +1,6 @@
-From de80487ed2ce3d935c2ad972462f4087cf938407 Mon Sep 17 00:00:00 2001
 From: Julien Cristau <jcristau@debian.org>
 Date: Thu, 26 Aug 2010 19:48:57 +0200
-Subject: [PATCH] Comment out std::ostream &operator<<(std::ostream &out, const pkgCache::DepIterator &dep)
+Subject: Comment out std::ostream &operator<<(std::ostream &out, const pkgCache::DepIterator &dep)
 
 This clashes with the function provided by libapt-pkg in 0.8.0.
 ---
@@ -29,5 +28,3 @@ index 6331fb3..87d2588 100644
  // Should version selections be logged the way they're written?
  // That's a little awkward since the syntax is hairy and some of them
 -- 
-1.7.1
-
