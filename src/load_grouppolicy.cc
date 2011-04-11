@@ -536,6 +536,18 @@ class firstchar_policy_parser : public string_policy_parser
   }
 };
 
+class source_policy_parser : public string_policy_parser
+{
+public:
+  group_policy_parse_node *create_node(const vector<string> &args)
+  {
+    if(args.size()!=0)
+      throw GroupParseException(_("Too many arguments to by-source grouping policy"));
+
+    return new policy_node0<pkg_grouppolicy_source_factory>;
+  }
+};
+
 class ver_policy_parser : public string_policy_parser
 {
   group_policy_parse_node *create_node(const vector<string> &args)
@@ -758,6 +770,7 @@ static void init_parse_types()
       parse_types["action"]=new mode_policy_parser;
       parse_types["filter"]=new filter_policy_parser;
       parse_types["firstchar"]=new firstchar_policy_parser;
+      parse_types["source"]=new source_policy_parser;
 
       parse_types["versions"]=new ver_policy_parser;
       parse_types["deps"]=new dep_policy_parser;
