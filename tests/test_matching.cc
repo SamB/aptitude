@@ -776,6 +776,9 @@ namespace
     { "?term(development)", "?term(\"development\")",
       pattern::make_term("development") },
 
+    { "?term-prefix(aptitu)", "?term-prefix(\"aptitu\")",
+      pattern::make_term_prefix("aptitu") },
+
     { "?upgradable", "?upgradable", pattern::make_upgradable() },
 
     { "~U", "?upgradable", pattern::make_upgradable() },
