@@ -49,7 +49,7 @@ $(README): $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-tx
 	xsltproc -o output-txt/index.html $(srcdir)/../aptitude-txt.xsl $(srcdir)/aptitude.xml
 	$(HTML2TEXT) output-txt/index.html | $(srcdir)/../fixup-text > $(README)
 
-doc-fo-stamp: output-fo/aptitude.fo $(IMAGES)
+doc-fo-stamp: $(srcdir)/aptitude.xml $(srcdir)/manpage.xml $(srcdir)/../aptitude-fo.xsl $(srcdir)/../aptitude-common.xsl $(IMAGES)
 	-rm -fr output-fo/
 	xsltproc -o output-fo/aptitude.fo $(srcdir)/../aptitude-fo.xsl $(srcdir)/aptitude.xml
 
