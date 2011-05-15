@@ -8,4 +8,4 @@ libgeneric_controllers_a_SOURCES = \
 	search_input.cc \
 	search_input.h
 
-EXTRA_DEST = README SConscript
+EXTRA_DIST = README
