@@ -4,4 +4,5 @@ noinst_LIBRARIES = libgeneric-views-mocks.a
 libgeneric_views_mocks_a_SOURCES = \
 	download_progress.cc \
 	download_progress.h \
-	progress.h
+	progress.h \
+	search_input.h
