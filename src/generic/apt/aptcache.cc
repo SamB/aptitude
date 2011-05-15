@@ -1099,14 +1099,9 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
 {
   dirty=true;
 
-
   bool set_to_manual =
     ((Pkg.CurrentVer().end()  && !(*this)[Pkg].Install()) ||
      (!Pkg.CurrentVer().end() && (*this)[Pkg].Delete() && get_ext_state(Pkg).remove_reason == unused));
-
-  if(set_to_manual)
-    MarkAuto(Pkg, false);
-
 
   // MarkInstall and friends like to modify the auto flag, so save it
   // here and restore it afterwards:
@@ -1122,6 +1117,9 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
   pkgDepCache::SetReInstall(Pkg, ReInstall);
 
   MarkAuto(Pkg, previously_auto);
+
+  if(set_to_manual)
+    MarkAuto(Pkg, false);
 
   get_ext_state(Pkg).selection_state=pkgCache::State::Install;
   get_ext_state(Pkg).reinstall=ReInstall;
