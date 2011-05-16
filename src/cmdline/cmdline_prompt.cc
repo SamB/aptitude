@@ -1,6 +1,6 @@
 // cmdline_prompt.cc
 //
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -59,7 +59,7 @@
 using namespace std;
 namespace cw = cwidget;
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_metrics;
 using aptitude::why::make_cmdline_why_callbacks;
 using aptitude::why::why_callbacks;
 using boost::shared_ptr;
@@ -82,7 +82,8 @@ static bool pkg_byname_compare(const pkgCache::PkgIterator &a, const pkgCache::P
 static bool get_fetchinfo(fetchinfo &f)
 {
   download_signal_log m;
-  pkgAcquire fetcher(&m);
+  pkgAcquire fetcher;
+  fetcher.Setup(&m);
   pkgSourceList l;
   if(!l.ReadMainList())
     return _error->Error(_("Couldn't read list of sources"));
@@ -152,7 +153,7 @@ namespace
 
   std::string roots_string(const pkgCache::PkgIterator &pkg,
 			   int verbose,
-                           const shared_ptr<terminal> &term)
+                           const shared_ptr<terminal_metrics> &term_metrics)
   {
     using namespace aptitude::matching;
     using cw::util::ref_ptr;
@@ -187,7 +188,7 @@ namespace
 				   true));
 
     const boost::shared_ptr<why_callbacks> callbacks =
-      make_cmdline_why_callbacks(verbose, term);
+      make_cmdline_why_callbacks(verbose, term_metrics);
     for(std::vector<search_params>::const_iterator it = params.begin();
 	it != params.end(); ++it)
       {
@@ -258,7 +259,7 @@ static void cmdline_show_instinfo(pkgvector &items,
 				  bool showsize,
 				  bool showpurge,
 				  bool showwhy,
-                                  const shared_ptr<terminal> &term)
+                                  const shared_ptr<terminal_metrics> &term_metrics)
 {
   sort(items.begin(), items.end(), pkg_byname_compare);
   strvector output;
@@ -372,7 +373,7 @@ static void cmdline_show_instinfo(pkgvector &items,
 
       if(showwhy)
 	{
-	  std::string whystring(roots_string(*i, verbose, term));
+	  std::string whystring(roots_string(*i, verbose, term_metrics));
 	  if(!whystring.empty())
 	    {
 	      s += " ";
@@ -386,7 +387,7 @@ static void cmdline_show_instinfo(pkgvector &items,
       output.push_back(s);
     }
 
-  cmdline_show_stringlist(output, term);
+  cmdline_show_stringlist(output, term_metrics);
 }
 
 // Note that not all of these are actually used, but I'm preserving
@@ -434,7 +435,7 @@ string prompt_string(const string &prompt)
  *  fat warning message about them.  Returns false if the user doesn't
  *  want to continue.
  */
-static bool prompt_essential(const shared_ptr<terminal> &term)
+static bool prompt_essential(const shared_ptr<terminal_metrics> &term_metrics)
 {
   pkgvector todelete, whatsbroken;
   bool ok=true;
@@ -459,7 +460,7 @@ static bool prompt_essential(const shared_ptr<terminal> &term)
       ok=false;
 
       printf(_("The following ESSENTIAL packages will be REMOVED!\n"));
-      cmdline_show_pkglist(todelete, term);
+      cmdline_show_pkglist(todelete, term_metrics);
       printf("\n");
     }
 
@@ -503,7 +504,7 @@ static bool prompt_essential(const shared_ptr<terminal> &term)
  *
  *  \return true if everything is OK or the user overrode the warning.
  */
-static bool prompt_trust(const shared_ptr<terminal> &term)
+static bool prompt_trust(const shared_ptr<terminal_metrics> &term_metrics)
 {
   pkgvector untrusted;
 
@@ -530,7 +531,7 @@ static bool prompt_trust(const shared_ptr<terminal> &term)
 	       "You should only proceed with the installation if you are certain that\n"
 	       "this is what you want to do.\n\n"));
 
-      cmdline_show_pkglist(untrusted, term);
+      cmdline_show_pkglist(untrusted, term_metrics);
 
       printf("\n");
 
@@ -614,7 +615,7 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 			  bool showvers, bool showdeps,
 			  bool showsize, bool showwhy,
 			  int verbose,
-                          const shared_ptr<terminal> &term)
+                          const shared_ptr<terminal_metrics> &term_metrics)
 {
   const int quiet = aptcfg->FindI("Quiet", 0);
 
@@ -700,20 +701,20 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 				i == pkg_auto_remove ||
 				i == pkg_unused_remove,
 				showwhy,
-                                term);
+                                term_metrics);
 	}
     }
 
   if(quiet == 0 && !recommended.empty())
     {
       printf(_("The following packages are RECOMMENDED but will NOT be installed:\n"));
-      cmdline_show_instinfo(recommended, verbose, showvers, showdeps, showsize, false, showwhy, term);
+      cmdline_show_instinfo(recommended, verbose, showvers, showdeps, showsize, false, showwhy, term_metrics);
     }
 
   if(verbose>0 && !suggested.empty())
     {
       printf(_("The following packages are SUGGESTED but will NOT be installed:\n"));
-      cmdline_show_instinfo(suggested, verbose, showvers, showdeps, showsize, false, showwhy, term);
+      cmdline_show_instinfo(suggested, verbose, showvers, showdeps, showsize, false, showwhy, term_metrics);
     }
 
   if((*apt_cache_file)->DelCount() == 0 &&
@@ -763,7 +764,7 @@ bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 
 static void cmdline_parse_show(string response,
 			       int verbose,
-                               const shared_ptr<terminal> &term)
+                               const shared_ptr<terminal_metrics> &term_metrics)
 {
   // assume response[0]=='i'
   std::vector<std::string> packages;
@@ -774,13 +775,13 @@ static void cmdline_parse_show(string response,
   else
     for(std::vector<std::string>::const_iterator it = packages.begin();
 	it != packages.end(); ++it)
-      do_cmdline_show(*it, verbose, term);
+      do_cmdline_show(*it, verbose, term_metrics);
 
   prompt_string(_("Press Return to continue."));
 }
 
 // Erm.  Merge w/ above?
-static void cmdline_parse_changelog(string response, const shared_ptr<terminal> &term)
+static void cmdline_parse_changelog(string response, const shared_ptr<terminal_metrics> &term_metrics)
 {
   vector<string> packages;
   // assume response[0]=='c'
@@ -789,13 +790,13 @@ static void cmdline_parse_changelog(string response, const shared_ptr<terminal> 
   if(packages.empty())
     printf(_("No packages found -- enter the package names on the line after 'c'.\n"));
   else
-    do_cmdline_changelog(packages, term);
+    do_cmdline_changelog(packages, term_metrics);
 
   prompt_string(_("Press Return to continue"));
 }
 
 static void cmdline_parse_why(string response,
-                              const shared_ptr<terminal> &term)
+                              const shared_ptr<terminal_metrics> &term_metrics)
 {
   vector<string> arguments;
   // assume response[0]=='w'
@@ -809,7 +810,7 @@ static void cmdline_parse_why(string response,
       string root = arguments.back();
       arguments.pop_back();
       const shared_ptr<why_callbacks> callbacks =
-        make_cmdline_why_callbacks(0, term);
+        make_cmdline_why_callbacks(0, term_metrics);
       std::auto_ptr<cw::fragment> frag(do_why(arguments, root,
 					      aptitude::why::no_summary,
 					      false, false,
@@ -817,7 +818,7 @@ static void cmdline_parse_why(string response,
                                               success));
       if(frag.get() != NULL)
         {
-          const unsigned int screen_width = term->get_screen_width();
+          const unsigned int screen_width = term_metrics->get_screen_width();
           std::cout << frag->layout(screen_width, screen_width, cwidget::style());
         }
       _error->DumpErrors();
@@ -831,7 +832,7 @@ static inline cw::fragment *flowindentbox(int i1, int irest, cw::fragment *f)
 
 static void prompt_help(ostream &out,
                         bool show_resolver_key,
-                        const shared_ptr<terminal> &term)
+                        const shared_ptr<terminal_metrics> &term_metrics)
 {
   std::vector<cw::fragment *> fragments;
 
@@ -918,7 +919,7 @@ static void prompt_help(ostream &out,
 
   cw::fragment *f = indentbox(2, 2, cw::sequence_fragment(fragments));
 
-  const unsigned int screen_width = term->get_screen_width();
+  const unsigned int screen_width = term_metrics->get_screen_width();
   out << _("Commands:") << endl;
   out << f->layout(screen_width, screen_width, cwidget::style());
   delete f;
@@ -939,7 +940,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool force_no_change,
 		       pkgPolicy &policy,
 		       bool arch_only,
-                       const shared_ptr<terminal> &term)
+                       const shared_ptr<terminal_metrics> &term_metrics)
 {
   bool exit=false;
   bool rval=true;
@@ -960,7 +961,7 @@ bool cmdline_do_prompt(bool as_upgrade,
       // ahead, we can break out immediately.
       if(!cmdline_show_preview(true, to_install, to_hold, to_remove,
 			       showvers, showdeps, showsize, showwhy, verbose,
-                               term) &&
+                               term_metrics) &&
 	 first &&
 	 !always_prompt &&
 	 (*apt_cache_file)->BrokenCount()==0)
@@ -978,7 +979,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 					  verbose,
 					  policy,
 					  arch_only,
-                                          term))
+                                          term_metrics))
 		{
 		case aptitude::cmdline::resolver_success:
 		  break;
@@ -998,7 +999,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  // changes the resolver made.
 		  cmdline_show_preview(true, to_install, to_hold, to_remove,
 				       showvers, showdeps, showsize, showwhy,
-				       verbose, term);
+				       verbose, term_metrics);
 
 		  if((*apt_cache_file)->DelCount() == 0 &&
 		     (*apt_cache_file)->InstCount() == 0)
@@ -1036,7 +1037,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 	      if(first)
 		{
 		  const std::string msg = _("aptitude failed to find a solution to these dependencies.  You can solve them yourself by hand or type 'n' to quit.");
-                  const unsigned int screen_width = term->get_screen_width();
+                  const unsigned int screen_width = term_metrics->get_screen_width();
 		  cw::fragment *f = cw::text_fragment(msg);
 		  cout << f->layout(screen_width,
 				    screen_width,
@@ -1080,7 +1081,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 		  if(have_broken)
 		    {
 		      cw::fragment *f = flowbox(cw::text_fragment(_("Enter a package management command (such as '+ package' to install a package), 'R' to attempt automatic dependency resolution or 'N' to abort.")));
-                      const unsigned int screen_width = term->get_screen_width();
+                      const unsigned int screen_width = term_metrics->get_screen_width();
 		      cout << f->layout(screen_width,
 					screen_width,
 					cwidget::style());
@@ -1131,13 +1132,13 @@ bool cmdline_do_prompt(bool as_upgrade,
 		    printf(_("\nSize changes will not be shown.\n\n"));
 		  break;
 		case 'I':
-		  cmdline_parse_show(response, verbose, term);
+		  cmdline_parse_show(response, verbose, term_metrics);
 		  break;
 		case 'C':
-		  cmdline_parse_changelog(response, term);
+		  cmdline_parse_changelog(response, term_metrics);
 		  break;
 		case 'W': // should be 'Y' but that's for "yes"
-		  cmdline_parse_why(response, term);
+		  cmdline_parse_why(response, term_metrics);
 		  break;
 		case '+':
 		case '-':
@@ -1154,14 +1155,14 @@ bool cmdline_do_prompt(bool as_upgrade,
 					 to_install, to_hold,
 					 to_remove, to_purge, verbose,
 					 policy, arch_only, true,
-                                         term);
+                                         term_metrics);
 		  }
 		  break;
 		case 'E':
 		  ui_preview();
 		case '?':
 		  valid_response=false;
-		  prompt_help(cout, have_broken, term);
+		  prompt_help(cout, have_broken, term_metrics);
 		  break;
 		default:
 		  printf("%s", unknown_key_message.c_str());
@@ -1172,7 +1173,7 @@ bool cmdline_do_prompt(bool as_upgrade,
 	}
 
       // Note: only show the prompt if we're planning to continue.
-      if(rval && (!prompt_essential(term) || !prompt_trust(term)))
+      if(rval && (!prompt_essential(term_metrics) || !prompt_trust(term_metrics)))
 	{
 	  rval=false;
 	  exit=true;

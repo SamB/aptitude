@@ -36,7 +36,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
@@ -73,7 +73,7 @@ int cmdline_simulate(bool as_upgrade,
 		     bool always_prompt, int verbose,
 		     bool assume_yes, bool force_no_change,
 		     pkgPolicy &policy, bool arch_only,
-                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                     const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 
 #endif // CMDLINE_SIMULATE_H

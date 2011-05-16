@@ -22,7 +22,6 @@
 #include "cmdline_versions.h"
 
 #include "cmdline_progress_display.h"
-#include "cmdline_progress_throttle.h"
 #include "cmdline_search_progress.h"
 #include "cmdline_util.h"
 #include "terminal.h"
@@ -35,6 +34,8 @@
 #include <generic/apt/matching/pattern.h>
 #include <generic/apt/matching/serialize.h>
 #include <generic/util/progress_info.h>
+#include <generic/util/throttle.h>
+#include <generic/views/progress.h>
 
 
 // System includes:
@@ -56,20 +57,22 @@ namespace cw = cwidget;
 namespace m = aptitude::matching;
 
 using aptitude::cmdline::create_progress_display;
-using aptitude::cmdline::create_progress_throttle;
+using aptitude::cmdline::create_search_progress;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::lessthan_1st;
 using aptitude::cmdline::package_results_lt;
-using aptitude::cmdline::progress_display;
-using aptitude::cmdline::progress_throttle;
 using aptitude::cmdline::search_result_column_parameters;
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_io;
 using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_metrics;
+using aptitude::cmdline::terminal_output;
 using aptitude::cmdline::version_results_eq;
 using aptitude::cmdline::version_results_lt;
 using aptitude::matching::serialize_pattern;
+using aptitude::util::create_throttle;
 using aptitude::util::progress_info;
+using aptitude::util::throttle;
+using aptitude::views::progress;
 using boost::shared_ptr;
 
 namespace
@@ -244,8 +247,9 @@ namespace
                          group_by_option group_by,
                          show_package_names_option show_package_names,
                          bool debug,
-                         const shared_ptr<terminal> &term,
-                         const shared_ptr<terminal_locale> &term_locale)
+                         const shared_ptr<terminal_locale> &term_locale,
+                         const shared_ptr<terminal_metrics> &term_metrics,
+                         const shared_ptr<terminal_output> &term_output)
   {
     // Set to -1 if any exact-name matches fail.  Also set to -1 if
     // there are no results at all.
@@ -254,17 +258,17 @@ namespace
     typedef std::vector<std::pair<pkgCache::VerIterator, cw::util::ref_ptr<m::structural_match> > >
       results_list;
 
-    const shared_ptr<progress_display> search_progress_display =
-      create_progress_display(term, term_locale);
-    const shared_ptr<progress_throttle> search_progress_throttle =
-      create_progress_throttle();
+    const shared_ptr<progress> search_progress_display =
+      create_progress_display(term_locale, term_metrics, term_output);
+    const shared_ptr<throttle> search_progress_throttle =
+      create_throttle();
 
     results_list output;
     cw::util::ref_ptr<m::search_cache> search_info(m::search_cache::create());
     for(std::vector<cw::util::ref_ptr<m::pattern> >::const_iterator pIt = patterns.begin();
         pIt != patterns.end(); ++pIt)
       {
-        const shared_ptr<progress_display> search_progress =
+        const shared_ptr<progress> search_progress =
           create_search_progress(serialize_pattern(*pIt),
                                  search_progress_display,
                                  search_progress_throttle);
@@ -279,7 +283,7 @@ namespace
                                             *apt_package_records,
                                             debug,
                                             sigc::mem_fun(search_progress.get(),
-                                                          &progress_display::set_progress));
+                                                          &progress::set_progress));
 
         // Warn the user if an exact name pattern didn't produce a
         // result.
@@ -523,8 +527,7 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                      group_by_option group_by,
                      show_package_names_option show_package_names)
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   int real_width=-1;
 
@@ -618,5 +621,6 @@ int cmdline_versions(int argc, char *argv[], const char *status_fname,
                             show_package_names,
                             debug,
                             term,
-                            term_locale);
+                            term,
+                            term);
 }

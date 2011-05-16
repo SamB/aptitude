@@ -27,11 +27,16 @@
 
 namespace aptitude
 {
+  namespace views
+  {
+    class progress;
+  }
+
   namespace cmdline
   {
-    class progress_display;
-    class terminal;
     class terminal_locale;
+    class terminal_metrics;
+    class terminal_output;
 
     /** \brief Create a customized text spinner that's similar to
      *  apt's spinner, but "cleans up" after itself if stdout appears
@@ -51,7 +56,7 @@ namespace aptitude
      */
     boost::shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const boost::shared_ptr<progress_display> &display);
+                       const boost::shared_ptr<views::progress> &display);
 
     /** \brief Convenience routine to create a default text-progress
      *  object.
@@ -61,8 +66,9 @@ namespace aptitude
      */
     boost::shared_ptr<OpProgress>
     make_text_progress(bool require_tty_decorations,
-                       const boost::shared_ptr<terminal> &term,
-                       const boost::shared_ptr<terminal_locale> &term_locale);
+                       const boost::shared_ptr<terminal_locale> &term_locale,
+                       const boost::shared_ptr<terminal_metrics> &term_metrics,
+                       const boost::shared_ptr<terminal_output> &term_output);
   }
 }
 

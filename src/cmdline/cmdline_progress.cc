@@ -22,12 +22,15 @@
 // Local includes:
 #include "cmdline_progress.h"
 
+#include "cmdline_download_progress_display.h"
 #include "terminal.h"
+#include "transient_message.h"
 
-#include <generic/apt/acqprogress.h>
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/apt/download_signal_log.h>
+
+#include <generic/controllers/acquire_download_progress.h>
 
 
 // System includes:
@@ -35,58 +38,47 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::download_status_display;
+using aptitude::controllers::acquire_download_progress;
+using aptitude::controllers::create_acquire_download_progress;
 using boost::shared_ptr;
 
-static void dl_complete(download_signal_log &manager,
-			AcqTextStatus *acqprogress)
+namespace aptitude
 {
-  delete acqprogress;
-}
-
-namespace
-{
-  void do_update_screen_width(pkgAcquire *,
-                              download_signal_log &,
-                              const sigc::slot1<void, bool> &,
-                              unsigned int &screen_width,
-                              const shared_ptr<terminal> &term)
+  namespace cmdline
   {
-    screen_width = term->get_screen_width();
-    // Note that we don't call the continuation; we assume that
-    // another slot invoked by the same signal will do that.
+    std::pair<download_signal_log *, shared_ptr<acquire_download_progress> >
+    create_cmdline_download_progress(const shared_ptr<terminal_input> &term_input,
+                                     const shared_ptr<terminal_locale> &term_locale,
+                                     const shared_ptr<terminal_metrics> &term_metrics,
+                                     const shared_ptr<terminal_output> &term_output)
+    {
+      download_signal_log * const log = new download_signal_log;
+
+      const int quiet = aptcfg->FindI("Quiet", 0);
+      const bool display_messages = quiet <= 1;
+      const bool hide_status = quiet > 0;
+
+      const shared_ptr<transient_message> message =
+        create_transient_message(term_locale, term_metrics, term_output);
+
+      const shared_ptr<download_status_display> download_status =
+        create_cmdline_download_status_display(message,
+                                               term_locale,
+                                               term_metrics,
+                                               hide_status);
+
+      const shared_ptr<views::download_progress> download_progress =
+        create_download_progress_display(message,
+                                         download_status,
+                                         term_input,
+                                         display_messages);
+
+      const shared_ptr<acquire_download_progress> controller =
+        create_acquire_download_progress(log, download_progress);
+
+      return std::make_pair(log, controller);
+    }
   }
-}
-
-download_signal_log *gen_cmdline_download_progress(const shared_ptr<terminal> &term)
-{
-  // The terminal expects a reference to a variable that will be
-  // updated in-place to contain the current screen width.
-  //
-  // \todo Instead of doing this, rewrite the progress display to use
-  // the terminal object directly -- will require either moving it
-  // into cmdline/ (preferred?) or moving the terminal into generic/.
-  static unsigned int screen_width;
-  screen_width = term->get_screen_width();
-
-  download_signal_log *m=new download_signal_log;
-
-  AcqTextStatus *acqprogress=new AcqTextStatus(screen_width, aptcfg->FindI("Quiet", 0));
-
-  m->MediaChange_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::MediaChange));
-  m->IMSHit_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::IMSHit));
-  m->Fetch_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Fetch));
-  m->Done_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Done));
-  m->Fail_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Fail));
-  m->Pulse_sig.connect(sigc::bind(sigc::ptr_fun(&do_update_screen_width),
-                                  sigc::ref(screen_width),
-                                  term));
-  m->Pulse_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Pulse));
-  m->Start_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Start));
-  m->Stop_sig.connect(sigc::mem_fun(*acqprogress, &AcqTextStatus::Stop));
-  m->Complete_sig.connect(sigc::bind(sigc::ptr_fun(dl_complete),
-				     acqprogress));
-
-  return m;
 }
 

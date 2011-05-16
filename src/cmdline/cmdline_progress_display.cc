@@ -30,6 +30,7 @@
 #include <generic/apt/apt.h>
 #include <generic/apt/config_signal.h>
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 // System includes:
 #include <boost/format.hpp>
@@ -57,7 +58,7 @@ namespace aptitude
       // \todo This should be configurable.
       const int progress_update_interval = 0.25;
 
-      class progress_display_impl : public progress_display
+      class progress_display_impl : public views::progress
       {
         // Set to "true" when done() is called, and to "false" when
         // any other method is called.  Used to suppress calls to
@@ -162,17 +163,15 @@ namespace aptitude
                 const std::wstring msg =
                   transcode(last_progress.get_progress_status());
                 if(old_style_percentage)
-                  message->set_text( (wformat(L"%s... %s")
-                                      % msg
-                                      % transcode(_("Done"))).str() );
+                  message->display_and_advance( (wformat(L"%s... %s")
+                                                 % msg
+                                                 % transcode(_("Done"))).str() );
                 else
-                  // ForTranslators: the string replacing "DONE" will
+                  message->display_and_advance( (wformat(L"[%4s] %s")
+                  // ForTranslators: the string replacing "DONE"
                   // be truncated or padded to 4 characters.
-                  message->set_text( (wformat(L"[%4s] %s")
-                                      % transcode(_("DONE"))
-                                      % msg).str() );
-
-                message->preserve_and_advance();
+                                                 % transcode(_("DONE"))
+                                                 % msg).str() );
               }
             else
               message->set_text(L"");
@@ -183,11 +182,7 @@ namespace aptitude
       }
     }
 
-    progress_display::~progress_display()
-    {
-    }
-
-    shared_ptr<progress_display>
+    shared_ptr<views::progress>
     create_progress_display(const shared_ptr<transient_message> &message,
                             bool old_style_percentage,
                             bool retain_completed)
@@ -197,12 +192,13 @@ namespace aptitude
                                                 retain_completed);
     }
 
-    shared_ptr<progress_display>
-    create_progress_display(const shared_ptr<terminal> &term,
-                            const shared_ptr<terminal_locale> &term_locale)
+    shared_ptr<views::progress>
+    create_progress_display(const shared_ptr<terminal_locale> &term_locale,
+                            const shared_ptr<terminal_metrics> &term_metrics,
+                            const shared_ptr<terminal_output> &term_output)
     {
       const shared_ptr<transient_message> message =
-        create_transient_message(term, term_locale);
+        create_transient_message(term_locale, term_metrics, term_output);
 
       const bool old_style_percentage =
         aptcfg->FindB(PACKAGE "::CmdLine::Progress::Percent-On-Right", false);

@@ -46,18 +46,28 @@ namespace aptitude
 
     namespace
     {
-      /** \brief Transient message implementation that makes all
-       *  methods into NOPs.
+      /** \brief Transient message implementation for non-terminal
+       *  output.
        */
       class dummy_transient_message : public transient_message
       {
+        shared_ptr<terminal_output> term_output;
+
       public:
+        explicit dummy_transient_message(const shared_ptr<terminal_output> &_term_output)
+          : term_output(_term_output)
+        {
+        }
+
         void set_text(const std::wstring &msg)
         {
         }
 
-        void preserve_and_advance()
+        void display_and_advance(const std::wstring &msg)
         {
+          term_output->write_text(msg);
+          term_output->write_text(L"\n");
+          term_output->flush();
         }
       };
 
@@ -71,25 +81,30 @@ namespace aptitude
         // The last string we displayed.
         std::wstring last_line;
 
-        // The terminal used to output text.
-        shared_ptr<terminal> term;
-
         // The locale to be used with that terminal.
         shared_ptr<terminal_locale> term_locale;
+
+        // The dimensions of the terminal.
+        shared_ptr<terminal_metrics> term_metrics;
+
+        // The terminal output object used to display this message.
+        shared_ptr<terminal_output> term_output;
 
         void clear_last_line();
 
       public:
-        transient_message_impl(const shared_ptr<terminal> &_term,
-                               const shared_ptr<terminal_locale> &_term_locale)
+        transient_message_impl(const shared_ptr<terminal_locale> &_term_locale,
+                               const shared_ptr<terminal_metrics> &_term_metrics,
+                               const shared_ptr<terminal_output> &_term_output)
           : last_line_len(0),
-            term(_term),
-            term_locale(_term_locale)
+            term_locale(_term_locale),
+            term_metrics(_term_metrics),
+            term_output(_term_output)
         {
         }
 
         void set_text(const std::wstring &line);
-        void preserve_and_advance();
+        void display_and_advance(const std::wstring &line);
       };
 
 
@@ -97,10 +112,10 @@ namespace aptitude
       {
         static const std::wstring blank(L" ");
 
-        term->move_to_beginning_of_line();
+        term_output->move_to_beginning_of_line();
         for(std::size_t i = 0; i < last_line_len; ++i)
-          term->write_text(blank);
-        term->move_to_beginning_of_line();
+          term_output->write_text(blank);
+        term_output->move_to_beginning_of_line();
 
         last_line_len = 0;
       }
@@ -112,7 +127,7 @@ namespace aptitude
           // do.
           return;
 
-        const unsigned int screen_width = term->get_screen_width();
+        const unsigned int screen_width = term_metrics->get_screen_width();
 
 
         // Display the message on a single line of the terminal.
@@ -145,29 +160,32 @@ namespace aptitude
         const std::wstring display(line.begin(), display_end);
 
         clear_last_line();
-        term->write_text(display);
-        term->flush();
+        term_output->write_text(display);
+        term_output->flush();
         last_line_len = display_width;
         last_line = line;
       }
 
-      void transient_message_impl::preserve_and_advance()
+      void transient_message_impl::display_and_advance(const std::wstring &msg)
       {
-        // As in set_text(), assume that the current message is
-        // already displayed.
-        term->write_text(L"\n");
-        term->flush();
+        clear_last_line();
+        term_output->write_text(msg);
+        term_output->write_text(L"\n");
+
+        last_line_len = 0;
+        last_line.clear();
       }
     }
 
     shared_ptr<transient_message>
-    create_transient_message(const shared_ptr<terminal> &term,
-                             const shared_ptr<terminal_locale> &term_locale)
+    create_transient_message(const shared_ptr<terminal_locale> &term_locale,
+                             const shared_ptr<terminal_metrics> &term_metrics,
+                             const shared_ptr<terminal_output> &term_output)
     {
-      if(!term->output_is_a_terminal())
-        return make_shared<dummy_transient_message>();
+      if(!term_output->output_is_a_terminal())
+        return make_shared<dummy_transient_message>(term_output);
       else
-        return make_shared<transient_message_impl>(term, term_locale);
+        return make_shared<transient_message_impl>(term_locale, term_metrics, term_output);
     }
   }
 }

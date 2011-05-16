@@ -744,6 +744,7 @@ namespace aptitude
     //   $(Dir::Etc::main)
     //   $(Dir::Etc::parts)/*
     //   $(Dir::Etc::preferences)
+    //   $(Dir::Etc::preferencesparts)/*
     //
     // Dir::State::* are truncated copies; the others are copied
     // literally.
@@ -836,6 +837,12 @@ namespace aptitude
 	if(!preferences.empty())
 	  copy_truncated(preferences, outDir + "/" + preferences,
 			 visited_packages);
+      }
+
+      {
+	const std::string preferencesParts = _config->FindDir("Dir::Etc::preferencesparts");
+	if(!preferencesParts.empty())
+	  recursive_copy_dir(preferencesParts, outDir + "/" + preferencesParts);
       }
     }
 

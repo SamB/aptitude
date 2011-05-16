@@ -377,4 +377,18 @@ public:
   ~pkg_grouppolicy_facet_tag_factory();
 };
 
+// Groups by source package
+class pkg_grouppolicy_source_factory:public pkg_grouppolicy_factory
+{
+  pkg_grouppolicy_factory *chain;
+public:
+  pkg_grouppolicy_source_factory(pkg_grouppolicy_factory *_chain):chain(_chain) {}
+
+  pkg_grouppolicy *instantiate(pkg_signal *_sig,
+			       desc_signal *_desc_sig);
+
+  virtual ~pkg_grouppolicy_source_factory()
+  {delete chain;}
+};
+
 #endif
