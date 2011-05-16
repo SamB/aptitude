@@ -1,6 +1,16 @@
 aptitude (0.6.4-1~prerelease) unstable; urgency=low
 
-  * Prerelease build to check that the source imported correctly.
+  * New upstream release.
+
+    - Fixed build errors with gcc 4.6 (Closes: #624948)
+
+    - Added a source grouping policy, thanks to Thadeu Lima de Sourza
+      Cascardo for the patch. (Closes: #497206)
+
+    - Fixed bug in how the "automatically installed" flag was set when the
+      user asked to upgrade a package. (Closes: #622719)
+
+    - Don't crash when apt-xapian-index isn't installed. (Closes: #588089)
 
   * Deleted all Debian patches; they've been included upstream.
 
