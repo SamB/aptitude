@@ -1,6 +1,6 @@
 // match.cc
 //
-//   Copyright (C) 2008-2010 Daniel Burrows
+//   Copyright (C) 2008-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -25,6 +25,7 @@
 #include <generic/apt/tags.h>
 #include <generic/apt/tasks.h>
 #include <generic/util/progress_info.h>
+#include <generic/util/util.h>
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/pkgrecords.h>
@@ -48,10 +49,12 @@
 #include <algorithm>
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/unordered_map.hpp>
 
 #include "serialize.h"
 
 using aptitude::util::progress_info;
+using boost::unordered_map;
 using cwidget::util::transcode;
 using cwidget::util::ref_ptr;
 
@@ -340,6 +343,60 @@ namespace aptitude
       // sorted list of the packages it matches.
       std::map<std::string, std::vector<Xapian::docid> > matched_term_prefixes;
 
+      // Stores compiled regular expressions that mimic Xapian's term
+      // matching (specifically, they only match at word boundaries).
+      // Only used if the Xapian database failed to load.
+      unordered_map<std::string, ref_ptr<regex> > term_regexes;
+
+      // Stores compiled regular expressions that mimic Xapian's term
+      // matching (specifically, they only match at word boundaries).
+      // Only used if the Xapian database failed to load.
+      unordered_map<std::string, ref_ptr<regex> > term_prefix_regexes;
+
+      /** \brief Get a regular expression that matches the given
+       *  string as a "term".
+       *
+       *  Memoizes its return value in term_regexes.
+       */
+      const ref_ptr<regex> &get_term_regex(const std::string &term)
+      {
+        ref_ptr<regex> &result = term_regexes[term];
+
+        if(!result.valid())
+          {
+            const std::string term_regex =
+              term.empty()
+                ? ".*"
+                : "(^|[^[:alnum:]])" + backslash_escape_nonalnum(term) + "($|[^[:alnum:]])";
+
+            result = ref_ptr<regex>(new regex(term_regex, REG_ICASE | REG_EXTENDED | REG_NOSUB));
+          }
+
+        return result;
+      }
+
+      /** \brief Get a regular expression that matches the given
+       *  string as a "term prefix".
+       *
+       *  Memoizes its return value in term_prefix_regexes.
+       */
+      const ref_ptr<regex> &get_term_prefix_regex(const std::string &term)
+      {
+        ref_ptr<regex> &result = term_regexes[term];
+
+        if(!result.valid())
+          {
+            const std::string term_regex =
+              term.empty()
+                ? ".*"
+                : "(^|[^[:alnum:]])" + backslash_escape_nonalnum(term) + ".*";
+
+            result = ref_ptr<regex>(new regex(term_regex, REG_ICASE | REG_EXTENDED | REG_NOSUB));
+          }
+
+        return result;
+      }
+
     public:
       implementation()
       {
@@ -393,9 +450,42 @@ namespace aptitude
 	  return cached_match->second;
       }
 
-      bool term_prefix_matches(const pkgCache::PkgIterator &pkg,
-			       const std::string &prefix,
-			       bool debug)
+      bool term_prefix_matches(const matchable &target,
+                               const std::string &prefix,
+                               aptitudeDepCache &cache,
+                               pkgRecords &records,
+                               bool debug)
+      {
+        pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+        if(db.get() != NULL)
+          return xapian_term_prefix_matches(pkg, prefix, debug);
+
+
+        // If we don't have a Xapian database, fake it by checking the
+        // package's name and description.
+        //
+        // Note that this is not a perfectly faithful representation
+        // of what Xapian would do: most notably, it omits special
+        // prefix handling (e.g., XP for package names).
+
+        const ref_ptr<regex> &term_prefix_regex = get_term_prefix_regex(prefix);
+
+        if(term_prefix_regex->exec(pkg.Name()))
+          return true;
+        else if(!target.get_has_version())
+          return false;
+        else
+          {
+            pkgCache::VerIterator ver = target.get_version_iterator(cache);
+
+            return term_prefix_regex->exec(transcode(get_long_description(ver, &records)));
+          }
+      }
+
+    private:
+      bool xapian_term_prefix_matches(const pkgCache::PkgIterator &pkg,
+                                      const std::string &prefix,
+                                      bool debug)
       {
 	if(debug)
 	  std::cout << "Searching for " << prefix << " as a term pefix." << std::endl;
@@ -463,9 +553,42 @@ namespace aptitude
 	  }
       }
 
-      bool term_matches(const pkgCache::PkgIterator &pkg,
+    public:
+      bool term_matches(const matchable &target,
 			const std::string &term,
+                        aptitudeDepCache &cache,
+                        pkgRecords &records,
 			bool debug)
+      {
+        pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
+        if(db.get() != NULL)
+          return xapian_term_matches(pkg, term, debug);
+
+        // If we don't have a Xapian database, fake it by checking the
+        // package's name and description.
+        //
+        // Note that this is not a perfectly faithful representation
+        // of what Xapian would do: most notably, it omits special
+        // prefix handling (e.g., XP for package names).
+
+        const ref_ptr<regex> &term_regex = get_term_regex(term);
+
+        if(term_regex->exec(pkg.Name()))
+          return true;
+        else if(!target.get_has_version())
+          return false;
+        else
+          {
+            pkgCache::VerIterator ver = target.get_version_iterator(cache);
+
+            return term_regex->exec(transcode(get_long_description(ver, &records)));
+          }
+      }
+
+    private:
+      bool xapian_term_matches(const pkgCache::PkgIterator &pkg,
+                               const std::string &term,
+                               bool debug)
       {
 	Xapian::docid pkg_docid(get_docid_by_name(*db, pkg.Name()));
 
@@ -519,6 +642,8 @@ namespace aptitude
 				      pkg_docid);
 	  }
       }
+
+    public:
 
       const xapian_info &get_toplevel_xapian_info(const ref_ptr<pattern> &toplevel,
 						  bool debug)
@@ -1443,7 +1568,7 @@ namespace aptitude
 #endif
 
 	      if(tags == NULL)
-		return false;
+		return NULL;
 
 	      for(std::set<tag>::const_iterator i=tags->begin(); i!=tags->end(); ++i)
 		{
@@ -1495,9 +1620,11 @@ namespace aptitude
 
 	  case pattern::term:
 	    {
-	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
-
-	      if(search_info->term_matches(pkg, p->get_term_term(), debug))
+	      if(search_info->term_matches(target,
+                                           p->get_term_term(),
+                                           cache,
+                                           records,
+                                           debug))
 		return match::make_atomic(p);
 	      else
 		return NULL;
@@ -1506,9 +1633,11 @@ namespace aptitude
 
 	  case pattern::term_prefix:
 	    {
-	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
-
-	      if(search_info->term_prefix_matches(pkg, p->get_term_prefix_term(), debug))
+	      if(search_info->term_prefix_matches(target,
+                                                  p->get_term_prefix_term(),
+                                                  cache,
+                                                  records,
+                                                  debug))
 		return match::make_atomic(p);
 	      else
 		return NULL;

@@ -205,6 +205,7 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
+MOC = @MOC@
 MSGFMT = @MSGFMT@
 MSGMERGE = @MSGMERGE@
 OBJEXT = @OBJEXT@
@@ -217,8 +218,14 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 PO4A = @PO4A@
 POSUB = @POSUB@
+QtCore_CFLAGS = @QtCore_CFLAGS@
+QtCore_LIBS = @QtCore_LIBS@
+QtGui_CFLAGS = @QtGui_CFLAGS@
+QtGui_LIBS = @QtGui_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -289,10 +296,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/intl
 SUBDIRS = \
-	controllers \
 	toplevel \
 	util \
-	views \
 	view-impls
 
 noinst_LIBRARIES = libgtk.a

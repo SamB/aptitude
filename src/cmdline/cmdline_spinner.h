@@ -34,7 +34,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
@@ -49,11 +49,11 @@ class cmdline_spinner
   /** The quietness of this spinner. */
   int quiet_level;
 
-  boost::shared_ptr<aptitude::cmdline::terminal> term;
+  boost::shared_ptr<aptitude::cmdline::terminal_metrics> term_metrics;
 
 public:
   cmdline_spinner(int _quiet_level,
-                  const boost::shared_ptr<aptitude::cmdline::terminal> &_term);
+                  const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &_term_metrics);
 
   /** Display the current spinner state, overwriting the current
    *  terminal line.

@@ -33,7 +33,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
@@ -43,7 +43,7 @@ namespace aptitude
  *  descriptors.  DumpErrors() is called after each changelog is displayed.
  */
 void do_cmdline_changelog(const std::vector<std::string> &packages,
-                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                          const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 int cmdline_changelog(int argc, char *argv[]);
 

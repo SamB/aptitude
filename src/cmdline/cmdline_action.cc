@@ -28,7 +28,7 @@
 
 namespace cw = cwidget;
 
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_metrics;
 using boost::shared_ptr;
 
 namespace
@@ -43,7 +43,7 @@ namespace
 				pkgset &to_remove, pkgset &to_purge,
 				int verbose,
 				bool allow_auto,
-                                const shared_ptr<terminal> &term)
+                                const shared_ptr<terminal_metrics> &term_metrics)
   {
     aptitude::cmdline::source_package sourcepkg =
       aptitude::cmdline::find_source_package(pkg,
@@ -147,7 +147,7 @@ namespace
 						policy,
 						arch_only,
 						allow_auto,
-                                                term);
+                                                term_metrics);
 			    satisfied = true;
 			  }
 		      }
@@ -182,7 +182,7 @@ namespace
 					    policy,
 					    arch_only,
 					    allow_auto,
-                                            term);
+                                            term_metrics);
 		      }
 		  }
 	      }
@@ -229,7 +229,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgPolicy &policy,
 			 bool arch_only,
 			 bool allow_auto,
-                         const shared_ptr<terminal> &term)
+                         const shared_ptr<terminal_metrics> &term_metrics)
 {
   // Handle virtual packages.
   if(!pkg.ProvidesList().end())
@@ -285,7 +285,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 		{
 		  printf(_("\"%s\" is a virtual package provided by:\n"),
 			 pkg.Name());
-		  cmdline_show_pkglist(cands, term);
+		  cmdline_show_pkglist(cands, term_metrics);
 		  printf(_("You must choose one to install.\n"));
 		}
 	      return false;
@@ -328,7 +328,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	    printf(_("%s is not currently installed, so it will not be upgraded.\n"), pkg.Name());
 	}
       else if(verbose > 0)
-	printf(_("%s is already installed at the latest version, so it will not be upgraded."), pkg.Name());
+	printf(_("%s is already installed at the latest version, so it will not be upgraded.\n"), pkg.Name());
       break;
 
     case cmdline_reinstall:
@@ -435,7 +435,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 				      to_remove, to_purge,
 				      verbose,
 				      allow_auto,
-                                      term);
+                                      term_metrics);
     default:
       fprintf(stderr, "Internal error: impossible pkgaction type\n");
       abort();
@@ -452,7 +452,7 @@ bool cmdline_applyaction(string s,
 			 int verbose,
 			 pkgPolicy &policy, bool arch_only,
 			 bool allow_auto,
-                         const shared_ptr<terminal> &term)
+                         const shared_ptr<terminal_metrics> &term_metrics)
 {
   using namespace aptitude::matching;
 
@@ -485,7 +485,7 @@ bool cmdline_applyaction(string s,
 				       sourcestr,
 				       policy, arch_only,
 				       allow_auto,
-                                       term) && rval;
+                                       term_metrics) && rval;
 	}
 
       // break out.
@@ -532,7 +532,7 @@ bool cmdline_applyaction(string s,
 					    to_remove, to_purge,
 					    verbose,
 					    allow_auto,
-                                            term);
+                                            term_metrics);
 
 	  // Maybe they misspelled the package name?
 	  pkgvector possible;
@@ -553,7 +553,7 @@ bool cmdline_applyaction(string s,
 	      else
 		{
 		  printf(_("Couldn't find package \"%s\".  However, the following\npackages contain \"%s\" in their name:\n"), package.c_str(), package.c_str());
-		  cmdline_show_pkglist(possible, term);
+		  cmdline_show_pkglist(possible, term_metrics);
 		}
 	    }
 	  else
@@ -580,7 +580,7 @@ bool cmdline_applyaction(string s,
 	      else
 		{
 		  printf(_("Couldn't find any package matching \"%s\".  However, the following\npackages contain \"%s\" in their description:\n"), package.c_str(), package.c_str());
-		  cmdline_show_pkglist(possible, term);
+		  cmdline_show_pkglist(possible, term_metrics);
 		}
 	    }
 
@@ -592,7 +592,7 @@ bool cmdline_applyaction(string s,
 				 to_install, to_hold, to_remove, to_purge,
 				 verbose, source,
 				 sourcestr, policy, arch_only, allow_auto,
-                                 term);
+                                 term_metrics);
     }
   else
     {
@@ -618,7 +618,7 @@ bool cmdline_applyaction(string s,
 				  sourcestr,
 				  policy, arch_only,
 				  allow_auto,
-                                  term))
+                                  term_metrics))
 	    rval = false;
 	}
     }
@@ -707,7 +707,7 @@ void cmdline_parse_action(string s,
 			  int verbose,
 			  pkgPolicy &policy, bool arch_only,
 			  bool allow_auto,
-                          const boost::shared_ptr<aptitude::cmdline::terminal> &term)
+                          const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics)
 {
   string::size_type loc=0;
 
@@ -745,7 +745,7 @@ void cmdline_parse_action(string s,
 				      to_remove, to_purge,
 				      verbose, policy,
 				      arch_only, allow_auto,
-                                      term))
+                                      term_metrics))
 		return;
 	    }
 	}

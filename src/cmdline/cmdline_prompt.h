@@ -82,14 +82,14 @@ bool cmdline_do_prompt(bool as_upgrade,
 		       bool force_no_change,
 		       pkgPolicy &policy,
 		       bool arch_only,
-                       const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                       const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 bool cmdline_show_preview(bool as_upgrade, pkgset &to_install,
 			  pkgset &to_hold, pkgset &to_remove,
 			  bool showvers, bool showdeps,
 			  bool showsize, bool showwhy,
 			  int verbose,
-                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                          const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 /** Prompt for a single line of input from the user.
  *

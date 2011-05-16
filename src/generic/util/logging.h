@@ -56,9 +56,8 @@ namespace aptitude
           WARN_LEVEL = 3,
           ERROR_LEVEL = 4,
           FATAL_LEVEL = 5,
-          /** \brief The OFF level is special: messages logged at it
-           *  are never seen, even if the logger has been configured
-           *  to show them.
+          /** \brief The OFF level is special: loggers set to this
+           *  level never display any messages.
            */
           OFF_LEVEL = INT_MIN
         };
@@ -112,7 +111,7 @@ namespace aptitude
         bool isEnabledFor(log_level l) const
         {
           return
-            l != OFF_LEVEL &&
+            effectiveLevel != OFF_LEVEL &&
             l >= effectiveLevel;
         }
 

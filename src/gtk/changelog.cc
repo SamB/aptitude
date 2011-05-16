@@ -51,6 +51,7 @@
 
 #include <boost/make_shared.hpp>
 
+using aptitude::Loggers;
 using aptitude::apt::get_changelog;
 
 namespace cw = cwidget;
@@ -323,17 +324,21 @@ namespace gui
     {
       Glib::RefPtr<Gtk::TextBuffer::Mark> begin, end;
       Glib::RefPtr<Gtk::TextBuffer> text_buffer;
+      // Used for logging.
+      aptitude::apt::changelog_info info;
       std::string current_version;
       bool only_new;
 
       finish_changelog_download_info(const Glib::RefPtr<Gtk::TextBuffer::Mark> &_begin,
 				     const Glib::RefPtr<Gtk::TextBuffer::Mark> &_end,
 				     const Glib::RefPtr<Gtk::TextBuffer> &_text_buffer,
+                                     const aptitude::apt::changelog_info &_info,
 				     const std::string &_current_version,
 				     bool _only_new)
 	: begin(_begin),
 	  end(_end),
 	  text_buffer(_text_buffer),
+          info(_info),
 	  current_version(_current_version),
 	  only_new(_only_new)
       {
@@ -349,6 +354,13 @@ namespace gui
     void finish_changelog_download(const cw::util::ref_ptr<aptitude::apt::changelog> &cl,
 				   const boost::shared_ptr<finish_changelog_download_info> &download_info)
     {
+      LOG_TRACE(Loggers::getAptitudeGtkChangelog(),
+                "Finishing the download of "
+                << download_info->info.get_source_package()
+                << " "
+                << download_info->info.get_source_version()
+                << ".");
+
       const Gtk::TextBuffer::iterator begin = download_info->text_buffer->get_iter_at_mark(download_info->begin);
       const Gtk::TextBuffer::iterator end = download_info->text_buffer->get_iter_at_mark(download_info->end);
 
@@ -452,9 +464,37 @@ namespace gui
       }
     };
 
+    std::ostream &operator<<(std::ostream &out,
+                             const std::set<std::string> &s)
+    {
+      out << "{";
+      for(std::set<std::string>::const_iterator it = s.begin();
+          it != s.end(); ++it)
+        {
+          if(it != s.begin())
+            out << ", ";
+          out << *it;
+        }
+      out << "}";
+
+      return out;
+    }
+
     std::ostream &operator<<(std::ostream &out, const preprocessed_changelog_job &job)
     {
-      return out << "changelog:" << job.get_binary_package_name();
+      const aptitude::apt::changelog_info &target_info = *job.get_target_info();
+
+      return out << "(binaryPackageName = "
+                 << job.get_binary_package_name()
+                 << ", sourcePackage = "
+                 << target_info.get_source_package()
+                 << ", sourceVersion = "
+                 << target_info.get_source_version()
+                 << ", onlyNew = "
+                 << (job.get_only_new() ? "true" : "false")
+                 << ", origins = "
+                 << job.get_origins()
+                 << ")";
     }
 
     // \todo It would be uber-cool to have a progress bar for each
@@ -521,6 +561,7 @@ namespace gui
 	  new_download_info = boost::make_shared<finish_changelog_download_info>(download_info->begin,
 										 end_mark,
 										 text_buffer,
+                                                                                 download_info->info,
 										 download_info->current_version,
 										 download_info->only_new);
 
@@ -572,6 +613,11 @@ namespace gui
     void process_changelog_job(const boost::shared_ptr<preprocessed_changelog_job> &entry,
 			       const temp::name &digested_file)
     {
+      logging::LoggerPtr logger = aptitude::Loggers::getAptitudeGtkChangelog();
+
+      LOG_DEBUG(logger,
+                "Processing the changelog job for " << entry << ".");
+
       //Gtk::TextView *textView = entry->get_text_view();
       Glib::RefPtr<Gtk::TextBuffer> textBuffer = entry->get_text_buffer();
       Glib::RefPtr<Gtk::TextBuffer::Mark> beginMark = entry->get_begin();
@@ -660,6 +706,7 @@ namespace gui
 	      const bool only_new = entry->get_only_new();
 	      boost::shared_ptr<finish_changelog_download_info> download_info =
 		boost::make_shared<finish_changelog_download_info>(beginMark, endMark, textBuffer,
+                                                                   *current_info,
 								   only_new ? current_info->get_source_version() : "",
 								   only_new);
 
@@ -719,6 +766,7 @@ namespace gui
 	      const bool only_new = entry->get_only_new();
 	      boost::shared_ptr<finish_changelog_download_info> download_info =
 		boost::make_shared<finish_changelog_download_info>(beginMark, endMark, textBuffer,
+                                                                   *current_info,
 								   only_new ? current_info->get_source_version() : "",
 								   only_new);
 

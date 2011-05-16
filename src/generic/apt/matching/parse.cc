@@ -1,6 +1,6 @@
 // parse.cc
 //
-//  Copyright 2000-2005, 2007-2009 Daniel Burrows
+//  Copyright 2000-2005, 2007-2009, 2011 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1131,7 +1131,7 @@ ref_ptr<pattern> parse_atom(string::const_iterator &start,
 
 	  if(start == end)
 	    {
-	      return pattern::make_term("~");
+	      return pattern::make_name("~");
 	    }
 	  else
 	    {

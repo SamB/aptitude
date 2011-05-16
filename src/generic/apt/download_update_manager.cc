@@ -1,6 +1,6 @@
 // download_update_manager.cc
 //
-//   Copyright (C) 2005, 2007-2009 Daniel Burrows
+//   Copyright (C) 2005, 2007-2009, 2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -94,7 +94,8 @@ bool download_update_manager::prepare(OpProgress &progress,
 	}
     }
 
-  fetcher = new pkgAcquire(&acqlog);
+  fetcher = new pkgAcquire();
+  fetcher->Setup(&acqlog);
 
   if(!src_list.GetIndexes(fetcher))
     {
@@ -328,7 +329,7 @@ void download_update_manager::finish(pkgAcquire::RunResult res,
   // redundant work at the command-line.
   {
     pkgCacheFile cachefile;
-    if(!cachefile.BuildCaches(*progress, true))
+    if(!cachefile.BuildCaches(progress, true))
       {
 	_error->Error(_("Couldn't rebuild package cache"));
 	k(failure);

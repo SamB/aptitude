@@ -9,7 +9,7 @@ MANPAGE=aptitude.$(LANGCODE).8
 PERCENT_TRANSLATED=45
 MANPAGE_PERCENT_TRANSLATED=30
 
-IMAGES = $(wildcard images/*.png)
+IMAGES = $(wildcard $(srcdir)/images/*.png)
 
 HTML2TEXT=$(srcdir)/../html-to-text
 

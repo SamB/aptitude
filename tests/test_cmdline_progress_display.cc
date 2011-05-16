@@ -25,6 +25,7 @@
 #include <cmdline/mocks/transient_message.h>
 
 #include <generic/util/progress_info.h>
+#include <generic/views/progress.h>
 
 // System includes:
 #include <boost/make_shared.hpp>
@@ -34,7 +35,6 @@
 #include <gtest/gtest.h>
 
 using aptitude::cmdline::create_progress_display;
-using aptitude::cmdline::progress_display;
 using aptitude::util::progress_info;
 using boost::make_shared;
 using boost::shared_ptr;
@@ -49,6 +49,7 @@ using testing::Values;
 using testing::_;
 
 namespace mocks = aptitude::cmdline::mocks;
+namespace views = aptitude::views;
 
 namespace
 {
@@ -85,7 +86,7 @@ namespace
     : public TestWithParam<CmdlineProgressDisplayParams>
   {
     shared_ptr<mocks::transient_message> msg;
-    shared_ptr<progress_display> progress;
+    shared_ptr<views::progress> progress;
 
     bool get_old_style_percentage() const
     {
@@ -98,7 +99,7 @@ namespace
     }
 
     CmdlineProgressDisplayTest()
-      : msg(make_shared<mocks::transient_message>())
+      : msg(mocks::transient_message::create_strict())
     {
     }
 
@@ -131,15 +132,7 @@ namespace
 }
 
 #define EXPECT_NO_RETAIN_COMPLETED()            \
-  EXPECT_CALL(*msg, preserve_and_advance()).Times(0)
-
-#define MAYBE_EXPECT_RETAIN_COMPLETED()     \
-  EXPECT_CALL(*msg, preserve_and_advance()) \
-  .Times(get_retain_completed() ? 1 : 0)
-
-#define MAYBE_EXPECT_CLEAR_COMPLETED()    \
-  EXPECT_CALL(*msg, set_text(StrEq(L""))) \
-  .Times(get_retain_completed() ? 0 : 1)
+  EXPECT_CALL(*msg, display_and_advance(_)).Times(0)
 
 TEST_P(CmdlineProgressDisplayTest, InitialShowNoneHasNoEffect)
 {
@@ -500,20 +493,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterPulse)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();
@@ -536,20 +524,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterBar)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Ack... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Ack... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Ack")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Ack")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(maybe_done);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(maybe_done);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(bar(0.98, "Ack"));
   progress->done();
@@ -577,20 +560,15 @@ TEST_P(CmdlineProgressDisplayTest, DoneAfterDone)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();
@@ -620,20 +598,15 @@ TEST_P(CmdlineProgressDisplayTest, NoneAfterDone)
     {
       if(get_old_style_percentage())
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"Marvelous Monkey... Done")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"Marvelous Monkey... Done")))
           .After(text_set);
       else
         maybe_done =
-          EXPECT_CALL(*msg, set_text(StrEq(L"[DONE] Marvelous Monkey")))
+          EXPECT_CALL(*msg, display_and_advance(StrEq(L"[DONE] Marvelous Monkey")))
           .After(text_set);
     }
-
-  // Next, we should get a call to preserve_and_advance(), or a call
-  // to clear the message if that's disabled.
-  MAYBE_EXPECT_RETAIN_COMPLETED()
-    .After(text_set);
-  MAYBE_EXPECT_CLEAR_COMPLETED()
-    .After(text_set);
+  else
+    EXPECT_CALL(*msg, set_text(StrEq(L"")));
 
   progress->set_progress(pulse("Marvelous Monkey"));
   progress->done();

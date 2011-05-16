@@ -1,6 +1,6 @@
 // aptcache.cc
 //
-//  Copyright 1999-2009 Daniel Burrows
+//  Copyright 1999-2009, 2011 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -640,7 +640,7 @@ void aptitudeDepCache::mark_all_upgradable(bool with_autoinst,
 	  pre_package_state_changed();
 	  dirty = true;
 
-	  MarkInstall(*it, do_autoinstall);
+	  internal_mark_install(*it, do_autoinstall, false);
 	}
     }
 }
@@ -1099,14 +1099,13 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
 {
   dirty=true;
 
-
   bool set_to_manual =
     ((Pkg.CurrentVer().end()  && !(*this)[Pkg].Install()) ||
      (!Pkg.CurrentVer().end() && (*this)[Pkg].Delete() && get_ext_state(Pkg).remove_reason == unused));
 
-  if(set_to_manual)
-    MarkAuto(Pkg, false);
-
+  // MarkInstall and friends like to modify the auto flag, so save it
+  // here and restore it afterwards:
+  bool previously_auto = ((*this)[Pkg].Flags & Flag::Auto) != 0;
 
   if(!ReInstall)
     {
@@ -1116,6 +1115,11 @@ void aptitudeDepCache::internal_mark_install(const PkgIterator &Pkg,
     pkgDepCache::MarkKeep(Pkg, AutoInst);
 
   pkgDepCache::SetReInstall(Pkg, ReInstall);
+
+  MarkAuto(Pkg, previously_auto);
+
+  if(set_to_manual)
+    MarkAuto(Pkg, false);
 
   get_ext_state(Pkg).selection_state=pkgCache::State::Install;
   get_ext_state(Pkg).reinstall=ReInstall;
@@ -1334,7 +1338,7 @@ void aptitudeDepCache::mark_single_install(const PkgIterator &Pkg, undo_group *u
   if(set_to_manual)
     MarkAuto(Pkg, false);
 
-  pkgDepCache::MarkInstall(Pkg, true);
+  internal_mark_install(Pkg, true, false);
 }
 
 void aptitudeDepCache::mark_auto_installed(const PkgIterator &Pkg,
@@ -1539,7 +1543,7 @@ bool aptitudeDepCache::try_fix_broken(undo_group *undo)
 	{
 	  pkgDepCache::StateCache &state=(*this)[i];
 	  if(state.InstBroken() || state.NowBroken())
-	    MarkInstall(i,true);
+            internal_mark_install(i, true, false);
 	  else if(state.Delete())
 	    fixer.Remove(i);
 	}
@@ -2179,7 +2183,7 @@ bool aptitudeCacheFile::Open(OpProgress &Progress, bool do_initselections,
   Policy=new aptitudePolicy(Cache);
   if(_error->PendingError())
     return false;
-  if(!ReadPinFile(*Policy))
+  if(ReadPinFile(*Policy) == false || ReadPinDir(*Policy) == false)
     return false;
 
   DCache=new aptitudeDepCache(Cache, Policy);

@@ -1,6 +1,6 @@
 // aptcache.h  -*-c++-*-
 //
-//  Copyright 1999-2005, 2007-2009 Daniel Burrows
+//  Copyright 1999-2005, 2007-2009, 2011 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -320,6 +320,11 @@ private:
   // The following methods just perform the core part of the named
   // action, without creating a new action group or running
   // mark&sweep.
+
+  /**
+   * Use this instead of pkgDepCache::MarkInstall; it ensures that the
+   * package's auto flag is set properly.
+   */
   void internal_mark_install(const PkgIterator &Pkg, bool AutoInst, bool ReInstall);
   void internal_mark_delete(const PkgIterator &Pkg, bool Purge, bool unused_delete);
   void internal_mark_keep(const PkgIterator &Pkg, bool Automatic, bool SetHold);

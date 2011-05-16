@@ -1,6 +1,6 @@
 // test_resolver.cc                       -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2010 Daniel Burrows
+//   Copyright (C) 2005, 2007-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -674,7 +674,6 @@ private:
 		     u);
 
     package a = u.find_package("a");
-    package b = u.find_package("b");
     dep av2d1(*a.version_from_name("v2").deps_begin());
 
     r.approve_break(av2d1);
@@ -723,8 +722,6 @@ private:
 		     imm::map<dummy_universe::package, dummy_universe::version>(),
 		     u);
 
-    package a = u.find_package("a");
-    package b = u.find_package("b");
     package c = u.find_package("c");
 
     solution sol;
@@ -766,7 +763,6 @@ private:
     // dummy_universe_1 has only one solution: installing bv2 and cv2.
     dummy_universe_ref u = parseUniverse(dummy_universe_1);
 
-    package a = u.find_package("a");
     package b = u.find_package("b");
     package c = u.find_package("c");
     version bv2 = b.version_from_name("v2");
@@ -821,7 +817,6 @@ private:
     // and leaving the only dependency of cv2 broken.
     dummy_universe_ref u = parseUniverse(dummy_universe_3);
 
-    package a = u.find_package("a");
     package b = u.find_package("b");
     package c = u.find_package("c");
     version bv2 = b.version_from_name("v2");
@@ -876,11 +871,8 @@ private:
     package a = u.find_package("a");
     package b = u.find_package("b");
     package c = u.find_package("c");
-    version av1 = a.version_from_name("v1");
     version av2 = a.version_from_name("v2");
-    version bv1 = b.version_from_name("v1");
     version bv2 = b.version_from_name("v2");
-    version cv1 = c.version_from_name("v1");
     version cv2 = c.version_from_name("v2");
 
     choice_set av1_choices;
@@ -1302,13 +1294,8 @@ private:
     dummy_universe_ref u = parseUniverse(dummy_universe_2);
 
     package a = u.find_package("a");
-    package b = u.find_package("b");
     package c = u.find_package("c");
-    version av1 = a.version_from_name("v1");
     version av2 = a.version_from_name("v2");
-    version bv1 = b.version_from_name("v1");
-    version bv2 = b.version_from_name("v2");
-    version cv1 = c.version_from_name("v1");
     version cv2 = c.version_from_name("v2");
 
 
@@ -1481,7 +1468,6 @@ private:
 		     u);
 
     dummy_universe::package a = u.find_package("a");
-    dummy_universe::version av1 = a.version_from_name("v1");
     dummy_universe::version av2 = a.version_from_name("v2");
 
     r.add_version_score(av2, 100);

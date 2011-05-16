@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.6.3)
+AC_INIT(aptitude, 0.6.4)
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER(config.h)
@@ -293,6 +293,7 @@ dnl write "dnl" at the end: the "dnl" deletes the newline, and without
 dnl it you'll get an error when you run the configure script.
 AC_CHECK_HEADERS( dnl
 boost/algorithm/string.hpp dnl
+boost/algorithm/string/join.hpp dnl
 boost/array.hpp dnl
 boost/compressed_pair.hpp dnl
 boost/enable_shared_from_this.hpp dnl
@@ -361,6 +362,7 @@ boost/test/unit_test.hpp dnl
 boost/type_traits/is_same.hpp dnl
 boost/unordered_map.hpp dnl
 boost/unordered_set.hpp dnl
+boost/utility.hpp dnl
 boost/variant.hpp dnl
 boost/weak_ptr.hpp dnl
                   , []
@@ -537,6 +539,71 @@ fi
 
 
 AC_DEFINE_UNQUOTED(SIGC_VERSION, ["$(pkg-config --modversion sigc++-2.0)"], [The version of libsigc++ with which the program was compiled])
+
+########################################################################
+
+WANT_HAVE_QT=0
+AC_ARG_ENABLE(qt,
+  AS_HELP_STRING(--enable-qt, [compile the Qt frontend if the appropriate libraries are available]),
+  [if test x$enableval = xyes
+  then
+    WANT_HAVE_QT=1
+  else
+    WANT_HAVE_QT=
+  fi])
+
+HAVE_QT=0
+if test x$WANT_HAVE_QT = x1
+then
+  AC_MSG_NOTICE([Testing for the libraries needed to build the Qt frontend.])
+
+  # required version of Qt libraries
+  QTCORE_REQUIRED=4.6.0
+  QTGUI_REQUIRED=4.6.0
+
+  HAVE_QT=1
+  PKG_CHECK_MODULES(QtCore, QtCore >= $QTCORE_REQUIRED, ,[HAVE_QT=])
+  PKG_CHECK_MODULES(QtGui, QtGui >= $QTGUI_REQUIRED, ,[HAVE_QT=])
+
+  # test for qt4-moc
+  AC_PATH_PROG(MOC, moc-qt4)
+  if test ! -x "$MOC"; then
+    AC_PATH_PROG(MOC, moc)
+    if test ! -x "$MOC"; then
+      AC_MSG_WARN([Qt MOC hasn't been found.])
+      HAVE_QT=0
+    else
+      AC_MSG_NOTICE([Qt MOC has been found.])
+    fi
+  fi
+else
+  AC_MSG_NOTICE([Qt frontend not enabled; use --enable-qt to enable it.])
+fi
+
+if test x$WANT_HAVE_QT = x1 && test x$HAVE_QT != x1
+then
+  AC_MSG_WARN([Unable to find the necessary Qt libraries; disabling Qt support.])
+fi
+
+if test x$HAVE_QT = x1
+then
+  AC_MSG_NOTICE([The Qt frontend will be built.])
+fi
+
+AM_CONDITIONAL([BUILD_QT], [test x$HAVE_QT = x1])
+if test x$HAVE_QT = x1
+then
+  AC_DEFINE([HAVE_QT], [], [Define if the Qt frontend is included in the build.])
+fi
+
+if test x$HAVE_QT = x1
+then
+  CXXFLAGS="$CXXFLAGS -DQT_NO_KEYWORDS $QtCore_CFLAGS $QtGui_CFLAGS"
+  LIBS="$LIBS $QtCore_LIBS $QtGui_LIBS"
+fi
+
+########################################################################
+
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -817,20 +884,22 @@ AC_CONFIG_FILES([
 	po/Makefile.in
 	src/Makefile
 	src/gtk/Makefile
-        src/gtk/controllers/Makefile
         src/gtk/toplevel/Makefile
 	src/gtk/util/Makefile
-        src/gtk/views/Makefile
-        src/gtk/views/mocks/Makefile
         src/gtk/view-impls/Makefile
+	src/qt/Makefile
 	src/cmdline/Makefile
         src/cmdline/mocks/Makefile
 	src/generic/Makefile
 	src/generic/apt/Makefile
 	src/generic/apt/history/Makefile
 	src/generic/apt/matching/Makefile
+        src/generic/controllers/Makefile
 	src/generic/problemresolver/Makefile
 	src/generic/util/Makefile
+        src/generic/util/mocks/Makefile
+        src/generic/views/Makefile
+        src/generic/views/mocks/Makefile
 	src/mine/Makefile
 	tests/Makefile
 ])

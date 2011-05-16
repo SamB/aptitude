@@ -27,18 +27,18 @@
 
 #include <stdio.h>
 
+using aptitude::controllers::acquire_download_progress;
+using aptitude::cmdline::create_cmdline_download_progress;
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
 using aptitude::cmdline::make_text_progress;
-using aptitude::cmdline::terminal;
+using aptitude::cmdline::terminal_io;
 using aptitude::cmdline::terminal_locale;
 using boost::shared_ptr;
 
 // Download stuff to the current directory
 int cmdline_download(int argc, char *argv[])
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   if(argc<=1)
     {
@@ -48,7 +48,7 @@ int cmdline_download(int argc, char *argv[])
 
   _error->DumpErrors();
 
-  shared_ptr<OpProgress> progress = make_text_progress(false, term, term_locale);
+  shared_ptr<OpProgress> progress = make_text_progress(false, term, term, term);
   apt_init(progress.get(), false);
 
   pkgSourceList list;
@@ -59,7 +59,12 @@ int cmdline_download(int argc, char *argv[])
       _error->DumpErrors();
       return -1;
     }
-  pkgAcquire fetcher(gen_cmdline_download_progress(term));
+
+  std::pair<download_signal_log *, boost::shared_ptr<acquire_download_progress> >
+    progress_display = create_cmdline_download_progress(term, term, term, term);
+
+  pkgAcquire fetcher;
+  fetcher.Setup(progress_display.first);
   string filenames[(*apt_cache_file)->Head().PackageCount];
   string default_release = aptcfg->Find("APT::Default-Release");
 

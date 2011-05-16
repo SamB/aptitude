@@ -23,7 +23,6 @@
 
 namespace mocks = aptitude::cmdline::mocks;
 
-using aptitude::cmdline::terminal;
 using boost::shared_ptr;
 using testing::InSequence;
 using testing::StrEq;
@@ -34,11 +33,11 @@ namespace
 {
   struct TerminalMock : public Test
   {
-    boost::shared_ptr<mocks::terminal> terminal;
+    boost::shared_ptr<mocks::combining_terminal_output> terminal;
 
   public:
     TerminalMock()
-      : terminal(mocks::create_combining_terminal())
+      : terminal(mocks::combining_terminal_output::create_strict())
     {
     }
   };
@@ -54,7 +53,6 @@ TEST_F(TerminalMock, WriteEmptyStringDoesNotOutput)
 {
   EXPECT_CALL(*terminal, output(_))
     .Times(0);
-  EXPECT_CALL(*terminal, flush());
 
   terminal->write_text(L"");
   terminal->flush();
@@ -63,8 +61,6 @@ TEST_F(TerminalMock, WriteEmptyStringDoesNotOutput)
 TEST_F(TerminalMock, WritesMustBeFlushed)
 {
   EXPECT_CALL(*terminal, output(_))
-    .Times(0);
-  EXPECT_CALL(*terminal, flush())
     .Times(0);
 
   // Nothing should be called by this:
@@ -81,12 +77,7 @@ TEST_F(TerminalMock, MoveToBeginningOfLineMustBeFlushed)
 
 TEST_F(TerminalMock, WriteAndFlush)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"abc")));
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"abc")));
 
   terminal->write_text(L"abc");
   terminal->flush();
@@ -94,12 +85,7 @@ TEST_F(TerminalMock, WriteAndFlush)
 
 TEST_F(TerminalMock, MoveToBeginningOfLineAndFlush)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"\r")));
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"\r")));
 
   terminal->move_to_beginning_of_line();
   terminal->flush();
@@ -108,21 +94,13 @@ TEST_F(TerminalMock, MoveToBeginningOfLineAndFlush)
 TEST_F(TerminalMock, NewlineIsImplicitFlush)
 {
   EXPECT_CALL(*terminal, output(StrEq(L"abc\n")));
-  EXPECT_CALL(*terminal, flush())
-    .Times(0);
 
   terminal->write_text(L"abc\n");
 }
 
 TEST_F(TerminalMock, DoubleFlushDoesNotOutput)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"def")));
-    EXPECT_CALL(*terminal, flush());
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"def")));
 
   terminal->write_text(L"def");
   terminal->flush();
@@ -131,9 +109,6 @@ TEST_F(TerminalMock, DoubleFlushDoesNotOutput)
 
 TEST_F(TerminalMock, DoubleNewlineOutputsTwice)
 {
-  EXPECT_CALL(*terminal, flush())
-    .Times(0);
-
   {
     InSequence dummy;
 
@@ -153,7 +128,6 @@ TEST_F(TerminalMock, MultipleNewlines)
     EXPECT_CALL(*terminal, output(StrEq(L"I like\n")));
     EXPECT_CALL(*terminal, output(StrEq(L"bunnies!\n")));
     EXPECT_CALL(*terminal, output(StrEq(L" -- Burble")));
-    EXPECT_CALL(*terminal, flush());
   }
 
   terminal->write_text(L"abc\nI like\nbunnies!\n -- Burble");
@@ -162,12 +136,7 @@ TEST_F(TerminalMock, MultipleNewlines)
 
 TEST_F(TerminalMock, FlushAfterNewlineDoesNotOutput)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"xyz\n")));
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"xyz\n")));
 
   terminal->write_text(L"xyz\n");
   terminal->flush();
@@ -177,12 +146,7 @@ TEST_F(TerminalMock, FlushAfterNewlineDoesNotOutput)
 
 TEST_F(TerminalMock, FlushCombinesWrites)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"abcdef")));
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"abcdef")));
 
   terminal->write_text(L"abc");
   terminal->write_text(L"def");
@@ -191,12 +155,7 @@ TEST_F(TerminalMock, FlushCombinesWrites)
 
 TEST_F(TerminalMock, FlushCombinesWritesWithMoveToBeginningOfLine)
 {
-  {
-    InSequence dummy;
-
-    EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef\rghi")));
-    EXPECT_CALL(*terminal, flush());
-  }
+  EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef\rghi")));
 
   terminal->write_text(L"abc");
   terminal->move_to_beginning_of_line();
@@ -208,9 +167,6 @@ TEST_F(TerminalMock, FlushCombinesWritesWithMoveToBeginningOfLine)
 
 TEST_F(TerminalMock, NewlineCombinesWrites)
 {
-  EXPECT_CALL(*terminal, flush())
-    .Times(0);
-
   EXPECT_CALL(*terminal, output(StrEq(L"xyzzy\n")));
 
   terminal->write_text(L"xyz");
@@ -220,8 +176,6 @@ TEST_F(TerminalMock, NewlineCombinesWrites)
 TEST_F(TerminalMock, newlineCombinesWritesWithMoveToBeginningOfLine)
 {
   EXPECT_CALL(*terminal, output(StrEq(L"abc\rdef\n")));
-  EXPECT_CALL(*terminal, flush())
-    .Times(0);
 
   terminal->write_text(L"abc");
   terminal->move_to_beginning_of_line();
@@ -240,7 +194,6 @@ TEST_F(TerminalMock, CombineAndSplit)
     EXPECT_CALL(*terminal, output(StrEq(L"de\rfg\n")));
     EXPECT_CALL(*terminal, output(StrEq(L"hijklmn\n")));
     EXPECT_CALL(*terminal, output(StrEq(L"op")));
-    EXPECT_CALL(*terminal, flush());
   }
 
   terminal->write_text(L"a");

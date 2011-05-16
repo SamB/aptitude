@@ -37,7 +37,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
   }
 }
 
@@ -111,7 +111,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 			 pkgPolicy &policy,
 			 bool arch_only,
 			 bool allow_auto,
-                         const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                         const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term);
 
 /** \brief Apply the given command-line action to the given package,
  *  updating the command-line state appropriately.
@@ -172,7 +172,7 @@ bool cmdline_applyaction(string s,
 			 int verbose,
 			 pkgPolicy &policy, bool arch_only,
 			 bool allow_auto,
-                         const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                         const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term);
 
 /** \brief Parses a list of actions and executes them.
  *
@@ -229,6 +229,6 @@ void cmdline_parse_action(string s,
 			  int verbose,
 			  pkgPolicy &policy, bool arch_only,
 			  bool allow_auto,
-                          const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                          const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term);
 
 #endif // CMDLINE_ACTION_H

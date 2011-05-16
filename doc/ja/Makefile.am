@@ -18,7 +18,7 @@ docdir=$(datadir)/doc/$(PACKAGE)
 localemandir=$(mandir)/$(LANGCODE)
 htmldir=$(DESTDIR)$(docdir)/html/$(LANGCODE)
 
-IMAGES = $(wildcard images/*.png)
+IMAGES = $(wildcard $(srcdir)/images/*.png)
 
 if USE_PO4A
 all-local: doc-stamp

@@ -4,6 +4,8 @@ localedir = $(datadir)/locale
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
+SUBDIRS = mocks
+
 noinst_LIBRARIES = libgeneric-util.a
 libgeneric_util_a_SOURCES = \
 	compare3.h \
@@ -40,6 +42,8 @@ libgeneric_util_a_SOURCES = \
 	sqlite.h \
 	temp.cc \
 	temp.h \
+	throttle.cc \
+	throttle.h \
 	undo.cc \
 	undo.h \
 	util.cc \

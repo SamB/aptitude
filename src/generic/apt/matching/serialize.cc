@@ -1,6 +1,6 @@
 // serialize.cc       -*-c++-*-
 //
-//   Copyright (C) 2008-2009 Daniel Burrows
+//   Copyright (C) 2008-2009, 2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -511,7 +511,7 @@ namespace aptitude
 
 	  case pattern::term_prefix:
 	    out << "?term-prefix(";
-	    serialize_string(p->get_term_term(), out);
+	    serialize_string(p->get_term_prefix_term(), out);
 	    out.put(')');
 	    break;
 

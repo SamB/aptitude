@@ -41,7 +41,7 @@ namespace aptitude
 {
   namespace cmdline
   {
-    class terminal;
+    class terminal_metrics;
 
     /** \brief Represents the termination state of the
      *  command-line resolver.
@@ -92,7 +92,7 @@ namespace aptitude
  */
 
 generic_solution<aptitude_universe> calculate_current_solution(bool print_resolving_dependencies,
-                                                               const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                                                               const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 /** \brief Write the resolver state to a file as appropriate.
  *
@@ -138,7 +138,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		     int verbose,
 		     pkgPolicy &policy,
 		     bool arch_only,
-                     const boost::shared_ptr<aptitude::cmdline::terminal> &term);
+                     const boost::shared_ptr<aptitude::cmdline::terminal_metrics> &term_metrics);
 
 namespace aptitude
 {
@@ -164,7 +164,7 @@ namespace aptitude
 			   bool no_new_installs,
 			   bool no_new_upgrades,
 			   bool show_story,
-                           const boost::shared_ptr<terminal> &term);
+                           const boost::shared_ptr<terminal_metrics> &term_metrics);
   }
 }
 
