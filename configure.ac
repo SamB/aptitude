@@ -29,8 +29,8 @@ AC_CHECK_LIB(apt-pkg, main, , [AC_MSG_ERROR([Can't find the APT libraries -- ple
 
 AC_MSG_CHECKING([whether apt includes the automatic dependency removal patch (required)])
 
-AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/depcache.h>]],
-				  [[extern pkgDepCache::ActionGroup d;]]),
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <apt-pkg/depcache.h>]],
+                                   [[extern pkgDepCache::ActionGroup d;]])],
 		  AC_MSG_RESULT([yes]),
 		  AC_MSG_FAILURE([need libapt-pkg 0.7 or later]))
 
@@ -55,7 +55,7 @@ dnl data structures.  Test for each one individually.
 DEBTAGS_OK=0
 
 AC_MSG_CHECKING([whether ept::debtags::Tag exists])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
   ept::debtags::Tag t;
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT(yes)
         AC_DEFINE([HAVE_EPT_DEBTAGS_TAG], [], [Define if ept::debtags::Tag exists.])
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
         [AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING([whether ept::debtags::Facet exists])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
   ept::debtags::Facet f;
 
   return 0;
-}],
+}])],
         [
         AC_DEFINE([HAVE_EPT_DEBTAGS_FACET], [], [Define if ept::debtags::Facet exists])
         AC_MSG_RESULT([yes])
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         [AC_MSG_RESULT([no])])
 
 AC_MSG_CHECKING([whether ept::debtags::getTagsOfItem returns a set of strings.])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/debtags.h>
 
 int main(int argc, char **argv)
@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 
   return 0;
 }
-],
+])],
         [
         AC_MSG_RESULT(yes)
         AC_DEFINE([EPT_DEBTAGS_GETTAGSOFITEM_RETURNS_STRINGS], [], [Define if ept::debtags::Debtags::getTagsOfItem returns a set of strings])
@@ -120,7 +120,7 @@ dnl Newer versions of ept got rid of the whole textsearch header and
 dnl instead just include the Xapian database directly.  See which
 dnl version we're dealing with.
 AC_MSG_CHECKING([whether ept::textsearch exists])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/textsearch/textsearch.h>
 
 int main(int argc, char **argv)
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
   db.docidByName("foo");
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT(yes)
         AC_DEFINE([HAVE_EPT_TEXTSEARCH], [], [Define if ept::textsearch exists])
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 
 dnl Now look in the new location:
 AC_MSG_CHECKING([whether ept/axi exists])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/axi/axi.h>
 
 int main(int argc, char **argv)
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
   Xapian::Database db(ept::axi::path_db());
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_AXI], [], [Define if ept/axi/axi.h can provide docids.])
@@ -165,7 +165,7 @@ fi
 
 AC_MSG_CHECKING([whether ept::debtags::Vocabulary::tagData exists and returns ept::debtags::voc::TagData *])
 
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/vocabulary.h>
 
 int main(int argc, char **argv)
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 
   // Use td so the compiler doesn't complain:
   return td == NULL ? 1 : 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_VOCABULARY_TAG_DATA], [], [Define if the ept debtags vocabulary object exists and supports tagData()])
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 
 AC_MSG_CHECKING([whether ept::debtags::Vocabulary::facetData exists and returns ept::debtags::voc::FacetData *])
 
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/vocabulary.h>
 
 int main(int argc, char **argv)
@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 
   // Use fd so the compiler doesn't complain:
   return fd == NULL ? 1 : 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_VOCABULARY_FACET_DATA], [], [Define if the ept debtags vocabulary object exists and supports facetData()])
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
         [AC_MSG_RESULT([no])])
 
 AC_MSG_CHECKING([whether ept::debtags::Tag::fullname() exists])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
   std::string s = t.fullname();
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_TAG_FULLNAME], [], [Define if ept::debtags::Tag exists and has a fullname() method])
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 
 
 AC_MSG_CHECKING([whether ept::debtags::Facet exists and supports name()])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -232,7 +232,7 @@ int main(int argc, char **argv)
   const std::string name = f.name();
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_FACET_NAME], [], [Define if ept::debtags::Facet exists and supports description retrieval.])
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
 
 
 AC_MSG_CHECKING([whether ept::debtags::Facet exists and supports description retrieval])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
   const std::string shortDesc = f.shortDescription();
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_FACET_DESCRIPTION], [], [Define if ept::debtags::Facet exists and supports description retrieval.])
@@ -260,7 +260,7 @@ int main(int argc, char **argv)
         [AC_MSG_RESULT([no])])
 
 AC_MSG_CHECKING([whether ept::debtags::Tag exists and supports description retrieval])
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <ept/debtags/tag.h>
 
 int main(int argc, char **argv)
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
   const std::string shortDesc = t.shortDescription();
 
   return 0;
-}],
+}])],
         [
         AC_MSG_RESULT([yes])
         AC_DEFINE([HAVE_EPT_DEBTAGS_TAG_DESCRIPTION], [], [Define if ept::debtags::Tag exists and supports description retrieval.])
@@ -380,7 +380,7 @@ AC_MSG_CHECKING([the calling convertion of boost::fusion::fold])
 # fold must be incompatible; the actual operations performed are
 # irrelevant.  My fold operator takes an int and a class, and returns
 # the empty string.
-AC_COMPILE_IFELSE([
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <boost/fusion/algorithm/iteration/fold.hpp>
 #include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/include/fold.hpp>
@@ -403,14 +403,14 @@ int main(int argc, char **argv)
 {
   boost::fusion::vector<int, int, int> v(5, 3, 1);
   boost::fusion::fold(v, T(), F());
-}],
+}])],
                  [
                    AC_MSG_RESULT([State first, then value])
                    AC_DEFINE([BOOST_FUSION_FOLD_STATE_BEFORE_VALUE], [],
                              [Define if boost::fusion::fold passes the state as the first argument to the fold function.])
                  ],
                  [
-                   AC_COMPILE_IFELSE([
+                   AC_COMPILE_IFELSE([AC_LANG_SOURCE([
 #include <boost/fusion/algorithm/iteration/fold.hpp>
 #include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/include/fold.hpp>
@@ -434,7 +434,7 @@ int main(int argc, char **argv)
   boost::fusion::vector<int, int, int> v(5, 3, 1);
   boost::fusion::fold(v, T(), F());
 }
-                   ],
+                   ])],
                    [AC_MSG_RESULT([Value first, then state])],
                    [AC_MSG_ERROR([Can't figure out how to invoke boost::fusion::fold])])
                  ])
@@ -449,7 +449,7 @@ for libname in boost_unit_test_framework-mt boost_unit_test_framework
 do
   LIBS="$LIBS -l$libname"
 
-  AC_LINK_IFELSE([
+  AC_LINK_IFELSE([AC_LANG_SOURCE([
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_NO_MAIN
 
@@ -464,7 +464,7 @@ int main(int argc, char **argv)
 {
   return boost::unit_test::unit_test_main(init_unit_test, argc, argv);
 }
-],
+])],
         BOOST_UNIT_TEST_LIBS="-l$libname")
 
   LIBS="$OLDLIBS"
@@ -650,26 +650,26 @@ dnl 				 AC_DEFINE(HAVE_EXT_HASH_SET,  , [Define if the g++ extension ext/hash_s
 
 AC_MSG_CHECKING([whether apt supports ddtp])
 
-AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
-				  [[pkgCache::DescIterator d;]]),
-		  AC_MSG_RESULT([yes])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
+                                   [[pkgCache::DescIterator d;]])],
+                  AC_MSG_RESULT([yes])
 		  AC_DEFINE([HAVE_DDTP], [], [Set to true if apt is DDTP-enabled]),
 		  AC_MSG_RESULT([no]))
 
 AC_MSG_CHECKING([whether apt supports the Homepage: field])
 
-AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgrecords.h>]],
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <apt-pkg/pkgrecords.h>]],
 				  [[  pkgRecords::Parser *p = NULL;]]
-				  [[  if(0) p->Homepage();]]),
+				  [[  if(0) p->Homepage();]])],
 		   AC_MSG_RESULT([yes])
 		   AC_DEFINE([APT_HAS_HOMEPAGE], [], [Set to true if apt supports the Homepage: field]),
 		   AC_MSG_RESULT([no]))
 
 AC_MSG_CHECKING([whether apt supports dpkg triggers])
 
-AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
-			          [[pkgCache::State::TriggersAwaited;]]
-				  [[pkgCache::State::TriggersPending;]]),
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <apt-pkg/pkgcache.h>]],
+                                   [[pkgCache::State::TriggersAwaited;]]
+                                   [[pkgCache::State::TriggersPending;]])],
 		  AC_MSG_RESULT([yes])
 		  AC_DEFINE([APT_HAS_TRIGGERS], [], [Set to true if apt supports dpkg trigger states]),
 		  AC_MSG_RESULT([no]))
