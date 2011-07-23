@@ -22,7 +22,7 @@
 
     <legalnotice>
       <para>
-	Copyright 2004-2010 Daniel Burrows.
+	Copyright 2004-2011 Daniel Burrows.
       </para>
 
       <para>
@@ -1140,10 +1140,12 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    When the safe resolver is being used (i.e., <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	    was passed or <link
+	    was passed, the action is <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
+	    or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install upgrades for packages regardless of
+	    is set to <literal>true</literal>), prevent the dependency
+	    resolver from install upgrades for packages regardless of
 	    the value of <link
 	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>.
 	  </para>
@@ -1160,10 +1162,12 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    command to install new packages; when the safe resolver is
 	    being used (i.e., <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	    was passed or <link
+	    was passed, the action is <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
+	    or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install new packages.  This option takes
+	    is set to <literal>true</literal>), prevent the dependency
+	    resolver from install new packages.  This option takes
 	    effect regardless of the value of <link
 	    linkend='configSafe-Resolver-No-New-Installs'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
 	  </para>
@@ -1906,7 +1910,8 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	<listitem>
 	  <para>
 	    Display the actions performed by the <quote>safe</quote>
-	    resolver.
+	    resolver and by <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
