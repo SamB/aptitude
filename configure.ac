@@ -23,8 +23,7 @@ ac_cv_c_const=yes
 ac_cv_c_inline=yes
 
 dnl Checks for libraries.
-AC_CHECK_LIB(ncursesw, initscr, ,
-	[AC_MSG_ERROR([Can't find libncursesw -- please install libncursesw5-dev])])
+AC_CHECK_LIB(ncursesw, initscr, , [AC_MSG_ERROR([Can't find libncursesw -- please install libncursesw5-dev])])
 AC_CHECK_LIB(apt-pkg, main, , [AC_MSG_ERROR([Can't find the APT libraries -- please install libapt-pkg-dev])])
 
 AC_MSG_CHECKING([whether apt includes the automatic dependency removal patch (required)])
@@ -481,6 +480,54 @@ fi
 AC_SUBST(BOOST_UNIT_TEST_LIBS)
 
 ##### End Boost.Test check #####
+
+##### Check for Google Mock #####
+
+dnl Google Mock's developers do not support prebuilt libraries (e.g.,
+dnl they pay no attention to ABI compatibility) and as a result have
+dnl asked Debian not to ship prebuilt libraries.  So, if we are
+dnl running on a system where gmock isn't available in $LIBDIR, we
+dnl guess that maybe there's source available that we can compile
+dnl during our own build process.
+
+AC_MSG_CHECKING([how to link gmock])
+
+BUILD_LOCAL_GMOCK=0
+
+OLD_LIBS="$LIBS"
+LIBS="$LIBS -lgmock"
+
+AC_LINK_IFELSE([AC_LANG_SOURCE([
+#include <gmock/gmock.h>
+
+int main(int argc, char **argv)
+{
+  return 0;
+}])],
+        [AC_MSG_RESULT([gmock is in in library path])]
+        ,
+        dnl Ok, check whether we can link it if we include the gmock
+        dnl source code.  Note that it will require both pthreads and
+        dnl gtest; no way around that.
+        [LIBS="$OLD_LIBS -lpthread -lgtest"
+         OLD_CPPFLAGS="$CPPFLAGS"
+         CPPFLAGS="$CPPFLAGS -I/usr/src/gmock"
+         AC_LINK_IFELSE([AC_LANG_SOURCE([
+#include <src/gmock-all.cc>
+
+int main(int argc, char **argv)
+{
+  return 0;
+}])],
+           [AC_MSG_RESULT([source is in /usr/src/gmock])
+            BUILD_LOCAL_GMOCK=1],
+           [AC_MSG_ERROR([Can't figure out where Google Mock lives; either install the google-mock package or place the library in the link path])])
+         CPPFLAGS="$OLD_CPPFLAGS"
+         LIBS="$OLD_LIBS"])
+
+AM_CONDITIONAL([BUILD_LOCAL_GMOCK], [test x$BUILD_LOCAL_GMOCK = x1])
+
+##### End Google Mock check #####
 
 PKG_CHECK_MODULES(SQLITE3, sqlite3)
 
