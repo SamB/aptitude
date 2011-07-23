@@ -1,6 +1,6 @@
 // dpkg_terminal.cc
 //
-//  Copyright 2008-2010 Daniel Burrows
+//  Copyright 2008-2011 Daniel Burrows
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -500,7 +500,6 @@ namespace gui
 
     LOG_INFO(logger, "Child process starting.");
 
-
     // We have to do this before tcsetattr(), because tcsetattr()
     // requires the terminal (that's the parent process) to respond,
     // but that process is blocked in accept() until we open the side
@@ -593,6 +592,8 @@ namespace gui
 
     try
       {
+        // TODO: now that I control the fork() call, I can probably
+        // use pipes instead of a socket.
 	listen_sock = std::auto_ptr<temporary_listen_socket>(new temporary_listen_socket(dpkg_socket_name, 1));
       }
     catch(TemporarySocketFail &ex)
@@ -604,12 +605,31 @@ namespace gui
       }
 
     GtkWidget *vte = terminal->gobj();
-    pid_t pid = vte_terminal_forkpty(VTE_TERMINAL(vte),
-				     NULL, NULL,
-				     FALSE, FALSE, FALSE);
+    GError *error = NULL;
+    VtePty *pty = vte_terminal_pty_new(VTE_TERMINAL(vte),
+                                       static_cast<VtePtyFlags>(VTE_PTY_NO_LASTLOG | VTE_PTY_NO_UTMP | VTE_PTY_NO_WTMP),
+                                       &error);
+
+    if(error != NULL)
+      {
+        // Couldn't create a pty ... what to do now?  Can't run dpkg
+        // without a pty, so abort.
+        LOG_ERROR(logger, "Unable to create a pty: " << error->message);
+        _error->Error("Unable to create a pty: %s", error->message);
+
+        if(pty != NULL)
+          g_free(pty);
+
+        return;
+      }
+
+    pid_t pid = fork();
 
     if(pid == 0)
-      child_process(dpkg_socket_name, f);
+      {
+        vte_pty_child_setup(pty);
+        child_process(dpkg_socket_name, f);
+      }
     else
       {
 	LOG_INFO(logger, "The shell process is PID " << pid << ".");
