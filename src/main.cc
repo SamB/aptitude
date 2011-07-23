@@ -663,13 +663,6 @@ int main(int argc, char *argv[])
 
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
 
-  // This tracks whether we got a --*-new-installs command-line
-  // argument, so we can present a useful warning message to the user
-  // if it's not applicable.
-  bool saw_new_installs_option = false;
-  // Same for --*-new-upgrades
-  bool saw_new_upgrades_option = false;
-
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
   bool showsize=aptcfg->FindB(PACKAGE "::CmdLine::Show-Size-Changes", false);
@@ -845,19 +838,15 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_NO_NEW_INSTALLS:
 	      safe_resolver_no_new_installs = true;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_ALLOW_NEW_INSTALLS:
 	      safe_resolver_no_new_installs = false;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_NO_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = true;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_ALLOW_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = false;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_SAFE_RESOLVER:
 	      resolver_mode = resolver_mode_safe;
