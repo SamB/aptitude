@@ -200,6 +200,12 @@ namespace aptitude
      */
     static logging::LoggerPtr getAptitudeGtkToplevelTabs();
 
+    /** \brief The logger for the initialization of the Qt frontend.
+     *
+     *  Name: aptitude.qt.init
+     */
+    static logging::LoggerPtr getAptitudeQtInit();
+
     /** \brief The logger for the dependency resolver.
      *
      *  Name: aptitude.resolver

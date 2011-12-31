@@ -57,9 +57,8 @@ AR = ar
 ARFLAGS = cru
 libgeneric_apt_a_AR = $(AR) $(ARFLAGS)
 libgeneric_apt_a_LIBADD =
-am_libgeneric_apt_a_OBJECTS = acqprogress.$(OBJEXT) aptcache.$(OBJEXT) \
-	apt.$(OBJEXT) aptitudepolicy.$(OBJEXT) \
-	aptitude_resolver.$(OBJEXT) \
+am_libgeneric_apt_a_OBJECTS = aptcache.$(OBJEXT) apt.$(OBJEXT) \
+	aptitudepolicy.$(OBJEXT) aptitude_resolver.$(OBJEXT) \
 	aptitude_resolver_cost_settings.$(OBJEXT) \
 	aptitude_resolver_cost_syntax.$(OBJEXT) \
 	aptitude_resolver_cost_types.$(OBJEXT) \
@@ -194,6 +193,7 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
+MOC = @MOC@
 MSGFMT = @MSGFMT@
 MSGMERGE = @MSGMERGE@
 OBJEXT = @OBJEXT@
@@ -206,8 +206,14 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 PO4A = @PO4A@
 POSUB = @POSUB@
+QtCore_CFLAGS = @QtCore_CFLAGS@
+QtCore_LIBS = @QtCore_LIBS@
+QtGui_CFLAGS = @QtGui_CFLAGS@
+QtGui_LIBS = @QtGui_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -283,8 +289,6 @@ LDADD = @LIBINTL@
 EXTRA_DIST = README.hier
 noinst_LIBRARIES = libgeneric-apt.a
 libgeneric_apt_a_SOURCES = \
-        acqprogress.cc      \
-        acqprogress.h       \
         aptcache.cc         \
         aptcache.h          \
         apt.cc              \
@@ -400,7 +404,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/acqprogress.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/apt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/apt_undo_group.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aptcache.Po@am__quote@

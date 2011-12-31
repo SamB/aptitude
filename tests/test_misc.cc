@@ -1,6 +1,6 @@
 // Miscellaneous tests.
 //
-//   Copyright (C) 2005, 2007 Daniel Burrows
+//   Copyright (C) 2005, 2007, 2010 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -17,9 +17,15 @@
 //   the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //   Boston, MA 02111-1307, USA.
 
+// Local includes:
+#include <generic/util/util.h>
+
+// System includes:
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <generic/util/util.h>
+#include <sys/time.h>
+
+using aptitude::util::subtract_timevals;
 
 class MiscTest : public CppUnit::TestFixture
 {
@@ -27,6 +33,11 @@ class MiscTest : public CppUnit::TestFixture
 
   CPPUNIT_TEST(testStripWS);
   CPPUNIT_TEST(testOrderlessLt);
+  CPPUNIT_TEST(testSubtractTimevalGreaterInBothComponents);
+  CPPUNIT_TEST(testSubtractTimevalGreaterInSecondsLessInMilliseconds);
+  CPPUNIT_TEST(testSubtractTimevalEqual);
+  CPPUNIT_TEST(testSubtractTimevalLessInSecondsGreaterInMilliseconds);
+  CPPUNIT_TEST(testSubtractTimevalLessInBothComponents);
 
   CPPUNIT_TEST_SUITE_END();
 private:
@@ -93,6 +104,87 @@ private:
     CPPUNIT_ASSERT(!cmp(c, b));
     CPPUNIT_ASSERT(!cmp(d, c));
     CPPUNIT_ASSERT(!cmp(e, d));
+  }
+
+  void testSubtractTimevalGreaterInBothComponents()
+  {
+    struct timeval a, b;
+
+    a.tv_sec = 10;
+    a.tv_usec = 1000;
+
+    b.tv_sec = 5;
+    b.tv_usec = 50;
+
+    struct timeval c = subtract_timevals(a, b);
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(5), c.tv_sec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(950), c.tv_usec);
+  }
+
+  void testSubtractTimevalGreaterInSecondsLessInMilliseconds()
+  {
+    struct timeval a, b;
+
+    a.tv_sec = 10;
+    a.tv_usec = 75;
+
+    b.tv_sec = 5;
+    b.tv_usec = 100;
+
+    struct timeval c = subtract_timevals(a, b);
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(4), c.tv_sec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(999975), c.tv_usec);
+  }
+
+
+  void testSubtractTimevalEqual()
+  {
+    struct timeval a, b;
+
+    a.tv_sec = 50;
+    a.tv_usec = 230;
+
+    b.tv_sec = 50;
+    b.tv_usec = 230;
+
+    struct timeval c = subtract_timevals(a, b);
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(0), c.tv_sec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(0), c.tv_usec);
+  }
+
+  void testSubtractTimevalLessInSecondsGreaterInMilliseconds()
+  {
+    struct timeval a, b;
+
+    a.tv_sec = 70;
+    a.tv_usec = 500;
+
+    b.tv_sec = 80;
+    b.tv_usec = 10;
+
+    struct timeval c = subtract_timevals(a, b);
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(-10), c.tv_sec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(490), c.tv_usec);
+  }
+
+  void testSubtractTimevalLessInBothComponents()
+  {
+    struct timeval a, b;
+
+    a.tv_sec = 100;
+    a.tv_usec = 130;
+
+    b.tv_sec = 123;
+    b.tv_usec = 131;
+
+    struct timeval c = subtract_timevals(a, b);
+
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(-24), c.tv_sec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(999999), c.tv_usec);
   }
 };
 

@@ -36,9 +36,7 @@
 
 
 using aptitude::cmdline::create_terminal;
-using aptitude::cmdline::create_terminal_locale;
-using aptitude::cmdline::terminal;
-using aptitude::cmdline::terminal_locale;
+using aptitude::cmdline::terminal_io;
 using boost::shared_ptr;
 
 void print_autoclean_msg()
@@ -48,8 +46,7 @@ void print_autoclean_msg()
 
 int cmdline_update(int argc, char *argv[], int verbose)
 {
-  shared_ptr<terminal> term = create_terminal();
-  shared_ptr<terminal_locale> term_locale = create_terminal_locale();
+  shared_ptr<terminal_io> term = create_terminal();
 
   _error->DumpErrors();
 
@@ -67,7 +64,7 @@ int cmdline_update(int argc, char *argv[], int verbose)
   download_update_manager m;
   m.pre_autoclean_hook.connect(sigc::ptr_fun(print_autoclean_msg));
   int rval =
-    (cmdline_do_download(&m, verbose, term, term_locale)
+    (cmdline_do_download(&m, verbose, term, term, term, term)
      == download_manager::success ? 0 : -1);
 
   if(_error->PendingError())

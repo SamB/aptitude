@@ -31,13 +31,33 @@ class download_signal_log;
 
 namespace aptitude
 {
+  namespace controllers
+  {
+    class acquire_download_progress;
+  }
+
   namespace cmdline
   {
-    class terminal;
+    class terminal_input;
+    class terminal_locale;
+    class terminal_metrics;
+    class terminal_output;
+
+    /** \brief Create the objects required to display the progress of a
+     *  download on the given terminal.
+     *
+     *  \note this is just a convenience routine that ties together
+     *  some other modules of code.
+     *
+     *  \return a pair containing the download signal log to use and a
+     *  strong reference to the download progress complex of objects.
+     */
+    std::pair<download_signal_log *, boost::shared_ptr<controllers::acquire_download_progress> >
+    create_cmdline_download_progress(const boost::shared_ptr<terminal_input> &term_input,
+                                     const boost::shared_ptr<terminal_locale> &term_locale,
+                                     const boost::shared_ptr<terminal_metrics> &term_metrics,
+                                     const boost::shared_ptr<terminal_output> &term_output);
   }
 }
-
-download_signal_log *
-gen_cmdline_download_progress(const boost::shared_ptr<aptitude::cmdline::terminal> &term);
 
 #endif // CMDLINE_PROGRESS_H

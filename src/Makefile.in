@@ -74,11 +74,13 @@ am_aptitude_OBJECTS = main.$(OBJEXT) desc_render.$(OBJEXT) \
 	ui_download_manager.$(OBJEXT) view_changelog.$(OBJEXT)
 aptitude_OBJECTS = $(am_aptitude_OBJECTS)
 aptitude_LDADD = $(LDADD)
-aptitude_DEPENDENCIES = $(MAYBE_LIBGTK) cmdline/libcmdline.a \
-	mine/libcmine.a generic/apt/libgeneric-apt.a \
-	generic/util/libgeneric-util.a \
+aptitude_DEPENDENCIES = $(MAYBE_LIBGTK) $(MAYBE_LIBQT) \
+	cmdline/libcmdline.a mine/libcmine.a \
+	generic/apt/libgeneric-apt.a generic/util/libgeneric-util.a \
 	generic/apt/matching/libgeneric-matching.a \
-	generic/problemresolver/libgeneric-problemresolver.a
+	generic/controllers/libgeneric-controllers.a \
+	generic/problemresolver/libgeneric-problemresolver.a \
+	generic/views/libgeneric-views.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -108,7 +110,7 @@ AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
 	distdir
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = generic gtk cmdline mine
+DIST_SUBDIRS = generic gtk qt cmdline mine
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -192,6 +194,7 @@ LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
 MKINSTALLDIRS = @MKINSTALLDIRS@
+MOC = @MOC@
 MSGFMT = @MSGFMT@
 MSGMERGE = @MSGMERGE@
 OBJEXT = @OBJEXT@
@@ -204,8 +207,14 @@ PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 PO4A = @PO4A@
 POSUB = @POSUB@
+QtCore_CFLAGS = @QtCore_CFLAGS@
+QtCore_LIBS = @QtCore_LIBS@
+QtGui_CFLAGS = @QtGui_CFLAGS@
+QtGui_LIBS = @QtGui_LIBS@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -277,12 +286,16 @@ top_srcdir = @top_srcdir@
 MAINTAINERCLEANFILES = Makefile.in
 @BUILD_GTK_TRUE@MAYBE_GTK = gtk
 @BUILD_GTK_TRUE@MAYBE_LIBGTK = gtk/libgtk.a gtk/toplevel/libgtk-toplevel.a
-SUBDIRS = generic $(MAYBE_GTK) cmdline mine
+@BUILD_QT_TRUE@MAYBE_QT = qt
+@BUILD_QT_TRUE@MAYBE_LIBQT = qt/libqt.a
+SUBDIRS = generic $(MAYBE_GTK) $(MAYBE_QT) cmdline mine
 INCLUDES = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
-LDADD = @LIBINTL@ $(MAYBE_LIBGTK) cmdline/libcmdline.a mine/libcmine.a \
+LDADD = @LIBINTL@ $(MAYBE_LIBGTK) $(MAYBE_LIBQT) cmdline/libcmdline.a mine/libcmine.a \
 	generic/apt/libgeneric-apt.a generic/util/libgeneric-util.a \
 	generic/apt/matching/libgeneric-matching.a \
-	generic/problemresolver/libgeneric-problemresolver.a
+	generic/controllers/libgeneric-controllers.a \
+	generic/problemresolver/libgeneric-problemresolver.a \
+	generic/views/libgeneric-views.a
 
 aptitude_SOURCES = \
 	aptitude.h	\

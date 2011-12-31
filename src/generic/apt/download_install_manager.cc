@@ -1,6 +1,6 @@
 // download_install_manager.cc
 //
-//   Copyright (C) 2005-2010 Daniel Burrows
+//   Copyright (C) 2005-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -89,7 +89,8 @@ bool download_install_manager::prepare(OpProgress &progress,
       return false;
     }
 
-  fetcher = new pkgAcquire(&acqlog);
+  fetcher = new pkgAcquire;
+  fetcher->Setup(&acqlog);
 
   if(!pm->GetArchives(fetcher, &src_list, apt_package_records) ||
      _error->PendingError())

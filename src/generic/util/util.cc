@@ -38,6 +38,8 @@
 
 #include <cwidget/generic/util/eassert.h>
 
+#include <sys/time.h>
+
 using namespace std;
 
 std::string backslash_escape_nonalnum(const std::string &s)
@@ -338,6 +340,22 @@ namespace aptitude
 {
   namespace util
   {
+    timeval subtract_timevals(const timeval &a, const timeval &b)
+    {
+      timeval rval;
+
+      rval.tv_sec = a.tv_sec - b.tv_sec;
+      if(a.tv_usec < b.tv_usec)
+        {
+          --rval.tv_sec;
+          rval.tv_usec = (a.tv_usec - b.tv_usec) + 1000000;
+        }
+      else
+        rval.tv_usec = a.tv_usec - b.tv_usec;
+
+      return rval;
+    }
+
     bool recursive_remdir(const std::string &dirname)
     {
       struct stat stbuf;

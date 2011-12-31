@@ -1659,3 +1659,67 @@ pkg_grouppolicy_facet_tag_factory::~pkg_grouppolicy_facet_tag_factory()
 {
   delete chain;
 }
+
+
+/*****************************************************************************/
+
+// Groups packages by source package
+class pkg_grouppolicy_source:public pkg_grouppolicy
+{
+  typedef map<string,
+	      pair<pkg_grouppolicy *, pkg_subtree *> > childmap;
+
+  childmap children;
+  pkg_grouppolicy_factory *chain;
+
+  pkg_grouppolicy *spillover;
+public:
+  pkg_grouppolicy_source(pkg_grouppolicy_factory *_chain,
+			 pkg_signal *_sig, desc_signal *_desc_sig)
+    :pkg_grouppolicy(_sig, _desc_sig),
+     chain(_chain),
+     spillover(_chain->instantiate(get_sig(), get_desc_sig()))
+  {
+  }
+
+  ~pkg_grouppolicy_source()
+  {
+    for(childmap::iterator i = children.begin(); i != children.end(); ++i)
+      delete i->second.first;
+  }
+
+  void add_package(const pkgCache::PkgIterator &pkg, pkg_subtree *root)
+  {
+    if(pkg.VersionList().end() || pkg.VersionList().FileList().end())
+      return;
+    std::string source_package_name =
+      apt_package_records->Lookup(pkg.VersionList().FileList()).SourcePkg();
+    if(source_package_name.length() == 0)
+      source_package_name = pkg.Name();
+
+    childmap::iterator found = children.find(source_package_name);
+
+    if(found != children.end())
+      found->second.first->add_package(pkg, found->second.second);
+    else
+      {
+	pkg_subtree *newtree = new pkg_subtree(cw::util::transcode(source_package_name),
+                                               L"",
+                                               get_desc_sig());
+	pkg_grouppolicy *newchild = chain->instantiate(get_sig(),
+                                                       get_desc_sig());
+	children[source_package_name].first = newchild;
+	children[source_package_name].second = newtree;
+	root->add_child(newtree);
+	newtree->set_num_packages_parent(root);
+
+	newchild->add_package(pkg, newtree);
+      }
+  }
+};
+
+pkg_grouppolicy *pkg_grouppolicy_source_factory::instantiate(pkg_signal *sig,
+							     desc_signal *desc_sig)
+{
+  return new pkg_grouppolicy_source(chain, sig, desc_sig);
+}

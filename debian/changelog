@@ -1,8 +1,29 @@
-aptitude (0.6.3-5) UNRELEASED; urgency=low
+aptitude (0.6.4-2) UNRELEASED; urgency=low
 
   * Drop now useless aptitude-man-ja.xsl file. Closes: #489711
 
  -- Christian Perrier <bubulle@debian.org>  Sat, 31 Dec 2011 13:23:11 +0100
+
+aptitude (0.6.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+    - Fixed build errors with gcc 4.6 (Closes: #624948)
+
+    - Added a source grouping policy, thanks to Thadeu Lima de Sourza
+      Cascardo for the patch. (Closes: #497206)
+
+    - Fixed bug in how the "automatically installed" flag was set when the
+      user asked to upgrade a package. (Closes: #622719)
+
+    - Don't crash when apt-xapian-index isn't installed. (Closes: #588089)
+
+  * Updated the project URL and added the git url to debian/copyright.
+    (Closes: #626209)
+
+  * Deleted all Debian patches; they've been included upstream.
+
+ -- Daniel Burrows <dburrows@debian.org>  Sun, 15 May 2011 20:19:26 -0700
 
 aptitude (0.6.3-4) unstable; urgency=low
 

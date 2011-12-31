@@ -19,8 +19,8 @@
 
 #include <generic/apt/matching/compare_patterns.h>
 #include <generic/apt/matching/pattern.h>
-#include <gtk/controllers/search_input.h>
-#include <gtk/views/mocks/search_input.h>
+#include <generic/controllers/search_input.h>
+#include <generic/views/mocks/search_input.h>
 
 #include <boost/make_shared.hpp>
 #include <boost/test/unit_test.hpp>
@@ -28,9 +28,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-namespace ctrls = gui::controllers;
-namespace views = gui::views;
-namespace mocks = gui::views::mocks;
+namespace ctrls = aptitude::controllers;
+namespace views = aptitude::views;
+namespace mocks = aptitude::views::mocks;
 
 using aptitude::matching::compare_patterns;
 using aptitude::matching::pattern;
@@ -58,7 +58,7 @@ namespace
   class controller_callbacks
   {
   public:
-    MOCK_METHOD2(activated, void(Glib::ustring, cwidget::util::ref_ptr<aptitude::matching::pattern>));
+    MOCK_METHOD2(activated, void(std::wstring, cwidget::util::ref_ptr<aptitude::matching::pattern>));
   };
 
   struct SearchInputTest
@@ -124,11 +124,11 @@ namespace
 BOOST_FIXTURE_TEST_CASE(testEnteringCorrectTextSearches, SearchInputTest)
 {
   ref_ptr<pattern> p = pattern::make_installed();
-  Glib::ustring p_text = "?installed";
+  std::wstring p_text = L"?installed";
 
   // The controller isn't required to call set_error_message(), but it
   // should set it to "" if it does.
-  EXPECT_CALL(*view, set_error_message(Glib::ustring())).Times(AnyNumber());
+  EXPECT_CALL(*view, set_error_message(std::wstring())).Times(AnyNumber());
 
   Expectation set_search_text;
   {

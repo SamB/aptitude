@@ -154,6 +154,11 @@ namespace aptitude
     return Logger::getLogger("aptitude.gtk.toplevel.tabs");
   }
 
+  LoggerPtr Loggers::getAptitudeQtInit()
+  {
+    return Logger::getLogger("aptitude.qt.init");
+  }
+
   LoggerPtr Loggers::getAptitudeResolver()
   {
     return Logger::getLogger("aptitude.resolver");

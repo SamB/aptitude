@@ -1,7 +1,7 @@
 /** \file download_queue.cc */
 
 
-// Copyright (C) 2009-2010 Daniel Burrows
+// Copyright (C) 2009-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -316,7 +316,7 @@ namespace aptitude
 	  {
 	    const std::string lastModifiedTimeStr = LookupTag(Message, "Last-Modified");
 	    time_t lastModifiedTime = 0;
-	    if(!StrToTime(lastModifiedTimeStr, lastModifiedTime))
+	    if(!RFC1123StrToTime(lastModifiedTimeStr.c_str(), lastModifiedTime))
 	      lastModifiedTime = 0;
 
 	    LOG_INFO(Loggers::getAptitudeDownloadQueue(),
@@ -925,7 +925,8 @@ namespace aptitude
 		      "Setting up the download process for the background download queue.");
 
 	    download_callback cb;
-	    pkgAcquire downloader(&cb);
+	    pkgAcquire downloader;
+            downloader.Setup(&cb);
 
 	    for(std::deque<boost::shared_ptr<start_request> >::const_iterator it =
 		  start_requests.begin();

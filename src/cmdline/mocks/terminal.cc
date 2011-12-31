@@ -28,7 +28,9 @@ using boost::make_shared;
 using boost::shared_ptr;
 using testing::AnyNumber;
 using testing::Invoke;
+using testing::NiceMock;
 using testing::Return;
+using testing::StrictMock;
 using testing::_;
 
 namespace aptitude
@@ -37,87 +39,129 @@ namespace aptitude
   {
     namespace mocks
     {
-      shared_ptr<terminal> terminal::create()
+      terminal_input::terminal_input()
       {
-        return make_shared<terminal>();
-      }
-
-      shared_ptr<terminal_locale> terminal_locale::create()
-      {
-        return make_shared<terminal_locale>();
-      }
-
-      class terminal::combining_impl : public terminal
-      {
-        std::wstring pending_writes;
-
-        void do_write_text(const std::wstring &s)
-        {
-          std::wstring::size_type start = 0;
-          for(std::wstring::size_type nl = s.find('\n', start);
-              nl != s.npos; nl = s.find('\n', start))
-            {
-              pending_writes.append(s, start, (nl - start) + 1);
-              start = nl + 1;
-
-              output(pending_writes);
-              pending_writes.clear();
-            }
-
-          pending_writes.append(s, start, s.npos);
-        }
-
-        void do_move_to_beginning_of_line()
-        {
-          do_write_text(L"\r");
-        }
-
-        void do_flush()
-        {
-          if(!pending_writes.empty())
-            {
-              output(pending_writes);
-              pending_writes.clear();
-            }
-        }
-
-      public:
-        combining_impl()
-        {
-        }
-
-        void write_text(const std::wstring &s)
-        {
-          do_write_text(s);
-          terminal::write_text(s);
-        }
-
-        void move_to_beginning_of_line()
-        {
-          do_move_to_beginning_of_line();
-          terminal::move_to_beginning_of_line();
-        }
-
-        // This is overridden (rather than relying on ON_CALL) to
-        // ensure that output is written before the mock's flush() is
-        // called; otherwise, it looks like the output comes second,
-        // which is surprising.
-        void flush()
-        {
-          do_flush();
-          terminal::flush();
-        }
-      };
-
-      shared_ptr<terminal> create_combining_terminal()
-      {
-        return make_shared<terminal::combining_impl>();
+        // Make sure the program doesn't abort if there's an
+        // unexpected invocation of prompt_for_input().
+        ON_CALL(*this, prompt_for_input(_))
+          .WillByDefault(Return(std::wstring()));
       }
 
       terminal_locale::terminal_locale()
       {
         EXPECT_CALL(*this, wcwidth(_))
           .WillRepeatedly(Return(1));
+      }
+
+      terminal_metrics::terminal_metrics()
+      {
+      }
+
+      terminal_output::terminal_output()
+      {
+      }
+
+      class combining_terminal_output::impl : public combining_terminal_output
+      {
+        friend shared_ptr<impl> make_shared<impl>();
+        impl();
+
+        std::wstring pending_writes;
+
+        void do_write_text(const std::wstring &s);
+
+        friend class testing::NiceMock<impl>;
+        friend class testing::StrictMock<impl>;
+
+      public:
+        void write_text(const std::wstring &s);
+        void move_to_beginning_of_line();
+        void flush();
+
+        static shared_ptr<impl> create_default();
+        static shared_ptr<impl> create_nice();
+        static shared_ptr<impl> create_strict();
+      };
+
+      combining_terminal_output::impl::impl()
+      {
+      }
+
+      void combining_terminal_output::impl::do_write_text(const std::wstring &s)
+      {
+        std::wstring::size_type start = 0;
+        for(std::wstring::size_type nl = s.find('\n', start);
+            nl != s.npos; nl = s.find('\n', start))
+          {
+            pending_writes.append(s, start, (nl - start) + 1);
+            start = nl + 1;
+
+            output(pending_writes);
+            pending_writes.clear();
+          }
+
+        pending_writes.append(s, start, s.npos);
+      }
+
+      void combining_terminal_output::impl::write_text(const std::wstring &s)
+      {
+        do_write_text(s);
+      }
+
+      void combining_terminal_output::impl::move_to_beginning_of_line()
+      {
+        do_write_text(L"\r");
+      }
+
+      void combining_terminal_output::impl::flush()
+      {
+        if(!pending_writes.empty())
+          {
+            output(pending_writes);
+            pending_writes.clear();
+          }
+      }
+
+      terminal_with_combined_output::terminal_with_combined_output()
+      {
+      }
+
+      terminal_with_combined_output::~terminal_with_combined_output()
+      {
+      }
+
+      combining_terminal_output::combining_terminal_output()
+      {
+      }
+
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_default()
+      {
+        return make_shared<combining_terminal_output::impl>();
+      }
+
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_nice()
+      {
+        return make_shared<NiceMock<combining_terminal_output::impl> >();
+      }
+
+      shared_ptr<combining_terminal_output::impl> combining_terminal_output::impl::create_strict()
+      {
+        return make_shared<StrictMock<combining_terminal_output::impl> >();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_default()
+      {
+        return impl::create_default();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_nice()
+      {
+        return impl::create_nice();
+      }
+
+      shared_ptr<combining_terminal_output> combining_terminal_output::create_strict()
+      {
+        return impl::create_strict();
       }
     }
   }

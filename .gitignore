@@ -13,6 +13,11 @@ INSTALL
 *.moc
 *.mocc
 po/*.gmo
+po/aptitude.pot.sig
+po/remove-potcdate.sed
+
+# Distributed tar files.
+aptitude-*.tar.gz
 
 # autoconf-related files
 configure
@@ -31,6 +36,8 @@ Makefile.in
 aclocal.m4
 autom4te.cache
 depcomp
+
+.deps/
 
 doc/Makefile
 doc/Makefile.in
@@ -60,11 +67,13 @@ doc/en/aptitude-create-state-bundle.1
 doc/en/aptitude-run-state-bundle.1
 doc/en/aptitude.8
 doc/en/doc-css-stamp
+doc/en/doc-fo-stamp
 doc/en/doc-html-stamp
 doc/en/doc-stamp
 doc/en/images/Makefile
 doc/en/images/Makefile.in
 doc/en/man-stamp
+doc/en/output-fo/
 doc/en/output-html/
 doc/en/output-txt/
 doc/es/Makefile
@@ -221,6 +230,7 @@ tests/Makefile
 tests/Makefile.in
 tests/boost_test
 tests/cppunit_test
+tests/gtest_test
 tests/interactive_set_test
 
 

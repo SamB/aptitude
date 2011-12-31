@@ -45,13 +45,20 @@ namespace aptitude
     /** \brief Abstraction of the I/O device used for the command-line
      *  code.
      *
-     *  A virtual interface is used so that we can dummy it out for
-     *  testing (see mocks/terminal.h).
+     *  Virtual interfaces are used so that we can dummy them out for
+     *  testing (see mocks/terminal.h).  Using several virtual
+     *  interfaces allows code to specify more precisely which
+     *  functionality is required, so we don't have to
      */
-    class terminal
+    // @{
+
+    /** \brief Interface representing the ability to write to the
+     *  terminal.
+     */
+    class terminal_output
     {
     public:
-      virtual ~terminal();
+      virtual ~terminal_output();
 
       /** \brief Check whether the output stream seems to be connected
        *  to a terminal.
@@ -79,6 +86,15 @@ namespace aptitude
        *  printed.
        */
       virtual void flush() = 0;
+    };
+
+    /** \brief Interface representing the ability to read from the
+     *  terminal.
+     */
+    class terminal_input
+    {
+    public:
+      ~terminal_input();
 
       /** \brief Prompt for a line of input from the terminal device.
        *
@@ -96,6 +112,15 @@ namespace aptitude
        *  and aborts the program.
        */
       virtual std::wstring prompt_for_input(const std::wstring &msg) = 0;
+    };
+
+    /** \brief Interface representing the ability to read the
+     *  characteristics of the terminal.
+     */
+    class terminal_metrics
+    {
+    public:
+      ~terminal_metrics();
 
       /** \brief Retrieve the current screen width.
        *
@@ -127,16 +152,26 @@ namespace aptitude
        */
       virtual int wcwidth(wchar_t ch) = 0;
     };
+    // @}
+
+    /** \brief Master interface representing all the terminal
+     *  capabilities at once.
+     *
+     *  This should normally not be passed as a parameter to
+     *  functions; it exists so that create_terminal() has a return
+     *  type.
+     */
+    class terminal_io : public terminal_input,
+                        public terminal_locale,
+                        public terminal_metrics,
+                        public terminal_output
+    {
+    };
 
     /** \brief Create a terminal object attached to the standard I/O
-        streams.
+     *  streams and using the system locale definitions.
      */
-    boost::shared_ptr<terminal> create_terminal();
-
-    /** \brief Create a terminal locale object using the system locale
-     *  definitions.
-     */
-    boost::shared_ptr<terminal_locale> create_terminal_locale();
+    boost::shared_ptr<terminal_io> create_terminal();
   }
 }
 

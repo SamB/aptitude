@@ -60,9 +60,6 @@ namespace cwidget
   using namespace widgets;
 }
 
-// ForTranslators: This string is a confirmation message, which users
-// (especially CJK users) should be able to input without input
-// methods.  Please include nothing but ASCII characters.
 static void try_delete_essential(wstring s,
 				 const pkgCache::PkgIterator pkg,
 				 bool purge)

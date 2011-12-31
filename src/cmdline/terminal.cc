@@ -56,7 +56,7 @@ namespace aptitude
       // -- watch out for what happens if the curses UI starts up,
       // we'll have to tear down the handler, and be sure to handle
       // memory barriers.
-      class terminal_impl : public terminal
+      class terminal_impl : public terminal_io
       {
       public:
         bool output_is_a_terminal();
@@ -65,6 +65,7 @@ namespace aptitude
         void flush();
         std::wstring prompt_for_input(const std::wstring &msg);
         unsigned int get_screen_width();
+        int wcwidth(wchar_t ch);
       };
 
       bool terminal_impl::output_is_a_terminal()
@@ -121,19 +122,13 @@ namespace aptitude
           return 80;
       }
 
-      class terminal_locale_impl : public terminal_locale
-      {
-      public:
-        int wcwidth(wchar_t ch);
-      };
-
-      int terminal_locale_impl::wcwidth(wchar_t ch)
+      int terminal_impl::wcwidth(wchar_t ch)
       {
         return ::wcwidth(ch);
       }
     }
 
-    terminal::~terminal()
+    terminal_input::~terminal_input()
     {
     }
 
@@ -141,14 +136,17 @@ namespace aptitude
     {
     }
 
-    shared_ptr<terminal> create_terminal()
+    terminal_metrics::~terminal_metrics()
     {
-      return make_shared<terminal_impl>();
     }
 
-    shared_ptr<terminal_locale> create_terminal_locale()
+    terminal_output::~terminal_output()
     {
-      return make_shared<terminal_locale_impl>();
+    }
+
+    shared_ptr<terminal_io> create_terminal()
+    {
+      return make_shared<terminal_impl>();
     }
   }
 }

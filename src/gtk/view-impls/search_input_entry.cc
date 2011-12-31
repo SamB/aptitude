@@ -18,11 +18,17 @@
 //  the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 //  Boston, MA 02111-1307, USA.
 
+// Local includes:
 #include "search_input_entry.h"
 
-#include <gtk/views/search_input.h>
+#include <generic/views/search_input.h>
 
+// System includes:
 #include <boost/make_shared.hpp>
+
+#include <cwidget/generic/util/transcode.h>
+
+using cwidget::util::transcode;
 
 namespace gui
 {
@@ -30,7 +36,7 @@ namespace gui
   {
     namespace
     {
-      class search_input_entry_impl : public views::search_input
+      class search_input_entry_impl : public aptitude::views::search_input
       {
         Gtk::Entry *search_entry;
         Gtk::Label *error_label;
@@ -58,11 +64,11 @@ namespace gui
                Gtk::Label *error_label,
                Gtk::Button *find_button);
 
-        Glib::ustring get_search_text();
+        std::wstring get_search_text();
 
-        void set_search_text(const Glib::ustring &text);
+        void set_search_text(const std::wstring &text);
 
-        void set_error_message(const Glib::ustring &msg);
+        void set_error_message(const std::wstring &msg);
 
         void set_input_validity(bool valid);
 
@@ -93,23 +99,23 @@ namespace gui
                                                            find_button);
       }
 
-      Glib::ustring search_input_entry_impl::get_search_text()
+      std::wstring search_input_entry_impl::get_search_text()
       {
-        return search_entry->get_text();
+        return transcode(std::string(search_entry->get_text()), "UTF-8");
       }
 
-      void search_input_entry_impl::set_search_text(const Glib::ustring &text)
+      void search_input_entry_impl::set_search_text(const std::wstring &text)
       {
-        search_entry->set_text(text);
+        search_entry->set_text(transcode(text, "UTF-8"));
       }
 
-      void search_input_entry_impl::set_error_message(const Glib::ustring &msg)
+      void search_input_entry_impl::set_error_message(const std::wstring &msg)
       {
         if(!msg.empty())
           {
             Glib::ustring markup =
               Glib::ustring::compose("<span size=\"smaller\" color=\"red\">%1</span>",
-                                     Glib::Markup::escape_text(msg));
+                                     Glib::Markup::escape_text(transcode(msg, "UTF-8")));
 
             error_label->set_markup(markup);
             error_label->show();

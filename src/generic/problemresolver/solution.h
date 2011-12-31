@@ -1,6 +1,6 @@
 // solution.h                                             -*-c++-*-
 //
-//   Copyright (C) 2005, 2007-2010 Daniel Burrows
+//   Copyright (C) 2005, 2007-2011 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
 //   modify it under the terms of the GNU General Public License as
@@ -158,17 +158,10 @@ class resolver_initial_state
     typename PackageUniverse::version version_of(const typename PackageUniverse::package &p) const
     {
       int slot;
-      int p_id;
       if(overridden_versions == NULL)
-	{
-	  slot = -1;
-	  p_id = -1;
-	}
+        slot = -1;
       else
-	{
-	  p_id = p.get_id();
-	  slot = overridden_versions[p.get_id()];
-	}
+        slot = overridden_versions[p.get_id()];
 
       if(slot == -1)
 	return p.current_version();

@@ -16,7 +16,7 @@ README=README.$(LANGCODE)
 
 HTML2TEXT=$(srcdir)/../html-to-text
 
-IMAGES = $(wildcard images/*.png)
+IMAGES = $(wildcard $(srcdir)/images/*.png)
 
 all-local: doc-stamp
 
