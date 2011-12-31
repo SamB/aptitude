@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2011-05-14 21:10-0700\n"
-"PO-Revision-Date: 2009-07-21 13:49+0100\n"
+"PO-Revision-Date: 2009-12-03 11:31+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -750,17 +750,18 @@ msgid "%s is already installed at the requested version (%s)\n"
 msgstr "%s je už inštalovaný v požadovanej verzii (%s)\n"
 
 #: src/cmdline/cmdline_action.cc:328
-#, fuzzy, c-format
-#| msgid "%s is not currently installed, so it will not be reinstalled.\n"
+#, c-format
 msgid "%s is not currently installed, so it will not be upgraded.\n"
-msgstr "%s nie je nainštalovaný, preto sa nepreinštaluje.\n"
+msgstr "%s nie je momentálne nainštalovaný, preto sa nebude aktualizovať.\n"
 
 #: src/cmdline/cmdline_action.cc:331
 #, fuzzy, c-format
-#| msgid "%s is already installed at the requested version (%s)\n"
+#| msgid ""
+#| "%s is already installed at the latest version, so it will not be upgraded."
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr "%s je už inštalovaný v požadovanej verzii (%s)\n"
+msgstr ""
+"%s je už inštalovaný v požadovanej verzii, preto sa nebude aktualizovať."
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -860,9 +861,9 @@ msgstr "Err "
 
 #: src/cmdline/cmdline_changelog.cc:179
 #, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#| msgid "Changelog of %s"
 msgid "Changelog download failed: %s"
-msgstr "Súbor zmien %s"
+msgstr "Záznam zmien %s"
 
 #: src/cmdline/cmdline_changelog.cc:283
 msgid "Can't execute sensible-pager, is this a working Debian system?"
@@ -2581,10 +2582,9 @@ msgstr "Neočakávaný koniec súboru na štandardnom vstupe"
 #. exactly 4 character cells wide; "ERR" is short
 #. for "ERROR".
 #: src/cmdline/text_progress.cc:96
-#, fuzzy, c-format
-#| msgid "[ERROR]"
+#, c-format
 msgid "[ ERR] %s"
-msgstr "[CHYBA]"
+msgstr ""
 
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
@@ -3245,10 +3245,9 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "Nepodarilo sa stiahnuť záznam zmien: %s"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
-msgstr "Súbor zmien %s"
+msgstr "Záznam zmien %s"
 
 #: src/generic/apt/pkg_hier.cc:28 src/generic/apt/pkg_hier.cc:49
 #, c-format
@@ -3294,9 +3293,9 @@ msgstr ""
 #: src/generic/apt/resolver_manager.cc:910
 #: src/generic/apt/resolver_manager.cc:912
 #, fuzzy, c-format
-#| msgid "Unable to parse pattern %s"
+#| msgid "Failed to download the changelog: %s"
 msgid "Failed to parse the cost settings string: %s"
-msgstr "Nedá sa spracovať vzor %s"
+msgstr "Nepodarilo sa stiahnuť záznam zmien: %s"
 
 #: src/generic/apt/tags.cc:218 src/generic/apt/tags.cc:225
 msgid "Building tag database"
@@ -3426,10 +3425,8 @@ msgid "Expected %s"
 msgstr "Neočakávaná „)“"
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " alebo"
+msgstr ""
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -3444,9 +3441,9 @@ msgstr "Zlyhalo vytvorenie dočasného adresára zo šablóny „%s“: %s"
 
 #: src/generic/util/temp.cc:342
 #, fuzzy, c-format
-#| msgid "Unable to create temporary directory from template \"%s\": %s"
+#| msgid "Unable to create temporary filename from template \"%s\": %s"
 msgid "Unable to create temporary filename from prefix \"%s\""
-msgstr "Zlyhalo vytvorenie dočasného adresára zo šablóny „%s“: %s"
+msgstr "Zlyhalo vytvorenie názvu dočasného súboru zo šablóny „%s“: %s"
 
 #: src/generic/util/util.cc:364
 #, c-format
@@ -3660,7 +3657,7 @@ msgstr "značky"
 
 #: src/gtk/aptitude.glade:1085
 msgid "Screenshot"
-msgstr ""
+msgstr "Snímka obrazovky"
 
 #: src/gtk/aptitude.glade:1137
 msgid "Fixing upgrade manually:"
@@ -3811,10 +3808,8 @@ msgid "Keep your computer up-to-date."
 msgstr ""
 
 #: src/gtk/areas.cc:75
-#, fuzzy
-#| msgid "Broken"
 msgid "Browse"
-msgstr "Porušené"
+msgstr ""
 
 #: src/gtk/areas.cc:76
 #, fuzzy
@@ -4839,9 +4834,7 @@ msgstr ""
 "alternatívami."
 
 #: src/gtk/resolver.cc:466
-#, fuzzy, c-format
-#| msgid ""
-#| "Upgrading %s to version %s is preferred over all un-accpted alternatives."
+#, c-format
 msgid ""
 "Upgrading %s to version %s is preferred over all un-accepted alternatives."
 msgstr ""
@@ -5429,22 +5422,19 @@ msgid "  Ept support disabled.\n"
 msgstr "  Podpora Ept vypnutá.\n"
 
 #: src/main.cc:171
-#, fuzzy, c-format
-#| msgid "  apt version %d.%d.%d\n"
+#, c-format
 msgid "  Gtk+ version %d.%d.%d\n"
-msgstr "  Verzia apt %d.%d.%d\n"
+msgstr "  Gtk+ verzia %d.%d.%d\n"
 
 #: src/main.cc:173
-#, fuzzy, c-format
-#| msgid "  apt version %d.%d.%d\n"
+#, c-format
 msgid "  Gtk-- version %d.%d.%d\n"
-msgstr "  Verzia apt %d.%d.%d\n"
+msgstr "  Gtk-- verzia %d.%d.%d\n"
 
 #: src/main.cc:176
-#, fuzzy, c-format
-#| msgid "  Ept support disabled.\n"
+#, c-format
 msgid "  Gtk+ support disabled.\n"
-msgstr "  Podpora Ept vypnutá.\n"
+msgstr "  Podpora Gtk+ vypnutá.\n"
 
 #: src/main.cc:179
 #, fuzzy, c-format
@@ -5506,47 +5496,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Inštaluje/aktualizuje balíky\n"
+msgstr " install      - Inštaluje/aktualizuje balíky.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Odstráni balíky\n"
+msgstr " remove       - Odstráni balíky.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Vyčistí balíky a ich konfiguračné súbory\n"
+msgstr " purge        - Vyčistí balíky a ich konfiguračné súbory.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Ochráni balíky pred aktualizáciou\n"
+msgstr " hold         - Ochráni balíky pred aktualizáciou.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Zruší ochranu balíka pred aktualizáciou\n"
+msgstr " unhold       - Zruší ochranu balíka pred aktualizáciou.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Označí balíky, že boli inštalované automaticky\n"
+msgstr " markauto     - Označí balíky, že boli inštalované automaticky.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Označí balíky, že boli inštalované manuálne\n"
+msgstr " unmarkauto   - Označí balíky, že boli inštalované manuálne.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5557,88 +5539,72 @@ msgstr ""
 " forbid-version - Zakáže aptitude aktualizáciu na konkrétnu verziu balíka.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Stiahne zoznamy nových/aktualizovateľných balíkov\n"
+msgstr " update       - Stiahne zoznamy nových/aktualizovateľných balíkov.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Vykoná bezpečnú aktualizáciu\n"
+msgstr " safe-upgrade - Vykoná bezpečnú aktualizáciu.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
 msgstr ""
 " full-upgrade - Vykoná aktualizáciu, pri ktorej možno nainštaluje a odstráni "
-"balíky\n"
+"balíky.\n"
 
 #: src/main.cc:209
-#, fuzzy, c-format
-#| msgid "'&BD' to install the build-dependencies of a package."
+#, c-format
 msgid " build-dep    - Install the build-dependencies of packages.\n"
-msgstr "„&BD“ nainštaluje závislosti pre zostavenie balíka."
+msgstr " build-dep    - Nainštaluje závislosti pre zostavenie balíka.\n"
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Zabudne, ktoré balíky sú „nové“\n"
+msgstr " forget-new   - Zabudne, ktoré balíky sú „nové“.\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Vyhľadá balíky podľa názvu a/alebo výrazu\n"
+msgstr " search       - Vyhľadá balíky podľa názvu a/alebo výrazu.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Zobrazí podrobné informácie o balíku\n"
+msgstr " show         - Zobrazí podrobné informácie o balíku.\n"
 
 #: src/main.cc:213
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Odstráni stiahnuté .deb súbory balíkov\n"
+msgstr " clean        - Odstráni stiahnuté .deb súbory balíkov.\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Odstráni staré stiahnuté .deb súbory balíkov\n"
+msgstr " autoclean    - Odstráni staré stiahnuté .deb súbory balíkov.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Zobrazí zoznam zmien balíka\n"
+msgstr " changelog    - Zobrazí záznam zmien balíka.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Stiahne .deb súbor balíka\n"
+msgstr " download     - Stiahne .deb súbor balíka.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
 " reinstall    - Stiahne a (pravdepodobne) preinštaluje aktuálne "
-"nainštalovaný balík\n"
+"nainštalovaný balík.\n"
 
 #: src/main.cc:218
 #, c-format
@@ -5652,13 +5618,7 @@ msgstr ""
 "                prečo by jeden alebo viac balíkov vyžadovalo daný balík\n"
 
 #: src/main.cc:220
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5668,7 +5628,7 @@ msgstr ""
 " why-not      - Zobrazí ručne nainštalované balíky, ktoré vedú ku konfliktu\n"
 "                s daným balíkom alebo prečo by jeden či viac balíkov viedlo "
 "ku\n"
-"                konfliktu s daným balíkom, keby bol nainštalovaný\n"
+"                konfliktu s daným balíkom, keby bol nainštalovaný.\n"
 
 #: src/main.cc:224
 #, c-format
@@ -5676,10 +5636,9 @@ msgid "  Options:\n"
 msgstr "  Voľby:\n"
 
 #: src/main.cc:225
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Tento pomocník\n"
+msgstr " -h             Tento pomocník.\n"
 
 #: src/main.cc:227
 #, c-format
@@ -5697,9 +5656,9 @@ msgstr ""
 
 #: src/main.cc:231
 #, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#| msgid " -h             This help text.\n"
 msgid " --qt           Use the Qt GUI.\n"
-msgstr " -h             Tento pomocník\n"
+msgstr " -h             Tento pomocník.\n"
 
 #: src/main.cc:232
 #, fuzzy, c-format
@@ -5724,50 +5683,39 @@ msgstr ""
 " -d             Stiahne balíky, ale nič neinštaluje ani neodstraňuje.\n"
 
 #: src/main.cc:236
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation or actions.\n"
-msgstr " -P             Vždy vyžadovať potvrdenie alebo operácie\n"
+msgstr " -P             Vždy vyžadovať potvrdenie alebo operácie.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr ""
-" -y             Na jednoduché áno/nie otázky odpovie automaticky „áno“\n"
+" -y             Na jednoduché áno/nie otázky odpovie automaticky „áno“.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
 msgstr ""
-" -F formát      Udáva formát na zobrazenie výsledkov hľadania; viď manuál\n"
+" -F formát      Udáva formát na zobrazenie výsledkov hľadania; pozri "
+"manuál.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
 msgstr ""
-" -O radenie      Udáva spôsob zoradenia výsledkov hľadania; viď manuál\n"
+" -O radenie      Udáva spôsob zoradenia výsledkov hľadania; pozri manuál.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr " -w šírka       Udáva šírku zobrazenia výsledkov hľadania\n"
+msgstr " -w šírka       Udáva šírku zobrazenia výsledkov hľadania.\n"
 
 #: src/main.cc:241
 #, c-format
@@ -5791,10 +5739,7 @@ msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Zobrazí zmenu v nainštalovanej veľkosti každého balíka.\n"
 
 #: src/main.cc:245
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
@@ -5802,38 +5747,29 @@ msgstr ""
 " -v             Zobrazí dodatočné informácie. (Môžete zadať niekoľkokrát.)\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr ""
 " -t [verzia]     Vyberie verziu vydania, z ktorého sa majú inštalovať "
-"balíky\n"
+"balíky.\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress.\n"
 "                indicators.\n"
 msgstr ""
-" -q             V príkazovom riadku, potláča indikátory inkrementálneho "
-"postupu.\n"
+" -q             V príkazovom riadku, potláča indikátory inkrementálneho\n"
+"                postupu.\n"
 
 #: src/main.cc:249
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o kľúč=hodn   Nastaví konfiguračnú voľbu nazvanú „kľúč“\n"
+msgstr " -o kľúč=hodn   Nastaví konfiguračnú voľbu nazvanú „kľúč“.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
 "                strong dependencies.\n"
@@ -5854,7 +5790,7 @@ msgstr " -u             Pri štarte stiahne nové zoznamy balíkov.\n"
 #: src/main.cc:254 src/main.cc:256
 #, c-format
 msgid "                  (terminal interface only)"
-msgstr ""
+msgstr "                  (iba terminálové rozhranie)"
 
 #: src/main.cc:255
 #, c-format
@@ -6001,27 +5937,24 @@ msgstr ""
 "dep-versions“."
 
 #: src/main.cc:1089
-#, fuzzy
-#| msgid "Only one of -u and -i may be specified\n"
 msgid ""
 "Only one of --auto-clean-on-startup, --clean-on-startup, -i, and -u may be "
 "specified\n"
-msgstr "Môžete zadať iba jednu z volieb -u a -i\n"
+msgstr ""
+"Môžete zadať iba jednu z volieb --auto-clean-on-startup, --clean-on-startup, "
+"-i a -u\n"
 
 #: src/main.cc:1098
-#, fuzzy
-#| msgid ""
-#| "-u and -i may not be specified in command-line mode (eg, with 'install')"
 msgid ""
 "-u, -i, and --clean-on-startup may not be specified in command-line mode "
 "(eg, with 'install')"
-msgstr "-u a -i nemôžu byť použité v riadkovom režime (napr. s „install“)"
+msgstr ""
+"-u, -i a --clean-on-startup nemôžu byť použité v režime príkazového riadka "
+"(napr. s „install“)"
 
 #: src/main.cc:1115
-#, fuzzy
-#| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
-msgstr "-u a -i nemôžu byť použité spoločne s príkazom"
+msgstr "-u, -i a --clean-on-startup nemôžu byť použité spoločne s príkazom"
 
 #: src/main.cc:1226
 #, c-format
@@ -7588,16 +7521,12 @@ msgid "Downloaded package files have been deleted"
 msgstr "Stiahnuté balíky boli vymazané"
 
 #: src/ui.cc:1747
-#, fuzzy
-#| msgid ""
-#| "Updating the package lists requires administrative privileges, which you "
-#| "currently do not have.  Would you like to change to the root account?"
 msgid ""
 "Cleaning the package cache requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
 msgstr ""
-"Aktualizácia zoznamu balíkov vyžaduje administrátorské práva, ktoré "
-"momentálne nemáte. Chcete sa prepnúť na účet root?"
+"Aktualizácia zoznamu balíkov vyžaduje práva správcu, ktoré momentálne "
+"nemáte. Chcete sa prepnúť na účet root?"
 
 #: src/ui.cc:1793
 msgid "The apt cache file is not available; cannot auto-clean."
@@ -7612,16 +7541,12 @@ msgid ""
 msgstr "Staré stiahnuté balíky boli vymazané, uvoľnilo sa %sB miesta na disku."
 
 #: src/ui.cc:1830
-#, fuzzy
-#| msgid ""
-#| "Updating the package lists requires administrative privileges, which you "
-#| "currently do not have.  Would you like to change to the root account?"
 msgid ""
 "Deleting obsolete files requires administrative privileges, which you "
 "currently do not have.  Would you like to change to the root account?"
 msgstr ""
-"Aktualizácia zoznamu balíkov vyžaduje administrátorské práva, ktoré "
-"momentálne nemáte. Chcete sa prepnúť na účet root?"
+"Aktualizácia zoznamu balíkov vyžaduje práva správcu, ktoré momentálne "
+"nemáte. Chcete sa prepnúť na účet root?"
 
 #: src/ui.cc:1932
 msgid "No more solutions."
@@ -8206,6 +8131,14 @@ msgstr "Môžete prehliadať zoznamy zmien iba oficiálnych Debian balíkov."
 #~ "Váhe %d nastavenej pomocou %s::ProblemResolver::Tier-Names chýba položka "
 #~ "Name."
 
+#~| msgid "No resolution found."
+#~ msgid "No changelog found."
+#~ msgstr "Nebol nájdený žiadny záznam zmien."
+
+#~| msgid "Cannot open package hierarchy file %s"
+#~ msgid "Can't create a temporary file: %s"
+#~ msgstr "Nedá sa vytvoriť dočasný súbor: %s"
+
 #~ msgid "Unknown error"
 #~ msgstr "Neznáma chyba"
 
@@ -8214,16 +8147,6 @@ msgstr "Môžete prehliadať zoznamy zmien iba oficiálnych Debian balíkov."
 
 #~ msgid "Downloading Changelog"
 #~ msgstr "Sťahuje sa záznam zmien (changelog)"
-
-#, fuzzy
-#~| msgid "No resolution found."
-#~ msgid "No changelog found."
-#~ msgstr "Nebolo nájdené žiadne riešenie."
-
-#, fuzzy
-#~| msgid "Cannot open package hierarchy file %s"
-#~ msgid "Can't create a temporary file: %s"
-#~ msgstr "Nedá sa otvoriť súbor s hierarchiou balíkov %s"
 
 #~ msgid "Download Changelog"
 #~ msgstr "Stiahnuť Changelog"
@@ -8446,6 +8369,9 @@ msgstr "Môžete prehliadať zoznamy zmien iba oficiálnych Debian balíkov."
 
 #~ msgid "Automatically Installed"
 #~ msgstr "Automaticky nainštalované"
+
+#~ msgid "Broken"
+#~ msgstr "Porušené"
 
 #~ msgid "Unchanged"
 #~ msgstr "Nezmenené"
