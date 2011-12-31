@@ -1,7 +1,7 @@
 # automake doesn't play nicely with DocBook :(
 
 SUBDIRS=images
-EXTRA_DIST=aptitude-html-ja.xsl aptitude-man-ja.xsl
+EXTRA_DIST=aptitude-html-ja.xsl
 
 LANGCODE=ja
 MANPAGE=aptitude.$(LANGCODE).8
@@ -53,9 +53,9 @@ manpage.xml: $(srcdir)/../en/manpage.xml $(srcdir)/../po4a/po/$(LANGCODE).po
 
 db2latex: doc-db2latex-stamp
 
-$(MANPAGE): $(XMLSOURCES) $(srcdir)/aptitude-man-$(LANGCODE).xsl $(srcdir)/../aptitude-man.xsl
+$(MANPAGE): $(XMLSOURCES) $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man
-	xsltproc -o output-man/aptitude.8 $(srcdir)/aptitude-man-$(LANGCODE).xsl aptitude.xml
+	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
 
 $(README): $(XMLSOURCES) $(srcdir)/../aptitude-txt.xsl $(srcdir)/../aptitude-common.xsl
