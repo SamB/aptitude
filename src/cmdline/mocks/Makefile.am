@@ -3,8 +3,6 @@ INCLUDES=-I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/i
 noinst_LIBRARIES = libcmdline-mocks.a
 
 libcmdline_mocks_a_SOURCES = \
-	cmdline_progress_display.h \
-	cmdline_progress_throttle.h \
 	download_status_display.cc \
 	download_status_display.h \
 	teletype.cc \
@@ -12,5 +10,3 @@ libcmdline_mocks_a_SOURCES = \
 	terminal.cc \
 	terminal.h \
 	transient_message.h
-
-EXTRA_DIST = SConscript

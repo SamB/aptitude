@@ -1,6 +1,6 @@
 // test_resolver_costs.cc
 //
-// Copyright (C) 2010 Daniel Burrows
+// Copyright (C) 2010-2011 Daniel Burrows
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License as
@@ -220,8 +220,9 @@ public:
     aptitude_resolver_cost_settings::component
       removals_component = settings.get_or_create_component("removals", aptitude_resolver_cost_settings::maximized),
       cancels_component = settings.get_or_create_component("cancels", aptitude_resolver_cost_settings::maximized),
-      aardvarks_component = settings.get_or_create_component("aardvarks", aptitude_resolver_cost_settings::maximized),
-      nonexistent_component = settings.get_or_create_component("llamas", aptitude_resolver_cost_settings::maximized);
+      aardvarks_component = settings.get_or_create_component("aardvarks", aptitude_resolver_cost_settings::maximized);
+
+    settings.get_or_create_component("llamas", aptitude_resolver_cost_settings::maximized);
 
     CPPUNIT_ASSERT_THROW(settings.get_or_create_component("removals", aptitude_resolver_cost_settings::additive),
                          CostTypeCheckFailure);

@@ -653,8 +653,6 @@ int main(int argc, char *argv[])
   bool clean_only = false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
-  bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
-  bool safe_upgrade_show_resolver_actions = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::Show-Resolver-Actions", false);
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
   bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
@@ -664,13 +662,6 @@ int main(int argc, char *argv[])
     resolver_mode = resolver_mode_safe;
 
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
-
-  // This tracks whether we got a --*-new-installs command-line
-  // argument, so we can present a useful warning message to the user
-  // if it's not applicable.
-  bool saw_new_installs_option = false;
-  // Same for --*-new-upgrades
-  bool saw_new_upgrades_option = false;
 
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
@@ -841,29 +832,21 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_SHOW_RESOLVER_ACTIONS:
 	      safe_resolver_show_resolver_actions = true;
-	      safe_upgrade_show_resolver_actions = true;
 	      break;
 	    case OPTION_NO_SHOW_RESOLVER_ACTIONS:
 	      safe_resolver_show_resolver_actions = false;
-	      safe_upgrade_show_resolver_actions = false;
 	      break;
 	    case OPTION_NO_NEW_INSTALLS:
-	      safe_upgrade_no_new_installs = true;
 	      safe_resolver_no_new_installs = true;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_ALLOW_NEW_INSTALLS:
-	      safe_upgrade_no_new_installs = false;
 	      safe_resolver_no_new_installs = false;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_NO_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = true;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_ALLOW_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = false;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_SAFE_RESOLVER:
 	      resolver_mode = resolver_mode_safe;
