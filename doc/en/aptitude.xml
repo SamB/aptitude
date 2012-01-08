@@ -10426,6 +10426,12 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  </para>
 
 	  <orderedlist>
+            <listitem>
+              <para>
+                Configuration file options specified on the command-line.
+              </para>
+            </listitem>
+
 	    <listitem>
 	      <para>
 		The user's configuration file,
@@ -10441,6 +10447,20 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<filename>/etc/apt/apt.conf</filename>.
 	      </para>
 	    </listitem>
+
+            <listitem>
+              <para>
+                The system configuration fragment files,
+                <filename>/etc/apt/apt.conf.d/*</filename>.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                The file specified by the <literal>APT_CONFIG</literal>
+                environment variable (if any).
+              </para>
+            </listitem>
 
 	    <listitem>
 	      <para>
