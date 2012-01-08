@@ -445,10 +445,10 @@
 	<listitem>
 	  <para>
 	    Forbid a package from being upgraded to a particular
-	    version.  This will prevent aptitude from
+	    version.  This will prevent &aptitude; from
 	    automatically upgrading to this version, but will
 	    allow automatic upgrades to future versions.  By
-	    default, aptitude will select the version to which the
+	    default, &aptitude; will select the version to which the
 	    package would normally be upgraded; you may override
 	    this selection by appending <quote><literal>=<replaceable>version</replaceable></literal></quote>
 	    to the package name: for instance, <quote><literal>aptitude forbid-version
@@ -459,8 +459,9 @@
 	    This command is useful for avoiding broken versions of
 	    packages without having to set and clear manual holds.
 	    If you decide you really want the forbidden version
-	    after all, the <quote><literal>install</literal></quote> command will
-	    remove the ban.
+	    after all, <quote><literal>install package...</literal></quote> will
+	    remove the ban. <literal>--schedule-only</literal> here can be
+	    used to just remove the ban without installing anything.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -862,11 +863,11 @@ p   kde           Depends    kdepim (>= 4:3.4.3)</screen>
 	  <para>
 	    The command <literal>why</literal> finds a dependency
 	    chain that installs the package named on the command line,
-	    as above.  Note that the dependency that aptitude produced
+	    as above.  Note that the dependency that &aptitude; produced
 	    in this case is only a suggestion.  This is because no
 	    package currently installed on this computer depends on or
 	    recommends the <systemitem>kdepim</systemitem> package; if
-	    a stronger dependency were available, aptitude would have
+	    a stronger dependency were available, &aptitude; would have
 	    displayed it.
 	  </para>
 
@@ -883,7 +884,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
 	    If one or more <replaceable>pattern</replaceable>s are
-	    present, then aptitude will begin its search at these
+	    present, then &aptitude; will begin its search at these
 	    patterns; that is, the first package in the chain it
 	    prints will be a package matching the pattern in question.
 	    The patterns are considered to be package names unless
@@ -916,7 +917,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  </note>
 
 	  <para>
-	    By default aptitude outputs only the <quote>most
+	    By default &aptitude; outputs only the <quote>most
 	    installed, strongest, tightest, shortest</quote>
 	    dependency chain.  That is, it looks for a chain that only
 	    contains packages which are installed or will be
@@ -930,7 +931,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
 	    If the verbosity level is 1 or more, then
-	    <emphasis>all</emphasis> the explanations aptitude can
+	    <emphasis>all</emphasis> the explanations &aptitude; can
 	    find will be displayed, in inverse order of relevance.  If
 	    the verbosity level is 2 or more, a truly excessive amount
 	    of debugging information will be printed to standard
@@ -1030,7 +1031,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	<listitem>
 	  <para>
-	    Copy the apt configuration directory
+	    Copy the &apt; configuration directory
 	    (<literal>/etc/apt</literal>) and a subset of the package
 	    database to the specified directory.  If no packages are
 	    listed, the entire package database is copied; otherwise
@@ -1437,7 +1438,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 
 	  <para>
 	    This does not affect the log of installations that
-	    aptitude has performed
+	    &aptitude; has performed
 	    (<filename>/var/log/aptitude</filename>); the log messages
 	    written using this configuration include internal program
 	    events, errors, and debugging messages.  See the
@@ -1499,7 +1500,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 
 	  <para>
 	    This does not affect the log of installations that
-	    aptitude has performed
+	    &aptitude; has performed
 	    (<filename>/var/log/aptitude</filename>); the log messages
 	    written using this configuration include internal program
 	    events, errors, and debugging messages.  See the
@@ -2338,10 +2339,11 @@ The following packages will be REMOVED:
 
       <listitem>
 	<para>
-	  If $HOME/.aptitude exists, aptitude will store its
-	  configuration file in $HOME/.aptitude/config.  Otherwise, it
-	  will look up the current user's home directory using <citerefentry><refentrytitle>getpwuid</refentrytitle><manvolnum>2</manvolnum></citerefentry>
-	  and place its configuration file there.
+	  If <filename>$HOME/.aptitude</filename> exists, &aptitude; will store
+	  its configuration file in <filename>$HOME/.aptitude/config</filename>.
+          Otherwise, it will look up the current user's home directory
+          using <citerefentry><refentrytitle>getpwuid</refentrytitle><manvolnum>2</manvolnum></citerefentry>
+          and place its configuration file there.
 	</para>
       </listitem>
     </varlistentry>
@@ -2735,7 +2737,7 @@ The following packages will be REMOVED:
     <para>
       The following options may occur on the command-line before the
       input file.  Options following the input file are presumed to be
-      arguments to aptitude.
+      arguments to &aptitude;.
     </para>
 
     <variablelist>
@@ -2785,7 +2787,7 @@ The following packages will be REMOVED:
 	    Do not remove the unpacked state directory after running
 	    <command>aptitude</command>.  You might want to use this
 	    if, for instance, you are debugging a problem that appears
-	    when aptitude's state file is modified.  When
+	    when &aptitude;'s state file is modified.  When
 	    <command>aptitude</command> finishes running, the name of
 	    the state directory will be printed so that you can access
 	    it in the future.
