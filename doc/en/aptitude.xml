@@ -522,18 +522,17 @@
 	  <para>
 	    If you want to test the latest bleeding-edge source code
 	    for &aptitude;, you can download unreleased &aptitude;
-	    source code using Mercurial.  Install Mercurial (available
-	    from <ulink
-	    url='http://www.selenic.com/mercurial/'></ulink>) and
-	    execute the command <command>hg clone
-	    http://hg.debian.org/hg/aptitude/head aptitude</command>
+	    source code using Git.  Install Git (available
+	    from <ulink url='http://git-scm.com/'/>) and
+            execute the command <command>git clone
+            git://git.debian.org/git/aptitude/aptitude.git</command>
 	    to retrieve the most recent source code.
 	  </para>
 
 
 	  <warning>
 	    <para>
-	      The &aptitude; Mercurial repository is an active
+	      The &aptitude; Git repository is an active
 	      development tree; it will change as bugs are fixed and
 	      features are added, and there is absolutely no guarantee
 	      that it will even compile, let alone run properly!  Bug
@@ -582,16 +581,18 @@
 	    The &aptitude; source tree is regularly updated with new
 	    features, bugfixes, and new bugs.  Once the source code is
 	    available on your computer (see the previous section), you
-	    can <command>cd</command> into it and type <command>hg
-	    pull &amp;&amp; hg update</command> to update it with any
-	    changes made to the main repository.
+	    can <command>cd</command> into it and type <command>git
+	    pull</command> to update it with any changes made to the
+	    main repository.
 	  </para>
 
 	  <para>
 	    To automatically receive notifications when changes are
-	    made to the &aptitude; codebase, subscribe to the RSS feed
+	    made to the &aptitude; codebase, subscribe to the Atom feed
 	    available at <ulink
-	    url='http://hg.debian.org/hg/aptitude/head?cl=tip;style=rss'/>.
+            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=atom'/>
+            or RSS feed available at <ulink
+            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=rss'/>.
 	  </para>
 	</section>
 
@@ -599,7 +600,7 @@
 	  <title>Building &aptitude; from the development tree</title>
 
 	  <para>
-	    To build aptitude from the Mercurial repository, you must
+	    To build aptitude from the Git repository, you must
 	    have the programs <systemitem>autoconf</systemitem> and
 	    <systemitem>automake</systemitem> installed.  Type
 	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
