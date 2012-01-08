@@ -600,7 +600,7 @@
 	  <title>Building &aptitude; from the development tree</title>
 
 	  <para>
-	    To build aptitude from the Git repository, you must
+	    To build &aptitude; from the Git repository, you must
 	    have the programs <systemitem>autoconf</systemitem> and
 	    <systemitem>automake</systemitem> installed.  Type
 	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
@@ -659,7 +659,7 @@
 
 	<para>
 	  Once the cache is loaded (this may take some time on slower
-	  machines), the main aptitude screen should appear:
+	  machines), the main &aptitude; screen should appear:
 	</para>
 
 	<screenshot>
@@ -712,7 +712,7 @@ These packages are currently installed on your computer.
 
 	<para>
 	  As the top line of the screen suggests, you can access
-	  aptitude's menus by pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo>; you can
+	  &aptitude;'s menus by pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo>; you can
 	  also click the mouse on a menu title if your system supports
 	  it.  Pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo> will open the Actions menu:
 	</para>
@@ -2955,8 +2955,8 @@ Th+-------------------------------------------------------------------------+
 	</para>
 
 	<para>
-	  By default, aptitude will use the command
-	  <systemitem>su</systemitem> to gain root privileges.  If you
+	  By default, &aptitude; will use the command
+	  <systemitem>su</systemitem> to gain &root; privileges.  If you
 	  would like it to use some other command (such as
 	  <systemitem>sudo</systemitem>), set the configuration option
 	  <link
@@ -5073,7 +5073,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
       <warning>
 	<para>
-	  The behavior of aptitude when given a search pattern without
+	  The behavior of &aptitude; when given a search pattern without
 	  a leading <quote>?</quote> (or <quote>~</quote>) is provided
 	  as a convenience for interactive use and will change in
 	  future releases; scripts that invoke
@@ -5473,7 +5473,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	<para>
 	  <xref linkend='tableSearchTermQuickGuide'/> provides a brief
-	  summary of all the search terms provided by aptitude.  A
+	  summary of all the search terms provided by &aptitude;.  A
 	  full description of each term can be found <link
 	  linkend='searchTermReferenceList'>below</link>.
 	</para>
@@ -11001,7 +11001,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>16384</literal></seg>
 
 	      <seg>
-		The minimum size in bytes at which aptitude will begin
+		The minimum size in bytes at which &aptitude; will begin
 		to display screenshots incrementally.  Below this
 		size, screenshots will not appear until they are fully
 		downloaded.
@@ -11014,7 +11014,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	      <seg>
 		The maximum number of bytes of screenshot data that
-		aptitude will store in memory for screenshots that are
+		&aptitude; will store in memory for screenshots that are
 		not currently being displayed.  The default is four
 		megabytes.
 	      </seg>
@@ -11170,13 +11170,13 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<literal><replaceable>protocol</replaceable>:<replaceable>command</replaceable></literal>.
 		<replaceable>protocol</replaceable> must be either
 		<literal>su</literal> or <literal>sudo</literal>; it
-		determines how aptitude invokes the program when it
-		wants to gain root privileges.  If
+		determines how &aptitude; invokes the program when it
+		wants to gain &root; privileges.  If
 		<replaceable>protocol</replaceable> is
 		<literal>su</literal>, then
 		<quote><literal><replaceable>command</replaceable> -c
 		<replaceable>arguments</replaceable></literal></quote> is used
-		to become root; otherwise, aptitude uses
+		to become &root;; otherwise, &aptitude; uses
 		<quote><literal><replaceable>command</replaceable>
 		<replaceable>arguments</replaceable></literal></quote>.  The
 		first word in <replaceable>command</replaceable> is
@@ -11211,7 +11211,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>false</literal></seg>
 
 	      <seg>
-		In previous versions of aptitude, the setting
+		In previous versions of &aptitude;, the setting
 		<literal>Aptitude::Recommends-Important</literal>
 		caused recommendations to be installed automatically,
 		the same way that <literal><link
@@ -11219,7 +11219,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		does today.  If this option is set to
 		<literal>false</literal> and
 		<literal>Aptitude::Recommends-Important</literal> is
-		also set to <literal>false</literal>, aptitude will
+		also set to <literal>false</literal>, &aptitude; will
 		set <literal><link
 		linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal>
 		to <literal>false</literal> and set
@@ -12910,7 +12910,7 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
       <qandaentry>
 	<question>
 	  <para>
-	    I want to select text, why doesn't aptitude let me disable
+	    I want to select text, why doesn't &aptitude; let me disable
 	    the mouse?
 	  </para>
 	</question>
