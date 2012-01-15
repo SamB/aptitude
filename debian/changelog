@@ -1,5 +1,10 @@
 aptitude (0.6.4-2) UNRELEASED; urgency=low
 
+  [ Manuel A. Fernandez Montecelo ]
+  * Acknowledge and incorporate changes from NMUs.
+  * List items wrongly nested in the document (Closes: #365615).  Thanks
+    Kobayashi Noritada <nori1@dolphin.c.u-tokyo.ac.jp>.
+
   [ Christian Perrier ]
   * Drop now useless aptitude-man-ja.xsl file. Closes: #489711
   * Fix Hungarian translation of Recommends and Suggests
@@ -39,6 +44,20 @@ aptitude (0.6.4-2) UNRELEASED; urgency=low
   * Mention /etc/apt/apt.conf.d/* in Configuration file. Closes: #497138
 
  -- Christian Perrier <bubulle@debian.org>  Sat, 31 Dec 2011 13:23:11 +0100
+
+aptitude (0.6.4-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * tv_usec is a suseconds_t not a time_t.  It failed to build on sparc.
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Sat, 29 Oct 2011 18:52:21 +0000
+
+aptitude (0.6.4-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix FTBFS due to changes in google-mock.  (Closes: #634413)
+
+ -- Philipp Kern <pkern@debian.org>  Sun, 16 Oct 2011 22:29:57 +0200
 
 aptitude (0.6.4-1) unstable; urgency=low
 
