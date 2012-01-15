@@ -119,7 +119,7 @@ private:
     struct timeval c = subtract_timevals(a, b);
 
     CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(5), c.tv_sec);
-    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(950), c.tv_usec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<suseconds_t>(950), c.tv_usec);
   }
 
   void testSubtractTimevalGreaterInSecondsLessInMilliseconds()
@@ -135,7 +135,7 @@ private:
     struct timeval c = subtract_timevals(a, b);
 
     CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(4), c.tv_sec);
-    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(999975), c.tv_usec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<suseconds_t>(999975), c.tv_usec);
   }
 
 
@@ -152,7 +152,7 @@ private:
     struct timeval c = subtract_timevals(a, b);
 
     CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(0), c.tv_sec);
-    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(0), c.tv_usec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<suseconds_t>(0), c.tv_usec);
   }
 
   void testSubtractTimevalLessInSecondsGreaterInMilliseconds()
@@ -168,7 +168,7 @@ private:
     struct timeval c = subtract_timevals(a, b);
 
     CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(-10), c.tv_sec);
-    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(490), c.tv_usec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<suseconds_t>(490), c.tv_usec);
   }
 
   void testSubtractTimevalLessInBothComponents()
@@ -184,7 +184,7 @@ private:
     struct timeval c = subtract_timevals(a, b);
 
     CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(-24), c.tv_sec);
-    CPPUNIT_ASSERT_EQUAL(static_cast<time_t>(999999), c.tv_usec);
+    CPPUNIT_ASSERT_EQUAL(static_cast<suseconds_t>(999999), c.tv_usec);
   }
 };
 
