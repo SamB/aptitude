@@ -30,7 +30,7 @@
 </xsl:template>
 
 <xsl:template match="note">
-  <xsl:text>&#10;.RS&#10;.Sh "注意</xsl:text>
+  <xsl:text>&#10;.RS&#10;.SH "注意</xsl:text>
   <xsl:if test="title">
     <xsl:text>: </xsl:text>
     <xsl:value-of select="title[1]"/>
