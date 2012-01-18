@@ -256,7 +256,7 @@ static cw::fragment *apt_error_fragment()
 // Handles "search" dialogs for pagers
 static void pager_search(cw::pager &p)
 {
-  prompt_string(W_("Search for:"),
+  prompt_string(W_("Search for: "),
 		p.get_last_search(),
 		cw::util::arg(sigc::mem_fun(p, &cw::pager::search_for)),
 		NULL,
@@ -2232,7 +2232,7 @@ static void do_dump_resolver()
   static cw::editline::history_list history;
 
   if(resman != NULL && resman->resolver_exists())
-    prompt_string(_("File to which the resolver state should be dumped:"),
+    prompt_string(_("File to which the resolver state should be dumped: "),
 		  "",
 		  cw::util::arg(sigc::ptr_fun(handle_dump_resolver_response)),
 		  NULL,

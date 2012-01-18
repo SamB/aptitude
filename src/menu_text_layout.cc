@@ -72,8 +72,8 @@ bool menu_text_layout::find_search_back_enabled()
 
 bool menu_text_layout::find_search_back()
 {
-  prompt_string(_("Search backwards for: "),
-		cw::util::transcode(last_search),
+  prompt_string(W_("Search backwards for: "),
+		last_search,
 		cw::util::arg(sigc::mem_fun(this, &menu_text_layout::do_find_search_back)),
 		NULL,
 		NULL,

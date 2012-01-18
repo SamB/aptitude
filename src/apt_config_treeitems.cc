@@ -277,7 +277,7 @@ namespace aptitude
 
 	  void edit()
 	  {
-	    prompt_string(ssprintf(_("Editing \"%ls\""), description.c_str()),
+	    prompt_string(ssprintf(_("Editing \"%ls\": "), description.c_str()),
 			  aptcfg->Find(item, dflt.c_str()),
 			  cw::util::arg(sigc::mem_fun(this, &string_config_treeitem::set_text)),
 			  NULL,
