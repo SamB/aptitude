@@ -210,13 +210,14 @@ static void usage()
   printf(_(" forget-new   - Forget what packages are \"new\".\n"));
   printf(_(" search       - Search for a package by name and/or expression.\n"));
   printf(_(" show         - Display detailed information about a package.\n"));
+  printf(_(" versions     - Displays the versions of specified packages.\n");
   printf(_(" clean        - Erase downloaded package files.\n"));
   printf(_(" autoclean    - Erase old downloaded package files.\n"));
   printf(_(" changelog    - View a package's changelog.\n"));
   printf(_(" download     - Download the .deb file for a package.\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package.\n"));
   printf(_(" why          - Show the manually installed packages that require a package, or\n"
-           "                why one or more packages would require the given package\n"));
+           "                why one or more packages would require the given package.\n"));
   printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"
            "                with the given package, or why one or more packages would\n"
            "                lead to a conflict with the given package if installed.\n"));
@@ -251,9 +252,9 @@ static void usage()
            "                strong dependencies.\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
   printf(_(" -u             Download new package lists on startup.\n"));
-  printf(_("                  (terminal interface only)"));
+  printf(_("                  (terminal interface only)\n"));
   printf(_(" -i             Perform an install run on startup.\n"));
-  printf(_("                  (terminal interface only)"));
+  printf(_("                  (terminal interface only)\n"));
   printf("\n");
   printf(_("                  This aptitude does not have Super Cow Powers.\n"));
 }
