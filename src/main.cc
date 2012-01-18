@@ -210,7 +210,7 @@ static void usage()
   printf(_(" forget-new   - Forget what packages are \"new\".\n"));
   printf(_(" search       - Search for a package by name and/or expression.\n"));
   printf(_(" show         - Display detailed information about a package.\n"));
-  printf(_(" versions     - Displays the versions of specified packages.\n");
+  printf(_(" versions     - Displays the versions of specified packages.\n"));
   printf(_(" clean        - Erase downloaded package files.\n"));
   printf(_(" autoclean    - Erase old downloaded package files.\n"));
   printf(_(" changelog    - View a package's changelog.\n"));
