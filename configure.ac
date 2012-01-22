@@ -922,11 +922,13 @@ AC_CONFIG_FILES([
 	doc/fr/images/Makefile
 	doc/ja/Makefile
 	doc/ja/images/Makefile
+	doc/pl/Makefile
 	doc/po4a/Makefile
 	doc/po4a/po/Makefile
 	doc/po4a/add_de/Makefile
 	doc/po4a/add_es/Makefile
 	doc/po4a/add_fr/Makefile
+	doc/po4a/add_pl/Makefile
 	m4/Makefile
 	po/Makefile.in
 	src/Makefile
