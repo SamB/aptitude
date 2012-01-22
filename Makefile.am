@@ -10,7 +10,7 @@ SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
 
 dist_bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
 
-MANPAGE_LOCALES=gl it pl
+MANPAGE_LOCALES=gl it
 
 TLMANPAGES = $(wildcard $(srcdir)/aptitude.??.8)
 TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/help-??_??.txt)
