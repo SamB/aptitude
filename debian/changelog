@@ -1,5 +1,13 @@
 aptitude (0.6.4-2) UNRELEASED; urgency=low
 
+  [ Manuel A. Fernandez Montecelo ]
+  * Acknowledge and incorporate changes from NMUs (thanks Philipp Kern and Kurt
+    Roeckx).
+  * List items wrongly nested in the document (Closes: #365615).  Thanks
+    Kobayashi Noritada <nori1@dolphin.c.u-tokyo.ac.jp>.
+  * Update dead URL for regular expressions in the manual, thanks Diederik de
+    Haas <didi.debian@cknow.org> (Closes: #581508)
+
   [ Christian Perrier ]
   * Drop now useless aptitude-man-ja.xsl file. Closes: #489711
   * Fix Hungarian translation of Recommends and Suggests
@@ -37,8 +45,35 @@ aptitude (0.6.4-2) UNRELEASED; urgency=low
   * Fix missing entity refs and filename elements. Closes: #651289
   * Fix description of Aptitude::Sections::Top-Sections. Closes: #651661
   * Mention /etc/apt/apt.conf.d/* in Configuration file. Closes: #497138
+  * Fix manpage text for safe-resolver.  Thanks to Dan Jacobson
+    (Closes: #511731, #568297)
+  * Handles 'Enhances' relations in preview. (Closes: #583201)
+  * Fix resolver help for next/previous. (Closes: #495046)
+  * Typos in manpage.  Thanks to A. Costa for reporting them
+    (Closes: #644651)
+  * Boldness of Tags and User-Tags fields. (Closes: #652360)
+  * Wrap long description of boolean_config_treeitems. (Closes: #653120)
+  * Update menu files.  Thanks to Bill Allombert (Closes: #445125)
+  * Convert reportbug script from Python to sh.  Output order is now
+    correct. (Closes: #651373)
+  * Don't run file in aptitude-run-state-bundle.
+    Thanks to Sven Joachim for the patch (Closes: #635572)
 
  -- Christian Perrier <bubulle@debian.org>  Sat, 31 Dec 2011 13:23:11 +0100
+
+aptitude (0.6.4-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * tv_usec is a suseconds_t not a time_t.  It failed to build on sparc.
+
+ -- Kurt Roeckx <kurt@roeckx.be>  Sat, 29 Oct 2011 18:52:21 +0000
+
+aptitude (0.6.4-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix FTBFS due to changes in google-mock.  (Closes: #634413)
+
+ -- Philipp Kern <pkern@debian.org>  Sun, 16 Oct 2011 22:29:57 +0200
 
 aptitude (0.6.4-1) unstable; urgency=low
 

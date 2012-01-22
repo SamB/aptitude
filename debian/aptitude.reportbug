@@ -1,29 +1,29 @@
-#!/usr/bin/python
+#!/bin/sh
 
-import os
+export LANG=C
 
-# Make sure aptitude version numbers etc don't use translations.
-os.environ['LANG'] = 'C'
+if [ $TERM ]; then
+    echo "Terminal: $TERM" >&3
+else
+    echo "\$TERM not set." >&3
+fi
 
-out = os.fdopen(3, 'w')
+if [ $DISPLAY ]; then
+    echo "\$DISPLAY is set." >&3
+else
+    echo "\$DISPLAY not set." >&3
+fi
 
-if 'TERM' in os.environ:
-    out.write('Terminal: %s\n' % os.environ['TERM'])
-else:
-    out.write('$TERM not set.\n')
+aptitude=$(which aptitude)
+echo "which aptitude: $aptitude" >&3
 
-if 'DISPLAY' in os.environ:
-    out.write('$DISPLAY is set.\n')
-else:
-    out.write('$DISPLAY not set.\n')
+echo >&3
 
-out.write('`which aptitude`: %s\n' % os.popen('/usr/bin/which aptitude 2>&1').read().strip())
-
-out.write('aptitude version information:\n')
+echo "aptitude version information:" >&3
 # I would like to run `which aptitude`, but that raises security issues.
-os.system('/usr/bin/aptitude --version 1>&3')
+/usr/bin/aptitude --version >&3
 
-out.write('\n')
+echo >&3
 
-out.write('aptitude linkage:\n')
-os.system('/usr/bin/ldd /usr/bin/aptitude 1>&3')
+echo "aptitude linkage:" >&3
+/usr/bin/ldd /usr/bin/aptitude >&3
