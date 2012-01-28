@@ -1,9 +1,9 @@
 Source: aptitude
 Section: admin
-Maintainer: Daniel Burrows <dburrows@debian.org>
-Uploaders: Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
+Maintainer: aptitude Development Team <aptitude-devel@lists.alioth.debian.org>
+Uploaders: Daniel Burrows <dburrows@debian.org>, Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
 DM-Upload-Allowed: yes
-Build-Depends: libapt-pkg-dev (>= 0.8.0), debhelper (>= 5.0.0),
+Build-Depends: libapt-pkg-dev (>= 0.8.0), debhelper (>= 8.0.0),
  libsigc++-2.0-dev, libcppunit-dev, libcwidget-dev (>= 0.5.6.1-2),
  libncursesw5-dev, gettext, g++ (>= 4:3.2.2-0), docbook-xsl,
  docbook-xml, xsltproc, elinks, po4a, libept-dev (>= 0.5),
@@ -13,7 +13,7 @@ Build-Depends: libapt-pkg-dev (>= 0.8.0), debhelper (>= 5.0.0),
  libgtest-dev, google-mock, libsqlite3-dev
 Vcs-Git: git://git.debian.org/git/aptitude/aptitude.git
 Vcs-Browser: http://git.debian.org/?p=aptitude/aptitude.git;a=summary
-Standards-Version: 3.8.3
+Standards-Version: 3.9.2
 
 Package: aptitude
 Architecture: any
