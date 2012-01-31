@@ -150,6 +150,9 @@ wstring dep_text(const pkgCache::DepIterator &d)
     case pkgCache::Dep::Obsoletes:
       return swsprintf(W_("%s obsoletes %s").c_str(),
 				 name, targets.c_str());
+    case pkgCache::Dep::Enhances:
+      return swsprintf(W_("%s enhances %s").c_str(),
+				 name, targets.c_str());
     default:
       abort();
     }
