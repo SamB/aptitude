@@ -176,8 +176,8 @@ static void show_version()
   printf(_("  Gtk+ support disabled.\n"));
 #endif
 #ifdef HAVE_QT
-  printf(_("  Compiled with Qt 4.6.2 %s\n"), QT_VERSION_STR);
-  printf(_("  Running on Qt 4.6.2 %s\n"), qVersion());
+  printf(_("  Compiled with Qt %s\n"), QT_VERSION_STR);
+  printf(_("  Running on Qt %s\n"), qVersion());
 #else
   printf(_("  Qt support disabled.\n"));
 #endif
@@ -234,7 +234,7 @@ static void usage()
 #endif
   printf(_(" -s             Simulate actions, but do not actually perform them.\n"));
   printf(_(" -d             Only download packages, do not install or remove anything.\n"));
-  printf(_(" -P             Always prompt for confirmation or actions.\n"));
+  printf(_(" -P             Always prompt for confirmation of actions.\n"));
   printf(_(" -y             Assume that the answer to simple yes/no questions is 'yes'.\n"));
   printf(_(" -F format      Specify a format for displaying search results; see the manual.\n"));
   printf(_(" -O order       Specify how search results should be sorted; see the manual.\n"));
@@ -245,10 +245,10 @@ static void usage()
   printf(_(" -Z             Show the change in installed size of each package.\n"));
   printf(_(" -v             Display extra information. (may be supplied multiple times).\n"));
   printf(_(" -t [release]   Set the release from which packages should be installed.\n"));
-  printf(_(" -q             In command-line mode, suppress the incremental progress.\n"
+  printf(_(" -q             In command-line mode, suppress the incremental progress\n"
            "                indicators.\n"));
   printf(_(" -o key=val     Directly set the configuration option named 'key'.\n"));
-  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as.\n"
+  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n"
            "                strong dependencies.\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
   printf(_(" -u             Download new package lists on startup.\n"));
