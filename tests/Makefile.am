@@ -37,7 +37,7 @@ if BUILD_LOCAL_GMOCK
 noinst_LIBRARIES = libgmock.a
 
 GMOCK_LDFLAGS = $(srcdir)/libgmock.a -lgtest
-libgmock_a_SOURCES = /usr/src/gmock/src/gmock-all.cc
+nodist_libgmock_a_SOURCES = /usr/src/gmock/src/gmock-all.cc
 libgmock_a_CPPFLAGS = -I/usr/src/gmock
 else
 GMOCK_LDFLAGS = -lgmock -lgtest
