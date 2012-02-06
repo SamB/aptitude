@@ -1,3 +1,115 @@
+[2/6/2012]
+Version 0.6.5                               "Splat!"
+
+- Removed features:
+
+  * [cmdline]: Remove broken safe-upgrade-only options.
+
+               Specifically, Safe-Upgrade::No-New-Installs and
+               Safe-Upgrade::Show-Resolver-Actions.
+
+               These options were documented but have never worked.  A
+               quick skim didn't turn up any bugs filed about them, so
+               I guess no-one ever tried them.  Removed them.
+
+- Minor bugs:
+
+  * [all]: Do not translate program options in Catalan translation.
+           (Closes: #462558)
+
+  * [all]: Do not translate program options in Simplified Chinese
+           translation. (Closes: #563132)
+
+- Internal changes:
+
+  * [gtk]: Hopefully fix the use of VTE in the GTK+ frontend.
+
+  * [all]: Don't run file in aptitude-run-state-bundle.  Thanks to
+           Sven Joachim for the patch. (Closes: #635572)
+
+- Cosmetic and UI bugs:
+
+  * [curses]: Handles 'Enhances' relations in preview. (Closes: #583201)
+
+  * [cmdline]: Fix resolver help for next/previous. (Closes: #495046)
+
+  * [curses]: Boldness of Tags and User-Tags fields. (Closes: #652360)
+
+  * [curses]: Wrap long description of boolean_config_treeitems. (Closes: #653120)
+
+  * [cmdline]: Add versions, newlines to --help. (Closes: #581597, #604392)
+
+  * [all]: Fix prompt strings. (Closes: #652419)
+
+  * [cmdline]: Typos in output of version, usage.
+
+- Build system changes:
+
+  * [all]: Clean up the use of AC_COMPILE_IFELSE and AC_LINK_IFELSE
+           to fix a bunch of autoconf warnings.
+
+  * [all]: Modify autoconf/automake scripts to handle gmock changes.
+
+  * [all]: Silence automake warnings about GNU extensions.
+
+- Documentation:
+
+  * [doc]: Cleaned up the documentation of --new-new-upgrades and
+           --no-new-installs. (Closes: #568297)
+
+  * [doc]: Minor fixes in documentation and changelog. (Closes: #403220)
+
+  * [doc]: More precise wording suggested by jidanni in the
+           manpage. (Closes: #542293)
+
+  * [doc]: Switch Polish manpages to po4a. Thanks to Michał
+           Kułach. (Closes: #656820)
+
+  * [doc]: Fix link in users manual. (Closes: #397038)
+
+  * [doc]: Fix missing entity refs and filename elements. (Closes: #651289)
+
+  * [doc]: Update development details in the user's reference. (Closes: #651288)
+
+  * [doc]: Fix description of Aptitude::Sections::Top-Sections. (Closes: #651661)
+
+  * [doc]: Mention /etc/apt/apt.conf.d/* in Configuration file. (Closes: #497138)
+
+  * [doc]: Fix manpage text for safe-resolver.  Thanks to Dan
+           Jacobson (Closes: #511731, #568297)
+
+  * [doc]: Update description of forbid-version. (Closes: #511365)
+
+  * [doc]: Fix typos in manpage.  Thanks to A. Costa for reporting
+           them (Closes: #644651)
+
+  * [doc]: List items wrongly nested in the document.  Thanks
+           Kobayashi Noritada <nori1@dolphin.c.u-tokyo.ac.jp> (Closes: #365615)
+
+  * [doc]: Update dead URL for regular expressions in the manual,
+           thanks Diederik de Haas <didi.debian@cknow.org> (Closes: #581508)
+
+  * [doc]: Properly document 'Q' and 'q' keys for user interface in
+           the Help file.  Thanks Sebastian Kapfer and Stéphane
+           Aulery. (Closes: #242269)
+
+- Translation updates:
+
+  * Calatan (Closes: #332592)
+  * Danish (Closes: #608593)
+  * Dutch (Closes: #601672)
+  * French (Closes: #631759)
+  * German (Closes: #603589)
+  * Greek (Closes: #606871)
+  * Hungarian (Closes: #548609)
+  * Japanese (Closes: #550451)
+  * Polish (Closes: #657174)
+  * Portuguese (Closes: #577995)
+  * Russian (Closes: #559664)
+  * Simplified Chinese (Closes: #594526, #566367)
+  * Slovak (Closes: #559288, #653056)
+  * Spanish (Closes: #564445)
+
 [4/2/2011]
 Version 0.6.4                               "Spring is sprung"
 
