@@ -1,4 +1,4 @@
-aptitude (0.6.4-2) UNRELEASED; urgency=low
+aptitude (0.6.5-1) UNRELEASED; urgency=low
 
   [ Christian Perrier ]
   * Drop now useless aptitude-man-ja.xsl file. Closes: #489711
@@ -52,6 +52,10 @@ aptitude (0.6.4-2) UNRELEASED; urgency=low
     correct. (Closes: #651373)
   * Don't run file in aptitude-run-state-bundle.
     Thanks to Sven Joachim for the patch (Closes: #635572)
+  * Add versions, newlines to --help (Closes: #581597, #604392)
+  * Fix prompt strings. (Closes: #652419)
+  * Fix typo triggering "unexpected null solution". Thanks to Hristo
+    Hristov for the patch (Closes: #552747)
 
   [ Manuel A. Fernandez Montecelo ]
   * Acknowledge and incorporate changes from NMUs (thanks Philipp Kern and Kurt
@@ -71,7 +75,7 @@ aptitude (0.6.4-2) UNRELEASED; urgency=low
     - Fix for bug (Closes: #242269): Properly document 'Q' and 'q' keys for user
       interface in the Help file.  Thanks Sebastian Kapfer and Stéphane Aulery.
 
- -- Christian Perrier <bubulle@debian.org>  Sat, 31 Dec 2011 13:23:11 +0100
+ -- Christian Perrier <bubulle@debian.org>  Tue, 07 Feb 2012 09:14:11 +0800
 
 aptitude (0.6.4-1.2) unstable; urgency=low
 
