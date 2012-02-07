@@ -2,7 +2,6 @@ MAINTAINERCLEANFILES = Makefile.in
 
 INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(top_srcdir)/src -I$(srcdir)
 BOOST_TEST_LDFLAGS = @BOOST_UNIT_TEST_LIBS@
-GMOCK_LDFLAGS = -lgmock -lgtest
 AM_CPPFLAGS = -DBOOST_TEST_DYN_LINK -DSRCDIR=\"$(srcdir)\"
 LDADD = $(top_builddir)/src/loggers.o			       \
 $(top_builddir)/src/generic/apt/matching/libgeneric-matching.a \
@@ -32,6 +31,17 @@ interactive_set_test_SOURCES = interactive_set_test.cc
 
 test_choice.o test_choice_set.o test_resolver.o: $(top_srcdir)/src/generic/problemresolver/*.h
 test_promotion_set.o test_resolver_costs.o test_resolver_hints.o: $(top_srcdir)/src/generic/problemresolver/*.h
+
+# Build a local copy of gmock if necessary.
+if BUILD_LOCAL_GMOCK
+noinst_LIBRARIES = libgmock.a
+
+GMOCK_LDFLAGS = $(builddir)/libgmock.a -lgtest
+nodist_libgmock_a_SOURCES = /usr/src/gmock/src/gmock-all.cc
+libgmock_a_CPPFLAGS = -I/usr/src/gmock
+else
+GMOCK_LDFLAGS = -lgmock -lgtest
+endif
 
 # Note: test_apt_universe is not built by default because it takes way
 # too long.  Of course, ideally this would be done in a less ad-hoc

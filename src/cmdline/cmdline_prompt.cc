@@ -792,7 +792,7 @@ static void cmdline_parse_changelog(string response, const shared_ptr<terminal_m
   else
     do_cmdline_changelog(packages, term_metrics);
 
-  prompt_string(_("Press Return to continue"));
+  prompt_string(_("Press Return to continue."));
 }
 
 static void cmdline_parse_why(string response,

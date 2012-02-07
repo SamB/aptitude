@@ -461,6 +461,8 @@ cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 				   _("Replaces"), pkgCache::Dep::Replaces));
   fragments.push_back(dep_lst_frag(ver.DependsList(),
 				   _("Obsoletes"), pkgCache::Dep::Obsoletes));
+  fragments.push_back(dep_lst_frag(ver.DependsList(),
+				   _("Enhances"), pkgCache::Dep::Enhances));
 
   fragments.push_back(prv_lst_frag(ver.ProvidesList(), false, verbose, _("Provides")));
   fragments.push_back(prv_lst_frag(ver.ParentPkg().ProvidesList(), true, verbose, _("Provided by")));

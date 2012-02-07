@@ -260,6 +260,10 @@ pkgCache::Dep::DepType parse_deptype(const string &s)
     return pkgCache::Dep::DpkgBreaks;
   else if(!strcasecmp(s.c_str(), "replaces"))
     return pkgCache::Dep::Replaces;
+  else if(!strcasecmp(s.c_str(), "obsoletes"))
+    return pkgCache::Dep::Obsoletes;
+  else if(!strcasecmp(s.c_str(), "enhances"))
+    return pkgCache::Dep::Enhances;
   else // ewww.
     return (pkgCache::Dep::DepType) -1;
 }

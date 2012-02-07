@@ -1,6 +1,6 @@
 // dashboardtab.cc
 //
-//   Copyright (C) 2008-2009 Obey Arthur Liu
+//   Copyright (C) 2008-2009, 2011 Obey Arthur Liu
 //   Copyright (C) 2008 Daniel Burrows
 //
 //   This program is free software; you can redistribute it and/or
@@ -614,7 +614,7 @@ namespace gui
 	    // TODO: if we ever allow full replacements in safe upgrade,
 	    // this will be wrong; when that happens, we need to account
 	    // for them and include them in the explanatory text below.
-	    if(pkg.get_pkg().CurrentVer() != sol.version_of(pkg).get_ver())
+	    if(pkg.get_pkg().CurrentVer() != installed.get_ver())
 	      ++num_upgrades_selected;
 	  }
       }

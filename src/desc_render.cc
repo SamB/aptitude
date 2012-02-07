@@ -128,15 +128,11 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
 	  const std::string name(i->str());
 #endif
 
-	  tags.push_back(cw::text_fragment(name, cw::style_attrs_on(A_BOLD)));
+	  tags.push_back(cw::text_fragment(name));
 	}
 
-      wstring tagstitle = W_("Tags");
-
-      rval.push_back(cw::fragf("%ls: %F",
-			       tagstitle.c_str(),
-			       indentbox(0, wcswidth(tagstitle.c_str(), tagstitle.size())+2,
-					 wrapbox(cw::join_fragments(tags, L", ")))));
+      rval.push_back(dropbox(cw::fragf("%B%s: %b", _("Tags")),
+                             wrapbox(cw::join_fragments(tags, L", "))));
     }
 
   typedef aptitudeDepCache::user_tag user_tag;
@@ -147,12 +143,10 @@ cw::fragment *make_tags_fragment(const pkgCache::PkgIterator &pkg)
       for(set<user_tag>::const_iterator it = user_tags.begin();
 	  it != user_tags.end(); ++it)
 	{
-	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it),
-					   cw::style_attrs_on(A_BOLD)));
+	  tags.push_back(cw::text_fragment((*apt_cache_file)->deref_user_tag(*it)));
 	}
 
-      wstring title = W_("User Tags");
-      rval.push_back(dropbox(cw::fragf("%ls: ", title.c_str()),
+      rval.push_back(dropbox(cw::fragf("%B%s: %b", _("User Tags")),
 			     wrapbox(cw::join_fragments(tags, L", "))));
     }
 

@@ -1260,6 +1260,9 @@ namespace gui
       case pkgCache::Dep::Obsoletes:
         return ssprintf(_("%s obsoletes %s"),
 			name, targets.c_str());
+      case pkgCache::Dep::Enhances:
+        return ssprintf(_("%s enhances %s"),
+			name, targets.c_str());
       default:
         abort();
       }

@@ -96,12 +96,13 @@ namespace aptitude
 	  bool value = aptcfg->FindB(item, dflt);
 
 	  std::vector<cw::fragment *> fragments;
-	  fragments.push_back(cw::fragf(_("%BOption:%b  %s\n"
-					  "%BDefault:%b %s\n"
-					  "%BValue:%b   %s\n"),
-					item.c_str(),
-					dflt  ? _("True") : _("False"),
-					value ? _("True") : _("False")));
+          fragments.push_back(drophardwrapbox(cw::fragf(_("%BOption:%b  ")),
+                                              item));
+          fragments.push_back(drophardwrapbox(cw::fragf(_("%BDefault:%b ")),
+                                              dflt  ? _("True") : _("False")));
+          fragments.push_back(drophardwrapbox(cw::fragf(_("%BValue:%b   ")),
+                                              value ? _("True") : _("False")));
+
 	  fragments.push_back(cw::newline_fragment());
 	  fragments.push_back(wrapbox(cw::fragf(long_description.c_str())));
 
@@ -276,7 +277,7 @@ namespace aptitude
 
 	  void edit()
 	  {
-	    prompt_string(ssprintf(_("Editing \"%ls\""), description.c_str()),
+	    prompt_string(ssprintf(_("Editing \"%ls\": "), description.c_str()),
 			  aptcfg->Find(item, dflt.c_str()),
 			  cw::util::arg(sigc::mem_fun(this, &string_config_treeitem::set_text)),
 			  NULL,

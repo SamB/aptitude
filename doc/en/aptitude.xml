@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.6.4'>
+  <!ENTITY VERSION '0.6.5'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -484,17 +484,17 @@
 		  make</ulink>.
 		</para>
 	      </listitem>
-
-	      <listitem>
-		<para>
-		  Last but not least, download the most recent
-		  &aptitude; source code, available from <ulink
-		  url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
-		  (scroll to the bottom of the page and download the
-		  <quote>.orig.tar.gz</quote> file)
-		</para>
-	      </listitem>
 	    </itemizedlist>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Last but not least, download the most recent
+	      &aptitude; source code, available from <ulink
+	      url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
+	      (scroll to the bottom of the page and download the
+	      <quote>.orig.tar.gz</quote> file)
+	    </para>
 	  </listitem>
 	</orderedlist>
 
@@ -522,18 +522,17 @@
 	  <para>
 	    If you want to test the latest bleeding-edge source code
 	    for &aptitude;, you can download unreleased &aptitude;
-	    source code using Mercurial.  Install Mercurial (available
-	    from <ulink
-	    url='http://www.selenic.com/mercurial/'></ulink>) and
-	    execute the command <command>hg clone
-	    http://hg.debian.org/hg/aptitude/head aptitude</command>
+	    source code using Git.  Install Git (available
+	    from <ulink url='http://git-scm.com/'/>) and
+            execute the command <command>git clone
+            git://git.debian.org/git/aptitude/aptitude.git</command>
 	    to retrieve the most recent source code.
 	  </para>
 
 
 	  <warning>
 	    <para>
-	      The &aptitude; Mercurial repository is an active
+	      The &aptitude; Git repository is an active
 	      development tree; it will change as bugs are fixed and
 	      features are added, and there is absolutely no guarantee
 	      that it will even compile, let alone run properly!  Bug
@@ -582,16 +581,18 @@
 	    The &aptitude; source tree is regularly updated with new
 	    features, bugfixes, and new bugs.  Once the source code is
 	    available on your computer (see the previous section), you
-	    can <command>cd</command> into it and type <command>hg
-	    pull &amp;&amp; hg update</command> to update it with any
-	    changes made to the main repository.
+	    can <command>cd</command> into it and type <command>git
+	    pull</command> to update it with any changes made to the
+	    main repository.
 	  </para>
 
 	  <para>
 	    To automatically receive notifications when changes are
-	    made to the &aptitude; codebase, subscribe to the RSS feed
+	    made to the &aptitude; codebase, subscribe to the Atom feed
 	    available at <ulink
-	    url='http://hg.debian.org/hg/aptitude/head?cl=tip;style=rss'/>.
+            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=atom'/>
+            or RSS feed available at <ulink
+            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=rss'/>.
 	  </para>
 	</section>
 
@@ -599,7 +600,7 @@
 	  <title>Building &aptitude; from the development tree</title>
 
 	  <para>
-	    To build aptitude from the Mercurial repository, you must
+	    To build &aptitude; from the Git repository, you must
 	    have the programs <systemitem>autoconf</systemitem> and
 	    <systemitem>automake</systemitem> installed.  Type
 	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
@@ -658,7 +659,7 @@
 
 	<para>
 	  Once the cache is loaded (this may take some time on slower
-	  machines), the main aptitude screen should appear:
+	  machines), the main &aptitude; screen should appear:
 	</para>
 
 	<screenshot>
@@ -711,7 +712,7 @@ These packages are currently installed on your computer.
 
 	<para>
 	  As the top line of the screen suggests, you can access
-	  aptitude's menus by pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo>; you can
+	  &aptitude;'s menus by pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo>; you can
 	  also click the mouse on a menu title if your system supports
 	  it.  Pressing <keycombo action='simul'><keycap>Control</keycap><keycap>t</keycap></keycombo> will open the Actions menu:
 	</para>
@@ -1173,7 +1174,7 @@ These packages are currently installed on your computer.
 
 	<para>
 	  For instance, in the screen shot below, the
-	  <systemitem>kaffeine</systemitem> package was selected and
+	  <systemitem>kaffeine-mozilla</systemitem> package was selected and
 	  <keycap>+</keycap> was pushed.  The package is now
 	  highlighted in green and the letter <quote>i</quote> has
 	  appeared to the left of its name, to indicate that it will
@@ -1359,7 +1360,8 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	    results in the following solution being presented:
 	  </para>
 
-	  <screenshot id='solutionScreenSnapshot2'>
+          <informalfigure id='solutionScreenSnapshot2'>
+	  <screenshot>
 	    <mediaobject>
 	      <imageobject>
 		<imagedata fileref='images/solution-screen-snapshot2.png' format='PNG' width='100%' scalefit='1'/>
@@ -1393,6 +1395,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </textobject>
 	    </mediaobject>
 	  </screenshot>
+          </informalfigure>
 
 	  <!-- Move to the reference manual? -->
 	  <para>
@@ -2952,8 +2955,8 @@ Th+-------------------------------------------------------------------------+
 	</para>
 
 	<para>
-	  By default, aptitude will use the command
-	  <systemitem>su</systemitem> to gain root privileges.  If you
+	  By default, &aptitude; will use the command
+	  <systemitem>su</systemitem> to gain &root; privileges.  If you
 	  would like it to use some other command (such as
 	  <systemitem>sudo</systemitem>), set the configuration option
 	  <link
@@ -3450,7 +3453,7 @@ i A 0.5.25
 
 		  <para>
 		    If the package is installed, it will be removed.
-		    Futhermore, even if it is removed, any remaining
+		    Furthermore, even if it is removed, any remaining
 		    files (such as configuration files) related to the
 		    package will be removed from the system.
 		  </para>
@@ -3545,8 +3548,8 @@ i A 0.5.25
 
 		  <para>
 		    Note that the reinstallation will not be saved
-		    when you quit &aptitude; or perform an install run
-		    for technical reasons.  (essentially, the
+		    when you quit &aptitude; or perform an install run,
+		    for technical reasons (essentially, the
 		    underlying software layers
 		    (<command>dpkg</command> and &apt;) do not provide
 		    any way to find out whether a reinstallation was
@@ -5070,7 +5073,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
       <warning>
 	<para>
-	  The behavior of aptitude when given a search pattern without
+	  The behavior of &aptitude; when given a search pattern without
 	  a leading <quote>?</quote> (or <quote>~</quote>) is provided
 	  as a convenience for interactive use and will change in
 	  future releases; scripts that invoke
@@ -5144,7 +5147,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<para>
 	  Most textual searches (for package names, descriptions, etc)
 	  are performed using case-insensitive <ulink
-	  url='http://sitescooper.org/tao_regexps.html'>regular
+	  url='http://web.archive.org/web/20060719181658/http://sitescooper.org/tao_regexps.html'>regular
 	  expressions</ulink>.  A regular expression will match
 	  against a field if any portion of the field matches the
 	  expression; for instance,
@@ -5470,7 +5473,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	<para>
 	  <xref linkend='tableSearchTermQuickGuide'/> provides a brief
-	  summary of all the search terms provided by aptitude.  A
+	  summary of all the search terms provided by &aptitude;.  A
 	  full description of each term can be found <link
 	  linkend='searchTermReferenceList'>below</link>.
 	</para>
@@ -10423,6 +10426,12 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  </para>
 
 	  <orderedlist>
+            <listitem>
+              <para>
+                Configuration file options specified on the command-line.
+              </para>
+            </listitem>
+
 	    <listitem>
 	      <para>
 		The user's configuration file,
@@ -10438,6 +10447,20 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<filename>/etc/apt/apt.conf</filename>.
 	      </para>
 	    </listitem>
+
+            <listitem>
+              <para>
+                The system configuration fragment files,
+                <filename>/etc/apt/apt.conf.d/*</filename>.
+              </para>
+            </listitem>
+
+            <listitem>
+              <para>
+                The file specified by the <literal>APT_CONFIG</literal>
+                environment variable (if any).
+              </para>
+            </listitem>
 
 	    <listitem>
 	      <para>
@@ -10840,41 +10863,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configCmdLine-Safe-Upgrade-No-New-Installs'>
-	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		In command-line mode, if this option is
-		<literal>true</literal>, the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command will not attempt to resolve dependencies by
-		installing new packages.  If upgrading package
-		<replaceable>A</replaceable> would require package
-		<replaceable>B</replaceable> to be newly installed,
-		package <replaceable>A</replaceable> will not be
-		upgraded.  This corresponds to the command-line option
-		<literal><link
-		linkend='cmdlineOptionSafeUpgradeNoNewInstalls'>--no-new-installs</link></literal>.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'>
-	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		If this option is enabled, the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command will display an explanation of the actions
-		taken by the resolver before showing the installation
-		preview.  This option is similar to <link
-		linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>,
-		but only applies to the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command.  Equivalent to the command-line option <link
-		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configCmdLine-Show-Deps'>
 	      <seg><literal>Aptitude::CmdLine::Show-Deps</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -10980,14 +10968,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is enabled, then when the
 		<quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or because the command-line action is <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
 		it will display a summary of the actions taken by the
 		resolver before showing the installation preview.
-		This option is similar to <link
-		linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::Safe-Upgrade::Show-Resolver-Actions</literal></link>,
-		but only applies to command-line actions other than
-		<link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
 		Equivalent to the command-line option <link
 		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
@@ -10998,7 +10983,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>16384</literal></seg>
 
 	      <seg>
-		The minimum size in bytes at which aptitude will begin
+		The minimum size in bytes at which &aptitude; will begin
 		to display screenshots incrementally.  Below this
 		size, screenshots will not appear until they are fully
 		downloaded.
@@ -11011,7 +10996,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	      <seg>
 		The maximum number of bytes of screenshot data that
-		aptitude will store in memory for screenshots that are
+		&aptitude; will store in memory for screenshots that are
 		not currently being displayed.  The default is four
 		megabytes.
 	      </seg>
@@ -11167,13 +11152,13 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<literal><replaceable>protocol</replaceable>:<replaceable>command</replaceable></literal>.
 		<replaceable>protocol</replaceable> must be either
 		<literal>su</literal> or <literal>sudo</literal>; it
-		determines how aptitude invokes the program when it
-		wants to gain root privileges.  If
+		determines how &aptitude; invokes the program when it
+		wants to gain &root; privileges.  If
 		<replaceable>protocol</replaceable> is
 		<literal>su</literal>, then
 		<quote><literal><replaceable>command</replaceable> -c
 		<replaceable>arguments</replaceable></literal></quote> is used
-		to become root; otherwise, aptitude uses
+		to become &root;; otherwise, &aptitude; uses
 		<quote><literal><replaceable>command</replaceable>
 		<replaceable>arguments</replaceable></literal></quote>.  The
 		first word in <replaceable>command</replaceable> is
@@ -11208,7 +11193,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <seg><literal>false</literal></seg>
 
 	      <seg>
-		In previous versions of aptitude, the setting
+		In previous versions of &aptitude;, the setting
 		<literal>Aptitude::Recommends-Important</literal>
 		caused recommendations to be installed automatically,
 		the same way that <literal><link
@@ -11216,7 +11201,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		does today.  If this option is set to
 		<literal>false</literal> and
 		<literal>Aptitude::Recommends-Important</literal> is
-		also set to <literal>false</literal>, aptitude will
+		also set to <literal>false</literal>, &aptitude; will
 		set <literal><link
 		linkend='configAptInstall-Recommends'>Apt::Install-Recommends</link></literal>
 		to <literal>false</literal> and set
@@ -11886,14 +11871,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is <literal>true</literal>, then when
 		the <quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to install packages
-		that are not currently installed.  This is similar to
-		<link
-		linkend='configCmdLine-Safe-Upgrade-No-New-Installs'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
-		but applies only to command-line actions other than
-		<link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or by using the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command-line action, the resolver will not be allowed
+		to install packages that are not currently installed.
 	      </seg>
 	    </seglistitem>
 
@@ -11904,9 +11886,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is enabled, then when the
 		<quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to resolve
-		dependencies by upgrading packages.
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or by using the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command-line action, the resolver will not be allowed
+		to resolve dependencies by upgrading packages.
 	      </seg>
 	    </seglistitem>
 
@@ -11951,9 +11935,9 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		member of <literal>Top-Sections</literal> is
 		<quote><literal>main</literal></quote>, then a package
 		whose Section is
-		<quote><literal>games</literal></quote> will be
+		<quote><literal>games/arcade</literal></quote> will be
 		treated as if its Section field were
-		<quote><literal>games/arcade</literal></quote>.
+		<quote><literal>main/games/arcade</literal></quote>.
 	      </seg>
 	    </seglistitem>
 
@@ -12907,7 +12891,7 @@ Minesweeper                                   Minesweeper    Lost in 2388 second
       <qandaentry>
 	<question>
 	  <para>
-	    I want to select text, why doesn't aptitude let me disable
+	    I want to select text, why doesn't &aptitude; let me disable
 	    the mouse?
 	  </para>
 	</question>

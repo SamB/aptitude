@@ -176,8 +176,8 @@ static void show_version()
   printf(_("  Gtk+ support disabled.\n"));
 #endif
 #ifdef HAVE_QT
-  printf(_("  Compiled with Qt 4.6.2 %s\n"), QT_VERSION_STR);
-  printf(_("  Running on Qt 4.6.2 %s\n"), qVersion());
+  printf(_("  Compiled with Qt %s\n"), QT_VERSION_STR);
+  printf(_("  Running on Qt %s\n"), qVersion());
 #else
   printf(_("  Qt support disabled.\n"));
 #endif
@@ -210,13 +210,14 @@ static void usage()
   printf(_(" forget-new   - Forget what packages are \"new\".\n"));
   printf(_(" search       - Search for a package by name and/or expression.\n"));
   printf(_(" show         - Display detailed information about a package.\n"));
+  printf(_(" versions     - Displays the versions of specified packages.\n"));
   printf(_(" clean        - Erase downloaded package files.\n"));
   printf(_(" autoclean    - Erase old downloaded package files.\n"));
   printf(_(" changelog    - View a package's changelog.\n"));
   printf(_(" download     - Download the .deb file for a package.\n"));
   printf(_(" reinstall    - Download and (possibly) reinstall a currently installed package.\n"));
   printf(_(" why          - Show the manually installed packages that require a package, or\n"
-           "                why one or more packages would require the given package\n"));
+           "                why one or more packages would require the given package.\n"));
   printf(_(" why-not      - Show the manually installed packages that lead to a conflict\n"
            "                with the given package, or why one or more packages would\n"
            "                lead to a conflict with the given package if installed.\n"));
@@ -233,7 +234,7 @@ static void usage()
 #endif
   printf(_(" -s             Simulate actions, but do not actually perform them.\n"));
   printf(_(" -d             Only download packages, do not install or remove anything.\n"));
-  printf(_(" -P             Always prompt for confirmation or actions.\n"));
+  printf(_(" -P             Always prompt for confirmation of actions.\n"));
   printf(_(" -y             Assume that the answer to simple yes/no questions is 'yes'.\n"));
   printf(_(" -F format      Specify a format for displaying search results; see the manual.\n"));
   printf(_(" -O order       Specify how search results should be sorted; see the manual.\n"));
@@ -244,16 +245,16 @@ static void usage()
   printf(_(" -Z             Show the change in installed size of each package.\n"));
   printf(_(" -v             Display extra information. (may be supplied multiple times).\n"));
   printf(_(" -t [release]   Set the release from which packages should be installed.\n"));
-  printf(_(" -q             In command-line mode, suppress the incremental progress.\n"
+  printf(_(" -q             In command-line mode, suppress the incremental progress\n"
            "                indicators.\n"));
   printf(_(" -o key=val     Directly set the configuration option named 'key'.\n"));
-  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as.\n"
+  printf(_(" --with(out)-recommends	Specify whether or not to treat recommends as\n"
            "                strong dependencies.\n"));
   printf(_(" -S fname       Read the aptitude extended status info from fname.\n"));
   printf(_(" -u             Download new package lists on startup.\n"));
-  printf(_("                  (terminal interface only)"));
+  printf(_("                  (terminal interface only)\n"));
   printf(_(" -i             Perform an install run on startup.\n"));
-  printf(_("                  (terminal interface only)"));
+  printf(_("                  (terminal interface only)\n"));
   printf("\n");
   printf(_("                  This aptitude does not have Super Cow Powers.\n"));
 }
@@ -653,8 +654,6 @@ int main(int argc, char *argv[])
   bool clean_only = false;
   bool assume_yes=aptcfg->FindB(PACKAGE "::CmdLine::Assume-Yes", false);
   bool fix_broken=aptcfg->FindB(PACKAGE "::CmdLine::Fix-Broken", false);
-  bool safe_upgrade_no_new_installs = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::No-New-Installs", false);
-  bool safe_upgrade_show_resolver_actions = aptcfg->FindB(PACKAGE "::CmdLine::Safe-Upgrade::Show-Resolver-Actions", false);
   bool safe_resolver_no_new_installs = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Installs", false);
   bool safe_resolver_no_new_upgrades = aptcfg->FindB(PACKAGE "::Safe-Resolver::No-New-Upgrades", false);
   bool safe_resolver_show_resolver_actions = aptcfg->FindB(PACKAGE "::Safe-Resolver::Show-Resolver-Actions", false);
@@ -664,13 +663,6 @@ int main(int argc, char *argv[])
     resolver_mode = resolver_mode_safe;
 
   bool disable_columns = aptcfg->FindB(PACKAGE "::CmdLine::Disable-Columns", false);
-
-  // This tracks whether we got a --*-new-installs command-line
-  // argument, so we can present a useful warning message to the user
-  // if it's not applicable.
-  bool saw_new_installs_option = false;
-  // Same for --*-new-upgrades
-  bool saw_new_upgrades_option = false;
 
   bool showvers=aptcfg->FindB(PACKAGE "::CmdLine::Show-Versions", false);
   bool showdeps=aptcfg->FindB(PACKAGE "::CmdLine::Show-Deps", false);
@@ -841,29 +833,21 @@ int main(int argc, char *argv[])
 	      break;
 	    case OPTION_SHOW_RESOLVER_ACTIONS:
 	      safe_resolver_show_resolver_actions = true;
-	      safe_upgrade_show_resolver_actions = true;
 	      break;
 	    case OPTION_NO_SHOW_RESOLVER_ACTIONS:
 	      safe_resolver_show_resolver_actions = false;
-	      safe_upgrade_show_resolver_actions = false;
 	      break;
 	    case OPTION_NO_NEW_INSTALLS:
-	      safe_upgrade_no_new_installs = true;
 	      safe_resolver_no_new_installs = true;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_ALLOW_NEW_INSTALLS:
-	      safe_upgrade_no_new_installs = false;
 	      safe_resolver_no_new_installs = false;
-	      saw_new_installs_option = true;
 	      break;
 	    case OPTION_NO_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = true;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_ALLOW_NEW_UPGRADES:
 	      safe_resolver_no_new_upgrades = false;
-	      saw_new_upgrades_option = false;
 	      break;
 	    case OPTION_SAFE_RESOLVER:
 	      resolver_mode = resolver_mode_safe;

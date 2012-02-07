@@ -42,6 +42,7 @@ cw::fragment *depname_frag(pkgCache::DepIterator dep)
 							     cw::style_attrs_on(A_BOLD));
     case pkgCache::Dep::Replaces: return cw::text_fragment(_("replaces"));
     case pkgCache::Dep::Obsoletes: return cw::text_fragment(_("obsoletes"));
+    case pkgCache::Dep::Enhances: return cw::text_fragment(_("enhances"));
     }
 
   // Untranslated (internal error that will only happen if things go
