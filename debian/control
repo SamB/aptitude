@@ -1,5 +1,6 @@
 Source: aptitude
 Section: admin
+Priority: important
 Maintainer: aptitude Development Team <aptitude-devel@lists.alioth.debian.org>
 Uploaders: Daniel Burrows <dburrows@debian.org>, Manuel A. Fernandez Montecelo <manuel.montezelo@gmail.com>
 DM-Upload-Allowed: yes
@@ -17,7 +18,6 @@ Standards-Version: 3.9.2
 
 Package: aptitude
 Architecture: any
-Priority: important
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: aptitude-doc-en | aptitude-doc, sensible-utils, apt-xapian-index, libparse-debianchangelog-perl
 Suggests: tasksel, debtags
