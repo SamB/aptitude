@@ -62,7 +62,8 @@ bool do_log(const string &log,
   string timestr;
 
   if(localtime_r(&curtime, &ltime) != NULL)
-    timestr = sstrftime("%a, %b %e %Y %T %z", &ltime);
+    // ForTranslators: This is a date and time format.  See strftime(3).
+    timestr = sstrftime(_("%a, %b %e %Y %T %z"), &ltime);
   else
     timestr = ssprintf(_("Error generating local time (%s)"),
 		       sstrerror(errno).c_str());

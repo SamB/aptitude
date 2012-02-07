@@ -22,7 +22,7 @@
 
     <legalnotice>
       <para>
-	Copyright 2004-2010 Daniel Burrows.
+	Copyright 2004-2011 Daniel Burrows.
       </para>
 
       <para>
@@ -490,7 +490,7 @@
 	    Packages</link></quote> in the &aptitude; reference
 	    manual).  Packages which are not currently installed may
 	    be installed to resolve dependencies unless the <link
-	    linkend='cmdlineOptionSafeUpgradeNoNewInstalls'><literal>--no-new-installs</literal></link>
+	    linkend='cmdlineOptionNoNewInstalls'><literal>--no-new-installs</literal></link>
 	    command-line option is supplied.
 	  </para>
 
@@ -940,7 +940,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 
 	  <para>
 	    This command returns 0 if successful, 1 if no explanation
-	    could be constructed, and -1 if an error occured.
+	    could be constructed, and -1 if an error occurred.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1141,7 +1141,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	  <para>
 	    When the safe resolver is being used (i.e., <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	    was passed or <link
+	    was passed, the action is <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
+	    or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), allow the dependency
 	    resolver to install upgrades for packages regardless of
@@ -1161,7 +1163,9 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    command to install new packages; when the safe resolver is
 	    being used (i.e., <link
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
-	    was passed or <link
+	    was passed, the action is <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
+	    or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
 	    is set to <literal>true</literal>), allow the dependency
 	    resolver to install new packages.  This option takes
@@ -1194,7 +1198,7 @@ i A texlive-latex-extra Conflicts textopo</screen>
 	    truncate search results in an attempt to fit its results
 	    into vertical <quote>columns</quote>.  With this flag,
 	    each line will be formed by replacing any format escapes
-	    in the format string with the correponding text; column
+	    in the format string with the corresponding text; column
 	    widths will be ignored.
 	  </para>
 
@@ -1529,7 +1533,7 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	</listitem>
       </varlistentry>
 
-      <varlistentry id='cmdlineOptionSafeUpgradeNoNewInstalls'>
+      <varlistentry id='cmdlineOptionNoNewInstalls'>
 	<term>
 	  <literal>--no-new-installs</literal>
 	</term>
@@ -1553,12 +1557,6 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    This mimics the historical behavior of <command>apt-get
 	    upgrade</command>.
 	  </para>
-
-	  <para>
-	    This corresponds to the configuration option
-	    <literal><link
-	    linkend='configCmdLine-Safe-Upgrade-No-New-Installs'>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</link></literal>.
-	  </para>
 	</listitem>
       </varlistentry>
 
@@ -1571,10 +1569,10 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	    linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
 	    was passed or <link
 	    linkend='configAlways-Use-Safe-Resolver'><literal>Aptitude::Always-Use-Safe-Resolver</literal></link>
-	    is set to <literal>true</literal>), allow the dependency
-	    resolver to install new packages regardless of the value
-	    of <link
-	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Installs</literal></link>.
+	    is set to <literal>true</literal>), forbid the dependency
+	    resolver from installing upgrades for packages
+            regardless of the value of <link
+	    linkend='configSafe-Resolver-No-New-Upgrades'><literal>Aptitude::Safe-Resolver::No-New-Upgrades</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -1907,7 +1905,19 @@ libdbix-fulltextsearch-perl 0.73-10</screen>
 	<listitem>
 	  <para>
 	    Display the actions performed by the <quote>safe</quote>
-	    resolver.
+	    resolver and by <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+	  </para>
+
+	  <para>
+	    When executing the command <link
+	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+	    or when the option <link
+	    linkend='cmdlineSafeResolver'>--safe-resolver</link> is
+	    present, &aptitude; will display a summary of the actions
+	    performed by the resolver before printing the installation
+	    preview.  This is equivalent to the configuration option <link
+            linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -2110,16 +2120,6 @@ Packages requiring libglib2.0-data:
 	  <para>
 	    Display the version of &aptitude; and some information
 	    about how it was compiled.
-	  </para>
-
-	  <para>
-	    When executing the command <link
-	    linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-	    or when the option <link
-	    linkend='cmdlineSafeResolver'>--safe-resolver</link> is
-	    present, &aptitude; will display a summary of the actions
-	    performed by the resolver before printing the installation
-	    preview.  This is equivalent to the configuration options <link linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></link> and <link linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>.
 	  </para>
 	</listitem>
       </varlistentry>

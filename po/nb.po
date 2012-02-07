@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aptitude_nb\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
-"POT-Creation-Date: 2011-05-14 21:10-0700\n"
+"POT-Creation-Date: 2012-02-01 01:10+0800\n"
 "PO-Revision-Date: 2008-09-01 15:03+0200\n"
 "Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -24,42 +24,36 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.2\n"
 
-#: src/apt_config_treeitems.cc:99
-msgid ""
-"%BOption:%b  %s\n"
-"%BDefault:%b %s\n"
-"%BValue:%b   %s\n"
-msgstr ""
-"%BValg:%b     %s\n"
-"%BStandard:%b %s\n"
-"%BVerdi:%b    %s\n"
-
-#: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-msgid "True"
-msgstr "Sann"
-
-#: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:104
-msgid "False"
-msgstr "Usann"
-
-#: src/apt_config_treeitems.cc:209 src/apt_config_treeitems.cc:393
+#: src/apt_config_treeitems.cc:99 src/apt_config_treeitems.cc:210
+#: src/apt_config_treeitems.cc:394
 msgid "%BOption:%b  "
 msgstr "%BValg:%b     "
 
-#: src/apt_config_treeitems.cc:211 src/apt_config_treeitems.cc:395
+#: src/apt_config_treeitems.cc:101 src/apt_config_treeitems.cc:212
+#: src/apt_config_treeitems.cc:396
 msgid "%BDefault:%b "
 msgstr "%BStandard:%b "
 
-#: src/apt_config_treeitems.cc:213 src/apt_config_treeitems.cc:397
+#: src/apt_config_treeitems.cc:102 src/apt_config_treeitems.cc:104
+msgid "True"
+msgstr "Sann"
+
+#: src/apt_config_treeitems.cc:102 src/apt_config_treeitems.cc:104
+msgid "False"
+msgstr "Usann"
+
+#: src/apt_config_treeitems.cc:103 src/apt_config_treeitems.cc:214
+#: src/apt_config_treeitems.cc:398
 msgid "%BValue:%b   "
 msgstr "%BVerdi:%b    "
 
-#: src/apt_config_treeitems.cc:279
-#, c-format
-msgid "Editing \"%ls\""
+#: src/apt_config_treeitems.cc:280
+#, fuzzy, c-format
+#| msgid "Editing \"%ls\""
+msgid "Editing \"%ls\": "
 msgstr "Redigerer «%ls»"
 
-#: src/apt_config_treeitems.cc:401
+#: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
 msgstr "%BValg:%b     "
 
@@ -646,8 +640,8 @@ msgstr "Kritisk feil i oppløser"
 msgid "[%d(%d)/...] Resolving dependencies"
 msgstr "[%d(%d)/...] Løser opp avhengigheter"
 
-#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1291
-#: src/gtk/resolver.cc:1459 src/solution_dialog.cc:140
+#: src/broken_indicator.cc:313 src/gtk/resolver.cc:1294
+#: src/gtk/resolver.cc:1462 src/solution_dialog.cc:140
 #: src/solution_screen.cc:569
 msgid "Internal error: unexpected null solution."
 msgstr "Intern feil: uventet null-løsning."
@@ -938,7 +932,7 @@ msgstr ""
 "resolver.\n"
 
 #: src/cmdline/cmdline_do_action.cc:385 src/cmdline/cmdline_simulate.cc:60
-#: src/main.cc:1233
+#: src/main.cc:1217
 #, c-format
 msgid "Abort.\n"
 msgstr "Avbryt.\n"
@@ -1306,7 +1300,7 @@ msgstr "Etter utpakking vil %sB bli frigjort.\n"
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
 msgstr "Ingen pakker å vise -- oppgi pakkenavnene på linja etter «i».\n"
 
-#: src/cmdline/cmdline_prompt.cc:780
+#: src/cmdline/cmdline_prompt.cc:780 src/cmdline/cmdline_prompt.cc:795
 msgid "Press Return to continue."
 msgstr "Trykk Enter for å fortsette."
 
@@ -1314,10 +1308,6 @@ msgstr "Trykk Enter for å fortsette."
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Ingen pakker funnet -- oppgi pakkenavnene på linja etter «c».\n"
-
-#: src/cmdline/cmdline_prompt.cc:795
-msgid "Press Return to continue"
-msgstr "Trykk Enter for å fortsette"
 
 #: src/cmdline/cmdline_prompt.cc:806
 #, c-format
@@ -1629,7 +1619,7 @@ msgstr "Løsningsmotorens tilstand vellykket skrevet!"
 #| "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: "
 #| "%F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgid ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
+"y: %Fn: %Fq: %F.: %F,: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
 "ver) ...: %F%n<ID>: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
 "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pk ver ...: %F%na pk ver ...: %F"
@@ -1901,7 +1891,7 @@ msgstr ""
 "Jeg ønsker å løse avhengighetene, men ingen avhengighetsløser ble opprettet."
 
 #: src/cmdline/cmdline_resolver.cc:837 src/cmdline/cmdline_resolver.cc:1180
-#: src/gtk/resolver.cc:2055 src/solution_dialog.cc:127
+#: src/gtk/resolver.cc:2058 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
 msgstr "Løser opp avhengigheter ..."
@@ -1938,7 +1928,9 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ugyldig respons. Skriv inn en av følgende kommandoer:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-msgid "No solution found within the allotted time.  Try harder? [Y/n]"
+#, fuzzy
+#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
+msgid "No solution found within the allotted time.  Try harder? [Y/n] "
 msgstr "Ingen løsning funnet innen tidsfristen. Arbeide videre? [Y/n]"
 
 #: src/cmdline/cmdline_resolver.cc:1080
@@ -2145,7 +2137,7 @@ msgstr "Pakke: "
 msgid "State"
 msgstr "Tilstand"
 
-#: src/cmdline/cmdline_show.cc:379 src/cmdline/cmdline_show.cc:466
+#: src/cmdline/cmdline_show.cc:379 src/cmdline/cmdline_show.cc:468
 msgid "Provided by"
 msgstr "Skaffes av"
 
@@ -2253,27 +2245,31 @@ msgstr "Erstatter"
 msgid "Obsoletes"
 msgstr "Foreldet"
 
-#: src/cmdline/cmdline_show.cc:465 src/cmdline/cmdline_why.cc:281
+#: src/cmdline/cmdline_show.cc:465
+msgid "Enhances"
+msgstr ""
+
+#: src/cmdline/cmdline_show.cc:467 src/cmdline/cmdline_why.cc:281
 #: src/cmdline/cmdline_why.cc:1683 src/gtk/dependency_chains_tab.cc:205
 msgid "Provides"
 msgstr "Skaffer"
 
-#: src/cmdline/cmdline_show.cc:469 src/gtk/entitysummary.cc:367
+#: src/cmdline/cmdline_show.cc:471 src/gtk/entitysummary.cc:367
 #: src/gtk/info.cc:716 src/gtk/previewtab.cc:238 src/pkg_info_screen.cc:102
 msgid "Description: "
 msgstr "Beskrivelse: "
 
-#: src/cmdline/cmdline_show.cc:475 src/pkg_info_screen.cc:107
+#: src/cmdline/cmdline_show.cc:477 src/pkg_info_screen.cc:107
 #: src/pkg_view.cc:259
 msgid "Homepage: "
 msgstr "Hjemmeside: "
 
-#: src/cmdline/cmdline_show.cc:576
+#: src/cmdline/cmdline_show.cc:578
 #, c-format
 msgid "Unable to locate package %s"
 msgstr "Klarte ikke å finne pakka %s"
 
-#: src/cmdline/cmdline_show.cc:597
+#: src/cmdline/cmdline_show.cc:599
 #, c-format
 msgid "Unable to parse pattern %s"
 msgstr "Klarte ikke å tolke mønsteret %s"
@@ -2593,6 +2589,12 @@ msgstr ""
 msgid "Unknown version selection, something is very wrong."
 msgstr ""
 
+#: src/cmdline_parse.cc:22
+#, fuzzy, c-format
+#| msgid "Invalid operation %s"
+msgid "Invalid command-line option '%s'"
+msgstr "Ugyldig operasjon %s"
+
 #: src/cmdline/terminal.cc:46
 msgid "Unexpected end-of-file on standard input"
 msgstr "Uventet slutt på data på standard inn"
@@ -2610,7 +2612,7 @@ msgstr "[FEIL]"
 msgid "UNSATISFIED"
 msgstr "IKKE OPPFYLT"
 
-#: src/dep_item.cc:148 src/reason_fragment.cc:256
+#: src/dep_item.cc:148 src/reason_fragment.cc:257
 msgid "UNAVAILABLE"
 msgstr "UTILGJENGELIG"
 
@@ -2618,7 +2620,7 @@ msgstr "UTILGJENGELIG"
 msgid "Tags"
 msgstr "Merker"
 
-#: src/desc_render.cc:154
+#: src/desc_render.cc:149
 msgid "User Tags"
 msgstr "Brukermerker"
 
@@ -3018,16 +3020,21 @@ msgstr "Klarte ikke å finne pakka %s"
 msgid "Unable to open %s to log actions"
 msgstr "Klarte ikke å åpne %s for å logge handlinger"
 
-#: src/generic/apt/log.cc:67
+#. ForTranslators: This is a date and time format.  See strftime(3).
+#: src/generic/apt/log.cc:66
+msgid "%a, %b %e %Y %T %z"
+msgstr ""
+
+#: src/generic/apt/log.cc:68
 #, c-format
 msgid "Error generating local time (%s)"
 msgstr "Feil ved generering av lokal tid (%s)"
 
-#: src/generic/apt/log.cc:71
+#: src/generic/apt/log.cc:72
 msgid "log report"
 msgstr "loggrapport"
 
-#: src/generic/apt/log.cc:72
+#: src/generic/apt/log.cc:73
 #, c-format
 msgid ""
 "IMPORTANT: this log only lists intended actions; actions which fail due to\n"
@@ -3039,81 +3046,81 @@ msgstr ""
 "på grunn av dpkg-problemer kan være ufullstendige.\n"
 "\n"
 
-#: src/generic/apt/log.cc:73
+#: src/generic/apt/log.cc:74
 #, c-format
 msgid "Will install %li packages, and remove %li packages.\n"
 msgstr "Vil installere %li pakker, og fjerne %li pakker.\n"
 
-#: src/generic/apt/log.cc:77
+#: src/generic/apt/log.cc:78
 #, c-format
 msgid "%sB of disk space will be used\n"
 msgstr "%sB med diskplass vil bli brukt\n"
 
-#: src/generic/apt/log.cc:80
+#: src/generic/apt/log.cc:81
 #, c-format
 msgid "%sB of disk space will be freed\n"
 msgstr "%sB med diskplass vil bli frigjort\n"
 
-#: src/generic/apt/log.cc:90
+#: src/generic/apt/log.cc:91
 #, c-format
 msgid "[UPGRADE] %s %s -> %s\n"
 msgstr "[OPPGRADER] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:94
+#: src/generic/apt/log.cc:95
 #, c-format
 msgid "[DOWNGRADE] %s %s -> %s\n"
 msgstr "[NEDGRADER] %s %s -> %s\n"
 
-#: src/generic/apt/log.cc:104
+#: src/generic/apt/log.cc:105
 msgid "REMOVE"
 msgstr "FJERN"
 
-#: src/generic/apt/log.cc:110
+#: src/generic/apt/log.cc:111
 msgid "INSTALL"
 msgstr "INSTALLER"
 
-#: src/generic/apt/log.cc:113
+#: src/generic/apt/log.cc:114
 msgid "REINSTALL"
 msgstr "INSTALLER PÅ NYTT"
 
-#: src/generic/apt/log.cc:116
+#: src/generic/apt/log.cc:117
 msgid "HOLD"
 msgstr "BEHOLD"
 
-#: src/generic/apt/log.cc:119
+#: src/generic/apt/log.cc:120
 msgid "BROKEN"
 msgstr "ØDELAGT"
 
-#: src/generic/apt/log.cc:122
+#: src/generic/apt/log.cc:123
 msgid "REMOVE, NOT USED"
 msgstr "FJERN, UBRUKTE"
 
-#: src/generic/apt/log.cc:125
+#: src/generic/apt/log.cc:126
 msgid "REMOVE, DEPENDENCIES"
 msgstr "FJERN, PAKKEKRAV"
 
-#: src/generic/apt/log.cc:128
+#: src/generic/apt/log.cc:129
 msgid "INSTALL, DEPENDENCIES"
 msgstr "INSTALLER, PAKKEKRAV"
 
-#: src/generic/apt/log.cc:131
+#: src/generic/apt/log.cc:132
 msgid "HOLD, DEPENDENCIES"
 msgstr "BEHOLD, PAKKEKRAV"
 
-#: src/generic/apt/log.cc:134
+#: src/generic/apt/log.cc:135
 msgid "UNCONFIGURED"
 msgstr "IKKE SATT OPP"
 
-#: src/generic/apt/log.cc:137
+#: src/generic/apt/log.cc:138
 msgid "????????"
 msgstr "????????"
 
-#: src/generic/apt/log.cc:141
+#: src/generic/apt/log.cc:142
 #, c-format
 msgid "[%s] %s\n"
 msgstr "[%s] %s\n"
 
-#: src/generic/apt/log.cc:144
+#: src/generic/apt/log.cc:145
 #, c-format
 msgid ""
 "===============================================================================\n"
@@ -3136,39 +3143,39 @@ msgstr ""
 msgid "Filtering packages"
 msgstr "Laster ned pakker"
 
-#: src/generic/apt/matching/parse.cc:307
+#: src/generic/apt/matching/parse.cc:311
 #, c-format
 msgid "Unknown action type: %s"
 msgstr "Ukjent handlingstype: %s"
 
-#: src/generic/apt/matching/parse.cc:348
+#: src/generic/apt/matching/parse.cc:352
 #, c-format
 msgid "Unterminated literal string after %s"
 msgstr "Streng etter %s er ikke avsluttet"
 
-#: src/generic/apt/matching/parse.cc:445
+#: src/generic/apt/matching/parse.cc:449
 #, c-format
 msgid "Unknown priority %s"
 msgstr "Ukjent prioritet %s"
 
-#: src/generic/apt/matching/parse.cc:464
+#: src/generic/apt/matching/parse.cc:468
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
 msgstr "Mønster ender uventet (ventet «%c»)."
 
-#: src/generic/apt/matching/parse.cc:467
+#: src/generic/apt/matching/parse.cc:471
 #, c-format
 msgid "Expected '%c', got '%c'."
 msgstr "Ventet «%c», fikk «%c»."
 
-#: src/generic/apt/matching/parse.cc:807
-#: src/generic/apt/matching/parse.cc:1255
-#: src/generic/apt/matching/parse.cc:1295
+#: src/generic/apt/matching/parse.cc:811
+#: src/generic/apt/matching/parse.cc:1259
+#: src/generic/apt/matching/parse.cc:1299
 #, c-format
 msgid "Unknown dependency type: %s"
 msgstr "Ukjent kravtype: %s"
 
-#: src/generic/apt/matching/parse.cc:860
+#: src/generic/apt/matching/parse.cc:864
 #, fuzzy, c-format
 #| msgid "Unknown matcher type: \"%s\"."
 msgid "Unknown term type: \"%s\"."
@@ -3176,7 +3183,7 @@ msgstr "Ukjent mønstertype: «%s»."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
-#: src/generic/apt/matching/parse.cc:874 src/generic/apt/matching/parse.cc:883
+#: src/generic/apt/matching/parse.cc:878 src/generic/apt/matching/parse.cc:887
 #, fuzzy, c-format
 #| msgid ""
 #| "The ?%s matcher must be used in a \"wide\" context (a top-level context, "
@@ -3188,34 +3195,34 @@ msgstr ""
 "?%s-mønsteret må brukes in «vid» sammenheng (toppnivå eller en sammenheng "
 "omsluttet av ?%s)."
 
-#: src/generic/apt/matching/parse.cc:1113
+#: src/generic/apt/matching/parse.cc:1117
 msgid "Unmatched '('"
 msgstr "Mangler motsvar til «(»"
 
-#: src/generic/apt/matching/parse.cc:1261
+#: src/generic/apt/matching/parse.cc:1265
 msgid "Provides: cannot be broken"
 msgstr "Skaffer: kan ikke ødelegges"
 
-#: src/generic/apt/matching/parse.cc:1317
+#: src/generic/apt/matching/parse.cc:1321
 #, c-format
 msgid "Unknown pattern type: %c"
 msgstr "Ukjent mønstertype: %c"
 
-#: src/generic/apt/matching/parse.cc:1331
+#: src/generic/apt/matching/parse.cc:1335
 msgid "Can't search for \"\""
 msgstr "Kan ikke søke etter \"\""
 
-#: src/generic/apt/matching/parse.cc:1359
+#: src/generic/apt/matching/parse.cc:1363
 msgid "Unexpected empty expression"
 msgstr "Uventet tomt uttrykk"
 
-#: src/generic/apt/matching/parse.cc:1388
+#: src/generic/apt/matching/parse.cc:1392
 #, fuzzy, c-format
 #| msgid "Badly formed expression"
 msgid "Badly formed expression: expected '|', got '%c'"
 msgstr "Dårlig utformet uttrykk"
 
-#: src/generic/apt/matching/parse.cc:1435
+#: src/generic/apt/matching/parse.cc:1439
 msgid "Unexpected ')'"
 msgstr "Uventet «)»"
 
@@ -4161,22 +4168,22 @@ msgstr ""
 msgid "%s: Unable to accept a connection: %s"
 msgstr "Klarte ikke opprette midlertidig mappe fra malen «%s»: %s"
 
-#: src/gtk/dpkg_terminal.cc:533
+#: src/gtk/dpkg_terminal.cc:532
 #, c-format
 msgid "[%s] dpkg process starting...\n"
 msgstr ""
 
-#: src/gtk/dpkg_terminal.cc:566
+#: src/gtk/dpkg_terminal.cc:565
 #, c-format
 msgid "[%s] dpkg process complete.\n"
 msgstr ""
 
-#: src/gtk/dpkg_terminal.cc:569
+#: src/gtk/dpkg_terminal.cc:568
 #, c-format
 msgid "[%s] dpkg process failed.\n"
 msgstr ""
 
-#: src/gtk/dpkg_terminal.cc:572
+#: src/gtk/dpkg_terminal.cc:571
 #, c-format
 msgid "[%s] dpkg process complete; there are more packages left to process.\n"
 msgstr ""
@@ -4910,7 +4917,7 @@ msgstr ""
 msgid "Virtual package"
 msgstr "Pakke"
 
-#: src/gtk/resolver.cc:246 src/solution_fragment.cc:452
+#: src/gtk/resolver.cc:246 src/solution_fragment.cc:455
 msgid "Not Installed"
 msgstr "Ikke installert"
 
@@ -5080,163 +5087,169 @@ msgstr "%s erstatter %s"
 msgid "%s obsoletes %s"
 msgstr "%s gjør %s foreldet"
 
-#: src/gtk/resolver.cc:1373 src/gtk/resolver.cc:1838
+#: src/gtk/resolver.cc:1264 src/solution_fragment.cc:154
+#, fuzzy, c-format
+#| msgid "%s replaces %s"
+msgid "%s enhances %s"
+msgstr "%s erstatter %s"
+
+#: src/gtk/resolver.cc:1376 src/gtk/resolver.cc:1841
 #: src/solution_screen.cc:272
 msgid "Remove the following packages:"
 msgstr "Fjern disse pakkene:"
 
-#: src/gtk/resolver.cc:1387 src/gtk/resolver.cc:1850
+#: src/gtk/resolver.cc:1390 src/gtk/resolver.cc:1853
 #: src/solution_screen.cc:296
 msgid "Install the following packages:"
 msgstr "Installer disse pakkene:"
 
-#: src/gtk/resolver.cc:1400 src/gtk/resolver.cc:1862
+#: src/gtk/resolver.cc:1403 src/gtk/resolver.cc:1865
 #, fuzzy
 #| msgid "Remove the following packages:"
 msgid "Keep the following packages:"
 msgstr "Fjern disse pakkene:"
 
-#: src/gtk/resolver.cc:1413 src/gtk/resolver.cc:1874
+#: src/gtk/resolver.cc:1416 src/gtk/resolver.cc:1877
 #: src/solution_screen.cc:308
 msgid "Upgrade the following packages:"
 msgstr "Oppgrader disse pakkene:"
 
-#: src/gtk/resolver.cc:1426 src/gtk/resolver.cc:1887
+#: src/gtk/resolver.cc:1429 src/gtk/resolver.cc:1890
 #: src/solution_screen.cc:320
 msgid "Downgrade the following packages:"
 msgstr "Nedgrader disse pakkene:"
 
-#: src/gtk/resolver.cc:1439 src/gtk/resolver.cc:1900
+#: src/gtk/resolver.cc:1442 src/gtk/resolver.cc:1903
 #, fuzzy
 #| msgid "Leave the following dependencies unresolved:%n"
 msgid "Leave the following dependencies unresolved:"
 msgstr "La følgende avhengigheter være uløste:%n"
 
-#: src/gtk/resolver.cc:1516
+#: src/gtk/resolver.cc:1519
 #, fuzzy, c-format
 #| msgid "Remove %F [%s (%s)]"
 msgid "Remove %s [<big>%s</big> (%s)]"
 msgstr "Fjern %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1523
+#: src/gtk/resolver.cc:1526
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "Install %s [<big>%s</big> (%s)]"
 msgstr "Installer %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1531
+#: src/gtk/resolver.cc:1534
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "Cancel the installation of %s"
 msgstr "Avbryt installasjonen av %F"
 
-#: src/gtk/resolver.cc:1534
+#: src/gtk/resolver.cc:1537
 #, fuzzy, c-format
 #| msgid "Cancel the removal of %F"
 msgid "Cancel the removal of %s"
 msgstr "Avbryt fjerning av %F"
 
-#: src/gtk/resolver.cc:1537
+#: src/gtk/resolver.cc:1540
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "Keep %s at version <big>%s</big> (%s)"
 msgstr "Behold %F i versjon %s(%s)"
 
-#: src/gtk/resolver.cc:1544
+#: src/gtk/resolver.cc:1547
 #, fuzzy, c-format
 #| msgid "Upgrade %F [%s (%s) -> %s (%s)]"
 msgid "Upgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Oppgrader %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1553
+#: src/gtk/resolver.cc:1556
 #, fuzzy, c-format
 #| msgid "Downgrade %F [%s (%s) -> %s (%s)]"
 msgid "Downgrade %s [<big>%s</big> (%s) -> <big>%s</big> (%s)]"
 msgstr "Nedgrader %F [%s (%s) -> %s (%s)]"
 
-#: src/gtk/resolver.cc:1612
+#: src/gtk/resolver.cc:1615
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>Remove</b> %s"
 msgstr "Fjern(%s)"
 
-#: src/gtk/resolver.cc:1612
+#: src/gtk/resolver.cc:1615
 #, fuzzy, c-format
 #| msgid "Remove(%s)"
 msgid "<b>remove</b> %s"
 msgstr "Fjern(%s)"
 
-#: src/gtk/resolver.cc:1621
+#: src/gtk/resolver.cc:1624
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>Keep</b> %s at version %s"
 msgstr "Behold %F i versjon %s(%s)"
 
-#: src/gtk/resolver.cc:1621
+#: src/gtk/resolver.cc:1624
 #, fuzzy, c-format
 #| msgid "Keep %F at version %s (%s)"
 msgid "<b>keep</b> %s at version %s"
 msgstr "Behold %F i versjon %s(%s)"
 
-#: src/gtk/resolver.cc:1629
+#: src/gtk/resolver.cc:1632
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>Cancel</b> the installation of %s"
 msgstr "Avbryt installasjonen av %F"
 
-#: src/gtk/resolver.cc:1629
+#: src/gtk/resolver.cc:1632
 #, fuzzy, c-format
 #| msgid "Cancel the installation of %F"
 msgid "<b>cancel</b> the installation of %s"
 msgstr "Avbryt installasjonen av %F"
 
-#: src/gtk/resolver.cc:1636
+#: src/gtk/resolver.cc:1639
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>Install</b> %s %s"
 msgstr "Installer %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1636
+#: src/gtk/resolver.cc:1639
 #, fuzzy, c-format
 #| msgid "Install %F [%s (%s)]"
 msgid "<b>install</b> %s %s"
 msgstr "Installer %F [%s (%s)]"
 
-#: src/gtk/resolver.cc:1645
+#: src/gtk/resolver.cc:1648
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>Downgrade</b> %s to version %s"
 msgstr "  cwidget-versjon: %s\n"
 
-#: src/gtk/resolver.cc:1645
+#: src/gtk/resolver.cc:1648
 #, fuzzy, c-format
 #| msgid "  cwidget version: %s\n"
 msgid "<b>downgrade</b> %s to version %s"
 msgstr "  cwidget-versjon: %s\n"
 
-#: src/gtk/resolver.cc:1654
+#: src/gtk/resolver.cc:1657
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>Upgrade</b> %s to version %s"
 msgstr "%s-versjoner"
 
-#: src/gtk/resolver.cc:1654
+#: src/gtk/resolver.cc:1657
 #, fuzzy, c-format
 #| msgid "%s versions"
 msgid "<b>upgrade</b> %s to version %s"
 msgstr "%s-versjoner"
 
-#: src/gtk/resolver.cc:1667
+#: src/gtk/resolver.cc:1670
 #, c-format
 msgid "Leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1667
+#: src/gtk/resolver.cc:1670
 #, c-format
 msgid "leave %s unresolved"
 msgstr ""
 
-#: src/gtk/resolver.cc:1735
+#: src/gtk/resolver.cc:1738
 #, fuzzy, c-format
 #| msgid "%d install"
 #| msgid_plural "%d installs"
@@ -5245,7 +5258,7 @@ msgid_plural "%s installs"
 msgstr[0] "%d installert"
 msgstr[1] "%d installert"
 
-#: src/gtk/resolver.cc:1740
+#: src/gtk/resolver.cc:1743
 #, fuzzy, c-format
 #| msgid "%d removal"
 #| msgid_plural "%d removals"
@@ -5254,7 +5267,7 @@ msgid_plural "%s removes"
 msgstr[0] "%d fjernet"
 msgstr[1] "%d fjernet"
 
-#: src/gtk/resolver.cc:1746
+#: src/gtk/resolver.cc:1749
 #, fuzzy, c-format
 #| msgid "%d keep"
 #| msgid_plural "%d keeps"
@@ -5263,7 +5276,7 @@ msgid_plural "%s keeps"
 msgstr[0] "%d beholdt"
 msgstr[1] "%d beholdt"
 
-#: src/gtk/resolver.cc:1752
+#: src/gtk/resolver.cc:1755
 #, fuzzy, c-format
 #| msgid "%d upgrade"
 #| msgid_plural "%d upgrades"
@@ -5272,7 +5285,7 @@ msgid_plural "%s upgrades"
 msgstr[0] "%d oppgradert"
 msgstr[1] "%d oppgraderte"
 
-#: src/gtk/resolver.cc:1758
+#: src/gtk/resolver.cc:1761
 #, fuzzy, c-format
 #| msgid "%d downgrade"
 #| msgid_plural "%d downgrades"
@@ -5281,7 +5294,7 @@ msgid_plural "%s downgrades"
 msgstr[0] "%d nedgradert"
 msgstr[1] "%d nedgraderte"
 
-#: src/gtk/resolver.cc:1764
+#: src/gtk/resolver.cc:1767
 #, fuzzy, c-format
 #| msgid "Audit ^Recommendations"
 msgid "%s unresolved recommendation"
@@ -5289,35 +5302,35 @@ msgid_plural "%s unresolved recommendations"
 msgstr[0] "Revider ^Anbefalinger"
 msgstr[1] "Revider ^Anbefalinger"
 
-#: src/gtk/resolver.cc:2056
+#: src/gtk/resolver.cc:2059
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions yet."
 msgstr "Ingen flere løsninger."
 
-#: src/gtk/resolver.cc:2063
+#: src/gtk/resolver.cc:2066
 #, fuzzy
 #| msgid "Dependency handling"
 msgid "No dependency solution was found."
 msgstr "Håndtering av avhengigheter"
 
-#: src/gtk/resolver.cc:2064
+#: src/gtk/resolver.cc:2067
 #, fuzzy
 #| msgid "No more solutions."
 msgid "No solutions."
 msgstr "Ingen flere løsninger."
 
-#: src/gtk/resolver.cc:2075
+#: src/gtk/resolver.cc:2078
 msgid "To view a solution, select it from the list to the right."
 msgstr ""
 
-#: src/gtk/resolver.cc:2076
+#: src/gtk/resolver.cc:2079
 #, fuzzy, c-format
 #| msgid "No more solutions."
 msgid "%u solutions."
 msgstr "Ingen flere løsninger."
 
-#: src/gtk/resolver.cc:2106
+#: src/gtk/resolver.cc:2109
 #, fuzzy, c-format
 #| msgid "Could not open file \"%s\""
 msgid "Solution %s of %s."
@@ -5627,12 +5640,12 @@ msgstr "  Ept-støtte deaktivert.\n"
 #: src/main.cc:179
 #, fuzzy, c-format
 #| msgid "%s %s compiled at %s %s\n"
-msgid "  Compiled with Qt 4.6.2 %s\n"
+msgid "  Compiled with Qt %s\n"
 msgstr "%s %s kompilert på %s %s\n"
 
 #: src/main.cc:180
 #, c-format
-msgid "  Running on Qt 4.6.2 %s\n"
+msgid "  Running on Qt %s\n"
 msgstr ""
 
 #: src/main.cc:182
@@ -5785,29 +5798,35 @@ msgstr " show         - Vis detaljert informasjon om en pakke\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
+#| msgid " show         - Display detailed information about a package\n"
+msgid " versions     - Displays the versions of specified packages.\n"
+msgstr " show         - Vis detaljert informasjon om en pakke\n"
+
+#: src/main.cc:214
+#, fuzzy, c-format
 #| msgid " clean        - Erase downloaded package files\n"
 msgid " clean        - Erase downloaded package files.\n"
 msgstr " clean        - Slett nedlastede pakkefiler\n"
 
-#: src/main.cc:214
+#: src/main.cc:215
 #, fuzzy, c-format
 #| msgid " autoclean    - Erase old downloaded package files\n"
 msgid " autoclean    - Erase old downloaded package files.\n"
 msgstr " autoclean    - Slett eldre nedlastede pakkefiler\n"
 
-#: src/main.cc:215
+#: src/main.cc:216
 #, fuzzy, c-format
 #| msgid " changelog    - View a package's changelog\n"
 msgid " changelog    - View a package's changelog.\n"
 msgstr " endringslogg    - Vis en pakkes endringslogg\n"
 
-#: src/main.cc:216
+#: src/main.cc:217
 #, fuzzy, c-format
 #| msgid " download     - Download the .deb file for a package\n"
 msgid " download     - Download the .deb file for a package.\n"
 msgstr " download     - Les ned .deb-fila til en pakke\n"
 
-#: src/main.cc:217
+#: src/main.cc:218
 #, fuzzy, c-format
 #| msgid ""
 #| " reinstall    - Download and (possibly) reinstall a currently installed "
@@ -5819,18 +5838,22 @@ msgstr ""
 " reinstall    - Last ned og (kanskje) installer omigjen en pakke som nå er "
 "installert\n"
 
-#: src/main.cc:218
-#, c-format
+#: src/main.cc:219
+#, fuzzy, c-format
+#| msgid ""
+#| " why          - Show the manually installed packages that require a "
+#| "package, or\n"
+#| "                why one or more packages would require the given package\n"
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
-"                why one or more packages would require the given package\n"
+"                why one or more packages would require the given package.\n"
 msgstr ""
 " why          - Vis de manuelt installerte pakkene som krever en pakke, "
 "eller\n"
 "                hvorfor en eller flere pakker ville krever den gitte pakken\n"
 
-#: src/main.cc:220
+#: src/main.cc:221
 #, fuzzy, c-format
 #| msgid ""
 #| " why-not      - Show the manually installed packages that lead to a "
@@ -5850,59 +5873,59 @@ msgstr ""
 "ville\n"
 "                lede til en konflikt med den gitte pakken hvis installert\n"
 
-#: src/main.cc:224
+#: src/main.cc:225
 #, c-format
 msgid "  Options:\n"
 msgstr "  Valg:\n"
 
-#: src/main.cc:225
+#: src/main.cc:226
 #, fuzzy, c-format
 #| msgid " -h             This help text\n"
 msgid " -h             This help text.\n"
 msgstr " -h             Denne hjelpeteksten\n"
 
-#: src/main.cc:227
+#: src/main.cc:228
 #, c-format
 msgid ""
 " --gui          Use the GTK GUI even if disabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:229
+#: src/main.cc:230
 #, c-format
 msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr ""
 
-#: src/main.cc:231
+#: src/main.cc:232
 #, fuzzy, c-format
 #| msgid " -h             This help text\n"
 msgid " --qt           Use the Qt GUI.\n"
 msgstr " -h             Denne hjelpeteksten\n"
 
-#: src/main.cc:232
+#: src/main.cc:233
 #, c-format
 msgid ""
 " --no-qt        Do not use the Qt GUI even if enabled in the configuration.\n"
 msgstr ""
 
-#: src/main.cc:234
+#: src/main.cc:235
 #, c-format
 msgid " -s             Simulate actions, but do not actually perform them.\n"
 msgstr " -s             Simuler handlinger, men ikke utfør dem.\n"
 
-#: src/main.cc:235
+#: src/main.cc:236
 #, c-format
 msgid ""
 " -d             Only download packages, do not install or remove anything.\n"
 msgstr ""
 " -d             Bare last ned pakker, ikke installer eller slett noe.\n"
 
-#: src/main.cc:236
+#: src/main.cc:237
 #, fuzzy, c-format
 #| msgid " -P             Always prompt for confirmation or actions\n"
-msgid " -P             Always prompt for confirmation or actions.\n"
+msgid " -P             Always prompt for confirmation of actions.\n"
 msgstr " -P             Spør alltid om bekreftelse eller handlinger\n"
 
-#: src/main.cc:237
+#: src/main.cc:238
 #, fuzzy, c-format
 #| msgid ""
 #| " -y             Assume that the answer to simple yes/no questions is "
@@ -5911,7 +5934,7 @@ msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
 msgstr " -y             Forutsett at svaret på enkle ja/nei-spørsmål er «Ja»\n"
 
-#: src/main.cc:238
+#: src/main.cc:239
 #, fuzzy, c-format
 #| msgid ""
 #| " -F format      Specify a format for displaying search results; see the "
@@ -5922,7 +5945,7 @@ msgid ""
 msgstr ""
 " -F format      Oppgi et format for visning av søkeresultatet; se manualen\n"
 
-#: src/main.cc:239
+#: src/main.cc:240
 #, fuzzy, c-format
 #| msgid ""
 #| " -O order       Specify how search results should be sorted; see the "
@@ -5933,7 +5956,7 @@ msgid ""
 msgstr ""
 " -O rekkefølge  Oppgir hvordan et søkeresultat skal sorteres; se manualen\n"
 
-#: src/main.cc:240
+#: src/main.cc:241
 #, fuzzy, c-format
 #| msgid ""
 #| " -w width       Specify the display width for formatting search results\n"
@@ -5942,29 +5965,29 @@ msgid ""
 msgstr ""
 " -w bredde     Oppgi visningsbredde for formatering av søkeresultatet\n"
 
-#: src/main.cc:241
+#: src/main.cc:242
 #, c-format
 msgid " -f             Aggressively try to fix broken packages.\n"
 msgstr " -f             Prøv hardt å reparere ødelagte pakker.\n"
 
-#: src/main.cc:242
+#: src/main.cc:243
 #, c-format
 msgid " -V             Show which versions of packages are to be installed.\n"
 msgstr ""
 " -V             Vis hvilke versjoner av pakkene som skal installeres.\n"
 
-#: src/main.cc:243
+#: src/main.cc:244
 #, c-format
 msgid ""
 " -D             Show the dependencies of automatically changed packages.\n"
 msgstr " -D             Vis pakkekrava til automatisk endrede pakker.\n"
 
-#: src/main.cc:244
+#: src/main.cc:245
 #, c-format
 msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Vis endringene på installert størrelse på hver pakke.\n"
 
-#: src/main.cc:245
+#: src/main.cc:246
 #, fuzzy, c-format
 #| msgid ""
 #| " -v             Display extra information. (may be supplied multiple "
@@ -5974,7 +5997,7 @@ msgid ""
 "times).\n"
 msgstr " -v             Vis ekstra informasjon. (kan tilføyes flere ganger)\n"
 
-#: src/main.cc:246
+#: src/main.cc:247
 #, fuzzy, c-format
 #| msgid ""
 #| " -t [release]   Set the release from which packages should be installed\n"
@@ -5982,63 +6005,63 @@ msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [slippversjon]  Angi hvilken versjon pakker skal installeres fra\n"
 
-#: src/main.cc:247
+#: src/main.cc:248
 #, fuzzy, c-format
 #| msgid ""
 #| " -q             In command-line mode, suppress the incremental progress\n"
 #| "                indicators.\n"
 msgid ""
-" -q             In command-line mode, suppress the incremental progress.\n"
+" -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
 " -q             Ved bruk av kommandolinja, ikke vis framdriftsindikatorer.\n"
 
-#: src/main.cc:249
+#: src/main.cc:250
 #, fuzzy, c-format
 #| msgid " -o key=val     Directly set the configuration option named 'key'\n"
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr " -o nøkkel=verdi  Sett direkte oppsettsvalget «nøkkel»\n"
 
-#: src/main.cc:250
+#: src/main.cc:251
 #, fuzzy, c-format
 #| msgid ""
 #| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 #| "                strong dependencies\n"
 msgid ""
-" --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
+" --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\t Oppgi om anbefalte pakker skal håndteres\n"
 "                som strenge avhengigheter\n"
 
-#: src/main.cc:252
+#: src/main.cc:253
 #, c-format
 msgid " -S fname       Read the aptitude extended status info from fname.\n"
 msgstr " -S fnavn: Les den utvidede statusinfo-fila for aptitude fra fnavn.\n"
 
-#: src/main.cc:253
+#: src/main.cc:254
 #, c-format
 msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Last ned ny pakkeliste ved oppstart.\n"
 
-#: src/main.cc:254 src/main.cc:256
-#, c-format
-msgid "                  (terminal interface only)"
-msgstr ""
+#: src/main.cc:255 src/main.cc:257
+#, fuzzy, c-format
+msgid "                  (terminal interface only)\n"
+msgstr " -h             Denne hjelpeteksten\n"
 
-#: src/main.cc:255
+#: src/main.cc:256
 #, c-format
 msgid " -i             Perform an install run on startup.\n"
 msgstr " -i             Utfør en installasjonskjøring ved oppstart.\n"
 
-#: src/main.cc:258
+#: src/main.cc:259
 #, c-format
 msgid "                  This aptitude does not have Super Cow Powers.\n"
 msgstr "                  Denne aptituden har ikke superku-krefter.\n"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:392
+#: src/main.cc:393
 #, fuzzy
 #| msgid "true"
 msgid "trace"
@@ -6046,13 +6069,13 @@ msgstr "sann"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:395
+#: src/main.cc:396
 msgid "debug"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:398
+#: src/main.cc:399
 #, fuzzy
 #| msgid "no"
 msgid "info"
@@ -6060,13 +6083,13 @@ msgstr "ingen"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:401
+#: src/main.cc:402
 msgid "warn"
 msgstr ""
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:404
+#: src/main.cc:405
 #, fuzzy
 #| msgid "Err "
 msgid "error"
@@ -6074,7 +6097,7 @@ msgstr "Feil "
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:407
+#: src/main.cc:408
 #, fuzzy
 #| msgid "false"
 msgid "fatal"
@@ -6082,95 +6105,95 @@ msgstr "usann"
 
 #. ForTranslators: This is a log level that the user can pass on
 #. the command-line or set in the configuration file.
-#: src/main.cc:410
+#: src/main.cc:411
 msgid "off"
 msgstr ""
 
 #. ForTranslators: both the translated and the untranslated
 #. log level names are accepted here.
-#: src/main.cc:478
+#: src/main.cc:479
 #, c-format
 msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
 
-#: src/main.cc:487
+#: src/main.cc:488
 #, fuzzy, c-format
 #| msgid "Invalid operation %s"
 msgid "Invalid logger name \"%s\"."
 msgstr "Ugyldig operasjon %s"
 
-#: src/main.cc:769
+#: src/main.cc:761
 #, c-format
 msgid "Expected a number after -q=\n"
 msgstr "Forventet et tall etter -q=\n"
 
-#: src/main.cc:778
+#: src/main.cc:770
 #, c-format
 msgid "Expected a number after -q=, got %s\n"
 msgstr "Forventet et tall etter -q=, fikk %s\n"
 
-#: src/main.cc:802
+#: src/main.cc:794
 #, c-format
 msgid "-o requires an argument of the form key=value, got %s\n"
 msgstr "-o krever et argument av formen nøkkel=verdi, fikk %s\n"
 
-#: src/main.cc:900
+#: src/main.cc:884
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
 msgstr "Ikke noe komma etter merkenavn «%s».\n"
 
-#: src/main.cc:992 src/main.cc:1002
+#: src/main.cc:976 src/main.cc:986
 msgid "WEIRDNESS: unknown option code received\n"
 msgstr "MERKELIG: mottok en ukjent valgkode\n"
 
-#: src/main.cc:1020
+#: src/main.cc:1004
 msgid "--show-package-names|never"
 msgstr ""
 
-#: src/main.cc:1023
+#: src/main.cc:1007
 msgid "--show-package-names|auto"
 msgstr ""
 
-#: src/main.cc:1026
+#: src/main.cc:1010
 msgid "--show-package-names|always"
 msgstr ""
 
-#: src/main.cc:1031
+#: src/main.cc:1015
 #, c-format
 msgid ""
 "Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or "
 "\"always\")."
 msgstr ""
 
-#: src/main.cc:1037
+#: src/main.cc:1021
 msgid "no-summary"
 msgstr ""
 
-#: src/main.cc:1039
+#: src/main.cc:1023
 #, fuzzy
 #| msgid "Package"
 msgid "first-package"
 msgstr "Pakke"
 
-#: src/main.cc:1041
+#: src/main.cc:1025
 msgid "first-package-and-type"
 msgstr ""
 
-#: src/main.cc:1043
+#: src/main.cc:1027
 #, fuzzy
 #| msgid "All Packages"
 msgid "all-packages"
 msgstr "Alle pakkene"
 
-#: src/main.cc:1045
+#: src/main.cc:1029
 msgid "all-packages-with-dep-versions"
 msgstr ""
 
 #. ForTranslators: "why" here is the aptitude command name and
 #. should not be translated.
-#: src/main.cc:1051
+#: src/main.cc:1035
 #, c-format
 msgid ""
 "Invalid \"why\" summary mode \"%s\": expected \"no-summary\", \"first-package"
@@ -6178,7 +6201,7 @@ msgid ""
 "versions\"."
 msgstr ""
 
-#: src/main.cc:1089
+#: src/main.cc:1073
 #, fuzzy
 #| msgid "Only one of -u and -i may be specified\n"
 msgid ""
@@ -6186,7 +6209,7 @@ msgid ""
 "specified\n"
 msgstr "Du kan bare oppgi enten -u eller -i\n"
 
-#: src/main.cc:1098
+#: src/main.cc:1082
 #, fuzzy
 #| msgid ""
 #| "-u and -i may not be specified in command-line mode (eg, with 'install')"
@@ -6195,23 +6218,23 @@ msgid ""
 "(eg, with 'install')"
 msgstr "-u og -i kan ikke oppgis i kommandolinjemodus (f.eks., med «install»)"
 
-#: src/main.cc:1115
+#: src/main.cc:1099
 #, fuzzy
 #| msgid "-u and -i may not be specified with a command"
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
 msgstr "-u og -i kan ikke oppgis med en kommando"
 
-#: src/main.cc:1226
+#: src/main.cc:1210
 #, c-format
 msgid "Unknown command \"%s\"\n"
 msgstr "Ukjent kommando «%s»\n"
 
-#: src/main.cc:1238 src/main.cc:1323
+#: src/main.cc:1222 src/main.cc:1307
 #, c-format
 msgid "Uncaught exception: %s\n"
 msgstr "Unntakssignal ble ikke fanget opp: %s\n"
 
-#: src/main.cc:1242 src/main.cc:1327
+#: src/main.cc:1226 src/main.cc:1311
 #, c-format
 msgid ""
 "Backtrace:\n"
@@ -6220,7 +6243,8 @@ msgstr ""
 "Bakover-spor:\n"
 "%s\n"
 
-#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/view_changelog.cc:168
+#: src/menu_text_layout.cc:43 src/menu_tree.cc:227 src/ui.cc:259
+#: src/view_changelog.cc:168
 msgid "Search for: "
 msgstr "Søk etter: "
 
@@ -7110,17 +7134,21 @@ msgstr "erstatter"
 msgid "obsoletes"
 msgstr "gjør foreldet"
 
-#: src/reason_fragment.cc:177
+#: src/reason_fragment.cc:45
+msgid "enhances"
+msgstr ""
+
+#: src/reason_fragment.cc:178
 #, c-format
 msgid " (provided by %F)"
 msgstr " (skaffet av %F)"
 
-#: src/reason_fragment.cc:287
+#: src/reason_fragment.cc:288
 #, c-format
 msgid "%F%s %F %F"
 msgstr "%F%s %F %F"
 
-#: src/reason_fragment.cc:336
+#: src/reason_fragment.cc:337
 msgid ""
 "If you select a package, an explanation of its current state will appear in "
 "this space."
@@ -7128,7 +7156,7 @@ msgstr ""
 "Hvis du velger en pakke, så vil en beskrivelse av statusen dens vises i "
 "dette feltet."
 
-#: src/reason_fragment.cc:370
+#: src/reason_fragment.cc:371
 msgid ""
 "%B%s%b was installed automatically;  it is being removed because all of the "
 "packages which depend upon it are being removed:"
@@ -7136,18 +7164,18 @@ msgstr ""
 "%B%s%b ble installert automatisk;  den blir slettet fordi alle pakkene som "
 "hadde avhengigheter til den også slettes:"
 
-#: src/reason_fragment.cc:374
+#: src/reason_fragment.cc:375
 msgid "%B%s%b will be automatically removed because of dependency errors:"
 msgstr "%B%s%b vil bli slettet automatisk på grunn av avhengighetsfeil:"
 
-#: src/reason_fragment.cc:378
+#: src/reason_fragment.cc:379
 msgid ""
 "%B%s%b will be automatically installed to satisfy the following dependencies:"
 msgstr ""
 "%B%s%b vil bli installert automatisk for å tilfredsstille følgende "
 "avhengigheter:"
 
-#: src/reason_fragment.cc:384 src/reason_fragment.cc:396
+#: src/reason_fragment.cc:385 src/reason_fragment.cc:397
 msgid ""
 "%B%s%b cannot be upgraded now, but if it could be, it would still be held at "
 "version %B%s%b."
@@ -7155,7 +7183,7 @@ msgstr ""
 "%B%s%b kan ikke oppgraderes nå, men hadde den kunnet oppgraderes, så hadde "
 "den fortsatt blitt beholdt i versjon %B%s%b."
 
-#: src/reason_fragment.cc:387
+#: src/reason_fragment.cc:388
 msgid ""
 "%B%s%b will not be upgraded to version %B%s%b, to avoid breaking the "
 "following dependencies:"
@@ -7163,27 +7191,27 @@ msgstr ""
 "%B%s%b vil ikke bli oppgradert til versjon %B%s%b for å hindre at følgende "
 "avhengigheter blir brutt:"
 
-#: src/reason_fragment.cc:399
+#: src/reason_fragment.cc:400
 msgid "%B%s%b is currently installed."
 msgstr "B%s%b er allerede installert."
 
-#: src/reason_fragment.cc:405
+#: src/reason_fragment.cc:406
 msgid "%B%s%b is not currently installed."
 msgstr "%B%s%b er ikke installert."
 
-#: src/reason_fragment.cc:413
+#: src/reason_fragment.cc:414
 msgid "Some dependencies of %B%s%b are not satisfied:"
 msgstr "Noen av %B%s%bs avhengigheter er ikke tilfredsstilt:"
 
-#: src/reason_fragment.cc:417
+#: src/reason_fragment.cc:418
 msgid "%B%s%b will be downgraded."
 msgstr "%B%s%b vil bli nedgradert."
 
-#: src/reason_fragment.cc:424
+#: src/reason_fragment.cc:425
 msgid "%B%s%b will not be upgraded to the forbidden version %B%s%b."
 msgstr "%B%s%b vil ikke bli oppgradert til den forbudte versjonen %B%s%b."
 
-#: src/reason_fragment.cc:428
+#: src/reason_fragment.cc:429
 msgid ""
 "%B%s%b could be upgraded to version %B%s%b, but it is being held at version "
 "%B%s%b."
@@ -7191,37 +7219,37 @@ msgstr ""
 "%B%s%b kunne blitt oppgradert til versjon %B%s%b, men blir beholdt som "
 "versjon %B%s%b."
 
-#: src/reason_fragment.cc:435
+#: src/reason_fragment.cc:436
 msgid "%B%s%b will be re-installed."
 msgstr "%B%s%b vil bli installert på nytt."
 
-#: src/reason_fragment.cc:439
+#: src/reason_fragment.cc:440
 msgid "%B%s%b will be installed."
 msgstr "%B%s%b vil bli installert."
 
-#: src/reason_fragment.cc:443
+#: src/reason_fragment.cc:444
 msgid "%B%s%b will be removed."
 msgstr "%B%s%b blir slettet."
 
-#: src/reason_fragment.cc:448
+#: src/reason_fragment.cc:449
 msgid "%B%s%b will be upgraded from version %B%s%b to version %B%s%b."
 msgstr "%B%s%b vil bli oppgradert fra versjon %B%s%b til versjon %B%s%b."
 
-#: src/reason_fragment.cc:455
+#: src/reason_fragment.cc:456
 msgid "%B%s%b is only partly installed; its installation will be completed."
 msgstr "%B%s%b er bare delvis installert; dens installasjon vil bli fullført."
 
-#: src/reason_fragment.cc:487
+#: src/reason_fragment.cc:488
 msgid ""
 "The following packages depend on %B%s%b and will be broken by its removal:"
 msgstr ""
 "Følgende pakker er avhengige av %B%s%b og vil bli skadet hvis du fjerner den:"
 
-#: src/reason_fragment.cc:490
+#: src/reason_fragment.cc:491
 msgid "The following packages depend on %B%s%b and are broken:"
 msgstr "Følgende pakker er avhengige av %B%s%b og er skadet:"
 
-#: src/reason_fragment.cc:497
+#: src/reason_fragment.cc:498
 msgid ""
 "The following packages conflict with %B%s%b and will be broken by its "
 "installation:"
@@ -7229,7 +7257,7 @@ msgstr ""
 "Følgende pakker er i konflikt med %B%s%b og vil bli skadet hvis den "
 "installeres:"
 
-#: src/reason_fragment.cc:530
+#: src/reason_fragment.cc:531
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
 "currently installed version of %B%s%b, or conflict with the currently "
@@ -7238,7 +7266,7 @@ msgstr ""
 "Følgende pakker er avhengige av en annen versjon av %B%s%b enn den versjonen "
 "av %B%s%b som nå er installert, eller er i konflikt med nåværende versjon:"
 
-#: src/reason_fragment.cc:534
+#: src/reason_fragment.cc:535
 msgid ""
 "The following packages conflict with %B%s%b, or depend on a version of it "
 "which is not going to be installed."
@@ -7246,11 +7274,11 @@ msgstr ""
 "Følgende pakker er i konflikt med %B%s%b eller er avhengige av en versjon av "
 "den som ikke vil bli installert."
 
-#: src/reason_fragment.cc:538
+#: src/reason_fragment.cc:539
 msgid "The following packages conflict with %B%s%b:"
 msgstr "Følgende pakker er i konflikt med %B%s%b:"
 
-#: src/reason_fragment.cc:543
+#: src/reason_fragment.cc:544
 msgid ""
 "The following packages depend on a version of %B%s%b other than the "
 "currently installed version of %B%s%b:"
@@ -7258,7 +7286,7 @@ msgstr ""
 "Følgende pakker er avhengige av en annen versjon av %B%s%b enn den versjonen "
 "av %B%s%b som nå er installert:"
 
-#: src/reason_fragment.cc:547
+#: src/reason_fragment.cc:548
 msgid ""
 "The following packages depend on a version of %B%s%b which is not going to "
 "be installed."
@@ -7266,15 +7294,15 @@ msgstr ""
 "Følgende pakker er avhengige av en versjon av %B%s%b som ikke vil bli "
 "installert."
 
-#: src/reason_fragment.cc:553
+#: src/reason_fragment.cc:554
 msgid "upgraded"
 msgstr "oppgradert"
 
-#: src/reason_fragment.cc:553
+#: src/reason_fragment.cc:554
 msgid "downgraded"
 msgstr "nedgradert"
 
-#: src/reason_fragment.cc:559
+#: src/reason_fragment.cc:560
 msgid ""
 "The following packages depend on the currently installed version of %B%s%b "
 "(%B%s%b), or conflict with the version it will be %s to (%B%s%b), and will "
@@ -7284,7 +7312,7 @@ msgstr ""
 "%b), eller er i konflikt med den versjonen den vil bli %s til (%B%s%b), og "
 "vil bli skadet hvis den blir %s."
 
-#: src/reason_fragment.cc:566
+#: src/reason_fragment.cc:567
 msgid ""
 "The following packages conflict with version %B%s%b of %B%s%b, and will be "
 "broken if it is %s."
@@ -7292,7 +7320,7 @@ msgstr ""
 "Følgende pakker er konflikt med versjon %B%s%b av %B%s%b og vil bli skadet "
 "hvis den blir %s."
 
-#: src/reason_fragment.cc:571
+#: src/reason_fragment.cc:572
 msgid ""
 "The following packages depend on version %B%s%b of %B%s%b, and will be "
 "broken if it is %s."
@@ -7328,47 +7356,47 @@ msgstr "Bruk"
 msgid "Close"
 msgstr "Lukk"
 
-#: src/solution_fragment.cc:164
+#: src/solution_fragment.cc:167
 #, c-format
 msgid "%s conflicts with %s [provided by %s %s]"
 msgstr "%s er i konflikt med %s [som skaffes av %s %s]"
 
-#: src/solution_fragment.cc:177
+#: src/solution_fragment.cc:180
 #, c-format
 msgid "Removing %s"
 msgstr "Fjerner  %s"
 
-#: src/solution_fragment.cc:179
+#: src/solution_fragment.cc:182
 #, c-format
 msgid "Installing %s %s (%s)"
 msgstr "Installerer %s %s (%s)"
 
-#: src/solution_fragment.cc:184
+#: src/solution_fragment.cc:187
 #, c-format
 msgid "Leave %ls unresolved."
 msgstr ""
 
-#: src/solution_fragment.cc:410
+#: src/solution_fragment.cc:413
 msgid "%BRemove%b the following packages:%n"
 msgstr "%BFjern%b disse pakkene:%n"
 
-#: src/solution_fragment.cc:425
+#: src/solution_fragment.cc:428
 msgid "%BInstall%b the following packages:%n"
 msgstr "%BInstaller%b disse pakkene:%n"
 
-#: src/solution_fragment.cc:443
+#: src/solution_fragment.cc:446
 msgid "%BKeep%b the following packages at their current version:%n"
 msgstr "%BBehold%b disse pakkene i nåværende versjon:%n"
 
-#: src/solution_fragment.cc:467
+#: src/solution_fragment.cc:470
 msgid "%BUpgrade%b the following packages:%n"
 msgstr "%BOppgrader%b disse pakkene:%n"
 
-#: src/solution_fragment.cc:487
+#: src/solution_fragment.cc:490
 msgid "%BDowngrade%b the following packages:%n"
 msgstr "%BNedgrader%b disse pakkene:%n"
 
-#: src/solution_fragment.cc:508
+#: src/solution_fragment.cc:511
 #, c-format
 msgid "Leave the following dependencies unresolved:%n"
 msgstr "La følgende avhengigheter være uløste:%n"
@@ -7466,10 +7494,6 @@ msgstr "E:"
 #: src/ui.cc:245
 msgid "W:"
 msgstr "W:"
-
-#: src/ui.cc:259
-msgid "Search for:"
-msgstr "Søk etter:"
 
 #: src/ui.cc:341
 msgid ""
@@ -7845,7 +7869,9 @@ msgid "Error while dumping resolver state"
 msgstr "Feil under dumping av løsermotorens tilstand"
 
 #: src/ui.cc:2235
-msgid "File to which the resolver state should be dumped:"
+#, fuzzy
+#| msgid "File to which the resolver state should be dumped:"
+msgid "File to which the resolver state should be dumped: "
 msgstr "Fil som løsermotorens tilstand skal dumpes til:"
 
 #: src/ui.cc:2265
@@ -8361,6 +8387,21 @@ msgid "You can only view changelogs of official Debian packages."
 msgstr "Du kan bare se på endringslogger til offisielle Debian-pakker."
 
 #~ msgid ""
+#~ "%BOption:%b  %s\n"
+#~ "%BDefault:%b %s\n"
+#~ "%BValue:%b   %s\n"
+#~ msgstr ""
+#~ "%BValg:%b     %s\n"
+#~ "%BStandard:%b %s\n"
+#~ "%BVerdi:%b    %s\n"
+
+#~ msgid "Press Return to continue"
+#~ msgstr "Trykk Enter for å fortsette"
+
+#~ msgid "Search for:"
+#~ msgstr "Søk etter:"
+
+#~ msgid ""
 #~ "Unable to resolve dependencies for the upgrade (the resolver timed out)."
 #~ msgstr ""
 #~ "Klarte ikke løse opp avhengigheter for oppgraderingen (tidsavbrudd i "
@@ -8487,11 +8528,6 @@ msgstr "Du kan bare se på endringslogger til offisielle Debian-pakker."
 #~| msgid "yes"
 #~ msgid "gtk-yes"
 #~ msgstr "ja"
-
-#, fuzzy
-#~| msgid "Invalid operation %s"
-#~ msgid "Invalid command-line option '%s'"
-#~ msgstr "Ugyldig operasjon %s"
 
 #~ msgid "but it is not installable"
 #~ msgstr "men lar seg ikke installere"
@@ -8688,10 +8724,6 @@ msgstr "Du kan bare se på endringslogger til offisielle Debian-pakker."
 #~ "                lead to a conflict with the given package if installed\n"
 #~ msgstr ""
 #~ " -V             Vis hvilke versjoner av pakkene som skal installeres.\n"
-
-#, fuzzy
-#~ msgid "                indicators.\n"
-#~ msgstr " -h             Denne hjelpeteksten\n"
 
 #~ msgid "There are now %F."
 #~ msgstr "Det er nå %F."

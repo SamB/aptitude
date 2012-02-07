@@ -136,7 +136,7 @@ public:
 
     last_sol=sol;
 
-    if(sol.get_choices().size() > 0)
+    if(sol.get_choices().size() == 0)
       set_fragment(cw::fragf("%s", _("Internal error: unexpected null solution.")));
     else
       set_fragment(solution_fragment(sol));

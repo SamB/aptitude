@@ -114,14 +114,7 @@ then
 	exit 1
     fi
 
-    if file "$INPUTFILE" | grep bzip2 2>/dev/null > /dev/null
-    then
-	DECOMPRESSOR=bunzip2
-    else
-	DECOMPRESSOR=gunzip
-    fi
-
-    ($DECOMPRESSOR -c < "$INPUTFILE") | (cd "$tempdir" && tar x) || exit 1
+    tar -C "$tempdir" -xf "$INPUTFILE" || exit 1
 fi
 
 if [ $UNPACK_ONLY = 1 ]

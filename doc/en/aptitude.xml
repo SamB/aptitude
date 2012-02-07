@@ -7,7 +7,7 @@
   <!ENTITY dselect '<command>dselect</command>'>
   <!ENTITY apt-get '<command>apt-get</command>'>
   <!ENTITY root '<systemitem class="username">root</systemitem>'>
-  <!ENTITY VERSION '0.6.4'>
+  <!ENTITY VERSION '0.6.5'>
 
   <!-- Shortcuts for menu commands: -->
 
@@ -484,17 +484,17 @@
 		  make</ulink>.
 		</para>
 	      </listitem>
-
-	      <listitem>
-		<para>
-		  Last but not least, download the most recent
-		  &aptitude; source code, available from <ulink
-		  url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
-		  (scroll to the bottom of the page and download the
-		  <quote>.orig.tar.gz</quote> file)
-		</para>
-	      </listitem>
 	    </itemizedlist>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+	      Last but not least, download the most recent
+	      &aptitude; source code, available from <ulink
+	      url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
+	      (scroll to the bottom of the page and download the
+	      <quote>.orig.tar.gz</quote> file)
+	    </para>
 	  </listitem>
 	</orderedlist>
 
@@ -3453,7 +3453,7 @@ i A 0.5.25
 
 		  <para>
 		    If the package is installed, it will be removed.
-		    Futhermore, even if it is removed, any remaining
+		    Furthermore, even if it is removed, any remaining
 		    files (such as configuration files) related to the
 		    package will be removed from the system.
 		  </para>
@@ -5147,7 +5147,7 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	<para>
 	  Most textual searches (for package names, descriptions, etc)
 	  are performed using case-insensitive <ulink
-	  url='http://sitescooper.org/tao_regexps.html'>regular
+	  url='http://web.archive.org/web/20060719181658/http://sitescooper.org/tao_regexps.html'>regular
 	  expressions</ulink>.  A regular expression will match
 	  against a field if any portion of the field matches the
 	  expression; for instance,
@@ -10863,41 +10863,6 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      </seg>
 	    </seglistitem>
 
-	    <seglistitem id='configCmdLine-Safe-Upgrade-No-New-Installs'>
-	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		In command-line mode, if this option is
-		<literal>true</literal>, the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command will not attempt to resolve dependencies by
-		installing new packages.  If upgrading package
-		<replaceable>A</replaceable> would require package
-		<replaceable>B</replaceable> to be newly installed,
-		package <replaceable>A</replaceable> will not be
-		upgraded.  This corresponds to the command-line option
-		<literal><link
-		linkend='cmdlineOptionSafeUpgradeNoNewInstalls'>--no-new-installs</link></literal>.
-	      </seg>
-	    </seglistitem>
-
-	    <seglistitem id='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'>
-	      <seg><literal>Aptitude::CmdLine::Safe-Upgrade::Show-Resolver-Actions</literal></seg>
-	      <seg><literal>false</literal></seg>
-	      <seg>
-		If this option is enabled, the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command will display an explanation of the actions
-		taken by the resolver before showing the installation
-		preview.  This option is similar to <link
-		linkend='configSafe-Resolver-Show-Resolver-Actions'><literal>Aptitude::Safe-Resolver::Show-Resolver-Actions</literal></link>,
-		but only applies to the <link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
-		command.  Equivalent to the command-line option <link
-		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
-	      </seg>
-	    </seglistitem>
-
 	    <seglistitem id='configCmdLine-Show-Deps'>
 	      <seg><literal>Aptitude::CmdLine::Show-Deps</literal></seg>
 	      <seg><literal>false</literal></seg>
@@ -11003,14 +10968,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is enabled, then when the
 		<quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or because the command-line action is <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>,
 		it will display a summary of the actions taken by the
 		resolver before showing the installation preview.
-		This option is similar to <link
-		linkend='configCmdLine-Safe-Upgrade-Show-Resolver-Actions'><literal>Aptitude::Safe-Upgrade::Show-Resolver-Actions</literal></link>,
-		but only applies to command-line actions other than
-		<link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
 		Equivalent to the command-line option <link
 		linkend='cmdlineOptionShowResolverActions'><literal>--show-resolver-actions</literal></link>.
 	      </seg>
@@ -11909,14 +11871,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is <literal>true</literal>, then when
 		the <quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to install packages
-		that are not currently installed.  This is similar to
-		<link
-		linkend='configCmdLine-Safe-Upgrade-No-New-Installs'><literal>Aptitude::CmdLine::Safe-Upgrade::No-New-Installs</literal></link>,
-		but applies only to command-line actions other than
-		<link
-		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>.
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or by using the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command-line action, the resolver will not be allowed
+		to install packages that are not currently installed.
 	      </seg>
 	    </seglistitem>
 
@@ -11927,9 +11886,11 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		If this option is enabled, then when the
 		<quote>safe</quote> dependency resolver has been
 		activated via <link
-		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>,
-		the resolver will not be allowed to resolve
-		dependencies by upgrading packages.
+		linkend='cmdlineSafeResolver'><literal>--safe-resolver</literal></link>
+		or by using the <link
+		linkend='manpageSafeUpgrade'><literal>safe-upgrade</literal></link>
+		command-line action, the resolver will not be allowed
+		to resolve dependencies by upgrading packages.
 	      </seg>
 	    </seglistitem>
 

@@ -222,8 +222,8 @@ static void resolver_help(ostream &out,
 			cw::fragf(_("y: %F"
 				"n: %F"
 				"q: %F"
-				",: %F"
 				".: %F"
+				",: %F"
 				"o: %F"
 				"e: %F"
 				"x: %F"
@@ -1048,7 +1048,7 @@ cmdline_resolve_deps(pkgset &to_install,
 		    string response;
 // FIXME: translate Y, N
 		    if(!assume_yes)
-		      response = prompt_string(_("No solution found within the allotted time.  Try harder? [Y/n]"));
+		      response = prompt_string(_("No solution found within the allotted time.  Try harder? [Y/n] "));
 
 		    string::size_type loc=0;
 		    while(loc<response.size() && isspace(response[loc]))

@@ -10,12 +10,14 @@ SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
 
 dist_bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
 
-MANPAGE_LOCALES=gl it pl
+MANPAGE_LOCALES=gl it
 
 TLMANPAGES = $(wildcard $(srcdir)/aptitude.??.8)
 TLHELPTXTS = help.txt $(wildcard $(srcdir)/help-??.txt) $(wildcard $(srcdir)/help-??_??.txt)
 TLDEFAULTS = $(wildcard $(srcdir)/aptitude-defaults.??) $(wildcard $(srcdir)/aptitude-defaults.??_??)
-EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in FAQ README.i18n README.SMART-POINTERS README.THREADS README.CWIDGET aptitude-hackers-guide.txt aclocal.m4 \
+EXTRA_DIST = config.rpath  ChangeLog.SVN Doxyfile.in aclocal.m4 \
+	FAQ README.BOOST README.CWIDGET README.i18n README.INTERFACES README.NAMING \
+	README.SMART-POINTERS README.THREADS aptitude-hackers-guide.txt \
 	function_groups function_pkgs aptitude-defaults \
 	section-descriptions \
 	$(TLDEFAULTS) \
