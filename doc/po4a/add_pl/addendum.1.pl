@@ -1,15 +1,15 @@
 PO4A-HEADER:mode=after;position=</author>;beginboundary=<legalnotice>
     <othercredit>
       <personname>
-        <firstname>MichaÅ</firstname> <surname>KuÅach</surname>
+        <firstname>Michał</firstname> <surname>Kułach</surname>
       </personname>
       <email>michal.kulach@gmail.com</email>
-      <contrib>TÅumaczenie</contrib>
+      <contrib>Tłumaczenie</contrib>
     </othercredit>
     <othercredit>
       <personname>
-        <firstname>MichaÅ</firstname> <surname>Politkowski</surname>
+        <firstname>Michał</firstname> <surname>Politkowski</surname>
       </personname>
       <email>l10n@mp.pl.eu.org</email>
-      <contrib>TÅumaczenie</contrib>
+      <contrib>Tłumaczenie</contrib>
     </othercredit>
