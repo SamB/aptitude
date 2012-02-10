@@ -5,8 +5,9 @@ MAINTAINERCLEANFILES=Makefile.in aclocal.m4 config.h.in
 # more maintainable than the "correct" alternatives.
 SRCDIRS=@SRCDIRS@
 DOCDIRS=@DOCDIRS@
+TESTDIRS=@TESTDIRS@
 
-SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po tests
+SUBDIRS=$(SRCDIRS) $(DOCDIRS) m4 po $(TESTDIRS)
 
 dist_bin_SCRIPTS = aptitude-create-state-bundle aptitude-run-state-bundle
 

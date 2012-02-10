@@ -873,6 +873,16 @@ AC_ARG_ENABLE(docs,
 	fi,
 	DOCDIRS=doc)
 
+AC_ARG_ENABLE(tests,
+        AS_HELP_STRING([--disable-tests], [don't run the test suite]),
+        if test x$enableval=xno
+        then
+          TESTDIRS=
+        else
+          TESTDIRS=tests
+        fi,
+        TESTDIRS=tests)
+
 AC_ARG_ENABLE(resolver-sanity-checks,
 	AS_HELP_STRING([--enable-resolver-sanity-checks], [enable expensive internal sanity-checks in the dependency resolver]),
 	if test x$enableval=xyes
@@ -887,6 +897,7 @@ CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -Wall $WERROR"
 
 AC_SUBST(SRCDIRS)
 AC_SUBST(DOCDIRS)
+AC_SUBST(TESTDIRS)
 
 AC_DEFINE_UNQUOTED(STATEDIR, "$STATEDIR", [The location of aptitude's state files])
 AC_DEFINE_UNQUOTED(LOCKFILE, "$LOCKFILE", [The location of the lock to prevent simultaneous aptitude instances])
