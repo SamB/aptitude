@@ -1720,6 +1720,18 @@ static void really_do_clean()
     _error->Error(_("Cleaning while a download is in progress is not allowed"));
   else
     {
+      // Lock the archive directory
+      FileFd lock;
+      if (_config->FindB("Debug::NoLocking",false) == false)
+        {
+          lock.Fd(GetLock(_config->FindDir("Dir::Cache::archives") + "lock"));
+          if (_error->PendingError() == true)
+            {
+              _error->Error(_("Unable to lock the download directory"));
+              return;
+            }
+        }
+
       cw::widget_ref msg=cw::center::create(cw::frame::create(cw::label::create(_("Deleting downloaded files"))));
       msg->show_all();
       popup_widget(msg);
@@ -1796,6 +1808,18 @@ static void really_do_autoclean()
     _error->Error(_("Cleaning while a download is in progress is not allowed"));
   else
     {
+      // Lock the archive directory
+      FileFd lock;
+      if (_config->FindB("Debug::NoLocking",false) == false)
+        {
+          lock.Fd(GetLock(_config->FindDir("Dir::Cache::archives") + "lock"));
+          if (_error->PendingError() == true)
+            {
+              _error->Error(_("Unable to lock the download directory"));
+              return;
+            }
+        }
+
       cw::widget_ref msg=cw::center::create(cw::frame::create(cw::label::create(_("Deleting obsolete downloaded files"))));
       msg->show_all();
       popup_widget(msg);

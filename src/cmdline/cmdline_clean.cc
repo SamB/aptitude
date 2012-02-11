@@ -51,7 +51,7 @@ using boost::shared_ptr;
 
 int cmdline_clean(int argc, char *argv[], bool simulate)
 {
-  const shared_ptr<terminal_io> term = create_terminal();
+  const string archivedir = aptcfg->FindDir("Dir::Cache::archives");
 
   _error->DumpErrors();
 
@@ -61,9 +61,20 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
       return -1;
     }  
 
-  shared_ptr<OpProgress> progress = make_text_progress(false, term, term, term);
+  if(simulate)
+    {
+      printf(_("Del %s* %spartial/*\n"), archivedir.c_str(), archivedir.c_str());
+      return 0;
+    }
 
-  apt_init(progress.get(), false);
+  // Lock the archive directory
+  FileFd lock;
+  if (_config->FindB("Debug::NoLocking",false) == false)
+    {
+      lock.Fd(GetLock(archivedir + "lock"));
+      if (_error->PendingError() == true)
+        _error->Error(_("Unable to lock the download directory"));
+    }
 
   if(_error->PendingError())
     {
@@ -71,31 +82,9 @@ int cmdline_clean(int argc, char *argv[], bool simulate)
       return -1;
     }
 
-  // In case we aren't root.
-  if(!simulate)
-    apt_cache_file->GainLock();
-  else
-    apt_cache_file->ReleaseLock();
-
-  if(_error->PendingError())
-    {
-      _error->DumpErrors();
-      return -1;
-    }
-
-  if(aptcfg)
-    {
-      if(simulate)
-	printf(_("Del %s* %spartial/*\n"),
-	       aptcfg->FindDir("Dir::Cache::archives").c_str(),
-	       aptcfg->FindDir("Dir::Cache::archives").c_str());
-      else
-	{
-	  pkgAcquire fetcher;
-	  fetcher.Clean(aptcfg->FindDir("Dir::Cache::archives"));
-	  fetcher.Clean(aptcfg->FindDir("Dir::Cache::archives")+"partial/");
-	}
-    }
+  pkgAcquire fetcher;
+  fetcher.Clean(archivedir);
+  fetcher.Clean(archivedir+"partial/");
 
   int rval=_error->PendingError() ? -1 : 0;
 
@@ -135,6 +124,7 @@ public:
 
 int cmdline_autoclean(int argc, char *argv[], bool simulate)
 {
+  const string archivedir = aptcfg->FindDir("Dir::Cache::archives");
   const shared_ptr<terminal_io> term = create_terminal();
 
   _error->DumpErrors();
@@ -144,6 +134,20 @@ int cmdline_autoclean(int argc, char *argv[], bool simulate)
       fprintf(stderr, _("E: The autoclean command takes no arguments\n"));
       return -1;
     }  
+
+  // Lock the archive directory
+  FileFd lock;
+  if (!simulate &&
+      _config->FindB("Debug::NoLocking",false) == false)
+    {
+      lock.Fd(GetLock(archivedir + "lock"));
+      if (_error->PendingError() == true)
+        {
+          _error->Error(_("Unable to lock the download directory"));
+          _error->DumpErrors();
+          return -1;
+        }
+    }
 
   shared_ptr<OpProgress> progress = make_text_progress(false, term, term, term);
 
@@ -155,23 +159,10 @@ int cmdline_autoclean(int argc, char *argv[], bool simulate)
       return -1;
     }
 
-  // In case we aren't root.
-  if(!simulate)
-    apt_cache_file->GainLock();
-  else
-    apt_cache_file->ReleaseLock();
-
-  if(_error->PendingError())
-    {
-      _error->DumpErrors();
-      return -1;
-    }
-
   LogCleaner cleaner(simulate);
   int rval=0;
-  if(!(cleaner.Go(aptcfg->FindDir("Dir::Cache::archives"), *apt_cache_file) &&
-       cleaner.Go(aptcfg->FindDir("Dir::Cache::archives")+"partial/",
-		  *apt_cache_file)) ||
+  if(!(cleaner.Go(archivedir, *apt_cache_file) &&
+       cleaner.Go(archivedir+"partial/", *apt_cache_file)) ||
      _error->PendingError())
     rval=-1;
 
