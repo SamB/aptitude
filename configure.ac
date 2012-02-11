@@ -285,8 +285,6 @@ PKG_CHECK_MODULES(SIGC, sigc++-2.0)
 
 PKG_CHECK_MODULES(CWIDGET, cwidget)
 
-PKG_CHECK_MODULES(VTE, vte)
-
 dnl Check for Boost headers.  Place each one on a line by itself and
 dnl write "dnl" at the end: the "dnl" deletes the newline, and without
 dnl it you'll get an error when you run the configure script.
@@ -553,6 +551,8 @@ then
   PKG_CHECK_MODULES(GTHREAD, gthread-2.0,,[HAVE_GTK=])
   PKG_CHECK_MODULES(GTKMM, gtkmm-2.4,,[HAVE_GTK=])
   PKG_CHECK_MODULES(LIBGLADEMM, libglademm-2.4,,[HAVE_GTK=])
+  PKG_CHECK_MODULES(VTE, vte,,[HAVE_GTK=])
+
 else
   AC_MSG_NOTICE([Disabling the GTK+ frontend at your request (--disable-gtk).])
 fi
