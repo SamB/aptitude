@@ -337,7 +337,7 @@ void download_update_manager::finish(pkgAcquire::RunResult res,
     }
   else
     {
-      progress->OverallProgress(0, 0, 1, _("Updating debtags database..."));
+      progress->OverallProgress(0, 0, 1, _("Updating debtags database"));
 
       std::string debtags_options = aptcfg->Find(PACKAGE "::Debtags-Update-Options", "--local");
 
