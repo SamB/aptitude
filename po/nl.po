@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-09-05 23:04+0200\n"
+"PO-Revision-Date: 2012-02-12 14:39+0800\n"
 "Last-Translator: Frans Pop <elendil@planet.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
 "Language: nl\n"
@@ -41,10 +41,9 @@ msgid "%BValue:%b   "
 msgstr "%BWaarde:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Bezig met wijzigen van \"%ls\""
+msgstr "Bezig met wijzigen van \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -615,10 +614,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Geen bronpakket gevonden voor \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Kan de 'build-depends' niet voldoen: %s."
+msgstr "Kan de 'build-depends' niet voldoen: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -906,26 +904,18 @@ msgid "Err"
 msgstr "Fout "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "%sB opgehaald in %s (%sB/s)\n"
+msgstr "%sB opgehaald in %s (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Mediawisseling: plaats de schijf met opschrift '%s' in het station '%s' en "
-"druk op [Enter].\n"
+msgstr "Mediawisseling: plaats de schijf met opschrift '%s' in het station '%s' en druk op [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
 msgstr "[Bezig]"
 
@@ -1869,10 +1859,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ongeldig antwoord; geef één van de volgende commando's:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Geen oplossing gevonden in de toegewezen tijd. Harder proberen? [Y/n]"
+msgstr "Geen oplossing gevonden in de toegewezen tijd. Harder proberen? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1943,10 +1931,9 @@ msgid "but %s is installed."
 msgstr "maar %s is geïnstalleerd."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "maar het is niet installeerbaar"
+msgstr "maar het is niet installeerbaar."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2049,16 +2036,14 @@ msgid " [held]"
 msgstr " [houden]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; zal worden geïnstalleerd."
+msgstr "%s%s; zal worden geïnstalleerd"
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; zal automatisch worden geïnstalleerd"
+msgstr "%s%s; zal automatisch worden geïnstalleerd"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2341,10 +2326,9 @@ msgid "Archive %s:"
 msgstr "Archief"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Pakket \"%s\" bestaat niet.\n"
+msgstr "Pakket \"%s\" bestaat niet."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -2519,13 +2503,10 @@ msgid "Unable to parse some match patterns."
 msgstr "Kan sommige vergelijkingspatronen niet ontleden."
 
 #: src/cmdline/cmdline_why.cc:1417
-#, fuzzy, c-format
-#| msgid ""
-#| "%s: this command requires at least one argument (the package to query)."
+#, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
-msgstr ""
-"%s: de opdracht vereist tenminste één argument (het te bevragen pakket)."
+msgstr "%s: de opdracht vereist tenminste één argument (het te bevragen pakket).\n"
 
 #: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
@@ -5653,80 +5634,65 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Pakketten installeren/opwaarderen\n"
+msgstr " install      - Pakketten installeren/opwaarderen.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Pakketten verwijderen\n"
+msgstr " remove       - Pakketten verwijderen.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Pakketten en hun configuratiebestanden verwijderen\n"
+msgstr " purge        - Pakketten en hun configuratiebestanden verwijderen.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Pakketten behouden\n"
+msgstr " hold         - Pakketten behouden.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Annuleer het behouden van een pakket\n"
+msgstr " unhold       - Annuleer het behouden van een pakket.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Pakketten aanduiden als automatisch geïnstalleerd\n"
+msgstr " markauto     - Pakketten aanduiden als automatisch geïnstalleerd.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Pakketten aanduiden als handmatig geïnstalleerd\n"
+msgstr " unmarkauto   - Pakketten aanduiden als handmatig geïnstalleerd.\n"
 
 #: src/main.cc:205
 #, c-format
 msgid ""
 " forbid-version - Forbid aptitude from upgrading to a specific package "
 "version.\n"
-msgstr ""
-" verboden-versie - Verbied aptitude van op te waarderen naar een specifieke "
-"pakketversie.\n"
+msgstr " forbid-version - Verbied aptitude van op te waarderen naar een specifieke pakketversie.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Lijsten van nieuwe/opwaardeerbare pakketten ophalen\n"
+msgstr " update       - Lijsten van nieuwe/opwaardeerbare pakketten ophalen.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Een veilige opwaardering uitvoeren\n"
+msgstr " safe-upgrade - Een veilige opwaardering uitvoeren.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
 msgstr ""
-" full-upgrade - Een opwaardering uitvoeren, waarbij mogelijk pakketten "
-"worden geïnstalleerd of verwijderd\n"
+" full-upgrade - Een opwaardering uitvoeren, waarbij mogelijk pakketten worden\n"
+"                geïnstalleerd of verwijderd.\n"
 
 #: src/main.cc:209
 #, c-format
@@ -5734,22 +5700,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr "forget-new   - Vergeet welke pakketten \"nieuw\" zijn\n"
+msgstr "forget-new   - Vergeet welke pakketten \"nieuw\" zijn.\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Een pakket opzoeken op naam en/of op expressie\n"
+msgstr " search       - Een pakket opzoeken op naam en/of op expressie.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Gedetailleerde informatie tonen van een pakket\n"
+msgstr " show         - Gedetailleerde informatie tonen van een pakket.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5758,65 +5721,47 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Gedetailleerde informatie tonen van een pakket\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Opgehaalde pakketbestanden wissen\n"
+msgstr " clean        - Opgehaalde pakketbestanden wissen.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Oude opgehaalde pakketbestanden wissen\n"
+msgstr " autoclean    - Oude opgehaalde pakketbestanden wissen.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Bekijk de changelog van een pakket\n"
+msgstr " changelog    - Bekijk de changelog van een pakket.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Het .deb-bestand van een pakket ophalen\n"
+msgstr " download     - Het .deb-bestand van een pakket ophalen.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
-" reinstall    - Download en herinstalleer (mogelijk) een momenteel "
-"geïnstalleerd pakket\n"
+" reinstall    - Download en herinstalleer (mogelijk) een momenteel\n"
+"                geïnstalleerd pakket.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
 " why          - Toon de handmatig geïnstalleerde pakketten die een pakket\n"
-"                vereisen, of waarom één of meer pakketten het opgegeven "
-"pakket\n"
-"                nodig zouden hebben\n"
+"                vereisen, of waarom één of meer pakketten het opgegeven pakket\n"
+"                nodig zouden hebben.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5826,7 +5771,7 @@ msgstr ""
 " why-not      - Toon de handmatig geïnstalleerde pakketten die een conflict\n"
 "                veroorzaken met het opgegeven pakket, of waarom één of meer\n"
 "                pakketten zouden leiden tot een conflict met het opgegeven\n"
-"                pakket indien geïnstalleerd\n"
+"                pakket indien geïnstalleerd.\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5834,10 +5779,9 @@ msgid "  Options:\n"
 msgstr "  Opties:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Deze helptekst\n"
+msgstr " -h             Deze helptekst.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5875,10 +5819,9 @@ msgstr ""
 " -d             Enkel pakketten ophalen, niets installeren of verwijderen.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr "-P             Steeds naar bevestiging of actie vragen\n"
+msgstr "-P             Steeds naar bevestiging of actie vragen.\n"
 
 #: src/main.cc:238
 #, fuzzy, c-format
@@ -5892,37 +5835,26 @@ msgstr ""
 "'ja' is\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F indeling      Een indeling aangeven voor de zoekresultaten; zie "
-"handleiding\n"
+msgstr " -F indeling      Een indeling aangeven voor de zoekresultaten; zie handleiding.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
 msgstr ""
-" -O ordening       Geef aan hoe zoekresultaten moeten gesorteerd worden; zie "
-"handleiding\n"
+" -O ordening       Geef aan hoe zoekresultaten moeten gesorteerd worden; zie\n"
+"                   handleiding.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr ""
-" -w breedte       Geeft de breedte aan voor weergave van zoekresultaten\n"
+msgstr " -w breedte       Geeft de breedte aan voor weergave van zoekresultaten.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -5950,58 +5882,40 @@ msgstr ""
 " -Z             Toont de wijziging in installatiegrootte van elk pakket\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Toont extra informatie. (kan meerdere keren worden "
-"meegegeven)\n"
+msgstr " -v             Toont extra informatie. (kan meerdere keren worden meegegeven).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [release]   Zet de release waarvan pakketten moeten geïnstalleerd "
-"worden\n"
+msgstr " -t [release]   Zet de release waarvan pakketten moeten geïnstalleerd worden.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
-" -q             In commandoregelmodus: onderdruk de incrementele "
-"voortgangs-\n"
+" -q             In commandoregelmodus: onderdruk de incrementele voortgangs-\n"
 "                indicatoren.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr ""
-" -o sleutel=val Zet de configuratie-optie genaamd 'sleutel' rechtstreeks\n"
+msgstr " -o sleutel=val Zet de configuratie-optie genaamd 'sleutel' rechtstreeks.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tspecifieert of recommends al dan niet als sterke\n"
-"             afhankelijkheden worden behandeld\n"
+"                afhankelijkheden worden behandeld.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7854,10 +7768,8 @@ msgid "Error while dumping resolver state"
 msgstr "Fout bij het archiveren van de status van de oplosser"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Bestand waarin de status van de oplosser moet worden gearchiveerd:"
+msgstr "Bestand waarin de status van de oplosser moet worden gearchiveerd: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

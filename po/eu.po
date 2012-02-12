@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: aptitude_po_eu\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-05-05 22:00+0200\n"
+"PO-Revision-Date: 2012-02-12 16:16+0800\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "Language: eu\n"
@@ -705,10 +705,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Ezin da \"%s\"-(r)en iturburuko paketea aurkitu.\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Ezin da eraikitze-mendekotasuna bete: %s."
+msgstr "Ezin da eraikitze-mendekotasuna bete: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -994,28 +993,20 @@ msgid "Err"
 msgstr "Err "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Lortuta: %sB (%s) (%sB/s)\n"
+msgstr "Lortuta: %sB (%s) (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Euskarri-aldaketa: sartu '%s' etiketadun diskoa '%s' unitatean, eta sakatu "
-"[Sartu].\n"
+msgstr "Euskarri-aldaketa: sartu '%s' etiketadun diskoa '%s' unitatean, eta sakatu [Sartu]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Lanean]"
+msgstr "[Lanean]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1943,10 +1934,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Erantzun baliogabea. Sartu hurrengo komandoetariko bat:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Ez da irtenbiderik aurkitu emandako denboran. Sakonago saiatu? [Y/n]"
+msgstr "Ez da irtenbiderik aurkitu emandako denboran. Sakonago saiatu? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2017,10 +2006,9 @@ msgid "but %s is installed."
 msgstr "baina %s instalatuta dago."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "baina ez da instalagarria"
+msgstr "baina ez da instalagarria."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2123,16 +2111,14 @@ msgid " [held]"
 msgstr " [mantenduta]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s, instalatu egingo da."
+msgstr "%s%s, instalatu egingo da."
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; automatikoki instalatu egingo da"
+msgstr "%s%s; automatikoki instalatu egingo da"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2415,10 +2401,9 @@ msgid "Archive %s:"
 msgstr "Artxiboa"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Ez dago \"%s\" bezalako paketerik.\n"
+msgstr "Ez dago \"%s\" bezalako paketerik."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -3291,8 +3276,7 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "Aldaketen egunkariak deskargatzeko erabiliko den URLa"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
 msgstr "%s aldaketen egunkaria"
 
@@ -3475,10 +3459,8 @@ msgid "Expected %s"
 msgstr "Espero ez zen ')'"
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " edo"
+msgstr " edo "
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -5733,47 +5715,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Instalatu/bertsio-berritu paketeak\n"
+msgstr " install      - Instalatu/bertsio-berritu paketeak.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Kendu paketeak\n"
+msgstr " remove       - Kendu paketeak.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Kendu paketeak eta konfigurazio-fitxategiak\n"
+msgstr " purge        - Kendu paketeak eta konfigurazio-fitxategiak.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Atxiki paketeak\n"
+msgstr " hold         - Atxiki paketeak.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Utzi paketea atxikitzeari\n"
+msgstr " unhold       - Utzi paketea atxikitzeari.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Markatu paketeak automatikoki instalatutako gisa\n"
+msgstr " markauto     - Markatu paketeak automatikoki instalatutako gisa.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Markatu paketeak eskuz instalatutako gisa\n"
+msgstr " unmarkauto   - Markatu paketeak eskuz instalatutako gisa.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5785,30 +5759,23 @@ msgstr ""
 "berritzea.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
 msgstr ""
-" update       - Deskargatu pakete berrien edo bertsio-berritzeko "
-"modukoenzerrendak\n"
+" update       - Deskargatu pakete berrien edo bertsio-berritzeko\n"
+"                modukoenzerrendak.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Egin bertsio-berritze segurua\n"
+msgstr " safe-upgrade - Egin bertsio-berritze segurua.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Egin eguneratze bat, seguru asko paketeak instalatuz eta "
-"kenduz\n"
+msgstr " full-upgrade - Egin eguneratze bat, seguru asko paketeak instalatuz eta kenduz.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5817,23 +5784,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "'&BD' pakete baten eraikitzeko mendekotasunak instalatzeko."
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Ahaztu zein pakete diren \"berriak\"\n"
+msgstr " forget-new   - Ahaztu zein pakete diren \"berriak\".\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr ""
-" search       - Bilatu pakete bat izenaren eta/edo adierazpenaren arabera\n"
+msgstr " search       - Bilatu pakete bat izenaren eta/edo adierazpenaren arabera.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Bistaratu pakete bati buruzko informazio xehea\n"
+msgstr " show         - Bistaratu pakete bati buruzko informazio xehea.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5842,65 +5805,47 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Bistaratu pakete bati buruzko informazio xehea\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Ezabatu deskargatutako pakete-fitxategiak\n"
+msgstr " clean        - Ezabatu deskargatutako pakete-fitxategiak.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Ezabatu deskargatutako pakete-fitxategi zaharrak\n"
+msgstr " autoclean    - Ezabatu deskargatutako pakete-fitxategi zaharrak.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog   - Ikusi paketearen aldaketa egunkaria\n"
+msgstr " changelog   - Ikusi paketearen aldaketa egunkaria.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Deskargatu pakete baten .deb fitxategia\n"
+msgstr " download     - Deskargatu pakete baten .deb fitxategia.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
-" reinstall - Instalaturik dagoen paketea deskargatu eta (posibleki) "
-"berrinstalatu\n"
+" reinstall    - Instalaturik dagoen paketea deskargatu eta (posibleki)\n"
+"                berrinstalatu.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
-" why          - Erakutsi eskuz instalatutako paketeak (pakete bat \n"
-"                   behar dutena) edo\n"
-"                zergatik pakete batek edo gehiagok behar duten emandako "
-"paketea\n"
+" why          - Erakutsi eskuz instalatutako paketeak (pakete bat behar dutena)\n"
+"                edo zergatik pakete batek edo gehiagok behar duten emandako\n"
+"                paketea.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5908,10 +5853,9 @@ msgid ""
 "                lead to a conflict with the given package if installed.\n"
 msgstr ""
 " why-not      - Erakutsi eskuz instalatutako paketeak eta emandako\n"
-"                     paketearekin gatazkan sar daitezkeenak\n"
-"                     edo zergatik pakete bat edo gehiago gatazkan sartuko\n"
-"                     diren emandako paketearekin (azken hau instalatzen "
-"bada)\n"
+"                paketearekin gatazkan sar daitezkeenak\n"
+"                edo zergatik pakete bat edo gehiago gatazkan sartuko\n"
+"                diren emandako paketearekin (azken hau instalatzen bada).\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5919,10 +5863,9 @@ msgid "  Options:\n"
 msgstr "  Aukerak:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Laguntza-testu hau\n"
+msgstr " -h             Laguntza-testu hau.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5960,52 +5903,35 @@ msgstr ""
 " -d             Soilik deskargatu paketeak; ez instalatu edo kendu ezer.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Beti eskatu berrespena\n"
+msgstr " -P             Beti eskatu berrespena.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr ""
-" -y             Bai/ez erantzuneko galdera soilen erantzuna 'bai' izango da\n"
+msgstr " -y             Bai/ez erantzuneko galdera soilen erantzuna 'bai' izango da.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F format      Zehaztu bilaketa-emaitzak bistaratzeko formatu bat; ikus "
-"eskuliburua\n"
+msgstr " -F format      Zehaztu bilaketa-emaitzak bistaratzeko formatu bat; ikus eskuliburua.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O order       Zehaztu bilaketa-emaitzak nola ordenatuko diren; ikus "
-"eskuliburua\n"
+msgstr " -O order       Zehaztu bilaketa-emaitzak nola ordenatuko diren; ikus eskuliburua.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr " -w width       Zehaztu bilaketa-emaitzak erakusteko zabalera\n"
+msgstr " -w width       Zehaztu bilaketa-emaitzak erakusteko zabalera.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -6031,55 +5957,40 @@ msgstr ""
 " -Z\t\t    Erakutsi pakete bakoitzaren instalatutako tamainaren aldaketa.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Bistaratu informazio gehigarria. (hainbat aldiz eman "
-"daiteke)\n"
+msgstr " -v             Bistaratu informazio gehigarria (hainbat aldiz eman daiteke).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr " -t [release]   Ezarri zein banaketatatik instalatuko diren paketeak\n"
+msgstr " -t [release]   Ezarri zein banaketatatik instalatuko diren paketeak.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
 " -q             Komando-lerro moduan, progresio-gehikuntzaren adierazlea\n"
-"                 kentzen du.\n"
+"                kentzen du.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o key=balioa  'key' aukeraren konfigurazioa ezartzen du zuzenean\n"
+msgstr " -o key=balioa  'key' aukeraren konfigurazioa ezartzen du zuzenean.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
-" --with(out)-recommends,\tZehaztu gomendioak (iradokizunak) mendekotasun "
-"sendotzat\n"
-"                joko diren ala ez\n"
+" --with(out)-recommends,\tZehaztu gomendioak (iradokizunak) mendekotasun sendotzat\n"
+"                joko diren ala ez.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7919,10 +7830,8 @@ msgid "Error while dumping resolver state"
 msgstr "Errorea ebazpen-egoera iraultzean"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Fitxategia ebazpen-egoera iraultzeko:"
+msgstr "Fitxategia ebazpen-egoera iraultzeko: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

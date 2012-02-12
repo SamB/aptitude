@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2009-09-05 10:59+0200\n"
+"PO-Revision-Date: 2012-02-12 15:36+0800\n"
 "Last-Translator: Miroslav Kure <kurem@debian.cz>\n"
 "Language-Team: Czech <debian-l10n-czech@lists.debian.org>\n"
 "Language: cs\n"
@@ -41,10 +41,9 @@ msgid "%BValue:%b   "
 msgstr "%BHodnota:%b "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Upravuji „%ls“"
+msgstr "Upravuji „%ls“: "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -747,12 +746,10 @@ msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s není nainstalován, tudíž nebude aktualizován.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid ""
-#| "%s is already installed at the latest version, so it will not be upgraded."
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr "%s je již nainstalován v nejnovější verzi, tudíž nebude aktualizován."
+msgstr "%s je již nainstalován v nejnovější verzi, tudíž nebude aktualizován.\n"
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -965,28 +962,20 @@ msgid "Err"
 msgstr "Err "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Staženo %sB za %s (%s/B/s)\n"
+msgstr "Staženo %sB za %s (%s/B/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Výměna média: Vložte disk nazvaný „%s“ do mechaniky „%s“ a stiskněte "
-"[Enter]\n"
+msgstr "Výměna média: Vložte disk nazvaný „%s“ do mechaniky „%s“ a stiskněte [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Pracuji]"
+msgstr "[Pracuji]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1898,10 +1887,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Chybná odpověď; zadejte některý z následujících příkazů:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "V přiděleném čase nebylo nalezeno řešení. Zkusit důkladněji? [Y/n]"
+msgstr "V přiděleném čase nebylo nalezeno řešení. Zkusit důkladněji? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2368,10 +2355,9 @@ msgid "Archive %s:"
 msgstr "Archiv"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Balík „%s“ neexistuje.\n"
+msgstr "Balík „%s“ neexistuje."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -3228,8 +3214,7 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "Nepodařilo se stáhnout seznam změn: %s"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
 msgstr "Soubor změn %s"
 
@@ -5484,47 +5469,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Instaluje/aktualizuje balíky\n"
+msgstr " install      - Instaluje/aktualizuje balíky.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Odstraní balíky\n"
+msgstr " remove       - Odstraní balíky.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Odstraní balíky a jejich konfigurační soubory\n"
+msgstr " purge        - Odstraní balíky a jejich konfigurační soubory.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Ochrání balíky před aktualizací\n"
+msgstr " hold         - Ochrání balíky před aktualizací.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Zruší ochranu balíku před aktualizací\n"
+msgstr " unhold       - Zruší ochranu balíku před aktualizací.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Označí balíky, jako že byly instalovány automaticky\n"
+msgstr " markauto     - Označí balíky, jako že byly instalovány automaticky.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Označí balíky, jako že byly instalovány ručně\n"
+msgstr " unmarkauto   - Označí balíky, jako že byly instalovány ručně.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5535,28 +5512,21 @@ msgstr ""
 " forbid-version - Zakáže aptitude aktualizaci na konkrétní verzi balíku.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Stáhne seznamy nových/aktualizovatelných balíků\n"
+msgstr " update       - Stáhne seznamy nových/aktualizovatelných balíků.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Provede bezpečnou aktualizaci\n"
+msgstr " safe-upgrade - Provede bezpečnou aktualizaci.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Provede aktualizaci, při které možná (na|od)instaluje "
-"balíky\n"
+msgstr " full-upgrade - Provede aktualizaci, při které možná (na|od)instaluje balíky.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5565,22 +5535,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "„&BD“ pro instalaci závislostí pro sestavení balíku"
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Zapomene, které balíky jsou „nové“\n"
+msgstr " forget-new   - Zapomene, které balíky jsou „nové“.\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Hledá balíky podle jména a/nebo výrazu\n"
+msgstr " search       - Hledá balíky podle jména a/nebo výrazu.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Zobrazí podrobné informace o balíku\n"
+msgstr " show         - Zobrazí podrobné informace o balíku.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5589,45 +5556,34 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Zobrazí podrobné informace o balíku\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Smaže stažené .deb soubory balíků\n"
+msgstr " clean        - Smaže stažené .deb soubory balíků.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Smaže staré stažené .deb soubory balíků\n"
+msgstr " autoclean    - Smaže staré stažené .deb soubory balíků.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Zobrazí seznam změn balíku\n"
+msgstr " changelog    - Zobrazí seznam změn balíku.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Stáhne .deb soubor balíku\n"
+msgstr " download     - Stáhne .deb soubor balíku.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
-msgstr " reinstall    - Stáhne a (možná) přeinstaluje již instalovaný balík\n"
+msgstr " reinstall    - Stáhne a (možná) přeinstaluje již instalovaný balík.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
@@ -5637,13 +5593,7 @@ msgstr ""
 "                nebo proč by jeden či více balíků vyžadovalo daný balík.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5660,10 +5610,9 @@ msgid "  Options:\n"
 msgstr "  Volby:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Tato nápověda\n"
+msgstr " -h             Tato nápověda.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5703,49 +5652,35 @@ msgstr ""
 " -d             Stáhne balíky, ale nic neinstaluje nebo neodstraňuje.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Vždy vyžaduje potvrzení akcí\n"
+msgstr " -P             Vždy vyžaduje potvrzení akcí.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr " -y             Na jednoduché ano/ne otázky odpoví automaticky „ano“\n"
+msgstr " -y             Na jednoduché ano/ne otázky odpoví automaticky „ano“.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F formát      Určí formát pro zobrazení výsledků hledání; viz manuál\n"
+msgstr " -F formát      Určí formát pro zobrazení výsledků hledání; viz manuál.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O řazení      Určí, jak se mají výsledky hledání seřadit; viz manuál\n"
+msgstr " -O řazení      Určí, jak se mají výsledky hledání seřadit; viz manuál.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr " -w šířka       Určí šířku zobrazení výsledků hledání\n"
+msgstr " -w šířka       Určí šířku zobrazení výsledků hledání.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -5770,52 +5705,38 @@ msgstr ""
 " -Z             Zobrazí změnu v instalované velikosti každého balíku.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Zobrazí dodatečné informace. (Můžete zadat několikrát.)\n"
+msgstr " -v             Zobrazí dodatečné informace. (Můžete zadat několikrát.)\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [verze]     Vybere verzi Debianu, ze které se mají balíky instalovat\n"
+msgstr " -t [verze]     Vybere verzi Debianu, ze které se mají balíky instalovat.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr " -q             V příkazovém režimu potlačí indikátory postupu.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o klíč=hodn   Nastaví konfigurační volbu nazvanou „klíč“\n"
+msgstr " -o klíč=hodn   Nastaví konfigurační volbu nazvanou „klíč“.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tNastaví, zda se mají doporučené závislosti\n"
-"                brát jako silné závislosti\n"
+"                brát jako silné závislosti.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7627,10 +7548,8 @@ msgid "Error while dumping resolver state"
 msgstr "Chyba při ukládání stavu řešitele"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Soubor, do kterého se má uložit stav řešitele:"
+msgstr "Soubor, do kterého se má uložit stav řešitele: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2011-06-26 14:31+0100\n"
+"PO-Revision-Date: 2012-02-12 16:03+0800\n"
 "Last-Translator: Jean-Baka Domelevo Entfellner <domelevo@gmail.com>\n"
 "Language-Team: French <debian-l10n-french@lists.debian.org>\n"
 "Language: fr\n"
@@ -772,14 +772,10 @@ msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s n'est pas actuellement installé, il ne sera donc pas mis à jour.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid ""
-#| "%s is already installed at the latest version, so it will not be upgraded."
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr ""
-"%s est déjà installé avec la dernière version disponible, il ne sera donc "
-"pas mis à jour."
+msgstr "%s est déjà installé avec la dernière version disponible, il ne sera donc pas mis à jour.\n"
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -1007,28 +1003,20 @@ msgid "Err"
 msgstr "Err "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr " %so téléchargés en %s (%so/s)\n"
+msgstr " %so téléchargés en %s (%so/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Changement de support : veuillez insérer le disque dont le nom est « %s » "
-"dans le lecteur « %s » et presser Entrée.\n"
+msgstr "Changement de support : veuillez insérer le disque dont le nom est « %s » dans le lecteur « %s » et presser Entrée."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [En cours]"
+msgstr "[En cours]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1985,12 +1973,10 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Réponse incorrecte. Veuillez entrer une des commandes suivantes :"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
 msgstr ""
-"Aucune solution n'a été trouvée dans le temps alloué. Faut-il poursuivre la "
-"recherche ? [Y/n]"
+"Aucune solution n'a été trouvée dans le temps alloué. Faut-il poursuivre la\n"
+"recherche ? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -5719,11 +5705,7 @@ msgstr ""
 "                installé.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
@@ -5799,8 +5781,7 @@ msgstr ""
 "                installer ou enlever quoi que ce soit.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions.\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
 msgstr " -P             Toujours demander confirmation pour les actions.\n"
 
@@ -5883,10 +5864,7 @@ msgstr ""
 "                installé.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress.\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -5902,10 +5880,7 @@ msgstr ""
 "                « clé ».\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
-#| "                strong dependencies.\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
@@ -5927,10 +5902,9 @@ msgstr ""
 " -u             Télécharger les nouvelles listes de paquets au démarrage.\n"
 
 #: src/main.cc:255 src/main.cc:257
-#, fuzzy, c-format
-#| msgid "                  (terminal interface only)"
+#, c-format
 msgid "                  (terminal interface only)\n"
-msgstr "                  (interfaces texte seulement)"
+msgstr "                  (interfaces texte seulement)\n"
 
 #: src/main.cc:256
 #, c-format
@@ -7769,10 +7743,8 @@ msgid "Error while dumping resolver state"
 msgstr "Erreur lors de l'écriture de l'état du solveur"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Fichier vers lequel l'état du solveur doit être écrit :"
+msgstr "Fichier vers lequel l'état du solveur doit être écrit : "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

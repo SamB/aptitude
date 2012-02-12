@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude_lt\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-08-25 12:12+0300\n"
+"PO-Revision-Date: 2012-02-12 15:52+0800\n"
 "Last-Translator: Darius Žitkevičius <skystis@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "Language: lt\n"
@@ -42,10 +42,9 @@ msgid "%BValue:%b   "
 msgstr "%BReikšmė:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Redaguojant \"%ls\""
+msgstr "Redaguojant \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -681,10 +680,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Paketui „%s“ nėra išeities tektų paketo.\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Nepavyko patenkinti build-depends: %s."
+msgstr "Nepavyko patenkinti build-depends: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -966,28 +964,20 @@ msgid "Err"
 msgstr "Kld "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Paimta %sB iš %s (%sB/s)\n"
+msgstr "Paimta %sB iš %s (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Keičiasi laikmena: Prašome į įrenginį „%1$s“ įdėti diską „%2$s“ ir spauskite "
-"ENTER.\n"
+msgstr "Keičiasi laikmena: Prašome į įrenginį „%1$s“ įdėti diską „%2$s“ ir spauskite ENTER."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Dirbu]"
+msgstr "[Dirbu]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1904,10 +1894,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Blogas atsakymas; įveskite vieną iš išvardintų komandų:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Per nurodytą laiką sprendimas nerastas.  Pasistengti labiau? [Y/n]"
+msgstr "Per nurodytą laiką sprendimas nerastas.  Pasistengti labiau? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -1976,10 +1964,9 @@ msgid "but %s is installed."
 msgstr "tačiau %s yra įdiegtas."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "tačiau jis negali būti įdiegtas"
+msgstr "tačiau jis negali būti įdiegtas."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2083,16 +2070,14 @@ msgid " [held]"
 msgstr " [užlaikytas]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; bus įdiegtas"
+msgstr "%s%s; bus įdiegtas"
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; bus įdiegtas automatiškai"
+msgstr "%s%s; bus įdiegtas automatiškai"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2380,10 +2365,9 @@ msgid "Archive %s:"
 msgstr "Archyvas"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Nėra tokio paketo „%s“.\n"
+msgstr "Nėra tokio paketo „%s“."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -3251,8 +3235,7 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "URL adresas, iš kur paimami pakeitimų žurnalai"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
 msgstr "Pasikeitimų sąrašas paketui %s"
 
@@ -3431,10 +3414,8 @@ msgid "Expected %s"
 msgstr "Netikėtas „)“"
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " arba"
+msgstr " arba "
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -5690,52 +5671,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Įdiegti/atnaujinti paketus\n"
+msgstr " install      - Įdiegti/atnaujinti paketus.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Pašalinti paketus\n"
+msgstr " remove       - Pašalinti paketus.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr ""
-" purge        - Pašalinti paketus ir jų konfigūracijos bylas (išvalyti)\n"
+msgstr " purge        - Pašalinti paketus ir jų konfigūracijos bylas (išvalyti).\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Sulaikyti paketų atnaujinimą\n"
+msgstr " hold         - Sulaikyti paketų atnaujinimą.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Atšaukti paketų sulaikymą\n"
+msgstr " unhold       - Atšaukti paketų sulaikymą.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr ""
-" markauto     - Pažymėti paketus taip, kad atrodytu jog jie įdiegti "
-"automatiškai\n"
+msgstr " markauto     - Pažymėti paketus taip, kad atrodytu jog jie įdiegti automatiškai.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr ""
-" unmarkauto   - Pažymėti paketus taip, kad atrodytu jog jie įdiegti rankiniu "
-"būdu\n"
+msgstr " unmarkauto   - Pažymėti paketus taip, kad atrodytu jog jie įdiegti rankiniu būdu.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5745,28 +5713,21 @@ msgid ""
 msgstr " forbid-version - Uždrausti atnaujinimą į nurodytą versiją.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Atsisiųsti naują paketų sąrašą\n"
+msgstr " update       - Atsisiųsti naują paketų sąrašą.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Vykdyti saugų atnaujinimą\n"
+msgstr " safe-upgrade - Vykdyti saugų atnaujinimą.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Vykdyti atnaujinimą, leidžiamas paketų diegimas ir "
-"šalinimas\n"
+msgstr " full-upgrade - Vykdyti atnaujinimą, leidžiamas paketų diegimas ir šalinimas.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5775,22 +5736,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "'&BD' kad įdiegti kompiliavimo priklausomybes paketui."
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Užmiršti kurie paketai yra „nauji“\n"
+msgstr " forget-new   - Užmiršti kurie paketai yra „nauji“.\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Paketo paieška pagal pavadinimą ir/arba išraišką\n"
+msgstr " search       - Paketo paieška pagal pavadinimą ir/arba išraišką.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Rodyti detalią paketo informaciją\n"
+msgstr " show         - Rodyti detalią paketo informaciją.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5799,74 +5757,53 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Rodyti detalią paketo informaciją\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Pašalinti gautų paketų bylas\n"
+msgstr " clean        - Pašalinti gautų paketų bylas.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Pašalinti senas gautas paketų bylas\n"
+msgstr " autoclean    - Pašalinti senas gautas paketų bylas.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Žiūrėti paketo pakeitimų sąrašą\n"
+msgstr " changelog    - Žiūrėti paketo pakeitimų sąrašą.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Gauti paketo .deb bylą\n"
+msgstr " download     - Gauti paketo .deb bylą.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
-msgstr ""
-" reinstall    - Gauti ir (galbūt) įdiegti iš naujo šiuo metu įdiegtą paketą\n"
+msgstr " reinstall    - Gauti ir (galbūt) įdiegti iš naujo šiuo metu įdiegtą paketą.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
-" why          - Rodyti rankiniu būdu įdiegtus paketus, kuriems reikalingas "
-"paketas arba\n"
-"                kodėl vienas ar daugiau paketų reikalautu nurodyto paketo\n"
+" why          - Rodyti rankiniu būdu įdiegtus paketus, kuriems reikalingas paketas arba\n"
+"                kodėl vienas ar daugiau paketų reikalautu nurodyto paketo.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed.\n"
 msgstr ""
-" why-not      - Rodyti rankiniu būdu įdiegtus paketus, dėl kurių kyla "
-"konfliktas\n"
-"                su nurodytu paketu, arba kodėl vienas ar keli paketai "
-"diegiant\n"
-"                sukelia konfliktą\n"
+" why-not      - Rodyti rankiniu būdu įdiegtus paketus, dėl kurių kyla konfliktas\n"
+"                su nurodytu paketu, arba kodėl vienas ar keli paketai diegiant\n"
+"                sukelia konfliktą.\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5874,10 +5811,9 @@ msgid "  Options:\n"
 msgstr "  Parinktys:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Ši pagalbos informacija\n"
+msgstr " -h             Ši pagalbos informacija.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5916,51 +5852,35 @@ msgstr ""
 "nešalinti.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Visada klausti veiksmų patvirtinimo\n"
+msgstr " -P             Visada klausti veiksmų patvirtinimo.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr " -y             Į klausimus taip/ne automatiškai atsakyti „taip“\n"
+msgstr " -y             Į klausimus taip/ne automatiškai atsakyti „taip“.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F formatas    Nurodyti kokių formatu rodyti paieškos rezultatus žr. "
-"instrukciją\n"
+msgstr " -F formatas    Nurodyti kokių formatu rodyti paieškos rezultatus žr. instrukciją.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O tvarka      Nurodyti kaip rūšiuoti paieškos rezultatus; žr. "
-"instrukcijoje\n"
+msgstr " -O tvarka      Nurodyti kaip rūšiuoti paieškos rezultatus; žr. instrukcijoje.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr " -w plotis      Nuodyti ekrano plotį, paieškos rezultatų formavimui\n"
+msgstr " -w plotis      Nuodyti ekrano plotį, paieškos rezultatų formavimui.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -5984,54 +5904,38 @@ msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z             Rodyti įdiegtų paketų dydžio pasikeitimus.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Rodyti papildomą informaciją.( gali būti naudojamas kelis "
-"kartus)\n"
+msgstr " -v             Rodyti papildomą informaciją (gali būti naudojamas kelis kartus).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
 msgstr " -t [release]   Nustatyti iš kurių paketų diegti.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr ""
-" -q             Komandinėje eilutėje nerodyti progreso indikatoriaus.\n"
+msgstr " -q             Komandinėje eilutėje nerodyti progreso indikatoriaus.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o raktas=reikšmė      Tiesiogiai siųsti parametrą „raktas“\n"
+msgstr " -o raktas=reikšmė      Tiesiogiai siųsti parametrą „raktas“.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
-" --with(out)-recommends\tNurodo ar Laikyti (arba nelaikyti) rekomenduojamus "
-"paketus\n"
-"                kaip reikalingus\n"
+" --with(out)-recommends\tNurodo ar Laikyti (arba nelaikyti) rekomenduojamus paketus\n"
+"                kaip reikalingus.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7861,10 +7765,8 @@ msgid "Error while dumping resolver state"
 msgstr "Klaida iškraunant sprendimų būseną"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Byla į kurią turėtu būti iškraunama sprendimų būsena:"
+msgstr "Byla į kurią turėtu būti iškraunama sprendimų būsena: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

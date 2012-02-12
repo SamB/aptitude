@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-09-11 15:53+0200\n"
+"PO-Revision-Date: 2012-02-12 15:46+0800\n"
 "Last-Translator: quad-nrg.net <yodesy@quad-nrg.net>\n"
 "Language-Team: Greek <debian-l10n-greek@lists.debian.org>\n"
 "Language: el\n"
@@ -48,10 +48,9 @@ msgid "%BValue:%b   "
 msgstr "%BValue:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Διόρθωση του \"%ls\""
+msgstr "Διόρθωση του \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -714,10 +713,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Αδύνατη η εύρεση πηγαίου πακέτου για το \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Αδύνατη η ικανοποίηση του build-depends: %s."
+msgstr "Αδύνατη η ικανοποίηση του build-depends: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -1003,28 +1001,20 @@ msgid "Err"
 msgstr "Σφάλμα "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Μεταφορτώθηκαν %sB σε %s (%sB/s)\n"
+msgstr "Μεταφορτώθηκαν %sB σε %s (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Αλλαγή Μέσου: Παρακαλώ εισάγετε τον δίσκο με επιγραφή '%s' στη μονάδα '%s' "
-"και πατήστε [Enter].\n"
+msgstr "Αλλαγή Μέσου: Παρακαλώ εισάγετε τον δίσκο με επιγραφή '%s' στη μονάδα '%s' και πατήστε [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Λειτουργεί]"
+msgstr "[Λειτουργεί]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1976,10 +1966,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Μη έγκυρη απόκριση. Παρακαλώ εισάγετε μια από τις ακόλουθες εντολές:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Δεν βρέθηκε λύση μέσα στον διατιθέμενο χρόνο. Δοκιμή κεφαλίδας;[Y/n]"
+msgstr "Δεν βρέθηκε λύση μέσα στον διατιθέμενο χρόνο. Δοκιμή κεφαλίδας;[Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2050,10 +2038,9 @@ msgid "but %s is installed."
 msgstr "αλλά το %s είναι εγκατεστημένο."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "αλλά δεν είναι εγκατάστασιμο"
+msgstr "αλλά δεν είναι εγκατάστασιμο."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2156,10 +2143,9 @@ msgid " [held]"
 msgstr " [κρατημένο]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; θα εγκατασταθεί"
+msgstr "%s%s; θα εγκατασταθεί"
 
 #: src/cmdline/cmdline_show.cc:327
 #, fuzzy, c-format
@@ -2447,10 +2433,9 @@ msgid "Archive %s:"
 msgstr "Αρχείο"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Δεν υπάρχει τέτοιο πακέτο \"%s\".\n"
+msgstr "Δεν υπάρχει τέτοιο πακέτο \"%s\"."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -2626,13 +2611,10 @@ msgid "Unable to parse some match patterns."
 msgstr "Αδύνατο το parse μερικών σχημάτων ταιριάσματος."
 
 #: src/cmdline/cmdline_why.cc:1417
-#, fuzzy, c-format
-#| msgid ""
-#| "%s: this command requires at least one argument (the package to query)."
+#, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
-msgstr ""
-"%s: αυτή η εντολή απαιτεί τουλάχιστον ένα όρισμα (το πακέτο προς διερεύνηση)."
+msgstr "%s: αυτή η εντολή απαιτεί τουλάχιστον ένα όρισμα (το πακέτο προς διερεύνηση).\n"
 
 #: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
@@ -3510,10 +3492,8 @@ msgid "Expected %s"
 msgstr "Μή αναμενόμενη ')'"
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " ή"
+msgstr " ή "
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -5770,48 +5750,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Εγκατάσταση/αναβάθμιση πακέτου\n"
+msgstr " install      - Εγκατάσταση/αναβάθμιση πακέτου.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Αφαίρεση πακέτων\n"
+msgstr " remove       - Αφαίρεση πακέτων.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Αφαίρεση πακέτων μαζί με τα αρχεία ρυθμίσεών τους\n"
+msgstr " purge        - Αφαίρεση πακέτων μαζί με τα αρχεία ρυθμίσεών τους.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Τοποθέτηση πακέτων σε αναμονή\n"
+msgstr " hold         - Τοποθέτηση πακέτων σε αναμονή.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Ακύρωση της εντολής αναμονή για πακέτο\n"
+msgstr " unhold       - Ακύρωση της εντολής αναμονή για πακέτο.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr "markauto    - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί αυτόματα\n"
+msgstr "markauto    - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί αυτόματα.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr ""
-"unmarkauto   - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί χειροκίνητα\n"
+msgstr "unmarkauto   - Σήμανση των πακέτων σαν να έχουν εγκατασταθεί χειροκίνητα.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5823,28 +5794,21 @@ msgstr ""
 "συγκεκριμένη έκδοση.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr "update       - Μεταφόρτωση λιστών των νέων/αναβαθμιζόμενων πακέτων\n"
+msgstr "update       - Μεταφόρτωση λιστών των νέων/αναβαθμιζόμενων πακέτων.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Εκτέλεση μιας ασφαλούς αναβάθμισης\n"
+msgstr " safe-upgrade - Εκτέλεση μιας ασφαλούς αναβάθμισης.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Εκτέλεση μιας αναβάθμισης, πιθανόν με εγκατάσταση και "
-"αφαίρεση πακέτων\n"
+msgstr " full-upgrade - Εκτέλεση μιας αναβάθμισης, πιθανόν με εγκατάσταση και αφαίρεση πακέτων.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5853,23 +5817,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "'&BD' για να εγκαταστήσετε τις build-εξαρτήσεις ενός πακέτου."
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr "forget-new   - Ξέχασε ποια πακέτα είναι \"νέα\"\n"
+msgstr "forget-new   - Ξέχασε ποια πακέτα είναι \"νέα\".\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr ""
-" search       - Αναζήτηση ενός πακέτου με βάση το όνομα ή/και έκφραση\n"
+msgstr " search       - Αναζήτηση ενός πακέτου με βάση το όνομα ή/και έκφραση.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Εμφάνιση λεπτομερειών σχετικά με ένα πακέτο\n"
+msgstr " show         - Εμφάνιση λεπτομερειών σχετικά με ένα πακέτο.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5878,77 +5838,55 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Εμφάνιση λεπτομερειών σχετικά με ένα πακέτο\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Διαγραφή μεταφορτομένων πακέτων\n"
+msgstr " clean        - Διαγραφή μεταφορτομένων πακέτων.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Διαγραφή παλαιότερα μεταφορτομένων αρχεία πακέτων\n"
+msgstr " autoclean    - Διαγραφή παλαιότερα μεταφορτομένων αρχεία πακέτων.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " ημερ. αλλαγών    -Εμφάνισε το ημερολόγιο αλλαγών ενός πακέτου\n"
+msgstr " changelog    - Εμφάνισε το ημερολόγιο αλλαγών ενός πακέτου.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Μεταφόρτωση ενός αρχείου .deb για ένα πακέτο\n"
+msgstr " download     - Μεταφόρτωση ενός αρχείου .deb για ένα πακέτο.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
-"επανεγκατάσταση    - Κατέβασμα και (πιθανόν) επανεγκατάσταση ενός ήδη "
-"εγκατεστημένου πακέτου\n"
+"επανεγκατάσταση    - Κατέβασμα και (πιθανόν) επανεγκατάσταση ενός ήδη\n"
+"                     εγκατεστημένου πακέτου.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
-" γιατί          - Εμφάνιση των εγκατεστημένων με το χέρι πακέτων που "
-"απαιτούν ένα πακέτο ή \n"
-"                του γιατί ένα ή περισσότερα πακέτα θα απαιτούσαν το "
-"συγκεκριμένο πακέτο\n"
+" why          - Εμφάνιση των εγκατεστημένων με το χέρι πακέτων που απαιτούν ένα πακέτο ή \n"
+"                του γιατί ένα ή περισσότερα πακέτα θα απαιτούσαν το συγκεκριμένο πακέτο.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
 "                with the given package, or why one or more packages would\n"
 "                lead to a conflict with the given package if installed.\n"
 msgstr ""
-" γιατί-όχι      - Εμφάνισε τα εγκατεστημένα με το χέρι πακέτα που οδηγούν σε "
-"σύγκρουση\n"
-"                με το δοσμένο πακέτο, ή το γιατί ένα ή περισσότερα πακέτα θα "
-"μπορούσαν να\n"
-"                οδηγήσουν σε μια σύγκρουση με το δοσμένο πακέτο αν "
-"εγκατασταθούν\n"
+" why-not      - Εμφάνισε τα εγκατεστημένα με το χέρι πακέτα που οδηγούν σε σύγκρουση\n"
+"                με το δοσμένο πακέτο, ή το γιατί ένα ή περισσότερα πακέτα θα μπορούσαν να\n"
+"                οδηγήσουν σε μια σύγκρουση με το δοσμένο πακέτο αν εγκατασταθούν.\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5956,10 +5894,9 @@ msgid "  Options:\n"
 msgstr "  Επιλογές:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Αυτό το κείμενο βοήθειας\n"
+msgstr " -h             Αυτό το κείμενο βοήθειας.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -6000,54 +5937,39 @@ msgstr ""
 "απεγκατάσταση κάτι.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr "-P             Να γίνονται πάντα ερωτήσεις επιβεβαίωσης ή ενέργειες\n"
+msgstr "-P             Να γίνονται πάντα ερωτήσεις επιβεβαίωσης ή ενέργειες.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr ""
-"-y            Υπέθεσε ότι η απάντηση σε απλές ερωτήσεις ναι/όχι είναι 'ναι'\n"
+msgstr "-y            Υπέθεσε ότι η απάντηση σε απλές ερωτήσεις ναι/όχι είναι 'ναι'.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
 msgstr ""
-"-F format      Ορισμός του τρόπου εμφάνισης των αποτελεσμάτων αναζήτησης, "
-"δείτε εγχειρίδιο χρήσης\n"
+"-F format      Ορισμός του τρόπου εμφάνισης των αποτελεσμάτων αναζήτησης, δείτε\n"
+"               εγχειρίδιο χρήσης.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
 msgstr ""
-"-O order       Ορισμός του τρόπου ταξινόμησης των αποτελεσμάτων  αναζήτησης, "
-"δείτε το εγχειρίδιο χρήσης\n"
+"-O order       Ορισμός του τρόπου ταξινόμησης των αποτελεσμάτων  αναζήτησης,\n"
+"               δείτε το εγχειρίδιο χρήσης.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr ""
-" -w width       Καθορισμός του πλάτους εμφάνισης των αποτελεσμάτων "
-"αναζήτησης\n"
+msgstr " -w width       Καθορισμός του πλάτους εμφάνισης των αποτελεσμάτων αναζήτησης.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -6075,57 +5997,40 @@ msgstr ""
 "-Z\t\t    Εμφάνιση της αλλαγής μεγέθους στο εγκατεστημένο κάθε πακέτου.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-"-v             Εμφανίζει επιπλέον πληροφορίες (μπορεί να οριστεί πολλαπλές "
-"φορές)\n"
+msgstr "-v             Εμφανίζει επιπλέον πληροφορίες (μπορεί να οριστεί πολλαπλές φορές).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [release]   Ορίστε την έκδοση από ποια πακέτα θα πρέπει να "
-"εγκατασταθούν\n"
+msgstr " -t [release]   Ορίστε την έκδοση από ποια πακέτα θα πρέπει να εγκατασταθούν.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
 msgstr ""
-" -q             Σε κατάσταση γραμμής-εντολών, απόκρυψη των δεικτών "
-"σταδιακής\n"
-"                  προόδου.\n"
+" -q             Σε κατάσταση γραμμής-εντολών, απόκρυψη των δεικτών σταδιακής\n"
+"                προόδου.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o key=val     Άμεσος καθορισμός μια παραμέτρου με όνομα 'key'\n"
+msgstr " -o key=val     Άμεσος καθορισμός μια παραμέτρου με όνομα 'key'.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tΚαθορισμός αντιμετώπισης των συνιστώμενων ως\n"
-"                ισχυρών εξαρτήσεων\n"
+"                ισχυρών εξαρτήσεων.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7983,10 +7888,8 @@ msgid "Error while dumping resolver state"
 msgstr "Λάθος κατά το \"άδειασμα\" της κατάστασης του resolver"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Αρχείο για το \"άδειασμα\" της κατάστασης του resolver:"
+msgstr "Αρχείο για το \"άδειασμα\" της κατάστασης του resolver: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

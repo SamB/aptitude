@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-04-19 14:12+0100\n"
+"PO-Revision-Date: 2012-02-12 16:01+0800\n"
 "Last-Translator: Jacobo Tarrío <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -41,10 +41,9 @@ msgid "%BValue:%b   "
 msgstr "%BValor:%b       "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "A editar \"%ls\""
+msgstr "A editar \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -699,10 +698,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Non se puido atopar o paquete fonte para \"%s\".\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Non se puideron satisfacer as dependencias de compilación: %s."
+msgstr "Non se puideron satisfacer as dependencias de compilación: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -987,28 +985,20 @@ msgid "Err"
 msgstr "Err "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Recibíronse %sB en %s (%sB/s)\n"
+msgstr "Recibíronse %sB en %s (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Cambio de soporte: Introduza o disco etiquetado \"%s\" na unidade \"%s\" e "
-"prema [Intro]\n"
+msgstr "Cambio de soporte: Introduza o disco etiquetado \"%s\" na unidade \"%s\" e prema [Intro]"
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [A traballar]"
+msgstr "[A traballar]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1939,10 +1929,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Resposta non válida; introdza unha das seguintes ordes:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Non se atopou unha solución no tempo asignado. ¿Seguir probando? [S/n]"
+msgstr "Non se atopou unha solución no tempo asignado. ¿Seguir probando? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2013,10 +2001,9 @@ msgid "but %s is installed."
 msgstr "pero %s está instalado."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "pero non é instalable"
+msgstr "pero non é instalable."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2119,16 +2106,14 @@ msgid " [held]"
 msgstr " [retido]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; hase instalar"
+msgstr "%s%s; hase instalar"
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; hase instalar automaticamente"
+msgstr "%s%s; hase instalar automaticamente"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2411,10 +2396,9 @@ msgid "Archive %s:"
 msgstr "Arquivo"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Non hai tal paquete \"%s\".\n"
+msgstr "Non hai tal paquete \"%s\"."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -2590,13 +2574,10 @@ msgid "Unable to parse some match patterns."
 msgstr "Non se puideron analizar algúns patróns de busca."
 
 #: src/cmdline/cmdline_why.cc:1417
-#, fuzzy, c-format
-#| msgid ""
-#| "%s: this command requires at least one argument (the package to query)."
+#, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
-msgstr ""
-"%s: esta orde precisa de alomenos un argumento (o paquete a consultar)."
+msgstr "%s: esta orde precisa de alomenos un argumento (o paquete a consultar).\n"
 
 #: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
@@ -3294,8 +3275,7 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "URL a empregar para descargar os rexistros de cambios"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
 msgstr "Rexistro de cambios de %s"
 
@@ -3473,10 +3453,8 @@ msgid "Expected %s"
 msgstr "Non se esperaba un \")\""
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " ou"
+msgstr " ou "
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -5738,49 +5716,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Instalar/actualizar paquetes\n"
+msgstr " install      - Instalar/actualizar paquetes.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Eliminar paquetes\n"
+msgstr " remove       - Eliminar paquetes.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr ""
-" purge        - Eliminar paquetes e os seus ficheiros de configuración\n"
+msgstr " purge        - Eliminar paquetes e os seus ficheiros de configuración.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Reter paquetes\n"
+msgstr " hold         - Reter paquetes.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Cancelar a retención dun paquete\n"
+msgstr " unhold       - Cancelar a retención dun paquete.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr ""
-" markauto     - Marcar paquetes coma se fosen instalados automaticamente\n"
+msgstr " markauto     - Marcar paquetes coma se fosen instalados automaticamente.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Marcar paquetes coma se fose instalados manualmente\n"
+msgstr " unmarkauto   - Marcar paquetes coma se fose instalados manualmente.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5791,28 +5759,21 @@ msgstr ""
 " forbid-version - Impedir que aptitude actualice un paquete a unha versión.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Descargar as listas de paquetes novos/actualizables\n"
+msgstr " update       - Descargar as listas de paquetes novos/actualizables.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Realizar unha actualización segura\n"
+msgstr " safe-upgrade - Realizar unha actualización segura.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Facer unha actualización, quizais instalando e borrando "
-"paquetes\n"
+msgstr " full-upgrade - Facer unha actualización, quizais instalando e borrando paquetes.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5821,22 +5782,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "\"&BD\" para instalar as dependencias de compilación dun paquete."
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Esquecer que paquetes son \"novos\"\n"
+msgstr " forget-new   - Esquecer que paquetes son \"novos\".\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Buscar un paquete por nome e/ou expresión\n"
+msgstr " search       - Buscar un paquete por nome e/ou expresión.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Amosar información detallada sobre un paquete\n"
+msgstr " show         - Amosar información detallada sobre un paquete.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5845,46 +5803,34 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Amosar información detallada sobre un paquete\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Borrar os ficheiros de paquetes descargados\n"
+msgstr " clean        - Borrar os ficheiros de paquetes descargados.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Borrar os ficheiros de paquetes descargados vellos\n"
+msgstr " autoclean    - Borrar os ficheiros de paquetes descargados vellos.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Amosar o rexistro de cambios dun paquete\n"
+msgstr " changelog    - Amosar o rexistro de cambios dun paquete.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Descargar o ficheiro .deb dun paquete\n"
+msgstr " download     - Descargar o ficheiro .deb dun paquete.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
-msgstr ""
-" reinstall    - Descargar e (tal vez) reinstalar un paquete xa instalado\n"
+msgstr " reinstall    - Descargar e (tal vez) reinstalar un paquete xa instalado.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
@@ -5892,16 +5838,10 @@ msgid ""
 msgstr ""
 " why          - Amosar os paquetes instalados manualmente que requiren un\n"
 "                paquete, ou por que un ou máis paquetes habían requirir o\n"
-"                paquete indicado\n"
+"                paquete indicado.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5911,7 +5851,7 @@ msgstr ""
 " why-not      - Amosar os paquetes instalados manualmente que conducen a\n"
 "                un conflicto co paquete indicado, ou por que un ou máis\n"
 "                paquetes habían conducir a un conflicto co paquete indicado\n"
-"                se se instalaran\n"
+"                se se instalaran.\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5919,10 +5859,9 @@ msgid "  Options:\n"
 msgstr "  Opcións:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Este texto de axuda\n"
+msgstr " -h             Este texto de axuda.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5960,53 +5899,35 @@ msgstr ""
 " -d             Só descargar os paquetes, non instalar ou eliminar nada.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Pedir sempre confirmación para as accións\n"
+msgstr " -P             Pedir sempre confirmación para as accións.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr ""
-" -y             Supoñer que a resposta ás preguntas simples de si/non é \"si"
-"\"\n"
+msgstr " -y             Supoñer que a resposta ás preguntas simples de si/non é \"si\".\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F formato     Indicar un formato para os resultados das buscas; vexa o "
-"manual\n"
+msgstr " -F formato     Indicar un formato para os resultados das buscas; vexa o manual.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O orde        Indicar como ordear os resultados das buscas; vexa o manual\n"
+msgstr " -O orde        Indicar como ordear os resultados das buscas; vexa o manual.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr ""
-" -w anchura     Indicar a anchura para formatar os resultados das buscas\n"
+msgstr " -w anchura     Indicar a anchura para formatar os resultados das buscas.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -6032,55 +5953,38 @@ msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z             Amosar o cambio no tamaño instalado de cada paquete.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Amosar información extra (pode indicarse varias veces)\n"
+msgstr " -v             Amosar información extra (pode indicarse varias veces).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [distro]    Indicar de que distribución hai que instalar os paquetes\n"
+msgstr " -t [distro]    Indicar de que distribución hai que instalar os paquetes.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr ""
-" -q             No modo de liña de ordes, eliminar os indicadores de "
-"progreso.\n"
+msgstr " -q             No modo de liña de ordes, eliminar os indicadores de progreso.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr ""
-" -o clave=valor  Establecer a opción de configuración chamada \"clave\"\n"
+msgstr " -o clave=valor  Establecer a opción de configuración chamada \"clave\".\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tIndicar se hai que tratar as recomendacións coma\n"
-"                dependencias fortes\n"
+"                dependencias fortes.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7928,10 +7832,8 @@ msgid "Error while dumping resolver state"
 msgstr "Erro ao verquer o estado do resolvedor"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Ficheiro no que se quere gravar o estado do resolvedor:"
+msgstr "Ficheiro no que se quere gravar o estado do resolvedor: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

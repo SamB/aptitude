@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-09-05 09:43+0200\n"
+"PO-Revision-Date: 2012-02-12 15:26+0800\n"
 "Last-Translator: Borys Yanovych <borman@pravex.kiev.ua>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
 "Language: uk\n"
@@ -42,10 +42,9 @@ msgid "%BValue:%b   "
 msgstr "%BЗначення:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Редагування \"%ls\""
+msgstr "Редагування \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -1018,28 +1017,20 @@ msgid "Err"
 msgstr "Пмл "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Стягнено %sb за %s (%sb/s)\n"
+msgstr "Стягнено %sb за %s (%sb/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Заміна Носія: будь ласка, вставте диск з міткою '%s' в пристрій '%s' та  "
-"натисніть [Enter].\n"
+msgstr "Заміна Носія: будь ласка, вставте диск з міткою '%s' в пристрій '%s' та  натисніть [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Обробка]"
+msgstr "[Обробка]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1050,10 +1041,9 @@ msgstr ""
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:92
 #: src/cmdline/cmdline_user_tag.cc:130
-#, fuzzy, c-format
-#| msgid "No such package \"%s\""
+#, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Неможливо знайти пакунок \"%s\""
+msgstr "Неможливо знайти пакунок \"%s\".\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:132
 #, c-format
@@ -1346,16 +1336,11 @@ msgid "No packages found -- enter the package names on the line after 'c'.\n"
 msgstr "Пакунків не знайдено -- введіть назви пакунків в рядку після 'c'.\n"
 
 #: src/cmdline/cmdline_prompt.cc:806
-#, fuzzy, c-format
-#| msgid ""
-#| "No packages found -- enter zero or more roots of the search followed by "
-#| "the package to justify."
+#, c-format
 msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
-msgstr ""
-"Пакунків не знайдено -- для підтвердження введіть нуль або більше коренів "
-"пошуку після назви пакунка."
+msgstr "Пакунків не знайдено -- для підтвердження введіть нуль або більше коренів пошуку після назви пакунка.\n"
 
 #: src/cmdline/cmdline_prompt.cc:839
 #, c-format
@@ -1973,11 +1958,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Неправильна відповідь; будь ласка, введіть одну з таких команд:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr ""
-"Не вдалося знайти розв'язок за виділений час. Спробувати ретельніше? [Y/n]"
+msgstr "Не вдалося знайти розв'язок за виділений час. Спробувати ретельніше? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2046,10 +2028,9 @@ msgid "but %s is installed."
 msgstr "однак встановлено %s "
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "проте його неможливо встановити"
+msgstr "проте його неможливо встановити."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2152,16 +2133,14 @@ msgid " [held]"
 msgstr " [зафіксований]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; буде встановлено."
+msgstr "%s%s; буде встановлено."
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; буде встановлений автоматично"
+msgstr "%s%s; буде встановлений автоматично"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2450,10 +2429,9 @@ msgid "Archive %s:"
 msgstr "Архів"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\""
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Неможливо знайти пакунок \"%s\""
+msgstr "Неможливо знайти пакунок \"%s\"."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -2644,13 +2622,10 @@ msgid "Unable to parse some match patterns."
 msgstr "Не вдалося дослідити деякі шаблони відповідності."
 
 #: src/cmdline/cmdline_why.cc:1417
-#, fuzzy, c-format
-#| msgid ""
-#| "%s: this command requires at least one argument (the package to query)."
+#, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
-msgstr ""
-"%s: ця команда потребує хоча б одного аргументу (назви пакунка для запиту)."
+msgstr "%s: ця команда потребує хоча б одного аргументу (назви пакунка для запиту).\n"
 
 #: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
@@ -2743,10 +2718,8 @@ msgid " [ %i%% ]"
 msgstr " [ %i%% ]"
 
 #: src/download_list.cc:264
-#, fuzzy
-#| msgid "Downloading..."
 msgid "Downloading... "
-msgstr "Завантаження..."
+msgstr "Завантаження... "
 
 #: src/download_list.cc:340 src/gtk/download.cc:441
 #, c-format
@@ -2754,10 +2727,8 @@ msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
 msgstr "Будь ласка, вставте диск з міткою \"%s\" в пристрій \"%s\""
 
 #: src/download_list.cc:347 src/gtk/download.cc:445
-#, fuzzy
-#| msgid "Abort.\n"
 msgid "Abort"
-msgstr "Перервати.\n"
+msgstr "Перервати"
 
 #: src/download_list.cc:405
 msgid "[IGNORED]"
@@ -3342,8 +3313,7 @@ msgid "Failed to download changelogs: unexpected exception."
 msgstr "URL для завантаження списків змін"
 
 #: src/generic/apt/pkg_changelog.cc:589
-#, fuzzy, c-format
-#| msgid "ChangeLog of %s"
+#, c-format
 msgid "Changelog of %s"
 msgstr "Список змін для %s"
 
@@ -3521,10 +3491,8 @@ msgid "Expected %s"
 msgstr "Неочікувана ')'"
 
 #: src/generic/util/parsers.h:2007
-#, fuzzy
-#| msgid " or"
 msgid " or "
-msgstr " чи"
+msgstr " чи "
 
 #: src/generic/util/parsers.h:2770
 #, fuzzy, c-format
@@ -5839,47 +5807,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Встановити/оновити пакунки\n"
+msgstr " install      - Встановити/оновити пакунки.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Видалити пакунки\n"
+msgstr " remove       - Видалити пакунки.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Видалити пакунки і їх конфігураційні файли\n"
+msgstr " purge        - Видалити пакунки і їх конфігураційні файли.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Зафіксувати пакунки\n"
+msgstr " hold         - Зафіксувати пакунки.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Скасувати команду hold для пакунка\n"
+msgstr " unhold       - Скасувати команду hold для пакунка.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Позначити пакунок як автоматично встановлений\n"
+msgstr " markauto     - Позначити пакунок як автоматично встановлений.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Позначити пакунок як встановлений вручну\n"
+msgstr " unmarkauto   - Позначити пакунок як встановлений вручну.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5890,28 +5850,21 @@ msgstr ""
 " forbid-version - Заборонити aptitude оновлювати вказану версію пакунка.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Завантажити списки нових/оновлених пакунків\n"
+msgstr " update       - Завантажити списки нових/оновлених пакунків.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade      - Виконати безпечне оновлення\n"
+msgstr " safe-upgrade - Виконати безпечне оновлення.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Виконати оновлення, дозволяється встановлення та видалення "
-"пакунків\n"
+msgstr " full-upgrade - Виконати оновлення, дозволяється встановлення та видалення пакунків.\n"
 
 #: src/main.cc:209
 #, c-format
@@ -5919,22 +5872,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Забути про те які пакунки є \"новими\"\n"
+msgstr " forget-new   - Забути про те які пакунки є \"новими\".\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Пошук пакунка по назві та/або виразу\n"
+msgstr " search       - Пошук пакунка по назві та/або виразу.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Показати детальну інформацію про пакунок\n"
+msgstr " show         - Показати детальну інформацію про пакунок.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5943,40 +5893,31 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Показати детальну інформацію про пакунок\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Стерти завантажені файли пакунків\n"
+msgstr " clean        - Стерти завантажені файли пакунків.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Стерти старі завантажені файли пакунків\n"
+msgstr " autoclean    - Стерти старі завантажені файли пакунків.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Переглянути список змін пакунка\n"
+msgstr " changelog    - Переглянути список змін пакунка.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Завантажити .deb-файл пакунка\n"
+msgstr " download     - Завантажити .deb-файл пакунка.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
-msgstr ""
-" reinstall    - Завантажити і (можливо) перевстановити вже встановлений "
-"пакунок\n"
+msgstr " reinstall    - Завантажити і (можливо) перевстановити вже встановлений пакунок.\n"
 
 #: src/main.cc:219
 #, c-format
@@ -6001,10 +5942,9 @@ msgid "  Options:\n"
 msgstr "  Параметри:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Цей допоміжний текст\n"
+msgstr " -h             Цей допоміжний текст.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -6043,54 +5983,35 @@ msgstr ""
 "видаляти.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Завжди запитувати підтвердження дій\n"
+msgstr " -P             Завжди запитувати підтвердження дій.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr ""
-" -y             Вважати що відповіддю на прості запитання (yes/no) буде "
-"'yes'\n"
+msgstr " -y             Вважати що відповіддю на прості запитання (yes/no) буде 'yes'.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F format      Вказати формат відображення результатів пошуку; див. "
-"підручник\n"
+msgstr " -F format      Вказати формат відображення результатів пошуку; див. підручник.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O order       Вказати формат сортування результатів пошуку; див. "
-"підручник\n"
+msgstr " -O order       Вказати формат сортування результатів пошуку; див. підручник.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr ""
-" -w width       Вказати ширину виводу для форматування результатів пошуку\n"
+msgstr " -w width       Вказати ширину виводу для форматування результатів пошуку.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -6117,55 +6038,38 @@ msgstr ""
 " -Z             Показувати зміну розміру для кожного встановленого пакунка.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Показувати додаткову інформацію. (можна вказувати "
-"багаторазово)\n"
+msgstr " -v             Показувати додаткову інформацію. (можна вказувати багаторазово).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [випуск]    Задати випуск, з якого потрібно встановлювати пакунки\n"
+msgstr " -t [випуск]    Задати випуск, з якого потрібно встановлювати пакунки.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress "
-#| "indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr ""
-" -q             В режимі командного рядка не показувати індикатор прогресу\n"
+msgstr " -q             В режимі командного рядка не показувати індикатор прогресу.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr ""
-" -o key=val     Напряму задати конфігураційний параметр з назвою 'key'\n"
+msgstr " -o key=val     Напряму задати конфігураційний параметр з назвою 'key'.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tВказати, вважати чи ні рекомендації строгими\n"
-"                залежностями\n"
+"                залежностями.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -8041,10 +7945,8 @@ msgid "Error while dumping resolver state"
 msgstr "Помилка під час скидання стану розв'язувача"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Файл, в який потрібно скидати стан розв'язувача:"
+msgstr "Файл, в який потрібно скидати стан розв'язувача: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

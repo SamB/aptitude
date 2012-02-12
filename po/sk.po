@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2009-12-03 11:31+0100\n"
+"PO-Revision-Date: 2012-02-12 15:12+0800\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -42,10 +42,9 @@ msgid "%BValue:%b   "
 msgstr "%BHodnota:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Upravuje sa „%ls“"
+msgstr "Upravuje sa „%ls“: "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -749,13 +748,10 @@ msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s nie je momentálne nainštalovaný, preto sa nebude aktualizovať.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid ""
-#| "%s is already installed at the latest version, so it will not be upgraded."
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr ""
-"%s je už inštalovaný v požadovanej verzii, preto sa nebude aktualizovať."
+msgstr "%s je už inštalovaný v požadovanej verzii, preto sa nebude aktualizovať.\n"
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -973,28 +969,20 @@ msgid "Err"
 msgstr "Err "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Stiahnuté %sB za %s (%s/B/s)\n"
+msgstr "Stiahnuté %sB za %s (%s/B/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Výmena nosiča: Do mechaniky „%s“ vložte disk s názvom „%s“ a stlačte "
-"[Enter].\n"
+msgstr "Výmena nosiča: Do mechaniky „%s“ vložte disk s názvom „%s“ a stlačte [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Vykonáva sa]"
+msgstr "[Vykonáva sa]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1912,11 +1900,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Chybná odpoveď; prosím zadajte jeden z nasledujúcich príkazov:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr ""
-"Počas prideleného času sa nenašlo žiadne riešenie. Skúsiť dôkladnejšie? [Y/n]"
+msgstr "Počas prideleného času sa nenašlo žiadne riešenie. Skúsiť dôkladnejšie? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2382,10 +2367,9 @@ msgid "Archive %s:"
 msgstr "Archív"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Neexistuje balík „%s“.\n"
+msgstr "Neexistuje balík „%s“."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -5625,19 +5609,14 @@ msgstr ""
 "nainštalovaný balík.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
-" why          - Zobrazí ručne nainštalované balíky, ktoré vyžadujú balík "
-"alebo\n"
-"                prečo by jeden alebo viac balíkov vyžadovalo daný balík\n"
+" why          - Zobrazí ručne nainštalované balíky, ktoré vyžadujú balík alebo\n"
+"                prečo by jeden alebo viac balíkov vyžadovalo daný balík.\n"
 
 #: src/main.cc:221
 #, c-format
@@ -5705,8 +5684,7 @@ msgstr ""
 " -d             Stiahne balíky, ale nič neinštaluje ani neodstraňuje.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions.\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
 msgstr " -P             Vždy vyžadovať potvrdenie alebo operácie.\n"
 
@@ -5778,10 +5756,7 @@ msgstr ""
 "balíky.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress.\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -5795,16 +5770,13 @@ msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr " -o kľúč=hodn   Nastaví konfiguračnú voľbu nazvanú „kľúč“.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
-#| "                strong dependencies.\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tNastaví, či sa majú odporúčané závislosti\n"
-"                brať ako silné závislosti\n"
+"                brať ako silné závislosti.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -5817,10 +5789,9 @@ msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Pri štarte stiahne nové zoznamy balíkov.\n"
 
 #: src/main.cc:255 src/main.cc:257
-#, fuzzy, c-format
-#| msgid "                  (terminal interface only)"
+#, c-format
 msgid "                  (terminal interface only)\n"
-msgstr "                  (iba terminálové rozhranie)"
+msgstr "                  (iba terminálové rozhranie)\n"
 
 #: src/main.cc:256
 #, c-format
@@ -7609,10 +7580,8 @@ msgid "Error while dumping resolver state"
 msgstr "Nastala chyba pri ukladaní stavu riešenia"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Súbor, do ktorého má byť stav riešenia uložený:"
+msgstr "Súbor, do ktorého má byť stav riešenia uložený: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

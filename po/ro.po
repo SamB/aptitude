@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2008-10-17 15:42+0200\n"
+"PO-Revision-Date: 2012-02-12 15:07+0800\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language-Team: Romanian <debian-l10n-romanian@lists.debian.org>\n"
 "Language: ro\n"
@@ -43,10 +43,9 @@ msgid "%BValue:%b   "
 msgstr "%BValoare:%b  "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Se editează „%ls”"
+msgstr "Se editează „%ls”: "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -717,10 +716,9 @@ msgid "Unable to find the source package for \"%s\".\n"
 msgstr "Nu s-a putut găsi pachetul sursă pentru „%s”.\n"
 
 #: src/cmdline/cmdline_action.cc:212
-#, fuzzy, c-format
-#| msgid "Unable to satisfy the build-depends: %s."
+#, c-format
 msgid "Unable to satisfy the build-depends: %s.\n"
-msgstr "Nu se pot satisface dependențele la compilare: %s."
+msgstr "Nu se pot satisface dependențele la compilare: %s.\n"
 
 #: src/cmdline/cmdline_action.cc:249
 #, c-format
@@ -1006,28 +1004,20 @@ msgid "Err"
 msgstr "Er "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "S-au adus %sO în %s (%sO/s)\n"
+msgstr "S-au adus %sO în %s (%sO/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Schimbare de mediu: Introduceți discul „%s” în unitatea „%s” și apăsați "
-"[Enter]\n"
+msgstr "Schimbare de mediu: Introduceți discul „%s” în unitatea „%s” și apăsați [Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [În lucru]"
+msgstr "[În lucru]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1970,11 +1960,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Răspuns nevalid; vă rog introduceți una din următoarele comenzi:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr ""
-"Nu s-a găsit nici o soluție în timpul acordat. Încerc mai hotărât? [Y/n]"
+msgstr "Nu s-a găsit nici o soluție în timpul acordat. Încerc mai hotărât? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2046,10 +2033,9 @@ msgid "but %s is installed."
 msgstr "dar %s este instalat."
 
 #: src/cmdline/cmdline_show_broken.cc:85
-#, fuzzy, c-format
-#| msgid "but it is not installable"
+#, c-format
 msgid "but it is not installable."
-msgstr "dar nu este instalabil"
+msgstr "dar nu este instalabil."
 
 #: src/cmdline/cmdline_show_broken.cc:87
 #, fuzzy, c-format
@@ -2152,16 +2138,14 @@ msgid " [held]"
 msgstr " [reținut]"
 
 #: src/cmdline/cmdline_show.cc:325
-#, fuzzy, c-format
-#| msgid "%s; will be installed"
+#, c-format
 msgid "%s%s; will be installed"
-msgstr "%s; va fi instalat"
+msgstr "%s%s; va fi instalat"
 
 #: src/cmdline/cmdline_show.cc:327
-#, fuzzy, c-format
-#| msgid "%s; will be installed automatically"
+#, c-format
 msgid "%s%s; will be installed automatically"
-msgstr "%s; va fi instalată automat"
+msgstr "%s%s; va fi instalată automat"
 
 #: src/cmdline/cmdline_show.cc:347
 #, c-format
@@ -2448,10 +2432,9 @@ msgid "Archive %s:"
 msgstr "Arhivă"
 
 #: src/cmdline/cmdline_versions.cc:294
-#, fuzzy, c-format
-#| msgid "No such package \"%s\".\n"
+#, c-format
 msgid "No such package \"%s\"."
-msgstr "Nu există pachetul „%s”.\n"
+msgstr "Nu există pachetul „%s”."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
@@ -2627,14 +2610,10 @@ msgid "Unable to parse some match patterns."
 msgstr "Nu s-au putut analiza unele modele de căutare."
 
 #: src/cmdline/cmdline_why.cc:1417
-#, fuzzy, c-format
-#| msgid ""
-#| "%s: this command requires at least one argument (the package to query)."
+#, c-format
 msgid ""
 "%s: this command requires at least one argument (the package to query).\n"
-msgstr ""
-"%s: această comandă are nevoie cel puțin de un argument (pachetul de "
-"interogat)."
+msgstr "%s: această comandă are nevoie cel puțin de un argument (pachetul de interogat).\n"
 
 #: src/cmdline/cmdline_why.h:212
 msgid "Unknown version selection, something is very wrong."
@@ -5789,47 +5768,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Instalează/înnoiește pachetele\n"
+msgstr " install      - Instalează/înnoiește pachetele.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Șterge pachetele\n"
+msgstr " remove       - Șterge pachetele.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Curăță pachetele și fișierele lor de configurare\n"
+msgstr " purge        - Curăță pachetele și fișierele lor de configurare.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Pune pachetele în starea „păstrează”\n"
+msgstr " hold         - Pune pachetele în starea „păstrează”.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Anulează comanda de păstrare pentru un pachet\n"
+msgstr " unhold       - Anulează comanda de păstrare pentru un pachet.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr " markauto     - Marchează pachetele ca fiind automat instalate\n"
+msgstr " markauto     - Marchează pachetele ca fiind automat instalate.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Marchează pachetele ca fiind instalate manual\n"
+msgstr " unmarkauto   - Marchează pachetele ca fiind instalate manual.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5841,27 +5812,21 @@ msgstr ""
 "versiune de pachet.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Descarcă listele de pachete noi/posibil de înnoit\n"
+msgstr " update       - Descarcă listele de pachete noi/posibil de înnoit.\n"
 
 #: src/main.cc:207
-#, fuzzy, c-format
-#| msgid " safe-upgrade - Perform a safe upgrade\n"
+#, c-format
 msgid " safe-upgrade - Perform a safe upgrade.\n"
-msgstr " safe-upgrade - Execută o înnoire sigură\n"
+msgstr " safe-upgrade - Execută o înnoire sigură.\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
-#| msgid ""
-#| " full-upgrade - Perform an upgrade, possibly installing and removing "
-#| "packages\n"
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
-msgstr ""
-" full-upgrade - Execută o înnoire, posibil instalând și ștergând pachete\n"
+msgstr " full-upgrade - Execută o înnoire, posibil instalând și ștergând pachete.\n"
 
 #: src/main.cc:209
 #, fuzzy, c-format
@@ -5870,22 +5835,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr "'&BD' pentru instalarea dependențelor de compilare ale unui pachet."
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Uită de pachetele ce sunt \"noi\"\n"
+msgstr " forget-new   - Uită de pachetele ce sunt \"noi\".\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Caută un pachet după nume și/sau expresie\n"
+msgstr " search       - Caută un pachet după nume și/sau expresie.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Afișează informații detaliate despre un pachet\n"
+msgstr " show         - Afișează informații detaliate despre un pachet.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5894,63 +5856,46 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Afișează informații detaliate despre un pachet\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Șterge fișierele pachetelor descărcate\n"
+msgstr " clean        - Șterge fișierele pachetelor descărcate.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Șterge vechile fișiere ale pachetelor descărcate\n"
+msgstr " autoclean    - Șterge vechile fișiere ale pachetelor descărcate.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Afișează jurnalul de modificări al unui pachet\n"
+msgstr " changelog    - Afișează jurnalul de modificări al unui pachet.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Descarcă fișierul .deb pentru un pachet\n"
+msgstr " download     - Descarcă fișierul .deb pentru un pachet.\n"
 
 #: src/main.cc:218
-#, fuzzy, c-format
-#| msgid ""
-#| " reinstall    - Download and (possibly) reinstall a currently installed "
-#| "package\n"
+#, c-format
 msgid ""
 " reinstall    - Download and (possibly) reinstall a currently installed "
 "package.\n"
 msgstr ""
-" reinstall    - Descarcă și reinstalează (pe cât posibil) un pachet instalat "
-"curent\n"
+" reinstall    - Descarcă și reinstalează (pe cât posibil) un pachet instalat\n"
+"                curent.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
 " why          - Arată pachetele instalate manual care „cer” un pachet, sau\n"
-"                de ce unul sau mai multe pachete ar „cere” pachetul dat\n"
+"                de ce unul sau mai multe pachete ar „cere” pachetul dat.\n"
 
 #: src/main.cc:221
-#, fuzzy, c-format
-#| msgid ""
-#| " why-not      - Show the manually installed packages that lead to a "
-#| "conflict\n"
-#| "                with the given package, or why one or more packages "
-#| "would\n"
-#| "                lead to a conflict with the given package if installed\n"
+#, c-format
 msgid ""
 " why-not      - Show the manually installed packages that lead to a "
 "conflict\n"
@@ -5959,7 +5904,7 @@ msgid ""
 msgstr ""
 " why-not      - Arată pachetele instalate manual care duc la un conflict\n"
 "                cu pachetul dat, sau de ce unul sau mai multe pachete ar\n"
-"                duce la un conflict cu pachetul dat dacă este instalat\n"
+"                duce la un conflict cu pachetul dat dacă este instalat.\n"
 
 #: src/main.cc:225
 #, c-format
@@ -5967,10 +5912,9 @@ msgid "  Options:\n"
 msgstr "  Opțiuni:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Acest text de ajutor\n"
+msgstr " -h             Acest text de ajutor.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -6008,55 +5952,41 @@ msgstr ""
 " -d             Doar descarcă pachetele, nu instala sau șterge nimic.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Întodeauna cere confirmare pentru acțiuni\n"
+msgstr " -P             Întodeauna cere confirmare pentru acțiuni.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr ""
-" -y             Presupune că răspunsul la întrebările simple da/nu este "
-"'da'\n"
+msgstr " -y             Presupune că răspunsul la întrebările simple da/nu este 'da'.\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
 msgstr ""
-" -F format      Specifică un format pentru afișarea rezultatelor căutării; "
-"vezi manualul\n"
+" -F format      Specifică un format pentru afișarea rezultatelor căutării;\n"
+"                vezi manualul.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
 msgstr ""
-" -O ordine      Specifică modul în care rezultatele căutării să fie sortate; "
-"vezi manual\n"
+" -O ordine      Specifică modul în care rezultatele căutării să fie sortate;\n"
+"                vezi manual.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
 msgstr ""
-" -w lățime      Specifică lățimea afișării pentru formatarea rezultatului de "
-"căutare\n"
+" -w lățime      Specifică lățimea afișării pentru formatarea rezultatului\n"
+"                de căutare.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -6081,31 +6011,22 @@ msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\tArată modificarea în dimensiune a fiecărui pachet instalat.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
 msgstr ""
-" -v             Afișează informații suplimentare (poate fi folosită de mai "
-"multe ori)\n"
+" -v             Afișează informații suplimentare (poate fi folosită de mai\n"
+"                multe ori).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [producție] Impune producția din care pachetele ar trebui instalate\n"
+msgstr " -t [producție] Impune producția din care pachetele ar trebui instalate.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -6114,24 +6035,18 @@ msgstr ""
 "                incrementale.\n"
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr ""
-" -o key=val     Ajustează direct opțiunea de configurare numită 'key'\n"
+msgstr " -o key=val     Ajustează direct opțiunea de configurare numită 'key'.\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
-" --with(out)-recommends\t Specifică dacă recomandările să fie tratate ca "
-"dependențe\n"
-"                puternice sau nu\n"
+" --with(out)-recommends\t Specifică dacă recomandările să fie tratate ca dependențe\n"
+"                puternice sau nu.\n"
 
 #: src/main.cc:253
 #, c-format
@@ -7990,10 +7905,8 @@ msgid "Error while dumping resolver state"
 msgstr "Eroare în timpul scrierii stării rezolvatorului"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Fișierul în care ar trebui scrisă starea rezolvatorului:"
+msgstr "Fișierul în care ar trebui scrisă starea rezolvatorului: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

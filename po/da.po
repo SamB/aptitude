@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.6.3-3.2\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2011-01-01 19:22+0100\n"
+"PO-Revision-Date: 2012-02-12 15:38+0800\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -49,10 +49,9 @@ msgid "%BValue:%b   "
 msgstr "%BVærdi:%b   "
 
 #: src/apt_config_treeitems.cc:280
-#, fuzzy, c-format
-#| msgid "Editing \"%ls\""
+#, c-format
 msgid "Editing \"%ls\": "
-msgstr "Redigerer \"%ls\""
+msgstr "Redigerer \"%ls\": "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -766,14 +765,10 @@ msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s er aktuelt ikke installeret, så den vil ikke blive opgraderet.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid ""
-#| "%s is already installed at the latest version, so it will not be upgraded."
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr ""
-"%s er allerede installeret i den nyeste version, så den vil ikke blive "
-"opgraderet."
+msgstr "%s er allerede installeret i den nyeste version, så den vil ikke blive opgraderet.\n"
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -990,28 +985,20 @@ msgid "Err"
 msgstr "Fejl "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
-#, fuzzy, c-format
-#| msgid "Fetched %sB in %s (%sB/s)\n"
+#, c-format
 msgid "Fetched %sB in %s (%sB/s)"
-msgstr "Hentede %sB på %s (%sB/s)\n"
+msgstr "Hentede %sB på %s (%sB/s)"
 
 #: src/cmdline/cmdline_download_progress_display.cc:230
-#, fuzzy, c-format
-#| msgid ""
-#| "Media Change: Please insert the disc labeled '%s' in the drive '%s' and "
-#| "press [Enter].\n"
+#, c-format
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr ""
-"Skift disk: Indsæt venligst disken navngivet \"%s\" i drevet \"%s\" og tryk "
-"retur.\n"
+msgstr "Skift disk: Indsæt venligst disken navngivet \"%s\" i drevet \"%s\" og tryk retur."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
-#, fuzzy
-#| msgid " [Working]"
 msgid "[Working]"
-msgstr " [Arbejder]"
+msgstr "[Arbejder]"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:56
 #, c-format
@@ -1940,11 +1927,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Ugyldigt svar. Anfør en af følgende kommandoer:"
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr ""
-"Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n]"
+msgstr "Ingen løsning fundet indenfor den fastsatte tid. Prøv mere ihærdigt? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -5590,19 +5574,14 @@ msgstr ""
 "pakke.\n"
 
 #: src/main.cc:219
-#, fuzzy, c-format
-#| msgid ""
-#| " why          - Show the manually installed packages that require a "
-#| "package, or\n"
-#| "                why one or more packages would require the given package\n"
+#, c-format
 msgid ""
 " why          - Show the manually installed packages that require a package, "
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
 " why          - Vis de manuelt installerede pakker som kræver en pakke, \n"
-"eller\n"
-"                hvorfor en eller flere pakker kræver den angivne pakke\n"
+"                eller hvorfor en eller flere pakker kræver den angivne pakke.\n"
 
 #: src/main.cc:221
 #, c-format
@@ -5672,8 +5651,7 @@ msgstr ""
 " -d             Hent kun pakker, installér eller afinstallér ikke noget.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions.\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
 msgstr " -P             Spørg altid om bekræftelse eller handlinger.\n"
 
@@ -5745,10 +5723,7 @@ msgid ""
 msgstr " -t [udgave]  Angiv hvilken udgave pakker skal installeres fra.\n"
 
 #: src/main.cc:248
-#, fuzzy, c-format
-#| msgid ""
-#| " -q             In command-line mode, suppress the incremental progress.\n"
-#| "                indicators.\n"
+#, c-format
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
@@ -5763,10 +5738,7 @@ msgstr ""
 " -o nøgle=værdi Tildel værdi direkte til opsætningstilvalget \"nøgle\".\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as.\n"
-#| "                strong dependencies.\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
@@ -5785,10 +5757,9 @@ msgid " -u             Download new package lists on startup.\n"
 msgstr " -u             Hent nye pakkelister ved opstart\n"
 
 #: src/main.cc:255 src/main.cc:257
-#, fuzzy, c-format
-#| msgid "                  (terminal interface only)"
+#, c-format
 msgid "                  (terminal interface only)\n"
-msgstr "                  (kun terminal-brugerflade)"
+msgstr "                  (kun terminal-brugerflade)\n"
 
 #: src/main.cc:256
 #, c-format
@@ -7598,10 +7569,8 @@ msgid "Error while dumping resolver state"
 msgstr "Fejl ved dumpning af status for afhængighedsudreder"
 
 #: src/ui.cc:2235
-#, fuzzy
-#| msgid "File to which the resolver state should be dumped:"
 msgid "File to which the resolver state should be dumped: "
-msgstr "Fil som status for afhængighedsudreder skal skrives til:"
+msgstr "Fil som status for afhængighedsudreder skal skrives til: "
 
 #: src/ui.cc:2265
 msgid "^Install/remove packages"

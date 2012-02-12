@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: aptitude_nn\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2005-06-27 21:26+0200\n"
+"PO-Revision-Date: 2012-02-12 14:45+0800\n"
 "Last-Translator: Håvard Korsvoll <korsvoll@skulelinux.no>\n"
 "Language-Team: Norwegian nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "Language: \n"
@@ -5459,48 +5459,39 @@ msgstr ""
 "\n"
 
 #: src/main.cc:198
-#, fuzzy, c-format
-#| msgid " install      - Install/upgrade packages\n"
+#, c-format
 msgid " install      - Install/upgrade packages.\n"
-msgstr " install      - Installer/oppgrader pakkar\n"
+msgstr " install      - Installer/oppgrader pakkar.\n"
 
 #: src/main.cc:199
-#, fuzzy, c-format
-#| msgid " remove       - Remove packages\n"
+#, c-format
 msgid " remove       - Remove packages.\n"
-msgstr " remove       - Fjernar pakkar\n"
+msgstr " remove       - Fjernar pakkar.\n"
 
 #: src/main.cc:200
-#, fuzzy, c-format
-#| msgid " purge        - Remove packages and their configuration files\n"
+#, c-format
 msgid " purge        - Remove packages and their configuration files.\n"
-msgstr " purge        - Fjernar pakkar og oppsettsfilene deira\n"
+msgstr " purge        - Fjernar pakkar og oppsettsfilene deira.\n"
 
 #: src/main.cc:201
-#, fuzzy, c-format
-#| msgid " hold         - Place packages on hold\n"
+#, c-format
 msgid " hold         - Place packages on hold.\n"
-msgstr " hold         - Legg pakkar på hald\n"
+msgstr " hold         - Legg pakkar på hald.\n"
 
 #: src/main.cc:202
-#, fuzzy, c-format
-#| msgid " unhold       - Cancel a hold command for a package\n"
+#, c-format
 msgid " unhold       - Cancel a hold command for a package.\n"
-msgstr " unhold       - Fjern ein hald-kommando for ein pakke\n"
+msgstr " unhold       - Fjern ein hald-kommando for ein pakke.\n"
 
 #: src/main.cc:203
-#, fuzzy, c-format
-#| msgid ""
-#| " markauto     - Mark packages as having been automatically installed\n"
+#, c-format
 msgid " markauto     - Mark packages as having been automatically installed.\n"
-msgstr ""
-" markauto     - Merk pakkar som at dei er blitt installert automatisk\n"
+msgstr " markauto     - Merk pakkar som at dei er blitt installert automatisk.\n"
 
 #: src/main.cc:204
-#, fuzzy, c-format
-#| msgid " unmarkauto   - Mark packages as having been manually installed\n"
+#, c-format
 msgid " unmarkauto   - Mark packages as having been manually installed.\n"
-msgstr " unmarkauto   - Merk pakkar som at dei er installert manuelt\n"
+msgstr " unmarkauto   - Merk pakkar som at dei er installert manuelt.\n"
 
 #: src/main.cc:205
 #, c-format
@@ -5511,10 +5502,9 @@ msgstr ""
 " forby versjon - Forby aptitude å oppgradere til ein særskild pakkeversjon.\n"
 
 #: src/main.cc:206
-#, fuzzy, c-format
-#| msgid " update       - Download lists of new/upgradable packages\n"
+#, c-format
 msgid " update       - Download lists of new/upgradable packages.\n"
-msgstr " update       - Last ned liste over nye/oppgraderbare pakkar\n"
+msgstr " update       - Last ned liste over nye/oppgraderbare pakkar.\n"
 
 #: src/main.cc:207
 #, fuzzy, c-format
@@ -5522,13 +5512,13 @@ msgid " safe-upgrade - Perform a safe upgrade.\n"
 msgstr " upgrade      - Utfør ei trygg oppgradering\n"
 
 #: src/main.cc:208
-#, fuzzy, c-format
+#, c-format
 msgid ""
 " full-upgrade - Perform an upgrade, possibly installing and removing "
 "packages.\n"
 msgstr ""
-" dist-upgrade - Utfør ei oppgradering, det kan vera pakkar blir installert "
-"og fjerna\n"
+" full-upgrade - Utfør ei oppgradering, det kan vera pakkar blir installert\n"
+"                og fjerna.\n"
 
 #: src/main.cc:209
 #, c-format
@@ -5536,22 +5526,19 @@ msgid " build-dep    - Install the build-dependencies of packages.\n"
 msgstr ""
 
 #: src/main.cc:210
-#, fuzzy, c-format
-#| msgid " forget-new   - Forget what packages are \"new\"\n"
+#, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Gløym kva for pakkar som er «nye»\n"
+msgstr " forget-new   - Gløym kva for pakkar som er «nye».\n"
 
 #: src/main.cc:211
-#, fuzzy, c-format
-#| msgid " search       - Search for a package by name and/or expression\n"
+#, c-format
 msgid " search       - Search for a package by name and/or expression.\n"
-msgstr " search       - Søk etter ein pakke etter namn og/eller uttrykk\n"
+msgstr " search       - Søk etter ein pakke etter namn og/eller uttrykk.\n"
 
 #: src/main.cc:212
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package\n"
+#, c-format
 msgid " show         - Display detailed information about a package.\n"
-msgstr " show         - Vis detaljert informasjon om ei pakke\n"
+msgstr " show         - Vis detaljert informasjon om ei pakke.\n"
 
 #: src/main.cc:213
 #, fuzzy, c-format
@@ -5560,28 +5547,24 @@ msgid " versions     - Displays the versions of specified packages.\n"
 msgstr " show         - Vis detaljert informasjon om ei pakke\n"
 
 #: src/main.cc:214
-#, fuzzy, c-format
-#| msgid " clean        - Erase downloaded package files\n"
+#, c-format
 msgid " clean        - Erase downloaded package files.\n"
-msgstr " clean        - Slett nedlasta pakkefiler\n"
+msgstr " clean        - Slett nedlasta pakkefiler.\n"
 
 #: src/main.cc:215
-#, fuzzy, c-format
-#| msgid " autoclean    - Erase old downloaded package files\n"
+#, c-format
 msgid " autoclean    - Erase old downloaded package files.\n"
-msgstr " autoclean    - Slett gamle nedlasta pakkefiler\n"
+msgstr " autoclean    - Slett gamle nedlasta pakkefiler.\n"
 
 #: src/main.cc:216
-#, fuzzy, c-format
-#| msgid " changelog    - View a package's changelog\n"
+#, c-format
 msgid " changelog    - View a package's changelog.\n"
-msgstr " changelog    - Vis endringsloggen til ein pakke\n"
+msgstr " changelog    - Vis endringsloggen til ein pakke.\n"
 
 #: src/main.cc:217
-#, fuzzy, c-format
-#| msgid " download     - Download the .deb file for a package\n"
+#, c-format
 msgid " download     - Download the .deb file for a package.\n"
-msgstr " download     - Last ned .deb-fila for ein pakke\n"
+msgstr " download     - Last ned .deb-fila for ein pakke.\n"
 
 #: src/main.cc:218
 #, c-format
@@ -5613,10 +5596,9 @@ msgid "  Options:\n"
 msgstr "  Val:\n"
 
 #: src/main.cc:226
-#, fuzzy, c-format
-#| msgid " -h             This help text\n"
+#, c-format
 msgid " -h             This help text.\n"
-msgstr " -h             Denne hjelpeteksten\n"
+msgstr " -h             Denne hjelpeteksten.\n"
 
 #: src/main.cc:228
 #, c-format
@@ -5654,51 +5636,35 @@ msgstr ""
 " -d             Berre lasta ned pakkar, ikkje installer eller fjern noko.\n"
 
 #: src/main.cc:237
-#, fuzzy, c-format
-#| msgid " -P             Always prompt for confirmation or actions\n"
+#, c-format
 msgid " -P             Always prompt for confirmation of actions.\n"
-msgstr " -P             Spør alltid om stadfesting eller handlingar\n"
+msgstr " -P             Spør alltid om stadfesting eller handlingar.\n"
 
 #: src/main.cc:238
-#, fuzzy, c-format
-#| msgid ""
-#| " -y             Assume that the answer to simple yes/no questions is "
-#| "'yes'\n"
+#, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr " -y             Forutset at svaret på enkle ja/nei-spørsmål er «Ja»\n"
+msgstr " -y             Forutset at svaret på enkle ja/nei-spørsmål er «Ja».\n"
 
 #: src/main.cc:239
-#, fuzzy, c-format
-#| msgid ""
-#| " -F format      Specify a format for displaying search results; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -F format      Specify a format for displaying search results; see the "
 "manual.\n"
-msgstr ""
-" -F format      Oppgje eit format for vising av søkjeresultat; sjå manualen\n"
+msgstr " -F format      Oppgje eit format for vising av søkjeresultat; sjå manualen.\n"
 
 #: src/main.cc:240
-#, fuzzy, c-format
-#| msgid ""
-#| " -O order       Specify how search results should be sorted; see the "
-#| "manual\n"
+#, c-format
 msgid ""
 " -O order       Specify how search results should be sorted; see the "
 "manual.\n"
-msgstr ""
-" -O rekkjefølgje Oppgjev korleis eit søkjeresultat skal sorterast; sjå "
-"manualen\n"
+msgstr " -O rekkjefølgje Oppgjev korleis eit søkjeresultat skal sorterast; sjå manualen.\n"
 
 #: src/main.cc:241
-#, fuzzy, c-format
-#| msgid ""
-#| " -w width       Specify the display width for formatting search results\n"
+#, c-format
 msgid ""
 " -w width       Specify the display width for formatting search results.\n"
-msgstr ""
-" -w breidde     Oppgje visingsbreidde for formatering av søkjeresultat\n"
+msgstr " -w breidde     Oppgje visingsbreidde for formatering av søkjeresultat.\n"
 
 #: src/main.cc:242
 #, c-format
@@ -5723,24 +5689,17 @@ msgid " -Z             Show the change in installed size of each package.\n"
 msgstr " -Z\t\t    Vis endringane på installert storleik på kvar pakke.\n"
 
 #: src/main.cc:246
-#, fuzzy, c-format
-#| msgid ""
-#| " -v             Display extra information. (may be supplied multiple "
-#| "times)\n"
+#, c-format
 msgid ""
 " -v             Display extra information. (may be supplied multiple "
 "times).\n"
-msgstr ""
-" -v             Vis ekstra informasjon. (kan tilføyast fleire gongar)\n"
+msgstr " -v             Vis ekstra informasjon. (kan tilføyast fleire gongar).\n"
 
 #: src/main.cc:247
-#, fuzzy, c-format
-#| msgid ""
-#| " -t [release]   Set the release from which packages should be installed\n"
+#, c-format
 msgid ""
 " -t [release]   Set the release from which packages should be installed.\n"
-msgstr ""
-" -t [sleppversjon]  Set sleppversjonen som pakkar skal installerast frå\n"
+msgstr " -t [sleppversjon]  Set sleppversjonen som pakkar skal installerast frå.\n"
 
 #: src/main.cc:248
 #, c-format
@@ -5750,22 +5709,18 @@ msgid ""
 msgstr ""
 
 #: src/main.cc:250
-#, fuzzy, c-format
-#| msgid " -o key=val     Directly set the configuration option named 'key'\n"
+#, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
-msgstr " -o nøkkel=verdi    Set direkte oppsettsvalet som heiter «nøkkel»\n"
+msgstr " -o nøkkel=verdi    Set direkte oppsettsvalet som heiter «nøkkel».\n"
 
 #: src/main.cc:251
-#, fuzzy, c-format
-#| msgid ""
-#| " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
-#| "                strong dependencies\n"
+#, c-format
 msgid ""
 " --with(out)-recommends\tSpecify whether or not to treat recommends as\n"
 "                strong dependencies.\n"
 msgstr ""
 " --with(out)-recommends\tOppgje om tilrådde og/eller føreslåtte pakkar skal\n"
-"                handterast som strenge pakkekrav\n"
+"                handterast som strenge pakkekrav.\n"
 
 #: src/main.cc:253
 #, c-format
