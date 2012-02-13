@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aptitude 0.4.11\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2012-02-12 14:47+0800\n"
+"PO-Revision-Date: 2012-02-13 18:56+0100\n"
 "Last-Translator: Michał Kułach <michal.kulach@gmail.com>\n"
 "Language-Team: Polish <debian-l10n-polish@lists.debian.org>\n"
 "Language: pl\n"
@@ -1622,15 +1622,12 @@ msgid "Resolver state successfully written!"
 msgstr "Zapisano stan rozwiązywania problemów z zależnościami."
 
 #: src/cmdline/cmdline_resolver.cc:222
-#, fuzzy, c-format
-#| msgid ""
-#| "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
-#| "ver) ...: %F%n<ID>: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F.: %F,: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
 "ver) ...: %F%n<ID>: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"t: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr (nr|wersja) ...: %F%na (nr|"
+"t: %Fn: %Fq: %F.: %F,: %Fo: %Fe: %Fx: %Fr (nr|wersja) ...: %F%na (nr|"
 "wersja) ...: %F%n<NR>: %F%n<AKCJA> pakiet... : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:243
@@ -1939,7 +1936,8 @@ msgstr "Nieprawidłowa odpowiedź. Proszę podać jedno z następujących polece
 # Nie należy tłumaczyć Y na T! Patrz #495551.
 #: src/cmdline/cmdline_resolver.cc:1051
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Nie znaleziono rozwiązań przed upływem limitu czasu. Próbować dalej? [Y/n] "
+msgstr ""
+"Nie znaleziono rozwiązań przed upływem limitu czasu. Próbować dalej? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
@@ -2253,7 +2251,7 @@ msgstr "Dezaktualizuje"
 
 #: src/cmdline/cmdline_show.cc:465
 msgid "Enhances"
-msgstr ""
+msgstr "Rozszerza"
 
 #: src/cmdline/cmdline_show.cc:467 src/cmdline/cmdline_why.cc:281
 #: src/cmdline/cmdline_why.cc:1683 src/gtk/dependency_chains_tab.cc:205
@@ -2595,10 +2593,9 @@ msgid "Unknown version selection, something is very wrong."
 msgstr "Nieznany wybór wersji, jest jakiś poważny problem."
 
 #: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
+#, c-format
 msgid "Invalid command-line option '%s'"
-msgstr "Błędna operacja '%s'"
+msgstr "Błędna opcja wiersza poleceń \"%s\""
 
 #: src/cmdline/terminal.cc:46
 msgid "Unexpected end-of-file on standard input"
@@ -3043,7 +3040,7 @@ msgstr "Nie można otworzyć pliku dziennika: %s"
 #. ForTranslators: This is a date and time format.  See strftime(3).
 #: src/generic/apt/log.cc:66
 msgid "%a, %b %e %Y %T %z"
-msgstr ""
+msgstr "%a, %e %b %Y %T %z"
 
 #: src/generic/apt/log.cc:68
 #, c-format
@@ -3142,11 +3139,13 @@ msgstr "[%s] %s\n"
 #: src/generic/apt/log.cc:145
 #, c-format
 msgid ""
-"===============================================================================\n"
+"=============================================================================="
+"=\n"
 "\n"
 "Log complete.\n"
 msgstr ""
-"===============================================================================\n"
+"=============================================================================="
+"=\n"
 "\n"
 "Dziennik zakończony.\n"
 
@@ -4958,10 +4957,9 @@ msgid "%s obsoletes %s"
 msgstr "%s dezaktualizuje %s"
 
 #: src/gtk/resolver.cc:1264 src/solution_fragment.cc:154
-#, fuzzy, c-format
-#| msgid "%s replaces %s"
+#, c-format
 msgid "%s enhances %s"
-msgstr "%s zastępuje %s"
+msgstr "%s rozszerza %s"
 
 #: src/gtk/resolver.cc:1376 src/gtk/resolver.cc:1841
 #: src/solution_screen.cc:272
@@ -5607,10 +5605,9 @@ msgid " show         - Display detailed information about a package.\n"
 msgstr " show         - Wyświetlanie szczegółowych informacji o pakiecie.\n"
 
 #: src/main.cc:213
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package.\n"
+#, c-format
 msgid " versions     - Displays the versions of specified packages.\n"
-msgstr " show         - Wyświetlanie szczegółowych informacji o pakiecie.\n"
+msgstr " versions     - Wyświetlanie wersji podanych pakietów.\n"
 
 #: src/main.cc:214
 #, c-format
@@ -5647,8 +5644,10 @@ msgid ""
 "or\n"
 "                why one or more packages would require the given package.\n"
 msgstr ""
-" why          - Wyświetlenie pakietów ręcznie zainstalowanych, które wymagają\n"
-"                danego pakietu, lub dlaczego pakiet lub pakiety mogą go wymagać.\n"
+" why          - Wyświetlenie pakietów ręcznie zainstalowanych, które "
+"wymagają\n"
+"                danego pakietu, lub dlaczego pakiet lub pakiety mogą go "
+"wymagać.\n"
 
 #: src/main.cc:221
 #, c-format
@@ -6228,7 +6227,7 @@ msgstr "Kodowanie mine-help.txt|UTF-8"
 
 #: src/pkg_columnizer.cc:86
 msgid "30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15"
-msgstr "30 6 6 1 1 40 10 10 18 10 35 9 10 2 1 1 12 14 32 19 15"
+msgstr "30 6 6 1 1 40 10 10 18 10 35 9 10 2 1 1 12 14 32 20 15"
 
 #: src/pkg_columnizer.cc:89 src/ui.cc:2701
 msgid "Package"
@@ -6886,7 +6885,7 @@ msgstr "dezaktualizuje"
 
 #: src/reason_fragment.cc:45
 msgid "enhances"
-msgstr ""
+msgstr "rozszerza"
 
 #: src/reason_fragment.cc:178
 #, c-format
@@ -7640,7 +7639,7 @@ msgstr "^Zapomnij o nowościach"
 
 #: src/ui.cc:2282
 msgid "Canc^el pending actions"
-msgstr "Anuluj z^aplanowane zadania"
+msgstr "Anuluj za^planowane zadania"
 
 #: src/ui.cc:2286
 msgid "^Clean package cache"
@@ -7648,7 +7647,7 @@ msgstr "Wyczyść ^archiwum pakietów"
 
 #: src/ui.cc:2290
 msgid "Clean ^obsolete files"
-msgstr "^Usuń nieaktualne pliki"
+msgstr "Usuń ^nieaktualne pliki"
 
 #: src/ui.cc:2297
 msgid "^Reload package cache"
@@ -7660,11 +7659,11 @@ msgstr "^Saper"
 
 #: src/ui.cc:2307
 msgid "^Become root"
-msgstr "Uzyskaj prawa administratora"
+msgstr "Uzyskaj p^rawa administratora"
 
 #: src/ui.cc:2310
 msgid "^Quit"
-msgstr "^Zakończ"
+msgstr "Za^kończ"
 
 #: src/ui.cc:2317 src/ui.cc:2700
 msgid "Undo"
@@ -7775,7 +7774,7 @@ msgstr ""
 
 #: src/ui.cc:2367
 msgid "^Changelog"
-msgstr "^Dziennik zmian"
+msgstr "Dzi^ennik zmian"
 
 #: src/ui.cc:2368
 msgid "Display the Debian changelog of the selected package"
@@ -7860,7 +7859,7 @@ msgstr "Wyświetla informacje o pakiecie, którego dotyczy wybrana akcja"
 
 #: src/ui.cc:2419
 msgid "Reject Breaking ^Holds"
-msgstr "Odrzucaj naruszenia ^zatrzymań"
+msgstr "O^drzucaj naruszenia zatrzymań"
 
 #: src/ui.cc:2421
 msgid ""
@@ -7896,7 +7895,7 @@ msgstr "Powtarza wyszukiwanie"
 
 #: src/ui.cc:2441
 msgid "Find Again ^Backwards"
-msgstr "Z^najdź poprzedni"
+msgstr "Ponownie zn^ajdź poprzedni"
 
 #: src/ui.cc:2442
 msgid "Repeat the last search in the opposite direction"
@@ -7928,7 +7927,7 @@ msgstr "Szuka kolejnego pakietu z niespełnionymi zależnościami"
 
 #: src/ui.cc:2463
 msgid "^Preferences"
-msgstr "Preferencje"
+msgstr "^Preferencje"
 
 #: src/ui.cc:2468
 msgid "^UI options"
@@ -7956,7 +7955,7 @@ msgstr "Zmienia różne inne opcje programu"
 
 #: src/ui.cc:2483
 msgid "^Revert options"
-msgstr "^Przywróć domyślne"
+msgstr "Przywróć ^domyślne"
 
 #: src/ui.cc:2484
 msgid "Reset all settings to the system defaults"

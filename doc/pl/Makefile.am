@@ -3,7 +3,7 @@
 # no full manual yet
 SUBDIRS=
 #SUBDIRS=images
-
+EXTRA_DIST=fixman
 LANGCODE=pl
 MANPAGE=aptitude.$(LANGCODE).8
 # How much of the manual should actually at least be translated.
@@ -52,6 +52,7 @@ $(MANPAGE): $(XMLSOURCES) $(srcdir)/../aptitude-man.xsl
 	-rm -fr output-man $(MANPAGE)
 	xsltproc -o output-man/aptitude.8 $(srcdir)/../aptitude-man.xsl aptitude.xml
 	mv output-man/aptitude.8 $(MANPAGE)
+	/bin/bash $(srcdir)/fixman
 
 $(README): $(XMLSOURCES)  $(srcdir)/../aptitude-txt.xsl
 	-rm -fr output-txt
