@@ -145,10 +145,10 @@ PKG_SORTPOLICY_SUBCLASS(pkg_sortpolicy_priority,
 			int pri2=ver2.end()?0:ver2->Priority;
 			if(pri1<pri2)
 			  return -1;
-			  else if(pri1==pri2)
-			return 0;
-			  else // if(pri1>pri2)
-			return 1;);
+			else if(pri1==pri2)
+			  return 0;
+			else // if(pri1>pri2)
+			  return 1;);
 
 // Sort by version number
 PKG_SORTPOLICY_SUBCLASS(pkg_sortpolicy_ver,
