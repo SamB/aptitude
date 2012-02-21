@@ -1328,11 +1328,6 @@ namespace gui
     install_or_remove_packages();
   }
 
-  void do_sweep()
-  {
-    system("/usr/games/gnomine&");
-  }
-
   bool do_want_quit()
   {
     want_to_quit = true;
@@ -1511,9 +1506,6 @@ namespace gui
     // Not implemented menu item placeholder
     refGlade->get_widget("menu_do_reload_cache", pMenuFileReloadCache);
     pMenuFileReloadCache->signal_activate().connect(&do_notimplemented_message);
-
-    refGlade->get_widget("menu_do_sweep", pMenuFileSweep);
-    pMenuFileSweep->signal_activate().connect(&do_sweep);
 
     // Not implemented menu item placeholder
     refGlade->get_widget("menu_do_su_to_root", pMenuFileSuToRoot);

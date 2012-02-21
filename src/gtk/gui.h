@@ -138,7 +138,6 @@ namespace gui
       Gtk::ImageMenuItem * pMenuFileClean;
       Gtk::ImageMenuItem * pMenuFileAutoclean;
       Gtk::ImageMenuItem * pMenuFileReloadCache;
-      Gtk::ImageMenuItem * pMenuFileSweep;
       Gtk::ImageMenuItem * pMenuFileSuToRoot;
       Gtk::ImageMenuItem * pMenuFileExit;
 
