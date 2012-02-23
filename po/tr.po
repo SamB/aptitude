@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aptitude\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2006-10-18 02:07+0300\n"
+"PO-Revision-Date: 2012-02-23 16:54+0800\n"
 "Last-Translator: Erçin EKER <ercin.eker@linux.org.tr>\n"
 "Language-Team: Turkish <debian-l10n-turkish@lists.debian.org>\n"
 "Language: tr\n"
@@ -1752,9 +1752,10 @@ msgstr "Bağımlılıklar çözüleniyor..."
 msgid "The following actions will resolve these dependencies:"
 msgstr "Aşağıdaki paketler bu bağımlılıkları karşılayacak:"
 
+# po/
 #: src/cmdline/cmdline_resolver.cc:915
 msgid "Accept this solution? [Y/n/q/?] "
-msgstr "Çözümü kabul et? [E/h/i/?]"
+msgstr "Çözümü kabul et? [Y/n/q/?] "
 
 #: src/cmdline/cmdline_resolver.cc:942 src/cmdline/cmdline_resolver.cc:1077
 msgid "Abandoning all efforts to resolve these dependencies."
@@ -1779,10 +1780,8 @@ msgid "Invalid response; please enter one of the following commands:"
 msgstr "Geçersiz yanıt. Lütfen şu komutları kullanın: "
 
 #: src/cmdline/cmdline_resolver.cc:1051
-#, fuzzy
-#| msgid "No solution found within the allotted time.  Try harder? [Y/n]"
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [E/h]"
+msgstr "Belirlenmiş sürede çözüm bulunamadı. Denemeye devam et? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
