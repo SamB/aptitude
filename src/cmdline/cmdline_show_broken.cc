@@ -15,13 +15,22 @@
 #include <stdio.h>
 #include <string.h>
 
+using namespace std;
+
 void show_broken_deps(pkgCache::PkgIterator pkg)
 {
-  unsigned int indent=strlen(pkg.Name())+3;
+  const unsigned int indent=pkg.FullName(true).size() + 3;
   bool is_first_dep=true;
   pkgCache::VerIterator ver=(*apt_cache_file)[pkg].InstVerIter(*apt_cache_file);
 
-  printf("  %s:", pkg.Name());
+  cout << " " << pkg.FullName(true) << " :";
+
+  if(ver.end() == true)
+    {
+      cout << endl;
+      return;
+    }
+
   for(pkgCache::DepIterator dep=ver.DependsList(); !dep.end(); ++dep)
     {
       pkgCache::DepIterator first=dep, prev=dep;
@@ -52,10 +61,10 @@ void show_broken_deps(pkgCache::PkgIterator pkg)
 
 	      is_first_of_or=false;
 
+              cout << first.TargetPkg().FullName(true);
+
 	      if(first.TargetVer())
-		printf("%s (%s %s)", first.TargetPkg().Name(), first.CompType(), first.TargetVer());
-	      else
-		printf("%s", first.TargetPkg().Name());
+		printf(" (%s %s)", first.CompType(), first.TargetVer());
 
 	      // FIXME: handle virtual packages sanely.
 	      pkgCache::PkgIterator target=first.TargetPkg();
