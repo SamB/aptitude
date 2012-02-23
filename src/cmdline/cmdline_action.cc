@@ -247,14 +247,14 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 		    {
 		      if(verbose>0)
 			printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already installed.\n"),
-			       prv.OwnerPkg().Name(), pkg.Name());
+			       prv.OwnerPkg().FullName(true).c_str(), pkg.Name());
 		      return true;
 		    }
 		  else if((*apt_cache_file)[prv.OwnerPkg()].InstVerIter(*apt_cache_file)==prv.OwnerVer())
 		    {
 		      if(verbose>0)
 			printf(_("Note: \"%s\", providing the virtual package\n      \"%s\", is already going to be installed.\n"),
-			       prv.OwnerPkg().Name(), pkg.Name());
+			       prv.OwnerPkg().FullName(true).c_str(), pkg.Name());
 		      return true;
 		    }
 		}
@@ -295,7 +295,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	      if(!seen_in_first_pass)
 		{
 		  printf(_("Note: selecting \"%s\" instead of the\n      virtual package \"%s\"\n"),
-			 cands[0].Name(), pkg.Name());
+			 cands[0].FullName(true).c_str(), pkg.Name());
 		}
 	      pkg = cands[0];
 	    }
@@ -316,7 +316,7 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
 	to_install.insert(pkg);
       else if(pkg_state.Keep() && verbose>0)
 	printf(_("%s is already installed at the requested version (%s)\n"),
-	       pkg.Name(),
+	       pkg.FullName(true).c_str(),
 	       ver.VerStr());
       break;
     case cmdline_upgrade:
@@ -325,28 +325,33 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       else if(pkg_state.Status > 1)
 	{
 	  if(verbose > 0)
-	    printf(_("%s is not currently installed, so it will not be upgraded.\n"), pkg.Name());
+	    printf(_("%s is not currently installed, so it will not be upgraded.\n"),
+                   pkg.FullName(true).c_str());
 	}
       else if(verbose > 0)
-	printf(_("%s is already installed at the latest version, so it will not be upgraded.\n"), pkg.Name());
+	printf(_("%s is already installed at the latest version, so it will not be upgraded.\n"),
+               pkg.FullName(true).c_str());
       break;
 
     case cmdline_reinstall:
       if(pkg.CurrentVer().end())
-	printf(_("%s is not currently installed, so it will not be reinstalled.\n"), pkg.Name());
+	printf(_("%s is not currently installed, so it will not be reinstalled.\n"),
+               pkg.FullName(true).c_str());
 
       break;
     case cmdline_remove:
       if(!pkg.CurrentVer().end())
 	to_remove.insert(pkg);
       else if(pkg_state.Keep() && verbose>0)
-	printf(_("Package %s is not installed, so it will not be removed\n"), pkg.Name());
+	printf(_("Package %s is not installed, so it will not be removed\n"),
+               pkg.FullName(true).c_str());
       break;
     case cmdline_purge:
       if(!pkg.CurrentVer().end() || pkg->CurrentState!=pkgCache::State::ConfigFiles)
 	to_purge.insert(pkg);
       else if(pkg_state.Keep() && verbose>0)
-	printf(_("Package %s is not installed, so it will not be removed\n"), pkg.Name());
+	printf(_("Package %s is not installed, so it will not be removed\n"),
+               pkg.FullName(true).c_str());
       break;
     case cmdline_hold:
       to_hold.insert(pkg);
@@ -364,9 +369,11 @@ bool cmdline_applyaction(cmdline_pkgaction_type action,
       if(source==cmdline_version_cand)
 	{
 	  if(pkg.CurrentVer().end())
-	    printf(_("Package %s is not installed, cannot forbid an upgrade\n"), pkg.Name());
+	    printf(_("Package %s is not installed, cannot forbid an upgrade\n"),
+                   pkg.FullName(true).c_str());
 	  else if(!pkg_state.Upgradable())
-	    printf(_("Package %s is not upgradable, cannot forbid an upgrade\n"), pkg.Name());
+	    printf(_("Package %s is not upgradable, cannot forbid an upgrade\n"),
+                   pkg.FullName(true).c_str());
 	}
     default:
       break;

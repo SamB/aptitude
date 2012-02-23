@@ -123,7 +123,7 @@ static string reason_string_list(set<reason> &reasons)
       string dep_type = const_cast<pkgCache::DepIterator &>(why->dep).DepType();
       s += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
       s+=": ";
-      s+=why->pkg.Name();
+      s+=why->pkg.FullName(true);
     }
   if(!first)
     s+=")";
@@ -267,7 +267,7 @@ static void cmdline_show_instinfo(pkgvector &items,
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
     {
       std::string tags;
-      string s=i->Name();
+      string s=i->FullName(true);
 
       pkgDepCache::StateCache &state=(*apt_cache_file)[*i];
       //aptitudeDepCache::aptitude_state &extstate=(*apt_cache_file)->get_ext_state(*i);

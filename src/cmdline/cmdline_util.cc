@@ -142,7 +142,7 @@ void cmdline_show_pkglist(pkgvector &items,
   strvector tmp;
 
   for(pkgvector::iterator i=items.begin(); i!=items.end(); ++i)
-    tmp.push_back(i->Name());
+    tmp.push_back(i->FullName(true));
 
   cmdline_show_stringlist(tmp, term_metrics);
 }
@@ -164,9 +164,9 @@ pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
 	if(candver.end())
 	  {
 	    if(source == cmdline_version_cand)
-	      printf(_("No candidate version found for %s\n"), pkg.Name());
+	      printf(_("No candidate version found for %s\n"), pkg.FullName(true).c_str());
 	    else
-	      printf(_("No current or candidate version found for %s\n"), pkg.Name());
+	      printf(_("No current or candidate version found for %s\n"), pkg.FullName(true).c_str());
 	  }
 
 	return candver;
@@ -192,7 +192,7 @@ pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
 
       printf(_("Unable to find an archive \"%s\" for the package \"%s\"\n"),
 	     sourcestr.c_str(),
-	     pkg.Name());
+	     pkg.FullName(true).c_str());
 
       return pkgCache::VerIterator(*apt_cache_file, 0);
     case cmdline_version_version:
@@ -202,7 +202,7 @@ pkgCache::VerIterator cmdline_find_ver(pkgCache::PkgIterator pkg,
 
       printf(_("Unable to find a version \"%s\" for the package \"%s\"\n"),
 	     sourcestr.c_str(),
-	     pkg.Name());
+	     pkg.FullName(true).c_str());
 
       return pkgCache::VerIterator(*apt_cache_file, 0);
     default:
@@ -299,7 +299,7 @@ namespace
 	!p.end(); ++p)
       {
 	if(pkg_obsolete(p))
-	  obsolete.insert(p.Name());
+	  obsolete.insert(p.FullName(true));
 
 	const pkgDepCache::StateCache &state = (*apt_cache_file)[p];
 	const aptitudeDepCache::aptitude_state &estate =
