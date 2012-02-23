@@ -125,7 +125,7 @@ cw::column_disposition pkg_item::pkg_columnizer::setup_column(const pkgCache::Pk
     {
     case name:
       if(!pkg.end())
-	return cw::column_disposition(pkg.Name(), basex);
+	return cw::column_disposition(pkg.FullName(true), basex);
       else
 	return cw::column_disposition("", 0);
 

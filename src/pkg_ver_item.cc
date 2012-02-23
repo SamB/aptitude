@@ -75,7 +75,7 @@ cw::column_disposition pkg_ver_columnizer::setup_column(const pkgCache::VerItera
       if(ver.end())
 	return cw::column_disposition("", 0);
       else if(show_pkg_name)
-	return cw::column_disposition(string(ver.ParentPkg().Name())+" "+ver.VerStr(), basex);
+	return cw::column_disposition(string(ver.ParentPkg().FullName(true))+" "+ver.VerStr(), basex);
       else
 	return cw::column_disposition(ver.VerStr(), basex);
 
