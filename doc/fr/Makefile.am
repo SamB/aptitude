@@ -6,7 +6,7 @@ EXTRA_DIST=fixman
 LANGCODE=fr
 MANPAGE=aptitude.$(LANGCODE).8
 # How much of the manual is actually translated.
-PERCENT_TRANSLATED=45
+PERCENT_TRANSLATED=40
 MANPAGE_PERCENT_TRANSLATED=30
 
 IMAGES = $(wildcard $(srcdir)/images/*.png)
