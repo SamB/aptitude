@@ -293,10 +293,14 @@ void solution_act_item::show_target_info()
     real_ver = pkg.VersionList();
 
   // Show information about the corresponding package/version.
-  insert_main_widget(make_info_screen(pkg, real_ver),
-		     ssprintf(_("%s info"), pkg.Name()),
-		     "",
-		     ssprintf(_("Information about %s"), pkg.Name()));
+  char buf[512];
+  snprintf(buf, 512, _("Information about %s"), pkg.Name());
+  string menulabel(buf);
+  snprintf(buf, 512, _("%s info"), pkg.Name());
+  string tablabel(buf);
+
+  cw::widget_ref w=make_info_screen(pkg, real_ver);
+  insert_main_widget(w, menulabel, "", tablabel);
 }
 
 bool solution_act_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
