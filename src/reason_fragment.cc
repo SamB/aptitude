@@ -15,7 +15,6 @@
 #include <cwidget/config/colors.h>
 #include <cwidget/fragment.h>
 
-#include <functional>
 #include <set>
 
 using namespace std;
@@ -51,28 +50,6 @@ cw::fragment *depname_frag(pkgCache::DepIterator dep)
   return cw::text_fragment("has an invalid dependency type!", cw::get_style("Error"));
 }
 
-/** Compare two packages by name */
-struct pkg_name_cmp
-{
-  bool operator()(pkgCache::PkgIterator P1,
-		  pkgCache::PkgIterator P2)
-  {
-    return strcmp(P1.Name(), P2.Name())<0;
-  }
-};
-
-/** Compare two versions by memory location (useful for inserting into
- *  maps when the particular order is uninteresting)
- */
-struct ver_ptr_cmp
-{
-  bool operator()(pkgCache::VerIterator V1,
-		   pkgCache::VerIterator V2)
-  {
-    return less<void*>()(&*V1, &*V2);
-  }
-};
-
 /** Generate a cw::fragment describing the packages providing a given package.
  *
  *  \param dep the dependency that the provides are related to;
@@ -100,8 +77,8 @@ cw::fragment *prvfrag(pkgCache::DepIterator dep,
 
   vector<cw::fragment*> fragments;
 
-  set<pkgCache::VerIterator, ver_ptr_cmp> providing_versions;
-  set<pkgCache::PkgIterator, pkg_name_cmp> providing_packages;
+  set<pkgCache::VerIterator, ver_ptr_lt> providing_versions;
+  set<pkgCache::PkgIterator, pkg_name_lt> providing_packages;
 
   pkgCache::VerIterator candver=(*apt_cache_file)[pkg].CandidateVerIter(*apt_cache_file);	
 

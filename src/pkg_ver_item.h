@@ -122,16 +122,8 @@ public:
 
 class versort:public cwidget::widgets::sortpolicy
 {
+  pkg_name_lt plt;
 public:
-  inline int compare(const pkg_ver_item *item1, const pkg_ver_item *item2) const
-  {
-    if(item1->get_version().ParentPkg()!=item2->get_version().ParentPkg())
-      return strcmp(item1->get_version().ParentPkg().Name(),
-		    item2->get_version().ParentPkg().Name());
-
-    return _system->VS->CmpVersion(item1->get_version().VerStr(), item2->get_version().VerStr());
-  }
-
   bool operator()(cwidget::widgets::treeitem *item1, cwidget::widgets::treeitem *item2)
   {
     // FIXME: this is horrible.
@@ -139,7 +131,14 @@ public:
     const pkg_ver_item *pitem2=dynamic_cast<const pkg_ver_item *>(item2);
 
     if(pitem1 && pitem2)
-      return (compare(pitem1,pitem2)<0);
+      {
+        if(pitem1->get_version().ParentPkg()!=pitem2->get_version().ParentPkg())
+          return plt(pitem1->get_version().ParentPkg(),
+                     pitem2->get_version().ParentPkg());
+
+        return _system->VS->CmpVersion(pitem1->get_version().VerStr(),
+                                       pitem2->get_version().VerStr()) < 0;
+      }
     else
       return false; // we shouldn't get here!
   }

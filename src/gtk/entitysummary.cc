@@ -238,10 +238,12 @@ namespace gui
 
     struct compare_provider_lists_by_name
     {
+      pkg_name_lt base;
+    public:
       bool operator()(const std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > &p1,
 		      const std::pair<pkgCache::PkgIterator, std::vector<pkgCache::VerIterator> > &p2) const
       {
-	return strcmp(p1.first.Name(), p2.first.Name()) < 0;
+	return base(p1.first, p2.first);
       }
     };
   }

@@ -272,19 +272,6 @@ namespace gui
     upgrades_pkg_view->show_edit_columns_dialog();
   }
 
-  namespace
-  {
-    struct sort_versions_by_package_name
-    {
-      bool operator()(const pkgCache::VerIterator &v1,
-		      const pkgCache::VerIterator &v2)
-      {
-	return strcmp(v1.ParentPkg().Name(),
-		      v2.ParentPkg().Name()) < 0;
-      }
-    };
-  }
-
   // Download all the changelogs and show the new entries.
   void DashboardTab::create_upgrade_summary()
   {
@@ -329,8 +316,7 @@ namespace gui
       p->Done();
     }
 
-    std::sort(versions.begin(), versions.end(),
-	      sort_versions_by_package_name());
+    std::sort(versions.begin(), versions.end(), ver_name_lt());
 
     upgrades_summary_textview->set_buffer(text_buffer);
 

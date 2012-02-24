@@ -318,6 +318,22 @@ public:
   }
 };
 
+/** Compare two packages by memory location (useful for inserting into
+ *  maps when the particular order is uninteresting).
+ *
+ *  It is safe to use < and not std::less here because the pointers
+ *  share an array in the package cache.
+ */
+struct pkg_ptr_lt
+{
+public:
+  bool operator()(const pkgCache::PkgIterator &p1,
+                  const pkgCache::PkgIterator &p2) const
+  {
+    return &*p1 < &*p2;
+  }
+};
+
 /** Sort versions by package name. */
 struct ver_name_lt
 {
@@ -326,6 +342,65 @@ public:
 		  const pkgCache::VerIterator &v2) const
   {
     return strcmp(v1.ParentPkg().Name(), v2.ParentPkg().Name()) < 0;
+  }
+};
+
+/** Compare two versions by memory location (useful for inserting into
+ *  maps when the particular order is uninteresting).
+ *
+ *  It is safe to use < and not std::less here because the pointers
+ *  share an array in the package cache.
+ */
+struct ver_ptr_lt
+{
+public:
+  bool operator()(const pkgCache::VerIterator &v1,
+		  const pkgCache::VerIterator &v2) const
+  {
+    return &*v1 < &*v2;
+  }
+};
+
+struct dep_type_lt
+{
+  static int dep_type_to_int(const pkgCache::Dep::DepType dt)
+  {
+    switch(dt)
+      {
+      case pkgCache::Dep::PreDepends:
+        return 7;
+
+      case pkgCache::Dep::Depends:
+        return 6;
+
+      case pkgCache::Dep::Recommends:
+        return 5;
+
+      case pkgCache::Dep::Conflicts:
+        return 4;
+
+      case pkgCache::Dep::DpkgBreaks:
+        return 3;
+
+      case pkgCache::Dep::Suggests:
+        return 2;
+
+      case pkgCache::Dep::Replaces:
+        return 1;
+
+      case pkgCache::Dep::Obsoletes:
+        return 0;
+
+      default:
+        return -1;
+      }
+  }
+
+public:
+  bool operator()(const pkgCache::Dep::DepType dt1,
+                  const pkgCache::Dep::DepType dt2) const
+  {
+    return dep_type_to_int(dt1) < dep_type_to_int(dt2);
   }
 };
 

@@ -89,62 +89,11 @@ namespace
 		   dep.TargetPkg().Name());
   }
 
-  struct compare_pkgs
-  {
-    bool operator()(const pkgCache::PkgIterator &p1,
-		    const pkgCache::PkgIterator &p2)
-    {
-      return p1->ID < p2->ID;
-    }
-  };
-
-  struct compare_dep_levels
-  {
-    static int dep_level_to_int(const pkgCache::Dep::DepType dt)
-    {
-      switch(dt)
-	{
-	case pkgCache::Dep::PreDepends:
-	  return 7;
-
-	case pkgCache::Dep::Depends:
-	  return 6;
-
-	case pkgCache::Dep::Recommends:
-	  return 5;
-
-	case pkgCache::Dep::Conflicts:
-	  return 4;
-
-	case pkgCache::Dep::DpkgBreaks:
-	  return 3;
-
-	case pkgCache::Dep::Suggests:
-	  return 2;
-
-	case pkgCache::Dep::Replaces:
-	  return 1;
-
-	case pkgCache::Dep::Obsoletes:
-	  return 0;
-
-	default:
-	  return -1;
-	}
-    }
-
-    bool operator()(const pkgCache::Dep::DepType dt1,
-		    const pkgCache::Dep::DepType dt2) const
-    {
-      return dep_level_to_int(dt1) < dep_level_to_int(dt2);
-    }
-  };
-
   // Place weaker dependencies first, then order alphabetically.
   struct compare_pair_by_dep_type
   {
-    compare_dep_levels dep_type_less_than;
-
+    dep_type_lt dep_type_less_than;
+  public:
     bool operator()(const std::pair<std::string, pkgCache::Dep::DepType> &p1,
 		    const std::pair<std::string, pkgCache::Dep::DepType> &p2) const
     {
@@ -1551,7 +1500,7 @@ namespace aptitude
       if(mode == show_requiring_packages ||
 	 mode == show_requiring_packages_and_strength)
 	{
-	  compare_dep_levels dep_less_than;
+	  dep_type_lt dep_less_than;
 	  // Maps root names to strongest dependency type.
 	  std::map<std::string, pkgCache::Dep::DepType> roots;
 	  for(std::vector<std::vector<action> >::const_iterator it =

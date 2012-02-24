@@ -294,22 +294,13 @@ void infer_reverse_breakage(pkgCache::PkgIterator &pkg,
     }
 }
 
-struct cmp_pkg_mem
-{
-  bool operator()(const pkgCache::PkgIterator &P1,
-		  const pkgCache::PkgIterator &P2) const
-  {
-    return less<const pkgCache::Package *>()(&*P1, &*P2);
-  }
-};
-
 void infer_reverse_breakage(pkgCache::PkgIterator pkg,
 			    set<reason> &reasons)
 {
   for(pkgCache::DepIterator D=pkg.RevDependsList(); !D.end(); ++D)
     infer_reverse_breakage(pkg, D, reasons);
 
-  set<pkgCache::PkgIterator, cmp_pkg_mem> seen;
+  set<pkgCache::PkgIterator, pkg_ptr_lt> seen;
 
   // Look at the list of stuff provided by any version.
   for(pkgCache::VerIterator V=pkg.VersionList(); !V.end(); ++V)

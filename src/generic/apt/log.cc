@@ -154,6 +154,7 @@ bool do_log(const string &log,
 
 struct log_sorter
 {
+  pkg_name_lt plt;
 public:
   inline bool operator()(const logitem &a, const logitem &b)
   {
@@ -161,7 +162,8 @@ public:
       return true;
     else if(a.second>b.second)
       return false;
-    else return strcmp(a.first.Name(), b.first.Name())<0;
+    else
+      return plt(a.first, b.first);
   }
 };
 
