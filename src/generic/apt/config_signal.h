@@ -108,6 +108,19 @@ public:
       return theme_config->FindDir((themeroot+Name).c_str(), Default);
   }
 
+  inline std::vector<string> FindVector(const char *Name)
+  {
+    if(themeroot.empty() || system_config->Exists(Name))
+      return system_config->FindVector(Name);
+    else
+      return theme_config->FindVector((themeroot+Name).c_str());
+  }
+
+  inline std::vector<string> FindVector(string const &Name)
+  {
+    return FindVector(Name.c_str());
+  }
+
   inline int FindI(const char *Name,int Default = 0)
   {
     if(themeroot.empty() || system_config->Exists(Name))
