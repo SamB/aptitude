@@ -424,7 +424,7 @@ public:
       }
 
     if(args.size()>2)
-      throw GroupParseException(_("Too many arguments to by-section grouping policy"));
+      throw GroupParseException(_("Too many arguments to 'section' grouping policy"));
 
     return new policy_node2<pkg_grouppolicy_section_factory,
       split_mode_type, bool>(split_mode, passthrough);
@@ -437,7 +437,7 @@ public:
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("By-status grouping policies take no arguments"));
+      throw GroupParseException(_("'status' grouping policy takes no arguments"));
 
     return new policy_node0<pkg_grouppolicy_status_factory>;
   }
@@ -517,7 +517,7 @@ public:
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("By-mode grouping policies take no arguments"));
+      throw GroupParseException(_("'action' grouping policy takes no arguments"));
 
     return new policy_node0<pkg_grouppolicy_mode_factory>;
   }
@@ -528,8 +528,7 @@ class firstchar_policy_parser : public string_policy_parser
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("First-character grouping policies take no arguments"));
-
+      throw GroupParseException(_("'firstchar' grouping policy takes no arguments"));
 
     return new policy_node0<pkg_grouppolicy_firstchar_factory>;
   }
@@ -541,7 +540,7 @@ public:
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("Too many arguments to by-source grouping policy"));
+      throw GroupParseException(_("Too many arguments to 'source' grouping policy"));
 
     return new policy_node0<pkg_grouppolicy_source_factory>;
   }
@@ -552,7 +551,7 @@ class ver_policy_parser : public string_policy_parser
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("Version-generating grouping policies take no arguments"));
+      throw GroupParseException(_("'versions' grouping policy takes no arguments"));
 
     return new policy_terminal_node0<pkg_grouppolicy_ver_factory>;
   }
@@ -563,7 +562,7 @@ class dep_policy_parser: public string_policy_parser
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("Dep-generating grouping policies take no arguments"));
+      throw GroupParseException(_("'deps' grouping policy takes no arguments"));
 
     return new policy_terminal_node0<pkg_grouppolicy_dep_factory>;
   }
@@ -574,7 +573,7 @@ class priority_policy_parser : public string_policy_parser
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("By-priority grouping policies take no arguments"));
+      throw GroupParseException(_("'priority' grouping policy takes no arguments"));
 
     return new policy_node0<pkg_grouppolicy_priority_factory>;
   }
@@ -605,7 +604,7 @@ class task_policy_parser : public string_policy_parser
   group_policy_parse_node *create_node(const vector<string> &args)
   {
     if(args.size()!=0)
-      throw GroupParseException(_("Task grouping policies take no arguments"));
+      throw GroupParseException(_("'task' grouping policy takes no arguments"));
 
     return new policy_node0<pkg_grouppolicy_task_factory>;
   }
@@ -618,7 +617,7 @@ class tag_policy_parser : public string_policy_parser
     if(args.size() == 0)
       return new policy_node0<pkg_grouppolicy_facet_tag_factory>;
     else if(args.size() != 1)
-      throw GroupParseException(_("Expected no more than one argument to a tag grouping policy"));
+      throw GroupParseException(_("Expected no more than one argument to a 'tag' grouping policy"));
     else
       return new policy_node1<pkg_grouppolicy_tag_factory, string>(args[0]);
   }
@@ -641,7 +640,7 @@ class pattern_policy_parser : public group_policy_parser
       ++begin;
 
     if(begin == end || *begin == ')')
-      throw GroupParseException(_("Missing arguments to 'pattern'"));
+      throw GroupParseException(_("Missing arguments to 'pattern' grouping policy"));
 
     vector<pkg_grouppolicy_patterns_factory::match_entry> subgroups;
 
