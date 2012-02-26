@@ -48,8 +48,8 @@ const char *pkg_item::pkg_columnizer::default_pkgdisplay="%c%a%M%S %p %Z %v %V";
 //      code.
 cw::config::column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columnizer::numtypes] = {
   {30, true, true},     // name
-  {6, false, false},    // installed_size
-  {6, false, false},    // debsize
+  {8, false, false},    // installed_size
+  {8, false, false},    // debsize
   {1, false, false},    // stateflag
   {1, false, false},    // actionflag
   {40, true, true},     // description
@@ -65,12 +65,12 @@ cw::config::column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columniz
   {1, false, false},    // autoset
   {1, false, false},    // tagged
   {10, true, true},     // archive
-  {7, false, false},    // sizechange
+  {9, false, false},    // sizechange
   {strlen(PACKAGE), false, false},  // progname
   {strlen(VERSION), false, false},  // progver
   {12, false, true},    // brokencount
   {30, false, true},    // diskusage
-  {15, false, true},    // downloadsize
+  {17, false, true},    // downloadsize
   {4, false, false},    // pin_priority
   {15, false, true},    // hostname
   {1, false, false}     // trust_state
@@ -83,7 +83,7 @@ cw::config::column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columniz
 //
 // You can't set default widths for the program name and version here (those
 // strings aren't affected by translation, for one thing)
-const char *default_widths = N_("30 6 6 1 1 40 10 10 11 10 35 9 10 2 1 1 10 12 30 15 15");
+const char *default_widths = N_("30 8 8 1 1 40 10 10 11 10 35 9 10 2 1 1 10 9 12 30 17 15");
 
 const char *pkg_item::pkg_columnizer::column_names[pkg_columnizer::numtypes]=
   {N_("Package"),
@@ -627,7 +627,7 @@ public:
 void pkg_item::pkg_columnizer::init_formatting()
 {
   sscanf(_(default_widths),
-	 "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+	 "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
 	 &defaults[name].width,
 	 &defaults[installed_size].width,
 	 &defaults[debsize].width,
@@ -645,6 +645,7 @@ void pkg_item::pkg_columnizer::init_formatting()
 	 &defaults[autoset].width,
 	 &defaults[tagged].width,
 	 &defaults[archive].width,
+	 &defaults[sizechange].width,
 	 &defaults[brokencount].width,
 	 &defaults[diskusage].width,
 	 &defaults[downloadsize].width,
