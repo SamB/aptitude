@@ -29,7 +29,9 @@
 
 class pkg_grouppolicy_factory;
 
-pkg_grouppolicy_factory *parse_grouppolicy(std::string s);
-// Parses the given string as a grouping-policy description.
+/**
+ * Parses a chain of grouping policies from the given string and returns them.
+ */
+pkg_grouppolicy_factory* parse_grouppolicy(const std::string& s);
 
 #endif
