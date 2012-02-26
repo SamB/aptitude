@@ -53,8 +53,8 @@ cw::config::column_type_defaults pkg_item::pkg_columnizer::defaults[pkg_columniz
   {1, false, false},    // stateflag
   {1, false, false},    // actionflag
   {40, true, true},     // description
-  {10, false, false},   // currver
-  {10, false, false},   // candver
+  {14, false, false},   // currver
+  {14, false, false},   // candver
   {11, false, false},   // longstate
   {10, false, false},   // longaction
   {35, true, true},     // maintainer
