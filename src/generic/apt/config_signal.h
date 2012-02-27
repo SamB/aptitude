@@ -113,12 +113,15 @@ public:
     if(themeroot.empty() || system_config->Exists(Name))
       return system_config->FindVector(Name);
     else
-      return theme_config->FindVector((themeroot+Name).c_str());
+      return theme_config->FindVector(themeroot+Name);
   }
 
-  inline std::vector<string> FindVector(string const &Name)
+  inline std::vector<string> FindVector(string Name)
   {
-    return FindVector(Name.c_str());
+    if(themeroot.empty() || system_config->Exists(Name))
+      return system_config->FindVector(Name);
+    else
+      return theme_config->FindVector(themeroot+Name);
   }
 
   inline int FindI(const char *Name,int Default = 0)
