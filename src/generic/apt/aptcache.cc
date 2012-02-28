@@ -412,7 +412,14 @@ bool aptitudeDepCache::build_selection_list(OpProgress &Prog, bool WithLock,
       while(tagfile.Step(section))
 	{
 	  std::string package_name(section.FindS("Package"));
-	  PkgIterator pkg = FindPkg(package_name);
+          std::string arch(section.FindS("Architecture"));
+	  PkgIterator pkg;
+          // TODO: Wheezy+n can assume that all sections will have the
+          // Architecture tag (probably ;-).
+          if(arch.empty())
+            pkg=FindPkg(package_name);
+          else
+            pkg=FindPkg(package_name, arch);
 	  if(!pkg.end() && !pkg.VersionList().end())
 	    // Silently ignore unknown packages and packages with no actual
 	    // version.
@@ -829,8 +836,9 @@ bool aptitudeDepCache::save_selection_list(OpProgress &prog,
 	      }
 
 	    using cw::util::ssprintf;
-	    std::string line(ssprintf("Package: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s%s%s\n",
+	    std::string line(ssprintf("Package: %s\nArchitecture: %s\nUnseen: %s\nState: %i\nDselect-State: %i\nRemove-Reason: %i\n%s%s%s%s%s\n",
 				      i.Name(),
+                                      i.Arch(),
 				      estate.new_package?"yes":"no",
 				      estate.selection_state,
 				      i->SelectedState,
