@@ -103,6 +103,7 @@ switch(p->get_type())
     // Atomic patterns:
   case pattern::archive:
   case pattern::action:
+  case pattern::architecture:
   case pattern::automatic:
   case pattern::bind:
   case pattern::broken:
@@ -119,6 +120,7 @@ switch(p->get_type())
   case pattern::install_version:
   case pattern::installed:
   case pattern::maintainer:
+  case pattern::multiarch:
   case pattern::name:
   case pattern::new_tp:
   case pattern::obsolete:

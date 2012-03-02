@@ -238,6 +238,13 @@ namespace aptitude
 	   *  Fields: pattern.
 	   */
 	  any_version,
+          /** \brief ?architecture(PATTERN)
+           *
+           *  Matches packages by their architecture.
+           *
+           *  Fields: regex_info.
+           */
+          architecture,
 	  /** \brief ?automatic
 	   *
 	   *  Matches packages that were automatically installed.
@@ -356,6 +363,13 @@ namespace aptitude
 	   *  Fields: regex_info.
 	   */
 	  maintainer,
+	  /** \brief ?multiarch(MULTIARCH)
+	   *
+	   *  Matches packages by their Multi-Arch field.
+	   *
+	   *  Fields: multiarch_type.
+	   */
+	  multiarch,
 	  /** \brief ?name(PATTERN)
 	   *
 	   *  Matches packages by their name.
@@ -618,6 +632,19 @@ namespace aptitude
 	  action_keep
 	};
 
+      /** \brief The Multi-Arch capabilities that can be matched against. */
+      enum multiarch_type
+	{
+	  /** \brief Match packages that have no Multi-Arch capability. */
+	  multiarch_none,
+	  /** \brief Match packages that are Multi-Arch: foreign. */
+	  multiarch_foreign,
+	  /** \brief Match packages that are Multi-Arch: same. */
+	  multiarch_same,
+	  /** \brief Match packages that are Multi-Arch: allowed. */
+	  multiarch_allowed
+	};
+
     private:
 
       // The type of this node.
@@ -652,6 +679,9 @@ namespace aptitude
 
 	// The priority, if applicable.
 	pkgCache::State::VerPriority priority;
+
+	// The multiarch type being selected, if applicable.
+	multiarch_type multiarch;
       } info;
 
       // Disallow copy-construction.
@@ -756,6 +786,14 @@ namespace aptitude
 	info.action = action_type;
       }
 
+      // Allocate a pattern that has multi-arch info.
+      pattern(type _tp,
+	      multiarch_type multiarch_type)
+	: tp(_tp)
+      {
+	info.multiarch = multiarch_type;
+      }
+
     public:
 
       /** \name archive term constructor and accessors. */
@@ -849,6 +887,29 @@ namespace aptitude
 	eassert(tp == any_version && sub_patterns.size() == 1);
 
 	return sub_patterns.front();
+      }
+
+      // @}
+
+      /** \name architecture term constructor and accessors. */
+
+      // @{
+
+      /** \brief Create an ?architecture term.
+       *
+       *  \param s  The regular expression to match against.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_architecture(const std::string &s)
+      {
+        return new pattern(architecture, regex_info(s));
+      }
+
+      const regex_info &get_architecture_regex_info() const
+      {
+        eassert(tp == architecture);
+
+        return regex_information;
       }
 
       // @}
@@ -1277,6 +1338,32 @@ namespace aptitude
 	eassert(tp == maintainer);
 
 	return regex_information;
+      }
+
+      // @}
+
+      /** \name multiarch term constructor and accessors. */
+
+      // @{
+
+      /** \brief Create a ?multiarch term.
+       *
+       *  \param ma  The multiarch type to match.
+       */
+      static cwidget::util::ref_ptr<pattern>
+      make_multiarch(const multiarch_type ma)
+      {
+	return new pattern(multiarch, ma);
+      }
+
+      /** \brief Retrieve the information associated with a ?multiarch
+       *  term.
+       */
+      const multiarch_type get_multiarch_multiarch_type() const
+      {
+	eassert(tp == multiarch);
+
+	return info.multiarch;
       }
 
       // @}

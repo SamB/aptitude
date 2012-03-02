@@ -894,6 +894,25 @@ namespace aptitude
 
 	    break;
 
+	  case pattern::architecture:
+	    if(!target.get_has_version())
+	      return NULL;
+
+	    {
+	      pkgCache::VerIterator ver(target.get_version_iterator(cache));
+
+	      ref_ptr<match> m = evaluate_regexp(p,
+						 p->get_architecture_regex_info(),
+						 ver.Arch(),
+						 debug);
+
+	      if(m.valid())
+		return m;
+	      else
+		return NULL;
+	    }
+	    break;
+
 	  case pattern::automatic:
 	    {
 	      pkgCache::PkgIterator pkg(target.get_package_iterator(cache));
@@ -1179,6 +1198,46 @@ namespace aptitude
 				       p->get_maintainer_regex_info(),
 				       rec.Maintainer().c_str(),
 				       debug);
+	      }
+	    break;
+
+	  case pattern::multiarch:
+	    if(!target.get_has_version())
+	      return NULL;
+	    else
+	      {
+		bool matches = false;
+		const int multiarch = target.get_ver()->MultiArch;
+
+		switch(p->get_multiarch_multiarch_type())
+		  {
+		  case pattern::multiarch_none:
+		    matches = (multiarch == pkgCache::Version::None ||
+			       multiarch == pkgCache::Version::All);
+		    break;
+
+		  case pattern::multiarch_foreign:
+		    matches = (multiarch == pkgCache::Version::Foreign ||
+			       multiarch == pkgCache::Version::AllForeign);
+		    break;
+
+		  case pattern::multiarch_same:
+		    matches = multiarch == pkgCache::Version::Same;
+		    break;
+
+		  case pattern::multiarch_allowed:
+		    matches = (multiarch == pkgCache::Version::Allowed ||
+			       multiarch == pkgCache::Version::AllAllowed);
+		    break;
+
+		  default:
+		    throw MatchingException("Internal error: bad multiarch-type flag.");
+		  }
+
+		if(matches)
+		  return match::make_atomic(p);
+		else
+		  return NULL;
 	      }
 	    break;
 
@@ -2013,6 +2072,7 @@ namespace aptitude
 
 	  case pattern::archive:
 	  case pattern::action:
+	  case pattern::architecture:
 	  case pattern::automatic:
 	  case pattern::bind:
 	  case pattern::broken:
@@ -2030,6 +2090,7 @@ namespace aptitude
 	  case pattern::install_version:
 	  case pattern::installed:
 	  case pattern::maintainer:
+	  case pattern::multiarch:
 	  case pattern::name:
 	  case pattern::new_tp:
 	  case pattern::obsolete:
@@ -2223,6 +2284,7 @@ namespace aptitude
 
 	  case pattern::archive:
 	  case pattern::action:
+	  case pattern::architecture:
 	  case pattern::automatic:
 	  case pattern::bind:
 	  case pattern::broken:
@@ -2239,6 +2301,7 @@ namespace aptitude
 	  case pattern::install_version:
 	  case pattern::installed:
 	  case pattern::maintainer:
+	  case pattern::multiarch:
 	  case pattern::name:
 	  case pattern::new_tp:
 	  case pattern::obsolete:
@@ -2345,6 +2408,7 @@ namespace aptitude
 
 	  case pattern::archive:
 	  case pattern::action:
+	  case pattern::architecture:
 	  case pattern::automatic:
 	  case pattern::bind:
 	  case pattern::broken:
@@ -2361,6 +2425,7 @@ namespace aptitude
 	  case pattern::install_version:
 	  case pattern::installed:
 	  case pattern::maintainer:
+	  case pattern::multiarch:
 	  case pattern::name:
 	  case pattern::new_tp:
 	  case pattern::obsolete:
@@ -2540,6 +2605,7 @@ namespace aptitude
 	    // Various non-Xapian patterns, along with ?term.
 	  case pattern::archive:
 	  case pattern::action:
+	  case pattern::architecture:
 	  case pattern::automatic:
 	  case pattern::bind:
 	  case pattern::broken:
@@ -2557,6 +2623,7 @@ namespace aptitude
 	  case pattern::install_version:
 	  case pattern::installed:
 	  case pattern::maintainer:
+	  case pattern::multiarch:
 	  case pattern::name:
 	  case pattern::new_tp:
 	  case pattern::obsolete:
@@ -2828,6 +2895,7 @@ namespace aptitude
 
 	  case pattern::archive:
 	  case pattern::action:
+	  case pattern::architecture:
 	  case pattern::automatic:
 	  case pattern::bind:
 	  case pattern::broken:
@@ -2844,6 +2912,7 @@ namespace aptitude
 	  case pattern::install_version:
 	  case pattern::installed:
 	  case pattern::maintainer:
+	  case pattern::multiarch:
 	  case pattern::name:
 	  case pattern::new_tp:
 	  case pattern::obsolete:

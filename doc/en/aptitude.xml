@@ -85,6 +85,7 @@
   <!ENTITY Saction "<literal><link linkend='searchAction'>?action</link></literal>">
   <!ENTITY Sall-versions "<literal><link linkend='searchAllVersions'>?all-versions</link></literal>">
   <!ENTITY Sany-version "<literal><link linkend='searchAnyVersion'>?any-version</link></literal>">
+  <!ENTITY Sarchitecture "<literal><link linkend='searchArchitecture'>?architecture</link></literal>">
   <!ENTITY Sarchive "<literal><link linkend='searchArchive'>?archive</link></literal>">
   <!ENTITY Sautomatic "<literal><link linkend='searchAutomatic'>?automatic</link></literal>">
   <!ENTITY Sbind "<literal><link linkend='searchBind'>?bind</link></literal>">
@@ -108,6 +109,7 @@
   <!ENTITY Sgarbage "<literal><link linkend='searchGarbage'>?garbage</link></literal>">
   <!ENTITY Sinstalled "<literal><link linkend='searchInstalled'>?installed</link></literal>">
   <!ENTITY Smaintainer "<literal><link linkend='searchMaintainer'>?maintainer</link></literal>">
+  <!ENTITY Smultiarch "<literal><link linkend='searchMultiArch'>?multiarch</link></literal>">
   <!ENTITY Snarrow "<literal><link linkend='searchNarrow'>?narrow</link></literal>">
   <!ENTITY Sname "<literal><link linkend='searchTermName'>?name</link></literal>">
   <!ENTITY Snew "<literal><link linkend='searchNew'>?new</link></literal>">
@@ -5559,6 +5561,18 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 
 	      <row>
 		<entry>
+		  <literal>&Sarchitecture;(<replaceable>architecture</replaceable>)</literal>
+		</entry>
+		<entry/>
+		<entry>
+		  Select packages for the given architecture (such as
+		  <quote><literal>amd64</literal></quote>, or
+		  <quote><literal>all</literal></quote>).
+		</entry>
+	      </row>
+
+	      <row>
+		<entry>
 		  <literal>&Sarchive;(<replaceable>archive</replaceable>)</literal>
 		</entry>
 		<entry>
@@ -5726,6 +5740,19 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 		<entry>
 		  Select packages maintained by
 		  <replaceable>maintainer</replaceable>.
+		</entry>
+	      </row>
+
+	      <row>
+		<entry><literal>&Smultiarch;(<replaceable>multiarch</replaceable>)</literal></entry>
+		<entry/>
+		<entry>
+		  Select packages with a multi-arch capability of
+		  <replaceable>multiarch</replaceable> (that is, either
+		  <quote><literal>foreign</literal></quote>,
+		  <quote><literal>same</literal></quote>,
+		  <quote><literal>allowed</literal></quote>, or
+		  <quote><literal>none</literal></quote>).
 		</entry>
 	      </row>
 
@@ -6170,6 +6197,21 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	  </listitem>
 	</varlistentry>
 
+	<varlistentry id='searchArchitecture'>
+	  <term><literal>?architecture(<replaceable>architecture</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches package versions for the given
+	      <replaceable>architecture</replaceable>.  For instance,
+	      <quote><literal>?architecture(amd64)</literal></quote>
+	      matches <literal>amd64</literal> packages, while
+	      <quote><literal>?architecture(all)</literal></quote>
+	      matches arch-independent packages.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
 	<varlistentry id='searchArchive'>
 	  <term><literal>?archive(<replaceable>archive</replaceable>)</literal>, <literal>~A<replaceable>archive</replaceable></literal></term>
 
@@ -6485,6 +6527,22 @@ e: Examine  !: Apply  .: Next  ,: Previous</screen>
 	      <replaceable>maintainer</replaceable>.  For instance,
 	      <quote><literal>&Smaintainer;(joeyh)</literal></quote>
 	      will find all packages maintained by Joey Hess.
+	    </para>
+	  </listitem>
+	</varlistentry>
+
+	<varlistentry id='searchMultiArch'>
+	  <term><literal>?multiarch(<replaceable>multiarch</replaceable>)</literal></term>
+
+	  <listitem>
+	    <para>
+	      Matches packages with the multi-arch capability
+	      specified by <replaceable>multiarch</replaceable>.  For instance,
+	      <quote><literal>&Smultiarch;(foreign)</literal></quote>
+	      will find all packages which can satisfy dependencies of
+	      packages for another architecture.
+	      <quote><literal>&Smultiarch;(none)</literal></quote>
+	      will select packages with no multi-arch capability.
 	    </para>
 	  </listitem>
 	</varlistentry>

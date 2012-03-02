@@ -107,6 +107,7 @@ namespace
       term_type_all,
       term_type_and,
       term_type_any,
+      term_type_architecture,
       term_type_archive,
       term_type_automatic,
       term_type_bind,
@@ -120,6 +121,7 @@ namespace
       term_type_garbage,
       term_type_installed,
       term_type_maintainer,
+      term_type_multiarch,
       term_type_name,
       term_type_narrow,
       term_type_new,
@@ -160,6 +162,7 @@ namespace
     { "all-versions", term_type_all },
     { "and", term_type_and },
     { "any-version", term_type_any },
+    { "architecture", term_type_architecture },
     { "archive", term_type_archive },
     { "automatic", term_type_automatic },
     { "bind", term_type_bind },
@@ -174,6 +177,7 @@ namespace
     { "garbage", term_type_garbage },
     { "installed", term_type_installed },
     { "maintainer", term_type_maintainer },
+    { "multiarch", term_type_multiarch },
     { "name", term_type_name },
     /* ForTranslators: Opposite of widen. Search for "widen" in this file for details. */
     { "narrow", term_type_narrow },
@@ -310,6 +314,20 @@ namespace
     else
       throw MatchingException(ssprintf(_("Unknown action type: %s"),
 				       s.c_str()));
+  }
+
+  pattern::multiarch_type parse_multiarch(const std::string &s)
+  {
+    if(!strcasecmp(s.c_str(), "none"))
+      return pattern::multiarch_none;
+    else if(!strcasecmp(s.c_str(), "foreign"))
+      return pattern::multiarch_foreign;
+    else if(!strcasecmp(s.c_str(), "same"))
+      return pattern::multiarch_same;
+    else if(!strcasecmp(s.c_str(), "allowed"))
+      return pattern::multiarch_allowed;
+    else
+      throw MatchingException(ssprintf(_("Unknown multiarch type: %s"), s.c_str()));
   }
 }
 
@@ -889,6 +907,8 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
 					 "widen"));
       else
 	return pattern::make_any_version(parse_term_args(start, end, terminators, false, name_context));
+    case term_type_architecture:
+      return pattern::make_architecture(parse_string_match_args(start, end));
     case term_type_archive:
       return pattern::make_archive(parse_string_match_args(start, end));
     case term_type_automatic:
@@ -938,6 +958,11 @@ ref_ptr<pattern> parse_term_args(const string &term_name,
       return pattern::make_installed();
     case term_type_maintainer:
       return pattern::make_maintainer(parse_string_match_args(start, end));
+    case term_type_multiarch:
+      {
+	std::string s(parse_string_match_args(start, end));
+	return pattern::make_multiarch(parse_multiarch(s));
+      }
     case term_type_name:
       return pattern::make_name(parse_string_match_args(start, end));
     case term_type_narrow:

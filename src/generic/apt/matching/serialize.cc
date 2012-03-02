@@ -252,6 +252,10 @@ namespace aptitude
 				   variable_name_stack);
 	    break;
 
+	  case pattern::architecture:
+	    serialize_regexp_term("architecture", p->get_architecture_regex_info(), out);
+	    break;
+
 	  case pattern::automatic:
 	    out << "?automatic";
 	    break;
@@ -368,6 +372,32 @@ namespace aptitude
 	    serialize_regexp_term("maintainer",
 				  p->get_maintainer_regex_info(),
 				  out);
+	    break;
+
+	  case pattern::multiarch:
+	    out << "?multiarch(";
+	    switch(p->get_multiarch_multiarch_type())
+	      {
+	      case pattern::multiarch_none:
+		out << "none";
+		break;
+
+	      case pattern::multiarch_foreign:
+		out << "foreign";
+		break;
+
+	      case pattern::multiarch_same:
+		out << "same";
+		break;
+
+	      case pattern::multiarch_allowed:
+		out << "allowed";
+		break;
+
+	      default:
+		throw MatchingException("Internal error: bad multiarch-type flag.");
+	      }
+	    out << ')';
 	    break;
 
 	  case pattern::name:
