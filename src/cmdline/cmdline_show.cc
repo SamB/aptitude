@@ -416,6 +416,10 @@ cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 			      (state.Flags & pkgCache::Flag::Auto)
 			      ? _("yes") : _("no")));
 
+  const string multiarch(multiarch_type(ver->MultiArch));
+  if(!multiarch.empty())
+    fragments.push_back(cw::fragf("%s%s%n", _("Multi-Arch: "), multiarch.c_str()));
+
   fragments.push_back(cw::fragf("%s%s%n", _("Version: "), ver.VerStr()));
   fragments.push_back(cw::fragf("%s%s%n", _("Priority: "),
 				const_cast<pkgCache::VerIterator &>(ver).PriorityType() ? const_cast<pkgCache::VerIterator &>(ver).PriorityType() : _("N/A")));

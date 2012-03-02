@@ -119,6 +119,11 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 	frags.push_back(clipbox(cw::fragf("%B%s%b%s",
 				      _("Essential: "), _("yes"))));
 
+      const string multiarch(multiarch_type(ver->MultiArch));
+      if(!multiarch.empty())
+        frags.push_back(clipbox(cw::fragf("%B%s%b%s",
+                                          _("Multi-Arch: "), multiarch.c_str())));
+
       frags.push_back(clipbox(cw::fragf("%B%s%b%s%n"
 				    "%B%s%b%s%n"
 				    "%B%s%b%s%n"

@@ -426,6 +426,11 @@ inline bool is_conflict(pkgCache::Dep::DepType type)
   return is_conflict(static_cast<unsigned char>(type));
 }
 
+// TODO: This belongs upstream.
+/** \return a string describing the multi-arch type.
+ */
+const char *multiarch_type(unsigned char type);
+
 namespace aptitude
 {
   namespace apt

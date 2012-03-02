@@ -1260,6 +1260,17 @@ std::wstring get_long_description(const pkgCache::VerIterator &ver,
 #endif
 }
 
+const char *multiarch_type(unsigned char type)
+{
+  const char *types[] = {"", "", _("foreign"), _("same"), _("allowed"),
+                         _("foreign"), _("allowed")};
+
+  if(type < sizeof(types)/sizeof(*types))
+    return types[type];
+  return "";
+}
+
+
 namespace aptitude
 {
   namespace apt
