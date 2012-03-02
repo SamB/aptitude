@@ -25,17 +25,17 @@
 #include "pkg_item.h"
 #include "pkg_subtree.h"
 
-#include "generic/apt/apt.h"
-#include "generic/apt/config_signal.h"
-#include "generic/apt/matching/match.h"
-#include "generic/apt/matching/pattern.h"
-#include "generic/apt/pkg_hier.h"
-#include "generic/apt/tags.h"
-#include "generic/apt/tasks.h"
-
-#include "generic/util/util.h"
-
 #include <cwidget/generic/util/transcode.h>
+
+#include <generic/apt/apt.h>
+#include <generic/apt/config_signal.h>
+#include <generic/apt/matching/match.h>
+#include <generic/apt/matching/pattern.h>
+#include <generic/apt/pkg_hier.h>
+#include <generic/apt/tags.h>
+#include <generic/apt/tasks.h>
+
+#include <generic/util/util.h>
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/pkgsystem.h>
@@ -46,7 +46,6 @@
 
 #include <map>
 #include <set>
-
 
 using namespace std;
 
@@ -344,7 +343,7 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 	  if(found == sections.end())
 	    {
 	      string section_tail = section;
-	      pkg_subtree* newtree = 0;
+	      pkg_subtree *newtree = 0;
 
 	      // Look up the description of the section based on the
 	      // last component of its name, and create a new subtree
@@ -356,33 +355,31 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 	      // mafm: bug#181997, added complexity to allow that top-sections
 	      // appear "in natural order" (main, contrib, non-free) instead of
 	      // sorted alphabetically (contrib, main, non-free)
-	      bool useOrder = false;
+	      bool use_order = false;
 	      int order = -1;
-	      {
-		      // get an ordered list of top-sections
-		      const vector<string> topSections = aptitude::apt::get_top_sections();
+	      // get an ordered list of top-sections
+	      const vector<string> top_sections = aptitude::apt::get_top_sections();
 
-		      // get the order of the top-section (the lower the number,
-		      // the higher the priority)
-		      for (size_t i = 0; i < topSections.size(); ++i) {
-			      if (section == topSections[i]) {
-				      order = i;
-				      useOrder = true;
-				      break;
-			      }
-		      }
-	      }
+	      // get the order of the top-section (the lower the number,
+	      // the higher the priority)
+	      for(size_t i = 0; i < top_sections.size(); ++i)
+	      	{
+	      	  if(section == top_sections[i])
+	      	    {
+	      	      order = i;
+	      	      use_order = true;
+	      	      break;
+	      	    }
+	      	}
 
 	      // decide which [short] descriptions to use
 	      wstring shortdesc;
 	      wstring desc;
 	      if(section_descriptions.find(section_tail) != section_descriptions.end())
 		{
-		  wstring desc = section_descriptions[section_tail];
+		  desc = section_descriptions[section_tail];
 		  if(desc.find(L'\n') != desc.npos)
-		    {
-		      shortdesc = cw::util::transcode(section) + L" - " + wstring(desc, 0, desc.find('\n'));
-		    }
+		    shortdesc = cw::util::transcode(section) + L" - " + wstring(desc, 0, desc.find('\n'));
 		  else
 		    {
 		      shortdesc = cw::util::transcode(section) + desc;
@@ -396,19 +393,15 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 	        }
 
 	      // do create tree with desired descriptions, ordered or not
-	      if (useOrder)
-	        {
-		  newtree = new pkg_subtree_with_order(shortdesc,
-						       desc,
-						       get_desc_sig(),
-						       order);
-		}
+	      if(use_order)
+		newtree = new pkg_subtree_with_order(shortdesc,
+						     desc,
+						     get_desc_sig(),
+						     order);
 	      else
-	        {
-		  newtree = new pkg_subtree(shortdesc,
-					    desc,
-					    get_desc_sig());
-		}
+		newtree = new pkg_subtree(shortdesc,
+					  desc,
+					  get_desc_sig());
 
 	      // Generate a new sub-grouping-policy, and insert it
 	      // into the map with the new tree.

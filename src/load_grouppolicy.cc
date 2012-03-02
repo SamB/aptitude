@@ -24,22 +24,23 @@
 
 #include "load_grouppolicy.h"
 
+#include <generic/apt/matching/parse.h>
+#include <generic/apt/matching/pattern.h>
+#include <generic/apt/pkg_hier.h>
+
+#include <generic/util/util.h>
+
 #include "aptitude.h"
 
 #include "pkg_grouppolicy.h"
 #include "pkg_ver_item.h"
 #include "dep_item.h"
 
-#include "generic/apt/matching/parse.h"
-#include "generic/apt/matching/pattern.h"
-#include "generic/apt/pkg_hier.h"
-#include "generic/util/util.h"
-#include "generic/apt/apt.h"
+#include <generic/apt/apt.h>
 
 #include <apt-pkg/error.h>
 
 #include <map>
-
 
 using namespace std;
 namespace cw = cwidget;
@@ -783,7 +784,7 @@ static void init_parse_types()
     }
 }
 
-pkg_grouppolicy_factory* parse_grouppolicy(const string& s)
+pkg_grouppolicy_factory *parse_grouppolicy(const string &s)
 {
   init_parse_types();
 

@@ -29,9 +29,10 @@
 
 class pkg_grouppolicy_factory;
 
-/**
- * Parses a chain of grouping policies from the given string and returns them.
+/** \brief Parses a chain of grouping policies.
+ *
+ *  \param s a string which specifies a grouping policy configuration.
  */
-pkg_grouppolicy_factory* parse_grouppolicy(const std::string& s);
+pkg_grouppolicy_factory *parse_grouppolicy(const std::string &s);
 
 #endif
