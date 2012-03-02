@@ -23,46 +23,74 @@
 
 #include "load_sortpolicy.h"
 
-#include "aptitude.h"
-#include "pkg_sortpolicy.h"
-
-#include <apt-pkg/error.h>
-
-#include <boost/algorithm/string.hpp>
-#include <boost/tokenizer.hpp>
-
 #include <string>
 #include <vector>
 #include <map>
 
+#include <ctype.h>
+
+#include <apt-pkg/error.h>
+
+#include "aptitude.h"
+#include "pkg_sortpolicy.h"
 
 using namespace std;
 
-typedef pkg_sortpolicy* (*pkg_sortpolicy_parser)(pkg_sortpolicy* chain,
-						 bool reversed);
+typedef vector<string> arglist;
+typedef pkg_sortpolicy * (*pkg_sortpolicy_parser)(const arglist &,
+						  pkg_sortpolicy *,
+						  bool);
 typedef map<string, pkg_sortpolicy_parser> parser_map;
 
-pkg_sortpolicy* parse_name_policy(pkg_sortpolicy* chain,
+pkg_sortpolicy *parse_name_policy(const arglist &args,
+				  pkg_sortpolicy *chain,
 				  bool reversed)
 {
+  if(args.size()>0)
+    {
+      _error->Error(_("By-name sorting policies take no arguments"));
+      return NULL;
+    }
+
   return pkg_sortpolicy_name(chain, reversed);
 }
 
-pkg_sortpolicy* parse_ver_policy(pkg_sortpolicy* chain,
+pkg_sortpolicy *parse_ver_policy(const arglist &args,
+				 pkg_sortpolicy *chain,
 				 bool reversed)
 {
+  if(args.size() > 0)
+    {
+      _error->Error(_("By-version sorting policies take no arguments"));
+      return NULL;
+    }
+
   return pkg_sortpolicy_ver(chain, reversed);
 }
 
-pkg_sortpolicy* parse_installsize_policy(pkg_sortpolicy* chain,
+pkg_sortpolicy *parse_installsize_policy(const arglist &args,
+					 pkg_sortpolicy *chain,
 					 bool reversed)
 {
+  if(args.size()>0)
+    {
+      _error->Error(_("By-installed size sorting policies take no arguments"));
+      return NULL;
+    }
+
   return pkg_sortpolicy_installed_size(chain, reversed);
 }
 
-pkg_sortpolicy* parse_priority_policy(pkg_sortpolicy* chain,
+pkg_sortpolicy *parse_priority_policy(const arglist &args,
+				      pkg_sortpolicy *chain,
 				      bool reversed)
 {
+  if(args.size()>0)
+    {
+      _error->Error(_("By-priority sorting policies take no arguments"));
+      return NULL;
+    }
+
   return pkg_sortpolicy_priority(chain, reversed);
 }
 
@@ -70,69 +98,119 @@ static parser_map parse_types;
 
 static void init_parse_types()
 {
-  if(parse_types.empty())
+  static bool initted_parse_types=false;
+
+  if(!initted_parse_types)
     {
-      parse_types["name"] = parse_name_policy;
+      parse_types["name"]=parse_name_policy;
       parse_types["version"] = parse_ver_policy;
-      parse_types["installsize"] = parse_installsize_policy;
-      parse_types["priority"] = parse_priority_policy;
+      parse_types["installsize"]=parse_installsize_policy;
+      parse_types["priority"]=parse_priority_policy;
+      initted_parse_types=true;
     }
 }
 
 struct parse_atom
 {
   string name;
+  arglist args;
   bool reversed;
 
-  parse_atom() : reversed(false) {}
-  parse_atom(const string& name_, bool reversed_) : name(name_), reversed(reversed_) {}
+  parse_atom():reversed(false) {}
 };
 
-pkg_sortpolicy* parse_sortpolicy(const string& s)
+// Parses a chain of sorting policies from the given string and returns them.
+pkg_sortpolicy *parse_sortpolicy(string s)
 {
   init_parse_types();
 
-  vector<parse_atom> parsed;
+  typedef vector<parse_atom> temp_parse_list;
+  temp_parse_list parsed;
 
-  // get the list of sorting policies
-  typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-  boost::char_separator<char> separator(",");
-  tokenizer tok(s, separator);
+  string::size_type i=0;
 
-  for (tokenizer::iterator it = tok.begin(); it != tok.end(); ++it) {
-    bool reversed = (it->at(0) == '~');
-    string name = (reversed ? it->substr(1) : *it);
-    boost::algorithm::to_lower(name);
-    parsed.push_back(parse_atom(name, reversed));
-  }
-
-  // Now run through the parsed stuff from back-to-front and instantiate it.
-  pkg_sortpolicy* policy = NULL;
-  for (vector<parse_atom>::reverse_iterator it = parsed.rbegin(); it != parsed.rend(); ++it)
+  while(i<s.size())
     {
-      // Look up the parse function, Die gracefully if it's bad.
-      parser_map::iterator policyIt = parse_types.find(it->name);
-      if(policyIt == parse_types.end())
+      parse_atom current;
+
+      if(s[i]=='~')
 	{
-	  _error->Error(_("Invalid sorting policy type '%s'"),
-			  it->name.c_str());
-	  delete policy;
+	  current.reversed=true;
+	  i++;
+	}
+
+      // Find the first name.  Use tolower for nice case-insensitivity.
+      while(i<s.size() && s[i]!=',' && s[i]!='(')
+	current.name+=tolower(s[i++]);
+
+      if(current.name.size()==0)
+	{
+	  _error->Error(_("Invalid zero-length sorting policy name"));
 	  return NULL;
 	}
 
-      // create new policy (chaining previously parsed policies, if present)
-      pkg_sortpolicy* newPolicy = policyIt->second(policy, it->reversed);
-      if(!newPolicy)
+      if(i<s.size() && s[i]=='(') // Parse argument list
 	{
-	  _error->Error(_("Could not create sorting policy type '%s'"),
-			  it->name.c_str());
-	  delete policy;
-	  return NULL;
+	  while(i<s.size() && s[i]!=')')
+	    {
+	      ++i; // Clear out the leading '(' or ','
+	      string curarg;
+	      while(i<s.size() && s[i]!=',' && s[i]!=')')
+		curarg+=s[i++];
+
+	      current.args.push_back(curarg);
+	    }
+
+	  if(!(i<s.size() && s[i]==')')) // Unexpected EOT, bail
+	    {
+	      _error->Error(_("Unmatched '(' in sorting policy description"));
+	      return NULL;
+	    }
+
+	  ++i; // Clear out the ')'
 	}
 
-      // use new policy as base policy for the next iteration
-      policy = newPolicy;
+      parsed.push_back(current);
+      // Ew, takes kinda long.  Probably not an issue now, but creating current
+      // as a new item in parsed would be faster.
+
+      if(i<s.size() && s[i]==',')
+	i++; // Clear out trailing commas.
     }
 
-  return policy;
+  // Now run through the parsed stuff from back-to-front and instantiate it.
+  pkg_sortpolicy *rval=NULL;
+  temp_parse_list::reverse_iterator j=parsed.rbegin();
+
+  while(j!=parsed.rend())
+    {
+      // Look up the parse function
+      parser_map::iterator found=parse_types.find(j->name);
+
+      // Die gracefully if it's bad.
+      if(found==parse_types.end())
+	{
+	  _error->Error(_("Invalid sorting policy type '%s'"),
+			  j->name.c_str());
+	  delete rval;
+	  return NULL;
+	}
+
+      // Apply it to the argument list
+      pkg_sortpolicy *new_rval=found->second(j->args,
+					     rval,
+					     j->reversed);
+
+      // Check for failure
+      if(!new_rval)
+	{
+	  delete rval;
+	  return NULL;
+	}
+
+      rval=new_rval;
+      ++j;
+    }
+
+  return rval;
 }

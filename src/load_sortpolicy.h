@@ -10,12 +10,8 @@
 /** \file load_sortpolicy.h
  */
 
-
-/**
- * Parses a chain of sorting policies from the given string and returns them.
- */
 class pkg_sortpolicy;
 
-pkg_sortpolicy* parse_sortpolicy(const std::string& s);
+pkg_sortpolicy *parse_sortpolicy(std::string s);
 
 #endif
