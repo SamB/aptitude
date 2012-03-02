@@ -1309,5 +1309,29 @@ namespace aptitude
 
       return true;
     }
+
+    const std::vector<std::string> get_top_sections(const bool cached)
+    {
+      static std::vector<std::string> top_sections;
+
+      if(top_sections.empty() == false)
+        {
+          if(cached == true)
+            return top_sections;
+          else
+            top_sections.clear();
+        }
+
+      top_sections = aptcfg->FindVector(PACKAGE "::Sections::Top-Sections");
+      if(top_sections.empty() == true)
+        {
+          top_sections.push_back("main");
+          top_sections.push_back("contrib");
+          top_sections.push_back("non-free");
+          top_sections.push_back("non-US");
+        }
+
+      return top_sections;
+    }
   }
 }

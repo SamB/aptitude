@@ -360,14 +360,8 @@ void pkg_grouppolicy_section::add_package(const pkgCache::PkgIterator &pkg,
 	      int order = -1;
 	      {
 		      // get an ordered list of top-sections
-		      vector<string> topSections = aptcfg->FindVector(PACKAGE "::Sections::Top-Sections");
-		      if (topSections.empty()) {
-			      // provide some sensible defaults
-			      topSections.push_back("main");
-			      topSections.push_back("contrib");
-			      topSections.push_back("non-free");
-			      topSections.push_back("non-US");
-		      }
+		      const vector<string> topSections = aptitude::apt::get_top_sections();
+
 		      // get the order of the top-section (the lower the number,
 		      // the higher the priority)
 		      for (size_t i = 0; i < topSections.size(); ++i) {

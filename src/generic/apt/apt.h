@@ -29,6 +29,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <utility>
+#include <vector>
 
 /** \brief Central repository for apt structures
  *
@@ -436,6 +437,13 @@ namespace aptitude
      *  version aren't considered; should they be?
      */
     bool is_full_replacement(const pkgCache::DepIterator &dep);
+
+    /** \return an ordered vector of the Top Sections
+     *
+     *  From the configuration item Aptitude::Sections::Top-Sections
+     *  or a builtin list of defaults.
+     */
+    const std::vector<std::string> get_top_sections(const bool cached=true);
   }
 }
 
