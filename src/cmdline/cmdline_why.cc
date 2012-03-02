@@ -79,14 +79,14 @@ namespace
       return cw::fragf("%s %s %s (%s %s)",
 		   dep.ParentPkg().FullName(true).c_str(),
 		   dep.DepType(),
-		   dep.TargetPkg().Name(),
+		   dep.TargetPkg().FullName(true).c_str(),
 		   dep.CompType(),
 		   dep.TargetVer());
     else
       return cw::fragf("%s %s %s",
 		   dep.ParentPkg().FullName(true).c_str(),
 		   dep.DepType(),
-		   dep.TargetPkg().Name());
+		   dep.TargetPkg().FullName(true).c_str());
   }
 
   // Place weaker dependencies first, then order alphabetically.
@@ -240,7 +240,7 @@ namespace aptitude
 	  return cw::text_fragment(dep_targets(start));
 	}
       else
-	return cw::text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
+	return cw::text_fragment(const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().FullName(true));
     }
 
     cw::fragment *action::description_fragment() const
@@ -384,11 +384,11 @@ namespace aptitude
       case ProvidesInstall:
 	return cw::fragf(_("Install(%s provides %s)"),
 			 const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().FullName(true).c_str(),
-			 mpkg.Name());
+			 mpkg.FullName(true).c_str());
       case ProvidesRemove:
 	return cw::fragf(_("Remove(%s provides %s)"),
 			 const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().FullName(true).c_str(),
-			 mpkg.Name());
+			 mpkg.FullName(true).c_str());
       default:
 	return cw::text_fragment("Internal error: bad target node type.");
       }
@@ -1129,7 +1129,7 @@ namespace aptitude
           if(verbosity > 1)
             std::cout << ssprintf(_("    ++   --> ENQUEUING %s Provides %s\n"),
                                   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().FullName(true).c_str(),
-                                  const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name());
+                                  const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().FullName(true).c_str());
         }
 
         void begin(const search_params &params)
@@ -1607,7 +1607,7 @@ namespace aptitude
 		      entry += cw::util::transcode(cw::util::transcode(dep_type).substr(0, 1));
 		      entry += ": ";
 
-		      entry += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().Name();
+		      entry += const_cast<pkgCache::DepIterator &>(dep).TargetPkg().FullName(true);
 
 		      // Show version information if we were asked for it.
 		      if(mode == show_chain_with_versions && ((dep->CompareOp & ~pkgCache::Dep::Or) != pkgCache::Dep::NoOp))
@@ -1632,7 +1632,7 @@ namespace aptitude
 		      entry += cw::util::transcode(cw::util::transcode(_("Provides")).substr(0, 1));
 		      entry += "<- ";
 
-		      entry += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name();
+		      entry += const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().FullName(true);
 		      if(mode == show_chain_with_versions && prv.ProvideVersion() != NULL)
 			{
 			  entry += " (";

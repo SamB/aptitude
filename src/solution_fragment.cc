@@ -100,7 +100,7 @@ string dep_targets(const pkgCache::DepIterator &start)
       else
 	rval += " | ";
 
-      rval += d.TargetPkg().Name();
+      rval += d.TargetPkg().FullName(true).c_str();
 
       if(d.TargetVer())
 	{
@@ -167,7 +167,7 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
 
   return swsprintf(W_("%s conflicts with %s [provided by %s %s]").c_str(),
 		   const_cast<pkgCache::DepIterator &>(conflict).ParentPkg().FullName(true).c_str(),
-		   const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name(),
+		   const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().FullName(true).c_str(),
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().FullName(true).c_str(),
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerVer().VerStr());
 }

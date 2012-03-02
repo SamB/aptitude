@@ -223,7 +223,7 @@ cw::fragment *dep_singlefrag(pkgCache::PkgIterator pkg,
       available=true;
 
   return cw::fragf("%F%s%F%F%s",
-		   cw::text_fragment(dep.TargetPkg().Name(),
+		   cw::text_fragment(dep.TargetPkg().FullName(true),
 				     pkg_item::pkg_style(dep.TargetPkg(), false)),
 		   sec.empty() || sec=="main"?"":(" ["+sec+']').c_str(),
 		   verfrag,
