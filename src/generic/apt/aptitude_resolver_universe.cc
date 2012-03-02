@@ -585,11 +585,11 @@ struct DummyEmptySolution
 void dumpDep(std::ostream &out, pkgCache::DepIterator &dep,
 	     pkgDepCache *cache)
 {
-  out << dep.ParentPkg().Name() << " ("
+  out << dep.ParentPkg().FullName(false) << " ("
       << dep.ParentVer().VerStr() << ") "
       << dep.DepType()
       << " "
-      << dep.TargetPkg().Name();
+      << dep.TargetPkg().FullName(false);
   if(dep.TargetVer() != NULL)
     {
       out << " (" << dep.CompType() << " " << dep.TargetVer() << ")";

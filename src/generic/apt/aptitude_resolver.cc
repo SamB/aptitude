@@ -852,13 +852,13 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 {
   if(provider.end())
     LOG_TRACE(loggerScores, "Adding scores for the full replacement of "
-	      << real_target.Name()
-	      << " by " << src.ParentPkg().Name() << " " << src.VerStr());
+	      << real_target.FullName(false)
+	      << " by " << src.ParentPkg().FullName(false) << " " << src.VerStr());
   else
     LOG_TRACE(loggerScores, "Adding scores for the full replacement of "
 	      << real_target.Name() << " (provided by "
-	      << provider.ParentPkg().Name() << " " << provider.VerStr()
-	      << ") by " << src.ParentPkg().Name() << " " << src.VerStr());
+	      << provider.ParentPkg().FullName(false) << " " << provider.VerStr()
+	      << ") by " << src.ParentPkg().FullName(false) << " " << src.VerStr());
 
   // Drop literal and indirect self-provides: allowing these would
   // have the effect of giving a bonus to a random version of packages
@@ -870,7 +870,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	{
 	  LOG_TRACE(loggerScores,
 		    "Skipping full replacement of "
-		    << src.ParentPkg().Name() << " "
+		    << src.ParentPkg().FullName(false) << " "
 		    << src.VerStr() << " by itself.");
 	  return;
 	}
@@ -881,7 +881,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 	{
 	  LOG_TRACE(loggerScores,
 		    "Skipping full replacement of "
-		    << src.ParentPkg().Name() << " "
+		    << src.ParentPkg().FullName(false) << " "
 		    << src.VerStr() << " by itself (through the provided package "
 		    << real_target.Name() << ")");
 	  return;
@@ -907,8 +907,8 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
       if(!src_installed)
 	{
 	  LOG_TRACE(loggerScores,
-		    "Neither " << src_pkg.Name()
-		    << " nor " << target.Name()
+		    "Neither " << src_pkg.FullName(false)
+		    << " nor " << target.FullName(false)
 		    << " is installed; not adding a full replacement score.");
 	  return;
 	}
@@ -930,7 +930,7 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 		    {
 		      LOG_TRACE(loggerScores,
 				"Not penalizing "
-				<< target_ver.ParentPkg().Name()
+				<< target_ver.ParentPkg().FullName(false)
 				<< " " << target_ver.VerStr()
 				<< ": it does not provide the replaced package "
 				<< real_target.Name());
@@ -952,9 +952,9 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 	      LOG_DEBUG(loggerScores,
 			"** Score: " << std::showpos << undo_full_replacement_score << std::noshowpos
-			<< " for removing " << src.ParentPkg().Name()
+			<< " for removing " << src.ParentPkg().FullName(false)
 			<< " and installing its replacement, "
-			<< target.Name() << " " << target_ver.VerStr()
+			<< target.FullName(false) << " " << target_ver.VerStr()
 			<< "  (" PACKAGE "::ProblemResolver::UndoFullReplacementScore)");
 
 	      add_joint_score(s, undo_full_replacement_score);
@@ -979,9 +979,9 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 	  LOG_DEBUG(loggerScores,
 		    "** Score: " << std::showpos << full_replacement_score << std::noshowpos
-		    << " for removing " << target.Name()
+		    << " for removing " << target.FullName(false)
 		    << ", which is replaced by "
-		    << src.ParentPkg().Name() << " " << src.VerStr()
+		    << src.ParentPkg().FullName(false) << " " << src.VerStr()
 		    << ", which is already installed.  (" PACKAGE "::ProblemResolver::FullReplacementScore)");
 	  add_version_score(version::make_removal(target,
 						  cache),
@@ -999,12 +999,12 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 		    {
 		      LOG_DEBUG(loggerScores,
 				"** Score: " << std::showpos << full_replacement_score << std::noshowpos
-				<< " for installing " << target.Name()
+				<< " for installing " << target.FullName(false)
 				<< " " << target_ver.VerStr()
 				<< ", which does not provide the package name "
 				<< real_target.Name()
 				<< " (replaced by "
-				<< src.ParentPkg().Name() << " "
+				<< src.ParentPkg().FullName(false) << " "
 				<< src.VerStr()
 				<< ", which is already installed).  (" PACKAGE "::ProblemResolver::FullReplacementScore)");
 		      add_version_score(version::make_install(target_ver,
@@ -1026,9 +1026,9 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 	    LOG_DEBUG(loggerScores,
 		      "** Score: " << std::showpos << full_replacement_score << std::noshowpos
-		      << " for removing " << target.Name()
+		      << " for removing " << target.FullName(false)
 		      << " and installing its replacement, "
-		      << src.ParentPkg().Name() << " "
+		      << src.ParentPkg().FullName(false) << " "
 		      << src.VerStr() << "  (" PACKAGE "::ProblemResolver::FullReplacementScore)");
 
 	    add_joint_score(s, full_replacement_score);
@@ -1053,11 +1053,11 @@ void aptitude_resolver::add_full_replacement_score(const pkgCache::VerIterator &
 
 		      LOG_DEBUG(loggerScores,
 				"** Score: " << std::showpos << full_replacement_score << std::noshowpos
-				<< " for installing " << target.Name()
+				<< " for installing " << target.FullName(false)
 				<< " " << target_ver.VerStr()
 				<< ", which does not provide the package name "
 				<< real_target.Name()
-				<< " (replaced by " << src.ParentPkg().Name()
+				<< " (replaced by " << src.ParentPkg().FullName(false)
 				<< " " << src.VerStr() << ")   (" PACKAGE "::ProblemResolver::FullReplacementScore)");
 
 		      add_joint_score(s, full_replacement_score);
@@ -1088,7 +1088,7 @@ void aptitude_resolver::add_default_resolution_score(const pkgCache::DepIterator
       if((*cache)[currPkg].CandidateVer != *curr)
 	{
 	  LOG_TRACE(loggerScores,
-		    "Skipping " << currPkg.Name()
+		    "Skipping " << currPkg.FullName(false)
 		    << " " << pkgCache::VerIterator(cache->GetCache(), *curr).VerStr()
 		    << ": it is not the candidate version.");
 	  continue;
@@ -1106,7 +1106,7 @@ void aptitude_resolver::add_default_resolution_score(const pkgCache::DepIterator
 	  if((*cache)[currPkg].CandidateVer != *curr)
 	    {
 	      LOG_TRACE(loggerScores,
-			"Skipping " << currPkg.Name()
+			"Skipping " << currPkg.FullName(false)
 			<< " " << pkgCache::VerIterator(cache->GetCache(), *curr).VerStr()
 			<< ": it is not the candidate version.");
 	      continue;

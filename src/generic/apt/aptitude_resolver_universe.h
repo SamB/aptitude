@@ -50,10 +50,11 @@ class aptitude_resolver_package
 {
   pkgDepCache *cache;
   const pkgCache::Package *pkg;
+  std::string name;
 public:
   /** \brief Create an invalid package object. */
   aptitude_resolver_package()
-    : cache(0), pkg(0)
+    : cache(0), pkg(0), name()
   {
   }
 
@@ -69,6 +70,7 @@ public:
   {
     eassert(cache!=0);
     eassert(pkg != 0);
+    name = get_pkg().FullName(false);
   }
 
   /** \brief Generate a unique ID for this package.
@@ -87,9 +89,9 @@ public:
   }
 
   /** \return The name of the package. */
-  const char *get_name() const
+  const std::string get_name() const
   {
-    return get_pkg().Name();
+    return name;
   }
 
   /** \return The underlying APT package wrapped by this object. */

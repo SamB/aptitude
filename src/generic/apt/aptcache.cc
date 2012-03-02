@@ -666,7 +666,7 @@ void aptitudeDepCache::get_upgradable(bool ignore_removed,
 
       if(p.CurrentVer().end())
 	{
-	  LOG_TRACE(logger, p.Name() << " is not upgradable: it is not currently installed.");
+	  LOG_TRACE(logger, p.FullName(false) << " is not upgradable: it is not currently installed.");
 	  continue;
 	}
 
@@ -676,9 +676,9 @@ void aptitudeDepCache::get_upgradable(bool ignore_removed,
 	{
 	  do_upgrade = state.Status > 0 && !is_held(p);
 	  if(do_upgrade)
-	    LOG_DEBUG(logger, p.Name() << " is upgradable.");
+	    LOG_DEBUG(logger, p.FullName(false) << " is upgradable.");
 	  else
-	    LOG_TRACE(logger, p.Name() << " is not upgradable: no newer version is available, or it is held back.");
+	    LOG_TRACE(logger, p.FullName(false) << " is not upgradable: no newer version is available, or it is held back.");
 	}
       else
 	{
@@ -687,20 +687,20 @@ void aptitudeDepCache::get_upgradable(bool ignore_removed,
 	      // This case shouldn't really happen:
 	    case pkgCache::State::Unknown:
 	      estate.selection_state = pkgCache::State::Install;
-	      LOG_WARN(logger, p.Name() << " has not been seen before, but it should have been initialized on startup.");
+	      LOG_WARN(logger, p.FullName(false) << " has not been seen before, but it should have been initialized on startup.");
 
 	      // Fall through
 	    case pkgCache::State::Install:
 	      if(state.Status > 0 && !is_held(p))
 		{
 		  do_upgrade = true;
-		  LOG_TRACE(logger, p.Name() << " is upgradable.");
+		  LOG_TRACE(logger, p.FullName(false) << " is upgradable.");
 		}
 	      else
-		LOG_TRACE(logger, p.Name() << " is not upgradable: no newer version is available, or it is held back.");
+		LOG_TRACE(logger, p.FullName(false) << " is not upgradable: no newer version is available, or it is held back.");
 	      break;
 	    default:
-	      LOG_TRACE(logger, p.Name() << " is not upgradable: its state is " << estate.selection_state << " instead of " << pkgCache::State::Install << ".");
+	      LOG_TRACE(logger, p.FullName(false) << " is not upgradable: its state is " << estate.selection_state << " instead of " << pkgCache::State::Install << ".");
 	      break;
 	    }
 	}
@@ -1646,7 +1646,7 @@ namespace
   {
     logging::LoggerPtr logger(Loggers::getAptitudeAptCache());
     LOG_TRACE(logger, "Removing reverse dependencies of "
-	      << bad_ver.ParentPkg().Name() << " "
+	      << bad_ver.ParentPkg().FullName(false) << " "
 	      << bad_ver.VerStr() << " from the reinstate set.");
     // Follow direct revdeps.
     for(pkgCache::DepIterator dep = bad_ver.ParentPkg().RevDependsList();
@@ -1668,9 +1668,9 @@ namespace
 				 dep.TargetVer()))
 	  {
 	    LOG_DEBUG(logger,
-		      "Not reinstating " << dep.ParentPkg().Name()
+		      "Not reinstating " << dep.ParentPkg().FullName(false)
 		      << " due to its dependency on "
-		      << bad_ver.ParentPkg().Name()
+		      << bad_ver.ParentPkg().FullName(false)
 		      << " " << bad_ver.VerStr());
 	    reinstated.erase(dep.ParentPkg());
 	    remove_reverse_current_versions(reinstated, dep.ParentVer());
@@ -1699,9 +1699,9 @@ namespace
 				   dep.TargetVer()))
 	    {
 	      LOG_DEBUG(logger,
-			"Not reinstating " << dep.ParentPkg().Name()
+			"Not reinstating " << dep.ParentPkg().FullName(false)
 			<< " due to its dependency on "
-			<< bad_ver.ParentPkg().Name()
+			<< bad_ver.ParentPkg().FullName(false)
 			<< " " << bad_ver.VerStr()
 			<< " via the virtual package "
 			<< prv.ParentPkg().Name());
@@ -1724,7 +1724,7 @@ namespace
 
     if(not_orphaned.find(notOrphan) != not_orphaned.end())
       {
-	LOG_TRACE(logger, "Ignoring " << notOrphan.Name()
+	LOG_TRACE(logger, "Ignoring " << notOrphan.FullName(false)
 		  << ": it was already visited.");
 	return;
       }
@@ -1735,7 +1735,7 @@ namespace
        notOrphan.CurrentVer().end())
       {
 	LOG_WARN(logger, "Sanity-check failed: assuming the package "
-		 << notOrphan.Name()
+		 << notOrphan.FullName(false)
 		 << " is orphaned, since it is not currently installed.");
 	return;
       }
@@ -1743,12 +1743,12 @@ namespace
     if(reinstated.find(notOrphan) == reinstated.end())
       {
 	LOG_DEBUG(logger, "Treating the package "
-		  << notOrphan.Name()
+		  << notOrphan.FullName(false)
 		  << " as an orphan, since it is not in the reinstatement set.");
 	return;
       }
 
-    LOG_DEBUG(logger, "The package " << notOrphan.Name()
+    LOG_DEBUG(logger, "The package " << notOrphan.FullName(false)
 	      << " is not an orphan.");
 
     not_orphaned.insert(notOrphan);
@@ -1807,7 +1807,7 @@ namespace
        maybeOrphan.CurrentVer().end())
       {
 	LOG_WARN(logger, "Sanity-check failed: assuming the package "
-		 << maybeOrphan.Name()
+		 << maybeOrphan.FullName(false)
 		 << " is orphaned, since it is not currently installed.");
 	return;
       }
@@ -1886,7 +1886,7 @@ void aptitudeDepCache::sweep()
 	      // not previously being deleted.
 	      if(!PkgState[pkg->ID].Delete())
 		{
-		  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Removing " << pkg.Name() << ": it is unused.");
+		  LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Removing " << pkg.FullName(false) << ": it is unused.");
 
 		  pre_package_state_changed();
 		  MarkDelete(pkg, purge_unused);
@@ -1909,7 +1909,7 @@ void aptitudeDepCache::sweep()
 	      pre_package_state_changed();
 
 	      if(!PkgState[pkg->ID].Keep())
-		LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Cancelling the installation of " << pkg.Name() << ": it is unused.");
+		LOG_DEBUG(logger, "aptitudeDepCache::sweep(): Cancelling the installation of " << pkg.FullName(false) << ": it is unused.");
 
 	      MarkKeep(pkg, false, false);
 	    }
@@ -1920,16 +1920,16 @@ void aptitudeDepCache::sweep()
 	  if(!conflict.end())
 	    {
 	      LOG_DEBUG(logger, "aptitudeDepCache::sweep(): not scheduling "
-			<< pkg.Name() << " for reinstatement due to the conflict between "
-			<< conflict.ParentPkg().Name()
-			<< " and " << conflict.TargetPkg().Name());
+			<< pkg.FullName(false) << " for reinstatement due to the conflict between "
+			<< conflict.ParentPkg().FullName(false)
+			<< " and " << conflict.TargetPkg().FullName(false));
 
 	      reinstated_bad.insert(pkg);
 	    }
 	  else
 	    {
 	      LOG_DEBUG(logger, "aptitudeDepCache::sweep(): provisionally scheduling "
-			<< pkg.Name() << " for reinstatement.");
+			<< pkg.FullName(false) << " for reinstatement.");
 
 
 	      reinstated.insert(pkg);
@@ -1958,7 +1958,7 @@ void aptitudeDepCache::sweep()
     {
       pkgCache::PkgIterator pkg(*it);
       LOG_INFO(logger, "aptitudeDepCache::sweep(): reinstating "
-	       << pkg.Name());
+	       << pkg.FullName(false));
       MarkKeep(pkg, false, false);
     }
 }
@@ -2107,7 +2107,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       // Check what type of action it is.
       if(actionver.end())
 	{
-	  LOG_TRACE(logger, "Removing " << pkg.Name());
+	  LOG_TRACE(logger, "Removing " << pkg.FullName(false));
 
 	  // removal.
 	  internal_mark_delete(pkg, false, false);
@@ -2116,7 +2116,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
 	}
       else if(actionver == curver)
 	{
-	  LOG_TRACE(logger, "Keeping " << pkg.Name()
+	  LOG_TRACE(logger, "Keeping " << pkg.FullName(false)
 		    << " at its current version ("
 		    << curver.VerStr() << ")");
 
@@ -2125,7 +2125,7 @@ void aptitudeDepCache::apply_solution(const generic_solution<aptitude_universe> 
       else
 	// install a particular version that's not the current one.
 	{
-	  LOG_TRACE(logger, "Installing " << pkg.Name() << " " << actionver.VerStr());
+	  LOG_TRACE(logger, "Installing " << pkg.FullName(false) << " " << actionver.VerStr());
 
 	  set_candidate_version(actionver, NULL);
 	  internal_mark_install(pkg, false, false);
@@ -2345,7 +2345,7 @@ bool aptitudeDepCache::IsInstallOk(const pkgCache::PkgIterator &pkg,
 
   if(candver.end())
     {
-      LOG_WARN(Loggers::getAptitudeAptCache(), "The package " << pkg.Name() << " has no candidate version, unsure whether it should be installed.");
+      LOG_WARN(Loggers::getAptitudeAptCache(), "The package " << pkg.FullName(false) << " has no candidate version, unsure whether it should be installed.");
       return true;
     }
 
@@ -2354,7 +2354,7 @@ bool aptitudeDepCache::IsInstallOk(const pkgCache::PkgIterator &pkg,
     {
       LOG_INFO(Loggers::getAptitudeAptCache(), "Refusing to install version "
 	       << candver.VerStr() << " of the held package "
-	       << pkg.Name());
+	       << pkg.FullName(false));
       return false;
     }
 
@@ -2362,7 +2362,7 @@ bool aptitudeDepCache::IsInstallOk(const pkgCache::PkgIterator &pkg,
     {
       LOG_INFO(Loggers::getAptitudeAptCache(),
 	       "Refusing to install the forbidden version "
-	       << candver.VerStr() << " of the package " << pkg.Name());
+	       << candver.VerStr() << " of the package " << pkg.FullName(false));
       return false;
     }
 
@@ -2389,7 +2389,7 @@ bool aptitudeDepCache::IsDeleteOk(const pkgCache::PkgIterator &pkg,
 	{
 	  LOG_INFO(Loggers::getAptitudeAptCache(),
 		   "Refusing to remove the held package "
-		   << pkg.Name());
+		   << pkg.FullName(false));
 	  return false;
 	}
 

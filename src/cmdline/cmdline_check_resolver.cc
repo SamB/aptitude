@@ -81,7 +81,7 @@ namespace
 	  }
 
 	if(!seen_uninst)
-	  std::cout << "Didn't see the UNINST version of the package " << apt_pkg.Name() << "." << std::endl;
+	  std::cout << "Didn't see the UNINST version of the package " << apt_pkg.FullName(false) << "." << std::endl;
 
 	std::vector<pkgCache::VerIterator> remaining_versions;
 	std::set_difference(real_versions.begin(), real_versions.end(),
@@ -92,7 +92,7 @@ namespace
 	      remaining_versions.begin(); it != remaining_versions.end();
 	    ++it)
 	  {
-	    std::cout << "The package version " << it->ParentPkg().Name()
+	    std::cout << "The package version " << it->ParentPkg().FullName(false)
 		      << " " << it->VerStr() << " is missing from the resolver."
 		      << std::endl;
 	  }
@@ -102,7 +102,7 @@ namespace
 	  {
 	    if(!p.current_version().get_ver().end())
 	      {
-		std::cout << "The package " << apt_pkg.Name()
+		std::cout << "The package " << apt_pkg.FullName(false)
 			  << " only has config files installed, but version "
 			  << p.current_version().get_ver().VerStr()
 			  << " is installed according to the resolver."
@@ -117,19 +117,19 @@ namespace
 	    if(cache_instver != resolver_instver)
 	      {
 		if(cache_instver.end())
-		  std::cout << "The package " << apt_pkg.Name()
+		  std::cout << "The package " << apt_pkg.FullName(false)
 			    << " should not be installed, but version "
 			    << resolver_instver.VerStr()
 			    << " is installed according to the resolver."
 			    << std::endl;
 		else if(resolver_instver.end())
-		  std::cout << "The package " << apt_pkg.Name()
+		  std::cout << "The package " << apt_pkg.FullName(false)
 			    << " should be installed at version "
 			    << cache_instver.VerStr()
 			    << ", but it isn't installed according to the resolver."
 			    << std::endl;
 		else
-		  std::cout << "The package " << apt_pkg.Name()
+		  std::cout << "The package " << apt_pkg.FullName(false)
 			    << " should be installed at version "
 			    << cache_instver.VerStr()
 			    << ", but version "
