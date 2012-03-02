@@ -120,7 +120,8 @@ string dep_targets(const pkgCache::DepIterator &start)
 
 wstring dep_text(const pkgCache::DepIterator &d)
 {
-  const char *name = const_cast<pkgCache::DepIterator &>(d).ParentPkg().Name();
+  const string fullname = const_cast<pkgCache::DepIterator &>(d).ParentPkg().FullName(true);
+  const char *name = fullname.c_str();
 
   string targets = dep_targets(d);
 
@@ -165,9 +166,9 @@ wstring conflict_text(const pkgCache::DepIterator &conflict,
     return dep_text(conflict);
 
   return swsprintf(W_("%s conflicts with %s [provided by %s %s]").c_str(),
-		   const_cast<pkgCache::DepIterator &>(conflict).ParentPkg().Name(),
+		   const_cast<pkgCache::DepIterator &>(conflict).ParentPkg().FullName(true).c_str(),
 		   const_cast<pkgCache::PrvIterator &>(prv).ParentPkg().Name(),
-		   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().Name(),
+		   const_cast<pkgCache::PrvIterator &>(prv).OwnerPkg().FullName(true).c_str(),
 		   const_cast<pkgCache::PrvIterator &>(prv).OwnerVer().VerStr());
 }
 
@@ -177,10 +178,11 @@ cw::fragment *choice_fragment(const choice &c)
     {
     case choice::install_version:
       if(c.get_ver().get_ver().end())
-	return cw::fragf(_("Removing %s"), c.get_ver().get_pkg().Name());
+	return cw::fragf(_("Removing %s"), c.get_ver().get_pkg().FullName(true).c_str());
       else
 	return cw::fragf(_("Installing %s %s (%s)"),
-			 c.get_ver().get_pkg().Name(), c.get_ver().get_ver().VerStr(),
+			 c.get_ver().get_pkg().FullName(true).c_str(),
+                         c.get_ver().get_ver().VerStr(),
 			 archives_text(c.get_ver().get_ver()).c_str());
 
     case choice::break_soft_dep:
@@ -415,7 +417,7 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
 	  i!=remove_packages.end(); ++i)
 	{
 	  ids_column.append_id(i->second);
-	  fragments.push_back(cw::fragf("  %s%n", i->first.Name()));
+	  fragments.push_back(cw::fragf("  %s%n", i->first.FullName(true).c_str()));
 	}
 
       ids_column.append_newline();
@@ -431,7 +433,7 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
 	{
 	  ids_column.append_id(i->second);
 	  fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
-					i->first.ParentPkg().Name(),
+					i->first.ParentPkg().FullName(true).c_str(),
 					i->first.VerStr(),
 					archives_text(i->first).c_str()));
 	}
@@ -451,11 +453,11 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
 
 	  if(i->first.CurrentVer().end())
 	    fragments.push_back(cw::fragf("  %s [%s]%n",
-					  i->first.Name(),
+					  i->first.FullName(true).c_str(),
 					  _("Not Installed")));
 	  else
 	    fragments.push_back(cw::fragf("  %s [%s (%s)]%n",
-					  i->first.Name(),
+					  i->first.FullName(true).c_str(),
 					  i->first.CurrentVer().VerStr(),
 					  archives_text(i->first.CurrentVer()).c_str()));
 	}
@@ -473,7 +475,7 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
 	{
 	  ids_column.append_id(i->second);
 	  fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
-					i->first.ParentPkg().Name(),
+					i->first.ParentPkg().FullName(true).c_str(),
 					i->first.ParentPkg().CurrentVer().VerStr(),
 					archives_text(i->first.ParentPkg().CurrentVer()).c_str(),
 					i->first.VerStr(),
@@ -494,7 +496,7 @@ cw::fragment *solution_fragment_with_ids(const aptitude_solution &sol,
 	  ids_column.append_id(i->second);
 
 	  fragments.push_back(cw::fragf("  %s [%s (%s) -> %s (%s)]%n",
-					i->first.ParentPkg().Name(),
+					i->first.ParentPkg().FullName(true).c_str(),
 					i->first.ParentPkg().CurrentVer().VerStr(),
 					archives_text(i->first.ParentPkg().CurrentVer()).c_str(),
 					i->first.VerStr(),

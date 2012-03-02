@@ -95,14 +95,14 @@ static cw::fragment *action_description(const aptitude_resolver_version &ver)
     {
     case action_remove:
       return cw::fragf(_("Remove %F [%s (%s)]"),
-		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+		   cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str());
       break;
 
     case action_install:
       return cw::fragf(_("Install %F [%s (%s)]"),
-		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+		   cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)),
 		   ver.get_ver().VerStr(),
 		   archives_text(ver.get_ver()).c_str());
       break;
@@ -110,13 +110,13 @@ static cw::fragment *action_description(const aptitude_resolver_version &ver)
     case action_keep:
       if(ver.get_ver().end())
 	return cw::fragf(_("Cancel the installation of %F"),
-		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
+		     cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)));
       else if(ver.get_package().current_version().get_ver().end())
 	return cw::fragf(_("Cancel the removal of %F"),
-		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)));
+		     cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)));
       else
 	return cw::fragf(_("Keep %F at version %s (%s)"),
-		     cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+		     cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)),
 		     ver.get_ver().VerStr(),
 		     archives_text(ver.get_ver()).c_str());
 
@@ -124,7 +124,7 @@ static cw::fragment *action_description(const aptitude_resolver_version &ver)
 
     case action_upgrade:
       return cw::fragf(_("Upgrade %F [%s (%s) -> %s (%s)]"),
-		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+		   cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(),
 		   archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
@@ -133,7 +133,7 @@ static cw::fragment *action_description(const aptitude_resolver_version &ver)
 
     case action_downgrade:
       return cw::fragf(_("Downgrade %F [%s (%s) -> %s (%s)]"),
-		   cw::text_fragment(pkg.Name(), cw::style_attrs_on(A_BOLD)),
+		   cw::text_fragment(pkg.FullName(true), cw::style_attrs_on(A_BOLD)),
 		   pkg.CurrentVer().VerStr(), archives_text(pkg.CurrentVer()).c_str(),
 		   ver.get_ver().VerStr(), archives_text(ver.get_ver()).c_str());
       break;
@@ -442,7 +442,7 @@ void solution_act_item_bare::paint(cw::tree *win, int y, bool hierarchical, cons
 
   aptitude_universe::version ver = get_ver();
 
-  const char *name = ver.get_pkg().Name();
+  const char *name = ver.get_pkg().FullName(true).c_str();
   while(x < width && *name)
     {
       win->addch(*name);
@@ -605,11 +605,11 @@ void solution_unresolved_item::paint(cw::tree *win, int y, bool hierarchical, co
 
   if(!fully_explained)
     text = swsprintf(W_("%s recommends %s").c_str(),
-		     d.get_dep().ParentPkg().Name(),
+		     d.get_dep().ParentPkg().FullName(true).c_str(),
 		     dep_targets(d.get_dep()).c_str());
   else
     text = swsprintf(W_("-> Leave the dependency \"%s recommends %s\" unresolved.").c_str(),
-		     d.get_dep().ParentPkg().Name(),
+		     d.get_dep().ParentPkg().FullName(true).c_str(),
 		     dep_targets(d.get_dep()).c_str());
 
   wstring::const_iterator loc = text.begin();

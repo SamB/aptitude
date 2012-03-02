@@ -303,7 +303,7 @@ static pkgCache::VerIterator choose_version(const vector<pkgCache::VerIterator> 
 
   while(1)
     {
-      string response = prompt_string(ssprintf(_("Select the version of %s that should be used: "), choices.front().ParentPkg().Name()));
+      string response = prompt_string(ssprintf(_("Select the version of %s that should be used: "), choices.front().ParentPkg().FullName(true).c_str()));
 
       int i;
       istringstream in(response);
@@ -401,10 +401,10 @@ static void reject_or_mandate_version(const string &s,
 		  {
 		    if(ver.get_ver().end())
 		      cout << ssprintf(_("Allowing the removal of %s"),
-				       pkg.Name()) << endl;
+				       pkg.FullName(true).c_str()) << endl;
 		    else
 		      cout << ssprintf(_("Allowing the installation of %s version %s (%s)"),
-				       pkg.Name(),
+				       pkg.FullName(true).c_str(),
 				       ver.get_ver().VerStr(),
 				       archives_text(ver.get_ver()).c_str()) << endl;
 
@@ -414,10 +414,10 @@ static void reject_or_mandate_version(const string &s,
 		  {
 		    if(ver.get_ver().end())
 		      cout << ssprintf(_("Rejecting the removal of %s"),
-				       pkg.Name()) << endl;
+				       pkg.FullName(true).c_str()) << endl;
 		    else
 		      cout << ssprintf(_("Rejecting the installation of %s version %s (%s)"),
-				       pkg.Name(),
+				       pkg.FullName(true).c_str(),
 				       ver.get_ver().VerStr(),
 				       archives_text(ver.get_ver()).c_str()) << endl;
 
@@ -430,10 +430,10 @@ static void reject_or_mandate_version(const string &s,
 		  {
 		    if(ver.get_ver().end())
 		      cout << ssprintf(_("No longer requiring the removal of %s"),
-				       pkg.Name()) << endl;
+				       pkg.FullName(true).c_str()) << endl;
 		    else
 		      cout << ssprintf(_("No longer requiring the installation of %s version %s (%s)"),
-				       pkg.Name(), ver.get_ver().VerStr(),
+				       pkg.FullName(true).c_str(), ver.get_ver().VerStr(),
 				       archives_text(ver.get_ver()).c_str()) << endl;
 
 		    resman->unmandate_version(ver);
@@ -442,10 +442,10 @@ static void reject_or_mandate_version(const string &s,
 		  {
 		    if(ver.get_ver().end())
 		      cout << ssprintf(_("Requiring the removal of %s"),
-				       pkg.Name()) << endl;
+				       pkg.FullName(true).c_str()) << endl;
 		    else
 		      cout << ssprintf(_("Requiring the installation of %s version %s (%s)"),
-				       pkg.Name(), ver.get_ver().VerStr(),
+				       pkg.FullName(true).c_str(), ver.get_ver().VerStr(),
 				       archives_text(ver.get_ver()).c_str()) << endl;
 
 		    resman->mandate_version(ver);
@@ -466,7 +466,7 @@ static void reject_or_mandate_version(const string &s,
 	      dep_rendering_stream << "(??\?)";
 	    else
 	      {
-		dep_rendering_stream << start.ParentPkg().Name()
+		dep_rendering_stream << start.ParentPkg().FullName(true)
 				     << " "
 				     << start.ParentVer().VerStr()
 				     << " "
@@ -547,7 +547,7 @@ void cmdline_resolver_show_choice(const choice &c,
 
         if(disp_ver.end())
           info_fragment = cw::fragf("Package: %s\n\n",
-                                    c.get_ver().get_pkg().Name());
+                                    c.get_ver().get_pkg().FullName(true).c_str());
         else
           info_fragment = cw::fragf("%F\n\n",
                                     version_file_fragment(disp_ver,
