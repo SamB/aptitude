@@ -427,7 +427,8 @@ cw::fragment *version_file_fragment(const pkgCache::VerIterator &ver,
 			    ver.Section()?ver.Section():_("N/A")));
   fragments.push_back(cw::fragf("%s%s%n", _("Maintainer: "),
 			    rec.Maintainer().c_str()));
-  fragments.push_back(cw::fragf("%s%s%n", _("Architecture: "), pkg.Arch()));
+  fragments.push_back(cw::fragf("%s%s%n", _("Architecture: "),
+				const_cast<pkgCache::VerIterator &>(ver).Arch()));
 
   fragments.push_back(cw::fragf("%s%s%n", _("Uncompressed Size: "),
 			    SizeToStr(ver->InstalledSize).c_str()));
