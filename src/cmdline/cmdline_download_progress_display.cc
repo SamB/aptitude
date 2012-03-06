@@ -352,8 +352,8 @@ namespace aptitude
             components.push_back(transcode(mode));
 
           if(total_size != 0 && !complete)
-            components.push_back((wformat(L"%lu/%sB %lu%%")
-                                  % current_size
+            components.push_back((wformat(L"%sB/%sB %lu%%")
+                                  % transcode(SizeToStr(current_size))
                                   % transcode(SizeToStr(total_size))
                                   % as_percent( ((double) current_size) / total_size)).str());
           else if(current_size != 0)
