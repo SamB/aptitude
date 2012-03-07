@@ -394,12 +394,18 @@ void do_apply_solution();
 // Info screen
 cwidget::widgets::widget_ref make_info_screen(const pkgCache::PkgIterator &pkg,
 			       const pkgCache::VerIterator &ver);
+void show_info_screen(const pkgCache::PkgIterator &pkg,
+		      const pkgCache::VerIterator &ver);
 // Dependency screen
 cwidget::widgets::widget_ref make_dep_screen(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      bool reverse=false);
+void show_dep_screen(const pkgCache::PkgIterator &pkg,
+		     const pkgCache::VerIterator &ver,
+		     bool reverse=false);
 // List of versions
 cwidget::widgets::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg);
+void show_ver_screen(const pkgCache::PkgIterator &pkg);
 
 // Various defaults:
 extern const char *default_pkgstatusdisplay;

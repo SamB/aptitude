@@ -672,15 +672,7 @@ void pkg_ver_item::forbid_version(undo_group *undo)
 
 void pkg_ver_item::show_information()
 {
-  cw::widget_ref w=make_info_screen(version.ParentPkg(), version);
-
-  char buf[512];
-  snprintf(buf, 512, _("Information about %s"), version.ParentPkg().Name());
-  string menulabel(buf);
-  snprintf(buf, 512, _("%s info"), version.ParentPkg().Name());
-  string tablabel(buf);
-
-  insert_main_widget(w, menulabel, "", tablabel);
+  show_info_screen(version.ParentPkg(), version);
 }
 
 pkg_ver_screen::pkg_ver_screen(const pkgCache::PkgIterator &pkg)
@@ -704,26 +696,12 @@ bool pkg_ver_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Dependencies"))
     {
-      char buf[512];
-      snprintf(buf, 512, _("Dependencies of %s"), version.ParentPkg().Name());
-      string menulabel(buf);
-      snprintf(buf, 512, _("%s deps"), version.ParentPkg().Name());
-      string tablabel(buf);
-
-      cw::widget_ref w=make_dep_screen(version.ParentPkg(), version);
-      insert_main_widget(w, menulabel, "", tablabel);
+      show_dep_screen(version.ParentPkg(), version);
       return true;
     }
   else if(bindings->key_matches(k, "ReverseDependencies"))
     {
-      char buf[512];
-      snprintf(buf, 512, _("Packages depending on %s"), version.ParentPkg().Name());
-      string menulabel(buf);
-      snprintf(buf, 512, _("%s reverse deps"), version.ParentPkg().Name());
-      string tablabel(buf);
-
-      cw::widget_ref w=make_dep_screen(version.ParentPkg(), version, true);
-      insert_main_widget(w, menulabel, "", tablabel);
+      show_dep_screen(version.ParentPkg(), version, true);
       return true;
     }
   else if(bindings->key_matches(k, "InfoScreen"))

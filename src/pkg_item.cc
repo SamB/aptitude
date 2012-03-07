@@ -228,15 +228,7 @@ void pkg_item::set_auto(bool isauto, undo_group *undo)
 
 void pkg_item::show_information()
 {
-  char buf[512]="Foo";
-  snprintf(buf, 512, _("Information about %s"), package.Name());
-  string menulabel(buf);
-  snprintf(buf, 512, _("%s info"), package.Name());
-  string tablabel(buf);
-
-  cw::widget_ref w=make_info_screen(package, visible_version());
-  // what to use as the menu description?
-  insert_main_widget(w, menulabel, "", tablabel);
+  show_info_screen(package, visible_version());
 }
 
 void pkg_item::show_changelog()
@@ -325,44 +317,14 @@ void pkg_item::paint(cw::tree *win, int y, bool hierarchical, const cw::style &s
 bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 {
   if(bindings->key_matches(k, "Versions"))
-    {
-      char buf[512];
-      snprintf(buf, 512, _("Available versions of %s"),
-	       package.Name());
-      string menulabel(buf);
-      snprintf(buf, 512, _("%s versions"),
-	       package.Name());
-      string tablabel(buf);
-
-      cw::widget_ref w=make_ver_screen(package);
-      insert_main_widget(w, menulabel, "", tablabel);
-    }
+    show_ver_screen(package);
   else if(bindings->key_matches(k, "Dependencies"))
     {
       if(!visible_version().end())
-	{
-	  char buf[512];
-	  snprintf(buf, 512, _("Dependencies of %s"), package.Name());
-	  string menulabel(buf);
-	  snprintf(buf, 512, _("%s deps"), package.Name());
-	  string tablabel(buf);
-
-	  cw::widget_ref w=make_dep_screen(package, visible_version());
-	  insert_main_widget(w, menulabel, "", tablabel);
-	  w->show();
-	}
+	show_dep_screen(package, visible_version());
     }
   else if(bindings->key_matches(k, "ReverseDependencies"))
-    {
-      char buf[512];
-      snprintf(buf, 512, _("Packages depending on %s"), package.Name());
-      string menulabel(buf);
-      snprintf(buf, 512, _("%s reverse deps"), package.Name());
-      string tablabel(buf);
-
-      cw::widget_ref w=make_dep_screen(package, visible_version(), true);
-      insert_main_widget(w, menulabel, "", tablabel);
-    }
+    show_dep_screen(package, visible_version(), true);
   else if(bindings->key_matches(k, "InfoScreen"))
     show_information();
   else if(bindings->key_matches(k, "Changelog") &&

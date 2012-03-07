@@ -961,6 +961,17 @@ cw::widget_ref make_info_screen(const pkgCache::PkgIterator &pkg,
   return rval;
 }
 
+void show_info_screen(const pkgCache::PkgIterator &pkg,
+		      const pkgCache::VerIterator &ver)
+{
+  cw::widget_ref w = make_info_screen(pkg, ver);
+  const string menulabel =
+    ssprintf(_("Information about %s"), pkg.Name());
+  const string tablabel =
+    ssprintf(_("%s info"), pkg.Name());
+  insert_main_widget(w, menulabel, "", tablabel);
+}
+
 cw::widget_ref make_dep_screen(const pkgCache::PkgIterator &pkg,
 			      const pkgCache::VerIterator &ver,
 			      bool reverse)
@@ -971,12 +982,38 @@ cw::widget_ref make_dep_screen(const pkgCache::PkgIterator &pkg,
   return rval;
 }
 
+void show_dep_screen(const pkgCache::PkgIterator &pkg,
+		     const pkgCache::VerIterator &ver,
+		     bool reverse)
+{
+  cw::widget_ref w = make_dep_screen(pkg, ver, reverse);
+  const string menulabel =
+    ssprintf(reverse ? _("Packages depending on %s")
+		     : _("Dependencies of %s"),
+	     pkg.Name());
+  const string tablabel =
+    ssprintf(reverse ? _("%s reverse deps")
+		     : _("%s deps"),
+	     pkg.Name());
+  insert_main_widget(w, menulabel, "", tablabel);
+}
+
 cw::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg)
 {
   pkg_ver_screen_ref w = pkg_ver_screen::create(pkg);
   cw::widget_ref rval   = make_default_view(w, w->get_sig(), w->get_desc_sig(), true);
   w->repeat_signal();
   return rval;
+}
+
+void show_ver_screen(const pkgCache::PkgIterator &pkg)
+{
+  cw::widget_ref w = make_ver_screen(pkg);
+  const string menulabel =
+    ssprintf(_("Available versions of %s"), pkg.Name());
+  const string tablabel =
+    ssprintf(_("%s versions"), pkg.Name());
+  insert_main_widget(w, menulabel, "", tablabel);
 }
 
 static void do_help_about()
