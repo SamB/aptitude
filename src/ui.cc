@@ -965,10 +965,11 @@ void show_info_screen(const pkgCache::PkgIterator &pkg,
 		      const pkgCache::VerIterator &ver)
 {
   cw::widget_ref w = make_info_screen(pkg, ver);
+  const string name = pkg.FullName(true);
   const string menulabel =
-    ssprintf(_("Information about %s"), pkg.Name());
+    ssprintf(_("Information about %s"), name.c_str());
   const string tablabel =
-    ssprintf(_("%s info"), pkg.Name());
+    ssprintf(_("%s info"), name.c_str());
   insert_main_widget(w, menulabel, "", tablabel);
 }
 
@@ -987,14 +988,15 @@ void show_dep_screen(const pkgCache::PkgIterator &pkg,
 		     bool reverse)
 {
   cw::widget_ref w = make_dep_screen(pkg, ver, reverse);
+  const string name = pkg.FullName(true);
   const string menulabel =
     ssprintf(reverse ? _("Packages depending on %s")
 		     : _("Dependencies of %s"),
-	     pkg.Name());
+	     name.c_str());
   const string tablabel =
     ssprintf(reverse ? _("%s reverse deps")
 		     : _("%s deps"),
-	     pkg.Name());
+	     name.c_str());
   insert_main_widget(w, menulabel, "", tablabel);
 }
 
@@ -1009,10 +1011,11 @@ cw::widget_ref make_ver_screen(const pkgCache::PkgIterator &pkg)
 void show_ver_screen(const pkgCache::PkgIterator &pkg)
 {
   cw::widget_ref w = make_ver_screen(pkg);
+  const string name = pkg.FullName(true);
   const string menulabel =
-    ssprintf(_("Available versions of %s"), pkg.Name());
+    ssprintf(_("Available versions of %s"), name.c_str());
   const string tablabel =
-    ssprintf(_("%s versions"), pkg.Name());
+    ssprintf(_("%s versions"), name.c_str());
   insert_main_widget(w, menulabel, "", tablabel);
 }
 
@@ -1304,7 +1307,7 @@ static void check_package_trust()
 	  i!=untrusted.end(); ++i)
 	frags.push_back(clipbox(cw::fragf(_("  %S*%N %s [version %s]%n"),
 				      "Bullet",
-				      i->ParentPkg().Name(), i->VerStr())));
+					  i->ParentPkg().FullName(true).c_str(), i->VerStr())));
 
       main_stacked->add_visible_widget(cw::dialogs::yesno(cw::sequence_fragment(frags),
 						       cw::util::arg(sigc::ptr_fun(install_or_remove_packages)),
@@ -1558,7 +1561,7 @@ namespace
 		  {
 		    fragments.push_back(cw::fragf("  %S*%N %s%n",
 						  "Bullet",
-						  it->Name()));
+						  it->FullName(true).c_str()));
 		  }
 
 		fragments.push_back(cw::newline_fragment());
@@ -1573,7 +1576,7 @@ namespace
 		  {
 		    fragments.push_back(cw::fragf("  %S*%N %s%n",
 						  "Bullet",
-						  it->Name()));
+						  it->FullName(true).c_str()));
 		  }
 
 		fragments.push_back(cw::newline_fragment());

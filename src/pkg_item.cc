@@ -84,7 +84,7 @@ static void confirm_delete_essential(const pkgCache::PkgIterator &pkg,
   eassert((pkg->Flags&pkgCache::Flag::Essential)==pkgCache::Flag::Essential ||
 	 (pkg->Flags&pkgCache::Flag::Important)==pkgCache::Flag::Important);
 
-  cw::fragment *f=wrapbox(cw::fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.Name(), _(confirm_delete_essential_str)));
+  cw::fragment *f=wrapbox(cw::fragf(_("%s is an essential package!%n%nAre you sure you want to remove it?%nType '%s' if you are."), pkg.FullName(true).c_str(), _(confirm_delete_essential_str)));
 
   cw::widget_ref w=cw::dialogs::string(f,
 				   L"",
@@ -397,13 +397,13 @@ bool pkg_item::dispatch_key(const cw::config::key &k, cw::tree *owner)
 
 	  apt_cache_file->ReleaseLock();
 
-	  printf(_("Reconfiguring %s\n"), package.Name());
+	  printf(_("Reconfiguring %s\n"), package.FullName(true).c_str());
 
 	  char buf[512];
 	  if(sucmd)
 	    {
 	      snprintf(buf, 512, sucmd,
-		       package.Name());
+		       package.FullName(true).c_str());
 
 	      system(buf);
 

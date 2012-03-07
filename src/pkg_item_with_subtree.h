@@ -49,7 +49,7 @@ class pkg_item_with_subtree:public cwidget::widgets::subtree<child, sorter>, pub
       {
 	if(type==name)
 	  {
-	    std::wstring name = cwidget::util::transcode(get_pkg().Name());
+	    std::wstring name = cwidget::util::transcode(get_pkg().FullName(true));
 
 	    // Interesting question: would it be reasonable to use graphical
 	    // characters here?  What about Unicode graphical characters?

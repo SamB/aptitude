@@ -147,7 +147,7 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
       // Note: reverse provides show up in the version list
       if(!ver.ProvidesList().end())
 	{
-	  snprintf(buf, 256, _("Package names provided by %s"), pkg.Name());
+	  snprintf(buf, 256, _("Package names provided by %s"), pkg.FullName(true).c_str());
 	  pkg_subtree *prvtree=new pkg_subtree(cw::util::transcode(buf));
 
 	  for(pkgCache::PrvIterator prv=ver.ProvidesList(); !prv.end(); ++prv)
@@ -160,20 +160,21 @@ void pkg_grouppolicy_info::setup_package_info(const pkgCache::PkgIterator &pkg,
 	}
     }
 
-  snprintf(buf, 256, _("Packages which depend on %s"), pkg.Name());
+  snprintf(buf, 256, _("Packages which depend on %s"), pkg.FullName(true).c_str());
   pkg_subtree *revtree=new pkg_subtree(cw::util::transcode(buf));
   setup_package_deps<pkg_subtree>(pkg, ver, revtree, sig, true);
   tree->add_child(revtree);
 
   pkg_vertree_generic *newtree =
-    new pkg_vertree_generic(cw::util::swsprintf(W_("Versions of %s").c_str(), pkg.Name()), true);
+    new pkg_vertree_generic(cw::util::swsprintf(W_("Versions of %s").c_str(),
+						pkg.FullName(true).c_str()), true);
   setup_package_versions(pkg, newtree, sig);
   tree->add_child(newtree);
 }
 
 pkg_info_screen::pkg_info_screen(const pkgCache::PkgIterator &pkg,
 				 const pkgCache::VerIterator &ver)
-  :apt_info_tree(pkg.Name(), ver.end()?"":ver.VerStr())
+  :apt_info_tree(pkg.FullName(true), ver.end()?"":ver.VerStr())
 {
   set_root(setup_new_root(pkg, ver), true);
 }

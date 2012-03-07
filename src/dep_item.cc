@@ -82,7 +82,7 @@ pkg_depitem::pkg_depitem(pkgCache::DepIterator &first, pkg_signal *sig):
 
       firstiter=false;
 
-      currlabel+=start.TargetPkg().Name();
+      currlabel+=start.TargetPkg().FullName(true);
       if(start.TargetVer())
 	{
 	  currlabel+=" (";
@@ -233,7 +233,7 @@ cw::treeitem *pkg_dep_screen::setup_new_root(const pkgCache::PkgIterator &pkg,
 pkg_dep_screen::pkg_dep_screen(const pkgCache::PkgIterator &pkg,
 			       const pkgCache::VerIterator &ver,
 			       bool _reverse)
-  :apt_info_tree(pkg.Name(), ver.end()?"":ver.VerStr()), reverse(_reverse)
+  :apt_info_tree(pkg.FullName(true), ver.end()?"":ver.VerStr()), reverse(_reverse)
 {
   set_root(setup_new_root(pkg, ver), true);
 }

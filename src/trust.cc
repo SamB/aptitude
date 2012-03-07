@@ -20,5 +20,5 @@ cw::fragment *make_untrusted_warning(const pkgCache::VerIterator &ver)
 		     flowbox(cw::fragf(_("%F: This version of %s is from an %Buntrusted source%b!  Installing this package could allow a malicious individual to damage or take control of your system."),
 				   cw::text_fragment(_("WARNING"),
 						 cw::get_style("TrustWarning")),
-				   ver.ParentPkg().Name())));
+				   ver.ParentPkg().FullName(true).c_str())));
 }

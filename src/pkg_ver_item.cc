@@ -676,7 +676,7 @@ void pkg_ver_item::show_information()
 }
 
 pkg_ver_screen::pkg_ver_screen(const pkgCache::PkgIterator &pkg)
-  :apt_info_tree(pkg.Name(), "")
+  :apt_info_tree(pkg.FullName(true), "")
 {
   set_root(setup_new_root(pkg, pkg.VersionList()),true);
   //set_header(_("Available versions of ")+string(pkg.Name()));

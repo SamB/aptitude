@@ -148,7 +148,7 @@ namespace
     for(std::vector<pkgCache::PkgIterator>::const_iterator it =
 	  remaining_packages.begin(); it != remaining_packages.end(); ++it)
       {
-	std::cout << "The package " << it->Name()
+	std::cout << "The package " << it->FullName(true)
 		  << " is missing from the resolver model." << std::endl;
       }
   }
