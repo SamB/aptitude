@@ -1,4 +1,3 @@
-# translation of ru.po to Russian
 # translation of aptitude to Russian
 # This file is distributed under the same license as the aptitude package.
 # Copyright (C) 2004 THE aptitude'S COPYRIGHT HOLDER.
@@ -8,13 +7,13 @@
 # Dmitry Beloglazov <dm-guest@alioth.debian.org>, 2004.
 # Max Kosmach <max@tcen.ru>, 2008.
 # Yuri Kozlov <kozlov.y@gmail.com>, 2004, 2005, 2006, 2007, 2008.
-# Yuri Kozlov <yuray@komyakino.ru>, 2009.
+# Yuri Kozlov <yuray@komyakino.ru>, 2009, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: aptitude 0.6.1.3-3\n"
+"Project-Id-Version: aptitude 0.6.5-1+\n"
 "Report-Msgid-Bugs-To: aptitude@packages.debian.org\n"
 "POT-Creation-Date: 2012-02-01 01:10+0800\n"
-"PO-Revision-Date: 2012-02-12 15:10+0800\n"
+"PO-Revision-Date: 2012-03-08 10:20+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
 "Language: ru\n"
@@ -23,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
 
 #: src/apt_config_treeitems.cc:99 src/apt_config_treeitems.cc:210
 #: src/apt_config_treeitems.cc:394
@@ -51,7 +50,7 @@ msgstr "%BЗначение:%b     "
 #: src/apt_config_treeitems.cc:280
 #, c-format
 msgid "Editing \"%ls\": "
-msgstr "Редактируется \"%ls\": "
+msgstr "Редактируется «%ls»: "
 
 #: src/apt_config_treeitems.cc:402
 msgid "%BChoice:%b  "
@@ -120,7 +119,7 @@ msgid ""
 msgstr ""
 "Если эта настройка включена, то aptitude завершит работу после закрытия всех "
 "окон (списки пакетов, описания пакетов и т.д.). В противном случае aptitude "
-"будет продолжать работать, пока вы не выберете 'Выйти' в меню Действий."
+"будет продолжать работать, пока вы не выберете «Выход» в меню Действий."
 
 #: src/apt_options.cc:190
 msgid "Prompt for confirmation at exit"
@@ -168,7 +167,7 @@ msgid ""
 "were no errors, begin installing packages immediately."
 msgstr ""
 "Ждать подтверждения, если при скачивании произошла ошибка. Если ошибок не "
-"было -- начинать установку пакетов сразу же."
+"было — начинать установку пакетов сразу же."
 
 #: src/apt_options.cc:203
 msgid "Always"
@@ -184,7 +183,7 @@ msgstr ""
 
 #: src/apt_options.cc:206
 msgid "Use a 'status-line' download indicator for all downloads"
-msgstr "Использовать индикатор скачивания внизу экрана для всех скачиваний"
+msgstr "Использовать индикатор скачивания «status-line» для всех скачиваний"
 
 #: src/apt_options.cc:207
 msgid ""
@@ -398,7 +397,7 @@ msgstr ""
 #: src/apt_options.cc:307
 msgid ""
 "Forget which packages are \"new\" whenever the package lists are updated"
-msgstr "Забывать о \"новых\" пакетах после обновления списка пакетов"
+msgstr "Забывать о «новых» пакетах после обновления списка пакетов"
 
 #: src/apt_options.cc:308
 msgid ""
@@ -406,12 +405,12 @@ msgid ""
 "after you update the package lists (e.g., by pressing 'u')."
 msgstr ""
 "Если эта настройка включена, то aptitude очистит список новых пакетов после "
-"обновления списка пакетов (например, по нажатию 'u')."
+"обновления списка пакетов (например, по нажатию «u»)."
 
 #: src/apt_options.cc:313
 msgid ""
 "Forget which packages are \"new\" whenever packages are installed or removed"
-msgstr "Забывать о \"новых\" пакетах после установки или удалении пакетов"
+msgstr "Забывать о «новых» пакетах после установки или удалении пакетов"
 
 #: src/apt_options.cc:314
 msgid ""
@@ -469,8 +468,8 @@ msgid ""
 "shell command that is to receive the log on standard input."
 msgstr ""
 "При установке или удалении пакетов всё, что выполняет aptitude будет "
-"записано в этот файл. Если первый символ имени файла вертикальная черта ('%B|"
-"%b'), то остаток имени будет рассматриваться как команда оболочки командной "
+"записано в этот файл. Если первый символ имени файла вертикальная черта («%B|"
+"%b»), то остаток имени будет рассматриваться как команда оболочки командной "
 "строки, которая принимает данные о действиях aptitude со стандартного ввода."
 
 #: src/apt_options.cc:350
@@ -520,11 +519,11 @@ msgid ""
 "enabled, packages that are recommended by an installed package will not be "
 "automatically removed."
 msgstr ""
-"Если эта настройка и настройка \"автоматически разрешать зависимости\" "
+"Если эта настройка и настройка «автоматически разрешать зависимости» "
 "включены, aptitude попытается установить рекомендуемые к новым "
 "устанавливаемым пакетам вместе с их зависимостями. Предложения не будут "
-"автоматически установлены. Если эта настройка и настройка \"автоматически "
-"удалять неиспользуемые пакеты\" включены, то пакеты, рекомендуемые "
+"автоматически установлены. Если эта настройка и настройка «автоматически "
+"удалять неиспользуемые пакеты» включены, то пакеты, рекомендуемые "
 "устанавливаемым пакетом, не будут автоматически удалены."
 
 #: src/apt_options.cc:380
@@ -544,8 +543,8 @@ msgstr ""
 "Если эта настройка включена, то автоматически установленные пакеты и для "
 "которых нет зависящих пакетов установленных вручную, будут удалены из "
 "системы. При отмене удаления пакет помечается как установленный вручную.\n"
-"Если эта настройка и настройка \"устанавливать рекомендуемые пакеты "
-"автоматически\" включены, то автоматически установленные пакеты не будут "
+"Если эта настройка и настройка «устанавливать рекомендуемые пакеты "
+"автоматически» включены, то автоматически установленные пакеты не будут "
 "удаляться, если какой-то из установленных пакетов их рекомендует."
 
 #: src/apt_options.cc:392
@@ -638,7 +637,7 @@ msgstr "Неустранимая ошибка в решателе"
 #: src/broken_indicator.cc:277
 #, c-format
 msgid "[%d(%d)/...] Resolving dependencies"
-msgstr "[%d(%d)/...] Разрешение зависимостей"
+msgstr "[%d(%d)/…] Разрешение зависимостей"
 
 #: src/broken_indicator.cc:313 src/gtk/resolver.cc:1294
 #: src/gtk/resolver.cc:1462 src/solution_dialog.cc:140
@@ -648,47 +647,47 @@ msgstr "Внутренняя ошибка: неожиданно нет реше�
 
 #: src/broken_indicator.cc:371
 msgid "Suggest keeping all packages at their current version."
-msgstr "Предложить оставить все пакеты без обновления."
+msgstr "Предлагается оставить все пакеты без обновления."
 
 #: src/broken_indicator.cc:379
 #, c-format
 msgid "%d install"
 msgid_plural "%d installs"
-msgstr[0] "%d установлен"
-msgstr[1] "%d установлено"
-msgstr[2] "%d установлено"
+msgstr[0] "%d установку"
+msgstr[1] "%d установки"
+msgstr[2] "%d установок"
 
 #: src/broken_indicator.cc:389
 #, c-format
 msgid "%d removal"
 msgid_plural "%d removals"
-msgstr[0] "%d удалён"
-msgstr[1] "%d удалено"
-msgstr[2] "%d удалено"
+msgstr[0] "%d удаление"
+msgstr[1] "%d удаления"
+msgstr[2] "%d удалений"
 
 #: src/broken_indicator.cc:399
 #, c-format
 msgid "%d keep"
 msgid_plural "%d keeps"
-msgstr[0] "%d оставлен"
-msgstr[1] "%d оставлено"
-msgstr[2] "%d оставлено"
+msgstr[0] "%d оставить неизменным"
+msgstr[1] "%d оставить неизменным"
+msgstr[2] "%d оставить неизменным"
 
 #: src/broken_indicator.cc:409
 #, c-format
 msgid "%d upgrade"
 msgid_plural "%d upgrades"
-msgstr[0] "%d обновлён"
-msgstr[1] "%d обновлено"
-msgstr[2] "%d обновлено"
+msgstr[0] "%d обновление"
+msgstr[1] "%d обновления"
+msgstr[2] "%d обновлений"
 
 #: src/broken_indicator.cc:419
 #, c-format
 msgid "%d downgrade"
 msgid_plural "%d downgrades"
-msgstr[0] "%d заменён на более старые"
-msgstr[1] "%d заменено на более старые"
-msgstr[2] "%d заменено на более старые"
+msgstr[0] "%d замену на старую версию"
+msgstr[1] "%d замены на старую версию"
+msgstr[2] "%d замен на старую версию"
 
 #. ForTranslators: %F is replaced with a comma separated list such as
 #. "n1 installs, n2 removals", ...
@@ -696,12 +695,12 @@ msgstr[2] "%d заменено на более старые"
 #: src/broken_indicator.cc:430
 #, c-format
 msgid "Suggest %F"
-msgstr "Предлагается %F"
+msgstr "Предлагается выполнить %F"
 
 #: src/cmdline/cmdline_action.cc:55
 #, c-format
 msgid "Unable to find the source package for \"%s\".\n"
-msgstr "Не удалось найти пакет с исходниками для \"%s\".\n"
+msgstr "Не удалось найти пакет с исходниками для «%s».\n"
 
 #: src/cmdline/cmdline_action.cc:212
 #, c-format
@@ -714,8 +713,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already installed.\n"
 msgstr ""
-"Замечание: \"%s\", предоставляющий виртуальный пакет\n"
-"           \"%s\", уже установлен.\n"
+"Замечание: «%s», предоставляющий виртуальный пакет\n"
+"           «%s», уже установлен.\n"
 
 #: src/cmdline/cmdline_action.cc:256
 #, c-format
@@ -723,8 +722,8 @@ msgid ""
 "Note: \"%s\", providing the virtual package\n"
 "      \"%s\", is already going to be installed.\n"
 msgstr ""
-"Замечание: \"%s\", предоставляющий виртуальный пакет\n"
-"           \"%s\", уже выбран для установки.\n"
+"Замечание: «%s», предоставляющий виртуальный пакет\n"
+"           «%s», уже выбран для установки.\n"
 
 #: src/cmdline/cmdline_action.cc:278
 #, c-format
@@ -732,13 +731,13 @@ msgid ""
 "\"%s\" exists in the package database, but it is not a\n"
 "real package and no package provides it.\n"
 msgstr ""
-"\"%s\" существует в базе данных пакетов, но это не\n"
+"«%s» существует в базе данных пакетов, но это не\n"
 "настоящий пакет, и ни один пакет не предоставляет его.\n"
 
 #: src/cmdline/cmdline_action.cc:286
 #, c-format
 msgid "\"%s\" is a virtual package provided by:\n"
-msgstr "\"%s\" является виртуальным пакетом, предоставленный:\n"
+msgstr "«%s» является виртуальным пакетом, предоставленный:\n"
 
 #: src/cmdline/cmdline_action.cc:289
 #, c-format
@@ -751,8 +750,8 @@ msgid ""
 "Note: selecting \"%s\" instead of the\n"
 "      virtual package \"%s\"\n"
 msgstr ""
-"Замечание: выбран \"%s\" вместо\n"
-"           виртуального пакета \"%s\"\n"
+"Замечание: выбран «%s» вместо\n"
+"           виртуального пакета «%s»\n"
 
 #: src/cmdline/cmdline_action.cc:318
 #, c-format
@@ -765,12 +764,10 @@ msgid "%s is not currently installed, so it will not be upgraded.\n"
 msgstr "%s не установлен, поэтому не будет обновлён.\n"
 
 #: src/cmdline/cmdline_action.cc:331
-#, fuzzy, c-format
-#| msgid ""
-#| "%s is already installed at the latest version, so it will not be upgraded."
+#, c-format
 msgid ""
 "%s is already installed at the latest version, so it will not be upgraded.\n"
-msgstr "%s уже установлен самой последней версии, поэтому не будет обновлён."
+msgstr "%s уже установлен самой последней версии, поэтому не будет обновлён.\n"
 
 #: src/cmdline/cmdline_action.cc:336
 #, c-format
@@ -795,7 +792,7 @@ msgstr "Пакет %s не обновляемый, поэтому нельзя �
 #: src/cmdline/cmdline_action.cc:470
 #, c-format
 msgid "Note: selecting the task \"%s: %s\" for installation\n"
-msgstr "Замечание: выбрана задача \"%s: %s\" для установки\n"
+msgstr "Замечание: выбрана задача «%s: %s» для установки\n"
 
 #: src/cmdline/cmdline_action.cc:505
 #, c-format
@@ -803,13 +800,13 @@ msgid ""
 "You can only specify a package version with an 'install' command or a "
 "'forbid-version' command.\n"
 msgstr ""
-"Вы можете указать версию пакета только в команде 'install' или в 'forbid-"
-"version'.\n"
+"Вы можете указать версию пакета только в команде «install» или «forbid-"
+"version».\n"
 
 #: src/cmdline/cmdline_action.cc:514
 #, c-format
 msgid "You can only specify a package archive with an 'install' command.\n"
-msgstr "Вы можете указать архив пакета только в команде 'install'.\n"
+msgstr "Вы можете указать архив пакета только в команде «install».\n"
 
 #: src/cmdline/cmdline_action.cc:552
 #, c-format
@@ -817,8 +814,8 @@ msgid ""
 "Couldn't find package \"%s\", and more than 40\n"
 "packages contain \"%s\" in their name.\n"
 msgstr ""
-"Не удалось найти пакет \"%s\", и более чем 40\n"
-"пакетов содержат \"%s\" в своём имени.\n"
+"Не удалось найти пакет «%s», и более чем 40\n"
+"пакетов содержат «%s» в своём имени.\n"
 
 #: src/cmdline/cmdline_action.cc:555
 #, c-format
@@ -826,14 +823,13 @@ msgid ""
 "Couldn't find package \"%s\".  However, the following\n"
 "packages contain \"%s\" in their name:\n"
 msgstr ""
-"Не удалось найти пакет \"%s\". Однако, следующие\n"
-"пакеты содержат \"%s\" в своём имени:\n"
+"Не удалось найти пакет «%s». Однако, следующие\n"
+"пакеты содержат «%s» в своём имени:\n"
 
 #: src/cmdline/cmdline_action.cc:577
 #, c-format
 msgid "Couldn't find any package whose name or description matched \"%s\"\n"
-msgstr ""
-"Не удалось найти пакеты, содержащих \"%s\" в своём имени или описании\n"
+msgstr "Не удалось найти пакеты, содержащих «%s» в своём имени или описании\n"
 
 #: src/cmdline/cmdline_action.cc:579
 #, c-format
@@ -841,8 +837,8 @@ msgid ""
 "Couldn't find any package matching \"%s\", and more than 40\n"
 "packages contain \"%s\" in their description.\n"
 msgstr ""
-"Не удалось найти пакет имеющий \"%s\", и более чем 40\n"
-"пакетов содержат \"%s\" в своём описании.\n"
+"Не удалось найти пакет имеющий «%s», и более чем 40\n"
+"пакетов содержат «%s» в своём описании.\n"
 
 #: src/cmdline/cmdline_action.cc:582
 #, c-format
@@ -850,13 +846,13 @@ msgid ""
 "Couldn't find any package matching \"%s\".  However, the following\n"
 "packages contain \"%s\" in their description:\n"
 msgstr ""
-"Не удалось найти пакет имеющий \"%s\".Однако, следующие\n"
-"пакеты содержат \"%s\" в своём описании.\n"
+"Не удалось найти пакет имеющий «%s». Однако, следующие\n"
+"пакеты содержат «%s» в своём описании.\n"
 
 #: src/cmdline/cmdline_action.cc:724
 #, c-format
 msgid "Bad action character '%c'\n"
-msgstr "Неверный символ '%c' для выбора действия\n"
+msgstr "Некорректный символ «%c» для выбора действия\n"
 
 #: src/cmdline/cmdline_changelog.cc:136
 #: src/cmdline/cmdline_download_progress_display.cc:131
@@ -868,10 +864,9 @@ msgid "Err "
 msgstr "Ош "
 
 #: src/cmdline/cmdline_changelog.cc:179
-#, fuzzy, c-format
-#| msgid "Changelog of %s"
+#, c-format
 msgid "Changelog download failed: %s"
-msgstr "Changelog для %s"
+msgstr "Не удалось скачать Changelog: %s"
 
 #: src/cmdline/cmdline_changelog.cc:283
 msgid "Can't execute sensible-pager, is this a working Debian system?"
@@ -927,7 +922,7 @@ msgstr "Неверная операция %s"
 
 #: src/cmdline/cmdline_do_action.cc:233
 msgid "Unexpected pattern argument following \"keep-all\""
-msgstr "Неожидаемый шаблонный аргумент после \"keep-all\""
+msgstr "Неожидаемый шаблонный аргумент после «keep-all»"
 
 #: src/cmdline/cmdline_do_action.cc:345
 #, c-format
@@ -956,7 +951,7 @@ msgstr "Не удалось прочитать файл sources.list"
 #: src/cmdline/cmdline_download.cc:91
 #, c-format
 msgid "Can't find a package named \"%s\""
-msgstr "Не удалось найти пакет, с именем \"%s\""
+msgstr "Не удалось найти пакет, с именем «%s»"
 
 #: src/cmdline/cmdline_download.cc:135
 #, c-format
@@ -968,26 +963,20 @@ msgstr ""
 "устаревший пакет?"
 
 #: src/cmdline/cmdline_download_progress_display.cc:154
-#, fuzzy
-#| msgid "Hit "
 msgid "Hit"
-msgstr "Из кэша: "
+msgstr "Из кэша"
 
 #. ForTranslators: this stands for "ignored" and should be
 #. the same width as the translation of "Err".
 #: src/cmdline/cmdline_download_progress_display.cc:181
-#, fuzzy
-#| msgid "Ign "
 msgid "Ign"
-msgstr "Игн "
+msgstr "Игнор  "
 
 #. ForTranslators: this stands for "error" and should be the
 #. same width as the translation of "Ign".
 #: src/cmdline/cmdline_download_progress_display.cc:185
-#, fuzzy
-#| msgid "Err "
 msgid "Err"
-msgstr "Ош "
+msgstr "Ошибка "
 
 #: src/cmdline/cmdline_download_progress_display.cc:211
 #, c-format
@@ -999,7 +988,9 @@ msgstr "Получено %sБ в %s (%sБ/с)"
 msgid ""
 "Media change: Please insert the disc labeled '%s' into the drive '%s' and "
 "press [Enter]."
-msgstr "Смена носителя: вставьте диск, помеченный как '%s' в привод '%s' и нажмите [Enter]."
+msgstr ""
+"Смена носителя: вставьте диск, помеченный как «%s» в привод «%s» и нажмите "
+"[Enter]."
 
 #: src/cmdline/cmdline_download_progress_display.cc:435
 msgid "[Working]"
@@ -1018,7 +1009,7 @@ msgstr ""
 #: src/cmdline/cmdline_user_tag.cc:130
 #, c-format
 msgid "No such package \"%s\".\n"
-msgstr "Пакет не найден \"%s\".\n"
+msgstr "Пакет «%s» не найден.\n"
 
 #: src/cmdline/cmdline_extract_cache_subset.cc:132
 #, c-format
@@ -1080,7 +1071,7 @@ msgstr "Выполнено"
 #. be truncated or padded to 4 characters.
 #: src/cmdline/cmdline_progress_display.cc:173
 msgid "DONE"
-msgstr ""
+msgstr "СДЕЛ"
 
 #: src/cmdline/cmdline_prompt.cc:89
 msgid "Couldn't read list of sources"
@@ -1166,7 +1157,7 @@ msgstr "Я знаю, что это очень плохая идея"
 #: src/cmdline/cmdline_prompt.cc:487 src/ui.cc:1546
 #, c-format
 msgid "To continue, type the phrase \"%s\":\n"
-msgstr "Чтобы продолжить, наберите фразу \"%s\":\n"
+msgstr "Чтобы продолжить, наберите фразу «%s»:\n"
 
 #: src/cmdline/cmdline_prompt.cc:529
 #, c-format
@@ -1192,7 +1183,7 @@ msgid ""
 msgstr ""
 "*** ПРЕДУПРЕЖДЕНИЕ ***   Игнорирование этих надёжных противоречий, так как\n"
 "                  %s::CmdLine::Ignore-Trust-Violations установлено в "
-"'true'!\n"
+"«true»!\n"
 
 #: src/cmdline/cmdline_prompt.cc:550
 msgid ""
@@ -1200,7 +1191,7 @@ msgid ""
 "                  Apt::Get::AllowUnauthenticated is 'true'!\n"
 msgstr ""
 "*** ПРЕДУПРЕЖДЕНИЕ ***   Игнорирование этих надёжных противоречий, так как\n"
-"                  Apt::Get::AllowUnauthenticated установлено в 'true'!\n"
+"                  Apt::Get::AllowUnauthenticated установлено в «true»!\n"
 
 #. ForTranslators: This string is a confirmation message, which
 #. users (especially CJK users) should be able to input without
@@ -1228,12 +1219,12 @@ msgstr "Хотите игнорировать предупреждение и п
 #: src/cmdline/cmdline_prompt.cc:579
 #, c-format
 msgid "To continue, enter \"%s\"; to abort, enter \"%s\": "
-msgstr "Чтобы продолжить, наберите фразу \"%s\"; для отмены введите \"%s\": "
+msgstr "Чтобы продолжить, наберите фразу «%s»; для отмены введите «%s»: "
 
 #: src/cmdline/cmdline_prompt.cc:596
 #, c-format
 msgid "Unrecognized input.  Enter either \"%s\" or \"%s\".\n"
-msgstr "Неверный ввод. Требуется \"%s\" или \"%s\".\n"
+msgstr "Неверный ввод. Требуется «%s» или «%s».\n"
 
 #: src/cmdline/cmdline_prompt.cc:710
 #, c-format
@@ -1295,7 +1286,7 @@ msgstr "После распаковки освободится %s байт.\n"
 #: src/cmdline/cmdline_prompt.cc:774
 #, c-format
 msgid "No packages to show -- enter the package names on the line after 'i'.\n"
-msgstr "Нет пакетов для показа -- введите имена пакетов в строке после 'i'.\n"
+msgstr "Нет пакетов для показа — введите имена пакетов в строке после «i».\n"
 
 #: src/cmdline/cmdline_prompt.cc:780 src/cmdline/cmdline_prompt.cc:795
 msgid "Press Return to continue."
@@ -1304,7 +1295,7 @@ msgstr "Нажмите Ввод для продолжения."
 #: src/cmdline/cmdline_prompt.cc:791
 #, c-format
 msgid "No packages found -- enter the package names on the line after 'c'.\n"
-msgstr "Пакеты не найдены -- введите имена пакетов в строке после 'c'.\n"
+msgstr "Пакеты не найдены — введите имена пакетов в строке после «c».\n"
 
 #: src/cmdline/cmdline_prompt.cc:806
 #, c-format
@@ -1312,7 +1303,7 @@ msgid ""
 "No packages found -- enter zero or more roots of the search followed by the "
 "package to justify.\n"
 msgstr ""
-"Пакеты не найдены -- введите ноль или более корней поиска после пакета для "
+"Пакеты не найдены — введите ноль или более корней поиска после пакета для "
 "подтверждения.\n"
 
 #: src/cmdline/cmdline_prompt.cc:839
@@ -1344,7 +1335,7 @@ msgid ""
 "the 'i'"
 msgstr ""
 "показать информацию об одном или более пакетов; названия пакетов должны быть "
-"перечислены после 'i'"
+"перечислены после «i»"
 
 #: src/cmdline/cmdline_prompt.cc:851
 #, c-format
@@ -1357,7 +1348,7 @@ msgid ""
 "follow the 'c'"
 msgstr ""
 "показать список изменений Debian одного или более пакетов; названия пакетов "
-"должны быть перечислены после 'c'"
+"должны быть перечислены после «c»"
 
 #: src/cmdline/cmdline_prompt.cc:855
 #, c-format
@@ -1433,42 +1424,42 @@ msgstr ""
 
 #: src/cmdline/cmdline_prompt.cc:888 src/cmdline/cmdline_resolver.cc:267
 msgid "'+' to install packages"
-msgstr "'+' установить пакеты"
+msgstr "«+» установить пакеты"
 
 #: src/cmdline/cmdline_prompt.cc:891 src/cmdline/cmdline_resolver.cc:269
 msgid ""
 "'+M' to install packages and immediately flag them as automatically installed"
 msgstr ""
-"'+M' установить пакеты и сразу пометить их как автоматически установленные"
+"«+M» установить пакеты и сразу пометить их как автоматически установленные"
 
 #: src/cmdline/cmdline_prompt.cc:893 src/cmdline/cmdline_resolver.cc:271
 msgid "'-' to remove packages"
-msgstr "'-' удалить пакеты"
+msgstr "«-» удалить пакеты"
 
 #: src/cmdline/cmdline_prompt.cc:895 src/cmdline/cmdline_resolver.cc:273
 msgid "'_' to purge packages"
-msgstr "'_' вычистить пакеты"
+msgstr "«_» вычистить пакеты"
 
 #: src/cmdline/cmdline_prompt.cc:897 src/cmdline/cmdline_resolver.cc:275
 msgid "'=' to place packages on hold"
-msgstr "'=' зафиксировать пакеты"
+msgstr "«=» зафиксировать пакеты"
 
 #: src/cmdline/cmdline_prompt.cc:899 src/cmdline/cmdline_resolver.cc:277
 msgid ""
 "':' to keep packages in their current state without placing them on hold"
-msgstr "':' сохранить пакеты в их текущем состоянии без фиксации"
+msgstr "«:» сохранить пакеты в их текущем состоянии без фиксации"
 
 #: src/cmdline/cmdline_prompt.cc:901 src/cmdline/cmdline_resolver.cc:279
 msgid "'&M' to mark packages as automatically installed"
-msgstr "'&M' пометить пакеты как автоматически установленные"
+msgstr "«&M» пометить пакеты как автоматически установленные"
 
 #: src/cmdline/cmdline_prompt.cc:903 src/cmdline/cmdline_resolver.cc:281
 msgid "'&m' to mark packages as manually installed"
-msgstr "'&m' пометить пакеты как установленные вручную"
+msgstr "«&m» пометить пакеты как установленные вручную"
 
 #: src/cmdline/cmdline_prompt.cc:905
 msgid "'&BD' to install the build-dependencies of a package."
-msgstr "'&BD' установить сборочные зависимости пакета."
+msgstr "«&BD» установить сборочные зависимости пакета."
 
 #: src/cmdline/cmdline_prompt.cc:908
 msgid ""
@@ -1477,25 +1468,28 @@ msgid ""
 "These characters provide extra information about the package's state, and "
 "can include any combination of the following:"
 msgstr ""
+"В списке действий, которые нужно выполнить, после некоторых пакетов указан "
+"один или более символов в скобках, например «aptitude{u}». Эти символы "
+"отображают дополнительную информацию о состоянии пакета; они могут "
+"составлять любые комбинации:"
 
 #: src/cmdline/cmdline_prompt.cc:912
-#, fuzzy
-#| msgid "Whether the package is automatically installed."
 msgid "'a': the package was automatically installed or removed."
-msgstr "Установлен ли пакет автоматически."
+msgstr "«a»: пакет был установлен или удалён автоматически."
 
 #: src/cmdline/cmdline_prompt.cc:914
 msgid ""
 "'b': some of the package's dependencies are violated by the proposed changes."
 msgstr ""
+"«b»: некоторые зависимости пакета нарушаются предлагаемыми изменениями."
 
 #: src/cmdline/cmdline_prompt.cc:916
 msgid "'p': the package will be purged in addition to being removed."
-msgstr ""
+msgstr "«p»: пакет будет вычищен в дополнении к обычному удалению."
 
 #: src/cmdline/cmdline_prompt.cc:918
 msgid "'u': the package is being removed because it is unused."
-msgstr ""
+msgstr "«u»: пакет будет удалён, так как больше не используется."
 
 #: src/cmdline/cmdline_prompt.cc:923
 msgid "Commands:"
@@ -1507,7 +1501,7 @@ msgid ""
 "them yourself by hand or type 'n' to quit."
 msgstr ""
 "aptitude не удалось найти решение для этих зависимостей. Вы можете разрешить "
-"это вручную или нажмите 'н', чтобы выйти."
+"это вручную или нажмите «n», чтобы выйти."
 
 #: src/cmdline/cmdline_prompt.cc:1058
 msgid "Do you want to continue? [Y/n/?] "
@@ -1519,16 +1513,16 @@ msgstr "Будете разбираться с зависимостями вру
 
 #: src/cmdline/cmdline_prompt.cc:1077
 msgid "Invalid response.  Please enter a valid command or '?' for help.\n"
-msgstr "Неверный ответ. Введите допустимую команду или '?' для справки.\n"
+msgstr "Неверный ответ. Введите допустимую команду или «?» для справки.\n"
 
 #: src/cmdline/cmdline_prompt.cc:1083
 msgid ""
 "Enter a package management command (such as '+ package' to install a "
 "package), 'R' to attempt automatic dependency resolution or 'N' to abort."
 msgstr ""
-"Введите команду для действия над пакетом (например, '+ пакет' -- для "
-"установки пакет), 'R' -- для автоматического разрешения зависимостей или 'N' "
-"-- чтобы прервать."
+"Введите команду для действия над пакетом (например, «+ пакет» — для "
+"установки пакет), «R» — для автоматического разрешения зависимостей или «N» "
+"— чтобы прервать."
 
 #: src/cmdline/cmdline_prompt.cc:1115
 #, c-format
@@ -1612,16 +1606,13 @@ msgid "Resolver state successfully written!"
 msgstr "Состояние решателя успешно сохранено!"
 
 #: src/cmdline/cmdline_resolver.cc:222
-#, fuzzy, c-format
-#| msgid ""
-#| "y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: "
-#| "%F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+#, c-format
 msgid ""
 "y: %Fn: %Fq: %F.: %F,: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) ...: %F%na (ID|pkg "
 "ver) ...: %F%n<ID>: %F%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
 msgstr ""
-"y: %Fn: %Fq: %F,: %F.: %Fo: %Fe: %Fx: %Fr pkg ver ...: %F%na pkg ver ...: %F"
-"%n<ACTION> pkg... : %F%n%F%F%F%F%F%F%F%F"
+"y: %Fn: %Fq: %F.: %F,: %Fo: %Fe: %Fx: %Fr (ID|pkg ver) …: %F%na (ID|pkg ver) "
+"…: %F%n<ID>: %F%n<ACTION> pkg… : %F%n%F%F%F%F%F%F%F%F"
 
 #: src/cmdline/cmdline_resolver.cc:243
 msgid "accept the proposed changes"
@@ -1661,37 +1652,32 @@ msgstr ""
 "зависимостями вручную."
 
 #: src/cmdline/cmdline_resolver.cc:259
-#, fuzzy
-#| msgid ""
-#| "reject the given package versions; don't display any solutions in which "
-#| "they occur.  Enter UNINST instead of a version to reject removing the "
-#| "package."
 msgid ""
 "reject the given package versions; don't display any solutions in which they "
 "occur.  Enter UNINST instead of a version to reject removing the package.  "
 "ID is the integer printed to the left of the action."
 msgstr ""
 "отвергнуть версии данных пакетов; не показывать решения, в которые они "
-"входят. Введите UNINST вместо версии для отказа от удаления пакета."
+"входят. Введите UNINST вместо версии для отказа от удаления пакета. Значение "
+"ID отображается в виде целого числа слева от действия."
 
 #: src/cmdline/cmdline_resolver.cc:261
-#, fuzzy
-#| msgid ""
-#| "accept the given package versions; display only solutions in which they "
-#| "occur.  Enter UNINST instead of a version to accept removing the package."
 msgid ""
 "accept the given package versions; display only solutions in which they "
 "occur.  Enter UNINST instead of a version to accept removing the package.  "
 "ID is the integer printed to the left of the action."
 msgstr ""
 "принять версии данных пакетов; показывать только решения, в которые они "
-"входят. Введите UNINST вместо версии для согласия на удаление пакета."
+"входят. Введите UNINST вместо версии для согласия на удаление пакета. "
+"Значение ID отображается в виде целого числа слева от действия."
 
 #: src/cmdline/cmdline_resolver.cc:263
 msgid ""
 "display information about the action labeled ID from the solution.  The "
 "label is the integer printed to the left of the action."
 msgstr ""
+"показать информацию о действии с помеченным ID из решения. Значение ID "
+"отображается в виде целого числа слева от действия."
 
 #: src/cmdline/cmdline_resolver.cc:265
 msgid "adjust the state of the listed packages, where ACTION is one of:"
@@ -1723,22 +1709,22 @@ msgstr "Неверный ответ. Введите целое значение 
 #: src/cmdline/cmdline_resolver.cc:329
 #, c-format
 msgid "Expected at least one package/version pair following '%c'"
-msgstr "Ожидается как минимум одна пара пакет/версия после '%c'"
+msgstr "Ожидается как минимум одна пара пакет/версия после «%c»"
 
 #: src/cmdline/cmdline_resolver.cc:351
 #, c-format
 msgid "Expected a version or \"%s\" after \"%s\""
-msgstr "Ожидается версия или \"%s\" после \"%s\""
+msgstr "Ожидается версия или «%s» после «%s»"
 
 #: src/cmdline/cmdline_resolver.cc:361
 #, c-format
 msgid "No such package \"%s\""
-msgstr "Пакет \"%s\" не найден"
+msgstr "Пакет «%s» не найден"
 
 #: src/cmdline/cmdline_resolver.cc:377
 #, c-format
 msgid "%s has no version named \"%s\""
-msgstr "%s не имеет версии \"%s\""
+msgstr "%s не имеет версии «%s»"
 
 #: src/cmdline/cmdline_resolver.cc:403
 #, c-format
@@ -1781,34 +1767,29 @@ msgid "Requiring the installation of %s version %s (%s)"
 msgstr "Требуется установка %s версии %s (%s)"
 
 #: src/cmdline/cmdline_resolver.cc:496
-#, fuzzy, c-format
-#| msgid "Leave the following recommendations unresolved:"
+#, c-format
 msgid "Allowing this recommendation to be ignored: %s"
-msgstr "Оставить следующие зависимости неразрешёнными:"
+msgstr "Позволить проигнорировать эту рекомендацию: %s"
 
 #: src/cmdline/cmdline_resolver.cc:502
-#, fuzzy, c-format
-#| msgid "Audit ^Recommendations"
+#, c-format
 msgid "Always obeying this recommendation: %s"
-msgstr "^Проверка рекомендаций"
+msgstr "Всегда соглашаемся с этой рекомендацией: %s"
 
 #: src/cmdline/cmdline_resolver.cc:511
-#, fuzzy, c-format
-#| msgid "No longer requiring the removal of %s"
+#, c-format
 msgid "No longer ignoring this recommendation: %s"
-msgstr "Удаление %s больше не требуется"
+msgstr "Больше не игнорируем эту рекомендацию: %s"
 
 #: src/cmdline/cmdline_resolver.cc:517
-#, fuzzy, c-format
-#| msgid "Audit ^Recommendations"
+#, c-format
 msgid "Ignoring this recommendation: %s"
-msgstr "^Проверка рекомендаций"
+msgstr "Игнорируем эту рекомендацию: %s"
 
 #: src/cmdline/cmdline_resolver.cc:576
-#, fuzzy, c-format
-#| msgid "Actions"
+#, c-format
 msgid "Action \"%s\""
-msgstr "Действия"
+msgstr "Действие «%s»"
 
 #. ForTranslators: the substitution is
 #. replaced in English with something
@@ -1816,16 +1797,20 @@ msgstr "Действия"
 #: src/cmdline/cmdline_resolver.cc:589
 #, c-format
 msgid "This action was selected because %ls."
-msgstr ""
+msgstr "Это действие было выбрано, так как %ls."
 
 #: src/cmdline/cmdline_resolver.cc:591
 msgid "This action is currently rejected; it will not appear in new solutions."
 msgstr ""
+"В данный момент это действие отвергается; оно больше не появится в "
+"последующих решениях."
 
 #: src/cmdline/cmdline_resolver.cc:592
 msgid ""
 "This action is currently approved; it will be selected whenever possible."
 msgstr ""
+"В данный момент это действие согласовано; оно будет выбрано, если это "
+"возможно."
 
 #. ForTranslators: the "r" here is
 #. for "reject", but should not be
@@ -1836,6 +1821,7 @@ msgstr ""
 #, c-format
 msgid "Enter \"r %s\" to allow this action to appear in new solutions."
 msgstr ""
+"Введите «r %s», чтобы позволить этому действию появляться в новых решениях."
 
 #. ForTranslators: the "r" here is
 #. for "reject", but should not be
@@ -1845,7 +1831,7 @@ msgstr ""
 #: src/cmdline/cmdline_resolver.cc:605
 #, c-format
 msgid "Enter \"r %s\" to prevent this action from appearing in new solutions."
-msgstr ""
+msgstr "Введите «r %s», чтобы это действие не появлялось в новых решениях."
 
 #. ForTranslators: the "a" here is
 #. for "approve", but should not be
@@ -1858,6 +1844,8 @@ msgid ""
 "Enter \"a %s\" to cease requiring that new solutions include this action if "
 "possible."
 msgstr ""
+"Введите «a %s», чтобы отменить требование появления этого действия в новых "
+"решениях при возможности."
 
 #. ForTranslators: the "a" here is
 #. for "approve", but should not be
@@ -1869,6 +1857,8 @@ msgstr ""
 msgid ""
 "Enter \"a %s\" to require that new solutions include this action if possible."
 msgstr ""
+"Введите «a %s», чтобы требовать появление этого действия в новых решениях "
+"при возможности."
 
 #: src/cmdline/cmdline_resolver.cc:790
 #, c-format
@@ -1894,7 +1884,7 @@ msgstr ""
 #: src/gtk/resolver.cc:2058 src/solution_dialog.cc:127
 #: src/solution_screen.cc:546
 msgid "Resolving dependencies..."
-msgstr "Разрешение зависимостей..."
+msgstr "Разрешение зависимостей…"
 
 #: src/cmdline/cmdline_resolver.cc:897
 msgid "The following actions will resolve these dependencies:"
@@ -1930,15 +1920,16 @@ msgstr "Неверный ответ; можно вводить одну из с�
 
 #: src/cmdline/cmdline_resolver.cc:1051
 msgid "No solution found within the allotted time.  Try harder? [Y/n] "
-msgstr "За отведённое время решения не было найдено. Попытаться тщательнее? [Y/n] "
+msgstr ""
+"За отведённое время решения не было найдено. Попытаться тщательнее? [Y/n] "
 
 #: src/cmdline/cmdline_resolver.cc:1080
 msgid "Invalid response; please enter 'y' or 'n'."
-msgstr "Неверный ответ; можно ввести 'y' или 'n'."
+msgstr "Неверный ответ; можно ввести «y» или «n»."
 
 #: src/cmdline/cmdline_resolver.cc:1089
 msgid "Unable to resolve dependencies!  Giving up..."
-msgstr "Не удалось разрешить зависимости!  Ничего не получается..."
+msgstr "Не удалось разрешить зависимости!  Ничего не получается…"
 
 #: src/cmdline/cmdline_resolver.cc:1095
 msgid "*** No more solutions available ***"
@@ -1960,23 +1951,23 @@ msgid ""
 "  You may be able to solve this problem by increasing\n"
 "  Aptitude::ProblemResolver::StepLimit (currently %d)."
 msgstr ""
+"Не удалось разрешить зависимости для обновления, так как закончилось время\n"
+"решателя. Вы можете попробовать решить эту проблему увеличив значение\n"
+"Aptitude::ProblemResolver::StepLimit (сейчас равно %d)."
 
 #: src/cmdline/cmdline_resolver.cc:1201
-#, fuzzy
-#| msgid "Unable to resolve dependencies for the upgrade (no solution found)."
 msgid "Unable to resolve dependencies for the upgrade: no solution found."
-msgstr "Не удалось разрешить зависимости для обновления (решение не найдено)."
+msgstr "Не удалось разрешить зависимости для обновления: решение не найдено."
 
 #: src/cmdline/cmdline_resolver.cc:1207
-#, fuzzy, c-format
-#| msgid "Unable to resolve dependencies for the upgrade (%s)."
+#, c-format
 msgid "Unable to resolve dependencies for the upgrade: %s"
-msgstr "Не удалось разрешить зависимости для обновления (%s)."
+msgstr "Не удалось разрешить зависимости для обновления: %s"
 
 #: src/cmdline/cmdline_search.cc:198 src/cmdline/cmdline_versions.cc:559
 #, c-format
 msgid "iconv of %s failed.\n"
-msgstr "iconv для %s завершился неудачно.\n"
+msgstr "вызов iconv для %s завершился неудачно.\n"
 
 #: src/cmdline/cmdline_search.cc:215
 #, c-format
@@ -2241,7 +2232,7 @@ msgstr "Устаревшие"
 
 #: src/cmdline/cmdline_show.cc:465
 msgid "Enhances"
-msgstr ""
+msgstr "Улучшают"
 
 #: src/cmdline/cmdline_show.cc:467 src/cmdline/cmdline_why.cc:281
 #: src/cmdline/cmdline_why.cc:1683 src/gtk/dependency_chains_tab.cc:205
@@ -2275,7 +2266,7 @@ msgstr "Эти пакеты были бы загружены/установле�
 
 #: src/cmdline/cmdline_simulate.cc:77
 msgid "Internal Error, Ordering didn't finish"
-msgstr "Внутренняя ошибка, Упорядочивание не закончено"
+msgstr "Внутренняя ошибка, упорядочивание не закончено"
 
 #: src/cmdline/cmdline_update.cc:44
 #, c-format
@@ -2290,12 +2281,12 @@ msgstr "E: Команде update не нужны аргументы\n"
 #: src/cmdline/cmdline_user_tag.cc:64
 #, c-format
 msgid "Adding user tag \"%s\" to the package \"%s\".\n"
-msgstr "Добавляется пользовательская метка \"%s\" для пакета \"%s\".\n"
+msgstr "Добавляется пользовательская метка «%s» для пакета «%s».\n"
 
 #: src/cmdline/cmdline_user_tag.cc:71
 #, c-format
 msgid "Removing user tag \"%s\" from the package \"%s\".\n"
-msgstr "Удаляется пользовательская метка \"%s\" для пакета \"%s\".\n"
+msgstr "Удаляется пользовательская метка «%s» для пакета «%s».\n"
 
 #: src/cmdline/cmdline_user_tag.cc:103
 #, c-format
@@ -2315,12 +2306,12 @@ msgstr "Нет в наличии или подходящей версии для
 #: src/cmdline/cmdline_util.cc:193
 #, c-format
 msgid "Unable to find an archive \"%s\" for the package \"%s\"\n"
-msgstr "Не удаётся найти архив \"%s\" для пакета \"%s\"\n"
+msgstr "Не удаётся найти архив «%s» пакета «%s»\n"
 
 #: src/cmdline/cmdline_util.cc:203
 #, c-format
 msgid "Unable to find a version \"%s\" for the package \"%s\"\n"
-msgstr "Не удаётся найти версию \"%s\" для пакета \"%s\"\n"
+msgstr "Не удаётся найти версию «%s» пакета «%s»\n"
 
 #: src/cmdline/cmdline_util.cc:209
 #, c-format
@@ -2378,51 +2369,48 @@ msgstr[1] "Есть %d теперь тоже устаревших пакета: 
 msgstr[2] "Есть %d теперь тоже устаревших пакетов: "
 
 #: src/cmdline/cmdline_versions.cc:124
-#, fuzzy, c-format
-#| msgid "Packages: "
+#, c-format
 msgid "Package %s:"
-msgstr "Пакеты: "
+msgstr "Пакет %s:"
 
 #: src/cmdline/cmdline_versions.cc:151 src/cmdline/cmdline_versions.cc:190
-#, fuzzy, c-format
-#| msgid "Source Package: "
+#, c-format
 msgid "Source package %s:"
-msgstr "Исходный пакет: "
+msgstr "Исходный пакет %s:"
 
 #: src/cmdline/cmdline_versions.cc:212
-#, fuzzy, c-format
-#| msgid "Archive"
+#, c-format
 msgid "Archive %s:"
-msgstr "Архив"
+msgstr "Архив %s:"
 
 #: src/cmdline/cmdline_versions.cc:294
 #, c-format
 msgid "No such package \"%s\"."
-msgstr "Пакет не найден \"%s\"."
+msgstr "Пакет «%s» не найден."
 
 #: src/cmdline/cmdline_versions.cc:494
 msgid "--group-by|archive"
-msgstr ""
+msgstr "--group-by|archive"
 
 #: src/cmdline/cmdline_versions.cc:498
 msgid "--group-by|auto"
-msgstr ""
+msgstr "--group-by|auto"
 
 #: src/cmdline/cmdline_versions.cc:502
 msgid "--group-by|none"
-msgstr ""
+msgstr "--group-by|none"
 
 #: src/cmdline/cmdline_versions.cc:506
 msgid "--group-by|package"
-msgstr ""
+msgstr "--group-by|package"
 
 #: src/cmdline/cmdline_versions.cc:510
 msgid "--group-by|source-package"
-msgstr ""
+msgstr "--group-by|source-package"
 
 #: src/cmdline/cmdline_versions.cc:514
 msgid "--group-by|source-version"
-msgstr ""
+msgstr "--group-by|source-version"
 
 #. ForTranslators: --group-by is the argument name and shouldn't
 #. be translated.
@@ -2432,12 +2420,13 @@ msgid ""
 "Invalid package grouping mode \"%s\" (should be \"auto\", \"none\", \"package"
 "\", or \"source-package\")"
 msgstr ""
+"Некорректный режим группировки пакетов «%s» (должно быть «auto», «none», "
+"«package» или «source-package»)"
 
 #: src/cmdline/cmdline_versions.cc:576
-#, fuzzy, c-format
-#| msgid "search: You must provide at least one search term\n"
+#, c-format
 msgid "versions: You must provide at least one package selector\n"
-msgstr "поиск: вы должны ввести хотя бы одно слово\n"
+msgstr "версии: вы должны ввести хотя бы один параметр выбора пакетов\n"
 
 #: src/cmdline/cmdline_why.cc:341
 msgid "dep_level"
@@ -2566,7 +2555,7 @@ msgstr "Пакеты, требующие %s:"
 #: src/cmdline/cmdline_why.cc:1442
 #, c-format
 msgid "No package named \"%s\" exists."
-msgstr "Пакета с именем \"%s\" не существует."
+msgstr "Пакета с именем «%s» не существует."
 
 #: src/cmdline/cmdline_why.cc:1382
 msgid "Unable to parse some match patterns."
@@ -2584,10 +2573,9 @@ msgid "Unknown version selection, something is very wrong."
 msgstr "Выбранная версия неизвестна, в чём-то большая ошибка."
 
 #: src/cmdline_parse.cc:22
-#, fuzzy, c-format
-#| msgid "Invalid operation %s"
+#, c-format
 msgid "Invalid command-line option '%s'"
-msgstr "Неверная операция %s"
+msgstr "Некорректный параметр командной строки «%s»"
 
 #: src/cmdline/terminal.cc:46
 msgid "Unexpected end-of-file on standard input"
@@ -2599,7 +2587,7 @@ msgstr "Неожиданный конец файла в стандартном �
 #: src/cmdline/text_progress.cc:96
 #, c-format
 msgid "[ ERR] %s"
-msgstr ""
+msgstr "[ОШИБ] %s"
 
 #: src/dep_item.cc:148
 msgid "UNSATISFIED"
@@ -2668,12 +2656,12 @@ msgstr " [ %i%% ]"
 
 #: src/download_list.cc:264
 msgid "Downloading... "
-msgstr "Скачивание... "
+msgstr "Скачивание… "
 
 #: src/download_list.cc:340 src/gtk/download.cc:441
 #, c-format
 msgid "Please insert the disc labeled \"%s\" into the drive \"%s\""
-msgstr "Вставьте диск, помеченный как \"%s\", в привод \"%s\""
+msgstr "Вставьте диск, помеченный как «%s», в привод «%s»"
 
 #: src/download_list.cc:347 src/gtk/download.cc:445
 msgid "Abort"
@@ -2698,14 +2686,11 @@ msgstr "Нет информации об иерархии для редакти�
 #: src/edit_pkg_hier.cc:294
 #, c-format
 msgid "Couldn't open \"%s\" for writing"
-msgstr "Не удалось открыть \"%s\" для записи"
+msgstr "Не удалось открыть «%s» для записи"
 
 #: src/edit_pkg_hier.cc:340
-#, fuzzy
-#| msgid "Unable to look up your home directory, saving to /tmp/function_pkgs!"
 msgid "Unable to look up your home directory!"
-msgstr ""
-"Не удалось обнаружить ваш домашний каталог, сохранение в /tmp/function_pkgs!"
+msgstr "Не удалось обнаружить ваш домашний каталог!"
 
 #: src/generic/apt/aptcache.cc:271
 #, c-format
@@ -2719,7 +2704,7 @@ msgstr ""
 #: src/generic/apt/aptcache.cc:288
 #, c-format
 msgid "Unterminated '\"' in the user-tags list of the package %s."
-msgstr "Незакрытая '\"' в списке user-tags в пакете %s."
+msgstr "Незакрытая «\"» в списке user-tags в пакете %s."
 
 #: src/generic/apt/aptcache.cc:392
 msgid "Can't open Aptitude extended state file"
@@ -2826,51 +2811,50 @@ msgstr ""
 #: src/generic/apt/aptitude_resolver.cc:441
 #, c-format
 msgid "Invalid hint \"%s\": expected an action, but found nothing."
-msgstr "Неверная подсказка \"%s\": ожидалось действие, но ничего не найдено."
+msgstr "Неверная подсказка «%s»: ожидалось действие, но ничего не найдено."
 
 #: src/generic/apt/aptitude_resolver.cc:466
-#, fuzzy, c-format
-#| msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
+#, c-format
 msgid ""
 "Invalid hint \"%s\": expected a component name and a number, but found "
 "nothing."
 msgstr ""
-"Неверная подсказка \"%s\": ожидался номер уровня, но ничего не найдено."
+"Неверная подсказка «%s»: ожидалось имя компонента или номер, но ничего не "
+"найдено."
 
 #: src/generic/apt/aptitude_resolver.cc:485
-#, fuzzy, c-format
-#| msgid "Invalid hint \"%s\": expected a tier number, but found nothing."
+#, c-format
 msgid ""
 "Invalid hint \"%s\": expected the numeric value following the component "
 "name, but found nothing."
 msgstr ""
-"Неверная подсказка \"%s\": ожидался номер уровня, но ничего не найдено."
+"Неверная подсказка «%s»: ожидалось числовое значение после имени компонента, "
+"но ничего не найдено."
 
 #: src/generic/apt/aptitude_resolver.cc:505
 #, c-format
 msgid "Invalid hint \"%s\": the numeric component \"%s\" cannot be parsed."
-msgstr ""
+msgstr "Неверная подсказка «%s»: невозможно разобрать числовую часть «%s»."
 
 #: src/generic/apt/aptitude_resolver.cc:516
-#, fuzzy, c-format
-#| msgid "Invalid hint \"%s\": expected a target, but found nothing."
+#, c-format
 msgid "Invalid hint \"%s\": expected a level, but found nothing."
-msgstr "Неверная подсказка \"%s\": ожидалась цель, но ничего не найдено."
+msgstr "Неверная подсказка «%s»: ожидался уровень, но ничего не найдено."
 
 #: src/generic/apt/aptitude_resolver.cc:538
 #, c-format
 msgid "Invalid hint \"%s\": expected a target, but found nothing."
-msgstr "Неверная подсказка \"%s\": ожидалась цель, но ничего не найдено."
+msgstr "Неверная подсказка «%s»: ожидалась цель, но ничего не найдено."
 
 #: src/generic/apt/aptitude_resolver.cc:565
 #, c-format
 msgid "Invalid hint \"%s\": invalid target: %s"
-msgstr "Неверная подсказка \"%s\": неверная цель: %s"
+msgstr "Неверная подсказка «%s»: неверная цель: %s"
 
 #: src/generic/apt/aptitude_resolver.cc:585
 #, c-format
 msgid "Invalid hint \"%s\": trailing junk after the version."
-msgstr "Неверная подсказка \"%s\": мусор после номера версии."
+msgstr "Неверная подсказка «%s»: мусор после номера версии."
 
 #: src/generic/apt/aptitude_resolver.cc:680
 #, c-format
@@ -2878,23 +2862,22 @@ msgid ""
 "Invalid hint \"%s\": the action \"%s\" should be \"approve\", \"reject\", or "
 "a number."
 msgstr ""
-"Неверная подсказка \"%s\": действием \"%s\" должно быть \"approve\", \"reject"
-"\", или число."
+"Неверная подсказка «%s»: действием «%s» должно быть «approve», «reject» или "
+"число."
 
 #: src/generic/apt/aptitude_resolver_cost_settings.cc:130
 #, c-format
 msgid "Conflicting types for the cost component %s."
-msgstr ""
+msgstr "Конфликт типов стоимости компонента %s."
 
 #: src/generic/apt/aptitude_resolver_universe.cc:828
-#, fuzzy, c-format
-#| msgid ""
-#| "Invalid search tier \"%s\" (not \"conflict\", \"minimum\", or an integer)."
+#, c-format
 msgid ""
 "Invalid safety level \"%s\" (not \"discard\", \"maximum\", \"minimum\", or "
 "an integer)."
 msgstr ""
-"Неверный уровень поиска \"%s\" (не \"conflict\", \"minimum\", или число)."
+"Неверный уровень безопасности «%s» (не «discard», «maximum», «minimum» или "
+"число)."
 
 #: src/generic/apt/download_install_manager.cc:60
 msgid ""
@@ -2972,7 +2955,7 @@ msgstr "Команда debtags (%s) не может быть выполнена:
 
 #: src/generic/apt/download_update_manager.cc:372
 msgid "Updating debtags database..."
-msgstr "Обновление базы данных debtags..."
+msgstr "Обновление базы данных debtags…"
 
 #: src/generic/apt/download_update_manager.cc:389
 msgid "(core dumped)"
@@ -3028,7 +3011,7 @@ msgstr "Не удалось открыть %s для протоколирова�
 #. ForTranslators: This is a date and time format.  See strftime(3).
 #: src/generic/apt/log.cc:66
 msgid "%a, %b %e %Y %T %z"
-msgstr ""
+msgstr "%e %b %Y %T %z"
 
 #: src/generic/apt/log.cc:68
 #, c-format
@@ -3139,14 +3122,12 @@ msgstr ""
 #: src/generic/apt/matching/match.cc:2996
 #: src/generic/apt/matching/match.cc:3113
 msgid "Accessing index"
-msgstr ""
+msgstr "Выполняется доступ к индексу"
 
 #: src/generic/apt/matching/match.cc:3006
 #: src/generic/apt/matching/match.cc:3120
-#, fuzzy
-#| msgid "Downloading packages"
 msgid "Filtering packages"
-msgstr "Скачиваются пакеты"
+msgstr "Фильтруются пакеты"
 
 #: src/generic/apt/matching/parse.cc:311
 #, c-format
@@ -3166,12 +3147,12 @@ msgstr "Неизвестный приоритет %s"
 #: src/generic/apt/matching/parse.cc:468
 #, c-format
 msgid "Match pattern ends unexpectedly (expected '%c')."
-msgstr "Шаблон совпадений завершился неожиданно (ожидалось '%c')."
+msgstr "Шаблон совпадений завершился неожиданно (ожидался «%c»)."
 
 #: src/generic/apt/matching/parse.cc:471
 #, c-format
 msgid "Expected '%c', got '%c'."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался «%c», получен «%c»."
 
 #: src/generic/apt/matching/parse.cc:811
 #: src/generic/apt/matching/parse.cc:1259
@@ -3183,7 +3164,7 @@ msgstr "Неизвестный тип зависимости: %s"
 #: src/generic/apt/matching/parse.cc:864
 #, c-format
 msgid "Unknown term type: \"%s\"."
-msgstr "Неизвестный тип элемента: \"%s\"."
+msgstr "Неизвестный тип термина: «%s»."
 
 #. ForTranslators: Question marks ("?") are used as prefix for function names.
 #. Leave the question marks attached to the string placeholders.
@@ -3193,12 +3174,12 @@ msgid ""
 "The ?%s term must be used in a \"wide\" context (a top-level context, or a "
 "context enclosed by ?%s)."
 msgstr ""
-"Элемент ?%s должен использоваться в \"расширенном\" контексте (контекст "
+"Элемент ?%s должен использоваться в «расширенном» контексте (контекст "
 "верхнего уровня или контекст, указанный в ?%s)."
 
 #: src/generic/apt/matching/parse.cc:1117
 msgid "Unmatched '('"
-msgstr "Несовпадающая '('"
+msgstr "Непарная «(»"
 
 #: src/generic/apt/matching/parse.cc:1265
 msgid "Provides: cannot be broken"
@@ -3211,7 +3192,7 @@ msgstr "Неизвестный тип шаблона: %c"
 
 #: src/generic/apt/matching/parse.cc:1335
 msgid "Can't search for \"\""
-msgstr "Не найдена \"\""
+msgstr "Невозможно выполнить поиск «»"
 
 #: src/generic/apt/matching/parse.cc:1363
 msgid "Unexpected empty expression"
@@ -3220,11 +3201,11 @@ msgstr "Неожиданное пустое выражение"
 #: src/generic/apt/matching/parse.cc:1392
 #, c-format
 msgid "Badly formed expression: expected '|', got '%c'"
-msgstr "Неправильно оформленное выражение: ожидалось '|', получено '%c'"
+msgstr "Неправильно оформленное выражение: ожидался «|», получен «%c»"
 
 #: src/generic/apt/matching/parse.cc:1439
 msgid "Unexpected ')'"
-msgstr "Неожиданное ')'"
+msgstr "Неожиданная «)»"
 
 #: src/generic/apt/parse_dpkg_status.cc:72
 msgid "<aptitude: internal parse error: no apostrophe>"
@@ -3255,16 +3236,13 @@ msgid "ChangeLog of %s"
 msgstr "ChangeLog для %s"
 
 #: src/generic/apt/pkg_changelog.cc:565 src/generic/apt/pkg_changelog.cc:570
-#, fuzzy, c-format
-#| msgid "Failed to download the changelog: %s"
+#, c-format
 msgid "Failed to download changelogs: %s"
 msgstr "Не удалось скачать список изменений: %s"
 
 #: src/generic/apt/pkg_changelog.cc:575
-#, fuzzy
-#| msgid "Failed to download the changelog: %s"
 msgid "Failed to download changelogs: unexpected exception."
-msgstr "Не удалось скачать список изменений: %s"
+msgstr "Не удалось скачать список изменений: неожиданное исключение."
 
 #: src/generic/apt/pkg_changelog.cc:589
 #, c-format
@@ -3314,10 +3292,9 @@ msgstr ""
 
 #: src/generic/apt/resolver_manager.cc:910
 #: src/generic/apt/resolver_manager.cc:912
-#, fuzzy, c-format
-#| msgid "Failed to download the changelog: %s"
+#, c-format
 msgid "Failed to parse the cost settings string: %s"
-msgstr "Не удалось скачать список изменений: %s"
+msgstr "Не удалось преобразовать строку настройки стоимости: %s"
 
 #: src/generic/apt/tags.cc:218 src/generic/apt/tags.cc:225
 msgid "Building tag database"
@@ -3325,21 +3302,18 @@ msgstr "Построение базы данных меток"
 
 #: src/generic/apt/tags.cc:400
 msgid "legacy"
-msgstr ""
+msgstr "устарел"
 
 #: src/generic/apt/tags.cc:430 src/generic/apt/tags.cc:445
 #: src/generic/apt/tags.cc:476 src/generic/apt/tags.cc:491
-#, fuzzy
-#| msgid "No upgrades are available."
 msgid "No tag descriptions are available."
-msgstr "Нет доступных обновлений."
+msgstr "Метки описаний недоступны."
 
 #: src/generic/apt/tags.cc:436 src/generic/apt/tags.cc:451
 #: src/generic/apt/tags.cc:482 src/generic/apt/tags.cc:497
-#, fuzzy, c-format
-#| msgid "No upgrades are available."
+#, c-format
 msgid "No description available for %s."
-msgstr "Нет доступных обновлений."
+msgstr "Недоступно описание для %s."
 
 #: src/generic/apt/tasks.cc:278
 msgid "Unable to open /usr/share/tasksel/debian-tasks.desc"
@@ -3356,141 +3330,123 @@ msgstr "Ошибка разбора"
 
 #: src/generic/problemresolver/exceptions.h:105
 msgid "Cost increments must be strictly positive."
-msgstr ""
+msgstr "Прибавки стоимости должны быть только положительными."
 
 #: src/generic/problemresolver/exceptions.h:114
 msgid "The maximum cost value was exceeded."
-msgstr ""
+msgstr "Превышено максимальное значение стоимости."
 
 #: src/generic/problemresolver/exceptions.h:124
 msgid "A single cost level was both added and lower-bounded."
-msgstr ""
+msgstr "Добавлен единственный уровень стоимости и ограничен снизу."
 
 #: src/generic/util/parsers.h:735
-#, fuzzy, c-format
-#| msgid "Expected '%c', got '%c'."
+#, c-format
 msgid "Expected '%s', but got EOF."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался «%s», но получен EOF."
 
 #: src/generic/util/parsers.h:737
-#, fuzzy, c-format
-#| msgid "Expected '%c', got '%c'."
+#, c-format
 msgid "Expected '%s', but got '%s'."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался «%s», но получен «%s»."
 
 #: src/generic/util/parsers.h:778
-#, fuzzy
-#| msgid "Expected a number after -q=, got %s\n"
 msgid "Expected any character, but got EOF."
-msgstr "Ожидается число после -q=, получен %s\n"
+msgstr "Ожидался любой символ, но получен EOF."
 
 #: src/generic/util/parsers.h:791
-#, fuzzy
-#| msgid "Bad action character '%c'\n"
 msgid "any character"
-msgstr "Неверный символ '%c' для выбора действия\n"
+msgstr "любой символ"
 
 #: src/generic/util/parsers.h:832
-#, fuzzy, c-format
-#| msgid "Expected '%c', got '%c'."
+#, c-format
 msgid "Expected %s, but got EOF."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался %s, но получен EOF."
 
 #: src/generic/util/parsers.h:843
-#, fuzzy, c-format
-#| msgid "Expected '%c', got '%c'."
+#, c-format
 msgid "Expected %s, but got '%c'."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался %s, но получен «%c»."
 
 #: src/generic/util/parsers.h:1017
-#, fuzzy
-#| msgid "Expected policy identifier, got '%c'"
 msgid "Expected an integer, got EOF."
-msgstr "Ожидался идентификатор правила, получен '%c'"
+msgstr "Ожидалось целое число, получен EOF."
 
 #: src/generic/util/parsers.h:1026
-#, fuzzy
-#| msgid "Expected '{', ')', or ',' following '||', got '%s'"
 msgid "Expected an integer following '-', got EOF."
-msgstr "Ожидался символ '{', ')', или ',' после '||', получен '%s'"
+msgstr "Ожидалось целое число после «-», получен EOF."
 
 #: src/generic/util/parsers.h:1032
-#, fuzzy, c-format
-#| msgid "Expected policy identifier, got '%c'"
+#, c-format
 msgid "Expected an integer, got '%c'."
-msgstr "Ожидался идентификатор правила, получен '%c'"
+msgstr "Ожидалось целое число, получен «%c»."
 
 #: src/generic/util/parsers.h:1046 src/generic/util/parsers.h:1054
-#, fuzzy, c-format
-#| msgid "Invalid logger name \"%s\"."
+#, c-format
 msgid "Invalid integer: \"%s\"."
-msgstr "Неверное имя команды ведения протокола \"%s\"."
+msgstr "Некорректное целое число: «%s»."
 
 #: src/generic/util/parsers.h:1077
-#, fuzzy, c-format
-#| msgid "Expected '%c', got '%c'."
+#, c-format
 msgid "Expected EOF, got '%c'."
-msgstr "Ожидался '%c', получен '%c'."
+msgstr "Ожидался EOF, получен «%c»."
 
 #: src/generic/util/parsers.h:1191
 msgid "anything"
-msgstr ""
+msgstr "что угодно"
 
 #. ForTranslators: this is used to generate an error
 #. message; a brief description of what we expected to see
 #. is inserted into it.
 #: src/generic/util/parsers.h:1941 src/generic/util/parsers.h:2034
 #: src/generic/util/parsers.h:2085
-#, fuzzy, c-format
-#| msgid "Unexpected ')'"
+#, c-format
 msgid "Expected %s"
-msgstr "Неожиданное ')'"
+msgstr "Ожидался %s"
 
 #: src/generic/util/parsers.h:2007
 msgid " or "
-msgstr ""
+msgstr " или "
 
 #: src/generic/util/parsers.h:2770
-#, fuzzy, c-format
-#| msgid "Unexpected ')'"
+#, c-format
 msgid "Unexpected %s"
-msgstr "Неожиданное ')'"
+msgstr "Неожиданный %s"
 
 #: src/generic/util/temp.cc:201 src/generic/util/temp.cc:275
 #, c-format
 msgid "Unable to create temporary directory from template \"%s\": %s"
-msgstr "Не удалось создать временный каталог из шаблона \"%s\": %s"
+msgstr "Не удалось создать временный каталог из шаблона «%s»: %s"
 
 #: src/generic/util/temp.cc:342
-#, fuzzy, c-format
-#| msgid "Unable to create temporary filename from template \"%s\": %s"
+#, c-format
 msgid "Unable to create temporary filename from prefix \"%s\""
-msgstr "Не удалось создать имя временного файла из шаблона \"%s\": %s"
+msgstr "Не удалось создать имя временного файла из шаблона «%s»"
 
 #: src/generic/util/util.cc:364
 #, c-format
 msgid "Unable to stat \"%s\""
-msgstr "Не удалось выполнить вызов stat \"%s\""
+msgstr "Не удалось выполнить вызов stat «%s»"
 
 #: src/generic/util/util.cc:370
 #, c-format
 msgid "Unable to remove \"%s\""
-msgstr "Не удалось удалить \"%s\""
+msgstr "Не удалось удалить «%s»"
 
 #: src/generic/util/util.cc:380
 #, c-format
 msgid "Unable to list files in \"%s\""
-msgstr "Не удалось получить список файлов в \"%s\""
+msgstr "Не удалось получить список файлов в «%s»"
 
 #: src/generic/util/util.cc:397
 #, c-format
 msgid "Failure closing directory \"%s\""
-msgstr "Не удалось закрыть каталог \"%s\""
+msgstr "Не удалось закрыть каталог «%s»"
 
 #: src/generic/util/util.cc:403
 #, c-format
 msgid "Unable to remove directory \"%s\""
-msgstr "Не удалось удалить каталог \"%s\""
+msgstr "Не удалось удалить каталог «%s»"
 
 #: src/gtk/aptitude.glade:6 src/gtk/aptitude.glade:2260
 #: src/qt/windows/main_window.cc:44
@@ -3516,7 +3472,7 @@ msgstr ""
 
 #: src/gtk/aptitude.glade:63 src/gtk/aptitude.glade:2321 src/ui.cc:2279
 msgid "Forget which packages are \"new\""
-msgstr "Забыть о \"новых\" пакетах"
+msgstr "Забыть о «новых» пакетах"
 
 #: src/gtk/aptitude.glade:72 src/gtk/aptitude.glade:2331 src/ui.cc:2283
 msgid "Cancel all pending installations, removals, holds, and upgrades."
@@ -3544,7 +3500,7 @@ msgid ""
 "Run 'su' to become root; this will restart the program, but your settings "
 "will be preserved"
 msgstr ""
-"Запуск 'su', чтобы стать суперпользователем. Это приведёт к перезапуску "
+"Запуск «su», чтобы стать суперпользователем. Это приведёт к перезапуску "
 "программы, но ваши настройки будут сохранены"
 
 #: src/gtk/aptitude.glade:136 src/gtk/aptitude.glade:2401 src/ui.cc:2311
@@ -3616,7 +3572,7 @@ msgstr "Установить/Удалить"
 
 #: src/gtk/aptitude.glade:592
 msgid "Edit Columns..."
-msgstr "Редактировать колонки..."
+msgstr "Редактировать колонки…"
 
 #: src/gtk/aptitude.glade:606
 msgid "Dummy label (will be replaced at runtime)."
@@ -3687,7 +3643,7 @@ msgstr "Исправление обновления вручную:"
 
 #: src/gtk/aptitude.glade:1147 src/gtk/dashboardtab.cc:540
 msgid "Calculating upgrade..."
-msgstr "Выполняется расчёт обновления..."
+msgstr "Выполняется расчёт обновления…"
 
 #: src/gtk/aptitude.glade:1195
 msgid "<b>Solutions</b>"
@@ -3821,41 +3777,35 @@ msgid ""
 "You can also modify the files by hand, then click \"No\"."
 msgstr ""
 "Применить эти изменения?\n"
-"Также вы можете изменить файлы вручную, тогда нажмите \"Нет\"."
+"Также вы можете изменить файлы вручную, тогда нажмите «Нет»."
 
 #: src/gtk/areas.cc:73
 msgid "Keep your computer up-to-date."
-msgstr ""
+msgstr "Обновить ОС до самой новой версии."
 
 #: src/gtk/areas.cc:75
 msgid "Browse"
-msgstr ""
+msgstr "Обзор"
 
 #: src/gtk/areas.cc:76
-#, fuzzy
-#| msgid "Unable to correct for unavailable packages"
 msgid "Explore the available packages."
-msgstr "Не удалось скорректировать недоступность пакетов"
+msgstr "Просмотреть доступные пакеты."
 
 #: src/gtk/areas.cc:78
-#, fuzzy
-#| msgid "^Find"
 msgid "Find"
-msgstr "^Поиск"
+msgstr "Поиск"
 
 #: src/gtk/areas.cc:79
-#, fuzzy
-#| msgid "Search for: "
 msgid "Search for packages."
-msgstr "Поиск: "
+msgstr "Поиск пакетов."
 
 #: src/gtk/areas.cc:81
 msgid "Go"
-msgstr ""
+msgstr "Выполнить"
 
 #: src/gtk/areas.cc:82
 msgid "Finalize and apply your changes to the system."
-msgstr ""
+msgstr "Одобрить и применить ваши изменения к системе."
 
 #: src/gtk/areas.cc:84 src/ui.cc:702 src/ui.cc:704
 msgid "Preferences"
@@ -3863,7 +3813,7 @@ msgstr "Настройки"
 
 #: src/gtk/areas.cc:85
 msgid "Configure aptitude."
-msgstr ""
+msgstr "Настроить aptitude."
 
 #: src/gtk/changelog.cc:284
 msgid "The changelog is empty."
@@ -3891,10 +3841,9 @@ msgid "Failed to download the changelog: %s"
 msgstr "Не удалось скачать список изменений: %s"
 
 #: src/gtk/changelog.cc:554 src/gtk/changelog.cc:692
-#, fuzzy, c-format
-#| msgid "Requiring the installation of %s version %s (%s)"
+#, c-format
 msgid "Parsing the changelog of %s version %s..."
-msgstr "Требуется установка %s версии %s (%s)"
+msgstr "Анализируется список изменений %s версии %s…"
 
 #: src/gtk/changelog.cc:659
 #, c-format
@@ -3914,16 +3863,14 @@ msgstr ""
 "%s."
 
 #: src/gtk/changelog.cc:739
-#, fuzzy, c-format
-#| msgid "Downloading changelog; please wait..."
+#, c-format
 msgid "Downloading the changelog of %s version %s..."
-msgstr "Скачивается список изменений, подождите..."
+msgstr "Скачивается список изменений %s версии %s…"
 
 #: src/gtk/changelog.cc:931
-#, fuzzy, c-format
-#| msgid "Preparing to download changelogs"
+#, c-format
 msgid "Preparing to download the changelog of %s version %s."
-msgstr "Подготовка к получению файлов списков изменений"
+msgstr "Подготовка к скачиванию списка изменений %s версии %s."
 
 #: src/gtk/dashboardtab.cc:215
 msgid "Resolve Upgrade Manually"
@@ -3962,14 +3909,14 @@ msgid_plural ""
 "Press \"%s\" to install <span size='large'>%d</span> upgrades out of <span "
 "size='large'>%d</span>."
 msgstr[0] ""
-"Нажмите \"%s\" для установки <span size='large'>%d</span> обновления из "
-"<span size='large'>%d</span>."
+"Нажмите «%s» для установки <span size='large'>%d</span> обновления из <span "
+"size='large'>%d</span>."
 msgstr[1] ""
-"Нажмите \"%s\" для установки <span size='large'>%d</span> обновлений из "
-"<span size='large'>%d</span>."
+"Нажмите «%s» для установки <span size='large'>%d</span> обновлений из <span "
+"size='large'>%d</span>."
 msgstr[2] ""
-"Нажмите \"%s\" для установки <span size='large'>%d</span> обновлений из "
-"<span size='large'>%d</span>."
+"Нажмите «%s» для установки <span size='large'>%d</span> обновлений из <span "
+"size='large'>%d</span>."
 
 #: src/gtk/dashboardtab.cc:666
 #, c-format
@@ -3980,13 +3927,13 @@ msgid_plural ""
 "Press \"%s\" to manually attempt to install the remaining <span size='large'>"
 "%d</span> upgrades."
 msgstr[0] ""
-"Нажмите \"%s\", чтобы вручную попытаться установить оставшееся <span "
+"Нажмите «%s», чтобы вручную попытаться установить оставшееся <span "
 "size='large'>%d</span> обновление."
 msgstr[1] ""
-"Нажмите \"%s\", чтобы вручную попытаться установить оставшиеся <span "
+"Нажмите «%s», чтобы вручную попытаться установить оставшиеся <span "
 "size='large'>%d</span> обновления."
 msgstr[2] ""
-"Нажмите \"%s\", чтобы вручную попытаться установить оставшиеся <span "
+"Нажмите «%s», чтобы вручную попытаться установить оставшиеся <span "
 "size='large'>%d</span> обновлений."
 
 #: src/gtk/dashboardtab.cc:691
@@ -3995,7 +3942,7 @@ msgid ""
 "Unable to calculate an upgrade.  Press \"%s\" to manually search for a "
 "solution."
 msgstr ""
-"Не удалось рассчитать процесс обновления. Нажмите \"%s\", чтобы поискать "
+"Не удалось рассчитать процесс обновления. Нажмите «%s», чтобы поискать "
 "решение вручную."
 
 #: src/gtk/dashboardtab.cc:708
@@ -4105,7 +4052,7 @@ msgstr "%s: Не удалось создать доменный сокет Unix:
 #: src/gtk/dpkg_terminal.cc:388 src/gtk/dpkg_terminal.cc:466
 #, c-format
 msgid "Internal error: the temporary socket name \"%s\" is too long!"
-msgstr "Внутренняя ошибка: имя временного сокета \"%s\" слишком длинно!"
+msgstr "Внутренняя ошибка: имя временного сокета «%s» слишком длинно!"
 
 #: src/gtk/dpkg_terminal.cc:429
 #, c-format
@@ -4115,7 +4062,7 @@ msgstr "%s: Не удалось принять подключение: %s"
 #: src/gtk/dpkg_terminal.cc:532
 #, c-format
 msgid "[%s] dpkg process starting...\n"
-msgstr "[%s] запускается процесс dpkg...\n"
+msgstr "[%s] запускается процесс dpkg…\n"
 
 #: src/gtk/dpkg_terminal.cc:565
 #, c-format
@@ -4220,7 +4167,7 @@ msgstr "%s является виртуальным пакетом, предос�
 
 #: src/gtk/entitysummary.cc:341 src/gtk/previewtab.cc:215
 msgid "(more info...)"
-msgstr "(дополнительно...)"
+msgstr "(дополнительно…)"
 
 #: src/gtk/entitysummary.cc:373
 msgid "Source: "
@@ -4238,12 +4185,12 @@ msgstr "Видим?"
 #: src/gtk/entityview.cc:411
 #, c-format
 msgid "Columns of \"%s\":"
-msgstr "Колонки \"%s\":"
+msgstr "Колонки «%s»:"
 
 #: src/gtk/entityview.cc:412
 #, c-format
 msgid "Editing the columns of \"%s\""
-msgstr "Редактирование колонок \"%s\""
+msgstr "Редактирование колонок «%s»"
 
 #: src/gtk/entityview.cc:552
 msgid "Icons showing the current and future status of this package."
@@ -4279,8 +4226,8 @@ msgid ""
 "This file list pertains to the currently installed version \"%s\", not the "
 "selected version \"%s\"."
 msgstr ""
-"Данный список файлов относится к установленной в данный момент версии \"%s"
-"\", а не выбранной версии \"%s\"."
+"Данный список файлов относится к установленной в данный момент версии «%s», "
+"а не выбранной версии «%s»."
 
 #: src/gtk/filesview.cc:309
 msgid "Files list is only available for installed packages."
@@ -4378,7 +4325,7 @@ msgid ""
 "'%s'?"
 msgstr ""
 "Заменить файл настройки\n"
-"'%s'?"
+"«%s»?"
 
 #: src/gtk/gui.cc:389
 #, c-format
@@ -4390,12 +4337,12 @@ msgid ""
 msgstr ""
 "Файл настройки %s был изменён (вами или сценарием). В этом пакете доступна "
 "обновлённая версия. Если вы хотите оставить имеющуюся версию, выберите "
-"'Нет'. Заменить имеющийся файл новой версией из пакета? "
+"«Нет». Заменить имеющийся файл новой версией из пакета? "
 
 #: src/gtk/gui.cc:417
 #, c-format
 msgid "Comparing %s to %s..."
-msgstr "Сравнивается %s с %s..."
+msgstr "Сравнивается %s с %s…"
 
 #: src/gtk/gui.cc:738
 msgid ""
@@ -4411,7 +4358,7 @@ msgstr "Установка изменений выполнена!"
 
 #: src/gtk/gui.cc:823
 msgid "Applying changes..."
-msgstr "Устанавливаются изменения..."
+msgstr "Применение изменений…"
 
 #: src/gtk/gui.cc:875
 #, c-format
@@ -4556,7 +4503,7 @@ msgstr "Информация о пакете: список зависимост�
 
 #: src/gtk/info.cc:597
 msgid "Please wait; reloading cache..."
-msgstr "Перезагрузка кэша, подождите..."
+msgstr "Перезагрузка кэша, подождите…"
 
 #: src/gtk/info.cc:779
 msgid "Info"
@@ -4574,11 +4521,11 @@ msgstr "Неизвестен"
 #: src/gtk/packagestab.cc:203
 #, c-format
 msgid "No packages matched \"%s\"."
-msgstr "Нет пакетов, совпадающих с шаблоном \"%s\"."
+msgstr "Нет пакетов, совпадающих с шаблоном «%s»."
 
 #: src/gtk/packagestab.cc:313
 msgid "Enter a search and click \"Find\" to display packages."
-msgstr "Введите строку поиска и нажмите \"Поиск\" для просмотра пакетов."
+msgstr "Введите строку поиска и нажмите «Поиск» для просмотра пакетов."
 
 #: src/gtk/packagestab.cc:415
 msgid "Packages: "
@@ -4606,11 +4553,11 @@ msgstr "%s; устанавливается вручную."
 
 #: src/gtk/pkgview.cc:401
 msgid "Cache reloading, please wait..."
-msgstr "Выполняется перезагрузка кэша, подождите..."
+msgstr "Выполняется перезагрузка кэша, подождите…"
 
 #: src/gtk/pkgview.cc:607
 msgid "Searching..."
-msgstr "Идёт поиск..."
+msgstr "Идёт поиск…"
 
 #: src/gtk/pkgview.cc:718
 msgid "Finalizing view"
@@ -4647,7 +4594,7 @@ msgstr ""
 "Пакеты удаляются, так как больше не используются\n"
 " Эти пакеты удаляются, так как они были установлены автоматически для "
 "удовлетворения зависимостей, а планируемое действие приведёт к тому, что не "
-"останется пакетов, объявляющих 'важных' зависимостей от них.\n"
+"останется пакетов, объявляющих «важных» зависимостей от них.\n"
 
 #: src/gtk/previewtab.cc:99 src/pkg_grouppolicy.cc:639
 msgid ""
@@ -4943,10 +4890,9 @@ msgid "%s obsoletes %s"
 msgstr "%s делает устаревшим %s"
 
 #: src/gtk/resolver.cc:1264 src/solution_fragment.cc:154
-#, fuzzy, c-format
-#| msgid "%s replaces %s"
+#, c-format
 msgid "%s enhances %s"
-msgstr "%s замещает %s"
+msgstr "%s улучшает %s"
 
 #: src/gtk/resolver.cc:1376 src/gtk/resolver.cc:1841
 #: src/solution_screen.cc:272
@@ -5151,10 +5097,9 @@ msgid "%u solutions."
 msgstr "%u решений."
 
 #: src/gtk/resolver.cc:2109
-#, fuzzy, c-format
-#| msgid "Solution %s of %s (tier %s)."
+#, c-format
 msgid "Solution %s of %s."
-msgstr "Решение %s из %s (уровень %s)."
+msgstr "Решение %s из %s."
 
 #: src/gtk/tab.cc:68
 msgid "Download"
@@ -5163,22 +5108,22 @@ msgstr "Скачано"
 #: src/load_config.cc:48
 #, c-format
 msgid "Unrecognized color name \"%s\""
-msgstr "Неизвестное название цвета \"%s\""
+msgstr "Неизвестное название цвета «%s»"
 
 #: src/load_config.cc:75
 #, c-format
 msgid "Unrecognized attribute name \"%s\""
-msgstr "Неизвестное название атрибута \"%s\""
+msgstr "Неизвестное название атрибута «%s»"
 
 #: src/load_config.cc:113
 #, c-format
 msgid "Invalid entry in style definition group: \"%s\""
-msgstr "Неправильный элемент в группе задания стиля: \"%s\""
+msgstr "Неправильный элемент в группе задания стиля: «%s»"
 
 #: src/load_config.cc:115
 #, c-format
 msgid "Invalid tagless entry in style definition group: \"%s\""
-msgstr "Неправильный не имеющий метки элемент в группе задания стиля: \"%s\""
+msgstr "Неправильный не имеющий метки элемент в группе задания стиля: «%s»"
 
 #: src/load_config.cc:127
 msgid "The default color may only be used as a background."
@@ -5192,53 +5137,55 @@ msgstr "Неизвестный атрибут стиля %s"
 #: src/load_config.cc:167 src/load_config.cc:169
 #, c-format
 msgid "Invalid entry in keybinding group: \"%s\""
-msgstr "Неправильный элемент в группе привязки клавиш: \"%s\""
+msgstr "Неправильный элемент в группе привязки клавиш: «%s»"
 
 #: src/load_config.cc:184
 #, c-format
 msgid "Ignoring invalid keybinding \"%s\" -> \"%s\""
-msgstr "Игнорирование неверной привязки клавиш \"%s\" -> \"%s\""
+msgstr "Игнорирование неверной привязки клавиш «%s» -> «%s»"
 
 #: src/load_grouppolicy.cc:289
 #, c-format
 msgid "Expected policy identifier, got '%c'"
-msgstr "Ожидался идентификатор правила, получен '%c'"
+msgstr "Ожидался идентификатор правила, получен «%c»"
 
 #: src/load_grouppolicy.cc:305
 #, c-format
 msgid "Expected ',', '%c', or '('; got '%c'"
-msgstr "Ожидался символ ',', '%c', или '(', получен '%c'"
+msgstr "Ожидался символ «,», «%c» или «(», получен «%c»"
 
 #: src/load_grouppolicy.cc:309
 #, c-format
 msgid "Expected ',' or '(', got '%c'"
-msgstr "Ожидался ',' или '(', получен '%c'"
+msgstr "Ожидался «,» или «(», получен «%c»"
 
 #: src/load_grouppolicy.cc:317
 #, c-format
 msgid "Unknown grouping policy \"%s\""
-msgstr "Неизвестное группирующее правило \"%s\""
+msgstr "Неизвестное группирующее правило «%s»"
 
 #: src/load_grouppolicy.cc:324
 #, c-format
 msgid "Terminal policy \"%s\" should be the last policy in the list"
-msgstr "Завершающее правило \"%s\" должно быть последним правилом в списке"
+msgstr "Завершающее правило «%s» должно быть последним правилом в списке"
 
 #: src/load_grouppolicy.cc:385 src/load_grouppolicy.cc:751
 msgid "Unmatched '(' in pattern grouping policy"
-msgstr "Нет пары для '(' в шаблоне группирующего правила"
+msgstr "Нет пары для «(» в шаблоне группирующего правила"
 
 #: src/load_grouppolicy.cc:413
 #, c-format
 msgid "Bad section name '%s' (use 'none', 'topdir', 'subdir', or 'subdirs')"
 msgstr ""
-"Неверное имя секции '%s' (можно 'none', 'topdir', 'subdir' или 'subdirs')"
+"Некорректное имя секции «%s» (допускается «none», «topdir», «subdir» или "
+"«subdirs»)"
 
 #: src/load_grouppolicy.cc:423
 #, c-format
 msgid "Bad passthrough setting '%s' (use 'passthrough' or 'nopassthrough')"
 msgstr ""
-"Неверная установка passthrough '%s' (можно 'passthrough' или 'nopassthrough')"
+"Некорректное значение passthrough «%s» (допускается «passthrough» или "
+"«nopassthrough»)"
 
 #: src/load_grouppolicy.cc:428
 msgid "Too many arguments to by-section grouping policy"
@@ -5250,12 +5197,12 @@ msgstr "Группирующему правилу By-status не нужно ар
 
 #: src/load_grouppolicy.cc:460
 msgid "Expected '(' after 'filter'"
-msgstr "После 'filter' ожидается '('"
+msgstr "После «filter» ожидается «(»"
 
 #: src/load_grouppolicy.cc:497
 #, c-format
 msgid "Unable to parse pattern at '%s'"
-msgstr "Не удалось проанализировать шаблон начиная с %s"
+msgstr "Не удалось проанализировать шаблон начиная с «%s»"
 
 #: src/load_grouppolicy.cc:502
 msgid "Exactly one filter must be provided as an argument to a filter policy"
@@ -5270,10 +5217,8 @@ msgid "First-character grouping policies take no arguments"
 msgstr "Группирующим правилам First-character не нужно аргументов"
 
 #: src/load_grouppolicy.cc:545
-#, fuzzy
-#| msgid "Too many arguments to by-section grouping policy"
 msgid "Too many arguments to by-source grouping policy"
-msgstr "Слишком много аргументов для группирующего правила by-section"
+msgstr "Слишком много аргументов для группирующего правила by-source"
 
 #: src/load_grouppolicy.cc:556
 msgid "Version-generating grouping policies take no arguments"
@@ -5297,26 +5242,26 @@ msgstr "Должно быть не более одного параметра г
 
 #: src/load_grouppolicy.cc:637
 msgid "Expected '(' after 'pattern'"
-msgstr "После 'pattern' ожидается '('"
+msgstr "После «pattern» ожидается «(»"
 
 #: src/load_grouppolicy.cc:645
 msgid "Missing arguments to 'pattern'"
-msgstr "Пропущен параметр для 'pattern'"
+msgstr "Пропущен параметр для «pattern»"
 
 #: src/load_grouppolicy.cc:668
 #, c-format
 msgid "Unable to parse pattern after \"%s\""
-msgstr "Не удалось проанализировать шаблон после \"%s\""
+msgstr "Не удалось проанализировать шаблон после «%s»"
 
 #: src/load_grouppolicy.cc:706
 #, c-format
 msgid "Unexpectedly empty tree title after \"%s\""
-msgstr "Неожиданно пустой заголовок дерева после \"%s\""
+msgstr "Неожиданно пустой заголовок дерева после «%s»"
 
 #: src/load_grouppolicy.cc:725
 #, c-format
 msgid "Expected '{', ')', or ',' following '||', got '%s'"
-msgstr "Ожидался символ '{', ')', или ',' после '||', получен '%s'"
+msgstr "Ожидался символ «{», «)» или «,» после «||», получен «%s»"
 
 #: src/load_pkgview.cc:64
 msgid "Couldn't parse layout: No column format specified for static item"
@@ -5332,7 +5277,7 @@ msgstr "Не удалось разобрать размещение: ошибк�
 #, c-format
 msgid "Couldn't parse layout: unknown view item type \"%s\""
 msgstr ""
-"Не удалось разобрать размещение: неизвестный тип элемента отображения \"%s\""
+"Не удалось разобрать размещение: неизвестный тип элемента отображения «%s»"
 
 #: src/load_pkgview.cc:125 src/load_pkgview.cc:133
 msgid "Couldn't parse layout: no row number specified"
@@ -5349,7 +5294,7 @@ msgstr "Не удалось разобрать размещение: не зад
 #: src/load_pkgview.cc:180 src/load_pkgview.cc:198
 #, c-format
 msgid "Unknown alignment type '%s'"
-msgstr "Неизвестный тип выравнивания '%s'"
+msgstr "Неизвестный тип выравнивания «%s»"
 
 #: src/load_sortpolicy.cc:51
 msgid "By-name sorting policies take no arguments"
@@ -5373,23 +5318,23 @@ msgstr "Пустое имя сортирующего правила недопу
 
 #: src/load_sortpolicy.cc:166
 msgid "Unmatched '(' in sorting policy description"
-msgstr "Нет пары для '(' в описании сортирующего правила"
+msgstr "Нет пары для «(» в описании сортирующего правила"
 
 #: src/load_sortpolicy.cc:193
 #, c-format
 msgid "Invalid sorting policy type '%s'"
-msgstr "Неверный тип сортирующего правила '%s'"
+msgstr "Некорректный тип сортирующего правила «%s»"
 
 #: src/main.cc:134
 #, c-format
 msgid "Can't decode multibyte string after \"%ls\""
-msgstr "Не удалось декодировать многобайтовую строку после \"%ls\""
+msgstr "Не удалось декодировать многобайтовую строку после «%ls»"
 
 #: src/main.cc:143
 #, c-format
 msgid "Can't decode wide-character string after \"%s\""
 msgstr ""
-"Не удалось декодировать широкоформатную (wide-character) строку после \"%s\""
+"Не удалось декодировать широкоформатную (wide-character) строку после «%s»"
 
 #: src/main.cc:151
 #, c-format
@@ -5451,21 +5396,19 @@ msgid "  Gtk+ support disabled.\n"
 msgstr "  Поддержка Gtk+ выключена.\n"
 
 #: src/main.cc:179
-#, fuzzy, c-format
-#| msgid "%s %s compiled at %s %s\n"
+#, c-format
 msgid "  Compiled with Qt %s\n"
-msgstr "%s %s скомпилировано в %s %s\n"
+msgstr "  Скомпилировано с Qt %s\n"
 
 #: src/main.cc:180
 #, c-format
 msgid "  Running on Qt %s\n"
-msgstr ""
+msgstr "  Работает на Qt %s\n"
 
 #: src/main.cc:182
-#, fuzzy, c-format
-#| msgid "  Ept support disabled.\n"
+#, c-format
 msgid "  Qt support disabled.\n"
-msgstr "  Поддержка ept выключена.\n"
+msgstr "  Поддержка Qt выключена.\n"
 
 #: src/main.cc:184
 msgid ""
@@ -5498,7 +5441,7 @@ msgstr "Использование: aptitude [-S имя файла] [-u|-i]"
 #: src/main.cc:195
 #, c-format
 msgid "       aptitude [options] <action> ..."
-msgstr "       aptitude [параметры] <действие> ..."
+msgstr "       aptitude [параметры] <действие> …"
 
 #: src/main.cc:197
 #, c-format
@@ -5579,7 +5522,7 @@ msgstr " build-dep    - Установить сборочные зависимо
 #: src/main.cc:210
 #, c-format
 msgid " forget-new   - Forget what packages are \"new\".\n"
-msgstr " forget-new   - Забыть, какие пакеты \"новые\".\n"
+msgstr " forget-new   - Забыть, какие пакеты «новые».\n"
 
 #: src/main.cc:211
 #, c-format
@@ -5592,10 +5535,9 @@ msgid " show         - Display detailed information about a package.\n"
 msgstr " show         - Показать подробную информацию о пакете.\n"
 
 #: src/main.cc:213
-#, fuzzy, c-format
-#| msgid " show         - Display detailed information about a package.\n"
+#, c-format
 msgid " versions     - Displays the versions of specified packages.\n"
-msgstr " show         - Показать подробную информацию о пакете.\n"
+msgstr " versions     - Показать версии указанных пакетов.\n"
 
 #: src/main.cc:214
 #, c-format
@@ -5673,19 +5615,16 @@ msgid " --no-gui       Do not use the GTK GUI even if available.\n"
 msgstr " --no-gui       Не использовать ГИП GTK, даже если это возможно.\n"
 
 #: src/main.cc:232
-#, fuzzy, c-format
-#| msgid " -h             This help text.\n"
+#, c-format
 msgid " --qt           Use the Qt GUI.\n"
-msgstr " -h             Эта справка.\n"
+msgstr " --qt           Использовать ГИП Qt.\n"
 
 #: src/main.cc:233
-#, fuzzy, c-format
-#| msgid ""
-#| " --gui          Use the GTK GUI even if disabled in the configuration.\n"
+#, c-format
 msgid ""
 " --no-qt        Do not use the Qt GUI even if enabled in the configuration.\n"
 msgstr ""
-" --gui          Использовать ГИП GTK, даже если он выключен в настройках.\n"
+" --no-qt        Не использовать ГИП Qt даже если он включён в настройке.\n"
 
 #: src/main.cc:235
 #, c-format
@@ -5710,7 +5649,7 @@ msgstr " -P             Всегда спрашивать подтвержден
 #, c-format
 msgid ""
 " -y             Assume that the answer to simple yes/no questions is 'yes'.\n"
-msgstr " -y             Предполагать ответ 'да' на простой вопрос да/нет.\n"
+msgstr " -y             Предполагать ответ «да» на простой вопрос да/нет.\n"
 
 #: src/main.cc:239
 #, c-format
@@ -5780,14 +5719,16 @@ msgstr ""
 msgid ""
 " -q             In command-line mode, suppress the incremental progress\n"
 "                indicators.\n"
-msgstr " -q             Не выводить индикаторы хода работы в режиме командной строки.\n"
+msgstr ""
+" -q             Не выводить индикаторы хода работы в режиме командной "
+"строки.\n"
 
 #: src/main.cc:250
 #, c-format
 msgid " -o key=val     Directly set the configuration option named 'key'.\n"
 msgstr ""
 " -o key=val     Вручную установить значение параметра настройки с именем "
-"'key'.\n"
+"«key».\n"
 
 #: src/main.cc:251
 #, c-format
@@ -5874,13 +5815,13 @@ msgid ""
 "Unknown log level name \"%s\" (expected \"trace\", \"debug\", \"info\", "
 "\"warn\", \"error\", \"fatal\", or \"off\")."
 msgstr ""
-"Неизвестное имя уровня протоколирования \"%s\" (допустимы \"trace\", \"debug"
-"\", \"info\", \"warn\", \"error\", \"fatal\", или \"off\")."
+"Неизвестное имя уровня протоколирования «%s» (допустимы «trace», «debug», "
+"«info», «warn», «error», «fatal» или «off»)."
 
 #: src/main.cc:488
 #, c-format
 msgid "Invalid logger name \"%s\"."
-msgstr "Неверное имя команды ведения протокола \"%s\"."
+msgstr "Неверное имя команды ведения протокола «%s»."
 
 #: src/main.cc:761
 #, c-format
@@ -5900,7 +5841,7 @@ msgstr "-o требуется параметр в виде ключ=значен
 #: src/main.cc:884
 #, c-format
 msgid "No comma following tag name \"%s\".\n"
-msgstr "Не указана запятая после имени метки \"%s\".\n"
+msgstr "Не указана запятая после имени метки «%s».\n"
 
 #: src/main.cc:976 src/main.cc:986
 msgid "WEIRDNESS: unknown option code received\n"
@@ -5908,15 +5849,15 @@ msgstr "СТРАННОСТЬ: получен неизвестный код па�
 
 #: src/main.cc:1004
 msgid "--show-package-names|never"
-msgstr ""
+msgstr "--show-package-names|never"
 
 #: src/main.cc:1007
 msgid "--show-package-names|auto"
-msgstr ""
+msgstr "--show-package-names|auto"
 
 #: src/main.cc:1010
 msgid "--show-package-names|always"
-msgstr ""
+msgstr "--show-package-names|always"
 
 #: src/main.cc:1015
 #, c-format
@@ -5924,6 +5865,8 @@ msgid ""
 "Invalid package names display mode \"%s\" (should be \"never\", \"auto\", or "
 "\"always\")."
 msgstr ""
+"Некорректный режим отображения имён пакетов «%s» (должно быть «never», "
+"«auto» или «always»)."
 
 #: src/main.cc:1021
 msgid "no-summary"
@@ -5954,9 +5897,9 @@ msgid ""
 "\", \"first-package-and-type\", \"all-packages\", or \"all-packages-with-dep-"
 "versions\"."
 msgstr ""
-"Неверный режим итога \"%s\" для \"why\": допустимо \"no-summary\", \"first-"
-"package\", \"first-package-and-type\", \"all-packages\", или \"all-packages-"
-"with-dep-versions\"."
+"Неверный режим итога «%s» для «why»: допустимо «no-summary», «first-"
+"package», «first-package-and-type», «all-packages» или «all-packages-with-"
+"dep-versions»."
 
 #: src/main.cc:1073
 msgid ""
@@ -5972,7 +5915,7 @@ msgid ""
 "(eg, with 'install')"
 msgstr ""
 "-u, -i и --clean-on-startup не могут быть заданы в режиме командной строки "
-"(например, с install)"
+"(например, с «install»)"
 
 #: src/main.cc:1099
 msgid "-u, -i, and --clean-on-startup may not be specified with a command"
@@ -5981,7 +5924,7 @@ msgstr "-u, -i и --clean-on-startup не могут быть заданы с к
 #: src/main.cc:1210
 #, c-format
 msgid "Unknown command \"%s\"\n"
-msgstr "Неизвестная команда \"%s\"\n"
+msgstr "Неизвестная команда «%s»\n"
 
 #: src/main.cc:1222 src/main.cc:1307
 #, c-format
@@ -6039,7 +5982,7 @@ msgstr "Проиграл"
 #: src/mine/cmine.cc:169 src/mine/cmine.cc:209
 #, c-format
 msgid "Could not open file \"%s\""
-msgstr "Не удалось открыть файл \"%s\""
+msgstr "Не удалось открыть файл «%s»"
 
 #: src/mine/cmine.cc:182
 #, c-format
@@ -6108,11 +6051,11 @@ msgstr "Вы проиграли!"
 
 #: src/mine/cmine.cc:471
 msgid "You die...  --More--"
-msgstr "Вы умерли...  --Ещё--"
+msgstr "Вы умерли…  --Ещё--"
 
 #: src/mine/cmine.cc:484
 msgid "The spikes were poisoned!  The poison was deadly...  --More--"
-msgstr "Пики были отравлены!  Яд оказался смертельным...  --Ещё--"
+msgstr "Пики были отравлены! Яд оказался смертельным…  --Ещё--"
 
 #: src/mine/cmine.cc:487
 msgid "You land on a set of sharp iron spikes!  --More--"
@@ -6128,16 +6071,16 @@ msgstr "БАБАХ!  Вы наступили на мину.  --Ещё--"
 
 #: src/mine/cmine.cc:498
 msgid "The dart was poisoned!  The poison was deadly...  --More--"
-msgstr "Дротик был отравлен!  Яд оказался смертельным...  --Ещё--"
+msgstr "Дротик был отравлен! Яд оказался смертельным…  --Ещё--"
 
 #: src/mine/cmine.cc:500
 msgid ""
 "A little dart shoots out at you!  You are hit by a little dart!  --More--"
-msgstr "Маленький дротик попал в вас!  Вы подбиты маленьким дротиком!  --Ещё--"
+msgstr "Маленький дротик попал в вас! Вы подбиты маленьким дротиком!  --Ещё--"
 
 #: src/mine/cmine.cc:504
 msgid "You turn to stone... --More--"
-msgstr "Вы обратились в камень... --Ещё--"
+msgstr "Вы обратились в камень… --Ещё--"
 
 #: src/mine/cmine.cc:506
 msgid "Touching the cockatrice corpse was a fatal mistake.  --More--"
@@ -6410,7 +6353,7 @@ msgstr "Будет использовано %sБ дискового простр
 #: src/pkg_columnizer.cc:417
 #, c-format
 msgid "Will free %sB of disk space"
-msgstr "Будет освобождено %sБ дискового пространства"
+msgstr "Освободится на диске %sБ"
 
 #: src/pkg_columnizer.cc:431
 #, c-format
@@ -6426,7 +6369,7 @@ msgstr "HN слишком длинна"
 #, c-format
 msgid "Unable to transcode package display format after \"%ls\""
 msgstr ""
-"Не удалось выполнить преобразование формата отображения пакета после \"%ls\""
+"Не удалось выполнить преобразование формата отображения пакета после «%ls»"
 
 #: src/pkg_columnizer.cc:686
 msgid "Internal error: Default column string is unparsable"
@@ -6465,9 +6408,9 @@ msgid ""
 "Actions menu to empty this list)."
 msgstr ""
 "Новые пакеты\n"
-" Эти пакеты были добавлены в Debian после последней очистки вашего списка "
-"\"новых\" пакетов. (выберите \"Забыть новые пакеты\" из меню Действия, чтобы "
-"очистить этот список)"
+" Эти пакеты были добавлены в Debian после последней очистки вашего списка "
+"«новых» пакетов (выберите «Забыть новые пакеты» из меню «Действия», чтобы "
+"очистить этот список)."
 
 #: src/pkg_grouppolicy.cc:430
 msgid ""
@@ -6575,7 +6518,7 @@ msgid ""
 "predefined set of packages for a particular purpose."
 msgstr ""
 "\n"
-" Задачи -- это группы пакетов, которые предоставляют лёгкий способ выбора "
+" Задачи — это группы пакетов, которые предоставляют лёгкий способ выбора "
 "заранее сформированного набора пакетов под определённую цель."
 
 #: src/pkg_grouppolicy.cc:1207
@@ -6586,7 +6529,7 @@ msgstr "Неправильное число в строке формата: %ls"
 #: src/pkg_grouppolicy.cc:1216
 #, c-format
 msgid "Match indices must be 1 or greater, not \"%s\""
-msgstr "Индексы совпадения должны быть равны 1 или более, а не \"%s\""
+msgstr "Индексы совпадения должны быть равны 1 или более, а не «%s»"
 
 #: src/pkg_grouppolicy.cc:1234
 #, c-format
@@ -6645,7 +6588,7 @@ msgid ""
 "'%s' if you are."
 msgstr ""
 "%s это пакет первой необходимости!%n%nВы действительно хотите его удалить?"
-"%nЕсли да, то введите '%s'."
+"%nЕсли да, то введите «%s»."
 
 #: src/pkg_item.cc:232 src/pkg_ver_item.cc:678 src/solution_item.cc:299
 #, c-format
@@ -6734,7 +6677,7 @@ msgstr "Все пакеты"
 #: src/pkg_tree.cc:282
 #, c-format
 msgid "No packages matched the pattern \"%ls\"."
-msgstr "Нет пакетов, совпадающих с шаблоном \"%ls\"."
+msgstr "Нет пакетов, совпадающих с шаблоном «%ls»."
 
 #: src/pkg_tree.cc:301
 msgid "Enter the new package tree limit: "
@@ -6767,14 +6710,14 @@ msgstr ""
 #: src/pkg_view.cc:575
 msgid "make_package_view: error in arguments -- two main widgets??"
 msgstr ""
-"make_package_view: ошибка в аргументах -- два главных графических элемента "
+"make_package_view: ошибка в аргументах — два главных графических элемента "
 "интерфейса??"
 
 #: src/pkg_view.cc:581
 msgid ""
 "make_package_view: error in arguments -- bad column list for static item"
 msgstr ""
-"make_package_view: ошибка в аргументах -- неверная колонка списка для "
+"make_package_view: ошибка в аргументах — неверная колонка списка для "
 "статического элемента??"
 
 #: src/pkg_view.cc:678
@@ -6795,69 +6738,51 @@ msgstr "make_package_view: не найден главный графически
 
 #: src/qt/tabs_manager.cc:254
 msgid "Perform Changes"
-msgstr ""
+msgstr "Выполнить изменения"
 
 #: src/qt/widgets/packages_tab.cc:72
-#, fuzzy
-#| msgid "Install"
 msgid "all"
-msgstr "Установить"
+msgstr "все"
 
 #: src/qt/widgets/packages_tab.cc:72
-#, fuzzy
-#| msgid "installed"
 msgid "installed locally"
-msgstr "установлен"
+msgstr "установленный локально"
 
 #: src/qt/widgets/packages_tab.cc:72
-#, fuzzy
-#| msgid "New"
 msgid "new"
-msgstr "Новый"
+msgstr "новый"
 
 #: src/qt/widgets/packages_tab.cc:78
-#, fuzzy
-#| msgid "Show "
 msgid "Show:"
-msgstr "Показать "
+msgstr "Показать:"
 
 #: src/qt/widgets/packages_tab.cc:84
 msgid "Manage Filters"
-msgstr ""
+msgstr "Управление фильтрами"
 
 #: src/qt/widgets/packages_tab.cc:105
-#, fuzzy
-#| msgid "Description"
 msgid "Name and Description"
-msgstr "Описание"
+msgstr "Имя и описание"
 
 #: src/qt/widgets/packages_tab.cc:111
-#, fuzzy
-#| msgid "^Find"
 msgid "Find:"
-msgstr "^Поиск"
+msgstr "Поиск:"
 
 #: src/qt/widgets/packages_tab.cc:113
 msgid "by"
-msgstr ""
+msgstr "по"
 
 #: src/qt/windows/main_window.cc:96
-#, fuzzy
-#| msgid "_File"
 msgid "&File"
-msgstr "_Файл"
+msgstr "&Файл"
 
 #: src/qt/windows/main_window.cc:104
-#, fuzzy
-#| msgid "Packages"
 msgid "&Packages"
-msgstr "Пакеты"
+msgstr "&Пакеты"
 
 #: src/qt/windows/main_window.cc:112
-#, fuzzy
-#| msgid "Help"
 msgid "&Help"
-msgstr "Помощь"
+msgstr "&Справка"
 
 #: src/reason_fragment.cc:32
 msgid "depends on"
@@ -6893,7 +6818,7 @@ msgstr "делает устаревшим"
 
 #: src/reason_fragment.cc:45
 msgid "enhances"
-msgstr ""
+msgstr "улучшает"
 
 #: src/reason_fragment.cc:178
 #, c-format
@@ -7188,7 +7113,7 @@ msgstr "Вернуть старую версию %F [%s (%s) -> %s (%s)]"
 #: src/solution_item.cc:607
 #, c-format
 msgid "-> Leave the dependency \"%s recommends %s\" unresolved."
-msgstr "-> Оставить зависимость \"%s рекомендует %s\" неразрешённой."
+msgstr "-> Оставить зависимость «%s рекомендует %s» неразрешённой."
 
 #: src/solution_screen.cc:164
 msgid "The following actions will resolve this dependency:"
@@ -7253,7 +7178,7 @@ msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: кэш пакетов открыт в режиме только для чтения! Текущее "
 "изменение и все последующие изменения не будут сохранены, если вы не "
 "остановите все другие запущенные, основанные на apt, программы и не выберите "
-"\"Стать суперпользователем\" из меню Действия."
+"«Стать суперпользователем» из меню «Действия»."
 
 #: src/ui.cc:347
 msgid "Never display this message again."
@@ -7288,7 +7213,7 @@ msgstr "Не удалось выполнить fork: %s"
 #: src/ui.cc:568
 msgid ""
 "Subprocess exited with an error -- did you type your password correctly?"
-msgstr "Подпроцесс завершился с ошибкой -- вы ввели правильный пароль?"
+msgstr "Подпроцесс завершился с ошибкой — вы ввели правильный пароль?"
 
 #: src/ui.cc:607
 msgid "Loading cache"
@@ -7330,9 +7255,9 @@ msgid ""
 "conditions; see 'license' for details."
 msgstr ""
 "Aptitude %s%n%nCopyright 2000-2008 Daniel Burrows.%n%naptitude поставляется "
-"%BАБСОЛЮТНО БЕЗ ГАРАНТИЙ%b; подробней, смотрите в пункте 'Лицензия' из меню "
-"Помощь. Это свободное ПО, и вы вправе распространять его на определённых "
-"условиях, подробней смотрите 'Лицензия'."
+"%BАБСОЛЮТНО БЕЗ ГАРАНТИЙ%b; подробней, смотрите в пункте «Лицензия» из меню "
+"«Справка». Это свободное ПО, и вы вправе распространять его на определённых "
+"условиях, подробней смотрите «Лицензия»."
 
 #: src/ui.cc:1034 src/ui.cc:1036
 msgid "License"
@@ -7361,7 +7286,7 @@ msgstr "Просмотреть краткое введение в aptitude"
 
 #: src/ui.cc:1064 src/ui.cc:2706
 msgid "Help"
-msgstr "Помощь"
+msgstr "Справка"
 
 #: src/ui.cc:1072
 msgid "README"
@@ -7426,7 +7351,7 @@ msgid ""
 msgstr ""
 "Вероятно, в каталоге %s остались файлы от старой версии aptitude. Скорее "
 "всего эти файлы не нужны и их можно удалить.%n%nХотите удалить этот каталог "
-"и всё его содержимое? Если вы ответите \"Нет\", то это сообщение больше не "
+"и всё его содержимое? Если вы ответите «Нет», то это сообщение больше не "
 "появится."
 
 #: src/ui.cc:1214
@@ -7482,7 +7407,7 @@ msgid ""
 "Ran out of time while trying to resolve dependencies (press \"%s\" to try "
 "harder)"
 msgstr ""
-"Убьём время, пока ищется решение проблемы с зависимостями (нажмите \"%s\", "
+"Убьём время, пока ищется решение проблемы с зависимостями (нажмите «%s», "
 "чтобы попытаться тщательнее)"
 
 #: src/ui.cc:1459
@@ -7512,7 +7437,7 @@ msgid ""
 "upgrade."
 msgstr ""
 "Нет пакетов для установки, удаления или обновления. Некоторые пакеты могут "
-"быть обновлены, но вы не задали их обновление. Введите \"U\", чтобы пометить "
+"быть обновлены, но вы не задали их обновление. Введите «U», чтобы пометить "
 "их для обновления."
 
 #: src/ui.cc:1654 src/ui.cc:1799
@@ -7655,7 +7580,7 @@ msgstr "^Стать суперпользователем"
 
 #: src/ui.cc:2310
 msgid "^Quit"
-msgstr "^Выйти"
+msgstr "^Выход"
 
 #: src/ui.cc:2317 src/ui.cc:2700
 msgid "Undo"
@@ -7663,7 +7588,7 @@ msgstr "Откат"
 
 #: src/ui.cc:2326
 msgid "^Install"
-msgstr "^Install"
+msgstr "^Установить"
 
 #: src/ui.cc:2327
 msgid "Flag the currently selected package for installation or upgrade"
@@ -7671,7 +7596,7 @@ msgstr "Пометить выделенный пакет для установк
 
 #: src/ui.cc:2330
 msgid "^Remove"
-msgstr "^Remove"
+msgstr "У^далить"
 
 #: src/ui.cc:2331
 msgid "Flag the currently selected package for removal"
@@ -7679,7 +7604,7 @@ msgstr "Пометить выделенный пакет для удаления
 
 #: src/ui.cc:2334
 msgid "^Purge"
-msgstr "^Purge"
+msgstr "^Вычистить"
 
 #: src/ui.cc:2335
 msgid ""
@@ -7688,7 +7613,7 @@ msgstr "Пометить выделенный пакет для удаления
 
 #: src/ui.cc:2338
 msgid "^Keep"
-msgstr "^Keep"
+msgstr "^Оставить"
 
 #: src/ui.cc:2339
 msgid "Cancel any action on the selected package"
@@ -7696,7 +7621,7 @@ msgstr "Отменить любое действие над выделенным
 
 #: src/ui.cc:2342
 msgid "^Hold"
-msgstr "^Hold"
+msgstr "^Фиксировать"
 
 #: src/ui.cc:2343
 msgid ""
@@ -7732,7 +7657,7 @@ msgstr ""
 
 #: src/ui.cc:2354
 msgid "^Forbid Version"
-msgstr "^Forbid версию"
+msgstr "^Запретить версию"
 
 #: src/ui.cc:2355
 msgid ""
@@ -7744,7 +7669,7 @@ msgstr ""
 
 #: src/ui.cc:2359
 msgid "I^nformation"
-msgstr "I^nformation"
+msgstr "^Информация"
 
 #: src/ui.cc:2360
 msgid "Display more information about the selected package"
@@ -8028,7 +7953,7 @@ msgstr "Показать информацию об этой программе"
 
 #: src/ui.cc:2540
 msgid "^Help"
-msgstr "^Помощь"
+msgstr "^Справка"
 
 #: src/ui.cc:2541
 msgid "View the on-line help"
@@ -8101,22 +8026,19 @@ msgid "View the list of changes made to this Debian package."
 msgstr "Показать список изменений, сделанных для этого пакета Debian."
 
 #: src/view_changelog.cc:343
-#, fuzzy, c-format
-#| msgid "Preparing to download changelogs"
+#, c-format
 msgid "Preparing to download the changelog of %s"
-msgstr "Подготовка к получению файлов списков изменений"
+msgstr "Подготовка к скачиванию списка изменений %s"
 
 #: src/view_changelog.cc:371
-#, fuzzy, c-format
-#| msgid "Failed to download the changelog: %s"
+#, c-format
 msgid "Failed to download the changelog of %s: %s"
-msgstr "Не удалось скачать список изменений: %s"
+msgstr "Не удалось скачать список изменений %s: %s"
 
 #: src/view_changelog.cc:382
-#, fuzzy, c-format
-#| msgid "Downloading changelogs"
+#, c-format
 msgid "Downloading the changelog of %s"
-msgstr "Скачиваются файлы списков изменений"
+msgstr "Скачивается список изменений %s"
 
 #: src/view_changelog.cc:415
 msgid "You can only view changelogs of official Debian packages."
