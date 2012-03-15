@@ -1,8 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(aptitude, 0.6.5)
+AC_INIT([aptitude],[0.6.5])
 AC_CONFIG_SRCDIR([src/main.cc])
 AM_INIT_AUTOMAKE([1.11 -Wall foreign]) # -Wno-portability
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 dnl Use C++
 AC_LANG([C++])
