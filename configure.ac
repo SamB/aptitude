@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(aptitude, 0.6.5)
 AC_CONFIG_SRCDIR([src/main.cc])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11 -Wall foreign]) # -Wno-portability
 AM_CONFIG_HEADER(config.h)
 
 dnl Use C++
@@ -865,13 +865,15 @@ AC_ARG_ENABLE(aptitude,
 
 AC_ARG_ENABLE(docs,
 	AS_HELP_STRING([--disable-docs], [don't generate the documentation]),
-	if test x$enableval=xno
-	then
-	  DOCDIRS=
-	else
-	  DOCDIRS=doc
-	fi,
-	DOCDIRS=doc)
+	[],
+	[enable_docs=yes])
+if test x$enable_docs=xno
+then
+  DOCDIRS=
+else
+  DOCDIRS=doc
+  AC_CONFIG_SUBDIRS([doc])
+fi
 
 AC_ARG_ENABLE(tests,
         AS_HELP_STRING([--disable-tests], [don't run the test suite]),
@@ -919,27 +921,6 @@ dnl AC_DEFINE_UNQUOTED(PKGDATADIR, "$PKGDATADIR", [The location in which the pro
 AC_CONFIG_FILES([
 	Doxyfile
 	Makefile
-	doc/Makefile
-	doc/cs/Makefile
-	doc/cs/images/Makefile
-	doc/de/Makefile
-	doc/en/Makefile
-	doc/en/images/Makefile
-	doc/es/Makefile
-	doc/es/images/Makefile
-	doc/fi/Makefile
-	doc/fi/images/Makefile
-	doc/fr/Makefile
-	doc/fr/images/Makefile
-	doc/ja/Makefile
-	doc/ja/images/Makefile
-	doc/pl/Makefile
-	doc/po4a/Makefile
-	doc/po4a/po/Makefile
-	doc/po4a/add_de/Makefile
-	doc/po4a/add_es/Makefile
-	doc/po4a/add_fr/Makefile
-	doc/po4a/add_pl/Makefile
 	m4/Makefile
 	po/Makefile.in
 	src/Makefile
