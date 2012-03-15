@@ -2,7 +2,16 @@ AC_INIT([aptitude-doc],[0.6.5])
 AC_CONFIG_SRCDIR([en/aptitude.xml])
 AM_INIT_AUTOMAKE([1.11 -Wall foreign])
 
+AC_PATH_PROG(RSVG_CONVERT, rsvg-convert)
+if test "x$RSVG_CONVERT" = x; then
+  AC_MSG_ERROR([cannot find rsvg-convert -- please install librsvg2-bin])
+fi
+
 AC_PATH_PROG(PO4A, po4a)
+if test "x$P04A" = x; then
+  AC_MSG_WARN([without po4a, we cannot build all of the translated docs])
+fi
+
 AM_CONDITIONAL(USE_PO4A, [test "x$PO4A" != "x"])
 
 AC_CONFIG_FILES([
