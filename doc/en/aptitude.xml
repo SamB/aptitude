@@ -224,108 +224,106 @@
       found in either program.
     </para>
 
-  </section>
+    <section>
+      <title>What is a package manager?</title>
 
-  <section>
-    <title>What is a package manager?</title>
+      <para>
+	A <firstterm>package manager</firstterm> keeps track of what
+	software is installed on your computer, and allows you to easily
+	install new software, upgrade software to newer versions, or
+	remove software that you previously installed.  As the name
+	suggests, package managers deal with
+	<firstterm>packages</firstterm>: collections of files that are
+	bundled together and can be installed and removed as a group.
+      </para>
 
-    <para>
-      A <firstterm>package manager</firstterm> keeps track of what
-      software is installed on your computer, and allows you to easily
-      install new software, upgrade software to newer versions, or
-      remove software that you previously installed.  As the name
-      suggests, package managers deal with
-      <firstterm>packages</firstterm>: collections of files that are
-      bundled together and can be installed and removed as a group.
-    </para>
+      <para>
+	Often, a package is just a particular program.  For instance,
+	the instant messaging client <command>gaim</command> is
+	contained in the Debian package of the same name.  On the other
+	hand, it is common for programs to consist of several
+	interrelated packages.  For instance, the
+	<command>gimp</command> image editor consists not only of the
+	<systemitem>gimp</systemitem> package, but also of the
+	<systemitem>gimp-data</systemitem> package; in addition, several
+	optional add-on packages (containing esoteric data,
+	documentation, and so on) are also available.  It is also
+	possible for several small, related programs to be contained in
+	a single package: for instance, the
+	<systemitem>fileutils</systemitem> package contains several
+	common Unix commands, such as <command>ls</command>,
+	<command>cp</command>, etc.
+      </para>
 
-    <para>
-      Often, a package is just a particular program.  For instance,
-      the instant messaging client <command>gaim</command> is
-      contained in the Debian package of the same name.  On the other
-      hand, it is common for programs to consist of several
-      interrelated packages.  For instance, the
-      <command>gimp</command> image editor consists not only of the
-      <systemitem>gimp</systemitem> package, but also of the
-      <systemitem>gimp-data</systemitem> package; in addition, several
-      optional add-on packages (containing esoteric data,
-      documentation, and so on) are also available.  It is also
-      possible for several small, related programs to be contained in
-      a single package: for instance, the
-      <systemitem>fileutils</systemitem> package contains several
-      common Unix commands, such as <command>ls</command>,
-      <command>cp</command>, etc.
-    </para>
+      <para>
+	Some packages require other packages in order to function.  In
+	Debian, packages can <firstterm>depend</firstterm> upon,
+	<firstterm>recommend</firstterm>,
+	<firstterm>suggest</firstterm>,
+	<firstterm>break</firstterm>, or
+	<firstterm>conflict</firstterm> with other packages.
+      </para>
 
-    <para>
-      Some packages require other packages in order to function.  In
-      Debian, packages can <firstterm>depend</firstterm> upon,
-      <firstterm>recommend</firstterm>,
-      <firstterm>suggest</firstterm>,
-      <firstterm>break</firstterm>, or
-      <firstterm>conflict</firstterm> with other packages.
-    </para>
+      <itemizedlist>
 
-    <itemizedlist>
+	<listitem>
+	  <para>
+	    If a package A depends upon another package B, then B is
+	    required for A to operate properly.  For instance, the
+	    <systemitem>gimp</systemitem> package depends upon the
+	    <systemitem>gimp-data</systemitem> package in order to
+	    ensure that the <ulink
+	    url='http://www.gimp.org'>GIMP</ulink> graphics editor can
+	    access its critical data files.
+	  </para>
+	</listitem>
 
-      <listitem>
-	<para>
-	  If a package A depends upon another package B, then B is
-	  required for A to operate properly.  For instance, the
-	  <systemitem>gimp</systemitem> package depends upon the
-	  <systemitem>gimp-data</systemitem> package in order to
-	  ensure that the <ulink
-	  url='http://www.gimp.org'>GIMP</ulink> graphics editor can
-	  access its critical data files.
-	</para>
-      </listitem>
+	<listitem>
+	  <para>
+	    If a package A recommends another package B, then B provides
+	    important additional functionality to A that will be desired
+	    in most circumstances.  For instance, the
+	    <systemitem>mozilla-browser</systemitem> package recommends
+	    the <systemitem>mozilla-psm</systemitem> package, which adds
+	    support for secure data transfers to the <ulink
+	    url='http://www.mozilla.org'>Mozilla</ulink> Web browser.
+	    While <systemitem>mozilla-psm</systemitem> is not strictly
+	    required for Mozilla to function, most users will want
+	    Mozilla to support the secure transmission of confidential
+	    data (such as credit card numbers).
+	  </para>
+	</listitem>
 
-      <listitem>
-	<para>
-	  If a package A recommends another package B, then B provides
-	  important additional functionality to A that will be desired
-	  in most circumstances.  For instance, the
-	  <systemitem>mozilla-browser</systemitem> package recommends
-	  the <systemitem>mozilla-psm</systemitem> package, which adds
-	  support for secure data transfers to the <ulink
-	  url='http://www.mozilla.org'>Mozilla</ulink> Web browser.
-	  While <systemitem>mozilla-psm</systemitem> is not strictly
-	  required for Mozilla to function, most users will want
-	  Mozilla to support the secure transmission of confidential
-	  data (such as credit card numbers).
-	</para>
-      </listitem>
+	<listitem>
+	  <para>
+	    If a package A suggests another package B, then package B
+	    provides functionality that may enhance A, but is not needed
+	    in most cases.  For instance, the
+	    <systemitem>kmail</systemitem> package suggests the
+	    <systemitem>gnupg</systemitem> package, which contains
+	    encryption software that can be used by <ulink
+	    url='http://kmail.kde.org/'>KMail</ulink>.
+	  </para>
+	</listitem>
 
-      <listitem>
-	<para>
-	  If a package A suggests another package B, then package B
-	  provides functionality that may enhance A, but is not needed
-	  in most cases.  For instance, the
-	  <systemitem>kmail</systemitem> package suggests the
-	  <systemitem>gnupg</systemitem> package, which contains
-	  encryption software that can be used by <ulink
-	  url='http://kmail.kde.org/'>KMail</ulink>.
-	</para>
-      </listitem>
+	<listitem>
+	  <para>
+	    If a package A conflicts with another package B, then the
+	    two packages cannot be installed at the same time.  For
+	    instance, <systemitem>fb-music-hi</systemitem> conflicts
+	    with <systemitem>fb-music-low</systemitem> because they
+	    provide alternate sets of music for the game <ulink
+	    url='http://www.frozen-bubble.org'>Frozen Bubble</ulink>.
+	  </para>
+	</listitem>
+      </itemizedlist>
 
-      <listitem>
-	<para>
-	  If a package A conflicts with another package B, then the
-	  two packages cannot be installed at the same time.  For
-	  instance, <systemitem>fb-music-hi</systemitem> conflicts
-	  with <systemitem>fb-music-low</systemitem> because they
-	  provide alternate sets of music for the game <ulink
-	  url='http://www.frozen-bubble.org'>Frozen Bubble</ulink>.
-	</para>
-      </listitem>
-    </itemizedlist>
-
-    <para>
-      The job of a package manager is to present an interface which
-      assists the user in managing the collection of packages
-      installed on his or her system.  &aptitude; provides such an
-      interface by building on the &apt; package management system.
-    </para>
+      <para>
+	The job of a package manager is to present an interface which
+	assists the user in managing the collection of packages
+	installed on his or her system.  &aptitude; provides such an
+	interface by building on the &apt; package management system.
+      </para>
 
     </section>
 
@@ -385,234 +383,235 @@
 	<systemitem>sources.list(5)</systemitem>.
       </para>
     </section>
+  </section>
 
-    <section>
-      <title>How can I get &aptitude;?</title>
+  <section>
+    <title>How can I get &aptitude;?</title>
+
+    <para>
+      In case you are reading this manual but &aptitude; is not yet
+      installed on your system, this section explains how to correct
+      this unfortunate situation.  Most people should head straight
+      for the section on <link linkend='secBinaryPackages'>binary
+      packages</link>.
+    </para>
+
+    <section id='secBinaryPackages'>
+      <title>Pre-built &aptitude; packages, or, <quote>what 99% of users should do</quote></title>
 
       <para>
-	In case you are reading this manual but &aptitude; is not yet
-	installed on your system, this section explains how to correct
-	this unfortunate situation.  Most people should head straight
-	for the section on <link linkend='secBinaryPackages'>binary
-	packages</link>.
+	Pre-built, or <quote>binary</quote> packages are the easiest and most
+	common way to install &aptitude;.  You should only attempt a
+	<link linkend='secSourceInstall'>source install</link> if
+	binary packages are not available for some reason, or if you
+	have unusual needs that are not met by binary packages.
       </para>
 
-      <section id='secBinaryPackages'>
-	<title>Pre-built &aptitude; packages, or, <quote>what 99% of users should do</quote></title>
+      <para>
+	If you are using a Debian system, execute the following
+	command as &root;: <userinput>apt-get install
+	aptitude</userinput>.  If you are not using a Debian system,
+	your system provider might have created a pre-built package
+	of &aptitude;; if you are not sure, you can contact them for
+	further suggestions.
+      </para>
+    </section>
 
+    <section id='secSourceInstall'>
+      <title>Building &aptitude; from source code</title>
+
+      <para>
+	You also can build &aptitude; from source; however, this is
+	probably not a useful exercise unless &apt; is already
+	available on your system.  If it is, you can install
+	&aptitude; from source with the following steps:
+      </para>
+
+      <orderedlist>
+	<listitem>
+	  <para>
+	    Install the following pieces of software:
+	  </para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		A C++ compiler, such as <ulink
+		url='http://gcc.gnu.org'>g++</ulink>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		The development files for &apt;, typically available
+		in a package with a name like
+		<systemitem>libapt-pkg-dev</systemitem>.
+	      </para>
+	    </listitem>
+
+
+	    <listitem>
+	      <para>
+		The <systemitem>libsigc++-2.0</systemitem> library,
+		available in the package
+		<systemitem>libsigc++-2.0-dev</systemitem> or from
+		<ulink
+		    url='http://libsigc.sourceforge.net'></ulink>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		The <systemitem>cwidget</systemitem> library,
+		available in the package
+		<systemitem>libcwidget-dev</systemitem> or from
+		<ulink
+		    url='http://cwidget.alioth.debian.org'></ulink>.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		The <systemitem>gettext</systemitem> program, which
+		should be included with your Linux distribution.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		A <systemitem>make</systemitem> tool, such as <ulink
+		url='http://www.gnu.org/software/make'>GNU
+		make</ulink>.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+
+	<listitem>
+	  <para>
+	    Last but not least, download the most recent
+	    &aptitude; source code, available from <ulink
+	    url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
+	    (scroll to the bottom of the page and download the
+	    <quote>.orig.tar.gz</quote> file)
+	  </para>
+	</listitem>
+      </orderedlist>
+
+      <para>
+	Once all the required components are available, open a
+	terminal and execute the command <command>tar zxf
+	aptitude-&VERSION;.tar.gz</command> to unpack the source
+	code.  Once the source code is unpacked, type <command>cd
+	aptitude-&VERSION; &amp;&amp; ./configure &amp;&amp;
+	make</command> to compile &aptitude;.  If this succeeds,
+	make sure you are the &root; user (by using
+	<command>su</command>, for instance), then type
+	<command>make install</command> to install &aptitude; on
+	your computer.  Once &aptitude; is successfully installed,
+	typing <command>aptitude</command> at a command prompt
+	should start the program.
+      </para>
+    </section>
+
+    <section>
+      <title>Tracking and participating in &aptitude; development</title>
+
+      <section>
+	<title>Getting the &aptitude; development source tree</title>
 	<para>
-	  Pre-built, or <quote>binary</quote> packages are the easiest and most
-	  common way to install &aptitude;.  You should only attempt a
-	  <link linkend='secSourceInstall'>source install</link> if
-	  binary packages are not available for some reason, or if you
-	  have unusual needs that are not met by binary packages.
+	  If you want to test the latest bleeding-edge source code
+	  for &aptitude;, you can download unreleased &aptitude;
+	  source code using Git.  Install Git (available
+	  from <ulink url='http://git-scm.com/'/>) and
+	  execute the command <command>git clone
+	  git://git.debian.org/git/aptitude/aptitude.git</command>
+	  to retrieve the most recent source code.
 	</para>
 
-	<para>
-	  If you are using a Debian system, execute the following
-	  command as &root;: <userinput>apt-get install
-	  aptitude</userinput>.  If you are not using a Debian system,
-	  your system provider might have created a pre-built package
-	  of &aptitude;; if you are not sure, you can contact them for
-	  further suggestions.
-	</para>
+
+	<warning>
+	  <para>
+	    The &aptitude; Git repository is an active
+	    development tree; it will change as bugs are fixed and
+	    features are added, and there is absolutely no guarantee
+	    that it will even compile, let alone run properly!  Bug
+	    reports are welcome, but be aware that you use
+	    development code entirely at your own
+	    risk!<footnote><para>Of course, all free software is
+	    used at your own risk, but the risk involved in using an
+	    active development tree is much
+	    higher.</para></footnote>
+	  </para>
+	</warning>
       </section>
 
-      <section id='secSourceInstall'>
-	<title>Building &aptitude; from source code</title>
+      <section>
+	<title>Mailing list</title>
 
 	<para>
-	  You also can build &aptitude; from source; however, this is
-	  probably not a useful exercise unless &apt; is already
-	  available on your system.  If it is, you can install
-	  &aptitude; from source with the following steps:
-	</para>
-
-	<orderedlist>
-	  <listitem>
-	    <para>
-	      Install the following pieces of software:
-	    </para>
-
-	    <itemizedlist>
-	      <listitem>
-		<para>
-		  A C++ compiler, such as <ulink
-		  url='http://gcc.gnu.org'>g++</ulink>.
-		</para>
-	      </listitem>
-
-	      <listitem>
-		<para>
-		  The development files for &apt;, typically available
-		  in a package with a name like
-		  <systemitem>libapt-pkg-dev</systemitem>.
-		</para>
-	      </listitem>
-
-
-	      <listitem>
-		<para>
-		  The <systemitem>libsigc++-2.0</systemitem> library,
-		  available in the package
-		  <systemitem>libsigc++-2.0-dev</systemitem> or from
-		  <ulink
-		  url='http://libsigc.sourceforge.net'></ulink>.
-		</para>
-	      </listitem>
-
-	      <listitem>
-		<para>
-		  The <systemitem>cwidget</systemitem> library,
-		  available in the package
-		  <systemitem>libcwidget-dev</systemitem> or from
-		  <ulink
-		  url='http://cwidget.alioth.debian.org'></ulink>.
-		</para>
-	      </listitem>
-
-	      <listitem>
-		<para>
-		  The <systemitem>gettext</systemitem> program, which
-		  should be included with your Linux distribution.
-		</para>
-	      </listitem>
-
-	      <listitem>
-		<para>
-		  A <systemitem>make</systemitem> tool, such as <ulink
-		  url='http://www.gnu.org/software/make'>GNU
-		  make</ulink>.
-		</para>
-	      </listitem>
-	    </itemizedlist>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-	      Last but not least, download the most recent
-	      &aptitude; source code, available from <ulink
-	      url='http://packages.debian.org/unstable/admin/aptitude'></ulink>.
-	      (scroll to the bottom of the page and download the
-	      <quote>.orig.tar.gz</quote> file)
-	    </para>
-	  </listitem>
-	</orderedlist>
-
-	<para>
-	  Once all the required components are available, open a
-	  terminal and execute the command <command>tar zxf
-	  aptitude-&VERSION;.tar.gz</command> to unpack the source
-	  code.  Once the source code is unpacked, type <command>cd
-	  aptitude-&VERSION; &amp;&amp; ./configure &amp;&amp;
-	  make</command> to compile &aptitude;.  If this succeeds,
-	  make sure you are the &root; user (by using
-	  <command>su</command>, for instance), then type
-	  <command>make install</command> to install &aptitude; on
-	  your computer.  Once &aptitude; is successfully installed,
-	  typing <command>aptitude</command> at a command prompt
-	  should start the program.
+	  The primary mailing list for &aptitude; development is
+	  <email>aptitude-devel@lists.alioth.debian.org</email>.
+	  Archives of the list are located at <ulink
+	  url='http://lists.alioth.debian.org/pipermail/aptitude-devel/'/>.
+	  To subscribe, visit the Web page <ulink
+	  url='http://lists.alioth.debian.org/mailman/listinfo/aptitude-devel'/>.
 	</para>
       </section>
 
       <section>
-	<title>Tracking and participating in &aptitude; development</title>
+	<title>Submitting patches</title>
 
-	<section>
-	  <title>Getting the &aptitude; development source tree</title>
-	  <para>
-	    If you want to test the latest bleeding-edge source code
-	    for &aptitude;, you can download unreleased &aptitude;
-	    source code using Git.  Install Git (available
-	    from <ulink url='http://git-scm.com/'/>) and
-            execute the command <command>git clone
-            git://git.debian.org/git/aptitude/aptitude.git</command>
-	    to retrieve the most recent source code.
-	  </para>
+	<para>
+	  Ideally, patches should be submitted to the &aptitude;
+	  mailing list,
+	  <email>aptitude-devel@lists.alioth.debian.org</email>.
+	  But if you prefer sending them by private email, you may
+	  email them to <email>aptitude@packages.debian.org</email>
+	  or <email>dburrows@debian.org</email>.  A brief
+	  description of the motivation behind your patch, and an
+	  explanation of how it works, are greatly appreciated.
+	</para>
+      </section>
 
+      <section>
+	<title>Tracking changes to the &aptitude; source tree</title>
 
-	  <warning>
-	    <para>
-	      The &aptitude; Git repository is an active
-	      development tree; it will change as bugs are fixed and
-	      features are added, and there is absolutely no guarantee
-	      that it will even compile, let alone run properly!  Bug
-	      reports are welcome, but be aware that you use
-	      development code entirely at your own
-	      risk!<footnote><para>Of course, all free software is
-	      used at your own risk, but the risk involved in using an
-	      active development tree is much
-	      higher.</para></footnote>
-	    </para>
-	  </warning>
-	</section>
+	<para>
+	  The &aptitude; source tree is regularly updated with new
+	  features, bugfixes, and new bugs.  Once the source code is
+	  available on your computer (see the previous section), you
+	  can <command>cd</command> into it and type <command>git
+	  pull</command> to update it with any changes made to the
+	  main repository.
+	</para>
 
-	<section>
-	  <title>Mailing list</title>
+	<para>
+	  To automatically receive notifications when changes are
+	  made to the &aptitude; codebase, subscribe to the Atom feed
+	  available at <ulink
+	  url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=atom'/>
+	  or RSS feed available at <ulink
+	  url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=rss'/>.
+	</para>
+      </section>
 
-	  <para>
-	    The primary mailing list for &aptitude; development is
-	    <email>aptitude-devel@lists.alioth.debian.org</email>.
-	    Archives of the list are located at <ulink
-	    url='http://lists.alioth.debian.org/pipermail/aptitude-devel/'/>.
-	    To subscribe, visit the Web page <ulink
-	    url='http://lists.alioth.debian.org/mailman/listinfo/aptitude-devel'/>.
-	  </para>
-	</section>
+      <section>
+	<title>Building &aptitude; from the development tree</title>
 
-	<section>
-	  <title>Submitting patches</title>
-
-	  <para>
-	    Ideally, patches should be submitted to the &aptitude;
-	    mailing list,
-	    <email>aptitude-devel@lists.alioth.debian.org</email>.
-	    But if you prefer sending them by private email, you may
-	    email them to <email>aptitude@packages.debian.org</email>
-	    or <email>dburrows@debian.org</email>.  A brief
-	    description of the motivation behind your patch, and an
-	    explanation of how it works, are greatly appreciated.
-	  </para>
-	</section>
-
-	<section>
-	  <title>Tracking changes to the &aptitude; source tree</title>
-
-	  <para>
-	    The &aptitude; source tree is regularly updated with new
-	    features, bugfixes, and new bugs.  Once the source code is
-	    available on your computer (see the previous section), you
-	    can <command>cd</command> into it and type <command>git
-	    pull</command> to update it with any changes made to the
-	    main repository.
-	  </para>
-
-	  <para>
-	    To automatically receive notifications when changes are
-	    made to the &aptitude; codebase, subscribe to the Atom feed
-	    available at <ulink
-            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=atom'/>
-            or RSS feed available at <ulink
-            url='http://anonscm.debian.org/gitweb/?p=aptitude/aptitude.git;a=rss'/>.
-	  </para>
-	</section>
-
-	<section>
-	  <title>Building &aptitude; from the development tree</title>
-
-	  <para>
-	    To build &aptitude; from the Git repository, you must
-	    have the programs <systemitem>autoconf</systemitem> and
-	    <systemitem>automake</systemitem> installed.  Type
-	    <command>sh ./autogen.sh &amp;&amp; ./configure</command>
-	    to generate the files needed to compile &aptitude;, then
-	    execute <command>make</command> and <command>make
-	    install</command>.
-	  </para>
-	</section>
+	<para>
+	  To build &aptitude; from the Git repository, you must
+	  have the programs <systemitem>autoconf</systemitem> and
+	  <systemitem>automake</systemitem> installed.  Type
+	  <command>sh ./autogen.sh &amp;&amp; ./configure</command>
+	  to generate the files needed to compile &aptitude;, then
+	  execute <command>make</command> and <command>make
+	  install</command>.
+	</para>
       </section>
     </section>
-  </preface>
+  </section>
+</preface>
 
   <chapter id='chapGettingStarted'>
     <title>Getting started</title>
