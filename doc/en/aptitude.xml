@@ -142,45 +142,48 @@
   <!ENTITY manpage SYSTEM "manpage.xml">
 ]>
 
-<book lang="en"> <bookinfo> <title>&aptitude; user's manual</title>
-<subtitle>Version &VERSION;</subtitle>
+<book lang="en">
+<bookinfo>
+  <title>&aptitude; user's manual</title>
+  <subtitle>Version &VERSION;</subtitle>
 
-<author><personname><firstname>Daniel</firstname><surname>Burrows</surname></personname><email>dburrows@debian.org</email></author>
+  <author>
+    <personname><firstname>Daniel</firstname><surname>Burrows</surname></personname>
+    <email>dburrows@debian.org</email>
+  </author>
 
-<copyright>
-  <year>2004-2008</year>
-  <holder>Daniel Burrows</holder>
-</copyright>
+  <copyright>
+    <year>2004-2008</year>
+    <holder>Daniel Burrows</holder>
+  </copyright>
 
-<legalnotice>
-  <para>
-    This manual is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License as
-    published by the Free Software Foundation; either version 2 of the
-    License, or (at your option) any later version.
-  </para>
+  <legalnotice>
+    <para>
+      This manual is free software; you can redistribute it and/or
+      modify it under the terms of the GNU General Public License as
+      published by the Free Software Foundation; either version 2 of the
+      License, or (at your option) any later version.
+    </para>
 
-  <para>
-    This manual is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-  </para>
+    <para>
+      This manual is distributed in the hope that it will be useful, but
+      WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+      General Public License for more details.
+    </para>
 
-  <para>
-    You should have received a copy of the GNU General Public License
-    along with this manual; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-    02111-1307 USA
-  </para>
-</legalnotice>
-
+    <para>
+      You should have received a copy of the GNU General Public License
+      along with this manual; if not, write to the Free Software
+      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+      02111-1307 USA
+    </para>
+  </legalnotice>
 </bookinfo>
 
 <toc/>
 
 <preface>
-
   <title>Introduction</title>
 
   <blockquote>
@@ -211,7 +214,6 @@
   </para>
 
   <section>
-
     <title>What is this aptitude thing, anyway?</title>
 
     <para>
@@ -225,7 +227,6 @@
   </section>
 
   <section>
-
     <title>What is a package manager?</title>
 
     <para>
@@ -386,9 +387,7 @@
     </section>
 
     <section>
-      <title>
-	How can I get &aptitude;?
-      </title>
+      <title>How can I get &aptitude;?</title>
 
       <para>
 	In case you are reading this manual but &aptitude; is not yet
