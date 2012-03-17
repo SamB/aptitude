@@ -8,7 +8,7 @@ if test "x$RSVG_CONVERT" = x; then
 fi
 
 AC_PATH_PROG(PO4A, po4a)
-if test "x$P04A" = x; then
+if test "x$PO4A" = x; then
   AC_MSG_WARN([without po4a, we cannot build all of the translated docs])
 fi
 
