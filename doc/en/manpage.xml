@@ -1,4 +1,4 @@
-<refentry>
+<refentry id='aptitude.8'>
   <refentryinfo>
     <!--
 	The <author> element isn't needed here, because docbook-xsl
@@ -2427,12 +2427,15 @@ The following packages will be REMOVED:
     <title>See also</title>
 
     <para>
-      <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <filename>/usr/share/doc/aptitude/html/<replaceable>lang</replaceable>/index.html</filename> from the package aptitude-doc-<replaceable>lang</replaceable>
+      <citerefentry><refentrytitle>apt-get</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
+      <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
+      <filename>/usr/share/doc/aptitude/html/<replaceable>lang</replaceable>/index.html</filename>
+      from the package aptitude-doc-<replaceable>lang</replaceable>
     </para>
   </refsect1>
 </refentry>
 
-<refentry>
+<refentry id='aptitude-create-state-bundle.1'>
   <refentryinfo>
     <!--
 	The <author> element isn't needed here, because docbook-xsl
@@ -2542,8 +2545,8 @@ The following packages will be REMOVED:
     </itemizedlist>
 
     <para>
-      The output of this program can be used as an argument to <link
-      linkend='aptitudeRunStateBundle'><citerefentry><refentrytitle>aptitude-run-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry></link>.
+      The output of this program can be used as an argument to
+      <xref linkend='aptitude-run-state-bundle.1'/>.
     </para>
   </refsect1>
 
@@ -2630,12 +2633,14 @@ The following packages will be REMOVED:
     <title>See also</title>
 
     <para>
-      <citerefentry><refentrytitle>aptitude-run-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>, <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>, <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>
+      <xref linkend='aptitude-run-state-bundle.1'/>,
+      <xref linkend='aptitude.8'/>,
+      <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>
     </para>
   </refsect1>
 </refentry>
 
-<refentry id='aptitudeRunStateBundle'>
+<refentry id='aptitude-run-state-bundle.1'>
   <refentryinfo>
     <!--
 	The <author> element isn't needed here, because docbook-xsl
@@ -2716,13 +2721,13 @@ The following packages will be REMOVED:
     <para>
       <command>aptitude-run-state-bundle</command> unpacks the given
       aptitude state bundle created by
-      <citerefentry><refentrytitle>aptitude-create-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>
+      <xref linkend='aptitude-create-state-bundle.1'/>
       to a temporary directory, invokes
       <replaceable>program</replaceable> on it with the supplied
       <replaceable>arguments</replaceable>, and removes the temporary
       directory afterwards.  If <replaceable>program</replaceable> is
       not supplied, it defaults to
-      <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>.
+      <xref linkend='aptitude.8'/>.
     </para>
   </refsect1>
 
@@ -2838,8 +2843,8 @@ The following packages will be REMOVED:
     <title>See also</title>
 
     <para>
-      <citerefentry><refentrytitle>aptitude-create-state-bundle</refentrytitle><manvolnum>1</manvolnum></citerefentry>,
-      <citerefentry><refentrytitle>aptitude</refentrytitle><manvolnum>8</manvolnum></citerefentry>,
+      <xref linkend='aptitude-create-state-bundle.1'/>,
+      <xref linkend='aptitude.8'/>,
       <citerefentry><refentrytitle>apt</refentrytitle><manvolnum>8</manvolnum></citerefentry>
     </para>
   </refsect1>
