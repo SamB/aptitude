@@ -9,11 +9,13 @@
 
 <xsl:import href="aptitude-common.xsl"/>
 
-<xsl:output method="html" encoding="UTF-8"/>
+<xsl:param name="chunker.output.indent" select="'yes'"/>
 <xsl:param name="chunker.output.encoding" select="'utf-8'"/>
 
-<xsl:param name="chunk.section.depth" select="2"/>
-<xsl:param name="chunk.quietly" select="1"/>
+<xsl:param name="use.id.as.filename" select="1"/>
+
+<xsl:param name="chunk.section.depth" select="1"/>
+<!--<xsl:param name="chunk.quietly" select="1"/>-->
 <xsl:param name="chunk.first.sections" select="1"/>
 <xsl:param name="generate.section.toc.level" select="3"/>
 
